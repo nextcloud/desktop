@@ -137,9 +137,9 @@ QIcon Theme::aboutIcon() const
     return applicationIcon();
 }
 
-bool Theme::isUsingDarkTheme() const
+bool Theme::isUsingDarkTheme(IconType type) const
 {
-    if (!_hasDarkColoredTheme) {
+    if (!_hasDarkColoredTheme && type != IconType::VanillaIcon) {
         return false;
     }
     return QPalette().base().color().lightnessF() <= 0.5;
@@ -148,14 +148,14 @@ bool Theme::isUsingDarkTheme() const
  * helper to load a icon from either the icon theme the desktop provides or from
  * the apps Qt resources.
  */
-QIcon Theme::themeIcon(const QString &name, bool sysTray, bool sysTrayMenuVisible, IconFallback fallbackType) const
+QIcon Theme::themeIcon(const QString &name, bool sysTray, bool sysTrayMenuVisible, IconType iconType) const
 {
-    const bool useCoreIcon = (fallbackType == IconFallback::CoreIcon) || isVanilla();
+    const bool useCoreIcon = (iconType == IconType::VanillaIcon) || isVanilla();
     QString flavor;
     if (sysTray) {
         flavor = systrayIconFlavor(_mono, sysTrayMenuVisible);
     } else {
-        if (isUsingDarkTheme()) {
+        if (isUsingDarkTheme(iconType)) {
             flavor = QStringLiteral("dark");
         } else {
             flavor = QStringLiteral("colored");
@@ -195,8 +195,8 @@ QIcon Theme::themeIcon(const QString &name, bool sysTray, bool sysTrayMenuVisibl
         }
     }
     if (cached.isNull()) {
-        if (!useCoreIcon && fallbackType == IconFallback::FallbackToCoreIcon) {
-            return themeIcon(name, sysTray, sysTrayMenuVisible, IconFallback::CoreIcon);
+        if (!useCoreIcon && iconType == IconType::BrandedIconWithFallbackToVanillaIcon) {
+            return themeIcon(name, sysTray, sysTrayMenuVisible, IconType::VanillaIcon);
         }
         qWarning() << "Failed to locate the icon" << name;
     }

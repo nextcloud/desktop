@@ -97,6 +97,14 @@ public:
 
 #ifndef TOKEN_AUTH_ONLY
     /**
+     * Wehther we allow a fallback to a vanilla icon
+     */
+    enum class IconType {
+        BrandedIcon,
+        BrandedIconWithFallbackToVanillaIcon,
+        VanillaIcon
+    };
+    /**
       * get an sync state icon
       */
     virtual QIcon syncStateIcon(SyncResult::Status, bool sysTray = false, bool sysTrayMenuVisible = false) const;
@@ -108,8 +116,9 @@ public:
 
     /**
      * Whether use the dark icon theme
+     * The function also ensures the theme supports the dark theme
      */
-    bool isUsingDarkTheme() const;
+    bool isUsingDarkTheme(IconType fallbackType = IconType::BrandedIcon) const;
 #endif
 
     virtual QString statusHeaderText(SyncResult::Status) const;
@@ -399,13 +408,7 @@ public:
 
 protected:
 #ifndef TOKEN_AUTH_ONLY
-    enum class IconFallback {
-        NoFallbackToCoreIcon,
-        FallbackToCoreIcon,
-        CoreIcon
-    };
-
-    QIcon themeIcon(const QString &name, bool sysTray = false, bool sysTrayMenuVisible = false, IconFallback fallbackType = IconFallback::FallbackToCoreIcon) const;
+    QIcon themeIcon(const QString &name, bool sysTray = false, bool sysTrayMenuVisible = false, IconType iconType = IconType::BrandedIconWithFallbackToVanillaIcon) const;
     static bool hasTheme(const QString &theme);
 #endif
     Theme();

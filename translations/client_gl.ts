@@ -752,7 +752,7 @@ Esta acción interromperá calquera sincronización que estea agora en proceso.<
 <context>
     <name>OCC::CleanupPollsJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1142"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1143"/>
         <source>Error writing metadata to the database</source>
         <translation>Produciuse un erro ao escribir os metadatos na base de datos</translation>
     </message>
@@ -2619,7 +2619,7 @@ Este é un modo novo e experimental. Se decide usalo, informe de calquera proble
 <context>
     <name>OCC::PropagateDirectory</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1008"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1009"/>
         <source>Error writing metadata to the database</source>
         <translation>Produciuse un erro ao escribir os metadatos na base de datos</translation>
     </message>
@@ -2627,48 +2627,49 @@ Este é un modo novo e experimental. Se decide usalo, informe de calquera proble
 <context>
     <name>OCC::PropagateDownloadFile</name>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="453"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="386"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="458"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
         <translation>Non é posíbel descargar o ficheiro %1 por mor dunha colisión co nome dun ficheiro local!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="504"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="509"/>
         <source>The download would reduce free local disk space below the limit</source>
         <translation>A descarga reducirá o espazo libre local por baixo do límite</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="508"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="513"/>
         <source>Free space on disk is less than %1</source>
         <translation>O espazo libre no disco é inferior a %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="631"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="636"/>
         <source>File was deleted from server</source>
         <translation>O ficheiro vai ser eliminado do servidor</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="698"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="703"/>
         <source>The file could not be downloaded completely.</source>
         <translation>Non foi posíbel descargar completamente o ficheiro.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="705"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="710"/>
         <source>The downloaded file is empty despite the server announced it should have been %1.</source>
         <translation>O ficheiro descargado está baleiro, aínda que o servidor dí que o seu tamaño debe ser de %1. </translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="885"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="890"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
         <translation>Non foi posíbel gardar o ficheiro %1 por mor dunha colisión co nome dun ficheiro local!</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="364"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="934"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="939"/>
         <source>File has changed since discovery</source>
         <translation>O ficheiro cambiou após ser atopado</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1000"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1005"/>
         <source>Error writing metadata to the database</source>
         <translation>Produciuse un erro ao escribir os metadatos na base de datos</translation>
     </message>
@@ -3834,17 +3835,17 @@ Este é un modo novo e experimental. Se decide usalo, informe de calquera proble
 <context>
     <name>OCC::ValidateChecksumHeader</name>
     <message>
-        <location filename="../src/common/checksums.cpp" line="336"/>
+        <location filename="../src/common/checksums.cpp" line="339"/>
         <source>The checksum header is malformed.</source>
         <translation>A cabeceira da suma de comprobación é incorrecta.</translation>
     </message>
     <message>
-        <location filename="../src/common/checksums.cpp" line="363"/>
+        <location filename="../src/common/checksums.cpp" line="366"/>
         <source>The checksum header contained an unknown checksum type &apos;%1&apos;</source>
         <translation>A cabeceira da suma de comprobación contén un tipo de suma de comprobación descoñecido «%1»</translation>
     </message>
     <message>
-        <location filename="../src/common/checksums.cpp" line="367"/>
+        <location filename="../src/common/checksums.cpp" line="370"/>
         <source>The downloaded file does not match the checksum, it will be resumed. &apos;%1&apos; != &apos;%2&apos;</source>
         <translation>O ficheiro descargado non coincide coa suma de comprobación. Retomase. «%1» != «%2»</translation>
     </message>
