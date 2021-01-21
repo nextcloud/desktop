@@ -36,7 +36,7 @@ public:
     void start();
 
     /* unlocks the current folder that holds this file */
-    void unlockFolder();
+    void unlockFolder(bool uploadFailed = false);
   // Used by propagateupload
   QByteArray _folderToken;
   QByteArray _folderId;
@@ -56,6 +56,7 @@ signals:
     // Emmited after the file is encrypted and everythign is setup.
     void finalized(const QString& path, const QString& filename, quint64 size);
     void error();
+    void folderUnlocked(const QByteArray &folderId, int httpStatus);
 
 private:
   OwncloudPropagator *_propagator;
@@ -70,6 +71,9 @@ private:
   FolderMetadata *_metadata;
   EncryptedFile _encryptedFile;
   QString _completeFileName;
+
+  bool _isUnlockRunning = false; // protection against multiple calls to unlock the same folder
+  QMutex _isUnlockRunningMutex; // corresponding mutex for _isUnlockRunning
 };
 
 

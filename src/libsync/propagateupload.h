@@ -257,6 +257,10 @@ private slots:
     void slotComputeTransmissionChecksum(const QByteArray &contentChecksumType, const QByteArray &contentChecksum);
     // transmission checksum computed, prepare the upload
     void slotStartUpload(const QByteArray &transmissionChecksumType, const QByteArray &transmissionChecksum);
+    // invoked when encrypted folder lock has been released
+    void slotFolderUnlocked(const QByteArray &folderId, int httpReturnCode);
+    // invoked on internal error to unlock a folder and faile
+    void slotOnErrorStartFolderUnlock(SyncFileItem::Status status, const QString &errorString);
 
 public:
     virtual void doStartUpload() = 0;
@@ -310,6 +314,7 @@ protected:
 private:
   PropagateUploadEncrypted *_uploadEncryptedHelper;
   bool _uploadingEncrypted;
+  QPair<SyncFileItem::Status, QString> _status = { SyncFileItem::NoStatus, QString() };
 };
 
 /**

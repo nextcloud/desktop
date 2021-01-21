@@ -59,6 +59,9 @@ private slots:
     void success();
 
 private:
-    bool _isEncryptedRootFolder = false;
+    void finalizeMkColJob(QNetworkReply::NetworkError err, const QString &jobHttpReasonPhraseString, const QString &jobPath);
+
+private:
+    QPair<SyncFileItem::Status, QString> _status = { SyncFileItem::NoStatus, QString() };
 };
 }
