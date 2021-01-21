@@ -95,6 +95,7 @@ void PropagateUploadEncrypted::slotFolderLockedSuccessfully(const QByteArray& fi
   _currentLockingInProgress = true;
   _folderToken = token;
   _folderId = fileId;
+  _isFolderLocked = true;
 
   auto job = new GetMetadataApiJob(_propagator->account(), _folderId);
   connect(job, &GetMetadataApiJob::jsonReceived,
@@ -178,7 +179,8 @@ void PropagateUploadEncrypted::slotFolderEncryptedMetadataReceived(const QJsonDo
 
       if (!encryptionResult) {
         qCDebug(lcPropagateUploadEncrypted()) << "There was an error encrypting the file, aborting upload.";
-        unlockFolder(true);
+        connect(this, &PropagateUploadEncrypted::folderUnlocked, this, &PropagateUploadEncrypted::error);
+        unlockFolder();
         return;
       }
 
@@ -229,7 +231,8 @@ void PropagateUploadEncrypted::slotUpdateMetadataError(const QByteArray& fileId,
 {
   qCDebug(lcPropagateUploadEncrypted) << "Update metadata error for folder" << fileId << "with error" << httpErrorResponse;
   qCDebug(lcPropagateUploadEncrypted()) << "Unlocking the folder.";
-  unlockFolder(true);
+  connect(this, &PropagateUploadEncrypted::folderUnlocked, this, &PropagateUploadEncrypted::error);
+  unlockFolder();
 }
 
 void PropagateUploadEncrypted::slotFolderLockedError(const QByteArray& fileId, int httpErrorCode)
@@ -262,49 +265,34 @@ void PropagateUploadEncrypted::slotFolderEncryptedIdError(QNetworkReply *r)
     qCDebug(lcPropagateUploadEncrypted) << "Error retrieving the Id of the encrypted folder.";
 }
 
-void PropagateUploadEncrypted::unlockFolder(bool uploadFailed)
+void PropagateUploadEncrypted::unlockFolder()
 {
-    {
-        QMutexLocker locker(&_isUnlockRunningMutex);
+    ASSERT(!_isUnlockRunning);
 
-        ASSERT(!_isUnlockRunning);
-
-        if (_isUnlockRunning) {
-            qWarning() << "Double-call to unlockFolder.";
-            return;
-        }
-
-        _isUnlockRunning = true;
+    if (_isUnlockRunning) {
+        qWarning() << "Double-call to unlockFolder.";
+        return;
     }
+
+    _isUnlockRunning = true;
 
     qDebug() << "Calling Unlock";
     auto *unlockJob = new UnlockEncryptFolderApiJob(_propagator->account(),
         _folderId, _folderToken, this);
 
-    connect(unlockJob, &UnlockEncryptFolderApiJob::success, [this, uploadFailed](const QByteArray &folderId) {
+    connect(unlockJob, &UnlockEncryptFolderApiJob::success, [this](const QByteArray &folderId) {
         qDebug() << "Successfully Unlocked";
         _folderToken = "";
         _folderId = "";
+        _isFolderLocked = false;
 
         emit folderUnlocked(folderId, 200);
-
-        if (uploadFailed) {
-            emit error();
-        }
-
-        QMutexLocker locker(&_isUnlockRunningMutex);
         _isUnlockRunning = false;
     });
-    connect(unlockJob, &UnlockEncryptFolderApiJob::error, [this, uploadFailed](const QByteArray &folderId, int httpStatus) {
+    connect(unlockJob, &UnlockEncryptFolderApiJob::error, [this](const QByteArray &folderId, int httpStatus) {
         qDebug() << "Unlock Error";
 
         emit folderUnlocked(folderId, httpStatus);
-
-        if (uploadFailed) {
-            emit error();
-        }
-
-        QMutexLocker locker(&_isUnlockRunningMutex);
         _isUnlockRunning = false;
     });
     unlockJob->start();

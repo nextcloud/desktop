@@ -237,7 +237,7 @@ void PropagateUploadFileCommon::start()
     _uploadEncryptedHelper = new PropagateUploadEncrypted(propagator(), remoteParentPath, _item, this);
     connect(_uploadEncryptedHelper, &PropagateUploadEncrypted::finalized,
             this, &PropagateUploadFileCommon::setupEncryptedFile);
-    connect(_uploadEncryptedHelper, &PropagateUploadEncrypted::error, [this]{
+    connect(_uploadEncryptedHelper, &PropagateUploadEncrypted::error, [this] {
         qCDebug(lcPropagateUpload) << "Error setting up encryption.";
         done(SyncFileItem::FatalError, tr("Failed to upload encrypted file."));
     });
@@ -416,17 +416,17 @@ void PropagateUploadFileCommon::slotStartUpload(const QByteArray &transmissionCh
 void PropagateUploadFileCommon::slotFolderUnlocked(const QByteArray &folderId, int httpReturnCode)
 {
     qDebug() << "Failed to unlock encrypted folder" << folderId;
-    if (_status.first == SyncFileItem::NoStatus && httpReturnCode != 200) {
+    if (_uploadStatus.status == SyncFileItem::NoStatus && httpReturnCode != 200) {
         done(SyncFileItem::FatalError, tr("Failed to unlock encrypted folder."));
     } else {
-        done(_status.first, _status.second);
+        done(_uploadStatus.status, _uploadStatus.message);
     }
 }
 
 void PropagateUploadFileCommon::slotOnErrorStartFolderUnlock(SyncFileItem::Status status, const QString &errorString)
 {
     if (_uploadingEncrypted) {
-        _status = { status, errorString };
+        _uploadStatus = { status, errorString };
         connect(_uploadEncryptedHelper, &PropagateUploadEncrypted::folderUnlocked, this, &PropagateUploadFileCommon::slotFolderUnlocked);
         _uploadEncryptedHelper->unlockFolder();
     } else {
@@ -750,8 +750,8 @@ QMap<QByteArray, QByteArray> PropagateUploadFileCommon::headers()
             headers[QByteArrayLiteral("OC-ConflictBaseEtag")] = conflictRecord.baseEtag;
     }
 
-    if (_uploadEncryptedHelper && !_uploadEncryptedHelper->_folderToken.isEmpty()) {
-        headers.insert("e2e-token", _uploadEncryptedHelper->_folderToken);
+    if (_uploadEncryptedHelper && !_uploadEncryptedHelper->folderToken().isEmpty()) {
+        headers.insert("e2e-token", _uploadEncryptedHelper->folderToken());
     }
 
     return headers;
@@ -786,7 +786,7 @@ void PropagateUploadFileCommon::finalize()
     propagator()->_journal->commit("upload file start");
 
     if (_uploadingEncrypted) {
-        _status = { SyncFileItem::Success, QString() };
+        _uploadStatus = { SyncFileItem::Success, QString() };
         connect(_uploadEncryptedHelper, &PropagateUploadEncrypted::folderUnlocked, this, &PropagateUploadFileCommon::slotFolderUnlocked);
         _uploadEncryptedHelper->unlockFolder();
     } else {

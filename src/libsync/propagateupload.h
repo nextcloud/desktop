@@ -205,6 +205,11 @@ class PropagateUploadFileCommon : public PropagateItemJob
 {
     Q_OBJECT
 
+    struct UploadStatus {
+        SyncFileItem::Status status = SyncFileItem::NoStatus;
+        QString message;
+    };
+
 protected:
     QVector<AbstractNetworkJob *> _jobs; /// network jobs that are currently in transit
     bool _finished BITFIELD(1); /// Tells that all the jobs have been finished
@@ -314,7 +319,7 @@ protected:
 private:
   PropagateUploadEncrypted *_uploadEncryptedHelper;
   bool _uploadingEncrypted;
-  QPair<SyncFileItem::Status, QString> _status = { SyncFileItem::NoStatus, QString() };
+  UploadStatus _uploadStatus;
 };
 
 /**

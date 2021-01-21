@@ -93,7 +93,7 @@ void PropagateRemoteMkdir::slotStartEncryptedMkcolJob(const QString &path, const
 
     auto job = new MkColJob(propagator()->account(),
                             propagator()->fullRemotePath(filename),
-                            {{"e2e-token", _uploadEncryptedHelper->_folderToken }},
+                            {{"e2e-token", _uploadEncryptedHelper->folderToken() }},
                             this);
     connect(job, qOverload<QNetworkReply::NetworkError>(&MkColJob::finished),
             this, &PropagateRemoteMkdir::slotMkcolJobFinished);
@@ -120,6 +120,7 @@ void PropagateRemoteMkdir::finalizeMkColJob(QNetworkReply::NetworkError err, con
 {
     if (_item->_httpErrorCode == 405) {
         // This happens when the directory already exists. Nothing to do.
+        qDebug(lcPropagateRemoteMkdir) << "Folder" << jobPath << "already exists.";
     } else if (err != QNetworkReply::NoError) {
         SyncFileItem::Status status = classifyError(err, _item->_httpErrorCode,
             &propagator()->_anotherSyncNeeded);
@@ -155,7 +156,8 @@ void PropagateRemoteMkdir::finalizeMkColJob(QNetworkReply::NetworkError err, con
     if (!_uploadEncryptedHelper && !_item->_isEncrypted) {
         success();
     } else {
-        // We still need to mark that folder encrypted
+        // We still need to mark that folder encrypted in case we were uploading it as encrypted one
+        // Another scenario, is we are creating a new folder because of move operation on an encrypted folder that works via remove + re-upload
         propagator()->_activeJobList.append(this);
 
         // We're expecting directory path in /Foo/Bar convention...
@@ -214,7 +216,8 @@ void PropagateRemoteMkdir::slotMkcolJobFinished()
 
     const auto jobPath = _job->path();
 
-    if (_uploadEncryptedHelper && !_uploadEncryptedHelper->_folderId.isEmpty()) {
+    if (_uploadEncryptedHelper && _uploadEncryptedHelper->isFolderLocked() && !_uploadEncryptedHelper->isUnlockRunning()) {
+        // since we are done, we need to unlock a folder in case it was locked
         connect(_uploadEncryptedHelper, &PropagateUploadEncrypted::folderUnlocked, this, [this, err, jobHttpReasonPhraseString, jobPath]() {
             finalizeMkColJob(err, jobHttpReasonPhraseString, jobPath);
         });
