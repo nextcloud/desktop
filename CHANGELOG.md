@@ -8,8 +8,9 @@ ownCloud admins and users.
 Summary
 -------
 
+* Bugfix - Support dark theme with branded client and vanilla icons: [#4363](https://github.com/owncloud/enterprise/issues/4363)
 * Bugfix - SQLite wal file grows to several gigabyte: [#7646](https://github.com/owncloud/client/issues/7646)
-* Bugfix - Mac tray icon is size: [#8149](https://github.com/owncloud/client/issues/8149)
+* Bugfix - Mac tray icon is scaled wrong: [#8149](https://github.com/owncloud/client/issues/8149)
 * Bugfix - Fix potential crashes with the remove all dialog: [#8314](https://github.com/owncloud/client/pull/8314)
 * Bugfix - Don't recommend non default sync option: [#8317](https://github.com/owncloud/client/issues/8317)
 * Bugfix - Detect file name clash with VirtualFiles enabled: [#8323](https://github.com/owncloud/client/issues/8323)
@@ -24,13 +25,19 @@ Summary
 Details
 -------
 
+* Bugfix - Support dark theme with branded client and vanilla icons: [#4363](https://github.com/owncloud/enterprise/issues/4363)
+
+   We fixed a bug where the dark vanilla icons where used with a branded client.
+
+   https://github.com/owncloud/enterprise/issues/4363
+
 * Bugfix - SQLite wal file grows to several gigabyte: [#7646](https://github.com/owncloud/client/issues/7646)
 
    We fixed a bug where the SQLite wal file growed until the client was quit.
 
    https://github.com/owncloud/client/issues/7646
 
-* Bugfix - Mac tray icon is size: [#8149](https://github.com/owncloud/client/issues/8149)
+* Bugfix - Mac tray icon is scaled wrong: [#8149](https://github.com/owncloud/client/issues/8149)
 
    We backported a change to Qt 5.12.10 which fixed the scaling of the system tray icon on Big Sur.
 
@@ -86,7 +93,8 @@ Details
 
 * Change - Third party upgrades in distributed binaries: [#8349](https://github.com/owncloud/client/issues/8349)
 
-   We updated Qt from 5.12.9 to 5.12.10. We updated OpenSSL from 1.1.1g to 1.1.1i.
+   We updated Qt from 5.12.9 to 5.12.10. We updated OpenSSL from 1.1.1g to 1.1.1i. Linux
+   dependencies: QtKeychain was updated from 0.10.0 to 0.12.0
 
    https://github.com/owncloud/client/issues/8349
 
