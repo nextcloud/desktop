@@ -189,7 +189,7 @@ QIcon Theme::themeIcon(const QString &name, bool sysTray, bool sysTrayMenuVisibl
             } else if (size >= 128) {
                 if (!previousIcon.isEmpty()) {
                     qWarning() << "Upsacling:" << previousIcon << "to" << size;
-                    cached.addPixmap(QPixmap(previousIcon).scaled({ size, size }, Qt::KeepAspectRatio));
+                    cached.addPixmap(QPixmap(previousIcon).scaled({ size, size }, Qt::KeepAspectRatio, Qt::SmoothTransformation));
                 }
             }
         }
