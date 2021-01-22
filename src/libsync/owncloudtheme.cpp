@@ -58,12 +58,12 @@ QColor ownCloudTheme::wizardHeaderSubTitleColor() const
 
 QIcon ownCloudTheme::wizardHeaderLogo() const
 {
-    return themeIcon(QStringLiteral("wizard_logo"), false, false, Theme::IconType::BrandedIcon);
+    return themeUniversalIcon(QStringLiteral("wizard_logo"));
 }
 
 QIcon ownCloudTheme::aboutIcon() const
 {
-    return QIcon(QStringLiteral(":/client/ownCloud/theme/colored/oc-image-about.svg"));
+    return themeUniversalIcon(QStringLiteral("oc-image-about"));
 }
 
 #endif

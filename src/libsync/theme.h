@@ -120,6 +120,11 @@ public:
      * The function also ensures the theme supports the dark theme
      */
     bool isUsingDarkTheme() const;
+
+    /**
+    * Whether the branding allows the dark theme
+    */
+    bool allowDarkTheme() const;
 #endif
 
     virtual QString statusHeaderText(SyncResult::Status) const;
@@ -189,7 +194,7 @@ public:
 
 #ifndef TOKEN_AUTH_ONLY
     /** colored, white or black */
-    QString systrayIconFlavor(IconType type, bool mono, bool sysTrayMenuVisible = false) const;
+    QString systrayIconFlavor(bool mono, bool sysTrayMenuVisible = false) const;
 
     /**
      * Override to use a string or a custom image name.
@@ -407,12 +412,11 @@ public:
      */
     virtual bool enableExperimentalFeatures() const;
 
-    // whether or not a theme is available
-    bool hasTheme(IconType type, const QString &theme) const;
-
 protected:
 #ifndef TOKEN_AUTH_ONLY
-    QIcon themeIcon(const QString &name, bool sysTray = false, bool sysTrayMenuVisible = false, IconType iconType = IconType::BrandedIconWithFallbackToVanillaIcon) const;
+    QIcon themeUniversalIcon(const QString &name, IconType iconType = IconType::BrandedIcon) const;
+    QIcon themeTrayIcon(const QString &name, bool sysTrayMenuVisible = false, IconType iconType = IconType::BrandedIconWithFallbackToVanillaIcon) const;
+    QIcon themeIcon(const QString &name, IconType iconType = IconType::BrandedIconWithFallbackToVanillaIcon) const;
 #endif
     Theme();
 
@@ -423,13 +427,19 @@ private:
     Theme(Theme const &);
     Theme &operator=(Theme const &);
 
-    static Theme *_instance;
-    bool _mono;
-#ifndef TOKEN_AUTH_ONLY
-    // <is vanilla, theme name>
-    mutable QMap<QPair<bool, QString>, bool> _themeCache;
+    QIcon loadIcon(const QString &flavor, const QString &name, IconType iconType) const;
+    // whether or not a theme is available
+    bool hasTheme(IconType type, const QString &theme) const;
 
+    static Theme *_instance;
+    bool _mono = false;
+#ifndef TOKEN_AUTH_ONLY
     mutable QMap<QString, QIcon> _iconCache;
+    // <<is vanilla, theme name>, bool
+    // caches the availability of themes for branded and unbranded themes
+    mutable QMap<QPair<bool, QString>, bool> _themeCache;
+    const bool _hasBrandedColored = hasTheme(IconType::BrandedIcon, QStringLiteral("colored"));
+    const bool _hasBrandedDark = hasTheme(IconType::BrandedIcon, QStringLiteral("dark"));
 #endif
 };
 }
