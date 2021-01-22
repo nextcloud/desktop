@@ -349,7 +349,7 @@ void OCC::SyncEngine::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
                 const auto result = _syncOptions._vfs->convertToPlaceholder(filePath, *item);
                 if (!result) {
                     item->_instruction = CSYNC_INSTRUCTION_ERROR;
-                    item->_errorString = tr("Could not update file : %1").arg(result.error());
+                    item->_errorString = tr("Could not update file: %1").arg(result.error());
                     return;
                 }
             }
