@@ -27,6 +27,12 @@ QString DummyCredentials::user() const
     return _user;
 }
 
+QString DummyCredentials::password() const
+{
+    Q_UNREACHABLE();
+    return QString();
+}
+
 QNetworkAccessManager *DummyCredentials::createQNAM() const
 {
     return new AccessManager;

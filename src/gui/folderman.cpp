@@ -24,6 +24,7 @@
 #include "filesystem.h"
 #include "lockwatcher.h"
 #include "common/asserts.h"
+#include <pushnotifications.h>
 #include <syncengine.h>
 
 #ifdef Q_OS_MAC
@@ -77,6 +78,8 @@ FolderMan::FolderMan(QObject *parent)
 
     connect(_lockWatcher.data(), &LockWatcher::fileUnlocked,
         this, &FolderMan::slotWatchedFileUnlocked);
+
+    connect(this, &FolderMan::folderListChanged, this, &FolderMan::slotSetupPushNotifications);
 }
 
 FolderMan *FolderMan::instance()
@@ -753,32 +756,80 @@ void FolderMan::slotStartScheduledFolderSync()
     }
 }
 
+bool FolderMan::pushNotificationsFilesReady(Account *account)
+{
+    const auto pushNotifications = account->pushNotifications();
+    const auto pushFilesAvailable = account->capabilities().availablePushNotifications() & PushNotificationType::Files;
+
+    return pushFilesAvailable && pushNotifications && pushNotifications->isReady();
+}
+
 void FolderMan::slotEtagPollTimerTimeout()
 {
-    ConfigFile cfg;
-    auto polltime = cfg.remotePollInterval();
+    qCInfo(lcFolderMan) << "Etag poll timer timeout";
 
-    for (Folder *f : qAsConst(_folderMap)) {
-        if (!f) {
-            continue;
-        }
-        if (_currentSyncFolder == f) {
-            continue;
-        }
-        if (_scheduledFolders.contains(f)) {
-            continue;
-        }
-        if (_disabledFolders.contains(f)) {
-            continue;
-        }
-        if (f->etagJob() || f->isBusy() || !f->canSync()) {
-            continue;
-        }
-        if (f->msecSinceLastSync() < polltime) {
-            continue;
-        }
-        QMetaObject::invokeMethod(f, "slotRunEtagJob", Qt::QueuedConnection);
+    const auto folderMapValues = _folderMap.values();
+
+    qCInfo(lcFolderMan) << "Folders to sync:" << folderMapValues.size();
+
+    QList<Folder *> foldersToRun;
+
+    // Some folders need not to be checked because they use the push notifications
+    std::copy_if(folderMapValues.begin(), folderMapValues.end(), std::back_inserter(foldersToRun), [this](Folder *folder) -> bool {
+        const auto account = folder->accountState()->account();
+        const auto capabilities = account->capabilities();
+        const auto pushNotifications = account->pushNotifications();
+
+        return !pushNotificationsFilesReady(account.data());
+    });
+
+    qCInfo(lcFolderMan) << "Number of folders that don't use push notifications:" << foldersToRun.size();
+
+    runEtagJobsIfPossible(foldersToRun);
+}
+
+void FolderMan::runEtagJobsIfPossible(const QList<Folder *> &folderMap)
+{
+    for (auto folder : folderMap) {
+        runEtagJobIfPossible(folder);
     }
+}
+
+void FolderMan::runEtagJobIfPossible(Folder *folder)
+{
+    const ConfigFile cfg;
+    const auto polltime = cfg.remotePollInterval();
+
+    qCInfo(lcFolderMan) << "Run etag job on folder" << folder;
+
+    if (!folder) {
+        return;
+    }
+    if (_currentSyncFolder == folder) {
+        qCInfo(lcFolderMan) << "Can not run etag job: Sync is running";
+        return;
+    }
+    if (_scheduledFolders.contains(folder)) {
+        qCInfo(lcFolderMan) << "Can not run etag job: Folder is alreday scheduled";
+        return;
+    }
+    if (_disabledFolders.contains(folder)) {
+        qCInfo(lcFolderMan) << "Can not run etag job: Folder is disabled";
+        return;
+    }
+    if (folder->etagJob() || folder->isBusy() || !folder->canSync()) {
+        qCInfo(lcFolderMan) << "Can not run etag job: Folder is busy";
+        return;
+    }
+    // When not using push notifications, make sure polltime is reached
+    if (!pushNotificationsFilesReady(folder->accountState()->account().data())) {
+        if (folder->msecSinceLastSync() < polltime) {
+            qCInfo(lcFolderMan) << "Can not run etag job: Polltime not reached";
+            return;
+        }
+    }
+
+    QMetaObject::invokeMethod(folder, "slotRunEtagJob", Qt::QueuedConnection);
 }
 
 void FolderMan::slotRemoveFoldersForAccount(AccountState *accountState)
@@ -1502,6 +1553,44 @@ void FolderMan::restartApplication()
         QProcess::startDetached(prg, args);
     } else {
         qCDebug(lcFolderMan) << "On this platform we do not restart.";
+    }
+}
+
+void FolderMan::slotSetupPushNotifications(const Folder::Map &folderMap)
+{
+    for (auto folder : folderMap) {
+        const auto account = folder->accountState()->account();
+
+        // See if the account already provides the PushNotifications object and if yes connect to it.
+        // If we can't connect at this point, the signals will be connected in slotPushNotificationsReady()
+        // after the PushNotification object emitted the ready signal
+        slotConnectToPushNotifications(account.data());
+        connect(account.data(), &Account::pushNotificationsReady, this, &FolderMan::slotConnectToPushNotifications, Qt::UniqueConnection);
+    }
+}
+
+void FolderMan::slotProcessFilesPushNotification(Account *account)
+{
+    qCInfo(lcFolderMan) << "Got files push notification for account" << account;
+
+    for (auto folder : _folderMap) {
+        // Just run on the folders that belong to this account
+        if (folder->accountState()->account() != account) {
+            continue;
+        }
+
+        qCInfo(lcFolderMan) << "Schedule folder" << folder << "for sync";
+        scheduleFolder(folder);
+    }
+}
+
+void FolderMan::slotConnectToPushNotifications(Account *account)
+{
+    const auto pushNotifications = account->pushNotifications();
+
+    if (pushNotificationsFilesReady(account)) {
+        qCInfo(lcFolderMan) << "Push notifications ready";
+        connect(pushNotifications, &PushNotifications::filesChanged, this, &FolderMan::slotProcessFilesPushNotification, Qt::UniqueConnection);
     }
 }
 
