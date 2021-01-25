@@ -15,6 +15,7 @@ Summary
 * Bugfix - Don't recommend non default sync option: [#8317](https://github.com/owncloud/client/issues/8317)
 * Bugfix - Detect file name clash with VirtualFiles enabled: [#8323](https://github.com/owncloud/client/issues/8323)
 * Bugfix - Remove stray placeholders: [#8326](https://github.com/owncloud/client/issues/8326)
+* Bugfix - Fix wrong option provided to OIDC: [#8390](https://github.com/owncloud/client/issues/8390)
 * Change - Don't ask the user to switch to http: [#8231](https://github.com/owncloud/client/issues/8231)
 * Change - Remove support for http redirects: [#8293](https://github.com/owncloud/client/pull/8293)
 * Change - Ignore the desktop.ini file in every directory, not only in top dir: [#8298](https://github.com/owncloud/client/issues/8298)
@@ -67,6 +68,12 @@ Details
    We fixed a bug where Windows Virtual Files where not handled as such and thus not removed.
 
    https://github.com/owncloud/client/issues/8326
+
+* Bugfix - Fix wrong option provided to OIDC: [#8390](https://github.com/owncloud/client/issues/8390)
+
+   We fixed a bug where we passed a wrong value to the OIDC display parameter
+
+   https://github.com/owncloud/client/issues/8390
 
 * Change - Don't ask the user to switch to http: [#8231](https://github.com/owncloud/client/issues/8231)
 
