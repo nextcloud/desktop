@@ -1,0 +1,5 @@
+Bugfix: Fix wrong option provided to OIDC
+
+We fixed a bug where we passed a wrong value to the OIDC display parameter
+
+https://github.com/owncloud/client/issues/8390
