@@ -306,8 +306,7 @@ QUrl OAuth::authorisationLink() const
         { QStringLiteral("code_challenge_method"), QStringLiteral("S256") },
         { QStringLiteral("scope"), Theme::instance()->openIdConnectScopes() },
         { QStringLiteral("prompt"), Theme::instance()->openIdConnectPrompt() },
-        { QStringLiteral("state"), QString::fromUtf8(_state) },
-        { QStringLiteral("display"), Theme::instance()->appNameGUI() } });
+        { QStringLiteral("state"), QString::fromUtf8(_state) } });
 
     if (!_account->davUser().isNull()) {
         const QString davUser = _account->davUser().replace(QLatin1Char('+'), QStringLiteral("%2B")); // Issue #7762;
