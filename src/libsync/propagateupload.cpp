@@ -192,7 +192,6 @@ PropagateUploadFileCommon::PropagateUploadFileCommon(OwncloudPropagator *propaga
     , _finished(false)
     , _deleteExisting(false)
     , _aborting(false)
-    , _parallelism(FullParallelism)
     , _uploadEncryptedHelper(nullptr)
     , _uploadingEncrypted(false)
 {
@@ -205,15 +204,6 @@ PropagateUploadFileCommon::PropagateUploadFileCommon(OwncloudPropagator *propaga
     if (!ok) {
         return;
     }
-
-    if (hasEncryptedAncestor()) {
-        _parallelism = WaitForFinished;
-    }
-}
-
-PropagatorJob::JobParallelism PropagateUploadFileCommon::parallelism()
-{
-    return _parallelism;
 }
 
 void PropagateUploadFileCommon::setDeleteExisting(bool enabled)
@@ -247,8 +237,10 @@ void PropagateUploadFileCommon::start()
     _uploadEncryptedHelper = new PropagateUploadEncrypted(propagator(), remoteParentPath, _item, this);
     connect(_uploadEncryptedHelper, &PropagateUploadEncrypted::finalized,
             this, &PropagateUploadFileCommon::setupEncryptedFile);
-    connect(_uploadEncryptedHelper, &PropagateUploadEncrypted::error,
-            []{ qCDebug(lcPropagateUpload) << "Error setting up encryption."; });
+    connect(_uploadEncryptedHelper, &PropagateUploadEncrypted::error, [this] {
+        qCDebug(lcPropagateUpload) << "Error setting up encryption.";
+        done(SyncFileItem::FatalError, tr("Failed to upload encrypted file."));
+    });
     _uploadEncryptedHelper->start();
 }
 
@@ -394,11 +386,7 @@ void PropagateUploadFileCommon::slotStartUpload(const QByteArray &transmissionCh
     const QString originalFilePath = propagator()->fullLocalPath(_item->_file);
 
     if (!FileSystem::fileExists(fullFilePath)) {
-      if (_uploadingEncrypted) {
-        _uploadEncryptedHelper->unlockFolder();
-      }
-    done(SyncFileItem::SoftError, tr("File Removed (start upload) %1").arg(fullFilePath));
-        return;
+        return slotOnErrorStartFolderUnlock(SyncFileItem::SoftError, tr("File Removed (start upload) %1").arg(fullFilePath));
     }
     time_t prevModtime = _item->_modtime; // the _item value was set in PropagateUploadFile::start()
     // but a potential checksum calculation could have taken some time during which the file could
@@ -407,12 +395,8 @@ void PropagateUploadFileCommon::slotStartUpload(const QByteArray &transmissionCh
     _item->_modtime = FileSystem::getModTime(originalFilePath);
     if (prevModtime != _item->_modtime) {
         propagator()->_anotherSyncNeeded = true;
-        if (_uploadingEncrypted) {
-          _uploadEncryptedHelper->unlockFolder();
-        }
         qDebug() << "prevModtime" << prevModtime << "Curr" << _item->_modtime;
-        done(SyncFileItem::SoftError, tr("Local file changed during syncing. It will be resumed."));
-        return;
+        return slotOnErrorStartFolderUnlock(SyncFileItem::SoftError, tr("Local file changed during syncing. It will be resumed."));
     }
 
     _fileToUpload._size = FileSystem::getSize(fullFilePath);
@@ -423,14 +407,31 @@ void PropagateUploadFileCommon::slotStartUpload(const QByteArray &transmissionCh
     // or not yet fully copied to the destination.
     if (fileIsStillChanging(*_item)) {
         propagator()->_anotherSyncNeeded = true;
-        if (_uploadingEncrypted) {
-          _uploadEncryptedHelper->unlockFolder();
-        }
-        done(SyncFileItem::SoftError, tr("Local file changed during sync."));
-        return;
+        return slotOnErrorStartFolderUnlock(SyncFileItem::SoftError, tr("Local file changed during sync."));
     }
 
     doStartUpload();
+}
+
+void PropagateUploadFileCommon::slotFolderUnlocked(const QByteArray &folderId, int httpReturnCode)
+{
+    qDebug() << "Failed to unlock encrypted folder" << folderId;
+    if (_uploadStatus.status == SyncFileItem::NoStatus && httpReturnCode != 200) {
+        done(SyncFileItem::FatalError, tr("Failed to unlock encrypted folder."));
+    } else {
+        done(_uploadStatus.status, _uploadStatus.message);
+    }
+}
+
+void PropagateUploadFileCommon::slotOnErrorStartFolderUnlock(SyncFileItem::Status status, const QString &errorString)
+{
+    if (_uploadingEncrypted) {
+        _uploadStatus = { status, errorString };
+        connect(_uploadEncryptedHelper, &PropagateUploadEncrypted::folderUnlocked, this, &PropagateUploadFileCommon::slotFolderUnlocked);
+        _uploadEncryptedHelper->unlockFolder();
+    } else {
+        done(status, errorString);
+    }
 }
 
 UploadDevice::UploadDevice(const QString &fileName, qint64 start, qint64 size, BandwidthManager *bwm)
@@ -749,8 +750,8 @@ QMap<QByteArray, QByteArray> PropagateUploadFileCommon::headers()
             headers[QByteArrayLiteral("OC-ConflictBaseEtag")] = conflictRecord.baseEtag;
     }
 
-    if (_uploadEncryptedHelper && !_uploadEncryptedHelper->_folderToken.isEmpty()) {
-        headers.insert("e2e-token", _uploadEncryptedHelper->_folderToken);
+    if (_uploadEncryptedHelper && !_uploadEncryptedHelper->folderToken().isEmpty()) {
+        headers.insert("e2e-token", _uploadEncryptedHelper->folderToken());
     }
 
     return headers;
@@ -785,9 +786,12 @@ void PropagateUploadFileCommon::finalize()
     propagator()->_journal->commit("upload file start");
 
     if (_uploadingEncrypted) {
-      _uploadEncryptedHelper->unlockFolder();
+        _uploadStatus = { SyncFileItem::Success, QString() };
+        connect(_uploadEncryptedHelper, &PropagateUploadEncrypted::folderUnlocked, this, &PropagateUploadFileCommon::slotFolderUnlocked);
+        _uploadEncryptedHelper->unlockFolder();
+    } else {
+        done(SyncFileItem::Success);
     }
-    done(SyncFileItem::Success);
 }
 
 void PropagateUploadFileCommon::abortNetworkJobs(

@@ -85,6 +85,34 @@ void PropagateRemoteMove::start()
 
     if (origin == _item->_renameTarget) {
         // The parent has been renamed already so there is nothing more to do.
+
+        if (!_item->_encryptedFileName.isEmpty()) {
+            // when renaming non-encrypted folder that contains encrypted folder, nested files of its encrypted folder are incorrectly displayed in the Settings dialog
+            // encrypted name is displayed instead of a local folder name, unless the sync folder is removed, then added again and re-synced
+            // we are fixing it by modifying the "_encryptedFileName" in such a way so it will have a renamed root path at the beginning of it as expected
+            // corrected "_encryptedFileName" is later used in propagator()->updateMetadata() call that will update the record in the Sync journal DB
+
+            const auto path = _item->_file;
+            const auto slashPosition = path.lastIndexOf('/');
+            const auto parentPath = slashPosition >= 0 ? path.left(slashPosition) : QString();
+
+            SyncJournalFileRecord parentRec;
+            bool ok = propagator()->_journal->getFileRecord(parentPath, &parentRec);
+            if (!ok) {
+                done(SyncFileItem::NormalError);
+                return;
+            }
+
+            const auto remoteParentPath = parentRec._e2eMangledName.isEmpty() ? parentPath : parentRec._e2eMangledName;
+
+            const auto lastSlashPosition = _item->_encryptedFileName.lastIndexOf('/');
+            const auto encryptedName = lastSlashPosition >= 0 ? _item->_encryptedFileName.mid(lastSlashPosition + 1) : QString();
+
+            if (!encryptedName.isEmpty()) {
+                _item->_encryptedFileName = remoteParentPath + "/" + encryptedName;
+            }
+        }
+
         finalize();
         return;
     }

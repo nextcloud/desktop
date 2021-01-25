@@ -178,12 +178,19 @@ protected slots:
 
 private:
     QScopedPointer<PropagateItemJob> _restoreJob;
+    JobParallelism _parallelism;
 
 public:
     PropagateItemJob(OwncloudPropagator *propagator, const SyncFileItemPtr &item)
         : PropagatorJob(propagator)
         , _item(item)
+        , _parallelism(FullParallelism)
     {
+        // we should always execute jobs that process the E2EE API calls as sequential jobs
+        // TODO: In fact, we must make sure Lock/Unlock are not colliding and always wait for each other to complete. So, we could refactor this "_parallelism" later
+        // so every "PropagateItemJob" that will potentially execute Lock job on E2EE folder will get executed sequentially.
+        // As an alternative, we could optimize Lock/Unlock calls, so we do a batch-write on one folder and only lock and unlock a folder once per batch.
+        _parallelism = (_item->_isEncrypted || hasEncryptedAncestor()) ? WaitForFinished : FullParallelism;
     }
     ~PropagateItemJob();
 
@@ -198,6 +205,8 @@ public:
         QMetaObject::invokeMethod(this, "start"); // We could be in a different thread (neon jobs)
         return true;
     }
+
+    virtual JobParallelism parallelism() override { return _parallelism; }
 
     SyncFileItemPtr _item;
 

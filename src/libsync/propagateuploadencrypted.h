@@ -33,13 +33,15 @@ class PropagateUploadEncrypted : public QObject
   Q_OBJECT
 public:
     PropagateUploadEncrypted(OwncloudPropagator *propagator, const QString &remoteParentPath, SyncFileItemPtr item, QObject *parent = nullptr);
+    ~PropagateUploadEncrypted() = default;
+
     void start();
 
-    /* unlocks the current folder that holds this file */
     void unlockFolder();
-  // Used by propagateupload
-  QByteArray _folderToken;
-  QByteArray _folderId;
+
+    bool isUnlockRunning() const { return _isUnlockRunning; }
+    bool isFolderLocked() const { return _isFolderLocked; }
+    const QByteArray folderToken() const { return _folderToken; }
 
 private slots:
     void slotFolderEncryptedIdReceived(const QStringList &list);
@@ -56,14 +58,21 @@ signals:
     // Emmited after the file is encrypted and everythign is setup.
     void finalized(const QString& path, const QString& filename, quint64 size);
     void error();
+    void folderUnlocked(const QByteArray &folderId, int httpStatus);
 
 private:
   OwncloudPropagator *_propagator;
   QString _remoteParentPath;
   SyncFileItemPtr _item;
 
+  QByteArray _folderToken;
+  QByteArray _folderId;
+
   QElapsedTimer _folderLockFirstTry;
   bool _currentLockingInProgress = false;
+
+  bool _isUnlockRunning = false;
+  bool _isFolderLocked = false;
 
   QByteArray _generatedKey;
   QByteArray _generatedIv;

@@ -32,7 +32,6 @@ PropagateRemoteMkdir::PropagateRemoteMkdir(OwncloudPropagator *propagator, const
     : PropagateItemJob(propagator, item)
     , _deleteExisting(false)
     , _uploadEncryptedHelper(nullptr)
-    , _parallelism(FullParallelism)
 {
     const auto path = _item->_file;
     const auto slashPosition = path.lastIndexOf('/');
@@ -43,15 +42,6 @@ PropagateRemoteMkdir::PropagateRemoteMkdir(OwncloudPropagator *propagator, const
     if (!ok) {
         return;
     }
-
-    if (hasEncryptedAncestor()) {
-        _parallelism = WaitForFinished;
-    }
-}
-
-PropagatorJob::JobParallelism PropagateRemoteMkdir::parallelism()
-{
-    return _parallelism;
 }
 
 void PropagateRemoteMkdir::start()
@@ -103,10 +93,8 @@ void PropagateRemoteMkdir::slotStartEncryptedMkcolJob(const QString &path, const
 
     auto job = new MkColJob(propagator()->account(),
                             propagator()->fullRemotePath(filename),
-                            {{"e2e-token", _uploadEncryptedHelper->_folderToken }},
+                            {{"e2e-token", _uploadEncryptedHelper->folderToken() }},
                             this);
-    connect(job, qOverload<QNetworkReply::NetworkError>(&MkColJob::finished),
-            _uploadEncryptedHelper, &PropagateUploadEncrypted::unlockFolder);
     connect(job, qOverload<QNetworkReply::NetworkError>(&MkColJob::finished),
             this, &PropagateRemoteMkdir::slotMkcolJobFinished);
     _job = job;
@@ -126,6 +114,59 @@ void PropagateRemoteMkdir::abort(PropagatorJob::AbortType abortType)
 void PropagateRemoteMkdir::setDeleteExisting(bool enabled)
 {
     _deleteExisting = enabled;
+}
+
+void PropagateRemoteMkdir::finalizeMkColJob(QNetworkReply::NetworkError err, const QString &jobHttpReasonPhraseString, const QString &jobPath)
+{
+    if (_item->_httpErrorCode == 405) {
+        // This happens when the directory already exists. Nothing to do.
+        qDebug(lcPropagateRemoteMkdir) << "Folder" << jobPath << "already exists.";
+    } else if (err != QNetworkReply::NoError) {
+        SyncFileItem::Status status = classifyError(err, _item->_httpErrorCode,
+            &propagator()->_anotherSyncNeeded);
+        done(status, _item->_errorString);
+        return;
+    } else if (_item->_httpErrorCode != 201) {
+        // Normally we expect "201 Created"
+        // If it is not the case, it might be because of a proxy or gateway intercepting the request, so we must
+        // throw an error.
+        done(SyncFileItem::NormalError,
+            tr("Wrong HTTP code returned by server. Expected 201, but received \"%1 %2\".")
+                .arg(_item->_httpErrorCode)
+                .arg(jobHttpReasonPhraseString));
+        return;
+    }
+
+    if (_item->_fileId.isEmpty()) {
+        // Owncloud 7.0.0 and before did not have a header with the file id.
+        // (https://github.com/owncloud/core/issues/9000)
+        // So we must get the file id using a PROPFIND
+        // This is required so that we can detect moves even if the folder is renamed on the server
+        // while files are still uploading
+        propagator()->_activeJobList.append(this);
+        auto propfindJob = new PropfindJob(propagator()->account(), jobPath, this);
+        propfindJob->setProperties(QList<QByteArray>() << "http://owncloud.org/ns:id");
+        QObject::connect(propfindJob, &PropfindJob::result, this, &PropagateRemoteMkdir::propfindResult);
+        QObject::connect(propfindJob, &PropfindJob::finishedWithError, this, &PropagateRemoteMkdir::propfindError);
+        propfindJob->start();
+        _job = propfindJob;
+        return;
+    }
+
+    if (!_uploadEncryptedHelper && !_item->_isEncrypted) {
+        success();
+    } else {
+        // We still need to mark that folder encrypted in case we were uploading it as encrypted one
+        // Another scenario, is we are creating a new folder because of move operation on an encrypted folder that works via remove + re-upload
+        propagator()->_activeJobList.append(this);
+
+        // We're expecting directory path in /Foo/Bar convention...
+        Q_ASSERT(jobPath.startsWith('/') && !jobPath.endsWith('/'));
+        // But encryption job expect it in Foo/Bar/ convention
+        auto job = new OCC::EncryptFolderJob(propagator()->account(), propagator()->_journal, jobPath.mid(1), _item->_fileId, this);
+        connect(job, &OCC::EncryptFolderJob::finished, this, &PropagateRemoteMkdir::slotEncryptFolderFinished);
+        job->start();
+    }
 }
 
 void PropagateRemoteMkdir::slotMkdir()
@@ -167,56 +208,22 @@ void PropagateRemoteMkdir::slotMkcolJobFinished()
     _item->_responseTimeStamp = _job->responseTimestamp();
     _item->_requestId = _job->requestId();
 
-    if (_item->_httpErrorCode == 405) {
-        // This happens when the directory already exists. Nothing to do.
-    } else if (err != QNetworkReply::NoError) {
-        SyncFileItem::Status status = classifyError(err, _item->_httpErrorCode,
-            &propagator()->_anotherSyncNeeded);
-        done(status, _job->errorString());
-        return;
-    } else if (_item->_httpErrorCode != 201) {
-        // Normally we expect "201 Created"
-        // If it is not the case, it might be because of a proxy or gateway intercepting the request, so we must
-        // throw an error.
-        done(SyncFileItem::NormalError,
-            tr("Wrong HTTP code returned by server. Expected 201, but received \"%1 %2\".")
-                .arg(_item->_httpErrorCode)
-                .arg(_job->reply()->attribute(QNetworkRequest::HttpReasonPhraseAttribute).toString()));
-        return;
-    }
-
     _item->_fileId = _job->reply()->rawHeader("OC-FileId");
 
-    if (_item->_fileId.isEmpty()) {
-        // Owncloud 7.0.0 and before did not have a header with the file id.
-        // (https://github.com/owncloud/core/issues/9000)
-        // So we must get the file id using a PROPFIND
-        // This is required so that we can detect moves even if the folder is renamed on the server
-        // while files are still uploading
-        propagator()->_activeJobList.append(this);
-        auto propfindJob = new PropfindJob(_job->account(), _job->path(), this);
-        propfindJob->setProperties(QList<QByteArray>() << "http://owncloud.org/ns:id");
-        QObject::connect(propfindJob, &PropfindJob::result, this, &PropagateRemoteMkdir::propfindResult);
-        QObject::connect(propfindJob, &PropfindJob::finishedWithError, this, &PropagateRemoteMkdir::propfindError);
-        propfindJob->start();
-        _job = propfindJob;
-        return;
-    }
+    _item->_errorString = _job->errorString();
 
-    if (!_uploadEncryptedHelper) {
-        success();
+    const auto jobHttpReasonPhraseString = _job->reply()->attribute(QNetworkRequest::HttpReasonPhraseAttribute).toString();
+
+    const auto jobPath = _job->path();
+
+    if (_uploadEncryptedHelper && _uploadEncryptedHelper->isFolderLocked() && !_uploadEncryptedHelper->isUnlockRunning()) {
+        // since we are done, we need to unlock a folder in case it was locked
+        connect(_uploadEncryptedHelper, &PropagateUploadEncrypted::folderUnlocked, this, [this, err, jobHttpReasonPhraseString, jobPath]() {
+            finalizeMkColJob(err, jobHttpReasonPhraseString, jobPath);
+        });
+        _uploadEncryptedHelper->unlockFolder();
     } else {
-        // We still need to mark that folder encrypted
-        propagator()->_activeJobList.append(this);
-
-        // We're expecting directory path in /Foo/Bar convention...
-        Q_ASSERT(_job->path().startsWith('/') && !_job->path().endsWith('/'));
-        // But encryption job expect it in Foo/Bar/ convention
-        const auto path = _job->path().mid(1);
-
-        auto job = new OCC::EncryptFolderJob(propagator()->account(), propagator()->_journal, path, _item->_fileId, this);
-        connect(job, &OCC::EncryptFolderJob::finished, this, &PropagateRemoteMkdir::slotEncryptFolderFinished);
-        job->start();
+        finalizeMkColJob(err, jobHttpReasonPhraseString, jobPath);
     }
 }
 

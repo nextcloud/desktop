@@ -937,9 +937,14 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
 
     // If it's not a move it's just a local-NEW
     if (!moveCheck()) {
-       postProcessLocalNew();
-       finalize();
-       return;
+        if (base._isE2eEncrypted) {
+            // renaming the encrypted folder is done via remove + re-upload hence we need to mark the newly created folder as encrypted
+            // base is a record in the SyncJournal database that contains the data about the being-renamed folder with it's old name and encryption information
+            item->_isEncrypted = true;
+        }
+        postProcessLocalNew();
+        finalize();
+        return;
     }
 
     // Check local permission if we are allowed to put move the file here
