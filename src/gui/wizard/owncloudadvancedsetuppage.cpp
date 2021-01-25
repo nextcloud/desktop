@@ -149,6 +149,7 @@ void OwncloudAdvancedSetupPage::initializePage()
 
     if (Theme::instance()->wizardSelectiveSyncDefaultNothing()) {
         _selectiveSyncBlacklist = QStringList("/");
+        setRadioChecked(_ui.rSelectiveSync);
         QTimer::singleShot(0, this, &OwncloudAdvancedSetupPage::slotSelectiveSyncClicked);
     }
 
@@ -367,6 +368,9 @@ void OwncloudAdvancedSetupPage::slotSelectiveSyncClicked()
 
         if (updateBlacklist) {
             if (!_selectiveSyncBlacklist.isEmpty()) {
+                _ui.rSelectiveSync->blockSignals(true);
+                setRadioChecked(_ui.rSelectiveSync);
+                _ui.rSelectiveSync->blockSignals(false);
                 auto s = dlg->estimatedSize();
                 if (s > 0) {
                     _ui.lSelectiveSyncSizeLabel->setText(tr("(%1)").arg(Utility::octetsToString(s)));
