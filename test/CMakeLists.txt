@@ -69,6 +69,8 @@ nextcloud_add_test(SelectiveSync "")
 nextcloud_add_test(DatabaseError "")
 nextcloud_add_test(LockedFiles "../src/gui/lockwatcher.cpp")
 nextcloud_add_test(FolderWatcher "${FolderWatcher_SRC}")
+nextcloud_add_test(Capabilities "")
+nextcloud_add_test(PushNotifications "pushnotificationstestutils.cpp")
 
 if( UNIX AND NOT APPLE )
     nextcloud_add_test(InotifyWatcher "${FolderWatcher_SRC}")
