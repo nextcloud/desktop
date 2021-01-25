@@ -351,7 +351,7 @@ Wait for the new sync, then encrypt it.</source>
         <location filename="../src/gui/accountsettings.cpp" line="408"/>
         <location filename="../src/gui/accountsettings.cpp" line="500"/>
         <source>Availability</source>
-        <translation type="unfinished"/>
+        <translation>Saatavuus</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="413"/>
@@ -440,7 +440,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="788"/>
         <source>Disable support</source>
-        <translation type="unfinished"/>
+        <translation>Poista tuki</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="647"/>
@@ -1871,7 +1871,7 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="318"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Peruuta</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="411"/>
@@ -2084,7 +2084,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="77"/>
         <source>Open folder</source>
-        <translation type="unfinished"/>
+        <translation>Avaa kansio</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="78"/>
@@ -2188,7 +2188,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="443"/>
         <source>Update Failed</source>
-        <translation type="unfinished"/>
+        <translation>Päivitys epäonnistui</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="449"/>
@@ -2208,7 +2208,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="465"/>
         <source>Update manually</source>
-        <translation type="unfinished"/>
+        <translation>Päivitä manuaalisesti</translation>
     </message>
 </context>
 <context>
@@ -2451,7 +2451,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="85"/>
         <source> (experimental)</source>
-        <translation type="unfinished"/>
+        <translation> (kokeellinen)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="154"/>
@@ -2810,7 +2810,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="341"/>
         <source>Stay safe</source>
-        <translation type="unfinished"/>
+        <translation>Pysy turvassa</translation>
     </message>
 </context>
 <context>
@@ -2879,7 +2879,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="273"/>
         <source>Filename is too long.</source>
-        <translation type="unfinished"/>
+        <translation>Tiedoston nimi on liian pitkä.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="276"/>
@@ -2889,7 +2889,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="279"/>
         <source>Stat failed.</source>
-        <translation type="unfinished"/>
+        <translation>Stat epäonnistui.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="282"/>
@@ -2914,7 +2914,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="408"/>
         <source>size</source>
-        <translation type="unfinished"/>
+        <translation>koko</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="410"/>
@@ -3619,7 +3619,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/sharee.cpp" line="133"/>
         <source>%1 (%2)</source>
         <comment>sharee (shareWithAdditionalInfo)</comment>
-        <translation type="unfinished"/>
+        <translation>%1 (%2)</translation>
     </message>
 </context>
 <context>
