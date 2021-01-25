@@ -307,9 +307,15 @@ void VfsCfApi::fileStatusChanged(const QString &systemFileName, SyncFileStatus f
 
 void VfsCfApi::scheduleHydrationJob(const QString &requestId, const QString &folderPath)
 {
-    Q_ASSERT(std::none_of(std::cbegin(d->hydrationJobs), std::cend(d->hydrationJobs), [=](HydrationJob *job) {
+    const auto jobAlreadyScheduled = std::any_of(std::cbegin(d->hydrationJobs), std::cend(d->hydrationJobs), [=](HydrationJob *job) {
         return job->requestId() == requestId || job->folderPath() == folderPath;
-    }));
+    });
+
+    if (jobAlreadyScheduled) {
+        qCWarning(lcCfApi) << "The OS submitted again a hydration request which is already on-going" << requestId << folderPath;
+        emit hydrationRequestFailed(requestId);
+        return;
+    }
 
     if (d->hydrationJobs.isEmpty()) {
         emit beginHydrating();
