@@ -26,6 +26,7 @@
 #include "folderman.h"
 #include "iconjob.h"
 #include "accessmanager.h"
+#include "owncloudgui.h"
 
 #include "ActivityData.h"
 #include "ActivityListModel.h"
@@ -417,7 +418,7 @@ void ActivityListModel::removeActivityFromActivityList(Activity activity)
     }
 }
 
-void ActivityListModel::triggerDefaultAction(int activityIndex) const
+void ActivityListModel::triggerDefaultAction(int activityIndex)
 {
     if (activityIndex < 0 || activityIndex >= _finalList.size()) {
         qCWarning(lcActivity) << "Couldn't trigger default action at index" << activityIndex << "/ final list size:" << _finalList.size();
@@ -444,13 +445,19 @@ void ActivityListModel::triggerDefaultAction(int activityIndex) const
 
         const auto baseName = QFileInfo(basePath).fileName();
 
-        ConflictDialog dialog;
-        dialog.setBaseFilename(baseName);
-        dialog.setLocalVersionFilename(conflictedPath);
-        dialog.setRemoteVersionFilename(basePath);
-        if (dialog.exec() == ConflictDialog::Accepted) {
-            folder->scheduleThisFolderSoon();
+        if (!_currentConflictDialog.isNull()) {
+            _currentConflictDialog->close();
         }
+        _currentConflictDialog = new ConflictDialog;
+        _currentConflictDialog->setBaseFilename(baseName);
+        _currentConflictDialog->setLocalVersionFilename(conflictedPath);
+        _currentConflictDialog->setRemoteVersionFilename(basePath);
+        _currentConflictDialog->setAttribute(Qt::WA_DeleteOnClose);
+        connect(_currentConflictDialog, &ConflictDialog::accepted, folder, [folder]() {
+            folder->scheduleThisFolderSoon();
+        });
+        _currentConflictDialog->open();
+        ownCloudGui::raiseDialog(_currentConflictDialog);
         return;
     }
 
