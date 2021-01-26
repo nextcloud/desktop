@@ -1067,6 +1067,33 @@ private slots:
         QCOMPARE(*vfs->pinState("onlinerenamed2/file1rename"), PinState::OnlineOnly);
     }
 
+    void testEmptyFolderInOnlineOnlyRoot()
+    {
+        FakeFolder fakeFolder{ FileInfo() };
+        setupVfs(fakeFolder);
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        ItemCompletedSpy completeSpy(fakeFolder);
+
+        auto cleanup = [&]() {
+            completeSpy.clear();
+        };
+        cleanup();
+
+        // OnlineOnly forced on the root
+        setPinState(fakeFolder.localPath(), PinState::OnlineOnly, cfapi::NoRecurse);
+
+        // No effect sync
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        cleanup();
+
+        // Add an empty folder which should propagate
+        fakeFolder.localModifier().mkdir("A");
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        cleanup();
+    }
+
     void testIncompatiblePins()
     {
         FakeFolder fakeFolder{ FileInfo() };
