@@ -216,6 +216,7 @@ void Account::trySetupPushNotifications()
                 qCInfo(lcAccount) << "Delete push notifications object because authentication failed or connection lost";
                 _pushNotifications->deleteLater();
                 _pushNotifications = nullptr;
+                emit pushNotificationsDisabled(this);
             };
 
             connect(_pushNotifications, &PushNotifications::connectionLost, this, deletePushNotifications);

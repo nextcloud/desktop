@@ -70,6 +70,8 @@ OCC::AccountPtr FakeWebSocketServer::createAccount()
 
     QStringList typeList;
     typeList.append("files");
+    typeList.append("activities");
+    typeList.append("notifications");
 
     QString websocketUrl("ws://localhost:12345");
 
