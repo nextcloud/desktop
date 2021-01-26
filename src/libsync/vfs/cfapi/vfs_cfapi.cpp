@@ -187,8 +187,10 @@ bool VfsCfApi::statTypeVirtualFile(csync_file_stat_t *stat, void *statData)
     // It's a dir with a reparse point due to the placeholder info (hence the cloud tag)
     // if we don't remove the reparse point flag the discovery will end up thinking
     // it is a file... let's prevent it
-    if (isDirectory && hasReparsePoint && hasCloudTag) {
-        ffd->dwFileAttributes &= ~FILE_ATTRIBUTE_REPARSE_POINT;
+    if (isDirectory) {
+        if (hasReparsePoint && hasCloudTag) {
+            ffd->dwFileAttributes &= ~FILE_ATTRIBUTE_REPARSE_POINT;
+        }
         return false;
     } else if (isSparseFile && isPinned) {
         stat->type = ItemTypeVirtualFileDownload;
