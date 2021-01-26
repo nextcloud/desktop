@@ -3,6 +3,7 @@
 
 #include "accountmanager.h"
 #include "owncloudgui.h"
+#include <pushnotifications.h>
 #include "syncengine.h"
 #include "ocsjob.h"
 #include "configfile.h"
@@ -40,7 +41,7 @@ User::User(AccountStatePtr &account, const bool &isCurrent, QObject *parent)
         this, &User::slotRefresh);
 
     connect(_account.data(), &AccountState::stateChanged,
-            [=]() { if (isConnected()) {slotRefresh();} });
+            [=]() { if (isConnected()) {slotRefreshImmediately();} });
     connect(_account.data(), &AccountState::stateChanged, this, &User::accountStateChanged);
     connect(_account.data(), &AccountState::hasFetchedNavigationApps,
         this, &User::slotRebuildNavigationAppList);
@@ -105,19 +106,90 @@ void User::slotBuildNotificationDisplay(const ActivityList &list)
 
 void User::setNotificationRefreshInterval(std::chrono::milliseconds interval)
 {
-    qCDebug(lcActivity) << "Starting Notification refresh timer with " << interval.count() / 1000 << " sec interval";
-    _notificationCheckTimer.start(interval.count());
+    if (!checkPushNotificationsAreReady()) {
+        qCDebug(lcActivity) << "Starting Notification refresh timer with " << interval.count() / 1000 << " sec interval";
+        _notificationCheckTimer.start(interval.count());
+    }
+}
+
+void User::slotPushNotificationsReady()
+{
+    qCInfo(lcActivity) << "Push notifications are ready";
+
+    if (_notificationCheckTimer.isActive()) {
+        // as we are now able to use push notifications - let's stop the polling timer
+        _notificationCheckTimer.stop();
+    }
+
+    connectPushNotifications();
+}
+
+void User::slotDisconnectPushNotifications()
+{
+    disconnect(_account->account()->pushNotifications(), &PushNotifications::notificationsChanged, this, &User::slotReceivedPushNotification);
+    disconnect(_account->account()->pushNotifications(), &PushNotifications::activitiesChanged, this, &User::slotReceivedPushActivity);
+
+    disconnect(_account->account().data(), &Account::pushNotificationsDisabled, this, &User::slotDisconnectPushNotifications);
+
+    // connection to WebSocket may have dropped or an error occured, so we need to bring back the polling until we have re-established the connection
+    setNotificationRefreshInterval(ConfigFile().notificationRefreshInterval());
+}
+
+void User::slotReceivedPushNotification(Account *account)
+{
+    if (account->id() == _account->account()->id()) {
+        slotRefreshNotifications();
+    }
+}
+
+void User::slotReceivedPushActivity(Account *account)
+{
+    if (account->id() == _account->account()->id()) {
+        slotRefreshActivities();
+    }
+}
+
+void User::connectPushNotifications() const
+{
+    connect(_account->account().data(), &Account::pushNotificationsDisabled, this, &User::slotDisconnectPushNotifications, Qt::UniqueConnection);
+
+    connect(_account->account()->pushNotifications(), &PushNotifications::notificationsChanged, this, &User::slotReceivedPushNotification, Qt::UniqueConnection);
+    connect(_account->account()->pushNotifications(), &PushNotifications::activitiesChanged, this, &User::slotReceivedPushActivity, Qt::UniqueConnection);
+}
+
+bool User::checkPushNotificationsAreReady() const
+{
+    const auto pushNotifications = _account->account()->pushNotifications();
+
+    const auto pushActivitiesAvailable = _account->account()->capabilities().availablePushNotifications() & PushNotificationType::Activities;
+    const auto pushNotificationsAvailable = _account->account()->capabilities().availablePushNotifications() & PushNotificationType::Notifications;
+
+    const auto pushActivitiesAndNotificationsAvailable = pushActivitiesAvailable && pushNotificationsAvailable;
+
+    if (pushActivitiesAndNotificationsAvailable && pushNotifications && pushNotifications->isReady()) {
+        connectPushNotifications();
+        return true;
+    } else {
+        connect(_account->account().data(), &Account::pushNotificationsReady, this, &User::slotPushNotificationsReady, Qt::UniqueConnection);
+        return false;
+    }
 }
 
 void User::slotRefreshImmediately() {
     if (_account.data() && _account.data()->isConnected()) {
-        this->slotRefreshActivities();
+        slotRefreshActivities();
     }
-    this->slotRefreshNotifications();
+    slotRefreshNotifications();
 }
 
 void User::slotRefresh()
 {
+    if (checkPushNotificationsAreReady()) {
+        // we are relying on WebSocket push notifications - ignore refresh attempts from UI
+        _timeSinceLastCheck[_account.data()].invalidate();
+        return;
+    }
+
     // QElapsedTimer isn't actually constructed as invalid.
     if (!_timeSinceLastCheck.contains(_account.data())) {
         _timeSinceLastCheck[_account.data()].invalidate();
@@ -131,9 +203,9 @@ void User::slotRefresh()
     }
     if (_account.data() && _account.data()->isConnected()) {
         if (!timer.isValid()) {
-            this->slotRefreshActivities();
+            slotRefreshActivities();
         }
-        this->slotRefreshNotifications();
+        slotRefreshNotifications();
         timer.start();
     }
 }

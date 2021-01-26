@@ -64,9 +64,14 @@ signals:
     void filesChanged(Account *account);
 
     /**
-     * Will be emitted if there is a new notification or activity on the server
+     * Will be emitted if activities have been changed on the server
      */
-    void notification(Account *account);
+    void activitiesChanged(Account *account);
+
+    /**
+     * Will be emitted if notifications have been changed on the server
+     */
+    void notificationsChanged(Account *account);
 
     /**
      * Will be emitted if push notifications are unable to authenticate
@@ -100,7 +105,8 @@ private:
     void handleAuthenticated();
     void handleNotifyFile();
     void handleInvalidCredentials();
-    void handleNotification();
+    void handleNotifyNotification();
+    void handleNotifyActivity();
 
     Account *_account = nullptr;
     QWebSocket *_webSocket = nullptr;

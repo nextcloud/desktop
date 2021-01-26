@@ -188,6 +188,14 @@ PushNotificationTypes Capabilities::availablePushNotifications() const
         pushNotificationTypes.setFlag(PushNotificationType::Files);
     }
 
+    if (types.contains("activities")) {
+        pushNotificationTypes.setFlag(PushNotificationType::Activities);
+    }
+
+    if (types.contains("notifications")) {
+        pushNotificationTypes.setFlag(PushNotificationType::Notifications);
+    }
+
     return pushNotificationTypes;
 }
 
