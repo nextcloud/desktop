@@ -71,15 +71,15 @@ class OWNCLOUDSYNC_EXPORT ClientSideEncryption : public QObject {
     Q_OBJECT
 public:
     ClientSideEncryption();
-    void initialize();
-    void setAccount(AccountPtr account);
-    bool hasPrivateKey() const;
-    bool hasPublicKey() const;
-    void generateKeyPair();
-    void generateCSR(EVP_PKEY *keyPair);
-    void encryptPrivateKey();
+    void initialize(const AccountPtr &account);
 
-    void forgetSensitiveData();
+private:
+    void generateKeyPair(const AccountPtr &account);
+    void generateCSR(const AccountPtr &account, EVP_PKEY *keyPair);
+    void encryptPrivateKey(const AccountPtr &account);
+
+public:
+    void forgetSensitiveData(const AccountPtr &account);
 
     bool newMnemonicGenerated() const;
 
@@ -97,17 +97,16 @@ signals:
     void showMnemonic(const QString& mnemonic);
 
 private:
-    void getPrivateKeyFromServer();
-    void getPublicKeyFromServer();
-    void decryptPrivateKey(const QByteArray &key);
+    void getPrivateKeyFromServer(const AccountPtr &account);
+    void getPublicKeyFromServer(const AccountPtr &account);
+    void decryptPrivateKey(const AccountPtr &account, const QByteArray &key);
 
-    void fetchFromKeyChain();
+    void fetchFromKeyChain(const AccountPtr &account);
 
-    void writePrivateKey();
-    void writeCertificate();
-    void writeMnemonic();
+    void writePrivateKey(const AccountPtr &account);
+    void writeCertificate(const AccountPtr &account);
+    void writeMnemonic(const AccountPtr &account);
 
-    AccountPtr _account;
     bool isInitialized = false;
 
 public:
