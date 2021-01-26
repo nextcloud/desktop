@@ -52,7 +52,6 @@ void cfApiSendTransferInfo(const CF_CONNECTION_KEY &connectionKey, const CF_TRAN
     opParams.TransferData.Length.QuadPart = length;
 
     const qint64 result = CfExecute(&opInfo, &opParams);
-    Q_ASSERT(result == S_OK);
     if (result != S_OK) {
         qCCritical(lcCfApiWrapper) << "Couldn't send transfer info" << QString::number(transferKey.QuadPart, 16) << ":" << _com_error(result).ErrorMessage();
     }
