@@ -92,7 +92,7 @@ public:
     /** Creates a basic SyncFileItem from a DB record
      *
      * This is intended in particular for read-update-write cycles that need
-     * to go through a a SyncFileItem, like PollJob.
+     * to go through a a SyncFileItem.
      */
     static SyncFileItemPtr fromSyncJournalFileRecord(const SyncJournalFileRecord &rec);
 

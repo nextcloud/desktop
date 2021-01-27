@@ -216,15 +216,8 @@ void PropagateUploadFileV1::slotPutFinished()
         return;
     }
 
-    // The server needs some time to process the request and provide us with a poll URL
     if (_item->_httpErrorCode == 202) {
-        QString path = QString::fromUtf8(job->reply()->rawHeader("OC-JobStatus-Location"));
-        if (path.isEmpty()) {
-            done(SyncFileItem::NormalError, tr("Poll URL missing"));
-            return;
-        }
-        _finished = true;
-        startPollJob(path);
+        done(SyncFileItem::NormalError, tr("The server did ask for a removed legacy feature(polling)"));
         return;
     }
 

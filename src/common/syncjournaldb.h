@@ -133,14 +133,6 @@ public:
         bool isChunked() const { return _transferid != 0; }
     };
 
-    struct PollInfo
-    {
-        QString _file; // The relative path of a file
-        QString _url; // the poll url. (This pollinfo is invalid if _url is empty)
-        qint64 _modtime; // The modtime of the file being uploaded
-        qint64 _fileSize;
-    };
-
     DownloadInfo getDownloadInfo(const QString &file);
     void setDownloadInfo(const QString &file, const DownloadInfo &i);
     QVector<DownloadInfo> getAndDeleteStaleDownloadInfos(const QSet<QString> &keep);
@@ -159,8 +151,6 @@ public:
 
     void avoidRenamesOnNextSync(const QString &path) { avoidRenamesOnNextSync(path.toUtf8()); }
     void avoidRenamesOnNextSync(const QByteArray &path);
-    void setPollInfo(const PollInfo &);
-    QVector<PollInfo> getPollInfos();
 
     enum SelectiveSyncListType {
         /** The black list is the list of folders that are unselected in the selective sync dialog.

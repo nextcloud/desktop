@@ -605,45 +605,6 @@ private:
     const QString _remoteFolder; // remote folder, ends with '/'
 };
 
-
-/**
- * @brief Job that wait for all the poll jobs to be completed
- * @ingroup libsync
- */
-class CleanupPollsJob : public QObject
-{
-    Q_OBJECT
-    QVector<SyncJournalDb::PollInfo> _pollInfos;
-    AccountPtr _account;
-    SyncJournalDb *_journal;
-    QString _localPath;
-    QSharedPointer<Vfs> _vfs;
-
-public:
-    explicit CleanupPollsJob(const QVector<SyncJournalDb::PollInfo> &pollInfos, AccountPtr account,
-        SyncJournalDb *journal, const QString &localPath, const QSharedPointer<Vfs> &vfs, QObject *parent = nullptr)
-        : QObject(parent)
-        , _pollInfos(pollInfos)
-        , _account(account)
-        , _journal(journal)
-        , _localPath(localPath)
-        , _vfs(vfs)
-    {
-    }
-
-    ~CleanupPollsJob() override;
-
-    /**
-     * Start the job.  After the job is completed, it will emit either finished or aborted, and it
-     * will destroy itself.
-     */
-    void start();
-signals:
-    void finished();
-    void aborted(const QString &error);
-private slots:
-    void slotPollFinished();
-};
 }
 
 #endif

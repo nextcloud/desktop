@@ -38,7 +38,6 @@
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcPutJob, "sync.networkjob.put", QtInfoMsg)
-Q_LOGGING_CATEGORY(lcPollJob, "sync.networkjob.poll", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcPropagateUpload, "sync.propagator.upload", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcPropagateUploadV1, "sync.propagator.upload.v1", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcPropagateUploadNG, "sync.propagator.upload.ng", QtInfoMsg)
@@ -97,81 +96,6 @@ bool PUTFileJob::finished()
                      << replyStatusString()
                      << reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute)
                      << reply()->attribute(QNetworkRequest::HttpReasonPhraseAttribute);
-
-    emit finishedSignal();
-    return true;
-}
-
-void PollJob::start()
-{
-    setTimeout(120 * 1000);
-    QUrl accountUrl = account()->url();
-    QUrl finalUrl = QUrl::fromUserInput(accountUrl.scheme() + QStringLiteral("://") + accountUrl.authority()
-        + (path().startsWith(QLatin1Char('/')) ? QString() : QStringLiteral("/")) + path());
-    sendRequest("GET", finalUrl);
-    connect(reply(), &QNetworkReply::downloadProgress, this, &AbstractNetworkJob::resetTimeout, Qt::UniqueConnection);
-    AbstractNetworkJob::start();
-}
-
-bool PollJob::finished()
-{
-    QNetworkReply::NetworkError err = reply()->error();
-    if (err != QNetworkReply::NoError) {
-        _item->_httpErrorCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-        _item->_requestId = requestId();
-        _item->_status = classifyError(err, _item->_httpErrorCode);
-        _item->_errorString = errorString();
-
-        if (_item->_status == SyncFileItem::FatalError || _item->_httpErrorCode >= 400) {
-            if (_item->_status != SyncFileItem::FatalError
-                && _item->_httpErrorCode != 503) {
-                SyncJournalDb::PollInfo info;
-                info._file = _item->_file;
-                // no info._url removes it from the database
-                _journal->setPollInfo(info);
-                _journal->commit(QStringLiteral("remove poll info"));
-            }
-            emit finishedSignal();
-            return true;
-        }
-        QTimer::singleShot(8 * 1000, this, &PollJob::start);
-        return false;
-    }
-
-    QByteArray jsonData = reply()->readAll().trimmed();
-    QJsonParseError jsonParseError;
-    QJsonObject json = QJsonDocument::fromJson(jsonData, &jsonParseError).object();
-    qCInfo(lcPollJob) << ">" << jsonData << "<" << reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() << json << jsonParseError.errorString();
-    if (jsonParseError.error != QJsonParseError::NoError) {
-        _item->_errorString = tr("Invalid JSON reply from the poll URL");
-        _item->_status = SyncFileItem::NormalError;
-        emit finishedSignal();
-        return true;
-    }
-
-    auto status = json[QStringLiteral("status")].toString();
-    if (status == QLatin1String("init") || status == QLatin1String("started")) {
-        QTimer::singleShot(5 * 1000, this, &PollJob::start);
-        return false;
-    }
-
-    _item->_responseTimeStamp = responseTimestamp();
-    _item->_httpErrorCode = json[QStringLiteral("errorCode")].toInt();
-
-    if (status == QLatin1String("finished")) {
-        _item->_status = SyncFileItem::Success;
-        _item->_fileId = json[QStringLiteral("fileId")].toString().toUtf8();
-        _item->_etag = parseEtag(json[QStringLiteral("ETag")].toString().toUtf8());
-    } else { // error
-        _item->_status = classifyError(QNetworkReply::UnknownContentError, _item->_httpErrorCode);
-        _item->_errorString = json[QStringLiteral("errorMessage")].toString();
-    }
-
-    SyncJournalDb::PollInfo info;
-    info._file = _item->_file;
-    // no info._url removes it from the database
-    _journal->setPollInfo(info);
-    _journal->commit(QStringLiteral("remove poll info"));
 
     emit finishedSignal();
     return true;
@@ -478,37 +402,6 @@ void UploadDevice::setChoked(bool b)
     if (!_choked) {
         QMetaObject::invokeMethod(this, "readyRead", Qt::QueuedConnection);
     }
-}
-
-void PropagateUploadFileCommon::startPollJob(const QString &path)
-{
-    PollJob *job = new PollJob(propagator()->account(), path, _item,
-        propagator()->_journal, propagator()->localPath(), this);
-    connect(job, &PollJob::finishedSignal, this, &PropagateUploadFileCommon::slotPollFinished);
-    SyncJournalDb::PollInfo info;
-    info._file = _item->_file;
-    info._url = path;
-    info._modtime = _item->_modtime;
-    info._fileSize = _item->_size;
-    propagator()->_journal->setPollInfo(info);
-    propagator()->_journal->commit(QStringLiteral("add poll info"));
-    propagator()->_activeJobList.append(this);
-    job->start();
-}
-
-void PropagateUploadFileCommon::slotPollFinished()
-{
-    PollJob *job = qobject_cast<PollJob *>(sender());
-    OC_ASSERT(job);
-
-    propagator()->_activeJobList.removeOne(this);
-
-    if (job->_item->_status != SyncFileItem::Success) {
-        done(job->_item->_status, job->_item->_errorString);
-        return;
-    }
-
-    finalize();
 }
 
 void PropagateUploadFileCommon::done(SyncFileItem::Status status, const QString &errorString)

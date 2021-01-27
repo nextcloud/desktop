@@ -47,7 +47,6 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcPropagator, "sync.propagator", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcDirectory, "sync.propagator.directory", QtInfoMsg)
-Q_LOGGING_CATEGORY(lcCleanupPolls, "sync.propagator.cleanuppolls", QtInfoMsg)
 
 qint64 criticalFreeSpaceLimit()
 {
@@ -1101,55 +1100,6 @@ void PropagateRootDirectory::slotDirDeletionJobsFinished(SyncFileItem::Status st
 }
 
 // ================================================================================
-
-CleanupPollsJob::~CleanupPollsJob()
-{
-}
-
-void CleanupPollsJob::start()
-{
-    if (_pollInfos.empty()) {
-        emit finished();
-        deleteLater();
-        return;
-    }
-
-    auto info = _pollInfos.first();
-    _pollInfos.pop_front();
-    SyncJournalFileRecord record;
-    SyncFileItemPtr item(new SyncFileItem);
-    item->_file = info._file;
-    item->_modtime = info._modtime;
-    item->_size = info._fileSize;
-    PollJob *job = new PollJob(_account, info._url, item, _journal, _localPath, this);
-    connect(job, &PollJob::finishedSignal, this, &CleanupPollsJob::slotPollFinished);
-    job->start();
-}
-
-void CleanupPollsJob::slotPollFinished()
-{
-    PollJob *job = qobject_cast<PollJob *>(sender());
-    OC_ASSERT(job);
-    if (job->_item->_status == SyncFileItem::FatalError) {
-        emit aborted(job->_item->_errorString);
-        deleteLater();
-        return;
-    } else if (job->_item->_status != SyncFileItem::Success) {
-        qCWarning(lcCleanupPolls) << "There was an error with file " << job->_item->_file << job->_item->_errorString;
-    } else {
-        if (!OwncloudPropagator::updateMetadata(*job->_item, _localPath, *_journal, *_vfs)) {
-            qCWarning(lcCleanupPolls) << "database error";
-            job->_item->_status = SyncFileItem::FatalError;
-            job->_item->_errorString = tr("Error writing metadata to the database");
-            emit aborted(job->_item->_errorString);
-            deleteLater();
-            return;
-        }
-        _journal->setUploadInfo(job->_item->_file, SyncJournalDb::UploadInfo());
-    }
-    // Continue with the next entry, or finish
-    start();
-}
 
 QString OwncloudPropagator::fullRemotePath(const QString &tmp_file_name) const
 {

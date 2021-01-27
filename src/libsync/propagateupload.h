@@ -146,38 +146,6 @@ signals:
 };
 
 /**
- * @brief This job implements the asynchronous PUT
- *
- * If the server replies to a PUT with a OC-JobStatus-Location path, we will query this url until the server
- * replies with an etag.
- * @ingroup libsync
- */
-class PollJob : public AbstractNetworkJob
-{
-    Q_OBJECT
-    SyncJournalDb *_journal;
-    QString _localPath;
-
-public:
-    SyncFileItemPtr _item;
-    // Takes ownership of the device
-    explicit PollJob(AccountPtr account, const QString &path, const SyncFileItemPtr &item,
-        SyncJournalDb *journal, const QString &localPath, QObject *parent)
-        : AbstractNetworkJob(account, path, parent)
-        , _journal(journal)
-        , _localPath(localPath)
-        , _item(item)
-    {
-    }
-
-    void start() override;
-    bool finished() override;
-
-signals:
-    void finishedSignal();
-};
-
-/**
  * @brief The PropagateUploadFileCommon class is the code common between all chunking algorithms
  * @ingroup libsync
  *
@@ -195,7 +163,7 @@ signals:
  *                                  .
  *                                  .
  *                                  v
- *        finalize() or abortWithError()  or startPollJob()
+ *        finalize() or abortWithError()
  */
 class PropagateUploadFileCommon : public PropagateItemJob
 {
@@ -246,15 +214,11 @@ private slots:
 public:
     virtual void doStartUpload() = 0;
 
-    void startPollJob(const QString &path);
     void finalize();
     void abortWithError(SyncFileItem::Status status, const QString &error);
 
 public slots:
     void slotJobDestroyed(QObject *job);
-
-private slots:
-    void slotPollFinished();
 
 protected:
     void done(SyncFileItem::Status status, const QString &errorString = QString()) override;

@@ -1,0 +1,5 @@
+Change: We removed the support for async jobs using OC-JobStatus-Location
+
+We removed the support of async polling jobs after discovering potential issues.
+
+https://github.com/owncloud/client/pull/8398

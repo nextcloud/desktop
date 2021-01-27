@@ -411,19 +411,6 @@ void OCC::SyncEngine::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
 
 void SyncEngine::startSync()
 {
-    if (_journal->exists()) {
-        QVector<SyncJournalDb::PollInfo> pollInfos = _journal->getPollInfos();
-        if (!pollInfos.isEmpty()) {
-            qCInfo(lcEngine) << "Finish Poll jobs before starting a sync";
-            CleanupPollsJob *job = new CleanupPollsJob(pollInfos, _account,
-                _journal, _localPath, _syncOptions._vfs, this);
-            connect(job, &CleanupPollsJob::finished, this, &SyncEngine::startSync);
-            connect(job, &CleanupPollsJob::aborted, this, &SyncEngine::slotCleanPollsJobAborted);
-            job->start();
-            return;
-        }
-    }
-
     if (s_anySyncRunning || _syncRunning) {
         OC_ASSERT(false);
         return;
@@ -752,12 +739,6 @@ void SyncEngine::slotDiscoveryFinished()
         return;
     }
     finish();
-}
-
-void SyncEngine::slotCleanPollsJobAborted(const QString &error)
-{
-    syncError(error);
-    finalize(false);
 }
 
 void SyncEngine::setNetworkLimits(int upload, int download)
