@@ -282,6 +282,7 @@ signals:
     void appPasswordRetrieved(QString);
 
     void pushNotificationsReady(Account *account);
+    void pushNotificationsDisabled(Account *account);
 
 protected Q_SLOTS:
     void slotCredentialsFetched();

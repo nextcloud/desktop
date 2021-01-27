@@ -72,6 +72,15 @@ public slots:
     void slotRebuildNavigationAppList();
 
 private:
+    void slotPushNotificationsReady();
+    void slotDisconnectPushNotifications();
+    void slotReceivedPushNotification(Account *account);
+    void slotReceivedPushActivity(Account *account);
+
+    void connectPushNotifications() const;
+    bool checkPushNotificationsAreReady() const;
+
+private:
     AccountStatePtr _account;
     bool _isCurrentUser;
     ActivityListModel *_activityModel;
