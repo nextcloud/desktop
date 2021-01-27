@@ -2449,13 +2449,13 @@ for additional privileges during the process.</source>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="85"/>
-        <source>Use &amp;virtual files instead of downloading content immediately%1</source>
-        <translation>Utilitza &amp;fitxers virtuals en comptes de baixar el contingut immediatament%1</translation>
+        <source>Use &amp;virtual files instead of downloading content immediately %1</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="85"/>
-        <source> (experimental)</source>
-        <translation> (experimental)</translation>
+        <source>(experimental)</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="154"/>

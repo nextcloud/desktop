@@ -2475,13 +2475,13 @@ vragen om extra autorisaties tijdens installatie.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="85"/>
-        <source>Use &amp;virtual files instead of downloading content immediately%1</source>
-        <translation>Gebruik &amp;virtuele bestanden in plaats van direct downloaden content%1</translation>
+        <source>Use &amp;virtual files instead of downloading content immediately %1</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="85"/>
-        <source> (experimental)</source>
-        <translation> (experimenteel)</translation>
+        <source>(experimental)</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="154"/>

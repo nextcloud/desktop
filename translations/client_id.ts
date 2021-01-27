@@ -2450,12 +2450,12 @@ beberapa ijin pada saat proses berjalan.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="85"/>
-        <source>Use &amp;virtual files instead of downloading content immediately%1</source>
+        <source>Use &amp;virtual files instead of downloading content immediately %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="85"/>
-        <source> (experimental)</source>
+        <source>(experimental)</source>
         <translation type="unfinished"/>
     </message>
     <message>
