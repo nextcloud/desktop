@@ -119,24 +119,29 @@ ENDIF(NOT APPLE)
 
 find_package(Qt5 REQUIRED COMPONENTS WebSockets)
 add_library(${synclib_NAME} SHARED ${libsync_SRCS})
-target_link_libraries(${synclib_NAME}
+target_link_libraries(${synclib_NAME} PUBLIC
     "${csync_NAME}"
     OpenSSL::Crypto
     OpenSSL::SSL
-    ${OS_SPECIFIC_LINK_LIBRARIES}
-    Qt5::Core Qt5::Network
+    Qt5::Core
+    Qt5::Network
     Qt5::WebSockets
+    ${OS_SPECIFIC_LINK_LIBRARIES}
 )
 
 if (NOT TOKEN_AUTH_ONLY)
     find_package(Qt5 REQUIRED COMPONENTS Widgets Svg)
-    target_link_libraries(${synclib_NAME} Qt5::Widgets Qt5::Svg qt5keychain)
+    target_link_libraries(${synclib_NAME} PUBLIC
+        Qt5::Widgets
+        Qt5::Svg
+        qt5keychain
+    )
 endif()
 
 if(INOTIFY_FOUND)
     target_include_directories(${synclib_NAME} PRIVATE ${INOTIFY_INCLUDE_DIR})
     link_directories(${INOTIFY_LIBRARY_DIR})
-    target_link_libraries(${synclib_NAME} ${INOTIFY_LIBRARY} )
+    target_link_libraries(${synclib_NAME} PUBLIC ${INOTIFY_LIBRARY})
 endif()
 
 GENERATE_EXPORT_HEADER( ${synclib_NAME}
