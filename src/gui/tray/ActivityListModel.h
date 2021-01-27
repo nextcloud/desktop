@@ -26,6 +26,7 @@ namespace OCC {
 Q_DECLARE_LOGGING_CATEGORY(lcActivity)
 
 class AccountState;
+class ConflictDialog;
 
 /**
  * @brief The ActivityListModel
@@ -74,7 +75,7 @@ public:
     void removeActivityFromActivityList(int row);
     void removeActivityFromActivityList(Activity activity);
 
-    Q_INVOKABLE void triggerDefaultAction(int activityIndex) const;
+    Q_INVOKABLE void triggerDefaultAction(int activityIndex);
     Q_INVOKABLE void triggerAction(int activityIndex, int actionIndex);
 
 public slots:
@@ -113,6 +114,8 @@ private:
     int _maxActivities = 100;
     int _maxActivitiesDays = 30;
     bool _showMoreActivitiesAvailableEntry = false;
+
+    QPointer<ConflictDialog> _currentConflictDialog;
 };
 }
 
