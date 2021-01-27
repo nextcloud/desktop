@@ -436,7 +436,11 @@ S prazno mapo počakajte na konec usklajevanja, potem jo znova šifrirajte.</tra
 The only advantage of disabling virtual file support is that the selective sync feature will become available again.
 
 This action will abort any currently running synchronization.</source>
-        <translation type="unfinished"/>
+        <translation>S tem dejanjem boste onemogočili podporo navideznim datotekam. Kot posledica bo vsebina map, ki so trenutno označene kot »na voljo le na spletu«, prejeta tudi na napravo.
+
+Edina prednost onemogočanja te podpore je, da bo spet na voljo izbirno usklajevanje.
+
+S tem dejanjem prav tako prekinete vsa trenutna usklajevanja v izvajanju.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="788"/>
@@ -1690,12 +1694,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="512"/>
         <source>Use virtual files instead of downloading content immediately %1</source>
-        <translation type="unfinished"/>
+        <translation>Uporabi možnost navideznih datotek namesto prejemanja celotne vsebine %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="512"/>
         <source>(experimental)</source>
-        <translation type="unfinished"/>
+        <translation>(preizkusno)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="548"/>
@@ -1878,7 +1882,9 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <source>The update channel determines which client updates will be offered for installation. The &quot;stable&quot; channel contains only upgrades that are considered reliable, while the versions in the &quot;beta&quot; channel may contain newer features and bugfixes, but have not yet been tested thoroughly.
 
 Note that this selects only what pool upgrades are taken from, and that there are no downgrades: So going back from the beta channel to the stable channel usually cannot be done immediately and means waiting for a stable version that is newer than the currently installed beta version.</source>
-        <translation type="unfinished"/>
+        <translation>Kanal posodobitev določa, katere posodobitve bodo na voljo za namestitev. Kanal »Stabilno« vsebuje le nadgradnje, ki veljajo za zanesljive, medtem ko različice v kanalu »Beta (preizkusno)« vključujejo tudi najnovejše funkcije in popravke napak, ki pa še niso temeljito preizkušene.
+
+Zavedati se je treba, da izbor določa le različice programske opreme za nadgradnjo in da povrnitev na starejše različice ni več mogoča. Povrnitev iz preizkusnega kanala Beta na Stabilnega ni mogoča, dokler stabilna različica ni višja oziroma novejša od nameščene preizkusne različice. </translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="317"/>
@@ -2082,7 +2088,9 @@ Predmeti v mapah, ki jih je dovoljeno izbrisati, bodo odstranjeni, če prepreču
         <source>The client can write debug logs to a temporary folder. These logs are very helpful for diagnosing problems.
 Since log files can get large, the client will start a new one for each sync run and compress older ones. It will also delete log files after a couple of hours to avoid consuming too much disk space.
 If enabled, logs will be written to %1</source>
-        <translation type="unfinished"/>
+        <translation>Program lahko zapisuje dnevnike razhroščevanja v začasno mapo. Ti dnevniki so uporabni prii odpravljanju napak delovanja.
+Ker so dnevniški zapisi lahko obsežni, program začne nov zapis z vsakim zagonom, starejše datoteke pa stisne v arhiv. Ti arhivi bodo po nekaj urah tudi samodejno izbrisani, da ne zasedejo preveč prostora na disku.
+Če je možnost omogočena, se bodo dnevniki zapisovali v %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="64"/>
@@ -2466,13 +2474,13 @@ zahteva skrbniška dovoljenja za dokončanje opravila.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="85"/>
-        <source>Use &amp;virtual files instead of downloading content immediately%1</source>
-        <translation>Uporabite $navidezne datoteke namesto prejemanja celotne vsebine %1</translation>
+        <source>Use &amp;virtual files instead of downloading content immediately %1</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="85"/>
-        <source> (experimental)</source>
-        <translation>(preizkusno)</translation>
+        <source>(experimental)</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="154"/>
@@ -3191,7 +3199,7 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="242"/>
         <source>Failed to upload encrypted file.</source>
-        <translation type="unfinished"/>
+        <translation>Pošiljanje šifrirane datoteke je spodletelo.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="281"/>
@@ -3222,7 +3230,7 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="420"/>
         <source>Failed to unlock encrypted folder.</source>
-        <translation type="unfinished"/>
+        <translation>Odklepanje šifrirane mape je spodletelo.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="758"/>
@@ -3670,7 +3678,7 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
     <message>
         <location filename="../src/gui/socketapi.cpp" line="540"/>
         <source>Context menu share</source>
-        <translation type="unfinished"/>
+        <translation>Vsebinski meni souporabe</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="754"/>
@@ -3680,7 +3688,7 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
     <message>
         <location filename="../src/gui/socketapi.cpp" line="768"/>
         <source>I shared something with you</source>
-        <translation>Nekaj vam dajem v souporaboNekaj vam dajem v souporabo</translation>
+        <translation>Nekaj vam dajem v souporabo</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="781"/>
@@ -4065,7 +4073,7 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="352"/>
         <source>Could not update file: %1</source>
-        <translation type="unfinished"/>
+        <translation>Ni mogoče posodobiti datoteke: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="362"/>
@@ -4669,7 +4677,7 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="90"/>
         <source>S&amp;ynchronize everything from server</source>
-        <translation type="unfinished"/>
+        <translation>Uskladi &amp;vse datoteke s strežnika</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="90"/>
