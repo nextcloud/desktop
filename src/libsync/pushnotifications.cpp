@@ -73,8 +73,10 @@ void PushNotifications::onWebSocketTextMessageReceived(const QString &message)
 
     if (message == "notify_file") {
         handleNotifyFile();
-    } else if (message == "notify_activity" || message == "notify_notification") {
-        handleNotification();
+    } else if (message == "notify_activity") {
+        handleNotifyActivity();
+    } else if (message == "notify_notification") {
+        handleNotifyNotification();
     } else if (message == "authenticated") {
         handleAuthenticated();
     } else if (message == "err: Invalid credentials") {
@@ -181,9 +183,15 @@ void PushNotifications::handleInvalidCredentials()
     }
 }
 
-void PushNotifications::handleNotification()
+void PushNotifications::handleNotifyNotification()
 {
-    qCInfo(lcPushNotifications) << "Notification or activity push notification arrived";
-    emit notification(_account);
+    qCInfo(lcPushNotifications) << "Push notification arrived";
+    emit notificationsChanged(_account);
+}
+
+void PushNotifications::handleNotifyActivity()
+{
+    qCInfo(lcPushNotifications) << "Push activity arrived";
+    emit activitiesChanged(_account);
 }
 }
