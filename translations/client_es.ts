@@ -391,13 +391,13 @@ Espere a una nueva sincronización, luego cifrala.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="525"/>
-        <source>Enable virtual file support%1 …</source>
-        <translation>Habilitar soporte para archivos virtuales%1 ...</translation>
+        <source>Enable virtual file support %1 …</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="525"/>
-        <source> (experimental)</source>
-        <translation>(experimental)</translation>
+        <source>(experimental)</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="501"/>
@@ -436,7 +436,11 @@ Espere a una nueva sincronización, luego cifrala.</translation>
 The only advantage of disabling virtual file support is that the selective sync feature will become available again.
 
 This action will abort any currently running synchronization.</source>
-        <translation type="unfinished"/>
+        <translation>Esta acción deshabilitará el soporte de archivos virtuales. Como consecuencia, se descargará el contenido de las carpetas que estén marcadas como &quot;disponible solo en línea&quot;.
+
+La única ventaja de deshabilitar el soporte de archivos virtuales es para la característica de sincronización selectiva que estará disponible de nuevo.
+
+Además, esta acción interrumpirá cualquier sincronización en curso.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="788"/>
@@ -620,12 +624,12 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::ActivityListModel</name>
     <message>
-        <location filename="../src/gui/tray/ActivityListModel.cpp" line="348"/>
+        <location filename="../src/gui/tray/ActivityListModel.cpp" line="349"/>
         <source>Files from the ignore list as well as symbolic links are not synced.</source>
         <translation>Los archivos de la lista de ignorados así como los enlace simbólicos no estarán sincronizados.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityListModel.cpp" line="519"/>
+        <location filename="../src/gui/tray/ActivityListModel.cpp" line="526"/>
         <source>For more activities please open the Activity app.</source>
         <translation>Para más detalles, por favor, abre la app Actividades.</translation>
     </message>
@@ -1691,12 +1695,12 @@ Si esto ha sido un accidente, y decides mantener tus archivos, serán re-sincron
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="512"/>
         <source>Use virtual files instead of downloading content immediately %1</source>
-        <translation type="unfinished"/>
+        <translation>Usa archivos virtuales en vez de descargar el contenido inmediatamente %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="512"/>
         <source>(experimental)</source>
-        <translation type="unfinished"/>
+        <translation>(experimental)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="548"/>
@@ -2473,12 +2477,12 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="85"/>
         <source>Use &amp;virtual files instead of downloading content immediately %1</source>
-        <translation type="unfinished"/>
+        <translation>Usa &amp;archivos virtuales en vez de descargar el contenido inmediatamente %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="85"/>
         <source>(experimental)</source>
-        <translation type="unfinished"/>
+        <translation>(experimental)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="154"/>
@@ -3197,7 +3201,7 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="242"/>
         <source>Failed to upload encrypted file.</source>
-        <translation type="unfinished"/>
+        <translation>Fallo al subir el archivo cifrado.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="281"/>
@@ -3228,7 +3232,7 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="420"/>
         <source>Failed to unlock encrypted folder.</source>
-        <translation type="unfinished"/>
+        <translation>Fallo al desbloquear la carpeta cifrada.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="758"/>
@@ -4071,7 +4075,7 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="352"/>
         <source>Could not update file: %1</source>
-        <translation type="unfinished"/>
+        <translation>No se pudo actualizar el archivo: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="362"/>
@@ -4335,32 +4339,32 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
 <context>
     <name>OCC::User</name>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="331"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="403"/>
         <source>Retry all uploads</source>
         <translation>Reintentar todas las subidas</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="379"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="451"/>
         <source>Synced %1</source>
         <translation>Sincronizado %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="381"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="453"/>
         <source>You renamed %1</source>
         <translation>Has renombrado %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="383"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="455"/>
         <source>You deleted %1</source>
         <translation>Has borrado %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="385"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="457"/>
         <source>You created %1</source>
         <translation>Has creado %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="387"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="459"/>
         <source>You changed %1</source>
         <translation>Has cambiado %1</translation>
     </message>
@@ -4368,22 +4372,22 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
 <context>
     <name>OCC::UserModel</name>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="706"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="778"/>
         <source>Confirm Account Removal</source>
         <translation>Confirma  la eliminación de cuenta</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="707"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="779"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;¿De verdad quieres eliminar la conexión con la cuenta &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Aviso:&lt;/b&gt; Esto &lt;b&gt;no eliminará&lt;/b&gt; ningún archivo.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="712"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="784"/>
         <source>Remove connection</source>
         <translation>Eliminar vinculación</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="713"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="785"/>
         <source>Cancel</source>
         <translation>Cancelar</translation>
     </message>
@@ -4675,7 +4679,7 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="90"/>
         <source>S&amp;ynchronize everything from server</source>
-        <translation type="unfinished"/>
+        <translation>S&amp;incronizar todo desde el servidor</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="90"/>

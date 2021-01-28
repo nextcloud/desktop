@@ -391,13 +391,13 @@ S prazno mapo počakajte na konec usklajevanja, potem jo znova šifrirajte.</tra
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="525"/>
-        <source>Enable virtual file support%1 …</source>
-        <translation>Omogoči podporo za navidezne datoteke %1 ...</translation>
+        <source>Enable virtual file support %1 …</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="525"/>
-        <source> (experimental)</source>
-        <translation>(preizkusno)</translation>
+        <source>(experimental)</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="501"/>
@@ -624,12 +624,12 @@ S tem dejanjem prav tako prekinete vsa trenutna usklajevanja v izvajanju.</trans
 <context>
     <name>OCC::ActivityListModel</name>
     <message>
-        <location filename="../src/gui/tray/ActivityListModel.cpp" line="348"/>
+        <location filename="../src/gui/tray/ActivityListModel.cpp" line="349"/>
         <source>Files from the ignore list as well as symbolic links are not synced.</source>
         <translation>Datoteke, ki so na seznamu neusklajevanja, in simbolne povezave se ne usklajujejo.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityListModel.cpp" line="519"/>
+        <location filename="../src/gui/tray/ActivityListModel.cpp" line="526"/>
         <source>For more activities please open the Activity app.</source>
         <translation>Za izpis več dejavnosti odprite program Dejavnost</translation>
     </message>
@@ -4337,32 +4337,32 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
 <context>
     <name>OCC::User</name>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="331"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="403"/>
         <source>Retry all uploads</source>
         <translation>Ponovi pošiljanje vseh predmetov</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="379"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="451"/>
         <source>Synced %1</source>
         <translation>Usklajeno %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="381"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="453"/>
         <source>You renamed %1</source>
         <translation>Preimenovali ste %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="383"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="455"/>
         <source>You deleted %1</source>
         <translation>Izbrisali ste %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="385"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="457"/>
         <source>You created %1</source>
         <translation>Ustvarili ste %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="387"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="459"/>
         <source>You changed %1</source>
         <translation>Spremenili ste %1</translation>
     </message>
@@ -4370,22 +4370,22 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
 <context>
     <name>OCC::UserModel</name>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="706"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="778"/>
         <source>Confirm Account Removal</source>
         <translation>Potrdi odstranjevanje računa</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="707"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="779"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Ali res želite odstraniti povezavo z računom &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Opomba:&lt;/b&gt; odstranitev povezave &lt;b&gt;ne izbriše&lt;/b&gt; nobene datoteke.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="712"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="784"/>
         <source>Remove connection</source>
         <translation>Odstrani povezavo</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="713"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="785"/>
         <source>Cancel</source>
         <translation>Prekliči</translation>
     </message>

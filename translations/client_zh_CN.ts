@@ -391,13 +391,13 @@ Wait for the new sync, then encrypt it.</source>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="525"/>
-        <source>Enable virtual file support%1 …</source>
-        <translation>启用虚拟文件支持%1 ...</translation>
+        <source>Enable virtual file support %1 …</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="525"/>
-        <source> (experimental)</source>
-        <translation>(实验性的)</translation>
+        <source>(experimental)</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="501"/>
@@ -620,12 +620,12 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::ActivityListModel</name>
     <message>
-        <location filename="../src/gui/tray/ActivityListModel.cpp" line="348"/>
+        <location filename="../src/gui/tray/ActivityListModel.cpp" line="349"/>
         <source>Files from the ignore list as well as symbolic links are not synced.</source>
         <translation>来自忽略列表的文件和符号链接不会被同步。</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityListModel.cpp" line="519"/>
+        <location filename="../src/gui/tray/ActivityListModel.cpp" line="526"/>
         <source>For more activities please open the Activity app.</source>
         <translation>有关更多动态，请打开 “动态” 应用。</translation>
     </message>
@@ -2465,12 +2465,12 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="85"/>
         <source>Use &amp;virtual files instead of downloading content immediately %1</source>
-        <translation type="unfinished"/>
+        <translation>使用 &amp;虚拟文件，而非立即下载内容 %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="85"/>
         <source>(experimental)</source>
-        <translation type="unfinished"/>
+        <translation>(实验性)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="154"/>
@@ -4321,32 +4321,32 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::User</name>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="331"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="403"/>
         <source>Retry all uploads</source>
         <translation>重试所有上传</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="379"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="451"/>
         <source>Synced %1</source>
         <translation>已同步 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="381"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="453"/>
         <source>You renamed %1</source>
         <translation>您重命名了 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="383"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="455"/>
         <source>You deleted %1</source>
         <translation>您删除了 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="385"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="457"/>
         <source>You created %1</source>
         <translation>您创建了 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="387"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="459"/>
         <source>You changed %1</source>
         <translation>您修改了 %1</translation>
     </message>
@@ -4354,22 +4354,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::UserModel</name>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="706"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="778"/>
         <source>Confirm Account Removal</source>
         <translation>确认移除账号</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="707"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="779"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;您确定要移除与账号&lt;i&gt;%1&lt;/i&gt;的连接吗？&lt;/p&gt;&lt;p&gt;&lt;b&gt;注意：&lt;/b&gt; 这 &lt;b&gt;不会&lt;/b&gt; 删除任何文件。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="712"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="784"/>
         <source>Remove connection</source>
         <translation>移除连接</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="713"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="785"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
