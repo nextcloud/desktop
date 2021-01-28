@@ -3,34 +3,21 @@ Changelog for ownCloud Desktop Client [unreleased] (UNRELEASED)
 The following sections list the changes in ownCloud Desktop Client unreleased relevant to
 ownCloud admins and users.
 
-[unreleased]: https://github.com/owncloud/client/compare/v2.7.4...master
+[unreleased]: https://github.com/owncloud/client/compare/v2.7.5...master
 
 Summary
 -------
 
-* Bugfix - Support dark theme with branded client and vanilla icons: [#4363](https://github.com/owncloud/enterprise/issues/4363)
 * Bugfix - SQLite wal file grows to several gigabyte: [#7646](https://github.com/owncloud/client/issues/7646)
-* Bugfix - Mac tray icon is scaled wrong: [#8149](https://github.com/owncloud/client/issues/8149)
-* Bugfix - Fix potential crashes with the remove all dialog: [#8314](https://github.com/owncloud/client/pull/8314)
 * Bugfix - Don't recommend non default sync option: [#8317](https://github.com/owncloud/client/issues/8317)
-* Bugfix - Detect file name clash with VirtualFiles enabled: [#8323](https://github.com/owncloud/client/issues/8323)
-* Bugfix - Remove stray placeholders: [#8326](https://github.com/owncloud/client/issues/8326)
-* Bugfix - Fix wrong option provided to OIDC: [#8390](https://github.com/owncloud/client/issues/8390)
 * Change - Don't ask the user to switch to http: [#8231](https://github.com/owncloud/client/issues/8231)
 * Change - Remove support for http redirects: [#8293](https://github.com/owncloud/client/pull/8293)
 * Change - Ignore the desktop.ini file in every directory, not only in top dir: [#8298](https://github.com/owncloud/client/issues/8298)
-* Change - Third party upgrades in distributed binaries: [#8349](https://github.com/owncloud/client/issues/8349)
 * Change - Add support for dynamic client registration with OIDC: [#8350](https://github.com/owncloud/client/pull/8350/)
 * Change - Include full os version in the about dialog: [#8374](https://github.com/owncloud/client/pull/8374)
 
 Details
 -------
-
-* Bugfix - Support dark theme with branded client and vanilla icons: [#4363](https://github.com/owncloud/enterprise/issues/4363)
-
-   We fixed a bug where the dark vanilla icons where used with a branded client.
-
-   https://github.com/owncloud/enterprise/issues/4363
 
 * Bugfix - SQLite wal file grows to several gigabyte: [#7646](https://github.com/owncloud/client/issues/7646)
 
@@ -38,42 +25,11 @@ Details
 
    https://github.com/owncloud/client/issues/7646
 
-* Bugfix - Mac tray icon is scaled wrong: [#8149](https://github.com/owncloud/client/issues/8149)
-
-   We backported a change to Qt 5.12.10 which fixed the scaling of the system tray icon on Big Sur.
-
-   https://github.com/owncloud/client/issues/8149
-
-* Bugfix - Fix potential crashes with the remove all dialog: [#8314](https://github.com/owncloud/client/pull/8314)
-
-   We fixed a bug a dialog window belonging to a removed account could still be visible. User action
-   on that dialog would then cause a crash.
-
-   https://github.com/owncloud/client/pull/8314
-
 * Bugfix - Don't recommend non default sync option: [#8317](https://github.com/owncloud/client/issues/8317)
 
    We fixed a bug where sync all was still recommended on Windows
 
    https://github.com/owncloud/client/issues/8317
-
-* Bugfix - Detect file name clash with VirtualFiles enabled: [#8323](https://github.com/owncloud/client/issues/8323)
-
-   We fixed an issue where the file name clash detection was not run with VirtualFiles enabled.
-
-   https://github.com/owncloud/client/issues/8323
-
-* Bugfix - Remove stray placeholders: [#8326](https://github.com/owncloud/client/issues/8326)
-
-   We fixed a bug where Windows Virtual Files where not handled as such and thus not removed.
-
-   https://github.com/owncloud/client/issues/8326
-
-* Bugfix - Fix wrong option provided to OIDC: [#8390](https://github.com/owncloud/client/issues/8390)
-
-   We fixed a bug where we passed a wrong value to the OIDC display parameter
-
-   https://github.com/owncloud/client/issues/8390
 
 * Change - Don't ask the user to switch to http: [#8231](https://github.com/owncloud/client/issues/8231)
 
@@ -98,13 +54,6 @@ Details
    https://github.com/owncloud/client/issues/8298
    https://github.com/owncloud/client/pull/8299
 
-* Change - Third party upgrades in distributed binaries: [#8349](https://github.com/owncloud/client/issues/8349)
-
-   We updated Qt from 5.12.9 to 5.12.10. We updated OpenSSL from 1.1.1g to 1.1.1i. Linux
-   dependencies: QtKeychain was updated from 0.10.0 to 0.12.0
-
-   https://github.com/owncloud/client/issues/8349
-
 * Change - Add support for dynamic client registration with OIDC: [#8350](https://github.com/owncloud/client/pull/8350/)
 
    We implemented support for dynamic client registration with an OpenID Connect provider.
@@ -117,6 +66,71 @@ Details
    issues.
 
    https://github.com/owncloud/client/pull/8374
+
+Changelog for ownCloud Desktop Client [2.7.5] (2021-01-28)
+=======================================
+The following sections list the changes in ownCloud Desktop Client 2.7.5 relevant to
+ownCloud admins and users.
+
+[2.7.5]: https://github.com/owncloud/client/compare/v2.7.4...v2.7.5
+
+Summary
+-------
+
+* Bugfix - Support dark theme with branded client and vanilla icons: [#4363](https://github.com/owncloud/enterprise/issues/4363)
+* Bugfix - Mac tray icon is scaled wrong: [#8149](https://github.com/owncloud/client/issues/8149)
+* Bugfix - Fix potential crashes with the remove all dialog: [#8314](https://github.com/owncloud/client/pull/8314)
+* Bugfix - Detect file name clash with VirtualFiles enabled: [#8323](https://github.com/owncloud/client/issues/8323)
+* Bugfix - Remove stray placeholders: [#8326](https://github.com/owncloud/client/issues/8326)
+* Bugfix - Fix wrong option provided to OIDC: [#8390](https://github.com/owncloud/client/issues/8390)
+* Change - Third party upgrades in distributed binaries: [#8349](https://github.com/owncloud/client/issues/8349)
+
+Details
+-------
+
+* Bugfix - Support dark theme with branded client and vanilla icons: [#4363](https://github.com/owncloud/enterprise/issues/4363)
+
+   We fixed a bug where the dark vanilla icons where used with a branded client.
+
+   https://github.com/owncloud/enterprise/issues/4363
+
+* Bugfix - Mac tray icon is scaled wrong: [#8149](https://github.com/owncloud/client/issues/8149)
+
+   We backported a change to Qt 5.12.10 which fixed the scaling of the system tray icon on Big Sur.
+
+   https://github.com/owncloud/client/issues/8149
+
+* Bugfix - Fix potential crashes with the remove all dialog: [#8314](https://github.com/owncloud/client/pull/8314)
+
+   We fixed a bug a dialog window belonging to a removed account could still be visible. User action
+   on that dialog would then cause a crash.
+
+   https://github.com/owncloud/client/pull/8314
+
+* Bugfix - Detect file name clash with VirtualFiles enabled: [#8323](https://github.com/owncloud/client/issues/8323)
+
+   We fixed an issue where the file name clash detection was not run with VirtualFiles enabled.
+
+   https://github.com/owncloud/client/issues/8323
+
+* Bugfix - Remove stray placeholders: [#8326](https://github.com/owncloud/client/issues/8326)
+
+   We fixed a bug where Windows Virtual Files where not handled as such and thus not removed.
+
+   https://github.com/owncloud/client/issues/8326
+
+* Bugfix - Fix wrong option provided to OIDC: [#8390](https://github.com/owncloud/client/issues/8390)
+
+   We fixed a bug where we passed a wrong value to the OIDC display parameter
+
+   https://github.com/owncloud/client/issues/8390
+
+* Change - Third party upgrades in distributed binaries: [#8349](https://github.com/owncloud/client/issues/8349)
+
+   We updated Qt from 5.12.9 to 5.12.10. We updated OpenSSL from 1.1.1g to 1.1.1i. Linux
+   dependencies: QtKeychain was updated from 0.10.0 to 0.12.0
+
+   https://github.com/owncloud/client/issues/8349
 
 Changelog for ownCloud Desktop Client [2.7.4] (2020-12-21)
 =======================================
