@@ -3817,7 +3817,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::Theme</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="387"/>
+        <location filename="../src/libsync/theme.cpp" line="432"/>
         <source>&lt;p&gt;Version %1. For more information visit &lt;a href=&quot;%2&quot;&gt;https://%3&lt;/a&gt;&lt;/p&gt;&lt;p&gt;For known issues and help, please visit: &lt;a href=&quot;https://central.owncloud.org/c/desktop-client&quot;&gt;https://central.owncloud.org&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz,  Jan-Christoph Borchardt, Thomas Müller, Dominik Schmidt, Michael Stingl, Hannah von Reth, and others.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;&lt;p&gt;Distributed by %4 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br/&gt;%5 and the %5 logo are registered trademarks of %4 in the United States, other countries, or both.&lt;/p&gt;&lt;p&gt;&lt;small&gt;%6&lt;/small&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;เวอร์ชัน %1 สามารถดูข้อมูลเพิ่มเติมได้ที่ &lt;a href=&quot;%2&quot;&gt;https://%3&lt;/a&gt;&lt;/p&gt;&lt;p&gt;สำหรับแจ้งปัญหาที่พบและขอความช่วยเหลือโปรดไปที่:&lt;a href=&quot;https://central.owncloud.org/c/desktop-client&quot;&gt;https://central.owncloud.org&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz, Jan-Christoph Borchardt, Thomas Müller, Dominik Schmidt, Michael Stingl, Hannah von Reth, Sunchai Paejaroenchai และคนอื่นๆที่ไม่ได้กล่าวถึง&lt;/small&gt;&lt;/p&gt;&lt;p&gt;ลิขสิทธิ์ ownCloud GmbH&lt;/p&gt;&lt;p&gt;จัดจำหน่ายโดย %4 และได้รับอนุญาตภายใต้ GNU General Public License (GPL) เวอร์ชัน 2.0&lt;br/&gt;%5 และโลโก้ %5 เป็นเครื่องหมายการค้าจดทะเบียนของ %4 ในสหรัฐอเมริกาประเทศอื่นๆ หรือทั้งสองอย่าง&lt;/p&gt;&lt;p&gt;&lt;small&gt;%6&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
@@ -4392,7 +4392,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>ownCloudTheme::aboutVersions()</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="365"/>
+        <location filename="../src/libsync/theme.cpp" line="410"/>
         <source>%1 %2 %3 %4%8%9Libraries Qt %5, %6%8Using virtual files plugin: %7%8</source>
         <translation>%1 %2 %3 %4%8%9ไลบรารี่ Qt %5, %6%8กำลังใช้ปลั๊กอินไฟล์เสมือน: %7%8</translation>
     </message>
@@ -4400,7 +4400,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>ownCloudTheme::qtVer</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="355"/>
+        <location filename="../src/libsync/theme.cpp" line="400"/>
         <source>%1 (Built against Qt %1)</source>
         <translation>%1 (สร้างขึ้นเพื่อต่อต้าน Qt %1)</translation>
     </message>
@@ -4408,7 +4408,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>ownCloudTheme::versionWithSha</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="360"/>
+        <location filename="../src/libsync/theme.cpp" line="405"/>
         <source>%1 %2</source>
         <translation>%1 %2</translation>
     </message>
@@ -4516,52 +4516,52 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>theme</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="75"/>
+        <location filename="../src/libsync/theme.cpp" line="104"/>
         <source>Status undefined</source>
         <translation>สถานะไม่สามารถระบุได้</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="78"/>
+        <location filename="../src/libsync/theme.cpp" line="107"/>
         <source>Waiting to start sync</source>
         <translation>กำลังรอการเริ่มต้นประสานข้อมูล</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="81"/>
+        <location filename="../src/libsync/theme.cpp" line="110"/>
         <source>Sync is running</source>
         <translation>การประสานข้อมูลกำลังทำงาน</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="84"/>
+        <location filename="../src/libsync/theme.cpp" line="113"/>
         <source>Sync Success</source>
         <translation>การประสานข้อมูลเสร็จสิ้น</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="87"/>
+        <location filename="../src/libsync/theme.cpp" line="116"/>
         <source>Sync Success, some files were ignored.</source>
         <translation>ประสานข้อมูลสำเร็จ บางไฟล์ถูกละเลย</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="90"/>
+        <location filename="../src/libsync/theme.cpp" line="119"/>
         <source>Sync Error</source>
         <translation>ประสานข้อมูลผิดพลาด</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="93"/>
+        <location filename="../src/libsync/theme.cpp" line="122"/>
         <source>Setup Error</source>
         <translation>เกิดข้อผิดพลาดในการตั้งค่า</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="96"/>
+        <location filename="../src/libsync/theme.cpp" line="125"/>
         <source>Preparing to sync</source>
         <translation>เตรียมความพร้อมในการประสานข้อมูล</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="99"/>
+        <location filename="../src/libsync/theme.cpp" line="128"/>
         <source>Aborting...</source>
         <translation>กำลังยกเลิก...</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="102"/>
+        <location filename="../src/libsync/theme.cpp" line="131"/>
         <source>Sync is paused</source>
         <translation>การประสานข้อมูลถูกหยุดชั่วคราว</translation>
     </message>
