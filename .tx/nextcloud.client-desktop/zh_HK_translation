@@ -21,7 +21,7 @@ Icon=@APPLICATION_EXECUTABLE@
 
 
 # Translations
-Icon[de]=@APPLICATION_ICON_NAME@
-Name[de]=@APPLICATION_NAME@ Client zur Desktop-Synchronisierung
-Comment[de]=@APPLICATION_NAME@ Client zur Desktop-Synchronisierung
-GenericName[de]=Ordner-Synchronisation
+Icon[zh_HK]=@APPLICATION_ICON_NAME@
+Name[zh_HK]= @APPLICATION_NAME@ 桌面同步客戶端
+Comment[zh_HK]= @APPLICATION_NAME@ 桌面同步客戶端
+GenericName[zh_HK]=資料夾同步
