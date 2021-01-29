@@ -60,8 +60,9 @@ public:
     struct SubFolderInfo
     {
         Folder *_folder = nullptr;
-        QString _name;
-        QString _path;
+        QString _name; // Folder name to be displayed in the UI
+        QString _path; // Sub-folder path that should always point to a local filesystem's folder
+        QString _e2eMangledName; // Mangled name that needs to be used when making fetch requests and should not be used for displaying in the UI
         QVector<int> _pathIdx;
         QVector<SubFolderInfo> _subs;
         qint64 _size = 0;

@@ -595,8 +595,12 @@ void FolderStatusModel::fetchMore(const QModelIndex &parent)
         return;
     info->resetSubs(this, parent);
     QString path = info->_folder->remotePathTrailingSlash();
-    if (info->_path != QLatin1String("/")) {
-        path += info->_path;
+
+    // info->_path always contains non-mangled name, so we need to use mangled when requesting nested folders for encrypted subfolders as required by LsColJob
+    const QString infoPath = (info->_isEncrypted && !info->_e2eMangledName.isEmpty()) ? info->_e2eMangledName : info->_path;
+
+    if (infoPath != QLatin1String("/")) {
+        path += infoPath;
     }
 
     auto *job = new LsColJob(_accountState->account(), path, this);
@@ -742,6 +746,15 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
         parentInfo->_folder->journalDb()->getFileRecordByE2eMangledName(removeTrailingSlash(relativePath), &rec);
         if (rec.isValid()) {
             newInfo._name = removeTrailingSlash(rec._path).split('/').last();
+            if (rec._isE2eEncrypted && !rec._e2eMangledName.isEmpty()) {
+                // we must use local path for Settings Dialog's filesystem tree, otherwise open and create new folder actions won't work
+                // hence, we are storing _e2eMangledName separately so it can be use later for LsColJob
+                newInfo._e2eMangledName = relativePath;
+                newInfo._path = rec._path;
+            }
+            if (!newInfo._path.endsWith('/')) {
+                newInfo._path += '/';
+            }
         } else {
             newInfo._name = removeTrailingSlash(relativePath).split('/').last();
         }

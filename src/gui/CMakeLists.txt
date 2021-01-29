@@ -23,6 +23,7 @@ endif()
 set(client_UI_SRCS
     accountsettings.ui
     conflictdialog.ui
+    foldercreationdialog.ui
     folderwizardsourcepage.ui
     folderwizardtargetpage.ui
     generalsettings.ui
@@ -60,6 +61,7 @@ set(client_SRCS
     conflictsolver.cpp
     connectionvalidator.cpp
     folder.cpp
+    foldercreationdialog.cpp
     folderman.cpp
     folderstatusmodel.cpp
     folderstatusdelegate.cpp
