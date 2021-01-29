@@ -392,12 +392,12 @@ Warten Sie auf die neue Synchronisierung und verschlüsseln Sie sie dann.</trans
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="525"/>
         <source>Enable virtual file support %1 …</source>
-        <translation type="unfinished"/>
+        <translation>Unterstützung für virtuelle Dateien aktivieren %1 …</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="525"/>
         <source>(experimental)</source>
-        <translation type="unfinished"/>
+        <translation>(experimentell)</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="501"/>
