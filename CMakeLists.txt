@@ -200,11 +200,11 @@ if(BUILD_CLIENT)
 
     if (APPLE)
         find_package(HOMEBREW)
-        message(STATUS "HOMEBREW_EXECUTABLE detected as ${HOMEBREW_EXECUTABLE}")
+        # message(STATUS "HOMEBREW_EXECUTABLE detected as ${HOMEBREW_EXECUTABLE}")
         execute_process(COMMAND ${HOMEBREW_EXECUTABLE} --prefix openssl
             OUTPUT_VARIABLE OPENSSL_ROOT_DIR
             OUTPUT_STRIP_TRAILING_WHITESPACE)
-        message(STATUS "OPENSSL_ROOT_DIR detected as ${OPENSSL_ROOT_DIR}")
+        # message(STATUS "OPENSSL_ROOT_DIR detected as ${OPENSSL_ROOT_DIR}")
     endif()
 
     find_package(OpenSSL 1.1 REQUIRED )
