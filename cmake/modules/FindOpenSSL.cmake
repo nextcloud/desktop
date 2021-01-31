@@ -3,4 +3,5 @@ find_path(OPENSSL_ROOT_DIR openssl
         /usr/bin
         /usr/local
         /usr/local/Cellar
+        /usr/local/opt/openssl
 )
