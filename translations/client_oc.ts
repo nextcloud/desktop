@@ -4243,7 +4243,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/systray.cpp" line="98"/>
         <location filename="../src/gui/systray.cpp" line="113"/>
         <source>Resume sync</source>
-        <translation type="unfinished"/>
+        <translation>Reprendre la sincro.</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="99"/>
@@ -4263,7 +4263,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/systray.cpp" line="113"/>
         <source>Resume sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Reprendre la sincro. per totes</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="234"/>
@@ -4972,7 +4972,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/tray/Window.qml" line="143"/>
         <location filename="../src/gui/tray/Window.qml" line="255"/>
         <source>Resume sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Reprendre la sincro. per totes</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="143"/>
