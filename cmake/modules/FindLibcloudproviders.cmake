@@ -1,10 +1,12 @@
 # FindLibcloudproviders.cmake
 
-find_path(LIBCLOUDPROVIDERS_INCLUDE_DIR
+include(FindPackageHandleStandardArgs)
+
+find_path(Libcloudproviders_INCLUDE_DIR
     NAMES cloudprovidersproviderexporter.h cloudprovidersaccountexporter.h
     PATH_SUFFIXES cloudproviders
 )
-find_library(LIBCLOUDPROVIDERS_LIBRARY
+find_library(Libcloudproviders_LIBRARY
     NAMES
         libcloudproviders
         cloudproviders
@@ -17,6 +19,21 @@ find_library(LIBCLOUDPROVIDERS_LIBRARY
        ${CMAKE_INSTALL_PREFIX}/lib
 )
 
-message("================> ${LIBCLOUDPROVIDERS_LIBRARY}")
+find_package_handle_standard_args(Libcloudproviders
+  DEFAULT_MSG
+  Libcloudproviders_INCLUDE_DIR
+  Libcloudproviders_LIBRARY
+)
 
-find_package_handle_standard_args(LIBCLOUDPROVIDERS DEFAULT_MSG LIBCLOUDPROVIDERS_INCLUDE_DIR LIBCLOUDPROVIDERS_LIBRARY)
+if (Libcloudproviders_FOUND)
+  set(Libcloudproviders_INCLUDE_DIRS ${Libcloudproviders_INCLUDE_DIR})
+  set(Libcloudproviders_LIBRARIES ${Libcloudproviders_LIBRARY})
+
+  add_library(Libcloudproviders::Libcloudproviders UNKNOWN IMPORTED)
+  set_target_properties(Libcloudproviders::Libcloudproviders PROPERTIES
+    IMPORTED_LOCATION "${Libcloudproviders_LIBRARIES}"
+    INTERFACE_INCLUDE_DIRECTORIES "${Libcloudproviders_INCLUDE_DIRS}"
+  )
+
+  mark_as_advanced(Libcloudproviders_INCLUDE_DIR Libcloudproviders_LIBRARY)
+endif()

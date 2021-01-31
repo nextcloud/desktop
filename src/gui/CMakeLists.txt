@@ -191,7 +191,7 @@ else()
    list(APPEND 3rdparty_SRC ../3rdparty/qtlockedfile/qtlockedfile_win.cpp )
 endif()
 
-IF( NOT WIN32 AND NOT APPLE AND LIBCLOUDPROVIDERS_FOUND)
+IF( NOT WIN32 AND NOT APPLE AND Libcloudproviders_FOUND)
     message("Building with libcloudproviderssupport")
     add_definitions(-DWITH_LIBCLOUDPROVIDERS)
     set(client_SRCS ${client_SRCS} cloudproviders/cloudprovidermanager.cpp)
@@ -199,7 +199,6 @@ IF( NOT WIN32 AND NOT APPLE AND LIBCLOUDPROVIDERS_FOUND)
 
     include_directories(${GLib2_INCLUDE_DIRS})
     include_directories(${GIO_INCLUDE_DIRS})
-    include_directories(${LIBCLOUDPROVIDERS_INCLUDE_DIR})
 ENDIF()
 
 find_package(Qt5LinguistTools)
@@ -371,7 +370,7 @@ IF( LIBCLOUDPROVIDERS_FOUND )
       PUBLIC
       ${GLib2_LDFLAGS}
       ${GIO_LDFLAGS}
-      ${LIBCLOUDPROVIDERS_LIBRARY}
+      Libcloudproviders::Libcloudproviders
     )
 ENDIF()
 
