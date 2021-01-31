@@ -1,4 +1,4 @@
-if (APPLE AND NOT QT_PREFIX)
+if (APPLE)
   # Use Homebrew to find Qt.
   execute_process(COMMAND ${HOMEBREW_EXECUTABLE} --prefix qt
     OUTPUT_VARIABLE QT_PREFIX
