@@ -3,6 +3,9 @@ set(CMAKE_CXX_STANDARD 14)
 
 project(client)
 
+include(FeatureSummary)
+feature_summary(WHAT REQUIRED_PACKAGES_NOT_FOUND FATAL_ON_MISSING_REQUIRED_PACKAGES)
+
 if(UNIT_TESTING)
     include(CTest)
     enable_testing()
@@ -43,7 +46,7 @@ if (NOT DEFINED PACKAGE)
     set(PACKAGE "${LINUX_PACKAGE_SHORTNAME}-client")
 endif()
 
-set( CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules )
+set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules ${CMAKE_MODULE_PATH})
 
 if(NOT CRASHREPORTER_EXECUTABLE)
     set(CRASHREPORTER_EXECUTABLE "${APPLICATION_EXECUTABLE}_crash_reporter")
@@ -141,10 +144,10 @@ endif()
 # this option builds the updater
 option(BUILD_UPDATER "BUILD_UPDATER" OFF)
 if(BUILD_UPDATER)
-   message("Compiling with updater")
+   message(STATUS "Compiling with updater")
    add_definitions(-DBUILD_UPDATER=1)
 else()
-   message("Compiling without updater")
+   message(STATUS "Compiling without updater")
 endif()
 
 # this option builds the shell integration
@@ -187,10 +190,8 @@ if(BUILD_CLIENT)
         find_package(Sparkle)
     endif()
 
-    if(UNIX)
-        find_package(INotify REQUIRED)
-    else()
-        find_package(INotify)
+    if(UNIX AND NOT APPLE)
+        find_package(Inotify REQUIRED)
     endif()
     find_package(Sphinx)
     find_package(PdfLatex)
@@ -269,3 +270,5 @@ elseif(BUILD_CLIENT)
     install( FILES sync-exclude.lst DESTINATION ${SYSCONFDIR}/${APPLICATION_SHORTNAME} )
     configure_file(sync-exclude.lst bin/sync-exclude.lst COPYONLY)
 endif()
+
+feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)

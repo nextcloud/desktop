@@ -19,7 +19,15 @@ include(DefineOptions.cmake)
 
 include(DefineInstallationPaths)
 
-find_package(SQLite3 3.8.0 REQUIRED)
+if (APPLE OR WIN32)
+    set(USE_OUR_OWN_SQLITE3 TRUE)
+    set(SQLITE3_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/src/3rdparty/sqlite3)
+    set(SQLITE3_LIBRARIES "")
+    set(SQLITE3_SOURCE ${SQLITE3_INCLUDE_DIR}/sqlite3.c)
+    MESSAGE(STATUS "Using own sqlite3 from " ${SQLITE3_INCLUDE_DIR})
+else()
+    find_package(SQLite3 3.8.0 REQUIRED)
+endif()
 
 include(ConfigureChecks.cmake)
 include(../common/common.cmake)
@@ -65,7 +73,6 @@ target_include_directories(
   PUBLIC ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/std
 )
 
-find_package(SQLite3 3.9.0 REQUIRED)
 if (USE_OUR_OWN_SQLITE3)
     # make sure that the path for the local sqlite3 is before the system one
     target_include_directories("${csync_NAME}" BEFORE PUBLIC ${SQLITE3_INCLUDE_DIR})
