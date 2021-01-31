@@ -21,5 +21,10 @@ if (APPLE)
       set(Qt5LinguistTools_DIR "${QT_PREFIX}/lib/cmake/Qt5LinguistTools/")
       message(STATUS "Qt5LinguistTools_DIR detected as ${Qt5LinguistTools_DIR}")
       
+  find_package(Qt5
+    HINTS
+      "${Qt5_DIR}"
+  )
+      
   endif()
 endif()
