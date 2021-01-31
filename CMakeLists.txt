@@ -199,7 +199,18 @@ if(BUILD_CLIENT)
     find_package(PdfLatex)
 
     if (APPLE)
-        find_package(HOMEBREW)
+        find_program(HOMEBREW_EXECUTABLE brew)
+        mark_as_advanced(FORCE HOMEBREW_EXECUTABLE)
+        if (HOMEBREW_EXECUTABLE)
+            # Detected a Homebrew install, query for its install prefix.
+            execute_process(COMMAND ${HOMEBREW_EXECUTABLE} --prefix
+                OUTPUT_VARIABLE HOMEBREW_INSTALL_PREFIX
+                OUTPUT_STRIP_TRAILING_WHITESPACE)
+            # message(STATUS "Detected Homebrew with install prefix: "
+            #     "${HOMEBREW_INSTALL_PREFIX}, adding to CMake search paths.")
+            list(APPEND CMAKE_PREFIX_PATH "${HOMEBREW_INSTALL_PREFIX}")
+        endif()
+
         # message(STATUS "HOMEBREW_EXECUTABLE detected as ${HOMEBREW_EXECUTABLE}")
         execute_process(COMMAND ${HOMEBREW_EXECUTABLE} --prefix openssl
             OUTPUT_VARIABLE OPENSSL_ROOT_DIR
