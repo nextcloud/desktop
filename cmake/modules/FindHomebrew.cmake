@@ -8,5 +8,6 @@ if (APPLE AND NOT HOMEBREW_EXECUTABLE)
             OUTPUT_STRIP_TRAILING_WHITESPACE)
         message(STATUS "Detected Homebrew with install prefix: "
             "${HOMEBREW_INSTALL_PREFIX}, adding to CMake search paths.")
-    list(APPEND CMAKE_PREFIX_PATH "${HOMEBREW_INSTALL_PREFIX}")
+        list(APPEND CMAKE_PREFIX_PATH "${HOMEBREW_INSTALL_PREFIX}")
+    endif()
 endif()
