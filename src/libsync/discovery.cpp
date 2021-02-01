@@ -163,7 +163,13 @@ void ProcessDirectoryJob::process()
 
         // On the server the path is mangled in case of E2EE
         if (!e.serverEntry.e2eMangledName.isEmpty()) {
-            path._server = e.serverEntry.e2eMangledName;
+            Q_ASSERT(_discoveryData->_remoteFolder.startsWith('/'));
+            Q_ASSERT(_discoveryData->_remoteFolder.endsWith('/'));
+
+            const auto rootPath = _discoveryData->_remoteFolder.mid(1);
+            Q_ASSERT(e.serverEntry.e2eMangledName.startsWith(rootPath));
+
+            path._server = e.serverEntry.e2eMangledName.mid(rootPath.length());
         }
 
         // If the filename starts with a . we consider it a hidden file
@@ -398,8 +404,19 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
     item->_etag = serverEntry.etag;
     item->_directDownloadUrl = serverEntry.directDownloadUrl;
     item->_directDownloadCookies = serverEntry.directDownloadCookies;
-    item->_encryptedFileName = serverEntry.e2eMangledName;
     item->_isEncrypted = serverEntry.isE2eEncrypted;
+    item->_encryptedFileName = [=] {
+        if (serverEntry.e2eMangledName.isEmpty()) {
+            return QString();
+        }
+
+        Q_ASSERT(_discoveryData->_remoteFolder.startsWith('/'));
+        Q_ASSERT(_discoveryData->_remoteFolder.endsWith('/'));
+
+        const auto rootPath = _discoveryData->_remoteFolder.mid(1);
+        Q_ASSERT(serverEntry.e2eMangledName.startsWith(rootPath));
+        return serverEntry.e2eMangledName.mid(rootPath.length());
+    }();
 
     // Check for missing server data
     {
