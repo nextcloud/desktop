@@ -336,6 +336,7 @@ IF(BUILD_UPDATER)
     add_library(updater STATIC ${updater_SRCS})
     target_link_libraries(updater ${synclib_NAME} ${updater_DEPS} Qt5::Widgets Qt5::Svg Qt5::Network Qt5::Xml)
     target_include_directories(updater PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+    set_target_properties(updater PROPERTIES AUTOMOC ON)
 endif()
 
 set_target_properties( ${APPLICATION_EXECUTABLE} PROPERTIES
