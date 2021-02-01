@@ -171,34 +171,35 @@ settings associated with the log window.
 
 To enable logging to a directory, stop the client and add the following to the General section in the configuration file:
 
-```
-[General]
-logDebug=true
-logExpire=<hours>
-logDir=<dir>
-```
+::
 
-  .. note:: Independent of platform you must use slash (/) as a path reparator:
+  [General]
+  logDebug=true
+  logExpire=<hours>
+  logDir=<dir>
 
-  * Correct: C:/Temp
-  * Not correct: C:\Temp
+Independent of platform you must use slash (/) as a path separator:
+
+  .. note::
+    * Correct: C:/Temp
+    * Not correct: C:\Temp
 
 As an example, to keep log data for two days in a directory called temp:
 
-```
-[General]
-logDebug=true
-logExpire=48
-logDir=C:/Temp
-```
+::
+
+  [General]
+  logDebug=true
+  logExpire=48
+  logDir=C:/Temp
 
 Once you restart the client, you will find the log file in the ``<dir>`` defined in ``logDir``.
 
   .. note:: You will find the configuration file in the following locations:
 
-   * Microsoft Windows systems: ``%APPDATA%\Nextcloud\nextcloud.cfg``
-   * macOS systems: ``$HOME/Library/Preferences/Nextcloud/nextcloud.cfg``
-   * Linux distributions: ``$HOME/.config/Nextcloud/nextcloud.cfg``
+    * Microsoft Windows systems: ``%APPDATA%\Nextcloud\nextcloud.cfg``
+    * macOS systems: ``$HOME/Library/Preferences/Nextcloud/nextcloud.cfg``
+    * Linux distributions: ``$HOME/.config/Nextcloud/nextcloud.cfg``
 
 
 Alternatively, you can start the client in the command line with parameters:
