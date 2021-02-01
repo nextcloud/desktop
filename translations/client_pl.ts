@@ -1216,7 +1216,7 @@ If you decide to restore the files, they will be re-synced with the server if yo
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
         <translation>Wszystkie pliki z folderu synchronizacji &apos;%1&apos; zostały usunięte z serwera.
 W momencie synchronizacji zostaną usunięte z lokalnego folderu, co spowoduje ich niedostępność, chyba że posiadasz prawo do przywracania.
-Jeśli zdecydujesz się przywrócić pliki i posiadasz odpowiednie uprawnienia, zostaną one ponownie przesłane na serwer.
+Jeśli zdecydujesz się przywrócić pliki i posiadasz odpowiednie uprawnienia, zostaną one ponownie wysłane na serwer.
 Jeśli zdecydujesz się je usunąć, nie będą już dostępne.</translation>
     </message>
     <message>
@@ -1275,7 +1275,7 @@ If you decide to restore the files, they will be re-synced with the server if yo
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
         <translation>Wszystkie pliki z folderu synchronizacji &apos;%1&apos; zostały usunięte z serwera.
 W momencie synchronizacji zostaną usunięte z lokalnego folderu, co spowoduje ich niedostępność, chyba że posiadasz prawo do przywracania.
-Jeśli zdecydujesz się przywrócić pliki i posiadasz odpowiednie uprawnienia, zostaną one ponownie przesłane na serwer.
+Jeśli zdecydujesz się przywrócić pliki i posiadasz odpowiednie uprawnienia, zostaną one ponownie wysłane na serwer.
 Jeśli zdecydujesz się je usunąć, nie będą już dostępne. </translation>
     </message>
     <message>
@@ -3201,12 +3201,12 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="242"/>
         <source>Failed to upload encrypted file.</source>
-        <translation>Nie udało się przesłać zaszyfrowanego pliku.</translation>
+        <translation>Nie udało się wysłać zaszyfrowanego pliku.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="281"/>
         <source>File %1 cannot be uploaded because another file with the same name, differing only in case, exists</source>
-        <translation>Plik %1 nie może zostać przesłany, ponieważ istnieje inny plik o tej samej nazwie.</translation>
+        <translation>Plik %1 nie może zostać wysłany, ponieważ istnieje inny plik o tej samej nazwie.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="292"/>
@@ -4263,7 +4263,7 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1816"/>
         <source>There is insufficient space available on the server for some uploads.</source>
-        <translation>Na serwerze nie ma wystarczającej ilości miejsca na niektóre przesłane pliki.</translation>
+        <translation>Na serwerze nie ma wystarczającej ilości miejsca na niektóre wysłane pliki.</translation>
     </message>
 </context>
 <context>
@@ -4725,7 +4725,7 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="354"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If this box is checked, existing content in the local folder will be erased to start a clean sync from the server.&lt;/p&gt;&lt;p&gt;Do not check this if the local content should be uploaded to the servers folder.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Jeśli to pole jest zaznaczone, istniejąca zawartość w folderze lokalnym zostanie usunięta, aby rozpocząć nową synchronizację z serwerem.&lt;/p&gt;&lt;p&gt;Nie zaznaczaj tego pola, jeśli zawartość lokalna powinna zostać przesłana do katalogu na serwerach.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Jeśli to pole jest zaznaczone, istniejąca zawartość w folderze lokalnym zostanie usunięta, aby rozpocząć nową synchronizację z serwerem.&lt;/p&gt;&lt;p&gt;Nie zaznaczaj tego pola, jeśli zawartość lokalna powinna zostać wysłana do katalogu na serwerach.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="357"/>
