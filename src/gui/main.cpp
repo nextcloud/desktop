@@ -52,6 +52,7 @@ void warnSystray()
 int main(int argc, char **argv)
 {
     Q_INIT_RESOURCE(resources);
+    Q_INIT_RESOURCE(theme);
 
     // Work around a bug in KDE's qqc2-desktop-style which breaks
     // buttons with icons not based on a name, by forcing a style name
