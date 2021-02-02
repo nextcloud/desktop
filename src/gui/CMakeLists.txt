@@ -205,14 +205,8 @@ target_sources(${APPLICATION_EXECUTABLE} PRIVATE
     ${PROJECT_SOURCE_DIR}/client.qrc
     ${PROJECT_SOURCE_DIR}/core_theme.qrc)
 
-generate_theme(${APPLICATION_EXECUTABLE})
-set(theme_dir ${OEM_THEME_DIR}/theme)
-
-# add executable icon on windows and osx
-if(APPLE)
-    file(GLOB_RECURSE OWNCLOUD_SIDEBAR_ICONS "${theme_dir}/colored/*-${APPLICATION_ICON_NAME}-icon-sidebar.png")
-    MESSAGE(STATUS "OWNCLOUD_SIDEBAR_ICONS: ${APPLICATION_ICON_NAME}: ${OWNCLOUD_SIDEBAR_ICONS}")
-endif()
+generate_theme(${APPLICATION_EXECUTABLE} OWNCLOUD_SIDEBAR_ICONS)
+MESSAGE(STATUS "OWNCLOUD_SIDEBAR_ICONS: ${APPLICATION_ICON_NAME}: ${OWNCLOUD_SIDEBAR_ICONS}")
 
 ecm_add_app_icon(appIcons ICONS "${OWNCLOUD_ICONS}" SIDEBAR_ICONS "${OWNCLOUD_SIDEBAR_ICONS}" OUTFILE_BASENAME "${APPLICATION_ICON_NAME}")
 target_sources(${APPLICATION_EXECUTABLE} PRIVATE ${appIcons})
@@ -228,9 +222,9 @@ if(NOT APPLE)
             target_sources(${APPLICATION_EXECUTABLE} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/manifest-mingw.rc)
         endif()
     else()
-        file(GLOB _icons "${theme_dir}/colored/*-${APPLICATION_ICON_NAME}-icon.png")
+        file(GLOB _icons "${OEM_THEME_DIR}/theme/colored/*-${APPLICATION_ICON_NAME}-icon.png")
         foreach(_file ${_icons})
-            string(REPLACE "${theme_dir}/colored/" "" _res ${_file})
+            string(REPLACE "${OEM_THEME_DIR}/theme/colored/" "" _res ${_file})
             string(REPLACE "-${APPLICATION_ICON_NAME}-icon.png" "" _res ${_res})
             install(FILES ${_file} RENAME ${APPLICATION_ICON_NAME}.png DESTINATION ${DATADIR}/icons/hicolor/${_res}x${_res}/apps)
         endforeach(_file)

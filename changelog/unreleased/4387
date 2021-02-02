@@ -1,0 +1,5 @@
+Bugfix: Fix missing sidebar icons on Mac with branded builds
+
+We fixed an issue where branded client where lacking the sidebar icons.
+
+https://github.com/owncloud/enterprise/issues/4387
