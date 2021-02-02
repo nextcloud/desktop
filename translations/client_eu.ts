@@ -397,7 +397,7 @@ Itxaron berriro sinkronizatu arte, ondoren enkriptatu.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="525"/>
         <source>(experimental)</source>
-        <translation type="unfinished"/>
+        <translation>(esperimentala)</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="501"/>
@@ -1689,7 +1689,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="512"/>
         <source>(experimental)</source>
-        <translation type="unfinished"/>
+        <translation>(esperimentala)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="548"/>
@@ -2466,7 +2466,7 @@ pribilegio gehigarriak eskatzen ahal dizu prozesuan.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="85"/>
         <source>(experimental)</source>
-        <translation type="unfinished"/>
+        <translation>(esperimentala)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="154"/>
