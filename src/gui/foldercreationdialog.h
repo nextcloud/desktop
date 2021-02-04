@@ -17,6 +17,8 @@
 
 #include <QDialog>
 
+namespace OCC {
+
 namespace Ui {
 class FolderCreationDialog;
 }
@@ -39,5 +41,7 @@ private:
 
     QString _destination;
 };
+
+}
 
 #endif // FOLDERCREATIONDIALOG_H
