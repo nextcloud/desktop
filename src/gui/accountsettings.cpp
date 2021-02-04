@@ -17,6 +17,7 @@
 #include "ui_accountsettings.h"
 
 #include "theme.h"
+#include "foldercreationdialog.h"
 #include "folderman.h"
 #include "folderwizard.h"
 #include "folderstatusmodel.h"
@@ -333,6 +334,46 @@ void AccountSettings::slotEditCurrentIgnoredFiles()
     openIgnoredFilesDialog(f->path());
 }
 
+void AccountSettings::slotOpenMakeFolderDialog()
+{
+    const auto &selected = _ui->_folderList->selectionModel()->currentIndex();
+
+    if (!selected.isValid()) {
+        qCWarning(lcAccountSettings) << "Selection model current folder index is not valid.";
+        return;
+    }
+
+    const auto &classification = _model->classify(selected);
+
+    if (classification != FolderStatusModel::SubFolder && classification != FolderStatusModel::RootFolder) {
+        return;
+    }
+
+    const QString fileName = [this, &selected, &classification] {
+        QString result;
+        if (classification == FolderStatusModel::RootFolder) {
+            const auto alias = _model->data(selected, FolderStatusDelegate::FolderAliasRole).toString();
+            if (const auto folder = FolderMan::instance()->folder(alias)) {
+                result = folder->path();
+            }
+        } else {
+            result = _model->data(selected, FolderStatusDelegate::FolderPathRole).toString();
+        }
+
+        if (result.endsWith('/')) {
+            result.chop(1);
+        }
+
+        return result;
+    }();
+
+    if (!fileName.isEmpty()) {
+        const auto folderCreationDialog = new FolderCreationDialog(fileName, this); 
+        folderCreationDialog->setAttribute(Qt::WA_DeleteOnClose);
+        folderCreationDialog->open();
+    }
+}
+
 void AccountSettings::slotEditCurrentLocalIgnoredFiles()
 {
     QModelIndex selected = _ui->_folderList->selectionModel()->currentIndex();
@@ -402,6 +443,10 @@ void AccountSettings::slotSubfolderContextMenuRequested(const QModelIndex& index
 
     ac = menu.addAction(tr("Edit Ignored Files"));
     connect(ac, &QAction::triggered, this, &AccountSettings::slotEditCurrentLocalIgnoredFiles);
+
+    ac = menu.addAction(tr("Create new folder"));
+    connect(ac, &QAction::triggered, this, &AccountSettings::slotOpenMakeFolderDialog);
+    ac->setEnabled(QFile::exists(fileName));
 
     const auto folder = info->_folder;
     if (folder && folder->virtualFilesEnabled()) {
@@ -474,6 +519,10 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
 
     ac = menu->addAction(tr("Edit Ignored Files"));
     connect(ac, &QAction::triggered, this, &AccountSettings::slotEditCurrentIgnoredFiles);
+
+    ac = menu->addAction(tr("Create new folder"));
+    connect(ac, &QAction::triggered, this, &AccountSettings::slotOpenMakeFolderDialog);
+    ac->setEnabled(QFile::exists(folder->path()));
 
     if (!_ui->_folderList->isExpanded(index) && folder->supportsSelectiveSync()) {
         ac = menu->addAction(tr("Choose what to sync"));
