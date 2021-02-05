@@ -20,6 +20,8 @@
 #include <QDir>
 #include <QMessageBox>
 
+namespace OCC {
+
 FolderCreationDialog::FolderCreationDialog(const QString &destination, QWidget *parent)
     : QDialog(parent)
     , ui(new Ui::FolderCreationDialog)
@@ -81,4 +83,6 @@ void FolderCreationDialog::slotNewFolderNameEditTextEdited()
     } else {
         ui->labelErrorMessage->setVisible(false);
     }
+}
+
 }
