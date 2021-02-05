@@ -149,6 +149,34 @@
     </message>
 </context>
 <context>
+    <name>FolderCreationDialog</name>
+    <message>
+        <location filename="../src/gui/foldercreationdialog.ui" line="14"/>
+        <source>Create new folder</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/foldercreationdialog.ui" line="42"/>
+        <source>Enter folder name</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/foldercreationdialog.ui" line="61"/>
+        <source>Folder already exists</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/foldercreationdialog.cpp" line="71"/>
+        <source>Error</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/foldercreationdialog.cpp" line="71"/>
+        <source>Could not create a folder! Check your write permissions.</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>FolderWizardSourcePage</name>
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="33"/>
@@ -349,8 +377,14 @@ Attendi la nuova sincronizzazione, quindi cifrala.</translation>
         <translation>Modifica file ignorati</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="408"/>
-        <location filename="../src/gui/accountsettings.cpp" line="500"/>
+        <location filename="../src/gui/accountsettings.cpp" line="447"/>
+        <location filename="../src/gui/accountsettings.cpp" line="523"/>
+        <source>Create new folder</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="453"/>
+        <location filename="../src/gui/accountsettings.cpp" line="549"/>
         <source>Availability</source>
         <translation>Disponibilità</translation>
     </message>
@@ -385,17 +419,17 @@ Attendi la nuova sincronizzazione, quindi cifrala.</translation>
         <translation>Rimuovi connessione di sincronizzazione cartelle</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="517"/>
+        <location filename="../src/gui/accountsettings.cpp" line="566"/>
         <source>Disable virtual file support …</source>
         <translation>Disabilita il supporto dei file virtuali…</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="525"/>
+        <location filename="../src/gui/accountsettings.cpp" line="574"/>
         <source>Enable virtual file support %1 …</source>
         <translation>Abilita supporto dei file virtuali %1…</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="525"/>
+        <location filename="../src/gui/accountsettings.cpp" line="574"/>
         <source>(experimental)</source>
         <translation>(sperimentale)</translation>
     </message>
@@ -425,12 +459,12 @@ Attendi la nuova sincronizzazione, quindi cifrala.</translation>
         <translation>Rimuovi connessione di sincronizzazione cartelle</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="780"/>
+        <location filename="../src/gui/accountsettings.cpp" line="829"/>
         <source>Disable virtual file support?</source>
         <translation>Vuoi disabilitare il supporto dei file virtuali?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="781"/>
+        <location filename="../src/gui/accountsettings.cpp" line="830"/>
         <source>This action will disable virtual file support. As a consequence contents of folders that are currently marked as &quot;available online only&quot; will be downloaded.
 
 The only advantage of disabling virtual file support is that the selective sync feature will become available again.
@@ -443,7 +477,7 @@ L&apos;unico vantaggio di disabilitare il supporto dei file virtuali è che la f
 Questa azione interromperà qualsiasi sincronizzazione attualmente in esecuzione.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="788"/>
+        <location filename="../src/gui/accountsettings.cpp" line="837"/>
         <source>Disable support</source>
         <translation>Disabilita supporto</translation>
     </message>
@@ -488,7 +522,12 @@ Questa azione interromperà qualsiasi sincronizzazione attualmente in esecuzione
         <translation>La versione %1 del server è datata e non supportata! Continua a tuo rischio.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1034"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1066"/>
+        <source>Log in</source>
+        <translation>Accedi</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="1083"/>
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
         <translation>La versione %1 del server non è supportata! Continua a tuo rischio.</translation>
     </message>
@@ -528,12 +567,7 @@ Questa azione interromperà qualsiasi sincronizzazione attualmente in esecuzione
         <translation>Nessuna connessione a %1 su %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1066"/>
-        <source>Log in</source>
-        <translation>Accedi</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1070"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1119"/>
         <source>Server configuration error: %1 at %2.</source>
         <translation>Errore di configurazione del server: %1 in %2.</translation>
     </message>
@@ -2869,132 +2903,132 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::ProcessDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="237"/>
+        <location filename="../src/libsync/discovery.cpp" line="243"/>
         <source>Symbolic links are not supported in syncing.</source>
         <translation>I collegamenti simbolici non sono supportati dalla sincronizzazione.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="245"/>
+        <location filename="../src/libsync/discovery.cpp" line="251"/>
         <source>File is listed on the ignore list.</source>
         <translation>Il file è presente nell&apos;elenco degli ignorati.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="249"/>
+        <location filename="../src/libsync/discovery.cpp" line="255"/>
         <source>File names ending with a period are not supported on this file system.</source>
         <translation>I nomi del file che terminano con un punto non sono supportati su questo file system.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="259"/>
+        <location filename="../src/libsync/discovery.cpp" line="265"/>
         <source>File names containing the character &apos;%1&apos; are not supported on this file system.</source>
         <translation>I nomi del file che contengono il carattere &apos;%1&apos; non sono supportati su questo file system.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="263"/>
+        <location filename="../src/libsync/discovery.cpp" line="269"/>
         <source>File name contains at least one invalid character</source>
         <translation>Il nome del file contiene almeno un carattere non valido</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="265"/>
+        <location filename="../src/libsync/discovery.cpp" line="271"/>
         <source>The file name is a reserved name on this file system.</source>
         <translation>Il nome del file è un nome riservato su questo file system.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="270"/>
+        <location filename="../src/libsync/discovery.cpp" line="276"/>
         <source>Filename contains trailing spaces.</source>
         <translation>Il nome del file contiene spazi alla fine.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="273"/>
+        <location filename="../src/libsync/discovery.cpp" line="279"/>
         <source>Filename is too long.</source>
         <translation>Il nome del file è troppo lungo.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="276"/>
+        <location filename="../src/libsync/discovery.cpp" line="282"/>
         <source>File/Folder is ignored because it&apos;s hidden.</source>
         <translation>Il file/cartella è ignorato poiché è nascosto.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="279"/>
+        <location filename="../src/libsync/discovery.cpp" line="285"/>
         <source>Stat failed.</source>
         <translation>Stat non riuscita.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="282"/>
+        <location filename="../src/libsync/discovery.cpp" line="288"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
         <translation>Conflitto: versione del server scaricata, copia locale rinominata e non caricata.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="286"/>
+        <location filename="../src/libsync/discovery.cpp" line="292"/>
         <source>The filename cannot be encoded on your file system.</source>
         <translation>Il nome del file non può essere codificato sul tuo file system.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="289"/>
+        <location filename="../src/libsync/discovery.cpp" line="295"/>
         <source>The filename is blacklisted on the server.</source>
         <translation>Il nome del file è nella lista nera sul server.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="344"/>
+        <location filename="../src/libsync/discovery.cpp" line="350"/>
         <source>File has extension reserved for virtual files.</source>
         <translation>Il file ha l&apos;estensione riservata ai file virtuali.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="408"/>
+        <location filename="../src/libsync/discovery.cpp" line="425"/>
         <source>size</source>
         <translation>dimensione</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="410"/>
+        <location filename="../src/libsync/discovery.cpp" line="427"/>
         <source>permissions</source>
         <translation>permessi</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="414"/>
+        <location filename="../src/libsync/discovery.cpp" line="431"/>
         <source>file id</source>
         <translation>ID del file</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="418"/>
+        <location filename="../src/libsync/discovery.cpp" line="435"/>
         <source>server reported no %1</source>
         <translation>il server non ha restituito alcun %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1197"/>
+        <location filename="../src/libsync/discovery.cpp" line="1214"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Ignorato in base alla lista nera per la scelta di cosa sincronizzare</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1230"/>
+        <location filename="../src/libsync/discovery.cpp" line="1247"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Non consentito perché non sei autorizzato ad aggiungere sottocartelle a quella cartella</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1235"/>
+        <location filename="../src/libsync/discovery.cpp" line="1252"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Non ti è consentito perché non hai i permessi per aggiungere file in quella cartella </translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1248"/>
+        <location filename="../src/libsync/discovery.cpp" line="1265"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Non ti è permesso caricare questo file perché hai l&apos;accesso in sola lettura sul server, ripristino</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1270"/>
+        <location filename="../src/libsync/discovery.cpp" line="1287"/>
         <source>Moved to invalid target, restoring</source>
         <translation>Spostato su una destinazione non valida, ripristino</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1283"/>
+        <location filename="../src/libsync/discovery.cpp" line="1300"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Rimozione non consentita, ripristino</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1392"/>
+        <location filename="../src/libsync/discovery.cpp" line="1409"/>
         <source>Error while reading the database</source>
         <translation>Errore durante la lettura del database</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1453"/>
+        <location filename="../src/libsync/discovery.cpp" line="1470"/>
         <source>Server replied with an error while reading directory &apos;%1&apos; : %2</source>
         <translation>Il server ha risposto con un errore durante la lettura della cartella &apos;% 1&apos; : %2</translation>
     </message>
@@ -4802,6 +4836,11 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 </context>
 <context>
     <name>QObject</name>
+    <message>
+        <location filename="../src/gui/foldercreationdialog.cpp" line="36"/>
+        <source>New folder</source>
+        <translation type="unfinished"/>
+    </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="464"/>
         <source>%n day ago</source>

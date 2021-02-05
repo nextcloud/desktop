@@ -149,6 +149,34 @@
     </message>
 </context>
 <context>
+    <name>FolderCreationDialog</name>
+    <message>
+        <location filename="../src/gui/foldercreationdialog.ui" line="14"/>
+        <source>Create new folder</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/foldercreationdialog.ui" line="42"/>
+        <source>Enter folder name</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/foldercreationdialog.ui" line="61"/>
+        <source>Folder already exists</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/foldercreationdialog.cpp" line="71"/>
+        <source>Error</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/foldercreationdialog.cpp" line="71"/>
+        <source>Could not create a folder! Check your write permissions.</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>FolderWizardSourcePage</name>
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="33"/>
@@ -349,8 +377,14 @@ Pričekajte novu sinkronizaciju, a zatim je šifrirajte.</translation>
         <translation>Uredi zanemarene datoteke</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="408"/>
-        <location filename="../src/gui/accountsettings.cpp" line="500"/>
+        <location filename="../src/gui/accountsettings.cpp" line="447"/>
+        <location filename="../src/gui/accountsettings.cpp" line="523"/>
+        <source>Create new folder</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="453"/>
+        <location filename="../src/gui/accountsettings.cpp" line="549"/>
         <source>Availability</source>
         <translation>Raspoloživost</translation>
     </message>
@@ -385,17 +419,17 @@ Pričekajte novu sinkronizaciju, a zatim je šifrirajte.</translation>
         <translation>Uklonite poveznicu za sinkronizaciju mape</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="517"/>
+        <location filename="../src/gui/accountsettings.cpp" line="566"/>
         <source>Disable virtual file support …</source>
         <translation>Onemogućite podršku za virtualne datoteke...</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="525"/>
+        <location filename="../src/gui/accountsettings.cpp" line="574"/>
         <source>Enable virtual file support %1 …</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="525"/>
+        <location filename="../src/gui/accountsettings.cpp" line="574"/>
         <source>(experimental)</source>
         <translation type="unfinished"/>
     </message>
@@ -425,12 +459,12 @@ Pričekajte novu sinkronizaciju, a zatim je šifrirajte.</translation>
         <translation>Uklonite poveznicu za sinkronizaciju mape</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="780"/>
+        <location filename="../src/gui/accountsettings.cpp" line="829"/>
         <source>Disable virtual file support?</source>
         <translation>Onemogućiti podršku za virtualne datoteke?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="781"/>
+        <location filename="../src/gui/accountsettings.cpp" line="830"/>
         <source>This action will disable virtual file support. As a consequence contents of folders that are currently marked as &quot;available online only&quot; will be downloaded.
 
 The only advantage of disabling virtual file support is that the selective sync feature will become available again.
@@ -439,7 +473,7 @@ This action will abort any currently running synchronization.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="788"/>
+        <location filename="../src/gui/accountsettings.cpp" line="837"/>
         <source>Disable support</source>
         <translation>Onemogući podršku</translation>
     </message>
@@ -484,7 +518,12 @@ This action will abort any currently running synchronization.</source>
         <translation>Inačica poslužitelja %1 je stara i nepodržana! Nastavite na vlastitu odgovornost.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1034"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1066"/>
+        <source>Log in</source>
+        <translation>Prijava</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="1083"/>
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
         <translation>Inačica poslužitelja %1 nije podržana! Nastavite na vlastitu odgovornost.</translation>
     </message>
@@ -524,12 +563,7 @@ This action will abort any currently running synchronization.</source>
         <translation>Ne postoji veza s %1 na %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1066"/>
-        <source>Log in</source>
-        <translation>Prijava</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1070"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1119"/>
         <source>Server configuration error: %1 at %2.</source>
         <translation>Pogreška konfiguracije poslužitelja: %1 na %2.</translation>
     </message>
@@ -2875,132 +2909,132 @@ Ovo je novi, eksperimentalni način rada. Ako se odlučite aktivirati ga, prijav
 <context>
     <name>OCC::ProcessDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="237"/>
+        <location filename="../src/libsync/discovery.cpp" line="243"/>
         <source>Symbolic links are not supported in syncing.</source>
         <translation>Simboličke poveznice nisu podržane u sinkronizaciji.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="245"/>
+        <location filename="../src/libsync/discovery.cpp" line="251"/>
         <source>File is listed on the ignore list.</source>
         <translation>Datoteka je navedena na popisu za zanemarivanje.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="249"/>
+        <location filename="../src/libsync/discovery.cpp" line="255"/>
         <source>File names ending with a period are not supported on this file system.</source>
         <translation>Nazivi datoteka koji završavaju točkom nisu podržani u ovom datotečnom sustavu.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="259"/>
+        <location filename="../src/libsync/discovery.cpp" line="265"/>
         <source>File names containing the character &apos;%1&apos; are not supported on this file system.</source>
         <translation>Nazivi datoteka koji sadrže znak „%1”nisu podržani u ovom datotečnom sustavu.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="263"/>
+        <location filename="../src/libsync/discovery.cpp" line="269"/>
         <source>File name contains at least one invalid character</source>
         <translation>Naziv datoteke sadrži barem jedan nevažeći znak</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="265"/>
+        <location filename="../src/libsync/discovery.cpp" line="271"/>
         <source>The file name is a reserved name on this file system.</source>
         <translation>Naziv datoteke je rezervirani naziv u ovom datotečnom sustavu.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="270"/>
+        <location filename="../src/libsync/discovery.cpp" line="276"/>
         <source>Filename contains trailing spaces.</source>
         <translation>Naziv datoteke sadrži završne praznine.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="273"/>
+        <location filename="../src/libsync/discovery.cpp" line="279"/>
         <source>Filename is too long.</source>
         <translation>Naziv datoteke je predugačak.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="276"/>
+        <location filename="../src/libsync/discovery.cpp" line="282"/>
         <source>File/Folder is ignored because it&apos;s hidden.</source>
         <translation>Datoteka/mapa se zanemaruje jer je skrivena.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="279"/>
+        <location filename="../src/libsync/discovery.cpp" line="285"/>
         <source>Stat failed.</source>
         <translation>Stat nije uspio.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="282"/>
+        <location filename="../src/libsync/discovery.cpp" line="288"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
         <translation>Nepodudaranje: preuzeta inačica poslužitelja, lokalna kopija preimenovana i nije otpremljena.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="286"/>
+        <location filename="../src/libsync/discovery.cpp" line="292"/>
         <source>The filename cannot be encoded on your file system.</source>
         <translation>Naziv datoteke ne može se kodirati u vašem datotečnom sustavu.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="289"/>
+        <location filename="../src/libsync/discovery.cpp" line="295"/>
         <source>The filename is blacklisted on the server.</source>
         <translation>Ovaj naziv datoteke je blokiran na poslužitelju.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="344"/>
+        <location filename="../src/libsync/discovery.cpp" line="350"/>
         <source>File has extension reserved for virtual files.</source>
         <translation>Datoteka ima nastavak koji je rezerviran za virtualne datoteke.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="408"/>
+        <location filename="../src/libsync/discovery.cpp" line="425"/>
         <source>size</source>
         <translation>veličina</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="410"/>
+        <location filename="../src/libsync/discovery.cpp" line="427"/>
         <source>permissions</source>
         <translation>dopuštenja</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="414"/>
+        <location filename="../src/libsync/discovery.cpp" line="431"/>
         <source>file id</source>
         <translation>id datoteke</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="418"/>
+        <location filename="../src/libsync/discovery.cpp" line="435"/>
         <source>server reported no %1</source>
         <translation>poslužitelj javlja da nema %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1197"/>
+        <location filename="../src/libsync/discovery.cpp" line="1214"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Zanemareno zbog crne liste „odaberi što će se sinkronizirati”</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1230"/>
+        <location filename="../src/libsync/discovery.cpp" line="1247"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Nije dopušteno jer nemate dopuštenje za dodavanje podmapa u tu mapu</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1235"/>
+        <location filename="../src/libsync/discovery.cpp" line="1252"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Nije dopušteno jer nemate dopuštenje za dodavanje datoteka u tu mapu</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1248"/>
+        <location filename="../src/libsync/discovery.cpp" line="1265"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Nije dopušteno otpremiti ovu datoteku jer je dostupna samo za čitanje na poslužitelju, vraćanje</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1270"/>
+        <location filename="../src/libsync/discovery.cpp" line="1287"/>
         <source>Moved to invalid target, restoring</source>
         <translation>Premješteno na nevažeće odredište, vraćanje</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1283"/>
+        <location filename="../src/libsync/discovery.cpp" line="1300"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Nije dopušteno uklanjanje, vraćanje</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1392"/>
+        <location filename="../src/libsync/discovery.cpp" line="1409"/>
         <source>Error while reading the database</source>
         <translation>Pogreška pri čitanju baze podataka</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1453"/>
+        <location filename="../src/libsync/discovery.cpp" line="1470"/>
         <source>Server replied with an error while reading directory &apos;%1&apos; : %2</source>
         <translation>Poslužitelj je javio pogrešku pri čitanju direktorija &apos;%1&apos; : %2</translation>
     </message>
@@ -4808,6 +4842,11 @@ Ovo je novi, eksperimentalni način rada. Ako se odlučite aktivirati ga, prijav
 </context>
 <context>
     <name>QObject</name>
+    <message>
+        <location filename="../src/gui/foldercreationdialog.cpp" line="36"/>
+        <source>New folder</source>
+        <translation type="unfinished"/>
+    </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="464"/>
         <source>%n day ago</source>

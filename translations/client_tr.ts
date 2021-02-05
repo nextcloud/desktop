@@ -149,6 +149,34 @@
     </message>
 </context>
 <context>
+    <name>FolderCreationDialog</name>
+    <message>
+        <location filename="../src/gui/foldercreationdialog.ui" line="14"/>
+        <source>Create new folder</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/foldercreationdialog.ui" line="42"/>
+        <source>Enter folder name</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/foldercreationdialog.ui" line="61"/>
+        <source>Folder already exists</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/foldercreationdialog.cpp" line="71"/>
+        <source>Error</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/foldercreationdialog.cpp" line="71"/>
+        <source>Could not create a folder! Check your write permissions.</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>FolderWizardSourcePage</name>
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="33"/>
@@ -349,8 +377,14 @@ Eşitlemenin tamamlanmasını bekleyip klasörü şifreleyin</translation>
         <translation>Yok Sayılan Dosyaları Düzenle</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="408"/>
-        <location filename="../src/gui/accountsettings.cpp" line="500"/>
+        <location filename="../src/gui/accountsettings.cpp" line="447"/>
+        <location filename="../src/gui/accountsettings.cpp" line="523"/>
+        <source>Create new folder</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="453"/>
+        <location filename="../src/gui/accountsettings.cpp" line="549"/>
         <source>Availability</source>
         <translation>Kullanılabilirlik</translation>
     </message>
@@ -385,17 +419,17 @@ Eşitlemenin tamamlanmasını bekleyip klasörü şifreleyin</translation>
         <translation>Klasör eşitleme bağlantısını sil</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="517"/>
+        <location filename="../src/gui/accountsettings.cpp" line="566"/>
         <source>Disable virtual file support …</source>
         <translation>Sanal dosya desteğini devre dışı bırak …</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="525"/>
+        <location filename="../src/gui/accountsettings.cpp" line="574"/>
         <source>Enable virtual file support %1 …</source>
         <translation>%1 için sanal dosya desteği kullanılsın …</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="525"/>
+        <location filename="../src/gui/accountsettings.cpp" line="574"/>
         <source>(experimental)</source>
         <translation>(deneysel)</translation>
     </message>
@@ -425,12 +459,12 @@ Eşitlemenin tamamlanmasını bekleyip klasörü şifreleyin</translation>
         <translation>Klasör Eşitleme Bağlantısını Sil</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="780"/>
+        <location filename="../src/gui/accountsettings.cpp" line="829"/>
         <source>Disable virtual file support?</source>
         <translation>Sanal dosya desteği devre dışı bırakılsın mı?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="781"/>
+        <location filename="../src/gui/accountsettings.cpp" line="830"/>
         <source>This action will disable virtual file support. As a consequence contents of folders that are currently marked as &quot;available online only&quot; will be downloaded.
 
 The only advantage of disabling virtual file support is that the selective sync feature will become available again.
@@ -443,7 +477,7 @@ Sanal dosya desteğini devre dışı bırakmanın tek faydası isteğe bağlı e
 Bu işlem şu anda yürütülmekte olan eşitleme işlemlerini durdurur.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="788"/>
+        <location filename="../src/gui/accountsettings.cpp" line="837"/>
         <source>Disable support</source>
         <translation>Desteği devre dışı bırak</translation>
     </message>
@@ -488,7 +522,12 @@ Bu işlem şu anda yürütülmekte olan eşitleme işlemlerini durdurur.</transl
         <translation>%1 sunucu sürümü eski ve desteklenmiyor! Riski üstlenerek devam edebilirsiniz.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1034"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1066"/>
+        <source>Log in</source>
+        <translation>Oturum Aç</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="1083"/>
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
         <translation>%1 sunucu sürümü desteklenmiyor! Riski üstlenerek devam edebilirsiniz.</translation>
     </message>
@@ -528,12 +567,7 @@ Bu işlem şu anda yürütülmekte olan eşitleme işlemlerini durdurur.</transl
         <translation>%1 ile %2 üzerinde bağlantı yok.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1066"/>
-        <source>Log in</source>
-        <translation>Oturum Aç</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1070"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1119"/>
         <source>Server configuration error: %1 at %2.</source>
         <translation>Sunucu yapılandırma sorunu: %1 ile %2.</translation>
     </message>
@@ -2878,132 +2912,132 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
 <context>
     <name>OCC::ProcessDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="237"/>
+        <location filename="../src/libsync/discovery.cpp" line="243"/>
         <source>Symbolic links are not supported in syncing.</source>
         <translation>Sembolik bağlantıların eşitlenmesi desteklenmiyor.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="245"/>
+        <location filename="../src/libsync/discovery.cpp" line="251"/>
         <source>File is listed on the ignore list.</source>
         <translation>Dosya yok sayılanlar listesinde.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="249"/>
+        <location filename="../src/libsync/discovery.cpp" line="255"/>
         <source>File names ending with a period are not supported on this file system.</source>
         <translation>Nokta ile biten dosya adları bu dosya sisteminde desteklenmiyor.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="259"/>
+        <location filename="../src/libsync/discovery.cpp" line="265"/>
         <source>File names containing the character &apos;%1&apos; are not supported on this file system.</source>
         <translation>&apos;%1&apos; karakterini içeren dosya adları bu sistemde desteklenmiyor.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="263"/>
+        <location filename="../src/libsync/discovery.cpp" line="269"/>
         <source>File name contains at least one invalid character</source>
         <translation>Dosya adında en az bir geçersiz karakter var</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="265"/>
+        <location filename="../src/libsync/discovery.cpp" line="271"/>
         <source>The file name is a reserved name on this file system.</source>
         <translation>Bu dosya adı bu dosya sisteminde ayırtılmış bir ad olduğundan kullanılamaz.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="270"/>
+        <location filename="../src/libsync/discovery.cpp" line="276"/>
         <source>Filename contains trailing spaces.</source>
         <translation>Dosya adının sonunda boşluklar var.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="273"/>
+        <location filename="../src/libsync/discovery.cpp" line="279"/>
         <source>Filename is too long.</source>
         <translation>Dosya adı çok uzun.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="276"/>
+        <location filename="../src/libsync/discovery.cpp" line="282"/>
         <source>File/Folder is ignored because it&apos;s hidden.</source>
         <translation>Dosya/Klasör gizli olduğu için yok sayıldı.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="279"/>
+        <location filename="../src/libsync/discovery.cpp" line="285"/>
         <source>Stat failed.</source>
         <translation>Durum alınamadı.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="282"/>
+        <location filename="../src/libsync/discovery.cpp" line="288"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
         <translation>Çakışma: Sunucu sürümü indirildi, yerel kopya yeniden adlandırıldı ve yüklenmedi.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="286"/>
+        <location filename="../src/libsync/discovery.cpp" line="292"/>
         <source>The filename cannot be encoded on your file system.</source>
         <translation>Dosya adı dosya sisteminizde kodlanamıyor.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="289"/>
+        <location filename="../src/libsync/discovery.cpp" line="295"/>
         <source>The filename is blacklisted on the server.</source>
         <translation>Dosya adı sunucu üzerinde kara listeye alınmış.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="344"/>
+        <location filename="../src/libsync/discovery.cpp" line="350"/>
         <source>File has extension reserved for virtual files.</source>
         <translation>Dosyanın uzantısı sanal dosyalar için ayrılmış.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="408"/>
+        <location filename="../src/libsync/discovery.cpp" line="425"/>
         <source>size</source>
         <translation>boyut</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="410"/>
+        <location filename="../src/libsync/discovery.cpp" line="427"/>
         <source>permissions</source>
         <translation>izinler</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="414"/>
+        <location filename="../src/libsync/discovery.cpp" line="431"/>
         <source>file id</source>
         <translation>dosya kodu</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="418"/>
+        <location filename="../src/libsync/discovery.cpp" line="435"/>
         <source>server reported no %1</source>
         <translation>sunucu numarası %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1197"/>
+        <location filename="../src/libsync/discovery.cpp" line="1214"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>&quot;Eşitlenecek ögeleri seçin&quot; kara listesinde olduğundan yok sayıldı</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1230"/>
+        <location filename="../src/libsync/discovery.cpp" line="1247"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Bu klasöre alt klasör ekleme izniniz olmadığından izin verilmedi</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1235"/>
+        <location filename="../src/libsync/discovery.cpp" line="1252"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Bu klasöre dosya ekleme izniniz olmadığından izin verilmedi</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1248"/>
+        <location filename="../src/libsync/discovery.cpp" line="1265"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Sunucu üzerinde salt okunur olduğundan, bu dosya yüklenemedi, geri yükleniyor</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1270"/>
+        <location filename="../src/libsync/discovery.cpp" line="1287"/>
         <source>Moved to invalid target, restoring</source>
         <translation>Geçersiz bir hedefe taşındı, geri yükleniyor</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1283"/>
+        <location filename="../src/libsync/discovery.cpp" line="1300"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Silmeye izin verilmedi, geri yükleniyor</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1392"/>
+        <location filename="../src/libsync/discovery.cpp" line="1409"/>
         <source>Error while reading the database</source>
         <translation>Veritabanı okunurken sorun çıktı</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1453"/>
+        <location filename="../src/libsync/discovery.cpp" line="1470"/>
         <source>Server replied with an error while reading directory &apos;%1&apos; : %2</source>
         <translation>!%1&apos; klasörü okunurken sunucu bir hata yanıtı verdi: %2</translation>
     </message>
@@ -4811,6 +4845,11 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
 </context>
 <context>
     <name>QObject</name>
+    <message>
+        <location filename="../src/gui/foldercreationdialog.cpp" line="36"/>
+        <source>New folder</source>
+        <translation type="unfinished"/>
+    </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="464"/>
         <source>%n day ago</source>
