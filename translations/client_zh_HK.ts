@@ -149,34 +149,6 @@
     </message>
 </context>
 <context>
-    <name>FolderCreationDialog</name>
-    <message>
-        <location filename="../src/gui/foldercreationdialog.ui" line="14"/>
-        <source>Create new folder</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/foldercreationdialog.ui" line="42"/>
-        <source>Enter folder name</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/foldercreationdialog.ui" line="61"/>
-        <source>Folder already exists</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/foldercreationdialog.cpp" line="71"/>
-        <source>Error</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/foldercreationdialog.cpp" line="71"/>
-        <source>Could not create a folder! Check your write permissions.</source>
-        <translation type="unfinished"/>
-    </message>
-</context>
-<context>
     <name>FolderWizardSourcePage</name>
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="33"/>
@@ -1326,6 +1298,34 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <location filename="../src/gui/folder.cpp" line="1249"/>
         <source>Keep files</source>
         <translation>保留檔案</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::FolderCreationDialog</name>
+    <message>
+        <location filename="../src/gui/foldercreationdialog.ui" line="14"/>
+        <source>Create new folder</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/foldercreationdialog.ui" line="42"/>
+        <source>Enter folder name</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/foldercreationdialog.ui" line="61"/>
+        <source>Folder already exists</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/foldercreationdialog.cpp" line="73"/>
+        <source>Error</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/foldercreationdialog.cpp" line="73"/>
+        <source>Could not create a folder! Check your write permissions.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -4644,7 +4644,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="776"/>
         <source>Unknown status</source>
-        <translation>未知狀態</translation>
+        <translation>狀態不詳</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="778"/>
@@ -4827,7 +4827,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/gui/foldercreationdialog.cpp" line="36"/>
+        <location filename="../src/gui/foldercreationdialog.cpp" line="38"/>
         <source>New folder</source>
         <translation type="unfinished"/>
     </message>

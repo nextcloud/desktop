@@ -149,34 +149,6 @@
     </message>
 </context>
 <context>
-    <name>FolderCreationDialog</name>
-    <message>
-        <location filename="../src/gui/foldercreationdialog.ui" line="14"/>
-        <source>Create new folder</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/foldercreationdialog.ui" line="42"/>
-        <source>Enter folder name</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/foldercreationdialog.ui" line="61"/>
-        <source>Folder already exists</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/foldercreationdialog.cpp" line="71"/>
-        <source>Error</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/foldercreationdialog.cpp" line="71"/>
-        <source>Could not create a folder! Check your write permissions.</source>
-        <translation type="unfinished"/>
-    </message>
-</context>
-<context>
     <name>FolderWizardSourcePage</name>
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="33"/>
@@ -380,7 +352,7 @@ Aguarde a nova sincronização e criptografe-a.</translation>
         <location filename="../src/gui/accountsettings.cpp" line="447"/>
         <location filename="../src/gui/accountsettings.cpp" line="523"/>
         <source>Create new folder</source>
-        <translation type="unfinished"/>
+        <translation>Criar nova pasta </translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="453"/>
@@ -1335,6 +1307,34 @@ Se isso foi um acidente e você decidir manter seus arquivos, eles serão sincro
         <location filename="../src/gui/folder.cpp" line="1249"/>
         <source>Keep files</source>
         <translation>Manter arquivos</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::FolderCreationDialog</name>
+    <message>
+        <location filename="../src/gui/foldercreationdialog.ui" line="14"/>
+        <source>Create new folder</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/foldercreationdialog.ui" line="42"/>
+        <source>Enter folder name</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/foldercreationdialog.ui" line="61"/>
+        <source>Folder already exists</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/foldercreationdialog.cpp" line="73"/>
+        <source>Error</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/foldercreationdialog.cpp" line="73"/>
+        <source>Could not create a folder! Check your write permissions.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -4847,9 +4847,9 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/gui/foldercreationdialog.cpp" line="36"/>
+        <location filename="../src/gui/foldercreationdialog.cpp" line="38"/>
         <source>New folder</source>
-        <translation type="unfinished"/>
+        <translation>Nova pasta </translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="464"/>

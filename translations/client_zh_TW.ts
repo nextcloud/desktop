@@ -17,27 +17,27 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="124"/>
         <source>Checking for changes in &apos;%1&apos;</source>
-        <translation>檢查 &apos;%1&apos; 的變動</translation>
+        <translation>檢查「%1」的變動</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="129"/>
         <source>Syncing %1 of %2  (%3 left)</source>
-        <translation>正在同步第%1項，共%2項（剩餘%3項）</translation>
+        <translation>正在同步第 %1 項，共 %2 項（剩餘 %3 項）</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="134"/>
         <source>Syncing %1 of %2</source>
-        <translation>正在同步第%1項，共%2項</translation>
+        <translation>正在同步第 %1 項，共 %2 項</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="141"/>
         <source>Syncing %1 (%2 left)</source>
-        <translation>正在同步%1（剩餘%2項）</translation>
+        <translation>正在同步%1（剩餘 %2 項）</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="144"/>
         <source>Syncing %1</source>
-        <translation>正在同步%1</translation>
+        <translation>正在同步 %1</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="165"/>
@@ -53,7 +53,7 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="184"/>
         <source>Syncing</source>
-        <translation>同步中</translation>
+        <translation>正在同步</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="220"/>
@@ -96,13 +96,13 @@
     <message>
         <location filename="../src/common/filesystembase.cpp" line="445"/>
         <source>Could not make directories in trash</source>
-        <translation>無法將目錄移置回收桶</translation>
+        <translation>無法將目錄移到回收桶</translation>
     </message>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="459"/>
         <location filename="../src/common/filesystembase.cpp" line="465"/>
         <source>Could not move &apos;%1&apos; to &apos;%2&apos;</source>
-        <translation>無法將%1&apos; 移動至 &apos;%2&apos;</translation>
+        <translation>無法將「%1」移動到「%2」</translation>
     </message>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="502"/>
@@ -112,12 +112,12 @@
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="167"/>
         <source>Error removing &apos;%1&apos;: %2</source>
-        <translation>移除 &apos;%1&apos;: %2 錯誤</translation>
+        <translation>移除「%1」時發生錯誤：%2</translation>
     </message>
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="183"/>
         <source>Could not remove folder &apos;%1&apos;</source>
-        <translation>無法移除資料夾 &apos;%1&apos;</translation>
+        <translation>無法移除資料夾「%1」</translation>
     </message>
 </context>
 <context>
@@ -130,12 +130,12 @@
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="32"/>
         <source>Please switch to your browser to proceed.</source>
-        <translation>請轉至瀏覽器繼續</translation>
+        <translation>請切換至您的瀏覽器以繼續。</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="42"/>
         <source>An error occurred while connecting. Please try again.</source>
-        <translation>連接時發生錯誤，請重試</translation>
+        <translation>連線時發生錯誤。請重試。</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="52"/>
@@ -149,44 +149,16 @@
     </message>
 </context>
 <context>
-    <name>FolderCreationDialog</name>
-    <message>
-        <location filename="../src/gui/foldercreationdialog.ui" line="14"/>
-        <source>Create new folder</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/foldercreationdialog.ui" line="42"/>
-        <source>Enter folder name</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/foldercreationdialog.ui" line="61"/>
-        <source>Folder already exists</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/foldercreationdialog.cpp" line="71"/>
-        <source>Error</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/foldercreationdialog.cpp" line="71"/>
-        <source>Could not create a folder! Check your write permissions.</source>
-        <translation type="unfinished"/>
-    </message>
-</context>
-<context>
     <name>FolderWizardSourcePage</name>
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="33"/>
         <source>Pick a local folder on your computer to sync</source>
-        <translation>在您的電腦中選擇一個本地資料夾用來同步</translation>
+        <translation>在您的電腦選取要用來同步的本機資料夾</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="44"/>
         <source>&amp;Choose …</source>
-        <translation>選擇</translation>
+        <translation>選擇……(&amp;C)</translation>
     </message>
 </context>
 <context>
@@ -227,7 +199,7 @@
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="435"/>
         <source>Server replied &quot;%1 %2&quot; to &quot;%3 %4&quot;</source>
-        <translation>伺服器回覆 &quot;%1 %2&quot; 到 &quot;%3 %4&quot;</translation>
+        <translation>伺服器回覆「%1 %2」到「%3 %4」</translation>
     </message>
 </context>
 <context>
@@ -235,12 +207,12 @@
     <message>
         <location filename="../src/libsync/abstractpropagateremotedeleteencrypted.cpp" line="139"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>伺服器回傳錯誤的 HTTP 代碼。預期為 204，但收到的是「%1 %2」。</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractpropagateremotedeleteencrypted.cpp" line="181"/>
         <source>&quot;%1 Failed to unlock encrypted folder %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>「%1 解鎖已加密的資料夾 %2 失敗」。</translation>
     </message>
 </context>
 <context>
@@ -253,7 +225,7 @@
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="352"/>
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
-        <translation>為了保護您的身份，我們將用含12個單詞的助記碼進行加密。請將這些單詞記在一個安全的地方。要將其他裝置（如手機或手提電腦）加入您的帳戶中，需用到此助記碼。</translation>
+        <translation>為了保護您的身份，我們將用含 12 個單詞的助記碼進行加密。請將這些單詞記在一個安全的地方。要將其他裝置（如手機或筆記型電腦）加入您的帳號中，需用到此助記碼。</translation>
     </message>
 </context>
 <context>
@@ -261,7 +233,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="31"/>
         <source>Unchecked folders will be &lt;b&gt;removed&lt;/b&gt; from your local file system and will not be synchronized to this computer anymore</source>
-        <translation>未標示的資料夾將會從這台電腦被 &lt;b&gt;刪除&lt;/b&gt; 而且不會再被同步到這台電腦 </translation>
+        <translation>未標示的資料夾將會從這台電腦被&lt;b&gt;刪除&lt;/b&gt;，而且不會再被同步到這台電腦 </translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="126"/>
@@ -278,12 +250,12 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="174"/>
         <source>Connected with &lt;server&gt; as &lt;user&gt;</source>
-        <translation>以 &lt;user&gt; 的身分連接 &lt;server&gt;</translation>
+        <translation>以 &lt;user&gt; 的身分連線到 &lt;server&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="204"/>
         <source>Storage space: …</source>
-        <translation>儲存空間:</translation>
+        <translation>儲存空間：……</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="77"/>
@@ -304,17 +276,17 @@
         <location filename="../src/gui/accountsettings.cpp" line="203"/>
         <location filename="../src/gui/accountsettings.cpp" line="217"/>
         <source>This account supports end-to-end encryption</source>
-        <translation>此帳戶支援端點對端點加密</translation>
+        <translation>此帳號支援端點對端點加密</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="205"/>
         <source>Display mnemonic</source>
-        <translation type="unfinished"/>
+        <translation>顯示助記碼</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="187"/>
         <source>No account configured.</source>
-        <translation>沒有設置帳號。</translation>
+        <translation>未設定帳號。</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="220"/>
@@ -356,7 +328,8 @@
         <location filename="../src/gui/accountsettings.cpp" line="279"/>
         <source>You cannot encrypt a folder with contents, please remove the files.
 Wait for the new sync, then encrypt it.</source>
-        <translation type="unfinished"/>
+        <translation>您無法加密有內容的資料夾，請移除檔案。
+等待新同步，然後加密。</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="348"/>
@@ -379,13 +352,13 @@ Wait for the new sync, then encrypt it.</source>
         <location filename="../src/gui/accountsettings.cpp" line="447"/>
         <location filename="../src/gui/accountsettings.cpp" line="523"/>
         <source>Create new folder</source>
-        <translation type="unfinished"/>
+        <translation>建立新資料夾</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="453"/>
         <location filename="../src/gui/accountsettings.cpp" line="549"/>
         <source>Availability</source>
-        <translation type="unfinished"/>
+        <translation>可用性</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="413"/>
@@ -420,17 +393,17 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="566"/>
         <source>Disable virtual file support …</source>
-        <translation>停用虛擬檔案支援...</translation>
+        <translation>停用虛擬檔案支援……</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="574"/>
         <source>Enable virtual file support %1 …</source>
-        <translation type="unfinished"/>
+        <translation>啟用虛擬檔案支援 %1……</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="574"/>
         <source>(experimental)</source>
-        <translation type="unfinished"/>
+        <translation>（實驗性）</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="501"/>
@@ -440,7 +413,7 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="502"/>
         <source>&lt;p&gt;Could not create local folder &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;無法建立本機資料夾&lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;無法建立本機資料夾&lt;i&gt;%1&lt;/i&gt;。&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="555"/>
@@ -450,7 +423,7 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="556"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;您確定要停止同步資料夾 &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;注意:&lt;/b&gt; 此操作 &lt;b&gt;不會&lt;/b&gt; 刪除任何檔案&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;您真的想要停止同步資料夾 &lt;i&gt;%1&lt;/i&gt; 嗎？&lt;/p&gt;&lt;p&gt;&lt;b&gt;注意：&lt;/b&gt;這&lt;b&gt;不會&lt;/b&gt;刪除任何檔案。&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="562"/>
@@ -469,7 +442,11 @@ Wait for the new sync, then encrypt it.</source>
 The only advantage of disabling virtual file support is that the selective sync feature will become available again.
 
 This action will abort any currently running synchronization.</source>
-        <translation type="unfinished"/>
+        <translation>此動作將會停用虛擬檔案支援。結果是將會下載目前標記為「僅線上可用」的資料夾內容。
+
+停用虛擬檔案支援的好處是選擇性同步功能將再次可用。
+
+此動作將會中止任何目前正在執行的同步。</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="837"/>
@@ -479,12 +456,12 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="647"/>
         <source>Sync Running</source>
-        <translation>正在同步中</translation>
+        <translation>正在執行同步</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="648"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
-        <translation>正在同步中&lt;br/&gt;你真的想要中斷？</translation>
+        <translation>正在執行同步動作。&lt;br/&gt;您真的想要中斷嗎？</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="724"/>
@@ -514,7 +491,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="770"/>
         <source>The server version %1 is old and unsupported! Proceed at your own risk.</source>
-        <translation>伺服器版本%1過舊，已不支援。繼續的風險請自負。</translation>
+        <translation>伺服器版本 %1 過舊，已不支援。繼續的風險請自負。</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1066"/>
@@ -524,7 +501,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1083"/>
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
-        <translation type="unfinished"/>
+        <translation>已不支援伺服器版本 %1！繼續的風險請自負。</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="772"/>
@@ -539,52 +516,52 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="776"/>
         <source>Server %1 is currently in maintenance mode.</source>
-        <translation>伺服器 %1 現正處於維護模式</translation>
+        <translation>伺服器 %1 目前正處於維護模式。</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="778"/>
         <source>Signed out from %1.</source>
-        <translation>從 %1 登出</translation>
+        <translation>從 %1 登出。</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="787"/>
         <source>Obtaining authorization from the browser. &lt;a href=&apos;%1&apos;&gt;Click here&lt;/a&gt; to re-open the browser.</source>
-        <translation>正從瀏覽器獲取許可。如須重新開啟瀏覽器，請&lt;a href=&apos;%1&apos;&gt;點擊此處&lt;/a&gt;。</translation>
+        <translation>正在從瀏覽器取得授權。&lt;a href=&apos;%1&apos;&gt;點擊此處&lt;/a&gt;以重新開啟瀏覽器。</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="791"/>
         <source>Connecting to %1 …</source>
-        <translation>正在連線到 %1...</translation>
+        <translation>正在連線到 %1……</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="794"/>
         <source>No connection to %1 at %2.</source>
-        <translation>%1 沒有連線到 %2  </translation>
+        <translation>在 %2 沒有連線到 %1。</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1119"/>
         <source>Server configuration error: %1 at %2.</source>
-        <translation type="unfinished"/>
+        <translation>伺服器設定錯誤：%1 於 %2。</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="800"/>
         <source>No %1 connection configured.</source>
-        <translation>沒有 %1 連線設置。</translation>
+        <translation>未設定 %1 連線。</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="918"/>
         <source>There are folders that were not synchronized because they are too big: </source>
-        <translation>有部份的資料夾因為容量太大沒有辦法同步:</translation>
+        <translation>有部份的資料夾因為容量太大沒有辦法同步：</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="920"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
-        <translation>有部分資料夾因為是外部存儲沒有辦法同步: </translation>
+        <translation>有部分資料夾因為是外部儲存空間沒有辦法同步：</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="921"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
-        <translation>有部分資料夾因為容量太大或是外部存儲沒有辦法同步: </translation>
+        <translation>有部分資料夾因為容量太大或是外部儲存空間沒有辦法同步：</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="955"/>
@@ -594,7 +571,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="956"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;您確定要中斷此帳號 &lt;i&gt;%1&lt;/i&gt; 的連線?&lt;/p&gt;&lt;p&gt;&lt;b&gt;注意:&lt;/b&gt;此操作 &lt;b&gt;不會&lt;/b&gt; 刪除任何的檔案。&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;您真的想要移除到帳號 &lt;i&gt;%1&lt;/i&gt; 的連線嗎？&lt;/p&gt;&lt;p&gt;&lt;b&gt;注意：&lt;/b&gt;這&lt;b&gt;不會&lt;/b&gt;刪除任何檔案。&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="962"/>
@@ -612,7 +589,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="135"/>
         <source>Disconnected</source>
-        <translation>已經離線</translation>
+        <translation>已斷線</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="137"/>
@@ -632,7 +609,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="143"/>
         <source>Network error</source>
-        <translation>網路異常</translation>
+        <translation>網路錯誤</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="145"/>
@@ -655,17 +632,17 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/tray/ActivityListModel.cpp" line="349"/>
         <source>Files from the ignore list as well as symbolic links are not synced.</source>
-        <translation type="unfinished"/>
+        <translation>忽略列表中的檔案與符號連結不會同步。</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityListModel.cpp" line="526"/>
         <source>For more activities please open the Activity app.</source>
-        <translation>請開啟活動以檢視更多活動app</translation>
+        <translation>請開啟活動應用程式以檢視更多活動。</translation>
     </message>
     <message>
         <location filename="../src/gui/activitylistmodel.cpp" line="241"/>
         <source>Files from the ignore list as well as symbolic links are not synced. This includes:</source>
-        <translation>在排除清單內以及檔案參照連結的檔案沒有倍同步，這些檔案包含：</translation>
+        <translation>忽略列表中的檔案與符號連結不會同步。其中包含了：</translation>
     </message>
 </context>
 <context>
@@ -678,17 +655,17 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="23"/>
         <source>This server probably requires a SSL client certificate.</source>
-        <translation>伺服器需要SSL的客戶端憑證</translation>
+        <translation>伺服器可能需要客戶端 SSL 憑證。</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="35"/>
         <source>Certificate &amp; Key (pkcs12) :</source>
-        <translation>憑證與密鑰 (pkcs12) :</translation>
+        <translation>憑證與金鑰 (pkcs12)：</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="51"/>
         <source>Browse …</source>
-        <translation>搜尋中...</translation>
+        <translation>瀏覽……</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="60"/>
@@ -698,12 +675,12 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="79"/>
         <source>An encrypted pkcs12 bundle is strongly recommended as a copy will be stored in the configuration file.</source>
-        <translation type="unfinished"/>
+        <translation>強烈建議使用加密的 pkcs12 套裝，因為副本將儲存在設定檔中。</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.cpp" line="38"/>
         <source>Select a certificate</source>
-        <translation>選擇一個憑證</translation>
+        <translation>選取憑證</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.cpp" line="38"/>
@@ -716,12 +693,12 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/application.cpp" line="131"/>
         <source>Continuing will mean &lt;b&gt;deleting these settings&lt;/b&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>繼續代表了&lt;b&gt;刪除這些設定&lt;/b&gt;。</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="133"/>
         <source>Continuing will mean &lt;b&gt;ignoring these settings&lt;/b&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>繼續代表了&lt;b&gt;忽略這些設定&lt;/b&gt;。</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="139"/>
@@ -1323,6 +1300,34 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <location filename="../src/gui/folder.cpp" line="1249"/>
         <source>Keep files</source>
         <translation>保留檔案</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::FolderCreationDialog</name>
+    <message>
+        <location filename="../src/gui/foldercreationdialog.ui" line="14"/>
+        <source>Create new folder</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/foldercreationdialog.ui" line="42"/>
+        <source>Enter folder name</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/foldercreationdialog.ui" line="61"/>
+        <source>Folder already exists</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/foldercreationdialog.cpp" line="73"/>
+        <source>Error</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/foldercreationdialog.cpp" line="73"/>
+        <source>Could not create a folder! Check your write permissions.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -4824,7 +4829,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/gui/foldercreationdialog.cpp" line="36"/>
+        <location filename="../src/gui/foldercreationdialog.cpp" line="38"/>
         <source>New folder</source>
         <translation type="unfinished"/>
     </message>
