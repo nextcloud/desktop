@@ -4083,7 +4083,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="244"/>
         <source>%1 (skipped due to earlier error, trying again in %2)</source>
-        <translation>%1 (vynechané kvôli predchádzajúcej chybe, ďalší pokus za %2)</translation>
+        <translation>%1 (vynechané kvôli predchádzajúcej chybe, ďalší pokus o %2)</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="352"/>
