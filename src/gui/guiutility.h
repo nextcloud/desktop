@@ -26,7 +26,7 @@ namespace Utility {
      *
      * If launching the browser fails, display a message.
      */
-    bool openBrowser(const QUrl &url, QWidget *errorWidgetParent);
+    bool openBrowser(const QUrl &url, QWidget *errorWidgetParent = nullptr);
 
     /** Start composing a new email message.
      *
