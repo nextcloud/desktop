@@ -352,7 +352,7 @@ Itxaron berriro sinkronizatu arte, ondoren enkriptatu.</translation>
         <location filename="../src/gui/accountsettings.cpp" line="447"/>
         <location filename="../src/gui/accountsettings.cpp" line="523"/>
         <source>Create new folder</source>
-        <translation type="unfinished"/>
+        <translation>Sortu karpeta berria</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="453"/>

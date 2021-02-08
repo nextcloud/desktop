@@ -627,7 +627,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/tray/ActivityListModel.cpp" line="349"/>
         <source>Files from the ignore list as well as symbolic links are not synced.</source>
-        <translation>略過清單中的文件以及符號鏈接不會同步。</translation>
+        <translation>略過清單中的檔案以及符號連結不會同步。</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityListModel.cpp" line="526"/>
@@ -5112,7 +5112,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/Window.qml" line="522"/>
         <source>Activity list</source>
-        <translation type="unfinished"/>
+        <translation>活動清單</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="538"/>
