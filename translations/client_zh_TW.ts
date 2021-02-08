@@ -703,12 +703,12 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/application.cpp" line="139"/>
         <source>Some settings were configured in newer versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>部份設定是在此客戶端的較新版本中設定的，且使用了此版本不提供的功能。&lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;目前的設定檔已備份至 &lt;i&gt;%2&lt;/i&gt;。</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="146"/>
         <source>Quit</source>
-        <translation>結束</translation>
+        <translation>離開</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="147"/>
@@ -718,12 +718,12 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/application.cpp" line="207"/>
         <source>Error accessing the configuration file</source>
-        <translation>存取配置文件時錯誤</translation>
+        <translation>存取設定檔時發生錯誤</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="208"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your user.</source>
-        <translation>存取設定檔%1時發生錯誤 請確定檔案可以被使用者存取</translation>
+        <translation>存取位於 %1 的設定檔時發生錯誤。請確保您的使用者可以存取該檔案。</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="211"/>
@@ -741,17 +741,17 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="32"/>
         <source>Enter username and password for &apos;%1&apos; at %2.</source>
-        <translation>輸入 &apos;%1&apos; 在 %2 使用者名稱 和 密碼</translation>
+        <translation>輸入「%1」在 %2 的使用者名稱與密碼。</translation>
     </message>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="37"/>
         <source>&amp;User:</source>
-        <translation>使用者 (&amp;U):</translation>
+        <translation>使用者(&amp;U)：</translation>
     </message>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="38"/>
         <source>&amp;Password:</source>
-        <translation>密碼 (&amp;P):</translation>
+        <translation>密碼(&amp;P)：</translation>
     </message>
 </context>
 <context>
@@ -759,7 +759,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1034"/>
         <source>Error writing metadata to the database</source>
-        <translation>寫入後設資料(metadata) 時發生錯誤</translation>
+        <translation>將詮釋資料寫入到資料庫時發生錯誤</translation>
     </message>
 </context>
 <context>
@@ -767,12 +767,12 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1147"/>
         <source>Please enter your end to end encryption passphrase:&lt;br&gt;&lt;br&gt;User: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation>請輸入您的端點對端點加密的認證資訊&lt;br&gt;&lt;br&gt;User: %2&lt;br&gt;Account: %3&lt;br&gt;</translation>
+        <translation>請輸入您的端到端加密認證資訊：&lt;br&gt;&lt;br&gt;使用者：%2&lt;br&gt;帳號：%3&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1155"/>
         <source>Enter E2E passphrase</source>
-        <translation>請輸入端到端密碼短語</translation>
+        <translation>輸入端到端加密認證資訊</translation>
     </message>
 </context>
 <context>
@@ -791,12 +791,12 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="32"/>
         <source>Which version of the file do you want to keep?&lt;br/&gt;If you select both versions, the local file will have a number added to its name.</source>
-        <translation type="unfinished"/>
+        <translation>您想要保留哪個版本的檔案？&lt;br/&gt;如果您選擇同時保留兩個版本，本機的檔案名稱後方僵化加上數字。</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="46"/>
         <source>Local version</source>
-        <translation>本地版本</translation>
+        <translation>本機版本</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="57"/>
@@ -819,7 +819,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="110"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Open local version&lt;/a&gt;</source>
-        <translation>&lt;a href=&quot;%1&quot;&gt;開啟本地版本&lt;/a&gt;</translation>
+        <translation>&lt;a href=&quot;%1&quot;&gt;開啟本機版本&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="154"/>
@@ -840,7 +840,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="148"/>
         <source>Open local version</source>
-        <translation>開啟本地版本</translation>
+        <translation>開啟本機版本</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="156"/>
@@ -855,7 +855,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="175"/>
         <source>Keep local version</source>
-        <translation>保留本地版本</translation>
+        <translation>保留本機版本</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="176"/>
@@ -868,7 +868,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="88"/>
         <source>Do you want to delete the directory &lt;i&gt;%1&lt;/i&gt; and all its contents permanently?</source>
-        <translation>您確定要刪除所選目錄 &lt;i&gt;%1&lt;/i&gt; 和裡面的內容嗎？</translation>
+        <translation>您確定要永久刪除所選目錄 &lt;i&gt;%1&lt;/i&gt; 和裡面的內容嗎？</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="89"/>
@@ -902,12 +902,12 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="50"/>
         <source>No Nextcloud account configured</source>
-        <translation>沒有 Nextcloud 帳戶的設定檔</translation>
+        <translation>沒有 Nextcloud 帳號的設定檔</translation>
     </message>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="147"/>
         <source>Authentication error: Either username or password are wrong.</source>
-        <translation>驗證錯誤︰使用者名稱或是密碼錯誤</translation>
+        <translation>驗證錯誤︰使用者名稱或是密碼錯誤。</translation>
     </message>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="159"/>
@@ -922,12 +922,12 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="289"/>
         <source>The configured server for this client is too old</source>
-        <translation>設置的伺服器對這個客戶端來說太舊了</translation>
+        <translation>設定的伺服器對此客戶端來說太舊了</translation>
     </message>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="290"/>
         <source>Please update to the latest server and restart the client.</source>
-        <translation>請將伺服器端更新到最新版並重新啟動客戶端</translation>
+        <translation>請將伺服器端更新到最新版並重新啟動客戶端。</translation>
     </message>
 </context>
 <context>
@@ -935,13 +935,13 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="398"/>
         <source>The server file discovery reply is missing data.</source>
-        <translation>伺服器回報檔案遺失</translation>
+        <translation>伺服器回報檔案遺失。</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="497"/>
         <location filename="../src/libsync/discoveryphase.cpp" line="522"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
-        <translation type="unfinished"/>
+        <translation>伺服器錯誤：PROPFIND 回覆未使用 XML 格式！</translation>
     </message>
 </context>
 <context>
@@ -949,12 +949,12 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="262"/>
         <source>Error while opening directory %1</source>
-        <translation>開啟目錄 %1 發生錯誤</translation>
+        <translation>開啟目錄 %1 時發生錯誤</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="264"/>
         <source>Directory not accessible on client, permission denied</source>
-        <translation>用戶端無法存取目錄，權限被拒</translation>
+        <translation>客戶端無法存取目錄，權限被拒</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="268"/>
@@ -969,7 +969,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="318"/>
         <source>Error while reading directory %1</source>
-        <translation>讀取目錄 %1 發生錯誤</translation>
+        <translation>讀取目錄 %1 時發生錯誤</translation>
     </message>
 </context>
 <context>
@@ -978,7 +978,8 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/libsync/encryptfolderjob.cpp" line="72"/>
         <source>Could not generate the metadata for encryption, Unlocking the folder.
 This can be an issue with your OpenSSL libraries.</source>
-        <translation type="unfinished"/>
+        <translation>無法生成用於加密的詮釋資料，正在解鎖資料夾。
+這可能是您 OpenSSL 函式庫的問題。</translation>
     </message>
 </context>
 <context>
@@ -987,7 +988,7 @@ This can be an issue with your OpenSSL libraries.</source>
         <location filename="../src/gui/creds/flow2auth.cpp" line="108"/>
         <location filename="../src/gui/creds/flow2auth.cpp" line="211"/>
         <source>Error returned from the server: &lt;em&gt;%1&lt;/em&gt;</source>
-        <translation>伺服器發回錯誤訊息：&lt;em&gt;%1&lt;/em&gt;</translation>
+        <translation>伺服器回傳錯誤訊息：&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="111"/>
@@ -999,13 +1000,13 @@ This can be an issue with your OpenSSL libraries.</source>
         <location filename="../src/gui/creds/flow2auth.cpp" line="114"/>
         <location filename="../src/gui/creds/flow2auth.cpp" line="217"/>
         <source>Could not parse the JSON returned from the server: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
-        <translation>無法解析伺服器發回的JSON：&lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
+        <translation>無法解析伺服器回傳的 JSON：&lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="117"/>
         <location filename="../src/gui/creds/flow2auth.cpp" line="220"/>
         <source>The reply from the server did not contain all expected fields</source>
-        <translation>伺服器的回應沒有包含所有預期的欄位</translation>
+        <translation>伺服器的回應並未包含所有預期的欄位</translation>
     </message>
 </context>
 <context>
@@ -1013,12 +1014,12 @@ This can be an issue with your OpenSSL libraries.</source>
     <message>
         <location filename="../src/gui/wizard/flow2authcredspage.cpp" line="36"/>
         <source>Connect to %1</source>
-        <translation>連接到%1</translation>
+        <translation>連線至 %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authcredspage.cpp" line="37"/>
         <source>Login in your browser (Login Flow v2)</source>
-        <translation>請在瀏覽器上登入(Login Flow v2)</translation>
+        <translation>請在瀏覽器上登入 (Login Flow v2)</translation>
     </message>
 </context>
 <context>
@@ -1026,27 +1027,27 @@ This can be an issue with your OpenSSL libraries.</source>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="77"/>
         <source>Unable to open the Browser, please copy the link to your Browser.</source>
-        <translation>無法開啟瀏覽器。請將連結複製到瀏覽器中。</translation>
+        <translation>無法開啟瀏覽器，請將連結複製到瀏覽器中。</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="140"/>
         <source>Waiting for authorization</source>
-        <translation>等候驗證中</translation>
+        <translation>正在等候授權</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="145"/>
         <source>Polling for authorization</source>
-        <translation>輪詢驗證中</translation>
+        <translation>正在輪詢授權</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="150"/>
         <source>Starting authorization</source>
-        <translation>開始驗證</translation>
+        <translation>開始授權</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="154"/>
         <source>Link copied to clipboard.</source>
-        <translation>超連結已複製到剪貼簿</translation>
+        <translation>超連結已複製到剪貼簿。</translation>
     </message>
 </context>
 <context>
@@ -1054,66 +1055,66 @@ This can be an issue with your OpenSSL libraries.</source>
     <message>
         <location filename="../src/gui/folder.cpp" line="141"/>
         <source>Local folder %1 does not exist.</source>
-        <translation>本機資料夾 %1 不存在</translation>
+        <translation>本機資料夾 %1 不存在。</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="144"/>
         <source>%1 should be a folder but is not.</source>
-        <translation>資料夾不存在, %1 必須是資料夾</translation>
+        <translation>%1 應該是資料夾，但並不是。</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="147"/>
         <source>%1 is not readable.</source>
-        <translation>%1 是不可讀的</translation>
+        <translation>%1 不可讀。</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="373"/>
         <source>%1 and %n other file(s) have been removed.</source>
-        <translation><numerusform>%1 跟 %n 其他檔案已經被刪除</numerusform></translation>
+        <translation><numerusform>已移除 %1 跟 %n 個其他檔案。</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="375"/>
         <source>%1 has been removed.</source>
         <comment>%1 names a file.</comment>
-        <translation>%1 已被移除。</translation>
+        <translation>已移除 %1。</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="380"/>
         <source>%1 and %n other file(s) have been downloaded.</source>
-        <translation><numerusform>%1 跟 %n 其他檔案已經被下載</numerusform></translation>
+        <translation><numerusform>已下載 %1 跟 %n 個其他檔案。</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="382"/>
         <source>%1 has been downloaded.</source>
         <comment>%1 names a file.</comment>
-        <translation>%1 已被下載。</translation>
+        <translation>已下載 %1。</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="425"/>
         <source>%1 and %n other file(s) have been added.</source>
-        <translation><numerusform>%1 跟 %n 其他檔案已經被加入</numerusform></translation>
+        <translation><numerusform>已新增 %1 跟 %n 個其他檔案。</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="427"/>
         <source>%1 has been added.</source>
         <comment>%1 names a file.</comment>
-        <translation>%1 已加入。</translation>
+        <translation>已新增 %1。</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="387"/>
         <source>%1 and %n other file(s) have been updated.</source>
-        <translation><numerusform>%1 跟 %n 其他檔案已經被修改</numerusform></translation>
+        <translation><numerusform>已更新 %1 跟 %n 個其他檔案。</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="389"/>
         <source>%1 has been updated.</source>
         <comment>%1 names a file.</comment>
-        <translation>%1 已被更新。</translation>
+        <translation>已更新 %1。</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="394"/>
         <source>%1 has been renamed to %2 and %n other file(s) have been renamed.</source>
-        <translation><numerusform>%1 已被改名為 %2 並且 %n其他檔案已被改名</numerusform></translation>
+        <translation><numerusform>%1 已被更名為 %2，其他 %n 個檔案也被更名。</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="396"/>
@@ -1124,42 +1125,42 @@ This can be an issue with your OpenSSL libraries.</source>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="401"/>
         <source>%1 has been moved to %2 and %n other file(s) have been moved.</source>
-        <translation><numerusform>%1 已被搬移到%2 並且 %n 其他檔案已經被搬移</numerusform></translation>
+        <translation><numerusform>%1 已被移動到 %2，其他 %n 個檔案也被移動。</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="403"/>
         <source>%1 has been moved to %2.</source>
-        <translation>%1 已被搬移至 %2。</translation>
+        <translation>%1 已被移動到 %2。</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="408"/>
         <source>%1 has and %n other file(s) have sync conflicts.</source>
-        <translation><numerusform>%1 跟 %n 其他檔案同步時發生衝突</numerusform></translation>
+        <translation><numerusform>%1 跟 %n 個其他檔案同步時發生衝突。</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="410"/>
         <source>%1 has a sync conflict. Please check the conflict file!</source>
-        <translation>%1 同步時發生衝突，請檢查發生衝突的檔案</translation>
+        <translation>%1 同步時發生衝突。請檢查發生衝突的檔案！</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="415"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
-        <translation><numerusform>%1 與%n 其他檔案因為錯誤無法被同步。請從紀錄檔觀看細節。</numerusform></translation>
+        <translation><numerusform>%1 跟 %n 個其他檔案因為錯誤無法被同步。請檢視紀錄檔以取得詳細資訊。</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="417"/>
         <source>%1 could not be synced due to an error. See the log for details.</source>
-        <translation>%1 因為錯誤無法被同步。請從紀錄檔觀看細節。</translation>
+        <translation>%1 因為錯誤無法被同步。請檢視紀錄檔以取得詳細資訊。</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="422"/>
         <source>%1 and %n other file(s) are currently locked.</source>
-        <translation><numerusform>%1以及%n個其他文件正在被鎖定狀態</numerusform></translation>
+        <translation><numerusform>%1 跟 %n 個其他檔案正在被鎖定狀態。</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="424"/>
         <source>%1 is currently locked.</source>
-        <translation>%1正在被鎖定狀態</translation>
+        <translation>%1 目前已被鎖定。</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="432"/>
@@ -1175,29 +1176,30 @@ This can be an issue with your OpenSSL libraries.</source>
         <location filename="../src/gui/folder.cpp" line="933"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
-        <translation>一個大於%1MB的資料夾已被新增至:%2
+        <translation>一個大於 %1 MB 的資料夾已被新增至：%2
 </translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="936"/>
         <source>A folder from an external storage has been added.
 </source>
-        <translation>一個來自外部空間的資料夾已被新增</translation>
+        <translation>一個來自外部空間的資料夾已被新增。
+</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="937"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
-        <translation>若要下載此項目，請前往設定選擇它</translation>
+        <translation>若要下載此項目，請前往設定選擇它。</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="992"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
-        <translation>已創建%1資料夾，但該資料夾已從要同步的檔案中剔除，因此不會被同步。</translation>
+        <translation>已建立 %1 資料夾，但先前已從同步中排除。因此其中的資料將不會被同步。</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="995"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
-        <translation>已新增%1檔案，但該檔案已從要同步的檔案中剔除，因此不會被同步。</translation>
+        <translation>已建立 %1 檔案，但先前已從同步中排除。因此其中的資料將不會被同步。</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1006"/>
@@ -1206,9 +1208,9 @@ This can be an issue with your OpenSSL libraries.</source>
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
 
 %1</source>
-        <translation>無法可靠地跟蹤要同步的資料夾內容之更動。
+        <translation>無法可靠地追蹤要同步的資料夾內容更動。
 
-客戶端可能無法及時上傳本地的更動，而只能每隔一段時間（預設為2小時）才掃描及上傳一次本地變更。
+客戶端可能無法及時上傳本地的更動，而只能每隔一段時間（預設為2小時）才掃描及上傳一次本機變更。
 
 %1</translation>
     </message>
@@ -1219,7 +1221,7 @@ These deletes will be synchronized to your local sync folder, making such files 
 If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
         <translation>「%1」資料夾中的所有檔案已從伺服器上移除。
-同步後，這些檔案也會從您的本地資料夾中移除。除非您有復原的權限，否則您將無法讀取這些檔案。
+同步後，這些檔案也會從您的本機資料夾中移除。除非您有復原的權限，否則您將無法讀取這些檔案。
 假如您決定復原這些檔案，只要您擁有權限，這些檔案就會重新和伺服器同步。
 假如您決定移除這些檔案，除非您是檔案的所有者，否則您將無法讀取這些檔案。</translation>
     </message>
@@ -1228,19 +1230,19 @@ If you decide to delete the files, they will be unavailable to you, unless you a
         <source>All files got deleted from your local sync folder '%1'.
 These files will be deleted from the server and will not be available on your other devices if they will not be restored.
 If this action was unintended you can restore the lost data now.</source>
-        <translation>「%1」本地同步資料夾中的所有檔案已被移除。
+        <translation>「%1」本機同步資料夾中的所有檔案已被移除。
 這些檔案將會從伺服器上移除，使得您無法從其他裝置讀取這些檔案，除非您選擇復原。
 如果您意外地做了此項動作，您可以立即復原已移除的資料。</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1061"/>
         <source>Delete all files?</source>
-        <translation>確定要移除所有檔案嗎？</translation>
+        <translation>刪除所有檔案？</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1064"/>
         <source>Delete all files</source>
-        <translation>移除所有檔案</translation>
+        <translation>刪除所有檔案</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1065"/>
@@ -1252,9 +1254,9 @@ If this action was unintended you can restore the lost data now.</source>
         <source>This sync would reset the files to an earlier time in the sync folder '%1'.
 This might be because a backup was restored on the server.
 Continuing the sync as normal will cause all your files to be overwritten by an older file in an earlier state. Do you want to keep your local most recent files as conflict files?</source>
-        <translation>此次同步將會將同步資料夾「%1」的檔案重置到先前一個版本。
+        <translation>此次同步將會將同步資料夾「%1」的檔案重設為較早的版本。
 這有可能是因為伺服器被復原至一個備份。
-繼續正常同步將會使您的所有檔案被先前的一個版本覆蓋。您希望將目前的最新檔案儲存為衝突檔案嗎？</translation>
+繼續正常同步將會使您的所有檔案被較舊的版本覆寫。您希望將目前的最新檔案儲存為衝突檔案嗎？</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1087"/>
@@ -1269,7 +1271,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folder.cpp" line="1091"/>
         <source>Keep Local Files as Conflict</source>
-        <translation>將本地檔案視為衝突檔案</translation>
+        <translation>將本機檔案視為衝突檔案</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1235"/>
@@ -1277,14 +1279,19 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation type="unfinished"/>
+        <translation>「%1」資料夾中的所有檔案已從伺服器上移除。
+同步後，這些檔案也會從您的本地資料夾中移除。除非您有復原的權限，否則您將無法讀取這些檔案。
+假如您決定復原這些檔案，只要您擁有權限，這些檔案就會重新和伺服器同步。
+假如您決定移除這些檔案，除非您是檔案的所有者，否則您將無法讀取這些檔案。</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1240"/>
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
-        <translation type="unfinished"/>
+        <translation>在您本機同步資料夾「%1」中的所有檔案都已刪除。這些刪除將會與您的伺服器同步，除非復原，否則這些檔案將不可用。
+您確定您想要與伺服器同步那些動作嗎？
+如果這是意外，而且您決定保留您的檔案，它們將會自伺服器重新同步。</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1244"/>
@@ -1307,27 +1314,27 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/foldercreationdialog.ui" line="14"/>
         <source>Create new folder</source>
-        <translation type="unfinished"/>
+        <translation>建立新資料夾</translation>
     </message>
     <message>
         <location filename="../src/gui/foldercreationdialog.ui" line="42"/>
         <source>Enter folder name</source>
-        <translation type="unfinished"/>
+        <translation>輸入資料夾名稱</translation>
     </message>
     <message>
         <location filename="../src/gui/foldercreationdialog.ui" line="61"/>
         <source>Folder already exists</source>
-        <translation type="unfinished"/>
+        <translation>資料夾已存在</translation>
     </message>
     <message>
         <location filename="../src/gui/foldercreationdialog.cpp" line="73"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>錯誤</translation>
     </message>
     <message>
         <location filename="../src/gui/foldercreationdialog.cpp" line="73"/>
         <source>Could not create a folder! Check your write permissions.</source>
-        <translation type="unfinished"/>
+        <translation>無法建立資料夾！請檢查您的寫入權限。</translation>
     </message>
 </context>
 <context>
@@ -1335,12 +1342,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="309"/>
         <source>Could not reset folder state</source>
-        <translation>無法重置資料夾狀態</translation>
+        <translation>無法重設資料夾狀態</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="310"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
-        <translation>發現較舊的同步處理日誌&apos;%1&apos;，但無法移除。請確認沒有應用程式正在使用它。</translation>
+        <translation>發現較舊的同步處理日誌「%1」，但無法移除。請確認沒有應用程式正在使用它。</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1107"/>
@@ -1350,17 +1357,17 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="1112"/>
         <source> (backup %1)</source>
-        <translation>(備份 %1)</translation>
+        <translation>（備份 %1）</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1357"/>
         <source>Undefined State.</source>
-        <translation>未知狀態</translation>
+        <translation>未定義狀態。</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1360"/>
         <source>Waiting to start syncing.</source>
-        <translation>正在等待同步開始</translation>
+        <translation>正在等待同步開始。</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1363"/>
@@ -1370,22 +1377,22 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="1366"/>
         <source>Sync is running.</source>
-        <translation>同步執行中</translation>
+        <translation>正在執行同步。</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1371"/>
         <source>Sync was successful, unresolved conflicts.</source>
-        <translation>同步成功，衝突未解決</translation>
+        <translation>同步成功，但衝突未解決。</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1373"/>
         <source>Last Sync was successful.</source>
-        <translation>最後一次同步成功</translation>
+        <translation>最後一次同步成功。</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1379"/>
         <source>Setup Error.</source>
-        <translation>安裝失敗</translation>
+        <translation>安裝失敗。</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1382"/>
@@ -1395,17 +1402,17 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="1385"/>
         <source>Sync is paused.</source>
-        <translation>同步已暫停</translation>
+        <translation>同步已暫停。</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1391"/>
         <source>%1 (Sync is paused)</source>
-        <translation>%1 (同步暫停)</translation>
+        <translation>%1（同步已暫停）</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1399"/>
         <source>No valid folder selected!</source>
-        <translation>沒有選擇有效的資料夾</translation>
+        <translation>未選取有效的資料夾！</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1520"/>
@@ -1415,12 +1422,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="1409"/>
         <source>The selected path is not a folder!</source>
-        <translation>所選的路徑並非資料夾!</translation>
+        <translation>所選的路徑並非資料夾！</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1413"/>
         <source>You have no permission to write to the selected folder!</source>
-        <translation>您沒有權限來寫入被選取的資料夾!</translation>
+        <translation>您沒有權限來寫入被選取的資料夾！</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1449"/>
@@ -1435,7 +1442,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="1469"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
-        <translation>此資料夾已與Server設定同步，請選擇其他資料夾</translation>
+        <translation>此本機資料夾已設定為從伺服器同步。請挑選其他本機資料夾！</translation>
     </message>
 </context>
 <context>
@@ -1448,7 +1455,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="256"/>
         <source>Synchronized with local folder (%1)</source>
-        <translation>已與本地資料夾同步（%1）</translation>
+        <translation>已與本機資料夾同步（%1）</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="313"/>
@@ -1478,17 +1485,17 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="188"/>
         <source>Error while loading the list of folders from the server.</source>
-        <translation>從伺服器端同步資料夾清單時發生錯誤。</translation>
+        <translation>從伺服器端同步資料夾列表時發生錯誤。</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="191"/>
         <source>Fetching folder list from server …</source>
-        <translation>正在從伺服器取得資料清單...</translation>
+        <translation>正在從伺服器擷取資料夾列表……</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="217"/>
         <source>There are unresolved conflicts. Click for details.</source>
-        <translation>存在未解決的衝突，請查看細節</translation>
+        <translation>有未解決的衝突。點擊以檢視詳細資訊。</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="235"/>
@@ -1503,22 +1510,22 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="299"/>
         <source>Synchronizing VirtualFiles with local folder</source>
-        <translation>與本地資料夾同步虛擬檔案</translation>
+        <translation>與本機資料夾同步虛擬檔案</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="301"/>
         <source>Synchronizing with local folder</source>
-        <translation>與本地資料夾同步</translation>
+        <translation>與本機資料夾同步</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="904"/>
         <source>Checking for changes in remote &apos;%1&apos;</source>
-        <translation>檢查遠端 &apos;%1&apos; 的變動</translation>
+        <translation>正在檢查遠端「%1」的變動</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="908"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
-        <translation>檢查本地 &apos;%1&apos; 的變動</translation>
+        <translation>正在檢查本機「%1」的變動</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="915"/>
@@ -1529,19 +1536,19 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <location filename="../src/gui/folderstatusmodel.cpp" line="950"/>
         <source>, &apos;%1&apos;</source>
         <extracomment>Build a list of file names</extracomment>
-        <translation>, &apos;%1&apos;</translation>
+        <translation>，「%1」</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="953"/>
         <source>&apos;%1&apos;</source>
         <extracomment>Argument is a file name</extracomment>
-        <translation>&apos;%1&apos;</translation>
+        <translation>「%1」</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="977"/>
         <source>Syncing %1</source>
         <extracomment>Example text: &quot;Syncing 'foo.txt', 'bar.txt'&quot;</extracomment>
-        <translation>同步 %1</translation>
+        <translation>正在同步 %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="979"/>
@@ -1553,29 +1560,29 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <location filename="../src/gui/folderstatusmodel.cpp" line="983"/>
         <source>download %1/s</source>
         <extracomment>Example text: &quot;download 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
-        <translation>下載 %1/s</translation>
+        <translation>下載 %1／秒</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="985"/>
         <source>↓ %1/s</source>
-        <translation>↓ %1/s</translation>
+        <translation>↓ %1／秒</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="993"/>
         <source>upload %1/s</source>
         <extracomment>Example text: &quot;upload 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
-        <translation>上傳 %1/s</translation>
+        <translation>上傳 %1／秒</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="995"/>
         <source>↑ %1/s</source>
-        <translation>↑ %1/s</translation>
+        <translation>↑ %1／秒</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1001"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (2MB of 2MB)&quot;</extracomment>
-        <translation>%1 %2 (%3 的 %4)</translation>
+        <translation>%1 %2（%3 的 %4）</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1005"/>
@@ -1587,13 +1594,13 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <location filename="../src/gui/folderstatusmodel.cpp" line="1024"/>
         <source>%5 left, %1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;5 minutes left, 12 MB of 345 MB, file 6 of 7&quot;</extracomment>
-        <translation>剩餘%5，%1 的 %2, 檔案 %3 的 %4</translation>
+        <translation>剩餘%5，%1 的 %2，檔案 %3 的 %4</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1032"/>
         <source>%1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;12 MB of 345 MB, file 6 of 7&quot;</extracomment>
-        <translation>%1 的 %2, 檔案 %3 的 %4</translation>
+        <translation>%1 的 %2，檔案 %3 的 %4</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1039"/>
@@ -1603,17 +1610,17 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1085"/>
         <source>Waiting …</source>
-        <translation>請稍後...</translation>
+        <translation>請稍候……</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folderstatusmodel.cpp" line="1087"/>
         <source>Waiting for %n other folder(s) …</source>
-        <translation><numerusform>等候其他 %n 個資料夾</numerusform></translation>
+        <translation><numerusform>正在等待其他 %n 個資料夾……</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1093"/>
         <source>Preparing to sync …</source>
-        <translation>正在準備同步...</translation>
+        <translation>正在準備同步……</translation>
     </message>
 </context>
 <context>
@@ -1621,7 +1628,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderwatcher.cpp" line="126"/>
         <source>The watcher did not receive a test notification.</source>
-        <translation type="unfinished"/>
+        <translation>監視程式未收到測試通知。</translation>
     </message>
 </context>
 <context>
@@ -1629,7 +1636,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderwatcher_linux.cpp" line="88"/>
         <source>This problem usually happens when the inotify watches are exhausted. Check the FAQ for details.</source>
-        <translation>這個問題通常是因為 inotify 監視器資源耗盡。請到問與答查看更多詳細資料。</translation>
+        <translation>這個問題通常是因為 inotify 監視程式資源耗盡。請到 FAQ 檢視詳細資訊。</translation>
     </message>
 </context>
 <context>
@@ -1650,12 +1657,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="67"/>
         <source>Click to select a local folder to sync.</source>
-        <translation>請選擇要同步的本地資料夾</translation>
+        <translation>點擊選取要同步的本機資料夾。</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="74"/>
         <source>Enter the path to the local folder.</source>
-        <translation>請輸入本地資料夾的路徑</translation>
+        <translation>請輸入本機資料夾的路徑。</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="133"/>
@@ -1673,27 +1680,27 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="182"/>
         <source>Enter the name of the new folder to be created below &apos;%1&apos;:</source>
-        <translation>請輸入欲創建在 &apos;%1&apos; 底下的新資料夾名稱:</translation>
+        <translation>請輸入要在「%1」底下建立的資料夾名稱：</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="212"/>
         <source>Folder was successfully created on %1.</source>
-        <translation>資料夾成功建立在%1</translation>
+        <translation>資料夾成功建立於 %1。</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="223"/>
         <source>Authentication failed accessing %1</source>
-        <translation>存取 %1 認證失敗 </translation>
+        <translation>存取 %1 驗證失敗</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="225"/>
         <source>Failed to create the folder on %1. Please check manually.</source>
-        <translation>在 %1 建立資料夾失敗，請手動檢查</translation>
+        <translation>在 %1 建立資料夾失敗。請手動檢查。</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="234"/>
         <source>Failed to list a folder. Error: %1</source>
-        <translation>取得資料夾清單失敗，錯誤: %1</translation>
+        <translation>取得資料夾列表失敗。錯誤：%1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="315"/>
