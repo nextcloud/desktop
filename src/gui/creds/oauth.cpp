@@ -23,6 +23,7 @@
 #include "theme.h"
 #include "networkjobs.h"
 #include "creds/httpcredentials.h"
+#include "guiutility.h"
 
 namespace OCC {
 
@@ -174,7 +175,7 @@ QUrl OAuth::authorisationLink() const
 
 bool OAuth::openBrowser()
 {
-    if (!QDesktopServices::openUrl(authorisationLink())) {
+    if (!Utility::openBrowser(authorisationLink())) {
         // We cannot open the browser, then we claim we don't support OAuth.
         emit result(NotSupported, QString());
         return false;
