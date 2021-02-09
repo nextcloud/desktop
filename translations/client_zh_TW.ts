@@ -1715,12 +1715,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="458"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a parent folder of &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation>您已經同步了 &lt;i&gt;%1&lt;/i&gt;, 這個資料夾是 &lt;i&gt;%2&lt;/i&gt; 的母資料夾。</translation>
+        <translation>您已經同步了 &lt;i&gt;%1&lt;/i&gt;，這個資料夾是 &lt;i&gt;%2&lt;/i&gt; 的上層資料夾。</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="473"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a subfolder of &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>您已經同步了 &lt;i&gt;%1&lt;/i&gt;，這個資料夾是 &lt;i&gt;%2&lt;/i&gt; 的下層資料夾。</translation>
     </message>
 </context>
 <context>
@@ -1728,12 +1728,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="512"/>
         <source>Use virtual files instead of downloading content immediately %1</source>
-        <translation type="unfinished"/>
+        <translation>使用虛擬檔案而非立刻下載內容 %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="512"/>
         <source>(experimental)</source>
-        <translation type="unfinished"/>
+        <translation>（實驗性）</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="548"/>
@@ -1746,12 +1746,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="48"/>
         <source>&lt;b&gt;Warning:&lt;/b&gt; %1</source>
-        <translation>&lt;b&gt;警告:&lt;/b&gt; %1</translation>
+        <translation>&lt;b&gt;警告：&lt;/b&gt; %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="50"/>
         <source>&lt;b&gt;Warning:&lt;/b&gt;</source>
-        <translation>&lt;b&gt;警告:&lt;/b&gt;</translation>
+        <translation>&lt;b&gt;警告：&lt;/b&gt;</translation>
     </message>
 </context>
 <context>
@@ -1759,22 +1759,22 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="181"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
-        <translation>沒有收到來自伺服器的 E-Tag，請檢查代理伺服器或網路閘道</translation>
+        <translation>沒有收到來自伺服器的 E-Tag，請檢查代理伺服器或網路閘道器</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="188"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
-        <translation>在復原時收到了不同的 E-Tag，將在下一次重新嘗試取得</translation>
+        <translation>在復原時收到了不同的 E-Tag。將在下一次重新嘗試取得。</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="213"/>
         <source>We received an unexpected download Content-Length.</source>
-        <translation type="unfinished"/>
+        <translation>我們收到了非預期的下載 Content-Length。</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="215"/>
         <source>Server returned wrong content-range</source>
-        <translation>伺服器回應錯誤的內容長度</translation>
+        <translation>伺服器回傳了錯誤的內容長度</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="325"/>
@@ -1793,7 +1793,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.ui" line="41"/>
         <source>Legal notice</source>
-        <translation>法律提示</translation>
+        <translation>法律聲明</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="66"/>
@@ -1803,22 +1803,22 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.ui" line="72"/>
         <source>For System Tray</source>
-        <translation>顯示在工作列</translation>
+        <translation>系統匣</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="75"/>
         <source>Use &amp;Monochrome Icons</source>
-        <translation>使用&amp;單色圖示</translation>
+        <translation>使用單色圖示(&amp;M)</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="82"/>
         <source>&amp;Launch on System Startup</source>
-        <translation>&amp;系統啟動時啟動</translation>
+        <translation>系統啟動時啟動(&amp;L)</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="89"/>
         <source>Show Server &amp;Notifications</source>
-        <translation>顯示系統訊息</translation>
+        <translation>顯示伺服器通知(&amp;N)</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="99"/>
@@ -1828,7 +1828,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.ui" line="107"/>
         <source>&amp;Automatically check for Updates</source>
-        <translation>自動檢查更新</translation>
+        <translation>自動檢查更新(&amp;A)</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="140"/>
@@ -1848,12 +1848,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.ui" line="189"/>
         <source>&amp;Restart &amp;&amp; Update</source>
-        <translation>重新啟動並更新 (&amp;R)</translation>
+        <translation>重新啟動並更新(&amp;R)</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="123"/>
         <source>&amp;Check for Update now</source>
-        <translation>立即檢查更新</translation>
+        <translation>立即檢查更新(&amp;C)</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="214"/>
@@ -1879,32 +1879,32 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.ui" line="308"/>
         <source>Show sync folders in &amp;Explorer&apos;s Navigation Pane</source>
-        <translation>在檔案管理員中顯示資料夾</translation>
+        <translation>在檔案總管的導覽面板中顯示同步資料夾(&amp;E)</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="325"/>
         <source>S&amp;how crash reporter</source>
-        <translation>&amp;顯示意外回報器</translation>
+        <translation>顯示當機回報程式(&amp;H)</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="222"/>
         <source>Edit &amp;Ignored Files</source>
-        <translation>編輯&amp;被忽略的檔案</translation>
+        <translation>編輯被忽略的檔案(&amp;I)</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="229"/>
         <source>Create Debug Archive …</source>
-        <translation>建立除錯壓縮檔...</translation>
+        <translation>建立除錯壓縮檔……</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="149"/>
         <source>Server notifications that require attention.</source>
-        <translation>伺服器公告，請注意</translation>
+        <translation>需要注意的伺服器通知。</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="162"/>
         <source>You cannot disable autostart because system-wide autostart is enabled.</source>
-        <translation>您不可以停用自動啟動，因為已啟用系統廣域自動啟動。</translation>
+        <translation>您無法停用自動啟動，因為已啟用系統層面的自動啟動。</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="303"/>

@@ -1315,27 +1315,27 @@ Si esto ha sido un accidente, y decides mantener tus archivos, serán re-sincron
     <message>
         <location filename="../src/gui/foldercreationdialog.ui" line="14"/>
         <source>Create new folder</source>
-        <translation type="unfinished"/>
+        <translation>Crear nueva carpeta</translation>
     </message>
     <message>
         <location filename="../src/gui/foldercreationdialog.ui" line="42"/>
         <source>Enter folder name</source>
-        <translation type="unfinished"/>
+        <translation>Escriba el nombre de la carpeta</translation>
     </message>
     <message>
         <location filename="../src/gui/foldercreationdialog.ui" line="61"/>
         <source>Folder already exists</source>
-        <translation type="unfinished"/>
+        <translation>Ya existe la carpeta</translation>
     </message>
     <message>
         <location filename="../src/gui/foldercreationdialog.cpp" line="73"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>Error</translation>
     </message>
     <message>
         <location filename="../src/gui/foldercreationdialog.cpp" line="73"/>
         <source>Could not create a folder! Check your write permissions.</source>
-        <translation type="unfinished"/>
+        <translation>¡No se pudo crear la carpeta! Comprueba los permisos de escritura.</translation>
     </message>
 </context>
 <context>

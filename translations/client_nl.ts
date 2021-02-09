@@ -1312,27 +1312,27 @@ Als dit een ongelukje was en je de bestanden wilt behouden, worden ze opnieuw ge
     <message>
         <location filename="../src/gui/foldercreationdialog.ui" line="14"/>
         <source>Create new folder</source>
-        <translation type="unfinished"/>
+        <translation>Maak nieuwe map aan</translation>
     </message>
     <message>
         <location filename="../src/gui/foldercreationdialog.ui" line="42"/>
         <source>Enter folder name</source>
-        <translation type="unfinished"/>
+        <translation>Geef mapnaam op</translation>
     </message>
     <message>
         <location filename="../src/gui/foldercreationdialog.ui" line="61"/>
         <source>Folder already exists</source>
-        <translation type="unfinished"/>
+        <translation>Map bestaat al</translation>
     </message>
     <message>
         <location filename="../src/gui/foldercreationdialog.cpp" line="73"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>Fout</translation>
     </message>
     <message>
         <location filename="../src/gui/foldercreationdialog.cpp" line="73"/>
         <source>Could not create a folder! Check your write permissions.</source>
-        <translation type="unfinished"/>
+        <translation>Kon map niet aanmaken! Controleer je schrijfrechten.</translation>
     </message>
 </context>
 <context>
