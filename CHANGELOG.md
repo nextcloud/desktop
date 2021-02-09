@@ -3,7 +3,7 @@ Changelog for ownCloud Desktop Client [unreleased] (UNRELEASED)
 The following sections list the changes in ownCloud Desktop Client unreleased relevant to
 ownCloud admins and users.
 
-[unreleased]: https://github.com/owncloud/client/compare/v2.7.5...master
+[unreleased]: https://github.com/owncloud/client/compare/v2.7.6...master
 
 Summary
 -------
@@ -66,6 +66,36 @@ Details
    issues.
 
    https://github.com/owncloud/client/pull/8374
+
+Changelog for ownCloud Desktop Client [2.7.6] (2021-02-04)
+=======================================
+The following sections list the changes in ownCloud Desktop Client 2.7.6 relevant to
+ownCloud admins and users.
+
+[2.7.6]: https://github.com/owncloud/client/compare/v2.7.5...v2.7.6
+
+Summary
+-------
+
+* Bugfix - Fix missing sidebar icons on Mac with branded builds: [#4387](https://github.com/owncloud/enterprise/issues/4387)
+* Bugfix - Case sensitive comparison of checksum algorithm: [#8371](https://github.com/owncloud/client/pull/8371)
+
+Details
+-------
+
+* Bugfix - Fix missing sidebar icons on Mac with branded builds: [#4387](https://github.com/owncloud/enterprise/issues/4387)
+
+   We fixed an issue where branded client where lacking the sidebar icons.
+
+   https://github.com/owncloud/enterprise/issues/4387
+
+* Bugfix - Case sensitive comparison of checksum algorithm: [#8371](https://github.com/owncloud/client/pull/8371)
+
+   We fixed a bug where the checksum detection was case sensitive and used a different casing than
+   the server.
+
+   https://github.com/owncloud/client/pull/8371
+   https://github.com/owncloud/client/pull/8376
 
 Changelog for ownCloud Desktop Client [2.7.5] (2021-01-28)
 =======================================
