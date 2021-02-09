@@ -1,0 +1,7 @@
+Bugfix: Case sensitive comparison of checksum algorithm
+
+We fixed a bug where the checksum detection was case sensitive
+and used a different casing than the server.
+
+https://github.com/owncloud/client/pull/8371
+https://github.com/owncloud/client/pull/8376
