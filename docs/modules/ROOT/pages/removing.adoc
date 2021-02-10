@@ -1,9 +1,18 @@
 = Removing the Desktop Synchronization Client
 
+== Removing the Configuration File
+
+When you remove the client - the configuration file remains on your system. If you then decide to install
+the client again, you won't need to re-enter the connection information.
+ 
+In case you want a clean removal of the client, you manually have to delete the configuration file.
+The location of the configuration file is operating system dependent and can be found in the
+xref:advanced_usage/configuration_file.adoc[Configuration File] description.
+
 == Windows Navigation Sidebar
 
-If you have removed the windows synchronization client but still have the owncloud shortcut or symbol in the windows navigation side bar, 
-here is how you can remove it:
+If you have removed the Windows Synchronization Client but still have the ownCloud shortcut or symbol in
+the Windows Navigation Side Bar, here is how you to remove it:
 
 1. Open `regedit`. (press the Windows Key and type regedit)
 2. Search (CTL+F) for the name of the client, in this case `owncloud `.
@@ -13,4 +22,4 @@ here is how you can remove it:
 
 You have to do this twice. Once for the `x64` and `x32` system settings.
 
-Once this is done, you don't even need a reboot, just open and close your explorer - the sidebar is clean.
+Once this is done, you don't need a reboot, just open and close your explorer - the sidebar is clean.
