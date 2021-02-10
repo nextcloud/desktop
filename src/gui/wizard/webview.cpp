@@ -16,6 +16,7 @@
 #include <QWebEngineCertificateError>
 #include <QMessageBox>
 
+#include "guiutility.h"
 #include "common/utility.h"
 
 namespace OCC {
@@ -227,7 +228,7 @@ bool ExternalWebEnginePage::acceptNavigationRequest(const QUrl &url, QWebEngineP
 {
     Q_UNUSED(type);
     Q_UNUSED(isMainFrame);
-    QDesktopServices::openUrl(url);
+    Utility::openBrowser(url);
     return false;
 }
 
