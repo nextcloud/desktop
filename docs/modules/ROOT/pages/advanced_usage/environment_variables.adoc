@@ -1,32 +1,39 @@
 = Environment Variables
 
+== Introduction
+
 The behavior of the client can also be controlled using environment variables.
-The value of the environment variables overrides the values in the configuration file.
 
-Note that most environment variables only exist for debugging or testing.
-They are not officially supported and may change from version to version.
-If you end up relying on a setting only available through an environment variable, please create a bug report.
+NOTE: The value of the environment variables override the values in the configuration file.
 
-The environment variables are:
+NOTE: Most environment variables only exist for debugging or testing. They are not officially
+supported and may change from version to version. If you end up relying on a setting only available
+through an environment variable, please create a bug report.
 
-[cols="2,1,4", options="header"]
+== Available Environment Variables
+
+[width="100%",cols="45%,25%,100%",options="header"]
+//[cols="2,1,4", options="header"]
 |===
 | Setting
 | Default
 | Description
 
 | `OWNCLOUD_CHUNK_SIZE`
-| 10000000 (or 10 MB)
+| 10000000 +
+(or 10 MB)
 | Specifies the initial chunk size of uploaded files in bytes.
 The client will dynamically adjust this size within the maximum and minimum bounds (see below).
 To disable chunking completely, set `OWNCLOUD_CHUNK_SIZE=0` .
 
 | `OWNCLOUD_MAX_CHUNK_SIZE`
-| 100000000 (or 100 MB)
+| 100000000 +
+(or 100 MB)
 | Specifies the maximum chunk size of uploaded files in bytes.
 
 | `OWNCLOUD_MIN_CHUNK_SIZE`
-| 1000000 (or 1 MB)
+| 1000000 +
+(or 1 MB)
 | Specifies the minimum chunk size of uploaded files in bytes.
 
 | `OWNCLOUD_TARGET_CHUNK_UPLOAD_DURATION`
@@ -66,7 +73,8 @@ More information available under the "Low Disk Space" section.
 | Minimum timeout, in seconds, for blacklisted files.
 
 | `OWNCLOUD_BLACKLIST_TIME_MAX` 
-| 24*60*60 (or one day)
+| 24*60*60 +
+(or one day)
 | Maximum timeout, in seconds, for blacklisted files.
 
 | `OWNCLOUD_HTTP2_ENABLED`
@@ -100,7 +108,8 @@ Helpful if a platform's tray has problematic behavior.
 | Set to "1" if the tray menu sometimes contains stale entries.
 
 | `OWNCLOUD_FULL_LOCAL_DISCOVERY_INTERVAL`
-| 3600000 (1 hour)
+| 3600000 +
+(1 hour)
 | Maximum time in milliseconds that fast local discovery is allowed for after a full local discovery.
 Set to 0 to always require full local discovery.
 Set to -1 to never require full local discovery.
@@ -133,4 +142,9 @@ Set to -1 to never require full local discovery.
 | `OWNCLOUD_UPLOAD_CONFLICT_FILES`
 | unset
 | Set to "1" to enable uploading conflict files to the server.
+
+
+| `QT_LOGGING_RULES`
+| unset
+| Set to "sync.httplogger=true" to enable verbose http logging. See also troubleshooting.adoc for more.
 |===
