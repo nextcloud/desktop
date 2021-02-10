@@ -98,7 +98,7 @@ list(APPEND RemoteWipe_SRC ${RemoteWipe_SRC})
 list(APPEND RemoteWipe_SRC stubremotewipe.cpp )
 nextcloud_add_test(RemoteWipe "${RemoteWipe_SRC}")
 
-nextcloud_add_test(OAuth "syncenginetestutils.h;../src/gui/creds/oauth.cpp")
+nextcloud_add_test(OAuth "syncenginetestutils.h;../src/gui/creds/oauth.cpp;../src/gui/guiutility.cpp")
 
 configure_file(test_journal.db "${PROJECT_BINARY_DIR}/bin/test_journal.db" COPYONLY)
 

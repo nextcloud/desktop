@@ -499,7 +499,7 @@ void SocketApi::command_EDIT(const QString &localFile, SocketListener *listener)
         auto url = QUrl(data.value("url").toString());
 
         if(!url.isEmpty())
-            Utility::openBrowser(url, nullptr);
+            Utility::openBrowser(url);
     });
     job->start();
 }
@@ -772,7 +772,7 @@ void SocketApi::emailPrivateLink(const QString &link)
 
 void OCC::SocketApi::openPrivateLink(const QString &link)
 {
-    Utility::openBrowser(link, nullptr);
+    Utility::openBrowser(link);
 }
 
 void SocketApi::command_GET_STRINGS(const QString &argument, SocketListener *listener)

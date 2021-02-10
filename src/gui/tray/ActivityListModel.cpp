@@ -27,6 +27,7 @@
 #include "iconjob.h"
 #include "accessmanager.h"
 #include "owncloudgui.h"
+#include "guiutility.h"
 
 #include "ActivityData.h"
 #include "ActivityListModel.h"
@@ -465,7 +466,7 @@ void ActivityListModel::triggerDefaultAction(int activityIndex)
         QDesktopServices::openUrl(path);
     } else {
         const auto link = data(modelIndex, LinkRole).toUrl();
-        QDesktopServices::openUrl(link);
+        Utility::openBrowser(link);
     }
 }
 
@@ -486,7 +487,7 @@ void ActivityListModel::triggerAction(int activityIndex, int actionIndex)
     const auto action = activity._links[actionIndex];
 
     if (action._verb == "WEB") {
-        QDesktopServices::openUrl(QUrl(action._link));
+        Utility::openBrowser(QUrl(action._link));
         return;
     }
 

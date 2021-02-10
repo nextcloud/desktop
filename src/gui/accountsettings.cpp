@@ -22,6 +22,7 @@
 #include "folderstatusmodel.h"
 #include "folderstatusdelegate.h"
 #include "common/utility.h"
+#include "guiutility.h"
 #include "application.h"
 #include "configfile.h"
 #include "account.h"
@@ -705,8 +706,9 @@ void AccountSettings::slotForceSyncCurrentFolder()
 
 void AccountSettings::slotOpenOC()
 {
-    if (_OCUrl.isValid())
-        QDesktopServices::openUrl(_OCUrl);
+    if (_OCUrl.isValid()) {
+        Utility::openBrowser(_OCUrl);
+    }
 }
 
 void AccountSettings::slotUpdateQuota(qint64 total, qint64 used)
