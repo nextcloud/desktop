@@ -4,7 +4,7 @@
 * xref:removing.adoc[Removing the Client]
 * xref:conflicts.adoc[Conflicts]
 * Advanced Usage
-** xref:advanced_usage/options.adoc[Options]
+** xref:advanced_usage/command_line_options.adoc[Options]
 ** xref:advanced_usage/configuration_file.adoc[Configuration File]
 ** xref:advanced_usage/environment_variables.adoc[Environment Variables]
 ** xref:advanced_usage/command_line_client.adoc[Command-Line Client]
