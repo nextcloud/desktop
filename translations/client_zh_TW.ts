@@ -499,7 +499,7 @@ This action will abort any currently running synchronization.</source>
         <translation>登入</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1083"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1084"/>
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
         <translation>已不支援伺服器版本 %1！繼續的風險請自負。</translation>
     </message>
@@ -539,7 +539,7 @@ This action will abort any currently running synchronization.</source>
         <translation>在 %2 沒有連線到 %1。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1119"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1120"/>
         <source>Server configuration error: %1 at %2.</source>
         <translation>伺服器設定錯誤：%1 於 %2。</translation>
     </message>
@@ -1916,7 +1916,9 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <source>The update channel determines which client updates will be offered for installation. The &quot;stable&quot; channel contains only upgrades that are considered reliable, while the versions in the &quot;beta&quot; channel may contain newer features and bugfixes, but have not yet been tested thoroughly.
 
 Note that this selects only what pool upgrades are taken from, and that there are no downgrades: So going back from the beta channel to the stable channel usually cannot be done immediately and means waiting for a stable version that is newer than the currently installed beta version.</source>
-        <translation type="unfinished"/>
+        <translation>更新頻道將決定會提供哪些更新給客戶端安裝。「穩定」頻道僅包含被認為足夠可靠的升級，而「測試」頻道可能會包含較新的功能與臭蟲修復，但尚未經過全面測試。
+
+請注意，這只是選取從哪個軟體庫中取得升級，無法降級，因此通常無法立刻從測試頻道回到穩定頻道，這代表了要等到比目前測試版本還新的穩定版本才會切換成功。</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="317"/>
@@ -1946,7 +1948,7 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="417"/>
         <source>Debug archive is created at %1</source>
-        <translation>除錯壓縮檔已建立於在 %1</translation>
+        <translation>除錯壓縮檔已在 %1 建立</translation>
     </message>
 </context>
 <context>
@@ -1981,12 +1983,12 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="100"/>
         <source>Please enter %1 password:&lt;br&gt;&lt;br&gt;User: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation>請輸入%1 密碼:&lt;br&gt;&lt;br&gt;使用者: %2&lt;br&gt;帳戶: %3&lt;br&gt;</translation>
+        <translation>請輸入 %1  密碼：&lt;br&gt;&lt;br&gt;使用者：%2&lt;br&gt;帳號：%3&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="114"/>
         <source>Reading from keychain failed with error: &apos;%1&apos;</source>
-        <translation>從授權碼讀取資料時失敗，錯誤: &apos;%1&apos;</translation>
+        <translation>從鑰匙串讀取資料時失敗，錯誤：「%1」</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="120"/>
@@ -1996,7 +1998,7 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="156"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Click here&lt;/a&gt; to request an app password from the web interface.</source>
-        <translation>&lt;a href=&quot;%1&quot;&gt;點擊此處&lt;/a&gt;，通過網頁界面索取應用程式密碼</translation>
+        <translation>&lt;a href=&quot;%1&quot;&gt;點擊此處&lt;/a&gt;，通過網頁介面索取應用程式密碼</translation>
     </message>
 </context>
 <context>
@@ -2024,7 +2026,7 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="40"/>
         <source>This entry is provided by the system at &apos;%1&apos; and cannot be modified in this view.</source>
-        <translation>這個項目是由系統提供在 &apos;%1&apos; 且不能在這個頁面被修改</translation>
+        <translation>這個項目是由系統提供於「%1」且不能在這個頁面被修改。</translation>
     </message>
 </context>
 <context>
@@ -2037,7 +2039,7 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/ignorelisttablewidget.ui" line="38"/>
         <source>Allow Deletion</source>
-        <translation>允許移除</translation>
+        <translation>允許刪除</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.ui" line="49"/>
@@ -2061,7 +2063,7 @@ Note that this selects only what pool upgrades are taken from, and that there ar
 Items where deletion is allowed will be deleted if they prevent a directory from being removed. This is useful for meta data.</source>
         <translation>與某個模式相符的檔案或資料夾將不會被同步。
 
-如果允許移除的項目使得某個資料夾無法被移除，這些項目將會被移除。此設定可用於原資料。</translation>
+如果允許移除的項目使得某個資料夾無法被移除，這些項目將會被移除。此設定可用於詮釋資料。</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="93"/>
@@ -2090,7 +2092,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <location filename="../src/gui/legalnotice.ui" line="14"/>
         <location filename="../src/gui/legalnotice.ui" line="25"/>
         <source>Legal notice</source>
-        <translation>法律提示</translation>
+        <translation>法律聲明</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.ui" line="57"/>
@@ -2100,12 +2102,12 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="55"/>
         <source>&lt;p&gt;Copyright 2017-2020 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2018 ownCloud GmbH&lt;/p&gt;</source>
-        <translation>&lt;p&gt; 2017-2020 Nextcloud GmbH 版權所有&lt;br /&gt;2012-2018 ownCloud GmbH 版權所有&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Copyright 2017-2020 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2018 ownCloud GmbH&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="58"/>
         <source>&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0 or any later version.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;使用GNU General Public License (GPL) Version 2.0 或是更新的版本授權使用&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;以 GNU 通用公眾授權條款 (GPL) 2.0 版或更新版本授權。&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -2386,7 +2388,7 @@ Logs will be written to %1</source>
         <translation>存取權杖進入點發生錯誤：&lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/oauth.cpp" line="120"/>
+        <location filename="../src/gui/creds/oauth.cpp" line="121"/>
         <source>Empty JSON from OAuth2 redirect</source>
         <translation type="unfinished"/>
     </message>
@@ -4470,7 +4472,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>%1帳戶所在的伺服器正運行不受支援的舊版本%2。此客戶端在該伺服器版本上未經測試，可能會有風險。請慎行。</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="228"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="229"/>
         <source>The server on account %1 runs an unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
         <translation type="unfinished"/>
     </message>
@@ -5341,32 +5343,32 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>開啟郵件客戶端並撰寫新訊息時發生錯誤。可能未設定預設郵件客戶端？</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="76"/>
+        <location filename="../src/gui/guiutility.cpp" line="86"/>
         <source>Always available locally</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="78"/>
+        <location filename="../src/gui/guiutility.cpp" line="88"/>
         <source>Currently available locally</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="80"/>
+        <location filename="../src/gui/guiutility.cpp" line="90"/>
         <source>Some available online only</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="83"/>
+        <location filename="../src/gui/guiutility.cpp" line="93"/>
         <source>Available online only</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="90"/>
+        <location filename="../src/gui/guiutility.cpp" line="100"/>
         <source>Make always available locally</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="95"/>
+        <location filename="../src/gui/guiutility.cpp" line="105"/>
         <source>Free up local space</source>
         <translation type="unfinished"/>
     </message>

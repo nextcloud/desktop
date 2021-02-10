@@ -494,7 +494,7 @@ This action will abort any currently running synchronization.</source>
         <translation>Logg inn</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1083"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1084"/>
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
         <translation type="unfinished"/>
     </message>
@@ -534,7 +534,7 @@ This action will abort any currently running synchronization.</source>
         <translation>Ingen tilkobling til %1 på %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1119"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1120"/>
         <source>Server configuration error: %1 at %2.</source>
         <translation type="unfinished"/>
     </message>
@@ -2359,7 +2359,7 @@ Logs will be written to %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/creds/oauth.cpp" line="120"/>
+        <location filename="../src/gui/creds/oauth.cpp" line="121"/>
         <source>Empty JSON from OAuth2 redirect</source>
         <translation type="unfinished"/>
     </message>
@@ -4442,7 +4442,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Serveren på konto %1 kjører en gammel %2 som ikke støttes. Bruk av denne klienten med ikke-støttede server-versjoner er ikke testet og kan være farlig. Fortsett på egen risiko.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="228"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="229"/>
         <source>The server on account %1 runs an unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
         <translation type="unfinished"/>
     </message>
@@ -5313,32 +5313,32 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Det oppstod en feil ved oppstart av e-post klienten for å lage en ny melding. Kanskje ingen standard e-post klient er konfigurert?</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="76"/>
+        <location filename="../src/gui/guiutility.cpp" line="86"/>
         <source>Always available locally</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="78"/>
+        <location filename="../src/gui/guiutility.cpp" line="88"/>
         <source>Currently available locally</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="80"/>
+        <location filename="../src/gui/guiutility.cpp" line="90"/>
         <source>Some available online only</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="83"/>
+        <location filename="../src/gui/guiutility.cpp" line="93"/>
         <source>Available online only</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="90"/>
+        <location filename="../src/gui/guiutility.cpp" line="100"/>
         <source>Make always available locally</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="95"/>
+        <location filename="../src/gui/guiutility.cpp" line="105"/>
         <source>Free up local space</source>
         <translation type="unfinished"/>
     </message>

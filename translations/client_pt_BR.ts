@@ -499,7 +499,7 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
         <translation>Entrar</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1083"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1084"/>
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
         <translation>A versão do servidor %1 não é suportada! Prossiga por sua própria conta e risco.</translation>
     </message>
@@ -539,7 +539,7 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
         <translation>Sem conexão para %1 em %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1119"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1120"/>
         <source>Server configuration error: %1 at %2.</source>
         <translation>Erro na configuração do servidor: %1 em %2.</translation>
     </message>
@@ -1314,27 +1314,27 @@ Se isso foi um acidente e você decidir manter seus arquivos, eles serão sincro
     <message>
         <location filename="../src/gui/foldercreationdialog.ui" line="14"/>
         <source>Create new folder</source>
-        <translation type="unfinished"/>
+        <translation>Criar nova pasta </translation>
     </message>
     <message>
         <location filename="../src/gui/foldercreationdialog.ui" line="42"/>
         <source>Enter folder name</source>
-        <translation type="unfinished"/>
+        <translation>Digite o nome da pasta </translation>
     </message>
     <message>
         <location filename="../src/gui/foldercreationdialog.ui" line="61"/>
         <source>Folder already exists</source>
-        <translation type="unfinished"/>
+        <translation>Pasta já existe </translation>
     </message>
     <message>
         <location filename="../src/gui/foldercreationdialog.cpp" line="73"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>Erro</translation>
     </message>
     <message>
         <location filename="../src/gui/foldercreationdialog.cpp" line="73"/>
         <source>Could not create a folder! Check your write permissions.</source>
-        <translation type="unfinished"/>
+        <translation>Não foi possível criar uma pasta! Verifique suas permissões de gravação. </translation>
     </message>
 </context>
 <context>
@@ -2390,7 +2390,7 @@ Logs serão gravados em %1</translation>
         <translation>Ocorreu um erro ao acessar o ponto final do token: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/oauth.cpp" line="120"/>
+        <location filename="../src/gui/creds/oauth.cpp" line="121"/>
         <source>Empty JSON from OAuth2 redirect</source>
         <translation>JSON vazio do redirecionamento OAuth2 </translation>
     </message>
@@ -4481,7 +4481,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <translation>O servidor na conta %1 roda uma versão antiga %2 não suportada. Usar esse cliente junto com versões não suportadas e não testadas é potencialmente perigoso. Prossiga por sua conta.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="228"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="229"/>
         <source>The server on account %1 runs an unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
         <translation>O servidor na conta %1 executa uma versão não suportada %2. Usar este cliente com versões de servidor não suportadas não foi testado e é potencialmente perigoso. Prossiga por sua conta e risco. </translation>
     </message>
@@ -5352,32 +5352,32 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <translation>Ocorreu um erro ao iniciar o cliente de e-mail para criar uma nova mensagem. Talvez nenhum cliente de e-mail padrão esteja configurado?</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="76"/>
+        <location filename="../src/gui/guiutility.cpp" line="86"/>
         <source>Always available locally</source>
         <translation>Sempre disponível localmente </translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="78"/>
+        <location filename="../src/gui/guiutility.cpp" line="88"/>
         <source>Currently available locally</source>
         <translation>Atualmente disponível localmente </translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="80"/>
+        <location filename="../src/gui/guiutility.cpp" line="90"/>
         <source>Some available online only</source>
         <translation>Alguns disponíveis apenas online </translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="83"/>
+        <location filename="../src/gui/guiutility.cpp" line="93"/>
         <source>Available online only</source>
         <translation>Disponível apenas online </translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="90"/>
+        <location filename="../src/gui/guiutility.cpp" line="100"/>
         <source>Make always available locally</source>
         <translation>Sempre disponível localmente </translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="95"/>
+        <location filename="../src/gui/guiutility.cpp" line="105"/>
         <source>Free up local space</source>
         <translation>Libere espaço local </translation>
     </message>

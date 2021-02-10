@@ -499,7 +499,7 @@ Ta czynność spowoduje przerwanie aktualnie uruchomionej synchronizacji.</trans
         <translation>Zaloguj</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1083"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1084"/>
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
         <translation>Wersja serwera %1 nie jest już obsługiwana! Kontynuujesz na własne ryzyko.</translation>
     </message>
@@ -539,7 +539,7 @@ Ta czynność spowoduje przerwanie aktualnie uruchomionej synchronizacji.</trans
         <translation>Brak połączenia do %1 z %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1119"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1120"/>
         <source>Server configuration error: %1 at %2.</source>
         <translation>Błąd konfiguracji serwera: %1 w %2.</translation>
     </message>
@@ -2391,7 +2391,7 @@ Dzienniki zostaną zapisane w %1</translation>
         <translation>Wystąpił błąd podczas uzyskiwania dostępu do &apos;token&apos;: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/oauth.cpp" line="120"/>
+        <location filename="../src/gui/creds/oauth.cpp" line="121"/>
         <source>Empty JSON from OAuth2 redirect</source>
         <translation>Pusty plik JSON z przekierowania OAuth2</translation>
     </message>
@@ -4481,7 +4481,7 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
         <translation>Serwer na koncie %1 uruchomiony jest na starej i niewspieranej wersji %2. Używanie klienta z niewspieraną wersją serwera nie zostało przetestowane i jest potencjalnie niebezpieczne. Kontynuujesz na własne ryzyko.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="228"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="229"/>
         <source>The server on account %1 runs an unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
         <translation>Serwer na koncie %1 uruchomiony jest na starej i niewspieranej wersji %2. Używanie klienta z niewspieraną wersją serwera nie zostało przetestowane i jest potencjalnie niebezpieczne. Kontynuujesz na własne ryzyko.</translation>
     </message>
@@ -5352,32 +5352,32 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
         <translation>Wystąpił błąd podczas uruchamiania klienta poczty e-mail w celu utworzenia nowej wiadomości. Może nie jest skonfigurowany domyślny klient poczty e-mail?</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="76"/>
+        <location filename="../src/gui/guiutility.cpp" line="86"/>
         <source>Always available locally</source>
         <translation>Zawsze dostępne lokalnie</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="78"/>
+        <location filename="../src/gui/guiutility.cpp" line="88"/>
         <source>Currently available locally</source>
         <translation>Obecnie dostępne lokalnie</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="80"/>
+        <location filename="../src/gui/guiutility.cpp" line="90"/>
         <source>Some available online only</source>
         <translation>Niektóre dostępne tylko online</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="83"/>
+        <location filename="../src/gui/guiutility.cpp" line="93"/>
         <source>Available online only</source>
         <translation>Dostępne tylko online</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="90"/>
+        <location filename="../src/gui/guiutility.cpp" line="100"/>
         <source>Make always available locally</source>
         <translation>Twórz zawsze dostępne lokalnie</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="95"/>
+        <location filename="../src/gui/guiutility.cpp" line="105"/>
         <source>Free up local space</source>
         <translation>Zwolnij miejsce lokalne</translation>
     </message>

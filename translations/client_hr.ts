@@ -495,7 +495,7 @@ This action will abort any currently running synchronization.</source>
         <translation>Prijava</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1083"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1084"/>
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
         <translation>Inačica poslužitelja %1 nije podržana! Nastavite na vlastitu odgovornost.</translation>
     </message>
@@ -535,7 +535,7 @@ This action will abort any currently running synchronization.</source>
         <translation>Ne postoji veza s %1 na %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1119"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1120"/>
         <source>Server configuration error: %1 at %2.</source>
         <translation>Pogreška konfiguracije poslužitelja: %1 na %2.</translation>
     </message>
@@ -2387,7 +2387,7 @@ Zapisi se zapisuju u %1</translation>
         <translation>Došlo je do pogreške prilikom pristupanja krajnjoj točki ‘token’: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/oauth.cpp" line="120"/>
+        <location filename="../src/gui/creds/oauth.cpp" line="121"/>
         <source>Empty JSON from OAuth2 redirect</source>
         <translation>Prazan JSON s OAuth2 preusmjeravanja</translation>
     </message>
@@ -4477,7 +4477,7 @@ Ovo je novi, eksperimentalni način rada. Ako se odlučite aktivirati ga, prijav
         <translation>Poslužitelj na računu %1 koristi se starom i nepodržanom inačicom %2. Upotreba ovog klijenta s nepodržanim inačicama poslužitelja nije testirana i potencijalno je opasna. Nastavite na vlastitu odgovornost.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="228"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="229"/>
         <source>The server on account %1 runs an unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
         <translation>Poslužitelj na računu %1 koristi se nepodržanom inačicom %2. Upotreba ovog klijenta s nepodržanim inačicama poslužitelja nije testirana i potencijalno je opasna. Nastavite na vlastitu odgovornost.</translation>
     </message>
@@ -5348,32 +5348,32 @@ Ovo je novi, eksperimentalni način rada. Ako se odlučite aktivirati ga, prijav
         <translation>Došlo je do pogreške prilikom pokretanja preglednika radi stvaranja nove poruke. Možda nije konfiguriran zadani klijent e-pošte?</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="76"/>
+        <location filename="../src/gui/guiutility.cpp" line="86"/>
         <source>Always available locally</source>
         <translation>Uvijek dostupno lokalno</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="78"/>
+        <location filename="../src/gui/guiutility.cpp" line="88"/>
         <source>Currently available locally</source>
         <translation>Trenutačno dostupno lokalno</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="80"/>
+        <location filename="../src/gui/guiutility.cpp" line="90"/>
         <source>Some available online only</source>
         <translation>Djelomično dostupno samo na mreži</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="83"/>
+        <location filename="../src/gui/guiutility.cpp" line="93"/>
         <source>Available online only</source>
         <translation>Dostupno samo na mreži</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="90"/>
+        <location filename="../src/gui/guiutility.cpp" line="100"/>
         <source>Make always available locally</source>
         <translation>Učini uvijek dostupnim lokalno</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="95"/>
+        <location filename="../src/gui/guiutility.cpp" line="105"/>
         <source>Free up local space</source>
         <translation>Oslobodi lokalni prostor za pohranu</translation>
     </message>

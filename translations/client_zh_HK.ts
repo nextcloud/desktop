@@ -494,7 +494,7 @@ This action will abort any currently running synchronization.</source>
         <translation>登入</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1083"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1084"/>
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
         <translation>伺服器版本%1過舊，已不支援。繼續的風險請自負。</translation>
     </message>
@@ -534,7 +534,7 @@ This action will abort any currently running synchronization.</source>
         <translation>%1 沒有連線到 %2  </translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1119"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1120"/>
         <source>Server configuration error: %1 at %2.</source>
         <translation>伺服器設定錯誤：%1 在 %2。</translation>
     </message>
@@ -2377,7 +2377,7 @@ Logs will be written to %1</source>
         <translation>存取權杖進入點發生錯誤：&lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/oauth.cpp" line="120"/>
+        <location filename="../src/gui/creds/oauth.cpp" line="121"/>
         <source>Empty JSON from OAuth2 redirect</source>
         <translation type="unfinished"/>
     </message>
@@ -4461,7 +4461,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>%1帳戶所在的伺服器正運行不受支援的舊版本%2。此客戶端在該伺服器版本上未經測試，可能會有風險。請慎行。</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="228"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="229"/>
         <source>The server on account %1 runs an unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
         <translation>%1 帳戶所在的伺服器正運行不受支援的舊版本 %2。此客戶端在該伺服器版本上未經測試，可能會有風險。請慎行。</translation>
     </message>
@@ -5332,32 +5332,32 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>開啟郵件客戶端並撰寫新訊息時發生錯誤。可能未設定預設郵件客戶端？</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="76"/>
+        <location filename="../src/gui/guiutility.cpp" line="86"/>
         <source>Always available locally</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="78"/>
+        <location filename="../src/gui/guiutility.cpp" line="88"/>
         <source>Currently available locally</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="80"/>
+        <location filename="../src/gui/guiutility.cpp" line="90"/>
         <source>Some available online only</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="83"/>
+        <location filename="../src/gui/guiutility.cpp" line="93"/>
         <source>Available online only</source>
         <translation>僅在線可用</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="90"/>
+        <location filename="../src/gui/guiutility.cpp" line="100"/>
         <source>Make always available locally</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="95"/>
+        <location filename="../src/gui/guiutility.cpp" line="105"/>
         <source>Free up local space</source>
         <translation>釋放本地存儲空間</translation>
     </message>

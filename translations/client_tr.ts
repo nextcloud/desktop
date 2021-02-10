@@ -499,7 +499,7 @@ Bu işlem şu anda yürütülmekte olan eşitleme işlemlerini durdurur.</transl
         <translation>Oturum Aç</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1083"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1084"/>
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
         <translation>%1 sunucu sürümü desteklenmiyor! Riski üstlenerek devam edebilirsiniz.</translation>
     </message>
@@ -539,7 +539,7 @@ Bu işlem şu anda yürütülmekte olan eşitleme işlemlerini durdurur.</transl
         <translation>%1 ile %2 üzerinde bağlantı yok.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1119"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1120"/>
         <source>Server configuration error: %1 at %2.</source>
         <translation>Sunucu yapılandırma sorunu: %1 ile %2.</translation>
     </message>
@@ -2390,7 +2390,7 @@ Günlükler %1 üzerine yazılacak</translation>
         <translation>&apos;kod&apos; uç noktasına erişilirken bir sorun çıktı: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/oauth.cpp" line="120"/>
+        <location filename="../src/gui/creds/oauth.cpp" line="121"/>
         <source>Empty JSON from OAuth2 redirect</source>
         <translation>OAuth2 yönlendirmesinden gelen JSON boş</translation>
     </message>
@@ -4480,7 +4480,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
         <translation>%1 hesabındaki sunucu eski ve desteklenmeyen %2 sürümünü kullanıyor. Bu istemci desteklenmeyen sunucu sürümleri üzerinde denenmemiş olduğundan tehlikeli olabilir. Bu riski alıyorsanız devam edebilirsiniz.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="228"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="229"/>
         <source>The server on account %1 runs an unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
         <translation>%1 hesabındaki sunucu desteklenmeyen %2 sürümünü kullanıyor. Bu istemci desteklenmeyen sunucu sürümleri üzerinde denenmemiş olduğundan tehlikeli olabilir. Bu riski alıyorsanız devam edebilirsiniz.</translation>
     </message>
@@ -5351,32 +5351,32 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
         <translation>E-posta istemcisi yeni bir ileti oluşturmak için açılırken bir sorun çıktı. Varsayılan e-posta istemcisi yapılandırılmamış olabilir mi? </translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="76"/>
+        <location filename="../src/gui/guiutility.cpp" line="86"/>
         <source>Always available locally</source>
         <translation>Her zaman yerel olarak kullanılabilir</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="78"/>
+        <location filename="../src/gui/guiutility.cpp" line="88"/>
         <source>Currently available locally</source>
         <translation>Şu anda yerel olarak kullanılabilir</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="80"/>
+        <location filename="../src/gui/guiutility.cpp" line="90"/>
         <source>Some available online only</source>
         <translation>Bazıları yalnız çevrimiçi kullanılabilir</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="83"/>
+        <location filename="../src/gui/guiutility.cpp" line="93"/>
         <source>Available online only</source>
         <translation>Yalnız çevrimiçi kullanılabilir</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="90"/>
+        <location filename="../src/gui/guiutility.cpp" line="100"/>
         <source>Make always available locally</source>
         <translation>Her zaman yerel olarak kullanılabilsin</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="95"/>
+        <location filename="../src/gui/guiutility.cpp" line="105"/>
         <source>Free up local space</source>
         <translation>Yerelden kaldırıp yer aç</translation>
     </message>
