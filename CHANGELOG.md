@@ -15,6 +15,7 @@ Summary
 * Change - Ignore the desktop.ini file in every directory, not only in top dir: [#8298](https://github.com/owncloud/client/issues/8298)
 * Change - Add support for dynamic client registration with OIDC: [#8350](https://github.com/owncloud/client/pull/8350/)
 * Change - Include full os version in the about dialog: [#8374](https://github.com/owncloud/client/pull/8374)
+* Change - We removed the support for async jobs using OC-JobStatus-Location: [#8398](https://github.com/owncloud/client/pull/8398)
 
 Details
 -------
@@ -66,6 +67,12 @@ Details
    issues.
 
    https://github.com/owncloud/client/pull/8374
+
+* Change - We removed the support for async jobs using OC-JobStatus-Location: [#8398](https://github.com/owncloud/client/pull/8398)
+
+   We removed the support of async polling jobs after discovering potential issues.
+
+   https://github.com/owncloud/client/pull/8398
 
 Changelog for ownCloud Desktop Client [2.7.6] (2021-02-04)
 =======================================
