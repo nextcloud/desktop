@@ -9,6 +9,7 @@ Summary
 -------
 
 * Bugfix - SQLite wal file grows to several gigabyte: [#7646](https://github.com/owncloud/client/issues/7646)
+* Bugfix - Fix missing permission for newly created folder: [#8076](https://github.com/owncloud/client/pull/8076)
 * Bugfix - Don't recommend non default sync option: [#8317](https://github.com/owncloud/client/issues/8317)
 * Change - Don't ask the user to switch to http: [#8231](https://github.com/owncloud/client/issues/8231)
 * Change - Remove support for http redirects: [#8293](https://github.com/owncloud/client/pull/8293)
@@ -25,6 +26,12 @@ Details
    We fixed a bug where the SQLite wal file growed until the client was quit.
 
    https://github.com/owncloud/client/issues/7646
+
+* Bugfix - Fix missing permission for newly created folder: [#8076](https://github.com/owncloud/client/pull/8076)
+
+   We fixed a bug where a newly created folder had no permissions set.
+
+   https://github.com/owncloud/client/pull/8076
 
 * Bugfix - Don't recommend non default sync option: [#8317](https://github.com/owncloud/client/issues/8317)
 
