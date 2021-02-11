@@ -909,11 +909,11 @@ bool SyncJournalDb::setFileRecord(const SyncJournalFileRecord &_record)
         }
     }
 
-    qCInfo(lcDb) << "Updating file record for path:" << record._path << "inode:" << record._inode
+    qCInfo(lcDb) << "Updating file record for path:" << record.path() << "inode:" << record._inode
                  << "modtime:" << record._modtime << "type:" << record._type
                  << "etag:" << record._etag << "fileId:" << record._fileId << "remotePerm:" << record._remotePerm.toString()
                  << "fileSize:" << record._fileSize << "checksum:" << record._checksumHeader
-                 << "e2eMangledName:" << record._e2eMangledName << "isE2eEncrypted:" << record._isE2eEncrypted;
+                 << "e2eMangledName:" << record.e2eMangledName() << "isE2eEncrypted:" << record._isE2eEncrypted;
 
     qlonglong phash = getPHash(record._path);
     if (checkConnect()) {
@@ -1241,7 +1241,7 @@ bool SyncJournalDb::listFilesInPath(const QByteArray& path,
         SyncJournalFileRecord rec;
         fillFileRecordFromGetQuery(rec, _listFilesInPathQuery);
         if (!rec._path.startsWith(path) || rec._path.indexOf("/", path.size() + 1) > 0) {
-            qWarning(lcDb) << "hash collision" << path << rec._path;
+            qWarning(lcDb) << "hash collision" << path << rec.path();
             continue;
         }
         rowCallback(rec);

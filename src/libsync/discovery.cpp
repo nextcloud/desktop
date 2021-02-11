@@ -319,7 +319,7 @@ void ProcessDirectoryJob::processFile(PathTuple path,
                               << " | inode: " << dbEntry._inode << "/" << localEntry.inode << "/"
                               << " | type: " << dbEntry._type << "/" << localEntry.type << "/" << (serverEntry.isDirectory ? ItemTypeDirectory : ItemTypeFile)
                               << " | e2ee: " << dbEntry._isE2eEncrypted << "/" << serverEntry.isE2eEncrypted
-                              << " | e2eeMangledName: " << dbEntry._e2eMangledName << "/" << serverEntry.e2eMangledName;
+                              << " | e2eeMangledName: " << dbEntry.e2eMangledName() << "/" << serverEntry.e2eMangledName;
 
     if (_discoveryData->isRenamed(path._original)) {
         qCDebug(lcDisco) << "Ignoring renamed";
@@ -564,7 +564,7 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
         }
 
         // Now we know there is a sane rename candidate.
-        QString originalPath = QString::fromUtf8(base._path);
+        QString originalPath = base.path();
 
         if (_discoveryData->isRenamed(originalPath)) {
             qCInfo(lcDisco, "folder already has a rename entry, skipping");
@@ -896,7 +896,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         dbError();
         return;
     }
-    const auto originalPath = QString::fromUtf8(base._path);
+    const auto originalPath = base.path();
 
     // Function to gradually check conditions for accepting a move-candidate
     auto moveCheck = [&]() {

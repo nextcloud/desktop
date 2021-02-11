@@ -19,6 +19,7 @@
 #include <QDir>
 #include <QStringList>
 #include <QtGlobal>
+#include <QTextCodec>
 #include <qmetaobject.h>
 
 #include <iostream>
@@ -198,6 +199,7 @@ void Logger::setLogFile(const QString &name)
     }
 
     _logstream.reset(new QTextStream(&_logFile));
+    _logstream->setCodec(QTextCodec::codecForName("UTF-8"));
 }
 
 void Logger::setLogExpire(int expire)

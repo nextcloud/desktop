@@ -989,14 +989,14 @@ void SyncEngine::wipeVirtualFiles(const QString &localPath, SyncJournalDb &journ
         if (rec._type != ItemTypeVirtualFile && rec._type != ItemTypeVirtualFileDownload)
             return;
 
-        qCDebug(lcEngine) << "Removing db record for" << rec._path;
+        qCDebug(lcEngine) << "Removing db record for" << rec.path();
         journal.deleteFileRecord(rec._path);
 
         // If the local file is a dehydrated placeholder, wipe it too.
         // Otherwise leave it to allow the next sync to have a new-new conflict.
         QString localFile = localPath + rec._path;
         if (QFile::exists(localFile) && vfs.isDehydratedPlaceholder(localFile)) {
-            qCDebug(lcEngine) << "Removing local dehydrated placeholder" << rec._path;
+            qCDebug(lcEngine) << "Removing local dehydrated placeholder" << rec.path();
             QFile::remove(localFile);
         }
     });

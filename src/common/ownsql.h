@@ -152,6 +152,12 @@ public:
         bindValueInternal(pos, value);
     }
 
+    void bindValue(int pos, const QByteArray &value)
+    {
+        qCDebug(lcSql) << "SQL bind" << pos << QString::fromUtf8(value);
+        bindValueInternal(pos, value);
+    }
+
     const QByteArray &lastQuery() const;
     int numRowsAffected();
     void reset_and_clear_bindings();
