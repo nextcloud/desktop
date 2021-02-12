@@ -161,7 +161,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="58"/>
         <source>Re-open Browser </source>
-        <translation type="unfinished"/>
+        <translation>Otwórz ponownie przeglądarkę</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="65"/>
@@ -419,12 +419,12 @@ Ta czynność spowoduje przerwanie obecnie działającej synchronizacji.
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="343"/>
         <source>Enable virtual file support%1...</source>
-        <translation type="unfinished"/>
+        <translation>Włącz obsługę wirtualną pliku %1</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="343"/>
         <source> (experimental)</source>
-        <translation type="unfinished"/>
+        <translation>(eksperymentalne)</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="492"/>
@@ -454,12 +454,12 @@ Ta czynność spowoduje przerwanie obecnie działającej synchronizacji.
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="864"/>
         <source>Obtaining authorization from the browser.</source>
-        <translation type="unfinished"/>
+        <translation>Uzyskaj autoryzację z przeglądarki</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="877"/>
         <source>Server configuration error: %1 at %2.</source>
-        <translation type="unfinished"/>
+        <translation>Błąd konfiguracji serwera: %1 w %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="888"/>
@@ -533,7 +533,7 @@ Ta czynność spowoduje przerwanie obecnie działającej synchronizacji.
     <message>
         <location filename="../src/gui/activitylistmodel.cpp" line="75"/>
         <source>%1 %2 on %3</source>
-        <translation type="unfinished"/>
+        <translation>%1 %2 na %3</translation>
     </message>
 </context>
 <context>
@@ -876,7 +876,7 @@ Ta czynność spowoduje przerwanie obecnie działającej synchronizacji.
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="422"/>
         <source>%1 and %n other file(s) have been added.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 i %n innych plik(ów) zostało dodanych.</numerusform><numerusform>%1 i %n innych plik(ów) zostało dodanych.</numerusform><numerusform>%1 i %n innych plik(ów) zostało dodanych.</numerusform><numerusform>%1 i %n innych plik(ów) zostało dodanych.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="424"/>
@@ -1173,7 +1173,7 @@ Jeśli to był wypadek i zdecydujesz się zatrzymać pliki, zostaną one zsynchr
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="279"/>
         <source>Synchronizing VirtualFiles with local folder</source>
-        <translation type="unfinished"/>
+        <translation>Synchronizacja VirtualFiles z lokalnym folderem</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="281"/>
@@ -1228,12 +1228,12 @@ Jeśli to był wypadek i zdecydujesz się zatrzymać pliki, zostaną one zsynchr
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="984"/>
         <source>↓ %1/s</source>
-        <translation type="unfinished"/>
+        <translation>↓ %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="994"/>
         <source>↑ %1/s</source>
-        <translation type="unfinished"/>
+        <translation>↑ %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="992"/>
@@ -1396,7 +1396,7 @@ Jeśli to był wypadek i zdecydujesz się zatrzymać pliki, zostaną one zsynchr
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="485"/>
         <source> (experimental)</source>
-        <translation type="unfinished"/>
+        <translation>(eksperymentalne)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="519"/>
@@ -1468,7 +1468,7 @@ Jeśli to był wypadek i zdecydujesz się zatrzymać pliki, zostaną one zsynchr
     <message>
         <location filename="../src/gui/generalsettings.ui" line="109"/>
         <source>Log Settings</source>
-        <translation type="unfinished"/>
+        <translation>Ustawienia Log</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="136"/>
@@ -2181,7 +2181,7 @@ o dodatkowe uprawnienia podczas procesu aktualizacji.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="89"/>
         <source> (experimental)</source>
-        <translation type="unfinished"/>
+        <translation>(eksperymentalne)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="89"/>
