@@ -741,7 +741,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="37"/>
         <source>&amp;User:</source>
-        <translation>使用者 (&amp;U):</translation>
+        <translation>用戶 (&amp;U):</translation>
     </message>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="38"/>
