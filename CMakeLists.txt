@@ -192,15 +192,19 @@ if(BUILD_CLIENT)
 
     if(UNIX AND NOT APPLE)
         find_package(Inotify REQUIRED)
+        find_package(Libcloudproviders)
     endif()
-    find_package(Sphinx)
+
+    if (NOT APPLE)
+        find_package(Sphinx)
+    endif()
+
     find_package(PdfLatex)
     find_package(OpenSSL 1.1 REQUIRED )
 
    find_package(ZLIB REQUIRED)
    find_package(GLib2)
    find_package(Gio)
-   find_package(Libcloudproviders)
 endif()
 
 if (NOT DEFINED APPLICATION_ICON_NAME)
