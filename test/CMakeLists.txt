@@ -68,12 +68,12 @@ if (WIN32)
         ${CMAKE_BINARY_DIR}/src/libsync/vfs/cfapi
     )
 
-    nextcloud_add_test(LongWinPath)
     nextcloud_add_test(SyncCfApi)
 elseif(LINUX) # elseif(LINUX OR APPLE)
     nextcloud_add_test(SyncXAttr)
 endif()
 
+nextcloud_add_test(LongPath)
 nextcloud_add_benchmark(LargeSync)
 
 nextcloud_add_test(Account)
