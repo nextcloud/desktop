@@ -18,7 +18,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 #include "common/filesystembase.h"
+#include "csync/csync.h"
+#include "csync/vio/csync_vio_local.h"
 
+#include <QTemporaryFile>
 #include <QTest>
 
 
@@ -27,6 +30,7 @@ class TestLongWindowsPath : public QObject
     Q_OBJECT
 
 private Q_SLOTS:
+#ifdef Q_OS_WIN
     void check_long_win_path()
     {
         {
@@ -81,7 +85,58 @@ private Q_SLOTS:
         // printf( "YYYYYYYYYYYY %ld\n", strlen(new_long));
         QCOMPARE(new_long.length(), 286);
     }
+#endif
+
+
+    void testLongPathStat_data()
+    {
+        QTest::addColumn<QString>("name");
+
+        QTest::newRow("long") << QStringLiteral("/alonglonglonglong/blonglonglonglong/clonglonglonglong/dlonglonglonglong/"
+                                                "elonglonglonglong/flonglonglonglong/glonglonglonglong/hlonglonglonglong/ilonglonglonglong/"
+                                                "jlonglonglonglong/klonglonglonglong/llonglonglonglong/mlonglonglonglong/nlonglonglonglong/"
+                                                "olonglonglonglong/file.txt");
+        QTest::newRow("long emoji") << QString::fromUtf8("/alonglonglonglong/blonglonglonglong/clonglonglonglong/dlonglonglonglong/"
+                                                         "elonglonglonglong/flonglonglonglong/glonglonglonglong/hlonglonglonglong/ilonglonglonglong/"
+                                                         "jlonglonglonglong/klonglonglonglong/llonglonglonglong/mlonglonglonglong/nlonglonglonglong/"
+                                                         "olonglonglonglong/file🐷.txt");
+        QTest::newRow("long russian") << QString::fromUtf8("/alonglonglonglong/blonglonglonglong/clonglonglonglong/dlonglonglonglong/"
+                                                           "elonglonglonglong/flonglonglonglong/glonglonglonglong/hlonglonglonglong/ilonglonglonglong/"
+                                                           "jlonglonglonglong/klonglonglonglong/llonglonglonglong/mlonglonglonglong/nlonglonglonglong/"
+                                                           "olonglonglonglong/собственное.txt");
+        QTest::newRow("long arabic") << QString::fromUtf8("/alonglonglonglong/blonglonglonglong/clonglonglonglong/dlonglonglonglong/"
+                                                          "elonglonglonglong/flonglonglonglong/glonglonglonglong/hlonglonglonglong/ilonglonglonglong/"
+                                                          "jlonglonglonglong/klonglonglonglong/llonglonglonglong/mlonglonglonglong/nlonglonglonglong/"
+                                                          "olonglonglonglong/السحاب.txt");
+        QTest::newRow("long chinese") << QString::fromUtf8("/alonglonglonglong/blonglonglonglong/clonglonglonglong/dlonglonglonglong/"
+                                                           "elonglonglonglong/flonglonglonglong/glonglonglonglong/hlonglonglonglong/ilonglonglonglong/"
+                                                           "jlonglonglonglong/klonglonglonglong/llonglonglonglong/mlonglonglonglong/nlonglonglonglong/"
+                                                           "olonglonglonglong/自己的云.txt");
+    }
+
+    void testLongPathStat()
+    {
+        QTemporaryDir tmp;
+        QFETCH(QString, name);
+        const QFileInfo longPath(tmp.path() + name);
+
+        const auto data = QByteArrayLiteral("hello");
+        qDebug() << longPath;
+        QVERIFY(longPath.dir().mkpath("."));
+
+        QFile file(longPath.filePath());
+        QVERIFY(file.open(QFile::WriteOnly));
+        QVERIFY(file.write(data.constData()) == data.size());
+        file.close();
+
+        csync_file_stat_t buf;
+        QVERIFY(csync_vio_local_stat(longPath.filePath(), &buf) != -1);
+        QVERIFY(buf.size == data.size());
+        QVERIFY(buf.size == longPath.size());
+
+        QVERIFY(tmp.remove());
+    }
 };
 
 QTEST_GUILESS_MAIN(TestLongWindowsPath)
-#include "testlongwinpath.moc"
+#include "testlongpath.moc"

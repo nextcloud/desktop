@@ -42,10 +42,7 @@ if( UNIX AND NOT APPLE )
 endif(UNIX AND NOT APPLE)
 
 
-if (WIN32)
-    owncloud_add_test(LongWinPath)
-endif()
-
+owncloud_add_test(LongPath)
 owncloud_add_benchmark(LargeSync)
 
 owncloud_add_test(FolderMan)
