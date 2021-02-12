@@ -850,8 +850,9 @@ void ConfigFile::setDownloadLimit(int kbytes)
 QPair<bool, qint64> ConfigFile::newBigFolderSizeLimit() const
 {
     auto defaultValue = Theme::instance()->newBigFolderSizeLimit();
-    qint64 value = getValue(newBigFolderSizeLimitC, QString(), defaultValue).toLongLong();
-    bool use = value >= 0 && getValue(useNewBigFolderSizeLimitC, QString(), true).toBool();
+    const auto fallback = getValue(newBigFolderSizeLimitC, QString(), defaultValue).toLongLong();
+    const auto value = getPolicySetting(QLatin1String(newBigFolderSizeLimitC), fallback).toLongLong();
+    const bool use = value >= 0 && useNewBigFolderSizeLimit();
     return qMakePair(use, qMax<qint64>(0, value));
 }
 
@@ -863,7 +864,14 @@ void ConfigFile::setNewBigFolderSizeLimit(bool isChecked, qint64 mbytes)
 
 bool ConfigFile::confirmExternalStorage() const
 {
-    return getValue(confirmExternalStorageC, QString(), true).toBool();
+    const auto fallback = getValue(confirmExternalStorageC, QString(), true);
+    return getPolicySetting(QLatin1String(confirmExternalStorageC), fallback).toBool();
+}
+
+bool ConfigFile::useNewBigFolderSizeLimit() const
+{
+    const auto fallback = getValue(useNewBigFolderSizeLimitC, QString(), true);
+    return getPolicySetting(QLatin1String(useNewBigFolderSizeLimitC), fallback).toBool();
 }
 
 void ConfigFile::setConfirmExternalStorage(bool isChecked)
@@ -913,7 +921,8 @@ void ConfigFile::setMonoIcons(bool useMonoIcons)
 bool ConfigFile::crashReporter() const
 {
     QSettings settings(configFile(), QSettings::IniFormat);
-    return settings.value(QLatin1String(crashReporterC), true).toBool();
+    const auto fallback = settings.value(QLatin1String(crashReporterC), true);
+    return getPolicySetting(QLatin1String(crashReporterC), fallback).toBool();
 }
 
 void ConfigFile::setCrashReporter(bool enabled)
