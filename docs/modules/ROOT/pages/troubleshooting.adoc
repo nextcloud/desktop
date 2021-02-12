@@ -123,7 +123,7 @@ Therefore it might need to be necessary to start the ownCloud client using the c
 
 On Linux and Mac simply open the terminal and run: 
 ```
-owncloud --logfile - --logflush`.
+owncloud --logfile - --logflush
 ```
 
 On Windows open a PowerShell and run the following command:
