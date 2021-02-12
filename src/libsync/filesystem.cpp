@@ -115,7 +115,7 @@ static qint64 getSizeWithCsync(const QString &filename)
     if (csync_vio_local_stat(filename, &stat) != -1) {
         result = stat.size;
     } else {
-        qCWarning(lcFileSystem) << "Could not get size for" << filename << "with csync";
+        qCWarning(lcFileSystem) << "Could not get size for" << filename << "with csync" << Utility::formatWinError(errno);
     }
     return result;
 }
