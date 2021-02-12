@@ -1,0 +1,6 @@
+Bugfix: Fix issues with long path
+
+We fixed an issue introduced in dd641fae997d71c8396b77def2fa25ad96fdf47f with
+some functions and files paths > 260 characters.
+
+https://github.com/owncloud/enterprise/issues/4405
