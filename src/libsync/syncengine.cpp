@@ -652,6 +652,11 @@ void SyncEngine::slotDiscoveryFinished()
     //    qCInfo(lcEngine) << "Permissions of the root folder: " << _csync_ctx->remote.root_perms.toString();
     auto finish = [this]{
         auto databaseFingerprint = _journal->dataFingerprint();
+        // fix issue in the database -> we shouldn't have stored "[empty]" as now it leads to always restoring the files even though the fingerprint hasn't really changed
+        if (databaseFingerprint == QByteArray("[empty]")) {
+            _journal->setDataFingerprint("");
+            databaseFingerprint = "";
+        }
         // If databaseFingerprint is empty, this means that there was no information in the database
         // (for example, upgrading from a previous version, or first sync, or server not supporting fingerprint)
         if (!databaseFingerprint.isEmpty() && _discoveryPhase

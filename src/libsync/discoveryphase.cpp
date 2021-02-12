@@ -443,10 +443,6 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(const QString &fi
         }
         if (map.contains("data-fingerprint")) {
             _dataFingerprint = map.value("data-fingerprint").toUtf8();
-            if (_dataFingerprint.isEmpty()) {
-                // Placeholder that means that the server supports the feature even if it did not set one.
-                _dataFingerprint = "[empty]";
-            }
         }
         if (map.contains("id")) {
             _fileId = map.value("id").toUtf8();
