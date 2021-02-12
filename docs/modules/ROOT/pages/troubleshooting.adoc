@@ -116,6 +116,21 @@ As an example, to define a test where you keep log data for two days, you can is
 
 `\` owncloud --logdir /tmp/owncloud_logs --logexpire 48``
 
+==== Logging in the Console
+
+If the ownCloud client isn't able to start and immediately crashes the first two options are not available. 
+Therefore it might need to be necessary to start the ownCloud client using the command line in order to be see the error message
+
+On Linux and Mac simply open the terminal and run `owncloud`.
+
+On Windows open a PowerShell and run the following command:
+
+```
+& 'C:\Program Files\ownCloud\owncloud.exe' --logfile - --logflush | Write-Host
+```
+
+Make sure to adjust the path to your `owncloud.exe`, if you have chosen to install the client in a different path
+
 ==== Control Log Content
 
 Thanks to the Qt framework, logging can be controlled at run-time through the QT_LOGGING_RULES environment variable.
