@@ -121,7 +121,10 @@ As an example, to define a test where you keep log data for two days, you can is
 If the ownCloud client isn't able to start and immediately crashes the first two options are not available. 
 Therefore it might need to be necessary to start the ownCloud client using the command line in order to be see the error message
 
-On Linux and Mac simply open the terminal and run `owncloud`.
+On Linux and Mac simply open the terminal and run: 
+```
+owncloud --logfile - --logflush`.
+```
 
 On Windows open a PowerShell and run the following command:
 
@@ -129,7 +132,9 @@ On Windows open a PowerShell and run the following command:
 & 'C:\Program Files\ownCloud\owncloud.exe' --logfile - --logflush | Write-Host
 ```
 
-Make sure to adjust the path to your `owncloud.exe`, if you have chosen to install the client in a different path
+Make sure to copy the whole command and adjust the path to your `owncloud.exe`, if you have chosen to install the client in a different path.
+
+To further increase the verbosity of the output you can also combine these commands with the `--logdebug` argument.
 
 ==== Control Log Content
 
