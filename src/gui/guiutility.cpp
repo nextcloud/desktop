@@ -22,13 +22,23 @@
 #include <QUrlQuery>
 
 #include "common/asserts.h"
-
 using namespace OCC;
 
 Q_LOGGING_CATEGORY(lcUtility, "nextcloud.gui.utility", QtInfoMsg)
 
 bool Utility::openBrowser(const QUrl &url, QWidget *errorWidgetParent)
 {
+    const QStringList allowedUrlSchemes = {
+        "http",
+        "https",
+        "oauthtest"
+    };
+
+    if (!allowedUrlSchemes.contains(url.scheme())) {
+        qCWarning(lcUtility) << "URL format is not supported, or it has been compromised for:" << url.toString();
+        return false;
+    }
+
     if (!QDesktopServices::openUrl(url)) {
         if (errorWidgetParent) {
             QMessageBox::warning(

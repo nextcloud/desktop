@@ -9,6 +9,7 @@
 #include "configfile.h"
 #include "notificationconfirmjob.h"
 #include "logger.h"
+#include "guiutility.h"
 
 #include <QDesktopServices>
 #include <QIcon>
@@ -719,7 +720,7 @@ Q_INVOKABLE void UserModel::openCurrentAccountTalk()
 
     const auto talkApp = currentUser()->talkApp();
     if (talkApp) {
-        QDesktopServices::openUrl(talkApp->url());
+        Utility::openBrowser(talkApp->url());
     } else {
         qCWarning(lcActivity) << "The Talk app is not enabled on" << currentUser()->server();
     }
@@ -731,10 +732,11 @@ Q_INVOKABLE void UserModel::openCurrentAccountServer()
         return;
 
     QString url = _users[_currentUserId]->server(false);
-    if (!(url.contains("http://") || url.contains("https://"))) {
+    if (!url.startsWith("http://") && !url.startsWith("https://")) {
         url = "https://" + _users[_currentUserId]->server(false);
     }
-    QDesktopServices::openUrl(QUrl(url));
+
+    QDesktopServices::openUrl(url);
 }
 
 Q_INVOKABLE void UserModel::switchCurrentUser(const int &id)
@@ -983,7 +985,7 @@ void UserAppsModel::buildAppList()
 
 void UserAppsModel::openAppUrl(const QUrl &url)
 {
-    QDesktopServices::openUrl(url);
+    Utility::openBrowser(url);
 }
 
 int UserAppsModel::rowCount(const QModelIndex &parent) const

@@ -16,6 +16,7 @@
 #include <QWebEngineCertificateError>
 #include <QMessageBox>
 
+#include "guiutility.h"
 #include "common/utility.h"
 
 namespace OCC {
@@ -51,9 +52,6 @@ public:
 
 protected:
     bool certificateError(const QWebEngineCertificateError &certificateError) override;
-
-private:
-    QUrl _rootUrl;
 };
 
 // We need a separate class here, since we cannot simply return the same WebEnginePage object
@@ -190,15 +188,10 @@ QWebEnginePage * WebEnginePage::createWindow(QWebEnginePage::WebWindowType type)
 
 void WebEnginePage::setUrl(const QUrl &url) {
     QWebEnginePage::setUrl(url);
-    _rootUrl = url;
 }
 
-bool WebEnginePage::certificateError(const QWebEngineCertificateError &certificateError) {
-    if (certificateError.error() == QWebEngineCertificateError::CertificateAuthorityInvalid &&
-        certificateError.url().host() == _rootUrl.host()) {
-        return true;
-    }
-
+bool WebEnginePage::certificateError(const QWebEngineCertificateError &certificateError)
+{
     /**
      * TODO properly improve this.
      * The certificate should be displayed.
@@ -227,7 +220,7 @@ bool ExternalWebEnginePage::acceptNavigationRequest(const QUrl &url, QWebEngineP
 {
     Q_UNUSED(type);
     Q_UNUSED(isMainFrame);
-    QDesktopServices::openUrl(url);
+    Utility::openBrowser(url);
     return false;
 }
 

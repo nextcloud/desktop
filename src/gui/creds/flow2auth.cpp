@@ -25,6 +25,7 @@
 #include "theme.h"
 #include "networkjobs.h"
 #include "configfile.h"
+#include "guiutility.h"
 
 namespace OCC {
 
@@ -146,7 +147,7 @@ void Flow2Auth::fetchNewToken(const TokenAction action)
         {
         case actionOpenBrowser:
             // Try to open Browser
-            if (!QDesktopServices::openUrl(authorisationLink())) {
+            if (!Utility::openBrowser(authorisationLink())) {
                 // We cannot open the browser, then we claim we don't support Flow2Auth.
                 // Our UI callee will ask the user to copy and open the link.
                 emit result(NotSupported);

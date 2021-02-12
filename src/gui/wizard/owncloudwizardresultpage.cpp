@@ -17,6 +17,7 @@
 #include <QDir>
 #include <QUrl>
 
+#include "guiutility.h"
 #include "wizard/owncloudwizardresultpage.h"
 #include "wizard/owncloudwizardcommon.h"
 #include "theme.h"
@@ -93,7 +94,7 @@ void OwncloudWizardResultPage::slotOpenServer()
 {
     Theme *theme = Theme::instance();
     QUrl url = QUrl(field("OCUrl").toString() + theme->wizardUrlPostfix());
-    QDesktopServices::openUrl(url);
+    Utility::openBrowser(url);
 }
 
 } // namespace OCC
