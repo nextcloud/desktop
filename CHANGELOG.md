@@ -8,6 +8,7 @@ ownCloud admins and users.
 Summary
 -------
 
+* Bugfix - Fix issues with long path: [#4405](https://github.com/owncloud/enterprise/issues/4405)
 * Bugfix - SQLite wal file grows to several gigabyte: [#7646](https://github.com/owncloud/client/issues/7646)
 * Bugfix - Fix missing permission for newly created folder: [#8076](https://github.com/owncloud/client/pull/8076)
 * Bugfix - Don't recommend non default sync option: [#8317](https://github.com/owncloud/client/issues/8317)
@@ -20,6 +21,13 @@ Summary
 
 Details
 -------
+
+* Bugfix - Fix issues with long path: [#4405](https://github.com/owncloud/enterprise/issues/4405)
+
+   We fixed an issue introduced in dd641fae997d71c8396b77def2fa25ad96fdf47f with some
+   functions and files paths > 260 characters.
+
+   https://github.com/owncloud/enterprise/issues/4405
 
 * Bugfix - SQLite wal file grows to several gigabyte: [#7646](https://github.com/owncloud/client/issues/7646)
 
