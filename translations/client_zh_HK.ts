@@ -225,7 +225,7 @@
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="352"/>
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
-        <translation>為了保護您的身份，我們將用含12個單詞的助記碼進行加密。請將這些單詞記在一個安全的地方。要將其他裝置（如手機或手提電腦）加入您的帳戶中，需用到此助記碼。</translation>
+        <translation>為了保護您的身份，我們將用含12個單詞的助記碼進行加密。請將這些單詞記在一個安全的地方。要將其他裝置（如手提電話或手提電腦）加入您的帳戶中，需用到此助記碼。</translation>
     </message>
 </context>
 <context>
@@ -233,7 +233,8 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="31"/>
         <source>Unchecked folders will be &lt;b&gt;removed&lt;/b&gt; from your local file system and will not be synchronized to this computer anymore</source>
-        <translation>未標示的資料夾將會從這台電腦被 &lt;b&gt;刪除&lt;/b&gt; 而且不會再被同步到這台電腦 </translation>
+        <translation>未標示的資料夾將會從這部電腦中&lt;b&gt;刪除&lt;/b&gt;亦不會再被同步到這部電腦 
+</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="126"/>
@@ -4417,12 +4418,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::WebEnginePage</name>
     <message>
-        <location filename="../src/gui/wizard/webview.cpp" line="211"/>
+        <location filename="../src/gui/wizard/webview.cpp" line="203"/>
         <source>Invalid certificate detected</source>
         <translation>檢測到無效憑證</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/webview.cpp" line="212"/>
+        <location filename="../src/gui/wizard/webview.cpp" line="204"/>
         <source>The host &quot;%1&quot; provided an invalid certificate. Continue?</source>
         <translation>主機「%1」所提供的憑證無效。確定繼續？</translation>
     </message>

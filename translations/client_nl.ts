@@ -4443,12 +4443,12 @@ Fout bij instellen pin status
 <context>
     <name>OCC::WebEnginePage</name>
     <message>
-        <location filename="../src/gui/wizard/webview.cpp" line="211"/>
+        <location filename="../src/gui/wizard/webview.cpp" line="203"/>
         <source>Invalid certificate detected</source>
         <translation>Ongeldig certificaat gedetecteerd</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/webview.cpp" line="212"/>
+        <location filename="../src/gui/wizard/webview.cpp" line="204"/>
         <source>The host &quot;%1&quot; provided an invalid certificate. Continue?</source>
         <translation>De server &quot;%1&quot; heeft een ongeldig certificaat . Wilt u doorgaan?</translation>
     </message>

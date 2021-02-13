@@ -4413,12 +4413,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::WebEnginePage</name>
     <message>
-        <location filename="../src/gui/wizard/webview.cpp" line="211"/>
+        <location filename="../src/gui/wizard/webview.cpp" line="203"/>
         <source>Invalid certificate detected</source>
         <translation>유효하지 않은 인증서 발견</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/webview.cpp" line="212"/>
+        <location filename="../src/gui/wizard/webview.cpp" line="204"/>
         <source>The host &quot;%1&quot; provided an invalid certificate. Continue?</source>
         <translation>호스트 &quot;%1&quot;이 잘못된 인증서를 제공했습니다. 계속하시겠습니까?</translation>
     </message>

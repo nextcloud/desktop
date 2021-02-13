@@ -4437,12 +4437,12 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
 <context>
     <name>OCC::WebEnginePage</name>
     <message>
-        <location filename="../src/gui/wizard/webview.cpp" line="211"/>
+        <location filename="../src/gui/wizard/webview.cpp" line="203"/>
         <source>Invalid certificate detected</source>
         <translation>Certificado inválido detectado</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/webview.cpp" line="212"/>
+        <location filename="../src/gui/wizard/webview.cpp" line="204"/>
         <source>The host &quot;%1&quot; provided an invalid certificate. Continue?</source>
         <translation>El host &quot;%1&quot; ha entregado un certificado no válido. ¿Continuar?</translation>
     </message>
