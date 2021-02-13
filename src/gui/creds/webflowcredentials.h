@@ -45,7 +45,7 @@ public:
 
     QString authType() const override;
     QString user() const override;
-    QString password() const;
+    QString password() const override;
     QNetworkAccessManager *createQNAM() const override;
 
     bool ready() const override;
