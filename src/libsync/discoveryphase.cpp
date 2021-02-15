@@ -443,6 +443,10 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(const QString &fi
         }
         if (map.contains("data-fingerprint")) {
             _dataFingerprint = map.value("data-fingerprint").toUtf8();
+            if (_dataFingerprint.isEmpty()) {
+                // Placeholder that means that the server supports the feature even if it did not set one.
+                _dataFingerprint = DataFingerprintPlaceholder;
+            }
         }
         if (map.contains("id")) {
             _fileId = map.value("id").toUtf8();
@@ -571,4 +575,6 @@ void DiscoverySingleDirectoryJob::metadataError(const QByteArray &fileId, int ht
     emit finished(_results);
     deleteLater();
 }
+
+const QByteArray DiscoverySingleDirectoryJob::DataFingerprintPlaceholder = QByteArrayLiteral("[empty]");
 }
