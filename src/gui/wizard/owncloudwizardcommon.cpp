@@ -16,6 +16,10 @@
 #include <QLabel>
 #include <QPixmap>
 #include <QVariant>
+#include <QRadioButton>
+#include <QAbstractButton>
+#include <QCheckBox>
+#include <QSpinBox>
 
 #include "wizard/owncloudwizardcommon.h"
 #include "theme.h"
@@ -66,6 +70,15 @@ namespace WizardCommon {
         sizePolicy.setRetainSizeWhenHidden(true);
         errorLabel->setSizePolicy(sizePolicy);
         errorLabel->setVisible(false);
+    }
+
+    void customizeHintLabel(QLabel *label)
+    {
+        auto palette = label->palette();
+        QColor textColor = palette.color(QPalette::Text);
+        textColor.setAlpha(128);
+        palette.setColor(QPalette::Text, textColor);
+        label->setPalette(palette);
     }
 
 } // ns WizardCommon

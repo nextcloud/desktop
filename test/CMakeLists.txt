@@ -9,6 +9,7 @@ add_library(testutils
   STATIC
   syncenginetestutils.cpp
   pushnotificationstestutils.cpp
+  themeutils.cpp
 )
 
 target_link_libraries(testutils PUBLIC ${APPLICATION_EXECUTABLE}sync Qt5::Test)
@@ -54,6 +55,7 @@ nextcloud_add_test(LockedFiles)
 nextcloud_add_test(FolderWatcher)
 nextcloud_add_test(Capabilities)
 nextcloud_add_test(PushNotifications)
+nextcloud_add_test(Theme)
 
 if( UNIX AND NOT APPLE )
     nextcloud_add_test(InotifyWatcher)

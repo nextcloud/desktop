@@ -131,7 +131,12 @@ void OwncloudSetupWizard::startWizard()
 
     _ocWizard->setRemoteFolder(_remoteFolder);
 
-    _ocWizard->setStartId(WizardCommon::Page_ServerSetup);
+#ifdef WITH_PROVIDERS
+    const auto startPage = WizardCommon::Page_Welcome;
+#else // WITH_PROVIDERS
+    const auto startPage = WizardCommon::Page_ServerSetup;
+#endif // WITH_PROVIDERS
+    _ocWizard->setStartId(startPage);
 
     _ocWizard->restart();
 

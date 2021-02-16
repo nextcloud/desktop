@@ -20,6 +20,7 @@
 #include "owncloudgui.h"
 
 #include "wizard/owncloudwizard.h"
+#include "wizard/welcomepage.h"
 #include "wizard/owncloudsetuppage.h"
 #include "wizard/owncloudhttpcredspage.h"
 #include "wizard/owncloudoauthcredspage.h"
@@ -46,6 +47,9 @@ Q_LOGGING_CATEGORY(lcWizard, "nextcloud.gui.wizard", QtInfoMsg)
 OwncloudWizard::OwncloudWizard(QWidget *parent)
     : QWizard(parent)
     , _account(nullptr)
+#ifdef WITH_PROVIDERS
+    , _welcomePage(new WelcomePage(this))
+#endif // WITH_PROVIDERS
     , _setupPage(new OwncloudSetupPage(this))
     , _httpCredsPage(new OwncloudHttpCredsPage(this))
     , _browserCredsPage(new OwncloudOAuthCredsPage)
@@ -57,6 +61,9 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
     setObjectName("owncloudWizard");
 
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
+#ifdef WITH_PROVIDERS
+    setPage(WizardCommon::Page_Welcome, _welcomePage);
+#endif // WITH_PROVIDERS
     setPage(WizardCommon::Page_ServerSetup, _setupPage);
     setPage(WizardCommon::Page_HttpCreds, _httpCredsPage);
     setPage(WizardCommon::Page_OAuthCreds, _browserCredsPage);
@@ -94,6 +101,12 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
     setSubTitleFormat(Qt::RichText);
     setButtonText(QWizard::CustomButton1, tr("Skip folders configuration"));
 
+    // Change the next buttons size policy since we hide it on the
+    // welcome page but want it to fill it's space that we don't get
+    // flickering when the page changes
+    auto nextButtonSizePolicy = button(QWizard::NextButton)->sizePolicy();
+    nextButtonSizePolicy.setRetainSizeWhenHidden(true);
+    button(QWizard::NextButton)->setSizePolicy(nextButtonSizePolicy);
 
     // Connect styleChanged events to our widgets, so they can adapt (Dark-/Light-Mode switching)
     connect(this, &OwncloudWizard::styleChanged, _setupPage, &OwncloudSetupPage::slotStyleChanged);
@@ -220,6 +233,29 @@ void OwncloudWizard::slotCurrentPageChanged(int id)
 {
     qCDebug(lcWizard) << "Current Wizard page changed to " << id;
 
+    const auto setNextButtonAsDefault = [this]() {
+        auto nextButton = qobject_cast<QPushButton *>(button(QWizard::NextButton));
+        if (nextButton) {
+            nextButton->setDefault(true);
+            nextButton->setFocus();
+        }
+    };
+
+    if (id == WizardCommon::Page_Welcome) {
+        // Set next button to just hidden so it retains it's layout
+        button(QWizard::NextButton)->setHidden(true);
+        // Need to set it from here, otherwise it has no effect
+        _welcomePage->setLoginButtonDefault();
+    } else if (id == WizardCommon::Page_WebView || id == WizardCommon::Page_Flow2AuthCreds) {
+        setButtonLayout({ QWizard::Stretch, QWizard::BackButton });
+    } else if (id == WizardCommon::Page_AdvancedSetup) {
+        setButtonLayout({ QWizard::Stretch, QWizard::CustomButton1, QWizard::BackButton, QWizard::NextButton });
+        setNextButtonAsDefault();
+    } else {
+        setButtonLayout({ QWizard::Stretch, QWizard::BackButton, QWizard::NextButton });
+        setNextButtonAsDefault();
+    }
+
     if (id == WizardCommon::Page_ServerSetup) {
         emit clearPendingRequests();
     }
@@ -232,7 +268,6 @@ void OwncloudWizard::slotCurrentPageChanged(int id)
         done(Accepted);
     }
 
-    setOption(QWizard::HaveCustomButton1, id == WizardCommon::Page_AdvancedSetup);
     if (id == WizardCommon::Page_AdvancedSetup && (_credentialsPage == _browserCredsPage || _credentialsPage == _flow2CredsPage)) {
         // For OAuth, disable the back button in the Page_AdvancedSetup because we don't want
         // to re-open the browser.

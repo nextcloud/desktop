@@ -29,6 +29,7 @@ namespace OCC {
 
 Q_DECLARE_LOGGING_CATEGORY(lcWizard)
 
+class WelcomePage;
 class OwncloudSetupPage;
 class OwncloudHttpCredsPage;
 class OwncloudOAuthCredsPage;
@@ -115,6 +116,7 @@ private:
     void customizeStyle();
 
     AccountPtr _account;
+    WelcomePage *_welcomePage;
     OwncloudSetupPage *_setupPage;
     OwncloudHttpCredsPage *_httpCredsPage;
     OwncloudOAuthCredsPage *_browserCredsPage;

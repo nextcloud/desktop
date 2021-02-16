@@ -132,6 +132,10 @@ public:
 #ifndef TOKEN_AUTH_ONLY
     static QString hidpiFileName(const QString &fileName, QPaintDevice *dev = nullptr);
 
+    static QString hidpiFileName(const QString &iconName, const QColor &backgroundColor, QPaintDevice *dev = nullptr);
+
+    static bool isHidpi(QPaintDevice *dev = nullptr);
+
     /**
       * get an sync state icon
       */
@@ -230,6 +234,8 @@ public:
 
     /** @return color for the setup wizard. */
     virtual QColor wizardHeaderBackgroundColor() const;
+
+    virtual QPixmap wizardApplicationLogo() const;
 
     /** @return logo for the setup wizard. */
     virtual QPixmap wizardHeaderLogo() const;
