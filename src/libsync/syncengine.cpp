@@ -652,11 +652,9 @@ void SyncEngine::slotDiscoveryFinished()
     //    qCInfo(lcEngine) << "Permissions of the root folder: " << _csync_ctx->remote.root_perms.toString();
     auto finish = [this]{
         auto databaseFingerprint = _journal->dataFingerprint();
-
         // If databaseFingerprint is empty, this means that there was no information in the database
         // (for example, upgrading from a previous version, or first sync, or server not supporting fingerprint)
-        const bool isFingerprintEmpty = databaseFingerprint.isEmpty() || databaseFingerprint == DiscoverySingleDirectoryJob::DataFingerprintPlaceholder;
-        if (!isFingerprintEmpty && _discoveryPhase
+        if (!databaseFingerprint.isEmpty() && _discoveryPhase
             && _discoveryPhase->_dataFingerprint != databaseFingerprint) {
             qCInfo(lcEngine) << "data fingerprint changed, assume restore from backup" << databaseFingerprint << _discoveryPhase->_dataFingerprint;
             restoreOldFiles(_syncItems);
@@ -862,11 +860,24 @@ void SyncEngine::restoreOldFiles(SyncFileItemVector &syncItems)
             qCWarning(lcEngine) << "restoreOldFiles: RESTORING" << syncItem->_file;
             syncItem->_instruction = CSYNC_INSTRUCTION_CONFLICT;
             break;
-        case CSYNC_INSTRUCTION_REMOVE:
+            // Looks like the problem actually happens because of the server upgrade is done without enabling the 'maintenance'mode that would stop all the syncing
+            // until it's turned back off. Also, it looks like the files were removed from the server, and the "data-fingerprint" was updated as well (with a separate server command).
+            // This of course is one of those cases, when users would just need to do a full re-sync to fix the consequences of an incorrect upgrade procedure.
+            // But, the user I am talking to is refusing to do so, and saying that this is very hard to do as there's a lot of users and they are in different time-zones.
+            // I've been debugging this problem for a while. And here is what I propose:
+
+            // Based on my reasearch - the CSYNC_INSTRUCTION_REMOVE case makes no sense
+            // why do we want to re-upload a file that's been changed on the server? the remove instruction is only set if the file was actually removed
+            // for those cases when the user was modifying the file offline while it was removed from the server, the instruction is set to CSYNC_INSTRUCTION_NEW
+            // so the user's work won't be lost
+            // if it's a file that's been modified elsewhere (by other user - then we'll be having instruction CSYNC_INSTRUCTION_SYNC).
+            // Removing the case for CSYNC_INSTRUCTION_REMOVE would fix the issue with removed files being reuploaded because of the "data-fingerprint" has changed on the server
+            // while the files were removed just before or right after that.
+        /*case CSYNC_INSTRUCTION_REMOVE:
             qCWarning(lcEngine) << "restoreOldFiles: RESTORING" << syncItem->_file;
             syncItem->_instruction = CSYNC_INSTRUCTION_NEW;
             syncItem->_direction = SyncFileItem::Up;
-            break;
+            break;*/
         case CSYNC_INSTRUCTION_RENAME:
         case CSYNC_INSTRUCTION_NEW:
             // Ideally we should try to revert the rename or remove, but this would be dangerous

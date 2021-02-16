@@ -158,8 +158,6 @@ private:
 
 public:
     QByteArray _dataFingerprint;
-
-    static const QByteArray DataFingerprintPlaceholder;
 };
 
 class DiscoveryPhase : public QObject
