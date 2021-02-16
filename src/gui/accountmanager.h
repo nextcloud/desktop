@@ -58,7 +58,7 @@ public:
      * Return a list of all accounts.
      * (this is a list of QSharedPointer for internal reasons, one should normally not keep a copy of them)
      */
-    QList<AccountStatePtr> accounts() { return _accounts; }
+    const QList<AccountStatePtr> &accounts() { return _accounts; }
 
     /**
      * Return the account state pointer for an account identified by its display name
