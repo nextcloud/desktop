@@ -63,7 +63,7 @@ SyncJournalFileRecord SyncFileItem::toSyncJournalFileRecordWithInode(const QStri
 SyncFileItemPtr SyncFileItem::fromSyncJournalFileRecord(const SyncJournalFileRecord &rec)
 {
     auto item = SyncFileItemPtr::create();
-    item->_file = QString::fromUtf8(rec._path);
+    item->_file = rec.path();
     item->_inode = rec._inode;
     item->_modtime = rec._modtime;
     item->_type = rec._type;
@@ -73,7 +73,7 @@ SyncFileItemPtr SyncFileItem::fromSyncJournalFileRecord(const SyncJournalFileRec
     item->_remotePerm = rec._remotePerm;
     item->_serverHasIgnoredFiles = rec._serverHasIgnoredFiles;
     item->_checksumHeader = rec._checksumHeader;
-    item->_encryptedFileName = QString::fromUtf8(rec._e2eMangledName);
+    item->_encryptedFileName = rec.e2eMangledName();
     item->_isEncrypted = rec._isE2eEncrypted;
     return item;
 }

@@ -55,6 +55,8 @@ public:
     bool isDirectory() const { return _type == ItemTypeDirectory; }
     bool isFile() const { return _type == ItemTypeFile || _type == ItemTypeVirtualFileDehydration; }
     bool isVirtualFile() const { return _type == ItemTypeVirtualFile || _type == ItemTypeVirtualFileDownload; }
+    QString path() const { return QString::fromUtf8(_path); }
+    QString e2eMangledName() const { return QString::fromUtf8(_e2eMangledName); }
 
     QByteArray _path;
     quint64 _inode = 0;

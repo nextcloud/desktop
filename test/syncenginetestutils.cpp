@@ -995,7 +995,7 @@ FileInfo FakeFolder::dbState() const
 {
     FileInfo result;
     _journalDb->getFilesBelowPath("", [&](const OCC::SyncJournalFileRecord &record) {
-        auto components = PathComponents(QString::fromUtf8(record._path));
+        auto components = PathComponents(record.path());
         auto &parentDir = findOrCreateDirs(result, components.parentDirComponents());
         auto name = components.fileName();
         auto &item = parentDir.children[name];
