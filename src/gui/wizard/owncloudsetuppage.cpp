@@ -45,10 +45,9 @@ OwncloudSetupPage::OwncloudSetupPage(QWidget *parent)
 {
     _ui.setupUi(this);
 
-    Theme *theme = Theme::instance();
-    setTitle(WizardCommon::titleTemplate().arg(tr("Connect to %1").arg(theme->appNameGUI())));
-    setSubTitle(WizardCommon::subTitleTemplate().arg(tr("Setup %1 server").arg(theme->appNameGUI())));
+    setupServerAddressDescriptionLabel();
 
+    Theme *theme = Theme::instance();
     if (theme->overrideServerUrl().isEmpty()) {
         _ui.leUrl->setPostfix(theme->wizardUrlPostfix());
         _ui.leUrl->setPlaceholderText(theme->wizardUrlHint());
@@ -59,7 +58,11 @@ OwncloudSetupPage::OwncloudSetupPage(QWidget *parent)
 
     registerField(QLatin1String("OCUrl*"), _ui.leUrl);
 
-    _ui.resultLayout->addWidget(_progressIndi);
+    auto sizePolicy = _progressIndi->sizePolicy();
+    sizePolicy.setRetainSizeWhenHidden(true);
+    _progressIndi->setSizePolicy(sizePolicy);
+
+    _ui.progressLayout->addWidget(_progressIndi);
     stopSpinner();
 
     setupCustomization();
@@ -70,35 +73,17 @@ OwncloudSetupPage::OwncloudSetupPage(QWidget *parent)
 
     addCertDial = new AddCertificateDialog(this);
     connect(addCertDial, &QDialog::accepted, this, &OwncloudSetupPage::slotCertificateAccepted);
+}
 
-#ifdef WITH_PROVIDERS
-    connect(_ui.loginButton, &QPushButton::clicked, this, &OwncloudSetupPage::slotLogin);
-    connect(_ui.createAccountButton, &QPushButton::clicked, this, &OwncloudSetupPage::slotGotoProviderList);
+void OwncloudSetupPage::setLogo()
+{
+    _ui.logoLabel->setPixmap(Theme::instance()->wizardApplicationLogo());
+}
 
-    _ui.login->hide();
-    _ui.slideShow->addSlide(Theme::hidpiFileName(":/client/theme/colored/wizard-nextcloud.png"), tr("Keep your data secure and under your control"));
-    _ui.slideShow->addSlide(Theme::hidpiFileName(":/client/theme/colored/wizard-files.png"), tr("Secure collaboration & file exchange"));
-    _ui.slideShow->addSlide(Theme::hidpiFileName(":/client/theme/colored/wizard-groupware.png"), tr("Easy-to-use web mail, calendaring & contacts"));
-    _ui.slideShow->addSlide(Theme::hidpiFileName(":/client/theme/colored/wizard-talk.png"), tr("Screensharing, online meetings & web conferences"));
-
-    connect(_ui.slideShow, &SlideShow::clicked, _ui.slideShow, &SlideShow::stopShow);
-    connect(_ui.nextButton, &QPushButton::clicked, _ui.slideShow, &SlideShow::nextSlide);
-    connect(_ui.prevButton, &QPushButton::clicked, _ui.slideShow, &SlideShow::prevSlide);
-
-    _ui.slideShow->startShow();
-#else
-    _ui.createAccountButton->hide();
-    _ui.loginButton->hide();
-    _ui.installLink->hide();
-    _ui.slideShow->hide();
-#endif
-
+void OwncloudSetupPage::setupServerAddressDescriptionLabel()
+{
     const auto appName = Theme::instance()->appNameGUI();
-    _ui.loginButton->setText(tr("Log in to your %1").arg(appName));
-    _ui.addressDescriptionLabel->setText(tr("This is the link to your %1 web interface when you open it in the browser.<br/>"
-                                            "It looks like https://cloud.example.com or https://example.com/cloud").arg(appName));
-
-    customizeStyle();
+    _ui.serverAddressDescriptionLabel->setText(tr("The link to your %1 web interface when you open it in the browser.", "%1 will be replaced with the application name").arg(appName));
 }
 
 void OwncloudSetupPage::setServerUrl(const QString &newUrl)
@@ -127,25 +112,17 @@ void OwncloudSetupPage::setupCustomization()
 
     variant = theme->customMedia(Theme::oCSetupBottom);
     WizardCommon::setupCustomMedia(variant, _ui.bottomLabel);
+
+    auto leUrlPalette = _ui.leUrl->palette();
+    leUrlPalette.setColor(QPalette::Text, Qt::black);
+    leUrlPalette.setColor(QPalette::Base, Qt::white);
+    _ui.leUrl->setPalette(leUrlPalette);
 }
 
 #ifdef WITH_PROVIDERS
 void OwncloudSetupPage::slotLogin()
 {
-    _ui.slideShow->hide();
-    _ui.nextButton->hide();
-    _ui.prevButton->hide();
-
     _ocWizard->setRegistration(false);
-    _ui.login->setMaximumHeight(0);
-    auto *animation = new QPropertyAnimation(_ui.login, "maximumHeight");
-    animation->setDuration(0);
-    animation->setStartValue(500);
-    animation->setEndValue(500);
-    _ui.login->show();
-    _ui.loginButton->hide();
-    wizard()->resize(wizard()->sizeHint());
-    animation->start();
 }
 void OwncloudSetupPage::slotGotoProviderList()
 {
@@ -160,6 +137,14 @@ void OwncloudSetupPage::slotGotoProviderList()
 // slot hit from textChanged of the url entry field.
 void OwncloudSetupPage::slotUrlChanged(const QString &url)
 {
+    // Need to set next button as default button here because
+    // otherwise the on OSX the next button does not stay the default
+    // button
+    auto nextButton = qobject_cast<QPushButton *>(_ocWizard->button(QWizard::NextButton));
+    if (nextButton) {
+        nextButton->setDefault(true);
+    }
+
     _authTypeKnown = false;
 
     QString newUrl = url;
@@ -181,16 +166,6 @@ void OwncloudSetupPage::slotUrlChanged(const QString &url)
     if (newUrl != url) {
         _ui.leUrl->setText(newUrl);
     }
-
-    const auto isSecure = url.startsWith(QLatin1String("https://"));
-    const auto toolTip = isSecure ? tr("This URL is secure. You can use it.")
-                                  : tr("This URL is NOT secure as it is not encrypted.\n"
-                                       "It is not advisable to use it.");
-    const auto pixmap = isSecure ? QPixmap(Theme::hidpiFileName(":/client/theme/lock-https.svg"))
-                                 : QPixmap(Theme::hidpiFileName(":/client/theme/lock-http.svg"));
-
-    _ui.urlLabel->setToolTip(toolTip);
-    _ui.urlLabel->setPixmap(pixmap.scaled(_ui.urlLabel->size(), Qt::KeepAspectRatio));
 }
 
 void OwncloudSetupPage::slotUrlEditFinished()
@@ -210,6 +185,8 @@ bool OwncloudSetupPage::isComplete() const
 
 void OwncloudSetupPage::initializePage()
 {
+    customizeStyle();
+
     WizardCommon::initErrorLabel(_ui.errorLabel);
 
     _authTypeKnown = false;
@@ -217,26 +194,29 @@ void OwncloudSetupPage::initializePage()
 
     QAbstractButton *nextButton = wizard()->button(QWizard::NextButton);
     auto *pushButton = qobject_cast<QPushButton *>(nextButton);
-    if (pushButton)
+    if (pushButton) {
         pushButton->setDefault(true);
+    }
 
-    // If url is overriden by theme, it's already set and
-    // we just check the server type and switch to second page
-    // immediately.
-    if (Theme::instance()->overrideServerUrl().isEmpty()) {
-        _ui.leUrl->setFocus();
-    } else if (!Theme::instance()->forceOverrideServerUrl()) {
+    _ui.leUrl->setFocus();
+
+    const auto isServerUrlOverridden = !Theme::instance()->overrideServerUrl().isEmpty();
+    if (isServerUrlOverridden && !Theme::instance()->forceOverrideServerUrl()) {
+        // If the url is overwritten but we don't force to use that url
+        // Just focus the next button to let the user navigate quicker
         if (nextButton) {
             nextButton->setFocus();
         }
-    } else {
+    } else if (isServerUrlOverridden) {
+        // If the overwritten url is not empty and we force this overwritten url
+        // we just check the server type and switch to next page
+        // immediately.
         setCommitPage(true);
         // Hack: setCommitPage() changes caption, but after an error this page could still be visible
         setButtonText(QWizard::CommitButton, tr("&Next >"));
         validatePage();
         setVisible(false);
     }
-    wizard()->resize(wizard()->sizeHint());
 }
 
 int OwncloudSetupPage::nextId() const
@@ -269,7 +249,7 @@ bool OwncloudSetupPage::validatePage()
         QString u = url();
         QUrl qurl(u);
         if (!qurl.isValid() || qurl.host().isEmpty()) {
-            setErrorString(tr("Invalid URL"), false);
+            setErrorString(tr("Server address does not seem to be valid"), false);
             return false;
         }
 
@@ -338,21 +318,18 @@ void OwncloudSetupPage::setErrorString(const QString &err, bool retryHTTPonly)
     _checking = false;
     emit completeChanged();
     stopSpinner();
-    wizard()->resize(wizard()->sizeHint());
 }
 
 void OwncloudSetupPage::startSpinner()
 {
-    _ui.resultLayout->setEnabled(true);
-    _ui.urlLabel->setVisible(false);
+    _ui.progressLayout->setEnabled(true);
     _progressIndi->setVisible(true);
     _progressIndi->startAnimation();
 }
 
 void OwncloudSetupPage::stopSpinner()
 {
-    _ui.resultLayout->setEnabled(false);
-    _ui.urlLabel->setVisible(true);
+    _ui.progressLayout->setEnabled(false);
     _progressIndi->setVisible(false);
     _progressIndi->stopAnimation();
 }
@@ -397,24 +374,19 @@ void OwncloudSetupPage::slotStyleChanged()
 
 void OwncloudSetupPage::customizeStyle()
 {
-#ifdef WITH_PROVIDERS
-    Theme *theme = Theme::instance();
+    setLogo();
 
-    bool widgetHasDarkBg = Theme::isDarkColor(QGuiApplication::palette().base().color());
-    _ui.nextButton->setIcon(theme->uiThemeIcon(QString("control-next.svg"), widgetHasDarkBg));
-    _ui.prevButton->setIcon(theme->uiThemeIcon(QString("control-prev.svg"), widgetHasDarkBg));
+    if (_progressIndi) {
+        const auto isDarkBackground = Theme::isDarkColor(palette().window().color());
+        if (isDarkBackground) {
+            _progressIndi->setColor(Qt::white);
+        } else {
+            _progressIndi->setColor(Qt::black);
+        }
+    }
 
-    // QPushButtons are a mess when it comes to consistent background coloring without stylesheets,
-    // so we do it here even though this is an exceptional styling method here
-    _ui.createAccountButton->setStyleSheet("QPushButton {background-color: #0082C9; color: white}");
 
-    QPalette pal = _ui.slideShow->palette();
-    pal.setColor(QPalette::WindowText, theme->wizardHeaderBackgroundColor());
-    _ui.slideShow->setPalette(pal);
-#endif
-
-    if(_progressIndi)
-        _progressIndi->setColor(QGuiApplication::palette().color(QPalette::Text));
+    WizardCommon::customizeHintLabel(_ui.serverAddressDescriptionLabel);
 }
 
 } // namespace OCC

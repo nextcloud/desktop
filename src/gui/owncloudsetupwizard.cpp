@@ -116,7 +116,7 @@ void OwncloudSetupWizard::startWizard()
     // if its a relative path, prepend with users home dir, otherwise use as absolute path
 
     if (!QDir(localFolder).isAbsolute()) {
-        localFolder = QDir::homePath() + QDir::separator() + localFolder;
+        localFolder = QDir::homePath() + QLatin1Char('/') + localFolder;
     }
 
     _ocWizard->setProperty("localFolder", localFolder);

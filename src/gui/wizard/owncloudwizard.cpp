@@ -52,7 +52,7 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
     , _httpCredsPage(new OwncloudHttpCredsPage(this))
     , _browserCredsPage(new OwncloudOAuthCredsPage)
     , _flow2CredsPage(new Flow2AuthCredsPage)
-    , _advancedSetupPage(new OwncloudAdvancedSetupPage)
+    , _advancedSetupPage(new OwncloudAdvancedSetupPage(this))
     , _resultPage(new OwncloudWizardResultPage)
     , _webViewPage(new WebViewPage(this))
 {
@@ -270,7 +270,6 @@ void OwncloudWizard::slotCurrentPageChanged(int id)
         auto nextButton = qobject_cast<QPushButton *>(button(QWizard::NextButton));
         if (nextButton) {
             nextButton->setDefault(true);
-            nextButton->setFocus();
         }
     };
 
