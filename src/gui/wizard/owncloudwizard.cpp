@@ -47,9 +47,7 @@ Q_LOGGING_CATEGORY(lcWizard, "nextcloud.gui.wizard", QtInfoMsg)
 OwncloudWizard::OwncloudWizard(QWidget *parent)
     : QWizard(parent)
     , _account(nullptr)
-#ifdef WITH_PROVIDERS
     , _welcomePage(new WelcomePage(this))
-#endif // WITH_PROVIDERS
     , _setupPage(new OwncloudSetupPage(this))
     , _httpCredsPage(new OwncloudHttpCredsPage(this))
     , _browserCredsPage(new OwncloudOAuthCredsPage)
@@ -61,9 +59,7 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
     setObjectName("owncloudWizard");
 
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
-#ifdef WITH_PROVIDERS
     setPage(WizardCommon::Page_Welcome, _welcomePage);
-#endif // WITH_PROVIDERS
     setPage(WizardCommon::Page_ServerSetup, _setupPage);
     setPage(WizardCommon::Page_HttpCreds, _httpCredsPage);
     setPage(WizardCommon::Page_OAuthCreds, _browserCredsPage);
@@ -76,7 +72,6 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
 
     // note: start Id is set by the calling class depending on if the
     // welcome text is to be shown or not.
-    setWizardStyle(QWizard::ModernStyle);
 
     connect(this, &QWizard::currentIdChanged, this, &OwncloudWizard::slotCurrentPageChanged);
     connect(_setupPage, &OwncloudSetupPage::determineAuthType, this, &OwncloudWizard::determineAuthType);
@@ -90,15 +85,11 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
 
 
     Theme *theme = Theme::instance();
-    setWindowTitle(tr("%1 Connection Wizard").arg(theme->appNameGUI()));
+    setWindowTitle(tr("Add %1 account").arg(theme->appNameGUI()));
     setWizardStyle(QWizard::ModernStyle);
-    setPixmap(QWizard::BannerPixmap, theme->wizardHeaderBanner());
-    setPixmap(QWizard::LogoPixmap, theme->wizardHeaderLogo());
     setOption(QWizard::NoBackButtonOnStartPage);
     setOption(QWizard::NoBackButtonOnLastPage);
     setOption(QWizard::NoCancelButton);
-    setTitleFormat(Qt::RichText);
-    setSubTitleFormat(Qt::RichText);
     setButtonText(QWizard::CustomButton1, tr("Skip folders configuration"));
 
     // Change the next buttons size policy since we hide it on the
@@ -117,6 +108,48 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
 
     // allow Flow2 page to poll on window activation
     connect(this, &OwncloudWizard::onActivate, _flow2CredsPage, &Flow2AuthCredsPage::slotPollNow);
+
+    adjustWizardSize();
+    centerWindow();
+}
+
+void OwncloudWizard::centerWindow()
+{
+    const auto wizardWindow = window();
+    const auto screenGeometry = QGuiApplication::screenAt(wizardWindow->pos())->geometry();
+    const auto windowGeometry = wizardWindow->geometry();
+    const auto newWindowPosition = screenGeometry.center() - QPoint(windowGeometry.width() / 2, windowGeometry.height() / 2);
+    wizardWindow->move(newWindowPosition);
+}
+
+
+void OwncloudWizard::adjustWizardSize()
+{
+    const auto pageSizes = calculateWizardPageSizes();
+    const auto longestSide = calculateLongestSideOfWizardPages(pageSizes);
+
+    resize(QSize(longestSide, longestSide));
+}
+
+QList<QSize> OwncloudWizard::calculateWizardPageSizes() const
+{
+    QList<QSize> pageSizes;
+    const auto pIds = pageIds();
+
+    std::transform(pIds.cbegin(), pIds.cend(), std::back_inserter(pageSizes), [this](int pageId) {
+        auto p = page(pageId);
+        p->adjustSize();
+        return p->sizeHint();
+    });
+
+    return pageSizes;
+}
+
+int OwncloudWizard::calculateLongestSideOfWizardPages(const QList<QSize> &pageSizes) const
+{
+    return std::accumulate(std::cbegin(pageSizes), std::cend(pageSizes), 0, [](int current, const QSize &size) {
+        return std::max({ current, size.width(), size.height() });
+    });
 }
 
 void OwncloudWizard::setAccount(AccountPtr account)
@@ -337,6 +370,15 @@ void OwncloudWizard::changeEvent(QEvent *e)
 void OwncloudWizard::customizeStyle()
 {
     // HINT: Customize wizard's own style here, if necessary in the future (Dark-/Light-Mode switching)
+
+    // Set background colors
+    auto wizardPalette = palette();
+    const auto backgroundColor = wizardPalette.color(QPalette::Window);
+    wizardPalette.setColor(QPalette::Base, backgroundColor);
+    // Set separator color
+    wizardPalette.setColor(QPalette::Mid, backgroundColor);
+
+    setPalette(wizardPalette);
 }
 
 void OwncloudWizard::bringToTop()
