@@ -258,8 +258,8 @@ private slots:
         QVERIFY(conflict);
         QCOMPARE(conflict->contentChar, 'W');
         fakeFolder.localModifier().remove(conflict->path());
-        // b1 was restored (re-uploaded)
-        QVERIFY(currentState.find("B/b1"));
+        // b1 should not get restored (re-uploaded)
+        QVERIFY(!currentState.find("B/b1"));
 
         // b2 has the new content (was not restored), since its mode time goes forward in time
         QCOMPARE(currentState.find("B/b2")->contentChar, 'N');
