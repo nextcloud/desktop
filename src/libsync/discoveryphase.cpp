@@ -575,5 +575,4 @@ void DiscoverySingleDirectoryJob::metadataError(const QByteArray &fileId, int ht
     emit finished(_results);
     deleteLater();
 }
-
 }
