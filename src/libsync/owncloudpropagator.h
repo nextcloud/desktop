@@ -413,7 +413,7 @@ public:
 
     ~OwncloudPropagator() override;
 
-    void start(const SyncFileItemVector &_syncedItems);
+    void start(SyncFileItemVector &&_syncedItems);
 
     const SyncOptions &syncOptions() const;
     void setSyncOptions(const SyncOptions &syncOptions);

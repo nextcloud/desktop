@@ -70,7 +70,6 @@ set(client_SRCS
     sharemanager.cpp
     shareusergroupwidget.cpp
     sharee.cpp
-    socketapi.cpp
     sslbutton.cpp
     sslerrordialog.cpp
     syncrunfilelog.cpp
@@ -131,6 +130,8 @@ set_target_properties(owncloudCore PROPERTIES AUTOUIC ON AUTORCC ON)
 target_link_libraries(owncloudCore PUBLIC Qt5::Widgets Qt5::Network Qt5::Xml
                                           libsync)
 
+add_subdirectory(socketapi)
+
 target_include_directories(owncloudCore PUBLIC
     ${CMAKE_SOURCE_DIR}/src/3rdparty/QProgressIndicator
     ${CMAKE_SOURCE_DIR}/src/3rdparty/qtlockedfile
@@ -151,7 +152,6 @@ IF( APPLE )
 
     target_sources(owncloudCore PRIVATE
             cocoainitializer_mac.mm
-            socketapisocket_mac.mm
             systray.mm
             settingsdialog_mac.mm
 

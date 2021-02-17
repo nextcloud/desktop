@@ -121,6 +121,10 @@ private:
     Q_INVOKABLE void command_DELETE_ITEM(const QString &localFile, SocketListener *listener);
     Q_INVOKABLE void command_MOVE_ITEM(const QString &localFile, SocketListener *listener);
 
+    // External sync
+    Q_INVOKABLE void command_V2_LIST_ACCOUNTS(const QString &argument, SocketListener *listener) const;
+    Q_INVOKABLE void command_V2_UPLOAD_FILES_FROM(const QString &argument, SocketListener *listener) const;
+
     // Fetch the private link and call targetFun
     void fetchPrivateLinkUrlHelper(const QString &localFile, const std::function<void(const QString &url)> &targetFun);
 
