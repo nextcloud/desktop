@@ -411,7 +411,7 @@ void OCC::SyncEngine::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
 
 void SyncEngine::startSync()
 {
-    if (s_anySyncRunning || _syncRunning) {
+    if (_syncRunning) {
         OC_ASSERT(false);
         return;
     }
@@ -703,8 +703,7 @@ void SyncEngine::slotDiscoveryFinished()
         if (_needsUpdate)
             Q_EMIT started();
 
-        _propagator->start(_syncItems);
-        _syncItems.clear();
+        _propagator->start(std::move(_syncItems));
 
         qCInfo(lcEngine) << "#### Post-Reconcile end #################################################### " << _stopWatch.addLapTime(QStringLiteral("Post-Reconcile Finished")) << "ms";
     };

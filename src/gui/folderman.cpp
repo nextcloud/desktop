@@ -17,7 +17,7 @@
 #include "folder.h"
 #include "syncresult.h"
 #include "theme.h"
-#include "socketapi.h"
+#include "socketapi/socketapi.h"
 #include "account.h"
 #include "accountstate.h"
 #include "accountmanager.h"

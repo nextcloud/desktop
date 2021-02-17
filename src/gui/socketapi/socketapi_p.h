@@ -68,6 +68,7 @@ public:
     }
 
     void sendMessage(const QString &message, bool doWait = false) const;
+    void sendMessage(const QString &function, const QJsonObject &obj, bool doWait = false) const;
 
     void sendMessageIfDirectoryMonitored(const QString &message, uint systemDirectoryHash) const
     {
@@ -121,7 +122,7 @@ public:
         _socketListener->sendMessage(QLatin1String("RESOLVE|") + _jobId + '|' + response);
     }
 
-    void resolve(const QJsonObject &response) { resolve(QJsonDocument{ response }.toJson()); }
+    void resolve(const QJsonObject &response) { resolve(QJsonDocument { response }.toJson()); }
 
     const QJsonObject &arguments() { return _arguments; }
 
