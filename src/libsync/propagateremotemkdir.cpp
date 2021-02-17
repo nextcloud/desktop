@@ -61,8 +61,7 @@ void PropagateRemoteMkdir::start()
     _job = new DeleteJob(propagator()->account(),
         propagator()->fullRemotePath(_item->_file),
         this);
-    connect(static_cast<DeleteJob*>(_job.data()), &DeleteJob::finishedSignal,
-            this, &PropagateRemoteMkdir::slotMkdir);
+    connect(qobject_cast<DeleteJob *>(_job), &DeleteJob::finishedSignal, this, &PropagateRemoteMkdir::slotMkdir);
     _job->start();
 }
 
@@ -76,7 +75,8 @@ void PropagateRemoteMkdir::slotStartMkcolJob()
     _job = new MkColJob(propagator()->account(),
         propagator()->fullRemotePath(_item->_file),
         this);
-    connect(_job, SIGNAL(finished(QNetworkReply::NetworkError)), this, SLOT(slotMkcolJobFinished()));
+    connect(qobject_cast<MkColJob *>(_job), &MkColJob::finishedWithError, this, &PropagateRemoteMkdir::slotMkcolJobFinished);
+    connect(qobject_cast<MkColJob *>(_job), &MkColJob::finishedWithoutError, this, &PropagateRemoteMkdir::slotMkcolJobFinished);
     _job->start();
 }
 
@@ -95,8 +95,8 @@ void PropagateRemoteMkdir::slotStartEncryptedMkcolJob(const QString &path, const
                             propagator()->fullRemotePath(filename),
                             {{"e2e-token", _uploadEncryptedHelper->folderToken() }},
                             this);
-    connect(job, qOverload<QNetworkReply::NetworkError>(&MkColJob::finished),
-            this, &PropagateRemoteMkdir::slotMkcolJobFinished);
+    connect(job, &MkColJob::finishedWithError, this, &PropagateRemoteMkdir::slotMkcolJobFinished);
+    connect(job, &MkColJob::finishedWithoutError, this, &PropagateRemoteMkdir::slotMkcolJobFinished);
     _job = job;
     _job->start();
 }

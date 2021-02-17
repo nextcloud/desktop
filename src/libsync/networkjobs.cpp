@@ -182,7 +182,11 @@ bool MkColJob::finished()
     qCInfo(lcMkColJob) << "MKCOL of" << reply()->request().url() << "FINISHED WITH STATUS"
                        << replyStatusString();
 
-    emit finished(reply()->error());
+    if (reply()->error() != QNetworkReply::NoError) {
+        Q_EMIT finishedWithError(reply());
+    } else {
+        Q_EMIT finishedWithoutError();
+    }
     return true;
 }
 

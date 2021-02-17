@@ -273,9 +273,10 @@ public:
     void start() override;
 
 signals:
-    void finished(QNetworkReply::NetworkError);
+    void finishedWithError(QNetworkReply *reply);
+    void finishedWithoutError();
 
-private slots:
+private:
     bool finished() override;
 };
 
