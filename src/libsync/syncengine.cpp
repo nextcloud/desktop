@@ -452,7 +452,7 @@ void SyncEngine::startSync()
     if (!QDir(_localPath).exists()) {
         _anotherSyncNeeded = DelayedFollowUp;
         // No _tr, it should only occur in non-mirall
-        syncError("Unable to find local sync folder.");
+        Q_EMIT syncError(QStringLiteral("Unable to find local sync folder."));
         finalize(false);
         return;
     }
@@ -465,11 +465,11 @@ void SyncEngine::startSync()
             qCWarning(lcEngine()) << "Too little space available at" << _localPath << ". Have"
                                   << freeBytes << "bytes and require at least" << minFree << "bytes";
             _anotherSyncNeeded = DelayedFollowUp;
-            syncError(tr("Only %1 are available, need at least %2 to start",
+            Q_EMIT syncError(tr("Only %1 are available, need at least %2 to start",
                 "Placeholders are postfixed with file sizes using Utility::octetsToString()")
-                          .arg(
-                              Utility::octetsToString(freeBytes),
-                              Utility::octetsToString(minFree)));
+                                 .arg(
+                                     Utility::octetsToString(freeBytes),
+                                     Utility::octetsToString(minFree)));
             finalize(false);
             return;
         } else {
@@ -498,7 +498,7 @@ void SyncEngine::startSync()
     // This creates the DB if it does not exist yet.
     if (!_journal->open()) {
         qCWarning(lcEngine) << "No way to create a sync journal!";
-        syncError(tr("Unable to open or create the local sync database. Make sure you have write access in the sync folder."));
+        Q_EMIT syncError(tr("Unable to open or create the local sync database. Make sure you have write access in the sync folder."));
         finalize(false);
         return;
         // database creation error!
@@ -514,7 +514,7 @@ void SyncEngine::startSync()
     _lastLocalDiscoveryStyle = _localDiscoveryStyle;
 
     if (_syncOptions._vfs->mode() == Vfs::WithSuffix && _syncOptions._vfs->fileSuffix().isEmpty()) {
-        syncError(tr("Using virtual files with suffix, but suffix is not set"));
+        Q_EMIT syncError(tr("Using virtual files with suffix, but suffix is not set"));
         finalize(false);
         return;
     }
@@ -526,7 +526,7 @@ void SyncEngine::startSync()
         qCInfo(lcEngine) << (usingSelectiveSync ? "Using Selective Sync" : "NOT Using Selective Sync");
     } else {
         qCWarning(lcEngine) << "Could not retrieve selective sync list from DB";
-        syncError(tr("Unable to read the blacklist from the local database"));
+        Q_EMIT syncError(tr("Unable to read the blacklist from the local database"));
         finalize(false);
         return;
     }
@@ -557,7 +557,7 @@ void SyncEngine::startSync()
     _discoveryPhase->setSelectiveSyncWhiteList(_journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList, &ok));
     if (!ok) {
         qCWarning(lcEngine) << "Unable to read selective sync list, aborting.";
-        syncError(tr("Unable to read from the sync journal."));
+        Q_EMIT syncError(tr("Unable to read from the sync journal."));
         finalize(false);
         return;
     }
@@ -581,7 +581,7 @@ void SyncEngine::startSync()
     connect(_discoveryPhase.data(), &DiscoveryPhase::itemDiscovered, this, &SyncEngine::slotItemDiscovered);
     connect(_discoveryPhase.data(), &DiscoveryPhase::newBigFolder, this, &SyncEngine::newBigFolder);
     connect(_discoveryPhase.data(), &DiscoveryPhase::fatalError, this, [this](const QString &errorString) {
-        syncError(errorString);
+        Q_EMIT syncError(errorString);
         finalize(false);
     });
     connect(_discoveryPhase.data(), &DiscoveryPhase::finished, this, &SyncEngine::slotDiscoveryFinished);
@@ -640,7 +640,7 @@ void SyncEngine::slotDiscoveryFinished()
     // Sanity check
     if (!_journal->open()) {
         qCWarning(lcEngine) << "Bailing out, DB failure";
-        syncError(tr("Cannot open the sync journal"));
+        Q_EMIT syncError(tr("Cannot open the sync journal"));
         finalize(false);
         return;
     } else {
@@ -723,7 +723,7 @@ void SyncEngine::slotDiscoveryFinished()
 
         // Emit the started signal only after the propagator has been set up.
         if (_needsUpdate)
-            emit(started());
+            Q_EMIT started();
 
         _propagator->start(_syncItems);
         _syncItems.clear();
@@ -1078,7 +1078,7 @@ void SyncEngine::abort()
         disconnect(_discoveryPhase.data(), nullptr, this, nullptr);
         _discoveryPhase.take()->deleteLater();
 
-        syncError(tr("Aborted"));
+        Q_EMIT syncError(tr("Aborted"));
         finalize(false);
     }
 }
