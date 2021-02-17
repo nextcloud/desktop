@@ -67,8 +67,6 @@ void ProcessDirectoryJob::process()
 {
     ASSERT(_localQueryDone && _serverQueryDone);
 
-    QString localDir;
-
     // Build lookup tables for local, remote and db entries.
     // For suffix-virtual files, the key will normally be the base file name
     // without the suffix.

@@ -28,7 +28,7 @@
 #include "clientproxy.h"
 #include "syncengine.h"
 #include "syncrunfilelog.h"
-#include "socketapi.h"
+#include "socketapi/socketapi.h"
 #include "theme.h"
 #include "filesystem.h"
 #include "localdiscoverytracker.h"

@@ -27,7 +27,7 @@
 #include "folderman.h"
 #include "logger.h"
 #include "configfile.h"
-#include "socketapi.h"
+#include "socketapi/socketapi.h"
 #include "sslerrordialog.h"
 #include "theme.h"
 #include "clientproxy.h"

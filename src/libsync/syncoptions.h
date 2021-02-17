@@ -15,18 +15,23 @@
 #pragma once
 
 #include "owncloudlib.h"
-#include <QString>
-#include <QSharedPointer>
-#include <chrono>
 #include "common/vfs.h"
+
+#include <QRegularExpression>
+#include <QSharedPointer>
+#include <QString>
+
+#include <chrono>
+
 
 namespace OCC {
 
 /**
  * Value class containing the options given to the sync engine
  */
-struct OWNCLOUDSYNC_EXPORT SyncOptions
+class OWNCLOUDSYNC_EXPORT SyncOptions
 {
+public:
     SyncOptions();
     ~SyncOptions();
 
@@ -82,6 +87,29 @@ struct OWNCLOUDSYNC_EXPORT SyncOptions
      * initial chunk size value.
      */
     void verifyChunkSizes();
+
+
+    /** A regular expression to match file names
+     * If no pattern is provided the default is an invalid regular expression.
+     */
+    QRegularExpression fileRegex() const;
+
+    /**
+     * A pattern like *.txt, matching only file names
+     */
+    void setFilePattern(const QString &pattern);
+
+    /**
+     * A pattern like /own.*\/.*txt matching the full path
+     */
+    void setPathPattern(const QString &pattern);
+
+private:
+    /**
+     * Only sync files that mathc the expression
+     * Invalid pattern by default.
+     */
+    QRegularExpression _fileRegex = QRegularExpression(QStringLiteral("("));
 };
 
 }

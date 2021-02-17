@@ -16,7 +16,7 @@
 #import <Cocoa/Cocoa.h>
 
 @protocol ChannelProtocol <NSObject>
-- (void)sendMessage:(NSData*)msg;
+- (void)sendMessage:(NSData *)msg;
 @end
 
 @protocol RemoteEndProtocol <NSObject, ChannelProtocol>
@@ -31,7 +31,7 @@
 @interface Server : NSObject
 @property SocketApiServerPrivate *wrapper;
 - (instancetype)initWithWrapper:(SocketApiServerPrivate *)wrapper;
-- (void)registerClient:(NSDistantObject <RemoteEndProtocol> *)remoteEnd;
+- (void)registerClient:(NSDistantObject<RemoteEndProtocol> *)remoteEnd;
 @end
 
 class SocketApiSocketPrivate
@@ -39,13 +39,13 @@ class SocketApiSocketPrivate
 public:
     SocketApiSocket *q_ptr;
 
-    SocketApiSocketPrivate(NSDistantObject <ChannelProtocol> *remoteEnd);
+    SocketApiSocketPrivate(NSDistantObject<ChannelProtocol> *remoteEnd);
     ~SocketApiSocketPrivate();
 
     // release remoteEnd
     void disconnectRemote();
 
-    NSDistantObject <ChannelProtocol> *remoteEnd;
+    NSDistantObject<ChannelProtocol> *remoteEnd;
     LocalEnd *localEnd;
     QByteArray inBuffer;
     bool isRemoteDisconnected = false;
@@ -59,7 +59,7 @@ public:
     SocketApiServerPrivate();
     ~SocketApiServerPrivate();
 
-    QList<SocketApiSocket*> pendingConnections;
+    QList<SocketApiSocket *> pendingConnections;
     NSConnection *connection;
     Server *server;
 };
@@ -73,7 +73,7 @@ public:
     return self;
 }
 
-- (void)sendMessage:(NSData*)msg
+- (void)sendMessage:(NSData *)msg
 {
     if (_wrapper) {
         _wrapper->inBuffer += QByteArray::fromRawNSData(msg);
@@ -81,7 +81,7 @@ public:
     }
 }
 
-- (void)connectionDidDie:(NSNotification*)notification
+- (void)connectionDidDie:(NSNotification *)notification
 {
 #pragma unused(notification)
     if (_wrapper) {
@@ -99,7 +99,7 @@ public:
     return self;
 }
 
-- (void)registerClient:(NSDistantObject <RemoteEndProtocol> *)remoteEnd
+- (void)registerClient:(NSDistantObject<RemoteEndProtocol> *)remoteEnd
 {
     // This saves a few mach messages that would otherwise be needed to query the interface
     [remoteEnd setProtocolForProxy:@protocol(RemoteEndProtocol)];
@@ -150,7 +150,7 @@ qint64 SocketApiSocket::writeData(const char *data, qint64 len)
         // Since FinderSync already runs in a separate process, blocking isn't too critical.
         [d->remoteEnd sendMessage:[NSData dataWithBytesNoCopy:const_cast<char *>(data) length:len freeWhenDone:NO]];
         return len;
-    } @catch(NSException* e) {
+    } @catch (NSException *e) {
         // connectionDidDie can be notified too late, also interpret any sending exception as a disconnection.
         d->disconnectRemote();
         emit disconnected();
@@ -170,16 +170,16 @@ bool SocketApiSocket::canReadLine() const
     return d->inBuffer.indexOf('\n', int(pos())) != -1 || QIODevice::canReadLine();
 }
 
-SocketApiSocketPrivate::SocketApiSocketPrivate(NSDistantObject <ChannelProtocol> *remoteEnd)
+SocketApiSocketPrivate::SocketApiSocketPrivate(NSDistantObject<ChannelProtocol> *remoteEnd)
     : remoteEnd(remoteEnd)
     , localEnd([[LocalEnd alloc] initWithWrapper:this])
 {
     [remoteEnd retain];
     // (Ab)use our objective-c object just to catch the notification
     [[NSNotificationCenter defaultCenter] addObserver:localEnd
-        selector:@selector(connectionDidDie:)
-        name:NSConnectionDidDieNotification
-        object:[remoteEnd connectionForProxy]];
+                                             selector:@selector(connectionDidDie:)
+                                                 name:NSConnectionDidDieNotification
+                                               object:[remoteEnd connectionForProxy]];
 }
 
 SocketApiSocketPrivate::~SocketApiSocketPrivate()
