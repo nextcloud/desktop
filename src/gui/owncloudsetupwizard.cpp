@@ -336,21 +336,23 @@ void OwncloudSetupWizard::createRemoteFolder()
     qCDebug(lcWizard) << "creating folder on ownCloud:" << _remoteFolder;
 
     MkColJob *job = new MkColJob(_ocWizard->account(), _remoteFolder, this);
-    connect(job, SIGNAL(finished(QNetworkReply::NetworkError)), SLOT(slotCreateRemoteFolderFinished(QNetworkReply::NetworkError)));
+    connect(job, &MkColJob::finishedWithError, this, &OwncloudSetupWizard::slotCreateRemoteFolderFinished);
+    connect(job, &MkColJob::finishedWithoutError, this, [this] {
+        qCDebug(lcWizard) << "Remote folder" << _remoteFolder << "created successfully.";
+        finalizeSetup(true);
+    });
     job->start();
 }
 
-void OwncloudSetupWizard::slotCreateRemoteFolderFinished(QNetworkReply::NetworkError error)
+void OwncloudSetupWizard::slotCreateRemoteFolderFinished(QNetworkReply *reply)
 {
+    auto error = reply->error();
     qCDebug(lcWizard) << "** webdav mkdir request finished " << error;
     //    disconnect(ownCloudInfo::instance(), SIGNAL(webdavColCreated(QNetworkReply::NetworkError)),
     //               this, SLOT(slotCreateRemoteFolderFinished(QNetworkReply::NetworkError)));
 
     bool success = true;
-
-    if (error == QNetworkReply::NoError) {
-        qCDebug(lcWizard) << "Remote folder" << _remoteFolder << "created successfully.";
-    } else if (error == 202) {
+    if (error == 202) {
         qCDebug(lcWizard) << "The remote folder" << _remoteFolder << "already exists. Connecting it for syncing.";
     } else if (error > 202 && error < 300) {
         _ocWizard->displayError(tr("The folder creation resulted in HTTP error code %1").arg((int)error));

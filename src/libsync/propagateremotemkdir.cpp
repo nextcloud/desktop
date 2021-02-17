@@ -42,7 +42,7 @@ void PropagateRemoteMkdir::start()
     _job = new DeleteJob(propagator()->account(),
         propagator()->fullRemotePath(_item->_file),
         this);
-    connect(_job, SIGNAL(finishedSignal()), SLOT(slotStartMkcolJob()));
+    connect(qobject_cast<DeleteJob *>(_job), &DeleteJob::finishedSignal, this, &PropagateRemoteMkdir::slotStartMkcolJob);
     _job->start();
 }
 
@@ -56,7 +56,8 @@ void PropagateRemoteMkdir::slotStartMkcolJob()
     _job = new MkColJob(propagator()->account(),
         propagator()->fullRemotePath(_item->_file),
         this);
-    connect(_job, SIGNAL(finished(QNetworkReply::NetworkError)), this, SLOT(slotMkcolJobFinished()));
+    connect(qobject_cast<MkColJob *>(_job), &MkColJob::finishedWithError, this, &PropagateRemoteMkdir::slotMkcolJobFinished);
+    connect(qobject_cast<MkColJob *>(_job), &MkColJob::finishedWithoutError, this, &PropagateRemoteMkdir::slotMkcolJobFinished);
     _job->start();
 }
 

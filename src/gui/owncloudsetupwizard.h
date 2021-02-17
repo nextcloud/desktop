@@ -60,7 +60,7 @@ private slots:
 
     void slotCreateLocalAndRemoteFolders(const QString &, const QString &);
     void slotRemoteFolderExists(QNetworkReply *);
-    void slotCreateRemoteFolderFinished(QNetworkReply::NetworkError);
+    void slotCreateRemoteFolderFinished(QNetworkReply *reply);
     void slotAssistantFinished(int);
 
 private:

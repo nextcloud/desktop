@@ -290,13 +290,15 @@ void PropagateUploadFileNG::startNewUpload()
     QMap<QByteArray, QByteArray> headers;
     headers["OC-Total-Length"] = QByteArray::number(_item->_size);
     auto job = new MkColJob(propagator()->account(), chunkUrl(), headers, this);
-    connect(job, SIGNAL(finished(QNetworkReply::NetworkError)),
-        this, SLOT(slotMkColFinished(QNetworkReply::NetworkError)));
+    connect(job, &MkColJob::finishedWithError,
+        this, &PropagateUploadFileNG::slotMkColFinished);
+    connect(job, &MkColJob::finishedWithoutError,
+        this, &PropagateUploadFileNG::slotMkColFinished);
     connect(job, &QObject::destroyed, this, &PropagateUploadFileCommon::slotJobDestroyed);
     job->start();
 }
 
-void PropagateUploadFileNG::slotMkColFinished(QNetworkReply::NetworkError)
+void PropagateUploadFileNG::slotMkColFinished()
 {
     propagator()->_activeJobList.removeOne(this);
     auto job = qobject_cast<MkColJob *>(sender());
