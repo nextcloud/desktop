@@ -35,6 +35,7 @@
 #include "filesystem.h"
 #include "wizard/owncloudwizard.h"
 #include "guiutility.h"
+#include "settingsdialog.h"
 
 #include <math.h>
 
@@ -493,7 +494,7 @@ void AccountSettings::slotRemoveCurrentFolder()
                "<p><b>Note:</b> This will <b>not</b> delete any files.</p>")
                 .arg(shortGuiLocalPath),
             QMessageBox::NoButton,
-            this);
+            ocApp()->gui()->settingsDialog());
         messageBox->setAttribute(Qt::WA_DeleteOnClose);
         QPushButton *yesButton =
             messageBox->addButton(tr("Remove Folder Sync Connection"), QMessageBox::YesRole);
