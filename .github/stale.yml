@@ -1,18 +1,13 @@
-
 # Number of days of inactivity before an issue becomes stale
 daysUntilStale: 28
 # Number of days of inactivity before a stale issue is closed
 daysUntilClose: 14
+# Only issues or pull requests with all of these labels are check if stale. Defaults to `[]` (disabled)
+onlyLabels:
+    - bug
 # Issues with these labels will never be considered stale
 exemptLabels:
-    - 1. to develop
-    - 2. to review
-    - 3. to release
-    - 4. to test
-    - backport-request
-    - overview
-    - security
-    - spec
+    - approved
 # Label to use when marking an issue as stale
 staleLabel: stale
 # Comment to post when marking an issue as stale. Set to `false` to disable
