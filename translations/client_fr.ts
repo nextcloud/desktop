@@ -351,7 +351,7 @@ Wait for the new sync, then encrypt it.</source>
         <location filename="../src/gui/accountsettings.cpp" line="447"/>
         <location filename="../src/gui/accountsettings.cpp" line="523"/>
         <source>Create new folder</source>
-        <translation type="unfinished"/>
+        <translation>Créer un nouveau dossier</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="453"/>
@@ -1309,7 +1309,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/foldercreationdialog.ui" line="14"/>
         <source>Create new folder</source>
-        <translation type="unfinished"/>
+        <translation>Créer un nouveau dossier</translation>
     </message>
     <message>
         <location filename="../src/gui/foldercreationdialog.ui" line="42"/>

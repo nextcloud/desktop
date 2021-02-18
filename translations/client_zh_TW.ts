@@ -2122,23 +2122,26 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <source>The client can write debug logs to a temporary folder. These logs are very helpful for diagnosing problems.
 Since log files can get large, the client will start a new one for each sync run and compress older ones. It will also delete log files after a couple of hours to avoid consuming too much disk space.
 If enabled, logs will be written to %1</source>
-        <translation type="unfinished"/>
+        <translation>客戶端可以將除錯日誌寫入臨時資料夾中。這些紀錄檔對診斷問題非常有用。
+因為紀錄檔會變大，所以客戶端將會在每次同步時開啟一個新檔案，並壓縮較舊的。它將會在數小時候刪除紀錄檔案，以避免消耗太多磁碟空間。
+若啟用，紀錄檔將會被寫入 %1</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="64"/>
         <source>Enable logging to temporary folder</source>
-        <translation>啟用記錄到暫存資料夾</translation>
+        <translation>啟用紀錄到暫存資料夾</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="70"/>
         <source>This setting persists across client restarts.
 Note that using any logging command line options will override this setting.</source>
-        <translation type="unfinished"/>
+        <translation>此設定在客戶端重新啟動後仍然存在。
+請注意，使用任何紀錄命令列選項將會覆寫此設定。</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="70"/>
         <source>&amp;Search:</source>
-        <translation>&amp;搜尋:</translation>
+        <translation>搜尋(&amp;S)：</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="77"/>
@@ -2148,12 +2151,12 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="78"/>
         <source>&amp;Find</source>
-        <translation>尋找 (&amp;F):</translation>
+        <translation>尋找(&amp;F)：</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="89"/>
         <source>&amp;Capture debug messages</source>
-        <translation>&amp;擷取除錯訊息</translation>
+        <translation>擷取除錯訊息(&amp;C)</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="101"/>
@@ -2165,9 +2168,9 @@ Note that using any logging command line options will override this setting.</so
         <source>When this option is enabled and no other logging is configured, logs will be written to a temporary folder and expire after a few hours. This setting persists across client restarts.
 
 Logs will be written to %1</source>
-        <translation>當此設定啟用，又未設定其他日誌時，日誌會被寫入一個臨時資料夾中，並於數小時後過時。客戶端重新開始並不會影響此設定。
+        <translation>當此設定啟用，又未設定其他日誌時，日誌會被寫入一個臨時資料夾中，並於數小時後過時。客戶端重新啟動並不會影響此設定。
 
-日誌將寫入%1</translation>
+日誌將寫入 %1</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="115"/>
@@ -2177,17 +2180,17 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="116"/>
         <source>Clear the log display.</source>
-        <translation>清除所顯示的記錄</translation>
+        <translation>清除所顯示的記錄。</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="122"/>
         <source>S&amp;ave</source>
-        <translation>儲存 (&amp;A)</translation>
+        <translation>儲存(&amp;A)</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="123"/>
         <source>Save the log file to a file on disk for debugging.</source>
-        <translation>將記錄檔儲存到硬碟用於除錯</translation>
+        <translation>將記錄檔儲存到硬碟用於除錯。</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="210"/>
@@ -2215,7 +2218,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/libsync/logger.cpp" line="198"/>
         <source>&lt;nobr&gt;File &apos;%1&apos;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output can &lt;b&gt;not&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
-        <translation>&lt;nobr&gt;檔案 &apos;%1&apos;&lt;br/&gt;無法開啟與寫入&lt;br/&gt;&lt;br/&gt;記錄 &lt;b&gt;無法&lt;/b&gt; 被儲存&lt;/nobr&gt;</translation>
+        <translation>&lt;nobr&gt;檔案「%1」&lt;br/&gt;無法開啟與寫入。&lt;br/&gt;&lt;br/&gt;紀錄&lt;b&gt;無法&lt;/b&gt;被儲存！&lt;/nobr&gt;</translation>
     </message>
 </context>
 <context>
@@ -2228,7 +2231,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="399"/>
         <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;%1  客戶端有新版本了。&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; 可供下載， 目前安裝的版本是 %3.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;%1 客戶端有新版本了。&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; 可供下載，目前安裝的版本是 %3。&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="412"/>
@@ -2254,7 +2257,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="449"/>
         <source>&lt;p&gt;A new version of the %1 Client is available but the updating process failed.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; has been downloaded. The installed version is %3.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;%1 客戶端有新版本了，但更新流程失敗。&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; 已下載。已安裝的版本為 %3。&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="463"/>
@@ -2287,7 +2290,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/networksettings.ui" line="42"/>
         <source>Use system proxy</source>
-        <translation>使用系統預設代理伺服器</translation>
+        <translation>使用系統代理伺服器</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="52"/>
@@ -2307,7 +2310,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/networksettings.ui" line="176"/>
         <source>Note: proxy settings have no effects for accounts on localhost</source>
-        <translation>注意：代理設定對於本地帳號沒有效果</translation>
+        <translation>注意：代理伺服器設定對於 localhost 上的帳號沒有效果</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="190"/>
@@ -2330,7 +2333,7 @@ Logs will be written to %1</source>
         <location filename="../src/gui/networksettings.ui" line="241"/>
         <location filename="../src/gui/networksettings.ui" line="320"/>
         <source>KBytes/s</source>
-        <translation>KBytes/s</translation>
+        <translation>KB／秒</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="250"/>
@@ -2380,7 +2383,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="111"/>
         <source>Error returned from the server: &lt;em&gt;%1&lt;/em&gt;</source>
-        <translation>伺服器回覆錯誤:&lt;em&gt;%1&lt;/em&gt;</translation>
+        <translation>伺服器回傳錯誤：&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="114"/>
@@ -2390,12 +2393,12 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="121"/>
         <source>Empty JSON from OAuth2 redirect</source>
-        <translation type="unfinished"/>
+        <translation>來自 OAuth2 重新導向的空 JSON</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="117"/>
         <source>Could not parse the JSON returned from the server: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
-        <translation>無法解析伺服器發回的JSON：&lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
+        <translation>無法解析伺服器回傳的 JSON：&lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="120"/>
@@ -2410,7 +2413,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="130"/>
         <source>&lt;h1&gt;Wrong user&lt;/h1&gt;&lt;p&gt;You logged-in with user &lt;em&gt;%1&lt;/em&gt;, but must login with user &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please log out of %3 in another tab, then &lt;a href=&apos;%4&apos;&gt;click here&lt;/a&gt; and log in as user %2&lt;/p&gt;</source>
-        <translation>&lt;h1&gt;使用者錯誤&lt;/h1&gt;&lt;p&gt;您目前以&lt;em&gt;%1&lt;/em&gt;的身份登入，但您必須以&lt;em&gt;%2&lt;/em&gt;的身份登入。&lt;br&gt;請在一個新的標籤頁中登出%3帳戶，然後&lt;a href=&apos;%4&apos;&gt;點擊此處&lt;/a&gt;，登入%2帳戶。&lt;/p&gt;</translation>
+        <translation>&lt;h1&gt;使用者錯誤&lt;/h1&gt;&lt;p&gt;您目前以 &lt;em&gt;%1&lt;/em&gt; 的身份登入，但您必須以 &lt;em&gt;%2&lt;/em&gt; 的身份登入。&lt;br&gt;請在一個新的分頁中登出 %3 帳號，然後&lt;a href=&apos;%4&apos;&gt;點擊此處&lt;/a&gt;，以使用者 %2 登入&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -2424,63 +2427,63 @@ Logs will be written to %1</source>
         <location filename="../src/gui/updater/ocupdater.cpp" line="109"/>
         <source>A new update for %1 is about to be installed. The updater may ask
 for additional privileges during the process.</source>
-        <translation>一個新的 %1 更新已經安裝完成。更新也許會詢問
-要求給予權限在安裝的過程中。</translation>
+        <translation>一個新的 %1 更新已經安裝完成。更新程式也許會
+在更新過程中要求額外的權限。</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="143"/>
         <source>Downloading version %1. Please wait …</source>
-        <translation>版本 %1，正在下載，請稍後...</translation>
+        <translation>正在下載版本 %1。請稍候……</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="145"/>
         <source>%1 version %2 available. Restart application to start the update.</source>
-        <translation>%1 的版本 %2 已經可以安裝，請重新啟動應用程式開始安裝更新。</translation>
+        <translation>%1 的版本 %2 已經可以安裝。請重新啟動應用程式開始安裝更新。</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="148"/>
         <source>Downloading %1. Please wait …</source>
-        <translation>正在下載 %，請稍候...</translation>
+        <translation>正在下載 %1。請稍候……</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="150"/>
         <source>%1 available. Restart application to start the update.</source>
-        <translation>%1 已經可以安裝，請重新啟動應用程式開始安裝更新。</translation>
+        <translation>%1 已經可以安裝。請重新啟動應用程式開始安裝更新。</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="152"/>
         <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; to download the update manually.</source>
-        <translation>無法下載更新檔，請點選連結 &lt;a href=&apos;%1&apos;&gt;按這裡&lt;/a&gt; 手動下載更新檔。</translation>
+        <translation>無法下載更新。請點擊&lt;a href=&apos;%1&apos;&gt;此處&lt;/a&gt;以手動下載更新。</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="154"/>
         <source>Could not check for new updates.</source>
-        <translation>無法檢查是否有新更新檔。</translation>
+        <translation>無法檢查新更新。</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="151"/>
         <source>New %1 version %2 is available. Please click &lt;a href=&apos;%3&apos;&gt;here&lt;/a&gt; to download the update.</source>
-        <translation>新版本 %1 %2 以提供更新，請點擊&lt;a href=&apos;%3&apos;&gt;這裡&lt;/a&gt;下載更新</translation>
+        <translation>新的 %1 版本 %2 可更新。請點擊&lt;a href=&apos;%3&apos;&gt;此處&lt;/a&gt;以下載更新。</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="156"/>
         <source>New %1 is available. Please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt; to download the update.</source>
-        <translation>新版本 %1 已可以更新，請點選 &lt;a href=&apos;%2&apos;&gt;這裡&lt;/a&gt; 下載更新。</translation>
+        <translation>新版本 %1 可更新，請點擊&lt;a href=&apos;%2&apos;&gt;此處&lt;/a&gt;下載更新。</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="158"/>
         <source>Checking update server …</source>
-        <translation>正在檢查更新...</translation>
+        <translation>正在檢查更新伺服器……</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="160"/>
         <source>Update status is unknown: Did not check for new updates.</source>
-        <translation>無法取得更新狀態: 無法檢查是否有新更新檔。</translation>
+        <translation>更新狀態未知：無法檢查是否有新更新。</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="164"/>
         <source>No updates available. Your installation is at the latest version.</source>
-        <translation>目前沒有可用的更新檔，您安裝的版本是最新的了。</translation>
+        <translation>目前沒有可用的更新。您安裝的版本是最新的了。</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="183"/>
@@ -2498,37 +2501,37 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="45"/>
         <source>Setup local folder options</source>
-        <translation>設定本地資料夾選項</translation>
+        <translation>設定本機資料夾選項</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="54"/>
         <source>Connect …</source>
-        <translation>連線中...</translation>
+        <translation>連線……</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="85"/>
         <source>Use &amp;virtual files instead of downloading content immediately %1</source>
-        <translation type="unfinished"/>
+        <translation>使用虛擬檔案取代立即下載內容 %1 (&amp;V)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="85"/>
         <source>(experimental)</source>
-        <translation type="unfinished"/>
+        <translation>（實驗性）</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="154"/>
         <source>%1 folder &apos;%2&apos; is synced to local folder &apos;%3&apos;</source>
-        <translation>%1 資料夾 &apos;%2&apos; 與本地資料夾 &apos;%3&apos; 同步</translation>
+        <translation>%1 資料夾「%2」與本機資料夾「%3」同步</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="157"/>
         <source>Sync the folder &apos;%1&apos;</source>
-        <translation>同步資料夾 &apos;%1&apos;</translation>
+        <translation>同步資料夾「%1」</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="162"/>
         <source>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Warning:&lt;/strong&gt; The local folder is not empty. Pick a resolution!&lt;/small&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;警告:&lt;/strong&gt; 本地端的資料夾不是空的. 請選擇解決方案!&lt;/small&gt;&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;警告：&lt;/strong&gt;本機的資料夾不是空的。請選擇解決方案！&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="171"/>
@@ -2543,7 +2546,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="294"/>
         <source>Local Sync Folder</source>
-        <translation>本地同步資料夾</translation>
+        <translation>本機同步資料夾</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="337"/>
@@ -2554,7 +2557,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="384"/>
         <source>There isn&apos;t enough free space in the local folder!</source>
-        <translation>本地資料夾沒有足夠的剩餘空間！</translation>
+        <translation>本機資料夾沒有足夠的剩餘空間！</translation>
     </message>
 </context>
 <context>
@@ -2567,17 +2570,17 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="43"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Failed to connect to the secure server address specified. How do you wish to proceed?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;無法連線到指定的安全伺服器位置，您想要如何處理?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;無法連線到指定的安全伺服器位置，您想要如何處理？&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="55"/>
         <source>Select a different URL</source>
-        <translation>選擇一個不同的URL</translation>
+        <translation>選取不同的 URL</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="62"/>
         <source>Retry unencrypted over HTTP (insecure)</source>
-        <translation>透過未加密HTTP重試 (不安全)</translation>
+        <translation>透過未加密的 HTTP 重試（不安全）</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="69"/>
@@ -2587,7 +2590,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.cpp" line="34"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Failed to connect to the secure server address &lt;em&gt;%1&lt;/em&gt;. How do you wish to proceed?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;無法連線到安全伺服器 &lt;em&gt;%1&lt;/em&gt;，您想要如何處理?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;無法連線到安全伺服器 &lt;em&gt;%1&lt;/em&gt;，您想要如何處理？&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>
@@ -2595,7 +2598,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="49"/>
         <source>&amp;Email</source>
-        <translation>電子郵件</translation>
+        <translation>電子郵件(&amp;E)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="59"/>
@@ -2641,17 +2644,17 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="78"/>
         <source>Secure collaboration &amp; file exchange</source>
-        <translation>安全地協作、傳輸檔案</translation>
+        <translation>安全地協作與傳輸檔案</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="79"/>
         <source>Easy-to-use web mail, calendaring &amp; contacts</source>
-        <translation>管理您的電子郵件、日曆及聯絡人，簡單易用</translation>
+        <translation>易於使用的網路郵件、日曆與聯絡人</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="80"/>
         <source>Screensharing, online meetings &amp; web conferences</source>
-        <translation>螢幕分享、線上對話、多人會議</translation>
+        <translation>螢幕分享、線上對話與網路會議</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="95"/>
@@ -2661,19 +2664,19 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="96"/>
         <source>This is the link to your %1 web interface when you open it in the browser.&lt;br/&gt;It looks like https://cloud.example.com or https://example.com/cloud</source>
-        <translation type="unfinished"/>
+        <translation>這是您在瀏覽器中開啟您的 %1 網頁介面時的連結。&lt;br/&gt;看起來像 https://cloud.example.com 或 https://example.com/cloud</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="184"/>
         <source>This URL is secure. You can use it.</source>
-        <translation>此網址是安全的，您可以使用這個網址</translation>
+        <translation>此網址是安全的。您可以使用此網址。</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="185"/>
         <source>This URL is NOT secure as it is not encrypted.
 It is not advisable to use it.</source>
-        <translation>此網址未加密，有安全疑慮
-我們不建議您使用此網址</translation>
+        <translation>此網址未加密，有安全疑慮。
+我們不建議您使用此網址。</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="233"/>
@@ -2696,7 +2699,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="250"/>
         <source>&lt;font color=&quot;green&quot;&gt;Successfully connected to %1: %2 version %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</source>
-        <translation>&lt;font color=&quot;green&quot;&gt;成功連線到 %1: %2 版本 %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</translation>
+        <translation>&lt;font color=&quot;green&quot;&gt;成功連線到 %1：%2 版本 %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="277"/>
@@ -2706,7 +2709,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="279"/>
         <source>Failed to connect to %1 at %2:&lt;br/&gt;%3</source>
-        <translation>從 %2 連線到 %1 失敗:&lt;br/&gt;%3</translation>
+        <translation>從 %2 連線到 %1 失敗：&lt;br/&gt;%3</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="297"/>
@@ -2716,109 +2719,109 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="316"/>
         <source>Trying to connect to %1 at %2 …</source>
-        <translation>嘗試以 %1 身分連線到 %2</translation>
+        <translation>嘗試以 %1 身分連線到 %2……</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="367"/>
         <source>The authenticated request to the server was redirected to &apos;%1&apos;. The URL is bad, the server is misconfigured.</source>
-        <translation>伺服器要求的認證請求被導向 &apos;%1&apos;，這個URL可能不安全，此伺服器可能設定有錯。</translation>
+        <translation>伺服器要求的認證請求被導向「%1」。這個網址可能不安全，此伺服器可能設定有錯。</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="380"/>
         <source>Access forbidden by server. To verify that you have proper access, &lt;a href=&quot;%1&quot;&gt;click here&lt;/a&gt; to access the service with your browser.</source>
-        <translation>從伺服器存取被拒絕。為了正確驗證您的存取資訊 &lt;a href=&quot;%1&quot;&gt;請點選這裡&lt;/a&gt; 透過瀏覽器來存取服務</translation>
+        <translation>從伺服器存取被拒絕。為了正確驗證您的存取資訊，&lt;a href=&quot;%1&quot;&gt;請點選這裡&lt;/a&gt;透過瀏覽器來存取服務。</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="389"/>
         <source>There was an invalid response to an authenticated WebDAV request</source>
-        <translation>伺服器回應 WebDAV 驗證請求不合法</translation>
+        <translation>伺服器回應 WebDAV 驗證請求無效</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="435"/>
         <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
-        <translation>本地同步資料夾%1已存在, 將其設置為同步&lt;br/&gt;&lt;br/&gt;</translation>
+        <translation>本機同步資料夾 %1 已存在，將其設定為同步。&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="438"/>
         <source>Creating local sync folder %1 …</source>
-        <translation>正在新增本機同步資料夾 %1...</translation>
+        <translation>正在新增本機同步資料夾 %1……</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="442"/>
         <source>ok</source>
-        <translation>ok</translation>
+        <translation>OK</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="444"/>
         <source>failed.</source>
-        <translation>失敗</translation>
+        <translation>失敗。</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="446"/>
         <source>Could not create local folder %1</source>
-        <translation>無法建立本地資料夾 %1</translation>
+        <translation>無法建立本機資料夾 %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="506"/>
         <source>No remote folder specified!</source>
-        <translation>沒有指定遠端資料夾!</translation>
+        <translation>未指定遠端資料夾！</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="512"/>
         <source>Error: %1</source>
-        <translation>錯誤： %1</translation>
+        <translation>錯誤：%1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="525"/>
         <source>creating folder on Nextcloud: %1</source>
-        <translation>正在Nextcloud上新增資料夾：%1</translation>
+        <translation>正在 Nextcloud 上建立資料夾：%1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="541"/>
         <source>Remote folder %1 created successfully.</source>
-        <translation>遠端資料夾%1建立成功!</translation>
+        <translation>遠端資料夾 %1 成功建立。</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="543"/>
         <source>The remote folder %1 already exists. Connecting it for syncing.</source>
-        <translation>遠端資料夾%1已存在，連線同步中</translation>
+        <translation>遠端資料夾 %1 已存在。正在連線同步。</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="545"/>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="547"/>
         <source>The folder creation resulted in HTTP error code %1</source>
-        <translation>在HTTP建立資料夾失敗, error code %1</translation>
+        <translation>資料夾建立結果為 HTTP 錯誤碼 %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="549"/>
         <source>The remote folder creation failed because the provided credentials are wrong!&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
-        <translation>由於帳號或密碼錯誤，遠端資料夾建立失敗&lt;br/&gt;請檢查您的帳號密碼。&lt;/p&gt;</translation>
+        <translation>由於帳號或密碼錯誤，遠端資料夾建立失敗！&lt;br/&gt;請檢查您的帳號密碼。&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="553"/>
         <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;遠端資料夾建立失敗,也許是因為所提供的帳號密碼錯誤&lt;/font&gt;&lt;br/&gt;請重新檢查您的帳號密碼&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;遠端資料夾建立失敗，也許是因為所提供的帳號密碼錯誤。&lt;/font&gt;&lt;br/&gt;請重新檢查您的帳號密碼。&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="558"/>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="559"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
-        <translation>建立遠端資料夾%1發生錯誤&lt;tt&gt;%2&lt;/tt&gt;失敗</translation>
+        <translation>建立遠端資料夾 %1 時發生錯誤 &lt;tt&gt;%2&lt;/tt&gt;。</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="576"/>
         <source>A sync connection from %1 to remote directory %2 was set up.</source>
-        <translation>從%1到遠端資料夾%2的連線已建立</translation>
+        <translation>從 %1 到遠端資料夾 %2 的連線已建立。</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="581"/>
         <source>Successfully connected to %1!</source>
-        <translation>成功連接到 %1 ！</translation>
+        <translation>成功連線至 %1！</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="588"/>
         <source>Connection to %1 could not be established. Please check again.</source>
-        <translation>無法建立連線%1, 請重新檢查</translation>
+        <translation>無法建立到 %1 的連線。請再檢查一次。</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="601"/>
@@ -2833,7 +2836,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="649"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
-        <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;本地同步資料夾 %1 建立成功!&lt;/b&gt;&lt;/font&gt;</translation>
+        <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;本機同步資料夾 %1 建立成功！&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
 </context>
 <context>
@@ -2841,7 +2844,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="91"/>
         <source>%1 Connection Wizard</source>
-        <translation>%1連線精靈</translation>
+        <translation>%1 連線精靈</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="100"/>
@@ -2862,17 +2865,23 @@ The virtual files mode is mutually exclusive with selective sync. Currently unse
 Switching to this mode will abort any currently running synchronization.
 
 This is a new, experimental mode. If you decide to use it, please report any issues that come up.</source>
-        <translation type="unfinished"/>
+        <translation>啟用「虛擬檔案」模式時，ㄧ開始不會下載任何檔案。但會為伺服器上存在的每個檔案建立一個小型的「%1」檔案。可以透過執行這些檔案或使用它們的右鍵選單來下載內容。
+
+虛擬檔案模式與選擇性同步是互斥的。目前未選取的資料夾將會被轉換為僅線上的資料夾，而您選擇性的同步設定將會被重設。
+
+切換到此模式將會中止目前執行中的任何同步。
+
+這是一種新的、實驗性的模式。如果您決定要使用它，請回報出現的任何問題。</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="340"/>
         <source>Enable experimental placeholder mode</source>
-        <translation type="unfinished"/>
+        <translation>啟用實驗性的佔位模式</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="341"/>
         <source>Stay safe</source>
-        <translation>維持穩定</translation>
+        <translation>注意安全</translation>
     </message>
 </context>
 <context>
@@ -2880,17 +2889,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudwizardresultpage.cpp" line="33"/>
         <source>Everything set up!</source>
-        <translation>一切都準備就緒!</translation>
+        <translation>一切都準備就緒！</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizardresultpage.cpp" line="37"/>
         <source>Open Local Folder</source>
-        <translation>打開本地資料夾</translation>
+        <translation>開啟本機資料夾</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizardresultpage.cpp" line="46"/>
         <source>Open %1 in Browser</source>
-        <translation>瀏覽器中開啟 %1</translation>
+        <translation>在瀏覽器中開啟 %1</translation>
     </message>
 </context>
 <context>
@@ -2898,7 +2907,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="140"/>
         <source>Invalid JSON reply from the poll URL</source>
-        <translation>不合法的JSON資訊從URL中回傳</translation>
+        <translation>來自輪詢 URL 的無效 JSON 回覆</translation>
     </message>
 </context>
 <context>
@@ -2906,7 +2915,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="243"/>
         <source>Symbolic links are not supported in syncing.</source>
-        <translation>同步不支援符號連結</translation>
+        <translation>同步不支援符號連結。</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="251"/>
@@ -2921,22 +2930,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="265"/>
         <source>File names containing the character &apos;%1&apos; are not supported on this file system.</source>
-        <translation>此檔案系統不支援含「%1」字元的檔案名稱。</translation>
+        <translation>此檔案系統不支援包含「%1」字元的檔案名稱。</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="269"/>
         <source>File name contains at least one invalid character</source>
-        <translation>檔案名稱含有不合法的字元</translation>
+        <translation>檔案名稱包含至少一個無效的字元</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="271"/>
         <source>The file name is a reserved name on this file system.</source>
-        <translation>此檔案名已被此檔案系統保留所用。</translation>
+        <translation>此檔案名稱為檔案系統的保留名稱。</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="276"/>
         <source>Filename contains trailing spaces.</source>
-        <translation>檔案名的結尾為空白符。</translation>
+        <translation>檔案名稱的結尾為空格。</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="279"/>
@@ -2946,17 +2955,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="282"/>
         <source>File/Folder is ignored because it&apos;s hidden.</source>
-        <translation>檔案或資料夾被隱藏，因此跳過</translation>
+        <translation>因為檔案或資料夾被隱藏，因此被忽略。</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="285"/>
         <source>Stat failed.</source>
-        <translation>狀態失敗。</translation>
+        <translation>統計失敗。</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="288"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
-        <translation>衝突：已下載伺服器版本，本地版本已更名但並未上傳。</translation>
+        <translation>衝突：已下載伺服器的版本，本機版本已更名但並未上傳。</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="292"/>
@@ -2971,7 +2980,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="350"/>
         <source>File has extension reserved for virtual files.</source>
-        <translation type="unfinished"/>
+        <translation>檔案有為虛擬檔案保留的副檔名。</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="425"/>
@@ -2991,47 +3000,47 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="435"/>
         <source>server reported no %1</source>
-        <translation type="unfinished"/>
+        <translation>伺服器回報沒有 %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1214"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
-        <translation type="unfinished"/>
+        <translation>由於「選擇要同步的內容」黑名單而被忽略</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1247"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
-        <translation type="unfinished"/>
+        <translation>不允許，因為您無權新增子資料夾到該資料夾</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1252"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
-        <translation type="unfinished"/>
+        <translation>不允許，因為您無權新增檔案到該資料夾</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1265"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
-        <translation type="unfinished"/>
+        <translation>不允許上傳此檔案，因為這在伺服器上是唯讀，正在復原</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1287"/>
         <source>Moved to invalid target, restoring</source>
-        <translation type="unfinished"/>
+        <translation>移動至無效目標，正在復原</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1300"/>
         <source>Not allowed to remove, restoring</source>
-        <translation type="unfinished"/>
+        <translation>不允許刪除，正在復原</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1409"/>
         <source>Error while reading the database</source>
-        <translation type="unfinished"/>
+        <translation>讀取資料庫時發生錯誤</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1470"/>
         <source>Server replied with an error while reading directory &apos;%1&apos; : %2</source>
-        <translation type="unfinished"/>
+        <translation>伺服器在讀取目錄「%1」回覆錯誤：%2</translation>
     </message>
 </context>
 <context>
@@ -4804,7 +4813,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="245"/>
         <source>This is the link to your %1 web interface when you open it in the browser.&lt;br/&gt;It looks like https://cloud.example.com or https://example.com/cloud</source>
-        <translation type="unfinished"/>
+        <translation>這是您在瀏覽器中開啟您的 %1 網頁介面時的連結。&lt;br/&gt;看起來像 https://cloud.example.com 或 https://example.com/cloud</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="343"/>

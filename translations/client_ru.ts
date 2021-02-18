@@ -351,7 +351,7 @@ Wait for the new sync, then encrypt it.</source>
         <location filename="../src/gui/accountsettings.cpp" line="447"/>
         <location filename="../src/gui/accountsettings.cpp" line="523"/>
         <source>Create new folder</source>
-        <translation type="unfinished"/>
+        <translation>Создать папку</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="453"/>
@@ -397,7 +397,7 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="574"/>
         <source>Enable virtual file support %1 …</source>
-        <translation type="unfinished"/>
+        <translation>Включить поддержку виртуальных файлов %1…</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="574"/>
@@ -432,7 +432,7 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="829"/>
         <source>Disable virtual file support?</source>
-        <translation type="unfinished"/>
+        <translation>Отключить поддержку виртуальных файлов?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="830"/>
@@ -441,7 +441,11 @@ Wait for the new sync, then encrypt it.</source>
 The only advantage of disabling virtual file support is that the selective sync feature will become available again.
 
 This action will abort any currently running synchronization.</source>
-        <translation type="unfinished"/>
+        <translation>Это действие приведёт к отключению поддержки виртуальных файлов, что приведёт к загрузке с сервера папок, отмеченных как «доступные только по сети».
+
+Единственным преимуществом отключения поддержки виртуальных файлов является возможность использовать выборочную синхронизацию.
+
+Отключение приведёт к прекращению выполняющейся синхронизации.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="837"/>
@@ -688,12 +692,12 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/application.cpp" line="131"/>
         <source>Continuing will mean &lt;b&gt;deleting these settings&lt;/b&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>При продолжении, эти &lt;b&gt;параметры будут удалены&lt;/b&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="133"/>
         <source>Continuing will mean &lt;b&gt;ignoring these settings&lt;/b&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>При продолжении, эти &lt;b&gt;параметры будут проигнорированы&lt;/b&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="139"/>
@@ -1306,27 +1310,27 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/foldercreationdialog.ui" line="14"/>
         <source>Create new folder</source>
-        <translation type="unfinished"/>
+        <translation>Создать папку</translation>
     </message>
     <message>
         <location filename="../src/gui/foldercreationdialog.ui" line="42"/>
         <source>Enter folder name</source>
-        <translation type="unfinished"/>
+        <translation>Введите имя папки</translation>
     </message>
     <message>
         <location filename="../src/gui/foldercreationdialog.ui" line="61"/>
         <source>Folder already exists</source>
-        <translation type="unfinished"/>
+        <translation>Папка уже существует</translation>
     </message>
     <message>
         <location filename="../src/gui/foldercreationdialog.cpp" line="73"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>Ошибка</translation>
     </message>
     <message>
         <location filename="../src/gui/foldercreationdialog.cpp" line="73"/>
         <source>Could not create a folder! Check your write permissions.</source>
-        <translation type="unfinished"/>
+        <translation>Не удалось создать папку, проверьте наличие права доступа на запись.</translation>
     </message>
 </context>
 <context>
@@ -1492,7 +1496,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="235"/>
         <source>Virtual file support is enabled.</source>
-        <translation type="unfinished"/>
+        <translation>Поддержка виртуальных файлов включена.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="241"/>
@@ -1502,12 +1506,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="299"/>
         <source>Synchronizing VirtualFiles with local folder</source>
-        <translation type="unfinished"/>
+        <translation>Синхронизация виртуальных файлов с локальной папкой</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="301"/>
         <source>Synchronizing with local folder</source>
-        <translation type="unfinished"/>
+        <translation>Синхронизация с локальной папкой</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="904"/>
@@ -1712,7 +1716,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="473"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a subfolder of &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Папка &lt;i&gt;«%1»&lt;/i&gt; уже настроена для синхронизации, и она является вложенной для папки &lt;i&gt;«%2»&lt;/i&gt;.</translation>
     </message>
 </context>
 <context>
@@ -1720,7 +1724,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="512"/>
         <source>Use virtual files instead of downloading content immediately %1</source>
-        <translation type="unfinished"/>
+        <translation>Использовать виртуальные файлы вместо загрузки %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="512"/>
@@ -1730,7 +1734,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="548"/>
         <source>Virtual files are not available for the selected folder</source>
-        <translation type="unfinished"/>
+        <translation>Использование виртуальные файлов недоступно для выбранной папки</translation>
     </message>
 </context>
 <context>
@@ -1761,7 +1765,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="213"/>
         <source>We received an unexpected download Content-Length.</source>
-        <translation type="unfinished"/>
+        <translation>Получено неожиданное значение размера данных.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="215"/>
@@ -1896,7 +1900,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="162"/>
         <source>You cannot disable autostart because system-wide autostart is enabled.</source>
-        <translation type="unfinished"/>
+        <translation>Автоматический запуск не может быть отключен, т.к. он настроен на уровне системы.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="303"/>
@@ -2118,13 +2122,14 @@ If enabled, logs will be written to %1</source>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="64"/>
         <source>Enable logging to temporary folder</source>
-        <translation type="unfinished"/>
+        <translation>Включить запись журнала во временную папку</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="70"/>
         <source>This setting persists across client restarts.
 Note that using any logging command line options will override this setting.</source>
-        <translation type="unfinished"/>
+        <translation>Этот параметр действует до перезапуска клиента.
+Обратите внимание, что любой аргумент командной строки имеет приоритет над этим параметром.</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="70"/>
@@ -2134,7 +2139,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="77"/>
         <source>Open folder</source>
-        <translation type="unfinished"/>
+        <translation>Открыть папку</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="78"/>
@@ -2298,7 +2303,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/networksettings.ui" line="176"/>
         <source>Note: proxy settings have no effects for accounts on localhost</source>
-        <translation type="unfinished"/>
+        <translation>Внимание: параметры прокси не применяются для учётных записей, где адрес сервера localhost</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="190"/>
@@ -2381,12 +2386,12 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="121"/>
         <source>Empty JSON from OAuth2 redirect</source>
-        <translation type="unfinished"/>
+        <translation>При перенаправлении с Oauth2 получен пустой ответ в формате JSON</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="117"/>
         <source>Could not parse the JSON returned from the server: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
-        <translation>Не удалось разобрать JSON, пришедший с сервера: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
+        <translation>Не удалось разобрать JSON, полученный с сервера: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="120"/>
@@ -2476,7 +2481,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="183"/>
         <source>Update Check</source>
-        <translation>Проверка Обновлений</translation>
+        <translation>Проверка обновлений</translation>
     </message>
 </context>
 <context>
@@ -2499,12 +2504,12 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="85"/>
         <source>Use &amp;virtual files instead of downloading content immediately %1</source>
-        <translation type="unfinished"/>
+        <translation>Использовать &amp;виртуальные файлы вместо загрузки %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="85"/>
         <source>(experimental)</source>
-        <translation type="unfinished"/>
+        <translation>(экспериментальная функция)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="154"/>
@@ -2529,7 +2534,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="275"/>
         <source>Virtual files are not available for the selected folder</source>
-        <translation type="unfinished"/>
+        <translation>Использование виртуальные файлов недоступно для выбранной папки.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="294"/>
@@ -2842,7 +2847,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="325"/>
         <source>Enable experimental feature?</source>
-        <translation type="unfinished"/>
+        <translation>Использовать экспериментальную функцию?</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="326"/>
@@ -2897,87 +2902,87 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="243"/>
         <source>Symbolic links are not supported in syncing.</source>
-        <translation type="unfinished"/>
+        <translation>Синхронизация символических ссылок не поддерживается.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="251"/>
         <source>File is listed on the ignore list.</source>
-        <translation type="unfinished"/>
+        <translation>Файл присутствует в списке исключений из сихнронизации.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="255"/>
         <source>File names ending with a period are not supported on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>Используемая файловая система не поддерживает имена файлов, оканчивающиеся на точку.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="265"/>
         <source>File names containing the character &apos;%1&apos; are not supported on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>Используемая файловая система не поддерживает имена файлов, содержащие символ «%1».</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="269"/>
         <source>File name contains at least one invalid character</source>
-        <translation type="unfinished"/>
+        <translation>Имя файла содержит по крайней мере один некорректный символ</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="271"/>
         <source>The file name is a reserved name on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>Имя файла является зарезервированным внутренним именем в используемой файловой системе.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="276"/>
         <source>Filename contains trailing spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Имя файла содержит пробелы на конце.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="279"/>
         <source>Filename is too long.</source>
-        <translation type="unfinished"/>
+        <translation>Имя файла слишком длинное.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="282"/>
         <source>File/Folder is ignored because it&apos;s hidden.</source>
-        <translation type="unfinished"/>
+        <translation>Файл или папка исключены из синхронизации, так как являются скрытыми.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="285"/>
         <source>Stat failed.</source>
-        <translation type="unfinished"/>
+        <translation>Ошибка вызова функции stat.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="288"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
-        <translation type="unfinished"/>
+        <translation>Конфликт: загружена версия файла с сервера, а локальная копия переименована и не передана на сервер.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="292"/>
         <source>The filename cannot be encoded on your file system.</source>
-        <translation type="unfinished"/>
+        <translation>Имя файла не может быть закодировано для используемой файловой системы.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="295"/>
         <source>The filename is blacklisted on the server.</source>
-        <translation type="unfinished"/>
+        <translation>Имя файла внесено в чёрный список на сервере.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="350"/>
         <source>File has extension reserved for virtual files.</source>
-        <translation type="unfinished"/>
+        <translation>Расширение файла является зарезервированным для виртуальных файлов.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="425"/>
         <source>size</source>
-        <translation type="unfinished"/>
+        <translation>размер</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="427"/>
         <source>permissions</source>
-        <translation type="unfinished"/>
+        <translation>права доступа</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="431"/>
         <source>file id</source>
-        <translation type="unfinished"/>
+        <translation>id файла</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="435"/>
@@ -3007,17 +3012,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1287"/>
         <source>Moved to invalid target, restoring</source>
-        <translation type="unfinished"/>
+        <translation>Перемещено в некорректное расположение, выполняется восстановление</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1300"/>
         <source>Not allowed to remove, restoring</source>
-        <translation type="unfinished"/>
+        <translation>Удаление недопустимо, выполняется восстановление</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1409"/>
         <source>Error while reading the database</source>
-        <translation type="unfinished"/>
+        <translation>Ошибка чтения базы данных</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1470"/>
@@ -3193,7 +3198,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="170"/>
         <source>Could not rename %1 to %2, error: %3</source>
-        <translation type="unfinished"/>
+        <translation>Не удалось переименовать «%1» в «%2», сообщение об ошибке: %3</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="134"/>
@@ -3217,7 +3222,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="242"/>
         <source>Failed to upload encrypted file.</source>
-        <translation type="unfinished"/>
+        <translation>Не удалось передать на сервер зашифрованный файл.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="281"/>
@@ -3248,7 +3253,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="420"/>
         <source>Failed to unlock encrypted folder.</source>
-        <translation type="unfinished"/>
+        <translation>Не удалось разблокировать зашифрованную папку.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="758"/>
@@ -3271,7 +3276,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="466"/>
         <source>Poll URL missing</source>
-        <translation type="unfinished"/>
+        <translation>Не хватает сформированного URL</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="457"/>
@@ -3401,7 +3406,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/settingsdialog.cpp" line="105"/>
         <source>%1 Settings</source>
         <extracomment>This name refers to the application name e.g Nextcloud</extracomment>
-        <translation type="unfinished"/>
+        <translation>Параметры %1</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="99"/>
@@ -3620,7 +3625,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="89"/>
         <source>Search globally</source>
-        <translation type="unfinished"/>
+        <translation>Искать глобально</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="285"/>
@@ -3682,7 +3687,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/sharee.cpp" line="133"/>
         <source>%1 (%2)</source>
         <comment>sharee (shareWithAdditionalInfo)</comment>
-        <translation type="unfinished"/>
+        <translation>%1 (%2)</translation>
     </message>
 </context>
 <context>
@@ -3737,7 +3742,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi.cpp" line="946"/>
         <source>Resharing this folder is not allowed</source>
-        <translation type="unfinished"/>
+        <translation>Не допускается повторная публикация этой папки</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="824"/>
@@ -4091,12 +4096,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="352"/>
         <source>Could not update file: %1</source>
-        <translation type="unfinished"/>
+        <translation>Не удалось обновить файл: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="362"/>
         <source>Could not update virtual file metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Не удалось обновить метаданные виртуального файла: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="536"/>
@@ -4264,7 +4269,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1024"/>
         <source>Aborted</source>
-        <translation type="unfinished"/>
+        <translation>Отменено</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1809"/>
@@ -5164,12 +5169,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="33"/>
         <source>Virtual file created</source>
-        <translation type="unfinished"/>
+        <translation>Виртуальный файл создан</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="35"/>
         <source>Replaced by virtual file</source>
-        <translation type="unfinished"/>
+        <translation>Выполнена замена виртуальным файлом</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="32"/>
