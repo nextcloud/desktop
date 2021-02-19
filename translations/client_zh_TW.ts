@@ -3048,7 +3048,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="988"/>
         <source>Error writing metadata to the database</source>
-        <translation>寫入後設資料(metadata) 時發生錯誤</translation>
+        <translation>將詮釋資料寫入到資料庫時發生錯誤</translation>
     </message>
 </context>
 <context>
@@ -3056,7 +3056,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="380"/>
         <source>File %1 can not be downloaded because encryption information is missing.</source>
-        <translation>%1檔案因缺乏加密資訊而未能下載。</translation>
+        <translation>%1 檔案因為缺少加密資訊而無法下載。</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="906"/>
@@ -3066,22 +3066,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="448"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
-        <translation>檔案 %1 無法被下載，因為本地端的檔案名稱已毀損!</translation>
+        <translation>檔案 %1 無法被下載，因為本機檔案名稱有衝突！</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="498"/>
         <source>The download would reduce free local disk space below the limit</source>
-        <translation>此項下載將會使剩餘的本地儲存空間降到低於限值</translation>
+        <translation>下載將會減少剩餘的本機磁碟空間，使其低於限制</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="502"/>
         <source>Free space on disk is less than %1</source>
-        <translation>可用的硬碟空間已經少於 %1</translation>
+        <translation>可用的磁碟空間已經少於 %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="622"/>
         <source>File was deleted from server</source>
-        <translation>檔案已從伺服器被刪除</translation>
+        <translation>檔案已從伺服器刪除</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="675"/>
@@ -3091,17 +3091,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="682"/>
         <source>The downloaded file is empty despite that the server announced it should have been %1.</source>
-        <translation>已下載的檔案為空，儘管伺服器所宣佈的檔案大小為%1。</translation>
+        <translation>儘管伺服器宣告其應為 %1，但下載的檔案為空。</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="871"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
-        <translation>檔案 %1 無法存檔，因為本地端的檔案名稱已毀損!</translation>
+        <translation>檔案 %1 無法儲存，因為本機檔案名稱有衝突！</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="962"/>
         <source>Error writing metadata to the database</source>
-        <translation>寫入後設資料(metadata) 時發生錯誤</translation>
+        <translation>將詮釋資料寫入到資料庫時發生錯誤</translation>
     </message>
 </context>
 <context>
@@ -3109,12 +3109,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="232"/>
         <source>; Restoration Failed: %1</source>
-        <translation>; 重新儲存失敗 %1</translation>
+        <translation>；復原失敗：%1</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="300"/>
         <source>A file or folder was removed from a read only share, but restoring failed: %1</source>
-        <translation>檔案或目錄已經從只供讀取的分享中被移除，但是復原失敗: %1</translation>
+        <translation>檔案或資料夾已被從唯讀分享移除，但復原失敗：%1</translation>
     </message>
 </context>
 <context>
@@ -3122,12 +3122,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="184"/>
         <source>could not delete file %1, error: %2</source>
-        <translation>無法刪除檔案 %1，錯誤: %2</translation>
+        <translation>無法刪除檔案 %1，錯誤：%2</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="199"/>
         <source>Attention, possible case sensitivity clash with %1</source>
-        <translation>注意! %1 的名稱可能有大小寫衝突。</translation>
+        <translation>注意，%1 的名稱可能有大小寫衝突</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="205"/>
@@ -3137,7 +3137,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="217"/>
         <source>Error writing metadata to the database</source>
-        <translation>寫入後設資料(metadata) 時發生錯誤</translation>
+        <translation>將詮釋資料寫入到資料庫時發生錯誤</translation>
     </message>
 </context>
 <context>
@@ -3145,17 +3145,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="79"/>
         <source>Error removing &apos;%1&apos;: %2;</source>
-        <translation>移除時發生錯誤 &apos;%1&apos;: %2;</translation>
+        <translation>移除「%1」時發生錯誤：%2；</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="103"/>
         <source>Could not remove %1 because of a local file name clash</source>
-        <translation>無法刪除 %1 ，因為本地端的檔案名稱已毀損!</translation>
+        <translation>無法移除檔案 %1，因為本機檔案名稱有衝突</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="104"/>
         <source>Could not remove folder &apos;%1&apos;</source>
-        <translation>無法移除資料夾 &apos;%1&apos;</translation>
+        <translation>無法移除資料夾「%1」</translation>
     </message>
 </context>
 <context>
@@ -3163,18 +3163,18 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="268"/>
         <source>File %1 can not be renamed to %2 because of a local file name clash</source>
-        <translation>檔案 %1 無法更名成 %2，因為本地端的檔案名稱已毀損</translation>
+        <translation>檔案 %1 無法重新命名為 %2，因為本機檔案名稱有衝突</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="299"/>
         <location filename="../src/libsync/propagatorjobs.cpp" line="304"/>
         <source>Error writing metadata to the database</source>
-        <translation>寫入後設資料(metadata) 時發生錯誤</translation>
+        <translation>將詮釋資料寫入到資料庫時發生錯誤</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="267"/>
         <source>Error setting pin state</source>
-        <translation type="unfinished"/>
+        <translation>設定釘選狀態時發生錯誤</translation>
     </message>
 </context>
 <context>
@@ -3182,7 +3182,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateremotedelete.cpp" line="152"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
-        <translation>從伺服器端回傳錯誤的 HTTP 代碼， 預期是 204, 但是接收到的是 &quot;%1 %2&quot;.</translation>
+        <translation>伺服器回傳錯誤的 HTTP 代碼。預期為 204，但收到的是「%1 %2」。</translation>
     </message>
 </context>
 <context>
@@ -3190,7 +3190,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateremotedeleteencryptedrootfolder.cpp" line="143"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>伺服器回傳錯誤的 HTTP 代碼。預期為 204，但收到的是「%1 %2」。</translation>
     </message>
 </context>
 <context>
@@ -3198,12 +3198,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="209"/>
         <source>Wrong HTTP code returned by server. Expected 201, but received &quot;%1 %2&quot;.</source>
-        <translation>從伺服器端回傳錯誤的 HTTP 代碼， 預期是 201, 但是接收到的是 &quot;%1 %2&quot;.</translation>
+        <translation>伺服器回傳錯誤的 HTTP 代碼。預期為 201，但收到的是「%1 %2」。</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="284"/>
         <source>Error writing metadata to the database</source>
-        <translation>寫入後設資料(metadata) 時發生錯誤</translation>
+        <translation>將詮釋資料寫入到資料庫時發生錯誤</translation>
     </message>
 </context>
 <context>
@@ -3211,23 +3211,23 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="170"/>
         <source>Could not rename %1 to %2, error: %3</source>
-        <translation type="unfinished"/>
+        <translation>無法將 %1 重新命名為 %2，錯誤：%3</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="134"/>
         <source>Wrong HTTP code returned by server. Expected 201, but received &quot;%1 %2&quot;.</source>
-        <translation>從伺服器端回傳錯誤的 HTTP 代碼， 預期是 201, 但是接收到的是 &quot;%1 %2&quot;.</translation>
+        <translation>伺服器回傳錯誤的 HTTP 代碼。預期為 201，但收到的是「%1 %2」。</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="166"/>
         <location filename="../src/libsync/propagateremotemove.cpp" line="172"/>
         <source>Error writing metadata to the database</source>
-        <translation>寫入後設資料(metadata) 時發生錯誤</translation>
+        <translation>將詮釋資料寫入到資料庫時發生錯誤</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="261"/>
         <source>Error setting pin state</source>
-        <translation type="unfinished"/>
+        <translation>設定釘選狀態時發生錯誤</translation>
     </message>
 </context>
 <context>
@@ -3235,43 +3235,43 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="242"/>
         <source>Failed to upload encrypted file.</source>
-        <translation type="unfinished"/>
+        <translation>上傳已加密的檔案失敗。</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="281"/>
         <source>File %1 cannot be uploaded because another file with the same name, differing only in case, exists</source>
-        <translation>%1檔案未能上傳，因為另一個同名（僅大小寫不同）的檔案已經存在</translation>
+        <translation>無法上傳 %1 檔案，因為另一個僅有大小寫不同的相同名稱檔案已存在</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="292"/>
         <location filename="../src/libsync/propagateupload.cpp" line="670"/>
         <source>Upload of %1 exceeds the quota for the folder</source>
-        <translation>上傳%1將會超過資料夾的大小限制</translation>
+        <translation>上傳 %1 將會超過資料夾的大小限制</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="401"/>
         <source>File Removed (start upload) %1</source>
-        <translation>移除檔案(開始上傳) %1</translation>
+        <translation>檔案已移除（開始上傳）%1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="415"/>
         <source>Local file changed during syncing. It will be resumed.</source>
-        <translation>本地端的檔案在同步的過程中被更改，此檔案將會被還原。</translation>
+        <translation>本機檔案在同步的過程中被修改。其將會被復原。</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="430"/>
         <source>Local file changed during sync.</source>
-        <translation>本地端的檔案在同步過程中被更改。</translation>
+        <translation>本機檔案在同步的過程中被修改。</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="420"/>
         <source>Failed to unlock encrypted folder.</source>
-        <translation type="unfinished"/>
+        <translation>解鎖已加密的資料夾失敗。</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="758"/>
         <source>Error writing metadata to the database</source>
-        <translation>寫入後設資料(metadata) 時發生錯誤</translation>
+        <translation>將詮釋資料寫入到資料庫時發生錯誤</translation>
     </message>
 </context>
 <context>
@@ -3279,27 +3279,27 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="412"/>
         <source>The local file was removed during sync.</source>
-        <translation>本地端的檔案在同步過程中被刪除。</translation>
+        <translation>本機檔案在同步的過程中被移除。</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="423"/>
         <source>Local file changed during sync.</source>
-        <translation>本地端的檔案在同步過程中被更改。</translation>
+        <translation>本機檔案在同步的過程中被修改。</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="466"/>
         <source>Poll URL missing</source>
-        <translation>遺失投票網址</translation>
+        <translation>缺少輪詢的超連結</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="457"/>
         <source>Unexpected return code from server (%1)</source>
-        <translation>伺服器回傳未知的錯誤碼(%1)</translation>
+        <translation>伺服器回傳未知的錯誤碼 (%1)</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="464"/>
         <source>Missing File ID from server</source>
-        <translation>伺服器遺失檔案ID</translation>
+        <translation>伺服器遺失檔案 ID</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="478"/>
@@ -3317,17 +3317,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="241"/>
         <source>The local file was removed during sync.</source>
-        <translation>本地端的檔案在同步過程中被刪除。</translation>
+        <translation>本機檔案在同步的過程中被移除。</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="252"/>
         <source>Local file changed during sync.</source>
-        <translation>本地端的檔案在同步過程中被更改。</translation>
+        <translation>本機檔案在同步的過程中被修改。</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="266"/>
         <source>The server did not acknowledge the last chunk. (No e-tag was present)</source>
-        <translation>伺服器不承認檔案的最後一個分割檔。(e-tag不存在)</translation>
+        <translation>伺服器不承認檔案的最後一個分割檔。（e-tag不存在）</translation>
     </message>
 </context>
 <context>
@@ -3345,12 +3345,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="36"/>
         <source>Proxy:</source>
-        <translation>代理伺服器:</translation>
+        <translation>代理伺服器：</translation>
     </message>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="43"/>
         <source>The proxy server needs a username and password.</source>
-        <translation>代理伺服器需要使用者帳號以及密碼。</translation>
+        <translation>代理伺服器需要使用者名稱以及密碼。</translation>
     </message>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="50"/>
@@ -3371,12 +3371,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="73"/>
         <source>Loading …</source>
-        <translation>載入中...</translation>
+        <translation>正在載入……</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="79"/>
         <source>Deselect remote folders you do not wish to synchronize.</source>
-        <translation>取消選擇您不願意同步的遠端資料夾。</translation>
+        <translation>取消選擇您不想要同步的遠端資料夾。</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="95"/>
@@ -3419,7 +3419,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/settingsdialog.cpp" line="105"/>
         <source>%1 Settings</source>
         <extracomment>This name refers to the application name e.g Nextcloud</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 設定</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="99"/>
@@ -3452,7 +3452,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sharedialog.ui" line="67"/>
         <source>ownCloud Path:</source>
-        <translation>ownCloud 路徑:</translation>
+        <translation>ownCloud 路徑：</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="82"/>
@@ -3472,7 +3472,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="113"/>
         <source>Folder: %2</source>
-        <translation>資料夾: %2</translation>
+        <translation>資料夾：%2</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="116"/>
@@ -3482,7 +3482,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="294"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
-        <translation>這個檔案無法被分享，並沒有分享此檔案的權限。</translation>
+        <translation>此檔案無法被分享，因為其以無分享權限的狀況分享。</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="335"/>
@@ -3515,12 +3515,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="171"/>
         <source>&amp;Share link</source>
-        <translation>&amp;分享連結</translation>
+        <translation>分享連結(&amp;S)</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="239"/>
         <source>Expiration date:</source>
-        <translation>有效期至：</translation>
+        <translation>到期日：</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="245"/>
@@ -3540,7 +3540,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="164"/>
         <source>Read only</source>
-        <translation>只讀</translation>
+        <translation>唯讀</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="164"/>
@@ -3550,7 +3550,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="169"/>
         <source>File Drop (Upload Only)</source>
-        <translation>檔案投寄（只允許上傳）</translation>
+        <translation>檔案投放（僅上傳）</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="170"/>
@@ -3560,7 +3560,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="175"/>
         <source>File drop (upload only)</source>
-        <translation>拖曳檔案(僅供上傳)</translation>
+        <translation>檔案投放（僅上傳）</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="184"/>
@@ -3570,7 +3570,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="190"/>
         <source>Note to recipient</source>
-        <translation>給接收者的訊息</translation>
+        <translation>給收件者的訊息</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="200"/>
@@ -3580,7 +3580,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="201"/>
         <source>Expiration Date</source>
-        <translation>有效期至</translation>
+        <translation>到期日</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="217"/>
@@ -3600,7 +3600,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="241"/>
         <source>Add another link</source>
-        <translation>新增連結</translation>
+        <translation>新增其他連結</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="464"/>
@@ -3610,7 +3610,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="465"/>
         <source>&lt;p&gt;Do you really want to delete the public link share &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;Note: This action cannot be undone.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;您確定要移除公共連結分享&lt;i&gt;%1&lt;/i&gt;嗎？&lt;/p&gt;&lt;p&gt;注意：此動作不可復原。&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;您確定要移除公開連結分享 &lt;i&gt;%1&lt;/i&gt; 嗎？&lt;/p&gt;&lt;p&gt;注意：此動作無法復原。&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="471"/>
@@ -3625,7 +3625,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="490"/>
         <source>Public link</source>
-        <translation>公共連結</translation>
+        <translation>公開連結</translation>
     </message>
 </context>
 <context>
@@ -3633,12 +3633,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/shareusergroupwidget.ui" line="59"/>
         <source>Share with users or groups …</source>
-        <translation>分享給適用者或群組</translation>
+        <translation>與使用者或群組分享……</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="89"/>
         <source>Search globally</source>
-        <translation type="unfinished"/>
+        <translation>全域搜尋</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="285"/>
@@ -3648,12 +3648,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="297"/>
         <source>No results for &apos;%1&apos;</source>
-        <translation>&apos;%1&apos; 沒有結果</translation>
+        <translation>「%1」沒有結果</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="386"/>
         <source>I shared something with you</source>
-        <translation>我與你分享了檔案</translation>
+        <translation>我與您分享了一些東西</translation>
     </message>
 </context>
 <context>
@@ -3691,7 +3691,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="471"/>
         <source>Can delete</source>
-        <translation>可以移除</translation>
+        <translation>可以刪除</translation>
     </message>
 </context>
 <context>
@@ -3700,7 +3700,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/sharee.cpp" line="133"/>
         <source>%1 (%2)</source>
         <comment>sharee (shareWithAdditionalInfo)</comment>
-        <translation type="unfinished"/>
+        <translation>%1 (%2)</translation>
     </message>
 </context>
 <context>
@@ -3709,7 +3709,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/socketapi.cpp" line="465"/>
         <source>Share with %1</source>
         <comment>parameter is Nextcloud</comment>
-        <translation>與%1分享</translation>
+        <translation>與 %1 分享</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="540"/>
@@ -3719,12 +3719,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi.cpp" line="754"/>
         <source>Select new location …</source>
-        <translation>選擇新位址...</translation>
+        <translation>選取新位置……</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="768"/>
         <source>I shared something with you</source>
-        <translation>我與你分享了檔案</translation>
+        <translation>我與您分享了一些東西</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="781"/>
@@ -3735,17 +3735,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi.cpp" line="672"/>
         <source>Share via %1</source>
-        <translation>由 %1 分享</translation>
+        <translation>透過 %1 分享</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="783"/>
         <source>Copy private link to clipboard</source>
-        <translation>將私用連結複製至剪貼簿</translation>
+        <translation>將私人連結複製到剪貼簿</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="784"/>
         <source>Send private link by email …</source>
-        <translation>用電子郵件發送私人連結</translation>
+        <translation>用電子郵件發送私人連結……</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="810"/>
@@ -3755,13 +3755,13 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi.cpp" line="946"/>
         <source>Resharing this folder is not allowed</source>
-        <translation type="unfinished"/>
+        <translation>此資料夾不允許二次分享</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="824"/>
         <location filename="../src/gui/socketapi.cpp" line="826"/>
         <source>Copy public link</source>
-        <translation>複製公共連結</translation>
+        <translation>複製公開連結</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="830"/>
@@ -3781,27 +3781,27 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi.cpp" line="916"/>
         <source>Resolve conflict …</source>
-        <translation type="unfinished"/>
+        <translation>解決衝突……</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="920"/>
         <source>Move and rename …</source>
-        <translation>移動並重新命名...</translation>
+        <translation>移動並重新命名……</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="923"/>
         <source>Move, rename and upload …</source>
-        <translation>移動、重新命名並上傳...</translation>
+        <translation>移動、重新命名並上傳……</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="925"/>
         <source>Delete local changes</source>
-        <translation>刪除本地變更</translation>
+        <translation>刪除本機變更</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="931"/>
         <source>Move and upload …</source>
-        <translation>移動並上傳...</translation>
+        <translation>移動並上傳……</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="932"/>
@@ -3814,32 +3814,32 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="88"/>
         <source>&lt;h3&gt;Certificate Details&lt;/h3&gt;</source>
-        <translation>&lt;h3&gt;憑證細節&lt;/h3&gt;</translation>
+        <translation>&lt;h3&gt;證書詳細資訊&lt;/h3&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="91"/>
         <source>Common Name (CN):</source>
-        <translation>(通用名):</translation>
+        <translation>一般名稱 (CN)：</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="92"/>
         <source>Subject Alternative Names:</source>
-        <translation>主題備用名稱:</translation>
+        <translation>主題備用名稱：</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="93"/>
         <source>Organization (O):</source>
-        <translation>組織 (O):</translation>
+        <translation>組織 (O)：</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="94"/>
         <source>Organizational Unit (OU):</source>
-        <translation>組織部門 (OU):</translation>
+        <translation>組織部門 (OU)：</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="95"/>
         <source>State/Province:</source>
-        <translation>州或省:</translation>
+        <translation>州／省：</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="96"/>
@@ -3849,7 +3849,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="97"/>
         <source>Serial:</source>
-        <translation>序號:</translation>
+        <translation>序號：</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="100"/>
@@ -3859,17 +3859,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="103"/>
         <source>Issuer:</source>
-        <translation>簽發者:</translation>
+        <translation>簽發者：</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="104"/>
         <source>Issued on:</source>
-        <translation>簽發於:</translation>
+        <translation>簽發於：</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="105"/>
         <source>Expires on:</source>
-        <translation>過期於:</translation>
+        <translation>過期於：</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="108"/>
@@ -3879,22 +3879,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="112"/>
         <source>SHA-256:</source>
-        <translation>SHA-256:</translation>
+        <translation>SHA-256：</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="113"/>
         <source>SHA-1:</source>
-        <translation>SHA-1:</translation>
+        <translation>SHA-1：</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="117"/>
         <source>&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This certificate was manually approved&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;b&gt;注意:&lt;/b&gt; 此憑證已被手動核准&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;&lt;b&gt;注意：&lt;/b&gt; 此憑證為手動核准&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="137"/>
         <source>%1 (self-signed)</source>
-        <translation>%1 (自我簽章)</translation>
+        <translation>%1（自我簽章）</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="139"/>
@@ -3905,7 +3905,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/sslbutton.cpp" line="174"/>
         <source>This connection is encrypted using %1 bit %2.
 </source>
-        <translation>這個連線已經使用 %1 bit %2 加密。
+        <translation>此連線已經使用 %1 位元 %2 加密。
 </translation>
     </message>
     <message>
@@ -3918,17 +3918,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="191"/>
         <source>Server version: %1</source>
-        <translation>伺服器版本: %1</translation>
+        <translation>伺服器版本：%1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="205"/>
         <source>No support for SSL session tickets/identifiers</source>
-        <translation>不支援SSL連線</translation>
+        <translation>不支援 SSL 工作階段證書／標識符</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="215"/>
         <source>Certificate information:</source>
-        <translation>憑證資訊:</translation>
+        <translation>憑證資訊：</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="244"/>
@@ -3951,7 +3951,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="132"/>
         <source>Cannot connect securely to &lt;i&gt;%1&lt;/i&gt;:</source>
-        <translation>無法安全的連線到 &lt;i&gt;%1&lt;/i&gt;:</translation>
+        <translation>無法安全地連線到 &lt;i&gt;%1&lt;/i&gt;：</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="166"/>
@@ -3969,49 +3969,49 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/sslerrordialog.cpp" line="180"/>
         <location filename="../src/gui/sslerrordialog.cpp" line="205"/>
         <source>Organization: %1</source>
-        <translation>組織:%1</translation>
+        <translation>組織：%1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="181"/>
         <location filename="../src/gui/sslerrordialog.cpp" line="206"/>
         <source>Unit: %1</source>
-        <translation>單位:%1</translation>
+        <translation>單位：%1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="182"/>
         <location filename="../src/gui/sslerrordialog.cpp" line="207"/>
         <source>Country: %1</source>
-        <translation>國家:%1</translation>
+        <translation>國家：%1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="189"/>
         <source>Fingerprint (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation>指紋 (SHA1): &amp;lt;tt&amp;gt;%1&amp;lt;/tt&amp;gt;</translation>
+        <translation>指紋 (SHA1)：&lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="194"/>
         <source>Fingerprint (SHA-256): &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation>SHA-256 數位指紋：&lt;tt&gt;%1&lt;/tt&gt;</translation>
+        <translation>指紋 (SHA-256)：&lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="195"/>
         <source>Fingerprint (SHA-512): &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation>SHA-512 數位指紋：&lt;tt&gt;%1&lt;/tt&gt;</translation>
+        <translation>指紋 (SHA-512)：&lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="197"/>
         <source>Effective Date: %1</source>
-        <translation>有效日期:%1</translation>
+        <translation>有效日期：%1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="198"/>
         <source>Expiration Date: %1</source>
-        <translation>到期日: %1</translation>
+        <translation>到期日：%1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="202"/>
         <source>Issuer: %1</source>
-        <translation>簽發者: %1</translation>
+        <translation>簽發者：%1</translation>
     </message>
 </context>
 <context>
@@ -4029,7 +4029,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="129"/>
         <source>Discovery step failed.</source>
-        <translation>發現步驟失敗。</translation>
+        <translation>探索步驟失敗。</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="132"/>
@@ -4049,17 +4049,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="141"/>
         <source>File or directory not found:</source>
-        <translation>找不到檔案或資料夾：</translation>
+        <translation>找不到檔案或目錄：</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="144"/>
         <source>Tried to create a folder that already exists.</source>
-        <translation>要新增的資料夾已經存在。</translation>
+        <translation>要建立的資料夾已經存在。</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="147"/>
         <source>No space on %1 server available.</source>
-        <translation>%1伺服器已無剩餘空間。</translation>
+        <translation>%1 伺服器已無剩餘空間。</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="150"/>
@@ -4069,12 +4069,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="153"/>
         <source>Aborted by the user</source>
-        <translation>使用者中斷</translation>
+        <translation>被使用者中止</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="156"/>
         <source>The service is temporarily unavailable</source>
-        <translation>這個服務暫時無法使用。</translation>
+        <translation>這個服務暫時無法使用</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="159"/>
@@ -4084,12 +4084,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="162"/>
         <source>Access is forbidden</source>
-        <translation>存取被拒</translation>
+        <translation>禁止存取</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="165"/>
         <source>An error occurred while opening a folder</source>
-        <translation>開啟資料夾時發生錯誤。</translation>
+        <translation>開啟資料夾時發生錯誤</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="168"/>
@@ -4104,17 +4104,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="244"/>
         <source>%1 (skipped due to earlier error, trying again in %2)</source>
-        <translation>%1（因先前錯誤而跳過，%2後重試）</translation>
+        <translation>%1（因先前錯誤而跳過，%2 後重試）</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="352"/>
         <source>Could not update file: %1</source>
-        <translation type="unfinished"/>
+        <translation>無法更新檔案：%1</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="362"/>
         <source>Could not update virtual file metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>無法更新虛擬檔案詮釋資料：%1</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="536"/>
@@ -4131,43 +4131,43 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/syncengine.cpp" line="1396"/>
         <location filename="../src/libsync/syncengine.cpp" line="1436"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
-        <translation>已忽略。根據 &quot;選擇要同步的項目&quot;的黑名單</translation>
+        <translation>由於「選擇要同步的內容」黑名單而被忽略</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1455"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
-        <translation>拒絕此操作，您沒有在此新增子資料夾的權限。</translation>
+        <translation>不允許，因為您無權新增子資料夾到該資料夾</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1470"/>
         <source>Not allowed because you don&apos;t have permission to add parent folder</source>
-        <translation>拒絕此操作，您沒有新增母資料夾的權限。</translation>
+        <translation>不允許，因為您無權新增上層資料夾</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1477"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
-        <translation>拒絕此操作，您沒有新增檔案在此資料夾的權限。</translation>
+        <translation>不允許，因為您無權新增檔案到該資料夾</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1502"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
-        <translation>拒絕上傳此檔案，此檔案在伺服器是唯讀檔，復原中</translation>
+        <translation>不允許上傳此檔案，因為這在伺服器上是唯讀，正在復原</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1518"/>
         <location filename="../src/libsync/syncengine.cpp" line="1537"/>
         <source>Not allowed to remove, restoring</source>
-        <translation>不允許刪除，復原中</translation>
+        <translation>不允許刪除，正在復原</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1551"/>
         <source>Local files and share folder removed.</source>
-        <translation>本地端檔案和共享資料夾已被刪除。</translation>
+        <translation>本機檔案和共享資料夾已被移除。</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1605"/>
         <source>Move not allowed, item restored</source>
-        <translation>不允許移動，物件復原中</translation>
+        <translation>不允許移動，正在復原項目</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1616"/>
@@ -4187,7 +4187,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="490"/>
         <source>Symbolic links are not supported in syncing.</source>
-        <translation>同步不支援符號連結</translation>
+        <translation>同步不支援符號連結。</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="493"/>
@@ -4197,22 +4197,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="497"/>
         <source>File names ending with a period are not supported on this file system.</source>
-        <translation>此檔案系統不支援以「.」結尾的檔案名。</translation>
+        <translation>此檔案系統不支援以「.」結尾的檔案名稱。</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="840"/>
         <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
-        <translation>無法開啟或新增本地同步資料庫。請確保您有寫入同步資料夾的權限。</translation>
+        <translation>無法開啟或建立本機同步資料庫。請確保您有寫入同步資料夾的權限。</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="507"/>
         <source>File names containing the character &apos;%1&apos; are not supported on this file system.</source>
-        <translation>此檔案系統不支援含「%1」字符的檔案名。</translation>
+        <translation>此檔案系統不支援包含「%1」字元的檔案名稱。</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="510"/>
         <source>The file name is a reserved name on this file system.</source>
-        <translation>此檔案名已被此檔案系統保留所用。</translation>
+        <translation>此檔案名稱為檔案系統的保留名稱。</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="515"/>

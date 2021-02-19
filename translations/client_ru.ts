@@ -212,7 +212,7 @@
     <message>
         <location filename="../src/libsync/abstractpropagateremotedeleteencrypted.cpp" line="181"/>
         <source>&quot;%1 Failed to unlock encrypted folder %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>%1 не удалось разблокировать зашифрованную папку «%2».</translation>
     </message>
 </context>
 <context>
@@ -702,7 +702,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/application.cpp" line="139"/>
         <source>Some settings were configured in newer versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Используемая версия приложения не поддерживает некоторые параметры, настроенные в более новой версии. &lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt; Резервная копия файла конфигурации сохранена в &lt;i&gt;%2&lt;/i&gt;. </translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="146"/>
@@ -940,7 +940,7 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/libsync/discoveryphase.cpp" line="497"/>
         <location filename="../src/libsync/discoveryphase.cpp" line="522"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
-        <translation type="unfinished"/>
+        <translation>Ошибка сервера: ответ PROPFIND не в формате XML.</translation>
     </message>
 </context>
 <context>
@@ -1091,7 +1091,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="425"/>
         <source>%1 and %n other file(s) have been added.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 и ещё %n файл добавлены.</numerusform><numerusform>%1 и ещё %n файла добавлены.</numerusform><numerusform>%1 и ещё %n файлов добавлены.</numerusform><numerusform>%1 и ещё %n файла добавлены.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="427"/>
@@ -2117,7 +2117,9 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <source>The client can write debug logs to a temporary folder. These logs are very helpful for diagnosing problems.
 Since log files can get large, the client will start a new one for each sync run and compress older ones. It will also delete log files after a couple of hours to avoid consuming too much disk space.
 If enabled, logs will be written to %1</source>
-        <translation type="unfinished"/>
+        <translation>Отладочные файлы журналов могут быть сохранены во временной папке. Эти файлы очень полезны для выявления ошибок в работе.
+Так как размер таких файлов может стать значительным, для каждого сеанса синхронизации создаётся новый файл, а предыдущие сохраняются в архивы с использованием сжатия и удалются через несколько часов.
+При включении этого параметры, журналы будут сохраняться в папке «%1».</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="64"/>
@@ -2858,12 +2860,18 @@ The virtual files mode is mutually exclusive with selective sync. Currently unse
 Switching to this mode will abort any currently running synchronization.
 
 This is a new, experimental mode. If you decide to use it, please report any issues that come up.</source>
-        <translation type="unfinished"/>
+        <translation>При включении функции виртуальных файлов, вместо загрузки всех файлов с сервера, для каждого файла, расположенного на сервере, будет создан соответствующий ему файл с расширением «%1» очень небольшого размера. Исходный файл с сервера будет загружен при обращении к соответствующему локальному файлу или при выборе соответствующего пункта  из контекстного меню.
+
+Режим виртуальных файлов несовместим с выборочной синхронизацией. При включении этой функции параметры выборочной синхронизации будут сброшены, а для всех несинхронизируемых папок будет установлен режим «доступно только при подключении».
+
+При включении этой функции все выполняющиеся синхронизации будут прерваны.
+
+Так как эта функция является экспериментальной, сообщайте разработчикам об ошибках в её работе.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="340"/>
         <source>Enable experimental placeholder mode</source>
-        <translation type="unfinished"/>
+        <translation>Использовать экспериментальную функцию подстановки</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="341"/>
@@ -2992,22 +3000,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1214"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
-        <translation type="unfinished"/>
+        <translation>Игнорируется из-за совпадения с записью в списке исключений из синхронизации</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1247"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
-        <translation type="unfinished"/>
+        <translation>Недостаточно прав для создания вложенных папок</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1252"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
-        <translation type="unfinished"/>
+        <translation>Недостаточно прав для создания файлов в этой папке</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1265"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
-        <translation type="unfinished"/>
+        <translation>Передача этого файла на сервер не разрешена, т.к. он доступен только для чтения, выполняется восстановление</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1287"/>
@@ -3161,7 +3169,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="267"/>
         <source>Error setting pin state</source>
-        <translation type="unfinished"/>
+        <translation>Не удалось задать состояние pin</translation>
     </message>
 </context>
 <context>
@@ -3177,7 +3185,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateremotedeleteencryptedrootfolder.cpp" line="143"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Получен неверный код HTTP-ответа сервера: ожидался код 204, но был получен «%1 %2».</translation>
     </message>
 </context>
 <context>
@@ -3214,7 +3222,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="261"/>
         <source>Error setting pin state</source>
-        <translation type="unfinished"/>
+        <translation>Не удалось задать состояние pin</translation>
     </message>
 </context>
 <context>
@@ -3737,12 +3745,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi.cpp" line="810"/>
         <source>Resharing this file is not allowed</source>
-        <translation>Повторное открытие доступа запрещено</translation>
+        <translation>Повторная публикация этого файла не разрешена</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="946"/>
         <source>Resharing this folder is not allowed</source>
-        <translation>Не допускается повторная публикация этой папки</translation>
+        <translation>Повторная публикация этой папки не разрешена</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="824"/>
@@ -4123,22 +4131,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1455"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
-        <translation>Не разрешается, так как у вас нет полномочий на добавление подпапок в папку.</translation>
+        <translation>Недостаточно прав для создания вложенных папок</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1470"/>
         <source>Not allowed because you don&apos;t have permission to add parent folder</source>
-        <translation>Не разрешается, так как у вас нет полномочий на добавление родительской папки</translation>
+        <translation>Недостаточно прав для добавления родительской папки</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1477"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
-        <translation>Не разрешается, так как у вас нет полномочий на добавление файлов в эту папку</translation>
+        <translation>Недостаточно прав для создания файлов в этой папке</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1502"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
-        <translation>Не допускается загрузка этого файла, так как на сервере он помечен только для чтения, восстанавливаем</translation>
+        <translation>Передача этого файла на сервер не разрешена, т.к. он доступен только для чтения, выполняется восстановление</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1518"/>
@@ -4214,7 +4222,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="514"/>
         <source>Using virtual files with suffix, but suffix is not set</source>
-        <translation type="unfinished"/>
+        <translation>Для виртуальных файлов настроено использование специального суффикса, но суффикс не указан</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="521"/>
@@ -4418,7 +4426,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/common/vfs.cpp" line="82"/>
         <source>The Virtual filesystem feature requires a NTFS file system, %1 is using %2</source>
-        <translation type="unfinished"/>
+        <translation>Для использования виртуальной файловой системы требуется NTFS, %1 использует %2</translation>
     </message>
 </context>
 <context>
@@ -4470,7 +4478,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="229"/>
         <source>The server on account %1 runs an unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
-        <translation type="unfinished"/>
+        <translation>На сервере учётной записи «%1» используется неподдерживаемая версия %2. Использование этого клиента совместно с неподдерживаемым сервером не тестировалось и может быть небезопасным. Продолжайте на свой страх и риск.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="273"/>
@@ -4700,7 +4708,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="90"/>
         <source>S&amp;ynchronize everything from server</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Синхронизировать всё с сервером</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="90"/>
@@ -4836,7 +4844,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/foldercreationdialog.cpp" line="38"/>
         <source>New folder</source>
-        <translation type="unfinished"/>
+        <translation>Новая папка</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="464"/>
@@ -5023,7 +5031,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/common/checksums.cpp" line="362"/>
         <source>The downloaded file does not match the checksum, it will be resumed. &apos;%1&apos; != &apos;%2&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Вычисленная контрольная сумма файла не соответствует ожидаемой, операция будет возобновлена: «%1»&lt;&gt;«%2»</translation>
     </message>
 </context>
 <context>
@@ -5341,12 +5349,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/guiutility.cpp" line="86"/>
         <source>Always available locally</source>
-        <translation type="unfinished"/>
+        <translation>Всегда доступен автономно</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="88"/>
         <source>Currently available locally</source>
-        <translation type="unfinished"/>
+        <translation>Сейчас доступен автономно</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="90"/>
@@ -5356,7 +5364,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/guiutility.cpp" line="93"/>
         <source>Available online only</source>
-        <translation type="unfinished"/>
+        <translation>Доступен только при подключении</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="100"/>
