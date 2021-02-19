@@ -28,14 +28,11 @@ class SocketUploadJob : public QObject
 {
     Q_OBJECT
 public:
-    SocketUploadJob(OCC::SocketListener *listener, const QString &argument, QObject *parent = nullptr);
-
+    SocketUploadJob(const QSharedPointer<SocketApiJobV2> &job);
     void start();
 
-    void finish(const QString &error);
-
 private:
-    SocketListener *_listener;
+    QSharedPointer<SocketApiJobV2> _apiJob;
     QString _localPath;
     QString _remotePath;
     QString _pattern;
@@ -43,7 +40,5 @@ private:
     SyncJournalDb *_db;
     SyncEngine *_engine;
     QStringList _syncedFiles;
-
-    bool _finished = false;
 };
 }

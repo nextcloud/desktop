@@ -70,8 +70,6 @@
 
 #include <QProcess>
 #include <QStandardPaths>
-#include <QTemporaryFile>
-#include <networkjobs.h>
 
 #ifdef Q_OS_MAC
 #include <CoreFoundation/CoreFoundation.h>
@@ -197,11 +195,6 @@ Q_LOGGING_CATEGORY(lcSocketApi, "nextcloud.gui.socketapi", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcPublicLink, "nextcloud.gui.socketapi.publiclink", QtInfoMsg)
 
 
-void SocketListener::sendMessage(const QString &function, const QJsonObject &obj, bool doWait) const
-{
-    sendMessage(function + QLatin1Char(':') + QJsonDocument(obj).toJson(QJsonDocument::Compact), doWait);
-}
-
 void SocketListener::sendMessage(const QString &message, bool doWait) const
 {
     if (!socket) {
@@ -225,16 +218,6 @@ void SocketListener::sendMessage(const QString &message, bool doWait) const
     }
 }
 
-struct ListenerHasSocketPred
-{
-    QIODevice *socket;
-    ListenerHasSocketPred(QIODevice *socket)
-        : socket(socket)
-    {
-    }
-    bool operator()(const SocketListener &listener) const { return listener.socket == socket; }
-};
-
 SocketApi::SocketApi(QObject *parent)
     : QObject(parent)
 {
@@ -242,6 +225,7 @@ SocketApi::SocketApi(QObject *parent)
 
     qRegisterMetaType<SocketListener *>("SocketListener*");
     qRegisterMetaType<QSharedPointer<SocketApiJob>>("QSharedPointer<SocketApiJob>");
+    qRegisterMetaType<QSharedPointer<SocketApiJobV2>>("QSharedPointer<SocketApiJobV2>");
 
     if (Utility::isWindows()) {
         socketPath = QLatin1String(R"(\\.\pipe\)")
@@ -312,7 +296,7 @@ SocketApi::~SocketApi()
     qCDebug(lcSocketApi) << "dtor";
     _localServer.close();
     // All remaining sockets will be destroyed with _localServer, their parent
-    ASSERT(_listeners.isEmpty() || _listeners.first().socket->parent() == &_localServer);
+    ASSERT(_listeners.isEmpty() || _listeners.first()->socket->parent() == &_localServer)
     _listeners.clear();
 }
 
@@ -331,14 +315,13 @@ void SocketApi::slotNewConnection()
     connect(socket, &QObject::destroyed, this, &SocketApi::slotSocketDestroyed);
     ASSERT(socket->readAll().isEmpty());
 
-    _listeners.append(SocketListener(socket));
-    SocketListener &listener = _listeners.last();
-
-    foreach (Folder *f, FolderMan::instance()->map()) {
+    auto listener = QSharedPointer<SocketListener>::create(socket);
+    _listeners.insert(socket, listener);
+    for (Folder *f : FolderMan::instance()->map()) {
         if (f->canSync()) {
             QString message = buildRegisterPathMessage(removeTrailingSlash(f->path()));
-            qCInfo(lcSocketApi) << "Trying to send SocketAPI Register Path Message -->" << message << "to" << listener.socket;
-            listener.sendMessage(message);
+            qCInfo(lcSocketApi) << "Trying to send SocketAPI Register Path Message -->" << message << "to" << listener->socket;
+            listener->sendMessage(message);
         }
     }
 }
@@ -350,13 +333,13 @@ void SocketApi::onLostConnection()
 
     auto socket = qobject_cast<QIODevice *>(sender());
     ASSERT(socket);
-    _listeners.erase(std::remove_if(_listeners.begin(), _listeners.end(), ListenerHasSocketPred(socket)), _listeners.end());
+    _listeners.remove(socket);
 }
 
 void SocketApi::slotSocketDestroyed(QObject *obj)
 {
     auto *socket = static_cast<QIODevice *>(obj);
-    _listeners.erase(std::remove_if(_listeners.begin(), _listeners.end(), ListenerHasSocketPred(socket)), _listeners.end());
+    _listeners.remove(socket);
 }
 
 void SocketApi::slotReadSocket()
@@ -370,27 +353,38 @@ void SocketApi::slotReadSocket()
     // the readyRead() signals are received - in that case there won't be a
     // valid listener. We execute the handler anyway, but it will work with
     // a SocketListener that doesn't send any messages.
-    static auto noListener = SocketListener(nullptr);
-    SocketListener *listener = &noListener;
-    auto listenerIt = std::find_if(_listeners.begin(), _listeners.end(), ListenerHasSocketPred(socket));
-    if (listenerIt != _listeners.end()) {
-        listener = &*listenerIt;
-    }
-
+    static auto invalidListener = QSharedPointer<SocketListener>::create(nullptr);
+    const auto listener = _listeners.value(socket, invalidListener);
     while (socket->canReadLine()) {
         // Make sure to normalize the input from the socket to
         // make sure that the path will match, especially on OS X.
         const QString line = QString::fromUtf8(socket->readLine().trimmed()).normalized(QString::NormalizationForm_C);
         qCInfo(lcSocketApi) << "Received SocketAPI message <--" << line << "from" << socket;
-        const QByteArray command = line.midRef(0, line.indexOf(QLatin1Char(':'))).toUtf8().toUpper().replace("/", "_");
-        const QByteArray functionWithArguments = "command_" + command + (command.startsWith("ASYNC_") ? "(QSharedPointer<SocketApiJob>)" : "(QString,SocketListener*)");
-        const int indexOfMethod = staticMetaObject.indexOfMethod(functionWithArguments);
+        const int argPos = line.indexOf(QLatin1Char(':'));
+        const QByteArray command = line.midRef(0, argPos).toUtf8().toUpper();
+        const int indexOfMethod = [&] {
+            QByteArray functionWithArguments = QByteArrayLiteral("command_");
+            if (command.startsWith("ASYNC_")) {
+                functionWithArguments += command + QByteArrayLiteral("(QSharedPointer<SocketApiJob>)");
+            } else if (command.startsWith("V2/")) {
+                functionWithArguments += QByteArrayLiteral("V2_") + command.mid(3) + QByteArrayLiteral("(QSharedPointer<SocketApiJobV2>)");
+            } else {
+                functionWithArguments += command + QByteArrayLiteral("(QString,SocketListener*)");
+            }
+            Q_ASSERT(staticQtMetaObject.normalizedSignature(functionWithArguments) == functionWithArguments);
+            const auto out = staticMetaObject.indexOfMethod(functionWithArguments);
+            if (out == -1) {
+                listener->sendError(QStringLiteral("Function %1 not found").arg(QString::fromUtf8(functionWithArguments)));
+            }
+            ASSERT(out != -1)
+            return out;
+        }();
 
-        const auto argument = line.midRef(command.length() + 1);
+        const auto argument = argPos != -1 ? line.midRef(argPos + 1) : QStringRef();
         if (command.startsWith("ASYNC_")) {
             auto arguments = argument.split('|');
             if (arguments.size() != 2) {
-                listener->sendMessage(QStringLiteral("argument count is wrong"));
+                listener->sendError(QStringLiteral("argument count is wrong"));
                 return;
             }
 
@@ -409,15 +403,31 @@ void SocketApi::slotReadSocket()
                                        << "with argument:" << argument;
                 socketApiJob->reject(QStringLiteral("command not found"));
             }
+        } else if (command.startsWith("V2/")) {
+            QJsonParseError error;
+            const auto json = QJsonDocument::fromJson(argument.toUtf8(), &error).object();
+            if (error.error != QJsonParseError::NoError) {
+                qCWarning(lcSocketApi()) << "Invalid json" << argument.toString() << error.errorString();
+                listener->sendError(error.errorString());
+                return;
+            }
+            auto socketApiJob = QSharedPointer<SocketApiJobV2>::create(listener, command, json);
+            if (indexOfMethod != -1) {
+                staticMetaObject.method(indexOfMethod)
+                    .invoke(this, Qt::QueuedConnection,
+                        Q_ARG(QSharedPointer<SocketApiJobV2>, socketApiJob));
+            } else {
+                qCWarning(lcSocketApi) << "The command is not supported by this version of the client:" << command
+                                       << "with argument:" << argument;
+                socketApiJob->failure(QStringLiteral("command not found"));
+            }
         } else {
             if (indexOfMethod != -1) {
                 // to ensure that listener is still valid we need to call it with Qt::DirectConnection
                 ASSERT(thread() == QThread::currentThread())
                 staticMetaObject.method(indexOfMethod)
                     .invoke(this, Qt::DirectConnection, Q_ARG(QString, argument.toString()),
-                        Q_ARG(SocketListener *, listener));
-            } else {
-                qCWarning(lcSocketApi) << "The command is not supported by this version of the client:" << command << "with argument:" << argument;
+                        Q_ARG(SocketListener *, listener.data()));
             }
         }
     }
@@ -431,10 +441,10 @@ void SocketApi::slotRegisterPath(const QString &alias)
 
     Folder *f = FolderMan::instance()->folder(alias);
     if (f) {
-        QString message = buildRegisterPathMessage(removeTrailingSlash(f->path()));
-        foreach (auto &listener, _listeners) {
-            qCInfo(lcSocketApi) << "Trying to send SocketAPI Register Path Message -->" << message << "to" << listener.socket;
-            listener.sendMessage(message);
+        const QString message = buildRegisterPathMessage(removeTrailingSlash(f->path()));
+        for (const auto &listener : qAsConst(_listeners)) {
+            qCInfo(lcSocketApi) << "Trying to send SocketAPI Register Path Message -->" << message << "to" << listener->socket;
+            listener->sendMessage(message);
         }
     }
 
@@ -479,8 +489,8 @@ void SocketApi::slotUpdateFolderView(Folder *f)
 
 void SocketApi::broadcastMessage(const QString &msg, bool doWait)
 {
-    foreach (auto &listener, _listeners) {
-        listener.sendMessage(msg, doWait);
+    for (const auto &listener : qAsConst(_listeners)) {
+        listener->sendMessage(msg, doWait);
     }
 }
 
@@ -530,8 +540,8 @@ void SocketApi::broadcastStatusPushMessage(const QString &systemPath, SyncFileSt
     QString msg = buildMessage(QLatin1String("STATUS"), systemPath, fileStatus.toSocketAPIString());
     Q_ASSERT(!systemPath.endsWith('/'));
     uint directoryHash = qHash(systemPath.left(systemPath.lastIndexOf('/')));
-    foreach (auto &listener, _listeners) {
-        listener.sendMessageIfDirectoryMonitored(msg, directoryHash);
+    for (const auto &listener : qAsConst(_listeners)) {
+        listener->sendMessageIfDirectoryMonitored(msg, directoryHash);
     }
 }
 
@@ -935,20 +945,20 @@ void SocketApi::command_MOVE_ITEM(const QString &localFile, SocketListener *)
     solver.setRemoteVersionFilename(target);
 }
 
-void SocketApi::command_V2_LIST_ACCOUNTS(const QString &, SocketListener *listener) const
+void SocketApi::command_V2_LIST_ACCOUNTS(const QSharedPointer<SocketApiJobV2> &job) const
 {
     QJsonArray out;
     for (auto acc : AccountManager::instance()->accounts()) {
         // TODO: Use uuid once https://github.com/owncloud/client/pull/8397 is merged
         out << QJsonObject({ { "name", acc->account()->displayName() }, { "id", acc->account()->id() } });
     }
-    listener->sendMessage(QStringLiteral("V2/ACCOUNTS"), { { "accounts", out } });
+    job->success({ { "accounts", out } });
 }
 
-void SocketApi::command_V2_UPLOAD_FILES_FROM(const QString &argument, SocketListener *listener) const
+void SocketApi::command_V2_UPLOAD_FILES_FROM(const QSharedPointer<SocketApiJobV2> &job) const
 {
-    auto job = new SocketUploadJob(listener, argument);
-    job->start();
+    auto uploadJob = new SocketUploadJob(job);
+    uploadJob->start();
 }
 
 void SocketApi::emailPrivateLink(const QString &link)
@@ -1427,6 +1437,46 @@ QString SocketApi::buildRegisterPathMessage(const QString &path)
     QString message = QLatin1String("REGISTER_PATH:");
     message.append(QDir::toNativeSeparators(fi.absoluteFilePath()));
     return message;
+}
+
+void SocketApiJob::resolve(const QString &response)
+{
+    _socketListener->sendMessage(QStringLiteral("RESOLVE|") + _jobId + QLatin1Char('|') + response);
+}
+
+void SocketApiJob::resolve(const QJsonObject &response)
+{
+    resolve(QJsonDocument { response }.toJson());
+}
+
+void SocketApiJob::reject(const QString &response)
+{
+    _socketListener->sendMessage(QStringLiteral("REJECT|") + _jobId + QLatin1Char('|') + response);
+}
+
+SocketApiJobV2::SocketApiJobV2(const QSharedPointer<SocketListener> &socketListener, const QByteArray &command, const QJsonObject &arguments)
+    : _socketListener(socketListener)
+    , _command(command)
+    , _jobId(arguments[QStringLiteral("id")].toString())
+    , _arguments(arguments[QStringLiteral("arguments")].toObject())
+{
+    ASSERT(!_jobId.isEmpty())
+}
+
+void SocketApiJobV2::success(const QJsonObject &response) const
+{
+    doFinish(response);
+}
+
+void SocketApiJobV2::failure(const QString &error) const
+{
+    doFinish({ { QStringLiteral("error"), error } });
+}
+
+void SocketApiJobV2::doFinish(const QJsonObject &obj) const
+{
+    _socketListener->sendMessage(_command + QStringLiteral("_RESULT:") + QJsonDocument({ { QStringLiteral("id"), _jobId }, { QStringLiteral("arguments"), obj } }).toJson(QJsonDocument::Compact));
+    Q_EMIT finished();
 }
 
 } // namespace OCC
