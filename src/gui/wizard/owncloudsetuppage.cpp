@@ -409,7 +409,7 @@ void OwncloudSetupPage::customizeStyle()
     _ui.createAccountButton->setStyleSheet("QPushButton {background-color: #0082C9; color: white}");
 
     QPalette pal = _ui.slideShow->palette();
-    pal.setColor(QPalette::WindowText, theme->wizardHeaderBackgroundColor());
+    pal.setColor(QPalette::WindowText, theme->applicationBackgroundColor());
     _ui.slideShow->setPalette(pal);
 #endif
 

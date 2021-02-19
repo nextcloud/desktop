@@ -7,8 +7,8 @@ import com.nextcloud.desktopclient 1.0
 
 QtObject {
     // Colors
-    property color ncBlue:      Theme.wizardHeaderBackgroundColor
-    property color ncTextColor: Theme.wizardHeaderTitleColor
+    property color ncBlue:      Theme.applicationBackgroundColor
+    property color ncTextColor: Theme.applicationTitleColor
     property color lightHover:  "#f7f7f7"
     property color menuBorder:  "#bdbdbd"
 

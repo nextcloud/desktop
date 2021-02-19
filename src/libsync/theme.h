@@ -53,8 +53,8 @@ class OWNCLOUDSYNC_EXPORT Theme : public QObject
     Q_PROPERTY(QString overrideServerUrl READ overrideServerUrl)
     Q_PROPERTY(bool forceOverrideServerUrl READ forceOverrideServerUrl)
 #ifndef TOKEN_AUTH_ONLY
-    Q_PROPERTY(QColor wizardHeaderTitleColor READ wizardHeaderTitleColor CONSTANT)
-    Q_PROPERTY(QColor wizardHeaderBackgroundColor READ wizardHeaderBackgroundColor CONSTANT)
+    Q_PROPERTY(QColor applicationTitleColor READ applicationTitleColor CONSTANT)
+    Q_PROPERTY(QColor applicationBackgroundColor READ applicationBackgroundColor CONSTANT)
 #endif
     Q_PROPERTY(QString updateCheckUrl READ updateCheckUrl CONSTANT)
 public:
@@ -226,10 +226,10 @@ public:
     virtual QVariant customMedia(CustomMediaType type);
 
     /** @return color for the setup wizard */
-    virtual QColor wizardHeaderTitleColor() const;
+    virtual QColor applicationTitleColor() const;
 
     /** @return color for the setup wizard. */
-    virtual QColor wizardHeaderBackgroundColor() const;
+    virtual QColor applicationBackgroundColor() const;
 
     /** @return logo for the setup wizard. */
     virtual QPixmap wizardHeaderLogo() const;
@@ -237,7 +237,7 @@ public:
     /**
      * The default implementation creates a
      * background based on
-     * \ref wizardHeaderTitleColor().
+     * \ref applicationTitleColor().
      *
      * @return banner for the setup wizard.
      */
