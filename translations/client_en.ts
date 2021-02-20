@@ -4,18 +4,18 @@
 <context>
     <name>FileSystem</name>
     <message>
-        <location filename="../src/common/filesystembase.cpp" line="388"/>
+        <location filename="../src/common/filesystembase.cpp" line="382"/>
         <source>Could not make directories in trash</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/common/filesystembase.cpp" line="396"/>
         <location filename="../src/common/filesystembase.cpp" line="402"/>
-        <location filename="../src/common/filesystembase.cpp" line="408"/>
         <source>Could not move &apos;%1&apos; to &apos;%2&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/common/filesystembase.cpp" line="442"/>
+        <location filename="../src/common/filesystembase.cpp" line="436"/>
         <source>Moving to the trash is not implemented on this platform</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4281,12 +4281,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/common/utility.cpp" line="451"/>
+        <location filename="../src/common/utility.cpp" line="452"/>
         <source>in the future</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/common/utility.cpp" line="447"/>
+        <location filename="../src/common/utility.cpp" line="448"/>
         <source>%n day(s) ago</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -4294,7 +4294,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/common/utility.cpp" line="455"/>
+        <location filename="../src/common/utility.cpp" line="456"/>
         <source>%n hour(s) ago</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -4302,17 +4302,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         </translation>
     </message>
     <message>
-        <location filename="../src/common/utility.cpp" line="460"/>
+        <location filename="../src/common/utility.cpp" line="461"/>
         <source>now</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/common/utility.cpp" line="462"/>
+        <location filename="../src/common/utility.cpp" line="463"/>
         <source>Less than a minute ago</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/common/utility.cpp" line="465"/>
+        <location filename="../src/common/utility.cpp" line="466"/>
         <source>%n minute(s) ago</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -4320,7 +4320,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         </translation>
     </message>
     <message>
-        <location filename="../src/common/utility.cpp" line="468"/>
+        <location filename="../src/common/utility.cpp" line="469"/>
         <source>Some time ago</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4334,27 +4334,27 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>Utility</name>
     <message>
-        <location filename="../src/common/utility.cpp" line="130"/>
+        <location filename="../src/common/utility.cpp" line="131"/>
         <source>%L1 GB</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/common/utility.cpp" line="134"/>
+        <location filename="../src/common/utility.cpp" line="135"/>
         <source>%L1 MB</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/common/utility.cpp" line="138"/>
+        <location filename="../src/common/utility.cpp" line="139"/>
         <source>%L1 KB</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/common/utility.cpp" line="141"/>
+        <location filename="../src/common/utility.cpp" line="142"/>
         <source>%L1 B</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/common/utility.cpp" line="317"/>
+        <location filename="../src/common/utility.cpp" line="318"/>
         <source>%n year(s)</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -4362,7 +4362,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/common/utility.cpp" line="318"/>
+        <location filename="../src/common/utility.cpp" line="319"/>
         <source>%n month(s)</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -4370,7 +4370,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/common/utility.cpp" line="319"/>
+        <location filename="../src/common/utility.cpp" line="320"/>
         <source>%n day(s)</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -4378,7 +4378,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/common/utility.cpp" line="320"/>
+        <location filename="../src/common/utility.cpp" line="321"/>
         <source>%n hour(s)</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -4386,7 +4386,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/common/utility.cpp" line="321"/>
+        <location filename="../src/common/utility.cpp" line="322"/>
         <source>%n minute(s)</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -4394,7 +4394,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/common/utility.cpp" line="322"/>
+        <location filename="../src/common/utility.cpp" line="323"/>
         <source>%n second(s)</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -4402,7 +4402,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         </translation>
     </message>
     <message>
-        <location filename="../src/common/utility.cpp" line="346"/>
+        <location filename="../src/common/utility.cpp" line="347"/>
         <source>%1 %2</source>
         <translation type="unfinished"></translation>
     </message>
