@@ -68,6 +68,7 @@ private:
     QVariant _data;
     QKeychain::Error _error = QKeychain::NoError;
     QString _errorString;
+    bool _retryOnKeyChainError = true;
     QKeychain::ReadPasswordJob *_job;
 
     CredentialManager *const _parent;

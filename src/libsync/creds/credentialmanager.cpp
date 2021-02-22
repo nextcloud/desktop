@@ -176,6 +176,16 @@ void CredentialJob::start()
     _job = new QKeychain::ReadPasswordJob(Theme::instance()->appName());
     _job->setKey(scopedKey(_parent, _key));
     connect(_job, &QKeychain::ReadPasswordJob::finished, this, [this] {
+#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
+        if (_retryOnKeyChainError && (_job->error() == QKeychain::NoBackendAvailable || _job->error() == QKeychain::OtherError)) {
+            // Could be that the backend was not yet available. Wait some extra seconds.
+            // (Issues #4274 and #6522)
+            // (For kwallet, the error is OtherError instead of NoBackendAvailable, maybe a bug in QtKeychain)
+            qCInfo(lcCredentaislManager) << "Backend unavailable (yet?) Retrying in a few seconds." << _job->errorString();
+            QTimer::singleShot(10000, this, &CredentialJob::start);
+            _retryOnKeyChainError = false;
+        }
+#endif
         OC_ASSERT(_job->error() != QKeychain::EntryNotFound);
         if (_job->error() == QKeychain::NoError) {
             const auto doc = QJsonDocument::fromBinaryData(_job->binaryData());
