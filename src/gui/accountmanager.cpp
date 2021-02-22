@@ -14,6 +14,7 @@
 
 #include "accountmanager.h"
 #include "configfile.h"
+#include "creds/credentialmanager.h"
 #include "sslerrordialog.h"
 #include "proxyauthhandler.h"
 #include "common/asserts.h"
@@ -37,6 +38,12 @@ const QString davUserDisplyNameC()
 {
     return QStringLiteral("display-name");
 }
+
+const QString userUUIDC()
+{
+    return QStringLiteral("uuid");
+}
+
 static const char caCertsKeyC[] = "CaCertificates";
 static const char accountsC[] = "Accounts";
 static const char versionC[] = "version";
@@ -226,6 +233,7 @@ void AccountManager::saveAccountHelper(Account *acc, QSettings &settings, bool s
     settings.setValue(QLatin1String(urlC), acc->_url.toString());
     settings.setValue(davUserC(), acc->_davUser);
     settings.setValue(davUserDisplyNameC(), acc->_displayName);
+    settings.setValue(userUUIDC(), acc->uuid());
     settings.setValue(QLatin1String(serverVersionC), acc->_serverVersion);
     if (acc->_credentials) {
         if (saveCredentials) {
@@ -293,6 +301,7 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
     acc->_serverVersion = settings.value(QLatin1String(serverVersionC)).toString();
     acc->_davUser = settings.value(davUserC()).toString();
     acc->_displayName = settings.value(davUserDisplyNameC()).toString();
+    acc->_uuid = settings.value(userUUIDC(), acc->_uuid).toUuid();
 
     // We want to only restore settings for that auth type and the user value
     acc->_settingsMap.insert(QLatin1String(userC), settings.value(userC));
@@ -350,6 +359,7 @@ void AccountManager::deleteAccount(AccountState *account)
 
     // Forget account credentials, cookies
     account->account()->credentials()->forgetSensitiveData();
+    account->account()->credentialManager()->clear();
     QFile::remove(account->account()->cookieJarPath());
 
     auto settings = ConfigFile::settingsWithGroup(QLatin1String(accountsC));

@@ -18,6 +18,7 @@
 
 #include <QByteArray>
 #include <QUrl>
+#include <QUuid>
 #include <QNetworkCookie>
 #include <QNetworkRequest>
 #include <QSslSocket>
@@ -43,6 +44,7 @@ class QNetworkAccessManager;
 
 namespace OCC {
 
+class CredentialManager;
 class AbstractCredentials;
 class Account;
 typedef QSharedPointer<Account> AccountPtr;
@@ -217,6 +219,10 @@ public:
 
     JobQueue *jobQueue();
 
+    QUuid uuid() const;
+
+    CredentialManager *credentialManager() const;
+
 public slots:
     /// Used when forgetting credentials
     void clearQNAMCache();
@@ -257,6 +263,7 @@ private:
 
     QWeakPointer<Account> _sharedThis;
     QString _id;
+    QUuid _uuid;
     QString _davUser;
     QString _displayName;
 #ifndef TOKEN_AUTH_ONLY
@@ -283,6 +290,7 @@ private:
     QString _davPath; // defaults to value from theme, might be overwritten in brandings
     JobQueue _jobQueue;
     JobQueueGuard _queueGuard;
+    CredentialManager *_credentialManager;
     friend class AccountManager;
 };
 }

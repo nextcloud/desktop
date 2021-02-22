@@ -13,6 +13,7 @@ owncloud_add_test(ConcatUrl)
 owncloud_add_test(Cookies)
 owncloud_add_test(XmlParse)
 owncloud_add_test(ChecksumValidator)
+owncloud_add_test(CredentialManager)
 
 owncloud_add_test(ExcludedFiles)
 

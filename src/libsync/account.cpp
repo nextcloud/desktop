@@ -17,6 +17,7 @@
 #include "networkjobs.h"
 #include "accessmanager.h"
 #include "creds/abstractcredentials.h"
+#include "creds/credentialmanager.h"
 #include "capabilities.h"
 #include "theme.h"
 #include "common/asserts.h"
@@ -40,10 +41,12 @@ Q_LOGGING_CATEGORY(lcAccount, "sync.account", QtInfoMsg)
 
 Account::Account(QObject *parent)
     : QObject(parent)
+    , _uuid(QUuid::createUuid())
     , _capabilities(QVariantMap())
     , _davPath(Theme::instance()->webDavPath())
     , _jobQueue(this)
     , _queueGuard(&_jobQueue)
+    , _credentialManager(new CredentialManager(this))
 {
     qRegisterMetaType<AccountPtr>("AccountPtr");
 }
@@ -78,6 +81,16 @@ QString Account::davPath() const
 void Account::setSharedThis(AccountPtr sharedThis)
 {
     _sharedThis = sharedThis.toWeakRef();
+}
+
+CredentialManager *Account::credentialManager() const
+{
+    return _credentialManager;
+}
+
+QUuid Account::uuid() const
+{
+    return _uuid;
 }
 
 AccountPtr Account::sharedFromThis()
