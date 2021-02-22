@@ -18,6 +18,7 @@
 #include <QBuffer>
 #include <networkjobs.h>
 #include "account.h"
+#include "credentialmanager.h"
 #include "creds/oauth.h"
 #include <QJsonObject>
 #include <QJsonDocument>
@@ -28,8 +29,6 @@
 #include "networkjobs.h"
 #include "creds/httpcredentials.h"
 
-#include <qt5keychain/keychain.h>
-
 using namespace OCC;
 Q_LOGGING_CATEGORY(lcOauth, "sync.credentials.oauth", QtInfoMsg)
 
@@ -39,7 +38,7 @@ const QString clientSecretC()
     return QStringLiteral("clientSecret");
 }
 
-QVariant getRequiredField(const QJsonObject &json, const QString &s, QString *error)
+QVariant getRequiredField(const QVariantMap &json, const QString &s, QString *error)
 {
     const auto out = json.constFind(s);
     if (out == json.constEnd()) {
@@ -79,23 +78,16 @@ public:
 
     void start()
     {
-        auto keychainJob = new QKeychain::ReadPasswordJob(Theme::instance()->appName());
-        keychainJob->setKey(AbstractCredentials::keychainServerWideKey(_account, clientSecretC()));
-        connect(keychainJob, &QKeychain::ReadPasswordJob::finished, this, [this, keychainJob] {
-            if (keychainJob->error() == QKeychain::NoError) {
-                QJsonParseError error;
-                const auto doc = QJsonDocument::fromJson(keychainJob->binaryData(), &error);
-                if (error.error == QJsonParseError::NoError) {
-                    rgisterClientFinished(doc);
-                    return;
-                }
-                qCWarning(lcOauth) << Q_FUNC_INFO << error.errorString();
-            } else if (keychainJob->error() != QKeychain::EntryNotFound) {
-                qCCritical(lcOauth) << "Failed to read client id" << keychainJob->errorString();
+        auto job = _account->credentialManager()->get(clientSecretC());
+        connect(job, &CredentialJob::finished, this, [this, job] {
+            qDebug() << job->errorString() << job->error();
+            if (job->data().isValid()) {
+                rgisterClientFinished(job->data().value<QVariantMap>());
+            } else {
+                qCCritical(lcOauth) << "Failed to read client id" << job->error();
+                rgisterClientOnline();
             }
-            rgisterClientOnline();
         });
-        keychainJob->start();
     }
 
 Q_SIGNALS:
@@ -106,12 +98,13 @@ private:
     void rgisterClientOnline()
     {
         auto job = new OCC::SimpleNetworkJob(_account->sharedFromThis(), this);
+        job->setAuthenticationJob(true);
         connect(job, &OCC::SimpleNetworkJob::finishedSignal, this, [this, job] {
             const auto data = job->reply()->readAll();
             QJsonParseError error;
             const auto json = QJsonDocument::fromJson(data, &error);
             if (error.error == QJsonParseError::NoError) {
-                rgisterClientFinished(json);
+                rgisterClientFinished(json.object().toVariantMap());
             } else {
                 qCWarning(lcOauth) << "Failed to register the client" << error.errorString() << data;
                 Q_EMIT errorOccured(error.errorString());
@@ -125,17 +118,16 @@ private:
         job->start();
     }
 
-    void rgisterClientFinished(const QJsonDocument &jsonDoc)
+    void rgisterClientFinished(const QVariantMap &data)
     {
-        const auto json = jsonDoc.object();
         {
             QString error;
-            auto expireDate = QDateTime::fromSecsSinceEpoch(getRequiredField(json, QStringLiteral("client_secret_expires_at"), &error).value<qint64>());
+            auto expireDate = QDateTime::fromSecsSinceEpoch(getRequiredField(data, QStringLiteral("client_secret_expires_at"), &error).value<qint64>());
             if (!error.isEmpty()) {
                 Q_EMIT errorOccured(error);
                 return;
             }
-            qCInfo(lcOauth) << "Client id iessued at:" << QDateTime::fromSecsSinceEpoch(json[QStringLiteral("client_id_issued_at")].toVariant().value<quint64>())
+            qCInfo(lcOauth) << "Client id iessued at:" << QDateTime::fromSecsSinceEpoch(data[QStringLiteral("client_id_issued_at")].value<quint64>())
                             << "expires at" << expireDate;
             if (QDateTime::currentDateTimeUtc() > expireDate) {
                 qCDebug(lcOauth) << "Client registration expired";
@@ -143,19 +135,10 @@ private:
                 return;
             }
         }
-        auto keychainJob = new QKeychain::WritePasswordJob(Theme::instance()->appName());
-        keychainJob->setKey(AbstractCredentials::keychainServerWideKey(_account, clientSecretC()));
-        connect(keychainJob, &QKeychain::WritePasswordJob::finished, this, [keychainJob] {
-            if (keychainJob->error() != QKeychain::NoError) {
-                qCWarning(lcOauth) << "Failed to save clientId" << keychainJob->errorString();
-            }
-        });
-        keychainJob->setBinaryData(jsonDoc.toJson());
-        keychainJob->start();
-
+        _account->credentialManager()->set(clientSecretC(), data);
         QString error;
-        const auto client_id = getRequiredField(json, QStringLiteral("client_id"), &error).toString();
-        const auto client_secret = getRequiredField(json, QStringLiteral("client_secret"), &error).toString();
+        const auto client_id = getRequiredField(data, QStringLiteral("client_id"), &error).toString();
+        const auto client_secret = getRequiredField(data, QStringLiteral("client_secret"), &error).toString();
         if (!error.isEmpty()) {
             Q_EMIT errorOccured(error);
             return;
@@ -243,22 +226,22 @@ void OAuth::startAuthentication()
                 QObject::connect(job, &SimpleNetworkJob::finishedSignal, this, [this, socket](QNetworkReply *reply) {
                     const auto jsonData = reply->readAll();
                     QJsonParseError jsonParseError;
-                    const QJsonObject json = QJsonDocument::fromJson(jsonData, &jsonParseError).object();
+                    const auto data = QJsonDocument::fromJson(jsonData, &jsonParseError).object().toVariantMap();
                     QString fieldsError;
-                    const QString accessToken = getRequiredField(json, QStringLiteral("access_token"), &fieldsError).toString();
-                    const QString refreshToken = getRequiredField(json, QStringLiteral("refresh_token"), &fieldsError).toString();
-                    const QString tokenType = getRequiredField(json, QStringLiteral("token_type"), &fieldsError).toString().toLower();
-                    const QString user = json[QStringLiteral("user_id")].toString();
-                    const QUrl messageUrl = QUrl::fromEncoded(json[QStringLiteral("message_url")].toString().toUtf8());
+                    const QString accessToken = getRequiredField(data, QStringLiteral("access_token"), &fieldsError).toString();
+                    const QString refreshToken = getRequiredField(data, QStringLiteral("refresh_token"), &fieldsError).toString();
+                    const QString tokenType = getRequiredField(data, QStringLiteral("token_type"), &fieldsError).toString().toLower();
+                    const QString user = data[QStringLiteral("user_id")].toString();
+                    const QUrl messageUrl = QUrl::fromEncoded(data[QStringLiteral("message_url")].toByteArray());
 
                     if (reply->error() != QNetworkReply::NoError || jsonParseError.error != QJsonParseError::NoError
                         || !fieldsError.isEmpty()
                         || tokenType != QLatin1String("bearer")) {
                         // do we have error message suitable for users?
-                        QString errorReason = json[QStringLiteral("error_description")].toString();
+                        QString errorReason = data[QStringLiteral("error_description")].toString();
                         if (errorReason.isEmpty()) {
                             // fall back to technical error
-                            errorReason = json[QStringLiteral("error")].toString();
+                            errorReason = data[QStringLiteral("error")].toString();
                         }
                         if (!errorReason.isEmpty()) {
                             errorReason = tr("Error returned from the server: <em>%1</em>")
@@ -323,31 +306,30 @@ void OAuth::refreshAuthentication(const QString &refreshToken)
             QString newRefreshToken = refreshToken;
             QJsonParseError jsonParseError;
             // https://developer.okta.com/docs/reference/api/oidc/#response-properties-2
-            const QJsonObject json = QJsonDocument::fromJson(jsonData, &jsonParseError).object();
-            const QString error = json.value(QLatin1String("error")).toString();
+            const auto data = QJsonDocument::fromJson(jsonData, &jsonParseError).object().toVariantMap();
+            const QString error = data.value(QStringLiteral("error")).toString();
             if (!error.isEmpty()) {
                 if (error == QLatin1String("invalid_grant") ||
                     error == QLatin1String("invalid_request")) {
                     newRefreshToken.clear();
                 } else {
-                    qCWarning(lcOauth) << tr("Error while refreshing the token: %1 : %2").arg(error, json.value(QLatin1String("error_description")).toString());
+                    qCWarning(lcOauth) << tr("Error while refreshing the token: %1 : %2").arg(error, data.value(QStringLiteral("error_description")).toString());
                 }
             } else if (reply->error() != QNetworkReply::NoError) {
                 qCWarning(lcOauth) << tr("Error while refreshing the token: %1 : %2").arg(reply->errorString(), QString::fromUtf8(jsonData));
             } else {
-                if (jsonParseError.error != QJsonParseError::NoError || json.isEmpty()) {
+                if (jsonParseError.error != QJsonParseError::NoError || data.isEmpty()) {
                     // Invalid or empty JSON: Network error maybe?
                     qCWarning(lcOauth) << tr("Error while refreshing the token: %1 : %2").arg(jsonParseError.errorString(), QString::fromUtf8(jsonData));
                 } else {
                     QString error;
-                    accessToken = getRequiredField(json, QStringLiteral("access_token"), &error).toString();
+                    accessToken = getRequiredField(data, QStringLiteral("access_token"), &error).toString();
                     if (!error.isEmpty()) {
                         qCWarning(lcOauth) << tr("The reply from the server did not contain all expected fields\n:%1\nReceived data: %2").arg(error, QString::fromUtf8(jsonData));
                     }
 
-                    const auto refresh_token = json.find(QStringLiteral("refresh_token"));
-                    if (refresh_token != json.constEnd() )
-                    {
+                    const auto refresh_token = data.find(QStringLiteral("refresh_token"));
+                    if (refresh_token != data.constEnd()) {
                         newRefreshToken = refresh_token.value().toString();
                     }
                 }
