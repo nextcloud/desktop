@@ -45,46 +45,18 @@ namespace OCC {
    This class handle both HTTP Basic Auth and OAuth. But anything that needs GUI to ask the user
    is in HttpCredentialsGui.
 
-   The authentication mechanism looks like this.
-
-   1) First, AccountState will attempt to load the certificate from the keychain
-
-   ---->  fetchFromKeychain
-                |                           }
-                v                            }
-          slotReadClientCertPEMJobDone       }     There are first 3 QtKeychain jobs to fetch
-                |                             }   the TLS client keys, if any, and the password
-                v                            }      (or refresh token
-          slotReadClientKeyPEMJobDone        }
-                |                           }
-                v
-            slotReadJobDone
-                |        |
-                |        +-------> emit fetched()   if OAuth is not used
-                |
-                v
-            refreshAccessToken()
-                |
-                v
-            emit fetched()
-
-   2) If the credentials is still not valid when fetched() is emitted, the ui, will call askFromUser()
-      which is implemented in HttpCredentialsGui
-
  */
 class OWNCLOUDSYNC_EXPORT HttpCredentials : public AbstractCredentials
 {
     Q_OBJECT
     friend class HttpCredentialsAccessManager;
+    friend class HttpLegacyCredentials;
 
 public:
     /// Don't add credentials if this is set on a QNetworkRequest
     static constexpr QNetworkRequest::Attribute DontAddCredentialsAttribute = QNetworkRequest::User;
 
-    HttpCredentials(DetermineAuthTypeJob::AuthType authType)
-        : _authType(authType)
-    {
-    }
+    HttpCredentials(DetermineAuthTypeJob::AuthType authType);
     explicit HttpCredentials(DetermineAuthTypeJob::AuthType authType, const QString &user, const QString &password,
             const QByteArray &clientCertBundle = QByteArray(), const QByteArray &clientCertPassword = QByteArray());
 
@@ -112,52 +84,20 @@ public:
 
     // Whether we are using OAuth
     bool isUsingOAuth() const { return _authType == DetermineAuthTypeJob::AuthType::OAuth; }
-
-private Q_SLOTS:
-    void slotAuthentication(QNetworkReply *, QAuthenticator *);
-
-    void slotReadClientCertPasswordJobDone(QKeychain::Job *);
-    void slotReadClientCertPEMJobDone(QKeychain::Job *);
-    void slotReadClientKeyPEMJobDone(QKeychain::Job *);
-
-    void slotReadPasswordFromKeychain();
-    void slotReadJobDone(QKeychain::Job *);
-
-    void slotWriteClientCertPasswordJobDone(QKeychain::Job *);
-    void slotWriteClientCertPEMJobDone(QKeychain::Job *);
-    void slotWriteClientKeyPEMJobDone(QKeychain::Job *);
-
-    void slotWritePasswordToKeychain();
-    void slotWriteJobDone(QKeychain::Job *);
-
 protected:
-    /** Reads data from keychain locations
-     *
-     * Goes through
-     *   slotReadClientCertPEMJobDone to
-     *   slotReadClientCertPEMJobDone to
-     *   slotReadJobDone
-     */
-    void fetchFromKeychainHelper();
 
     /// Wipes legacy keychain locations
     void deleteOldKeychainEntries();
 
-    /** Whether to bow out now because a retry will happen later
-     *
-     * Sometimes the keychain needs a while to become available.
-     * This function should be called on first keychain-read to check
-     * whether it errored because the keychain wasn't available yet.
-     * If that happens, this function will schedule another try and
-     * return true.
-     */
-    bool keychainUnavailableRetryLater(QKeychain::ReadPasswordJob *);
+    void slotAuthentication(QNetworkReply *reply, QAuthenticator *authenticator);
 
     /** Takes client cert pkcs12 and unwraps the key/cert.
      *
      * Returns false on failure.
      */
-    bool unpackClientCertBundle();
+    bool unpackClientCertBundle(const QByteArray &clientCertPassword);
+
+    void fetchFromKeychainHelper();
 
     QString _user;
     QString _password; // user's password, or access_token for OAuth
@@ -168,10 +108,10 @@ protected:
     bool _ready = false;
     bool _isRenewingOAuthToken = false;
     QByteArray _clientCertBundle;
+    // used when called from the wizard
     QByteArray _clientCertPassword;
     QSslKey _clientSslKey;
     QSslCertificate _clientSslCertificate;
-    bool _keychainMigration = false;
     bool _retryOnKeyChainError = true; // true if we haven't done yet any reading from keychain
 
     DetermineAuthTypeJob::AuthType _authType = DetermineAuthTypeJob::AuthType::Unknown;
