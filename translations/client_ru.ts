@@ -674,7 +674,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="79"/>
         <source>An encrypted pkcs12 bundle is strongly recommended as a copy will be stored in the configuration file.</source>
-        <translation type="unfinished"/>
+        <translation>Рекомендуется использовать шифрованный контейнер в формате pkcs12, т.к. его копия будет сохранена в файле конфигурации.</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.cpp" line="38"/>
@@ -2876,7 +2876,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="341"/>
         <source>Stay safe</source>
-        <translation type="unfinished"/>
+        <translation>Остаться в безопасности</translation>
     </message>
 </context>
 <context>
@@ -2995,7 +2995,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="435"/>
         <source>server reported no %1</source>
-        <translation type="unfinished"/>
+        <translation>ответ сервера: %1 отсуствует</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1214"/>
@@ -3035,7 +3035,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1470"/>
         <source>Server replied with an error while reading directory &apos;%1&apos; : %2</source>
-        <translation type="unfinished"/>
+        <translation>Ошибка сервера при попытке прочитать каталог «%1»: %2</translation>
     </message>
 </context>
 <context>
@@ -3869,7 +3869,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="108"/>
         <source>&lt;h3&gt;Fingerprints&lt;/h3&gt;</source>
-        <translation>&lt;h3&gt;Отпечатки&lt;/h3&gt;</translation>
+        <translation>&lt;h3&gt;Отпечатки:&lt;/h3&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="112"/>
@@ -5349,22 +5349,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/guiutility.cpp" line="86"/>
         <source>Always available locally</source>
-        <translation>Всегда доступен автономно</translation>
+        <translation>Всегда доступно автономно</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="88"/>
         <source>Currently available locally</source>
-        <translation>Сейчас доступен автономно</translation>
+        <translation>Сейчас доступно автономно</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="90"/>
         <source>Some available online only</source>
-        <translation type="unfinished"/>
+        <translation>Некоторые доступны только при подключении</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="93"/>
         <source>Available online only</source>
-        <translation>Доступен только при подключении</translation>
+        <translation>Доступно только при подключении</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="100"/>

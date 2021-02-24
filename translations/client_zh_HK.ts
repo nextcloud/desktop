@@ -689,12 +689,12 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/application.cpp" line="131"/>
         <source>Continuing will mean &lt;b&gt;deleting these settings&lt;/b&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>繼續將意味著&lt;b&gt;刪除這些設置&lt;/b&gt;。</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="133"/>
         <source>Continuing will mean &lt;b&gt;ignoring these settings&lt;/b&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>繼續將意味著&lt;b&gt;略過這些設置&lt;/b&gt;。</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="139"/>
@@ -1326,7 +1326,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/foldercreationdialog.cpp" line="73"/>
         <source>Could not create a folder! Check your write permissions.</source>
-        <translation type="unfinished"/>
+        <translation>無法創建資料夾！ 檢查您的寫入權限。</translation>
     </message>
 </context>
 <context>
@@ -1720,7 +1720,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="512"/>
         <source>Use virtual files instead of downloading content immediately %1</source>
-        <translation type="unfinished"/>
+        <translation>使用虛擬檔案，而不是立即下載內容 %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="512"/>
@@ -5118,13 +5118,13 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/Window.qml" line="538"/>
         <source>Open %1 locally</source>
-        <translation type="unfinished"/>
+        <translation>在近端打開 %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="695"/>
         <location filename="../src/gui/tray/Window.qml" line="698"/>
         <source>Show more actions</source>
-        <translation type="unfinished"/>
+        <translation>顯示更多操作</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="787"/>
@@ -5335,7 +5335,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/guiutility.cpp" line="86"/>
         <source>Always available locally</source>
-        <translation type="unfinished"/>
+        <translation>始終在近端可用</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="88"/>
