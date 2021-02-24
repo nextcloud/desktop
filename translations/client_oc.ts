@@ -207,7 +207,7 @@
     <message>
         <location filename="../src/libsync/abstractpropagateremotedeleteencrypted.cpp" line="139"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Marrit còdi HTTP tornat pel servidor. Esperat 204, mas recebut « %1 %2 ».</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractpropagateremotedeleteencrypted.cpp" line="181"/>
@@ -357,7 +357,7 @@ Wait for the new sync, then encrypt it.</source>
         <location filename="../src/gui/accountsettings.cpp" line="453"/>
         <location filename="../src/gui/accountsettings.cpp" line="549"/>
         <source>Availability</source>
-        <translation type="unfinished"/>
+        <translation>Disponibilitat</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="414"/>
@@ -3137,7 +3137,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateremotedelete.cpp" line="152"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Marrit còdi HTTP tornat pel servidor. Esperat 204, mas recebut « %1 %2 ».</translation>
     </message>
 </context>
 <context>
@@ -3145,7 +3145,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateremotedeleteencryptedrootfolder.cpp" line="143"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Marrit còdi HTTP tornat pel servidor. Esperat 204, mas recebut « %1 %2 ».</translation>
     </message>
 </context>
 <context>
