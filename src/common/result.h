@@ -104,6 +104,7 @@ public:
         OC_ASSERT(!_isError);
         return _result;
     }
+
     T operator*() &&
     {
         OC_ASSERT(!_isError);
@@ -114,6 +115,12 @@ public:
     {
         OC_ASSERT(!_isError);
         return &_result;
+    }
+
+    const T &get() const
+    {
+        OC_ASSERT(!_isError);
+        return _result;
     }
 
     const Error &error() const &

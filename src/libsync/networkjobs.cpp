@@ -106,7 +106,7 @@ bool RequestEtagJob::finished()
         // Parse DAV response
         QXmlStreamReader reader(reply());
         reader.addExtraNamespaceDeclaration(QXmlStreamNamespaceDeclaration(QStringLiteral("d"), QStringLiteral("DAV:")));
-        QString etag;
+        QByteArray etag;
         while (!reader.atEnd()) {
             QXmlStreamReader::TokenType type = reader.readNext();
             if (type == QXmlStreamReader::StartElement && reader.namespaceUri() == QLatin1String("DAV:")) {
@@ -115,9 +115,9 @@ bool RequestEtagJob::finished()
                     auto etagText = reader.readElementText();
                     auto parsedTag = parseEtag(etagText.toUtf8());
                     if (!parsedTag.isEmpty()) {
-                        etag += QString::fromUtf8(parsedTag);
+                        etag += parsedTag;
                     } else {
-                        etag += etagText;
+                        etag += etagText.toUtf8();
                     }
                 }
             }

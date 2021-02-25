@@ -464,7 +464,7 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(const QString &fi
     //This works in concerto with the RequestEtagJob and the Folder object to check if the remote folder changed.
     if (map.contains(QStringLiteral("getetag"))) {
         if (_firstEtag.isEmpty()) {
-            _firstEtag = QString::fromUtf8(parseEtag(map.value(QStringLiteral("getetag")).toUtf8())); // for directory itself
+            _firstEtag = parseEtag(map.value(QStringLiteral("getetag")).toUtf8()); // for directory itself
         }
     }
 }

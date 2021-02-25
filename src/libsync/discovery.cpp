@@ -596,7 +596,7 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
             // we need to make a request to the server to know that the original file is deleted on the server
             _pendingAsyncJobs++;
             auto job = new RequestEtagJob(_discoveryData->_account, originalPath, this);
-            connect(job, &RequestEtagJob::finishedWithResult, this, [=](const HttpResult<QString> &etag) {
+            connect(job, &RequestEtagJob::finishedWithResult, this, [=](const HttpResult<QByteArray> &etag) {
                 auto tmp_path = path;
                 _pendingAsyncJobs--;
                 QTimer::singleShot(0, _discoveryData, &DiscoveryPhase::scheduleMoreJobs);
@@ -994,10 +994,10 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         if (base.isVirtualFile() && isVfsWithSuffix())
             chopVirtualFileSuffix(serverOriginalPath);
         auto job = new RequestEtagJob(_discoveryData->_account, serverOriginalPath, this);
-        connect(job, &RequestEtagJob::finishedWithResult, this, [=](const HttpResult<QString> &etag) {
+        connect(job, &RequestEtagJob::finishedWithResult, this, [=](const HttpResult<QByteArray> &etag) {
             auto tmp_path = path;
             auto tmp_recurseQueryServer = recurseQueryServer;
-            if (!etag || (etag->toUtf8() != base._etag && !item->isDirectory()) || _discoveryData->isRenamed(originalPath)) {
+            if (!etag || (etag.get() != base._etag && !item->isDirectory()) || _discoveryData->isRenamed(originalPath)) {
                 qCInfo(lcDisco) << "Can't rename because the etag has changed or the directory is gone" << originalPath;
                 // Can't be a rename, leave it as a new.
                 postProcessLocalNew();
@@ -1005,7 +1005,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
                 // In case the deleted item was discovered in parallel
                 _discoveryData->findAndCancelDeletedJob(originalPath);
                 processRename(tmp_path);
-                tmp_recurseQueryServer = etag->toUtf8() == base._etag ? ParentNotChanged : NormalQuery;
+                tmp_recurseQueryServer = etag.get() == base._etag ? ParentNotChanged : NormalQuery;
             }
             processFileFinalize(item, tmp_path, item->isDirectory(), NormalQuery, tmp_recurseQueryServer);
             _pendingAsyncJobs--;
