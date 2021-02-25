@@ -162,6 +162,12 @@ version = 3.31.1
 [libs/zlib]
 version = 1.2.11
 
+[python-modules/pip]
+version = 3.4
+
+[python-modules/pip-system]
+version = 3.4
+
 [python-modules/virtualenv]
 version = master
 
