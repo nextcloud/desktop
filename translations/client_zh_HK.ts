@@ -329,7 +329,8 @@
         <location filename="../src/gui/accountsettings.cpp" line="280"/>
         <source>You cannot encrypt a folder with contents, please remove the files.
 Wait for the new sync, then encrypt it.</source>
-        <translation type="unfinished"/>
+        <translation>您無法加密包含內容的資料夾，請刪除檔案。
+等待新的同步，然後對其進行加密。</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="349"/>
@@ -2470,7 +2471,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="164"/>
         <source>No updates available. Your installation is at the latest version.</source>
-        <translation>目前沒有可用的更新檔，您安裝的版本是最新的了。</translation>
+        <translation>沒有可用的更新。 您的安裝是最新版本。</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="183"/>
@@ -2488,7 +2489,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="45"/>
         <source>Setup local folder options</source>
-        <translation>設定本地資料夾選項</translation>
+        <translation>設定近端資料夾選項</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="54"/>
@@ -2498,7 +2499,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="85"/>
         <source>Use &amp;virtual files instead of downloading content immediately %1</source>
-        <translation type="unfinished"/>
+        <translation>使用虛擬檔案(&amp;v)，而不是立即下載內容 %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="85"/>
@@ -2533,7 +2534,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="294"/>
         <source>Local Sync Folder</source>
-        <translation>本地同步資料夾</translation>
+        <translation>近端同步資料夾</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="337"/>
@@ -2544,7 +2545,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="384"/>
         <source>There isn&apos;t enough free space in the local folder!</source>
-        <translation>本地資料夾沒有足夠的剩餘空間！</translation>
+        <translation>近端資料夾沒有足夠的剩餘空間！</translation>
     </message>
 </context>
 <context>
@@ -2595,7 +2596,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="60"/>
         <source>Enter user credentials</source>
-        <translation>請輸入使用者憑證</translation>
+        <translation>請輸入用戶身份驗證</translation>
     </message>
 </context>
 <context>
@@ -2651,7 +2652,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="96"/>
         <source>This is the link to your %1 web interface when you open it in the browser.&lt;br/&gt;It looks like https://cloud.example.com or https://example.com/cloud</source>
-        <translation type="unfinished"/>
+        <translation>這是在瀏覽器中打開 %1 web 界面時的連結 它類似於https://cloud.example.com 或 https://example.com/cloud</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="184"/>
@@ -2981,12 +2982,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="435"/>
         <source>server reported no %1</source>
-        <translation type="unfinished"/>
+        <translation>伺服器報告沒有 %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1214"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
-        <translation type="unfinished"/>
+        <translation>被忽略，因為它在“選擇要同步的內容”黑名單中</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1247"/>
@@ -3021,7 +3022,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1470"/>
         <source>Server replied with an error while reading directory &apos;%1&apos; : %2</source>
-        <translation type="unfinished"/>
+        <translation>伺服器讀取目錄 &apos;%1&apos; 時發生錯誤：%2</translation>
     </message>
 </context>
 <context>
@@ -4794,7 +4795,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="245"/>
         <source>This is the link to your %1 web interface when you open it in the browser.&lt;br/&gt;It looks like https://cloud.example.com or https://example.com/cloud</source>
-        <translation type="unfinished"/>
+        <translation>這是在瀏覽器中打開 %1 web 界面時的連結 它類似於https://cloud.example.com 或 https://example.com/cloud</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="343"/>
@@ -5088,7 +5089,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/Window.qml" line="422"/>
         <source>Open local folder of current account</source>
-        <translation type="unfinished"/>
+        <translation>打開當前帳戶的近端資料夾</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="434"/>
