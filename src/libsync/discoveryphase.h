@@ -127,7 +127,7 @@ public:
     // This is not actually a network job, it is just a job
 signals:
     void firstDirectoryPermissions(RemotePermissions);
-    void etag(const QString &, const QDateTime &time);
+    void etag(const QByteArray &, const QDateTime &time);
     void finished(const HttpResult<QVector<RemoteInfo>> &result);
 
 private slots:
@@ -141,7 +141,7 @@ private slots:
 private:
     QVector<RemoteInfo> _results;
     QString _subPath;
-    QString _firstEtag;
+    QByteArray _firstEtag;
     QByteArray _fileId;
     AccountPtr _account;
     // The first result is for the directory itself and need to be ignored.

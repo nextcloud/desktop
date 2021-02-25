@@ -353,7 +353,7 @@ void Folder::slotRunEtagJob()
     // The _requestEtagJob is auto deleting itself on finish. Our guard pointer _requestEtagJob will then be null.
 }
 
-void Folder::etagRetrieved(const QString &etag, const QDateTime &tp)
+void Folder::etagRetrieved(const QByteArray &etag, const QDateTime &tp)
 {
     // re-enable sync if it was disabled because network was down
     FolderMan::instance()->setSyncEnabled(true);
@@ -367,7 +367,7 @@ void Folder::etagRetrieved(const QString &etag, const QDateTime &tp)
     _accountState->tagLastSuccessfullETagRequest(tp);
 }
 
-void Folder::etagRetrievedFromSyncEngine(const QString &etag, const QDateTime &time)
+void Folder::etagRetrievedFromSyncEngine(const QByteArray &etag, const QDateTime &time)
 {
     qCInfo(lcFolder) << "Root etag from during sync:" << etag;
     accountState()->tagLastSuccessfullETagRequest(time);
