@@ -2,18 +2,18 @@
 <context>
     <name>FileSystem</name>
     <message>
-        <location filename="../src/common/filesystembase.cpp" line="388"/>
+        <location filename="../src/common/filesystembase.cpp" line="382"/>
         <source>Could not make directories in trash</source>
         <translation>Impossible de créer des dossiers dans la corbeille</translation>
     </message>
     <message>
+        <location filename="../src/common/filesystembase.cpp" line="396"/>
         <location filename="../src/common/filesystembase.cpp" line="402"/>
-        <location filename="../src/common/filesystembase.cpp" line="408"/>
         <source>Could not move &apos;%1&apos; to &apos;%2&apos;</source>
         <translation>Impossible de déplacer &apos;%1&apos; vers &apos;%2&apos;</translation>
     </message>
     <message>
-        <location filename="../src/common/filesystembase.cpp" line="442"/>
+        <location filename="../src/common/filesystembase.cpp" line="436"/>
         <source>Moving to the trash is not implemented on this platform</source>
         <translation>Le déplacement dans la corbeille n&apos;est pas implémenté sur cette plateforme</translation>
     </message>
@@ -4288,37 +4288,37 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/common/utility.cpp" line="451"/>
+        <location filename="../src/common/utility.cpp" line="452"/>
         <source>in the future</source>
         <translation>Dans le futur</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/common/utility.cpp" line="447"/>
+        <location filename="../src/common/utility.cpp" line="448"/>
         <source>%n day(s) ago</source>
         <translation><numerusform>Hier</numerusform><numerusform>Il y a %n jours</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/common/utility.cpp" line="455"/>
+        <location filename="../src/common/utility.cpp" line="456"/>
         <source>%n hour(s) ago</source>
         <translation><numerusform>Il y a %n heure</numerusform><numerusform>Il y a %n heures</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/common/utility.cpp" line="460"/>
+        <location filename="../src/common/utility.cpp" line="461"/>
         <source>now</source>
         <translation>maintenant</translation>
     </message>
     <message>
-        <location filename="../src/common/utility.cpp" line="462"/>
+        <location filename="../src/common/utility.cpp" line="463"/>
         <source>Less than a minute ago</source>
         <translation>Il y a moins d&apos;une minute</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/common/utility.cpp" line="465"/>
+        <location filename="../src/common/utility.cpp" line="466"/>
         <source>%n minute(s) ago</source>
         <translation><numerusform>Il y a %n minute</numerusform><numerusform>Il y a %n minutes</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/common/utility.cpp" line="468"/>
+        <location filename="../src/common/utility.cpp" line="469"/>
         <source>Some time ago</source>
         <translation>Il y a quelque temps</translation>
     </message>
@@ -4332,57 +4332,57 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
 <context>
     <name>Utility</name>
     <message>
-        <location filename="../src/common/utility.cpp" line="130"/>
+        <location filename="../src/common/utility.cpp" line="131"/>
         <source>%L1 GB</source>
         <translation>%L1 Go</translation>
     </message>
     <message>
-        <location filename="../src/common/utility.cpp" line="134"/>
+        <location filename="../src/common/utility.cpp" line="135"/>
         <source>%L1 MB</source>
         <translation>%L1 Mo</translation>
     </message>
     <message>
-        <location filename="../src/common/utility.cpp" line="138"/>
+        <location filename="../src/common/utility.cpp" line="139"/>
         <source>%L1 KB</source>
         <translation>%L1 Ko</translation>
     </message>
     <message>
-        <location filename="../src/common/utility.cpp" line="141"/>
+        <location filename="../src/common/utility.cpp" line="142"/>
         <source>%L1 B</source>
         <translation>%L1 octets</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/common/utility.cpp" line="317"/>
+        <location filename="../src/common/utility.cpp" line="318"/>
         <source>%n year(s)</source>
         <translation><numerusform>%n an</numerusform><numerusform>%n ans</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/common/utility.cpp" line="318"/>
+        <location filename="../src/common/utility.cpp" line="319"/>
         <source>%n month(s)</source>
         <translation><numerusform>%n mois</numerusform><numerusform>%n mois</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/common/utility.cpp" line="319"/>
+        <location filename="../src/common/utility.cpp" line="320"/>
         <source>%n day(s)</source>
         <translation><numerusform>%n jour</numerusform><numerusform>%n jours</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/common/utility.cpp" line="320"/>
+        <location filename="../src/common/utility.cpp" line="321"/>
         <source>%n hour(s)</source>
         <translation><numerusform>%n heure</numerusform><numerusform>%n heures</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/common/utility.cpp" line="321"/>
+        <location filename="../src/common/utility.cpp" line="322"/>
         <source>%n minute(s)</source>
         <translation><numerusform>%n minute</numerusform><numerusform>%n minutes</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/common/utility.cpp" line="322"/>
+        <location filename="../src/common/utility.cpp" line="323"/>
         <source>%n second(s)</source>
         <translation><numerusform>%n seconde</numerusform><numerusform>%n secondes</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/common/utility.cpp" line="346"/>
+        <location filename="../src/common/utility.cpp" line="347"/>
         <source>%1 %2</source>
         <translation>%1 %2</translation>
     </message>
