@@ -1,0 +1,7 @@
+Bugfix: Moves in folder sync connections where executed as a delete and upload
+
+We fixed a bug where moves in folder sync connections where executed
+as a delete and upload.
+
+https://github.com/owncloud/client/issues/7838
+https://github.com/owncloud/enterprise/issues/4428
