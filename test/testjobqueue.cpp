@@ -20,7 +20,7 @@ class TestJob : public AbstractNetworkJob
     // AbstractNetworkJob interface
 public:
     TestJob(AccountPtr account)
-        : AbstractNetworkJob(account, QStringLiteral("A/a1"))
+        : AbstractNetworkJob(account, QStringLiteral("/A/a1"))
     {
     }
 
