@@ -4,99 +4,203 @@
 Appendix A: Building the Client
 ===============================
 
-This section explains how to build the Nextcloud Client from source for all
-major platforms. You should read this section if you want to develop for the
-desktop client.
+The goal of this section is to set up a build environment for developing
+and testing the Nextcloud Desktop client. If you just want to use the
+Nextcloud Desktop client without developing and testing it, you should
+download the latest stable build instead.
 
-.. note:: Build instructions are subject to change as development proceeds.
-  Please check the version for which you want to build.
+.. note:: These instructions represent a particular streamlined and easy-to-understand
+   methodology, but they are by no means the only way of setting up a build
+   environment.
 
-These instructions are updated to work with version |version| of the Nextcloud Client.
+The steps listed here have been tested multiple times and should allow you
+to build the client and/or the documentation with not warnings or errors.
+These instructions should be current with the version, |version|, of the
+Nextcloud Client with which it ships. If you are using the most recent version
+of these instructions, and you run into errors or warnings with the latest
+code from the repository, please open a GitHub Issue to let us know so we can
+document a workaround or fix any underlying problems.
 
-You have two possibilities to clone the repo.
 
-First option is As [remote URL](https://help.github.com/en/articles/which-remote-url-should-i-use) you can choose between cloning with HTTPS URL's, which is recommended or cloning with SSH URL's.
+Using GitHub
+------------
 
-[https://github.com/nextcloud/desktop.git](https://github.com/nextcloud/desktop.git)
+By default, cloning the GitHub repository will give you the "master" branch,
+which is the most recent. If for some reason you want to build an older
+version of the Nextcloud Desktop client, you can choose a branch corresponding
+with that version. However, for older versions of the client, please be mindful
+that any issues present may have been fixed in more recent versions.
 
-When you don't have SSH key added to your GitHub account, than use HTTPS.
+.. note:: Doing anything other than just downloading the existing code will
+   require you to have a GitHub account.
 
-When you no part of the nextcloud organisation, clone with HTTPS:
+If your goal in cloning and building the Nextcloud Desktop client is to
+contribute to its development, and you are not already a "collaborator"
+on the Nextcloud Desktop GitHub repository, you will need to create a "fork"
+by clicking the "fork" button in the upper right on any GitHub page in the
+repository. It is important to do this in advance because the URL for cloning
+the repository is different for a fork than for the main official version.
 
-```
-$ git clone git@github.com:nextcloud/desktop.git
-```
+When cloning a GitHub repository, you have two options for authenticating your
+GitHub account, SSH or HTTPS. SSH requires additional setup but is more secure
+and simplifies things later on. For an explanation of the differences between
+HTTPS and SSH, as well as instructions to set up SSH, see this `GitHub 
+help article`_ on the subject.
 
-macOS
------
+.. _`GitHub help article`: https://help.github.com/en/articles/which-remote-url-should-i-use
 
-In addition to needing XCode (along with the command line tools), developing in
-the macOS environment requires extra dependencies.  You can install these
-dependencies through MacPorts_ or Homebrew_.  These dependencies are required
-only on the build machine, because non-standard libs are deployed in the app
-bundle.
+The most basic version of the Git command for cloning a repository is as follows:
 
-The tested and preferred way to develop in this environment is through the use
-of HomeBrew_. The team has its own repository containing non-standard
-recipes.
+.. code-block:: bash
 
-To set up your build environment for development using HomeBrew_:
+   $ git clone <repository_url>
 
-1. Install Xcode
-2. Install Xcode command line tools::
-    xcode-select --install
+Which will clone the repository into the directory where you run the command.
 
-3. Install homebrew::
-    /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+The four versions of the ``git clone`` command are as follows:
 
-4. Add the Nextcloud repository using the following command::
+1. HTTPS from the official repository:
 
-    brew tap owncloud/owncloud
+   .. code-block:: bash
 
-5. Install a Qt5 version with qtwebkit support::
+      $ git clone https://github.com/nextcloud/desktop.git
 
-    brew install qt5
+2. SSH from the official repository:
 
-6. Install any missing dependencies::
+   .. code-block:: bash
 
-    brew install $(brew deps owncloud-client)
+      $ git clone git@github.com:nextcloud/desktop.git
 
-7. Add Qt from brew to the path::
+3. HTTPS from a fork (see above):
 
-    export PATH=/usr/local/Cellar/qt5/5.x.y/bin:$PATH
+   .. code-block:: bash
 
-   Where ``x.y`` is the current version of Qt 5 that brew has installed
-   on your machine.
-8. Install qtkeychain from here:  git clone https://github.com/frankosterfeld/qtkeychain.git
-   make sure you make the same install prefix as later while building the client e.g.  -
-   ``DCMAKE_INSTALL_PREFIX=/Path/to/client-install``
+      % git clone https://github.com/<github_username>/desktop.git
 
-9. For compilation of the client, follow the :ref:`generic-build-instructions`.
+4. SSH from a fork (see above):
 
-10. Install the Packages_ package creation tool.
+   .. code-block:: bash
 
-11. Enable git submodules:
-```
-$ cd desktop
-$ git submodule init
-$ git submodule update
-```
+      % git clone git@github.com:<github_username>/desktop.git
 
-12. Generate the build files:
-```
-$ cd build
-$ cmake .. -DCMAKE_INSTALL_PREFIX=~/nextcloud-desktop-client -DCMAKE_BUILD_TYPE=Debug
-```
+macOS Development Build
+-----------------------
 
-13. Compile and install:
-```
-$ make install
-```
+.. note:: While it is possible to do many of the following steps using GUI
+   frontends, wherever possible the Terminal commands are listed instead, in order
+   to streamline the process.
 
-   .. note:: Contrary to earlier versions, Nextcloud 1.7 and later are packaged
-             as a ``pkg`` installer. Do not call "make package" at any time when
-             compiling for OS X, as this will build a disk image, and will not
-             work correctly.
+1. Install Xcode from the Mac App Store:
+
+   https://apps.apple.com/app/xcode/id497799835
+
+Then, in Terminal:
+
+2. Install Xcode command line tools:
+
+   .. code-block:: bash
+
+      % xcode-select –install
+
+3. Install Homebrew from `brew.sh`_ (which will just give you the following):
+
+.. _`brew.sh`: https://brew.sh
+
+   .. code-block:: bash
+
+      % /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+.. note:: Under certain cirumstances, you may get on error along the
+   lines of ``Permission denied @ apply2files`` when installing certain
+   Homebrew packages. This is `a known issue`_ and can be fixed by changing
+   the permissions on the affected files with the following command:
+
+   .. code-block:: bash
+
+      % sudo chown -R $(whoami):admin /usr/local/* \
+         && sudo chmod -R g+rwx /usr/local/*
+
+   This workaround may lead to other shell warnings.
+
+.. _`a known issue`: https://stackoverflow.com/a/63241724
+
+4. Install Homebrew packages:
+
+   .. code-block:: bash
+
+      % brew install git qt qtkeychain cmake openssl glib cmocka
+
+5. Certain Homebrew packages are not automatically linked in places where
+   the build scripts can find them, so you can create a shell-profile script
+   that will find and load them dynamically when you run a build:
+
+   .. code-block:: bash
+
+      % echo 'export OPENSSL_ROOT_DIR=$(brew --prefix openssl)' >> ~/.nextcloud_build_variables
+      % echo 'export QT_PATH=$(brew --prefix qt5)/bin' >> ~/.nextcloud_build_variables
+      % echo 'export Qt5LinguistTools_DIR=$(brew --prefix qt5)/lib/cmake/Qt5LinguistTools/' >> ~/.nextcloud_build_variables
+   
+   .. note:: The name ``~/.nextcloud_build_variables`` is just a suggestion for
+      convenience. You can use a different file or create an entire shell
+      script, but this way of doing things is the simplest to explain.
+
+6. Clone the Nextcloud repository to a convenient location, such as ``~/Repositories``:
+
+   .. code-block:: bash
+
+      % mkdir ~/Repositories
+
+   (if it doesn't already exist), then:
+
+   .. code-block:: bash
+
+      % cd ~/Repositories
+
+   .. note:: The cloned repository can go basically anywhere your user account
+      has write access, though it should not go in a directory synced with another
+      cloud service (especially not iCloud Drive). ``~/Repositories`` is recommended
+      for tidiness and consistency.
+
+   .. code-block:: bash
+
+      % git clone <repository_url>
+
+   (See the above section on using GitHub for an explanation of what URL to use.)
+
+7. Create build directory:
+
+   .. code-block:: bash
+
+      % cd ~/Repositories/desktop
+      % mkdir build
+
+8. Generate the build files:
+
+.. note::
+
+      By default Nextcloud Desktop will build in a protected directory on macOS,
+      so you need to specify a build location. You can do this every time you build,
+      or you can add it to your save build variables, like so:
+      
+   .. code-block:: bash
+
+        % echo 'export CMAKE_INSTALL_PREFIX=~/Builds' >> ~/.nextcloud_build_variables
+      
+      Replace ``~/Builds`` with a different directory if you'd like the build to end up elsewhere.
+   
+..
+
+   .. code-block:: bash
+
+      % source ~/.nextcloud_build_variables
+      % cd ~/Repositories/desktop/build
+      % cmake ..
+
+9. Compile and install:
+
+   .. code-block:: bash
+
+      % make install
 
 Windows Development Build
 -------------------------
@@ -112,10 +216,12 @@ follow `Windows Installer Build (Cross-Compile)`_ instead.
    * Download an `OpenSSL Windows Build`_ (the non-"Light" version)
 
 2. Get the QtKeychain_ sources as well as the latest versions of the Nextcloud client
-   from Git as follows::
+   from Git as follows
 
-    git clone https://github.com/frankosterfeld/qtkeychain.git
-    git clone git://github.com/nextcloud/client.git
+   .. code-block::
+   
+      git clone https://github.com/frankosterfeld/qtkeychain.git
+      git clone git://github.com/nextcloud/client.git
 
 3. Open the Qt MinGW shortcut console from the Start Menu
 
@@ -150,7 +256,9 @@ follow `Windows Installer Build (Cross-Compile)`_ instead.
 
    The Nextcloud binary will appear in the ``bin`` directory.
 
-Windows Installer Build (Cross-Compile)
+.. _`Windows Installer Build (Cross-Compile)`:
+
+Windows Installer (i.e. Deployment) Build (Cross-Compile)
 ---------------------------------------
 
 Due to the large number of dependencies, building the client installer for Windows
@@ -215,21 +323,26 @@ part of the client source repository and not a separate module.
 
 To build the most up-to-date version of the client:
 
-1. Clone the latest versions of the client from Git_ as follows::
+1. Clone the latest versions of the client from Git_ as follows:
 
-     git clone git://github.com/nextcloud/client.git
-     cd client
-     git submodule init
-     git submodule update
+   .. code-block:: bash
 
-2. Create the build directory::
+      $ git clone git://github.com/nextcloud/client.git
+      $ cd client
+      $ git submodule update --init
 
-     mkdir client-build
-     cd client-build
+2. Create the build directory
 
-3. Configure the client build::
+   .. code-block:: bash
+   
+      $ mkdir client-build
+      $ cd client-build
 
-     cmake -DCMAKE_BUILD_TYPE="Debug" ..
+3. Configure the client build
+
+   .. code-block:: bash
+   
+      $ cmake -DCMAKE_BUILD_TYPE="Debug" ..
 
    .. note:: You must use absolute paths for the ``include`` and ``library``
             directories.
@@ -264,10 +377,7 @@ The following are known cmake parameters:
 .. _CSync: http://www.csync.org
 .. _Client Download Page: https://nextcloud.com/install/#install-clients
 .. _Git: http://git-scm.com
-.. _MacPorts: http://www.macports.org
-.. _Homebrew: http://mxcl.github.com/homebrew/
 .. _OpenSSL Windows Build: http://slproweb.com/products/Win32OpenSSL.html
 .. _Qt: http://www.qt.io/download
 .. _Microsoft Authenticode: https://msdn.microsoft.com/en-us/library/ie/ms537361%28v=vs.85%29.aspx
 .. _QtKeychain: https://github.com/frankosterfeld/qtkeychain
-.. _Packages: http://s.sudre.free.fr/Software/Packages/about.html
