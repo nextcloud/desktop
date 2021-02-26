@@ -150,14 +150,14 @@ void AbstractNetworkJob::adoptRequest(QNetworkReply *reply)
 QUrl AbstractNetworkJob::makeAccountUrl(const QString &relativePath) const
 {
     // ensure we always used the remote folder
-    OC_ASSERT(relativePath.startsWith(QLatin1Char('/')));
+    ASSERT(relativePath.startsWith(QLatin1Char('/')))
     return Utility::concatUrlPath(_account->url(), relativePath);
 }
 
 QUrl AbstractNetworkJob::makeDavUrl(const QString &relativePath) const
 {
     // ensure we always used the remote folder
-    OC_ASSERT(relativePath.startsWith(QLatin1Char('/')));
+    ASSERT(relativePath.startsWith(QLatin1Char('/')))
     return Utility::concatUrlPath(_account->davUrl(), relativePath);
 }
 

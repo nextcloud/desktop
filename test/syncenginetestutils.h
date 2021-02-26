@@ -143,6 +143,7 @@ public:
     }
 
     QString path() const;
+    QString absolutePath() const;
 
     void fixupParentPathRecursively();
 
