@@ -42,6 +42,9 @@ Details
 
    https://github.com/owncloud/client/issues/7838
    https://github.com/owncloud/enterprise/issues/4428
+   https://github.com/owncloud/client/pull/8453
+   https://github.com/owncloud/client/pull/8456
+   https://github.com/owncloud/client/pull/8459
 
 * Bugfix - Fix missing permission for newly created folder: [#8076](https://github.com/owncloud/client/pull/8076)
 
