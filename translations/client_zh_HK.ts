@@ -277,7 +277,7 @@
         <location filename="../src/gui/accountsettings.cpp" line="204"/>
         <location filename="../src/gui/accountsettings.cpp" line="218"/>
         <source>This account supports end-to-end encryption</source>
-        <translation>此帳戶支援端點對端點加密</translation>
+        <translation>此帳戶支援端到端加密</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="206"/>
@@ -313,7 +313,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="232"/>
         <source>Account</source>
-        <translation>帳號</translation>
+        <translation>帳戶</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="234"/>
@@ -606,7 +606,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="143"/>
         <source>Network error</source>
-        <translation>網路異常</translation>
+        <translation>網絡異常</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="145"/>
@@ -3421,7 +3421,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="206"/>
         <source>Account</source>
-        <translation>帳號</translation>
+        <translation>帳戶</translation>
     </message>
 </context>
 <context>
