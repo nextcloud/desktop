@@ -351,7 +351,7 @@ Wait for the new sync, then encrypt it.</source>
         <location filename="../src/gui/accountsettings.cpp" line="447"/>
         <location filename="../src/gui/accountsettings.cpp" line="523"/>
         <source>Create new folder</source>
-        <translation type="unfinished"/>
+        <translation>Luo uusi kansio</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="453"/>
@@ -402,7 +402,7 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="574"/>
         <source>(experimental)</source>
-        <translation type="unfinished"/>
+        <translation>(kokeellinen)</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="502"/>
@@ -2232,7 +2232,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="463"/>
         <source>Ask again later</source>
-        <translation type="unfinished"/>
+        <translation>Kysy myöhemmin uudelleen</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="464"/>
@@ -2953,12 +2953,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="427"/>
         <source>permissions</source>
-        <translation type="unfinished"/>
+        <translation>oikeudet</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="431"/>
         <source>file id</source>
-        <translation type="unfinished"/>
+        <translation>tiedoston id</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="435"/>
@@ -3601,7 +3601,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="89"/>
         <source>Search globally</source>
-        <translation type="unfinished"/>
+        <translation>Hae globaalisti</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="285"/>
@@ -3744,27 +3744,27 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi.cpp" line="916"/>
         <source>Resolve conflict …</source>
-        <translation type="unfinished"/>
+        <translation>Selvitä virhetilanne …</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="920"/>
         <source>Move and rename …</source>
-        <translation type="unfinished"/>
+        <translation>Siirrä ja uudelleennimeä …</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="923"/>
         <source>Move, rename and upload …</source>
-        <translation type="unfinished"/>
+        <translation>Siirrä, uudelleennimeä ja lataa …</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="925"/>
         <source>Delete local changes</source>
-        <translation type="unfinished"/>
+        <translation>Poista paikalliset muutokset</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="931"/>
         <source>Move and upload …</source>
-        <translation type="unfinished"/>
+        <translation>Siirrä ja lataa …</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="932"/>

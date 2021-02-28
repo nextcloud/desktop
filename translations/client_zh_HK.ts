@@ -153,12 +153,12 @@
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="33"/>
         <source>Pick a local folder on your computer to sync</source>
-        <translation>在您的電腦中選擇一個本地資料夾用來同步</translation>
+        <translation>在您的電腦中選擇一個近端資料夾用來同步</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="44"/>
         <source>&amp;Choose …</source>
-        <translation>選擇</translation>
+        <translation>選擇【&amp;c】</translation>
     </message>
 </context>
 <context>
@@ -225,7 +225,7 @@
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="352"/>
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
-        <translation>為了保護您的身份，我們將用含12個單詞的助記碼進行加密。請將這些單詞記在一個安全的地方。要將其他裝置（如手提電話或手提電腦）加入您的帳戶中，需用到此助記碼。</translation>
+        <translation>為了保護您的身份，我們將用含12個單詞的助記碼進行加密。請將這些單詞記在一個安全的地方。要將其他裝置（如手提電話或手提電腦）加入您的賬戶中，需用到此助記碼。</translation>
     </message>
 </context>
 <context>
@@ -246,7 +246,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="139"/>
         <source>Apply</source>
-        <translation>套用</translation>
+        <translation>使用</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="174"/>
@@ -277,7 +277,7 @@
         <location filename="../src/gui/accountsettings.cpp" line="204"/>
         <location filename="../src/gui/accountsettings.cpp" line="218"/>
         <source>This account supports end-to-end encryption</source>
-        <translation>此帳戶支援端到端加密</translation>
+        <translation>此賬戶支援端到端加密</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="206"/>
@@ -313,7 +313,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="232"/>
         <source>Account</source>
-        <translation>帳戶</translation>
+        <translation>賬戶</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="234"/>
@@ -788,12 +788,12 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="32"/>
         <source>Which version of the file do you want to keep?&lt;br/&gt;If you select both versions, the local file will have a number added to its name.</source>
-        <translation>請問您想要保留哪個檔案？&lt;br/&gt;如果您想要選擇兩個版本，本地的檔案名稱將會加上一個數字。</translation>
+        <translation>請問您想要保留哪個檔案？&lt;br/&gt;如果您想要選擇兩個版本，近端的檔案名稱將會加上一個數字。</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="46"/>
         <source>Local version</source>
-        <translation>本地版本</translation>
+        <translation>近端版本</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="57"/>
@@ -805,7 +805,7 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/gui/conflictdialog.ui" line="96"/>
         <location filename="../src/gui/conflictdialog.ui" line="204"/>
         <source>today</source>
-        <translation>今天</translation>
+        <translation>今日</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="103"/>
@@ -816,7 +816,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="110"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Open local version&lt;/a&gt;</source>
-        <translation>&lt;a href=&quot;%1&quot;&gt;開啟本地版本&lt;/a&gt;</translation>
+        <translation>&lt;a href=&quot;%1&quot;&gt;開啟近端版本&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="154"/>
@@ -837,7 +837,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="148"/>
         <source>Open local version</source>
-        <translation>開啟本地版本</translation>
+        <translation>開啟近端版本</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="156"/>
@@ -852,7 +852,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="175"/>
         <source>Keep local version</source>
-        <translation>保留本地版本</translation>
+        <translation>保留近端版本</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="176"/>
@@ -899,7 +899,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="50"/>
         <source>No Nextcloud account configured</source>
-        <translation>沒有 Nextcloud 帳戶的設定檔</translation>
+        <translation>沒有 Nextcloud 賬戶的設定檔</translation>
     </message>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="147"/>
@@ -975,7 +975,7 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/libsync/encryptfolderjob.cpp" line="72"/>
         <source>Could not generate the metadata for encryption, Unlocking the folder.
 This can be an issue with your OpenSSL libraries.</source>
-        <translation type="unfinished"/>
+        <translation>無法生成用於加密的元數據。解鎖文件夾。這可能是您的OpenSSL庫的問題。</translation>
     </message>
 </context>
 <context>
@@ -1205,7 +1205,7 @@ This means that the synchronization client might not upload local changes immedi
 %1</source>
         <translation>無法可靠地跟蹤要同步的資料夾內容之更動。
 
-客戶端可能無法及時上傳本地的更動，而只能每隔一段時間（預設為2小時）才掃描及上傳一次本地變更。
+客戶端可能無法及時上傳近端的更動，而只能每隔一段時間（預設為2小時）才掃描及上傳一次近端變更。
 
 %1</translation>
     </message>
@@ -1216,7 +1216,7 @@ These deletes will be synchronized to your local sync folder, making such files 
 If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
         <translation>「%1」資料夾中的所有檔案已從伺服器上移除。
-同步後，這些檔案也會從您的本地資料夾中移除。除非您有復原的權限，否則您將無法讀取這些檔案。
+同步後，這些檔案也會從您的近端資料夾中移除。除非您有復原的權限，否則您將無法讀取這些檔案。
 假如您決定復原這些檔案，只要您擁有權限，這些檔案就會重新和伺服器同步。
 假如您決定移除這些檔案，除非您是檔案的所有者，否則您將無法讀取這些檔案。</translation>
     </message>
@@ -1225,7 +1225,7 @@ If you decide to delete the files, they will be unavailable to you, unless you a
         <source>All files got deleted from your local sync folder '%1'.
 These files will be deleted from the server and will not be available on your other devices if they will not be restored.
 If this action was unintended you can restore the lost data now.</source>
-        <translation>「%1」本地同步資料夾中的所有檔案已被移除。
+        <translation>「%1」近端同步資料夾中的所有檔案已被移除。
 這些檔案將會從伺服器上移除，使得您無法從其他裝置讀取這些檔案，除非您選擇復原。
 如果您意外地做了此項動作，您可以立即復原已移除的資料。</translation>
     </message>
@@ -1266,7 +1266,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folder.cpp" line="1091"/>
         <source>Keep Local Files as Conflict</source>
-        <translation>將本地檔案視為衝突檔案</translation>
+        <translation>將近端檔案視為衝突檔案</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1235"/>
@@ -1275,7 +1275,7 @@ These deletes will be synchronized to your local sync folder, making such files 
 If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
         <translation>「%1」資料夾中的所有檔案已從伺服器上移除。
-同步後，這些檔案也會從您的本地資料夾中移除。除非您有復原的權限，否則您將無法讀取這些檔案。
+同步後，這些檔案也會從您的近端資料夾中移除。除非您有復原的權限，否則您將無法讀取這些檔案。
 假如您決定復原這些檔案，只要您擁有權限，這些檔案就會重新和伺服器同步。
 假如您決定移除這些檔案，除非您是檔案的所有者，否則您將無法讀取這些檔案。</translation>
     </message>
@@ -1425,12 +1425,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="1449"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
-        <translation>本地資料夾 %1 裡已經有被資料夾同步功能使用的資料夾，請選擇其他資料夾！</translation>
+        <translation>近端資料夾 %1 裡已經有被資料夾同步功能使用的資料夾，請選擇其他資料夾！</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1455"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
-        <translation>本地資料夾 %1 是被包含在一個已經被資料夾同步功能使用的資料夾，請選擇其他資料夾！</translation>
+        <translation>近端資料夾 %1 是被包含在一個已經被資料夾同步功能使用的資料夾，請選擇其他資料夾！</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1469"/>
@@ -1448,7 +1448,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="256"/>
         <source>Synchronized with local folder (%1)</source>
-        <translation>已與本地資料夾同步（%1）</translation>
+        <translation>已與近端資料夾同步（%1）</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="313"/>
@@ -1503,12 +1503,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="299"/>
         <source>Synchronizing VirtualFiles with local folder</source>
-        <translation>與本地資料夾同步虛擬檔案</translation>
+        <translation>與近端資料夾同步虛擬檔案</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="301"/>
         <source>Synchronizing with local folder</source>
-        <translation>與本地資料夾同步</translation>
+        <translation>與近端資料夾同步</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="904"/>
@@ -1518,7 +1518,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="908"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
-        <translation>檢查本地 &apos;%1&apos; 的變動</translation>
+        <translation>檢查近端 &apos;%1&apos; 的變動</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="915"/>
@@ -1650,12 +1650,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="67"/>
         <source>Click to select a local folder to sync.</source>
-        <translation>請選擇要同步的本地資料夾</translation>
+        <translation>請選擇要同步的近端資料夾</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="74"/>
         <source>Enter the path to the local folder.</source>
-        <translation>請輸入本地資料夾的路徑</translation>
+        <translation>請輸入近端資料夾的路徑</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="133"/>
@@ -1974,7 +1974,7 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="100"/>
         <source>Please enter %1 password:&lt;br&gt;&lt;br&gt;User: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation>請輸入%1 密碼:&lt;br&gt;&lt;br&gt;使用者: %2&lt;br&gt;帳戶: %3&lt;br&gt;</translation>
+        <translation>請輸入%1 密碼:&lt;br&gt;&lt;br&gt;使用者: %2&lt;br&gt;賬戶: %3&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="114"/>
@@ -2298,7 +2298,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/networksettings.ui" line="176"/>
         <source>Note: proxy settings have no effects for accounts on localhost</source>
-        <translation>注意：代理設定對於本地帳號沒有效果</translation>
+        <translation>注意：代理設定對於近端帳號沒有效果</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="190"/>
@@ -2401,7 +2401,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="130"/>
         <source>&lt;h1&gt;Wrong user&lt;/h1&gt;&lt;p&gt;You logged-in with user &lt;em&gt;%1&lt;/em&gt;, but must login with user &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please log out of %3 in another tab, then &lt;a href=&apos;%4&apos;&gt;click here&lt;/a&gt; and log in as user %2&lt;/p&gt;</source>
-        <translation>&lt;h1&gt;使用者錯誤&lt;/h1&gt;&lt;p&gt;您目前以&lt;em&gt;%1&lt;/em&gt;的身份登入，但您必須以&lt;em&gt;%2&lt;/em&gt;的身份登入。&lt;br&gt;請在一個新的標籤頁中登出%3帳戶，然後&lt;a href=&apos;%4&apos;&gt;點擊此處&lt;/a&gt;，登入%2帳戶。&lt;/p&gt;</translation>
+        <translation>&lt;h1&gt;使用者錯誤&lt;/h1&gt;&lt;p&gt;您目前以&lt;em&gt;%1&lt;/em&gt;的身份登入，但您必須以&lt;em&gt;%2&lt;/em&gt;的身份登入。&lt;br&gt;請在一個新的標籤頁中登出%3賬戶，然後&lt;a href=&apos;%4&apos;&gt;點擊此處&lt;/a&gt;，登入%2賬戶。&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -2509,7 +2509,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="154"/>
         <source>%1 folder &apos;%2&apos; is synced to local folder &apos;%3&apos;</source>
-        <translation>%1 資料夾 &apos;%2&apos; 與本地資料夾 &apos;%3&apos; 同步</translation>
+        <translation>%1 資料夾 &apos;%2&apos; 與近端資料夾 &apos;%3&apos; 同步</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="157"/>
@@ -2519,7 +2519,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="162"/>
         <source>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Warning:&lt;/strong&gt; The local folder is not empty. Pick a resolution!&lt;/small&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;警告:&lt;/strong&gt; 本地端的資料夾不是空的. 請選擇解決方案!&lt;/small&gt;&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;警告:&lt;/strong&gt; 近端端的資料夾不是空的. 請選擇解決方案!&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="171"/>
@@ -2727,7 +2727,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="435"/>
         <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
-        <translation>本地同步資料夾%1已存在, 將其設置為同步&lt;br/&gt;&lt;br/&gt;</translation>
+        <translation>近端同步資料夾%1已存在, 將其設置為同步&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="438"/>
@@ -2747,7 +2747,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="446"/>
         <source>Could not create local folder %1</source>
-        <translation>無法建立本地資料夾 %1</translation>
+        <translation>無法建立近端資料夾 %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="506"/>
@@ -2824,7 +2824,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="649"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
-        <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;本地同步資料夾 %1 建立成功!&lt;/b&gt;&lt;/font&gt;</translation>
+        <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;近端同步資料夾 %1 建立成功!&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
 </context>
 <context>
@@ -2876,7 +2876,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudwizardresultpage.cpp" line="37"/>
         <source>Open Local Folder</source>
-        <translation>打開本地資料夾</translation>
+        <translation>打開近端資料夾</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizardresultpage.cpp" line="46"/>
@@ -2947,7 +2947,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="288"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
-        <translation>衝突：已下載伺服器版本，本地版本已更名但並未上傳。</translation>
+        <translation>衝突：已下載伺服器版本，近端版本已更名但並未上傳。</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="292"/>
@@ -3048,12 +3048,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="448"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
-        <translation>檔案 %1 無法被下載，因為本地端的檔案名稱已毀損!</translation>
+        <translation>檔案 %1 無法被下載，因為近端端的檔案名稱已毀損!</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="498"/>
         <source>The download would reduce free local disk space below the limit</source>
-        <translation>此項下載將會使剩餘的本地儲存空間降到低於限值</translation>
+        <translation>此項下載將會使剩餘的近端儲存空間降到低於限值</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="502"/>
@@ -3078,7 +3078,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="871"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
-        <translation>檔案 %1 無法存檔，因為本地端的檔案名稱已毀損!</translation>
+        <translation>檔案 %1 無法存檔，因為近端端的檔案名稱已毀損!</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="962"/>
@@ -3132,7 +3132,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="103"/>
         <source>Could not remove %1 because of a local file name clash</source>
-        <translation>無法刪除 %1 ，因為本地端的檔案名稱已毀損!</translation>
+        <translation>無法刪除 %1 ，因為近端端的檔案名稱已毀損!</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="104"/>
@@ -3145,7 +3145,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="268"/>
         <source>File %1 can not be renamed to %2 because of a local file name clash</source>
-        <translation>檔案 %1 無法更名成 %2，因為本地端的檔案名稱已毀損</translation>
+        <translation>檔案 %1 無法更名成 %2，因為近端端的檔案名稱已毀損</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="299"/>
@@ -3193,7 +3193,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="170"/>
         <source>Could not rename %1 to %2, error: %3</source>
-        <translation type="unfinished"/>
+        <translation>無法將 %1 重命名為 %2，錯誤：%3</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="134"/>
@@ -3238,12 +3238,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="415"/>
         <source>Local file changed during syncing. It will be resumed.</source>
-        <translation>本地端的檔案在同步的過程中被更改，此檔案將會被還原。</translation>
+        <translation>近端端的檔案在同步的過程中被更改，此檔案將會被還原。</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="430"/>
         <source>Local file changed during sync.</source>
-        <translation>本地端的檔案在同步過程中被更改。</translation>
+        <translation>近端端的檔案在同步過程中被更改。</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="420"/>
@@ -3261,12 +3261,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="412"/>
         <source>The local file was removed during sync.</source>
-        <translation>本地端的檔案在同步過程中被刪除。</translation>
+        <translation>近端端的檔案在同步過程中被刪除。</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="423"/>
         <source>Local file changed during sync.</source>
-        <translation>本地端的檔案在同步過程中被更改。</translation>
+        <translation>近端端的檔案在同步過程中被更改。</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="466"/>
@@ -3299,12 +3299,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="241"/>
         <source>The local file was removed during sync.</source>
-        <translation>本地端的檔案在同步過程中被刪除。</translation>
+        <translation>近端端的檔案在同步過程中被刪除。</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="252"/>
         <source>Local file changed during sync.</source>
-        <translation>本地端的檔案在同步過程中被更改。</translation>
+        <translation>近端端的檔案在同步過程中被更改。</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="266"/>
@@ -3421,7 +3421,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="206"/>
         <source>Account</source>
-        <translation>帳戶</translation>
+        <translation>賬戶</translation>
     </message>
 </context>
 <context>
@@ -3737,7 +3737,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi.cpp" line="946"/>
         <source>Resharing this folder is not allowed</source>
-        <translation type="unfinished"/>
+        <translation>不允許重新分享此資料夾</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="824"/>
@@ -3763,7 +3763,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi.cpp" line="916"/>
         <source>Resolve conflict …</source>
-        <translation type="unfinished"/>
+        <translation>解決衝突 ...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="920"/>
@@ -3778,7 +3778,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi.cpp" line="925"/>
         <source>Delete local changes</source>
-        <translation>刪除本地變更</translation>
+        <translation>刪除近端變更</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="931"/>
@@ -4144,7 +4144,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1551"/>
         <source>Local files and share folder removed.</source>
-        <translation>本地端檔案和共享資料夾已被刪除。</translation>
+        <translation>近端端檔案和共享資料夾已被刪除。</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1605"/>
@@ -4184,7 +4184,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="840"/>
         <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
-        <translation>無法開啟或新增本地同步資料庫。請確保您有寫入同步資料夾的權限。</translation>
+        <translation>無法開啟或新增近端同步資料庫。請確保您有寫入同步資料夾的權限。</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="507"/>
@@ -4229,12 +4229,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="931"/>
         <source>Unable to read the blacklist from the local database</source>
-        <translation>無法從本地資料庫讀取黑名單。</translation>
+        <translation>無法從近端資料庫讀取黑名單。</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="540"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
-        <translation>衝突：已下載伺服器版本，本地版本已改名但並未上傳。</translation>
+        <translation>衝突：已下載伺服器版本，近端版本已改名但並未上傳。</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="544"/>
@@ -4287,7 +4287,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/systray.cpp" line="92"/>
         <source>Add account</source>
-        <translation>新增帳戶</translation>
+        <translation>新增賬戶</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="94"/>
@@ -4390,7 +4390,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="780"/>
         <source>Confirm Account Removal</source>
-        <translation>請確認移除帳戶</translation>
+        <translation>請確認移除賬戶</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="781"/>
@@ -4434,7 +4434,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="159"/>
         <source>You have been logged out of %1 as user %2. Please login again</source>
-        <translation>您已從%1登出%2帳戶。請再次登入。</translation>
+        <translation>您已從%1登出%2賬戶。請再次登入。</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="183"/>
@@ -4460,12 +4460,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="232"/>
         <source>The server on account %1 runs an old and unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
-        <translation>%1帳戶所在的伺服器正運行不受支援的舊版本%2。此客戶端在該伺服器版本上未經測試，可能會有風險。請慎行。</translation>
+        <translation>%1賬戶所在的伺服器正運行不受支援的舊版本%2。此客戶端在該伺服器版本上未經測試，可能會有風險。請慎行。</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="229"/>
         <source>The server on account %1 runs an unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
-        <translation>%1 帳戶所在的伺服器正運行不受支援的舊版本 %2。此客戶端在該伺服器版本上未經測試，可能會有風險。請慎行。</translation>
+        <translation>%1 賬戶所在的伺服器正運行不受支援的舊版本 %2。此客戶端在該伺服器版本上未經測試，可能會有風險。請慎行。</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="273"/>
@@ -4475,7 +4475,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="275"/>
         <source>Disconnected from some accounts</source>
-        <translation>已從一些帳戶斷開</translation>
+        <translation>已從一些賬戶斷開</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="283"/>
@@ -4505,7 +4505,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="307"/>
         <source>Account synchronization is disabled</source>
-        <translation>已禁用帳戶同步</translation>
+        <translation>已禁用賬戶同步</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="308"/>
@@ -4591,7 +4591,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="418"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
-        <translation>正在檢查本地「%1」中的變更</translation>
+        <translation>正在檢查近端「%1」中的變更</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="434"/>
@@ -4661,7 +4661,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="781"/>
         <source>New account …</source>
-        <translation>新帳戶</translation>
+        <translation>新賬戶</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="782"/>
@@ -4726,7 +4726,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="251"/>
         <source>&amp;Local Folder</source>
-        <translation>本地資料夾 (&amp;L)</translation>
+        <translation>近端資料夾 (&amp;L)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="304"/>
@@ -4736,17 +4736,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="344"/>
         <source>&amp;Keep local data</source>
-        <translation>保留本地資料 (&amp;K)</translation>
+        <translation>保留近端資料 (&amp;K)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="354"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If this box is checked, existing content in the local folder will be erased to start a clean sync from the server.&lt;/p&gt;&lt;p&gt;Do not check this if the local content should be uploaded to the servers folder.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;如果選中此項，本地資料夾中的所有內容將被抹去，然後從伺服器完全重新同步。&lt;/p&gt;&lt;p&gt;本地內容若要上傳至伺服器上，切勿選中此項。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;如果選中此項，近端資料夾中的所有內容將被抹去，然後從伺服器完全重新同步。&lt;/p&gt;&lt;p&gt;近端內容若要上傳至伺服器上，切勿選中此項。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="357"/>
         <source>Start a &amp;clean sync (Erases the local folder!)</source>
-        <translation>開始清除同步(將資料從本地端刪除)</translation>
+        <translation>開始清除同步(將資料從近端端刪除)</translation>
     </message>
 </context>
 <context>
@@ -4823,7 +4823,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudwizardresultpage.ui" line="163"/>
         <source>Your entire account is synced to the local folder </source>
-        <translation>您整個帳號的資料會與本地資料夾同步</translation>
+        <translation>您整個帳號的資料會與近端資料夾同步</translation>
     </message>
 </context>
 <context>
@@ -4905,17 +4905,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="94"/>
         <source>Account connected</source>
-        <translation>帳戶已連結</translation>
+        <translation>賬戶已連結</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="94"/>
         <source>Account not connected</source>
-        <translation>未連接到帳戶</translation>
+        <translation>未連接到賬戶</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="134"/>
         <source>Account actions</source>
-        <translation>帳戶動作</translation>
+        <translation>賬戶動作</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="168"/>
@@ -5018,7 +5018,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/common/checksums.cpp" line="362"/>
         <source>The downloaded file does not match the checksum, it will be resumed. &apos;%1&apos; != &apos;%2&apos;</source>
-        <translation type="unfinished"/>
+        <translation>下載的檔案與校驗和不匹配，將會被還原。&apos;%1&apos; != &apos;%2&apos;</translation>
     </message>
 </context>
 <context>
@@ -5032,7 +5032,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/Window.qml" line="131"/>
         <source>Current account</source>
-        <translation>目前帳戶</translation>
+        <translation>目前賬戶</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="143"/>
@@ -5054,7 +5054,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/Window.qml" line="214"/>
         <source>Add account</source>
-        <translation>新增帳戶</translation>
+        <translation>新增賬戶</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="227"/>
@@ -5089,7 +5089,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/Window.qml" line="422"/>
         <source>Open local folder of current account</source>
-        <translation>打開當前帳戶的近端資料夾</translation>
+        <translation>打開當前賬戶的近端資料夾</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="434"/>
@@ -5184,7 +5184,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="37"/>
         <source>Server version downloaded, copied changed local file into conflict file</source>
-        <translation>已下載伺服器上的版本，並將本地已更改的檔案複製至衝突檔案</translation>
+        <translation>已下載伺服器上的版本，並將近端已更改的檔案複製至衝突檔案</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="39"/>
@@ -5214,7 +5214,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="50"/>
         <source>Updated local metadata</source>
-        <translation>本地元資料已更新</translation>
+        <translation>近端元資料已更新</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="53"/>
@@ -5255,7 +5255,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="80"/>
         <source>updating local metadata</source>
-        <translation>正在更新本地元資料</translation>
+        <translation>正在更新近端元資料</translation>
     </message>
 </context>
 <context>
@@ -5341,12 +5341,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/guiutility.cpp" line="88"/>
         <source>Currently available locally</source>
-        <translation type="unfinished"/>
+        <translation>目前在本地可用</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="90"/>
         <source>Some available online only</source>
-        <translation type="unfinished"/>
+        <translation>其中一些僅在線可用</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="93"/>
@@ -5356,12 +5356,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/guiutility.cpp" line="100"/>
         <source>Make always available locally</source>
-        <translation type="unfinished"/>
+        <translation>使其永久在近端可用</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="105"/>
         <source>Free up local space</source>
-        <translation>釋放本地存儲空間</translation>
+        <translation>釋放近端存儲空間</translation>
     </message>
 </context>
 <context>
