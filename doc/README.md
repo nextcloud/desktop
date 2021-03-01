@@ -1,11 +1,29 @@
 # Desktop client documentation
 
-- The main nextcloud Documentation is found at https://github.com/nextcloud/documentation
-- The rst files from the current stable branch will be parsed with sphinx to be used at https://docs.nextcloud.com/desktop/3.0/
+The main nextcloud Documentation is found at https://github.com/nextcloud/documentation
+
+The rst files from the current stable branch will be parsed with sphinx to be used at https://docs.nextcloud.com/desktop/3.0/
+
+## Dependencies
+
+You will need to have [Sphinx](https://www.sphinx-doc.org), which comes packaged with Python 3.
+
+In addition, run the following to install PdfLatex and Doxygen.
+
+- On Linux:
+```
+$ sudo apt install doxygen python texlive-latex-base texlive-latex-extra
+```
+> Note: You may use something other than `apt` depending on your distribution.
+
+- On macOS (via [Homebrew](https://brew.sh/)):
+```
+% brew install basictex doxygen python
+```
 
 ## How to build the documentation
 
-- After installing [sphinx](https://www.sphinx-doc.org) you can run:
+In your repositories directory:
 
 ```
 $ git clone https://github.com/nextcloud/desktop.git
