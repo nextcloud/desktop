@@ -15,7 +15,7 @@ revision = 28db3b4
 
 [craft/craft-core]
 version = master
-revision = 487b9cca8
+revision = 454cdb83fefafe4a0f7d8f56fe25d6530097588e
 
 [dev-utils/autoconf]
 version = 2.69
@@ -163,10 +163,10 @@ version = 3.31.1
 version = 1.2.11
 
 [python-modules/pip]
-version = 3.4
+version = 3.5
 
 [python-modules/pip-system]
-version = 3.4
+version = 3.5
 
 [python-modules/virtualenv]
 version = master
