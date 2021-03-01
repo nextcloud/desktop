@@ -524,9 +524,8 @@ void Application::setupLogging()
 
     qCInfo(lcApplication) << "##################" << _theme->appName()
                           << "locale:" << QLocale::system().name()
-                          << "ui_lang:" << property("ui_lang")
-                          << "version:" << _theme->version()
-                          << "os:" << Utility::platformName();
+                          << "ui_lang:" << property("ui_lang").toString()
+                          << "version:" << _theme->aboutVersions(Theme::VersionFormat::OneLiner);
     qCInfo(lcApplication) << "Arguments:" << qApp->arguments();
 }
 

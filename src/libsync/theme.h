@@ -49,7 +49,8 @@ public:
     enum class VersionFormat {
         Plain,
         Url,
-        RichText
+        RichText,
+        OneLiner
     };
     Q_ENUM(VersionFormat);
 

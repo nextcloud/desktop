@@ -395,7 +395,19 @@ QString Theme::gitSHA1(VersionFormat format) const
 
 QString Theme::aboutVersions(Theme::VersionFormat format) const
 {
-    const QString br = format == Theme::VersionFormat::RichText ? QStringLiteral("<br>") : QStringLiteral("\n");
+    const QString br = [&format] {
+        switch (format) {
+        case Theme::VersionFormat::RichText:
+            return QStringLiteral("<br>");
+        case Theme::VersionFormat::Url:
+            Q_FALLTHROUGH();
+        case Theme::VersionFormat::Plain:
+            return QStringLiteral("\n");
+        case Theme::VersionFormat::OneLiner:
+            return QStringLiteral(" ");
+        }
+        Q_UNREACHABLE();
+    }();
     const QString qtVersion = QString::fromUtf8(qVersion());
     const QString qtVersionString = (QLatin1String(QT_VERSION_STR) == qtVersion ? qtVersion : QCoreApplication::translate("ownCloudTheme::qtVer", "%1 (Built against Qt %1)").arg(qtVersion, QStringLiteral(QT_VERSION_STR)));
     QString _version = version();
