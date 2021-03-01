@@ -978,7 +978,7 @@ Dit zal alle synchronisaties, die op dit moment bezig zijn, afbreken.</translati
         <source>Could not generate the metadata for encryption, Unlocking the folder.
 This can be an issue with your OpenSSL libraries.</source>
         <translation>Kan de metadata voor codering niet genereren, de map wordt ontgrendeld.
-Dit kan een probleem zijn met uw OpenSSL-bibliotheken.</translation>
+Dit kan een probleem zijn met je OpenSSL-bibliotheken.</translation>
     </message>
 </context>
 <context>
@@ -1220,9 +1220,9 @@ These deletes will be synchronized to your local sync folder, making such files 
 If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
         <translation>Alle bestanden in de synchronisatiemap &apos;%1&apos; zijn op de server verwijderd.
-Deze verwijderingen worden gesynchroniseerd met uw lokale synchronisatiemap, waardoor dergelijke bestanden niet beschikbaar zijn, tenzij u het recht hebt om te herstellen. 
-Als u besluit de bestanden te herstellen, worden ze opnieuw gesynchroniseerd met de server als u hiertoe over de rechten beschikt.
-Als u besluit de bestanden te verwijderen, zijn ze niet beschikbaar voor u, tenzij u de eigenaar bent.</translation>
+Deze verwijderingen worden gesynchroniseerd met je lokale synchronisatiemap, waardoor dergelijke bestanden niet beschikbaar zijn, tenzij je het recht hebt om te herstellen. 
+Als je besluit de bestanden te herstellen, worden ze opnieuw gesynchroniseerd met de server als je de juiste rechten hebt.
+Als je besluit de bestanden te verwijderen, zijn ze niet voor jou beschikbaar, tenzij je de eigenaar bent.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1057"/>
@@ -1704,7 +1704,7 @@ Als dit een ongelukje was en je de bestanden wilt behouden, worden ze opnieuw ge
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="315"/>
         <source>Choose this to sync the entire account</source>
-        <translation>Kies dit om uw volledige account te synchroniseren</translation>
+        <translation>Kies dit om je volledige account te synchroniseren</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="456"/>
@@ -2798,7 +2798,7 @@ Het is niet te adviseren om het te gebruiken.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="549"/>
         <source>The remote folder creation failed because the provided credentials are wrong!&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
-        <translation>Het aanmaken van de remote map is mislukt, waarschijnlijk omdat uw inloggegevens fout waren.&lt;br/&gt;Ga terug en controleer uw inloggegevens.&lt;/p&gt;</translation>
+        <translation>Het aanmaken van de externe map is mislukt, waarschijnlijk omdat je inloggegevens fout waren.&lt;br/&gt;Ga terug en controleer je inloggegevens.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="553"/>
