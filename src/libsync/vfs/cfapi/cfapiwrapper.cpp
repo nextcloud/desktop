@@ -60,6 +60,7 @@ void cfApiSendTransferInfo(const CF_CONNECTION_KEY &connectionKey, const CF_TRAN
 
 void CALLBACK cfApiFetchDataCallback(const CF_CALLBACK_INFO *callbackInfo, const CF_CALLBACK_PARAMETERS *callbackParameters)
 {
+    qDebug(lcCfApiWrapper) << "Fetch data callback called. File size:" << callbackInfo->FileSize.QuadPart;
     const auto sendTransferError = [=] {
         cfApiSendTransferInfo(callbackInfo->ConnectionKey,
                               callbackInfo->TransferKey,
@@ -70,6 +71,7 @@ void CALLBACK cfApiFetchDataCallback(const CF_CALLBACK_INFO *callbackInfo, const
     };
 
     const auto sendTransferInfo = [=](QByteArray &data, qint64 offset) {
+        qDebug(lcCfApiWrapper) << "Send transfer info. Offset:" << offset;
         cfApiSendTransferInfo(callbackInfo->ConnectionKey,
                               callbackInfo->TransferKey,
                               STATUS_SUCCESS,
@@ -123,21 +125,43 @@ void CALLBACK cfApiFetchDataCallback(const CF_CALLBACK_INFO *callbackInfo, const
         return;
     }
 
-    qint64 offset = 0;
+    // CFAPI expects sent blocks to be of a multiple of a block size.
+    // Only the last sent block is allowed to be of a different size than
+    // a multiple of a block size
+    constexpr auto cfapiBlockSize = 4096;
+    qint64 dataOffset = 0;
+    QByteArray protrudingData;
+
+    const auto alignAndSendData = [&](const QByteArray &receivedData) {
+        QByteArray data = protrudingData + receivedData;
+        protrudingData.clear();
+        if (data.size() < cfapiBlockSize) {
+            protrudingData = data;
+            return;
+        }
+        const auto protudingSize = data.size() % cfapiBlockSize;
+        protrudingData = data.right(protudingSize);
+        data.chop(protudingSize);
+
+        qDebug(lcCfApiWrapper) << "Send data block. Size:" << data.size();
+        sendTransferInfo(data, dataOffset);
+        dataOffset += data.size();
+    };
 
     QObject::connect(&socket, &QLocalSocket::readyRead, &loop, [&] {
-        auto data = socket.readAll();
-        if (data.isEmpty()) {
+        const auto receivedData = socket.readAll();
+        if (receivedData.isEmpty()) {
             qCWarning(lcCfApiWrapper) << "Unexpected empty data received" << requestId;
             sendTransferError();
+            protrudingData.clear();
             loop.quit();
             return;
         }
-        sendTransferInfo(data, offset);
-        offset += data.length();
+        alignAndSendData(receivedData);
     });
 
     QObject::connect(vfs, &OCC::VfsCfApi::hydrationRequestFinished, &loop, [&](const QString &id, int s) {
+        qDebug(lcCfApiWrapper) << "Hydration finished for request" << id;
         if (requestId == id) {
             const auto status = static_cast<OCC::HydrationJob::Status>(s);
             qCInfo(lcCfApiWrapper) << "Hydration done for" << path << requestId << status;
@@ -149,6 +173,11 @@ void CALLBACK cfApiFetchDataCallback(const CF_CALLBACK_INFO *callbackInfo, const
     });
 
     loop.exec();
+
+    if (!protrudingData.isEmpty()) {
+        qDebug(lcCfApiWrapper) << "Send remaining protruding data. Size:" << protrudingData.size();
+        sendTransferInfo(protrudingData, dataOffset);
+    }
 }
 
 CF_CALLBACK_REGISTRATION cfApiCallbacks[] = {

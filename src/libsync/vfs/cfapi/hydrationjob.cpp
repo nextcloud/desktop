@@ -120,11 +120,11 @@ void OCC::HydrationJob::emitFinished(Status status)
 {
     _status = status;
     if (status == Success) {
-        _socket->disconnectFromServer();
         connect(_socket, &QLocalSocket::disconnected, this, [=]{
             _socket->close();
             emit finished(this);
         });
+        _socket->disconnectFromServer();
     } else {
         _socket->close();
         emit finished(this);
