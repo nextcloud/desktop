@@ -19,6 +19,7 @@ Summary
 * Change - Add support for dynamic client registration with OIDC: [#8350](https://github.com/owncloud/client/pull/8350/)
 * Change - Include full os version in the about dialog: [#8374](https://github.com/owncloud/client/pull/8374)
 * Change - We removed the support for async jobs using OC-JobStatus-Location: [#8398](https://github.com/owncloud/client/pull/8398)
+* Enhancement - Add initial support for backups triggered by an external tool: [#8437](https://github.com/owncloud/client/pull/8437)
 
 Details
 -------
@@ -99,6 +100,12 @@ Details
    We removed the support of async polling jobs after discovering potential issues.
 
    https://github.com/owncloud/client/pull/8398
+
+* Enhancement - Add initial support for backups triggered by an external tool: [#8437](https://github.com/owncloud/client/pull/8437)
+
+   We added a socket api function which allows creation of backups.
+
+   https://github.com/owncloud/client/pull/8437
 
 Changelog for ownCloud Desktop Client [2.7.6] (2021-02-04)
 =======================================
