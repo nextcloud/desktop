@@ -10,7 +10,7 @@
 ```
 $ git clone https://github.com/nextcloud/desktop.git
 $ cd desktop
-$ cd docs
+$ cd doc
 $ sphinx-build -b html -D html_theme='nextcloud_com' -d _build/doctrees   . _build/html/com
 ```
 

@@ -114,7 +114,17 @@ quickly.
 Obtaining the Client Log File
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-To obtain the client log file:
+Create Debug Archive
+~~~~~~~~~~~~~~~~~~~~
+
+Since the 3.1.0 release we made it easier for users to provide debug information: debug logging is enabled by default with expiration time set to 24 hours and under the "General" settings, you can click on "Create Debug Archive ..." to pick the location of where the desktop client will export the logs and the database to a zip file.
+
+  .. image:: images/create_debug_archive.png
+
+Keyboard shortcut
+~~~~~~~~~~~~~~~~~
+
+Another way to obtain the client log file:
 
 1. Open the Nextcloud Desktop Client.
 
@@ -136,6 +146,9 @@ To obtain the client log file:
 
   The log file is saved in the location specified.
 
+Command line
+~~~~~~~~~~~~
+
 Alternatively, you can launch the Nextcloud Log Output window using the
 ``--logwindow`` command. After issuing this command, the Log Output window
 opens to show the current log. You can then follow the same procedures
@@ -148,8 +161,8 @@ mentioned above to save the log to a file.
      * macOS: ``/Applications/nextcloud.app/Contents/MacOS/nextcloud --logwindow``
      * Linux: ``nextcloud --logwindow``
 
-Saving Files Directly
-~~~~~~~~~~~~~~~~~~~~~
+Config file
+~~~~~~~~~~~
 
 The Nextcloud client enables you to save log files directly to a predefined file
 or directory.  This is a useful option for troubleshooting sporadic issues as
