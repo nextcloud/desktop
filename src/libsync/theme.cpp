@@ -382,6 +382,8 @@ QString Theme::gitSHA1(VersionFormat format) const
     }
     const auto gitUrl = QStringLiteral("https://github.com/owncloud/client/commit/%1").arg(gitSha);
     switch (format) {
+    case Theme::VersionFormat::OneLiner:
+        Q_FALLTHROUGH();
     case Theme::VersionFormat::Plain:
         return gitShahSort;
     case Theme::VersionFormat::Url:
