@@ -20,12 +20,6 @@ if (MEM_NULL_TESTS)
   add_definitions(-DCSYNC_MEM_NULL_TESTS)
 endif (MEM_NULL_TESTS)
 
-# Specific option for builds tied to servers that do not support renaming extensions
-set(NO_RENAME_EXTENSION 0 CACHE BOOL "Do not issue rename if the extension changes")
-if(NO_RENAME_EXTENSION)
-    add_definitions(-DNO_RENAME_EXTENSION)
-endif()
-
 set(csync_SRCS
   csync.cpp
   csync_exclude.cpp
