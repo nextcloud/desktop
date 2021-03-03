@@ -95,6 +95,8 @@ public:
     }
     void setLogRules(const QSet<QString> &rules);
 
+    void dumpCrashLog();
+
 signals:
     void logWindowLog(const QString &);
 
@@ -119,6 +121,8 @@ private:
     QString _logDirectory;
     bool _temporaryFolderLogDir = false;
     QSet<QString> _logRules;
+    QVector<QString> _crashLog;
+    int _crashLogIndex = 0;
 };
 
 } // namespace OCC
