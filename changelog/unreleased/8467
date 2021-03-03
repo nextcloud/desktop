@@ -1,0 +1,7 @@
+Enhancement: Attach the last 20 log lines to a crash report
+
+We now save the last 20 lines of log to a tempoary file.
+This file is then part of a crash report.
+
+https://github.com/owncloud/client/issues/8467
+https://github.com/owncloud/client/pull/8469

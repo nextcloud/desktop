@@ -31,6 +31,9 @@
 #include <io.h> // for stdout
 #endif
 
+namespace {
+constexpr int CrashLogSize = 20;
+}
 namespace OCC {
 
 static void mirallLogCatcher(QtMsgType type, const QMessageLogContext &ctx, const QString &message)
@@ -45,6 +48,7 @@ static void mirallLogCatcher(QtMsgType type, const QMessageLogContext &ctx, cons
 
     if(type == QtFatalMsg) {
         if (!logger->isNoop()) {
+            logger->dumpCrashLog();
             logger->close();
         }
 #if defined(Q_OS_WIN)
@@ -69,6 +73,7 @@ Logger::Logger(QObject *parent)
     , _logDebug(false)
 {
     qSetMessagePattern(QStringLiteral("%{time MM-dd hh:mm:ss:zzz} [ %{type} %{category} ]%{if-debug}\t[ %{function} ]%{endif}:\t%{message}"));
+    _crashLog.resize(CrashLogSize);
 #ifndef NO_MSG_HANDLER
     qInstallMessageHandler(mirallLogCatcher);
 #else
@@ -132,6 +137,8 @@ void Logger::doLog(const QString &msg)
 {
     {
         QMutexLocker lock(&_mutex);
+        _crashLogIndex = (_crashLogIndex + 1) % CrashLogSize;
+        _crashLog[_crashLogIndex] = msg;
         if (_logstream) {
             (*_logstream) << msg << endl;
             if (_doFileFlush)
@@ -244,6 +251,17 @@ void Logger::setLogRules(const QSet<QString> &rules)
     const QString tmp = rules.toList().join(QLatin1Char('\n')) + QLatin1Char('\n') + defaultRule;
     qDebug() << tmp;
     QLoggingCategory::setFilterRules(tmp);
+}
+
+void Logger::dumpCrashLog()
+{
+    QFile logFile(QDir::tempPath() + QStringLiteral("/" APPLICATION_NAME "-crash.log"));
+    if (logFile.open(QFile::WriteOnly)) {
+        QTextStream out(&logFile);
+        for (int i = 1; i <= CrashLogSize; ++i) {
+            out << _crashLog[(_crashLogIndex + i) % CrashLogSize] << QLatin1Char('\n');
+        }
+    }
 }
 
 static bool compressLog(const QString &originalName, const QString &targetName)
