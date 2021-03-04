@@ -36,11 +36,9 @@ class OWNCLOUDSYNC_EXPORT Logger : public QObject
 {
     Q_OBJECT
 public:
-    bool isNoop() const;
     bool isLoggingToFile() const;
 
-    void doLog(const QString &log);
-    void close();
+    void doLog(QtMsgType type, const QMessageLogContext &ctx, const QString &message);
 
     static Logger *instance();
 
@@ -80,8 +78,6 @@ public:
     }
     void setLogRules(const QSet<QString> &rules);
 
-    void dumpCrashLog();
-
 signals:
     void logWindowLog(const QString &);
 
@@ -95,6 +91,10 @@ public slots:
 private:
     Logger(QObject *parent = nullptr);
     ~Logger() override;
+
+    void close();
+    void dumpCrashLog();
+
     QFile _logFile;
     bool _doFileFlush = false;
     std::chrono::hours _logExpire;
