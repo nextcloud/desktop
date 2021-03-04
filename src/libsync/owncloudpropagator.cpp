@@ -742,12 +742,11 @@ bool OwncloudPropagator::createConflict(const SyncFileItemPtr &item,
             conflictItem->_size = item->_previousSize;
             emit newItem(conflictItem);
             composite->appendTask(conflictItem);
-        } else {
-            // Directories we can't process in one go. The next sync run
-            // will take care of uploading the conflict dir contents.
-            _anotherSyncNeeded = true;
         }
     }
+
+    // Need a new sync to detect the created copy of the conflicting file
+    _anotherSyncNeeded = true;
 
     return true;
 }
