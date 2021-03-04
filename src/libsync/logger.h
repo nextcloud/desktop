@@ -99,7 +99,6 @@ public slots:
 private:
     Logger(QObject *parent = nullptr);
     ~Logger() override;
-    bool _showTime = true;
     QFile _logFile;
     bool _doFileFlush = false;
     int _logExpire = 0;
