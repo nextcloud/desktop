@@ -28,12 +28,6 @@
 
 namespace OCC {
 
-struct Log
-{
-    QDateTime timeStamp;
-    QString message;
-};
-
 /**
  * @brief The Logger class
  * @ingroup libsync
@@ -45,11 +39,8 @@ public:
     bool isNoop() const;
     bool isLoggingToFile() const;
 
-    void log(Log log);
     void doLog(const QString &log);
     void close();
-
-    const QList<Log> &logs() const { return _logs; }
 
     static Logger *instance();
 
@@ -104,7 +95,6 @@ public slots:
 private:
     Logger(QObject *parent = nullptr);
     ~Logger() override;
-    QList<Log> _logs;
     bool _showTime;
     QFile _logFile;
     bool _doFileFlush;

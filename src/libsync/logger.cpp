@@ -104,20 +104,6 @@ void Logger::postGuiMessage(const QString &title, const QString &message)
     emit guiMessage(title, message);
 }
 
-void Logger::log(Log log)
-{
-    QString msg;
-    if (_showTime) {
-        msg = log.timeStamp.toString(QStringLiteral("MM-dd hh:mm:ss:zzz")) + QLatin1Char(' ');
-    }
-
-    msg += log.message;
-    // _logs.append(log);
-    // std::cout << qPrintable(log.message) << std::endl;
-
-    doLog(msg);
-}
-
 /**
  * Returns true if doLog does nothing and need not to be called
  */
