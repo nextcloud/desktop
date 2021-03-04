@@ -25,6 +25,9 @@ socketConnect = None
 def hook(context):
     try:
         os.makedirs(confdir, 0o0755)
+    except:
+        pass
+    try:
         os.remove(confFilePath)
     except:
         pass
