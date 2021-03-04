@@ -218,7 +218,13 @@ void Logger::disableTemporaryFolderLogDir()
 void Logger::setLogRules(const QSet<QString> &rules)
 {
     _logRules = rules;
-    QLoggingCategory::setFilterRules(rules.toList().join(QLatin1Char('\n')));
+    QString tmp;
+    QTextStream out(&tmp);
+    for (const auto &p : rules) {
+        out << p << QLatin1Char('\n');
+    }
+    qDebug() << tmp;
+    QLoggingCategory::setFilterRules(tmp);
 }
 
 void Logger::dumpCrashLog()
