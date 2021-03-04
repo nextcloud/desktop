@@ -535,7 +535,6 @@ bool OwncloudPropagator::localFileNameClash(const QString &relFile)
 #ifdef Q_OS_MAC
         const QFileInfo fileInfo(file);
         if (!fileInfo.exists()) {
-            qCWarning(lcPropagator) << "No valid fileinfo";
             return false;
         } else {
             // Need to normalize to composited form because of QTBUG-39622/QTBUG-55896
