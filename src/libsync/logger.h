@@ -95,11 +95,10 @@ public slots:
 private:
     Logger(QObject *parent = nullptr);
     ~Logger() override;
-    bool _showTime;
     QFile _logFile;
-    bool _doFileFlush;
+    bool _doFileFlush = false;
     std::chrono::hours _logExpire;
-    bool _logDebug;
+    bool _logDebug = false;
     QScopedPointer<QTextStream> _logstream;
     mutable QMutex _mutex;
     QString _logDirectory;
