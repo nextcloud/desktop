@@ -56,8 +56,16 @@ void PropagateDownloadEncrypted::checkFolderId(const QStringList &list)
   auto metadataJob = new GetMetadataApiJob(_propagator->account(), folderInfo.fileId);
   connect(metadataJob, &GetMetadataApiJob::jsonReceived,
           this, &PropagateDownloadEncrypted::checkFolderEncryptedMetadata);
+  connect(metadataJob, &GetMetadataApiJob::error,
+          this, &PropagateDownloadEncrypted::folderEncryptedMetadataError);
 
   metadataJob->start();
+}
+
+void PropagateDownloadEncrypted::folderEncryptedMetadataError(const QByteArray & /*fileId*/, int /*httpReturnCode*/)
+{
+    qCCritical(lcPropagateDownloadEncrypted) << "Failed to find encrypted metadata information of remote file" << _info.fileName();
+    emit failed();
 }
 
 void PropagateDownloadEncrypted::checkFolderEncryptedMetadata(const QJsonDocument &json)
