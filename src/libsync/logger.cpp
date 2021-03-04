@@ -206,7 +206,12 @@ void Logger::setLogRules(const QSet<QString> &rules)
 {
     static const QString defaultRule = qEnvironmentVariable("QT_LOGGING_RULES").replace(QLatin1Char(';'), QLatin1Char('\n'));
     _logRules = rules;
-    const QString tmp = rules.toList().join(QLatin1Char('\n')) + QLatin1Char('\n') + defaultRule;
+    QString tmp;
+    QTextStream out(&tmp);
+    for (const auto &p : rules) {
+        out << p << QLatin1Char('\n');
+    }
+    out << defaultRule;
     qDebug() << tmp;
     QLoggingCategory::setFilterRules(tmp);
 }
