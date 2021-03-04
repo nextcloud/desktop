@@ -20,6 +20,7 @@ Summary
 * Change - Include full os version in the about dialog: [#8374](https://github.com/owncloud/client/pull/8374)
 * Change - We removed the support for async jobs using OC-JobStatus-Location: [#8398](https://github.com/owncloud/client/pull/8398)
 * Enhancement - Add initial support for backups triggered by an external tool: [#8437](https://github.com/owncloud/client/pull/8437)
+* Enhancement - Attach the last 20 log lines to a crash report: [#8467](https://github.com/owncloud/client/issues/8467)
 
 Details
 -------
@@ -106,6 +107,13 @@ Details
    We added a socket api function which allows creation of backups.
 
    https://github.com/owncloud/client/pull/8437
+
+* Enhancement - Attach the last 20 log lines to a crash report: [#8467](https://github.com/owncloud/client/issues/8467)
+
+   We now save the last 20 lines of log to a tempoary file. This file is then part of a crash report.
+
+   https://github.com/owncloud/client/issues/8467
+   https://github.com/owncloud/client/pull/8469
 
 Changelog for ownCloud Desktop Client [2.7.6] (2021-02-04)
 =======================================
