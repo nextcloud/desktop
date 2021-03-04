@@ -37,35 +37,6 @@ constexpr int CrashLogSize = 20;
 }
 namespace OCC {
 
-QtMessageHandler s_originalMessageHandler = nullptr;
-
-static void mirallLogCatcher(QtMsgType type, const QMessageLogContext &ctx, const QString &message)
-{
-    auto logger = Logger::instance();
-    if (type == QtDebugMsg && !logger->logDebug()) {
-        if (s_originalMessageHandler) {
-            s_originalMessageHandler(type, ctx, message);
-        }
-    } else if (!logger->isNoop()) {
-        logger->doLog(qFormatLogMessage(type, ctx, message));
-    }
-    if(type == QtCriticalMsg || type == QtFatalMsg) {
-        std::cerr << qPrintable(qFormatLogMessage(type, ctx, message)) << std::endl;
-    }
-
-    if(type == QtFatalMsg) {
-        if (!logger->isNoop()) {
-            logger->dumpCrashLog();
-            logger->close();
-        }
-#if defined(Q_OS_WIN)
-    // Make application terminate in a way that can be caught by the crash reporter
-        Utility::crash();
-#endif
-    }
-}
-
-
 Logger *Logger::instance()
 {
     static Logger log;
@@ -78,9 +49,9 @@ Logger::Logger(QObject *parent)
     qSetMessagePattern(QStringLiteral("%{time yyyy-MM-dd hh:mm:ss:zzz} [ %{type} %{category} ]%{if-debug}\t[ %{function} ]%{endif}:\t%{message}"));
     _crashLog.resize(CrashLogSize);
 #ifndef NO_MSG_HANDLER
-   s_originalMessageHandler = qInstallMessageHandler(mirallLogCatcher);
-#else
-    Q_UNUSED(mirallLogCatcher)
+    qInstallMessageHandler([](QtMsgType type, const QMessageLogContext &ctx, const QString &message) {
+            Logger::instance()->doLog(type, ctx, message);
+        });
 #endif
 }
 
@@ -107,23 +78,15 @@ void Logger::postGuiMessage(const QString &title, const QString &message)
     emit guiMessage(title, message);
 }
 
-/**
- * Returns true if doLog does nothing and need not to be called
- */
-bool Logger::isNoop() const
-{
-    QMutexLocker lock(&_mutex);
-    return !_logstream;
-}
-
 bool Logger::isLoggingToFile() const
 {
     QMutexLocker lock(&_mutex);
     return _logstream;
 }
 
-void Logger::doLog(const QString &msg)
+void Logger::doLog(QtMsgType type, const QMessageLogContext &ctx, const QString &message)
 {
+    const QString msg = qFormatLogMessage(type, ctx, message);
     {
         QMutexLocker lock(&_mutex);
         _crashLogIndex = (_crashLogIndex + 1) % CrashLogSize;
@@ -133,13 +96,20 @@ void Logger::doLog(const QString &msg)
             if (_doFileFlush)
                 _logstream->flush();
         }
+        if (type == QtFatalMsg) {
+            close();
+#if defined(Q_OS_WIN)
+            // Make application terminate in a way that can be caught by the crash reporter
+            Utility::crash();
+#endif
+        }
     }
     emit logWindowLog(msg);
 }
 
 void Logger::close()
 {
-    QMutexLocker lock(&_mutex);
+    dumpCrashLog();
     if (_logstream)
     {
         _logstream->flush();
