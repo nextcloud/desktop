@@ -18,7 +18,9 @@
 #include <libcrashreporter-gui/CrashReporter.h>
 
 #include <QApplication>
+#include <QDir>
 #include <QDebug>
+#include <QFileInfo>
 
 int main(int argc, char *argv[])
 {
@@ -51,6 +53,14 @@ int main(int argc, char *argv[])
 #endif
     reporter.setWindowTitle(CRASHREPORTER_PRODUCT_NAME);
     reporter.setText("<html><head/><body><p><span style=\" font-weight:600;\">Sorry!</span> " CRASHREPORTER_PRODUCT_NAME " crashed. Please tell us about it! " CRASHREPORTER_PRODUCT_NAME " has created an error report for you that can help improve the stability in the future. You can now send this report directly to the " CRASHREPORTER_PRODUCT_NAME " developers.</p></body></html>");
+
+    const QFileInfo crashLog(QDir::tempPath() + QStringLiteral("/" CRASHREPORTER_PRODUCT_NAME "-crash.log"));
+    if (crashLog.exists()) {
+        QFile inFile(crashLog.filePath());
+        if (inFile.open(QFile::ReadOnly)) {
+            reporter.setComment(inFile.readAll());
+        }
+    }
 
     reporter.setReportData("BuildID", CRASHREPORTER_BUILD_ID);
     reporter.setReportData("ProductName", CRASHREPORTER_PRODUCT_NAME);
