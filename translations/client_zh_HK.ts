@@ -720,7 +720,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/application.cpp" line="208"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your user.</source>
-        <translation>存取設定檔%1時發生錯誤 請確定檔案可以被使用者存取</translation>
+        <translation>存取設定檔%1時發生錯誤 請確定檔案可以被用戶存取</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="211"/>
@@ -738,7 +738,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="32"/>
         <source>Enter username and password for &apos;%1&apos; at %2.</source>
-        <translation>輸入 &apos;%1&apos; 在 %2 使用者名稱 和 密碼</translation>
+        <translation>輸入 &apos;%1&apos; 在 %2 用戶名稱 和 密碼</translation>
     </message>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="37"/>
@@ -904,7 +904,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="147"/>
         <source>Authentication error: Either username or password are wrong.</source>
-        <translation>驗證錯誤︰使用者名稱或是密碼錯誤</translation>
+        <translation>驗證錯誤︰用戶名稱或是密碼錯誤</translation>
     </message>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="159"/>
@@ -938,7 +938,7 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/libsync/discoveryphase.cpp" line="497"/>
         <location filename="../src/libsync/discoveryphase.cpp" line="522"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
-        <translation>服務器錯誤：PROPFIND回覆未採用XML格式！</translation>
+        <translation>伺服器錯誤：PROPFIND回覆未採用XML格式！</translation>
     </message>
 </context>
 <context>
@@ -1390,7 +1390,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="1382"/>
         <source>User Abort.</source>
-        <translation>使用者中斷。</translation>
+        <translation>用戶中斷。</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1385"/>
@@ -1974,7 +1974,7 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="100"/>
         <source>Please enter %1 password:&lt;br&gt;&lt;br&gt;User: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation>請輸入%1 密碼:&lt;br&gt;&lt;br&gt;使用者: %2&lt;br&gt;賬戶: %3&lt;br&gt;</translation>
+        <translation>請輸入%1 密碼:&lt;br&gt;&lt;br&gt;用戶: %2&lt;br&gt;賬戶: %3&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="114"/>
@@ -2348,7 +2348,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="38"/>
         <source>Username for proxy server</source>
-        <translation>代理伺服器使用者名稱</translation>
+        <translation>代理伺服器用戶名稱</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="39"/>
@@ -2401,7 +2401,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="130"/>
         <source>&lt;h1&gt;Wrong user&lt;/h1&gt;&lt;p&gt;You logged-in with user &lt;em&gt;%1&lt;/em&gt;, but must login with user &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please log out of %3 in another tab, then &lt;a href=&apos;%4&apos;&gt;click here&lt;/a&gt; and log in as user %2&lt;/p&gt;</source>
-        <translation>&lt;h1&gt;使用者錯誤&lt;/h1&gt;&lt;p&gt;您目前以&lt;em&gt;%1&lt;/em&gt;的身份登入，但您必須以&lt;em&gt;%2&lt;/em&gt;的身份登入。&lt;br&gt;請在一個新的標籤頁中登出%3賬戶，然後&lt;a href=&apos;%4&apos;&gt;點擊此處&lt;/a&gt;，登入%2賬戶。&lt;/p&gt;</translation>
+        <translation>&lt;h1&gt;用戶錯誤&lt;/h1&gt;&lt;p&gt;您目前以&lt;em&gt;%1&lt;/em&gt;的身份登入，但您必須以&lt;em&gt;%2&lt;/em&gt;的身份登入。&lt;br&gt;請在一個新的標籤頁中登出%3賬戶，然後&lt;a href=&apos;%4&apos;&gt;點擊此處&lt;/a&gt;，登入%2賬戶。&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -3332,7 +3332,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="43"/>
         <source>The proxy server needs a username and password.</source>
-        <translation>代理伺服器需要使用者帳號以及密碼。</translation>
+        <translation>代理伺服器需要用戶帳號以及密碼。</translation>
     </message>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="50"/>
@@ -4051,7 +4051,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="153"/>
         <source>Aborted by the user</source>
-        <translation>使用者中斷</translation>
+        <translation>用戶中斷</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="156"/>
@@ -4695,12 +4695,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="90"/>
         <source>S&amp;ynchronize everything from server</source>
-        <translation>同&amp;步服務器中的所有內容</translation>
+        <translation>同&amp;步伺服器中的所有內容</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="90"/>
         <source>S&amp;ync everything from server</source>
-        <translation>同&amp;步服務器中的所有內容</translation>
+        <translation>同&amp;步伺服器中的所有內容</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="148"/>
@@ -5415,7 +5415,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="637"/>
         <source>Aborted by the user</source>
-        <translation>使用者中斷</translation>
+        <translation>用戶中斷</translation>
     </message>
 </context>
 <context>
@@ -5428,7 +5428,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/creds/shibbolethcredentials.cpp" line="254"/>
         <source>You must sign in as user %1</source>
-        <translation>您必須以 %1 使用者登入</translation>
+        <translation>您必須以 %1 用戶登入</translation>
     </message>
 </context>
 <context>
