@@ -107,20 +107,6 @@ void Logger::postGuiMessage(const QString &title, const QString &message)
     emit guiMessage(title, message);
 }
 
-void Logger::log(Log log)
-{
-    QString msg;
-    if (_showTime) {
-        msg = log.timeStamp.toString(QLatin1String("MM-dd hh:mm:ss:zzz")) + QLatin1Char(' ');
-    }
-
-    msg += log.message;
-    // _logs.append(log);
-    // std::cout << qPrintable(log.message) << std::endl;
-
-    doLog(msg);
-}
-
 /**
  * Returns true if doLog does nothing and need not to be called
  */
@@ -160,15 +146,6 @@ void Logger::close()
         _logFile.close();
         _logstream.reset();
     }
-}
-
-void Logger::mirallLog(const QString &message)
-{
-    Log log_;
-    log_.timeStamp = QDateTime::currentDateTimeUtc();
-    log_.message = message;
-
-    Logger::instance()->log(log_);
 }
 
 QString Logger::logFile() const
