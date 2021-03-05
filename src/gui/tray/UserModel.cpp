@@ -415,14 +415,13 @@ void User::slotAddError(const QString &folderAlias, const QString &message, Erro
 
 bool User::isValueableActivity(const Folder *folder, const SyncFileItemPtr &item) const
 {
-    // Check if we are adding it to the right account and if it is useful information (protocol errors)
-    const auto isDifferentAccount = folder->accountState() != _account.data();
-    const auto isConflictFromOriginalFile = item->_status == SyncFileItem::Conflict && !Utility::isConflictFile(item->_file);
-
-    if (isDifferentAccount) {
+    // Ignore activity from a different account
+    if (folder->accountState() != _account.data()) {
         return false;
     }
-    if (isConflictFromOriginalFile) {
+
+    // We just care about conflict issues that we are able to resolve
+    if (item->_status == SyncFileItem::Conflict && !Utility::isConflictFile(item->_file)) {
         return false;
     }
 
