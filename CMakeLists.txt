@@ -73,6 +73,10 @@ if(NOT WITH_CRASHREPORTER)
 endif()
 
 include(GNUInstallDirs)
+if(APPLE AND CMAKE_INSTALL_PREFIX MATCHES "/usr/local")
+    # set(CMAKE_INSTALL_PREFIX "$ENV{HOME}/Builds")
+    set(CMAKE_INSTALL_PREFIX "../..")
+endif()
 include(DefineInstallationPaths)
 include(GenerateExportHeader)
 
