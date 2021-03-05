@@ -80,6 +80,8 @@ private:
     void connectPushNotifications() const;
     bool checkPushNotificationsAreReady() const;
 
+    bool isValueableActivity(const Folder *folder, const SyncFileItemPtr &item) const;
+
 private:
     AccountStatePtr _account;
     bool _isCurrentUser;

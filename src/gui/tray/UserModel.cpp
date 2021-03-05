@@ -413,6 +413,21 @@ void User::slotAddError(const QString &folderAlias, const QString &message, Erro
     }
 }
 
+bool User::isValueableActivity(const Folder *folder, const SyncFileItemPtr &item) const
+{
+    // Ignore activity from a different account
+    if (folder->accountState() != _account.data()) {
+        return false;
+    }
+
+    // We just care about conflict issues that we are able to resolve
+    if (item->_status == SyncFileItem::Conflict && !Utility::isConflictFile(item->_file)) {
+        return false;
+    }
+
+    return true;
+}
+
 void User::slotItemCompleted(const QString &folder, const SyncFileItemPtr &item)
 {
     auto folderInstance = FolderMan::instance()->folder(folder);
@@ -420,8 +435,7 @@ void User::slotItemCompleted(const QString &folder, const SyncFileItemPtr &item)
     if (!folderInstance)
         return;
 
-    // check if we are adding it to the right account and if it is useful information (protocol errors)
-    if (folderInstance->accountState() == _account.data()) {
+    if (isValueableActivity(folderInstance, item)) {
         qCWarning(lcActivity) << "Item " << item->_file << " retrieved resulted in " << item->_errorString;
 
         Activity activity;
