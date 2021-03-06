@@ -189,7 +189,7 @@
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="281"/>
         <source>Connection timed out</source>
-        <translation type="unfinished"/>
+        <translation>Истече времето за поврзување</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="283"/>
@@ -207,12 +207,12 @@
     <message>
         <location filename="../src/libsync/abstractpropagateremotedeleteencrypted.cpp" line="139"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Погрешен HTTP код е испратен од серверот. Се очекува 204, но примено е&quot;%1 %2&quot;.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractpropagateremotedeleteencrypted.cpp" line="181"/>
         <source>&quot;%1 Failed to unlock encrypted folder %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>&quot;%1 Неуспешно отклучување на шифрираната папка %2&quot;.</translation>
     </message>
 </context>
 <context>
@@ -351,7 +351,7 @@ Wait for the new sync, then encrypt it.</source>
         <location filename="../src/gui/accountsettings.cpp" line="447"/>
         <location filename="../src/gui/accountsettings.cpp" line="523"/>
         <source>Create new folder</source>
-        <translation type="unfinished"/>
+        <translation>Креирај нова папка</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="453"/>
@@ -392,17 +392,17 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="566"/>
         <source>Disable virtual file support …</source>
-        <translation type="unfinished"/>
+        <translation>Оневозможи поддршка за виртуални датотеки ...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="574"/>
         <source>Enable virtual file support %1 …</source>
-        <translation type="unfinished"/>
+        <translation>Овозможи поддршка за виртуални датотеки ...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="574"/>
         <source>(experimental)</source>
-        <translation type="unfinished"/>
+        <translation>(експериментално)</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="502"/>
@@ -432,7 +432,7 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="829"/>
         <source>Disable virtual file support?</source>
-        <translation type="unfinished"/>
+        <translation>Дали сакате да ја оневозможите поддршката за виртуални датотеки?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="830"/>
@@ -446,7 +446,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="837"/>
         <source>Disable support</source>
-        <translation type="unfinished"/>
+        <translation>Оневозможи поддршка</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="648"/>
@@ -688,12 +688,12 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/application.cpp" line="131"/>
         <source>Continuing will mean &lt;b&gt;deleting these settings&lt;/b&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Продолжување би значело &lt;b&gt;бришење на ова подесување&lt;/b&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="133"/>
         <source>Continuing will mean &lt;b&gt;ignoring these settings&lt;/b&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Продолжување би значело &lt;b&gt;игнорирање на ова подесување&lt;/b&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="139"/>
@@ -786,7 +786,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="32"/>
         <source>Which version of the file do you want to keep?&lt;br/&gt;If you select both versions, the local file will have a number added to its name.</source>
-        <translation type="unfinished"/>
+        <translation>Кои верзии на датотеки сакате да ги чувате?&lt;br/&gt; Ако ги изберете двете верзии, на локалната датотека ќе биде додаден број на нејзиното име.</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="46"/>
@@ -944,17 +944,17 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="262"/>
         <source>Error while opening directory %1</source>
-        <translation type="unfinished"/>
+        <translation>Грешка при отварање на папката %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="264"/>
         <source>Directory not accessible on client, permission denied</source>
-        <translation type="unfinished"/>
+        <translation>Папката не е достапна за клиентот, забранет пристап</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="268"/>
         <source>Directory not found: %1</source>
-        <translation type="unfinished"/>
+        <translation>Папката не е пронајдена: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="299"/>
@@ -964,7 +964,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="318"/>
         <source>Error while reading directory %1</source>
-        <translation type="unfinished"/>
+        <translation>Грешка при читање на папката %1</translation>
     </message>
 </context>
 <context>
@@ -1013,7 +1013,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message>
         <location filename="../src/gui/wizard/flow2authcredspage.cpp" line="37"/>
         <source>Login in your browser (Login Flow v2)</source>
-        <translation>Најавете се од вашиот прелистувач (Login Flow v2)</translation>
+        <translation>Најавете се од вашиот прелистувач (Следење на проток v2)</translation>
     </message>
 </context>
 <context>
@@ -1086,13 +1086,13 @@ This can be an issue with your OpenSSL libraries.</source>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="425"/>
         <source>%1 and %n other file(s) have been added.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 и %n друга датотека е додадена.</numerusform><numerusform>%1 и %n други датотеки се додадени.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="427"/>
         <source>%1 has been added.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 е додадена.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="387"/>
@@ -1274,7 +1274,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folder.cpp" line="1244"/>
         <source>Remove All Files?</source>
-        <translation type="unfinished"/>
+        <translation>Дали сакате да ги избришете сите датотеки?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1248"/>
@@ -1292,27 +1292,27 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/foldercreationdialog.ui" line="14"/>
         <source>Create new folder</source>
-        <translation type="unfinished"/>
+        <translation>Креирај нова папка</translation>
     </message>
     <message>
         <location filename="../src/gui/foldercreationdialog.ui" line="42"/>
         <source>Enter folder name</source>
-        <translation type="unfinished"/>
+        <translation>Напиши име на папката</translation>
     </message>
     <message>
         <location filename="../src/gui/foldercreationdialog.ui" line="61"/>
         <source>Folder already exists</source>
-        <translation type="unfinished"/>
+        <translation>Папката веќе постои</translation>
     </message>
     <message>
         <location filename="../src/gui/foldercreationdialog.cpp" line="73"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>Грешка</translation>
     </message>
     <message>
         <location filename="../src/gui/foldercreationdialog.cpp" line="73"/>
         <source>Could not create a folder! Check your write permissions.</source>
-        <translation type="unfinished"/>
+        <translation>Неможе да се креира папка! Проверете дали имате дозвола за запишување.</translation>
     </message>
 </context>
 <context>
@@ -1395,7 +1395,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="1520"/>
         <source>The selected path does not exist!</source>
-        <translation type="unfinished"/>
+        <translation>Избраната патека не постои!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1409"/>
@@ -1478,7 +1478,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="235"/>
         <source>Virtual file support is enabled.</source>
-        <translation type="unfinished"/>
+        <translation>Овозможиена е поддршка за виртуални датотеки.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="241"/>
@@ -1488,7 +1488,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="299"/>
         <source>Synchronizing VirtualFiles with local folder</source>
-        <translation type="unfinished"/>
+        <translation>Синхронизација на виртуелни датотеки со локална папка</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="301"/>
@@ -1711,12 +1711,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="512"/>
         <source>(experimental)</source>
-        <translation type="unfinished"/>
+        <translation>(експериментално)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="548"/>
         <source>Virtual files are not available for the selected folder</source>
-        <translation type="unfinished"/>
+        <translation>Не се достапни виртуелни датотеки за избраната папка</translation>
     </message>
 </context>
 <context>
@@ -1757,7 +1757,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="325"/>
         <source>Connection Timeout</source>
-        <translation type="unfinished"/>
+        <translation>Времето за поврзување истече</translation>
     </message>
 </context>
 <context>
@@ -1786,7 +1786,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.ui" line="75"/>
         <source>Use &amp;Monochrome Icons</source>
-        <translation>Користи &amp;Монохроматски икони</translation>
+        <translation>Користи &amp;монохроматски икони</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="82"/>
@@ -1796,7 +1796,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.ui" line="89"/>
         <source>Show Server &amp;Notifications</source>
-        <translation>Прикачи &amp;Известувања од серверот.</translation>
+        <translation>Прикажи &amp;известувања од серверот.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="99"/>
@@ -1857,7 +1857,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.ui" line="308"/>
         <source>Show sync folders in &amp;Explorer&apos;s Navigation Pane</source>
-        <translation type="unfinished"/>
+        <translation>Покажи ги папките што се синхронизираат во навигационата лента на &amp;прелистувачот</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="325"/>
@@ -1867,12 +1867,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.ui" line="222"/>
         <source>Edit &amp;Ignored Files</source>
-        <translation>Измени &amp;Игнорирани датотеки</translation>
+        <translation>Измени &amp;игнорирани датотеки</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="229"/>
         <source>Create Debug Archive …</source>
-        <translation type="unfinished"/>
+        <translation>Креирај Debug архива ...</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="149"/>
@@ -1910,7 +1910,7 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="411"/>
         <source>Create Debug Archive</source>
-        <translation type="unfinished"/>
+        <translation>Креирај Debug архива</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="411"/>
@@ -1920,12 +1920,12 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="417"/>
         <source>Debug Archive Created</source>
-        <translation type="unfinished"/>
+        <translation>Креирана Debug архива</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="417"/>
         <source>Debug archive is created at %1</source>
-        <translation type="unfinished"/>
+        <translation>Debug архива креирана на %1</translation>
     </message>
 </context>
 <context>
@@ -2488,7 +2488,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="85"/>
         <source>(experimental)</source>
-        <translation type="unfinished"/>
+        <translation>(експериментално)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="154"/>
@@ -2513,7 +2513,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="275"/>
         <source>Virtual files are not available for the selected folder</source>
-        <translation type="unfinished"/>
+        <translation>Не се достапни виртуелни датотеки за избраната папка</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="294"/>
@@ -2686,7 +2686,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="297"/>
         <source>Timeout while trying to connect to %1 at %2.</source>
-        <translation type="unfinished"/>
+        <translation>Истече времето за поврзување на %1 во %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="316"/>
@@ -2816,7 +2816,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="91"/>
         <source>%1 Connection Wizard</source>
-        <translation type="unfinished"/>
+        <translation>%1 параматри за поврзување</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="100"/>
@@ -2826,7 +2826,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="325"/>
         <source>Enable experimental feature?</source>
-        <translation type="unfinished"/>
+        <translation>Овозможи експерименталена можност?</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="326"/>
@@ -2847,7 +2847,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="341"/>
         <source>Stay safe</source>
-        <translation type="unfinished"/>
+        <translation>Бидете безбедени</translation>
     </message>
 </context>
 <context>
@@ -2886,7 +2886,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="251"/>
         <source>File is listed on the ignore list.</source>
-        <translation type="unfinished"/>
+        <translation>Датотека е на листата за игнорирани датотеки.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="255"/>
@@ -2901,12 +2901,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="269"/>
         <source>File name contains at least one invalid character</source>
-        <translation type="unfinished"/>
+        <translation>Името на датотеката соджи невалиден карактер</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="271"/>
         <source>The file name is a reserved name on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>Ова име на датотека е резервирано име на системот.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="276"/>
@@ -2916,12 +2916,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="279"/>
         <source>Filename is too long.</source>
-        <translation type="unfinished"/>
+        <translation>Името на датотеката е премногу долго.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="282"/>
         <source>File/Folder is ignored because it&apos;s hidden.</source>
-        <translation type="unfinished"/>
+        <translation>Датотека/Папка е игнорирана бидејќи е сокриена.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="285"/>
@@ -2931,7 +2931,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="288"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
-        <translation type="unfinished"/>
+        <translation>Конфликт: Верзијата од серверот е преземена, локалната верзија е преименувана и не е прикачена на серверот.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="292"/>
@@ -2961,7 +2961,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="431"/>
         <source>file id</source>
-        <translation type="unfinished"/>
+        <translation>id на датотека</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="435"/>
@@ -2976,17 +2976,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1247"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
-        <translation type="unfinished"/>
+        <translation>Не е дозволено бидејќи немате дозвола да додавате потпапки во оваа папка</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1252"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
-        <translation type="unfinished"/>
+        <translation>Не е дозволено бидејќи немате дозвола да додавате датотеки во оваа папка</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1265"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
-        <translation type="unfinished"/>
+        <translation>Не е дозволено да ја прикачите оваа датотека бидејќи е само за читање на серверот, враќање</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1287"/>
@@ -2996,17 +2996,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1300"/>
         <source>Not allowed to remove, restoring</source>
-        <translation type="unfinished"/>
+        <translation>Не е дозволено бришење, враќање</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1409"/>
         <source>Error while reading the database</source>
-        <translation type="unfinished"/>
+        <translation>Грешка при вчитување на податоци од датабазата</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1470"/>
         <source>Server replied with an error while reading directory &apos;%1&apos; : %2</source>
-        <translation type="unfinished"/>
+        <translation>Серверот одговори со грешка при читање на папката &apos;%1&apos; : %2</translation>
     </message>
 </context>
 <context>
@@ -3156,7 +3156,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateremotedeleteencryptedrootfolder.cpp" line="143"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Погрешен HTTP код е испратен од серверот. Се очекува 204, но примено е&quot;%1 %2&quot;.</translation>
     </message>
 </context>
 <context>
@@ -3177,7 +3177,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="170"/>
         <source>Could not rename %1 to %2, error: %3</source>
-        <translation type="unfinished"/>
+        <translation>Неможе да се примени %1 во %2, грешка: %3</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="134"/>
@@ -3301,7 +3301,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="20"/>
         <source>Proxy authentication required</source>
-        <translation type="unfinished"/>
+        <translation>Потребна е Proxy автентификација</translation>
     </message>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="26"/>
@@ -3342,7 +3342,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="79"/>
         <source>Deselect remote folders you do not wish to synchronize.</source>
-        <translation type="unfinished"/>
+        <translation>Тргнете ја ознаката од папките кој не сакате да се синхронизираат.</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="95"/>
@@ -3385,7 +3385,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/settingsdialog.cpp" line="105"/>
         <source>%1 Settings</source>
         <extracomment>This name refers to the application name e.g Nextcloud</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 Параметри</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="99"/>
@@ -3666,7 +3666,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/sharee.cpp" line="133"/>
         <source>%1 (%2)</source>
         <comment>sharee (shareWithAdditionalInfo)</comment>
-        <translation type="unfinished"/>
+        <translation>%1 (%2)</translation>
     </message>
 </context>
 <context>
@@ -3721,7 +3721,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi.cpp" line="946"/>
         <source>Resharing this folder is not allowed</source>
-        <translation type="unfinished"/>
+        <translation>Повторно споделување на оваа папка не е дозволено</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="824"/>
@@ -4000,7 +4000,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="132"/>
         <source>A network connection timeout happened.</source>
-        <translation type="unfinished"/>
+        <translation>Се случи да истече времето за конекција</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="135"/>
@@ -4070,12 +4070,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="244"/>
         <source>%1 (skipped due to earlier error, trying again in %2)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (прескокнато поради предходна грешка, повторен обид за %2)</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="352"/>
         <source>Could not update file: %1</source>
-        <translation type="unfinished"/>
+        <translation>Неможе да се ажурира датотеката: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="362"/>
@@ -4248,12 +4248,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1024"/>
         <source>Aborted</source>
-        <translation type="unfinished"/>
+        <translation>Откажано</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1809"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
-        <translation type="unfinished"/>
+        <translation>Има малку простор на дискот: Преземањата ќе доведат да просторот на дискот се намали под %1 поради тоа се прескокнува.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1110"/>
@@ -4276,7 +4276,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/systray.cpp" line="94"/>
         <source>Open main dialog</source>
-        <translation type="unfinished"/>
+        <translation>Отвори во прозорец</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="97"/>
@@ -4449,7 +4449,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="229"/>
         <source>The server on account %1 runs an unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
-        <translation type="unfinished"/>
+        <translation>Серверот каде што се наоѓа %1 е премногу застарен и не ја поддржува верзијата %2. Користењето клиент со неподдржана верзија на сервер не е тестирано и потенцијално опасно. Продолжете на ваша одговорност.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="273"/>
@@ -4679,7 +4679,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="90"/>
         <source>S&amp;ynchronize everything from server</source>
-        <translation type="unfinished"/>
+        <translation>С&amp;инхронизирај се од серверот</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="90"/>
@@ -4807,7 +4807,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudwizardresultpage.ui" line="163"/>
         <source>Your entire account is synced to the local folder </source>
-        <translation type="unfinished"/>
+        <translation>Вашата сметка е синхронизирана во локална папка</translation>
     </message>
 </context>
 <context>
@@ -4815,7 +4815,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/foldercreationdialog.cpp" line="38"/>
         <source>New folder</source>
-        <translation type="unfinished"/>
+        <translation>Нова папка</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="464"/>
@@ -5148,7 +5148,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="33"/>
         <source>Virtual file created</source>
-        <translation type="unfinished"/>
+        <translation>Креирана виртуелна датотека</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="35"/>
@@ -5345,7 +5345,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/guiutility.cpp" line="105"/>
         <source>Free up local space</source>
-        <translation type="unfinished"/>
+        <translation>Ослободете простор од локалниот диск</translation>
     </message>
 </context>
 <context>
@@ -5443,7 +5443,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/synclogdialog.ui" line="14"/>
         <source>Synchronisation Log</source>
-        <translation type="unfinished"/>
+        <translation>Запис со синхронизација</translation>
     </message>
 </context>
 </TS>

@@ -764,7 +764,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1147"/>
         <source>Please enter your end to end encryption passphrase:&lt;br&gt;&lt;br&gt;User: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation>請輸入您的端點對端點加密的認證資訊&lt;br&gt;&lt;br&gt;User: %2&lt;br&gt;Account: %3&lt;br&gt;</translation>
+        <translation>請輸入您端對端加密的密碼短語：&lt;br&gt;&lt;br&gt;用戶：%2&lt;br&gt;賬戶：%3&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1155"/>
@@ -3002,7 +3002,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1265"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
-        <translation type="unfinished"/>
+        <translation>不允許上傳此檔案，因為它在伺服器上是唯讀的，正在還原</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1287"/>
@@ -4895,7 +4895,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="15"/>
         <source>Account entry</source>
-        <translation type="unfinished"/>
+        <translation>賬戶條目</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="32"/>
