@@ -1043,7 +1043,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="154"/>
         <source>Link copied to clipboard.</source>
-        <translation>超連結已複製到剪貼簿</translation>
+        <translation>已複製連結至剪貼板</translation>
     </message>
 </context>
 <context>
@@ -1051,7 +1051,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message>
         <location filename="../src/gui/folder.cpp" line="141"/>
         <source>Local folder %1 does not exist.</source>
-        <translation>本機資料夾 %1 不存在</translation>
+        <translation>近端資料夾 %1 不存在</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="144"/>
@@ -1066,7 +1066,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="373"/>
         <source>%1 and %n other file(s) have been removed.</source>
-        <translation><numerusform>%1 跟 %n 其他檔案已經被刪除</numerusform></translation>
+        <translation><numerusform>%1 跟 %n 個其他檔案已經被刪除</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="375"/>
@@ -1077,7 +1077,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="380"/>
         <source>%1 and %n other file(s) have been downloaded.</source>
-        <translation><numerusform>%1 跟 %n 其他檔案已經被下載</numerusform></translation>
+        <translation><numerusform>%1  跟 %n 個其他檔案已經被下載</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="382"/>
@@ -1088,7 +1088,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="425"/>
         <source>%1 and %n other file(s) have been added.</source>
-        <translation><numerusform>%1 跟 %n 其他檔案已經被加入</numerusform></translation>
+        <translation><numerusform>%1  跟 %n 個其他檔案已經被加入</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="427"/>
@@ -1099,7 +1099,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="387"/>
         <source>%1 and %n other file(s) have been updated.</source>
-        <translation><numerusform>%1 跟 %n 其他檔案已經被修改</numerusform></translation>
+        <translation><numerusform>%1 跟 %n 個其他檔案已經被修改</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="389"/>
@@ -3172,7 +3172,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateremotedeleteencryptedrootfolder.cpp" line="143"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>伺服器返回的 HTTP 代碼錯誤。預期 204，但收到“%1%2”。</translation>
     </message>
 </context>
 <context>
@@ -3387,7 +3387,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/NotificationHandler.cpp" line="139"/>
         <source>Dismiss</source>
-        <translation>我已了解</translation>
+        <translation>撤銷</translation>
     </message>
 </context>
 <context>
