@@ -3722,7 +3722,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi.cpp" line="783"/>
         <source>Copy private link to clipboard</source>
-        <translation>將私用連結複製至剪貼簿</translation>
+        <translation>將私用連結複製至剪貼板</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="784"/>
