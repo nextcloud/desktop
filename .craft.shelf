@@ -15,7 +15,7 @@ revision = 28db3b4
 
 [craft/craft-core]
 version = master
-revision = 454cdb83fefafe4a0f7d8f56fe25d6530097588e
+revision = 683a36716d6aa47b9da52bea2e8d7add953bf20b
 
 [dev-utils/autoconf]
 version = 2.69
