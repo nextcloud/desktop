@@ -2381,7 +2381,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="121"/>
         <source>Empty JSON from OAuth2 redirect</source>
-        <translation type="unfinished"/>
+        <translation>收到來自OAuth2重定向的空JSON</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="117"/>
@@ -2962,7 +2962,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="350"/>
         <source>File has extension reserved for virtual files.</source>
-        <translation type="unfinished"/>
+        <translation>檔案名包含為虛擬檔案保留的擴展名。</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="425"/>
@@ -2992,12 +2992,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1247"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
-        <translation type="unfinished"/>
+        <translation>拒絕此操作，您沒有在此新增子資料夾的權限。</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1252"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
-        <translation type="unfinished"/>
+        <translation>拒絕此操作，您沒有新增檔案在此資料夾的權限。</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1265"/>
@@ -3156,7 +3156,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="267"/>
         <source>Error setting pin state</source>
-        <translation type="unfinished"/>
+        <translation>設置PIN狀態時出錯</translation>
     </message>
 </context>
 <context>
@@ -3209,7 +3209,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="261"/>
         <source>Error setting pin state</source>
-        <translation type="unfinished"/>
+        <translation>設置PIN狀態時出錯</translation>
     </message>
 </context>
 <context>

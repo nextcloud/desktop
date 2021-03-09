@@ -212,7 +212,7 @@
     <message>
         <location filename="../src/libsync/abstractpropagateremotedeleteencrypted.cpp" line="181"/>
         <source>&quot;%1 Failed to unlock encrypted folder %2&quot;.</source>
-        <translation>&quot;%1 Selhalo odemčení zašifrované složky %2&quot;.</translation>
+        <translation>„%1 se nepodařilo odemknout zašifrovanou složku %2“.</translation>
     </message>
 </context>
 <context>
@@ -1333,7 +1333,7 @@ Pokud to byla pouze chyba a chcete si tyto soubory ponechat, budou ze serverem z
     <message>
         <location filename="../src/gui/foldercreationdialog.cpp" line="73"/>
         <source>Could not create a folder! Check your write permissions.</source>
-        <translation>Složku nelze vytvořit! Skontrolujte svá práva k zápisu.</translation>
+        <translation>Složku nelze vytvořit! Zkontrolujte svá práva k zápisu.</translation>
     </message>
 </context>
 <context>
@@ -3173,7 +3173,7 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="267"/>
         <source>Error setting pin state</source>
-        <translation>Chyba při nastavování pin stavu</translation>
+        <translation>Chyba při nastavování stavu pin</translation>
     </message>
 </context>
 <context>
@@ -3226,7 +3226,7 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="261"/>
         <source>Error setting pin state</source>
-        <translation>Chyba při nastavování pin stavu</translation>
+        <translation>Chyba při nastavování stavu pin</translation>
     </message>
 </context>
 <context>
@@ -3265,7 +3265,7 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="420"/>
         <source>Failed to unlock encrypted folder.</source>
-        <translation>Šifrovanou složku se nepodařilo otevřít.</translation>
+        <translation>Šifrovanou složku se nepodařilo odemknout.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="758"/>
@@ -3418,7 +3418,7 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
         <location filename="../src/gui/settingsdialog.cpp" line="105"/>
         <source>%1 Settings</source>
         <extracomment>This name refers to the application name e.g Nextcloud</extracomment>
-        <translation>%1 Nastavení</translation>
+        <translation>Nastavení %1</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="99"/>
@@ -5358,12 +5358,12 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
     <message>
         <location filename="../src/gui/guiutility.cpp" line="88"/>
         <source>Currently available locally</source>
-        <translation>Současně lokálně k dispozici </translation>
+        <translation>V tuto chvíli k dispozici lokálně</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="90"/>
         <source>Some available online only</source>
-        <translation>Některé k dispozici po připojení k síti</translation>
+        <translation>Některé k dispozici pouze po připojení k síti</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="93"/>
