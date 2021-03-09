@@ -63,7 +63,7 @@ void VfsCfApi::startImpl(const VfsSetupParams &params)
 {
     const auto localPath = QDir::toNativeSeparators(params.filesystemPath);
 
-    const auto registerResult = cfapi::registerSyncRoot(localPath, params.providerName, params.providerVersion);
+    const auto registerResult = cfapi::registerSyncRoot(localPath, params.providerName, params.providerVersion, params.alias, params.displayName, params.account->displayName());
     if (!registerResult) {
         qCCritical(lcCfApi) << "Initialization failed, couldn't register sync root:" << registerResult.error();
         return;
@@ -89,7 +89,7 @@ void VfsCfApi::stop()
 void VfsCfApi::unregisterFolder()
 {
     const auto localPath = QDir::toNativeSeparators(params().filesystemPath);
-    const auto result = cfapi::unegisterSyncRoot(localPath);
+    const auto result = cfapi::unregisterSyncRoot(localPath, params().providerName, params().account->displayName());
     if (!result) {
         qCCritical(lcCfApi) << "Unregistration failed for" << localPath << ":" << result.error();
     }
@@ -388,7 +388,6 @@ VfsCfApi::HydratationAndPinStates VfsCfApi::computeRecursiveHydrationAndPinState
     if (!info.exists()) {
         return {};
     }
-
     const auto effectivePin = pinState(folderPath);
     const auto pinResult = (!effectivePin && !basePinState) ? Optional<PinState>()
                          : (!effectivePin || !basePinState) ? PinState::Inherited
