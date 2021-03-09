@@ -12,11 +12,10 @@
  * for more details.
  */
 
-extern "C" {
-    #include <glib.h>
-    #include <gio.h>
-    #include <cloudprovidersproviderexporter.h>
-}
+#include <glib.h>
+#include <gio.h>
+#include <cloudprovidersproviderexporter.h>
+
 #include "cloudproviderwrapper.h"
 #include "cloudprovidermanager.h"
 #include "account.h"
