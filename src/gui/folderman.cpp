@@ -76,6 +76,9 @@ FolderMan::FolderMan(QObject *parent)
     connect(AccountManager::instance(), &AccountManager::removeAccountFolders,
         this, &FolderMan::slotRemoveFoldersForAccount);
 
+    connect(AccountManager::instance(), &AccountManager::accountRemoved,
+        this, &FolderMan::slotAccountRemoved);
+
     connect(_lockWatcher.data(), &LockWatcher::fileUnlocked,
         this, &FolderMan::slotWatchedFileUnlocked);
 
@@ -900,6 +903,23 @@ void FolderMan::runEtagJobIfPossible(Folder *folder)
     }
 
     QMetaObject::invokeMethod(folder, "slotRunEtagJob", Qt::QueuedConnection);
+}
+
+void FolderMan::slotAccountRemoved(AccountState *accountState)
+{
+    QVarLengthArray<Folder *, 16> foldersForCurrentAccount;
+    Folder::MapIterator i(_folderMap);
+    while (i.hasNext()) {
+        i.next();
+        Folder *folder = i.value();
+        if (folder->accountState() == accountState) {
+            foldersForCurrentAccount.append(folder);
+        }
+    }
+
+    for (const auto &f : qAsConst(foldersForCurrentAccount)) {
+        f->onAssociatedAccountRemoved();
+    }
 }
 
 void FolderMan::slotRemoveFoldersForAccount(AccountState *accountState)

@@ -44,6 +44,9 @@ struct OCSYNC_EXPORT VfsSetupParams
      */
     QString filesystemPath;
 
+    // Folder display name in Windows Explorer
+    QString displayName;
+
     /** The path to the synced folder on the account
      *
      * Always ends with /.

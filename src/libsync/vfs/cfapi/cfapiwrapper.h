@@ -71,7 +71,7 @@ private:
     std::unique_ptr<CF_PLACEHOLDER_BASIC_INFO, Deleter> _data;
 };
 
-OWNCLOUDSYNC_EXPORT Result<void, QString> registerSyncRoot(const QString &path, const QString &providerName, const QString &providerVersion);
+OWNCLOUDSYNC_EXPORT Result<void, QString> registerSyncRoot(const QString &path, const QString &providerName, const QString &providerVersion, const QString &displayName, const QString &accountDisplayName);
 OWNCLOUDSYNC_EXPORT Result<void, QString> unegisterSyncRoot(const QString &path);
 
 OWNCLOUDSYNC_EXPORT Result<ConnectionKey, QString> connectSyncRoot(const QString &path, VfsCfApi *context);

@@ -23,6 +23,7 @@
 #include <QLocalSocket>
 #include <QLoggingCategory>
 
+#include <sddl.h>
 #include <cfapi.h>
 #include <comdef.h>
 #include <ntstatus.h>
@@ -35,6 +36,7 @@ Q_LOGGING_CATEGORY(lcCfApiWrapper, "nextcloud.sync.vfs.cfapi.wrapper", QtInfoMsg
       FIELD_SIZE( CF_OPERATION_PARAMETERS, field ) )
 
 namespace {
+QMap<QString, QString> registeredSyncRootKeys;
 void cfApiSendTransferInfo(const CF_CONNECTION_KEY &connectionKey, const CF_TRANSFER_KEY &transferKey, NTSTATUS status, void *buffer, qint64 offset, qint64 length)
 {
 
@@ -78,6 +80,11 @@ void CALLBACK cfApiFetchDataCallback(const CF_CALLBACK_INFO *callbackInfo, const
                               data.data(),
                               offset,
                               data.length());
+
+        LARGE_INTEGER progressCompleted;
+        progressCompleted.QuadPart = offset;
+
+        CfReportProviderProgress(callbackInfo->ConnectionKey, callbackInfo->TransferKey, callbackInfo->FileSize, progressCompleted);
     };
 
     auto vfs = reinterpret_cast<OCC::VfsCfApi *>(callbackInfo->CallbackContext);
@@ -290,8 +297,110 @@ OCC::Optional<OCC::PinStateEnums::PinState> OCC::CfApiWrapper::PlaceHolderInfo::
     return cfPinStateToPinState(_data->PinState);
 }
 
-OCC::Result<void, QString> OCC::CfApiWrapper::registerSyncRoot(const QString &path, const QString &providerName, const QString &providerVersion)
+QString ConvertSidToStringSid(_In_ PSID sid)
 {
+    QString result;
+    wchar_t *stringSid;
+    if (::ConvertSidToStringSid(sid, &stringSid))
+    {
+        result = QString::fromWCharArray(stringSid);
+        ::LocalFree(stringSid);
+    }
+
+    return result;
+}
+
+QString retrieveWindowsSID()
+{
+    // FYI: code here is mostly identical to Windows-Classic-Examples/CloudMirror
+    QScopedPointer<TOKEN_USER> tokenInfo;
+
+    // get the tokenHandle from current thread/process if it's null
+    auto tokenHandle { GetCurrentThreadEffectiveToken() }; // Pseudo token, don't free.
+
+    DWORD tokenInfoSize { 0 };
+    if (!::GetTokenInformation(tokenHandle, TokenUser, nullptr, 0, &tokenInfoSize))
+    {
+        if (::GetLastError() == ERROR_INSUFFICIENT_BUFFER)
+        {
+            tokenInfo.reset(reinterpret_cast<TOKEN_USER*>(new char[tokenInfoSize]));
+            ::GetTokenInformation(tokenHandle, TokenUser, tokenInfo.get(), tokenInfoSize, &tokenInfoSize);
+        }
+    }
+
+    if (!tokenInfo) {
+        return QString();
+    }
+
+    return ConvertSidToStringSid(tokenInfo->User.Sid);
+}
+
+bool createSyncRootRegistryKeys(const QString &providerName, const QString &displayName, const QString &accountDisplayName, const QString& syncRootPath)
+{
+    const auto windowsSID = retrieveWindowsSID();
+    Q_ASSERT(!windowsSID.isEmpty());
+    if (windowsSID.isEmpty()) {
+        qCWarning(lcCfApiWrapper) << "Failed to set Registry keys for shell integration, as windowsSID is empty. Progress bar will not work.";
+        return false;
+    }
+
+    // syncRootId should be: [storage provider ID]![Windows SID]![Account ID]
+    const auto syncRootId = QString("%1!%2!%3").arg(providerName).arg(windowsSID).arg(accountDisplayName);
+
+    const QString providerSyncRootIdRegistryKey = QString() % R"(SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\SyncRootManager\)" % syncRootId;
+    const QString providerSyncRootIdUserSyncRootsRegistryKey = QString() % providerSyncRootIdRegistryKey % R"(\UserSyncRoots\)";
+
+    const QVector<std::tuple<HKEY, QString, QString, int, QVariant>> registryKeysToSet = {
+        { HKEY_LOCAL_MACHINE, providerSyncRootIdRegistryKey, QStringLiteral("Flags"), REG_DWORD, 34 },
+        { HKEY_LOCAL_MACHINE, providerSyncRootIdRegistryKey, QStringLiteral("DisplayNameResource"), REG_EXPAND_SZ, displayName },
+        { HKEY_LOCAL_MACHINE, providerSyncRootIdRegistryKey, QStringLiteral("IconResource"), REG_EXPAND_SZ, QString(QDir::toNativeSeparators(qApp->applicationFilePath()) + QString(",0")) },
+        { HKEY_LOCAL_MACHINE, providerSyncRootIdUserSyncRootsRegistryKey, windowsSID, REG_SZ, syncRootPath }
+    };
+
+    bool isAnyKeySetFailed = false;
+
+    for (const auto &registryKeyToSet : qAsConst(registryKeysToSet)) {
+        HKEY rootKey;
+        QString subKey;
+        QString valueName;
+        int type;
+        QVariant value;
+
+        std::tie(rootKey, subKey, valueName, type, value) = registryKeyToSet;
+
+        if ((isAnyKeySetFailed = !OCC::Utility::registrySetKeyValue(rootKey, subKey, valueName, type, value))) {
+            break;
+        }
+    }
+
+    if (isAnyKeySetFailed) {
+        qCWarning(lcCfApiWrapper) << "Failed to set Registry keys for shell integration. Progress bar will not work.";
+        Q_ASSERT(!OCC::Utility::registryDeleteKeyTree(HKEY_LOCAL_MACHINE, providerSyncRootIdRegistryKey));
+    } else {
+        registeredSyncRootKeys[syncRootPath] = providerSyncRootIdRegistryKey;
+        qCInfo(lcCfApiWrapper) << "Successfully set Registry keys for shell integration at:" << providerSyncRootIdRegistryKey << ". Progress bar will work.";
+    }
+
+    return !isAnyKeySetFailed;
+}
+
+bool deleteSyncRootRegistryKey(const QString& syncRootPath)
+{
+    const auto foundRegisteredSyncRootKey = registeredSyncRootKeys.find(syncRootPath);
+    if (foundRegisteredSyncRootKey != registeredSyncRootKeys.end() && !foundRegisteredSyncRootKey->isEmpty()) {
+        bool result = OCC::Utility::registryDeleteKeyTree(HKEY_LOCAL_MACHINE, *foundRegisteredSyncRootKey);
+        registeredSyncRootKeys.remove(*foundRegisteredSyncRootKey);
+        return result;
+    }
+
+    return true;
+}
+
+OCC::Result<void, QString> OCC::CfApiWrapper::registerSyncRoot(const QString &path, const QString &providerName, const QString &providerVersion, const QString &displayName, const QString &accountDisplayName)
+{
+    // even if we fail to register our sync root with shell, we can still proceed with using the VFS
+    Q_ASSERT(createSyncRootRegistryKeys(providerName, displayName, accountDisplayName, path));
+
     const auto p = path.toStdWString();
     const auto name = providerName.toStdWString();
     const auto version = providerVersion.toStdWString();
@@ -323,6 +432,8 @@ OCC::Result<void, QString> OCC::CfApiWrapper::registerSyncRoot(const QString &pa
 
 OCC::Result<void, QString> OCC::CfApiWrapper::unegisterSyncRoot(const QString &path)
 {
+    Q_ASSERT(deleteSyncRootRegistryKey(path));
+
     const auto p = path.toStdWString();
     const qint64 result = CfUnregisterSyncRoot(p.data());
     Q_ASSERT(result == S_OK);
@@ -346,7 +457,7 @@ OCC::Result<OCC::CfApiWrapper::ConnectionKey, QString> OCC::CfApiWrapper::connec
     if (result != S_OK) {
         return QString::fromWCharArray(_com_error(result).ErrorMessage());
     } else {
-        return key;
+        return std::move(key);
     }
 }
 
