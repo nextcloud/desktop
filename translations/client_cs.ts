@@ -207,7 +207,7 @@
     <message>
         <location filename="../src/libsync/abstractpropagateremotedeleteencrypted.cpp" line="139"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
-        <translation>Server vrátil neplatný HTTP kód. Očekáván 204, ale obdržen &quot;%1 %2&quot;.</translation>
+        <translation>Server vrátil neplatný HTTP kód. Očekáván 204, ale obdržen „%1 %2“.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractpropagateremotedeleteencrypted.cpp" line="181"/>
@@ -442,7 +442,7 @@ Počkejte na příští synchronizaci a pak složku zašifrujte.</translation>
 The only advantage of disabling virtual file support is that the selective sync feature will become available again.
 
 This action will abort any currently running synchronization.</source>
-        <translation>Toto vypne podporu virtuálních souborů. Následně bude obsah složek označených jako &quot;K dispozici pouze při připojení k síti&quot; stažený do zařízení.
+        <translation>Toto vypne podporu virtuálních souborů. Následně bude obsah složek označených jako „K dispozici pouze při připojení k síti“ stažený do zařízení.
 
 Jediná výhoda vypnutí podpory virtuálních souborů je v tom, že funkce výběru jednotlivých složek k synchronizaci bude zase k dispozici.
 
@@ -1915,7 +1915,7 @@ Pokud to byla pouze chyba a chcete si tyto soubory ponechat, budou ze serverem z
         <source>The update channel determines which client updates will be offered for installation. The &quot;stable&quot; channel contains only upgrades that are considered reliable, while the versions in the &quot;beta&quot; channel may contain newer features and bugfixes, but have not yet been tested thoroughly.
 
 Note that this selects only what pool upgrades are taken from, and that there are no downgrades: So going back from the beta channel to the stable channel usually cannot be done immediately and means waiting for a stable version that is newer than the currently installed beta version.</source>
-        <translation>Kanál aktualizací určuje jaká verze klienta bude nabízena k instalaci. &quot;Stabilní&quot; kanál obsahuje pouze verze, které jsou považované za spolehlivé, zatímco verze v &quot;beta&quot; kanálu mohou obsahovat nové funkce a opravy chyb, ale ještě nebyli důkladně otestovány.
+        <translation>Kanál aktualizací určuje jaká verze klienta bude nabízena k instalaci. „Stabilní“ kanál obsahuje pouze verze, které jsou považované za spolehlivé, zatímco verze v „beta“ kanálu mohou obsahovat nové funkce a opravy chyb, ale ještě nebyly důkladně otestovány.
 
 Poznamenáváme, že je možné přejít na novější verzi, ale není možné se vrátit ke starší. To znamená, že návrat z beta kanálu ke stabilnímu obvykle potrvá, protože se čeká, až bude nabídnuta stabilní verze klienta novější, než nainstalovaná beta verze.</translation>
     </message>
@@ -2864,13 +2864,13 @@ The virtual files mode is mutually exclusive with selective sync. Currently unse
 Switching to this mode will abort any currently running synchronization.
 
 This is a new, experimental mode. If you decide to use it, please report any issues that come up.</source>
-        <translation>Pokud jsou &quot;virtuální soubory&quot; povoleny, nebudou se zpočátku stahovat žádné soubory. Místo toho bude vytvořen malý &quot;%1&quot; soubor za každý soubor, který se nachází na serveru. Skutečný obsah může být stažen spuštěním souboru nebo použitím kontextové nabídky.
+        <translation>Pokud jsou „virtuální soubory“ povoleny, nebudou se zpočátku stahovat žádné soubory. Místo toho bude vytvořen malý „%1“ soubor za každý soubor, který se nachází na serveru. Skutečný obsah může být stažen spuštěním souboru nebo použitím kontextové nabídky.
 
-Režim virtuálních souborů lze použít pouze při synchronizaci všech složek. Složky, které jsou momentálně vyloučené ze synchronizace, budou převedeny do režimu &quot;K dispozici pouze při připojení k síti&quot; a nastavení synchronizace jednotlivých složek bude navráceno do původního stavu.
+Režim virtuálních souborů lze použít pouze při synchronizaci všech složek. Složky, které jsou momentálně vyloučené ze synchronizace, budou převedeny do režimu „K dispozici pouze při připojení k síti“ a nastavení synchronizace jednotlivých složek bude navráceno do původního stavu.
 
-Přepnutí do tohoto režimu přeruší případné právě běžící synchronizace.
+Přepnutí do tohoto režimu přeruší případné právě spuštěná synchronizace.
 
-Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, prosíme, nahlašte případné chyby, které objevíte.</translation>
+Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, prosíme, nahlaste případné chyby, které objevíte.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="340"/>
@@ -3189,7 +3189,7 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
     <message>
         <location filename="../src/libsync/propagateremotedeleteencryptedrootfolder.cpp" line="143"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
-        <translation>Server vrátil neplatný HTTP kód. Očekáván 204, ale obdržen &quot;%1 %2&quot;.</translation>
+        <translation>Server vrátil neplatný HTTP kód. Očekáván 204, ale obdržen „%1 %2“.</translation>
     </message>
 </context>
 <context>

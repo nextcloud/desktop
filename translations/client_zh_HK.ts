@@ -443,7 +443,11 @@ Wait for the new sync, then encrypt it.</source>
 The only advantage of disabling virtual file support is that the selective sync feature will become available again.
 
 This action will abort any currently running synchronization.</source>
-        <translation type="unfinished"/>
+        <translation>此操作將禁用虛擬檔案支持。 結果，將下載當前標記為“僅在線可用”的資料夾的內容。
+
+禁用虛擬檔案支持的唯一好處是選擇性同步功能將再次變得可用。
+
+此操作將中止任何當前正在運行的同步。</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="837"/>
@@ -672,7 +676,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="79"/>
         <source>An encrypted pkcs12 bundle is strongly recommended as a copy will be stored in the configuration file.</source>
-        <translation type="unfinished"/>
+        <translation>強烈建議使用加密的 pkcs12 捆綁軟件，因為副本將存儲在配置檔案中。</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.cpp" line="38"/>
@@ -700,7 +704,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/application.cpp" line="139"/>
         <source>Some settings were configured in newer versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>某些設置是在此客戶端的較新版本中配置的，並使用了此版本中不可用的功能。&lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt; 當前配置檔案已備份到 &lt;i&gt;%2&lt;/i&gt;。</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="146"/>
@@ -1762,7 +1766,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="213"/>
         <source>We received an unexpected download Content-Length.</source>
-        <translation type="unfinished"/>
+        <translation>我們收到了意外的下載內容長度。</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="215"/>
@@ -2113,7 +2117,9 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <source>The client can write debug logs to a temporary folder. These logs are very helpful for diagnosing problems.
 Since log files can get large, the client will start a new one for each sync run and compress older ones. It will also delete log files after a couple of hours to avoid consuming too much disk space.
 If enabled, logs will be written to %1</source>
-        <translation type="unfinished"/>
+        <translation>客戶端可以將 debug 日誌寫入臨時資料夾。這些日誌對於診斷問題非常有用。
+由於日誌文件會變大，客戶端將為每次同步運行啟動一個新檔案，並壓縮較舊的文件。幾個小時後，它還將刪除日誌文件，以避免佔用過多的磁盤空間 。
+如果啟用，日誌將被寫入 %1</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="64"/>
@@ -2858,7 +2864,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="340"/>
         <source>Enable experimental placeholder mode</source>
-        <translation type="unfinished"/>
+        <translation>啟用實驗性佔位符模式</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="341"/>
@@ -3007,12 +3013,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1287"/>
         <source>Moved to invalid target, restoring</source>
-        <translation type="unfinished"/>
+        <translation>已移至無效目標，正在還原</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1300"/>
         <source>Not allowed to remove, restoring</source>
-        <translation type="unfinished"/>
+        <translation>不允許刪除，還原</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1409"/>
@@ -4209,7 +4215,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="514"/>
         <source>Using virtual files with suffix, but suffix is not set</source>
-        <translation type="unfinished"/>
+        <translation>使用帶後綴的虛擬文件，但未設置後綴</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="521"/>
@@ -4413,7 +4419,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/common/vfs.cpp" line="82"/>
         <source>The Virtual filesystem feature requires a NTFS file system, %1 is using %2</source>
-        <translation type="unfinished"/>
+        <translation>虛擬檔案系統功能需要一個 NTFS 檔案系統，%1 正在使用 %2</translation>
     </message>
 </context>
 <context>
