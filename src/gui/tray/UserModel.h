@@ -81,7 +81,7 @@ private:
     bool checkPushNotificationsAreReady() const;
 
     bool isActivityOfCurrentAccount(const Folder *folder) const;
-    bool isActivityIgnored(const SyncFileItemPtr &item) const;
+    bool isUnsolvableConflict(const SyncFileItemPtr &item) const;
 
 private:
     AccountStatePtr _account;

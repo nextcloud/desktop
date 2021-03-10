@@ -418,14 +418,10 @@ bool User::isActivityOfCurrentAccount(const Folder *folder) const
     return folder->accountState() == _account.data();
 }
 
-bool User::isActivityIgnored(const SyncFileItemPtr &item) const
+bool User::isUnsolvableConflict(const SyncFileItemPtr &item) const
 {
     // We just care about conflict issues that we are able to resolve
-    if (item->_status == SyncFileItem::Conflict && !Utility::isConflictFile(item->_file)) {
-        return true;
-    }
-
-    return false;
+    return item->_status == SyncFileItem::Conflict && !Utility::isConflictFile(item->_file);
 }
 
 void User::slotItemCompleted(const QString &folder, const SyncFileItemPtr &item)
@@ -439,7 +435,7 @@ void User::slotItemCompleted(const QString &folder, const SyncFileItemPtr &item)
         return;
     }
 
-    if (isActivityIgnored(item)) {
+    if (isUnsolvableConflict(item)) {
         return;
     }
 
