@@ -423,7 +423,7 @@ Diese Aktion wird gerade laufende Synchronisationen abbrechen.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="343"/>
         <source> (experimental)</source>
-        <translation>(Experimentell)</translation>
+        <translation>(experimentell)</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="492"/>
@@ -453,7 +453,7 @@ Diese Aktion wird gerade laufende Synchronisationen abbrechen.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="864"/>
         <source>Obtaining authorization from the browser.</source>
-        <translation>Berechtigung vom Browser einholen.</translation>
+        <translation>Hole Berechtigung vom Browser ein.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="877"/>
@@ -3942,7 +3942,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="239"/>
         <source>Disconnected from %1</source>
-        <translation>Von %1 trennen</translation>
+        <translation>Von %1 getrennt</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="189"/>
