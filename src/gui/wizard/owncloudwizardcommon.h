@@ -16,8 +16,14 @@
 #ifndef MIRALL_OWNCLOUD_WIZARD_COMMON_H
 #define MIRALL_OWNCLOUD_WIZARD_COMMON_H
 
+#include <QString>
+
 class QVariant;
 class QLabel;
+class QRadioButton;
+class QSpinBox;
+class QCheckBox;
+class QAbstractButton;
 
 namespace OCC {
 
@@ -27,6 +33,7 @@ namespace WizardCommon {
     QString titleTemplate();
     QString subTitleTemplate();
     void initErrorLabel(QLabel *errorLabel);
+    void customizeHintLabel(QLabel *label);
 
     enum SyncMode {
         SelectiveMode,
@@ -34,6 +41,7 @@ namespace WizardCommon {
     };
 
     enum Pages {
+        Page_Welcome,
         Page_ServerSetup,
         Page_HttpCreds,
         Page_ShibbolethCreds,

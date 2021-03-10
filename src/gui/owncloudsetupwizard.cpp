@@ -116,7 +116,7 @@ void OwncloudSetupWizard::startWizard()
     // if its a relative path, prepend with users home dir, otherwise use as absolute path
 
     if (!QDir(localFolder).isAbsolute()) {
-        localFolder = QDir::homePath() + QDir::separator() + localFolder;
+        localFolder = QDir::homePath() + QLatin1Char('/') + localFolder;
     }
 
     _ocWizard->setProperty("localFolder", localFolder);
@@ -131,7 +131,12 @@ void OwncloudSetupWizard::startWizard()
 
     _ocWizard->setRemoteFolder(_remoteFolder);
 
-    _ocWizard->setStartId(WizardCommon::Page_ServerSetup);
+#ifdef WITH_PROVIDERS
+    const auto startPage = WizardCommon::Page_Welcome;
+#else // WITH_PROVIDERS
+    const auto startPage = WizardCommon::Page_ServerSetup;
+#endif // WITH_PROVIDERS
+    _ocWizard->setStartId(startPage);
 
     _ocWizard->restart();
 

@@ -19,6 +19,7 @@
 #include <QTimer>
 #include <QStorageInfo>
 #include <QMessageBox>
+#include <QJsonObject>
 
 #include "QProgressIndicator.h"
 
@@ -32,27 +33,31 @@
 #include <folderman.h>
 #include "creds/abstractcredentials.h"
 #include "networkjobs.h"
+#include "wizard/owncloudwizard.h"
 
 namespace OCC {
 
-OwncloudAdvancedSetupPage::OwncloudAdvancedSetupPage()
+OwncloudAdvancedSetupPage::OwncloudAdvancedSetupPage(OwncloudWizard *wizard)
     : QWizardPage()
     , _progressIndi(new QProgressIndicator(this))
+    , _ocWizard(wizard)
 {
     _ui.setupUi(this);
 
-    Theme *theme = Theme::instance();
-    setTitle(WizardCommon::titleTemplate().arg(tr("Connect to %1").arg(theme->appNameGUI())));
-    setSubTitle(WizardCommon::subTitleTemplate().arg(tr("Setup local folder options")));
+    setupResoultionWidget();
 
     registerField(QLatin1String("OCSyncFromScratch"), _ui.cbSyncFromScratch);
+
+    auto sizePolicy = _progressIndi->sizePolicy();
+    sizePolicy.setRetainSizeWhenHidden(true);
+    _progressIndi->setSizePolicy(sizePolicy);
 
     _ui.resultLayout->addWidget(_progressIndi);
     stopSpinner();
     setupCustomization();
 
     connect(_ui.pbSelectLocalFolder, &QAbstractButton::clicked, this, &OwncloudAdvancedSetupPage::slotSelectFolder);
-    setButtonText(QWizard::NextButton, tr("Connect …"));
+    setButtonText(QWizard::NextButton, tr("Connect"));
 
     connect(_ui.rSyncEverything, &QAbstractButton::clicked, this, &OwncloudAdvancedSetupPage::slotSyncEverythingClicked);
     connect(_ui.rSelectiveSync, &QAbstractButton::clicked, this, &OwncloudAdvancedSetupPage::slotSelectiveSyncClicked);
@@ -65,13 +70,11 @@ OwncloudAdvancedSetupPage::OwncloudAdvancedSetupPage()
     });
     connect(_ui.bSelectiveSync, &QAbstractButton::clicked, this, &OwncloudAdvancedSetupPage::slotSelectiveSyncClicked);
 
-    QIcon appIcon = theme->applicationIcon();
-    _ui.lServerIcon->setText(QString());
-    _ui.lServerIcon->setPixmap(appIcon.pixmap(48));
-    _ui.lLocalIcon->setText(QString());
-    
-    // TO DO: File doesn't exist anymore - unneccessary or replacement needed?
-    _ui.lLocalIcon->setPixmap(QPixmap(Theme::hidpiFileName(":/client/theme/folder-sync.png")));
+    const auto theme = Theme::instance();
+    const auto appIcon = theme->applicationIcon();
+    const auto appIconSize = Theme::isHidpi() ? 128 : 64;
+
+    _ui.lServerIcon->setPixmap(appIcon.pixmap(appIconSize));
 
     if (theme->wizardHideExternalStorageConfirmationCheckbox()) {
         _ui.confCheckBoxExternal->hide();
@@ -106,6 +109,11 @@ void OwncloudAdvancedSetupPage::setupCustomization()
 
     variant = theme->customMedia(Theme::oCSetupBottom);
     WizardCommon::setupCustomMedia(variant, _ui.bottomLabel);
+
+    WizardCommon::customizeHintLabel(_ui.lFreeSpace);
+    WizardCommon::customizeHintLabel(_ui.lSyncEverythingSizeLabel);
+    WizardCommon::customizeHintLabel(_ui.lSelectiveSyncSizeLabel);
+    WizardCommon::customizeHintLabel(_ui.serverAddressLabel);
 }
 
 bool OwncloudAdvancedSetupPage::isComplete() const
@@ -158,6 +166,69 @@ void OwncloudAdvancedSetupPage::initializePage()
     _ui.confCheckBoxSize->setChecked(newFolderLimit.first);
     _ui.confSpinBox->setValue(newFolderLimit.second);
     _ui.confCheckBoxExternal->setChecked(cfgFile.confirmExternalStorage());
+
+    fetchUserAvatar();
+    fetchUserData();
+
+    customizeStyle();
+
+    auto nextButton = qobject_cast<QPushButton *>(_ocWizard->button(QWizard::NextButton));
+    if (nextButton) {
+        nextButton->setDefault(true);
+    }
+}
+
+void OwncloudAdvancedSetupPage::fetchUserAvatar()
+{
+    // Reset user avatar
+    const auto appIcon = Theme::instance()->applicationIcon();
+    _ui.lServerIcon->setPixmap(appIcon.pixmap(48));
+    // Fetch user avatar
+    const auto account = _ocWizard->account();
+    auto avatarSize = 64;
+    if (Theme::isHidpi()) {
+        avatarSize *= 2;
+    }
+    const auto avatarJob = new AvatarJob(account, account->davUser(), avatarSize, this);
+    avatarJob->setTimeout(20 * 1000);
+    QObject::connect(avatarJob, &AvatarJob::avatarPixmap, this, [this](const QImage &avatarImage) {
+        if (avatarImage.isNull()) {
+            return;
+        }
+        const auto avatarPixmap = QPixmap::fromImage(AvatarJob::makeCircularAvatar(avatarImage));
+        _ui.lServerIcon->setPixmap(avatarPixmap);
+    });
+    avatarJob->start();
+}
+
+void OwncloudAdvancedSetupPage::fetchUserData()
+{
+    const auto account = _ocWizard->account();
+
+    // Fetch user data
+    const auto userJob = new JsonApiJob(account, QLatin1String("ocs/v1.php/cloud/user"), this);
+    userJob->setTimeout(20 * 1000);
+    connect(userJob, &JsonApiJob::jsonReceived, this, [this](const QJsonDocument &json) {
+        const auto objData = json.object().value("ocs").toObject().value("data").toObject();
+        const auto displayName = objData.value("display-name").toString();
+        _ui.userNameLabel->setText(displayName);
+    });
+    userJob->start();
+
+    const auto serverUrl = account->url().toString();
+    setServerAddressLabelUrl(serverUrl);
+    const auto userName = account->davDisplayName();
+    _ui.userNameLabel->setText(userName);
+}
+
+void OwncloudAdvancedSetupPage::setServerAddressLabelUrl(const QUrl &url)
+{
+    if (!url.isValid()) {
+        return;
+    }
+
+    const auto prettyUrl = url.toString().mid(url.scheme().size() + 3); // + 3 because we need to remove ://
+    _ui.serverAddressLabel->setText(prettyUrl);
 }
 
 // Called if the user changes the user- or url field. Adjust the texts and
@@ -172,7 +243,8 @@ void OwncloudAdvancedSetupPage::updateStatus()
 
     QString t;
 
-    _ui.pbSelectLocalFolder->setText(QDir::toNativeSeparators(locFolder));
+    setLocalFolderPushButtonPath(locFolder);
+
     if (dataChanged()) {
         if (_remoteFolder.isEmpty() || _remoteFolder == QLatin1String("/")) {
             t = "";
@@ -185,20 +257,18 @@ void OwncloudAdvancedSetupPage::updateStatus()
 
         const bool dirNotEmpty(QDir(locFolder).entryList(QDir::AllEntries | QDir::NoDotAndDotDot).count() > 0);
         if (dirNotEmpty) {
-            t += tr("<p><small><strong>Warning:</strong> The local folder is not empty. "
-                    "Pick a resolution!</small></p>");
+            t += tr("Warning: The local folder is not empty. Pick a resolution!");
         }
-        _ui.resolutionWidget->setVisible(dirNotEmpty);
+        setResolutionGuiVisible(dirNotEmpty);
     } else {
-        _ui.resolutionWidget->setVisible(false);
+        setResolutionGuiVisible(false);
     }
 
     QString lfreeSpaceStr = Utility::octetsToString(availableLocalSpace());
-    _ui.lFreeSpace->setText(QString(tr("Free space: %1")).arg(lfreeSpaceStr));
+    _ui.lFreeSpace->setText(QString(tr("%1 free space", "%1 gets replaced with the size and a matching unit. Example: 3 MB or 5 GB")).arg(lfreeSpaceStr));
 
     _ui.syncModeLabel->setText(t);
     _ui.syncModeLabel->setFixedHeight(_ui.syncModeLabel->sizeHint().height());
-    wizard()->resize(wizard()->sizeHint());
 
     qint64 rSpace = _ui.rSyncEverything->isChecked() ? _rSize : _rSelectedSize;
 
@@ -209,6 +279,13 @@ void OwncloudAdvancedSetupPage::updateStatus()
     setErrorString(errorStr);
 
     emit completeChanged();
+}
+
+void OwncloudAdvancedSetupPage::setResolutionGuiVisible(bool value)
+{
+    _ui.syncModeLabel->setVisible(value);
+    _ui.rKeepLocal->setVisible(value);
+    _ui.cbSyncFromScratch->setVisible(value);
 }
 
 /* obsolete */
@@ -334,7 +411,7 @@ void OwncloudAdvancedSetupPage::slotSelectFolder()
 {
     QString dir = QFileDialog::getExistingDirectory(nullptr, tr("Local Sync Folder"), QDir::homePath());
     if (!dir.isEmpty()) {
-        _ui.pbSelectLocalFolder->setText(dir);
+        setLocalFolderPushButtonPath(dir);
         wizard()->setProperty("localFolder", dir);
         updateStatus();
     }
@@ -342,6 +419,22 @@ void OwncloudAdvancedSetupPage::slotSelectFolder()
     qint64 rSpace = _ui.rSyncEverything->isChecked() ? _rSize : _rSelectedSize;
     QString errorStr = checkLocalSpace(rSpace);
     setErrorString(errorStr);
+}
+
+
+void OwncloudAdvancedSetupPage::setLocalFolderPushButtonPath(const QString &path)
+{
+    const auto homeDir = QDir::homePath().endsWith('/') ? QDir::homePath() : QDir::homePath() + QLatin1Char('/');
+
+    if (!path.startsWith(homeDir)) {
+        _ui.pbSelectLocalFolder->setText(QDir::toNativeSeparators(path));
+        return;
+    }
+
+    auto prettyPath = path;
+    prettyPath.remove(0, homeDir.size());
+
+    _ui.pbSelectLocalFolder->setText(QDir::toNativeSeparators(prettyPath));
 }
 
 void OwncloudAdvancedSetupPage::slotSelectiveSyncClicked()
@@ -383,6 +476,8 @@ void OwncloudAdvancedSetupPage::slotSelectiveSyncClicked()
             }
             wizard()->setProperty("blacklist", _selectiveSyncBlacklist);
         }
+
+        updateStatus();
 
     });
     dlg->open();
@@ -439,8 +534,25 @@ void OwncloudAdvancedSetupPage::slotStyleChanged()
 
 void OwncloudAdvancedSetupPage::customizeStyle()
 {
-    if(_progressIndi)
-        _progressIndi->setColor(QGuiApplication::palette().color(QPalette::Text));
+    if (_progressIndi) {
+        const auto isDarkBackground = Theme::isDarkColor(palette().window().color());
+        if (isDarkBackground) {
+            _progressIndi->setColor(Qt::white);
+        } else {
+            _progressIndi->setColor(Qt::black);
+        }
+    }
+
+    styleSyncLogo();
+    styleLocalFolderLabel();
+}
+
+void OwncloudAdvancedSetupPage::styleLocalFolderLabel()
+{
+    const auto backgroundColor = palette().window().color();
+    const auto folderIconFileName = Theme::instance()->isBranded() ? Theme::hidpiFileName("folder.png", backgroundColor)
+                                                                   : Theme::hidpiFileName(":/client/theme/colored/folder.png");
+    _ui.lLocal->setPixmap(folderIconFileName);
 }
 
 void OwncloudAdvancedSetupPage::setRadioChecked(QRadioButton *radio)
@@ -455,6 +567,26 @@ void OwncloudAdvancedSetupPage::setRadioChecked(QRadioButton *radio)
         _ui.rSelectiveSync->setCheckable(false);
     if (radio != _ui.rVirtualFileSync)
         _ui.rVirtualFileSync->setCheckable(false);
+}
+
+void OwncloudAdvancedSetupPage::styleSyncLogo()
+{
+    const auto syncArrowIcon = Theme::createColorAwareIcon(QLatin1String(":/client/theme/sync-arrow.svg"), palette());
+    _ui.syncLogoLabel->setPixmap(syncArrowIcon.pixmap(QSize(50, 50)));
+}
+
+void OwncloudAdvancedSetupPage::setupResoultionWidget()
+{
+    for (int i = 0; i < _ui.resolutionWidgetLayout->count(); ++i) {
+        auto widget = _ui.resolutionWidgetLayout->itemAt(i)->widget();
+        if (!widget) {
+            continue;
+        }
+
+        auto sizePolicy = widget->sizePolicy();
+        sizePolicy.setRetainSizeWhenHidden(true);
+        widget->setSizePolicy(sizePolicy);
+    }
 }
 
 } // namespace OCC

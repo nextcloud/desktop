@@ -78,7 +78,9 @@ signals:
     void determineAuthType(const QString &);
 
 private:
+    void setLogo();
     void customizeStyle();
+    void setupServerAddressDescriptionLabel();
 
     Ui_OwncloudSetupPage _ui;
 

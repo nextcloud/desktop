@@ -60,6 +60,7 @@ private:
     void startSpinner();
     void stopSpinner(bool showStatusLabel);
     void customizeStyle();
+    void setLogo();
 
     QProgressIndicator *_progressIndi;
     int _statusUpdateSkipCount = 0;

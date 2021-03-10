@@ -25,6 +25,8 @@ class QProgressIndicator;
 
 namespace OCC {
 
+class OwncloudWizard;
+
 /**
  * @brief The OwncloudAdvancedSetupPage class
  * @ingroup gui
@@ -33,7 +35,7 @@ class OwncloudAdvancedSetupPage : public QWizardPage
 {
     Q_OBJECT
 public:
-    OwncloudAdvancedSetupPage();
+    OwncloudAdvancedSetupPage(OwncloudWizard *wizard);
 
     bool isComplete() const override;
     void initializePage() override;
@@ -73,6 +75,14 @@ private:
     qint64 availableLocalSpace() const;
     QString checkLocalSpace(qint64 remoteSize) const;
     void customizeStyle();
+    void setServerAddressLabelUrl(const QUrl &url);
+    void setLocalFolderPushButtonPath(const QString &path);
+    void styleSyncLogo();
+    void styleLocalFolderLabel();
+    void setResolutionGuiVisible(bool value);
+    void setupResoultionWidget();
+    void fetchUserAvatar();
+    void fetchUserData();
 
     Ui_OwncloudAdvancedSetupPage _ui;
     bool _checking = false;
@@ -83,6 +93,7 @@ private:
     QStringList _selectiveSyncBlacklist;
     qint64 _rSize = -1;
     qint64 _rSelectedSize = -1;
+    OwncloudWizard *_ocWizard;
 };
 
 } // namespace OCC

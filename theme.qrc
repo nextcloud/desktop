@@ -80,6 +80,12 @@
         <file>theme/colored/state-warning-64.png</file>
         <file>theme/colored/state-warning-128.png</file>
         <file>theme/colored/state-warning-256.png</file>
+        <file>theme/black/folder.png</file>
+        <file>theme/black/folder@2x.png</file>
+        <file>theme/white/folder.png</file>
+        <file>theme/white/folder@2x.png</file>
+        <file>theme/colored/folder.png</file>
+        <file>theme/colored/folder@2x.png</file>
         <file>theme/black/control-next.svg</file>
         <file>theme/black/control-prev.svg</file>
         <file>theme/black/state-error.svg</file>
@@ -124,6 +130,23 @@
         <file>theme/white/state-warning-64.png</file>
         <file>theme/white/state-warning-128.png</file>
         <file>theme/white/state-warning-256.png</file>
+        <file>theme/white/wizard-files.png</file>
+        <file>theme/white/wizard-files@2x.png</file>
+        <file>theme/white/wizard-groupware.png</file>
+        <file>theme/white/wizard-groupware@2x.png</file>
+        <file>theme/white/wizard-nextcloud.png</file>
+        <file>theme/white/wizard-nextcloud@2x.png</file>
+        <file>theme/white/wizard-talk.png</file>
+        <file>theme/white/wizard-talk@2x.png</file>
+        <file>theme/black/wizard-files.png</file>
+        <file>theme/black/wizard-files@2x.png</file>
+        <file>theme/black/wizard-groupware.png</file>
+        <file>theme/black/wizard-groupware@2x.png</file>
+        <file>theme/black/wizard-nextcloud.png</file>
+        <file>theme/black/wizard-nextcloud@2x.png</file>
+        <file>theme/black/wizard-talk.png</file>
+        <file>theme/black/wizard-talk@2x.png</file>
+        <file>theme/black/wizard-files.png</file>
         <file>theme/colored/wizard-files.png</file>
         <file>theme/colored/wizard-files@2x.png</file>
         <file>theme/colored/wizard-groupware.png</file>
@@ -132,6 +155,13 @@
         <file>theme/colored/wizard-nextcloud@2x.png</file>
         <file>theme/colored/wizard-talk.png</file>
         <file>theme/colored/wizard-talk@2x.png</file>
+        <file>theme/sync-arrow.svg</file>
+        <file>theme/white/external.png</file>
+        <file>theme/white/external@2x.png</file>
+        <file>theme/black/external.png</file>
+        <file>theme/black/external@2x.png</file>
+        <file>theme/colored/external.png</file>
+        <file>theme/colored/external@2x.png</file>
         <file>theme/white/folder.svg</file>
         <file>theme/white/more-apps.svg</file>
         <file>theme/white/talk-app.svg</file>

@@ -33,9 +33,6 @@ Flow2AuthCredsPage::Flow2AuthCredsPage()
 {
     _layout = new QVBoxLayout(this);
 
-    setTitle(WizardCommon::titleTemplate().arg(tr("Connect to %1").arg(Theme::instance()->appNameGUI())));
-    setSubTitle(WizardCommon::subTitleTemplate().arg(tr("Login in your browser (Login Flow v2)")));
-
     _flow2AuthWidget = new Flow2AuthWidget();
     _layout->addWidget(_flow2AuthWidget);
 
@@ -59,6 +56,8 @@ void Flow2AuthCredsPage::initializePage()
 
     // Don't hide the wizard (avoid user confusion)!
     //wizard()->hide();
+
+    _flow2AuthWidget->slotStyleChanged();
 }
 
 void OCC::Flow2AuthCredsPage::cleanupPage()

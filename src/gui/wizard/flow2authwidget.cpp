@@ -17,6 +17,8 @@
 #include "common/utility.h"
 #include "account.h"
 #include "wizard/owncloudwizardcommon.h"
+#include "theme.h"
+#include "linklabel.h"
 
 #include "QProgressIndicator.h"
 
@@ -34,13 +36,23 @@ Flow2AuthWidget::Flow2AuthWidget(QWidget *parent)
     WizardCommon::initErrorLabel(_ui.errorLabel);
     _ui.errorLabel->setTextFormat(Qt::RichText);
 
-    connect(_ui.openLinkButton, &QCommandLinkButton::clicked, this, &Flow2AuthWidget::slotOpenBrowser);
-    connect(_ui.copyLinkButton, &QCommandLinkButton::clicked, this, &Flow2AuthWidget::slotCopyLinkToClipboard);
+    connect(_ui.openLinkLabel, &LinkLabel::clicked, this, &Flow2AuthWidget::slotOpenBrowser);
+    connect(_ui.copyLinkLabel, &LinkLabel::clicked, this, &Flow2AuthWidget::slotCopyLinkToClipboard);
 
-    _ui.horizontalLayout->addWidget(_progressIndi);
+    auto sizePolicy = _progressIndi->sizePolicy();
+    sizePolicy.setRetainSizeWhenHidden(true);
+    _progressIndi->setSizePolicy(sizePolicy);
+
+    _ui.progressLayout->addWidget(_progressIndi);
     stopSpinner(false);
+}
 
-    customizeStyle();
+void Flow2AuthWidget::setLogo()
+{
+    const auto backgroundColor = palette().window().color();
+    const auto logoIconFileName = Theme::instance()->isBranded() ? Theme::hidpiFileName("external.png", backgroundColor)
+                                                                 : Theme::hidpiFileName(":/client/theme/colored/external.png");
+    _ui.logoLabel->setPixmap(logoIconFileName);
 }
 
 void Flow2AuthWidget::startAuth(Account *account)
@@ -160,24 +172,24 @@ void Flow2AuthWidget::slotStatusChanged(Flow2Auth::PollStatus status, int second
 
 void Flow2AuthWidget::startSpinner()
 {
-    _ui.horizontalLayout->setEnabled(true);
+    _ui.progressLayout->setEnabled(true);
     _ui.statusLabel->setVisible(true);
     _progressIndi->setVisible(true);
     _progressIndi->startAnimation();
 
-    _ui.openLinkButton->setEnabled(false);
-    _ui.copyLinkButton->setEnabled(false);
+    _ui.openLinkLabel->setEnabled(false);
+    _ui.copyLinkLabel->setEnabled(false);
 }
 
 void Flow2AuthWidget::stopSpinner(bool showStatusLabel)
 {
-    _ui.horizontalLayout->setEnabled(false);
+    _ui.progressLayout->setEnabled(false);
     _ui.statusLabel->setVisible(showStatusLabel);
     _progressIndi->setVisible(false);
     _progressIndi->stopAnimation();
 
-    _ui.openLinkButton->setEnabled(_statusUpdateSkipCount == 0);
-    _ui.copyLinkButton->setEnabled(_statusUpdateSkipCount == 0);
+    _ui.openLinkLabel->setEnabled(_statusUpdateSkipCount == 0);
+    _ui.copyLinkLabel->setEnabled(_statusUpdateSkipCount == 0);
 }
 
 void Flow2AuthWidget::slotStyleChanged()
@@ -187,8 +199,24 @@ void Flow2AuthWidget::slotStyleChanged()
 
 void Flow2AuthWidget::customizeStyle()
 {
-    if(_progressIndi)
-        _progressIndi->setColor(QGuiApplication::palette().color(QPalette::Text));
+    setLogo();
+
+    if (_progressIndi) {
+        const auto isDarkBackground = Theme::isDarkColor(palette().window().color());
+        if (isDarkBackground) {
+            _progressIndi->setColor(Qt::white);
+        } else {
+            _progressIndi->setColor(Qt::black);
+        }
+    }
+
+    _ui.openLinkLabel->setText(tr("Reopen Browser"));
+    _ui.openLinkLabel->setAlignment(Qt::AlignCenter);
+
+    _ui.copyLinkLabel->setText(tr("Copy Link"));
+    _ui.copyLinkLabel->setAlignment(Qt::AlignCenter);
+
+    WizardCommon::customizeHintLabel(_ui.statusLabel);
 }
 
 } // namespace OCC

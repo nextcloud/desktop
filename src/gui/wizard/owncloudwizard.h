@@ -29,6 +29,7 @@ namespace OCC {
 
 Q_DECLARE_LOGGING_CATEGORY(lcWizard)
 
+class WelcomePage;
 class OwncloudSetupPage;
 class OwncloudHttpCredsPage;
 class OwncloudOAuthCredsPage;
@@ -73,6 +74,7 @@ public:
     AbstractCredentials *getCredentials() const;
 
     void bringToTop();
+    void centerWindow();
 
     /**
      * Shows a dialog explaining the virtual files mode and warning about it
@@ -113,8 +115,12 @@ protected:
 
 private:
     void customizeStyle();
+    void adjustWizardSize();
+    int calculateLongestSideOfWizardPages(const QList<QSize> &pageSizes) const;
+    QList<QSize> calculateWizardPageSizes() const;
 
     AccountPtr _account;
+    WelcomePage *_welcomePage;
     OwncloudSetupPage *_setupPage;
     OwncloudHttpCredsPage *_httpCredsPage;
     OwncloudOAuthCredsPage *_browserCredsPage;
