@@ -2,11 +2,11 @@
 import names
 import os
 import sys
-import dav
-import users
 from os import listdir
 from os.path import isfile, join
 import re
+import urllib.request
+import json
 
 from objectmaphelper import RegularExpression
 
@@ -36,7 +36,7 @@ def hook(context):
 def step(context):
     addAccount(context)
 
-@Then("an account should be displayed with the displayname |word| and host |any|")
+@Then("an account should be displayed with the displayname |any| and host |any|")
 def step(context, displayname, host):
     displayname = substituteInLineCodes(context, displayname)
     host = substituteInLineCodes(context, host)
@@ -48,8 +48,8 @@ def step(context, displayname, host):
             ), displayname + "\n" + host
         )
 
-@Given("user '|any|' has set up a client with these settings:")
-def step(context, username):
+@Given("user '|any|' has set up a client with these settings and password |any|:")
+def step(context, username, password):
     configContent = "\n".join(context.multiLineText)
     configContent = substituteInLineCodes(context, configContent)
     configFile = open(confFilePath, "w")
@@ -60,8 +60,7 @@ def step(context, username):
     snooze(1)
     try:
         waitForObject(names.enter_Password_Field, 10000)
-        userStore = users.Users(context)
-        type(waitForObject(names.enter_Password_Field), userStore.getPasswordForUser(username))
+        type(waitForObject(names.enter_Password_Field), password)
         clickButton(waitForObject(names.enter_Password_OK_QPushButton))
     except LookupError:
         pass
@@ -127,6 +126,12 @@ def isFolderSynced(folderName):
 def isFileSynced(fileName):
     return isItemSynced('FILE', fileName)
 
+def waitForFileToBeSynced(context, fileName):
+    waitFor(
+        lambda: isFileSynced(context.userData['clientSyncPath'] + fileName),
+        context.userData['clientSyncTimeout'] * 1000
+    )
+
 def substituteInLineCodes(context, value):
     from urllib.parse import urlparse
     value = value.replace('%local_server%', context.userData['localBackendUrl'])
@@ -146,6 +151,21 @@ def shareResource(resource):
         elif line.endswith(resource):
             return False
 
+def executeStepThroughMiddleware(context, step, errorMessage=''):
+    body = {
+    "step": step}
+    params = json.dumps(body).encode('utf8')
+        
+    req = urllib.request.Request(
+        context.userData['middlewareUrl'] + 'execute',
+        data=params,
+        headers={"Content-Type": "application/json"}, method='POST'
+    )
+    res = urllib.request.urlopen(req)
+    if res.getcode() != 200:
+        raise Exception(errorMessage + '\nexpected status 200 found {}'.format(res.getcode()))
+    
+    
 @When('the user adds "|any|" as collaborator of resource "|any|" with permissions "|any|" using the client-UI')
 def step(context, receiver, resource, permissions):
     resource = substituteInLineCodes(context, resource).replace('//','/')
@@ -181,6 +201,14 @@ def step(context, receiver, resource, permissions):
 def step(context):
     waitFor(lambda: isFolderSynced(context.userData['clientSyncPath']), context.userData['clientSyncTimeout'] * 1000)
 
+@When("the user waits for file '|any|' to get synced")
+def step(context, fileName):
+    waitForFileToBeSynced(context, fileName)
+
+@Given("the user has waited for file '|any|' to get synced")
+def step(context, fileName):
+    waitForFileToBeSynced(context, fileName)
+
 @When("the user creates a file '|any|' with following content on the file system")
 def step(context, filename):
     fileContent = "\n".join(context.multiLineText)
@@ -188,71 +216,53 @@ def step(context, filename):
     f.write(fileContent)
     f.close()
 
-@Then("the file '|any|' should exist on the server for user '|any|' with following content")
-def step(context, filename, username):
-    fileContent = "\n".join(context.multiLineText)
-    ocDav = dav.Dav(username, users.Users.getPasswordForUser(username), context)
-    actual = ocDav.downloadFile(filename)
-    test.compare(fileContent, actual, "the file content on the server should match expected content")
+@Given("user '|any|' has uploaded file with content '|any|' to '|any|'")
+def step(context, username, fileContent, filename):
+    executeStepThroughMiddleware(
+        context,
+        "Given user \"" + username + "\" has uploaded file with content \"" +
+        fileContent + "\" to \"" + filename + "\"",
+        'Failed to upload file'
+    )
 
-@When("the user '|any|' has uploaded a file '|any|' with following content")
-def step(context, username, filename):
+@Given("user '|any|' has been created with default attributes")
+def step(context, username):
+    executeStepThroughMiddleware(
+        context,
+        "Given user \"" + username + "\" has been created with default attributes",
+        "Failed to create user"
+    )
+
+@Then("the file '|any|' should exist on the server for user '|any|' with following content")
+def step(context, path, username):
     fileContent = "\n".join(context.multiLineText)
-    ocDav = dav.Dav(username, users.Users.getPasswordForUser(username), context)
-    ocDav.uploadFile(filename, fileContent)
+    executeStepThroughMiddleware(
+        context,
+        "Then as \"" + username + "\" the file \"" + path + "\" should have the content \"" + fileContent + "\"",
+        "Failed getting file from server or comparing the content"
+    )
 
 @Then("the file '|any|' should exist on the file system with following content")
 def step(context, filePath):
     expected = "\n".join(context.multiLineText)
     filePath = context.userData['clientSyncPath'] + filePath
-    waitFor(lambda: os.path.exists(filePath), context.userData['clientSyncTimeout'] * 1000)
-    f = open(filePath, 'r')
-    contents = f.read()
-
-    test.compare(expected, contents, "file expected to exist with content " + expected + " but does not")
-
-@Given("user '|any|' has been created with default attributes")
-def step(context, username):
-    userStore = users.Users(context)
-    userStore.createDefaultUser(username)
-
-@Then("the file '|any|' should exist on the server for user '|any|' after syncing with following content")
-def step(context, path, username):
-    fileContent = "\n".join(context.multiLineText)
-    usrDav = ocDav = dav.Dav(username, users.Users.getPasswordForUser(username), context)
-    waitFor(lambda: usrDav.checkFile(path), context.userData['clientSyncTimeout'] * 1000)
-    actual = ocDav.downloadFile(path)
-    test.compare(fileContent, actual, "the file content on the server should match expected content")
-
-@Then("the file '|any|' should exist on the file system after syncing with following content")
-def step(context, filePath):
-    expected = "\n".join(context.multiLineText)
-    filePath = context.userData['clientSyncPath'] + filePath
-    waitFor(lambda: os.path.exists(filePath), context.userData['clientSyncTimeout'] * 1000)
     f = open(filePath, 'r')
     contents = f.read()
     test.compare(expected, contents, "file expected to exist with content " + expected + " but does not")
 
 
-@When("the user pauses the file sync on the client")
+@Given("the user has paused the file sync")
 def step(context):
     mouseClick(waitForObjectItem(names.stack_folderList_QTreeView, "_1"), 718, 39, Qt.NoModifier, Qt.LeftButton)
     activateItem(waitForObjectItem(names.settings_QMenu, "Pause sync"))
 
 
-@When("the user changes the content of local file '|any|' with following content")
+@Given("the user has changed the content of local file '|any|' to:")
 def step(context, filename):
     fileContent = "\n".join(context.multiLineText)
     f = open(context.userData['clientSyncPath'] + filename, "w")
     f.write(fileContent)
     f.close()
-
-
-@When("the user '|any|' updates the file '|any|' on the server to")
-def step(context, username, filename):
-    fileContent = "\n".join(context.multiLineText)
-    ocDav = dav.Dav(username, users.Users.getPasswordForUser(username), context)
-    actual = ocDav.uploadFile(filename, fileContent)
 
 
 @When("the user resumes the file sync on the client")

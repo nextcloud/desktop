@@ -15,7 +15,6 @@
 #
 # See the section 'Performing Actions During Test Execution Via Hooks' in the Squish
 # manual for a complete reference of the available API.
-import users
 import shutil
 
 @OnScenarioStart
@@ -27,6 +26,7 @@ def hook(context):
         'localBackendUrl': os.environ.get('BACKEND_HOST', cfg.get('DEFAULT','BACKEND_HOST')),
         'clientSyncPath':  os.environ.get('CLIENT_SYNC_PATH', cfg.get('DEFAULT','CLIENT_SYNC_PATH')),
         'clientSyncTimeout':  os.environ.get('CLIENT_SYNC_TIMEOUT', cfg.get('DEFAULT','CLIENT_SYNC_TIMEOUT')),
+        'middlewareUrl': os.environ.get('MIDDLEWARE_URL', cfg.get('DEFAULT','MIDDLEWARE_URL')),
     }
 
     if context.userData['localBackendUrl'] == '':
@@ -43,16 +43,15 @@ def hook(context):
     if not os.path.exists(context.userData['clientSyncPath']):
         os.makedirs(context.userData['clientSyncPath'])
 
+    if context.userData['middlewareUrl'] == '':
+        context.userData['middlewareUrl']='http://localhost:3000/'
+
 @OnScenarioEnd
 def hook(context):
     # Detach (i.e. potentially terminate) all AUTs at the end of a scenario
     for ctx in applicationContextList():
         ctx.detach()
         snooze(5) #ToDo wait smarter till the app died
-
-    # delete users on the server
-    userStore = users.Users(context)
-    userStore.deleteAllUsers()
 
     # delete local files/folders
     for filename in os.listdir(context.userData['clientSyncPath']):

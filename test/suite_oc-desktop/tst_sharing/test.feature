@@ -3,7 +3,7 @@ Feature: Sharing
     Scenario: simple sharing
         Given user 'Alice' has been created with default attributes
         And user 'Brian' has been created with default attributes
-        And user 'Alice' has set up a client with these settings:
+        And user 'Alice' has set up a client with these settings and password '1234':
             """
             [Accounts]
             0\Folders\1\ignoreHiddenFiles=true
@@ -21,5 +21,5 @@ Feature: Sharing
             0\version=1
             version=2
             """
-        When the user adds "Brian" as collaborator of resource "%client_sync_path%/textfile0.txt" with permissions "edit,share" using the client-UI
-        Then user "Brian" should be listed in the collaborators list for file "%client_sync_path%/textfile0.txt" with permissions "edit,share" on the client-UI
+        When the user adds "Brian Murphy" as collaborator of resource "%client_sync_path%/textfile0.txt" with permissions "edit,share" using the client-UI
+        Then user "Brian Murphy" should be listed in the collaborators list for file "%client_sync_path%/textfile0.txt" with permissions "edit,share" on the client-UI

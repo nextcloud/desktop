@@ -12,12 +12,12 @@ Feature: adding accounts
             | user        | Alice              |
             | password    | 1234               |
             | localfolder | %client_sync_path% |
-        Then an account should be displayed with the displayname Alice and host %local_server_hostname%
+        Then an account should be displayed with the displayname Alice Hansen and host %local_server_hostname%
 
      Scenario: Adding multiple account
         Given user 'Brian' has been created with default attributes
         And user 'Alice' has been created with default attributes
-        And user 'Alice' has set up a client with these settings:
+        And user 'Alice' has set up a client with these settings and password '1234':
             """
             [Accounts]
             0\Folders\1\ignoreHiddenFiles=true
@@ -38,8 +38,7 @@ Feature: adding accounts
         When the user adds an account with
             | server      | %local_server%     |
             | user        | Brian              |
-            | password    | 123456             |
+            | password    | AaBb2Cc3Dd4        |
             | localfolder | %client_sync_path% |
-        Then an account should be displayed with the displayname Alice and host %local_server_hostname%
-        And an account should be displayed with the displayname Brian and host %local_server_hostname%
-
+        Then an account should be displayed with the displayname Alice Hansen and host %local_server_hostname%
+        And an account should be displayed with the displayname Brian Murphy and host %local_server_hostname%
