@@ -437,6 +437,7 @@ class OWNCLOUDSYNC_EXPORT DetermineAuthTypeJob : public QObject
     Q_OBJECT
 public:
     enum AuthType {
+        NoAuthType, // used only before we got a chance to probe the server
         Basic, // also the catch-all fallback for backwards compatibility reasons
         OAuth,
         WebViewFlow,
@@ -453,9 +454,9 @@ private:
     void checkAllDone();
 
     AccountPtr _account;
-    AuthType _resultGet = Basic;
-    AuthType _resultPropfind = Basic;
-    AuthType _resultOldFlow = Basic;
+    AuthType _resultGet = NoAuthType;
+    AuthType _resultPropfind = NoAuthType;
+    AuthType _resultOldFlow = NoAuthType;
     bool _getDone = false;
     bool _propfindDone = false;
     bool _oldFlowDone = false;

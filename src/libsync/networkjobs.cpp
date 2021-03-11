@@ -920,6 +920,7 @@ void DetermineAuthTypeJob::start()
     oldFlowRequired->setIgnoreCredentialFailure(true);
 
     connect(get, &SimpleNetworkJob::finishedSignal, this, [this]() {
+        _resultGet = Basic;
         _getDone = true;
         checkAllDone();
     });
@@ -927,8 +928,13 @@ void DetermineAuthTypeJob::start()
         auto authChallenge = reply->rawHeader("WWW-Authenticate").toLower();
         if (authChallenge.contains("bearer ")) {
             _resultPropfind = OAuth;
-        } else if (authChallenge.isEmpty()) {
-            qCWarning(lcDetermineAuthTypeJob) << "Did not receive WWW-Authenticate reply to auth-test PROPFIND";
+        } else {
+            if (authChallenge.isEmpty()) {
+                qCWarning(lcDetermineAuthTypeJob) << "Did not receive WWW-Authenticate reply to auth-test PROPFIND";
+            } else {
+                qCWarning(lcDetermineAuthTypeJob) << "Unknown WWW-Authenticate reply to auth-test PROPFIND:" << authChallenge;
+            }
+            _resultPropfind = Basic;
         }
         _propfindDone = true;
         checkAllDone();
@@ -947,6 +953,8 @@ void DetermineAuthTypeJob::start()
                     }
                 }
             }
+        } else {
+            _resultOldFlow = Basic;
         }
         _oldFlowDone = true;
         checkAllDone();
@@ -961,6 +969,10 @@ void DetermineAuthTypeJob::checkAllDone()
     if (!_getDone || !_propfindDone || !_oldFlowDone) {
         return;
     }
+
+    Q_ASSERT(_resultGet != NoAuthType);
+    Q_ASSERT(_resultPropfind != NoAuthType);
+    Q_ASSERT(_resultOldFlow != NoAuthType);
 
     auto result = _resultPropfind;
 
