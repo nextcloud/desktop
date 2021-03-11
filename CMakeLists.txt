@@ -41,7 +41,6 @@ endif()
 include("${CMAKE_CURRENT_LIST_DIR}/THEME.cmake")
 
 set(synclib_NAME "${APPLICATION_EXECUTABLE}sync")
-set(csync_NAME "${APPLICATION_EXECUTABLE}_csync")
 
 
 # For config.h

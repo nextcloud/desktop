@@ -25,7 +25,7 @@ macro(owncloud_add_benchmark test_class)
     ecm_mark_nongui_executable(${OWNCLOUD_TEST_CLASS}Bench)
 
     target_link_libraries(${OWNCLOUD_TEST_CLASS}Bench
-        ${APPLICATION_EXECUTABLE}sync
+        libsync
         syncenginetestutils
         Qt5::Core Qt5::Test Qt5::Xml Qt5::Network
     )
