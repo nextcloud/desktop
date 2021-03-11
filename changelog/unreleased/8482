@@ -1,0 +1,5 @@
+Bugfix: Fix brandings with space in the name
+
+We fix a build system issue with brandings containing spaces.
+
+https://github.com/owncloud/client/pull/8482

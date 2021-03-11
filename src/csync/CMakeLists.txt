@@ -47,26 +47,26 @@ endif()
 
 configure_file(csync_version.h.in ${CMAKE_CURRENT_BINARY_DIR}/csync_version.h)
 
-add_library("${csync_NAME}" SHARED ${common_SOURCES} ${csync_SRCS})
+add_library(csync SHARED ${common_SOURCES} ${csync_SRCS})
 
 target_include_directories(
-  "${csync_NAME}"
+  csync
   PUBLIC ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/std
 )
 
-generate_export_header("${csync_NAME}"
+generate_export_header(csync
   EXPORT_MACRO_NAME OCSYNC_EXPORT
   EXPORT_FILE_NAME ocsynclib.h
 )
 
-target_link_libraries("${csync_NAME}"
+target_link_libraries(csync
   ${CSYNC_REQUIRED_LIBRARIES}
   SQLite::SQLite3
   Qt5::Core Qt5::Concurrent
 )
 
 if(ZLIB_FOUND)
-  target_link_libraries("${csync_NAME}" ZLIB::ZLIB)
+  target_link_libraries(csync ZLIB::ZLIB)
 endif(ZLIB_FOUND)
 
 
@@ -74,17 +74,19 @@ endif(ZLIB_FOUND)
 if (APPLE)
     find_library(FOUNDATION_LIBRARY NAMES Foundation)
     find_library(CORESERVICES_LIBRARY NAMES CoreServices)
-    target_link_libraries("${csync_NAME}" ${FOUNDATION_LIBRARY} ${CORESERVICES_LIBRARY})
+    target_link_libraries(csync ${FOUNDATION_LIBRARY} ${CORESERVICES_LIBRARY})
 endif()
 
 set_target_properties(
-  "${csync_NAME}"
+  csync
     PROPERTIES
+      OUTPUT_NAME
+        "${APPLICATION_EXECUTABLE}_csync"
       VERSION
         ${LIBRARY_VERSION}
       SOVERSION
         ${LIBRARY_SOVERSION}
 )
-INSTALL(TARGETS "${csync_NAME}" ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
+INSTALL(TARGETS csync ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 
 configure_file(config_csync.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config_csync.h)

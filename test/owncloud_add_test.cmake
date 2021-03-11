@@ -25,7 +25,7 @@ macro(owncloud_add_benchmark test_class additional_cpp)
     ecm_mark_nongui_executable(${OWNCLOUD_TEST_CLASS}Bench)
 
     target_link_libraries(${OWNCLOUD_TEST_CLASS}Bench
-        ${APPLICATION_EXECUTABLE}sync
+        libsync
         Qt5::Core Qt5::Test Qt5::Xml Qt5::Network
     )
     target_compile_definitions(${OWNCLOUD_TEST_CLASS}Bench PRIVATE OWNCLOUD_BIN_PATH="${CMAKE_BINARY_DIR}/bin")

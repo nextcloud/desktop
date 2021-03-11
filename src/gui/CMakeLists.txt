@@ -129,7 +129,7 @@ endif()
 add_library(owncloudCore STATIC ${final_src})
 set_target_properties(owncloudCore PROPERTIES AUTOUIC ON AUTORCC ON)
 target_link_libraries(owncloudCore PUBLIC Qt5::Widgets Qt5::Network Qt5::Xml
-                                          ${synclib_NAME})
+                                          libsync)
 
 target_include_directories(owncloudCore PUBLIC
     ${CMAKE_SOURCE_DIR}/src/3rdparty/QProgressIndicator
@@ -189,27 +189,31 @@ if(WITH_CRASHREPORTER)
     endif()
 endif()
 
-add_executable(${APPLICATION_EXECUTABLE} main.cpp)
-set_target_properties(${APPLICATION_EXECUTABLE} PROPERTIES AUTOUIC ON AUTORCC ON)
-target_link_libraries( ${APPLICATION_EXECUTABLE} owncloudCore )
+add_executable(owncloud main.cpp)
+set_target_properties(owncloud PROPERTIES
+    OUTPUT_NAME "${APPLICATION_EXECUTABLE}"
+    AUTOUIC ON
+    AUTORCC ON
+)
+target_link_libraries(owncloud owncloudCore)
 
 
 find_package(Qt5LinguistTools)
 if(Qt5LinguistTools_FOUND)
     qt5_add_translation(client_I18N ${TRANSLATIONS})
-    target_sources(${APPLICATION_EXECUTABLE} PRIVATE ${client_I18N})
+    target_sources(owncloud PRIVATE ${client_I18N})
 endif()
 
 #TODO Move resources files
-target_sources(${APPLICATION_EXECUTABLE} PRIVATE
+target_sources(owncloud PRIVATE
     ${PROJECT_SOURCE_DIR}/client.qrc
     ${PROJECT_SOURCE_DIR}/core_theme.qrc)
 
-generate_theme(${APPLICATION_EXECUTABLE} OWNCLOUD_SIDEBAR_ICONS)
+generate_theme(owncloud OWNCLOUD_SIDEBAR_ICONS)
 MESSAGE(STATUS "OWNCLOUD_SIDEBAR_ICONS: ${APPLICATION_ICON_NAME}: ${OWNCLOUD_SIDEBAR_ICONS}")
 
 ecm_add_app_icon(appIcons ICONS "${OWNCLOUD_ICONS}" SIDEBAR_ICONS "${OWNCLOUD_SIDEBAR_ICONS}" OUTFILE_BASENAME "${APPLICATION_ICON_NAME}")
-target_sources(${APPLICATION_EXECUTABLE} PRIVATE ${appIcons})
+target_sources(owncloud PRIVATE ${appIcons})
 
 if(NOT APPLE)
     if(WIN32)
@@ -217,9 +221,9 @@ if(NOT APPLE)
           ${CMAKE_CURRENT_SOURCE_DIR}/version.rc.in
           ${CMAKE_CURRENT_BINARY_DIR}/version.rc
           @ONLY)
-        target_sources(${APPLICATION_EXECUTABLE} PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/version.rc)
+        target_sources(owncloud PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/version.rc)
         if(NOT MSVC)
-            target_sources(${APPLICATION_EXECUTABLE} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/manifest-mingw.rc)
+            target_sources(owncloud PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/manifest-mingw.rc)
         endif()
     else()
         file(GLOB _icons "${OEM_THEME_DIR}/theme/colored/*-${APPLICATION_ICON_NAME}-icon.png")
@@ -234,7 +238,7 @@ if(NOT APPLE)
 
     # we may not add MACOSX_BUNDLE here, if not building one
 else()
-    target_sources(${APPLICATION_EXECUTABLE} PRIVATE ${OWNCLOUD_BUNDLED_RESOURCES})
+    target_sources(owncloud PRIVATE ${OWNCLOUD_BUNDLED_RESOURCES})
 
     set_source_files_properties(
       ${client_I18N}
@@ -248,10 +252,10 @@ else()
       MACOSX_PACKAGE_LOCATION Resources
       )
 
-  set_target_properties(${APPLICATION_EXECUTABLE} PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/MacOSXBundleInfo.plist)
+  set_target_properties(owncloud PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/MacOSXBundleInfo.plist)
 endif()
 
-install(TARGETS ${APPLICATION_EXECUTABLE} ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
+install(TARGETS owncloud ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 
 if(UNIX AND NOT APPLE)
     include(libcloudproviders/libcloudproviders.cmake)
