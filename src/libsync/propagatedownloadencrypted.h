@@ -24,6 +24,7 @@ public slots:
   void checkFolderId(const QStringList &list);
   void checkFolderEncryptedMetadata(const QJsonDocument &json);
   void folderIdError();
+  void folderEncryptedMetadataError(const QByteArray &fileId, int httpReturnCode);
 
 signals:
   void fileMetadataFound();
