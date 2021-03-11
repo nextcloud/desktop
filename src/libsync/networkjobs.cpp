@@ -903,8 +903,8 @@ void DetermineAuthTypeJob::start()
 
     // Start three parallel requests
 
-    // 1. determines whether it's a shib server
-    auto get = _account->sendRequest("GET", _account->davUrl(), req);
+    // 1. determines whether it's a basic auth server
+    auto get = _account->sendRequest("GET", _account->url(), req);
 
     // 2. checks the HTTP auth method.
     auto propfind = _account->sendRequest("PROPFIND", _account->davUrl(), req);
@@ -919,8 +919,12 @@ void DetermineAuthTypeJob::start()
     propfind->setIgnoreCredentialFailure(true);
     oldFlowRequired->setIgnoreCredentialFailure(true);
 
-    connect(get, &SimpleNetworkJob::finishedSignal, this, [this]() {
-        _resultGet = Basic;
+    connect(get, &SimpleNetworkJob::finishedSignal, this, [this, get]() {
+        if (get->reply()->error() == QNetworkReply::AuthenticationRequiredError) {
+            _resultGet = Basic;
+        } else {
+            _resultGet = LoginFlowV2;
+        }
         _getDone = true;
         checkAllDone();
     });
@@ -989,6 +993,12 @@ void DetermineAuthTypeJob::checkAllDone()
     // If we determined that we need the webview flow (GS for example) then we switch to that
     if (_resultOldFlow == WebViewFlow) {
         result = WebViewFlow;
+    }
+
+    // If we determined that a simple get gave us an authentication required error
+    // then the server enforces basic auth and we got no choice but to use this
+    if (_resultGet == Basic) {
+        result = Basic;
     }
 
     qCInfo(lcDetermineAuthTypeJob) << "Auth type for" << _account->davUrl() << "is" << result;
