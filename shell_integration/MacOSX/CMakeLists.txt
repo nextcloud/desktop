@@ -14,9 +14,9 @@ add_custom_target( mac_overlayplugin ALL
         "OC_SOCKETAPI_TEAM_IDENTIFIER_PREFIX=${SOCKETAPI_TEAM_IDENTIFIER_PREFIX}"
     COMMENT building Mac Overlay icons
     VERBATIM)
-add_dependencies(mac_overlayplugin ${APPLICATION_EXECUTABLE}) # for the ownCloud.icns to be generated
+add_dependencies(mac_overlayplugin owncloud) # for the ownCloud.icns to be generated
 add_custom_command(TARGET mac_overlayplugin POST_BUILD COMMAND ${CMAKE_COMMAND}
-    ARGS -E copy_directory "${CMAKE_CURRENT_BINARY_DIR}/Release/FinderSyncExt.appex" "$<TARGET_FILE_DIR:${APPLICATION_EXECUTABLE}>/../PlugIns/FinderSyncExt.appex" MAIN_DEPENDENCY "${mac_overlayplugin}")
+    ARGS -E copy_directory "${CMAKE_CURRENT_BINARY_DIR}/Release/FinderSyncExt.appex" "$<TARGET_FILE_DIR:owncloud>/../PlugIns/FinderSyncExt.appex" MAIN_DEPENDENCY "${mac_overlayplugin}")
 
 endif()
 
