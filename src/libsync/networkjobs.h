@@ -439,7 +439,6 @@ public:
     enum AuthType {
         Basic, // also the catch-all fallback for backwards compatibility reasons
         OAuth,
-        Shibboleth,
         WebViewFlow,
         LoginFlowV2
     };

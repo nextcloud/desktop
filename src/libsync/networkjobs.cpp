@@ -919,11 +919,6 @@ void DetermineAuthTypeJob::start()
     propfind->setIgnoreCredentialFailure(true);
     oldFlowRequired->setIgnoreCredentialFailure(true);
 
-    connect(get, &AbstractNetworkJob::redirected, this, [this, get](QNetworkReply *, const QUrl &target, int) {
-        Q_UNUSED(this)
-        Q_UNUSED(get)
-        Q_UNUSED(target)
-    });
     connect(get, &SimpleNetworkJob::finishedSignal, this, [this]() {
         _getDone = true;
         checkAllDone();
@@ -968,16 +963,13 @@ void DetermineAuthTypeJob::checkAllDone()
     }
 
     auto result = _resultPropfind;
-    // OAuth > Shib > Basic
-    if (_resultGet == Shibboleth && result != OAuth)
-        result = Shibboleth;
 
-    // WebViewFlow > OAuth > Shib > Basic
+    // WebViewFlow > OAuth > Basic
     if (_account->serverVersionInt() >= Account::makeServerVersion(12, 0, 0)) {
         result = WebViewFlow;
     }
 
-    // LoginFlowV2 > WebViewFlow > OAuth > Shib > Basic
+    // LoginFlowV2 > WebViewFlow > OAuth > Basic
     if (_account->serverVersionInt() >= Account::makeServerVersion(16, 0, 0)) {
         result = LoginFlowV2;
     }

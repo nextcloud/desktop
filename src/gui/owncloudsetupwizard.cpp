@@ -86,17 +86,6 @@ bool OwncloudSetupWizard::bringWizardToFrontIfVisible()
         return false;
     }
 
-    if (wiz->_ocWizard->currentId() == WizardCommon::Page_ShibbolethCreds) {
-        // Try to find if there is a browser open and raise that instead (Issue #6105)
-        const auto allWindow = qApp->topLevelWidgets();
-        auto it = std::find_if(allWindow.cbegin(), allWindow.cend(), [](QWidget *w)
-            { return QLatin1String(w->metaObject()->className()) == QLatin1String("OCC::ShibbolethWebView"); });
-        if (it != allWindow.cend()) {
-            ownCloudGui::raiseDialog(*it);
-            return true;
-        }
-    }
-
     ownCloudGui::raiseDialog(wiz->_ocWizard);
     return true;
 }
@@ -413,7 +402,7 @@ void OwncloudSetupWizard::slotAuthError()
 
     // bring wizard to top
     _ocWizard->bringToTop();
-    if (_ocWizard->currentId() == WizardCommon::Page_ShibbolethCreds || _ocWizard->currentId() == WizardCommon::Page_OAuthCreds || _ocWizard->currentId() == WizardCommon::Page_Flow2AuthCreds) {
+    if (_ocWizard->currentId() == WizardCommon::Page_OAuthCreds || _ocWizard->currentId() == WizardCommon::Page_Flow2AuthCreds) {
         _ocWizard->back();
     }
     _ocWizard->displayError(errorMsg, _ocWizard->currentId() == WizardCommon::Page_ServerSetup && checkDowngradeAdvised(reply));
