@@ -156,8 +156,8 @@ void WebFlowCredentials::askFromUser() {
             _askDialog->setUrl(url);
         }
 
-        QString msg = tr("You have been logged out of %1 as user %2. Please login again")
-                .arg(_account->displayName(), _user);
+        QString msg = tr("You have been logged out of %1 as user %2. Please login again.")
+                          .arg(_account->displayName(), _user);
         _askDialog->setInfo(msg);
 
         _askDialog->show();
