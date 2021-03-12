@@ -971,7 +971,7 @@ void ConfigFile::setLogDebug(bool enabled)
 int ConfigFile::logExpire() const
 {
     QSettings settings(configFile(), QSettings::IniFormat);
-    return settings.value(QLatin1String(logExpireC), 24).toBool();
+    return settings.value(QLatin1String(logExpireC), 24).toInt();
 }
 
 void ConfigFile::setLogExpire(int hours)
