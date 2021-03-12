@@ -54,19 +54,28 @@ private Q_SLOTS:
         auto creds = fakeFolder.account()->credentialManager();
 
         const QString key = QStringLiteral("test");
-        auto job = creds->set(key, data);
-        setFallbackEnabled(job);
+        auto setJob = creds->set(key, data);
+        setFallbackEnabled(setJob);
 
-        connect(job, &QKeychain::Job::finished, this, [creds, data, key, this] {
-            auto job = creds->get(key);
-            setFallbackEnabled(job->_job);
-            connect(job, &CredentialJob::finished, this, [job, data, creds, this] {
-                QCOMPARE(job->data(), data);
+        connect(setJob, &QKeychain::Job::finished, this, [creds, data, key, setJob, this] {
+#ifdef Q_OS_LINUX
+            if (!qEnvironmentVariableIsSet("DBUS_SESSION_BUS_ADDRESS")) {
+                QEXPECT_FAIL("", "QKeychain might not use the plaintext fallback and fail if dbus is not present", Abort);
+                QCOMPARE(setJob->error(), QKeychain::NoError);
+            }
+#endif
+            QCOMPARE(setJob->error(), QKeychain::NoError);
+            auto getJob = creds->get(key);
+            setFallbackEnabled(getJob->_job);
+            connect(getJob, &CredentialJob::finished, this, [getJob, data, creds, this] {
+                QCOMPARE(getJob->error(), QKeychain::NoError);
+                QCOMPARE(getJob->data(), data);
                 const auto jobs = creds->clear();
                 for (auto &job : jobs) {
                     setFallbackEnabled(job);
                 }
-                connect(jobs[0], &QKeychain::Job::finished, this, [creds, data, this] {
+                connect(jobs[0], &QKeychain::Job::finished, this, [creds, data, jobs, this] {
+                    QCOMPARE(jobs[0]->error(), QKeychain::NoError);
                     QVERIFY(creds->knownKeys().isEmpty());
                     _finished = true;
                 });
