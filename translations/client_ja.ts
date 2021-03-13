@@ -168,7 +168,7 @@
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="44"/>
         <source>&amp;Choose …</source>
-        <translation>・選択 ...</translation>
+        <translation>選択(&amp;C) ...</translation>
     </message>
 </context>
 <context>
@@ -491,7 +491,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="766"/>
         <source>%1 as &lt;i&gt;%2&lt;/i&gt;</source>
-        <translation>&lt;i&gt;%2&lt;/i&gt; の %1</translation>
+        <translation>&lt;i&gt;%2&lt;/i&gt; として %1</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="772"/>
@@ -511,7 +511,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="774"/>
         <source>Connected to %1.</source>
-        <translation>%1 に接続</translation>
+        <translation>%1 に接続しています。</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="776"/>
@@ -2129,7 +2129,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="70"/>
         <source>&amp;Search:</source>
-        <translation>&amp;検索</translation>
+        <translation>検索(&amp;S):</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="77"/>
@@ -3158,7 +3158,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="79"/>
         <source>Error removing &apos;%1&apos;: %2;</source>
-        <translation>&apos;%1&apos;の削除エラー: %2;</translation>
+        <translation>&apos;%1&apos; 削除中のエラー: %2;</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="103"/>
@@ -3279,7 +3279,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="420"/>
         <source>Failed to unlock encrypted folder.</source>
-        <translation type="unfinished"/>
+        <translation>暗号化されたフォルダの解除に失敗しました。</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="758"/>
@@ -3732,7 +3732,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi.cpp" line="754"/>
         <source>Select new location …</source>
-        <translation type="unfinished"/>
+        <translation>新しい場所の選択...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="768"/>
@@ -4444,7 +4444,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/common/vfs.cpp" line="82"/>
         <source>The Virtual filesystem feature requires a NTFS file system, %1 is using %2</source>
-        <translation type="unfinished"/>
+        <translation>ヴァーチャルファイルシステム機能にはNTFSファイルシステムが必要です。%1 は %2 を使用しています。</translation>
     </message>
 </context>
 <context>
@@ -4775,12 +4775,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="121"/>
         <source>User name</source>
-        <translation type="unfinished"/>
+        <translation>ユーザー名</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="131"/>
         <source>Server address</source>
-        <translation type="unfinished"/>
+        <translation>サーバーアドレス</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="148"/>
@@ -5235,7 +5235,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/Window.qml" line="452"/>
         <source>More apps</source>
-        <translation>さらにアプリ</translation>
+        <translation>その他のアプリ</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="469"/>
