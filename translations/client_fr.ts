@@ -3286,7 +3286,7 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="596"/>
         <source>Cancel</source>
-        <translation>Anuler</translation>
+        <translation>Annuler</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="62"/>
