@@ -74,19 +74,20 @@ namespace {
     const QString optionsC()
     {
         return QStringLiteral(
-        "Options:\n"
-        "  -h --help            : show this help screen.\n"
-        "  -s --showsettings    : show the settings dialog while starting.\n"
-        "  -q --quit            : quit the running instance\n"
-        "  --logfile <filename> : write log output to file <filename>.\n"
-        "  --logfile -          : write log output to stdout.\n"
-        "  --logdir <name>      : write each sync log output in a new file\n"
-        "                         in folder <name>.\n"
-        "  --logexpire <hours>  : removes logs older than <hours> hours.\n"
-        "                         (to be used with --logdir)\n"
-        "  --logflush           : flush the log file after every write.\n"
-        "  --logdebug           : also output debug-level messages in the log.\n"
-        "  --confdir <dirname>  : Use the given configuration folder.");
+            "Options:\n"
+            "  -h --help            : show this help screen.\n"
+            "  -s --showsettings    : show the settings dialog while starting.\n"
+            "  -q --quit            : quit the running instance\n"
+            "  --logfile <filename> : write log output to file <filename>.\n"
+            "  --logfile -          : write log output to stdout.\n"
+            "  --logdir <name>      : write each sync log output in a new file\n"
+            "                         in folder <name>.\n"
+            "  --logexpire <hours>  : removes logs older than <hours> hours.\n"
+            "                         (to be used with --logdir)\n"
+            "  --logflush           : flush the log file after every write.\n"
+            "  --logdebug           : also output debug-level messages in the log.\n"
+            "  --language <locale>  : override UI language\n"
+            "  --confdir <dirname>  : Use the given configuration folder.");
     }
 
     QString applicationTrPath()
@@ -621,6 +622,12 @@ void Application::parseOptions(const QStringList &options)
             _debugMode = true;
         } else if (option == QLatin1String("--version")) {
             _versionOnly = true;
+        } else if (option == QLatin1String("--language")) {
+            if (it.hasNext() && !it.peekNext().startsWith(QLatin1String("--"))) {
+                _userEnforcedLanguage = it.next();
+            } else {
+                showHint("--language expects a parameter");
+            }
         } else if (option.endsWith(QStringLiteral(APPLICATION_DOTVIRTUALFILE_SUFFIX))) {
             // virtual file, open it after the Folder were created (if the app is not terminated)
             QTimer::singleShot(0, this, [this, option] { openVirtualFile(option); });
@@ -707,9 +714,15 @@ void Application::setupTranslations()
 {
     QStringList uiLanguages = QLocale::system().uiLanguages();
 
-    QString enforcedLocale = Theme::instance()->enforcedLocale();
-    if (!enforcedLocale.isEmpty())
-        uiLanguages.prepend(enforcedLocale);
+    // allow user and theme to enforce a language via a commandline parameter
+    const auto themeEnforcedLocale = Theme::instance()->enforcedLocale();
+    // note that the user enforced language is prioritized over the theme enforced one
+    // as we are prepending to the list of languages, the list passed to the loop must be sorted with ascending priority
+    for (const auto &enforcedLocale : { themeEnforcedLocale, _userEnforcedLanguage }) {
+        if (!enforcedLocale.isEmpty()) {
+            uiLanguages.prepend(enforcedLocale);
+        }
+    }
 
     QTranslator *translator = new QTranslator(this);
     QTranslator *qtTranslator = new QTranslator(this);

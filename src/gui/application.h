@@ -136,6 +136,7 @@ private:
     bool _logDebug;
     bool _userTriggeredConnect;
     bool _debugMode;
+    QString _userEnforcedLanguage;
 
     ClientProxy _proxy;
 

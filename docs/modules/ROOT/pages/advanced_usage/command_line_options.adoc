@@ -46,4 +46,7 @@ This command is used with `--logdir`.
 
 | `--confdir <dirname>`
 | Uses the specified configuration directory.
+
+| `--language <locale>`
+| Enforce language specified by given locale in the user interface. Example values: `de_DE`, `en_US`, `nl_NL`
 |===
