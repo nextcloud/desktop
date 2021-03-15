@@ -151,7 +151,7 @@ def shareResource(resource):
         elif line.endswith(resource):
             return False
 
-def executeStepThroughMiddleware(context, step, errorMessage=''):
+def executeStepThroughMiddleware(context, step):
     body = {
     "step": step}
     params = json.dumps(body).encode('utf8')
@@ -161,11 +161,13 @@ def executeStepThroughMiddleware(context, step, errorMessage=''):
         data=params,
         headers={"Content-Type": "application/json"}, method='POST'
     )
-    res = urllib.request.urlopen(req)
-    if res.getcode() != 200:
-        raise Exception(errorMessage + '\nexpected status 200 found {}'.format(res.getcode()))
-    
-    
+    try:
+        urllib.request.urlopen(req)
+    except urllib.error.HTTPError as e:
+        raise Exception(
+            "Step execution through test middleware failed. Error: " + e.read().decode()
+        )
+
 @When('the user adds "|any|" as collaborator of resource "|any|" with permissions "|any|" using the client-UI')
 def step(context, receiver, resource, permissions):
     resource = substituteInLineCodes(context, resource).replace('//','/')
