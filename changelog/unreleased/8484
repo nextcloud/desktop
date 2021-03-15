@@ -1,0 +1,5 @@
+Bugfix: We fixed an issue with the promptDeleteAllFiles setting
+
+When promptDeleteAllFiles=false is set the client will now correctly delete all files.
+
+https://github.com/owncloud/client/issues/8484
