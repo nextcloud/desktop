@@ -44,7 +44,6 @@ namespace WizardCommon {
         Page_Welcome,
         Page_ServerSetup,
         Page_HttpCreds,
-        Page_ShibbolethCreds,
         Page_OAuthCreds,
         Page_Flow2AuthCreds,
         Page_WebView,

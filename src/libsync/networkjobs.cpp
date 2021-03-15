@@ -903,8 +903,8 @@ void DetermineAuthTypeJob::start()
 
     // Start three parallel requests
 
-    // 1. determines whether it's a shib server
-    auto get = _account->sendRequest("GET", _account->davUrl(), req);
+    // 1. determines whether it's a basic auth server
+    auto get = _account->sendRequest("GET", _account->url(), req);
 
     // 2. checks the HTTP auth method.
     auto propfind = _account->sendRequest("PROPFIND", _account->davUrl(), req);
@@ -919,12 +919,12 @@ void DetermineAuthTypeJob::start()
     propfind->setIgnoreCredentialFailure(true);
     oldFlowRequired->setIgnoreCredentialFailure(true);
 
-    connect(get, &AbstractNetworkJob::redirected, this, [this, get](QNetworkReply *, const QUrl &target, int) {
-        Q_UNUSED(this)
-        Q_UNUSED(get)
-        Q_UNUSED(target)
-    });
-    connect(get, &SimpleNetworkJob::finishedSignal, this, [this]() {
+    connect(get, &SimpleNetworkJob::finishedSignal, this, [this, get]() {
+        if (get->reply()->error() == QNetworkReply::AuthenticationRequiredError) {
+            _resultGet = Basic;
+        } else {
+            _resultGet = LoginFlowV2;
+        }
         _getDone = true;
         checkAllDone();
     });
@@ -932,8 +932,13 @@ void DetermineAuthTypeJob::start()
         auto authChallenge = reply->rawHeader("WWW-Authenticate").toLower();
         if (authChallenge.contains("bearer ")) {
             _resultPropfind = OAuth;
-        } else if (authChallenge.isEmpty()) {
-            qCWarning(lcDetermineAuthTypeJob) << "Did not receive WWW-Authenticate reply to auth-test PROPFIND";
+        } else {
+            if (authChallenge.isEmpty()) {
+                qCWarning(lcDetermineAuthTypeJob) << "Did not receive WWW-Authenticate reply to auth-test PROPFIND";
+            } else {
+                qCWarning(lcDetermineAuthTypeJob) << "Unknown WWW-Authenticate reply to auth-test PROPFIND:" << authChallenge;
+            }
+            _resultPropfind = Basic;
         }
         _propfindDone = true;
         checkAllDone();
@@ -952,6 +957,8 @@ void DetermineAuthTypeJob::start()
                     }
                 }
             }
+        } else {
+            _resultOldFlow = Basic;
         }
         _oldFlowDone = true;
         checkAllDone();
@@ -967,17 +974,18 @@ void DetermineAuthTypeJob::checkAllDone()
         return;
     }
 
-    auto result = _resultPropfind;
-    // OAuth > Shib > Basic
-    if (_resultGet == Shibboleth && result != OAuth)
-        result = Shibboleth;
+    Q_ASSERT(_resultGet != NoAuthType);
+    Q_ASSERT(_resultPropfind != NoAuthType);
+    Q_ASSERT(_resultOldFlow != NoAuthType);
 
-    // WebViewFlow > OAuth > Shib > Basic
+    auto result = _resultPropfind;
+
+    // WebViewFlow > OAuth > Basic
     if (_account->serverVersionInt() >= Account::makeServerVersion(12, 0, 0)) {
         result = WebViewFlow;
     }
 
-    // LoginFlowV2 > WebViewFlow > OAuth > Shib > Basic
+    // LoginFlowV2 > WebViewFlow > OAuth > Basic
     if (_account->serverVersionInt() >= Account::makeServerVersion(16, 0, 0)) {
         result = LoginFlowV2;
     }
@@ -985,6 +993,12 @@ void DetermineAuthTypeJob::checkAllDone()
     // If we determined that we need the webview flow (GS for example) then we switch to that
     if (_resultOldFlow == WebViewFlow) {
         result = WebViewFlow;
+    }
+
+    // If we determined that a simple get gave us an authentication required error
+    // then the server enforces basic auth and we got no choice but to use this
+    if (_resultGet == Basic) {
+        result = Basic;
     }
 
     qCInfo(lcDetermineAuthTypeJob) << "Auth type for" << _account->davUrl() << "is" << result;
