@@ -5,7 +5,7 @@ Feature: adding accounts
     So that I can sync data with various organisations
 
     Scenario: Adding normal Account
-        Given user 'Alice' has been created with default attributes
+        Given user "Alice" has been created on the server with default attributes
         And the user has started the client
         When the user adds the first account with
             | server      | %local_server%     |
@@ -15,9 +15,9 @@ Feature: adding accounts
         Then an account should be displayed with the displayname Alice Hansen and host %local_server_hostname%
 
      Scenario: Adding multiple account
-        Given user 'Brian' has been created with default attributes
-        And user 'Alice' has been created with default attributes
-        And user 'Alice' has set up a client with these settings and password '1234':
+        Given user "Brian" has been created on the server with default attributes
+        And user "Alice" has been created on the server with default attributes
+        And user "Alice" has set up a client with these settings and password "1234":
             """
             [Accounts]
             0\Folders\1\ignoreHiddenFiles=true

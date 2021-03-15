@@ -32,11 +32,11 @@ def hook(context):
     except:
         pass
 
-@When("the user adds the first account with")
+@When('the user adds the first account with')
 def step(context):
     addAccount(context)
 
-@Then("an account should be displayed with the displayname |any| and host |any|")
+@Then('an account should be displayed with the displayname |any| and host |any|')
 def step(context, displayname, host):
     displayname = substituteInLineCodes(context, displayname)
     host = substituteInLineCodes(context, host)
@@ -48,7 +48,7 @@ def step(context, displayname, host):
             ), displayname + "\n" + host
         )
 
-@Given("user '|any|' has set up a client with these settings and password |any|:")
+@Given('user "|any|" has set up a client with these settings and password |any|:')
 def step(context, username, password):
     configContent = "\n".join(context.multiLineText)
     configContent = substituteInLineCodes(context, configContent)
@@ -65,12 +65,12 @@ def step(context, username, password):
     except LookupError:
         pass
 
-@Given("the user has started the client")
+@Given('the user has started the client')
 def step(context):
     startApplication("owncloud -s --logfile - --confdir " + confdir)
     snooze(1)
 
-@When("the user adds an account with")
+@When('the user adds an account with')
 def step(context):
     clickButton(waitForObject(names.settings_settingsdialog_toolbutton_Add_account_QToolButton))
 
@@ -191,58 +191,47 @@ def step(context, receiver, resource, permissions):
     resource = substituteInLineCodes(context, resource)
     socketConnect = syncstate.SocketConnect()
     socketConnect.sendCommand("SHARE:" + resource + "\n")
-    permissionsList = permissions.split(",")
+    permissionsList = permissions.split(',')
     
     test.compare(str(waitForObjectExists(names.scrollArea_sharedWith_QLabel).text), receiver)
     test.compare(waitForObjectExists(names.scrollArea_permissionsEdit_QCheckBox).checked, ('edit' in permissionsList))
     test.compare(waitForObjectExists(names.scrollArea_permissionShare_QCheckBox).checked, ('share' in permissionsList))
 
-@When("the user waits for the files to sync")
+@When('the user waits for the files to sync')
 def step(context):
     waitFor(lambda: isFolderSynced(context.userData['clientSyncPath']), context.userData['clientSyncTimeout'] * 1000)
 
-@When("the user waits for file '|any|' to get synced")
+@When('the user waits for file "|any|" to get synced')
 def step(context, fileName):
     waitForFileToBeSynced(context, fileName)
 
-@Given("the user has waited for file '|any|' to get synced")
+@Given('the user has waited for file "|any|" to get synced')
 def step(context, fileName):
     waitForFileToBeSynced(context, fileName)
 
-@When("the user creates a file '|any|' with following content on the file system")
+@When('the user creates a file "|any|" with following content on the file system')
 def step(context, filename):
     fileContent = "\n".join(context.multiLineText)
     f = open(context.userData['clientSyncPath'] + filename, "w")
     f.write(fileContent)
     f.close()
 
-@Given("user '|any|' has uploaded file with content '|any|' to '|any|'")
-def step(context, username, fileContent, filename):
+@Given(r"^(.*) on the server (.*)$", regexp=True)
+def step(context, stepPart1, stepPart2):
     executeStepThroughMiddleware(
         context,
-        "Given user \"" + username + "\" has uploaded file with content \"" +
-        fileContent + "\" to \"" + filename + "\"",
-        'Failed to upload file'
+        "Given " + stepPart1 + " " + stepPart2
     )
 
-@Given("user '|any|' has been created with default attributes")
-def step(context, username):
+@Then(r"^(.*) on the server (.*)$", regexp=True)
+def step(context, stepPart1, stepPart2):
     executeStepThroughMiddleware(
         context,
-        "Given user \"" + username + "\" has been created with default attributes",
-        "Failed to create user"
+        "Then " + stepPart1 + " " + stepPart2
     )
 
-@Then("the file '|any|' should exist on the server for user '|any|' with following content")
-def step(context, path, username):
-    fileContent = "\n".join(context.multiLineText)
-    executeStepThroughMiddleware(
-        context,
-        "Then as \"" + username + "\" the file \"" + path + "\" should have the content \"" + fileContent + "\"",
-        "Failed getting file from server or comparing the content"
-    )
 
-@Then("the file '|any|' should exist on the file system with following content")
+@Then('the file "|any|" should exist on the file system with following content')
 def step(context, filePath):
     expected = "\n".join(context.multiLineText)
     filePath = context.userData['clientSyncPath'] + filePath
@@ -251,13 +240,13 @@ def step(context, filePath):
     test.compare(expected, contents, "file expected to exist with content " + expected + " but does not")
 
 
-@Given("the user has paused the file sync")
+@Given('the user has paused the file sync')
 def step(context):
     mouseClick(waitForObjectItem(names.stack_folderList_QTreeView, "_1"), 718, 39, Qt.NoModifier, Qt.LeftButton)
     activateItem(waitForObjectItem(names.settings_QMenu, "Pause sync"))
 
 
-@Given("the user has changed the content of local file '|any|' to:")
+@Given('the user has changed the content of local file "|any|" to:')
 def step(context, filename):
     fileContent = "\n".join(context.multiLineText)
     f = open(context.userData['clientSyncPath'] + filename, "w")
@@ -265,19 +254,19 @@ def step(context, filename):
     f.close()
 
 
-@When("the user resumes the file sync on the client")
+@When('the user resumes the file sync on the client')
 def step(context):
     mouseClick(waitForObjectItem(names.stack_folderList_QTreeView, "_1"), 719, 38, Qt.NoModifier, Qt.LeftButton)
     activateItem(waitForObjectItem(names.settings_QMenu, "Resume sync"))
 
 
-@When("the user triggers force sync on the client")
+@When('the user triggers force sync on the client')
 def step(context):
     mouseClick(waitForObjectItem(names.stack_folderList_QTreeView, "_1"), 720, 36, Qt.NoModifier, Qt.LeftButton)
     activateItem(waitForObjectItem(names.settings_QMenu, "Force sync now"))
 
 
-@Then("a conflict file for '|any|' should exist on the file system with following content")
+@Then('a conflict file for "|any|" should exist on the file system with following content')
 def step(context, filename):
     expected = "\n".join(context.multiLineText)
 
@@ -298,12 +287,12 @@ def step(context, filename):
         raise Exception("Conflict file not found with given name")
 
 
-@When("the user clicks on the activity tab")
+@When('the user clicks on the activity tab')
 def step(context):
     clickButton(waitForObject(names.settings_settingsdialog_toolbutton_Activity_QToolButton))
 
 
-@Then("an conflict warning should be shown for |integer| files")
+@Then('an conflict warning should be shown for |integer| files')
 def step(context, files):
     clickTab(waitForObject(names.stack_QTabWidget), "Not Synced ({})".format(files))
     test.compare(
@@ -324,7 +313,7 @@ def buildConflictedRegex(filename):
         return '%s \(conflicted copy \d{4}-\d{2}-\d{2} \d{6}\)' % (filename)
 
 
-@Then("the table for conflict warning should include file '|any|'")
+@Then('the table for conflict warning should include file "|any|"')
 def step(context, filename):
     waitForObject(names.settings_OCC_SettingsDialog)
     waitForObjectExists({
@@ -335,7 +324,7 @@ def step(context, filename):
     })
 
 
-@When("user selects the unsynced files tab with |integer| unsynced files")
+@When('user selects the unsynced files tab with |integer| unsynced files')
 def step(context, number):
     # TODO: find some way to dynamically select the tab name
     # It might take some time for all files to sync except the expected number of unsynced files

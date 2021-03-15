@@ -1,9 +1,9 @@
 Feature: Sharing
 
     Scenario: simple sharing
-        Given user 'Alice' has been created with default attributes
-        And user 'Brian' has been created with default attributes
-        And user 'Alice' has set up a client with these settings and password '1234':
+        Given user "Alice" has been created on the server with default attributes
+        And user "Brian" has been created on the server with default attributes
+        And user "Alice" has set up a client with these settings and password "1234":
             """
             [Accounts]
             0\Folders\1\ignoreHiddenFiles=true
