@@ -2,7 +2,7 @@
 * xref:installing.adoc[Installing the Desktop Synchronization Client]
 * xref:navigating.adoc[Using the Synchronization Client]
 * xref:removing.adoc[Removing the Client]
-* xref:conflicts.adoc[Conflicts]
+* xref:conflicts.adoc[Manage Synchronisation Conflicts]
 * Advanced Usage
 ** xref:advanced_usage/command_line_options.adoc[Options]
 ** xref:advanced_usage/configuration_file.adoc[Configuration File]
