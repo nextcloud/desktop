@@ -27,7 +27,7 @@ Feature: adding accounts
             0\Folders\1\version=2
             0\Folders\1\virtualFilesMode=off
             0\dav_user=alice
-            0\display-name=Alice
+            0\display-name=Alice Hansen
             0\http_oauth=false
             0\http_user=alice
             0\url=%local_server%
