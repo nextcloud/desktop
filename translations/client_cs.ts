@@ -107,7 +107,7 @@
     <message>
         <location filename="../src/common/filesystembase.cpp" line="502"/>
         <source>Moving to the trash is not implemented on this platform</source>
-        <translation>Přesun do koše není na této platformě implementováno</translation>
+        <translation>Přesouvání do Koše není na této platformě implementováno</translation>
     </message>
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="167"/>
@@ -3563,7 +3563,7 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="245"/>
         <source>Expires:</source>
-        <translation>Platnost končí:</translation>
+        <translation>Platnost skončí:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="150"/>
@@ -4400,7 +4400,7 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
         <location filename="../src/libsync/theme.cpp" line="428"/>
         <location filename="../src/libsync/theme.cpp" line="438"/>
         <source>&lt;p&gt;Version %1. For more information please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt;.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Verze %1. Více informací získáte kliknutím &lt;a href=&apos;%2&apos;&gt;sem&lt;/a&gt;.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Verze %1. Další informace získáte kliknutím &lt;a href=&apos;%2&apos;&gt;sem&lt;/a&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="442"/>

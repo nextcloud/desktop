@@ -140,7 +140,7 @@
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="56"/>
         <source>Logo</source>
-        <translation type="unfinished"/>
+        <translation>Logo</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="65"/>
@@ -150,7 +150,7 @@
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="73"/>
         <source>Switch to your browser to connect your account</source>
-        <translation type="unfinished"/>
+        <translation>Hesabınızla bağlantı kurmak için web tarayıcınıza geçin</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="42"/>
@@ -1049,12 +1049,12 @@ Bu durum OpenSLL kitaplıkları ile ilgili bir sorun olabilir.</translation>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="213"/>
         <source>Reopen Browser</source>
-        <translation type="unfinished"/>
+        <translation>Tarayıcıyı Yeniden Aç</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="216"/>
         <source>Copy Link</source>
-        <translation type="unfinished"/>
+        <translation>Bağlantıyı Kopyala</translation>
     </message>
 </context>
 <context>
@@ -2512,7 +2512,7 @@ güncelleyici başka izinler isteyebilir.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="60"/>
         <source>Connect</source>
-        <translation type="unfinished"/>
+        <translation>Bağlan</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="54"/>
@@ -2552,13 +2552,13 @@ güncelleyici başka izinler isteyebilir.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="260"/>
         <source>Warning: The local folder is not empty. Pick a resolution!</source>
-        <translation type="unfinished"/>
+        <translation>Uyarı: Yerel klasör boş değil. Bir çözüm seçin!</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="268"/>
         <source>%1 free space</source>
         <comment>%1 gets replaced with the size and a matching unit. Example: 3 MB or 5 GB</comment>
-        <translation type="unfinished"/>
+        <translation>%1 boş alan</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="352"/>
@@ -2677,7 +2677,7 @@ güncelleyici başka izinler isteyebilir.</translation>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="86"/>
         <source>The link to your %1 web interface when you open it in the browser.</source>
         <comment>%1 will be replaced with the application name</comment>
-        <translation type="unfinished"/>
+        <translation>%1 web arayüzü için web tarayıcıda açacağınız bağlantı.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="80"/>
@@ -2714,7 +2714,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="252"/>
         <source>Server address does not seem to be valid</source>
-        <translation type="unfinished"/>
+        <translation>Sunucu adresi geçersiz gibi görünüyor</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="293"/>
@@ -2877,7 +2877,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="88"/>
         <source>Add %1 account</source>
-        <translation type="unfinished"/>
+        <translation>%1 hesabı ekle</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="100"/>
@@ -4511,43 +4511,43 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="20"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Form</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="143"/>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="88"/>
         <source>Log in to your %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 oturumunuzu açın</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="156"/>
         <source>Create account with Provider</source>
-        <translation type="unfinished"/>
+        <translation>Hizmet sağlayıcı ile hesap açın</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="67"/>
         <source>Keep your data secure and under your control</source>
-        <translation type="unfinished"/>
+        <translation>Verilerinizi güvenli ve denetiminiz altında tutun</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="68"/>
         <source>Secure collaboration &amp; file exchange</source>
-        <translation type="unfinished"/>
+        <translation>Güvenli iş birliği ve dosya aktarımı</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="69"/>
         <source>Easy-to-use web mail, calendaring &amp; contacts</source>
-        <translation type="unfinished"/>
+        <translation>Web üzerinden kolayca kullanılan e-posta, takvim ve kişiler</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="70"/>
         <source>Screensharing, online meetings &amp; web conferences</source>
-        <translation type="unfinished"/>
+        <translation>Ekran paylaşımı, çevrimiçi görüşmeler ve web toplantıları</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="106"/>
         <source>Host your own server</source>
-        <translation type="unfinished"/>
+        <translation>Kendi sunucunuzu işletin</translation>
     </message>
 </context>
 <context>
@@ -4800,12 +4800,12 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="121"/>
         <source>User name</source>
-        <translation type="unfinished"/>
+        <translation>Kullanıcı adı</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="131"/>
         <source>Server address</source>
-        <translation type="unfinished"/>
+        <translation>Sunucu adresi</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="148"/>
@@ -4820,7 +4820,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="175"/>
         <source>Sync Logo</source>
-        <translation type="unfinished"/>
+        <translation>Logo eşitlensin</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="251"/>
@@ -4830,17 +4830,17 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="244"/>
         <source>Local Folder</source>
-        <translation type="unfinished"/>
+        <translation>Yerel Klasör</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="408"/>
         <source>Synchronize everything from server</source>
-        <translation type="unfinished"/>
+        <translation>Sunucudaki her şey eşitlensin</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="464"/>
         <source>Ask before syncing folders larger than</source>
-        <translation type="unfinished"/>
+        <translation>Şundan büyük klasörlerin eşitlenmesi için onay istensin</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="165"/>
@@ -4851,7 +4851,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="533"/>
         <source>Ask before syncing external storages</source>
-        <translation type="unfinished"/>
+        <translation>Dış depolama aygıtlarının eşitlenmesi için onay istensin</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="198"/>
@@ -4876,7 +4876,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="714"/>
         <source>Keep local data</source>
-        <translation type="unfinished"/>
+        <translation>Yerel veriler korunsun</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="354"/>
@@ -4886,7 +4886,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="733"/>
         <source>Erase local folder and start a clean sync</source>
-        <translation type="unfinished"/>
+        <translation>Yerel klasör silinsin ve temiz bir eşitleme başlatılsın</translation>
     </message>
 </context>
 <context>
@@ -4931,17 +4931,17 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="32"/>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="353"/>
         <source>TextLabel</source>
-        <translation type="unfinished"/>
+        <translation>MetinEtiketi</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="73"/>
         <source>Logo</source>
-        <translation type="unfinished"/>
+        <translation>Logo</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="183"/>
         <source>Server address</source>
-        <translation type="unfinished"/>
+        <translation>Sunucu adresi</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="194"/>
@@ -4956,7 +4956,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="259"/>
         <source>This is the link to your %1 web interface when you open it in the browser.</source>
-        <translation type="unfinished"/>
+        <translation>%1 web arayüzü için web tarayıcıda açacağınız bağlantı.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="343"/>
