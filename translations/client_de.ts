@@ -2712,7 +2712,7 @@ Es wird davon abgeraten sie zu verwenden.</translation>
         <translation>&amp;Weiter &gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="252"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="250"/>
         <source>Server address does not seem to be valid</source>
         <translation>Serveradresse scheint nicht gültig zu sein</translation>
     </message>

@@ -222,7 +222,7 @@
     <message>
         <location filename="../src/libsync/abstractpropagateremotedeleteencrypted.cpp" line="181"/>
         <source>&quot;%1 Failed to unlock encrypted folder %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>&quot;%1 Neizdevās atslēgt šifrēto mapi %2&quot;.</translation>
     </message>
 </context>
 <context>
@@ -2676,7 +2676,7 @@ It is not advisable to use it.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="252"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="250"/>
         <source>Server address does not seem to be valid</source>
         <translation type="unfinished"/>
     </message>

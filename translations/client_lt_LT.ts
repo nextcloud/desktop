@@ -2695,7 +2695,7 @@ Patariama jo nenaudoti.</translation>
         <translation>&amp;Kitas &gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="252"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="250"/>
         <source>Server address does not seem to be valid</source>
         <translation type="unfinished"/>
     </message>

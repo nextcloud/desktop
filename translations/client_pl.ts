@@ -2713,7 +2713,7 @@ Nie zaleca się korzystania z niego.</translation>
         <translation>&amp;Dalej &gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="252"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="250"/>
         <source>Server address does not seem to be valid</source>
         <translation>Adres serwera jest nieprawidłowy</translation>
     </message>

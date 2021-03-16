@@ -2716,7 +2716,7 @@ Het is niet te adviseren om het te gebruiken.</translation>
         <translation>&amp;Volgende &gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="252"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="250"/>
         <source>Server address does not seem to be valid</source>
         <translation>Het serveradres lijkt niet geldig</translation>
     </message>
