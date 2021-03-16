@@ -454,7 +454,7 @@ void CheckServerJob::onTimedOut()
 
 QString CheckServerJob::version(const QJsonObject &info)
 {
-    return info.value(QLatin1String("version")).toString() + "-" + info.value(QLatin1String("productname")).toString();
+    return info.value(QLatin1String("version")).toString();
 }
 
 QString CheckServerJob::versionString(const QJsonObject &info)

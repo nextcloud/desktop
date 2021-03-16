@@ -21,6 +21,7 @@
 #include "capabilities.h"
 #include "theme.h"
 #include "pushnotifications.h"
+#include "version.h"
 
 #include "common/asserts.h"
 #include "clientsideencryption.h"
@@ -531,8 +532,8 @@ bool Account::serverVersionUnsupported() const
         // not detected yet, assume it is fine.
         return false;
     }
-    // Older version which is not "end of life" according to https://docs.nextcloud.com/server/latest/admin_manual/release_schedule.html
-    return serverVersionInt() < makeServerVersion(18, 0, 0) || !serverVersion().endsWith("Nextcloud");
+    return serverVersionInt() < makeServerVersion(NEXTCLOUD_SERVER_VERSION_MIN_SUPPORTED_MAJOR,
+               NEXTCLOUD_SERVER_VERSION_MIN_SUPPORTED_MINOR, NEXTCLOUD_SERVER_VERSION_MIN_SUPPORTED_PATCH);
 }
 
 void Account::setServerVersion(const QString &version)
