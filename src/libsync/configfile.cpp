@@ -63,6 +63,7 @@ const QString showInExplorerNavigationPaneC() { return QStringLiteral("showInExp
 const QString skipUpdateCheckC() { return QStringLiteral("skipUpdateCheck"); }
 const QString updateCheckIntervalC() { return QStringLiteral("updateCheckInterval"); }
 const QString updateChannelC() { return QStringLiteral("updateChannel"); }
+const QString uiLanguageC() { return QStringLiteral("uiLanguage"); }
 const QString geometryC() { return QStringLiteral("geometry"); }
 const QString timeoutC() { return QStringLiteral("timeout"); }
 const QString chunkSizeC() { return QStringLiteral("chunkSize"); }
@@ -566,6 +567,18 @@ void ConfigFile::setUpdateChannel(const QString &channel)
 {
     QSettings settings(configFile(), QSettings::IniFormat);
     settings.setValue(updateChannelC(), channel);
+}
+
+QString ConfigFile::uiLanguage() const
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    return settings.value(uiLanguageC(), QString()).toString();
+}
+
+void ConfigFile::setUiLanguage(const QString &uiLanguage)
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    settings.setValue(uiLanguageC(), uiLanguage);
 }
 
 void ConfigFile::setProxyType(int proxyType,
