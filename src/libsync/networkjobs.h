@@ -420,6 +420,12 @@ signals:
      * @param statusCode - the OCS status code: 100 (!) for success
      */
     void etagResponseHeaderReceived(const QByteArray &value, int statusCode);
+    
+    /**
+     * @brief desktopNotificationStatusReceived - signal to report the if user is online or dnd
+     * @param status - set desktop notifications allowed status 
+     */
+    void desktopNotificationStatusReceived(const bool status);
 
 private:
     QUrlQuery _additionalParams;

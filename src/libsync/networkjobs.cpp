@@ -871,6 +871,11 @@ bool JsonApiJob::finished()
     if(reply()->rawHeaderList().contains("ETag"))
         emit etagResponseHeaderReceived(reply()->rawHeader("ETag"), statusCode);
 
+    const auto desktopNotificationStatus = reply()->rawHeader(QByteArray("X-Nextcloud-User-Status"));
+    if(!desktopNotificationStatus.isEmpty()) {
+        emit desktopNotificationStatusReceived(desktopNotificationStatus == "online");
+    }
+
     QJsonParseError error;
     auto json = QJsonDocument::fromJson(jsonStr.toUtf8(), &error);
     // empty or invalid response and status code is != 304 because jsonStr is expected to be empty

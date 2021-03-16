@@ -17,10 +17,9 @@
 
 #include <QObject>
 #include <QPointer>
-#include <QVariant>
+#include "accountfwd.h"
 
 namespace OCC {
-class AccountState;
 class JsonApiJob;
 
 class UserStatus : public QObject
@@ -28,20 +27,22 @@ class UserStatus : public QObject
     Q_OBJECT
 
 public:
-    explicit UserStatus(AccountState *accountState, QObject *parent = nullptr);
-    void fetchCurrentUserStatus();
-    QString currentUserStatus() const;
+    explicit UserStatus(QObject *parent = nullptr);
+    void fetchUserStatus(AccountPtr account);
+    QString status() const;
+    QString message() const;
+    QUrl icon() const;
 
 private slots:
-    void slotFetchedCurrentStatus(const QJsonDocument &json);
+    void slotFetchUserStatusFinished(const QJsonDocument &json);
 
 signals:
-    void fetchedCurrentUserStatus();
+    void fetchUserStatusFinished();
 
 private:
-    QPointer<AccountState> _accountState;
     QPointer<JsonApiJob> _job; // the currently running job
-    QString _currentUserStatus;
+    QString _status;
+    QString _message;
 };
 
 

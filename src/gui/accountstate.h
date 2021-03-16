@@ -162,9 +162,31 @@ public:
     ///Asks for user credentials
     void handleInvalidCredentials();
 
-    QString currentUserStatus() const;
+    /** Returns the user status (online, dnd, away, offline, invisible)
+     *  https://gist.github.com/georgehrke/55a0412007f13be1551d1f9436a39675
+    */
+    QString status() const;
 
-    void fetchCurrentUserStatus();
+    /** Returns the user status Message (emoji + text)
+    */
+    QString statusMessage() const;
+
+    /** Returns the user status icon url
+    */
+    QUrl statusIcon() const;
+
+    /** Returns the user status retrieved by the notificatons endpoint: dnd or online
+     *  https://github.com/nextcloud/desktop/issues/2318#issuecomment-680698429
+    */
+    QString notificationStatus() const;
+
+    /** Set new user status retrieved by the notificatons endpoint: dnd or online
+    */
+    void setNotificationStatus(const QString &status);
+
+    /** Fetch the user status (status, icon, message)
+    */
+    void fetchUserStatus();
 
 public slots:
     /// Triggers a ping to the server to update state and
@@ -230,6 +252,7 @@ private:
     AccountAppList _apps;
 
     UserStatus *_userStatus;
+    QString _notificationStatus;
 };
 
 class AccountApp : public QObject
