@@ -2709,7 +2709,7 @@ Non è consigliabile utilizzarlo.</translation>
         <translation>Ava&amp;nti &gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="252"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="250"/>
         <source>Server address does not seem to be valid</source>
         <translation>L&apos;indirizzo del server non sembra essere valido</translation>
     </message>
