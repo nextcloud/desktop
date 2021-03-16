@@ -32,6 +32,7 @@
 #include "ignorelisteditor.h"
 
 #include "config.h"
+#include "translations.h"
 
 #include <QNetworkProxy>
 #include <QDir>
@@ -52,6 +53,9 @@ GeneralSettings::GeneralSettings(QWidget *parent)
         this, &GeneralSettings::slotToggleOptionalDesktopNotifications);
     connect(_ui->showInExplorerNavigationPaneCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::slotShowInExplorerNavigationPane);
 
+    // needs to be called before settings are loaded
+    loadLanguageNamesIntoDropdown();
+
     reloadConfig();
     loadMiscSettings();
     slotUpdateInfo();
@@ -62,6 +66,10 @@ GeneralSettings::GeneralSettings(QWidget *parent)
     connect(_ui->newFolderLimitCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::saveMiscSettings);
     connect(_ui->newFolderLimitSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &GeneralSettings::saveMiscSettings);
     connect(_ui->newExternalStorage, &QAbstractButton::toggled, this, &GeneralSettings::saveMiscSettings);
+
+    connect(_ui->languageDropdown, QOverload<int>::of(&QComboBox::activated), this, [this](int) {
+        this->saveMiscSettings();
+    });
 
     /* handle the hidden file checkbox */
 
@@ -138,6 +146,27 @@ void GeneralSettings::loadMiscSettings()
     _ui->newFolderLimitSpinBox->setValue(newFolderLimit.second);
     _ui->newExternalStorage->setChecked(cfgFile.confirmExternalStorage());
     _ui->monoIconsCheckBox->setChecked(cfgFile.monoIcons());
+
+    // we assume the languages have been loaded into the dropdown already (by making sure that the corresponding method is called before this one)
+    const auto &language = cfgFile.uiLanguage();
+
+    // index 0 means "use default", which we use unless the loop below sets another entry
+    _ui->languageDropdown->setCurrentIndex(0);
+
+    if (!language.isEmpty()) {
+        // a simple linear search to find the right entry and choose it is sufficient for this application
+        // we can skip the "use default" entry by starting at index 1
+        // note that if the loop below never breaks, the setting falls back to "use default"
+        // this is desired behavior, as it handles cases when the selected language no longer exists
+        for (int i = 1; i < _ui->languageDropdown->count(); ++i) {
+            const auto text = _ui->languageDropdown->itemText(i);
+
+            if (text == language) {
+                _ui->languageDropdown->setCurrentIndex(i);
+                break;
+            }
+        }
+    }
 }
 
 void GeneralSettings::showEvent(QShowEvent *)
@@ -235,6 +264,19 @@ void GeneralSettings::saveMiscSettings()
     cfgFile.setNewBigFolderSizeLimit(_ui->newFolderLimitCheckBox->isChecked(),
         _ui->newFolderLimitSpinBox->value());
     cfgFile.setConfirmExternalStorage(_ui->newExternalStorage->isChecked());
+
+    const auto pickedLanguageIndex = _ui->languageDropdown->currentIndex();
+
+    // the first entry, identified by index 0, means "use default", which is a special case handled below
+    if (pickedLanguageIndex > 0) {
+        // for now, we use the locale names as labels in the dropdown
+        // therefore, we can store them directly in the config file
+        // in future versions, we will likely display nice names instead of locales to improve the user experience
+        cfgFile.setUiLanguage(_ui->languageDropdown->itemText(pickedLanguageIndex));
+    } else {
+        // empty string means "use system default"
+        cfgFile.setUiLanguage("");
+    }
 }
 
 void GeneralSettings::slotToggleLaunchOnStartup(bool enable)
@@ -283,6 +325,21 @@ void GeneralSettings::reloadConfig()
         slotToggleLaunchOnStartup(hasAutoStart);
         _ui->autostartCheckBox->setChecked(hasAutoStart);
         connect(_ui->autostartCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::slotToggleLaunchOnStartup);
+    }
+}
+
+void GeneralSettings::loadLanguageNamesIntoDropdown()
+{
+    _ui->languageDropdown->clear();
+
+    // if no option has been chosen explicitly by the user, the first entry shall be used
+    _ui->languageDropdown->addItem(tr("(use default)"));
+
+    QStringList availableTranslations(Translations::listAvailableTranslations().toList());
+    availableTranslations.sort(Qt::CaseInsensitive);
+
+    for (const auto &i : availableTranslations) {
+        _ui->languageDropdown->addItem(i);
     }
 }
 

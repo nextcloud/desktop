@@ -56,6 +56,7 @@ protected:
 
 private:
     void reloadConfig();
+    void loadLanguageNamesIntoDropdown();
 
     Ui::GeneralSettings *_ui;
     QPointer<IgnoreListEditor> _ignoreEditor;
