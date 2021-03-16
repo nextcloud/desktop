@@ -42,6 +42,7 @@
 #include "csync_exclude.h"
 #include "common/vfs.h"
 #include "settingsdialog.h"
+#include "translations.h"
 
 #include "config.h"
 
@@ -88,23 +89,6 @@ namespace {
             "  --logdebug           : also output debug-level messages in the log.\n"
             "  --language <locale>  : override UI language\n"
             "  --confdir <dirname>  : Use the given configuration folder.");
-    }
-
-    QString applicationTrPath()
-    {
-        QString devTrPath = qApp->applicationDirPath() + QString::fromLatin1("/../src/gui/");
-        if (QDir(devTrPath).exists()) {
-            // might miss Qt, QtKeyChain, etc.
-            qCWarning(lcApplication) << "Running from build location! Translations may be incomplete!";
-            return devTrPath;
-        }
-#if defined(Q_OS_WIN)
-        return QApplication::applicationDirPath();
-#elif defined(Q_OS_MAC)
-        return QApplication::applicationDirPath() + QLatin1String("/../Resources/Translations"); // path defaults to app dir.
-#elif defined(Q_OS_UNIX)
-        return QString::fromLatin1(SHAREDIR "/" APPLICATION_EXECUTABLE "/i18n/");
-#endif
     }
 }
 
@@ -731,8 +715,8 @@ void Application::setupTranslations()
     foreach (QString lang, uiLanguages) {
         lang.replace(QLatin1Char('-'), QLatin1Char('_')); // work around QTBUG-25973
         lang = substLang(lang);
-        const QString trPath = applicationTrPath();
-        const QString trFile = QLatin1String("client_") + lang;
+        const QString trPath = Translations::applicationTrPath();
+        const QString trFile = Translations::translationsFilePrefix() + lang;
         if (translator->load(trFile, trPath) || lang.startsWith(QLatin1String("en"))) {
             // Permissive approach: Qt and keychain translations
             // may be missing, but Qt translations must be there in order

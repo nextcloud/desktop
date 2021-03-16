@@ -86,6 +86,7 @@ set(client_SRCS
     servernotificationhandler.cpp
     guiutility.cpp
     elidedlabel.cpp
+    translations.cpp
     creds/httpcredentialsgui.cpp
     wizard/postfixlineedit.cpp
     wizard/abstractcredswizardpage.cpp
