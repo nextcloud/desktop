@@ -57,15 +57,19 @@ public:
     Status status() const;
 
     void start();
+    void cancel();
 
 signals:
     void finished(HydrationJob *job);
+    void canceled(HydrationJob *job);
 
 private:
     void emitFinished(Status status);
+    void emitCanceled();
 
     void onNewConnection();
     void onGetFinished();
+    void onGetCanceled();
 
     AccountPtr _account;
     QString _remotePath;

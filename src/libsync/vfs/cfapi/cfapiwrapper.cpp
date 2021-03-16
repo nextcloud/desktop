@@ -57,7 +57,6 @@ void cfApiSendTransferInfo(const CF_CONNECTION_KEY &connectionKey, const CF_TRAN
     }
 }
 
-
 void CALLBACK cfApiFetchDataCallback(const CF_CALLBACK_INFO *callbackInfo, const CF_CALLBACK_PARAMETERS *callbackParameters)
 {
     qDebug(lcCfApiWrapper) << "Fetch data callback called. File size:" << callbackInfo->FileSize.QuadPart;
@@ -180,8 +179,29 @@ void CALLBACK cfApiFetchDataCallback(const CF_CALLBACK_INFO *callbackInfo, const
     }
 }
 
+void CALLBACK cfApiCancelFetchData(const CF_CALLBACK_INFO *callbackInfo, const CF_CALLBACK_PARAMETERS * /*callbackParameters*/)
+{
+    const auto path = QString(QString::fromWCharArray(callbackInfo->VolumeDosName) + QString::fromWCharArray(callbackInfo->NormalizedPath));
+
+    qInfo(lcCfApiWrapper) << "Cancel fetch data of" << path;
+
+    auto vfs = reinterpret_cast<OCC::VfsCfApi *>(callbackInfo->CallbackContext);
+    Q_ASSERT(vfs->metaObject()->className() == QByteArrayLiteral("OCC::VfsCfApi"));
+    const auto requestId = QString::number(callbackInfo->TransferKey.QuadPart, 16);
+    const auto cancelHydration = [=] {
+        vfs->cancelHydration(requestId, path);
+    };
+
+    const auto invokeResult = QMetaObject::invokeMethod(vfs, cancelHydration, Qt::QueuedConnection);
+    if (!invokeResult) {
+        qCritical(lcCfApiWrapper) << "Failed to cancel hydration for" << path << requestId;
+    }
+}
+
+
 CF_CALLBACK_REGISTRATION cfApiCallbacks[] = {
     { CF_CALLBACK_TYPE_FETCH_DATA, cfApiFetchDataCallback },
+    { CF_CALLBACK_TYPE_CANCEL_FETCH_DATA, cfApiCancelFetchData },
     CF_CALLBACK_REGISTRATION_END
 };
 

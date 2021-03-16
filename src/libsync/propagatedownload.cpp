@@ -342,6 +342,15 @@ void GETFileJob::slotReadyRead()
     }
 }
 
+void GETFileJob::cancel()
+{
+    if (reply()->isRunning()) {
+        reply()->abort();
+    }
+
+    emit canceled();
+}
+
 void GETFileJob::onTimedOut()
 {
     qCWarning(lcGetJob) << "Timeout" << (reply() ? reply()->request().url() : path());

@@ -264,6 +264,21 @@ Vfs::AvailabilityResult VfsCfApi::availability(const QString &folderPath)
     return AvailabilityError::NoSuchItem;
 }
 
+void VfsCfApi::cancelHydration(const QString &requestId, const QString & /*path*/)
+{
+    // Find matching hydration job for request id
+    auto hydrationJobsIter = std::find_if(d->hydrationJobs.begin(), d->hydrationJobs.begin(), [&](const HydrationJob *job) {
+        return job->requestId() == requestId;
+    });
+
+    if (hydrationJobsIter == d->hydrationJobs.end()) {
+        return;
+    }
+
+    // Cancel it
+    (*hydrationJobsIter)->cancel();
+}
+
 void VfsCfApi::requestHydration(const QString &requestId, const QString &path)
 {
     qCInfo(lcCfApi) << "Received request to hydrate" << path << requestId;
@@ -331,6 +346,7 @@ void VfsCfApi::scheduleHydrationJob(const QString &requestId, const QString &fol
     job->setRequestId(requestId);
     job->setFolderPath(folderPath);
     connect(job, &HydrationJob::finished, this, &VfsCfApi::onHydrationJobFinished);
+    connect(job, &HydrationJob::canceled, this, &VfsCfApi::onHydrationJobCanceled);
     d->hydrationJobs << job;
     job->start();
     emit hydrationRequestReady(requestId);
@@ -345,6 +361,22 @@ void VfsCfApi::onHydrationJobFinished(HydrationJob *job)
     if (d->hydrationJobs.isEmpty()) {
         emit doneHydrating();
     }
+}
+
+void VfsCfApi::onHydrationJobCanceled(HydrationJob *job)
+{
+    const auto folderPath = job->localPath();
+    const auto folderRelativePath = job->folderPath();
+
+    // Remove placeholder file because there might be already pumped
+    // some data into it
+    QFile::remove(folderPath + folderRelativePath);
+
+    // Create a new placeholder file
+    SyncJournalFileRecord record;
+    params().journal->getFileRecord(folderRelativePath, &record);
+    const auto item = SyncFileItem::fromSyncJournalFileRecord(record);
+    createPlaceholder(*item);
 }
 
 VfsCfApi::HydratationAndPinStates VfsCfApi::computeRecursiveHydrationAndPinStates(const QString &folderPath, const Optional<PinState> &basePinState)

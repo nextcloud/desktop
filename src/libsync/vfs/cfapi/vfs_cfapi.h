@@ -53,6 +53,8 @@ public:
     Optional<PinState> pinState(const QString &folderPath) override;
     AvailabilityResult availability(const QString &folderPath) override;
 
+    void cancelHydration(const QString &requestId, const QString &path);
+
 public slots:
     void requestHydration(const QString &requestId, const QString &path);
     void fileStatusChanged(const QString &systemFileName, SyncFileStatus fileStatus) override;
@@ -68,6 +70,7 @@ protected:
 private:
     void scheduleHydrationJob(const QString &requestId, const QString &folderPath);
     void onHydrationJobFinished(HydrationJob *job);
+    void onHydrationJobCanceled(HydrationJob *job);
 
     struct HasHydratedDehydrated {
         bool hasHydrated = false;
