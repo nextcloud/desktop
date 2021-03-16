@@ -15,6 +15,7 @@
 #ifndef MIRALL_GENERALSETTINGS_H
 #define MIRALL_GENERALSETTINGS_H
 
+#include <QMap>
 #include <QWidget>
 #include <QPointer>
 
@@ -61,6 +62,7 @@ private:
     Ui::GeneralSettings *_ui;
     QPointer<IgnoreListEditor> _ignoreEditor;
     bool _currentlyLoading;
+    QMap<QString, QString> localesToLanguageNamesMap;
 };
 
 

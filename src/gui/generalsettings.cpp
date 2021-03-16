@@ -151,13 +151,15 @@ void GeneralSettings::loadMiscSettings()
     _ui->newExternalStorage->setChecked(cfgFile.confirmExternalStorage());
     _ui->monoIconsCheckBox->setChecked(cfgFile.monoIcons());
 
-    // we assume the languages have been loaded into the dropdown already (by making sure that the corresponding method is called before this one)
-    const auto &language = cfgFile.uiLanguage();
+    // we assume the language names have been loaded into the dropdown already (by making sure that the corresponding method is called before this one)
+    const auto &locale = cfgFile.uiLanguage();
 
     // index 0 means "use default", which we use unless the loop below sets another entry
     _ui->languageDropdown->setCurrentIndex(0);
 
-    if (!language.isEmpty()) {
+    if (!locale.isEmpty()) {
+        const auto &language = QLocale(locale).nativeLanguageName();
+
         // a simple linear search to find the right entry and choose it is sufficient for this application
         // we can skip the "use default" entry by starting at index 1
         // note that if the loop below never breaks, the setting falls back to "use default"
@@ -276,7 +278,10 @@ void GeneralSettings::saveMiscSettings()
         // for now, we use the locale names as labels in the dropdown
         // therefore, we can store them directly in the config file
         // in future versions, we will likely display nice names instead of locales to improve the user experience
-        cfgFile.setUiLanguage(_ui->languageDropdown->itemText(pickedLanguageIndex));
+        const auto pickedLanguageName = _ui->languageDropdown->itemText(pickedLanguageIndex);
+        const auto pickedLanguageLocale = localesToLanguageNamesMap.key(pickedLanguageName);
+
+        cfgFile.setUiLanguage(pickedLanguageLocale);
     } else {
         // empty string means "use system default"
         cfgFile.setUiLanguage("");
@@ -334,12 +339,27 @@ void GeneralSettings::reloadConfig()
 
 void GeneralSettings::loadLanguageNamesIntoDropdown()
 {
+    // initialize map of locales to language names
+    const auto availableLocales = Translations::listAvailableTranslations();
+    for (const auto &availableLocale : availableLocales) {
+        auto nativeLanguageName = QLocale(availableLocale).nativeLanguageName();
+
+        // fallback if there's a locale whose name Qt doesn't know
+        // this indicates a broken filename
+        if (nativeLanguageName.isEmpty()) {
+            qCDebug(lcApplication()) << "Warning: could not find native language name for locale" << availableLocale;
+            nativeLanguageName = tr("unknown (%1)").arg(availableLocale);
+        }
+
+        localesToLanguageNamesMap.insert(availableLocale, nativeLanguageName);
+    }
+
     _ui->languageDropdown->clear();
 
     // if no option has been chosen explicitly by the user, the first entry shall be used
     _ui->languageDropdown->addItem(tr("(use default)"));
 
-    QStringList availableTranslations(Translations::listAvailableTranslations().toList());
+    QStringList availableTranslations(localesToLanguageNamesMap.values());
     availableTranslations.sort(Qt::CaseInsensitive);
 
     for (const auto &i : availableTranslations) {
