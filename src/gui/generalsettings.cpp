@@ -67,8 +67,12 @@ GeneralSettings::GeneralSettings(QWidget *parent)
     connect(_ui->newFolderLimitSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &GeneralSettings::saveMiscSettings);
     connect(_ui->newExternalStorage, &QAbstractButton::toggled, this, &GeneralSettings::saveMiscSettings);
 
-    connect(_ui->languageDropdown, QOverload<int>::of(&QComboBox::activated), this, [this](int) {
-        this->saveMiscSettings();
+    connect(_ui->languageDropdown, QOverload<int>::of(&QComboBox::activated), this, [this]() {
+        // first, store selected language in config file
+        saveMiscSettings();
+
+        // warn user that a language change requires a restart to take effect
+        QMessageBox::warning(this, tr("Warning"), tr("Language changes require a restart of this application to take effect."), QMessageBox::Ok);
     });
 
     /* handle the hidden file checkbox */
