@@ -45,6 +45,8 @@ Flow2AuthWidget::Flow2AuthWidget(QWidget *parent)
 
     _ui.progressLayout->addWidget(_progressIndi);
     stopSpinner(false);
+
+    customizeStyle();
 }
 
 void Flow2AuthWidget::setLogo()
