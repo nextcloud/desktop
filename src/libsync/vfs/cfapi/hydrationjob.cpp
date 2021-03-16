@@ -116,6 +116,15 @@ void OCC::HydrationJob::start()
     connect(_server, &QLocalServer::newConnection, this, &HydrationJob::onNewConnection);
 }
 
+void OCC::HydrationJob::cancel()
+{
+    if (!_job) {
+        return;
+    }
+
+    _job->cancel();
+}
+
 void OCC::HydrationJob::emitFinished(Status status)
 {
     _status = status;
@@ -131,6 +140,16 @@ void OCC::HydrationJob::emitFinished(Status status)
     }
 }
 
+void OCC::HydrationJob::emitCanceled()
+{
+    connect(_socket, &QLocalSocket::disconnected, this, [=] {
+        _socket->close();
+    });
+    _socket->disconnectFromServer();
+
+    emit canceled(this);
+}
+
 void OCC::HydrationJob::onNewConnection()
 {
     Q_ASSERT(!_socket);
@@ -140,7 +159,14 @@ void OCC::HydrationJob::onNewConnection()
     _socket = _server->nextPendingConnection();
     _job = new GETFileJob(_account, _remotePath + _folderPath, _socket, {}, {}, 0, this);
     connect(_job, &GETFileJob::finishedSignal, this, &HydrationJob::onGetFinished);
+    connect(_job, &GETFileJob::canceled, this, &HydrationJob::onGetCanceled);
     _job->start();
+}
+
+void OCC::HydrationJob::onGetCanceled()
+{
+    qCInfo(lcHydration) << "GETFileJob canceled" << _requestId << _folderPath << _job->reply()->error();
+    emitCanceled();
 }
 
 void OCC::HydrationJob::onGetFinished()
