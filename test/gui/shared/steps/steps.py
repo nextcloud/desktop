@@ -11,7 +11,7 @@ import json
 from objectmaphelper import RegularExpression
 
 # the script needs to use the system wide python
-# to switch from the build-in interpreter see https://kb.froglogic.com/squish/howto/using-external-python-interpreter-squish-6-6/
+# to switch from the built-in interpreter see https://kb.froglogic.com/squish/howto/using-external-python-interpreter-squish-6-6/
 # if the IDE fails to reference the script, add the folder in Edit->Preferences->PyDev->Interpreters->Libraries
 sys.path.append(os.path.realpath('../../../shell_integration/nautilus/'))
 import syncstate
@@ -203,15 +203,15 @@ def step(context, receiver, resource, permissions):
 def step(context):
     waitFor(lambda: isFolderSynced(context.userData['clientSyncPath']), context.userData['clientSyncTimeout'] * 1000)
 
-@When('the user waits for file "|any|" to get synced')
+@When('the user waits for file "|any|" to be synced')
 def step(context, fileName):
     waitForFileToBeSynced(context, fileName)
 
-@Given('the user has waited for file "|any|" to get synced')
+@Given('the user has waited for file "|any|" to be synced')
 def step(context, fileName):
     waitForFileToBeSynced(context, fileName)
 
-@When('the user creates a file "|any|" with following content on the file system')
+@When('the user creates a file "|any|" with the following content on the file system')
 def step(context, filename):
     fileContent = "\n".join(context.multiLineText)
     f = open(context.userData['clientSyncPath'] + filename, "w")
@@ -233,13 +233,13 @@ def step(context, stepPart1, stepPart2):
     )
 
 
-@Then('the file "|any|" should exist on the file system with following content')
+@Then('the file "|any|" should exist on the file system with the following content')
 def step(context, filePath):
     expected = "\n".join(context.multiLineText)
     filePath = context.userData['clientSyncPath'] + filePath
     f = open(filePath, 'r')
     contents = f.read()
-    test.compare(expected, contents, "file expected to exist with content " + expected + " but does not")
+    test.compare(expected, contents, "file expected to exist with content " + expected + " but does not have the expected content")
 
 
 @Given('the user has paused the file sync')
@@ -268,7 +268,7 @@ def step(context):
     activateItem(waitForObjectItem(names.settings_QMenu, "Force sync now"))
 
 
-@Then('a conflict file for "|any|" should exist on the file system with following content')
+@Then('a conflict file for "|any|" should exist on the file system with the following content')
 def step(context, filename):
     expected = "\n".join(context.multiLineText)
 
@@ -294,7 +294,7 @@ def step(context):
     clickButton(waitForObject(names.settings_settingsdialog_toolbutton_Activity_QToolButton))
 
 
-@Then('an conflict warning should be shown for |integer| files')
+@Then('a conflict warning should be shown for |integer| files')
 def step(context, files):
     clickTab(waitForObject(names.stack_QTabWidget), "Not Synced ({})".format(files))
     test.compare(
@@ -315,7 +315,7 @@ def buildConflictedRegex(filename):
         return '%s \(conflicted copy \d{4}-\d{2}-\d{2} \d{6}\)' % (filename)
 
 
-@Then('the table for conflict warning should include file "|any|"')
+@Then('the table of conflict warnings should include file "|any|"')
 def step(context, filename):
     waitForObject(names.settings_OCC_SettingsDialog)
     waitForObjectExists({
@@ -326,7 +326,7 @@ def step(context, filename):
     })
 
 
-@When('user selects the unsynced files tab with |integer| unsynced files')
+@When('the user selects the unsynced files tab with |integer| unsynced files')
 def step(context, number):
     # TODO: find some way to dynamically select the tab name
     # It might take some time for all files to sync except the expected number of unsynced files

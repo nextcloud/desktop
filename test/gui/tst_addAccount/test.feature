@@ -14,7 +14,7 @@ Feature: adding accounts
             | localfolder | %client_sync_path% |
         Then an account should be displayed with the displayname Alice Hansen and host %local_server_hostname%
 
-     Scenario: Adding multiple account
+     Scenario: Adding multiple accounts
         Given user "Brian" has been created on the server with default attributes
         And user "Alice" has been created on the server with default attributes
         And user "Alice" has set up a client with these settings and password "1234":
