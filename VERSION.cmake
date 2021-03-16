@@ -4,6 +4,11 @@ set( MIRALL_VERSION_PATCH 81 )
 set( MIRALL_VERSION_YEAR  2020 )
 set( MIRALL_SOVERSION 0 )
 
+# Minimum supported server version according to https://docs.nextcloud.com/server/latest/admin_manual/release_schedule.html
+set(NEXTCLOUD_SERVER_VERSION_MIN_SUPPORTED_MAJOR 19)
+set(NEXTCLOUD_SERVER_VERSION_MIN_SUPPORTED_MINOR 0)
+set(NEXTCLOUD_SERVER_VERSION_MIN_SUPPORTED_PATCH 0)
+
 if ( NOT DEFINED MIRALL_VERSION_SUFFIX )
     set( MIRALL_VERSION_SUFFIX "git") #e.g. beta1, beta2, rc1
 endif( NOT DEFINED MIRALL_VERSION_SUFFIX )
