@@ -698,11 +698,15 @@ void Application::setupTranslations()
 {
     QStringList uiLanguages = QLocale::system().uiLanguages();
 
+    // the user can also set a locale in the settings, so we need to load the config file
+    ConfigFile cfg;
+
     // allow user and theme to enforce a language via a commandline parameter
     const auto themeEnforcedLocale = Theme::instance()->enforcedLocale();
-    // note that the user enforced language is prioritized over the theme enforced one
+    // note that user-enforced languages are prioritized over the theme enforced one
+    // to make testing easier, --language overrides the setting from the config file
     // as we are prepending to the list of languages, the list passed to the loop must be sorted with ascending priority
-    for (const auto &enforcedLocale : { themeEnforcedLocale, _userEnforcedLanguage }) {
+    for (const auto &enforcedLocale : { themeEnforcedLocale, cfg.uiLanguage(), _userEnforcedLanguage }) {
         if (!enforcedLocale.isEmpty()) {
             uiLanguages.prepend(enforcedLocale);
         }
