@@ -118,7 +118,7 @@ void OCC::HydrationJob::start()
 
 void OCC::HydrationJob::cancel()
 {
-    if (_job == nullptr) {
+    if (!_job) {
         return;
     }
 
