@@ -52,7 +52,7 @@ struct csync_vio_handle_t {
   QString path; // Always ends with '\'
 };
 
-static int _csync_vio_local_stat_mb(const mbchar_t *uri, csync_file_stat_t *buf);
+static int _csync_vio_local_stat_mb(const QString &path, csync_file_stat_t *buf);
 
 csync_vio_handle_t *csync_vio_local_opendir(const QString &name) {
 
@@ -174,12 +174,12 @@ std::unique_ptr<csync_file_stat_t> csync_vio_local_readdir(csync_vio_handle_t *h
     file_stat->size = (handle->ffd.nFileSizeHigh * ((int64_t)(MAXDWORD)+1)) + handle->ffd.nFileSizeLow;
     file_stat->modtime = FileTimeToUnixTime(&handle->ffd.ftLastWriteTime, &rem);
 
-    std::wstring fullPath;
+    QString fullPath;
     fullPath.reserve(handle->path.size() + std::wcslen(handle->ffd.cFileName));
-    fullPath += handle->path.toStdWString(); // path always ends with '\', by construction
-    fullPath += handle->ffd.cFileName;
+    fullPath += handle->path; // path always ends with '\', by construction
+    fullPath += QString::fromWCharArray(handle->ffd.cFileName);
 
-    if (_csync_vio_local_stat_mb(fullPath.data(), file_stat.get()) < 0) {
+    if (_csync_vio_local_stat_mb(fullPath, file_stat.get()) < 0) {
         // Will get excluded by _csync_detect_update.
         file_stat->type = ItemTypeSkip;
     }
@@ -190,12 +190,11 @@ std::unique_ptr<csync_file_stat_t> csync_vio_local_readdir(csync_vio_handle_t *h
 
 int csync_vio_local_stat(const QString &uri, csync_file_stat_t *buf)
 {
-    const std::wstring wuri = uri.toStdWString();
-    int rc = _csync_vio_local_stat_mb(wuri.data(), buf);
+    int rc = _csync_vio_local_stat_mb(uri, buf);
     return rc;
 }
 
-static int _csync_vio_local_stat_mb(const mbchar_t *wuri, csync_file_stat_t *buf)
+static int _csync_vio_local_stat_mb(const QString &path, csync_file_stat_t *buf)
 {
     /* Almost nothing to do since csync_vio_local_readdir already filled up most of the information
        But we still need to fetch the file ID.
@@ -206,18 +205,20 @@ static int _csync_vio_local_stat_mb(const mbchar_t *wuri, csync_file_stat_t *buf
     BY_HANDLE_FILE_INFORMATION fileInfo;
     ULARGE_INTEGER FileIndex;
 
-    h = CreateFileW( wuri, 0, FILE_SHARE_WRITE | FILE_SHARE_READ | FILE_SHARE_DELETE,
+    const auto longPath = OCC::FileSystem::longWinPath(path);
+
+    h = CreateFileW(longPath.toStdWString().data(), 0, FILE_SHARE_WRITE | FILE_SHARE_READ | FILE_SHARE_DELETE,
                      nullptr, OPEN_EXISTING,
                      FILE_ATTRIBUTE_NORMAL | FILE_FLAG_BACKUP_SEMANTICS | FILE_FLAG_OPEN_REPARSE_POINT,
                      nullptr );
     if( h == INVALID_HANDLE_VALUE ) {
-        qCCritical(lcCSyncVIOLocal, "CreateFileW failed on %ls", wuri);
+        qCCritical(lcCSyncVIOLocal) << "CreateFileW failed on" << longPath;
         errno = GetLastError();
         return -1;
     }
 
     if(!GetFileInformationByHandle( h, &fileInfo ) ) {
-        qCCritical(lcCSyncVIOLocal, "GetFileInformationByHandle failed on %ls", wuri);
+        qCCritical(lcCSyncVIOLocal) << "GetFileInformationByHandle failed on" << longPath;
         errno = GetLastError();
         CloseHandle(h);
         return -1;

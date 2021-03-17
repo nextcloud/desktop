@@ -375,7 +375,8 @@ VfsCfApi::HydratationAndPinStates VfsCfApi::computeRecursiveHydrationAndPinState
                 return currentState;
             }
 
-            const auto path = folderPath + '/' + name;
+            // if the folderPath.isEmpty() we don't want to end up having path "/example.file" because this will lead to double slash later, when appending to "SyncFolder/"
+            const auto path = folderPath.isEmpty() ? name : folderPath + '/' + name;
             const auto states = computeRecursiveHydrationAndPinStates(path, currentState.pinState);
             return HydratationAndPinStates {
                 states.pinState,

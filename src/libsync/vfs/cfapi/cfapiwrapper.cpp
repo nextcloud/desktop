@@ -15,6 +15,7 @@
 #include "cfapiwrapper.h"
 
 #include "common/utility.h"
+#include "common/filesystembase.h"
 #include "hydrationjob.h"
 #include "vfs_cfapi.h"
 
@@ -370,6 +371,10 @@ bool OCC::CfApiWrapper::isSparseFile(const QString &path)
 
 OCC::CfApiWrapper::FileHandle OCC::CfApiWrapper::handleForPath(const QString &path)
 {
+    if (path.isEmpty()) {
+        return {};
+    }
+
     if (QFileInfo(path).isDir()) {
         HANDLE handle = nullptr;
         const qint64 openResult = CfOpenFileWithOplock(path.toStdWString().data(), CF_OPEN_FILE_FLAG_NONE, &handle);
@@ -377,10 +382,13 @@ OCC::CfApiWrapper::FileHandle OCC::CfApiWrapper::handleForPath(const QString &pa
             return {handle, [](HANDLE h) { CfCloseHandle(h); }};
         }
     } else {
-        const auto handle = CreateFile(path.toStdWString().data(), 0, 0, nullptr,
+        const auto longpath = OCC::FileSystem::longWinPath(path);
+        const auto handle = CreateFile(longpath.toStdWString().data(), 0, 0, nullptr,
                                        OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
         if (handle != INVALID_HANDLE_VALUE) {
             return {handle, [](HANDLE h) { CloseHandle(h); }};
+        } else {
+            qCCritical(lcCfApiWrapper) << "Could not CreateFile for longpath:" << longpath << "with error:" << GetLastError();
         }
     }
 
