@@ -411,7 +411,7 @@ OCC::CfApiWrapper::PlaceHolderInfo OCC::CfApiWrapper::findPlaceholderInfo(const 
     }
 }
 
-OCC::Result<void, QString> OCC::CfApiWrapper::setPinState(const FileHandle &handle, PinState state, SetPinRecurseMode mode)
+OCC::Result<void, QString> OCC::CfApiWrapper::setPinState(const FileHandle &handle, OCC::PinStateEnums::PinState state, SetPinRecurseMode mode)
 {
     const auto cfState = pinStateToCfPinState(state);
     const auto flags = pinRecurseModeToCfSetPinFlags(mode);
@@ -421,7 +421,7 @@ OCC::Result<void, QString> OCC::CfApiWrapper::setPinState(const FileHandle &hand
         return {};
     } else {
         qCWarning(lcCfApiWrapper) << "Couldn't set pin state" << state << "for" << pathForHandle(handle) << "with recurse mode" << mode << ":" << _com_error(result).ErrorMessage();
-        return "Couldn't set pin state";
+        return { "Couldn't set pin state" };
     }
 }
 
@@ -456,7 +456,7 @@ OCC::Result<void, QString> OCC::CfApiWrapper::createPlaceholderInfo(const QStrin
     const qint64 result = CfCreatePlaceholders(localBasePath.data(), &cloudEntry, 1, CF_CREATE_FLAG_NONE, nullptr);
     if (result != S_OK) {
         qCWarning(lcCfApiWrapper) << "Couldn't create placeholder info for" << path << ":" << _com_error(result).ErrorMessage();
-        return "Couldn't create placeholder info";
+        return { "Couldn't create placeholder info" };
     }
 
     const auto parentHandle = handleForPath(QDir::toNativeSeparators(QFileInfo(path).absolutePath()));
@@ -465,7 +465,7 @@ OCC::Result<void, QString> OCC::CfApiWrapper::createPlaceholderInfo(const QStrin
 
     const auto handle = handleForPath(path);
     if (!setPinState(handle, cfPinStateToPinState(state), NoRecurse)) {
-        return "Couldn't set the default inherit pin state";
+        return { "Couldn't set the default inherit pin state" };
     }
 
     return {};
@@ -478,7 +478,7 @@ OCC::Result<void, QString> OCC::CfApiWrapper::updatePlaceholderInfo(const FileHa
     const auto info = replacesPath.isEmpty() ? findPlaceholderInfo(handle)
                                              : findPlaceholderInfo(handleForPath(replacesPath));
     if (!info) {
-        return "Can't update non existing placeholder info";
+        return { "Can't update non existing placeholder info" };
     }
 
     const auto previousPinState = cfPinStateToPinState(info->PinState);
@@ -498,12 +498,12 @@ OCC::Result<void, QString> OCC::CfApiWrapper::updatePlaceholderInfo(const FileHa
 
     if (result != S_OK) {
         qCWarning(lcCfApiWrapper) << "Couldn't update placeholder info for" << pathForHandle(handle) << ":" << _com_error(result).ErrorMessage();
-        return "Couldn't update placeholder info";
+        return { "Couldn't update placeholder info" };
     }
 
     // Pin state tends to be lost on updates, so restore it every time
     if (!setPinState(handle, previousPinState, NoRecurse)) {
-        return "Couldn't restore pin state";
+        return { "Couldn't restore pin state" };
     }
 
     return {};
@@ -511,6 +511,9 @@ OCC::Result<void, QString> OCC::CfApiWrapper::updatePlaceholderInfo(const FileHa
 
 OCC::Result<void, QString> OCC::CfApiWrapper::convertToPlaceholder(const FileHandle &handle, time_t modtime, qint64 size, const QByteArray &fileId, const QString &replacesPath)
 {
+    Q_UNUSED(modtime);
+    Q_UNUSED(size);
+
     Q_ASSERT(handle);
 
     const auto fileIdentity = QString::fromUtf8(fileId).toStdWString();
@@ -519,7 +522,7 @@ OCC::Result<void, QString> OCC::CfApiWrapper::convertToPlaceholder(const FileHan
     Q_ASSERT(result == S_OK);
     if (result != S_OK) {
         qCCritical(lcCfApiWrapper) << "Couldn't convert to placeholder" << pathForHandle(handle) << ":" << _com_error(result).ErrorMessage();
-        return "Couldn't convert to placeholder";
+        return { "Couldn't convert to placeholder" };
     }
 
     const auto originalHandle = handleForPath(replacesPath);
