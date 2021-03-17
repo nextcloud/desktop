@@ -188,11 +188,9 @@ void CALLBACK cfApiCancelFetchData(const CF_CALLBACK_INFO *callbackInfo, const C
     auto vfs = reinterpret_cast<OCC::VfsCfApi *>(callbackInfo->CallbackContext);
     Q_ASSERT(vfs->metaObject()->className() == QByteArrayLiteral("OCC::VfsCfApi"));
     const auto requestId = QString::number(callbackInfo->TransferKey.QuadPart, 16);
-    const auto cancelHydration = [=] {
-        vfs->cancelHydration(requestId, path);
-    };
 
-    const auto invokeResult = QMetaObject::invokeMethod(vfs, cancelHydration, Qt::QueuedConnection);
+    const auto invokeResult = QMetaObject::invokeMethod(
+        vfs, [=] { vfs->cancelHydration(requestId, path); }, Qt::QueuedConnection);
     if (!invokeResult) {
         qCritical(lcCfApiWrapper) << "Failed to cancel hydration for" << path << requestId;
     }

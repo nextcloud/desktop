@@ -267,11 +267,11 @@ Vfs::AvailabilityResult VfsCfApi::availability(const QString &folderPath)
 void VfsCfApi::cancelHydration(const QString &requestId, const QString & /*path*/)
 {
     // Find matching hydration job for request id
-    auto hydrationJobsIter = std::find_if(d->hydrationJobs.begin(), d->hydrationJobs.begin(), [&](const HydrationJob *job) {
+    const auto hydrationJobsIter = std::find_if(d->hydrationJobs.cbegin(), d->hydrationJobs.cend(), [&](const HydrationJob *job) {
         return job->requestId() == requestId;
     });
 
-    if (hydrationJobsIter == d->hydrationJobs.end()) {
+    if (hydrationJobsIter == d->hydrationJobs.cend()) {
         return;
     }
 
