@@ -83,6 +83,8 @@ public:
         }
     }
 
+    void cancel();
+
     void newReplyHook(QNetworkReply *reply) override;
 
     void setBandwidthManager(BandwidthManager *bwm);
@@ -108,6 +110,7 @@ public:
     void setExpectedContentLength(qint64 size) { _expectedContentLength = size; }
 
 signals:
+    void canceled();
     void finishedSignal();
     void downloadProgress(qint64, qint64);
 private slots:
