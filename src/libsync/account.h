@@ -106,7 +106,7 @@ public:
     QString displayName() const;
 
     /// The internal id of the account.
-    QString id() const;
+    Q_DECL_DEPRECATED_X("Use uuid") QString id() const;
 
     /** Server url of the account */
     void setUrl(const QUrl &url);

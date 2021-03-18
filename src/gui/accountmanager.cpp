@@ -327,12 +327,16 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
 
 AccountStatePtr AccountManager::account(const QString &name)
 {
-    foreach (const auto &acc, _accounts) {
+    for (const auto &acc : _accounts) {
         if (acc->account()->displayName() == name) {
             return acc;
         }
     }
     return AccountStatePtr();
+}
+
+AccountStatePtr AccountManager::account(const QUuid uuid) {
+    return _accounts.value(uuid);
 }
 
 AccountState *AccountManager::addAccount(const AccountPtr &newAccount)
@@ -416,8 +420,7 @@ void AccountManager::addAccountState(AccountState *accountState)
         &Account::wantsAccountSaved,
         this, &AccountManager::saveAccount);
 
-    AccountStatePtr ptr(accountState);
-    _accounts << ptr;
+    _accounts.insert(accountState->account()->uuid(), AccountStatePtr{accountState});
     emit accountAdded(accountState);
 }
 }

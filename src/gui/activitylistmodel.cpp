@@ -196,9 +196,7 @@ void ActivityListModel::combineActivityLists()
 
 void ActivityListModel::fetchMore(const QModelIndex &)
 {
-    QList<AccountStatePtr> accounts = AccountManager::instance()->accounts();
-
-    foreach (const AccountStatePtr &asp, accounts) {
+    for (const AccountStatePtr &asp : AccountManager::instance()->accounts()) {
         if (!_activityLists.contains(asp.data()) && asp->isConnected()) {
             _activityLists[asp.data()] = ActivityList();
             startFetchJob(asp.data());

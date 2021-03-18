@@ -938,7 +938,7 @@ void ownCloudGui::slotLogout()
     auto list = AccountManager::instance()->accounts();
     if (auto account = qvariant_cast<AccountStatePtr>(sender()->property(propertyAccountC))) {
         list.clear();
-        list.append(account);
+        list.insert(account->account()->uuid(), account);
     }
 
     foreach (const auto &ai, list) {

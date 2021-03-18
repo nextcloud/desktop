@@ -55,15 +55,20 @@ public:
     void shutdown();
 
     /**
-     * Return a list of all accounts.
-     * (this is a list of QSharedPointer for internal reasons, one should normally not keep a copy of them)
+     * Return a map of all accounts.
+     * (this is a map of QSharedPointer for internal reasons, one should normally not keep a copy of them)
      */
-    const QList<AccountStatePtr> &accounts() { return _accounts; }
+    const QMap<QUuid, AccountStatePtr> &accounts() { return _accounts; }
 
     /**
      * Return the account state pointer for an account identified by its display name
      */
-    AccountStatePtr account(const QString &name);
+    Q_DECL_DEPRECATED_X("Please use the uuid to specify the account") AccountStatePtr account(const QString &name);
+
+    /**
+     * Return the account state pointer for an account identified by its display name
+     */
+    AccountStatePtr account(const QUuid uuid);
 
     /**
      * Delete the AccountState
@@ -110,7 +115,7 @@ Q_SIGNALS:
 
 private:
     AccountManager() {}
-    QList<AccountStatePtr> _accounts;
+    QMap<QUuid, AccountStatePtr> _accounts;
     /// Account ids from settings that weren't read
     QSet<QString> _additionalBlockedAccountIds;
 };
