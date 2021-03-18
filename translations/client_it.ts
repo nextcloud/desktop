@@ -1335,12 +1335,12 @@ Se è stato un errore e decidi di tenere i file, saranno sincronizzati nuovament
         <translation>La cartella esiste già</translation>
     </message>
     <message>
-        <location filename="../src/gui/foldercreationdialog.cpp" line="73"/>
+        <location filename="../src/gui/foldercreationdialog.cpp" line="76"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../src/gui/foldercreationdialog.cpp" line="73"/>
+        <location filename="../src/gui/foldercreationdialog.cpp" line="76"/>
         <source>Could not create a folder! Check your write permissions.</source>
         <translation>Impossibile creare una cartella! Controlla i tuoi permessi di scrittura.</translation>
     </message>
@@ -4978,7 +4978,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/gui/foldercreationdialog.cpp" line="38"/>
+        <location filename="../src/gui/foldercreationdialog.cpp" line="41"/>
         <source>New folder</source>
         <translation>Nuova cartella</translation>
     </message>

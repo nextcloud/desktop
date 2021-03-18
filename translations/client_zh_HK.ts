@@ -1333,12 +1333,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>文件夾已存在</translation>
     </message>
     <message>
-        <location filename="../src/gui/foldercreationdialog.cpp" line="73"/>
+        <location filename="../src/gui/foldercreationdialog.cpp" line="76"/>
         <source>Error</source>
         <translation>錯誤</translation>
     </message>
     <message>
-        <location filename="../src/gui/foldercreationdialog.cpp" line="73"/>
+        <location filename="../src/gui/foldercreationdialog.cpp" line="76"/>
         <source>Could not create a folder! Check your write permissions.</source>
         <translation>無法創建資料夾！ 檢查您的寫入權限。</translation>
     </message>
@@ -4490,7 +4490,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="159"/>
         <source>You have been logged out of %1 as user %2. Please login again.</source>
-        <translation type="unfinished"/>
+        <translation>您已以用戶 %2 的身份退出 %1。請再次登錄。</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="159"/>
@@ -4987,7 +4987,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/gui/foldercreationdialog.cpp" line="38"/>
+        <location filename="../src/gui/foldercreationdialog.cpp" line="41"/>
         <source>New folder</source>
         <translation>新資料夾</translation>
     </message>

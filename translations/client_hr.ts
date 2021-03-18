@@ -1330,12 +1330,12 @@ Ako ste slučajno odabrali ovu radnju i želite zadržati svoje datoteke, ponovn
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/foldercreationdialog.cpp" line="73"/>
+        <location filename="../src/gui/foldercreationdialog.cpp" line="76"/>
         <source>Error</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/foldercreationdialog.cpp" line="73"/>
+        <location filename="../src/gui/foldercreationdialog.cpp" line="76"/>
         <source>Could not create a folder! Check your write permissions.</source>
         <translation type="unfinished"/>
     </message>
@@ -4984,7 +4984,7 @@ Ovo je novi, eksperimentalni način rada. Ako se odlučite aktivirati ga, prijav
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/gui/foldercreationdialog.cpp" line="38"/>
+        <location filename="../src/gui/foldercreationdialog.cpp" line="41"/>
         <source>New folder</source>
         <translation type="unfinished"/>
     </message>

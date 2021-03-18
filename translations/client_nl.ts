@@ -1332,12 +1332,12 @@ Als dit een ongelukje was en je de bestanden wilt behouden, worden ze opnieuw ge
         <translation>Map bestaat al</translation>
     </message>
     <message>
-        <location filename="../src/gui/foldercreationdialog.cpp" line="73"/>
+        <location filename="../src/gui/foldercreationdialog.cpp" line="76"/>
         <source>Error</source>
         <translation>Fout</translation>
     </message>
     <message>
-        <location filename="../src/gui/foldercreationdialog.cpp" line="73"/>
+        <location filename="../src/gui/foldercreationdialog.cpp" line="76"/>
         <source>Could not create a folder! Check your write permissions.</source>
         <translation>Kon map niet aanmaken! Controleer je schrijfrechten.</translation>
     </message>
@@ -4497,7 +4497,7 @@ Fout bij instellen pin status
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="159"/>
         <source>You have been logged out of %1 as user %2. Please login again.</source>
-        <translation type="unfinished"/>
+        <translation>Je bent als gebruiker %2 uitgelogd van %1. Log opnieuw in.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="159"/>
@@ -4994,7 +4994,7 @@ Fout bij instellen pin status
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/gui/foldercreationdialog.cpp" line="38"/>
+        <location filename="../src/gui/foldercreationdialog.cpp" line="41"/>
         <source>New folder</source>
         <translation>Nieuwe map</translation>
     </message>

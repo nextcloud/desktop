@@ -1333,12 +1333,12 @@ Pokud to byla pouze chyba a chcete si tyto soubory ponechat, budou ze serverem z
         <translation>Složka už existuje</translation>
     </message>
     <message>
-        <location filename="../src/gui/foldercreationdialog.cpp" line="73"/>
+        <location filename="../src/gui/foldercreationdialog.cpp" line="76"/>
         <source>Error</source>
         <translation>Chyba</translation>
     </message>
     <message>
-        <location filename="../src/gui/foldercreationdialog.cpp" line="73"/>
+        <location filename="../src/gui/foldercreationdialog.cpp" line="76"/>
         <source>Could not create a folder! Check your write permissions.</source>
         <translation>Složku nelze vytvořit! Zkontrolujte svá práva k zápisu.</translation>
     </message>
@@ -4987,7 +4987,7 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/gui/foldercreationdialog.cpp" line="38"/>
+        <location filename="../src/gui/foldercreationdialog.cpp" line="41"/>
         <source>New folder</source>
         <translation>Nová složka</translation>
     </message>
