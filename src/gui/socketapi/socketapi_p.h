@@ -150,6 +150,9 @@ public:
     const QJsonObject &arguments() const { return _arguments; }
     QByteArray command() const { return _command; }
 
+    QString warning() const;
+    void setWarning(const QString &warning);
+
 Q_SIGNALS:
     void finished() const;
 
@@ -160,6 +163,7 @@ private:
     const QByteArray _command;
     QString _jobId;
     QJsonObject _arguments;
+    QString _warning;
 };
 }
 
