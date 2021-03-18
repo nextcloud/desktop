@@ -319,29 +319,28 @@ bool ExcludedFiles::isExcluded(
     const QString &basePath,
     bool excludeHidden) const
 {
+    const QFileInfo fileInfo(filePath);
     if (!filePath.startsWith(basePath, Utility::fsCasePreserving() ? Qt::CaseInsensitive : Qt::CaseSensitive)) {
         // Mark paths we're not responsible for as excluded...
         return true;
     }
 
     if (excludeHidden) {
-        QString path = filePath;
+        QFileInfo fi = fileInfo;
         // Check all path subcomponents, but to *not* check the base path:
         // We do want to be able to sync with a hidden folder as the target.
-        while (path.size() > basePath.size()) {
-            QFileInfo fi(path);
+        while (fi.filePath().size() > basePath.size()) {
             if (fi.isHidden() || fi.fileName().startsWith(QLatin1Char('.'))) {
                 return true;
             }
 
             // Get the parent path
-            path = fi.absolutePath();
+            fi = {fi.absolutePath()};
         }
     }
 
-    QFileInfo fi(filePath);
     ItemType type = ItemTypeFile;
-    if (fi.isDir()) {
+    if (fileInfo.isDir()) {
         type = ItemTypeDirectory;
     }
 
