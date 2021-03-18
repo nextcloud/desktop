@@ -1350,8 +1350,22 @@ void SocketApiJobV2::failure(const QString &error) const
 
 void SocketApiJobV2::doFinish(const QJsonObject &obj) const
 {
-    _socketListener->sendMessage(_command + QStringLiteral("_RESULT:") + QJsonDocument({ { QStringLiteral("id"), _jobId }, { QStringLiteral("arguments"), obj } }).toJson(QJsonDocument::Compact));
+    QJsonObject data { { QStringLiteral("id"), _jobId }, { QStringLiteral("arguments"), obj } };
+    if (!_warning.isEmpty()) {
+        data[QStringLiteral("warning")] = _warning;
+    }
+    _socketListener->sendMessage(_command + QStringLiteral("_RESULT:") + QJsonDocument(data).toJson(QJsonDocument::Compact));
     Q_EMIT finished();
+}
+
+QString SocketApiJobV2::warning() const
+{
+    return _warning;
+}
+
+void SocketApiJobV2::setWarning(const QString &warning)
+{
+    _warning = warning;
 }
 
 } // namespace OCC
