@@ -1334,12 +1334,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>Mapa že obstaja</translation>
     </message>
     <message>
-        <location filename="../src/gui/foldercreationdialog.cpp" line="73"/>
+        <location filename="../src/gui/foldercreationdialog.cpp" line="76"/>
         <source>Error</source>
         <translation>Napaka</translation>
     </message>
     <message>
-        <location filename="../src/gui/foldercreationdialog.cpp" line="73"/>
+        <location filename="../src/gui/foldercreationdialog.cpp" line="76"/>
         <source>Could not create a folder! Check your write permissions.</source>
         <translation>Ni mogoče ustvariti mape! Preverite dovoljenja za pisanje.</translation>
     </message>
@@ -4986,7 +4986,7 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/gui/foldercreationdialog.cpp" line="38"/>
+        <location filename="../src/gui/foldercreationdialog.cpp" line="41"/>
         <source>New folder</source>
         <translation>Nova mapa</translation>
     </message>
