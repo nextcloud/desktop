@@ -578,26 +578,6 @@ QString Utility::makeConflictFileName(
     return conflictFileName;
 }
 
-bool Utility::isConflictFile(const char *name)
-{
-    const char *bname = std::strrchr(name, '/');
-    if (bname) {
-        bname += 1;
-    } else {
-        bname = name;
-    }
-
-    // Old pattern
-    if (std::strstr(bname, "_conflict-"))
-        return true;
-
-    // New pattern
-    if (std::strstr(bname, "(conflicted copy"))
-        return true;
-
-    return false;
-}
-
 bool Utility::isConflictFile(const QString &name)
 {
     auto bname = name.midRef(name.lastIndexOf(QLatin1Char('/')) + 1);
