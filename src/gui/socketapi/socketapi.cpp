@@ -847,10 +847,11 @@ void SocketApi::command_V2_LIST_ACCOUNTS(const QSharedPointer<SocketApiJobV2> &j
 {
     QJsonArray out;
     for (auto acc : AccountManager::instance()->accounts()) {
-        // TODO: Use uuid once https://github.com/owncloud/client/pull/8397 is merged
-        out << QJsonObject({ { "name", acc->account()->displayName() }, { "id", acc->account()->id() } });
+        out << QJsonObject({ { QStringLiteral("name"), acc->account()->displayName() },
+            { QStringLiteral("id"), acc->account()->id() },
+            { QStringLiteral("uuid"), acc->account()->uuid().toString(QUuid::WithoutBraces) } });
     }
-    job->success({ { "accounts", out } });
+    job->success({ { QStringLiteral("accounts"), out } });
 }
 
 void SocketApi::command_V2_UPLOAD_FILES_FROM(const QSharedPointer<SocketApiJobV2> &job) const

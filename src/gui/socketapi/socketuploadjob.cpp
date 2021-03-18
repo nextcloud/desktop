@@ -37,9 +37,15 @@ SocketUploadJob::SocketUploadJob(const QSharedPointer<SocketApiJobV2> &job)
     }
 
     _pattern = job->arguments()[QLatin1String("pattern")].toString();
-    // TODO: use uuid
     const auto accname = job->arguments()[QLatin1String("account")][QLatin1String("name")].toString();
-    auto account = AccountManager::instance()->account(accname);
+    const auto accUUID = QUuid::fromString(job->arguments()[QLatin1String("account")][QLatin1String("uuid")].toString());
+    AccountStatePtr account;
+    if (accUUID.isNull()) {
+        job->setWarning("Using the name as identifier is deprecated, please use the uuid");
+        account = AccountManager::instance()->account(accname);
+    } else {
+        account = AccountManager::instance()->account(accUUID);
+    }
 
     if (!QFileInfo(_localPath).isAbsolute()) {
         job->failure(QStringLiteral("Local path must be a an absolute path"));
