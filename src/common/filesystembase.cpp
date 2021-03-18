@@ -496,7 +496,7 @@ bool FileSystem::isJunction(const QString &filename)
 #ifdef Q_OS_WIN
 QString FileSystem::pathtoUNC(const QString &_str)
 {
-    OC_ASSERT(QFileInfo(_str).isAbsolute());
+    Q_ASSERT(QFileInfo(_str).isAbsolute());
     if (_str.isEmpty()) {
         return _str;
     }
