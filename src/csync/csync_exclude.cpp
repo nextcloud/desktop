@@ -320,6 +320,9 @@ bool ExcludedFiles::isExcluded(
     bool excludeHidden) const
 {
     const QFileInfo fileInfo(filePath);
+    if (!fileInfo.exists(filePath)) {
+        return true;
+    }
     if (!filePath.startsWith(basePath, Utility::fsCasePreserving() ? Qt::CaseInsensitive : Qt::CaseSensitive)) {
         // Mark paths we're not responsible for as excluded...
         return true;
