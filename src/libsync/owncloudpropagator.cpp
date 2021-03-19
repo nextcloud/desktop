@@ -41,7 +41,6 @@
 #include <QTimer>
 #include <QObject>
 #include <QTimerEvent>
-#include <QRegularExpression>
 #include <qmath.h>
 
 namespace OCC {
@@ -379,26 +378,6 @@ void OwncloudPropagator::start(SyncFileItemVector &&items)
      * Each directory is a PropagateDirectory job, which contains the files in it.
      * In order to do that we loop over the items. (which are sorted by destination)
      * When we enter a directory, we can create the directory job and push it on the stack. */
-
-    const auto regex = syncOptions().fileRegex();
-    if (regex.isValid()) {
-        QSet<QStringRef> names;
-        for (auto &i : items) {
-            if (regex.match(i->_file).hasMatch()) {
-                int index = -1;
-                QStringRef ref;
-                do {
-                    ref = i->_file.midRef(0, index);
-                    names.insert(ref);
-                    index = ref.lastIndexOf(QLatin1Char('/'));
-                } while (index > 0);
-            }
-        }
-        items.erase(std::remove_if(items.begin(), items.end(), [&names](auto i) {
-            return !names.contains(QStringRef { &i->_file });
-        }),
-            items.end());
-    }
 
     _rootJob.reset(new PropagateRootDirectory(this));
     QStack<QPair<QString /* directory name */, PropagateDirectory * /* job */>> directories;
