@@ -14,6 +14,7 @@ Summary
 * Bugfix - Fix missing permission for newly created folder: [#8076](https://github.com/owncloud/client/pull/8076)
 * Bugfix - Don't recommend non default sync option: [#8317](https://github.com/owncloud/client/issues/8317)
 * Bugfix - Fix brandings with space in the name: [#8482](https://github.com/owncloud/client/pull/8482)
+* Bugfix - We fixed an issue with the promptDeleteAllFiles setting: [#8484](https://github.com/owncloud/client/issues/8484)
 * Change - Don't ask the user to switch to http: [#8231](https://github.com/owncloud/client/issues/8231)
 * Change - Remove support for http redirects: [#8293](https://github.com/owncloud/client/pull/8293)
 * Change - Ignore the desktop.ini file in every directory, not only in top dir: [#8298](https://github.com/owncloud/client/issues/8298)
@@ -66,6 +67,12 @@ Details
    We fix a build system issue with brandings containing spaces.
 
    https://github.com/owncloud/client/pull/8482
+
+* Bugfix - We fixed an issue with the promptDeleteAllFiles setting: [#8484](https://github.com/owncloud/client/issues/8484)
+
+   When promptDeleteAllFiles=false is set the client will now correctly delete all files.
+
+   https://github.com/owncloud/client/issues/8484
 
 * Change - Don't ask the user to switch to http: [#8231](https://github.com/owncloud/client/issues/8231)
 
