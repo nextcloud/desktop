@@ -155,7 +155,7 @@ def executeStepThroughMiddleware(context, step):
     body = {
     "step": step}
     params = json.dumps(body).encode('utf8')
-        
+
     req = urllib.request.Request(
         context.userData['middlewareUrl'] + 'execute',
         data=params,
@@ -185,7 +185,7 @@ def step(context, receiver, resource, permissions):
         clickButton(waitForObject(names.scrollArea_permissionsEdit_QCheckBox))
     if ('share' in permissionsList and shareChecked == False) or ('share' not in permissionsList and shareChecked == True):
         clickButton(waitForObject(names.scrollArea_permissionShare_QCheckBox))
-    
+
     clickButton(waitForObject(names.sharingDialog_Close_QPushButton))
 
 @Then('user "|any|" should be listed in the collaborators list for file "|any|" with permissions "|any|" on the client-UI')
@@ -194,7 +194,7 @@ def step(context, receiver, resource, permissions):
     socketConnect = syncstate.SocketConnect()
     socketConnect.sendCommand("SHARE:" + resource + "\n")
     permissionsList = permissions.split(',')
-    
+
     test.compare(str(waitForObjectExists(names.scrollArea_sharedWith_QLabel).text), receiver)
     test.compare(waitForObjectExists(names.scrollArea_permissionsEdit_QCheckBox).checked, ('edit' in permissionsList))
     test.compare(waitForObjectExists(names.scrollArea_permissionShare_QCheckBox).checked, ('share' in permissionsList))
@@ -332,3 +332,21 @@ def step(context, number):
     # It might take some time for all files to sync except the expected number of unsynced files
     snooze(10)
     clickTab(waitForObject(names.stack_QTabWidget), "Not Synced ({})".format(number))
+
+@When('the user opens the public links dialog of "|any|" using the client-UI')
+def step(context, resource):
+    resource = substituteInLineCodes(context, resource).replace('//','/')
+    waitFor(lambda: isFileSynced(resource), context.userData['clientSyncTimeout'] * 1000)
+    waitFor(lambda: shareResource(resource), context.userData['clientSyncTimeout'] * 1000)
+    mouseClick(waitForObject(names.qt_tabwidget_tabbar_Public_Links_TabItem), 0, 0, Qt.NoModifier, Qt.LeftButton)
+
+@When("the user toggles the password protection using the client-UI")
+def step(context):
+    clickButton(waitForObject(names.oCC_ShareLinkWidget_checkBox_password_QCheckBox))
+
+@Then('the progress indicator should not be visible in the client-UI')
+def step(context):
+    test.compare(
+        waitForObjectExists(names.oCC_ShareLinkWidget_checkBox_password_QProgressIndicator).visible,
+        False
+    )

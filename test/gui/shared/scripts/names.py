@@ -84,3 +84,9 @@ o_treeWidget_Conflict_Server_version_downloaded_local_copy_renamed_and_not_uploa
 qt_tabwidget_stackedwidget_OCC_ProtocolWidget_OCC_ProtocolWidget = {"container": stack_qt_tabwidget_stackedwidget_QStackedWidget, "name": "OCC__ProtocolWidget", "type": "OCC::ProtocolWidget", "visible": 1}
 oCC_ProtocolWidget_treeWidget_QTreeWidget = {"container": qt_tabwidget_stackedwidget_OCC_ProtocolWidget_OCC_ProtocolWidget, "name": "_treeWidget", "type": "QTreeWidget", "visible": 1}
 o_treeWidget_lorem_txt_QModelIndex = {"column": 1, "container": oCC_ProtocolWidget_treeWidget_QTreeWidget, "text": "lorem.txt", "type": "QModelIndex"}
+sharingDialog_qt_tabwidget_tabbar_QTabBar = {"name": "qt_tabwidget_tabbar", "type": "QTabBar", "visible": 1, "window": sharingDialog_OCC_ShareDialog}
+qt_tabwidget_tabbar_Public_Links_TabItem = {"container": sharingDialog_qt_tabwidget_tabbar_QTabBar, "text": "Public Links", "type": "TabItem"}
+qt_tabwidget_stackedwidget_OCC_ShareLinkWidget_OCC_ShareLinkWidget = {"container": sharingDialog_qt_tabwidget_stackedwidget_QStackedWidget, "name": "OCC__ShareLinkWidget", "type": "OCC::ShareLinkWidget", "visible": 1}
+oCC_ShareLinkWidget_checkBox_password_QCheckBox = {"container": qt_tabwidget_stackedwidget_OCC_ShareLinkWidget_OCC_ShareLinkWidget, "name": "checkBox_password", "type": "QCheckBox", "visible": 1}
+oCC_ShareLinkWidget_widget_editing_QWidget = {"container": qt_tabwidget_stackedwidget_OCC_ShareLinkWidget_OCC_ShareLinkWidget, "name": "widget_editing", "type": "QWidget", "visible": 1}
+oCC_ShareLinkWidget_checkBox_password_QProgressIndicator = {"aboveWidget": oCC_ShareLinkWidget_widget_editing_QWidget, "container": qt_tabwidget_stackedwidget_OCC_ShareLinkWidget_OCC_ShareLinkWidget, "leftWidget": oCC_ShareLinkWidget_checkBox_password_QCheckBox, "type": "QProgressIndicator", "unnamed": 1, "visible": 1}
