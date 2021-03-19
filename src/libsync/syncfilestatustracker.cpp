@@ -20,6 +20,7 @@
 #include "common/asserts.h"
 #include "csync_exclude.h"
 
+#include <QFileInfo>
 #include <QLoggingCategory>
 
 namespace OCC {
@@ -130,6 +131,12 @@ SyncFileStatus SyncFileStatusTracker::fileStatus(const QString &relativePath)
         return resolveSyncAndErrorStatus(QString(), NotShared);
     }
 
+    const QString absolutePath = _syncEngine->localPath() + relativePath;
+
+    if (!QFileInfo::exists(absolutePath)) {
+        return SyncFileStatus(SyncFileStatus::StatusNone);
+    }
+
     // The SyncEngine won't notify us at all for CSYNC_FILE_SILENTLY_EXCLUDED
     // and CSYNC_FILE_EXCLUDE_AND_REMOVE excludes. Even though it's possible
     // that the status of CSYNC_FILE_EXCLUDE_LIST excludes will change if the user
@@ -138,7 +145,7 @@ SyncFileStatus SyncFileStatusTracker::fileStatus(const QString &relativePath)
     // it's an acceptable compromize to treat all exclude types the same.
     // Update: This extra check shouldn't hurt even though silently excluded files
     // are now available via slotAddSilentlyExcluded().
-    if (_syncEngine->excludedFiles().isExcluded(_syncEngine->localPath() + relativePath,
+    if (_syncEngine->excludedFiles().isExcluded(absolutePath,
             _syncEngine->localPath(),
             _syncEngine->ignoreHiddenFiles())) {
         return SyncFileStatus(SyncFileStatus::StatusExcluded);
