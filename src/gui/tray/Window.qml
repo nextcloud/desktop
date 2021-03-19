@@ -99,7 +99,9 @@ Window {
         anchors.fill:   parent
         radius:         Style.trayWindowRadius
         border.width:   Style.trayWindowBorderWidth
-        border.color:   Style.menuBorder
+        border.color:   Style.windowText
+
+        color: Style.window
 
         Accessible.role: Accessible.Grouping
         Accessible.name: qsTr("Nextcloud desktop main dialog")
@@ -161,8 +163,9 @@ Window {
                             closePolicy: Menu.CloseOnPressOutsideParent | Menu.CloseOnEscape
 
                             background: Rectangle {
-                                border.color: Style.menuBorder
+                                border.color: Style.windowText
                                 radius: Style.currentAccountButtonRadius
+                                color: Style.window
                             }
 
                             Accessible.role: PopupMenu
@@ -194,7 +197,7 @@ Window {
                                     Rectangle {
                                         anchors.fill: parent
                                         anchors.margins: 1
-                                        color: parent.parent.hovered ? Style.lightHover : "transparent"
+                                        color: parent.parent.hovered ? Style.button : "transparent"
                                     }
                                 }
 
@@ -203,16 +206,24 @@ Window {
                                     spacing: 0
 
                                     Image {
+                                        id: addAccountImage
                                         Layout.leftMargin: 12
                                         verticalAlignment: Qt.AlignCenter
                                         source: "qrc:///client/theme/black/add.svg"
                                         sourceSize.width: Style.headerButtonIconSize
                                         sourceSize.height: Style.headerButtonIconSize
                                     }
+
+                                    ColorOverlay {
+                                        anchors.fill: addAccountImage
+                                        source: addAccountImage
+                                        color: Style.windowText
+                                    }
+
                                     Label {
                                         Layout.leftMargin: 14
                                         text: qsTr("Add account")
-                                        color: "black"
+                                        color: Style.windowText
                                         font.pixelSize: Style.topLinePixelSize
                                     }
                                     // Filler on the right
@@ -231,7 +242,7 @@ Window {
                             MenuSeparator {
                                 contentItem: Rectangle {
                                     implicitHeight: 1
-                                    color: Style.menuBorder
+                                    color: Style.windowText
                                 }
                             }
 
@@ -241,13 +252,19 @@ Window {
                                 hoverEnabled: true
                                 onClicked: Systray.pauseResumeSync()
 
+                                contentItem: Label {
+                                    text: syncPauseButton.text
+                                    font.pixelSize: Style.topLinePixelSize
+                                    color: Style.windowText
+                                }
+
                                 background: Item {
                                     height: parent.height
                                     width: parent.menu.width
                                     Rectangle {
                                         anchors.fill: parent
                                         anchors.margins: 1
-                                        color: parent.parent.hovered ? Style.lightHover : "transparent"
+                                        color: parent.parent.hovered ? Style.button : "transparent"
                                     }
                                 }
 
@@ -263,13 +280,19 @@ Window {
                                 hoverEnabled: true
                                 onClicked: Systray.openSettings()
 
+                                contentItem: Label {
+                                    text: settingsButton.text
+                                    font.pixelSize: Style.topLinePixelSize
+                                    color: Style.windowText
+                                }
+
                                 background: Item {
                                     height: parent.height
                                     width: parent.menu.width
                                     Rectangle {
                                         anchors.fill: parent
                                         anchors.margins: 1
-                                        color: parent.parent.hovered ? Style.lightHover : "transparent"
+                                        color: parent.parent.hovered ? Style.button : "transparent"
                                     }
                                 }
 
@@ -280,10 +303,14 @@ Window {
 
                             MenuItem {
                                 id: exitButton
-                                text: qsTr("Exit");
-                                font.pixelSize: Style.topLinePixelSize
                                 hoverEnabled: true
                                 onClicked: Systray.shutdown()
+                                text: qsTr("Exit")
+                                contentItem: Label {
+                                    text: exitButton.text
+                                    font.pixelSize: Style.topLinePixelSize
+                                    color: Style.windowText
+                                }
 
                                 background: Item {
                                     height: parent.height
@@ -291,7 +318,7 @@ Window {
                                     Rectangle {
                                         anchors.fill: parent
                                         anchors.margins: 1
-                                        color: parent.parent.hovered ? Style.lightHover : "transparent"
+                                        color: parent.parent.hovered ? Style.button : "transparent"
                                     }
                                 }
 
@@ -461,7 +488,8 @@ Window {
                         closePolicy: Menu.CloseOnPressOutsideParent | Menu.CloseOnEscape
 
                         background: Rectangle {
-                            border.color: Style.menuBorder
+                            color: Style.window
+                            border.color: Style.windowText
                             radius: 2
                         }
 
@@ -475,12 +503,37 @@ Window {
                             onObjectRemoved: appsMenu.removeItem(object)
                             delegate: MenuItem {
                                 id: appEntry
-                                text: appName
+                                /* text: appName */
                                 font.pixelSize: Style.topLinePixelSize
-                                icon.source: appIconUrl
+                                /* icon.source: appIconUrl */
+                                /* icon.color: Style.windowText */
                                 width: contentItem.implicitWidth + leftPadding + rightPadding
+                                height: 40
                                 onTriggered: UserAppsModel.openAppUrl(appUrl)
                                 hoverEnabled: true
+
+                                indicator: Item {
+                                    implicitWidth: 40
+                                    implicitHeight: 40
+                                    Image {
+                                        anchors.centerIn: parent
+                                        cache: true
+                                        sourceSize.height: 30
+                                        sourceSize.width: 30
+                                        source: appIconUrl
+                                    }
+                                }
+
+                                contentItem: Text {
+                                    leftPadding: appEntry.indicator.width
+                                    text: appName
+                                    font: appEntry.font
+                                    color: Style.windowText
+                                    horizontalAlignment: Text.AlignLeft
+                                    verticalAlignment: Text.AlignVCenter
+                                    anchors.centerIn: parent
+                                    elide: Text.ElideRight
+                                }
 
                                 background: Item {
                                     width: appsMenu.width
@@ -489,7 +542,7 @@ Window {
                                     Rectangle {
                                         anchors.fill: parent
                                         anchors.margins: 1
-                                        color: appEntry.hovered ? Style.lightHover : "transparent"
+                                        color: appEntry.hovered ? Style.button : "transparent"
                                     }
                                 }
 
@@ -551,7 +604,7 @@ Window {
 
                     Rectangle {
                         anchors.fill: parent
-                        color: (parent.containsMouse ? Style.lightHover : "transparent")
+                        color: (parent.containsMouse ? Style.button : "transparent")
                     }
                 }
 
@@ -569,6 +622,13 @@ Window {
                     sourceSize.width: 64
                 }
 
+                ColorOverlay {
+                    visible: !isColoredIcon
+                    anchors.fill: activityIcon
+                    source: activityIcon
+                    color: Style.windowText
+                }
+
                 Column {
                     id: activityTextColumn
                     anchors.left: activityIcon.right
@@ -582,7 +642,7 @@ Window {
                         width: parent.width
                         elide: Text.ElideRight
                         font.pixelSize: Style.topLinePixelSize
-                        color: activityTextTitleColor
+                        color: Style.windowText
                     }
 
                     Text {
@@ -595,6 +655,7 @@ Window {
                         width: parent.width
                         elide: Text.ElideRight
                         font.pixelSize: Style.subLinePixelSize
+                        color: Style.windowText
                     }
 
                     Text {
@@ -604,7 +665,8 @@ Window {
                         width: parent.width
                         elide: Text.ElideRight
                         font.pixelSize: Style.subLinePixelSize
-                        color: "#808080"
+                        color: Style.windowText
+                        opacity: 0.5
                     }
 
                     ToolTip {
@@ -778,9 +840,9 @@ Window {
                         visible: (path === "") ? false : true
                         display: AbstractButton.IconOnly
                         icon.source: "qrc:///client/theme/share.svg"
-                        icon.color: "transparent"
+                        icon.color: Style.windowText
                         background: Rectangle {
-                            color: parent.hovered ? Style.lightHover : "transparent"
+                            color: parent.hovered ? Style.button : "transparent"
                         }
                         ToolTip.visible: hovered
                         ToolTip.delay: 1000

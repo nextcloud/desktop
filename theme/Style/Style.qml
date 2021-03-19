@@ -5,12 +5,16 @@ import QtQuick 2.5
 
 import com.nextcloud.desktopclient 1.0
 
-QtObject {
+Item {
+    SystemPalette { id: activePalette; colorGroup: SystemPalette.Active }
     // Colors
+    property color window: activePalette.window
+    property color windowText: activePalette.windowText
+    property color button: activePalette.button
+
     property color ncBlue:      Theme.wizardHeaderBackgroundColor
     property color ncTextColor: Theme.wizardHeaderTitleColor
     property color lightHover:  "#f7f7f7"
-    property color menuBorder:  "#bdbdbd"
 
     // Fonts
     // We are using pixel size because this is cross platform comparable, point size isn't

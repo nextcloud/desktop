@@ -59,6 +59,7 @@ QHash<int, QByteArray> ActivityListModel::roleNames() const
     roles[ActionTextColorRole] = "activityTextTitleColor";
     roles[ObjectTypeRole] = "objectType";
     roles[PointInTimeRole] = "dateTime";
+    roles[IsColoredIcon] = "isColoredIcon";
     return roles;
 }
 
@@ -75,6 +76,13 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
         return QVariant();
 
     switch (role) {
+    case IsColoredIcon: {
+        if (a._fileAction == "file_created" || a._fileAction == "file_deleted") {
+            return true;
+        }
+        return false;
+    }
+
     case DisplayPathRole:
         if (!a._file.isEmpty()) {
             auto folder = FolderMan::instance()->folder(a._folder);

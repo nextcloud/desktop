@@ -40,22 +40,24 @@ class ActivityListModel : public QAbstractListModel
     Q_OBJECT
 public:
     enum DataRole {
-    ActionIconRole = Qt::UserRole + 1,
-    UserIconRole,
-    AccountRole,
-    ObjectTypeRole,
-    ActionsLinksRole,
-    ActionTextRole,
-    ActionTextColorRole,
-    ActionRole,
-    MessageRole,
-    DisplayPathRole,
-    PathRole,
-    AbsolutePathRole,
-    LinkRole,
-    PointInTimeRole,
-    AccountConnectedRole,
-    SyncFileStatusRole};
+        ActionIconRole = Qt::UserRole + 1,
+        UserIconRole,
+        AccountRole,
+        ObjectTypeRole,
+        ActionsLinksRole,
+        ActionTextRole,
+        ActionTextColorRole,
+        ActionRole,
+        MessageRole,
+        DisplayPathRole,
+        PathRole,
+        AbsolutePathRole,
+        LinkRole,
+        PointInTimeRole,
+        AccountConnectedRole,
+        SyncFileStatusRole,
+        IsColoredIcon
+    };
 
     explicit ActivityListModel(AccountState *accountState, QObject* parent = nullptr);
 

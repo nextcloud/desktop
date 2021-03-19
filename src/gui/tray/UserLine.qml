@@ -35,7 +35,7 @@ MenuItem {
                     anchors.fill: parent
                     hoverEnabled: true
                     onContainsMouseChanged: {
-                        accountStateIndicatorBackground.color = (containsMouse ? "#f6f6f6" : "white")
+                        accountStateIndicatorBackground.color = (containsMouse ? Style.button : Style.window)
                     }
                     onClicked: {
                         if (!isCurrentUser) {
@@ -53,7 +53,7 @@ MenuItem {
                     Rectangle {
                         anchors.fill: parent
                         anchors.margins: 1
-                        color: parent.parent.hovered ? Style.lightHover : "transparent"
+                        color: parent.parent.hovered ? Style.button : "transparent"
                     }
                 }
 
@@ -76,7 +76,7 @@ MenuItem {
                             height: width
                             anchors.bottom: accountAvatar.bottom
                             anchors.right: accountAvatar.right
-                            color: "white"
+                            color: Style.window
                             radius: width*0.5
                         }
                         Image {
@@ -105,7 +105,7 @@ MenuItem {
                             width: 128
                             text: name
                             elide: Text.ElideRight
-                            color: "black"
+                            color: Style.windowText
                             font.pixelSize: 12
                             font.bold: true
                         }
@@ -114,7 +114,7 @@ MenuItem {
                             width: 128
                             text: server
                             elide: Text.ElideRight
-                            color: "black"
+                            color: Style.windowText
                             font.pixelSize: 10
                         }
                     }
@@ -128,7 +128,7 @@ MenuItem {
                 flat: true
 
                 icon.source: "qrc:///client/theme/more.svg"
-                icon.color: "transparent"
+                icon.color: Style.windowText
 
                 Accessible.role: Accessible.ButtonMenu
                 Accessible.name: qsTr("Account actions")
@@ -161,10 +161,12 @@ MenuItem {
 
                     background: Rectangle {
                         border.color: Style.menuBorder
+                        color: Style.window
                         radius: 2
                     }
 
                     MenuItem {
+                        id: logOutButton
                         text: model.isConnected ? qsTr("Log out") : qsTr("Log in")
                         font.pixelSize: Style.topLinePixelSize
                         hoverEnabled: true
@@ -173,13 +175,19 @@ MenuItem {
                             accountMenu.close()
                         }
 
+                        contentItem: Label {
+                            text: logOutButton.text
+                            font.pixelSize: Style.topLinePixelSize
+                            color: Style.windowText
+                        }
+
                         background: Item {
                             height: parent.height
                             width: parent.menu.width
                             Rectangle {
                                 anchors.fill: parent
                                 anchors.margins: 1
-                                color: parent.parent.hovered ? Style.lightHover : "transparent"
+                                color: parent.parent.hovered ? Style.button : "transparent"
                             }
                         }
 
@@ -212,9 +220,16 @@ MenuItem {
                             Rectangle {
                                 anchors.fill: parent
                                 anchors.margins: 1
-                                color: parent.parent.hovered ? Style.lightHover : "transparent"
+                                color: parent.parent.hovered ? Style.button : "transparent"
                             }
                         }
+
+                        contentItem: Label {
+                            text: removeAccountButton.text
+                            font.pixelSize: Style.topLinePixelSize
+                            color: Style.windowText
+                        }
+
 
                         Accessible.role: Accessible.Button
                         Accessible.name: text
