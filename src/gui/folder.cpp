@@ -1193,8 +1193,10 @@ bool Folder::virtualFilesEnabled() const
 void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction dir, std::function<void(bool)> callback)
 {
     ConfigFile cfgFile;
-    if (!cfgFile.promptDeleteFiles())
+    if (!cfgFile.promptDeleteFiles()) {
+        callback(false);
         return;
+    }
     const QString msg = dir == SyncFileItem::Down ? tr("All files in the sync folder '%1' folder were deleted on the server.\n"
                                                  "These deletes will be synchronized to your local sync folder, making such files "
                                                  "unavailable unless you have a right to restore. \n"
