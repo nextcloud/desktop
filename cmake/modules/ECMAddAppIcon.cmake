@@ -197,11 +197,15 @@ function(ecm_add_app_icon appsources)
 
         function(create_windows_icon_and_rc command args deps)
                 add_custom_command(
-                    OUTPUT "${_outfilename}.ico"
+                    OUTPUT "${_outfilebasename}.ico"
                     COMMAND ${command}
                     ARGS ${args}
                     DEPENDS ${deps}
                     WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+                    # the problem is Png2Ico tool does not understand .ico output path that contains spaces(even though the path is put into quotes")
+                    # hence, we create an .ico file in the current directory, but, then, we move it to the original target
+                    COMMAND ${CMAKE_COMMAND} -E copy "${_outfilebasename}.ico" "${_outfilename}.ico"
+                    COMMAND ${CMAKE_COMMAND} -E remove "${_outfilebasename}.ico"
                 )
                 # this bit's a little hacky to make the dependency stuff work
                 file(WRITE "${_outfilename}.rc.in" "IDI_ICON1        ICON        DISCARDABLE    \"${_outfilename}.ico\"\n")
@@ -215,7 +219,7 @@ function(ecm_add_app_icon appsources)
         endfunction()
 
         if (IcoTool_FOUND)
-            list(APPEND icotool_args "-c" "-o" "${_outfilename}.ico")
+            list(APPEND icotool_args "-c" "-o" "${_outfilebasename}.ico")
 
             # According to https://stackoverflow.com/a/40851713/2886832
             # Windows always chooses the first icon above 255px, all other ones will be ignored
@@ -251,7 +255,7 @@ function(ecm_add_app_icon appsources)
         # Standard png2ico will fail with this.
         elseif(Png2Ico_FOUND AND NOT Png2Ico_HAS_RCFILE_ARGUMENT AND windows_icons)
             set(png2ico_args)
-            list(APPEND png2ico_args "${_outfilename}.ico")
+            list(APPEND png2ico_args "${_outfilebasename}.ico")
             list(APPEND png2ico_args "${windows_icons}")
             create_windows_icon_and_rc(Png2Ico::Png2Ico "${png2ico_args}" "${windows_icons}")
 
