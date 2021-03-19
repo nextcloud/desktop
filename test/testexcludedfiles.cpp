@@ -70,21 +70,48 @@ private slots:
         bool excludeHidden = true;
         bool keepHidden = false;
 
-        QVERIFY(!excluded.isExcluded("/a/b", "/a", keepHidden));
-        QVERIFY(!excluded.isExcluded("/a/b~", "/a", keepHidden));
-        QVERIFY(!excluded.isExcluded("/a/.b", "/a", keepHidden));
-        QVERIFY(excluded.isExcluded("/a/.b", "/a", excludeHidden));
+        auto check_isExcluded = [&](const QString &a, bool keepHidden) {
+            QTemporaryDir tmp;
+            Q_ASSERT(tmp.isValid());
+
+            auto createTree = [&](const QString &path) {
+                auto parts = path.split(QLatin1Char('/'), QString::SkipEmptyParts);
+                const auto fileName = parts.back();
+                parts.pop_back(); // remove file name
+                QString workPath = tmp.path() + QLatin1Char('/');
+                for (const auto &p : qAsConst(parts)) {
+                    QDir dir(workPath);
+                    dir.mkdir(p);
+                    workPath += p + QLatin1Char('/');
+                }
+                workPath += fileName;
+                QFile file(workPath);
+                QVERIFY(file.open(QFile::WriteOnly));
+                file.write("ownCloud");
+                file.close();
+            };
+            createTree(a);
+            return excluded.isExcluded(tmp.path() + a, tmp.path() + QStringLiteral("/a"), keepHidden);
+        };
+
+        QVERIFY(!check_isExcluded(QStringLiteral("/a/b"), keepHidden));
+        QVERIFY(!check_isExcluded(QStringLiteral("/a/b~"), keepHidden));
+        QVERIFY(!check_isExcluded(QStringLiteral("/a/.b"), keepHidden));
+        QVERIFY(check_isExcluded(QStringLiteral("/a/.b"), excludeHidden));
 
         excluded.addExcludeFilePath(EXCLUDE_LIST_FILE);
         excluded.reloadExcludeFiles();
 
-        QVERIFY(!excluded.isExcluded("/a/b", "/a", keepHidden));
-        QVERIFY(excluded.isExcluded("/a/b~", "/a", keepHidden));
-        QVERIFY(!excluded.isExcluded("/a/.b", "/a", keepHidden));
-        QVERIFY(excluded.isExcluded("/a/.Trashes", "/a", keepHidden));
-        QVERIFY(excluded.isExcluded("/a/foo_conflict-bar", "/a", keepHidden));
-        QVERIFY(excluded.isExcluded("/a/foo (conflicted copy bar)", "/a", keepHidden));
-        QVERIFY(excluded.isExcluded("/a/.b", "/a", excludeHidden));
+        QVERIFY(!check_isExcluded(QStringLiteral("/a/b"), keepHidden));
+        QVERIFY(check_isExcluded(QStringLiteral("/a/b~"), keepHidden));
+        QVERIFY(!check_isExcluded(QStringLiteral("/a/.b"), keepHidden));
+        QVERIFY(check_isExcluded(QStringLiteral("/a/.Trashes"), keepHidden));
+        QVERIFY(check_isExcluded(QStringLiteral("/a/foo_conflict-bar"), keepHidden));
+        QVERIFY(check_isExcluded(QStringLiteral("/a/foo (conflicted copy bar)"), keepHidden));
+        QVERIFY(check_isExcluded(QStringLiteral("/a/.b"), excludeHidden));
+
+        // test non exisitng folder
+        QVERIFY(excluded.isExcluded(QStringLiteral("/a/.b"), QStringLiteral("/a"), excludeHidden));
     }
 
     void check_csync_exclude_add()
