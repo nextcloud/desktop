@@ -646,6 +646,26 @@ void SyncEngine::slotDiscoveryFinished()
 
         Q_ASSERT(std::is_sorted(_syncItems.begin(), _syncItems.end()));
 
+        const auto regex = syncOptions().fileRegex();
+        if (regex.isValid()) {
+            QSet<QStringRef> names;
+            for (auto &i : _syncItems) {
+                if (regex.match(i->_file).hasMatch()) {
+                    int index = -1;
+                    QStringRef ref;
+                    do {
+                        ref = i->_file.midRef(0, index);
+                        names.insert(ref);
+                        index = ref.lastIndexOf(QLatin1Char('/'));
+                    } while (index > 0);
+                }
+            }
+            _syncItems.erase(std::remove_if(_syncItems.begin(), _syncItems.end(), [&names](auto i) {
+                return !names.contains(QStringRef { &i->_file });
+            }),
+                _syncItems.end());
+        }
+
         qCInfo(lcEngine) << "#### Reconcile (aboutToPropagate) #################################################### " << _stopWatch.addLapTime(QStringLiteral("Reconcile (aboutToPropagate)")) << "ms";
 
         _localDiscoveryPaths.clear();
