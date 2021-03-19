@@ -578,9 +578,9 @@ QString Utility::makeConflictFileName(
     return conflictFileName;
 }
 
-bool Utility::isConflictFile(const QString &name)
+bool Utility::isConflictFile(const QStringRef &name)
 {
-    auto bname = name.midRef(name.lastIndexOf(QLatin1Char('/')) + 1);
+    auto bname = name.mid(name.lastIndexOf(QLatin1Char('/')) + 1);
 
     if (bname.contains(QStringLiteral("_conflict-")))
         return true;
@@ -634,6 +634,11 @@ QString Utility::sanitizeForFileName(const QString &name)
         }
     }
     return result;
+}
+
+bool Utility::isConflictFile(const QString &name)
+{
+    return isConflictFile({ &name });
 }
 
 } // namespace OCC

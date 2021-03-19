@@ -137,7 +137,7 @@ public:
      * Note that this only matches patterns. It does not check whether the file
      * or directory pointed to is hidden (or whether it even exists).
      */
-    CSYNC_EXCLUDE_TYPE traversalPatternMatch(const QString &path, ItemType filetype) const;
+    CSYNC_EXCLUDE_TYPE traversalPatternMatch(const QStringRef &path, ItemType filetype) const;
 
 public slots:
     /**
@@ -171,7 +171,7 @@ private:
      * Note that this only matches patterns. It does not check whether the file
      * or directory pointed to is hidden (or whether it even exists).
      */
-    CSYNC_EXCLUDE_TYPE fullPatternMatch(const QString &path, ItemType filetype) const;
+    CSYNC_EXCLUDE_TYPE fullPatternMatch(const QStringRef &path, ItemType filetype) const;
 
     /**
      * Generate optimized regular expressions for the exclude patterns.

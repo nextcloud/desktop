@@ -216,6 +216,7 @@ namespace Utility {
 
     /** Returns whether a file name indicates a conflict file
      */
+    bool isConflictFile(const QStringRef &name);
     OCSYNC_EXPORT bool isConflictFile(const QString &name);
 
     /** Find the base name for a conflict file name, using name pattern only
