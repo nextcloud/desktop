@@ -1399,57 +1399,57 @@ Si custu fiat un&apos;errore e detzides de mantènnere is archìvios tuos, custo
     <message>
         <location filename="../src/gui/folderman.cpp" line="1379"/>
         <source>Setup Error.</source>
-        <translation type="unfinished"/>
+        <translation>Errore de cunfiguratzione</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1382"/>
         <source>User Abort.</source>
-        <translation type="unfinished"/>
+        <translation>Firmadu dae s&apos;utente.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1385"/>
         <source>Sync is paused.</source>
-        <translation type="unfinished"/>
+        <translation>Sa sincronizatzione est in pàusa.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1391"/>
         <source>%1 (Sync is paused)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (Sincronizatzione in pàusa)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1399"/>
         <source>No valid folder selected!</source>
-        <translation type="unfinished"/>
+        <translation>Peruna cartella bàlida seletzionada!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1520"/>
         <source>The selected path does not exist!</source>
-        <translation type="unfinished"/>
+        <translation>Su caminu seletzionadu non b&apos;est!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1409"/>
         <source>The selected path is not a folder!</source>
-        <translation type="unfinished"/>
+        <translation>Su caminu seletzionadu non b&apos;est!!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1413"/>
         <source>You have no permission to write to the selected folder!</source>
-        <translation type="unfinished"/>
+        <translation>Non tenes su permissu pro iscrìere in sa cartella seletzionada!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1449"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
-        <translation type="unfinished"/>
+        <translation>Sa cartella locale %1 cuntenet giai una cartella impreada in una connessione de sincronizatzione de is cartellas. Seletziona·nde un&apos;àtera!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1455"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
-        <translation type="unfinished"/>
+        <translation>Sa cartella locala %1 cuntenet giai una cartella impreada in una connessione de sincronizatzione de is cartellas. Seletziona·nde  un&apos;àtera!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1469"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
-        <translation type="unfinished"/>
+        <translation>Esistet giai una sincronizatzione dae su serbidore a custa cartella locale. Seletziona·nde un&apos;àtera locale!</translation>
     </message>
 </context>
 <context>
@@ -1457,17 +1457,17 @@ Si custu fiat un&apos;errore e detzides de mantènnere is archìvios tuos, custo
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="48"/>
         <source>Add Folder Sync Connection</source>
-        <translation type="unfinished"/>
+        <translation>Agiunghe connessiones de sincronizatzione cartellas</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="256"/>
         <source>Synchronized with local folder (%1)</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizadu cun sa cartella locale (%1)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="313"/>
         <source>File</source>
-        <translation type="unfinished"/>
+        <translation>Archìviu</translation>
     </message>
 </context>
 <context>
@@ -1475,159 +1475,159 @@ Si custu fiat un&apos;errore e detzides de mantènnere is archìvios tuos, custo
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="140"/>
         <source>You need to be connected to add a folder</source>
-        <translation type="unfinished"/>
+        <translation>Depes èssere connètidu pro agiùnghere una cartella</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="142"/>
         <source>Click this button to add a folder to synchronize.</source>
-        <translation type="unfinished"/>
+        <translation>Incarca custu butone pro agiùnghere una sa cartella de sincronizare.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="151"/>
         <location filename="../src/gui/folderstatusmodel.cpp" line="153"/>
         <source>%1 (%2)</source>
         <extracomment>Example text: &quot;File.txt (23KB)&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 (%2)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="188"/>
         <source>Error while loading the list of folders from the server.</source>
-        <translation type="unfinished"/>
+        <translation>Ddoe àt àpidu un&apos;errore carrighende sa lista de is cartellas dae su serbidore.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="191"/>
         <source>Fetching folder list from server …</source>
-        <translation type="unfinished"/>
+        <translation>Recòberu de s&apos;elencu de cartellas dae su serbidore ...</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="217"/>
         <source>There are unresolved conflicts. Click for details.</source>
-        <translation type="unfinished"/>
+        <translation>Ddoe at cunflitos ancora a isòrvere. Incarca pro is detàllios.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="235"/>
         <source>Virtual file support is enabled.</source>
-        <translation type="unfinished"/>
+        <translation>Sa ghia de is archìvios virtuales est ativadu.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="241"/>
         <source>Signed out</source>
-        <translation type="unfinished"/>
+        <translation>Essi·nche</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="299"/>
         <source>Synchronizing VirtualFiles with local folder</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizatzione de is archìvios virtuales cun sa cartella locale</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="301"/>
         <source>Synchronizing with local folder</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizatzione cun cartellas locales</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="904"/>
         <source>Checking for changes in remote &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Controllu de is modìficas in &apos;%1&apos; remotu</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="908"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Controllu de is modìficas in locale &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="915"/>
         <source>Reconciling changes</source>
-        <translation type="unfinished"/>
+        <translation>Cuntzìliu torra de is modìficas</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="950"/>
         <source>, &apos;%1&apos;</source>
         <extracomment>Build a list of file names</extracomment>
-        <translation type="unfinished"/>
+        <translation>, &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="953"/>
         <source>&apos;%1&apos;</source>
         <extracomment>Argument is a file name</extracomment>
-        <translation type="unfinished"/>
+        <translation>&apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="977"/>
         <source>Syncing %1</source>
         <extracomment>Example text: &quot;Syncing 'foo.txt', 'bar.txt'&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>Sincronizatzione %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="979"/>
         <location filename="../src/gui/folderstatusmodel.cpp" line="990"/>
         <source>, </source>
-        <translation type="unfinished"/>
+        <translation>, </translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="983"/>
         <source>download %1/s</source>
         <extracomment>Example text: &quot;download 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
-        <translation type="unfinished"/>
+        <translation>iscarrigamentu %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="985"/>
         <source>↓ %1/s</source>
-        <translation type="unfinished"/>
+        <translation>↓ %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="993"/>
         <source>upload %1/s</source>
         <extracomment>Example text: &quot;upload 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
-        <translation type="unfinished"/>
+        <translation>carrigamentu %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="995"/>
         <source>↑ %1/s</source>
-        <translation type="unfinished"/>
+        <translation>↑ %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1001"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (2MB of 2MB)&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 %2 (%3 de %4)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1005"/>
         <source>%1 %2</source>
         <extracomment>Example text: &quot;uploading foobar.png&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 %2</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1024"/>
         <source>%5 left, %1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;5 minutes left, 12 MB of 345 MB, file 6 of 7&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>%5 abarradu, %1 de %2, archìviu %3 de %4</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1032"/>
         <source>%1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;12 MB of 345 MB, file 6 of 7&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 de %2, archìviu %3 de %4</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1039"/>
         <source>file %1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>archìviu %1 de %2</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1085"/>
         <source>Waiting …</source>
-        <translation type="unfinished"/>
+        <translation>Iseta …</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folderstatusmodel.cpp" line="1087"/>
         <source>Waiting for %n other folder(s) …</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Isetende %n àteras cartella(s) …</numerusform><numerusform>Isetende %n àteras cartella(s) …</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1093"/>
         <source>Preparing to sync …</source>
-        <translation type="unfinished"/>
+        <translation>Aprontende sa sincronizatzione …</translation>
     </message>
 </context>
 <context>
@@ -1635,7 +1635,7 @@ Si custu fiat un&apos;errore e detzides de mantènnere is archìvios tuos, custo
     <message>
         <location filename="../src/gui/folderwatcher.cpp" line="126"/>
         <source>The watcher did not receive a test notification.</source>
-        <translation type="unfinished"/>
+        <translation>Su castiadore no at retzidu peruna notìfica de proa.</translation>
     </message>
 </context>
 <context>
@@ -1643,7 +1643,7 @@ Si custu fiat un&apos;errore e detzides de mantènnere is archìvios tuos, custo
     <message>
         <location filename="../src/gui/folderwatcher_linux.cpp" line="88"/>
         <source>This problem usually happens when the inotify watches are exhausted. Check the FAQ for details.</source>
-        <translation type="unfinished"/>
+        <translation>Custu problema a su sòlitu si presentat cando is controllos de inotify nche sunt agabados. Leghe is PF pro nd&apos;ischire de prus.</translation>
     </message>
 </context>
 <context>
@@ -1651,12 +1651,12 @@ Si custu fiat un&apos;errore e detzides de mantènnere is archìvios tuos, custo
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="557"/>
         <source>Add Folder Sync Connection</source>
-        <translation type="unfinished"/>
+        <translation>Agiunghe connessione de sincronizatzione cartellas</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="559"/>
         <source>Add Sync Connection</source>
-        <translation type="unfinished"/>
+        <translation>Agiunghe connessione de sincronizatzione</translation>
     </message>
 </context>
 <context>
@@ -1664,17 +1664,17 @@ Si custu fiat un&apos;errore e detzides de mantènnere is archìvios tuos, custo
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="67"/>
         <source>Click to select a local folder to sync.</source>
-        <translation type="unfinished"/>
+        <translation>Incarca pro seletzionare una cartella locale de sincronizare.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="74"/>
         <source>Enter the path to the local folder.</source>
-        <translation type="unfinished"/>
+        <translation>Iscrìe su caminu a sa cartella locale.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="133"/>
         <source>Select the source folder</source>
-        <translation type="unfinished"/>
+        <translation>Seletziona sa cartella sorgente</translation>
     </message>
 </context>
 <context>
@@ -1682,52 +1682,52 @@ Si custu fiat un&apos;errore e detzides de mantènnere is archìvios tuos, custo
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="181"/>
         <source>Create Remote Folder</source>
-        <translation type="unfinished"/>
+        <translation>Crea cartella remota</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="182"/>
         <source>Enter the name of the new folder to be created below &apos;%1&apos;:</source>
-        <translation type="unfinished"/>
+        <translation>Iscrie su nùmene de sa cartella noa de creare suta de su&apos;%1&apos;:</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="212"/>
         <source>Folder was successfully created on %1.</source>
-        <translation type="unfinished"/>
+        <translation>Sa cartella creada in manera curreta in %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="223"/>
         <source>Authentication failed accessing %1</source>
-        <translation type="unfinished"/>
+        <translation>Autenticatzione faddida intrende a %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="225"/>
         <source>Failed to create the folder on %1. Please check manually.</source>
-        <translation type="unfinished"/>
+        <translation>No at fatu a creare sa cartella in %1. Pro praghere, controlla tue etotu.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="234"/>
         <source>Failed to list a folder. Error: %1</source>
-        <translation type="unfinished"/>
+        <translation>No at fatu a pònnere in elencu una cartella. Errore: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="315"/>
         <source>Choose this to sync the entire account</source>
-        <translation type="unfinished"/>
+        <translation>Seletziona·dda pro sincronizare totu su contu</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="456"/>
         <source>This folder is already being synced.</source>
-        <translation type="unfinished"/>
+        <translation>Custa cartella nch&apos;est giai sincronizada.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="458"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a parent folder of &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Ses giai sincronizende &lt;i&gt;%1&lt;/i&gt;, cun sa cartella superiore de &lt;i&gt;%2&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="473"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a subfolder of &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Ses giai sincronizende &lt;i&gt;%1&lt;/i&gt;, cun una cartella inferiore de&lt;i&gt;%2&lt;/i&gt;.</translation>
     </message>
 </context>
 <context>
@@ -1735,17 +1735,17 @@ Si custu fiat un&apos;errore e detzides de mantènnere is archìvios tuos, custo
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="512"/>
         <source>Use virtual files instead of downloading content immediately %1</source>
-        <translation type="unfinished"/>
+        <translation>Imprea archìvios virtuales imbetzes de iscarrigare deretu su cuntenutu %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="512"/>
         <source>(experimental)</source>
-        <translation type="unfinished"/>
+        <translation>(isperimentale)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="548"/>
         <source>Virtual files are not available for the selected folder</source>
-        <translation type="unfinished"/>
+        <translation>Imprea archìvios virtuales imbetzes de iscarrigare deretu is cuntenutos</translation>
     </message>
 </context>
 <context>
@@ -1753,12 +1753,12 @@ Si custu fiat un&apos;errore e detzides de mantènnere is archìvios tuos, custo
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="48"/>
         <source>&lt;b&gt;Warning:&lt;/b&gt; %1</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;Avisu:&lt;/b&gt; %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="50"/>
         <source>&lt;b&gt;Warning:&lt;/b&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;Avisu:&lt;/b&gt;</translation>
     </message>
 </context>
 <context>
@@ -1766,27 +1766,27 @@ Si custu fiat un&apos;errore e detzides de mantènnere is archìvios tuos, custo
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="181"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
-        <translation type="unfinished"/>
+        <translation>Peruna etichetta eletrònica retzida dae su serbidore, controlla su proxy/gateway</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="188"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
-        <translation type="unfinished"/>
+        <translation>Amus retzidu un&apos;etichetta eletrònica diferente pro su riprìstinu. Torra a proare luego.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="213"/>
         <source>We received an unexpected download Content-Length.</source>
-        <translation type="unfinished"/>
+        <translation>Amus retzidu sena nos ddu isetare unu content-lenght de s&apos;iscarrigamentu.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="215"/>
         <source>Server returned wrong content-range</source>
-        <translation type="unfinished"/>
+        <translation>Su serbidore at torradu unu content-range isballiadu</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="325"/>
         <source>Connection Timeout</source>
-        <translation type="unfinished"/>
+        <translation>Connessione iscàdida</translation>
     </message>
 </context>
 <context>
@@ -1795,135 +1795,137 @@ Si custu fiat un&apos;errore e detzides de mantènnere is archìvios tuos, custo
         <location filename="../src/gui/generalsettings.ui" line="20"/>
         <location filename="../src/gui/generalsettings.ui" line="32"/>
         <source>About</source>
-        <translation type="unfinished"/>
+        <translation>Informatziones</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="41"/>
         <source>Legal notice</source>
-        <translation type="unfinished"/>
+        <translation>Nota legale</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="66"/>
         <source>General Settings</source>
-        <translation type="unfinished"/>
+        <translation>Impostatziones generales</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="72"/>
         <source>For System Tray</source>
-        <translation type="unfinished"/>
+        <translation>Pro sa safata de sistema</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="75"/>
         <source>Use &amp;Monochrome Icons</source>
-        <translation type="unfinished"/>
+        <translation>Imprea Iconas &amp;monocromàticas</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="82"/>
         <source>&amp;Launch on System Startup</source>
-        <translation type="unfinished"/>
+        <translation>es&amp;cuta a s&apos;aviu de su sistema</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="89"/>
         <source>Show Server &amp;Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Mustra serbidore &amp;notìficas</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="99"/>
         <source>Updates</source>
-        <translation type="unfinished"/>
+        <translation>Agiornamentos</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="107"/>
         <source>&amp;Automatically check for Updates</source>
-        <translation type="unfinished"/>
+        <translation>controll&amp;a in automàticu si ddoe at agiornamentos</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="140"/>
         <source>&amp;Channel</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Canale</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="157"/>
         <source>stable</source>
-        <translation type="unfinished"/>
+        <translation>stàbile</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="162"/>
         <source>beta</source>
-        <translation type="unfinished"/>
+        <translation>beta</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="189"/>
         <source>&amp;Restart &amp;&amp; Update</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Torra a aviare &amp;&amp; agiorna</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="123"/>
         <source>&amp;Check for Update now</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Controlla si immoe ddoe at agiornamentos </translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="214"/>
         <source>Advanced</source>
-        <translation type="unfinished"/>
+        <translation>Avantzadu</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="253"/>
         <source>Ask for confirmation before synchronizing folders larger than</source>
-        <translation type="unfinished"/>
+        <translation>Pedi cunfirma in antis de sincronizare cartellas prus mannas de</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="273"/>
         <source>MB</source>
         <extracomment>Trailing part of &quot;Ask confirmation before syncing folder larger than&quot; </extracomment>
-        <translation type="unfinished"/>
+        <translation>MB</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="297"/>
         <source>Ask for confirmation before synchronizing external storages</source>
-        <translation type="unfinished"/>
+        <translation>Pedi cunfirma in antis de sincronizare memòrias foranas</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="308"/>
         <source>Show sync folders in &amp;Explorer&apos;s Navigation Pane</source>
-        <translation type="unfinished"/>
+        <translation>Mustra is cartellas de sincronizatzione in su pannellu de navigatzione de &amp;Explorer</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="325"/>
         <source>S&amp;how crash reporter</source>
-        <translation type="unfinished"/>
+        <translation>Mustra su raportu de s&amp;rradura inatesu</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="222"/>
         <source>Edit &amp;Ignored Files</source>
-        <translation type="unfinished"/>
+        <translation>Mustra &amp;Ignora archìvios</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="229"/>
         <source>Create Debug Archive …</source>
-        <translation type="unfinished"/>
+        <translation>Crea archìviu de debug …</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="149"/>
         <source>Server notifications that require attention.</source>
-        <translation type="unfinished"/>
+        <translation>Serbidore de notìficas chi tocat a ddis dare contu.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="162"/>
         <source>You cannot disable autostart because system-wide autostart is enabled.</source>
-        <translation type="unfinished"/>
+        <translation>Non faghet a disativare s&apos;aviamentu automàticu ca est ativu s&apos;aviamentu automàticu a livellu de sistema.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="303"/>
         <source>Change update channel?</source>
-        <translation type="unfinished"/>
+        <translation>Boles cambiare su canale de agiornamentu?</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="304"/>
         <source>The update channel determines which client updates will be offered for installation. The &quot;stable&quot; channel contains only upgrades that are considered reliable, while the versions in the &quot;beta&quot; channel may contain newer features and bugfixes, but have not yet been tested thoroughly.
 
 Note that this selects only what pool upgrades are taken from, and that there are no downgrades: So going back from the beta channel to the stable channel usually cannot be done immediately and means waiting for a stable version that is newer than the currently installed beta version.</source>
-        <translation type="unfinished"/>
+        <translation>Su canale de agiornamentu determinat cales agiornamentos ant a èssere ofertos pro s&apos;installatzione. Su canale &quot;stàbile&quot; cuntenet isceti is agiornamentos cunsiderados seguros, cando chi is versiones in su canale &quot;beta&quot; podent cuntènnere funtzionalidades noas e curretziones de bug, ma non sunt istadas proadas a fundu ancora
+
+Annota chi custu seletzionat isceti dae cale grùstiu prelevare is agiornamentos e chi non ddoe apant downgrade: duncas, a su sòlitu non faghet a torrare deretu dae su canale beta a su canale istàbile e custu cheret nàrrere a isetare una versione istàbile chi siat prus reghente de sa versione beta chi ddoe est immoe.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="317"/>
