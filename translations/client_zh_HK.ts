@@ -235,7 +235,7 @@
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="352"/>
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
-        <translation>為了保護您的身份，我們將用含12個單詞的助記碼進行加密。請將這些單詞記在一個安全的地方。要將其他裝置（如手提電話或手提電腦）加入您的賬戶中，需用到此助記碼。</translation>
+        <translation>為了保護您的身分，我們將用含12個單詞的助記碼進行加密。請將這些單詞記在一個安全的地方。要將其他裝置（如手提電話或手提電腦）加入您的賬戶中，需用到此助記碼。</translation>
     </message>
 </context>
 <context>
@@ -791,13 +791,13 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="14"/>
         <source>Sync Conflict</source>
-        <translation>同步衝突</translation>
+        <translation>同步抵觸</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="20"/>
         <location filename="../src/gui/conflictdialog.cpp" line="94"/>
         <source>Conflicting versions of %1.</source>
-        <translation>衝突的 %1 版本。</translation>
+        <translation>抵觸的 %1 版本。</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="32"/>
@@ -846,7 +846,7 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/gui/conflictdialog.cpp" line="54"/>
         <location filename="../src/gui/conflictdialog.cpp" line="177"/>
         <source>Keep selected version</source>
-        <translation>保留選取的版本</translation>
+        <translation>保留選擇的版本</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="148"/>
@@ -1142,12 +1142,12 @@ This can be an issue with your OpenSSL libraries.</source>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="408"/>
         <source>%1 has and %n other file(s) have sync conflicts.</source>
-        <translation><numerusform>%1 跟 %n 其他檔案同步時發生衝突</numerusform></translation>
+        <translation><numerusform>%1 跟 %n 其他檔案同步時發生抵觸</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="410"/>
         <source>%1 has a sync conflict. Please check the conflict file!</source>
-        <translation>%1 同步時發生衝突，請檢查發生衝突的檔案</translation>
+        <translation>%1 同步時發生抵觸，請檢查發生抵觸的檔案</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="415"/>
@@ -1262,7 +1262,7 @@ This might be because a backup was restored on the server.
 Continuing the sync as normal will cause all your files to be overwritten by an older file in an earlier state. Do you want to keep your local most recent files as conflict files?</source>
         <translation>此次同步將會將同步資料夾「%1」的檔案重置到先前一個版本。
 這有可能是因為伺服器被復原至一個備份。
-繼續正常同步將會使您的所有檔案被先前的一個版本覆蓋。您希望將目前的最新檔案儲存為衝突檔案嗎？</translation>
+繼續正常同步將會使您的所有檔案被先前的一個版本覆蓋。您希望將目前的最新檔案儲存為抵觸檔案嗎？</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1087"/>
@@ -1277,7 +1277,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folder.cpp" line="1091"/>
         <source>Keep Local Files as Conflict</source>
-        <translation>將近端檔案視為衝突檔案</translation>
+        <translation>將近端檔案視為抵觸檔案</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1235"/>
@@ -1388,7 +1388,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="1371"/>
         <source>Sync was successful, unresolved conflicts.</source>
-        <translation>同步成功，衝突未解決</translation>
+        <translation>同步成功，抵觸未解決</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1373"/>
@@ -1433,7 +1433,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="1413"/>
         <source>You have no permission to write to the selected folder!</source>
-        <translation>您沒有權限來寫入被選取的資料夾!</translation>
+        <translation>您沒有權限來寫入被選擇的資料夾!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1449"/>
@@ -1501,7 +1501,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="217"/>
         <source>There are unresolved conflicts. Click for details.</source>
-        <translation>存在未解決的衝突，請查看細節</translation>
+        <translation>存在未解決的抵觸，請查看細節</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="235"/>
@@ -1744,7 +1744,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="548"/>
         <source>Virtual files are not available for the selected folder</source>
-        <translation>選取的資料夾無法使用虛擬檔案</translation>
+        <translation>選擇的資料夾無法使用虛擬檔案</translation>
     </message>
 </context>
 <context>
@@ -1890,7 +1890,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.ui" line="325"/>
         <source>S&amp;how crash reporter</source>
-        <translation>&amp;顯示意外回報器</translation>
+        <translation>&amp;顯示意外舉報器</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="222"/>
@@ -2419,7 +2419,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="130"/>
         <source>&lt;h1&gt;Wrong user&lt;/h1&gt;&lt;p&gt;You logged-in with user &lt;em&gt;%1&lt;/em&gt;, but must login with user &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please log out of %3 in another tab, then &lt;a href=&apos;%4&apos;&gt;click here&lt;/a&gt; and log in as user %2&lt;/p&gt;</source>
-        <translation>&lt;h1&gt;用戶錯誤&lt;/h1&gt;&lt;p&gt;您目前以&lt;em&gt;%1&lt;/em&gt;的身份登入，但您必須以&lt;em&gt;%2&lt;/em&gt;的身份登入。&lt;br&gt;請在一個新的標籤頁中登出%3賬戶，然後&lt;a href=&apos;%4&apos;&gt;點擊此處&lt;/a&gt;，登入%2賬戶。&lt;/p&gt;</translation>
+        <translation>&lt;h1&gt;用戶錯誤&lt;/h1&gt;&lt;p&gt;您目前以&lt;em&gt;%1&lt;/em&gt;的身分登入，但您必須以&lt;em&gt;%2&lt;/em&gt;的身分登入。&lt;br&gt;請在一個新的標籤頁中登出%3賬戶，然後&lt;a href=&apos;%4&apos;&gt;點擊此處&lt;/a&gt;，登入%2賬戶。&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -2563,7 +2563,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="352"/>
         <source>Virtual files are not available for the selected folder</source>
-        <translation>選取的資料夾無法使用虛擬檔案</translation>
+        <translation>選擇的資料夾無法使用虛擬檔案</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="294"/>
@@ -2630,7 +2630,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="60"/>
         <source>Enter user credentials</source>
-        <translation>請輸入用戶身份驗證</translation>
+        <translation>請輸入用戶身分驗證</translation>
     </message>
 </context>
 <context>
@@ -3003,7 +3003,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="288"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
-        <translation>衝突：已下載伺服器版本，近端版本已更名但並未上傳。</translation>
+        <translation>抵觸：已下載伺服器版本，近端版本已更名但並未上傳。</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="292"/>
@@ -3073,7 +3073,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1409"/>
         <source>Error while reading the database</source>
-        <translation>讀取資料庫時發生錯誤。</translation>
+        <translation>讀取數據庫時發生錯誤。</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1470"/>
@@ -3819,7 +3819,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi.cpp" line="916"/>
         <source>Resolve conflict …</source>
-        <translation>解決衝突 ...</translation>
+        <translation>解決抵觸 ...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="920"/>
@@ -4157,7 +4157,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="536"/>
         <source>Unresolved conflict.</source>
-        <translation>未解決的衝突。</translation>
+        <translation>未解決的抵觸。</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="805"/>
@@ -4240,7 +4240,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="840"/>
         <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
-        <translation>無法開啟或新增近端同步資料庫。請確保您有寫入同步資料夾的權限。</translation>
+        <translation>無法開啟或新增近端同步數據庫。請確保您有寫入同步資料夾的權限。</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="507"/>
@@ -4285,12 +4285,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="931"/>
         <source>Unable to read the blacklist from the local database</source>
-        <translation>無法從近端資料庫讀取黑名單。</translation>
+        <translation>無法從近端數據庫讀取黑名單。</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="540"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
-        <translation>衝突：已下載伺服器版本，近端版本已改名但並未上傳。</translation>
+        <translation>抵觸：已下載伺服器版本，近端版本已改名但並未上傳。</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="544"/>
@@ -4490,7 +4490,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="159"/>
         <source>You have been logged out of %1 as user %2. Please login again.</source>
-        <translation>您已以用戶 %2 的身份退出 %1。請再次登錄。</translation>
+        <translation>您已以用戶 %2 的身分退出 %1。請再次登錄。</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="159"/>
@@ -4500,7 +4500,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="183"/>
         <source>Please login with the user: %1</source>
-        <translation>請以%1的身份登入</translation>
+        <translation>請以%1的身分登入</translation>
     </message>
 </context>
 <context>
@@ -4618,7 +4618,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="356"/>
         <source>Unresolved conflicts</source>
-        <translation>未解決的衝突</translation>
+        <translation>未解決的抵觸</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="358"/>
@@ -5342,7 +5342,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="37"/>
         <source>Server version downloaded, copied changed local file into conflict file</source>
-        <translation>已下載伺服器上的版本，並將近端已更改的檔案複製至衝突檔案</translation>
+        <translation>已下載伺服器上的版本，並將近端已更改的檔案複製至抵觸檔案</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="39"/>
