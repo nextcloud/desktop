@@ -17,6 +17,8 @@
 
 #include <QObject>
 #include <QPointer>
+#include <QVariant>
+#include <QMetaEnum>
 #include "accountfwd.h"
 
 namespace OCC {
@@ -25,11 +27,19 @@ class JsonApiJob;
 class UserStatus : public QObject
 {
     Q_OBJECT
-
+    
 public:
     explicit UserStatus(QObject *parent = nullptr);
+    enum Status {
+        Online,
+        DoNotDisturb,
+        Away,
+        Offline,
+        Invisible
+    };
+    Q_ENUM(Status);
     void fetchUserStatus(AccountPtr account);
-    QString status() const;
+    Status status() const;
     QString message() const;
     QUrl icon() const;
 
@@ -40,8 +50,17 @@ signals:
     void fetchUserStatusFinished();
 
 private:
+    Status stringToEnum(const QString &status) const;
+    
+    // it needs to match the Status enum
+    const QHash<QString, int> _preDefinedStatus{{"online", 0},
+                                               {"dnd", 1}, //DoNotDisturb
+                                               {"away", 2},
+                                               {"offline", 3},
+                                               {"invisible", 4}};
+
     QPointer<JsonApiJob> _job; // the currently running job
-    QString _status;
+    Status _status{Status::Online};
     QString _message;
 };
 

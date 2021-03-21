@@ -19,8 +19,8 @@ class User : public QObject
     Q_OBJECT
     Q_PROPERTY(QString name READ name NOTIFY nameChanged)
     Q_PROPERTY(QString server READ server CONSTANT)
-    Q_PROPERTY(QUrl statusIcon READ statusIcon NOTIFY userStatusChanged)
-    Q_PROPERTY(QString statusMessage READ statusMessage NOTIFY userStatusChanged)
+    Q_PROPERTY(QUrl statusIcon READ statusIcon NOTIFY statusChanged)
+    Q_PROPERTY(QString statusMessage READ statusMessage NOTIFY statusChanged)
     Q_PROPERTY(bool hasLocalFolder READ hasLocalFolder NOTIFY hasLocalFolderChanged)
     Q_PROPERTY(bool serverHasTalk READ serverHasTalk NOTIFY serverHasTalkChanged)
     Q_PROPERTY(QString avatar READ avatarUrl NOTIFY avatarChanged)
@@ -48,7 +48,7 @@ public:
     void removeAccount() const;
     QString avatarUrl() const;
     bool isDesktopNotificationsAllowed() const;
-    QString status() const;
+    UserStatus::Status status() const;
     QString statusMessage() const;
     QUrl statusIcon() const;
 
@@ -59,7 +59,7 @@ signals:
     void serverHasTalkChanged();
     void avatarChanged();
     void accountStateChanged(int state);
-    void userStatusChanged();
+    void statusChanged();
 
 public slots:
     void slotItemCompleted(const QString &folder, const SyncFileItemPtr &item);

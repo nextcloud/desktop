@@ -422,10 +422,10 @@ signals:
     void etagResponseHeaderReceived(const QByteArray &value, int statusCode);
     
     /**
-     * @brief desktopNotificationStatusReceived - signal to report the if user is online or dnd
+     * @brief desktopNotificationStatusReceived - signal to report if notifications are allowed
      * @param status - set desktop notifications allowed status 
      */
-    void desktopNotificationStatusReceived(const bool status);
+    void allowDesktopNotificationsChanged(const bool isAllowed);
 
 private:
     QUrlQuery _additionalParams;

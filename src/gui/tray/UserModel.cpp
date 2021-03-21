@@ -53,7 +53,7 @@ User::User(AccountStatePtr &account, const bool &isCurrent, QObject *parent)
     connect(this, &User::guiLog, Logger::instance(), &Logger::guiLog);
 
     connect(_account->account().data(), &Account::accountChangedAvatar, this, &User::avatarChanged);
-    connect(_account.data(), &AccountState::userStatusChanged, this, &User::userStatusChanged);
+    connect(_account.data(), &AccountState::statusChanged, this, &User::statusChanged);
 
     connect(_activityModel, &ActivityListModel::sendNotificationRequest, this, &User::slotSendNotificationRequest);
 }
@@ -559,7 +559,7 @@ QString User::server(bool shortened) const
     return serverUrl;
 }
 
-QString User::status() const
+UserStatus::Status User::status() const
 {
     return _account->status();
 }
@@ -626,7 +626,7 @@ bool User::isConnected() const
 
 bool User::isDesktopNotificationsAllowed() const
 {
-    return _account.data()->notificationStatus() == "online";
+    return _account.data()->isDesktopNotificationsAllowed();
 }
 
 void User::removeAccount() const
@@ -736,7 +736,7 @@ void UserModel::addUser(AccountStatePtr &user, const bool &isCurrent)
            emit dataChanged(index(row, 0), index(row, 0), {UserModel::AvatarRole});
         });
 
-        connect(u, &User::userStatusChanged, this, [this, row] {
+        connect(u, &User::statusChanged, this, [this, row] {
             emit dataChanged(index(row, 0), index(row, 0), {UserModel::StatusIconRole, 
                                                             UserModel::StatusMessageRole});
         });

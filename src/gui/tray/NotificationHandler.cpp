@@ -48,8 +48,8 @@ void ServerNotificationHandler::slotFetchNotifications()
         this, &ServerNotificationHandler::slotNotificationsReceived);
     QObject::connect(_notificationJob.data(), &JsonApiJob::etagResponseHeaderReceived,
         this, &ServerNotificationHandler::slotEtagResponseHeaderReceived);
-    QObject::connect(_notificationJob.data(), &JsonApiJob::desktopNotificationStatusReceived,
-            this, &ServerNotificationHandler::slotDesktopNotificationStatusReceived);
+    QObject::connect(_notificationJob.data(), &JsonApiJob::allowDesktopNotificationsChanged,
+            this, &ServerNotificationHandler::slotAllowDesktopNotificationsChanged);
     _notificationJob->setProperty(propertyAccountStateC, QVariant::fromValue<AccountState *>(_accountState));
     _notificationJob->addRawHeader("If-None-Match", _accountState->notificationsEtagResponseHeader());
     _notificationJob->start();
@@ -64,11 +64,11 @@ void ServerNotificationHandler::slotEtagResponseHeaderReceived(const QByteArray 
     }
 }
 
-void ServerNotificationHandler::slotDesktopNotificationStatusReceived(const bool status)
+void ServerNotificationHandler::slotAllowDesktopNotificationsChanged(const bool isAllowed)
 {
     auto *account = qvariant_cast<AccountState *>(sender()->property(propertyAccountStateC));
     if (account != nullptr) {
-       account->setDesktopNotificationsStatus(status);
+       account->setDesktopNotificationsAllowed(isAllowed);
     }
 }
 

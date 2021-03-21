@@ -871,9 +871,9 @@ bool JsonApiJob::finished()
     if(reply()->rawHeaderList().contains("ETag"))
         emit etagResponseHeaderReceived(reply()->rawHeader("ETag"), statusCode);
 
-    const auto desktopNotificationStatus = reply()->rawHeader(QByteArray("X-Nextcloud-User-Status"));
-    if(!desktopNotificationStatus.isEmpty()) {
-        emit desktopNotificationStatusReceived(desktopNotificationStatus == "online");
+    const auto desktopNotificationsAllowed = reply()->rawHeader(QByteArray("X-Nextcloud-User-Status"));
+    if(!desktopNotificationsAllowed.isEmpty()) {
+        emit allowDesktopNotificationsChanged(desktopNotificationsAllowed == "online");
     }
 
     QJsonParseError error;

@@ -28,10 +28,16 @@ namespace OCC {
 
 UserStatus::UserStatus(QObject *parent)
     : QObject(parent)
-    , _status("online")
     , _message("")
 {
+}
 
+UserStatus::Status UserStatus::stringToEnum(const QString &status) const 
+{
+    // api should return invisible, dnd,... toLower() it is to make sure 
+    // it matches _preDefinedStatus, otherwise the default is online (0)
+    const auto statusEnum = _preDefinedStatus.value(status.isEmpty()? "online" : status.toLower(), 0);
+    return static_cast<Status>(statusEnum);
 }
 
 void UserStatus::fetchUserStatus(AccountPtr account)
@@ -50,17 +56,22 @@ void UserStatus::slotFetchUserStatusFinished(const QJsonDocument &json)
     const auto retrievedData = json.object().value("ocs").toObject().value("data").toObject();
     const auto emoji = retrievedData.value("icon").toString();
     const auto message = retrievedData.value("message").toString();
-    _status = retrievedData.value("status").toString();
+    auto statusString = retrievedData.value("status").toString(); 
+    _status = stringToEnum(statusString);
+    
+    // to display it to the user like 'Invisible' instead of 'invisible'
+    statusString.replace(0, 1, statusString.at(0).toUpper());  
 
     const auto visibleStatusText = message.isEmpty()
-                                ? _status == "dnd"? tr("Do not disturb") : _status
+                                ? _status == DoNotDisturb? tr("Do not disturb") 
+                                                : tr(qPrintable(statusString))
                                 : message;
 
     _message = QString("%1 %2").arg(emoji, visibleStatusText);
     emit fetchUserStatusFinished();
 }
 
-QString UserStatus::status() const
+UserStatus::Status UserStatus::status() const
 {
     return _status;
 }
@@ -72,20 +83,19 @@ QString UserStatus::message() const
 
 QUrl UserStatus::icon() const
 {
-    // online, away, dnd, invisible, offline
-    if(_status == "online") {
+    switch (_status) {
+    case Online:
         return Theme::instance()->statusOnlineImageSource();
-    } else if (_status == "away") {
+    case Away:
         return Theme::instance()->statusAwayImageSource();
-    } else if (_status == "dnd") {
+    case DoNotDisturb:
         return Theme::instance()->statusDoNotDisturbImageSource();
-    } else if (_status == "invisible") {
+    case Invisible:
+    case Offline:
         return Theme::instance()->statusInvisibleImageSource();
-    } else if (_status == "offline") {
-        return Theme::instance()->statusInvisibleImageSource();
+    default:
+        return Theme::instance()->statusOnlineImageSource();
     }
-
-    return Theme::instance()->statusOnlineImageSource();
 }
 
 } // namespace OCC

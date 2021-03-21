@@ -21,6 +21,7 @@
 #include <QPointer>
 #include "connectionvalidator.h"
 #include "creds/abstractcredentials.h"
+#include "userstatus.h"
 #include <memory>
 
 class QSettings;
@@ -31,7 +32,6 @@ class AccountState;
 class Account;
 class AccountApp;
 class RemoteWipe;
-class UserStatus;
 
 using AccountStatePtr = QExplicitlySharedDataPointer<AccountState>;
 using AccountAppList = QList<AccountApp *>;
@@ -162,10 +162,10 @@ public:
     ///Asks for user credentials
     void handleInvalidCredentials();
 
-    /** Returns the user status (online, dnd, away, offline, invisible)
+    /** Returns the user status (Online, Dnd, Away, Offline, Invisible)
      *  https://gist.github.com/georgehrke/55a0412007f13be1551d1f9436a39675
     */
-    QString status() const;
+    UserStatus::Status status() const;
 
     /** Returns the user status Message (emoji + text)
     */
@@ -175,14 +175,14 @@ public:
     */
     QUrl statusIcon() const;
 
-    /** Returns the user status retrieved by the notificatons endpoint: dnd or online
+    /** Returns the notifications status retrieved by the notificatons endpoint
      *  https://github.com/nextcloud/desktop/issues/2318#issuecomment-680698429
     */
-    QString notificationStatus() const;
+    bool isDesktopNotificationsAllowed() const;
 
-    /** Set new user status retrieved by the notificatons endpoint: dnd or online
+    /** Set desktop notifications status retrieved by the notificatons endpoint
     */
-    void setNotificationStatus(const QString &status);
+    void setDesktopNotificationsAllowed(const bool isAllowed);
 
     /** Fetch the user status (status, icon, message)
     */
@@ -201,7 +201,7 @@ signals:
     void stateChanged(State state);
     void isConnectedChanged();
     void hasFetchedNavigationApps();
-    void userStatusChanged();
+    void statusChanged();
 
 protected Q_SLOTS:
     void slotConnectionValidatorResult(ConnectionValidator::Status status, const QStringList &errors);
@@ -252,7 +252,7 @@ private:
     AccountAppList _apps;
 
     UserStatus *_userStatus;
-    QString _notificationStatus;
+    bool _isDesktopNotificationsAllowed;
 };
 
 class AccountApp : public QObject

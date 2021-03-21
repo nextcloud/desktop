@@ -21,7 +21,6 @@
 #include "logger.h"
 #include "configfile.h"
 #include "ocsnavigationappsjob.h"
-#include "userstatus.h"
 
 #include <QSettings>
 #include <QTimer>
@@ -46,7 +45,7 @@ AccountState::AccountState(AccountPtr account)
     , _maintenanceToConnectedDelay(60000 + (qrand() % (4 * 60000))) // 1-5min delay
     , _remoteWipe(new RemoteWipe(_account))
     , _userStatus(new UserStatus(this))
-    , _notificationStatus("online")
+    , _isDesktopNotificationsAllowed(true)
 {
     qRegisterMetaType<AccountState *>("AccountState*");
 
@@ -128,7 +127,7 @@ void AccountState::setState(State state)
     emit stateChanged(_state);
 }
 
-QString AccountState::status() const
+UserStatus::Status AccountState::status() const
 {
     return _userStatus->status();
 }
@@ -223,14 +222,14 @@ void AccountState::setNavigationAppsEtagResponseHeader(const QByteArray &value)
     _navigationAppsEtagResponseHeader = value;
 }
 
-QString AccountState::notificationStatus() const
+bool AccountState::isDesktopNotificationsAllowed() const
 {
-    return _notificationStatus;
+    return _isDesktopNotificationsAllowed;
 }
 
-void AccountState::setNotificationStatus(const QString &status)
+void AccountState::setDesktopNotificationsAllowed(const bool isAllowed)
 {
-    _notificationStatus = status;
+    _isDesktopNotificationsAllowed = isAllowed;
 }
 
 void AccountState::checkConnectivity()
@@ -452,7 +451,7 @@ void AccountState::fetchNavigationApps(){
 
 void AccountState::fetchUserStatus() 
 {
-    connect(_userStatus, &UserStatus::fetchUserStatusFinished, this, &AccountState::userStatusChanged);
+    connect(_userStatus, &UserStatus::fetchUserStatusFinished, this, &AccountState::statusChanged);
     _userStatus->fetchUserStatus(_account);
 }
 
