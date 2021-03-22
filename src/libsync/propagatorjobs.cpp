@@ -89,13 +89,15 @@ bool PropagateLocalRemove::removeRecursively(const QString &path)
 
 void PropagateLocalRemove::start()
 {
+    qCInfo(lcPropagateLocalRemove) << "Start propagate local remove job";
+
     _moveToTrash = propagator()->syncOptions()._moveFilesToTrash;
 
     if (propagator()->_abortRequested)
         return;
 
     const QString filename = propagator()->fullLocalPath(_item->_file);
-    qCDebug(lcPropagateLocalRemove) << filename;
+    qCInfo(lcPropagateLocalRemove) << "Going to delete:" << filename;
 
     if (propagator()->localFileNameClash(_item->_file)) {
         done(SyncFileItem::NormalError, tr("Could not remove %1 because of a local file name clash").arg(QDir::toNativeSeparators(filename)));
