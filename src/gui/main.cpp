@@ -64,10 +64,7 @@ int main(int argc, char **argv)
     // OpenSSL 1.1.0: No explicit initialisation or de-initialisation is necessary.
 
     QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps, true);
-#ifdef Q_OS_WIN
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling, true);
-#endif // !Q_OS_WIN
-
 #ifdef Q_OS_MAC
     Mac::CocoaInitializer cocoaInit; // RIIA
 #endif
