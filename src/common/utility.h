@@ -135,6 +135,10 @@ namespace Utility {
     // that means "test" means the same as "TEST" for filenames.
     // if false, the two cases are two different files.
     OCSYNC_EXPORT bool fsCasePreserving();
+    inline auto fsCaseSensitivity()
+    {
+        return fsCasePreserving() ? Qt::CaseInsensitive : Qt::CaseSensitive;
+    }
 
     // Check if two pathes that MUST exist are equal. This function
     // uses QDir::canonicalPath() to judge and cares for the systems

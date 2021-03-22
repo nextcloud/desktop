@@ -79,6 +79,9 @@ private:
     // We'll show a file/directory as SYNC as long as its sync count is > 0.
     // A directory that starts/ends propagation will in turn increase/decrease its own parent by 1.
     QHash<QString, int> _syncCount;
+
+    // case sensitivity used for path comparisons
+    Qt::CaseSensitivity _caseSensitivity;
 };
 }
 
