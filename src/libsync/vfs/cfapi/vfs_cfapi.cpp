@@ -363,16 +363,19 @@ void VfsCfApi::onHydrationJobFinished(HydrationJob *job)
 
 void VfsCfApi::onHydrationJobCanceled(HydrationJob *job)
 {
-    const auto folderPath = job->localPath();
     const auto folderRelativePath = job->folderPath();
+    SyncJournalFileRecord record;
+    if (!params().journal->getFileRecord(folderRelativePath, &record)) {
+        qCWarning(lcCfApi) << "Could not read file record from journal for canceled hydration request.";
+        return;
+    }
 
     // Remove placeholder file because there might be already pumped
     // some data into it
+    const auto folderPath = job->localPath();
     QFile::remove(folderPath + folderRelativePath);
 
     // Create a new placeholder file
-    SyncJournalFileRecord record;
-    params().journal->getFileRecord(folderRelativePath, &record);
     const auto item = SyncFileItem::fromSyncJournalFileRecord(record);
     createPlaceholder(*item);
 }
