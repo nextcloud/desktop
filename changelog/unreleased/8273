@@ -1,0 +1,6 @@
+Change: We no longer try to locate an ownCloud install at /owncloud
+
+We no longer try to locate an ownCloud install in /owncloud if we failed to
+connect to a server.
+
+https://github.com/owncloud/client/issues/8273

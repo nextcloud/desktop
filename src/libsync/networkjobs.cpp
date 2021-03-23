@@ -409,13 +409,8 @@ bool LsColJob::finished()
 
 /*********************************************************************************************/
 
-namespace {
-    const QString statusphpC() { return QStringLiteral("status.php"); }
-    const QString owncloudDirC() { return QStringLiteral("owncloud/"); }
-}
-
 CheckServerJob::CheckServerJob(AccountPtr account, QObject *parent)
-    : AbstractNetworkJob(account, statusphpC(), parent)
+    : AbstractNetworkJob(account, QStringLiteral("status.php"), parent)
     , _subdirFallback(false)
 {
     setIgnoreCredentialFailure(true);
@@ -530,16 +525,6 @@ bool CheckServerJob::finished()
     }
 
     mergeSslConfigurationForSslButton(reply()->sslConfiguration(), account());
-
-    // The server installs to /owncloud. Let's try that if the file wasn't found
-    // at the original location
-    if ((reply()->error() == QNetworkReply::ContentNotFoundError) && (!_subdirFallback)) {
-        _subdirFallback = true;
-        setPath(owncloudDirC() + statusphpC());
-        start();
-        qCInfo(lcCheckServerJob) << "Retrying with" << reply()->url();
-        return false;
-    }
 
     const QByteArray body = reply()->peek(4 * 1024);
     const int httpStatus = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
