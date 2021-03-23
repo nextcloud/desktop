@@ -17,6 +17,7 @@ Summary
 * Bugfix - We fixed an issue with the promptDeleteAllFiles setting: [#8484](https://github.com/owncloud/client/issues/8484)
 * Change - Don't ask the user to switch to http: [#8231](https://github.com/owncloud/client/issues/8231)
 * Change - Remove support for http redirects: [#8293](https://github.com/owncloud/client/pull/8293)
+* Change - We no longer try to locate an ownCloud install at /owncloud: [#8273](https://github.com/owncloud/client/issues/8273)
 * Change - Ignore the desktop.ini file in every directory, not only in top dir: [#8298](https://github.com/owncloud/client/issues/8298)
 * Change - Add support for dynamic client registration with OIDC: [#8350](https://github.com/owncloud/client/pull/8350/)
 * Change - Include full os version in the about dialog: [#8374](https://github.com/owncloud/client/pull/8374)
@@ -88,6 +89,12 @@ Details
 
    https://github.com/owncloud/client/pull/8293
    https://github.com/owncloud/client/pull/8253
+
+* Change - We no longer try to locate an ownCloud install at /owncloud: [#8273](https://github.com/owncloud/client/issues/8273)
+
+   We no longer try to locate an ownCloud install in /owncloud if we failed to connect to a server.
+
+   https://github.com/owncloud/client/issues/8273
 
 * Change - Ignore the desktop.ini file in every directory, not only in top dir: [#8298](https://github.com/owncloud/client/issues/8298)
 
