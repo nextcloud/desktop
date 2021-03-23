@@ -3038,42 +3038,42 @@ Ovo je novi, eksperimentalni način rada. Ako se odlučite aktivirati ga, prijav
         <translation>poslužitelj javlja da nema %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1214"/>
+        <location filename="../src/libsync/discovery.cpp" line="1217"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Zanemareno zbog crne liste „odaberi što će se sinkronizirati”</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1247"/>
+        <location filename="../src/libsync/discovery.cpp" line="1250"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Nije dopušteno jer nemate dopuštenje za dodavanje podmapa u tu mapu</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1252"/>
+        <location filename="../src/libsync/discovery.cpp" line="1255"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Nije dopušteno jer nemate dopuštenje za dodavanje datoteka u tu mapu</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1265"/>
+        <location filename="../src/libsync/discovery.cpp" line="1268"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Nije dopušteno otpremiti ovu datoteku jer je dostupna samo za čitanje na poslužitelju, vraćanje</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1287"/>
+        <location filename="../src/libsync/discovery.cpp" line="1290"/>
         <source>Moved to invalid target, restoring</source>
         <translation>Premješteno na nevažeće odredište, vraćanje</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1300"/>
+        <location filename="../src/libsync/discovery.cpp" line="1303"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Nije dopušteno uklanjanje, vraćanje</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1409"/>
+        <location filename="../src/libsync/discovery.cpp" line="1412"/>
         <source>Error while reading the database</source>
         <translation>Pogreška pri čitanju baze podataka</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1470"/>
+        <location filename="../src/libsync/discovery.cpp" line="1473"/>
         <source>Server replied with an error while reading directory &apos;%1&apos; : %2</source>
         <translation>Poslužitelj je javio pogrešku pri čitanju direktorija &apos;%1&apos; : %2</translation>
     </message>
@@ -3183,14 +3183,14 @@ Ovo je novi, eksperimentalni način rada. Ako se odlučite aktivirati ga, prijav
         <translation>Pogreška pri uklanjanju ‘%1’: %2;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="103"/>
-        <source>Could not remove %1 because of a local file name clash</source>
-        <translation>Nije moguće ukloniti %1 zbog nepodudaranja naziva lokalne datoteke</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="104"/>
         <source>Could not remove folder &apos;%1&apos;</source>
         <translation>Nije moguće ukloniti mapu &apos;%1&apos;</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="103"/>
+        <source>Could not remove %1 because of a local file name clash</source>
+        <translation>Nije moguće ukloniti %1 zbog nepodudaranja naziva lokalne datoteke</translation>
     </message>
 </context>
 <context>
@@ -3207,7 +3207,7 @@ Ovo je novi, eksperimentalni način rada. Ako se odlučite aktivirati ga, prijav
         <translation>Pogreška pri pisanju metapodataka u bazu podataka</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="267"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="269"/>
         <source>Error setting pin state</source>
         <translation>Pogreška pri postavljanju stanja šifre</translation>
     </message>

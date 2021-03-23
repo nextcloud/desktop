@@ -3041,42 +3041,42 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
         <translation>sunucu numarası %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1214"/>
+        <location filename="../src/libsync/discovery.cpp" line="1217"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>&quot;Eşitlenecek ögeleri seçin&quot; kara listesinde olduğundan yok sayıldı</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1247"/>
+        <location filename="../src/libsync/discovery.cpp" line="1250"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Bu klasöre alt klasör ekleme izniniz olmadığından izin verilmedi</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1252"/>
+        <location filename="../src/libsync/discovery.cpp" line="1255"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Bu klasöre dosya ekleme izniniz olmadığından izin verilmedi</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1265"/>
+        <location filename="../src/libsync/discovery.cpp" line="1268"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Sunucu üzerinde salt okunur olduğundan, bu dosya yüklenemedi, geri yükleniyor</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1287"/>
+        <location filename="../src/libsync/discovery.cpp" line="1290"/>
         <source>Moved to invalid target, restoring</source>
         <translation>Geçersiz bir hedefe taşındı, geri yükleniyor</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1300"/>
+        <location filename="../src/libsync/discovery.cpp" line="1303"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Silmeye izin verilmedi, geri yükleniyor</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1409"/>
+        <location filename="../src/libsync/discovery.cpp" line="1412"/>
         <source>Error while reading the database</source>
         <translation>Veritabanı okunurken sorun çıktı</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1470"/>
+        <location filename="../src/libsync/discovery.cpp" line="1473"/>
         <source>Server replied with an error while reading directory &apos;%1&apos; : %2</source>
         <translation>!%1&apos; klasörü okunurken sunucu bir hata yanıtı verdi: %2</translation>
     </message>
@@ -3186,14 +3186,14 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
         <translation>&apos;%1&apos; silinirken sorun çıktı: %2;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="103"/>
-        <source>Could not remove %1 because of a local file name clash</source>
-        <translation>Yerel bir dosya adı ile çakışması nedeniyle %1 dosyası %2 olarak adlandırılamadı</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="104"/>
         <source>Could not remove folder &apos;%1&apos;</source>
         <translation>&apos;%1&apos; klasörü silinemedi</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="103"/>
+        <source>Could not remove %1 because of a local file name clash</source>
+        <translation>Yerel bir dosya adı ile çakışması nedeniyle %1 dosyası %2 olarak adlandırılamadı</translation>
     </message>
 </context>
 <context>
@@ -3210,7 +3210,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
         <translation>Üst veri veritabanına yazılırken sorun çıktı</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="267"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="269"/>
         <source>Error setting pin state</source>
         <translation>Sabitleme durumu ayarlanırken sorun çıktı</translation>
     </message>

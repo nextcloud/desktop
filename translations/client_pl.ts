@@ -3042,42 +3042,42 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
         <translation>serwer zgłosił brak %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1214"/>
+        <location filename="../src/libsync/discovery.cpp" line="1217"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Ignorowane z powodu czarnej listy &quot;Wybierz co synchronizować&quot;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1247"/>
+        <location filename="../src/libsync/discovery.cpp" line="1250"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Niedozwolone, ponieważ nie masz uprawnień do dodawania podfolderów do tego folderu</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1252"/>
+        <location filename="../src/libsync/discovery.cpp" line="1255"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Niedozwolone, ponieważ nie masz uprawnień do dodawania plików w tym folderze</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1265"/>
+        <location filename="../src/libsync/discovery.cpp" line="1268"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Przesyłanie niedozwolone, ponieważ plik jest &quot;tylko do odczytu&quot; na serwerze, przywracanie</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1287"/>
+        <location filename="../src/libsync/discovery.cpp" line="1290"/>
         <source>Moved to invalid target, restoring</source>
         <translation>Przeniesiono do nieprawidłowego obiektu, przywracanie</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1300"/>
+        <location filename="../src/libsync/discovery.cpp" line="1303"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Brak uprawnień by usunąć, przywracanie</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1409"/>
+        <location filename="../src/libsync/discovery.cpp" line="1412"/>
         <source>Error while reading the database</source>
         <translation>Błąd podczas odczytu bazy danych</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1470"/>
+        <location filename="../src/libsync/discovery.cpp" line="1473"/>
         <source>Server replied with an error while reading directory &apos;%1&apos; : %2</source>
         <translation>Serwer odpowiedział z błędem podczas odczytu katalogu &apos;%1&apos; : %2</translation>
     </message>
@@ -3187,14 +3187,14 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
         <translation>Błąd podczas usuwania &apos;%1&apos;: %2;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="103"/>
-        <source>Could not remove %1 because of a local file name clash</source>
-        <translation>Nie można usunąć %1 z powodu kolizji z lokalną nazwą pliku</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="104"/>
         <source>Could not remove folder &apos;%1&apos;</source>
         <translation>Nie można usunąć folderu &apos;%1&apos;</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="103"/>
+        <source>Could not remove %1 because of a local file name clash</source>
+        <translation>Nie można usunąć %1 z powodu kolizji z lokalną nazwą pliku</translation>
     </message>
 </context>
 <context>
@@ -3211,7 +3211,7 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
         <translation>Błąd zapisu metadanych do bazy danych</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="267"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="269"/>
         <source>Error setting pin state</source>
         <translation>Błąd podczas ustawiania stanu przypięcia</translation>
     </message>
@@ -4058,7 +4058,7 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="122"/>
         <source>Success.</source>
-        <translation>Sukces.</translation>
+        <translation>Powodzenie.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="125"/>

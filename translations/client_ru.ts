@@ -3037,42 +3037,42 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>ответ сервера: %1 отсуствует</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1214"/>
+        <location filename="../src/libsync/discovery.cpp" line="1217"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Игнорируется из-за совпадения с записью в списке исключений из синхронизации</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1247"/>
+        <location filename="../src/libsync/discovery.cpp" line="1250"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Недостаточно прав для создания вложенных папок</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1252"/>
+        <location filename="../src/libsync/discovery.cpp" line="1255"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Недостаточно прав для создания файлов в этой папке</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1265"/>
+        <location filename="../src/libsync/discovery.cpp" line="1268"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Передача этого файла на сервер не разрешена, т.к. он доступен только для чтения, выполняется восстановление</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1287"/>
+        <location filename="../src/libsync/discovery.cpp" line="1290"/>
         <source>Moved to invalid target, restoring</source>
         <translation>Перемещено в некорректное расположение, выполняется восстановление</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1300"/>
+        <location filename="../src/libsync/discovery.cpp" line="1303"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Удаление недопустимо, выполняется восстановление</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1409"/>
+        <location filename="../src/libsync/discovery.cpp" line="1412"/>
         <source>Error while reading the database</source>
         <translation>Ошибка чтения базы данных</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1470"/>
+        <location filename="../src/libsync/discovery.cpp" line="1473"/>
         <source>Server replied with an error while reading directory &apos;%1&apos; : %2</source>
         <translation>Ошибка сервера при попытке прочитать каталог «%1»: %2</translation>
     </message>
@@ -3182,14 +3182,14 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Ошибка удаления «%1»: %2; </translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="103"/>
-        <source>Could not remove %1 because of a local file name clash</source>
-        <translation>Не удалось удалить «%1» из-за локального конфликта имён</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="104"/>
         <source>Could not remove folder &apos;%1&apos;</source>
         <translation>Не удалось удалить папку «%1»</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="103"/>
+        <source>Could not remove %1 because of a local file name clash</source>
+        <translation>Не удалось удалить «%1» из-за локального конфликта имён</translation>
     </message>
 </context>
 <context>
@@ -3206,7 +3206,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Ошибка записи метаданных в базу данных</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="267"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="269"/>
         <source>Error setting pin state</source>
         <translation>Не удалось задать состояние pin</translation>
     </message>
