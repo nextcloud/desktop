@@ -3042,42 +3042,42 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <translation>servidor relatou não  %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1214"/>
+        <location filename="../src/libsync/discovery.cpp" line="1217"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Ignorado devido à lista negra &quot;escolher o que sincronizar&quot; </translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1247"/>
+        <location filename="../src/libsync/discovery.cpp" line="1250"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Não permitido porque você não tem permissão para adicionar subpastas a essa pasta</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1252"/>
+        <location filename="../src/libsync/discovery.cpp" line="1255"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Não permitido porque você não tem permissão para adicionar arquivos nessa pasta </translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1265"/>
+        <location filename="../src/libsync/discovery.cpp" line="1268"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Não é permitido fazer upload deste arquivo porque ele é somente leitura no servidor, restaurando </translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1287"/>
+        <location filename="../src/libsync/discovery.cpp" line="1290"/>
         <source>Moved to invalid target, restoring</source>
         <translation>Movido para destino inválido, restaurando </translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1300"/>
+        <location filename="../src/libsync/discovery.cpp" line="1303"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Não tem permissão para remover, restaurar </translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1409"/>
+        <location filename="../src/libsync/discovery.cpp" line="1412"/>
         <source>Error while reading the database</source>
         <translation>Erro ao ler o banco de dados </translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1470"/>
+        <location filename="../src/libsync/discovery.cpp" line="1473"/>
         <source>Server replied with an error while reading directory &apos;%1&apos; : %2</source>
         <translation>O servidor respondeu com um erro ao ler o diretório &apos;%1&apos; : %2 </translation>
     </message>
@@ -3187,14 +3187,14 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <translation>Erro removendo &apos;%1&apos;: %2;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="103"/>
-        <source>Could not remove %1 because of a local file name clash</source>
-        <translation>Não foi possível remover %1 devido a um conflito com o nome de um arquivo local</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="104"/>
         <source>Could not remove folder &apos;%1&apos;</source>
         <translation>Não foi possível remover a pasta &apos;%1&apos;</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="103"/>
+        <source>Could not remove %1 because of a local file name clash</source>
+        <translation>Não foi possível remover %1 devido a um conflito com o nome de um arquivo local</translation>
     </message>
 </context>
 <context>
@@ -3211,7 +3211,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <translation>Ocorreu um erro ao escrever metadados no banco de dados</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="267"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="269"/>
         <source>Error setting pin state</source>
         <translation>Erro ao definir o estado do pin</translation>
     </message>

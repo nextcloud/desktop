@@ -140,7 +140,7 @@
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="56"/>
         <source>Logo</source>
-        <translation type="unfinished"/>
+        <translation>ロゴ</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="65"/>
@@ -361,7 +361,7 @@ Wait for the new sync, then encrypt it.</source>
         <location filename="../src/gui/accountsettings.cpp" line="447"/>
         <location filename="../src/gui/accountsettings.cpp" line="523"/>
         <source>Create new folder</source>
-        <translation type="unfinished"/>
+        <translation>新しいフォルダーを作成</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="453"/>
@@ -456,7 +456,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="837"/>
         <source>Disable support</source>
-        <translation type="unfinished"/>
+        <translation>サーポートを無効化</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="648"/>
@@ -713,7 +713,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/application.cpp" line="146"/>
         <source>Quit</source>
-        <translation type="unfinished"/>
+        <translation>終了</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="147"/>
@@ -801,13 +801,13 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="46"/>
         <source>Local version</source>
-        <translation type="unfinished"/>
+        <translation>ローカルバージョン</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="57"/>
         <location filename="../src/gui/conflictdialog.ui" line="165"/>
         <source>Click to open the file</source>
-        <translation type="unfinished"/>
+        <translation>クリークしてファイルを開く</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="96"/>
@@ -1043,12 +1043,12 @@ This can be an issue with your OpenSSL libraries.</source>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="215"/>
         <source>Reopen Browser</source>
-        <translation type="unfinished"/>
+        <translation>ブラウザを再度開く</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="218"/>
         <source>Copy Link</source>
-        <translation type="unfinished"/>
+        <translation>リンクをコピー</translation>
     </message>
 </context>
 <context>
@@ -1290,17 +1290,17 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folder.cpp" line="1244"/>
         <source>Remove All Files?</source>
-        <translation type="unfinished"/>
+        <translation>すべてのファイルを削除しますか？</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1248"/>
         <source>Remove all files</source>
-        <translation type="unfinished"/>
+        <translation>すべてのファイルを削除</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1249"/>
         <source>Keep files</source>
-        <translation type="unfinished"/>
+        <translation>ファイルを保持</translation>
     </message>
 </context>
 <context>
@@ -1308,17 +1308,17 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/foldercreationdialog.ui" line="14"/>
         <source>Create new folder</source>
-        <translation type="unfinished"/>
+        <translation>新しいフォルダーを作成</translation>
     </message>
     <message>
         <location filename="../src/gui/foldercreationdialog.ui" line="42"/>
         <source>Enter folder name</source>
-        <translation type="unfinished"/>
+        <translation>フォルダー名のを入力</translation>
     </message>
     <message>
         <location filename="../src/gui/foldercreationdialog.ui" line="61"/>
         <source>Folder already exists</source>
-        <translation type="unfinished"/>
+        <translation>フォルダーはすでに存在します</translation>
     </message>
     <message>
         <location filename="../src/gui/foldercreationdialog.cpp" line="76"/>
@@ -1509,7 +1509,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="301"/>
         <source>Synchronizing with local folder</source>
-        <translation type="unfinished"/>
+        <translation>ローカルフォルダーと同期</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="904"/>
@@ -1916,7 +1916,7 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="317"/>
         <source>Change update channel</source>
-        <translation type="unfinished"/>
+        <translation>アップデートチャンネルを変更</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="318"/>
@@ -1931,7 +1931,7 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="411"/>
         <source>Zip Archives</source>
-        <translation type="unfinished"/>
+        <translation>Zipアーカイブ</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="417"/>
@@ -2240,7 +2240,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="443"/>
         <source>Update Failed</source>
-        <translation type="unfinished"/>
+        <translation>アップデートに失敗しました</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="449"/>
@@ -2255,7 +2255,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="464"/>
         <source>Restart and update</source>
-        <translation type="unfinished"/>
+        <translation>再起動してアップデート</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="465"/>
@@ -2493,7 +2493,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="60"/>
         <source>Connect</source>
-        <translation type="unfinished"/>
+        <translation>接続</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="54"/>
@@ -2668,7 +2668,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="95"/>
         <source>Log in to your %1</source>
-        <translation type="unfinished"/>
+        <translation>あなたの「%1」にログイン</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="96"/>
@@ -2695,7 +2695,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="250"/>
         <source>Server address does not seem to be valid</source>
-        <translation type="unfinished"/>
+        <translation>サーバーアドレスは有効なさそうです</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="293"/>
@@ -2858,7 +2858,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="88"/>
         <source>Add %1 account</source>
-        <translation type="unfinished"/>
+        <translation>アカウント「%1」 を追加</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="100"/>
@@ -2988,7 +2988,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="295"/>
         <source>The filename is blacklisted on the server.</source>
-        <translation type="unfinished"/>
+        <translation>このファイル名はサーバーにブロックされました。</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="350"/>
@@ -2998,7 +2998,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="425"/>
         <source>size</source>
-        <translation type="unfinished"/>
+        <translation>サイズ</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="427"/>
@@ -3008,7 +3008,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="431"/>
         <source>file id</source>
-        <translation type="unfinished"/>
+        <translation>ファイルID</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="435"/>
@@ -3016,42 +3016,42 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1214"/>
+        <location filename="../src/libsync/discovery.cpp" line="1217"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1247"/>
+        <location filename="../src/libsync/discovery.cpp" line="1250"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1252"/>
+        <location filename="../src/libsync/discovery.cpp" line="1255"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1265"/>
+        <location filename="../src/libsync/discovery.cpp" line="1268"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1287"/>
+        <location filename="../src/libsync/discovery.cpp" line="1290"/>
         <source>Moved to invalid target, restoring</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1300"/>
+        <location filename="../src/libsync/discovery.cpp" line="1303"/>
         <source>Not allowed to remove, restoring</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1409"/>
+        <location filename="../src/libsync/discovery.cpp" line="1412"/>
         <source>Error while reading the database</source>
-        <translation type="unfinished"/>
+        <translation>データベースを読み込み中にエラーが発生しました</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1470"/>
+        <location filename="../src/libsync/discovery.cpp" line="1473"/>
         <source>Server replied with an error while reading directory &apos;%1&apos; : %2</source>
         <translation type="unfinished"/>
     </message>
@@ -3161,14 +3161,14 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>&apos;%1&apos; 削除中のエラー: %2;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="103"/>
-        <source>Could not remove %1 because of a local file name clash</source>
-        <translation>%1 はローカルファイル名が衝突しているため削除できませんでした</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="104"/>
         <source>Could not remove folder &apos;%1&apos;</source>
         <translation>フォルダー &apos;%1&apos;を削除できません</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="103"/>
+        <source>Could not remove %1 because of a local file name clash</source>
+        <translation>%1 はローカルファイル名が衝突しているため削除できませんでした</translation>
     </message>
 </context>
 <context>
@@ -3185,7 +3185,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>メタデータのデータベースへの書き込みに失敗</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="267"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="269"/>
         <source>Error setting pin state</source>
         <translation type="unfinished"/>
     </message>
@@ -3224,7 +3224,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="170"/>
         <source>Could not rename %1 to %2, error: %3</source>
-        <translation type="unfinished"/>
+        <translation>名前を「%1」から「%2」へ変更できません。エラー: %3</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="134"/>
@@ -3432,7 +3432,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/settingsdialog.cpp" line="105"/>
         <source>%1 Settings</source>
         <extracomment>This name refers to the application name e.g Nextcloud</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 設定</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="99"/>
@@ -3799,7 +3799,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi.cpp" line="920"/>
         <source>Move and rename …</source>
-        <translation type="unfinished"/>
+        <translation>移動して名前を変更…</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="923"/>
@@ -4122,7 +4122,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="352"/>
         <source>Could not update file: %1</source>
-        <translation type="unfinished"/>
+        <translation>ファイルをアップデートできません: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="362"/>
@@ -4295,7 +4295,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1024"/>
         <source>Aborted</source>
-        <translation type="unfinished"/>
+        <translation>中止した</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1809"/>
@@ -4393,27 +4393,27 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="452"/>
         <source>Synced %1</source>
-        <translation type="unfinished"/>
+        <translation>「%1」を同期しました</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="454"/>
         <source>You renamed %1</source>
-        <translation type="unfinished"/>
+        <translation>あなたは「%1」の名前を変更しました</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="456"/>
         <source>You deleted %1</source>
-        <translation type="unfinished"/>
+        <translation>あなたは「%1$s」を削除しました</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="458"/>
         <source>You created %1</source>
-        <translation type="unfinished"/>
+        <translation>あなたは「%1$s」を作成しました</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="460"/>
         <source>You changed %1</source>
-        <translation type="unfinished"/>
+        <translation>あなたは「%1$s」を変更しました</translation>
     </message>
 </context>
 <context>
@@ -4483,13 +4483,13 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="20"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>フォーム</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="143"/>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="88"/>
         <source>Log in to your %1</source>
-        <translation type="unfinished"/>
+        <translation>あなたの「%1」にログイン</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="156"/>
@@ -4792,7 +4792,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="175"/>
         <source>Sync Logo</source>
-        <translation type="unfinished"/>
+        <translation>同期ロゴ</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="251"/>
@@ -4802,7 +4802,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="244"/>
         <source>Local Folder</source>
-        <translation type="unfinished"/>
+        <translation>ローカルフォルダー</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="408"/>
@@ -4848,7 +4848,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="714"/>
         <source>Keep local data</source>
-        <translation type="unfinished"/>
+        <translation>ローカルデータを保持</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="354"/>
@@ -4908,12 +4908,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="73"/>
         <source>Logo</source>
-        <translation type="unfinished"/>
+        <translation>ロゴ</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="183"/>
         <source>Server address</source>
-        <translation type="unfinished"/>
+        <translation>サーバーアドレス</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="194"/>
@@ -4964,7 +4964,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/foldercreationdialog.cpp" line="41"/>
         <source>New folder</source>
-        <translation type="unfinished"/>
+        <translation>新しいフォルダー</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="464"/>
@@ -5043,7 +5043,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="94"/>
         <source>Account not connected</source>
-        <translation type="unfinished"/>
+        <translation>アカウントは接続していません</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="134"/>
@@ -5237,7 +5237,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/Window.qml" line="469"/>
         <source>Apps menu</source>
-        <translation type="unfinished"/>
+        <translation>アプリメニュー</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="497"/>
@@ -5252,7 +5252,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/Window.qml" line="538"/>
         <source>Open %1 locally</source>
-        <translation type="unfinished"/>
+        <translation>ローカルで「%1」を開く</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="695"/>
@@ -5268,7 +5268,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/Window.qml" line="791"/>
         <source>Share %1</source>
-        <translation type="unfinished"/>
+        <translation>「%1」を共有</translation>
     </message>
 </context>
 <context>
