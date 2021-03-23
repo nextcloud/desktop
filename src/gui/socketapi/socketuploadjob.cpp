@@ -22,6 +22,7 @@
 #include <QFileInfo>
 #include <QJsonArray>
 #include <QRegularExpression>
+#include <QTemporaryFile>
 
 using namespace OCC;
 
@@ -29,67 +30,73 @@ SocketUploadJob::SocketUploadJob(const QSharedPointer<SocketApiJobV2> &job)
     : _apiJob(job)
 {
     connect(job.data(), &SocketApiJobV2::finished, this, &SocketUploadJob::deleteLater);
+}
 
-    _localPath = _apiJob->arguments()[QLatin1String("localPath")].toString();
-    _remotePath = _apiJob->arguments()[QLatin1String("remotePath")].toString();
-    if (!_remotePath.startsWith(QLatin1Char('/'))) {
-        _remotePath = QLatin1Char('/') + _remotePath;
+void SocketUploadJob::start()
+{
+    const auto localPath = _apiJob->arguments()[QLatin1String("localPath")].toString();
+    auto remotePath = _apiJob->arguments()[QLatin1String("remotePath")].toString();
+    if (!remotePath.startsWith(QLatin1Char('/'))) {
+        remotePath = QLatin1Char('/') + remotePath;
     }
 
-    _pattern = job->arguments()[QLatin1String("pattern")].toString();
-    const auto accname = job->arguments()[QLatin1String("account")][QLatin1String("name")].toString();
-    const auto accUUID = QUuid::fromString(job->arguments()[QLatin1String("account")][QLatin1String("uuid")].toString());
+    const auto pattern = _apiJob->arguments()[QLatin1String("pattern")].toString();
+    const auto accname = _apiJob->arguments()[QLatin1String("account")][QLatin1String("name")].toString();
+    const auto accUUID = QUuid::fromString(_apiJob->arguments()[QLatin1String("account")][QLatin1String("uuid")].toString());
     AccountStatePtr account;
     if (accUUID.isNull()) {
-        job->setWarning("Using the name as identifier is deprecated, please use the uuid");
+        _apiJob->setWarning("Using the name as identifier is deprecated, please use the uuid");
         account = AccountManager::instance()->account(accname);
     } else {
         account = AccountManager::instance()->account(accUUID);
     }
 
-    if (!QFileInfo(_localPath).isAbsolute()) {
-        job->failure(QStringLiteral("Local path must be a an absolute path"));
-        return;
-    }
-    if (!_tmp.open()) {
-        job->failure(QStringLiteral("Failed to create temporary database"));
+    if (!account) {
+        _apiJob->failure(QStringLiteral("Failed to find %1").arg(QString::fromUtf8(QJsonDocument(_apiJob->arguments()[QLatin1String("account")].toObject()).toJson())));
         return;
     }
 
-    _db = new SyncJournalDb(_tmp.fileName(), this);
-    _engine = new SyncEngine(account->account(), _localPath.endsWith(QLatin1Char('/')) ? _localPath : _localPath + QLatin1Char('/'), _remotePath, _db);
-    _engine->setParent(_db);
+    if (!QFileInfo(localPath).isAbsolute()) {
+        _apiJob->failure(QStringLiteral("Local path must be a an absolute path"));
+        return;
+    }
+    auto tmp = new QTemporaryFile(this);
+    if (!tmp->open()) {
+        _apiJob->failure(QStringLiteral("Failed to create temporary database"));
+        return;
+    }
 
-    connect(_engine, &OCC::SyncEngine::itemCompleted, this, [this](const OCC::SyncFileItemPtr item) {
+    auto db = new SyncJournalDb(tmp->fileName(), this);
+    auto engine = new SyncEngine(account->account(), localPath.endsWith(QLatin1Char('/')) ? localPath : localPath + QLatin1Char('/'), remotePath, db);
+    engine->setParent(db);
+
+    connect(engine, &OCC::SyncEngine::itemCompleted, this, [this](const OCC::SyncFileItemPtr item) {
         _syncedFiles.append(item->_file);
     });
 
-    connect(_engine, &OCC::SyncEngine::finished, this, [this](bool ok) {
+    connect(engine, &OCC::SyncEngine::finished, this, [this, localPath](bool ok) {
         if (ok) {
-            _apiJob->success({ { "localPath", _localPath }, { "syncedFiles", QJsonArray::fromStringList(_syncedFiles) } });
+            _apiJob->success({ { "localPath", localPath }, { "syncedFiles", QJsonArray::fromStringList(_syncedFiles) } });
         }
     });
-    connect(_engine, &OCC::SyncEngine::syncError, this, [this](const QString &error, ErrorCategory) {
+    connect(engine, &OCC::SyncEngine::syncError, this, [this](const QString &error, ErrorCategory) {
         _apiJob->failure(error);
     });
-}
 
-void SocketUploadJob::start()
-{
-    auto opt = _engine->syncOptions();
-    opt.setFilePattern(_pattern);
+    auto opt = engine->syncOptions();
+    opt.setFilePattern(pattern);
     if (!opt.fileRegex().isValid()) {
         _apiJob->failure(opt.fileRegex().errorString());
         return;
     }
-    _engine->setSyncOptions(opt);
+    engine->setSyncOptions(opt);
 
     // create the dir, fail if it already exists
-    auto mkdir = new OCC::MkColJob(_engine->account(), _remotePath);
-    connect(mkdir, &OCC::MkColJob::finishedWithoutError, _engine, &OCC::SyncEngine::startSync);
-    connect(mkdir, &OCC::MkColJob::finishedWithError, this, [this](QNetworkReply *reply) {
+    auto mkdir = new OCC::MkColJob(engine->account(), remotePath);
+    connect(mkdir, &OCC::MkColJob::finishedWithoutError, engine, &OCC::SyncEngine::startSync);
+    connect(mkdir, &OCC::MkColJob::finishedWithError, this, [this, remotePath](QNetworkReply *reply) {
         if (reply->error() == 202) {
-            _apiJob->failure(QStringLiteral("Destination %1 already exists").arg(_remotePath));
+            _apiJob->failure(QStringLiteral("Destination %1 already exists").arg(remotePath));
         } else {
             _apiJob->failure(reply->errorString());
         }
