@@ -122,17 +122,21 @@ private:
     {
         {
             QString error;
-            auto expireDate = QDateTime::fromSecsSinceEpoch(getRequiredField(data, QStringLiteral("client_secret_expires_at"), &error).value<qint64>());
+            const auto expireDate = getRequiredField(data, QStringLiteral("client_secret_expires_at"), &error).value<qint64>();
             if (!error.isEmpty()) {
                 Q_EMIT errorOccured(error);
                 return;
             }
-            qCInfo(lcOauth) << "Client id iessued at:" << QDateTime::fromSecsSinceEpoch(data[QStringLiteral("client_id_issued_at")].value<quint64>())
-                            << "expires at" << expireDate;
-            if (QDateTime::currentDateTimeUtc() > expireDate) {
-                qCDebug(lcOauth) << "Client registration expired";
-                rgisterClientOnline();
-                return;
+            // 0 means it doesn't expire
+            if (expireDate) {
+                const auto qExpireDate = QDateTime::fromSecsSinceEpoch(expireDate);
+                qCInfo(lcOauth) << "Client id iessued at:" << QDateTime::fromSecsSinceEpoch(data[QStringLiteral("client_id_issued_at")].value<quint64>())
+                                << "expires at" << qExpireDate;
+                if (QDateTime::currentDateTimeUtc() > qExpireDate) {
+                    qCDebug(lcOauth) << "Client registration expired";
+                    rgisterClientOnline();
+                    return;
+                }
             }
         }
         _account->credentialManager()->set(clientSecretC(), data);
