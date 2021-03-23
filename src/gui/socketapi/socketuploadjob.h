@@ -14,8 +14,6 @@
 
 #pragma once
 #include <QObject>
-#include <QTemporaryFile>
-
 #include "socketapi.h"
 #include "account.h"
 
@@ -33,12 +31,6 @@ public:
 
 private:
     QSharedPointer<SocketApiJobV2> _apiJob;
-    QString _localPath;
-    QString _remotePath;
-    QString _pattern;
-    QTemporaryFile _tmp;
-    SyncJournalDb *_db;
-    SyncEngine *_engine;
     QStringList _syncedFiles;
 };
 }
