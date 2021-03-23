@@ -310,7 +310,7 @@ Application::Application(int &argc, char **argv)
                 tr("There was an error while accessing the configuration "
                    "file at %1.")
                     .arg(ConfigFile().configFile()),
-                tr("Quit ownCloud"));
+                tr("Quit %1").arg(Theme::instance()->appNameGUI()));
             QTimer::singleShot(0, qApp, SLOT(quit()));
             return;
         }
