@@ -35,7 +35,7 @@ Q_LOGGING_CATEGORY(lcOauth, "sync.credentials.oauth", QtInfoMsg)
 namespace {
 const QString clientSecretC()
 {
-    return QStringLiteral("clientSecret");
+    return QStringLiteral("http/clientSecret");
 }
 
 QVariant getRequiredField(const QVariantMap &json, const QString &s, QString *error)

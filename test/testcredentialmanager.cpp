@@ -110,6 +110,12 @@ private Q_SLOTS:
         spies.clear();
         {
             auto jobs = creds->clear(QStringLiteral("foo"));
+#ifdef Q_OS_LINUX
+            if (!qEnvironmentVariableIsSet("DBUS_SESSION_BUS_ADDRESS")) {
+                QEXPECT_FAIL("", "QKeychain might not use the plaintext fallback and fail if dbus is not present", Abort);
+                QCOMPARE(jobs.size(), 2);
+            }
+#endif
             QCOMPARE(jobs.size(), 2);
             for (auto &job : jobs) {
                 setFallbackEnabled(job);

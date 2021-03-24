@@ -37,6 +37,27 @@
 Q_LOGGING_CATEGORY(lcHttpCredentials, "sync.credentials.http", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcHttpLegacyCredentials, "sync.credentials.http.legacy", QtInfoMsg)
 
+namespace {
+auto passwordKeyC()
+{
+    return QStringLiteral("http/password");
+}
+
+auto refreshTokenKeyC()
+{
+    return QStringLiteral("http/oauthtoken");
+}
+
+auto clientCertBundleKeyC()
+{
+    return QStringLiteral("clientsideCert/bundle");
+}
+
+auto clientCertPasswordKeyC()
+{
+    return QStringLiteral("clientsideCert/password");
+}
+}
 
 namespace OCC {
 
@@ -183,7 +204,7 @@ void HttpCredentials::fetchFromKeychainHelper()
     }
 
     auto readPassword = [this] {
-        auto job = _account->credentialManager()->get(PasswordKey());
+        auto job = _account->credentialManager()->get(passwordKeyC());
         connect(job, &CredentialJob::finished, this, [job, this] {
             const auto error = job->error();
             if (job->error() != error) {
@@ -219,11 +240,11 @@ void HttpCredentials::fetchFromKeychainHelper()
             }
         });
     };
-    _clientCertBundle = _account->credentialSetting(clientCertBundleC()).toByteArray();
+    _clientCertBundle = _account->credentialSetting(clientCertBundleKeyC()).toByteArray();
     if (!_clientCertBundle.isEmpty()) {
         // New case (>=2.6): We have a bundle in the settings and read the password from
         // the keychain
-        auto job = _account->credentialManager()->get(clientCertPasswordC());
+        auto job = _account->credentialManager()->get(clientCertPasswordKeyC());
         connect(job, &CredentialJob::finished, this, [job, readPassword, this] {
             const auto clientCertPassword = job->data().toByteArray();
             if (job->error() != QKeychain::NoError) {
@@ -300,7 +321,7 @@ void HttpCredentials::invalidateToken()
         return;
     }
 
-    _account->credentialManager()->remove(PasswordKey());
+    _account->credentialManager()->clear(QStringLiteral("http"));
     // let QNAM forget about the password
     // This needs to be done later in the event loop because we might be called (directly or
     // indirectly) from QNetworkAccessManagerPrivate::authenticationRequired, which itself
@@ -330,7 +351,7 @@ void HttpCredentials::persist()
     if (!_clientCertBundle.isEmpty()) {
         // Note that the _clientCertBundle will often be cleared after usage,
         // it's just written if it gets passed into the constructor.
-        _account->setCredentialSetting(clientCertBundleC(), _clientCertBundle);
+        _account->setCredentialSetting(clientCertBundleKeyC(), _clientCertBundle);
     }
     Q_EMIT _account->wantsAccountSaved(_account);
 
@@ -340,11 +361,12 @@ void HttpCredentials::persist()
         // and we'll just store the bundle password in the keychain. That's prefered
         // since the keychain on older Windows platforms can only store a limited number
         // of bytes per entry and key/cert may exceed that.
-        _account->credentialManager()->set(clientCertPasswordC(), _clientCertPassword);
+        _account->credentialManager()->set(clientCertPasswordKeyC(), _clientCertPassword);
         _clientCertBundle.clear();
+    } else if (isUsingOAuth()) {
+        _account->credentialManager()->set(refreshTokenKeyC(), _refreshToken);
     } else {
-        // no client certificate at all (or doesn't need to be written)
-        _account->credentialManager()->set(PasswordKey(), isUsingOAuth() ? _refreshToken : _password);
+        _account->credentialManager()->set(passwordKeyC(), _password);
     }
 }
 

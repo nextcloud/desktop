@@ -13,37 +13,19 @@
 
 namespace {
 constexpr int CredentialVersion = 1;
-const QString CredentialVersionKey()
+auto CredentialVersionKey()
 {
     return QStringLiteral("CredentialVersion");
 }
-const QString userC()
-{
-    return QStringLiteral("user");
-}
-const QString isOAuthC()
+
+auto isOAuthC()
 {
     return QStringLiteral("oauth");
 }
-const QString clientCertBundleC()
+
+const QString userC()
 {
-    return QStringLiteral("clientCertPkcs12");
-}
-const QString clientCertPasswordC()
-{
-    return QStringLiteral("_clientCertPassword");
-}
-const QString clientCertificatePEMC()
-{
-    return QStringLiteral("_clientCertificatePEM");
-}
-const QString clientKeyPEMC()
-{
-    return QStringLiteral("_clientKeyPEM");
-}
-const QString PasswordKey()
-{
-    return QStringLiteral("password");
+    return QStringLiteral("user");
 }
 const char authenticationFailedC[] = "owncloud-authentication-failed";
 
@@ -62,6 +44,28 @@ namespace OCC {
 class HttpLegacyCredentials : public QObject
 {
     Q_OBJECT
+
+    const QString clientCertBundleC()
+    {
+        return QStringLiteral("clientCertPkcs12");
+    }
+    const QString clientCertPasswordC()
+    {
+        return QStringLiteral("_clientCertPassword");
+    }
+    const QString clientCertificatePEMC()
+    {
+        return QStringLiteral("_clientCertificatePEM");
+    }
+    const QString clientKeyPEMC()
+    {
+        return QStringLiteral("_clientKeyPEM");
+    }
+    const QString PasswordKey()
+    {
+        return QStringLiteral("password");
+    }
+
 public:
     HttpLegacyCredentials(HttpCredentials *parent)
         : QObject(parent)
@@ -83,7 +87,7 @@ public:
             job->start();
             return;
         }
-        const auto msg = tr("The support of client side certificate saved in the keychein was removed, please start the setup withard again and follow the instructions.");
+        const auto msg = tr("The support of client side certificate saved in the keychein was removed, please start the setup wizard again and follow the instructions.");
         QMetaObject::invokeMethod(qApp, "slotShowGuiMessage", Qt::QueuedConnection, Q_ARG(QString, tr("Credentials")), Q_ARG(QString, msg));
         qCWarning(lcHttpLegacyCredentials) << msg;
     }
