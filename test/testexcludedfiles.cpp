@@ -44,22 +44,22 @@ class TestExcludedFiles: public QObject
 
     static auto check_file_full(const QString &path)
     {
-        return excludedFiles->fullPatternMatch({ &path }, ItemTypeFile);
+        return excludedFiles->fullPatternMatch(&path, ItemTypeFile);
     }
 
     static auto check_dir_full(const QString &path)
     {
-        return excludedFiles->fullPatternMatch({ &path }, ItemTypeDirectory);
+        return excludedFiles->fullPatternMatch(&path, ItemTypeDirectory);
     }
 
     static auto check_file_traversal(const QString &path)
     {
-        return excludedFiles->traversalPatternMatch({ &path }, ItemTypeFile);
+        return excludedFiles->traversalPatternMatch(&path, ItemTypeFile);
     }
 
     static auto check_dir_traversal(const QString &path)
     {
-        return excludedFiles->traversalPatternMatch({ &path }, ItemTypeDirectory);
+        return excludedFiles->traversalPatternMatch(&path, ItemTypeDirectory);
     }
 
 private slots:

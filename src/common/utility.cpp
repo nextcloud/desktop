@@ -635,10 +635,4 @@ QString Utility::sanitizeForFileName(const QString &name)
     }
     return result;
 }
-
-bool Utility::isConflictFile(const QString &name)
-{
-    return isConflictFile({ &name });
-}
-
 } // namespace OCC
