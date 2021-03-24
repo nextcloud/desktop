@@ -50,7 +50,7 @@
         <x>0</x>
         <y>0</y>
         <width>673</width>
-        <height>69</height>
+        <height>68</height>
        </rect>
       </property>
       <property name="autoFillBackground">
@@ -76,13 +76,31 @@
     </widget>
    </item>
    <item>
-    <widget class="QListView" name="_activityList">
+    <widget class="QTableView" name="_activityList">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
+     <property name="alternatingRowColors">
+      <bool>true</bool>
+     </property>
+     <property name="selectionBehavior">
+      <enum>QAbstractItemView::SelectRows</enum>
+     </property>
+     <property name="showGrid">
+      <bool>false</bool>
+     </property>
+     <property name="sortingEnabled">
+      <bool>true</bool>
+     </property>
+     <property name="wordWrap">
+      <bool>false</bool>
+     </property>
+     <attribute name="verticalHeaderVisible">
+      <bool>false</bool>
+     </attribute>
     </widget>
    </item>
    <item>

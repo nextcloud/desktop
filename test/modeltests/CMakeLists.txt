@@ -1,0 +1,1 @@
+owncloud_add_test(ActivityModel)

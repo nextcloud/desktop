@@ -83,11 +83,6 @@ const QVector<ActivityLink> &Activity::links() const
     return _links;
 }
 
-bool Activity::operator<(const Activity &lhs) const
-{
-    return _dateTime.toMSecsSinceEpoch() > lhs._dateTime.toMSecsSinceEpoch();
-}
-
 bool Activity::operator==(const Activity &lhs) const
 {
     return (_type == lhs._type && _id == lhs._id && _uuid == lhs._uuid);

@@ -81,7 +81,7 @@ public slots:
 signals:
     void guiLog(const QString &, const QString &);
     void copyToClipboard();
-    void rowsInserted();
+    void dataChanged();
     void hideActivityTab(bool);
     void newNotification();
 

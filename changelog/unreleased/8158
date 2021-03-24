@@ -1,0 +1,7 @@
+Enhancement: We reworked the server activity table
+
+We redone the server activity table, its now behaves as a proper table,
+is sortable, supports right to left layouts and overall behave more smooth.
+
+https://github.com/owncloud/client/issues/8158
+https://github.com/owncloud/client/issues/4336

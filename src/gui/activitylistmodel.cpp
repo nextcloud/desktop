@@ -24,7 +24,6 @@
 #include "accountmanager.h"
 #include "folderman.h"
 #include "accessmanager.h"
-#include "activityitemdelegate.h"
 #include "guiutility.h"
 
 #include "activitydata.h"
@@ -34,70 +33,115 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcActivity, "gui.activity", QtInfoMsg)
 
-ActivityListModel::ActivityListModel(QWidget *parent)
-    : QAbstractListModel(parent)
+ActivityListModel::ActivityListModel(QObject *parent)
+    : QAbstractTableModel(parent)
 {
 }
 
 QVariant ActivityListModel::data(const QModelIndex &index, int role) const
 {
-    Activity a;
+    Q_ASSERT(checkIndex(index, QAbstractItemModel::CheckIndexOption::IndexIsValid));
+    if (!index.isValid()) {
+        return {};
+    }
 
-    if (!index.isValid())
-        return QVariant();
-
-    a = _finalList.at(index.row());
-    AccountStatePtr ast = AccountManager::instance()->account(a.uuid());
-    if (!ast)
-        return QVariant();
-    QStringList list;
-
+    const auto &a = _finalList.at(index.row());
+    const AccountStatePtr accountState = AccountManager::instance()->account(a.uuid());
+    if (!accountState) {
+        return {};
+    }
+    const auto column = static_cast<ActivityRole>(index.column());
     switch (role) {
-    case ActivityItemDelegate::PathRole:
-        list = FolderMan::instance()->findFileInLocalFolders(a.file(), ast->account());
-        if (list.count() > 0) {
-            return QVariant(list.at(0));
+    case UnderlyingDataRole:
+        Q_FALLTHROUGH();
+    case Qt::DisplayRole:
+        switch (column) {
+        case ActivityRole::Account:
+            return a.accName();
+        case ActivityRole::Text:
+            return a.subject();
+        case ActivityRole::PointInTime:
+            if (role == UnderlyingDataRole) {
+                return a.dateTime();
+            } else {
+                return Utility::timeAgoInWords(a.dateTime());
+            }
+        case ActivityRole::Path: {
+            QStringList list = FolderMan::instance()->findFileInLocalFolders(a.file(), accountState->account());
+            if (!list.isEmpty()) {
+                return list.at(0);
+            }
+            // File does not exist anymore? Let's try to open its path
+            list = FolderMan::instance()->findFileInLocalFolders(QFileInfo(a.file()).path(), accountState->account());
+            if (!list.isEmpty()) {
+                return list.at(0);
+            }
+            return {};
         }
-        // File does not exist anymore? Let's try to open its path
-        list = FolderMan::instance()->findFileInLocalFolders(QFileInfo(a.file()).path(), ast->account());
-        if (list.count() > 0) {
-            return QVariant(list.at(0));
+        case ActivityRole::ColumnCount:
+            Q_UNREACHABLE();
+            break;
         }
-        return QVariant();
-        break;
-    case ActivityItemDelegate::ActionIconRole:
-        return QVariant(); // FIXME once the action can be quantified, display on Icon
-        break;
-    case ActivityItemDelegate::UserIconRole:
-        return !ast->account()->avatar().isNull() ? QIcon(ast->account()->avatar()) : Utility::getCoreIcon(QStringLiteral("account"));
         break;
     case Qt::ToolTipRole:
         return tr("%1 %2 on %3").arg(a.subject(), Utility::timeAgoInWords(a.dateTime()), a.accName());
-        break;
-    case ActivityItemDelegate::ActionTextRole:
-        return a.subject();
-        break;
-    case ActivityItemDelegate::LinkRole:
-        return a.subject();
-        break;
-    case ActivityItemDelegate::AccountRole:
-        return a.accName();
-        break;
-    case ActivityItemDelegate::PointInTimeRole:
-        return Utility::timeAgoInWords(a.dateTime());
-        break;
-    case ActivityItemDelegate::AccountConnectedRole:
-        return (ast && ast->isConnected());
-        break;
+    case Qt::DecorationRole:
+        switch (column) {
+        case ActivityRole::Text:
+            if (!accountState->account()->avatar().isNull()) {
+                return QIcon(accountState->account()->avatar());
+            } else {
+                return Utility::getCoreIcon(QStringLiteral("account"));
+            }
+        default:
+            return {};
+        }
     default:
-        return QVariant();
+        return {};
     }
-    return QVariant();
+    Q_UNREACHABLE();
 }
 
-int ActivityListModel::rowCount(const QModelIndex &) const
+QVariant ActivityListModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
+    if (orientation == Qt::Horizontal) {
+        const auto actionRole = static_cast<ActivityRole>(section);
+        switch (role) {
+        case Qt::DisplayRole:
+            switch (actionRole) {
+            case ActivityRole::Text:
+                return tr("Activity");
+            case ActivityRole::Account:
+                return tr("Account");
+            case ActivityRole::PointInTime:
+                return tr("Time");
+            case ActivityRole::Path:
+                return tr("Local path");
+            case ActivityRole::ColumnCount:
+                Q_UNREACHABLE();
+                break;
+            };
+        };
+    }
+    return QAbstractTableModel::headerData(section, orientation, role);
+}
+
+int ActivityListModel::rowCount(const QModelIndex &parent) const
+{
+    Q_ASSERT(checkIndex(parent));
+    if (parent.isValid()) {
+        return 0;
+    }
     return _finalList.count();
+}
+
+int ActivityListModel::columnCount(const QModelIndex &parent) const
+{
+    Q_ASSERT(checkIndex(parent));
+    if (parent.isValid()) {
+        return 0;
+    }
+    return static_cast<int>(ActivityRole::ColumnCount);
 }
 
 // current strategy: Fetch 100 items per Account
@@ -105,7 +149,7 @@ int ActivityListModel::rowCount(const QModelIndex &) const
 // the _activityLists hash or so. Doesn't make it easier...
 bool ActivityListModel::canFetchMore(const QModelIndex &) const
 {
-    if (_activityLists.count() == 0)
+    if (_activityLists.isEmpty())
         return true;
 
     for (auto i = _activityLists.begin(); i != _activityLists.end(); ++i) {
@@ -121,74 +165,62 @@ bool ActivityListModel::canFetchMore(const QModelIndex &) const
     return false;
 }
 
-void ActivityListModel::startFetchJob(AccountState *s)
+void ActivityListModel::startFetchJob(AccountState *ast)
 {
-    if (!s->isConnected()) {
+    if (!ast || !ast->isConnected()) {
         return;
     }
-    JsonApiJob *job = new JsonApiJob(s->account(), QLatin1String("ocs/v1.php/cloud/activity"), this);
+    JsonApiJob *job = new JsonApiJob(ast->account(), QStringLiteral("ocs/v2.php/cloud/activity"), this);
     QObject::connect(job, &JsonApiJob::jsonReceived,
-        this, &ActivityListModel::slotActivitiesReceived);
-    job->setProperty("AccountStatePtr", QVariant::fromValue<QPointer<AccountState>>(s));
+        this, [ast, this](const QJsonDocument &json, int statusCode) {
+            _currentlyFetching.remove(ast);
+            const auto activities = json.object().value(QStringLiteral("ocs")).toObject().value(QStringLiteral("data")).toArray();
 
+            ActivityList list;
+            list.reserve(activities.size());
+            for (const auto &activ : activities) {
+                const auto json = activ.toObject();
+                list.append(Activity { Activity::ActivityType,
+                    json.value(QStringLiteral("id")).toVariant().value<Activity::Identifier>(),
+                    ast->account(),
+                    json.value(QStringLiteral("subject")).toString(),
+                    json.value(QStringLiteral("message")).toString(),
+                    json.value(QStringLiteral("file")).toString(),
+                    QUrl(json.value(QStringLiteral("link")).toString()),
+                    QDateTime::fromString(json.value(QStringLiteral("date")).toString(), Qt::ISODate) });
+            }
+
+            _activityLists[ast] = std::move(list);
+
+            emit activityJobStatusCode(ast, statusCode);
+
+            combineActivityLists();
+        });
     QUrlQuery params;
-    params.addQueryItem(QLatin1String("page"), QLatin1String("0"));
-    params.addQueryItem(QLatin1String("pagesize"), QLatin1String("100"));
+    params.addQueryItem(QStringLiteral("page"), QStringLiteral("0"));
+    params.addQueryItem(QStringLiteral("pagesize"), QStringLiteral("100"));
     job->addQueryParams(params);
 
-    _currentlyFetching.insert(s);
-    qCInfo(lcActivity) << "Start fetching activities for " << s->account()->displayName();
+    _currentlyFetching.insert(ast);
+    qCInfo(lcActivity) << "Start fetching activities for " << ast->account()->displayName();
     job->start();
-}
-
-void ActivityListModel::slotActivitiesReceived(const QJsonDocument &json, int statusCode)
-{
-    auto activities = json.object().value("ocs").toObject().value("data").toArray();
-
-    ActivityList list;
-    auto ast = qvariant_cast<QPointer<AccountState>>(sender()->property("AccountStatePtr"));
-    if (!ast)
-        return;
-
-    _currentlyFetching.remove(ast);
-
-    for (const auto &activ : activities) {
-        const auto json = activ.toObject();
-        list.append(Activity { Activity::ActivityType,
-            json.value(QStringLiteral("id")).toVariant().value<Activity::Identifier>(),
-            ast->account(),
-            json.value(QStringLiteral("subject")).toString(),
-            json.value(QStringLiteral("message")).toString(),
-            json.value(QStringLiteral("file")).toString(),
-            QUrl(json.value(QStringLiteral("link")).toString()),
-            QDateTime::fromString(json.value(QStringLiteral("date")).toString(), Qt::ISODate) });
-    }
-
-    _activityLists[ast] = list;
-
-    emit activityJobStatusCode(ast, statusCode);
-
-    combineActivityLists();
 }
 
 
 void ActivityListModel::combineActivityLists()
 {
     ActivityList resultList;
-
-    foreach (ActivityList list, _activityLists.values()) {
+    for (const ActivityList &list : qAsConst(_activityLists)) {
         resultList.append(list);
     }
+    setActivityList(std::move(resultList));
+}
 
-    std::sort(resultList.begin(), resultList.end());
-
+void ActivityListModel::setActivityList(const ActivityList &&resultList)
+{
     beginResetModel();
-    _finalList.clear();
-    endResetModel();
-
-    beginInsertRows(QModelIndex(), 0, resultList.count());
     _finalList = resultList;
-    endInsertRows();
+    endResetModel();
 }
 
 void ActivityListModel::fetchMore(const QModelIndex &)

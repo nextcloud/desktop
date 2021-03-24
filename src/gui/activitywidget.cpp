@@ -17,6 +17,7 @@
 
 #include "activitylistmodel.h"
 #include "activitywidget.h"
+#include "configfile.h">
 #include "syncresult.h"
 #include "logger.h"
 #include "theme.h"
@@ -28,7 +29,6 @@
 #include "account.h"
 #include "accountstate.h"
 #include "accountmanager.h"
-#include "activityitemdelegate.h"
 #include "protocolwidget.h"
 #include "issueswidget.h"
 #include "QProgressIndicator.h"
@@ -61,11 +61,23 @@ ActivityWidget::ActivityWidget(QWidget *parent)
 #endif
 
     _model = new ActivityListModel(this);
-    ActivityItemDelegate *delegate = new ActivityItemDelegate;
-    delegate->setParent(this);
-    _ui->_activityList->setItemDelegate(delegate);
-    _ui->_activityList->setAlternatingRowColors(true);
-    _ui->_activityList->setModel(_model);
+    auto sortModel = new QSortFilterProxyModel(this);
+    sortModel->setSourceModel(_model);
+    _ui->_activityList->setModel(sortModel);
+    sortModel->setSortRole(ActivityListModel::UnderlyingDataRole);
+    _ui->_activityList->hideColumn(static_cast<int>(ActivityListModel::ActivityRole::Path));
+    _ui->_activityList->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+    _ui->_activityList->horizontalHeader()->setSectionResizeMode(static_cast<int>(ActivityListModel::ActivityRole::Text), QHeaderView::Stretch);
+    _ui->_activityList->horizontalHeader()->setSortIndicator(static_cast<int>(ActivityListModel::ActivityRole::PointInTime), Qt::DescendingOrder);
+
+    ConfigFile cfg;
+    _ui->_activityList->horizontalHeader()->setObjectName(QStringLiteral("ActivityListModelHeader"));
+    cfg.restoreGeometryHeader(_ui->_activityList->horizontalHeader());
+
+    connect(qApp, &QApplication::aboutToQuit, this, [this] {
+        ConfigFile cfg;
+        cfg.saveGeometryHeader(_ui->_activityList->horizontalHeader());
+    });
 
     _ui->_notifyLabel->hide();
     _ui->_notifyScroll->hide();
@@ -100,7 +112,7 @@ ActivityWidget::ActivityWidget(QWidget *parent)
     _copyBtn->setToolTip(tr("Copy the activity list to the clipboard."));
     connect(_copyBtn, &QAbstractButton::clicked, this, &ActivityWidget::copyToClipboard);
 
-    connect(_model, &QAbstractItemModel::rowsInserted, this, &ActivityWidget::rowsInserted);
+    connect(_model, &QAbstractItemModel::modelReset, this, &ActivityWidget::dataChanged);
 
     connect(_ui->_activityList, &QListView::activated, this, &ActivityWidget::slotOpenFile);
 
@@ -237,10 +249,8 @@ void ActivityWidget::checkActivityTabVisibility()
 
 void ActivityWidget::slotOpenFile(QModelIndex indx)
 {
-    qCDebug(lcActivity) << indx.isValid() << indx.data(ActivityItemDelegate::PathRole).toString() << QFile::exists(indx.data(ActivityItemDelegate::PathRole).toString());
     if (indx.isValid()) {
-        QString fullPath = indx.data(ActivityItemDelegate::PathRole).toString();
-
+        const auto fullPath = indx.data(static_cast<int>(ActivityListModel::ActivityRole::Path)).toString();
         if (QFile::exists(fullPath)) {
             showInFileManager(fullPath);
         }
@@ -539,7 +549,7 @@ ActivitySettings::ActivitySettings(QWidget *parent)
         this, &ActivitySettings::slotRegularNotificationCheck);
 
     // connect a model signal to stop the animation.
-    connect(_activityWidget, &ActivityWidget::rowsInserted, _progressIndicator, &QProgressIndicator::stopAnimation);
+    connect(_activityWidget, &ActivityWidget::dataChanged, _progressIndicator, &QProgressIndicator::stopAnimation);
 
     // We want the protocol be the default
     _tab->setCurrentIndex(1);

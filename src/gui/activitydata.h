@@ -75,8 +75,6 @@ public:
     const QVector<ActivityLink> &links() const;
 
     bool operator==(const Activity &lhs) const;
-    bool operator<(const Activity &lhs) const;
-
 
 private:
     Type _type;

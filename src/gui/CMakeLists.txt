@@ -61,7 +61,6 @@ set(client_SRCS
     activitydata.cpp
     activitylistmodel.cpp
     activitywidget.cpp
-    activityitemdelegate.cpp
     selectivesyncdialog.cpp
     settingsdialog.cpp
     sharedialog.cpp

@@ -25,7 +25,6 @@
 #include "syncfileitem.h"
 #include "folder.h"
 #include "openfilemanager.h"
-#include "activityitemdelegate.h"
 #include "protocolwidget.h"
 #include "accountstate.h"
 #include "account.h"
@@ -99,11 +98,6 @@ IssuesWidget::IssuesWidget(QWidget *parent)
 #endif
 
     _ui->_treeWidget->setHeaderLabels(header);
-    int timestampColumnWidth =
-        ActivityItemDelegate::rowHeight() // icon
-        + _ui->_treeWidget->fontMetrics().boundingRect(ProtocolItem::timeString(QDateTime::currentDateTime())).width()
-        + timestampColumnExtra;
-    _ui->_treeWidget->setColumnWidth(0, timestampColumnWidth);
     _ui->_treeWidget->setColumnWidth(1, 180);
     _ui->_treeWidget->setColumnCount(4);
     _ui->_treeWidget->setRootIsDecorated(false);
@@ -489,7 +483,6 @@ void IssuesWidget::addError(const QString &folderAlias, const QString &message,
     QIcon icon = Theme::instance()->syncStateIcon(SyncResult::Error);
 
     QTreeWidgetItem *twitem = new ProtocolItem(columns);
-    twitem->setData(0, Qt::SizeHintRole, QSize(0, ActivityItemDelegate::rowHeight()));
     twitem->setIcon(0, icon);
     twitem->setToolTip(0, longTimeStr);
     twitem->setToolTip(3, message);

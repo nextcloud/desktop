@@ -60,3 +60,5 @@ if (CMOCKA_FOUND)
     include(AddCMockaTest)
     add_subdirectory(csync)
 endif (CMOCKA_FOUND)
+
+add_subdirectory(modeltests)

@@ -24,7 +24,6 @@
 #include "syncfileitem.h"
 #include "folder.h"
 #include "openfilemanager.h"
-#include "activityitemdelegate.h"
 #include "guiutility.h"
 #include "accountstate.h"
 
@@ -95,7 +94,6 @@ ProtocolItem *ProtocolItem::create(const QString &folder, const SyncFileItem &it
     ProtocolItem *twitem = new ProtocolItem(columns);
     // Warning: The data and tooltips on the columns define an implicit
     // interface and can only be changed with care.
-    twitem->setData(0, Qt::SizeHintRole, QSize(0, ActivityItemDelegate::rowHeight()));
     twitem->setIcon(0, icon);
     twitem->setToolTip(0, longTimeStr);
     twitem->setToolTip(1, item.destination());
