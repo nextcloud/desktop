@@ -1489,7 +1489,7 @@ QString FolderMan::trayTooltipStatusString(
     case SyncResult::Success:
     case SyncResult::Problem:
         if (hasUnresolvedConflicts) {
-            folderMessage = tr("Sync was successful, unresolved conflicts.");
+            folderMessage = tr("Sync finished with unresolved conflicts.");
         } else {
             folderMessage = tr("Last Sync was successful.");
         }
