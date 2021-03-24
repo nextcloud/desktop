@@ -16,13 +16,13 @@ You will also find links to source code archives and older versions on the downl
 
 == System Requirements
 
-* Windows 7+ (Stable WinVFS available for Windows 10 version 1709 or later)
-* macOS 10.12+ (unsupported legacy builds for Mac OS X 10.10 & 10.11 available; 64-bit only)
-* CentOS 7.6+ & 8
-* Debian 9.0 & 10
-* Fedora 30 & 31 & 32
-* Ubuntu 18.04 & 19.04 & 19.10 & 20.04
-* openSUSE Leap 15.0 & 15.1 & 15.2
+* Windows 7+ (x86 with 32-bit or x86-64; Native WinVFS available for Windows 10 version 1709 or later)
+* macOS 10.12+ (x86-64 or Apple M in Rosetta 2 emulation; unsupported legacy builds for Mac OS X 10.10 & 10.11 available)
+* CentOS 7.6+ & 8 (x86-64)
+* Debian 9.0 & 10 (x86-64)
+* Fedora 30 & 31 & 32 (x86-64)
+* Ubuntu 18.04 & 19.04 & 19.10 & 20.04 (x86-64)
+* openSUSE Leap 15.0 & 15.1 & 15.2 (x86-64)
 
 NOTE: For Linux distributions, we support, if technically feasible, the latest 2 versions per platform and the previous Ubuntu https://wiki.ubuntu.com/LTS[LTS].
 
