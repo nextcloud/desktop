@@ -19,18 +19,77 @@
 
 namespace OCC {
 
-bool operator<(const Activity &rhs, const Activity &lhs)
+Activity::Activity(Activity::Type type, qlonglong id, AccountPtr acc, const QString &subject, const QString &message, const QString &file, const QUrl &link, const QDateTime &dateTime, const QVector<ActivityLink> &&links)
+    : _type(type)
+    , _id(id)
+    , _accName(acc->displayName())
+    , _uuid(acc->uuid())
+    , _subject(subject)
+    , _message(message)
+    , _file(file)
+    , _link(link)
+    , _dateTime(dateTime)
+    , _links(links)
 {
-    return rhs._dateTime.toMSecsSinceEpoch() > lhs._dateTime.toMSecsSinceEpoch();
 }
 
-bool operator==(const Activity &rhs, const Activity &lhs)
+Activity::Type Activity::type() const
 {
-    return (rhs._type == lhs._type && rhs._id == lhs._id && rhs._accName == lhs._accName);
+    return _type;
 }
 
-Activity::Identifier Activity::ident() const
+Activity::Identifier Activity::id() const
 {
-    return Identifier(_id, _accName);
+    return _id;
+}
+
+QString Activity::subject() const
+{
+    return _subject;
+}
+
+QString Activity::message() const
+{
+    return _message;
+}
+
+QString Activity::file() const
+{
+    return _file;
+}
+
+QUrl Activity::link() const
+{
+    return _link;
+}
+
+QDateTime Activity::dateTime() const
+{
+    return _dateTime;
+}
+
+QString Activity::accName() const
+{
+    return _accName;
+}
+
+QUuid Activity::uuid() const
+{
+    return _uuid;
+}
+
+const QVector<ActivityLink> &Activity::links() const
+{
+    return _links;
+}
+
+bool Activity::operator<(const Activity &lhs) const
+{
+    return _dateTime.toMSecsSinceEpoch() > lhs._dateTime.toMSecsSinceEpoch();
+}
+
+bool Activity::operator==(const Activity &lhs) const
+{
+    return (_type == lhs._type && _id == lhs._id && _uuid == lhs._uuid);
 }
 }

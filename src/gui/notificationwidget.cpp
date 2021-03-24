@@ -38,25 +38,25 @@ void NotificationWidget::setActivity(const Activity &activity)
 {
     _myActivity = activity;
 
-    _accountName = activity._accName;
+    _accountName = activity.accName();
     OC_ASSERT(!_accountName.isEmpty());
 
     // _ui._headerLabel->setText( );
-    _ui._subjectLabel->setVisible(!activity._subject.isEmpty());
-    _ui._messageLabel->setVisible(!activity._message.isEmpty());
+    _ui._subjectLabel->setVisible(!activity.subject().isEmpty());
+    _ui._messageLabel->setVisible(!activity.message().isEmpty());
 
-    if (activity._link.isEmpty()) {
-        _ui._subjectLabel->setText(activity._subject);
+    if (activity.link().isEmpty()) {
+        _ui._subjectLabel->setText(activity.subject());
     } else {
-        _ui._subjectLabel->setText( QString("<a href=\"%1\">%2</a>")
-                    .arg(activity._link.toString(QUrl::FullyEncoded),
-                         activity._subject.toHtmlEscaped() ));
+        _ui._subjectLabel->setText(QString("<a href=\"%1\">%2</a>")
+                                       .arg(activity.link().toString(QUrl::FullyEncoded),
+                                           activity.subject().toHtmlEscaped()));
         _ui._subjectLabel->setTextFormat(Qt::RichText);
         _ui._subjectLabel->setOpenExternalLinks(true);
     }
 
-    _ui._messageLabel->setText(activity._message);
-    QString tText = tr("Created at %1").arg(Utility::timeAgoInWords(activity._dateTime));
+    _ui._messageLabel->setText(activity.message());
+    QString tText = tr("Created at %1").arg(Utility::timeAgoInWords(activity.dateTime()));
     _ui._timeLabel->setText(tText);
 
     // always remove the buttons
@@ -64,7 +64,7 @@ void NotificationWidget::setActivity(const Activity &activity)
     _buttons.clear();
 
     // display buttons for the links
-    if (activity._links.isEmpty()) {
+    if (activity.links().isEmpty()) {
         // in case there is no action defined, do a close button.
         QPushButton *b = _ui._buttonBox->addButton(QDialogButtonBox::Close);
         b->setDefault(true);
@@ -75,10 +75,10 @@ void NotificationWidget::setActivity(const Activity &activity)
             return;
         });
     } else {
-        for (const auto &link : activity._links) {
+        for (const auto &link : activity.links()) {
             QPushButton *b = _ui._buttonBox->addButton(link._label, QDialogButtonBox::AcceptRole);
             b->setDefault(link._isPrimary);
-            connect(b, &QAbstractButton::clicked, this, [this, b, &link]{
+            connect(b, &QAbstractButton::clicked, this, [this, b, link] {
                 slotButtonClicked(b, link);
             });
             _buttons.append(b);

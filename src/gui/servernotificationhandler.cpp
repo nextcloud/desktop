@@ -70,43 +70,43 @@ void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &j
     AccountState *ai = qvariant_cast<AccountState *>(sender()->property("AccountStatePtr"));
 
     ActivityList list;
+    list.reserve(notifies.size());
+    for (const auto &element : notifies) {
+        const auto json = element.toObject();
+        const auto id = json.value(QStringLiteral("notification_id")).toVariant().value<Activity::Identifier>();
 
-    foreach (auto element, notifies) {
-        Activity a;
-        auto json = element.toObject();
-        a._type = Activity::NotificationType;
-        a._accName = ai->account()->displayName();
-        a._id = json.value("notification_id").toInt();
-        a._subject = json.value("subject").toString();
-        a._message = json.value("message").toString();
-        QString s = json.value("link").toString();
-        if (!s.isEmpty()) {
-            a._link = QUrl(s);
-        }
-        a._dateTime = QDateTime::fromString(json.value("datetime").toString(), Qt::ISODate);
-
-        auto actions = json.value("actions").toArray();
-        foreach (auto action, actions) {
-            auto actionJson = action.toObject();
+        const auto actions = json.value("actions").toArray();
+        QVector<ActivityLink> linkList;
+        linkList.reserve(actions.size() + 1);
+        for (const auto &action : actions) {
+            const auto actionJson = action.toObject();
             ActivityLink al;
-            al._label = QUrl::fromPercentEncoding(actionJson.value("label").toString().toUtf8());
-            al._link = actionJson.value("link").toString();
-            al._verb = actionJson.value("type").toString().toUtf8();
-            al._isPrimary = actionJson.value("primary").toBool();
-
-            a._links.append(al);
+            al._label = QUrl::fromPercentEncoding(actionJson.value(QStringLiteral("label")).toString().toUtf8());
+            al._link = actionJson.value(QStringLiteral("link")).toString();
+            al._verb = actionJson.value(QStringLiteral("type")).toString().toUtf8();
+            al._isPrimary = actionJson.value(QStringLiteral("primary")).toBool();
+            linkList.append(al);
         }
 
         // Add another action to dismiss notification on server
         // https://github.com/owncloud/notifications/blob/master/docs/ocs-endpoint-v1.md#deleting-a-notification-for-a-user
         ActivityLink al;
         al._label = tr("Dismiss");
-        al._link  = Utility::concatUrlPath(ai->account()->url(), notificationsPath + "/" + QString::number(a._id)).toString();
+        al._link = Utility::concatUrlPath(ai->account()->url(), notificationsPath + "/" + QString::number(id)).toString();
         al._verb  = "DELETE";
         al._isPrimary = false;
-        a._links.append(al);
+        linkList.append(al);
 
-        list.append(a);
+        list.append(Activity {
+            Activity::NotificationType,
+            id,
+            ai->account(),
+            json.value(QStringLiteral("subject")).toString(),
+            json.value(QStringLiteral("message")).toString(),
+            QString(),
+            QUrl(json.value(QStringLiteral("link")).toString()),
+            QDateTime::fromString(json.value(QStringLiteral("datetime")).toString(), Qt::ISODate),
+            std::move(linkList) });
     }
     emit newNotificationList(list);
 

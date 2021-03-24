@@ -89,9 +89,9 @@ ActivityWidget::ActivityWidget(QWidget *parent)
             showLabels();
         }
 
-        for (auto it = _widgetForNotifId.cbegin(); it != _widgetForNotifId.cend(); ++it) {
-            if (it.key().second == ast->account()->displayName()) {
-                scheduleWidgetToRemove(it.value());
+        for (const auto widget : _widgetForNotifId) {
+            if (widget->activity().uuid() == ast->account()->uuid()) {
+                scheduleWidgetToRemove(widget);
             }
         }
     });
@@ -188,31 +188,31 @@ void ActivityWidget::storeActivityList(QTextStream &ts)
         ts << right
            // account name
            << qSetFieldWidth(30)
-           << activity._accName
+           << activity.accName()
            // separator
            << qSetFieldWidth(0) << ","
 
            // date and time
            << qSetFieldWidth(34)
-           << activity._dateTime.toString()
+           << activity.dateTime().toString()
            // separator
            << qSetFieldWidth(0) << ","
 
            // file
            << qSetFieldWidth(30)
-           << activity._file
+           << activity.file()
            // separator
            << qSetFieldWidth(0) << ","
 
            // subject
            << qSetFieldWidth(100)
-           << activity._subject
+           << activity.subject()
            // separator
            << qSetFieldWidth(0) << ","
 
            // message (mostly empty)
            << qSetFieldWidth(55)
-           << activity._message
+           << activity.message()
            //
            << qSetFieldWidth(0)
            << endl;
@@ -253,13 +253,16 @@ void ActivityWidget::slotOpenFile(QModelIndex indx)
 // collected.
 void ActivityWidget::slotBuildNotificationDisplay(const ActivityList &list)
 {
+    if (list.empty()) {
+        return;
+    }
+    // compute the count to display later
     QHash<QString, int> accNotified;
-    QString listAccountName;
 
     // Whether a new notification widget was added to the notificationLayout.
     bool newNotificationShown = false;
 
-    foreach (auto activity, list) {
+    for (const auto &activity : list) {
         if (_blacklistedNotifications.contains(activity)) {
             qCInfo(lcActivity) << "Activity in blacklist, skip";
             continue;
@@ -267,8 +270,8 @@ void ActivityWidget::slotBuildNotificationDisplay(const ActivityList &list)
 
         NotificationWidget *widget = nullptr;
 
-        if (_widgetForNotifId.contains(activity.ident())) {
-            widget = _widgetForNotifId[activity.ident()];
+        if (_widgetForNotifId.contains(activity.id())) {
+            widget = _widgetForNotifId[activity.id()];
         } else {
             widget = new NotificationWidget(this);
             connect(widget, &NotificationWidget::sendNotificationRequest,
@@ -279,14 +282,11 @@ void ActivityWidget::slotBuildNotificationDisplay(const ActivityList &list)
             _notificationsLayout->addWidget(widget);
             // _ui->_notifyScroll->setMinimumHeight( widget->height());
             _ui->_notifyScroll->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContentsOnFirstShow);
-            _widgetForNotifId[activity.ident()] = widget;
+            _widgetForNotifId[activity.id()] = widget;
             newNotificationShown = true;
         }
 
         widget->setActivity(activity);
-
-        // remember the list account name for the strayCat handling below.
-        listAccountName = activity._accName;
 
         // handle gui logs. In order to NOT annoy the user with every fetching of the
         // notifications the notification id is stored in a Set. Only if an id
@@ -298,35 +298,29 @@ void ActivityWidget::slotBuildNotificationDisplay(const ActivityList &list)
         if (_guiLogTimer.elapsed() > 60 * 60 * 1000) {
             _guiLoggedNotifications.clear();
         }
-        if (!_guiLoggedNotifications.contains(activity._id)) {
-            QString host = activity._accName;
-            // store the name of the account that sends the notification to be
+        if (!_guiLoggedNotifications.contains(activity.id())) {
+            // store the uui of the account that sends the notification to be
             // able to add it to the tray notification
-            if (!host.isEmpty()) {
-                if (accNotified.contains(host)) {
-                    accNotified[host] = accNotified[host] + 1;
-                } else {
-                    accNotified[host] = 1;
-                }
-            }
-            _guiLoggedNotifications.insert(activity._id);
+            accNotified[activity.accName()]++;
+            _guiLoggedNotifications.insert(activity.id());
         }
     }
 
     // check if there are widgets that have no corresponding activity from
     // the server any more. Collect them in a list
-    QList<Activity::Identifier> strayCats;
-    foreach (auto id, _widgetForNotifId.keys()) {
-        NotificationWidget *widget = _widgetForNotifId[id];
 
+    const auto accId = list.first().uuid();
+    QList<Activity::Identifier> strayCats;
+    for (const auto &id : _widgetForNotifId.keys()) {
+        NotificationWidget *widget = _widgetForNotifId[id];
         bool found = false;
         // do not mark widgets of other accounts to delete.
-        if (widget->activity()._accName != listAccountName) {
+        if (widget->activity().uuid() != accId) {
             continue;
         }
 
-        foreach (auto activity, list) {
-            if (activity.ident() == id) {
+        for (const auto &activity : list) {
+            if (activity.id() == id) {
                 // found an activity
                 found = true;
                 break;
@@ -339,7 +333,7 @@ void ActivityWidget::slotBuildNotificationDisplay(const ActivityList &list)
     }
 
     // .. and now delete all these stray cat widgets.
-    foreach (auto strayCatId, strayCats) {
+    for (const auto &strayCatId : strayCats) {
         NotificationWidget *widgetToGo = _widgetForNotifId[strayCatId];
         scheduleWidgetToRemove(widgetToGo, 0);
     }
@@ -454,7 +448,7 @@ void ActivityWidget::slotRequestCleanupAndBlacklist(const Activity &blacklistAct
         _blacklistedNotifications.append(blacklistActivity);
     }
 
-    NotificationWidget *widget = _widgetForNotifId[blacklistActivity.ident()];
+    NotificationWidget *widget = _widgetForNotifId[blacklistActivity.id()];
     scheduleWidgetToRemove(widget);
 }
 
@@ -486,7 +480,7 @@ void ActivityWidget::slotCheckToCleanWidgets()
 
         if (currentTime > t) {
             // found one to remove!
-            Activity::Identifier id = widget->activity().ident();
+            Activity::Identifier id = widget->activity().id();
             _widgetForNotifId.remove(id);
             widget->deleteLater();
             it = _widgetsToRemove.erase(it);

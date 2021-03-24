@@ -47,19 +47,19 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
         return QVariant();
 
     a = _finalList.at(index.row());
-    AccountStatePtr ast = AccountManager::instance()->account(a._accName);
+    AccountStatePtr ast = AccountManager::instance()->account(a.uuid());
     if (!ast)
         return QVariant();
     QStringList list;
 
     switch (role) {
     case ActivityItemDelegate::PathRole:
-        list = FolderMan::instance()->findFileInLocalFolders(a._file, ast->account());
+        list = FolderMan::instance()->findFileInLocalFolders(a.file(), ast->account());
         if (list.count() > 0) {
             return QVariant(list.at(0));
         }
         // File does not exist anymore? Let's try to open its path
-        list = FolderMan::instance()->findFileInLocalFolders(QFileInfo(a._file).path(), ast->account());
+        list = FolderMan::instance()->findFileInLocalFolders(QFileInfo(a.file()).path(), ast->account());
         if (list.count() > 0) {
             return QVariant(list.at(0));
         }
@@ -72,19 +72,19 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
         return !ast->account()->avatar().isNull() ? QIcon(ast->account()->avatar()) : Utility::getCoreIcon(QStringLiteral("account"));
         break;
     case Qt::ToolTipRole:
-        return tr("%1 %2 on %3").arg(a._subject, Utility::timeAgoInWords(a._dateTime), a._accName);
+        return tr("%1 %2 on %3").arg(a.subject(), Utility::timeAgoInWords(a.dateTime()), a.accName());
         break;
     case ActivityItemDelegate::ActionTextRole:
-        return a._subject;
+        return a.subject();
         break;
     case ActivityItemDelegate::LinkRole:
-        return a._link;
+        return a.subject();
         break;
     case ActivityItemDelegate::AccountRole:
-        return a._accName;
+        return a.accName();
         break;
     case ActivityItemDelegate::PointInTimeRole:
-        return Utility::timeAgoInWords(a._dateTime);
+        return Utility::timeAgoInWords(a.dateTime());
         break;
     case ActivityItemDelegate::AccountConnectedRole:
         return (ast && ast->isConnected());
@@ -152,19 +152,16 @@ void ActivityListModel::slotActivitiesReceived(const QJsonDocument &json, int st
 
     _currentlyFetching.remove(ast);
 
-    foreach (auto activ, activities) {
-        auto json = activ.toObject();
-
-        Activity a;
-        a._type = Activity::ActivityType;
-        a._accName = ast->account()->displayName();
-        a._id = json.value("id").toInt();
-        a._subject = json.value("subject").toString();
-        a._message = json.value("message").toString();
-        a._file = json.value("file").toString();
-        a._link = QUrl(json.value("link").toString());
-        a._dateTime = QDateTime::fromString(json.value("date").toString(), Qt::ISODate);
-        list.append(a);
+    for (const auto &activ : activities) {
+        const auto json = activ.toObject();
+        list.append(Activity { Activity::ActivityType,
+            json.value(QStringLiteral("id")).toVariant().value<Activity::Identifier>(),
+            ast->account(),
+            json.value(QStringLiteral("subject")).toString(),
+            json.value(QStringLiteral("message")).toString(),
+            json.value(QStringLiteral("file")).toString(),
+            QUrl(json.value(QStringLiteral("link")).toString()),
+            QDateTime::fromString(json.value(QStringLiteral("date")).toString(), Qt::ISODate) });
     }
 
     _activityLists[ast] = list;
@@ -215,14 +212,14 @@ void ActivityListModel::slotRefreshActivity(AccountState *ast)
 void ActivityListModel::slotRemoveAccount(AccountState *ast)
 {
     if (_activityLists.contains(ast)) {
-        const QString accountToRemove = ast->account()->displayName();
+        const auto accountToRemove = ast->account()->uuid();
 
         QMutableListIterator<Activity> it(_finalList);
 
         int i = 0;
         while (it.hasNext()) {
             Activity activity = it.next();
-            if (activity._accName == accountToRemove) {
+            if (activity.uuid() == accountToRemove) {
                 beginRemoveRows(QModelIndex(), i, i);
                 it.remove();
                 endRemoveRows();

@@ -17,6 +17,8 @@
 
 #include <QtCore>
 
+#include "account.h"
+
 namespace OCC {
 /**
  * @brief The ActivityLink class describes actions of an activity
@@ -44,37 +46,53 @@ public:
 class Activity
 {
 public:
-    // id, account name
-    typedef QPair<qlonglong, QString> Identifier;
-
+    using Identifier = qlonglong;
     enum Type {
         ActivityType,
         NotificationType
     };
+    Activity() = default;
+    explicit Activity(Type type, Identifier id, AccountPtr acc, const QString &subject, const QString &message, const QString &file, const QUrl &link, const QDateTime &dateTime, const QVector<ActivityLink> &&links = {});
 
+    Type type() const;
+
+    Identifier id() const;
+
+    QString subject() const;
+
+    QString message() const;
+
+    QString file() const;
+
+    QUrl link() const;
+
+    QDateTime dateTime() const;
+
+    QString accName() const;
+
+    QUuid uuid() const;
+
+    const QVector<ActivityLink> &links() const;
+
+    bool operator==(const Activity &lhs) const;
+    bool operator<(const Activity &lhs) const;
+
+
+private:
     Type _type;
-    qlonglong _id;
+    Identifier _id;
+    QString _accName; /* display name of the account */
+    QUuid _uuid; /* uuid of the account */
     QString _subject;
     QString _message;
     QString _file;
     QUrl _link;
     QDateTime _dateTime;
-    QString _accName; /* display name of the account involved */
 
     QVector<ActivityLink> _links; /* These links are transformed into buttons that
                                    * call links as reactions on the activity */
-    /**
-     * @brief Sort operator to sort the list youngest first.
-     * @param val
-     * @return
-     */
-
-
-    Identifier ident() const;
 };
 
-bool operator==(const Activity &rhs, const Activity &lhs);
-bool operator<(const Activity &rhs, const Activity &lhs);
 
 /* ==================================================================== */
 /**
