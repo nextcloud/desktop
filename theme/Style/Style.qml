@@ -33,6 +33,7 @@ QtObject {
 
     property int accountAvatarSize: (trayWindowHeaderHeight - 16)
     property int accountAvatarStateIndicatorSize: 16
+    property int folderStateIndicatorSize: 16
     property int accountLabelWidth: 128
 
     property int accountDropDownCaretSize: 20

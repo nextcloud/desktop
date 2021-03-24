@@ -98,6 +98,7 @@ set(client_SRCS
     systray.cpp
     thumbnailjob.cpp
     userinfo.cpp
+    userstatus.cpp
     accountstate.cpp
     addcertificatedialog.cpp
     authenticationdialog.cpp

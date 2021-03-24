@@ -139,6 +139,26 @@ QUrl Theme::stateOfflineImageSource() const
     return imagePathToUrl(themeImagePath("state-offline", 16));
 }
 
+QUrl Theme::statusOnlineImageSource() const
+{
+    return imagePathToUrl(themeImagePath("user-status-online", 16));
+}
+
+QUrl Theme::statusDoNotDisturbImageSource() const
+{
+    return imagePathToUrl(themeImagePath("user-status-dnd", 16));
+}
+
+QUrl Theme::statusAwayImageSource() const
+{
+    return imagePathToUrl(themeImagePath("user-status-away", 16));
+}
+
+QUrl Theme::statusInvisibleImageSource() const
+{
+    return imagePathToUrl(themeImagePath("user-status-invisible", 16));
+}
+
 QString Theme::version() const
 {
     return MIRALL_VERSION_STRING;

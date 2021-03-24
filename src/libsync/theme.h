@@ -42,6 +42,11 @@ class OWNCLOUDSYNC_EXPORT Theme : public QObject
     Q_PROPERTY(QString appName READ appName CONSTANT)
     Q_PROPERTY(QUrl stateOnlineImageSource READ stateOnlineImageSource CONSTANT)
     Q_PROPERTY(QUrl stateOfflineImageSource READ stateOfflineImageSource CONSTANT)
+    Q_PROPERTY(QUrl stateOnlineImageSource READ stateOnlineImageSource CONSTANT)
+    Q_PROPERTY(QUrl statusOnlineImageSource READ statusOnlineImageSource CONSTANT)
+    Q_PROPERTY(QUrl statusDoNotDisturbImageSource READ statusDoNotDisturbImageSource CONSTANT)
+    Q_PROPERTY(QUrl statusAwayImageSource READ statusAwayImageSource CONSTANT)
+    Q_PROPERTY(QUrl statusInvisibleImageSource READ statusInvisibleImageSource CONSTANT)
 #ifndef TOKEN_AUTH_ONLY
     Q_PROPERTY(QIcon folderDisabledIcon READ folderDisabledIcon CONSTANT)
     Q_PROPERTY(QIcon folderOfflineIcon READ folderOfflineIcon CONSTANT)
@@ -122,6 +127,30 @@ public:
      * @return QUrl full path to an icon
      */
     QUrl stateOfflineImageSource() const;
+    
+    /**
+     * @brief Returns full path to an online user status icon
+     * @return QUrl full path to an icon
+     */
+    QUrl statusOnlineImageSource() const;
+    
+    /**
+     * @brief Returns full path to an do not disturb user status icon
+     * @return QUrl full path to an icon
+     */
+    QUrl statusDoNotDisturbImageSource() const;
+    
+    /**
+     * @brief Returns full path to an away user status icon
+     * @return QUrl full path to an icon
+     */
+    QUrl statusAwayImageSource() const;
+    
+    /**
+     * @brief Returns full path to an invisible user status icon
+     * @return QUrl full path to an icon
+     */
+    QUrl statusInvisibleImageSource() const;
 
     /**
      * @brief configFileName

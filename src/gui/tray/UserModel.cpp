@@ -53,6 +53,7 @@ User::User(AccountStatePtr &account, const bool &isCurrent, QObject *parent)
     connect(this, &User::guiLog, Logger::instance(), &Logger::guiLog);
 
     connect(_account->account().data(), &Account::accountChangedAvatar, this, &User::avatarChanged);
+    connect(_account.data(), &AccountState::statusChanged, this, &User::statusChanged);
 
     connect(_activityModel, &ActivityListModel::sendNotificationRequest, this, &User::slotSendNotificationRequest);
 }
@@ -87,7 +88,7 @@ void User::slotBuildNotificationDisplay(const ActivityList &list)
 
             // Assemble a tray notification for the NEW notification
             ConfigFile cfg;
-            if (cfg.optionalServerNotifications()) {
+            if (cfg.optionalServerNotifications() && isDesktopNotificationsAllowed()) {
                 if (AccountManager::instance()->accounts().count() == 1) {
                     emit guiLog(activity._subject, "");
                 } else {
@@ -185,6 +186,8 @@ void User::slotRefreshImmediately() {
 
 void User::slotRefresh()
 {
+    slotRefreshUserStatus();
+    
     if (checkPushNotificationsAreReady()) {
         // we are relying on WebSocket push notifications - ignore refresh attempts from UI
         _timeSinceLastCheck[_account.data()].invalidate();
@@ -214,6 +217,13 @@ void User::slotRefresh()
 void User::slotRefreshActivities()
 {
     _activityModel->slotRefreshActivity();
+}
+
+void User::slotRefreshUserStatus() {
+    // TODO: check for _account->account()->capabilities().userStatus() 
+    if (_account.data() && _account.data()->isConnected()) {
+        _account.data()->fetchUserStatus();
+    }
 }
 
 void User::slotRefreshNotifications()
@@ -557,6 +567,21 @@ QString User::server(bool shortened) const
     return serverUrl;
 }
 
+UserStatus::Status User::status() const
+{
+    return _account->status();
+}
+
+QString User::statusMessage() const
+{
+    return _account->statusMessage();
+}
+
+QUrl User::statusIcon() const
+{
+    return _account->statusIcon();
+}
+
 QImage User::avatar() const
 {
     return AvatarJob::makeCircularAvatar(_account->account()->avatar());
@@ -604,6 +629,12 @@ bool User::isCurrentUser() const
 bool User::isConnected() const
 {
     return (_account->connectionStatus() == AccountState::ConnectionStatus::Connected);
+}
+
+
+bool User::isDesktopNotificationsAllowed() const
+{
+    return _account.data()->isDesktopNotificationsAllowed();
 }
 
 void User::removeAccount() const
@@ -667,6 +698,16 @@ Q_INVOKABLE bool UserModel::isUserConnected(const int &id)
     return _users[id]->isConnected();
 }
 
+Q_INVOKABLE QUrl UserModel::statusIcon(const int &id)
+{
+    if (id < 0 || id >= _users.size()) {
+        return {};
+    }
+
+    return _users[id]->statusIcon();
+}
+
+
 QImage UserModel::avatarById(const int &id)
 {
     if (id < 0 || id >= _users.size())
@@ -701,6 +742,11 @@ void UserModel::addUser(AccountStatePtr &user, const bool &isCurrent)
 
         connect(u, &User::avatarChanged, this, [this, row] {
            emit dataChanged(index(row, 0), index(row, 0), {UserModel::AvatarRole});
+        });
+
+        connect(u, &User::statusChanged, this, [this, row] {
+            emit dataChanged(index(row, 0), index(row, 0), {UserModel::StatusIconRole, 
+                                                            UserModel::StatusMessageRole});
         });
 
         _users << u;
@@ -841,6 +887,10 @@ QVariant UserModel::data(const QModelIndex &index, int role) const
         return _users[index.row()]->name();
     } else if (role == ServerRole) {
         return _users[index.row()]->server();
+    } else if (role == StatusIconRole) {
+        return _users[index.row()]->statusIcon();
+    } else if (role == StatusMessageRole) {
+        return _users[index.row()]->statusMessage();
     } else if (role == AvatarRole) {
         return _users[index.row()]->avatarUrl();
     } else if (role == IsCurrentUserRole) {
@@ -858,6 +908,8 @@ QHash<int, QByteArray> UserModel::roleNames() const
     QHash<int, QByteArray> roles;
     roles[NameRole] = "name";
     roles[ServerRole] = "server";
+    roles[StatusIconRole] = "statusIcon";
+    roles[StatusMessageRole] = "statusMessage";
     roles[AvatarRole] = "avatar";
     roles[IsCurrentUserRole] = "isCurrentUser";
     roles[IsConnectedRole] = "isConnected";

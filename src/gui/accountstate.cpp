@@ -44,6 +44,8 @@ AccountState::AccountState(AccountPtr account)
     , _waitingForNewCredentials(false)
     , _maintenanceToConnectedDelay(60000 + (qrand() % (4 * 60000))) // 1-5min delay
     , _remoteWipe(new RemoteWipe(_account))
+    , _userStatus(new UserStatus(this))
+    , _isDesktopNotificationsAllowed(true)
 {
     qRegisterMetaType<AccountState *>("AccountState*");
 
@@ -125,6 +127,21 @@ void AccountState::setState(State state)
     emit stateChanged(_state);
 }
 
+UserStatus::Status AccountState::status() const
+{
+    return _userStatus->status();
+}
+
+QString AccountState::statusMessage() const
+{
+    return _userStatus->message();
+}
+
+QUrl AccountState::statusIcon() const
+{
+    return _userStatus->icon();
+}
+
 QString AccountState::stateString(State state)
 {
     switch (state) {
@@ -203,6 +220,16 @@ QByteArray AccountState::navigationAppsEtagResponseHeader() const
 void AccountState::setNavigationAppsEtagResponseHeader(const QByteArray &value)
 {
     _navigationAppsEtagResponseHeader = value;
+}
+
+bool AccountState::isDesktopNotificationsAllowed() const
+{
+    return _isDesktopNotificationsAllowed;
+}
+
+void AccountState::setDesktopNotificationsAllowed(const bool isAllowed)
+{
+    _isDesktopNotificationsAllowed = isAllowed;
 }
 
 void AccountState::checkConnectivity()
@@ -420,6 +447,12 @@ void AccountState::fetchNavigationApps(){
     connect(job, &OcsNavigationAppsJob::etagResponseHeaderReceived, this, &AccountState::slotEtagResponseHeaderReceived);
     connect(job, &OcsNavigationAppsJob::ocsError, this, &AccountState::slotOcsError);
     job->getNavigationApps();
+}
+
+void AccountState::fetchUserStatus() 
+{
+    connect(_userStatus, &UserStatus::fetchUserStatusFinished, this, &AccountState::statusChanged);
+    _userStatus->fetchUserStatus(_account);
 }
 
 void AccountState::slotEtagResponseHeaderReceived(const QByteArray &value, int statusCode){
