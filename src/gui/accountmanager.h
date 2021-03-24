@@ -114,6 +114,7 @@ public slots:
 Q_SIGNALS:
     void accountAdded(AccountState *account);
     void accountRemoved(AccountState *account);
+    void accountSyncConnectionRemoved(AccountState *account);
     void removeAccountFolders(AccountState *account);
 };
 }

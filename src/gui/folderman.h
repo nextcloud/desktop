@@ -264,6 +264,8 @@ private slots:
     void slotStartScheduledFolderSync();
     void slotEtagPollTimerTimeout();
 
+    void slotAccountRemoved(AccountState *accountState);
+
     void slotRemoveFoldersForAccount(AccountState *accountState);
 
     // Wraps the Folder::syncStateChange() signal into the

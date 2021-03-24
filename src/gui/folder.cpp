@@ -300,6 +300,14 @@ void Folder::setSyncPaused(bool paused)
     emit canSyncChanged();
 }
 
+void Folder::onAssociatedAccountRemoved()
+{
+    if (_vfs) {
+        _vfs->stop();
+        _vfs->unregisterFolder();
+    }
+}
+
 void Folder::setSyncState(SyncResult::Status state)
 {
     _syncResult.setStatus(state);
@@ -486,6 +494,8 @@ void Folder::startVfs()
 
     VfsSetupParams vfsParams;
     vfsParams.filesystemPath = path();
+    vfsParams.displayName = shortGuiRemotePathOrAppName();
+    vfsParams.alias = alias();
     vfsParams.remotePath = remotePathTrailingSlash();
     vfsParams.account = _accountState->account();
     vfsParams.journal = &_journal;
