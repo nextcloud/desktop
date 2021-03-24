@@ -26,6 +26,8 @@
 
 namespace OCC {
 
+Q_LOGGING_CATEGORY(lcUserStatus, "nextcloud.gui.userstatus", QtInfoMsg)
+
 UserStatus::UserStatus(QObject *parent)
     : QObject(parent)
     , _message("")
@@ -51,9 +53,20 @@ void UserStatus::fetchUserStatus(AccountPtr account)
     _job->start();
 }
 
-void UserStatus::slotFetchUserStatusFinished(const QJsonDocument &json)
+void UserStatus::slotFetchUserStatusFinished(const QJsonDocument &json, const int statusCode)
 {
-    const auto retrievedData = json.object().value("ocs").toObject().value("data").toObject();
+    const QJsonObject defaultValues
+    {
+        {"icon", ""},
+        {"message", ""},
+        {"status", "online"}
+    };
+    
+    if (statusCode != 200) {
+        qCInfo(lcUserStatus) << "Slot fetch UserStatus finished with status code" << statusCode;
+        qCInfo(lcUserStatus) << "Using then default values as if user has not set any status" << defaultValues;
+    }
+    const auto retrievedData = json.object().value("ocs").toObject().value("data").toObject(defaultValues);
     const auto emoji = retrievedData.value("icon").toString();
     const auto message = retrievedData.value("message").toString();
     auto statusString = retrievedData.value("status").toString(); 

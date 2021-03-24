@@ -15,13 +15,11 @@
 #ifndef USERSTATUS_H
 #define USERSTATUS_H
 
-#include <QObject>
 #include <QPointer>
-#include <QVariant>
-#include <QMetaEnum>
 #include "accountfwd.h"
 
 namespace OCC {
+
 class JsonApiJob;
 
 class UserStatus : public QObject
@@ -44,7 +42,7 @@ public:
     QUrl icon() const;
 
 private slots:
-    void slotFetchUserStatusFinished(const QJsonDocument &json);
+    void slotFetchUserStatusFinished(const QJsonDocument &json, const int statusCode);
 
 signals:
     void fetchUserStatusFinished();

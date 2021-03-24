@@ -186,6 +186,8 @@ void User::slotRefreshImmediately() {
 
 void User::slotRefresh()
 {
+    slotRefreshUserStatus();
+    
     if (checkPushNotificationsAreReady()) {
         // we are relying on WebSocket push notifications - ignore refresh attempts from UI
         _timeSinceLastCheck[_account.data()].invalidate();
@@ -208,7 +210,6 @@ void User::slotRefresh()
             slotRefreshActivities();
         }
         slotRefreshNotifications();
-        _account.data()->fetchUserStatus();
         timer.start();
     }
 }
@@ -216,6 +217,13 @@ void User::slotRefresh()
 void User::slotRefreshActivities()
 {
     _activityModel->slotRefreshActivity();
+}
+
+void User::slotRefreshUserStatus() {
+    // TODO: check for _account->account()->capabilities().userStatus() 
+    if (_account.data() && _account.data()->isConnected()) {
+        _account.data()->fetchUserStatus();
+    }
 }
 
 void User::slotRefreshNotifications()

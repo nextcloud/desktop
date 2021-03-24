@@ -56,6 +56,7 @@ public:
     bool sharePublicLinkMultiple() const;
     bool shareResharing() const;
     bool chunkingNg() const;
+    bool userStatus() const;
 
     /// Returns which kind of push notfications are available
     PushNotificationTypes availablePushNotifications() const;
