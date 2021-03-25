@@ -350,3 +350,16 @@ def step(context):
         waitForObjectExists(names.oCC_ShareLinkWidget_checkBox_password_QProgressIndicator).visible,
         False
     )
+  
+@When('user "|any|" opens the sharing dialog of "|any|" using the client-UI')
+def step(context, receiver, resource):
+    resource = substituteInLineCodes(context, resource).replace('//','/')
+    waitFor(lambda: isFolderSynced(resource), context.userData['clientSyncTimeout'] * 1000)
+    waitFor(lambda: shareResource(resource), context.userData['clientSyncTimeout'] * 1000)   
+    
+
+@Then('the error text "|any|" should be displayed in the sharing dialog')
+def step(context, fileShareContext):
+    test.compare(str(waitForObjectExists(names.sharingDialog_The_file_can_not_be_shared_because_it_was_shared_without_sharing_permission_QLabel).text), fileShareContext)
+
+                 
