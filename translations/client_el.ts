@@ -1093,12 +1093,12 @@ This can be an issue with your OpenSSL libraries.</source>
         <translation>Το %1 έχει ληφθεί.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="425"/>
+        <location filename="../src/gui/folder.cpp" line="433"/>
         <source>%1 and %n other file(s) have been added.</source>
         <translation><numerusform>Έχουν προστεθεί %1 και %n άλλα αρχείο(α).</numerusform><numerusform>Έχουν προστεθεί %1 και %n άλλα αρχείο(α).</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="427"/>
+        <location filename="../src/gui/folder.cpp" line="435"/>
         <source>%1 has been added.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 έχει προστεθεί.</translation>
@@ -1275,7 +1275,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
         <translation>Διατήρηση τοπικών αρχείων ως Διένεξη</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1235"/>
+        <location filename="../src/gui/folder.cpp" line="1245"/>
         <source>All files in the sync folder '%1' folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
@@ -1283,24 +1283,24 @@ If you decide to delete the files, they will be unavailable to you, unless you a
         <translation>Όλα τα αρχεία στο φάκελο συγχρονισμού &apos;% 1&apos; διαγράφηκαν στο διακομιστή. Αυτές οι διαγραφές θα συγχρονιστούν με τον τοπικό φάκελο συγχρονισμού, καθιστώντας αυτά τα αρχεία μη διαθέσιμα εκτός εάν έχετε δικαίωμα επαναφοράς. Εάν αποφασίσετε να επαναφέρετε τα αρχεία, θα συγχρονιστούν ξανά με τον διακομιστή, εφόσον έχετε τα δικαιώματα. Εάν αποφασίσετε να διαγράψετε τα αρχεία, θα είναι μη διαθέσιμα σε εσάς, εκτός εάν είστε ο κάτοχος.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1240"/>
+        <location filename="../src/gui/folder.cpp" line="1250"/>
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
         <translation>Όλα τα αρχεία στον τοπικό σας φάκελο συγχρονισμού &apos;% 1&apos; διαγράφησαν. Αυτές οι διαγραφές θα συγχρονιστούν με τον διακομιστή σας, καθιστώντας τα αρχεία αυτά μη διαθέσιμα εκτός αν γίνει επαναφορά. Είστε βέβαιοι ότι θέλετε να συγχρονίσετε αυτές τις ενέργειες με τον διακομιστή; Εάν αυτό ήταν ατύχημα και αποφασίσετε να διατηρήσετε τα αρχεία σας, θα συγχρονιστούν ξανά από το διακομιστή.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1244"/>
+        <location filename="../src/gui/folder.cpp" line="1254"/>
         <source>Remove All Files?</source>
         <translation>Κατάργηση όλων των αρχείων;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1248"/>
+        <location filename="../src/gui/folder.cpp" line="1258"/>
         <source>Remove all files</source>
         <translation>Κατάργηση όλων των αρχείων.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1249"/>
+        <location filename="../src/gui/folder.cpp" line="1259"/>
         <source>Keep files</source>
         <translation>Κράτησε τα αρχεία</translation>
     </message>
@@ -1381,6 +1381,11 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>Ο συγχρονισμός ήταν επιτυχής, μη διευθετημένες διενέξεις.</translation>
     </message>
     <message>
+        <location filename="../src/gui/folderman.cpp" line="1492"/>
+        <source>Sync finished with unresolved conflicts.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/folderman.cpp" line="1373"/>
         <source>Last Sync was successful.</source>
         <translation>Ο τελευταίος συγχρονισμός ήταν επιτυχής.</translation>
@@ -1411,7 +1416,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>Δεν επιλέχθηκε έγκυρος φάκελος!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1520"/>
+        <location filename="../src/gui/folderman.cpp" line="1532"/>
         <source>The selected path does not exist!</source>
         <translation>Η επιλεγμένη διαδρομή δεν υπάρχει!</translation>
     </message>
@@ -4446,6 +4451,14 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     </message>
 </context>
 <context>
+    <name>OCC::UserStatus</name>
+    <message>
+        <location filename="../src/gui/userstatus.cpp" line="79"/>
+        <source>Do not disturb</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>OCC::Vfs</name>
     <message>
         <location filename="../src/common/vfs.cpp" line="82"/>
@@ -5042,6 +5055,16 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Αλλαγή στον λογαριασμό</translation>
     </message>
     <message>
+        <location filename="../src/gui/tray/UserLine.qml" line="92"/>
+        <source>Current user status is online</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/UserLine.qml" line="92"/>
+        <source>Current user status is do not disturb</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/tray/UserLine.qml" line="94"/>
         <source>Account connected</source>
         <translation>Συνδεδεμένος λογαριασμός</translation>
@@ -5216,6 +5239,21 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Τρέχων avatar χρήστη</translation>
     </message>
     <message>
+        <location filename="../src/gui/tray/Window.qml" line="360"/>
+        <source>Current user status is online</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="360"/>
+        <source>Current user status is do not disturb</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="422"/>
+        <source>Open local folder of current account</source>
+        <translation>Άνοιγμα τοπικού φακέλου του τρέχων λογαριασμού</translation>
+    </message>
+    <message>
         <location filename="../src/gui/tray/Window.qml" line="362"/>
         <source>Connected</source>
         <translation>Συνδεδεμένο</translation>
@@ -5224,11 +5262,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/tray/Window.qml" line="362"/>
         <source>Disconnected</source>
         <translation>Αποσυνδεδεμένο</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/Window.qml" line="422"/>
-        <source>Open local folder of current account</source>
-        <translation>Άνοιγμα τοπικού φακέλου του τρέχων λογαριασμού</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="434"/>
