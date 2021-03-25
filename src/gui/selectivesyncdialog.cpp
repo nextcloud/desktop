@@ -122,10 +122,6 @@ void SelectiveSyncWidget::refreshFolders()
 void SelectiveSyncWidget::setFolderInfo(const QString &folderPath, const QString &rootName, const QStringList &oldBlackList)
 {
     _folderPath = folderPath;
-    if (_folderPath.startsWith(QLatin1Char('/'))) {
-        // remove leading '/'
-        _folderPath = folderPath.mid(1);
-    }
     _rootName = rootName;
     _oldBlackList = oldBlackList;
     refreshFolders();

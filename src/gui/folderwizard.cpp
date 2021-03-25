@@ -498,9 +498,6 @@ FolderWizardSelectiveSync::~FolderWizardSelectiveSync()
 void FolderWizardSelectiveSync::initializePage()
 {
     QString targetPath = wizard()->property("targetPath").toString();
-    if (targetPath.startsWith('/')) {
-        targetPath = targetPath.mid(1);
-    }
     QString alias = QFileInfo(targetPath).fileName();
     if (alias.isEmpty())
         alias = Theme::instance()->appName();
