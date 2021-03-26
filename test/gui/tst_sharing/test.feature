@@ -1,8 +1,8 @@
 Feature: Sharing
 
-  	As a user
-  	I want to share files and folders with other users
-  	So that those users can access the files and folders
+    As a user
+    I want to share files and folders with other users
+    So that those users can access the files and folders
 
     Scenario: simple sharing
         Given user "Alice" has been created on the server with default attributes
@@ -137,3 +137,34 @@ Feature: Sharing
         When the user creates a new public link for file "%client_sync_path%/textfile0.txt" with password "pass123" using the client-UI
         Then as user "Alice" the file "textfile0.txt" should have a public link on the server
         And the public should be able to download the file "textfile0.txt" with password "pass123" from the last created public link by "Alice" on the server
+
+
+    Scenario: user changes the expiration date of an already existing public link using webUI
+        Given user "Alice" has been created on the server with default attributes
+        And user "Alice" has set up a client with these settings and password "1234":
+            """
+            [Accounts]
+            0\Folders\1\ignoreHiddenFiles=true
+            0\Folders\1\localPath=%client_sync_path%
+            0\Folders\1\paused=false
+            0\Folders\1\targetPath=/
+            0\Folders\1\version=2
+            0\Folders\1\virtualFilesMode=off
+            0\dav_user=alice
+            0\display-name=Alice
+            0\http_oauth=false
+            0\http_user=alice
+            0\url=%local_server%
+            0\user=Alice
+            0\version=1
+            version=2
+            """
+        And user "Alice" has created a public link on the server with following settings
+            | path       | textfile0.txt |
+            | name       | Public link   |
+            | expireDate | 2038-10-14    |
+        When the user opens the public links dialog of "%client_sync_path%/textfile0.txt" using the client-UI
+        And the user edits the public link named "Public link" of file "textfile0.txt" changing following
+            | expireDate | 2038-07-21 |
+        Then the fields of the last public link share response of user "Alice" should include on the server
+            | expireDate | 2038-07-21 |

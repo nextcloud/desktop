@@ -157,6 +157,9 @@ def shareResource(resource):
 def executeStepThroughMiddleware(context, step):
     body = {
     "step": step}
+    if hasattr(context, "table"):
+        body["table"] = context.table
+
     params = json.dumps(body).encode('utf8')
 
     req = urllib.request.Request(
@@ -398,3 +401,18 @@ def step(context, resource, password):
     type(waitForObject(names.oCC_ShareLinkWidget_lineEdit_password_QLineEdit), password)
     clickButton(waitForObject(names.oCC_ShareLinkWidget_createShareButton_QPushButton))
     waitFor(lambda: (findObject(names.linkShares_0_0_QModelIndex).displayText == "Public link"))
+
+
+@When('the user edits the public link named "|any|" of file "|any|" changing following')
+def step(context, publicLinkName, resource):
+    test.compare(str(waitForObjectExists(names.sharingDialog_label_name_QLabel).text), resource)
+    test.compare(str(waitForObjectExists(names.linkShares_0_0_QModelIndex).text), publicLinkName)
+    expDate = []
+    for row in context.table:
+        if row[0] == 'expireDate':
+            expDate = row[1].split("-")
+    expYear = expDate[0][2:]
+    doubleClick(waitForObject(names.oCC_ShareLinkWidget_qt_spinbox_lineedit_QLineEdit), 5, 9, Qt.NoModifier, Qt.LeftButton)
+    type(waitForObject(names.oCC_ShareLinkWidget_calendar_QDateEdit), expDate[1])
+    type(waitForObject(names.oCC_ShareLinkWidget_calendar_QDateEdit), expDate[2])
+    type(waitForObject(names.oCC_ShareLinkWidget_calendar_QDateEdit), expYear)
