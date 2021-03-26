@@ -430,11 +430,13 @@ if(BUILD_OWNCLOUD_OSX_BUNDLE AND NOT BUILD_LIBRARIES_ONLY)
 
     add_custom_command(TARGET ${APPLICATION_EXECUTABLE} POST_BUILD
         COMMAND "${MACDEPLOYQT_EXECUTABLE}"
-            "$<TARGET_FILE_DIR:${APPLICATION_EXECUTABLE}>/../.."
-            -qmldir=${CMAKE_SOURCE_DIR}/src/gui
-            -always-overwrite
-            -executable="$<TARGET_FILE_DIR:${APPLICATION_EXECUTABLE}>/${cmd_NAME}"
-            ${NO_STRIP}
+        "$<TARGET_FILE_DIR:${APPLICATION_EXECUTABLE}>/../.."
+        -qmldir=${CMAKE_SOURCE_DIR}/src/gui
+        -always-overwrite
+        -executable="$<TARGET_FILE_DIR:${APPLICATION_EXECUTABLE}>/${cmd_NAME}"
+        ${NO_STRIP}
+        COMMAND "${CMAKE_COMMAND}"
+        -E rm -rf "${BIN_OUTPUT_DIRECTORY}/${OWNCLOUD_OSX_BUNDLE}/Contents/PlugIns/bearer"
         COMMENT "Running macdeployqt..."
     )
 endif()
