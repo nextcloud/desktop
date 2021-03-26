@@ -452,6 +452,12 @@ bool deleteSyncRootRegistryKey(const QString &syncRootPath, const QString &provi
 
 OCC::Result<void, QString> OCC::CfApiWrapper::registerSyncRoot(const QString &path, const QString &providerName, const QString &providerVersion, const QString &folderAlias, const QString &displayName, const QString &accountDisplayName)
 {
+    Q_UNUSED(displayName);
+    Q_UNUSED(folderAlias);
+    Q_UNUSED(providerName);
+    Q_UNUSED(accountDisplayName);
+    /*
+     * TODO: Figure out how to fix the WOW6432Node issue, then, uncomment this block
     // even if we fail to register our sync root with shell, we can still proceed with using the VFS
     const auto createRegistryKeyResult = createSyncRootRegistryKeys(providerName, folderAlias, displayName, accountDisplayName, path);
     Q_ASSERT(createRegistryKeyResult);
@@ -459,6 +465,7 @@ OCC::Result<void, QString> OCC::CfApiWrapper::registerSyncRoot(const QString &pa
     if (!createRegistryKeyResult) {
         qCWarning(lcCfApiWrapper) << "Failed to create the registry key for path:" << path;
     }
+    */
 
     const auto p = path.toStdWString();
     const auto name = providerName.toStdWString();
@@ -491,12 +498,17 @@ OCC::Result<void, QString> OCC::CfApiWrapper::registerSyncRoot(const QString &pa
 
 OCC::Result<void, QString> OCC::CfApiWrapper::unregisterSyncRoot(const QString &path, const QString &providerName, const QString &accountDisplayName)
 {
+    Q_UNUSED(providerName);
+    Q_UNUSED(accountDisplayName);
+    /*
+     * TODO: Figure out how to fix the WOW6432Node issue, then, uncomment this block
     const auto deleteRegistryKeyResult = deleteSyncRootRegistryKey(path, providerName, accountDisplayName);
     Q_ASSERT(deleteRegistryKeyResult);
 
     if (!deleteRegistryKeyResult) {
         qCWarning(lcCfApiWrapper) << "Failed to delete the registry key for path:" << path;
     }
+    */
 
     const auto p = path.toStdWString();
     const qint64 result = CfUnregisterSyncRoot(p.data());
