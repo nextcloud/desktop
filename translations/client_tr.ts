@@ -1393,7 +1393,7 @@ Bu işlemi yanlışlıkla yaptıysanız ve dosyalarınızı korumak istiyorsanı
     <message>
         <location filename="../src/gui/folderman.cpp" line="1492"/>
         <source>Sync finished with unresolved conflicts.</source>
-        <translation type="unfinished"/>
+        <translation>Eşitleme çözülememiş çakışmalar ile tamamlandı.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1373"/>
@@ -4474,7 +4474,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
     <message>
         <location filename="../src/gui/userstatus.cpp" line="79"/>
         <source>Do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>Rahatsız etmeyin</translation>
     </message>
 </context>
 <context>
@@ -5076,12 +5076,12 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="92"/>
         <source>Current user status is online</source>
-        <translation type="unfinished"/>
+        <translation>Geçerli kullanıcı durumu çevrimiçi</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="92"/>
         <source>Current user status is do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>Geçerli kullanıcı durumu rahatsız etmeyin</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="94"/>
@@ -5260,12 +5260,12 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
     <message>
         <location filename="../src/gui/tray/Window.qml" line="360"/>
         <source>Current user status is online</source>
-        <translation type="unfinished"/>
+        <translation>Geçerli kullanıcı durumu çevrimiçi</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="360"/>
         <source>Current user status is do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>Geçerli kullanıcı durumu rahatsız etmeyin</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="422"/>

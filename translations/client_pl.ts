@@ -2480,7 +2480,7 @@ o dodatkowe uprawnienia podczas procesu aktualizacji.</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="156"/>
         <source>New %1 is available. Please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt; to download the update.</source>
-        <translation>Dostępna jest nowa %1. Kliknij &lt;a href=&apos;%2&apos;&gt;tutaj&lt;/a&gt;, aby pobrać aktualizację.</translation>
+        <translation>Dostępny jest nowy %1. Kliknij &lt;a href=&apos;%2&apos;&gt;tutaj&lt;/a&gt;, aby pobrać aktualizację.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="158"/>

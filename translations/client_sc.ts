@@ -356,7 +356,7 @@ Iseta sa sincronizatzione noa, tando tzifra·dda.</translation>
         <location filename="../src/gui/accountsettings.cpp" line="374"/>
         <location filename="../src/gui/accountsettings.cpp" line="410"/>
         <source>Edit Ignored Files</source>
-        <translation>Modìfica is archìvios disconnotos</translation>
+        <translation>Modìfica is archìvios ignorados</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="447"/>
@@ -1394,7 +1394,7 @@ Si custu fiat un&apos;errore e detzides de mantènnere is archìvios tuos, custo
     <message>
         <location filename="../src/gui/folderman.cpp" line="1492"/>
         <source>Sync finished with unresolved conflicts.</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizatzione agabbada cun cunflitos non isortos.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1373"/>
@@ -1935,7 +1935,7 @@ Annota chi custu seletzionat isceti dae cale grùstiu prelevare is agiornamentos
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="317"/>
         <source>Change update channel</source>
-        <translation type="unfinished"/>
+        <translation>Càmbia su canale de agiornamentu</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="318"/>
@@ -1945,22 +1945,22 @@ Annota chi custu seletzionat isceti dae cale grùstiu prelevare is agiornamentos
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="411"/>
         <source>Create Debug Archive</source>
-        <translation type="unfinished"/>
+        <translation>Crea archìviu de debug</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="411"/>
         <source>Zip Archives</source>
-        <translation type="unfinished"/>
+        <translation>Archìvios zip</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="417"/>
         <source>Debug Archive Created</source>
-        <translation type="unfinished"/>
+        <translation>Archìviu debug creadu</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="417"/>
         <source>Debug archive is created at %1</source>
-        <translation type="unfinished"/>
+        <translation>S&apos;archìviu de debug nch&apos;est creadu in %1</translation>
     </message>
 </context>
 <context>
@@ -1968,24 +1968,26 @@ Annota chi custu seletzionat isceti dae cale grùstiu prelevare is agiornamentos
     <message>
         <location filename="../src/gui/socketapi.cpp" line="567"/>
         <source>Password for share required</source>
-        <translation type="unfinished"/>
+        <translation>Recherta sa crae pro cumpartzire</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="568"/>
         <source>Please enter a password for your link share:</source>
-        <translation type="unfinished"/>
+        <translation>Inserta una crae pro su ligòngiu pro cumpartzire:</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="587"/>
         <source>Sharing error</source>
-        <translation type="unfinished"/>
+        <translation>Errore cumpartzinde</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="588"/>
         <source>Could not retrieve or create the public link share. Error:
 
 %1</source>
-        <translation type="unfinished"/>
+        <translation>Impossìbile a recuperare o a creare sa cumpartzidura cun unu ligòngiu pùblicu. Errore:
+
+%1</translation>
     </message>
 </context>
 <context>
@@ -1993,22 +1995,22 @@ Annota chi custu seletzionat isceti dae cale grùstiu prelevare is agiornamentos
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="100"/>
         <source>Please enter %1 password:&lt;br&gt;&lt;br&gt;User: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Inserta crae de %1 :&lt;br&gt;&lt;br&gt;Utente: %2&lt;br&gt;Contu: %3&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="114"/>
         <source>Reading from keychain failed with error: &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Letura de su portacraes faddida cun errore: &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="120"/>
         <source>Enter Password</source>
-        <translation type="unfinished"/>
+        <translation>Inserta crae</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="156"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Click here&lt;/a&gt; to request an app password from the web interface.</source>
-        <translation type="unfinished"/>
+        <translation>&lt;a href=&quot;%1&quot;&gt;Incarca inoghe&lt;/a&gt; pro pedire una crae de s&apos;aplicatzione dae s&apos;interfache web.</translation>
     </message>
 </context>
 <context>
@@ -2016,27 +2018,27 @@ Annota chi custu seletzionat isceti dae cale grùstiu prelevare is agiornamentos
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="14"/>
         <source>Ignored Files Editor</source>
-        <translation type="unfinished"/>
+        <translation>Editore de archìvios ignorados</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="20"/>
         <source>Global Ignore Settings</source>
-        <translation type="unfinished"/>
+        <translation>Impostatziones globales de ignora</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="26"/>
         <source>Sync hidden files</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizatzione de is archìvios cuados</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="36"/>
         <source>Files Ignored by Patterns</source>
-        <translation type="unfinished"/>
+        <translation>Archìvios ignorados pro modellos</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="40"/>
         <source>This entry is provided by the system at &apos;%1&apos; and cannot be modified in this view.</source>
-        <translation type="unfinished"/>
+        <translation>Custa intrada est frunida dae su sistema in %1&apos; e non si podet modìcare in custa bista.</translation>
     </message>
 </context>
 <context>
@@ -2044,12 +2046,12 @@ Annota chi custu seletzionat isceti dae cale grùstiu prelevare is agiornamentos
     <message>
         <location filename="../src/gui/ignorelisttablewidget.ui" line="33"/>
         <source>Pattern</source>
-        <translation type="unfinished"/>
+        <translation>Modellu</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.ui" line="38"/>
         <source>Allow Deletion</source>
-        <translation type="unfinished"/>
+        <translation>Permite cantzelladura</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.ui" line="49"/>
@@ -2064,34 +2066,36 @@ Annota chi custu seletzionat isceti dae cale grùstiu prelevare is agiornamentos
     <message>
         <location filename="../src/gui/ignorelisttablewidget.ui" line="66"/>
         <source>Remove all</source>
-        <translation type="unfinished"/>
+        <translation>Boga·nche totu</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="24"/>
         <source>Files or folders matching a pattern will not be synchronized.
 
 Items where deletion is allowed will be deleted if they prevent a directory from being removed. This is useful for meta data.</source>
-        <translation type="unfinished"/>
+        <translation> Is archìvios e is cartellas chi averiguant unu modellu non ant a èssere sincronizados.
+
+Is elementos in ue est permitidu ant a èssere cantzellados si impedint de catzare una cartella . Custu est de profetu pro is metadatos.</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="93"/>
         <source>Could not open file</source>
-        <translation type="unfinished"/>
+        <translation>No at fatu a abèrrere archìviu</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="94"/>
         <source>Cannot write changes to &apos;%1&apos;.</source>
-        <translation type="unfinished"/>
+        <translation>Non faghet a iscrìere is modìficas in &apos;%1&apos;.</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="112"/>
         <source>Add Ignore Pattern</source>
-        <translation type="unfinished"/>
+        <translation>Agiùnghe elementu de esclusione</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="113"/>
         <source>Add a new ignore pattern:</source>
-        <translation type="unfinished"/>
+        <translation>Agiunghe unu modellu de esclusione:</translation>
     </message>
 </context>
 <context>
@@ -2100,7 +2104,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <location filename="../src/gui/legalnotice.ui" line="14"/>
         <location filename="../src/gui/legalnotice.ui" line="25"/>
         <source>Legal notice</source>
-        <translation type="unfinished"/>
+        <translation>Nota legale</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.ui" line="57"/>
@@ -2110,12 +2114,12 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="55"/>
         <source>&lt;p&gt;Copyright 2017-2020 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2018 ownCloud GmbH&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Copyright 2017-2020 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2018 ownCloud GmbH&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="58"/>
         <source>&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0 or any later version.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Suta lissèntzia GNU General Public License (GPL) versione 2.0 o cale si siat versione imbeniente.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -2123,82 +2127,86 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="58"/>
         <source>Log Output</source>
-        <translation type="unfinished"/>
+        <translation>Resurtadu log</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="50"/>
         <source>The client can write debug logs to a temporary folder. These logs are very helpful for diagnosing problems.
 Since log files can get large, the client will start a new one for each sync run and compress older ones. It will also delete log files after a couple of hours to avoid consuming too much disk space.
 If enabled, logs will be written to %1</source>
-        <translation type="unfinished"/>
+        <translation>Su cliente podet iscrìere is log de debug in una cartella temporànea. Custos registros torrant a contu pro bogare a campu is problemas.
+Sigomente is archìvios de log si podent crèschere, su cliente nd&apos;at a aviare unu nou pro ogni sincronizatzione esecutada e at a cumprimire cussos prus betzos. S&apos;ant a eliminare fintzas is archìvios de registru a pustis de una pariga de oras pro evitare de ocupare tropu logu in su discu. 
+Si ativados, is log ant a èssere iscritos in %1</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="64"/>
         <source>Enable logging to temporary folder</source>
-        <translation type="unfinished"/>
+        <translation>Ativa sa registratzione a una cartella temporànea</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="70"/>
         <source>This setting persists across client restarts.
 Note that using any logging command line options will override this setting.</source>
-        <translation type="unfinished"/>
+        <translation>Custa impostatzione abarrat in casu chi si torret a aviare su cliente.
+Càstia chi s&apos;impreu de cale si siat optzione de sa riga de cumandu de registratzione at a sutaiscrìere custa impostatzione.</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="70"/>
         <source>&amp;Search:</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Chirca:</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="77"/>
         <source>Open folder</source>
-        <translation type="unfinished"/>
+        <translation>Aberi cartella</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="78"/>
         <source>&amp;Find</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Agata</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="89"/>
         <source>&amp;Capture debug messages</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Catura messàgios de debug</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="101"/>
         <source>Permanently save logs</source>
-        <translation type="unfinished"/>
+        <translation>Sarva is log in manera permanente</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="103"/>
         <source>When this option is enabled and no other logging is configured, logs will be written to a temporary folder and expire after a few hours. This setting persists across client restarts.
 
 Logs will be written to %1</source>
-        <translation type="unfinished"/>
+        <translation>Si custa optzione est ativada e no est cunfiguradu un&apos;àteru sistema de iscritura de is log, is log ant a èssere iscritos in una cartella temporànea e si nch&apos;ant a iscàdere a pustis de pagas oras. Custa impostatzione s&apos;at a cunservare in casu chi si torret a aviare su cliente.
+Logs ant a èssere iscritos in %1</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="115"/>
         <source>Clear</source>
-        <translation type="unfinished"/>
+        <translation>Lìmpia</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="116"/>
         <source>Clear the log display.</source>
-        <translation type="unfinished"/>
+        <translation>Lìmpia sa visualizatzione de su log.</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="122"/>
         <source>S&amp;ave</source>
-        <translation type="unfinished"/>
+        <translation>S&amp;arva</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="123"/>
         <source>Save the log file to a file on disk for debugging.</source>
-        <translation type="unfinished"/>
+        <translation> Sarva un&apos;archìviu de log in su discu pro su debug..</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="210"/>
         <source>Save log file</source>
-        <translation type="unfinished"/>
+        <translation>Sarva s&apos;archìviu log</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="220"/>
@@ -2208,7 +2216,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="220"/>
         <source>Could not write to log file %1</source>
-        <translation type="unfinished"/>
+        <translation>No at fatu a iscrìere s&apos;archìviu de log %1</translation>
     </message>
 </context>
 <context>
@@ -2221,7 +2229,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/libsync/logger.cpp" line="198"/>
         <source>&lt;nobr&gt;File &apos;%1&apos;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output can &lt;b&gt;not&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;nobr&gt;S&apos;archìviu &apos;%1&apos;&lt;br/&gt;no at fatu a ddu abèrrere in s&apos;iscritura.&lt;br/&gt;&lt;br/&gt;Su resurtadu de su log &lt;b&gt;no&lt;/b&gt; at a èssere sarvadu!&lt;/nobr&gt;</translation>
     </message>
 </context>
 <context>
@@ -2229,53 +2237,53 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="393"/>
         <source>New Version Available</source>
-        <translation type="unfinished"/>
+        <translation>Versione noa a disponimentu</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="399"/>
         <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Una versione noa de su cliente %1 Client est a disponimentu.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; est dispostu pro ddu iscàrrigare. Sa versione installada est %3.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="412"/>
         <location filename="../src/gui/updater/ocupdater.cpp" line="462"/>
         <source>Skip this version</source>
-        <translation type="unfinished"/>
+        <translation>Brinca custa versione</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="413"/>
         <source>Skip this time</source>
-        <translation type="unfinished"/>
+        <translation>Brinca custa borta</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="414"/>
         <source>Get update</source>
-        <translation type="unfinished"/>
+        <translation>Otène s&apos;agiornamentu</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="443"/>
         <source>Update Failed</source>
-        <translation type="unfinished"/>
+        <translation>Agiornamentu faddidu</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="449"/>
         <source>&lt;p&gt;A new version of the %1 Client is available but the updating process failed.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; has been downloaded. The installed version is %3.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Una versione noa de su cliente %1 est a disponimentu, ma su protzessu de agiornamentu no est andadu bene.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; iscarrigadu. Sa versione installada est %3.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="463"/>
         <source>Ask again later</source>
-        <translation type="unfinished"/>
+        <translation>Torra·ddu a pregontare luego</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="464"/>
         <source>Restart and update</source>
-        <translation type="unfinished"/>
+        <translation>Torra a cumintzare e agiorna</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="465"/>
         <source>Update manually</source>
-        <translation type="unfinished"/>
+        <translation>Agiorna tue etotu</translation>
     </message>
 </context>
 <context>
@@ -2283,102 +2291,102 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/networksettings.ui" line="23"/>
         <source>Proxy Settings</source>
-        <translation type="unfinished"/>
+        <translation>Impostatziones de su serbidore intermèdiu</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="29"/>
         <source>No Proxy</source>
-        <translation type="unfinished"/>
+        <translation>Perunu serbidore intermèdiu</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="42"/>
         <source>Use system proxy</source>
-        <translation type="unfinished"/>
+        <translation>Imprea su serbidore intermèdiu de su sistema</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="52"/>
         <source>Specify proxy manually as</source>
-        <translation type="unfinished"/>
+        <translation>Ispetzìfica tue etotu su serbidore intermèdiu comente </translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="80"/>
         <source>Host</source>
-        <translation type="unfinished"/>
+        <translation>Acollidore</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="131"/>
         <source>Proxy server requires authentication</source>
-        <translation type="unfinished"/>
+        <translation>Serbidore intermèdiu pedit de s&apos;identificare</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="176"/>
         <source>Note: proxy settings have no effects for accounts on localhost</source>
-        <translation type="unfinished"/>
+        <translation>Avisu: is impostatziones de su serbidore intermèdiu non tenent perunu effetu pro is contos de s&apos;acollidore locale</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="190"/>
         <source>Download Bandwidth</source>
-        <translation type="unfinished"/>
+        <translation>Mannària de banda de intrada</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="196"/>
         <location filename="../src/gui/networksettings.ui" line="275"/>
         <source>Limit to</source>
-        <translation type="unfinished"/>
+        <translation>Lìmita a</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="203"/>
         <location filename="../src/gui/networksettings.ui" line="292"/>
         <source>No limit</source>
-        <translation type="unfinished"/>
+        <translation>Perunu lìmite</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="241"/>
         <location filename="../src/gui/networksettings.ui" line="320"/>
         <source>KBytes/s</source>
-        <translation type="unfinished"/>
+        <translation>KBytes/s</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="250"/>
         <location filename="../src/gui/networksettings.ui" line="282"/>
         <source>Limit to 3/4 of estimated bandwidth</source>
-        <translation type="unfinished"/>
+        <translation>Lìmita a su tres bator de sa banda istimada</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="253"/>
         <location filename="../src/gui/networksettings.ui" line="285"/>
         <source>Limit automatically</source>
-        <translation type="unfinished"/>
+        <translation>Lìmita in automàticu</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="269"/>
         <source>Upload Bandwidth</source>
-        <translation type="unfinished"/>
+        <translation>Carriga·nche sa banda de intrada</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="37"/>
         <source>Hostname of proxy server</source>
-        <translation type="unfinished"/>
+        <translation>Nùmene de s&apos;acollidore de su serbidore intermèdiu</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="38"/>
         <source>Username for proxy server</source>
-        <translation type="unfinished"/>
+        <translation>Nùmene utente de su serbidore intermèdiu</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="39"/>
         <source>Password for proxy server</source>
-        <translation type="unfinished"/>
+        <translation>Crae de su serbidore intermèdiu</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="41"/>
         <source>HTTP(S) proxy</source>
-        <translation type="unfinished"/>
+        <translation>Serbidore intermèdiu HTTP(S) </translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="42"/>
         <source>SOCKS5 proxy</source>
-        <translation type="unfinished"/>
+        <translation>Serbidore intermèdiu de SOCKS5 </translation>
     </message>
 </context>
 <context>
@@ -2386,37 +2394,37 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="111"/>
         <source>Error returned from the server: &lt;em&gt;%1&lt;/em&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Errore torradu dae su serbidore: &lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="114"/>
         <source>There was an error accessing the &apos;token&apos; endpoint: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
-        <translation type="unfinished"/>
+        <translation> Ddoe at àpidu un&apos;errore intrende a su terminale de su terminadore de is &apos;token&apos;: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="121"/>
         <source>Empty JSON from OAuth2 redirect</source>
-        <translation type="unfinished"/>
+        <translation>JSON bòidos dae sa re-aderetada a OAuth2 </translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="117"/>
         <source>Could not parse the JSON returned from the server: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
-        <translation type="unfinished"/>
+        <translation> Non faghet a elaborare su JSON torradu dae su serbidore: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="120"/>
         <source>The reply from the server did not contain all expected fields</source>
-        <translation type="unfinished"/>
+        <translation>Sa risposta de su serbidore non cuntenet is campos isetados</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="124"/>
         <source>&lt;h1&gt;Login Error&lt;/h1&gt;&lt;p&gt;%1&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h1&gt;Errore de identificatzione&lt;/h1&gt;&lt;p&gt;%1&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="130"/>
         <source>&lt;h1&gt;Wrong user&lt;/h1&gt;&lt;p&gt;You logged-in with user &lt;em&gt;%1&lt;/em&gt;, but must login with user &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please log out of %3 in another tab, then &lt;a href=&apos;%4&apos;&gt;click here&lt;/a&gt; and log in as user %2&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h1&gt;Utente irballiadu&lt;/h1&gt;&lt;p&gt;Ses intradu cun s&apos;utente &lt;em&gt;%1&lt;/em&gt;, ma depes intrare cun s&apos;utente &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Serra sa sessione de %3 in un&apos;àtera ischeda, pustis &lt;a href=&apos;%4&apos;&gt;incarca inoghe&lt;/a&gt; e intra cun s&apos;utente %2&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -2424,73 +2432,74 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="108"/>
         <source>New %1 Update Ready</source>
-        <translation type="unfinished"/>
+        <translation> Un&apos;agionamentu nou de %1 est prontu</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="109"/>
         <source>A new update for %1 is about to be installed. The updater may ask
 for additional privileges during the process.</source>
-        <translation type="unfinished"/>
+        <translation>Un&apos;agiornamentu nou de %1 est pro èssere installadu. S&apos;agiornamentu diat pòdere pedire
+privilègios in prus durante su protzessu.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="143"/>
         <source>Downloading version %1. Please wait …</source>
-        <translation type="unfinished"/>
+        <translation>Iscarrigamentu de sa versione %1. Iseta...</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="145"/>
         <source>%1 version %2 available. Restart application to start the update.</source>
-        <translation type="unfinished"/>
+        <translation>Sa versione %2 de %1 est a disponimentu. Torra a aviare s&apos;aplicatzione pro cumintzare s&apos;agiornamentu.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="148"/>
         <source>Downloading %1. Please wait …</source>
-        <translation type="unfinished"/>
+        <translation>Iscarrighende %1. Iseta …</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="150"/>
         <source>%1 available. Restart application to start the update.</source>
-        <translation type="unfinished"/>
+        <translation>%1 a disponimentu. Torra a aviare s&apos;aplicatzione pro cumintzare s&apos;agiornamentu.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="152"/>
         <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; to download the update manually.</source>
-        <translation type="unfinished"/>
+        <translation> Impossìbile a iscarrigare. Incarca &lt;a href=&apos;%1&apos;&gt;inoghe&lt;/a&gt; pro iscarrigare s&apos;agiornamentu tue etotu.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="154"/>
         <source>Could not check for new updates.</source>
-        <translation type="unfinished"/>
+        <translation>No at fatu a controllare is agiornamentos noos.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="151"/>
         <source>New %1 version %2 is available. Please click &lt;a href=&apos;%3&apos;&gt;here&lt;/a&gt; to download the update.</source>
-        <translation type="unfinished"/>
+        <translation>Sa versione noa %2 di %1 est a disponimentu. Incarca&lt;a href=&apos;%3&apos;&gt;inoghe&lt;/a&gt; pro iscarrigare s&apos;agiornamentu.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="156"/>
         <source>New %1 is available. Please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt; to download the update.</source>
-        <translation type="unfinished"/>
+        <translation> Su %1 est a disponimentu. Incarca &lt;a href=&apos;%2&apos;&gt;inoghe&lt;/a&gt; pro iscarrigare s&apos;agiornamentu.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="158"/>
         <source>Checking update server …</source>
-        <translation type="unfinished"/>
+        <translation>Controllu serbidore de is agiornamentos …</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="160"/>
         <source>Update status is unknown: Did not check for new updates.</source>
-        <translation type="unfinished"/>
+        <translation>Non si nd&apos;ischet a cale puntu est s&apos;agiornamentu. Non faghet a cumproare sa si ddoe at agiornamentos noos.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="164"/>
         <source>No updates available. Your installation is at the latest version.</source>
-        <translation type="unfinished"/>
+        <translation>No ddoe at agiornamentos a disponimentu. S&apos;installatzione tua est a sa versione prus agiornada.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="183"/>
         <source>Update Check</source>
-        <translation type="unfinished"/>
+        <translation>Controlla agiornamentu</translation>
     </message>
 </context>
 <context>
@@ -2498,84 +2507,84 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="44"/>
         <source>Connect to %1</source>
-        <translation type="unfinished"/>
+        <translation>Connete a %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="45"/>
         <source>Setup local folder options</source>
-        <translation type="unfinished"/>
+        <translation>Cunfigura is sèberos de sa cartella locale</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="60"/>
         <source>Connect</source>
-        <translation type="unfinished"/>
+        <translation>Connete</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="54"/>
         <source>Connect …</source>
-        <translation type="unfinished"/>
+        <translation>Connete …</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="88"/>
         <source>Use &amp;virtual files instead of downloading content immediately %1</source>
-        <translation type="unfinished"/>
+        <translation> Imprea is archìvios &amp;virtuales imbetzes de iscarrigare deretu su cuntenutu %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="88"/>
         <source>(experimental)</source>
-        <translation type="unfinished"/>
+        <translation>(isperimentale)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="154"/>
         <source>%1 folder &apos;%2&apos; is synced to local folder &apos;%3&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Sa cartella %1 de &apos;%2&apos; est sincronizada cun sa cartella locale &apos;%3&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="157"/>
         <source>Sync the folder &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Sincroniza sa cartella &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="162"/>
         <source>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Warning:&lt;/strong&gt; The local folder is not empty. Pick a resolution!&lt;/small&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Avisu:&lt;/strong&gt; Sa cartella locale no est bòida. Sèbera unu remèdiu!&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="171"/>
         <source>Free space: %1</source>
-        <translation type="unfinished"/>
+        <translation>Logu lìberu: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="260"/>
         <source>Warning: The local folder is not empty. Pick a resolution!</source>
-        <translation type="unfinished"/>
+        <translation>Avisu: sa cartella locale no est bòida. Sèbera unu remèdiu!</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="268"/>
         <source>%1 free space</source>
         <comment>%1 gets replaced with the size and a matching unit. Example: 3 MB or 5 GB</comment>
-        <translation type="unfinished"/>
+        <translation>Logu lìberu %1 </translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="352"/>
         <source>Virtual files are not available for the selected folder</source>
-        <translation type="unfinished"/>
+        <translation>Is archìvios virtuales non sunt a disponimentu pro sa cartella seletzionada</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="294"/>
         <source>Local Sync Folder</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizatzione cartella locale</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="337"/>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="367"/>
         <source>(%1)</source>
-        <translation type="unfinished"/>
+        <translation>(%1)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="384"/>
         <source>There isn&apos;t enough free space in the local folder!</source>
-        <translation type="unfinished"/>
+        <translation>Non bastat su logu lìberu in sa cartella locale!</translation>
     </message>
 </context>
 <context>
@@ -2583,32 +2592,32 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="14"/>
         <source>Connection failed</source>
-        <translation type="unfinished"/>
+        <translation>Connessione faddida</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="43"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Failed to connect to the secure server address specified. How do you wish to proceed?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Connessione a s&apos;indiritzu seguru de su serbidore ispetzificadu faddida. Ite est a fàghere?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="55"/>
         <source>Select a different URL</source>
-        <translation type="unfinished"/>
+        <translation>Seletziona unu URL diferente</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="62"/>
         <source>Retry unencrypted over HTTP (insecure)</source>
-        <translation type="unfinished"/>
+        <translation>Torra a proare sena tzifradura in HTTP (non seguru)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="69"/>
         <source>Configure client-side TLS certificate</source>
-        <translation type="unfinished"/>
+        <translation>Cunfigura su tzertificadu TSL dae sa banda de su cliente</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.cpp" line="34"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Failed to connect to the secure server address &lt;em&gt;%1&lt;/em&gt;. How do you wish to proceed?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Connessione a su situ seguru de su serbidore faddida &lt;em&gt;%1&lt;/em&gt;. Ite est a fàghere?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>
@@ -2616,17 +2625,17 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="49"/>
         <source>&amp;Email</source>
-        <translation type="unfinished"/>
+        <translation>Posta&amp;Eletrònica</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="59"/>
         <source>Connect to %1</source>
-        <translation type="unfinished"/>
+        <translation>Connete a %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="60"/>
         <source>Enter user credentials</source>
-        <translation type="unfinished"/>
+        <translation>Inserta credentziales de s&apos;utente</translation>
     </message>
 </context>
 <context>
@@ -2634,12 +2643,12 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="45"/>
         <source>Connect to %1</source>
-        <translation type="unfinished"/>
+        <translation>Connete a %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="46"/>
         <source>Login in your browser</source>
-        <translation type="unfinished"/>
+        <translation>Intra in su navigadore tuo</translation>
     </message>
 </context>
 <context>
@@ -2647,54 +2656,55 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="48"/>
         <source>Connect to %1</source>
-        <translation type="unfinished"/>
+        <translation>Connete a %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="49"/>
         <source>Setup %1 server</source>
-        <translation type="unfinished"/>
+        <translation>Imposta serbidore %1 </translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="77"/>
         <source>Keep your data secure and under your control</source>
-        <translation type="unfinished"/>
+        <translation>Mantene is datos tuos seguros e controllados</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="78"/>
         <source>Secure collaboration &amp; file exchange</source>
-        <translation type="unfinished"/>
+        <translation>Collaboratzione segura &amp; cuncàmbiu de archìvios</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="79"/>
         <source>Easy-to-use web mail, calendaring &amp; contacts</source>
-        <translation type="unfinished"/>
+        <translation>Ìnternet, posta eletrònica, calendàriu e cuntatos fàtziles de impreare</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="86"/>
         <source>The link to your %1 web interface when you open it in the browser.</source>
         <comment>%1 will be replaced with the application name</comment>
-        <translation type="unfinished"/>
+        <translation>Su ligòngiu a s&apos;interfache ìnternet de %1 cando ddu aberis in su navigadore.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="80"/>
         <source>Screensharing, online meetings &amp; web conferences</source>
-        <translation type="unfinished"/>
+        <translation>Cumpartzi ischermu, addòbios in lìnia &amp; cunferèntzias in ìnternet</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="95"/>
         <source>Log in to your %1</source>
-        <translation type="unfinished"/>
+        <translation>Intra in su %1 tuo</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="96"/>
         <source>This is the link to your %1 web interface when you open it in the browser.&lt;br/&gt;It looks like https://cloud.example.com or https://example.com/cloud</source>
-        <translation type="unfinished"/>
+        <translation>Custu est su ligòngiu a s&apos;interfache ìnternet de %1 cando dda aberis in su navigadore.&lt;br/&gt;T&apos;at a essire comente https://cloud.example.com or https://example.com/cloud</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="185"/>
         <source>This URL is NOT secure as it is not encrypted.
 It is not advisable to use it.</source>
-        <translation type="unfinished"/>
+        <translation>Custu URL NOT est seguru dae chi no est tzfradu.
+Si cunsìgiat de non ddu impreare.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="184"/>

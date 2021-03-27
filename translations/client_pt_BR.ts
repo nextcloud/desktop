@@ -1394,7 +1394,7 @@ Se isso foi um acidente e você decidir manter seus arquivos, eles serão sincro
     <message>
         <location filename="../src/gui/folderman.cpp" line="1492"/>
         <source>Sync finished with unresolved conflicts.</source>
-        <translation type="unfinished"/>
+        <translation>Sincronização concluída com conflitos não resolvidos. </translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1373"/>
@@ -4475,7 +4475,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/gui/userstatus.cpp" line="79"/>
         <source>Do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>Não Perturbe</translation>
     </message>
 </context>
 <context>
@@ -5077,12 +5077,12 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="92"/>
         <source>Current user status is online</source>
-        <translation type="unfinished"/>
+        <translation>Online é o status atual do usuário</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="92"/>
         <source>Current user status is do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>Não Perturbe é o status atual do usuário</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="94"/>
@@ -5261,12 +5261,12 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/gui/tray/Window.qml" line="360"/>
         <source>Current user status is online</source>
-        <translation type="unfinished"/>
+        <translation>Online é o status atual do usuário</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="360"/>
         <source>Current user status is do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>Não Perturbe é o status atual do usuário</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="422"/>
