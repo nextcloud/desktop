@@ -951,7 +951,7 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
         <location filename="../src/libsync/discoveryphase.cpp" line="497"/>
         <location filename="../src/libsync/discoveryphase.cpp" line="522"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
-        <translation>Erro do servidor: a resposta do PROPFIND não está formatada em XML! </translation>
+        <translation>Erro do servidor: a resposta PROPFIND não está formatada em XML! </translation>
     </message>
 </context>
 <context>
@@ -1341,7 +1341,7 @@ Se isso foi um acidente e você decidir manter seus arquivos, eles serão sincro
     <message>
         <location filename="../src/gui/foldercreationdialog.cpp" line="76"/>
         <source>Could not create a folder! Check your write permissions.</source>
-        <translation>Não foi possível criar uma pasta! Verifique suas permissões de gravação. </translation>
+        <translation>Não foi possível criar uma pasta! Verifique suas permissões de escrita. </translation>
     </message>
 </context>
 <context>
