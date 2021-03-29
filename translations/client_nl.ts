@@ -1392,7 +1392,7 @@ Als dit een ongelukje was en je de bestanden wilt behouden, worden ze opnieuw ge
     <message>
         <location filename="../src/gui/folderman.cpp" line="1492"/>
         <source>Sync finished with unresolved conflicts.</source>
-        <translation type="unfinished"/>
+        <translation>Synchronisatie beëindigd met niet opgeloste conflicten.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1373"/>
@@ -4481,7 +4481,7 @@ Fout bij instellen pin status
     <message>
         <location filename="../src/gui/userstatus.cpp" line="79"/>
         <source>Do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>Niet storen</translation>
     </message>
 </context>
 <context>
@@ -5083,12 +5083,12 @@ Fout bij instellen pin status
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="92"/>
         <source>Current user status is online</source>
-        <translation type="unfinished"/>
+        <translation>Huidige gebruikersstatus is online</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="92"/>
         <source>Current user status is do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>Huidige gebruikersstatus is niet storen</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="94"/>
@@ -5267,12 +5267,12 @@ Fout bij instellen pin status
     <message>
         <location filename="../src/gui/tray/Window.qml" line="360"/>
         <source>Current user status is online</source>
-        <translation type="unfinished"/>
+        <translation>Huidige gebruikersstatus is online</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="360"/>
         <source>Current user status is do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>Huidige gebruikersstatus is niet storen</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="422"/>
