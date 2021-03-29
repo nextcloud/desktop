@@ -59,7 +59,7 @@ public:
 public slots:
     void showFirstPage();
     void showActivityPage();
-    void showIssuesList(const QString &folderAlias);
+    void showIssuesList();
     void slotSwitchPage(QAction *action);
     void slotRefreshActivity(AccountState *accountState);
     void slotRefreshActivityAccountStateSender();

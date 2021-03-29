@@ -38,8 +38,6 @@ class ActivityListModel : public QAbstractTableModel
 {
     Q_OBJECT
 public:
-    // TODO: Move to a common namespace
-    static constexpr int UnderlyingDataRole = Qt::UserRole + 100;
     enum class ActivityRole {
         Text,
         Account,

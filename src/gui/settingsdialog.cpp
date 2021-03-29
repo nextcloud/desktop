@@ -327,12 +327,12 @@ void SettingsDialog::showActivityPage()
     }
 }
 
-void SettingsDialog::showIssuesList(const QString &folderAlias)
+void SettingsDialog::showIssuesList()
 {
     if (!_activityAction)
         return;
     _activityAction->trigger();
-    _activitySettings->slotShowIssuesTab(folderAlias);
+    _activitySettings->slotShowIssuesTab();
 }
 
 void SettingsDialog::accountAdded(AccountState *s)

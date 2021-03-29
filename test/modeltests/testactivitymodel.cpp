@@ -23,7 +23,7 @@ private Q_SLOTS:
     {
         auto model = new ActivityListModel(this);
 
-        auto tester = new QAbstractItemModelTester(model, this);
+        new QAbstractItemModelTester(model, this);
 
         auto manager = AccountManager::instance();
 

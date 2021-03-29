@@ -17,7 +17,7 @@
 
 #include "activitylistmodel.h"
 #include "activitywidget.h"
-#include "configfile.h">
+#include "configfile.h"
 #include "syncresult.h"
 #include "logger.h"
 #include "theme.h"
@@ -29,6 +29,7 @@
 #include "account.h"
 #include "accountstate.h"
 #include "accountmanager.h"
+#include "models.h"
 #include "protocolwidget.h"
 #include "issueswidget.h"
 #include "QProgressIndicator.h"
@@ -55,18 +56,13 @@ ActivityWidget::ActivityWidget(QWidget *parent)
 {
     _ui->setupUi(this);
 
-// Adjust copyToClipboard() when making changes here!
-#if defined(Q_OS_MAC)
-    _ui->_activityList->setMinimumWidth(400);
-#endif
-
     _model = new ActivityListModel(this);
     auto sortModel = new QSortFilterProxyModel(this);
     sortModel->setSourceModel(_model);
     _ui->_activityList->setModel(sortModel);
-    sortModel->setSortRole(ActivityListModel::UnderlyingDataRole);
+    sortModel->setSortRole(Models::UnderlyingDataRole);
     _ui->_activityList->hideColumn(static_cast<int>(ActivityListModel::ActivityRole::Path));
-    _ui->_activityList->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+    _ui->_activityList->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
     _ui->_activityList->horizontalHeader()->setSectionResizeMode(static_cast<int>(ActivityListModel::ActivityRole::Text), QHeaderView::Stretch);
     _ui->_activityList->horizontalHeader()->setSortIndicator(static_cast<int>(ActivityListModel::ActivityRole::PointInTime), Qt::DescendingOrder);
 
@@ -107,10 +103,6 @@ ActivityWidget::ActivityWidget(QWidget *parent)
             }
         }
     });
-
-    _copyBtn = _ui->_dialogButtonBox->addButton(tr("Copy"), QDialogButtonBox::ActionRole);
-    _copyBtn->setToolTip(tr("Copy the activity list to the clipboard."));
-    connect(_copyBtn, &QAbstractButton::clicked, this, &ActivityWidget::copyToClipboard);
 
     connect(_model, &QAbstractItemModel::modelReset, this, &ActivityWidget::dataChanged);
 
@@ -524,22 +516,18 @@ ActivitySettings::ActivitySettings(QWidget *parent)
     hbox->addWidget(_tab);
     _activityWidget = new ActivityWidget(this);
     _activityTabId = _tab->addTab(_activityWidget, Theme::instance()->applicationIcon(), tr("Server Activity"));
-    connect(_activityWidget, &ActivityWidget::copyToClipboard, this, &ActivitySettings::slotCopyToClipboard);
     connect(_activityWidget, &ActivityWidget::hideActivityTab, this, &ActivitySettings::setActivityTabHidden);
     connect(_activityWidget, &ActivityWidget::guiLog, this, &ActivitySettings::guiLog);
     connect(_activityWidget, &ActivityWidget::newNotification, this, &ActivitySettings::slotShowActivityTab);
 
     _protocolWidget = new ProtocolWidget(this);
     _protocolTabId = _tab->addTab(_protocolWidget, Theme::instance()->syncStateIcon(SyncResult::Success), tr("Sync Protocol"));
-    connect(_protocolWidget, &ProtocolWidget::copyToClipboard, this, &ActivitySettings::slotCopyToClipboard);
 
     _issuesWidget = new IssuesWidget(this);
     _syncIssueTabId = _tab->addTab(_issuesWidget, Theme::instance()->syncStateIcon(SyncResult::Problem), QString());
     slotShowIssueItemCount(0); // to display the label.
     connect(_issuesWidget, &IssuesWidget::issueCountUpdated,
         this, &ActivitySettings::slotShowIssueItemCount);
-    connect(_issuesWidget, &IssuesWidget::copyToClipboard,
-        this, &ActivitySettings::slotCopyToClipboard);
 
     // Add a progress indicator to spin if the acitivity list is updated.
     _progressIndicator = new QProgressIndicator(this);
@@ -594,39 +582,11 @@ void ActivitySettings::slotShowActivityTab()
     }
 }
 
-void ActivitySettings::slotShowIssuesTab(const QString &folderAlias)
+void ActivitySettings::slotShowIssuesTab()
 {
     if (_syncIssueTabId == -1)
         return;
     _tab->setCurrentIndex(_syncIssueTabId);
-
-    _issuesWidget->showFolderErrors(folderAlias);
-}
-
-void ActivitySettings::slotCopyToClipboard()
-{
-    QString text;
-    QTextStream ts(&text);
-
-    int idx = _tab->currentIndex();
-    QString message;
-
-    if (idx == _activityTabId) {
-        // the activity widget
-        _activityWidget->storeActivityList(ts);
-        message = tr("The server activity list has been copied to the clipboard.");
-    } else if (idx == _protocolTabId) {
-        // the protocol widget
-        _protocolWidget->storeSyncActivity(ts);
-        message = tr("The sync activity list has been copied to the clipboard.");
-    } else if (idx == _syncIssueTabId) {
-        // issues Widget
-        message = tr("The list of unsynced items has been copied to the clipboard.");
-        _issuesWidget->storeSyncIssues(ts);
-    }
-
-    QApplication::clipboard()->setText(text);
-    emit guiLog(tr("Copied to clipboard"), message);
 }
 
 void ActivitySettings::slotRemoveAccount(AccountState *ptr)

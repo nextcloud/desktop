@@ -80,7 +80,6 @@ public slots:
 
 signals:
     void guiLog(const QString &, const QString &);
-    void copyToClipboard();
     void dataChanged();
     void hideActivityTab(bool);
     void newNotification();
@@ -138,10 +137,9 @@ public slots:
 
     void setNotificationRefreshInterval(std::chrono::milliseconds interval);
 
-    void slotShowIssuesTab(const QString &folderAlias);
+    void slotShowIssuesTab();
 
 private slots:
-    void slotCopyToClipboard();
     void setActivityTabHidden(bool hidden);
     void slotRegularNotificationCheck();
     void slotShowIssueItemCount(int cnt);

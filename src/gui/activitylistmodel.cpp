@@ -22,9 +22,10 @@
 #include "account.h"
 #include "accountstate.h"
 #include "accountmanager.h"
-#include "folderman.h"
 #include "accessmanager.h"
+#include "folderman.h"
 #include "guiutility.h"
+#include "models.h"
 
 #include "activitydata.h"
 #include "activitylistmodel.h"
@@ -52,7 +53,7 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
     }
     const auto column = static_cast<ActivityRole>(index.column());
     switch (role) {
-    case UnderlyingDataRole:
+    case Models::UnderlyingDataRole:
         Q_FALLTHROUGH();
     case Qt::DisplayRole:
         switch (column) {
@@ -61,7 +62,7 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
         case ActivityRole::Text:
             return a.subject();
         case ActivityRole::PointInTime:
-            if (role == UnderlyingDataRole) {
+            if (role == Models::UnderlyingDataRole) {
                 return a.dateTime();
             } else {
                 return Utility::timeAgoInWords(a.dateTime());

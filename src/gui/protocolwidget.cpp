@@ -12,165 +12,31 @@
  * for more details.
  */
 
+#include <QCursor>
 #include <QtGui>
 #include <QtWidgets>
 
+#include "activitylistmodel.h"
 #include "protocolwidget.h"
 #include "configfile.h"
 #include "syncresult.h"
 #include "logger.h"
 #include "theme.h"
 #include "folderman.h"
-#include "syncfileitem.h"
 #include "folder.h"
+#include "models.h"
 #include "openfilemanager.h"
 #include "guiutility.h"
 #include "accountstate.h"
+#include "syncfileitem.h"
 
+#include "activitylistmodel.h"
 #include "ui_protocolwidget.h"
 
 #include <climits>
 
-Q_DECLARE_METATYPE(OCC::ProtocolItem::ExtraData)
 
 namespace OCC {
-
-QString ProtocolItem::timeString(QDateTime dt, QLocale::FormatType format)
-{
-    const QLocale loc = QLocale::system();
-    QString dtFormat = loc.dateTimeFormat(format);
-    static const QRegExp re("(HH|H|hh|h):mm(?!:s)");
-    dtFormat.replace(re, "\\1:mm:ss");
-    return loc.toString(dt, dtFormat);
-}
-
-ProtocolItem::ExtraData ProtocolItem::extraData(const QTreeWidgetItem *item)
-{
-    return item->data(0, Qt::UserRole).value<ExtraData>();
-}
-
-void ProtocolItem::setExtraData(QTreeWidgetItem *item, const ExtraData &data)
-{
-    item->setData(0, Qt::UserRole, QVariant::fromValue(data));
-}
-
-ProtocolItem *ProtocolItem::create(const QString &folderName, const SyncFileItem &item)
-{
-    auto folder = FolderMan::instance()->folder(folderName);
-
-    QStringList columns;
-    QDateTime timestamp = QDateTime::currentDateTime();
-    const QString timeStr = timeString(timestamp);
-    const QString longTimeStr = timeString(timestamp, QLocale::LongFormat);
-
-    columns << timeStr;
-    columns << Utility::fileNameForGuiUse(item._originalFile);
-    columns << (folder ? folder->shortGuiLocalPath() : QDir::toNativeSeparators(folderName));
-
-    // If the error string is set, it's prefered because it is a useful user message.
-    QString message = item._errorString;
-    if (message.isEmpty()) {
-        message = item._messageString;
-    }
-    if (message.isEmpty()) {
-        message = Progress::asResultString(item);
-    }
-    columns << message;
-
-    QIcon icon;
-    if (item._status == SyncFileItem::NormalError
-        || item._status == SyncFileItem::FatalError
-        || item._status == SyncFileItem::DetailError
-        || item._status == SyncFileItem::BlacklistedError) {
-        icon = Theme::instance()->syncStateIcon(SyncResult::Error);
-    } else if (Progress::isWarningKind(item._status)) {
-        icon = Theme::instance()->syncStateIcon(SyncResult::Problem);
-    }
-
-    if (ProgressInfo::isSizeDependent(item)) {
-        columns << Utility::octetsToString(item._size);
-    }
-
-    ProtocolItem *twitem = new ProtocolItem(columns);
-    // Warning: The data and tooltips on the columns define an implicit
-    // interface and can only be changed with care.
-    twitem->setIcon(0, icon);
-    twitem->setToolTip(0, longTimeStr);
-    twitem->setToolTip(1, item.destination());
-    twitem->setToolTip(3, message);
-    ProtocolItem::ExtraData data;
-    data.timestamp = timestamp;
-    data.path = item.destination();
-    data.folderName = folderName;
-    data.status = item._status;
-    data.size = item._size;
-    data.direction = item._direction;
-    ProtocolItem::setExtraData(twitem, data);
-    return twitem;
-}
-
-SyncJournalFileRecord ProtocolItem::syncJournalRecord(QTreeWidgetItem *item)
-{
-    SyncJournalFileRecord rec;
-    auto f = folder(item);
-    if (!f)
-        return rec;
-    f->journalDb()->getFileRecord(extraData(item).path, &rec);
-    return rec;
-}
-
-Folder *ProtocolItem::folder(QTreeWidgetItem *item)
-{
-    return FolderMan::instance()->folder(extraData(item).folderName);
-}
-
-void ProtocolItem::openContextMenu(QPoint globalPos, QTreeWidgetItem *item, QWidget *parent)
-{
-    auto f = folder(item);
-    if (!f)
-        return;
-    AccountPtr account = f->accountState()->account();
-    auto rec = syncJournalRecord(item);
-    // rec might not be valid
-
-    auto menu = new QMenu(parent);
-
-    if (rec.isValid()) {
-        // "Open in Browser" action
-        auto openInBrowser = menu->addAction(ProtocolWidget::tr("Open in browser"));
-        QObject::connect(openInBrowser, &QAction::triggered, parent, [parent, account, rec]() {
-            fetchPrivateLinkUrl(account, rec._path, parent,
-                [parent](const QString &url) {
-                    Utility::openBrowser(url, parent);
-                });
-        });
-    }
-
-    // More actions will be conditionally added to the context menu here later
-
-    if (menu->actions().isEmpty()) {
-        delete menu;
-        return;
-    }
-
-    menu->setAttribute(Qt::WA_DeleteOnClose);
-    menu->popup(globalPos);
-}
-
-bool ProtocolItem::operator<(const QTreeWidgetItem &other) const
-{
-    int column = treeWidget()->sortColumn();
-    if (column == 0) {
-        // Items with empty "File" column are larger than others,
-        // otherwise sort by time (this uses lexicographic ordering)
-        return std::forward_as_tuple(text(1).isEmpty(), extraData(this).timestamp)
-            < std::forward_as_tuple(other.text(1).isEmpty(), extraData(&other).timestamp);
-    } else if (column == 4) {
-        return extraData(this).size < extraData(&other).size;
-    }
-
-    return QTreeWidgetItem::operator<(other);
-}
 
 ProtocolWidget::ProtocolWidget(QWidget *parent)
     : QWidget(parent)
@@ -181,37 +47,28 @@ ProtocolWidget::ProtocolWidget(QWidget *parent)
     connect(ProgressDispatcher::instance(), &ProgressDispatcher::itemCompleted,
         this, &ProtocolWidget::slotItemCompleted);
 
-    connect(_ui->_treeWidget, &QTreeWidget::itemActivated, this, &ProtocolWidget::slotOpenFile);
+    connect(_ui->_tableView, &QTreeWidget::customContextMenuRequested, this, &ProtocolWidget::slotItemContextMenu);
 
-    _ui->_treeWidget->setContextMenuPolicy(Qt::CustomContextMenu);
-    connect(_ui->_treeWidget, &QTreeWidget::customContextMenuRequested, this, &ProtocolWidget::slotItemContextMenu);
+    _model = new ProtocolItemModel(this);
+    _sortModel = new QSortFilterProxyModel(this);
+    _sortModel->setSourceModel(_model);
+    _sortModel->setSortRole(Models::UnderlyingDataRole);
+    _ui->_tableView->setModel(_sortModel);
 
-    // Adjust copyToClipboard() when making changes here!
-    QStringList header;
-    header << tr("Time");
-    header << tr("File");
-    header << tr("Folder");
-    header << tr("Action");
-    header << tr("Size");
+    _ui->_tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
+    _ui->_tableView->horizontalHeader()->setSectionResizeMode(static_cast<int>(ProtocolItemModel::ProtocolItemRole::File), QHeaderView::Stretch);
+    _ui->_tableView->horizontalHeader()->setSortIndicator(static_cast<int>(ProtocolItemModel::ProtocolItemRole::Time), Qt::DescendingOrder);
 
-    _ui->_treeWidget->setHeaderLabels(header);
-    int timestampColumnWidth =
-        _ui->_treeWidget->fontMetrics().boundingRect(ProtocolItem::timeString(QDateTime::currentDateTime())).width();
-    _ui->_treeWidget->setColumnWidth(0, timestampColumnWidth);
-    _ui->_treeWidget->setColumnWidth(1, 180);
-    _ui->_treeWidget->setColumnCount(5);
-    _ui->_treeWidget->setRootIsDecorated(false);
-    _ui->_treeWidget->setTextElideMode(Qt::ElideMiddle);
-    _ui->_treeWidget->header()->setObjectName("ActivityListHeader");
-#if defined(Q_OS_MAC)
-    _ui->_treeWidget->setMinimumWidth(400);
-#endif
+    _ui->_tableView->horizontalHeader()->setObjectName(QStringLiteral("ActivityListHeaderV2"));
+    ConfigFile cfg;
+    cfg.restoreGeometryHeader(_ui->_tableView->horizontalHeader());
+
+    connect(qApp, &QApplication::aboutToQuit, this, [this] {
+        ConfigFile cfg;
+        cfg.saveGeometryHeader(_ui->_tableView->horizontalHeader());
+    });
+
     _ui->_headerLabel->setText(tr("Local sync protocol"));
-
-    QPushButton *copyBtn = _ui->_dialogButtonBox->addButton(tr("Copy"), QDialogButtonBox::ActionRole);
-    copyBtn->setToolTip(tr("Copy the activity list to the clipboard."));
-    copyBtn->setEnabled(true);
-    connect(copyBtn, &QAbstractButton::clicked, this, &ProtocolWidget::copyToClipboard);
 }
 
 ProtocolWidget::~ProtocolWidget()
@@ -219,104 +76,62 @@ ProtocolWidget::~ProtocolWidget()
     delete _ui;
 }
 
-void ProtocolWidget::showEvent(QShowEvent *ev)
+void ProtocolWidget::showContextMenu(QWidget *parent, ProtocolItemModel *model, const QModelIndexList &items)
 {
-    ConfigFile cfg;
-    cfg.restoreGeometryHeader(_ui->_treeWidget->header());
+    auto menu = new QMenu(parent);
+    menu->setAttribute(Qt::WA_DeleteOnClose);
 
-    // Sorting by section was newly enabled. But if we restore the header
-    // from a state where sorting was disabled, both of these flags will be
-    // false and sorting will be impossible!
-    _ui->_treeWidget->header()->setSectionsClickable(true);
-    _ui->_treeWidget->header()->setSortIndicatorShown(true);
+    menu->addAction(tr("Copy to clipboard"), parent, [text = Models::formatSelection(items)] {
+        QApplication::clipboard()->setText(text);
+    });
 
-    // Switch back to "by time" ordering
-    _ui->_treeWidget->sortByColumn(0, Qt::DescendingOrder);
+    if (items.size() == 1) {
+        const auto &data = model->protocolItem(items.first());
+        auto folder = FolderMan::instance()->folder(data.folderName());
+        OC_ASSERT(folder);
+        if (!folder)
+            return;
 
-    QWidget::showEvent(ev);
-}
-
-void ProtocolWidget::hideEvent(QHideEvent *ev)
-{
-    ConfigFile cfg;
-    cfg.saveGeometryHeader(_ui->_treeWidget->header());
-    QWidget::hideEvent(ev);
-}
-
-void ProtocolWidget::slotItemContextMenu(const QPoint &pos)
-{
-    auto item = _ui->_treeWidget->itemAt(pos);
-    if (!item)
-        return;
-    auto globalPos = _ui->_treeWidget->viewport()->mapToGlobal(pos);
-    ProtocolItem::openContextMenu(globalPos, item, this);
-}
-
-void ProtocolWidget::slotOpenFile(QTreeWidgetItem *item, int)
-{
-    QString fileName = item->text(1);
-    if (Folder *folder = ProtocolItem::folder(item)) {
-        // folder->path() always comes back with trailing path
-        QString fullPath = folder->path() + fileName;
-        if (QFile(fullPath).exists()) {
-            showInFileManager(fullPath);
+        {
+            const QString localPath = folder->path() + data.path();
+            if (QFileInfo::exists(localPath)) {
+                menu->addAction(tr("Show in file browser"), parent, [localPath] {
+                    if (QFileInfo::exists(localPath)) {
+                        showInFileManager(localPath);
+                    }
+                });
+            }
+        }
+        // "Open in Browser" action
+        {
+            fetchPrivateLinkUrl(folder->accountState()->account(), folder->remotePathTrailingSlash() + data.path(), parent, [parent, menu = QPointer<QMenu>(menu)](const QString &url) {
+                // as fetchPrivateLinkUrl is async we need to check the menu still exists
+                if (menu) {
+                    menu->addAction(tr("Show in web browser"), parent, [url, parent] {
+                        Utility::openBrowser(url, parent);
+                    });
+                }
+            });
         }
     }
+    menu->popup(QCursor::pos());
+}
+
+void ProtocolWidget::slotItemContextMenu()
+{
+    QModelIndexList list;
+    auto rows = _ui->_tableView->selectionModel()->selectedRows();
+    for (int i = 0; i < rows.size(); ++i) {
+        rows[i] = _sortModel->mapToSource(rows[i]);
+    }
+    showContextMenu(this, _model, rows);
 }
 
 void ProtocolWidget::slotItemCompleted(const QString &folder, const SyncFileItemPtr &item)
 {
     if (!item->showInProtocolTab())
         return;
-    QTreeWidgetItem *line = ProtocolItem::create(folder, *item);
-    if (line) {
-        // Limit the number of items
-        int itemCnt = _ui->_treeWidget->topLevelItemCount();
-        while (itemCnt > 2000) {
-            delete _ui->_treeWidget->takeTopLevelItem(itemCnt - 1);
-            itemCnt--;
-        }
-        _ui->_treeWidget->insertTopLevelItem(0, line);
-    }
-}
-
-void ProtocolWidget::storeSyncActivity(QTextStream &ts)
-{
-    int topLevelItems = _ui->_treeWidget->topLevelItemCount();
-
-    for (int i = 0; i < topLevelItems; i++) {
-        QTreeWidgetItem *child = _ui->_treeWidget->topLevelItem(i);
-        ts << right
-           // time stamp
-           << qSetFieldWidth(20)
-           << child->data(0, Qt::DisplayRole).toString()
-           // separator
-           << qSetFieldWidth(0) << ","
-
-           // file name
-           << qSetFieldWidth(64)
-           << child->data(1, Qt::DisplayRole).toString()
-           // separator
-           << qSetFieldWidth(0) << ","
-
-           // folder
-           << qSetFieldWidth(30)
-           << child->data(2, Qt::DisplayRole).toString()
-           // separator
-           << qSetFieldWidth(0) << ","
-
-           // action
-           << qSetFieldWidth(15)
-           << child->data(3, Qt::DisplayRole).toString()
-           // separator
-           << qSetFieldWidth(0) << ","
-
-           // size
-           << qSetFieldWidth(10)
-           << child->data(4, Qt::DisplayRole).toString()
-           << qSetFieldWidth(0)
-           << endl;
-    }
+    _model->addProtocolItem(ProtocolItem { folder, item });
 }
 
 }

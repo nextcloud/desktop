@@ -21,61 +21,20 @@
 
 #include "progressdispatcher.h"
 #include "owncloudgui.h"
+#include "protocolitemmodel.h"
 
+#include "protocolitem.h"
 #include "ui_protocolwidget.h"
 
 class QPushButton;
+class QSortFilterProxyModel;
 
 namespace OCC {
-class SyncResult;
 
 namespace Ui {
     class ProtocolWidget;
 }
 class Application;
-
-/**
- * The items used in the protocol and issue QTreeWidget
- *
- * Special sorting: It allows items for global entries to be moved to the top if the
- * sorting section is the "Time" column.
- */
-class ProtocolItem : public QTreeWidgetItem
-{
-public:
-    using QTreeWidgetItem::QTreeWidgetItem;
-
-    // Shared with IssueWidget
-    static ProtocolItem *create(const QString &folder, const SyncFileItem &item);
-    static QString timeString(QDateTime dt, QLocale::FormatType format = QLocale::NarrowFormat);
-
-    struct ExtraData
-    {
-        ExtraData()
-            : status(SyncFileItem::NoStatus)
-            , direction(SyncFileItem::None)
-        {
-        }
-
-        QString path;
-        QString folderName;
-        QDateTime timestamp;
-        qint64 size = 0;
-        SyncFileItem::Status status BITFIELD(4);
-        SyncFileItem::Direction direction BITFIELD(3);
-    };
-
-    static ExtraData extraData(const QTreeWidgetItem *item);
-    static void setExtraData(QTreeWidgetItem *item, const ExtraData &data);
-
-    static SyncJournalFileRecord syncJournalRecord(QTreeWidgetItem *item);
-    static Folder *folder(QTreeWidgetItem *item);
-
-    static void openContextMenu(QPoint globalPos, QTreeWidgetItem *item, QWidget *parent);
-
-private:
-    bool operator<(const QTreeWidgetItem &other) const override;
-};
 
 /**
  * @brief The ProtocolWidget class
@@ -88,23 +47,18 @@ public:
     explicit ProtocolWidget(QWidget *parent = nullptr);
     ~ProtocolWidget() override;
 
-    void storeSyncActivity(QTextStream &ts);
+    static void showContextMenu(QWidget *parent, ProtocolItemModel *model, const QModelIndexList &items);
+
 
 public slots:
     void slotItemCompleted(const QString &folder, const SyncFileItemPtr &item);
-    void slotOpenFile(QTreeWidgetItem *item, int);
-
-protected:
-    void showEvent(QShowEvent *) override;
-    void hideEvent(QHideEvent *) override;
 
 private slots:
-    void slotItemContextMenu(const QPoint &pos);
-
-signals:
-    void copyToClipboard();
+    void slotItemContextMenu();
 
 private:
+    ProtocolItemModel *_model;
+    QSortFilterProxyModel *_sortModel;
     Ui::ProtocolWidget *_ui;
 };
 }

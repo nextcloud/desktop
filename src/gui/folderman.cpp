@@ -536,9 +536,7 @@ void FolderMan::slotFolderCanSyncChanged()
 Folder *FolderMan::folder(const QString &alias)
 {
     if (!alias.isEmpty()) {
-        if (_folderMap.contains(alias)) {
-            return _folderMap[alias];
-        }
+        return _folderMap.value(alias);
     }
     return nullptr;
 }

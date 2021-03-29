@@ -20,12 +20,13 @@
 #include <QLocale>
 #include <QTimer>
 
+#include "protocolitemmodel.h"
 #include "progressdispatcher.h"
 #include "owncloudgui.h"
 
 #include "ui_issueswidget.h"
 
-class QPushButton;
+class QSortFilterProxyModel;
 
 namespace OCC {
 class SyncResult;
@@ -46,50 +47,23 @@ public:
     explicit IssuesWidget(QWidget *parent = nullptr);
     ~IssuesWidget() override;
 
-    void storeSyncIssues(QTextStream &ts);
-    void showFolderErrors(const QString &folderAlias);
-
 public slots:
-    void addError(const QString &folderAlias, const QString &message, ErrorCategory category);
+    //    void addError(const QString &folderAlias, const QString &message, ErrorCategory category);
     void slotProgressInfo(const QString &folder, const ProgressInfo &progress);
     void slotItemCompleted(const QString &folder, const SyncFileItemPtr &item);
-    void slotOpenFile(QTreeWidgetItem *item, int);
-
-protected:
-    void showEvent(QShowEvent *) override;
-    void hideEvent(QHideEvent *) override;
 
 signals:
-    void copyToClipboard();
     void issueCountUpdated(int);
 
 private slots:
-    void slotRefreshIssues();
-    void slotUpdateFolderFilters();
-    void slotAccountAdded(AccountState *account);
-    void slotAccountRemoved(AccountState *account);
-    void slotItemContextMenu(const QPoint &pos);
+    void slotItemContextMenu();
 
 private:
-    void updateAccountChoiceVisibility();
-    AccountState *currentAccountFilter() const;
-    QString currentFolderFilter() const;
-    bool shouldBeVisible(QTreeWidgetItem *item, AccountState *filterAccount,
-        const QString &filterFolderAlias) const;
-    void cleanItems(const std::function<bool(QTreeWidgetItem *)> &shouldDelete);
-    void addItem(QTreeWidgetItem *item);
-
-    /// Add the special error widget for the category, if any
-    void addErrorWidget(QTreeWidgetItem *item, const QString &message, ErrorCategory category);
-
     /// Wipes all insufficient remote storgage blacklist entries
-    void retryInsufficentRemoteStorageErrors(const QString &folderAlias);
+    //    void retryInsufficentRemoteStorageErrors(const QString &folderAlias);
 
-    /// Each insert disables sorting, this timer reenables it
-    QTimer _reenableSorting;
-
-    /// Optimization: keep track of all folder/paths pairs that have an associated issue
-    QSet<QPair<QString, QString>> _pathsWithIssues;
+    ProtocolItemModel *_model;
+    QSortFilterProxyModel *_sortModel;
 
     Ui::IssuesWidget *_ui;
 };

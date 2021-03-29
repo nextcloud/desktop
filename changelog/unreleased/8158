@@ -1,7 +1,8 @@
-Enhancement: We reworked the server activity table
+Enhancement: We reworked the tables
 
-We redone the server activity table, its now behaves as a proper table,
-is sortable, supports right to left layouts and overall behave more smooth.
+We reworked all the tables in the application to unify
+their behaviour and improve their performance.
 
 https://github.com/owncloud/client/issues/8158
 https://github.com/owncloud/client/issues/4336
+https://github.com/owncloud/client/issues/8528

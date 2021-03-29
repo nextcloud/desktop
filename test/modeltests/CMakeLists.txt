@@ -1,1 +1,2 @@
 owncloud_add_test(ActivityModel)
+owncloud_add_test(ProtocolModel)
