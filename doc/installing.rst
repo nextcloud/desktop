@@ -27,7 +27,7 @@ download page.
 System Requirements
 ----------------------------------
 
-- Windows 8.1+
+- Windows 10+
 - macOS 10.12+ (**64-bit only**)
 - macOS 10.10 & 10.11 (**64-bit and up to client legacy version 2.6.5 only**)
 - CentOS 6 & 7 (64-bit only)
@@ -169,36 +169,49 @@ Installation Wizard
 -------------------
 
 The installation wizard takes you step-by-step through configuration options and
-account setup. First you need to enter the URL of your Nextcloud server.
+account setup. First, you need to enter the URL of your Nextcloud server.
 
-.. image:: images/client-1.png
+.. image:: images/wizard_welcome.png
+   :alt: form for choosing between login and registering
+
+If you already have an account on a Nextcloud instance, you want to
+press the button ``Login to your Nextcloud``. If you don't have a
+Nextcloud instance and an account there, you might want to register an
+account with a provider. Press ``Create account with Provider`` in
+that case. Please keep in mind that the desktop client might have
+built without provider support. In that case, you won't see this
+page. Instead, you will be prompted with the next page.
+
+.. image:: images/wizard_setup.png
    :alt: form for entering Nextcloud server URL
 
-Enter your Nextcloud login on the next screen.
+Enter the URL for your Nextcloud instance. The URL is the same URL that
+you type into your browser when you try to access your Nextcloud
+instance.
 
-.. image:: images/client-2.png
-   :alt: form for entering your Nextcloud login
+.. image:: images/wizard_flow2.png
+   :alt: form waiting for authorization
 
-On the Local Folder Option screen you may sync
-all of your files on the Nextcloud server, or select individual folders. The
-default local sync folder is ``Nextcloud``, in your home directory. You may
-change this as well.
+Now your web browser should open and prompt you to login into your
+Nextcloud instance. Enter your username and password in your web
+browser and grant access. After you did that, go back to the
+wizard. Please keep in mind that you might not need to enter your
+username and password if you are already logged in to your browser.
 
-.. image:: images/client-3.png
+.. image:: images/wizard_advanced.png
    :alt: Select which remote folders to sync, and which local folder to store
     them in.
 
-When you have completed selecting your sync folders, click the Connect button
-at the bottom right. The client will attempt to connect to your Nextcloud
-server, and when it is successful you'll see two buttons: one to connect to
-your Nextcloud Web GUI, and one to open your local folder. It will also start
-synchronizing your files.
+On the local folder options screen, you may sync all of your files on
+the Nextcloud server, or select individual folders. The default local
+sync folder is ``Nextcloud``, in your home directory. You may change
+this as well.
 
-.. image:: images/client-4.png
-   :alt: A successful server connection, showing a button to connect to your
-    Web GUI, and one to open your local Nextcloud folder
-
-Click the Finish button, and you're all done.
+When you have completed selecting your sync folders, click the Connect
+button at the bottom right. The client will attempt to connect to your
+Nextcloud server, and when it is successful, the wizard closes
+itself. You can now observe the sync activity if you open the main
+dialogue by clicking on the tray icon.
 
 .. Links
 
