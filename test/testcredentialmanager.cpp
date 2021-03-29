@@ -83,6 +83,45 @@ private Q_SLOTS:
         });
         QTest::qWaitFor([this] { return _finished; });
     }
+
+    void testSetGet2()
+    {
+        FakeFolder fakeFolder { FileInfo::A12_B12_C12_S12() };
+        auto creds = fakeFolder.account()->credentialManager();
+
+        const QVariantMap data {
+            { QStringLiteral("foo/test"), QColor(Qt::red) },
+            { QStringLiteral("foo/test2"), QColor(Qt::gray) },
+            { QStringLiteral("bar/test"), QColor(Qt::blue) },
+            { QStringLiteral("narf/test"), QColor(Qt::green) }
+        };
+
+        QVector<QSignalSpy *> spies;
+        for (auto it = data.cbegin(); it != data.cend(); ++it) {
+            auto setJob = creds->set(it.key(), it.value());
+            setFallbackEnabled(setJob);
+            spies.append(new QSignalSpy(setJob, &QKeychain::Job::finished));
+        }
+        QTest::qWait(1000);
+        for (const auto s : spies) {
+            QCOMPARE(s->count(), 1);
+            s->deleteLater();
+        }
+        spies.clear();
+        {
+            auto jobs = creds->clear(QStringLiteral("foo"));
+            QCOMPARE(jobs.size(), 2);
+            for (auto &job : jobs) {
+                setFallbackEnabled(job);
+                spies.append(new QSignalSpy(job, &QKeychain::Job::finished));
+            }
+            QTest::qWait(1000);
+            for (const auto s : spies) {
+                QCOMPARE(s->count(), 1);
+                s->deleteLater();
+            }
+        }
+    }
 };
 }
 

@@ -28,7 +28,7 @@ public:
     /**
      * Delete all credentials asigned with an account
      */
-    QVector<QPointer<QKeychain::Job>> clear();
+    QVector<QPointer<QKeychain::Job>> clear(const QString &group = {});
 
     bool contains(const QString &key) const;
     const Account *account() const;
@@ -37,7 +37,7 @@ private:
     QSettings *credentialsList() const;
 
     // TestCredentialManager
-    QStringList knownKeys() const;
+    QStringList knownKeys(const QString &group = {}) const;
 
     const Account *const _account = nullptr;
     mutable std::unique_ptr<QSettings> _credentialsList;

@@ -105,10 +105,10 @@ QKeychain::Job *CredentialManager::remove(const QString &key)
     return keychainJob;
 }
 
-QVector<QPointer<QKeychain::Job>> CredentialManager::clear()
+QVector<QPointer<QKeychain::Job>> CredentialManager::clear(const QString &group)
 {
-    OC_ENFORCE(_account);
-    const auto keys = knownKeys();
+    OC_ENFORCE(_account || !group.isEmpty());
+    const auto keys = knownKeys(group);
     QVector<QPointer<QKeychain::Job>> out;
     out.reserve(keys.size());
     for (const auto &key : keys) {
@@ -127,9 +127,20 @@ bool CredentialManager::contains(const QString &key) const
     return credentialsList()->contains(key);
 }
 
-QStringList CredentialManager::knownKeys() const
+QStringList CredentialManager::knownKeys(const QString &group) const
 {
-    return credentialsList()->allKeys();
+    if (group.isEmpty()) {
+        return credentialsList()->allKeys();
+    }
+    credentialsList()->beginGroup(group);
+    const auto keys = credentialsList()->allKeys();
+    QStringList out;
+    out.reserve(keys.size());
+    for (const auto &k : keys) {
+        out.append(group + QLatin1Char('/') + k);
+    }
+    credentialsList()->endGroup();
+    return out;
 }
 
 QSettings *CredentialManager::credentialsList() const
