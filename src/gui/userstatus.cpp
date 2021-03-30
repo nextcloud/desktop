@@ -30,16 +30,37 @@ Q_LOGGING_CATEGORY(lcUserStatus, "nextcloud.gui.userstatus", QtInfoMsg)
 
 UserStatus::UserStatus(QObject *parent)
     : QObject(parent)
-    , _message("")
 {
 }
 
 UserStatus::Status UserStatus::stringToEnum(const QString &status) const 
 {
+    // it needs to match the Status enum
+    const QHash<QString, Status> preDefinedStatus{{"online", Online},
+                                               {"dnd", DoNotDisturb}, //DoNotDisturb
+                                               {"away", Away},
+                                               {"offline", Offline},
+                                               {"invisible", Invisible}};
+    
     // api should return invisible, dnd,... toLower() it is to make sure 
     // it matches _preDefinedStatus, otherwise the default is online (0)
-    const auto statusEnum = _preDefinedStatus.value(status.isEmpty()? "online" : status.toLower(), 0);
-    return static_cast<Status>(statusEnum);
+    const auto statusKey = status.isEmpty() ? QStringLiteral("online") : status.toLower();
+    return preDefinedStatus.value(statusKey, Online);
+}
+
+QString UserStatus::enumToUserString(Status status) const 
+{
+    switch (status) {
+    case Away:
+        return tr("Away");
+    case DoNotDisturb:
+        return tr("Do not disturb");
+    case Invisible:
+    case Offline:
+        return tr("Offline");
+    default:
+        return tr("Online");
+    }
 }
 
 void UserStatus::fetchUserStatus(AccountPtr account)
@@ -65,19 +86,15 @@ void UserStatus::slotFetchUserStatusFinished(const QJsonDocument &json, int stat
         qCInfo(lcUserStatus) << "Slot fetch UserStatus finished with status code" << statusCode;
         qCInfo(lcUserStatus) << "Using then default values as if user has not set any status" << defaultValues;
     }
+    
     const auto retrievedData = json.object().value("ocs").toObject().value("data").toObject(defaultValues);
     const auto emoji = retrievedData.value("icon").toString();
     const auto message = retrievedData.value("message").toString();
     auto statusString = retrievedData.value("status").toString(); 
-    _status = stringToEnum(statusString);
-    
-    // to display it to the user like 'Invisible' instead of 'invisible'
-    statusString.replace(0, 1, statusString.at(0).toUpper());  
 
-    const auto visibleStatusText = message.isEmpty()
-                                ? _status == DoNotDisturb? tr("Do not disturb") 
-                                                : tr(qPrintable(statusString))
-                                : message;
+    _status = stringToEnum(statusString);
+    statusString = enumToUserString(_status);
+    const auto visibleStatusText = message.isEmpty() ? statusString : message;
 
     _message = QString("%1 %2").arg(emoji, visibleStatusText);
     emit fetchUserStatusFinished();
@@ -96,8 +113,6 @@ QString UserStatus::message() const
 QUrl UserStatus::icon() const
 {
     switch (_status) {
-    case Online:
-        return Theme::instance()->statusOnlineImageSource();
     case Away:
         return Theme::instance()->statusAwayImageSource();
     case DoNotDisturb:

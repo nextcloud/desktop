@@ -49,16 +49,9 @@ signals:
 
 private:
     Status stringToEnum(const QString &status) const;
-    
-    // it needs to match the Status enum
-    const QHash<QString, int> _preDefinedStatus{{"online", 0},
-                                               {"dnd", 1}, //DoNotDisturb
-                                               {"away", 2},
-                                               {"offline", 3},
-                                               {"invisible", 4}};
-
+    QString enumToUserString(Status status) const;
     QPointer<JsonApiJob> _job; // the currently running job
-    Status _status{Status::Online};
+    Status _status = Status::Online;
     QString _message;
 };
 
