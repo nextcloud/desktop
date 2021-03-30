@@ -53,9 +53,6 @@ GeneralSettings::GeneralSettings(QWidget *parent)
         this, &GeneralSettings::slotToggleOptionalDesktopNotifications);
     connect(_ui->showInExplorerNavigationPaneCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::slotShowInExplorerNavigationPane);
 
-    // needs to be called before settings are loaded
-    loadLanguageNamesIntoDropdown();
-
     reloadConfig();
     loadMiscSettings();
     slotUpdateInfo();
@@ -151,7 +148,9 @@ void GeneralSettings::loadMiscSettings()
     _ui->newExternalStorage->setChecked(cfgFile.confirmExternalStorage());
     _ui->monoIconsCheckBox->setChecked(cfgFile.monoIcons());
 
-    // we assume the language names have been loaded into the dropdown already (by making sure that the corresponding method is called before this one)
+    // the dropdown has to be populated before we can can pick an entry below based on the stored setting
+    loadLanguageNamesIntoDropdown();
+
     const auto &locale = cfgFile.uiLanguage();
 
     // index 0 means "use default", which we use unless the loop below sets another entry
@@ -354,6 +353,7 @@ void GeneralSettings::loadLanguageNamesIntoDropdown()
         localesToLanguageNamesMap.insert(availableLocale, nativeLanguageName);
     }
 
+    // allow method to be called more than once
     _ui->languageDropdown->clear();
 
     // if no option has been chosen explicitly by the user, the first entry shall be used
