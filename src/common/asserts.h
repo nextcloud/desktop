@@ -21,12 +21,12 @@
 // Prints a message on failure, even in release builds.
 #define OC_ASSERT(cond)                                                                                 \
     if (!(cond)) {                                                                                      \
-        OC_ASSERT_MSG("ASSERT: \"%s\" in file %s:%s, line %d", #cond, __FILE__, Q_FUNC_INFO, __LINE__); \
+        OC_ASSERT_MSG("ASSERT: \"%s\" in file %s, line %d %s", #cond, __FILE__, __LINE__, Q_FUNC_INFO); \
     } else {                                                                                            \
     }
 #define OC_ASSERT_X(cond, message)                                                                                                \
     if (!(cond)) {                                                                                                                \
-        OC_ASSERT_MSG("ASSERT: \"%s\" in file %s:%s, line %d with message: %s", #cond, __FILE__, Q_FUNC_INFO, __LINE__, message); \
+        OC_ASSERT_MSG("ASSERT: \"%s\" in file %s, line %d %s with message: %s", #cond, __FILE__, __LINE__, Q_FUNC_INFO, message); \
     } else {                                                                                                                      \
     }
 
@@ -35,12 +35,12 @@
 // Prints 'message' and aborts execution if 'cond' is false.
 #define OC_ENFORCE(cond)                                                                          \
     if (!(cond)) {                                                                                \
-        qFatal("ENFORCE: \"%s\" in file %s:%s, line %d", #cond, __FILE__, Q_FUNC_INFO, __LINE__); \
+        qFatal("ENFORCE: \"%s\" in file %s, line %d %s", #cond, __FILE__, __LINE__, Q_FUNC_INFO); \
     } else {                                                                                      \
     }
 #define OC_ENFORCE_X(cond, message)                                                                                         \
     if (!(cond)) {                                                                                                          \
-        qFatal("ENFORCE: \"%s\" in file %s:%s, line %d with message: %s", #cond, __FILE__, Q_FUNC_INFO, __LINE__, message); \
+        qFatal("ENFORCE: \"%s\" in file %s, line %d %s with message: %s", #cond, __FILE__, __LINE__, Q_FUNC_INFO, message); \
     } else {                                                                                                                \
     }
 
