@@ -219,7 +219,8 @@ void User::slotRefreshActivities()
     _activityModel->slotRefreshActivity();
 }
 
-void User::slotRefreshUserStatus() {
+void User::slotRefreshUserStatus() 
+{
     // TODO: check for _account->account()->capabilities().userStatus() 
     if (_account.data() && _account.data()->isConnected()) {
         _account.data()->fetchUserStatus();

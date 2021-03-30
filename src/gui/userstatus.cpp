@@ -55,8 +55,7 @@ void UserStatus::fetchUserStatus(AccountPtr account)
 
 void UserStatus::slotFetchUserStatusFinished(const QJsonDocument &json, int statusCode)
 {
-    const QJsonObject defaultValues
-    {
+    const QJsonObject defaultValues {
         {"icon", ""},
         {"message", ""},
         {"status", "online"}
