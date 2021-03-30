@@ -107,7 +107,7 @@ UserStatus::Status UserStatus::status() const
 
 QString UserStatus::message() const
 {
-    return _message;
+    return _message.trimmed();
 }
 
 QUrl UserStatus::icon() const
