@@ -698,7 +698,7 @@ Q_INVOKABLE bool UserModel::isUserConnected(const int &id)
     return _users[id]->isConnected();
 }
 
-Q_INVOKABLE QUrl UserModel::statusIcon(const int &id)
+Q_INVOKABLE QUrl UserModel::statusIcon(int id)
 {
     if (id < 0 || id >= _users.size()) {
         return {};

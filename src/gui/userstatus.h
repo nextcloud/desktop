@@ -42,7 +42,7 @@ public:
     QUrl icon() const;
 
 private slots:
-    void slotFetchUserStatusFinished(const QJsonDocument &json, const int statusCode);
+    void slotFetchUserStatusFinished(const QJsonDocument &json, int statusCode);
 
 signals:
     void fetchUserStatusFinished();

@@ -53,7 +53,7 @@ void UserStatus::fetchUserStatus(AccountPtr account)
     _job->start();
 }
 
-void UserStatus::slotFetchUserStatusFinished(const QJsonDocument &json, const int statusCode)
+void UserStatus::slotFetchUserStatusFinished(const QJsonDocument &json, int statusCode)
 {
     const QJsonObject defaultValues
     {
