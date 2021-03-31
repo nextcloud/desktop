@@ -1,0 +1,10 @@
+Enhancement: Add language picker to general settings
+
+Users can override the automatically chosen language by
+selecting a custom language in a dropdown in the general
+settings.
+Furthermore, a --language CLI parameter was added that
+serves the same purpose.
+
+https://github.com/owncloud/client/issues/8466
+https://github.com/owncloud/client/pull/8493
