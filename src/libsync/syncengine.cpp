@@ -345,7 +345,11 @@ void OCC::SyncEngine::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
             rec._serverHasIgnoredFiles |= prev._serverHasIgnoredFiles;
 
             // Ensure it's a placeholder file on disk
-            if (item->_type == ItemTypeFile) {
+            if (item->_type == ItemTypeFile
+#ifdef Q_OS_WIN
+                    && !FileSystem::isLnkFile(filePath)
+#endif
+                    ) {
                 const auto result = _syncOptions._vfs->convertToPlaceholder(filePath, *item);
                 if (!result) {
                     item->_instruction = CSYNC_INSTRUCTION_ERROR;
