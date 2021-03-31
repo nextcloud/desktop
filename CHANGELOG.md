@@ -23,6 +23,7 @@ Summary
 * Change - Include full os version in the about dialog: [#8374](https://github.com/owncloud/client/pull/8374)
 * Change - We removed the support for async jobs using OC-JobStatus-Location: [#8398](https://github.com/owncloud/client/pull/8398)
 * Enhancement - Add initial support for backups triggered by an external tool: [#8437](https://github.com/owncloud/client/pull/8437)
+* Enhancement - Add language picker to general settings: [#8466](https://github.com/owncloud/client/issues/8466)
 * Enhancement - Attach the last 20 log lines to a crash report: [#8467](https://github.com/owncloud/client/issues/8467)
 
 Details
@@ -128,6 +129,15 @@ Details
    We added a socket api function which allows creation of backups.
 
    https://github.com/owncloud/client/pull/8437
+
+* Enhancement - Add language picker to general settings: [#8466](https://github.com/owncloud/client/issues/8466)
+
+   Users can override the automatically chosen language by selecting a custom language in a
+   dropdown in the general settings. Furthermore, a --language CLI parameter was added that
+   serves the same purpose.
+
+   https://github.com/owncloud/client/issues/8466
+   https://github.com/owncloud/client/pull/8493
 
 * Enhancement - Attach the last 20 log lines to a crash report: [#8467](https://github.com/owncloud/client/issues/8467)
 
