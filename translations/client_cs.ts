@@ -150,7 +150,7 @@
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="73"/>
         <source>Switch to your browser to connect your account</source>
-        <translation>K připojení ke svému účtu se přepněte do svého internetového prohlížeče</translation>
+        <translation>Abyste se přihlásili ke svému účtu, přejděte do webového prohlížeče</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="42"/>
@@ -713,7 +713,7 @@ Současně tato akce zruší právě běžící synchronizaci.</translation>
     <message>
         <location filename="../src/gui/application.cpp" line="139"/>
         <source>Some settings were configured in newer versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation>Některá nastavení byla vytvořena v novejší verzi tohoto klienta a využívají funkce, které tato verze nepodporuje.&lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;Současné konfigurační soubory byly zálohovany do &lt;i&gt;%2&lt;/i&gt;.</translation>
+        <translation>Některá nastavení byla vytvořena v novejší verzi tohoto klienta a využívají funkce, které tato verze nepodporuje.&lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;Stávající soubory s nastaveními byly zazálohovány do &lt;i&gt;%2&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="146"/>
@@ -1049,7 +1049,7 @@ Toto může být způsobeno problémem s OpenSSL knihovnami.</translation>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="215"/>
         <source>Reopen Browser</source>
-        <translation>Znovu otevřít internetový prohlížeč</translation>
+        <translation>Znovu otevřít webový prohlížeč</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="218"/>
@@ -1099,7 +1099,7 @@ Toto může být způsobeno problémem s OpenSSL knihovnami.</translation>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="433"/>
         <source>%1 and %n other file(s) have been added.</source>
-        <translation><numerusform>%1 a %n další soubor byl přidán.</numerusform><numerusform>%1 a %n dalších souborů bylo přidáno.</numerusform><numerusform>%1 a %n dalších souborů bylo přidáno.</numerusform><numerusform>%1 a %n další soubory byly přidány.</numerusform></translation>
+        <translation><numerusform>%1 a %n další soubor byl přidán.</numerusform><numerusform>%1 a %n další soubory byly přidány.</numerusform><numerusform>%1 a %n dalších souborů bylo přidáno.</numerusform><numerusform>%1 a %n další soubory byly přidány.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="435"/>
@@ -1780,7 +1780,7 @@ Pokud to byla pouze chyba a chcete si tyto soubory ponechat, budou ze serverem z
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="213"/>
         <source>We received an unexpected download Content-Length.</source>
-        <translation>Obdrželi jsme neočekávanou délku obsahu.</translation>
+        <translation>Obdržena neočekávaná délka stahovaného obsahu.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="215"/>
@@ -2133,9 +2133,9 @@ Položky u kterých je umožněno mazání budou smazány, pokud brání tomu, a
         <source>The client can write debug logs to a temporary folder. These logs are very helpful for diagnosing problems.
 Since log files can get large, the client will start a new one for each sync run and compress older ones. It will also delete log files after a couple of hours to avoid consuming too much disk space.
 If enabled, logs will be written to %1</source>
-        <translation>Klient může do složky dočasně ukládat soubory se zápisem událostí. Tyto soubory jsou užitečné při odhalování případných problémů.
-Protože tyto soubory mohou být velké, klient zakládá nový soubor při každé synchronizaci a ty staré komprimuje. Aby se zabránilo velkému zabírání úložiště, tyto soubory se každých pár hodin mažou.
-Pokud je zápis událostí povolen, budou ukládány do %1</translation>
+        <translation>Klient umí ukládat soubory se záznamem událostí do dočasné složky. Tyto záznamy jsou užitečné při odhalování případných problémů.
+Protože tyto soubory mohou být velké, klient zakládá nový soubor při každé synchronizaci a ty staré komprimuje. Aby se zabránilo velkému zabírání úložiště, tyto soubory jsou po několika hodinách smazány.
+Pokud je zaznamenávání událostí zapnuto, budou ukládány do %1</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="64"/>
@@ -2268,7 +2268,7 @@ Záznamy událostí budou zapisovány do %1</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="449"/>
         <source>&lt;p&gt;A new version of the %1 Client is available but the updating process failed.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; has been downloaded. The installed version is %3.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Je k dispozici nová verze %1 klienta, ale aktualizace selhala.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; byla stažena. Nyní je nainstalovaná %3.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Je k dispozici nová verze %1 klienta, ale aktualizace se nezdařila.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; byla stažena. Nyní je nainstalovaná %3.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="463"/>
@@ -2459,7 +2459,7 @@ můžete být požádáni o dodatečná oprávnění.</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="150"/>
         <source>%1 available. Restart application to start the update.</source>
-        <translation>%1 k dispozici. Pro spuštění aktualizace aplikaci restartujte.</translation>
+        <translation>%1 k dispozici. Aby se provedla aktualizace, aplikaci restartujte.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="152"/>
@@ -2479,7 +2479,7 @@ můžete být požádáni o dodatečná oprávnění.</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="156"/>
         <source>New %1 is available. Please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt; to download the update.</source>
-        <translation>Nová %1 je k dispozici. Kliknutím &lt;a href=&apos;%2&apos;&gt;zde&lt;/a&gt; stáhnete aktualizaci.</translation>
+        <translation>Je k dispozici nové %1. Kliknutím &lt;a href=&apos;%2&apos;&gt;sem&lt;/a&gt; si stáhnete aktualizaci.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="158"/>
@@ -2719,7 +2719,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="250"/>
         <source>Server address does not seem to be valid</source>
-        <translation>Vypadá to, že adresa serveru je neplatná</translation>
+        <translation>Vypadá to, že adresa serveru není platná</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="293"/>
@@ -2882,7 +2882,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="88"/>
         <source>Add %1 account</source>
-        <translation>Přidat účet %1</translation>
+        <translation>Přidat %1 účet</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="100"/>
@@ -3013,12 +3013,12 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
     <message>
         <location filename="../src/libsync/discovery.cpp" line="292"/>
         <source>The filename cannot be encoded on your file system.</source>
-        <translation>Název souboru nemůže být na vašem souborovém systému enkódován.</translation>
+        <translation>Enkódování tohoto názvu souboru je mimo technické možnosti daného souborového systému.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="295"/>
         <source>The filename is blacklisted on the server.</source>
-        <translation>Název souboru je na serveru zakázán.</translation>
+        <translation>Takový název souboru je na serveru zařazen na seznam nepřípustných.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="350"/>
@@ -3053,12 +3053,12 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1250"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
-        <translation>Není možné, protože nemáte oprávnění přidávat podsložky do této složky</translation>
+        <translation>Neumožněno, protože nemáte oprávnění přidávat podsložky do této složky</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1255"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
-        <translation>Není možné, protože nemáte oprávnění přidávat soubory do této složky</translation>
+        <translation>Neumožněno, protože nemáte oprávnění přidávat soubory do této složky</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1268"/>
@@ -4482,7 +4482,7 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
     <message>
         <location filename="../src/common/vfs.cpp" line="82"/>
         <source>The Virtual filesystem feature requires a NTFS file system, %1 is using %2</source>
-        <translation>Virtuální souborový systém vyžaduje diskový systém NTFS, %1 používá %2</translation>
+        <translation>Funkce virtuální souborový systém vyžaduje souborový systém NTFS, %1 používá %2</translation>
     </message>
 </context>
 <context>
@@ -5285,7 +5285,7 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
     <message>
         <location filename="../src/gui/tray/Window.qml" line="434"/>
         <source>Open Nextcloud Talk in browser</source>
-        <translation>Otevřít Nextcloud Talk v probhlížeči</translation>
+        <translation>Otevřít Nextcloud Talk v prohlížeči</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="452"/>
