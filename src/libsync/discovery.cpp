@@ -501,12 +501,22 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
                 });
             return;
         }
+#ifdef Q_OS_WIN
+        const bool forceAlwaysLocal = item->_type == ItemTypeFile && item->_fileId.endsWith(".lnk");
+#else
+        const bool forceAlwaysLocal = false;
+#endif
+        if (forceAlwaysLocal) {
+            int a = 5;
+            a = 6;
+        }
         // Turn new remote files into virtual files if the option is enabled.
         auto &opts = _discoveryData->_syncOptions;
         if (!localEntry.isValid()
             && item->_type == ItemTypeFile
             && opts._vfs->mode() != Vfs::Off
-            && _pinState != PinState::AlwaysLocal) {
+            && _pinState != PinState::AlwaysLocal
+            && !forceAlwaysLocal) {
             item->_type = ItemTypeVirtualFile;
             if (isVfsWithSuffix())
                 addVirtualFileSuffix(tmp_path._original);
