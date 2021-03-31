@@ -849,8 +849,7 @@ void SocketApi::command_V2_LIST_ACCOUNTS(const QSharedPointer<SocketApiJobV2> &j
     QJsonArray out;
     for (auto acc : AccountManager::instance()->accounts()) {
         out << QJsonObject({ { QStringLiteral("name"), acc->account()->displayName() },
-            { QStringLiteral("id"), acc->account()->id() },
-            { QStringLiteral("uuid"), acc->account()->uuid().toString(QUuid::WithoutBraces) } });
+            { QStringLiteral("id"), acc->account()->id() } });
     }
     job->success({ { QStringLiteral("accounts"), out } });
 }

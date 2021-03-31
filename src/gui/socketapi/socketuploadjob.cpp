@@ -42,14 +42,8 @@ void SocketUploadJob::start()
 
     const auto pattern = _apiJob->arguments()[QLatin1String("pattern")].toString();
     const auto accname = _apiJob->arguments()[QLatin1String("account")][QLatin1String("name")].toString();
-    const auto accUUID = QUuid::fromString(_apiJob->arguments()[QLatin1String("account")][QLatin1String("uuid")].toString());
     AccountStatePtr account;
-    if (accUUID.isNull()) {
-        _apiJob->setWarning("Using the name as identifier is deprecated, please use the uuid");
-        account = AccountManager::instance()->account(accname);
-    } else {
-        account = AccountManager::instance()->account(accUUID);
-    }
+    account = AccountManager::instance()->account(accname);
 
     if (!account) {
         _apiJob->failure(QStringLiteral("Failed to find %1").arg(QString::fromUtf8(QJsonDocument(_apiJob->arguments()[QLatin1String("account")].toObject()).toJson())));
@@ -93,9 +87,11 @@ void SocketUploadJob::start()
 
     // create the dir, fail if it already exists
     auto mkdir = new OCC::MkColJob(engine->account(), remotePath);
-    connect(mkdir, &OCC::MkColJob::finishedWithoutError, engine, &OCC::SyncEngine::startSync);
-    connect(mkdir, &OCC::MkColJob::finishedWithError, this, [this, remotePath](QNetworkReply *reply) {
-        if (reply->error() == 202) {
+    connect(mkdir, qOverload<QNetworkReply::NetworkError>(&OCC::MkColJob::finished), this, [remotePath, engine, mkdir, this]() {
+        auto reply = mkdir->reply();
+        if (reply->error() == QNetworkReply::NoError) {
+            engine->startSync();
+        } else if (reply->error() == 202) {
             _apiJob->failure(QStringLiteral("Destination %1 already exists").arg(remotePath));
         } else {
             _apiJob->failure(reply->errorString());
