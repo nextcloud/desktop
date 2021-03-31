@@ -1,21 +1,9 @@
 [General]
 version = 2
-blueprintrepositories = https://github.com/owncloud/craft-blueprints-owncloud.git|master|;https://invent.kde.org/packaging/craft-blueprints-kde.git|master|
+blueprintrepositories = https://invent.kde.org/packaging/craft-blueprints-kde.git|master|;https://github.com/owncloud/craft-blueprints-owncloud.git|master|
 
 [core/cacert]
-version = 2020-10-14
-
-[craft/craft-blueprints-kde]
-version = master
-revision = c6809827
-
-[craft/craft-blueprints-owncloud]
-version = master
-revision = 28db3b4
-
-[craft/craft-core]
-version = master
-revision = 683a36716d6aa47b9da52bea2e8d7add953bf20b
+version = 2020-12-08
 
 [dev-utils/autoconf]
 version = 2.69
@@ -28,7 +16,6 @@ version = 3.3.2
 
 [dev-utils/breakpad-tools]
 version = cmake
-revision = e2a857c4
 
 [dev-utils/cmake]
 version = latest
@@ -48,9 +35,6 @@ version = 1.47.6
 [dev-utils/icoutils]
 version = 0.32.3
 
-[dev-utils/jom]
-version = 1_1_3
-
 [dev-utils/kshimgen]
 version = 0.4.3
 
@@ -64,7 +48,7 @@ version = 1.4.18
 version = 2.14.02
 
 [dev-utils/ninja]
-version = 1.10.0
+version = 1.10.2
 
 [dev-utils/packagesdev]
 version = 1.2.7
@@ -81,29 +65,14 @@ version = 2
 [dev-utils/python3]
 version = 3
 
-[dev-utils/qtbinpatcher]
-version = 2.2.0
-
-[dev-utils/wget]
-version = 1.18
-
 [kde/frameworks/extra-cmake-modules]
-version = 5.75.0
-
-[libs/d3dcompiler]
-version = master
+version = 5.79.0
 
 [libs/gettext]
 version = 0.19.8.1
 
-[libs/glib]
-version = 2.49.4
-
 [libs/libbzip2]
 version = 1.0.6
-
-[libs/libffi]
-version = 3.2.1
 
 [libs/libjpeg-turbo]
 version = 1.5.3
@@ -122,9 +91,6 @@ version = 1.4.5
 
 [libs/openssl]
 version = 1.1.1i
-
-[libs/pcre]
-version = 8.41
 
 [libs/pcre2]
 version = 10.35
@@ -150,9 +116,6 @@ version = 5.12.10
 [libs/qt5/qtxmlpatterns]
 version = 5.12.10
 
-[libs/runtime]
-version = 15
-
 [libs/sparkle]
 version = 1.24.0
 
@@ -162,17 +125,11 @@ version = 3.31.1
 [libs/zlib]
 version = 1.2.11
 
-[python-modules/pip]
-version = 3.5
-
-[python-modules/pip-system]
-version = 3.5
-
 [python-modules/virtualenv]
 version = master
 
 [qt-libs/qtkeychain]
-version = 0.10.0
+version = 0.12.0
 
 [virtual/base]
 version = 0.2
