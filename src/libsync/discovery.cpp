@@ -510,11 +510,13 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
             && item->_type == ItemTypeFile
             && opts._vfs->mode() != Vfs::Off
             && _pinState != PinState::AlwaysLocal
-#ifdef Q_OS_WIN
-            && !FileSystem::isLnkFile(path._server)
-#endif
             ) {
             item->_type = ItemTypeVirtualFile;
+#ifdef Q_OS_WIN
+            if(FileSystem::isLnkFile(path._server)) {
+                item->_type = ItemTypeVirtualFileDownload;
+            }
+#endif
             if (isVfsWithSuffix())
                 addVirtualFileSuffix(tmp_path._original);
         }

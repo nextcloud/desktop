@@ -196,7 +196,9 @@ bool VfsCfApi::statTypeVirtualFile(csync_file_stat_t *stat, void *statData)
         stat->type = ItemTypeVirtualFileDownload;
         return true;
     } else if (!isSparseFile && isUnpinned){
-        stat->type = ItemTypeVirtualFileDehydration;
+        if (!FileSystem::isLnkFile(stat->path)) {
+                stat->type = ItemTypeVirtualFileDehydration;
+        }
         return true;
     } else if (isSparseFile) {
         stat->type = ItemTypeVirtualFile;
