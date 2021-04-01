@@ -121,7 +121,7 @@ void IssuesWidget::slotProgressInfo(const QString &folder, const ProgressInfo &p
             return;
         const auto &engine = f->syncEngine();
         const auto style = engine.lastLocalDiscoveryStyle();
-        _model->remove([&](const ProtocolItem &item) {
+        _model->remove_if([&](const ProtocolItem &item) {
             if (item.folderName() != folder) {
                 return false;
             }

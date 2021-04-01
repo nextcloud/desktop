@@ -33,12 +33,10 @@ auto getFolder(const OCC::ProtocolItem &item)
 
 using namespace OCC;
 
-ProtocolItemModel::ProtocolItemModel(QObject *parent, bool issueMode, int maxLogSize)
+ProtocolItemModel::ProtocolItemModel(QObject *parent, bool issueMode)
     : QAbstractTableModel(parent)
     , _issueMode(issueMode)
-    , _maxLogSize(maxLogSize)
 {
-    _data.reserve(maxLogSize);
 }
 
 int ProtocolItemModel::rowCount(const QModelIndex &parent) const
@@ -47,7 +45,7 @@ int ProtocolItemModel::rowCount(const QModelIndex &parent) const
     if (parent.isValid()) {
         return 0;
     }
-    return actualSize();
+    return static_cast<int>(_data.size());
 }
 
 int ProtocolItemModel::columnCount(const QModelIndex &parent) const
@@ -170,48 +168,38 @@ QVariant ProtocolItemModel::headerData(int section, Qt::Orientation orientation,
     return QAbstractTableModel::headerData(section, orientation, role);
 }
 
-void ProtocolItemModel::addProtocolItem(const ProtocolItem &&item)
+void ProtocolItemModel::addProtocolItem(ProtocolItem &&item)
 {
-    Q_ASSERT(actualSize() == _data.size());
-    if (_data.size() >= _maxLogSize) {
+    if (_data.isFull()) {
         beginRemoveRows(QModelIndex(), 0, 0);
-        _start++;
+        _data.pop_front();
         endRemoveRows();
-    } else {
-        _data.push_back({});
     }
-    // _data.size() might differ
-    const auto size = actualSize();
+    const auto size = static_cast<int>(_data.size());
     beginInsertRows(QModelIndex(), size, size);
-    _data[convertToIndex(size)] = std::move(item);
-    _end++;
+    _data.push_back(std::move(item));
     endInsertRows();
 }
 
 const ProtocolItem &ProtocolItemModel::protocolItem(const QModelIndex &index) const
 {
     Q_ASSERT(checkIndex(index, QAbstractItemModel::CheckIndexOption::IndexIsValid));
-    return _data.at(convertToIndex(index.row()));
+    return _data.at(index.row());
 }
 
-const std::vector<ProtocolItem> &ProtocolItemModel::rawData() const
+void ProtocolItemModel::reset(std::vector<ProtocolItem> &&data)
 {
-    return _data;
+    beginResetModel();
+    _data.reset(std::move(data));
+    endResetModel();
 }
 
-void ProtocolItemModel::remove(const std::function<bool(const ProtocolItem &)> &filter)
+void ProtocolItemModel::remove_if(const std::function<bool(const ProtocolItem &)> &filter)
 {
     if (_data.empty()) {
         return;
     }
-    const auto first = protocolItem(index(0, 0));
     beginResetModel();
-    _data.erase(std::remove_if(_data.begin(), _data.end(), filter), _data.end());
-    // find start again
-    _start = std::distance(_data.cbegin(), std::find_if(_data.cbegin(), _data.cend(), [&first](const ProtocolItem &pi) {
-        return pi._id <= first._id;
-    }));
-    _end = _start + _data.size();
+    _data.remove_if(filter);
     endResetModel();
-    _data.reserve(_maxLogSize);
 }

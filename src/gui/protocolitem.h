@@ -16,6 +16,8 @@
 #include "csync/csync.h"
 #include "libsync/syncfileitem.h"
 
+#include "common/fixedsizeringbuffer.h"
+
 namespace OCC {
 
 class ProtocolItem
@@ -51,15 +53,6 @@ private:
 
     QString _message;
     bool _sizeIsRelevant;
-
-    /**
-     * The creation id
-     */
-    qulonglong _id = [] {
-        static qulonglong count = 0;
-        return ++count;
-    }();
-    friend class ProtocolItemModel;
 };
 
 }

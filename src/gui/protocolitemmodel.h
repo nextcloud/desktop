@@ -17,8 +17,11 @@
 
 #include "protocolitem.h"
 
+#include "common/fixedsizeringbuffer.h"
+
 
 namespace OCC {
+
 class ProtocolItemModel : public QAbstractTableModel
 {
     Q_OBJECT
@@ -38,40 +41,38 @@ public:
      * @param parent
      * @param issueMode Whether we are tracking all synced items or issues
      */
-    ProtocolItemModel(QObject *parent = nullptr, bool issueMode = false, int maxLogSize=2000);
+    ProtocolItemModel(QObject *parent = nullptr, bool issueMode = false);
 
     int rowCount(const QModelIndex &parent = {}) const override;
     int columnCount(const QModelIndex &parent = {}) const override;
     QVariant data(const QModelIndex &index, int role) const override;
     QVariant headerData(int section, Qt::Orientation orientation, int role) const override;
 
-    void addProtocolItem(const ProtocolItem &&item);
+    void addProtocolItem(ProtocolItem &&item);
     const ProtocolItem &protocolItem(const QModelIndex &index) const;
-
-    const std::vector<ProtocolItem> &rawData() const;
-    void remove(const std::function<bool(const ProtocolItem &)> &filter);
 
     bool isModelFull() const
     {
-        return _data.size() == _maxLogSize;
+        return _data.isFull();
     }
+
+    /**
+     * Return underlying unordered raw data
+     */
+    auto rawData() const
+    {
+        return _data;
+    }
+
+    void reset(std::vector<ProtocolItem> &&data);
+
+    void remove_if(const std::function<bool(const ProtocolItem &)> &filter);
 
 private:
+    FixedSizeRingBuffer<ProtocolItem, 2000> _data;
     bool _issueMode;
     int _maxLogSize;
-    std::vector<ProtocolItem> _data;
 
-    qulonglong _start = 0;
-    qulonglong _end = 0;
-
-    constexpr qulonglong actualSize() const
-    {
-        return _end - _start;
-    }
-    constexpr int convertToIndex(qulonglong i) const
-    {
-        return (i + _start) % _maxLogSize;
-    }
 };
 
 }
