@@ -184,6 +184,8 @@ bool VfsCfApi::statTypeVirtualFile(csync_file_stat_t *stat, void *statData)
     const auto hasReparsePoint = (ffd->dwFileAttributes & FILE_ATTRIBUTE_REPARSE_POINT) != 0;
     const auto hasCloudTag = (ffd->dwReserved0 & IO_REPARSE_TAG_CLOUD) != 0;
 
+    const auto isWindowsShortcut = !isDirectory && FileSystem::isLnkFile(stat->path);
+
     // It's a dir with a reparse point due to the placeholder info (hence the cloud tag)
     // if we don't remove the reparse point flag the discovery will end up thinking
     // it is a file... let's prevent it
@@ -195,11 +197,9 @@ bool VfsCfApi::statTypeVirtualFile(csync_file_stat_t *stat, void *statData)
     } else if (isSparseFile && isPinned) {
         stat->type = ItemTypeVirtualFileDownload;
         return true;
-    } else if (!isSparseFile && isUnpinned){
-        if (!FileSystem::isLnkFile(stat->path)) {
-            stat->type = ItemTypeVirtualFileDehydration;
-            return true;
-        }
+    } else if (!isSparseFile && isUnpinned && !isWindowsShortcut){
+        stat->type = ItemTypeVirtualFileDehydration;
+        return true;
     } else if (isSparseFile) {
         stat->type = ItemTypeVirtualFile;
         return true;

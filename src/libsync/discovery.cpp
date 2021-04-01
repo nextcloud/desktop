@@ -180,9 +180,15 @@ void ProcessDirectoryJob::process()
         // local stat function.
         // Recall file shall not be ignored (#4420)
         bool isHidden = e.localEntry.isHidden || (f.first[0] == '.' && f.first != QLatin1String(".sys.admin#recall#"));
+#ifdef Q_OS_WIN
+        // exclude ".lnk" files as they are not essential, but, causing troubles when enabling the VFS due to QFileInfo::isDir() and other methods are freezing, which causes the ".lnk" files to start hydrating and freezing the app eventually.
+        const bool isServerEntrySymLink = !e.localEntry.isValid() && e.serverEntry.isValid() && !e.serverEntry.isDirectory && FileSystem::isLnkFile(e.serverEntry.name);
+#else
+        const bool isServerEntrySymLink = false;
+#endif
         if (handleExcluded(path._target, e.localEntry.name,
                 e.localEntry.isDirectory || e.serverEntry.isDirectory, isHidden,
-                e.localEntry.isSymLink))
+                e.localEntry.isSymLink || isServerEntrySymLink))
             continue;
 
         if (_queryServer == InBlackList || _discoveryData->isInSelectiveSyncBlackList(path._original)) {
@@ -509,14 +515,8 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
         if (!localEntry.isValid()
             && item->_type == ItemTypeFile
             && opts._vfs->mode() != Vfs::Off
-            && _pinState != PinState::AlwaysLocal
-#ifdef Q_OS_WIN
-            // on Windows, ".lnk" files are causing troubles with QFileInfo - always treat them as normal files
-            && !FileSystem::isLnkFile(path._server)
-#endif
-            ) {
+            && _pinState != PinState::AlwaysLocal) {
             item->_type = ItemTypeVirtualFile;
-
             if (isVfsWithSuffix())
                 addVirtualFileSuffix(tmp_path._original);
         }
