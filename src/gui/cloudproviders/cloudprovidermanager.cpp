@@ -13,7 +13,7 @@
  */
 
 #include <glib.h>
-#include <gio.h>
+#include <gio/gio.h>
 #include <cloudprovidersproviderexporter.h>
 
 #include "cloudproviderwrapper.h"

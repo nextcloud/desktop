@@ -192,17 +192,6 @@ else()
    list(APPEND 3rdparty_SRC ../3rdparty/qtlockedfile/qtlockedfile_win.cpp )
 endif()
 
-IF( NOT WIN32 AND NOT APPLE AND LIBCLOUDPROVIDERS_FOUND)
-    message("Building with libcloudproviderssupport")
-    add_definitions(-DWITH_LIBCLOUDPROVIDERS)
-    set(client_SRCS ${client_SRCS} cloudproviders/cloudprovidermanager.cpp)
-    set(client_SRCS ${client_SRCS} cloudproviders/cloudproviderwrapper.cpp)
-
-    include_directories(${GLib2_INCLUDE_DIRS})
-    include_directories(${GIO_INCLUDE_DIRS})
-    include_directories(${LIBCLOUDPROVIDERS_INCLUDE_DIR})
-ENDIF()
-
 find_package(Qt5LinguistTools)
 if(Qt5LinguistTools_FOUND)
     qt5_add_translation(client_I18N ${TRANSLATIONS})
@@ -355,7 +344,10 @@ endif()
 
 target_link_libraries(nextcloudCore PUBLIC ${OS_SPECIFIC_LINK_LIBRARIES})
 
-IF( LIBCLOUDPROVIDERS_FOUND )
+if(TARGET PkgConfig::CLOUDPROVIDERS)
+    message("Building with libcloudproviderssupport")
+    target_sources(nextcloudCore PRIVATE cloudproviders/cloudprovidermanager.cpp cloudproviders/cloudproviderwrapper.cpp)
+
     string(TOLOWER "${APPLICATION_VENDOR}" DBUS_VENDOR)
     string(REGEX REPLACE "[^A-z0-9]" "" DBUS_VENDOR "${DBUS_VENDOR}")
     string(REGEX REPLACE "[^A-z0-9]" "" DBUS_APPLICATION_NAME "${APPLICATION_SHORTNAME}")
@@ -366,13 +358,14 @@ IF( LIBCLOUDPROVIDERS_FOUND )
     set(LIBCLOUDPROVIDERS_DBUS_OBJECT_PATH "/${DBUS_PREFIX}/${DBUS_VENDOR}/${DBUS_APPLICATION_NAME}")
 
     configure_file(${CMAKE_CURRENT_SOURCE_DIR}/cloudproviders/cloudproviderconfig.h.in ${CMAKE_CURRENT_BINARY_DIR}/cloudproviderconfig.h)
+    target_compile_definitions(nextcloudCore PUBLIC -DWITH_LIBCLOUDPROVIDERS)
     target_link_libraries(nextcloudCore
-      PUBLIC
-      ${GLib2_LDFLAGS}
-      ${GIO_LDFLAGS}
-      ${LIBCLOUDPROVIDERS_LIBRARY}
+      PRIVATE
+      PkgConfig::CLOUDPROVIDERS
+      PkgConfig::GLIB2
+      PkgConfig::GIO
     )
-ENDIF()
+endif()
 
 ## handle DBUS for Fdo notifications
 if( UNIX AND NOT APPLE )

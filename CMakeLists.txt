@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.2)
+cmake_minimum_required(VERSION 3.6)
 set(CMAKE_CXX_STANDARD 14)
 
 project(client)
@@ -197,9 +197,16 @@ if(BUILD_CLIENT)
     find_package(OpenSSL 1.1 REQUIRED )
 
    find_package(ZLIB REQUIRED)
-   find_package(GLib2)
-   find_package(Gio)
-   find_package(Libcloudproviders)
+
+   if(NOT WIN32 AND NOT APPLE)
+      find_package(PkgConfig REQUIRED)
+      pkg_check_modules(CLOUDPROVIDERS cloudproviders IMPORTED_TARGET)
+
+      if(CLOUDPROVIDERS_FOUND)
+        pkg_check_modules(GIO REQUIRED gio-2.0 IMPORTED_TARGET)
+        pkg_check_modules(GLIB2 REQUIRED glib-2.0 IMPORTED_TARGET)
+      endif()
+   endif()
 endif()
 
 if (NOT DEFINED APPLICATION_ICON_NAME)

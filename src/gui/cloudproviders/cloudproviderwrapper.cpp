@@ -14,7 +14,7 @@
  */
 
 #include <glib.h>
-#include <gio.h>
+#include <gio/gio.h>
 #include <cloudprovidersaccountexporter.h>
 #include <cloudprovidersproviderexporter.h>
 
