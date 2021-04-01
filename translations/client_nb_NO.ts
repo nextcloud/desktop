@@ -2421,6 +2421,11 @@ kan be om flere rettigheter under behandlingen.</translation>
         <translation>%1 versjon %2 tilgjengelig. Start applikasjonen på nytt for å starte oppdatering.</translation>
     </message>
     <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="152"/>
+        <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; to download the update manually.</source>
+        <translation>Klarte ikke å laste ned oppdateringen. Klikk &lt;a href=&apos;%1&apos;&gt;her&lt;/a&gt; for å laste ned oppdateringen manuelt.</translation>
+    </message>
+    <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="148"/>
         <source>Downloading %1. Please wait …</source>
         <translation type="unfinished"/>
@@ -2431,9 +2436,14 @@ kan be om flere rettigheter under behandlingen.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="151"/>
+        <source>New %1 version %2 is available. Please click &lt;a href=&apos;%3&apos;&gt;here&lt;/a&gt; to download the update.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="152"/>
-        <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; to download the update manually.</source>
-        <translation>Klarte ikke å laste ned oppdateringen. Klikk &lt;a href=&apos;%1&apos;&gt;her&lt;/a&gt; for å laste ned oppdateringen manuelt.</translation>
+        <source>Could not download update. Please open %1 to download the update manually.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="154"/>
@@ -2441,13 +2451,8 @@ kan be om flere rettigheter under behandlingen.</translation>
         <translation>Klarte ikke å se etter nye oppdateringer.</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="151"/>
-        <source>New %1 version %2 is available. Please click &lt;a href=&apos;%3&apos;&gt;here&lt;/a&gt; to download the update.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="156"/>
-        <source>New %1 is available. Please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt; to download the update.</source>
+        <source>New %1 is available. Please open %2 to download the update.</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -2459,6 +2464,11 @@ kan be om flere rettigheter under behandlingen.</translation>
         <location filename="../src/gui/updater/ocupdater.cpp" line="160"/>
         <source>Update status is unknown: Did not check for new updates.</source>
         <translation>Oppdateringsstatus er ukjent: Sjekket ikke for nye oppdateringer.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="156"/>
+        <source>New %1 is available. Please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt; to download the update.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="164"/>

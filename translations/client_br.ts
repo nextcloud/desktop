@@ -2437,6 +2437,11 @@ evit aotreoù ouzhpenn e pad an oberenn.</translation>
         <translation>%1 stumm %2 a zo posupl kaout. Adlansit ar meziant evit gregiñ an adnevesadenn.</translation>
     </message>
     <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="152"/>
+        <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; to download the update manually.</source>
+        <translation>Dibosupl pellkargañ an adnevesadenn. Klikit &lt;a href=&apos;%1&apos;&gt;amañ&lt;/a&gt; evit pellkargañ diouzhtu gant an dorn.</translation>
+    </message>
+    <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="148"/>
         <source>Downloading %1. Please wait …</source>
         <translation type="unfinished"/>
@@ -2447,9 +2452,14 @@ evit aotreoù ouzhpenn e pad an oberenn.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="151"/>
+        <source>New %1 version %2 is available. Please click &lt;a href=&apos;%3&apos;&gt;here&lt;/a&gt; to download the update.</source>
+        <translation>%1 stumm %2 nevez a zo posupl kaout. Klikit &lt;a href=&apos;%3&apos;&gt;amañ&lt;/a&gt; evit pellkargañ an adnevesadenn.</translation>
+    </message>
+    <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="152"/>
-        <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; to download the update manually.</source>
-        <translation>Dibosupl pellkargañ an adnevesadenn. Klikit &lt;a href=&apos;%1&apos;&gt;amañ&lt;/a&gt; evit pellkargañ diouzhtu gant an dorn.</translation>
+        <source>Could not download update. Please open %1 to download the update manually.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="154"/>
@@ -2457,13 +2467,8 @@ evit aotreoù ouzhpenn e pad an oberenn.</translation>
         <translation>Dibosupl gwiriañ an adnevesadennoù nevez.</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="151"/>
-        <source>New %1 version %2 is available. Please click &lt;a href=&apos;%3&apos;&gt;here&lt;/a&gt; to download the update.</source>
-        <translation>%1 stumm %2 nevez a zo posupl kaout. Klikit &lt;a href=&apos;%3&apos;&gt;amañ&lt;/a&gt; evit pellkargañ an adnevesadenn.</translation>
-    </message>
-    <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="156"/>
-        <source>New %1 is available. Please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt; to download the update.</source>
+        <source>New %1 is available. Please open %2 to download the update.</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -2475,6 +2480,11 @@ evit aotreoù ouzhpenn e pad an oberenn.</translation>
         <location filename="../src/gui/updater/ocupdater.cpp" line="160"/>
         <source>Update status is unknown: Did not check for new updates.</source>
         <translation>Ar stad adnevesañ a zo dian : N&apos;eo ket bet gwiriet an adnevesadennoù nevez.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="156"/>
+        <source>New %1 is available. Please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt; to download the update.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="164"/>

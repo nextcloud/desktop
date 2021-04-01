@@ -1394,7 +1394,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="1492"/>
         <source>Sync finished with unresolved conflicts.</source>
-        <translation type="unfinished"/>
+        <translation>Usklajevanje je končano z zaznanimi nerešenimi spori.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1373"/>
@@ -2451,6 +2451,11 @@ zahteva skrbniška dovoljenja za dokončanje opravila.</translation>
         <translation>Na voljo je %1 različice %2. Ponovno zaženite program za uveljavitev posodobitve.</translation>
     </message>
     <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="152"/>
+        <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; to download the update manually.</source>
+        <translation>Posodobitve ni mogoče prejeti. &lt;a href=&apos;%1&apos;&gt;Kliknite&lt;/a&gt; za ročni prejem in namestitev.</translation>
+    </message>
+    <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="148"/>
         <source>Downloading %1. Please wait …</source>
         <translation>Poteka prejemanje različice %1. Počakajte …</translation>
@@ -2461,9 +2466,14 @@ zahteva skrbniška dovoljenja za dokončanje opravila.</translation>
         <translation>Na voljo je %1. Ponovno zaženite program za uveljavitev posodobitve.</translation>
     </message>
     <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="151"/>
+        <source>New %1 version %2 is available. Please click &lt;a href=&apos;%3&apos;&gt;here&lt;/a&gt; to download the update.</source>
+        <translation>Na voljo je različica %1 %2. Kliknite na &lt;a href=&apos;%3&apos;&gt;povezavo&lt;/a&gt; za prejem posodobitve.</translation>
+    </message>
+    <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="152"/>
-        <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; to download the update manually.</source>
-        <translation>Posodobitve ni mogoče prejeti. &lt;a href=&apos;%1&apos;&gt;Kliknite&lt;/a&gt; za ročni prejem in namestitev.</translation>
+        <source>Could not download update. Please open %1 to download the update manually.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="154"/>
@@ -2471,14 +2481,9 @@ zahteva skrbniška dovoljenja za dokončanje opravila.</translation>
         <translation>Ni mogoče preveriti za nove posodobitve.</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="151"/>
-        <source>New %1 version %2 is available. Please click &lt;a href=&apos;%3&apos;&gt;here&lt;/a&gt; to download the update.</source>
-        <translation>Na voljo je različica %1 %2. Kliknite na &lt;a href=&apos;%3&apos;&gt;povezavo&lt;/a&gt; za prejem posodobitve.</translation>
-    </message>
-    <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="156"/>
-        <source>New %1 is available. Please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt; to download the update.</source>
-        <translation>Na voljo je različica %1. Kliknite na &lt;a href=&apos;%2&apos;&gt;povezavo&lt;/a&gt; za prejem posodobitve.</translation>
+        <source>New %1 is available. Please open %2 to download the update.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="158"/>
@@ -2489,6 +2494,11 @@ zahteva skrbniška dovoljenja za dokončanje opravila.</translation>
         <location filename="../src/gui/updater/ocupdater.cpp" line="160"/>
         <source>Update status is unknown: Did not check for new updates.</source>
         <translation>Stanje posodobitve ni znano: ni mogoče preveriti za nove posodobitve.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="156"/>
+        <source>New %1 is available. Please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt; to download the update.</source>
+        <translation>Na voljo je različica %1. Kliknite na &lt;a href=&apos;%2&apos;&gt;povezavo&lt;/a&gt; za prejem posodobitve.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="164"/>
@@ -4473,7 +4483,7 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
     <message>
         <location filename="../src/gui/userstatus.cpp" line="79"/>
         <source>Do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>Ne moti</translation>
     </message>
 </context>
 <context>
@@ -4502,7 +4512,7 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="159"/>
         <source>You have been logged out of %1 as user %2. Please login again.</source>
-        <translation type="unfinished"/>
+        <translation>Prijava v oblak %1 z uporabniškimi podatki %2 je prekinjena. Prijaviti se je treba znova.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="159"/>
@@ -5075,12 +5085,12 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="92"/>
         <source>Current user status is online</source>
-        <translation type="unfinished"/>
+        <translation>Trenutno je uporabnik povezan</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="92"/>
         <source>Current user status is do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>Trenutno uporabnik ne želi motenj</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="94"/>
@@ -5259,12 +5269,12 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
     <message>
         <location filename="../src/gui/tray/Window.qml" line="360"/>
         <source>Current user status is online</source>
-        <translation type="unfinished"/>
+        <translation>Trenutno je uporabnik povezan</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="360"/>
         <source>Current user status is do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>Trenutno uporabnik ne želi motenj</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="422"/>

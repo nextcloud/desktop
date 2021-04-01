@@ -2454,6 +2454,11 @@ for additional privileges during the process.</source>
         <translation>Налична са  версии % 1 и % 2. Необходимо е рестартиране на приложението, за да стартира актуализацията.</translation>
     </message>
     <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="152"/>
+        <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; to download the update manually.</source>
+        <translation>Актуализацията не можа да се изтегли. Моля, щракнете &lt;a href=&apos;%1&apos;&gt;тук&lt;/a&gt;, за   ръчно изтегляне на актуализацията.</translation>
+    </message>
+    <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="148"/>
         <source>Downloading %1. Please wait …</source>
         <translation>Изтегля се % 1. Моля да се изчака …</translation>
@@ -2464,9 +2469,14 @@ for additional privileges during the process.</source>
         <translation>% 1 наличен .Рестартиране на приложение, за да стартира актуализацията.</translation>
     </message>
     <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="151"/>
+        <source>New %1 version %2 is available. Please click &lt;a href=&apos;%3&apos;&gt;here&lt;/a&gt; to download the update.</source>
+        <translation>Налична е нова % 1 версия % 2. Моля, кликнете &lt;a href=&apos;%3&apos;&gt;тук&lt;/a&gt;, за изтегляне на актуализацията.</translation>
+    </message>
+    <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="152"/>
-        <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; to download the update manually.</source>
-        <translation>Актуализацията не можа да се изтегли. Моля, щракнете &lt;a href=&apos;%1&apos;&gt;тук&lt;/a&gt;, за   ръчно изтегляне на актуализацията.</translation>
+        <source>Could not download update. Please open %1 to download the update manually.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="154"/>
@@ -2474,14 +2484,9 @@ for additional privileges during the process.</source>
         <translation>Проверката за актуализации не може да бъде извършена.</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="151"/>
-        <source>New %1 version %2 is available. Please click &lt;a href=&apos;%3&apos;&gt;here&lt;/a&gt; to download the update.</source>
-        <translation>Налична е нова % 1 версия % 2. Моля, кликнете &lt;a href=&apos;%3&apos;&gt;тук&lt;/a&gt;, за изтегляне на актуализацията.</translation>
-    </message>
-    <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="156"/>
-        <source>New %1 is available. Please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt; to download the update.</source>
-        <translation>Наличен е нов % 1. Моля, кликнете &lt;a href=&apos;%2&apos;&gt;тук&lt;/a&gt;, изтегляне на актуализацията.</translation>
+        <source>New %1 is available. Please open %2 to download the update.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="158"/>
@@ -2492,6 +2497,11 @@ for additional privileges during the process.</source>
         <location filename="../src/gui/updater/ocupdater.cpp" line="160"/>
         <source>Update status is unknown: Did not check for new updates.</source>
         <translation>Състоянието на актуализацията е неизвестно: Непроверено за нови актуализации.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="156"/>
+        <source>New %1 is available. Please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt; to download the update.</source>
+        <translation>Наличен е нов % 1. Моля, кликнете &lt;a href=&apos;%2&apos;&gt;тук&lt;/a&gt;, изтегляне на актуализацията.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="164"/>

@@ -2453,6 +2453,11 @@ o dodatkowe uprawnienia podczas procesu aktualizacji.</translation>
         <translation>Dostępna jest wersja %1 %2. Uruchom ponownie aplikację, aby rozpocząć aktualizację.</translation>
     </message>
     <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="152"/>
+        <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; to download the update manually.</source>
+        <translation>Nie można pobrać aktualizacji. Kliknij &lt;a href=&apos;%1&apos;&gt;tutaj&lt;/a&gt;, aby ręcznie pobrać aktualizację.</translation>
+    </message>
+    <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="148"/>
         <source>Downloading %1. Please wait …</source>
         <translation>Pobieranie %1. Proszę czekać…</translation>
@@ -2463,9 +2468,14 @@ o dodatkowe uprawnienia podczas procesu aktualizacji.</translation>
         <translation>%1 dostępne. Uruchom ponownie aplikację, aby rozpocząć aktualizację.</translation>
     </message>
     <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="151"/>
+        <source>New %1 version %2 is available. Please click &lt;a href=&apos;%3&apos;&gt;here&lt;/a&gt; to download the update.</source>
+        <translation>Dostępna jest nowa wersja %1 %2. Kliknij &lt;a href=&apos;%3&apos;&gt;tutaj&lt;/a&gt;, aby pobrać aktualizację.</translation>
+    </message>
+    <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="152"/>
-        <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; to download the update manually.</source>
-        <translation>Nie można pobrać aktualizacji. Kliknij &lt;a href=&apos;%1&apos;&gt;tutaj&lt;/a&gt;, aby ręcznie pobrać aktualizację.</translation>
+        <source>Could not download update. Please open %1 to download the update manually.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="154"/>
@@ -2473,14 +2483,9 @@ o dodatkowe uprawnienia podczas procesu aktualizacji.</translation>
         <translation>Nie można sprawdzić nowych aktualizacji.</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="151"/>
-        <source>New %1 version %2 is available. Please click &lt;a href=&apos;%3&apos;&gt;here&lt;/a&gt; to download the update.</source>
-        <translation>Dostępna jest nowa wersja %1 %2. Kliknij &lt;a href=&apos;%3&apos;&gt;tutaj&lt;/a&gt;, aby pobrać aktualizację.</translation>
-    </message>
-    <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="156"/>
-        <source>New %1 is available. Please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt; to download the update.</source>
-        <translation>Dostępny jest nowy %1. Kliknij &lt;a href=&apos;%2&apos;&gt;tutaj&lt;/a&gt;, aby pobrać aktualizację.</translation>
+        <source>New %1 is available. Please open %2 to download the update.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="158"/>
@@ -2491,6 +2496,11 @@ o dodatkowe uprawnienia podczas procesu aktualizacji.</translation>
         <location filename="../src/gui/updater/ocupdater.cpp" line="160"/>
         <source>Update status is unknown: Did not check for new updates.</source>
         <translation>Status aktualizacji jest nieznany. Nie sprawdzono dostępności nowych aktualizacji.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="156"/>
+        <source>New %1 is available. Please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt; to download the update.</source>
+        <translation>Dostępny jest nowy %1. Kliknij &lt;a href=&apos;%2&apos;&gt;tutaj&lt;/a&gt;, aby pobrać aktualizację.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="164"/>

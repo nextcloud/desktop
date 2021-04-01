@@ -2420,6 +2420,11 @@ for additional privileges during the process.</source>
         <translation>%1 версія %2 доступна. Перезавантажте застосунок для початку оновлення.</translation>
     </message>
     <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="152"/>
+        <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; to download the update manually.</source>
+        <translation>Неможливо завантажити оновлення. Будь ласка, клацніть &lt;a href=&apos;%1&apos;&gt;тут&lt;/a&gt;, щоб самостійно завантажити оновлення.</translation>
+    </message>
+    <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="148"/>
         <source>Downloading %1. Please wait …</source>
         <translation type="unfinished"/>
@@ -2430,9 +2435,14 @@ for additional privileges during the process.</source>
         <translation type="unfinished"/>
     </message>
     <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="151"/>
+        <source>New %1 version %2 is available. Please click &lt;a href=&apos;%3&apos;&gt;here&lt;/a&gt; to download the update.</source>
+        <translation>Нова %1 версія %2 доступна. Будь ласка, клацніть &lt;a href=&apos;%3&apos;&gt;тут&lt;/a&gt; для звантаження оновлення.</translation>
+    </message>
+    <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="152"/>
-        <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; to download the update manually.</source>
-        <translation>Неможливо завантажити оновлення. Будь ласка, клацніть &lt;a href=&apos;%1&apos;&gt;тут&lt;/a&gt;, щоб самостійно завантажити оновлення.</translation>
+        <source>Could not download update. Please open %1 to download the update manually.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="154"/>
@@ -2440,13 +2450,8 @@ for additional privileges during the process.</source>
         <translation>Не вдалося перевірити наявність оновлень. </translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="151"/>
-        <source>New %1 version %2 is available. Please click &lt;a href=&apos;%3&apos;&gt;here&lt;/a&gt; to download the update.</source>
-        <translation>Нова %1 версія %2 доступна. Будь ласка, клацніть &lt;a href=&apos;%3&apos;&gt;тут&lt;/a&gt; для звантаження оновлення.</translation>
-    </message>
-    <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="156"/>
-        <source>New %1 is available. Please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt; to download the update.</source>
+        <source>New %1 is available. Please open %2 to download the update.</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -2458,6 +2463,11 @@ for additional privileges during the process.</source>
         <location filename="../src/gui/updater/ocupdater.cpp" line="160"/>
         <source>Update status is unknown: Did not check for new updates.</source>
         <translation>Статус оновлення невідомий: Не вдалося перевірити наявність оновлень.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="156"/>
+        <source>New %1 is available. Please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt; to download the update.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="164"/>

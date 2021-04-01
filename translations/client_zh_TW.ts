@@ -2453,6 +2453,11 @@ for additional privileges during the process.</source>
         <translation>%1 的版本 %2 已經可以安裝。請重新啟動應用程式開始安裝更新。</translation>
     </message>
     <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="152"/>
+        <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; to download the update manually.</source>
+        <translation>無法下載更新。請點擊&lt;a href=&apos;%1&apos;&gt;此處&lt;/a&gt;以手動下載更新。</translation>
+    </message>
+    <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="148"/>
         <source>Downloading %1. Please wait …</source>
         <translation>正在下載 %1。請稍候……</translation>
@@ -2463,9 +2468,14 @@ for additional privileges during the process.</source>
         <translation>%1 已經可以安裝。請重新啟動應用程式開始安裝更新。</translation>
     </message>
     <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="151"/>
+        <source>New %1 version %2 is available. Please click &lt;a href=&apos;%3&apos;&gt;here&lt;/a&gt; to download the update.</source>
+        <translation>新的 %1 版本 %2 可更新。請點擊&lt;a href=&apos;%3&apos;&gt;此處&lt;/a&gt;以下載更新。</translation>
+    </message>
+    <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="152"/>
-        <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; to download the update manually.</source>
-        <translation>無法下載更新。請點擊&lt;a href=&apos;%1&apos;&gt;此處&lt;/a&gt;以手動下載更新。</translation>
+        <source>Could not download update. Please open %1 to download the update manually.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="154"/>
@@ -2473,14 +2483,9 @@ for additional privileges during the process.</source>
         <translation>無法檢查新更新。</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="151"/>
-        <source>New %1 version %2 is available. Please click &lt;a href=&apos;%3&apos;&gt;here&lt;/a&gt; to download the update.</source>
-        <translation>新的 %1 版本 %2 可更新。請點擊&lt;a href=&apos;%3&apos;&gt;此處&lt;/a&gt;以下載更新。</translation>
-    </message>
-    <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="156"/>
-        <source>New %1 is available. Please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt; to download the update.</source>
-        <translation>新版本 %1 可更新，請點擊&lt;a href=&apos;%2&apos;&gt;此處&lt;/a&gt;下載更新。</translation>
+        <source>New %1 is available. Please open %2 to download the update.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="158"/>
@@ -2491,6 +2496,11 @@ for additional privileges during the process.</source>
         <location filename="../src/gui/updater/ocupdater.cpp" line="160"/>
         <source>Update status is unknown: Did not check for new updates.</source>
         <translation>更新狀態未知：無法檢查是否有新更新。</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="156"/>
+        <source>New %1 is available. Please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt; to download the update.</source>
+        <translation>新版本 %1 可更新，請點擊&lt;a href=&apos;%2&apos;&gt;此處&lt;/a&gt;下載更新。</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="164"/>

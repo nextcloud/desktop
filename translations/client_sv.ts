@@ -2439,6 +2439,11 @@ ytterligare rättigheter under processen.</translation>
         <translation>%1 version %2 tillgänglig. Starta om programmet för att starta uppdateringen.</translation>
     </message>
     <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="152"/>
+        <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; to download the update manually.</source>
+        <translation>Kunde inte hämta uppdateringen. Klicka &lt;a href=&apos;%1&apos;&gt;här&lt;/a&gt; för att hämta uppdateringen manuellt.</translation>
+    </message>
+    <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="148"/>
         <source>Downloading %1. Please wait …</source>
         <translation>laddar ner %1. Vänta …</translation>
@@ -2449,9 +2454,14 @@ ytterligare rättigheter under processen.</translation>
         <translation>%1 tillgänglig. Starta om appen för att starta uppdateringen.</translation>
     </message>
     <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="151"/>
+        <source>New %1 version %2 is available. Please click &lt;a href=&apos;%3&apos;&gt;here&lt;/a&gt; to download the update.</source>
+        <translation>Ny %1 version %2 är tillgänglig. Vänligen klicka &lt;a href=&apos;%3&apos;&gt;här&lt;/a&gt; för att hämta uppdateringen.</translation>
+    </message>
+    <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="152"/>
-        <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; to download the update manually.</source>
-        <translation>Kunde inte hämta uppdateringen. Klicka &lt;a href=&apos;%1&apos;&gt;här&lt;/a&gt; för att hämta uppdateringen manuellt.</translation>
+        <source>Could not download update. Please open %1 to download the update manually.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="154"/>
@@ -2459,14 +2469,9 @@ ytterligare rättigheter under processen.</translation>
         <translation>Kunde inte söka efter uppdateringar.</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="151"/>
-        <source>New %1 version %2 is available. Please click &lt;a href=&apos;%3&apos;&gt;here&lt;/a&gt; to download the update.</source>
-        <translation>Ny %1 version %2 är tillgänglig. Vänligen klicka &lt;a href=&apos;%3&apos;&gt;här&lt;/a&gt; för att hämta uppdateringen.</translation>
-    </message>
-    <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="156"/>
-        <source>New %1 is available. Please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt; to download the update.</source>
-        <translation>Ny %1 är tillgänglig. Klicka &lt;a href=&apos;%2&apos;&gt;här&lt;/a&gt; för att ladda ner uppdateringen.</translation>
+        <source>New %1 is available. Please open %2 to download the update.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="158"/>
@@ -2477,6 +2482,11 @@ ytterligare rättigheter under processen.</translation>
         <location filename="../src/gui/updater/ocupdater.cpp" line="160"/>
         <source>Update status is unknown: Did not check for new updates.</source>
         <translation>Uppdateringsstatus är okänd: Gjorde ingen kontroll av nya uppdateringar.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="156"/>
+        <source>New %1 is available. Please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt; to download the update.</source>
+        <translation>Ny %1 är tillgänglig. Klicka &lt;a href=&apos;%2&apos;&gt;här&lt;/a&gt; för att ladda ner uppdateringen.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="164"/>
