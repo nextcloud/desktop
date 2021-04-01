@@ -2434,6 +2434,11 @@ for additional privileges during the process.</source>
         <translation>%1 je versio %2 disponeblas. Restartigu la aplikaĵon por ekĝisdatigi.</translation>
     </message>
     <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="152"/>
+        <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; to download the update manually.</source>
+        <translation>Ne eblis elŝuti la ĝisdatigon. Bv. alklaki &lt;a href=&apos;%1&apos;&gt;ĉi tie&lt;/a&gt; por elŝuti la ĝisdatigon permane.</translation>
+    </message>
+    <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="148"/>
         <source>Downloading %1. Please wait …</source>
         <translation type="unfinished"/>
@@ -2444,9 +2449,14 @@ for additional privileges during the process.</source>
         <translation type="unfinished"/>
     </message>
     <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="151"/>
+        <source>New %1 version %2 is available. Please click &lt;a href=&apos;%3&apos;&gt;here&lt;/a&gt; to download the update.</source>
+        <translation>Nova %1 (versio %2) disponeblas. Alklaku &lt;a href=&apos;%3&apos;&gt;ĉi tie&lt;/a&gt; por elŝuti la ĝisdatigon.</translation>
+    </message>
+    <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="152"/>
-        <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; to download the update manually.</source>
-        <translation>Ne eblis elŝuti la ĝisdatigon. Bv. alklaki &lt;a href=&apos;%1&apos;&gt;ĉi tie&lt;/a&gt; por elŝuti la ĝisdatigon permane.</translation>
+        <source>Could not download update. Please open %1 to download the update manually.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="154"/>
@@ -2454,13 +2464,8 @@ for additional privileges during the process.</source>
         <translation>Ne eblis kontroli, ĉu estas novaj ĝisdatigoj.</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="151"/>
-        <source>New %1 version %2 is available. Please click &lt;a href=&apos;%3&apos;&gt;here&lt;/a&gt; to download the update.</source>
-        <translation>Nova %1 (versio %2) disponeblas. Alklaku &lt;a href=&apos;%3&apos;&gt;ĉi tie&lt;/a&gt; por elŝuti la ĝisdatigon.</translation>
-    </message>
-    <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="156"/>
-        <source>New %1 is available. Please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt; to download the update.</source>
+        <source>New %1 is available. Please open %2 to download the update.</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -2472,6 +2477,11 @@ for additional privileges during the process.</source>
         <location filename="../src/gui/updater/ocupdater.cpp" line="160"/>
         <source>Update status is unknown: Did not check for new updates.</source>
         <translation>Stato pri ĝisdatigoj estas nekonata: ne eblis kontroli, ĉu estas novaj ĝisdatigoj.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="156"/>
+        <source>New %1 is available. Please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt; to download the update.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="164"/>

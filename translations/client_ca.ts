@@ -2426,6 +2426,11 @@ for additional privileges during the process.</source>
         <translation>Està disponible la versió %2 del %1. Reinicieu l&apos;aplicació per a iniciar l&apos;actualització.</translation>
     </message>
     <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="152"/>
+        <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; to download the update manually.</source>
+        <translation>No s&apos;ha pogut baixar l&apos;actualització. Feu clic &lt;a href=&apos;%1&apos;&gt;aquí&lt;/a&gt; per a baixar l&apos;actualització manualment.</translation>
+    </message>
+    <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="148"/>
         <source>Downloading %1. Please wait …</source>
         <translation>S&apos;està baixant la versió %1. Espereu...</translation>
@@ -2436,9 +2441,14 @@ for additional privileges during the process.</source>
         <translation>Hi ha disponible la versió %1. Reinicieu l&apos;aplicació per a iniciar l&apos;actualització.</translation>
     </message>
     <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="151"/>
+        <source>New %1 version %2 is available. Please click &lt;a href=&apos;%3&apos;&gt;here&lt;/a&gt; to download the update.</source>
+        <translation>Hi ha disponible la versió %2 del %1. Feu clic &lt;a href=&apos;%3&apos;&gt;aquí&lt;/a&gt; per a baixar l&apos;actualització.</translation>
+    </message>
+    <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="152"/>
-        <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; to download the update manually.</source>
-        <translation>No s&apos;ha pogut baixar l&apos;actualització. Feu clic &lt;a href=&apos;%1&apos;&gt;aquí&lt;/a&gt; per a baixar l&apos;actualització manualment.</translation>
+        <source>Could not download update. Please open %1 to download the update manually.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="154"/>
@@ -2446,14 +2456,9 @@ for additional privileges during the process.</source>
         <translation>No s&apos;ha pogut comprovar si hi ha noves actualitzacions.</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="151"/>
-        <source>New %1 version %2 is available. Please click &lt;a href=&apos;%3&apos;&gt;here&lt;/a&gt; to download the update.</source>
-        <translation>Hi ha disponible la versió %2 del %1. Feu clic &lt;a href=&apos;%3&apos;&gt;aquí&lt;/a&gt; per a baixar l&apos;actualització.</translation>
-    </message>
-    <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="156"/>
-        <source>New %1 is available. Please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt; to download the update.</source>
-        <translation>Hi ha disponible la nova versió %1. Feu clic &lt;a href=&apos;%2&apos;&gt;aquí&lt;/a&gt; per a baixar l&apos;actualització.</translation>
+        <source>New %1 is available. Please open %2 to download the update.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="158"/>
@@ -2464,6 +2469,11 @@ for additional privileges during the process.</source>
         <location filename="../src/gui/updater/ocupdater.cpp" line="160"/>
         <source>Update status is unknown: Did not check for new updates.</source>
         <translation>Es desconeix l&apos;estat de les actualitzacions: no s&apos;ha comprovat si hi ha actualitzacions noves.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="156"/>
+        <source>New %1 is available. Please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt; to download the update.</source>
+        <translation>Hi ha disponible la nova versió %1. Feu clic &lt;a href=&apos;%2&apos;&gt;aquí&lt;/a&gt; per a baixar l&apos;actualització.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="164"/>

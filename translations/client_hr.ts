@@ -2449,6 +2449,11 @@ dodatne ovlasti tijekom postupka.</translation>
         <translation>%1 inačica %2 je dostupna. Ponovno pokrenite aplikaciju kako biste pokrenuli ažuriranje.</translation>
     </message>
     <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="152"/>
+        <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; to download the update manually.</source>
+        <translation>Nije moguće preuzeti ažuriranje. Kliknite &lt;a href=&apos;%1&apos;&gt;ovdje&lt;/a&gt; kako biste ručno preuzeli ažuriranje.</translation>
+    </message>
+    <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="148"/>
         <source>Downloading %1. Please wait …</source>
         <translation>Preuzimanje %1. Pričekajte…</translation>
@@ -2459,9 +2464,14 @@ dodatne ovlasti tijekom postupka.</translation>
         <translation>%1 je dostupan. Ponovno pokrenite aplikaciju kako biste pokrenuli ažuriranje.</translation>
     </message>
     <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="151"/>
+        <source>New %1 version %2 is available. Please click &lt;a href=&apos;%3&apos;&gt;here&lt;/a&gt; to download the update.</source>
+        <translation>Dostupna je inačica %1 %2. Kliknite &lt;a href=&apos;%3&apos;&gt;ovdje&lt;/a&gt; za preuzimanje ažuriranja.</translation>
+    </message>
+    <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="152"/>
-        <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; to download the update manually.</source>
-        <translation>Nije moguće preuzeti ažuriranje. Kliknite &lt;a href=&apos;%1&apos;&gt;ovdje&lt;/a&gt; kako biste ručno preuzeli ažuriranje.</translation>
+        <source>Could not download update. Please open %1 to download the update manually.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="154"/>
@@ -2469,14 +2479,9 @@ dodatne ovlasti tijekom postupka.</translation>
         <translation>Nije moguće provjeriti ima li novih ažuriranja.</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="151"/>
-        <source>New %1 version %2 is available. Please click &lt;a href=&apos;%3&apos;&gt;here&lt;/a&gt; to download the update.</source>
-        <translation>Dostupna je inačica %1 %2. Kliknite &lt;a href=&apos;%3&apos;&gt;ovdje&lt;/a&gt; za preuzimanje ažuriranja.</translation>
-    </message>
-    <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="156"/>
-        <source>New %1 is available. Please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt; to download the update.</source>
-        <translation>Dostupan je %1. Kliknite &lt;a href=’%2’&gt;ovdje&lt;/a&gt; za preuzimanje ažuriranja.</translation>
+        <source>New %1 is available. Please open %2 to download the update.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="158"/>
@@ -2487,6 +2492,11 @@ dodatne ovlasti tijekom postupka.</translation>
         <location filename="../src/gui/updater/ocupdater.cpp" line="160"/>
         <source>Update status is unknown: Did not check for new updates.</source>
         <translation>Status ažuriranja je nepoznat: provjera ažuriranja nije izvršena.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="156"/>
+        <source>New %1 is available. Please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt; to download the update.</source>
+        <translation>Dostupan je %1. Kliknite &lt;a href=’%2’&gt;ovdje&lt;/a&gt; za preuzimanje ažuriranja.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="164"/>
