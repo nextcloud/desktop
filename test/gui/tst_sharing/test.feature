@@ -87,3 +87,53 @@ Feature: Sharing
         And user "Alice" has updated the share permissions on the server for folder "/simple-folder" to "read" for user "Brian"
         When user "Brian" opens the sharing dialog of "%client_sync_path%/Shares/simple-folder" using the client-UI
         Then the error text "The file can not be shared because it was shared without sharing permission." should be displayed in the sharing dialog
+
+
+    Scenario: simple sharing of a file by public link without password
+        Given user "Alice" has been created on the server with default attributes
+        And user "Alice" has set up a client with these settings and password "1234":
+            """
+            [Accounts]
+            0\Folders\1\ignoreHiddenFiles=true
+            0\Folders\1\localPath=%client_sync_path%
+            0\Folders\1\paused=false
+            0\Folders\1\targetPath=/
+            0\Folders\1\version=2
+            0\Folders\1\virtualFilesMode=off
+            0\dav_user=alice
+            0\display-name=Alice
+            0\http_oauth=false
+            0\http_user=alice
+            0\url=%local_server%
+            0\user=Alice
+            0\version=1
+            version=2
+            """
+        When the user creates a new public link for file "%client_sync_path%/textfile0.txt" without password using the client-UI
+        Then as user "Alice" the file "textfile0.txt" should have a public link on the server
+        And the public should be able to download the file "textfile0.txt" without password from the last created public link by "Alice" on the server
+
+
+    Scenario: simple sharing of a file by public link with password
+        Given user "Alice" has been created on the server with default attributes
+        And user "Alice" has set up a client with these settings and password "1234":
+            """
+            [Accounts]
+            0\Folders\1\ignoreHiddenFiles=true
+            0\Folders\1\localPath=%client_sync_path%
+            0\Folders\1\paused=false
+            0\Folders\1\targetPath=/
+            0\Folders\1\version=2
+            0\Folders\1\virtualFilesMode=off
+            0\dav_user=alice
+            0\display-name=Alice
+            0\http_oauth=false
+            0\http_user=alice
+            0\url=%local_server%
+            0\user=Alice
+            0\version=1
+            version=2
+            """
+        When the user creates a new public link for file "%client_sync_path%/textfile0.txt" with password "pass123" using the client-UI
+        Then as user "Alice" the file "textfile0.txt" should have a public link on the server
+        And the public should be able to download the file "textfile0.txt" with password "pass123" from the last created public link by "Alice" on the server

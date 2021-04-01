@@ -233,6 +233,13 @@ def step(context, stepPart1, stepPart2):
     )
 
 
+@Then(r"^(.*) on the server", regexp=True)
+def step(context, stepPart1):
+    executeStepThroughMiddleware(
+        context,
+        "Then " + stepPart1
+    )
+
 @Then('the file "|any|" should exist on the file system with the following content')
 def step(context, filePath):
     expected = "\n".join(context.multiLineText)
@@ -333,16 +340,23 @@ def step(context, number):
     snooze(10)
     clickTab(waitForObject(names.stack_QTabWidget), "Not Synced ({})".format(number))
 
-@When('the user opens the public links dialog of "|any|" using the client-UI')
-def step(context, resource):
+
+def openPublicLinkDialog(context, resource):
     resource = substituteInLineCodes(context, resource).replace('//','/')
     waitFor(lambda: isFileSynced(resource), context.userData['clientSyncTimeout'] * 1000)
     waitFor(lambda: shareResource(resource), context.userData['clientSyncTimeout'] * 1000)
     mouseClick(waitForObject(names.qt_tabwidget_tabbar_Public_Links_TabItem), 0, 0, Qt.NoModifier, Qt.LeftButton)
 
+
+@When('the user opens the public links dialog of "|any|" using the client-UI')
+def step(context, resource):
+    openPublicLinkDialog(context,resource)
+
+
 @When("the user toggles the password protection using the client-UI")
 def step(context):
     clickButton(waitForObject(names.oCC_ShareLinkWidget_checkBox_password_QCheckBox))
+
 
 @Then('the progress indicator should not be visible in the client-UI')
 def step(context):
@@ -350,16 +364,31 @@ def step(context):
         waitForObjectExists(names.oCC_ShareLinkWidget_checkBox_password_QProgressIndicator).visible,
         False
     )
-  
+
+
 @When('user "|any|" opens the sharing dialog of "|any|" using the client-UI')
 def step(context, receiver, resource):
     resource = substituteInLineCodes(context, resource).replace('//','/')
     waitFor(lambda: isFolderSynced(resource), context.userData['clientSyncTimeout'] * 1000)
-    waitFor(lambda: shareResource(resource), context.userData['clientSyncTimeout'] * 1000)   
-    
+
 
 @Then('the error text "|any|" should be displayed in the sharing dialog')
 def step(context, fileShareContext):
     test.compare(str(waitForObjectExists(names.sharingDialog_The_file_can_not_be_shared_because_it_was_shared_without_sharing_permission_QLabel).text), fileShareContext)
 
-                 
+
+@When('the user creates a new public link for file "|any|" without password using the client-UI')
+def step(context, resource):
+    resource = openPublicLinkDialog(context, resource)
+    test.compare(str(waitForObjectExists(names.sharingDialog_label_name_QLabel).text), resource.replace(context.userData['clientSyncPath'], ''))
+    clickButton(waitForObject(names.oCC_ShareLinkWidget_createShareButton_QPushButton))
+
+
+@When('the user creates a new public link for file "|any|" with password "|any|" using the client-UI')
+def step(context, resource, password):
+    resource = openPublicLinkDialog(context, resource)
+    test.compare(str(waitForObjectExists(names.sharingDialog_label_name_QLabel).text), resource.replace(context.userData['clientSyncPath'], ''))
+    clickButton(waitForObject(names.oCC_ShareLinkWidget_checkBox_password_QCheckBox))
+    mouseClick(waitForObject(names.oCC_ShareLinkWidget_lineEdit_password_QLineEdit), 0, 0, Qt.NoModifier, Qt.LeftButton)
+    type(waitForObject(names.oCC_ShareLinkWidget_lineEdit_password_QLineEdit), password)
+    clickButton(waitForObject(names.oCC_ShareLinkWidget_createShareButton_QPushButton))
