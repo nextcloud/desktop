@@ -2471,7 +2471,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="152"/>
         <source>Could not download update. Please open %1 to download the update manually.</source>
-        <translation type="unfinished"/>
+        <translation>Impossibile scaricare l&apos;aggiornamento. Apri %1 per scaricare l&apos;aggiornamento manualmente.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="154"/>
@@ -2481,7 +2481,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="156"/>
         <source>New %1 is available. Please open %2 to download the update.</source>
-        <translation type="unfinished"/>
+        <translation>Il nuovo %1 è disponibile. Apri %2 per scaricare l&apos;aggiornamento.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="158"/>
@@ -5077,7 +5077,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="92"/>
         <source>Current user status is online</source>
-        <translation>Lo stato attuale dell&apos;utente è online</translation>
+        <translation>Lo stato attuale dell&apos;utente è in linea</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="92"/>
@@ -5261,7 +5261,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/Window.qml" line="360"/>
         <source>Current user status is online</source>
-        <translation>Lo stato attuale dell&apos;utente è online</translation>
+        <translation>Lo stato attuale dell&apos;utente è in linea</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="360"/>

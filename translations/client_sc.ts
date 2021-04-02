@@ -974,7 +974,7 @@ Custa atzione at a firmare cale si siat sincronizatzione immoe in esecutzione.</
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="299"/>
         <source>Filename encoding is not valid</source>
-        <translation>Sa codìfica de su nùmene de s&apos;archìviu </translation>
+        <translation>Sa codìfica de su nùmene de s&apos;archìviu no est vàlida</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="318"/>
