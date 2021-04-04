@@ -404,7 +404,7 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="566"/>
         <source>Disable virtual file support …</source>
-        <translation>停用虛擬檔案支援。。。</translation>
+        <translation>停用虛擬檔案支援...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="574"/>
@@ -542,7 +542,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="793"/>
         <source>Connecting to %1 …</source>
-        <translation>正在連線到 %1。。。</translation>
+        <translation>正在連線到 %1...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="796"/>
@@ -676,7 +676,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="51"/>
         <source>Browse …</source>
-        <translation>搜尋中。。。</translation>
+        <translation>搜尋中...</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="60"/>
@@ -1501,7 +1501,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="191"/>
         <source>Fetching folder list from server …</source>
-        <translation>正在從伺服器取得資料清單。。。</translation>
+        <translation>正在從伺服器取得資料清單...</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="217"/>
@@ -1621,7 +1621,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1085"/>
         <source>Waiting …</source>
-        <translation>請稍後。。。</translation>
+        <translation>請稍後...</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folderstatusmodel.cpp" line="1087"/>
@@ -1631,7 +1631,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1093"/>
         <source>Preparing to sync …</source>
-        <translation>正在準備同步。。。</translation>
+        <translation>正在準備同步...</translation>
     </message>
 </context>
 <context>
@@ -1905,7 +1905,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.ui" line="229"/>
         <source>Create Debug Archive …</source>
-        <translation>建立除錯壓縮檔。。。</translation>
+        <translation>建立除錯壓縮檔...</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="149"/>
@@ -2118,7 +2118,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="58"/>
         <source>&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0 or any later version.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;使用GNU General Public License（GPL）Version 2。0 或是更新的版本授權使用&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;使用GNU General Public License（GPL）Version 2.0 或是更新的版本授權使用&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -2444,7 +2444,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="143"/>
         <source>Downloading version %1. Please wait …</source>
-        <translation>版本 %1，正在下載，請稍後。。。</translation>
+        <translation>版本 %1，正在下載，請稍後...</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="145"/>
@@ -2459,7 +2459,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="148"/>
         <source>Downloading %1. Please wait …</source>
-        <translation>正在下載 %1。請稍候。。。</translation>
+        <translation>正在下載 %1。請稍候...</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="150"/>
@@ -2489,7 +2489,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="158"/>
         <source>Checking update server …</source>
-        <translation>正在檢查更新。。。</translation>
+        <translation>正在檢查更新...</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="160"/>
@@ -2532,7 +2532,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="54"/>
         <source>Connect …</source>
-        <translation>連線中。。。</translation>
+        <translation>連線中...</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="88"/>
@@ -2792,7 +2792,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="438"/>
         <source>Creating local sync folder %1 …</source>
-        <translation>正在新增本機同步資料夾 %1。。。</translation>
+        <translation>正在新增本機同步資料夾 %1...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="442"/>
@@ -3424,7 +3424,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="73"/>
         <source>Loading …</source>
-        <translation>載入中。。。</translation>
+        <translation>載入中...</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="79"/>
@@ -3772,7 +3772,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi.cpp" line="754"/>
         <source>Select new location …</source>
-        <translation>選擇新位址。。。</translation>
+        <translation>選擇新位址...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="768"/>
@@ -3834,17 +3834,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi.cpp" line="916"/>
         <source>Resolve conflict …</source>
-        <translation>解決抵觸 。。。</translation>
+        <translation>解決抵觸 ...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="920"/>
         <source>Move and rename …</source>
-        <translation>移動並重新命名。。。</translation>
+        <translation>移動並重新命名...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="923"/>
         <source>Move, rename and upload …</source>
-        <translation>移動、重新命名並上傳。。。</translation>
+        <translation>移動、重新命名並上傳...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="925"/>
@@ -3854,7 +3854,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi.cpp" line="931"/>
         <source>Move and upload …</source>
-        <translation>移動並上傳。。。</translation>
+        <translation>移動並上傳...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="932"/>
@@ -4696,7 +4696,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="415"/>
         <source>Log in …</source>
-        <translation>登入中。。。</translation>
+        <translation>登入中...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="415"/>
@@ -4776,7 +4776,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="780"/>
         <source>Settings …</source>
-        <translation>設定中。。。</translation>
+        <translation>設定中...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="781"/>
