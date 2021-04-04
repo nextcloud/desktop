@@ -2478,7 +2478,7 @@ vragen om extra autorisaties tijdens installatie.</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="152"/>
         <source>Could not download update. Please open %1 to download the update manually.</source>
-        <translation type="unfinished"/>
+        <translation>Kon de update niet downloaden. Open %1  om de update handmatig op te halen.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="154"/>
@@ -2488,7 +2488,7 @@ vragen om extra autorisaties tijdens installatie.</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="156"/>
         <source>New %1 is available. Please open %2 to download the update.</source>
-        <translation type="unfinished"/>
+        <translation>Nieuwe %1 beschikbaar. Open %2 om de update te downloaden.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="158"/>
