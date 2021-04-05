@@ -20,9 +20,7 @@
 
 #include "common/asserts.h"
 #include "common/checksums.h"
-#ifdef Q_OS_WIN
 #include "common/filesystembase.h"
-#endif
 
 #include <csync_exclude.h>
 #include "vio/csync_vio_local.h"

@@ -13,10 +13,8 @@
  */
 
 #include "discovery.h"
-#include "common/syncjournaldb.h"
-#ifdef Q_OS_WIN
 #include "common/filesystembase.h"
-#endif
+#include "common/syncjournaldb.h"
 #include "syncfileitem.h"
 #include <QDebug>
 #include <algorithm>
