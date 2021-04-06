@@ -55,12 +55,9 @@ void ProtocolItem::setExtraData(QTreeWidgetItem *item, const ExtraData &data)
     item->setData(0, Qt::UserRole, QVariant::fromValue(data));
 }
 
-ProtocolItem *ProtocolItem::create(const QString &folder, const SyncFileItem &item)
+ProtocolItem *ProtocolItem::create(const QString &folderName, const SyncFileItem &item)
 {
-    auto f = FolderMan::instance()->folder(folder);
-    if (!f) {
-        return nullptr;
-    }
+    auto folder = FolderMan::instance()->folder(folderName);
 
     QStringList columns;
     QDateTime timestamp = QDateTime::currentDateTime();
@@ -69,10 +66,13 @@ ProtocolItem *ProtocolItem::create(const QString &folder, const SyncFileItem &it
 
     columns << timeStr;
     columns << Utility::fileNameForGuiUse(item._originalFile);
-    columns << f->shortGuiLocalPath();
+    columns << (folder ? folder->shortGuiLocalPath() : QDir::toNativeSeparators(folderName));
 
     // If the error string is set, it's prefered because it is a useful user message.
     QString message = item._errorString;
+    if (message.isEmpty()) {
+        message = item._messageString;
+    }
     if (message.isEmpty()) {
         message = Progress::asResultString(item);
     }
@@ -103,7 +103,7 @@ ProtocolItem *ProtocolItem::create(const QString &folder, const SyncFileItem &it
     ProtocolItem::ExtraData data;
     data.timestamp = timestamp;
     data.path = item.destination();
-    data.folderName = folder;
+    data.folderName = folderName;
     data.status = item._status;
     data.size = item._size;
     data.direction = item._direction;

@@ -1001,7 +1001,7 @@ void Folder::slotEmitFinishedDelayed()
 void Folder::slotTransmissionProgress(const ProgressInfo &pi)
 {
     emit progressInfo(pi);
-    ProgressDispatcher::instance()->setProgressInfo(alias(), pi);
+    emit ProgressDispatcher::instance()->progressInfo(alias(), pi);
 }
 
 // a item is completed: count the errors and forward to the ProgressDispatcher

@@ -30,6 +30,9 @@ public:
     void start();
 
 private:
+    void fail(const QString &error);
+
+    QString _localPath;
     QSharedPointer<SocketApiJobV2> _apiJob;
     QStringList _syncedFiles;
 };
