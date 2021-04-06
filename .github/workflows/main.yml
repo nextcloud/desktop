@@ -4,12 +4,12 @@ on:
   pull_request:
     branches:
       - "master"
-      - "2.7"
+      - "2.8"
     
   push:
     branches:
       - "master"
-      - "2.7"
+      - "2.8"
 
 defaults:
   run:
