@@ -17,6 +17,7 @@
 
 #include "accountmanager.h"
 #include "common/syncjournaldb.h"
+#include "csync_exclude.h"
 #include "progressdispatcher.h"
 #include "syncengine.h"
 
@@ -57,6 +58,7 @@ void SocketUploadJob::start()
     }
 
     const auto pattern = _apiJob->arguments()[QLatin1String("pattern")].toString();
+    const auto excludes = _apiJob->arguments()[QLatin1String("excludes")].toArray();
     const auto accname = _apiJob->arguments()[QLatin1String("account")][QLatin1String("name")].toString();
     AccountStatePtr account;
     account = AccountManager::instance()->account(accname);
@@ -81,6 +83,10 @@ void SocketUploadJob::start()
     auto db = new SyncJournalDb(tmp->fileName(), this);
     auto engine = new SyncEngine(account->account(), _localPath.endsWith(QLatin1Char('/')) ? _localPath : _localPath + QLatin1Char('/'), remotePath, db);
     engine->setParent(db);
+
+    for (const auto &i : excludes) {
+        engine->excludedFiles().addManualExclude(i.toString());
+    }
 
     connect(engine, &OCC::SyncEngine::transmissionProgress, this, [this](const ProgressInfo &info) {
         Q_EMIT ProgressDispatcher::instance()->progressInfo(_localPath, info);
