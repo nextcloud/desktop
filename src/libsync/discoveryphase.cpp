@@ -20,7 +20,6 @@
 
 #include "common/asserts.h"
 #include "common/checksums.h"
-#include "common/filesystembase.h"
 
 #include <csync_exclude.h>
 #include "vio/csync_vio_local.h"
@@ -306,13 +305,7 @@ void DiscoverySingleLocalDirectoryJob::run() {
         i.inode = dirent->inode;
         i.isDirectory = dirent->type == ItemTypeDirectory;
         i.isHidden = dirent->is_hidden;
-#ifdef Q_OS_WIN
-        // exclude ".lnk" files as they are not essential, but, causing troubles when enabling the VFS due to QFileInfo::isDir() and other methods are freezing, which causes the ".lnk" files to start hydrating and freezing the app eventually.
-        const bool isWindowsShortcut = dirent->type == ItemTypeFile && FileSystem::isLnkFile(i.name);
-#else
-        const bool isWindowsShortcut = false;
-#endif
-        i.isSymLink = dirent->type == ItemTypeSoftLink || isWindowsShortcut;
+        i.isSymLink = dirent->type == ItemTypeSoftLink;
         i.isVirtualFile = dirent->type == ItemTypeVirtualFile || dirent->type == ItemTypeVirtualFileDownload;
         i.type = dirent->type;
         results.push_back(i);
