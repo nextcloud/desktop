@@ -180,11 +180,11 @@ Q_LOGGING_CATEGORY(lcPublicLink, "nextcloud.gui.socketapi.publiclink", QtInfoMsg
 void SocketListener::sendMessage(const QString &message, bool doWait) const
 {
     if (!socket) {
-        qCInfo(lcSocketApi) << "Not sending message to dead socket:" << message;
+        qCWarning(lcSocketApi) << "Not sending message to dead socket:" << message;
         return;
     }
 
-    qCInfo(lcSocketApi) << "Sending SocketAPI message -->" << message << "to" << socket;
+    qCDebug(lcSocketApi) << "Sending SocketAPI message -->" << message << "to" << socket;
     QString localMessage = message;
     if (!localMessage.endsWith(QLatin1Char('\n'))) {
         localMessage.append(QLatin1Char('\n'));
@@ -313,6 +313,7 @@ void SocketApi::slotNewConnection()
     foreach (Folder *f, FolderMan::instance()->map()) {
         if (f->canSync()) {
             QString message = buildRegisterPathMessage(removeTrailingSlash(f->path()));
+            qCInfo(lcSocketApi) << "Trying to send SocketAPI Register Path Message -->" << message << "to" << listener.socket;
             listener.sendMessage(message);
         }
     }
@@ -417,6 +418,7 @@ void SocketApi::slotRegisterPath(const QString &alias)
     if (f) {
         QString message = buildRegisterPathMessage(removeTrailingSlash(f->path()));
         foreach (auto &listener, _listeners) {
+            qCInfo(lcSocketApi) << "Trying to send SocketAPI Register Path Message -->" << message << "to" << listener.socket;
             listener.sendMessage(message);
         }
     }
