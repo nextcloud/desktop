@@ -3813,7 +3813,7 @@ Fout bij instellen pin status
         <translation>Verder delen van dit bestand is niet toegestaan</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="946"/>
+        <location filename="../src/gui/socketapi.cpp" line="948"/>
         <source>Resharing this folder is not allowed</source>
         <translation>Verder delen van deze map is niet toegestaan</translation>
     </message>

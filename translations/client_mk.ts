@@ -3773,7 +3773,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Повторно споделување на оваа датотека не е дозволено</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="946"/>
+        <location filename="../src/gui/socketapi.cpp" line="948"/>
         <source>Resharing this folder is not allowed</source>
         <translation>Повторно споделување на оваа папка не е дозволено</translation>
     </message>

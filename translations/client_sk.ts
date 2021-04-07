@@ -3786,7 +3786,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Opätovné sprístupňovanie tohto súboru je zakázané</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="946"/>
+        <location filename="../src/gui/socketapi.cpp" line="948"/>
         <source>Resharing this folder is not allowed</source>
         <translation type="unfinished"/>
     </message>
