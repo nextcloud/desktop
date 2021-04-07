@@ -385,8 +385,7 @@ void AccountSettings::slotEditCurrentLocalIgnoredFiles()
 
 void AccountSettings::openIgnoredFilesDialog(const QString & absFolderPath)
 {
-    Q_ASSERT(absFolderPath.startsWith('/'));
-    Q_ASSERT(absFolderPath.endsWith('/'));
+    Q_ASSERT(QFileInfo(absFolderPath).isAbsolute());
 
     const QString ignoreFile = absFolderPath + ".sync-exclude.lst";
     auto layout = new QVBoxLayout();
