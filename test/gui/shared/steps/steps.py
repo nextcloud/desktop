@@ -385,6 +385,7 @@ def step(context, resource):
     openPublicLinkDialog(context, resource)
     test.compare(str(waitForObjectExists(names.sharingDialog_label_name_QLabel).text), resource.replace(context.userData['clientSyncPath'], ''))
     clickButton(waitForObject(names.oCC_ShareLinkWidget_createShareButton_QPushButton))
+    waitFor(lambda: (waitForObject(names.linkShares_0_0_QModelIndex).displayText == "Public link"))
 
 
 @When('the user creates a new public link for file "|any|" with password "|any|" using the client-UI')
@@ -396,3 +397,4 @@ def step(context, resource, password):
     mouseClick(waitForObject(names.oCC_ShareLinkWidget_lineEdit_password_QLineEdit), 0, 0, Qt.NoModifier, Qt.LeftButton)
     type(waitForObject(names.oCC_ShareLinkWidget_lineEdit_password_QLineEdit), password)
     clickButton(waitForObject(names.oCC_ShareLinkWidget_createShareButton_QPushButton))
+    waitFor(lambda: (findObject(names.linkShares_0_0_QModelIndex).displayText == "Public link"))
