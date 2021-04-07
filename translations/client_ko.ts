@@ -3783,7 +3783,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>이 파일을 다시 공유할 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="946"/>
+        <location filename="../src/gui/socketapi.cpp" line="948"/>
         <source>Resharing this folder is not allowed</source>
         <translation type="unfinished"/>
     </message>

@@ -3808,7 +3808,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Повторното споделяне на този файл не е разрешено</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="946"/>
+        <location filename="../src/gui/socketapi.cpp" line="948"/>
         <source>Resharing this folder is not allowed</source>
         <translation>Повторното споделяне на тази папка не е разрешено</translation>
     </message>
