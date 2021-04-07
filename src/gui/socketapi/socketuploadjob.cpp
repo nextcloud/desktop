@@ -15,11 +15,13 @@
 #include "socketuploadjob.h"
 #include "socketapi_p.h"
 
+#include "application.h"
 #include "accountmanager.h"
 #include "common/syncjournaldb.h"
 #include "csync_exclude.h"
 #include "progressdispatcher.h"
 #include "syncengine.h"
+#include "theme.h"
 
 #include <QDir>
 #include <QFileInfo>
@@ -28,19 +30,6 @@
 #include <QTemporaryFile>
 
 using namespace OCC;
-
-namespace {
-
-// create a fake SyncFileItemPtr to display a message in the protocol
-void logMessage(const QString &localPath, const QString &message)
-{
-    auto item = SyncFileItemPtr::create();
-    item->_status = SyncFileItem::Success;
-    item->_messageString = message;
-    item->_responseTimeStamp = QDateTime::currentDateTime().toString(Qt::RFC2822Date).toUtf8();
-    Q_EMIT ProgressDispatcher::instance()->itemCompleted(QDir::toNativeSeparators(localPath), item);
-}
-}
 
 SocketUploadJob::SocketUploadJob(const QSharedPointer<SocketApiJobV2> &job)
     : _apiJob(job)
@@ -130,6 +119,23 @@ void SocketUploadJob::start()
 
 void SocketUploadJob::fail(const QString &error)
 {
-    logMessage(_localPath, tr("Backup of %1 failed with: %2").arg(QDir::toNativeSeparators(_localPath), error));
+    logMessage(_localPath, tr("Backup of %1 failed with: %2").arg(QDir::toNativeSeparators(_localPath), error), false);
     _apiJob->failure(error);
+}
+
+void SocketUploadJob::logMessage(const QString &localPath, const QString &message, bool ok)
+{
+    auto item = SyncFileItemPtr::create();
+    QIcon icon; // null icon will cause the default icon
+    if (ok) {
+        item->_status = SyncFileItem::Success;
+        item->_messageString = message;
+    } else {
+        icon = Theme::instance()->syncStateIcon(SyncResult::Error);
+        item->_status = SyncFileItem::FatalError;
+        item->_errorString = message;
+    }
+    ocApp()->gui()->slotShowTrayMessage(tr("%1 backup").arg(ocApp()->applicationName()), message, icon);
+    item->_responseTimeStamp = QDateTime::currentDateTime().toString(Qt::RFC2822Date).toUtf8();
+    Q_EMIT ProgressDispatcher::instance()->itemCompleted(QDir::toNativeSeparators(localPath), item);
 }

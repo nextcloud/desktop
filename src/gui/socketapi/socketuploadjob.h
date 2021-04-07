@@ -32,6 +32,9 @@ public:
 private:
     void fail(const QString &error);
 
+    // create a fake SyncFileItemPtr to display a message in the protocol
+    void logMessage(const QString &localPath, const QString &message, bool ok = true);
+
     QString _localPath;
     QSharedPointer<SocketApiJobV2> _apiJob;
     QStringList _syncedFiles;
