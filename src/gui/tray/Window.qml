@@ -452,6 +452,7 @@ Window {
 
                 HeaderButton {
                     id: trayWindowTalkButton
+                    
                     visible: UserModel.currentUser.serverHasTalk
                     icon.source: "qrc:///client/theme/white/talk-app.svg"
                     onClicked: UserModel.openCurrentAccountTalk()
@@ -464,6 +465,7 @@ Window {
                 HeaderButton {
                     id: trayWindowAppsButton
                     icon.source: "qrc:///client/theme/white/more-apps.svg"
+  
                     onClicked: {
                         if(appsMenu.count <= 0) {
                             UserModel.openCurrentAccountServer()
