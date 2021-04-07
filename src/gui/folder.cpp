@@ -462,7 +462,7 @@ void Folder::createGuiLog(const QString &filename, LogStatus status, int count,
         }
 
         if (!text.isEmpty()) {
-            logger->postOptionalGuiLog(tr("Sync Activity"), text);
+            ocApp()->gui()->slotShowOptionalTrayMessage(tr("Sync Activity"), text);
         }
     }
 }
@@ -1049,8 +1049,7 @@ void Folder::slotNewBigFolderDiscovered(const QString &newF, bool isExternal)
                                       : (tr("A folder from an external storage has been added.\n"));
         message += tr("Please go in the settings to select it if you wish to download it.");
 
-        auto logger = Logger::instance();
-        logger->postOptionalGuiLog(Theme::instance()->appNameGUI(), message);
+        ocApp()->gui()->slotShowOptionalTrayMessage(Theme::instance()->appNameGUI(), message);
     }
 }
 
@@ -1114,7 +1113,7 @@ void Folder::warnOnNewExcludedItem(const SyncJournalFileRecord &record, const QS
              "It will not be synchronized.")
               .arg(fi.filePath());
 
-    Logger::instance()->postOptionalGuiLog(Theme::instance()->appNameGUI(), message);
+    ocApp()->gui()->slotShowOptionalTrayMessage(Theme::instance()->appNameGUI(), message);
 }
 
 void Folder::slotWatcherUnreliable(const QString &message)
@@ -1128,7 +1127,7 @@ void Folder::slotWatcherUnreliable(const QString &message)
            "occasionally (every two hours by default).\n"
            "\n"
            "%1").arg(message);
-    Logger::instance()->postGuiLog(Theme::instance()->appNameGUI(), fullMessage);
+    ocApp()->gui()->slotShowGuiMessage(Theme::instance()->appNameGUI(), fullMessage);
 }
 
 void Folder::slotHydrationStarts()

@@ -53,10 +53,6 @@ public:
 
     static Logger *instance();
 
-    void postGuiLog(const QString &title, const QString &message);
-    void postOptionalGuiLog(const QString &title, const QString &message);
-    void postGuiMessage(const QString &title, const QString &message);
-
     void setLogFile(const QString &name);
     void setLogExpire(std::chrono::hours expire);
     void setLogDir(const QString &dir);
@@ -88,13 +84,6 @@ public:
         setLogRules(_logRules - rules);
     }
     void setLogRules(const QSet<QString> &rules);
-
-signals:
-    void logWindowLog(const QString &);
-
-    void guiLog(const QString &, const QString &);
-    void guiMessage(const QString &, const QString &);
-    void optionalGuiLog(const QString &, const QString &);
 
 public slots:
     void enterNextLogFile();

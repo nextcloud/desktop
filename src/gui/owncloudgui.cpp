@@ -83,13 +83,6 @@ ownCloudGui::ownCloudGui(Application *parent)
         this, &ownCloudGui::updateContextMenuNeeded);
     connect(AccountManager::instance(), &AccountManager::accountRemoved,
         this, &ownCloudGui::updateContextMenuNeeded);
-
-    connect(Logger::instance(), &Logger::guiLog,
-        this, &ownCloudGui::slotShowTrayMessage);
-    connect(Logger::instance(), &Logger::optionalGuiLog,
-        this, &ownCloudGui::slotShowOptionalTrayMessage);
-    connect(Logger::instance(), &Logger::guiMessage,
-        this, &ownCloudGui::slotShowGuiMessage);
 }
 
 ownCloudGui::~ownCloudGui()
