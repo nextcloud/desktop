@@ -3543,6 +3543,39 @@ Este é un modo novo e experimental. Se decide usalo, informe de calquera proble
     </message>
 </context>
 <context>
+    <name>OCC::SocketUploadJob</name>
+    <message>
+        <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="66"/>
+        <source>Backup of %1 started</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="69"/>
+        <source>Failed to find %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="74"/>
+        <source>Local path must be a an absolute path</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="79"/>
+        <source>Failed to create temporary database</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="100"/>
+        <source>Backup of %1 succeeded</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="133"/>
+        <source>Backup of %1 failed with: %2</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>OCC::SslButton</name>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="89"/>
