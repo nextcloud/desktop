@@ -405,10 +405,6 @@ Window {
 
                 RowLayout {
                     id: openLocalFolderRowLayout
-                    height: Style.trayWindowHeaderHeight
-                    width: height
-                    anchors.left: accountControlRowLayout.right
-                    anchors.top: accountControlRowLayout.top
                     spacing: 0
                     Layout.preferredWidth:  Style.trayWindowHeaderHeight
                     Layout.preferredHeight: Style.trayWindowHeaderHeight
@@ -418,26 +414,27 @@ Window {
                         visible: UserModel.currentUser.hasLocalFolder
                         icon.source: "qrc:///client/theme/white/folder.svg"
                         onClicked: UserModel.openCurrentAccountLocalFolder()
-                    }
-                                             
-                    Rectangle {
-                        id: folderStateIndicatorBackground
-                        width: Style.folderStateIndicatorSize
-                        height: width
-                        anchors.top: openLocalFolderButton.verticalCenter
-                        anchors.left: openLocalFolderButton.horizontalCenter
-                        color: Style.ncBlue
-                        radius: width*0.5
-                    }
+                        
+                        Rectangle {
+                            id: folderStateIndicatorBackground
+                            width: Style.folderStateIndicatorSize
+                            height: width
+                            anchors.top: openLocalFolderButton.verticalCenter
+                            anchors.left: openLocalFolderButton.horizontalCenter
+                            color: Style.ncBlue
+                            radius: width*0.5
+                            z: 1
+                        }
+                   }
 
-                    Image {
+                   Image {
                         id: folderStateIndicator
                         source: UserModel.isUserConnected(UserModel.currentUserId)
                                 ? Style.stateOnlineImageSource
                                 : Style.stateOfflineImageSource
                         cache: false
-                        x: folderStateIndicatorBackground.x
-                        y: folderStateIndicatorBackground.y
+                        anchors.top: openLocalFolderButton.verticalCenter
+                        anchors.left: openLocalFolderButton.horizontalCenter
                         
                         sourceSize.width: Style.folderStateIndicatorSize
                         sourceSize.height: Style.folderStateIndicatorSize
