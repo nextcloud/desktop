@@ -48,7 +48,7 @@ UserStatus::Status UserStatus::stringToEnum(const QString &status) const
     return preDefinedStatus.value(statusKey, Status::Online);
 }
 
-QString UserStatus::enumToUserString(Status status) const 
+QString UserStatus::enumToString(Status status) const 
 {
     switch (status) {
     case Status::Away:
@@ -93,7 +93,7 @@ void UserStatus::slotFetchUserStatusFinished(const QJsonDocument &json, int stat
     auto statusString = retrievedData.value("status").toString(); 
 
     _status = stringToEnum(statusString);
-    statusString = enumToUserString(_status);
+    statusString = enumToString(_status);
     const auto visibleStatusText = message.isEmpty() ? statusString : message;
 
     _message = QString("%1 %2").arg(emoji, visibleStatusText);

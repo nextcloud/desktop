@@ -49,7 +49,7 @@ signals:
 
 private:
     Status stringToEnum(const QString &status) const;
-    QString enumToUserString(Status status) const;
+    QString enumToString(Status status) const;
     QPointer<JsonApiJob> _job; // the currently running job
     Status _status = Status::Online;
     QString _message;
