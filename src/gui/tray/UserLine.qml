@@ -35,7 +35,7 @@ MenuItem {
                     anchors.fill: parent
                     hoverEnabled: true
                     onContainsMouseChanged: {
-                        accountStateIndicatorBackground.color = (containsMouse ? Style.button : Style.window)
+                        accountStateIndicatorBackground.color = (containsMouse ? Style.activePalette.button : Style.activePalette.window)
                     }
                     onClicked: {
                         if (!isCurrentUser) {
@@ -53,7 +53,7 @@ MenuItem {
                     Rectangle {
                         anchors.fill: parent
                         anchors.margins: 1
-                        color: parent.parent.hovered ? Style.button : "transparent"
+                        color: parent.parent.hovered ? Style.activePalette.button : "transparent"
                     }
                 }
 
@@ -76,7 +76,7 @@ MenuItem {
                             height: width
                             anchors.bottom: accountAvatar.bottom
                             anchors.right: accountAvatar.right
-                            color: Style.window
+                            color: Style.activePalette.window
                             radius: width*0.5
                         }
                         Image {
@@ -105,7 +105,7 @@ MenuItem {
                             width: 128
                             text: name
                             elide: Text.ElideRight
-                            color: Style.windowText
+                            color: Style.activePalette.windowText
                             font.pixelSize: 12
                             font.bold: true
                         }
@@ -114,7 +114,7 @@ MenuItem {
                             width: 128
                             text: server
                             elide: Text.ElideRight
-                            color: Style.windowText
+                            color: Style.activePalette.windowText
                             font.pixelSize: 10
                         }
                     }
@@ -128,7 +128,7 @@ MenuItem {
                 flat: true
 
                 icon.source: "qrc:///client/theme/more.svg"
-                icon.color: Style.windowText
+                icon.color: Style.activePalette.windowText
 
                 Accessible.role: Accessible.ButtonMenu
                 Accessible.name: qsTr("Account actions")
@@ -161,7 +161,7 @@ MenuItem {
 
                     background: Rectangle {
                         border.color: Style.menuBorder
-                        color: Style.window
+                        color: Style.activePalette.window
                         radius: 2
                     }
 
@@ -178,7 +178,7 @@ MenuItem {
                         contentItem: Label {
                             text: logOutButton.text
                             font.pixelSize: Style.topLinePixelSize
-                            color: Style.windowText
+                            color: Style.activePalette.windowText
                         }
 
                         background: Item {
@@ -187,7 +187,7 @@ MenuItem {
                             Rectangle {
                                 anchors.fill: parent
                                 anchors.margins: 1
-                                color: parent.parent.hovered ? Style.button : "transparent"
+                                color: parent.parent.hovered ? Style.activePalette.button : "transparent"
                             }
                         }
 
@@ -220,14 +220,14 @@ MenuItem {
                             Rectangle {
                                 anchors.fill: parent
                                 anchors.margins: 1
-                                color: parent.parent.hovered ? Style.button : "transparent"
+                                color: parent.parent.hovered ? Style.activePalette.button : "transparent"
                             }
                         }
 
                         contentItem: Label {
                             text: removeAccountButton.text
                             font.pixelSize: Style.topLinePixelSize
-                            color: Style.windowText
+                            color: Style.activePalette.windowText
                         }
 
 

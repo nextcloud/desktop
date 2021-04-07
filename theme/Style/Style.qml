@@ -6,12 +6,8 @@ import QtQuick 2.5
 import com.nextcloud.desktopclient 1.0
 
 Item {
-    SystemPalette { id: activePalette; colorGroup: SystemPalette.Active }
     // Colors
-    property color window: activePalette.window
-    property color windowText: activePalette.windowText
-    property color button: activePalette.button
-
+    property var activePalette: SystemPalette { id: activePalette; colorGroup: SystemPalette.Active }
     property color ncBlue:      Theme.wizardHeaderBackgroundColor
     property color ncTextColor: Theme.wizardHeaderTitleColor
     property color lightHover:  "#f7f7f7"

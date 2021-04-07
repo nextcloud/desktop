@@ -99,9 +99,9 @@ Window {
         anchors.fill:   parent
         radius:         Style.trayWindowRadius
         border.width:   Style.trayWindowBorderWidth
-        border.color:   Style.windowText
+        border.color:   Style.activePalette.windowText
 
-        color: Style.window
+        color: Style.activePalette.window
 
         Accessible.role: Accessible.Grouping
         Accessible.name: qsTr("Nextcloud desktop main dialog")
@@ -163,9 +163,9 @@ Window {
                             closePolicy: Menu.CloseOnPressOutsideParent | Menu.CloseOnEscape
 
                             background: Rectangle {
-                                border.color: Style.windowText
+                                border.color: Style.activePalette.windowText
                                 radius: Style.currentAccountButtonRadius
-                                color: Style.window
+                                color: Style.activePalette.window
                             }
 
                             Accessible.role: PopupMenu
@@ -197,7 +197,7 @@ Window {
                                     Rectangle {
                                         anchors.fill: parent
                                         anchors.margins: 1
-                                        color: parent.parent.hovered ? Style.button : "transparent"
+                                        color: parent.parent.hovered ? Style.activePalette.button : "transparent"
                                     }
                                 }
 
@@ -217,13 +217,13 @@ Window {
                                     ColorOverlay {
                                         anchors.fill: addAccountImage
                                         source: addAccountImage
-                                        color: Style.windowText
+                                        color: Style.activePalette.windowText
                                     }
 
                                     Label {
                                         Layout.leftMargin: 14
                                         text: qsTr("Add account")
-                                        color: Style.windowText
+                                        color: Style.activePalette.windowText
                                         font.pixelSize: Style.topLinePixelSize
                                     }
                                     // Filler on the right
@@ -242,7 +242,7 @@ Window {
                             MenuSeparator {
                                 contentItem: Rectangle {
                                     implicitHeight: 1
-                                    color: Style.windowText
+                                    color: Style.activePalette.windowText
                                 }
                             }
 
@@ -255,7 +255,7 @@ Window {
                                 contentItem: Label {
                                     text: syncPauseButton.text
                                     font.pixelSize: Style.topLinePixelSize
-                                    color: Style.windowText
+                                    color: Style.activePalette.windowText
                                 }
 
                                 background: Item {
@@ -264,7 +264,7 @@ Window {
                                     Rectangle {
                                         anchors.fill: parent
                                         anchors.margins: 1
-                                        color: parent.parent.hovered ? Style.button : "transparent"
+                                        color: parent.parent.hovered ? Style.activePalette.button : "transparent"
                                     }
                                 }
 
@@ -283,7 +283,7 @@ Window {
                                 contentItem: Label {
                                     text: settingsButton.text
                                     font.pixelSize: Style.topLinePixelSize
-                                    color: Style.windowText
+                                    color: Style.activePalette.windowText
                                 }
 
                                 background: Item {
@@ -292,7 +292,7 @@ Window {
                                     Rectangle {
                                         anchors.fill: parent
                                         anchors.margins: 1
-                                        color: parent.parent.hovered ? Style.button : "transparent"
+                                        color: parent.parent.hovered ? Style.activePalette.button : "transparent"
                                     }
                                 }
 
@@ -309,7 +309,7 @@ Window {
                                 contentItem: Label {
                                     text: exitButton.text
                                     font.pixelSize: Style.topLinePixelSize
-                                    color: Style.windowText
+                                    color: Style.activePalette.windowText
                                 }
 
                                 background: Item {
@@ -318,7 +318,7 @@ Window {
                                     Rectangle {
                                         anchors.fill: parent
                                         anchors.margins: 1
-                                        color: parent.parent.hovered ? Style.button : "transparent"
+                                        color: parent.parent.hovered ? Style.activePalette.button : "transparent"
                                     }
                                 }
 
@@ -488,8 +488,8 @@ Window {
                         closePolicy: Menu.CloseOnPressOutsideParent | Menu.CloseOnEscape
 
                         background: Rectangle {
-                            color: Style.window
-                            border.color: Style.windowText
+                            color: Style.activePalette.window
+                            border.color: Style.activePalette.windowText
                             radius: 2
                         }
 
@@ -506,7 +506,7 @@ Window {
                                 /* text: appName */
                                 font.pixelSize: Style.topLinePixelSize
                                 /* icon.source: appIconUrl */
-                                /* icon.color: Style.windowText */
+                                /* icon.color: Style.activePalette.windowText */
                                 width: contentItem.implicitWidth + leftPadding + rightPadding
                                 height: 40
                                 onTriggered: UserAppsModel.openAppUrl(appUrl)
@@ -528,7 +528,7 @@ Window {
                                     leftPadding: appEntry.indicator.width
                                     text: appName
                                     font: appEntry.font
-                                    color: Style.windowText
+                                    color: Style.activePalette.windowText
                                     horizontalAlignment: Text.AlignLeft
                                     verticalAlignment: Text.AlignVCenter
                                     anchors.centerIn: parent
@@ -542,7 +542,7 @@ Window {
                                     Rectangle {
                                         anchors.fill: parent
                                         anchors.margins: 1
-                                        color: appEntry.hovered ? Style.button : "transparent"
+                                        color: appEntry.hovered ? Style.activePalette.button : "transparent"
                                     }
                                 }
 
@@ -604,7 +604,7 @@ Window {
 
                     Rectangle {
                         anchors.fill: parent
-                        color: (parent.containsMouse ? Style.button : "transparent")
+                        color: (parent.containsMouse ? Style.activePalette.button : "transparent")
                     }
                 }
 
@@ -626,7 +626,7 @@ Window {
                     visible: !isColoredIcon
                     anchors.fill: activityIcon
                     source: activityIcon
-                    color: Style.windowText
+                    color: Style.activePalette.windowText
                 }
 
                 Column {
@@ -642,7 +642,7 @@ Window {
                         width: parent.width
                         elide: Text.ElideRight
                         font.pixelSize: Style.topLinePixelSize
-                        color: Style.windowText
+                        color: Style.activePalette.windowText
                     }
 
                     Text {
@@ -655,7 +655,7 @@ Window {
                         width: parent.width
                         elide: Text.ElideRight
                         font.pixelSize: Style.subLinePixelSize
-                        color: Style.windowText
+                        color: Style.activePalette.windowText
                     }
 
                     Text {
@@ -665,7 +665,7 @@ Window {
                         width: parent.width
                         elide: Text.ElideRight
                         font.pixelSize: Style.subLinePixelSize
-                        color: Style.windowText
+                        color: Style.activePalette.windowText
                         opacity: 0.5
                     }
 
@@ -840,9 +840,9 @@ Window {
                         visible: (path === "") ? false : true
                         display: AbstractButton.IconOnly
                         icon.source: "qrc:///client/theme/share.svg"
-                        icon.color: Style.windowText
+                        icon.color: Style.activePalette.windowText
                         background: Rectangle {
-                            color: parent.hovered ? Style.button : "transparent"
+                            color: parent.hovered ? Style.activePalette.button : "transparent"
                         }
                         ToolTip.visible: hovered
                         ToolTip.delay: 1000
