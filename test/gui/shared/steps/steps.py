@@ -140,6 +140,9 @@ def substituteInLineCodes(context, value):
 
     return value
 
+def sanitizePath(path):
+    return path.replace('//','/')
+
 def shareResource(resource):
     socketConnect = syncstate.SocketConnect()
     socketConnect.sendCommand("SHARE:" + resource + "\n")
@@ -170,7 +173,7 @@ def executeStepThroughMiddleware(context, step):
 
 @When('the user adds "|any|" as collaborator of resource "|any|" with permissions "|any|" using the client-UI')
 def step(context, receiver, resource, permissions):
-    resource = substituteInLineCodes(context, resource).replace('//','/')
+    resource = sanitizePath(substituteInLineCodes(context, resource))
     waitFor(lambda: isFileSynced(resource), context.userData['clientSyncTimeout'] * 1000)
     waitFor(lambda: shareResource(resource), context.userData['clientSyncTimeout'] * 1000)
 
@@ -342,11 +345,10 @@ def step(context, number):
 
 
 def openPublicLinkDialog(context, resource):
-    resource = substituteInLineCodes(context, resource).replace('//','/')
+    resource = sanitizePath(substituteInLineCodes(context, resource))
     waitFor(lambda: isFileSynced(resource), context.userData['clientSyncTimeout'] * 1000)
     waitFor(lambda: shareResource(resource), context.userData['clientSyncTimeout'] * 1000)
     mouseClick(waitForObject(names.qt_tabwidget_tabbar_Public_Links_TabItem), 0, 0, Qt.NoModifier, Qt.LeftButton)
-
 
 @When('the user opens the public links dialog of "|any|" using the client-UI')
 def step(context, resource):
@@ -368,7 +370,7 @@ def step(context):
 
 @When('user "|any|" opens the sharing dialog of "|any|" using the client-UI')
 def step(context, receiver, resource):
-    resource = substituteInLineCodes(context, resource).replace('//','/')
+    resource = sanitizePath(substituteInLineCodes(context, resource))
     waitFor(lambda: isFolderSynced(resource), context.userData['clientSyncTimeout'] * 1000)
 
 
