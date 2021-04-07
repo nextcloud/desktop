@@ -236,7 +236,7 @@ def step(context, stepPart1, stepPart2):
     )
 
 
-@Then(r"^(.*) on the server", regexp=True)
+@Then(r"^(.*) on the server$", regexp=True)
 def step(context, stepPart1):
     executeStepThroughMiddleware(
         context,
