@@ -381,14 +381,16 @@ def step(context, fileShareContext):
 
 @When('the user creates a new public link for file "|any|" without password using the client-UI')
 def step(context, resource):
-    resource = openPublicLinkDialog(context, resource)
+    resource = sanitizePath(substituteInLineCodes(context, resource))
+    openPublicLinkDialog(context, resource)
     test.compare(str(waitForObjectExists(names.sharingDialog_label_name_QLabel).text), resource.replace(context.userData['clientSyncPath'], ''))
     clickButton(waitForObject(names.oCC_ShareLinkWidget_createShareButton_QPushButton))
 
 
 @When('the user creates a new public link for file "|any|" with password "|any|" using the client-UI')
 def step(context, resource, password):
-    resource = openPublicLinkDialog(context, resource)
+    resource = sanitizePath(substituteInLineCodes(context, resource))
+    openPublicLinkDialog(context, resource)
     test.compare(str(waitForObjectExists(names.sharingDialog_label_name_QLabel).text), resource.replace(context.userData['clientSyncPath'], ''))
     clickButton(waitForObject(names.oCC_ShareLinkWidget_checkBox_password_QCheckBox))
     mouseClick(waitForObject(names.oCC_ShareLinkWidget_lineEdit_password_QLineEdit), 0, 0, Qt.NoModifier, Qt.LeftButton)
