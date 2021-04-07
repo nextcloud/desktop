@@ -99,7 +99,7 @@ Window {
         anchors.fill:   parent
         radius:         Style.trayWindowRadius
         border.width:   Style.trayWindowBorderWidth
-        border.color:   Style.activePalette.windowText
+        border.color:   Style.activePalette.alternateBase
 
         color: Style.activePalette.window
 
@@ -163,7 +163,7 @@ Window {
                             closePolicy: Menu.CloseOnPressOutsideParent | Menu.CloseOnEscape
 
                             background: Rectangle {
-                                border.color: Style.activePalette.windowText
+                                border.color: Style.activePalette.alternateBase
                                 radius: Style.currentAccountButtonRadius
                                 color: Style.activePalette.window
                             }
@@ -197,7 +197,7 @@ Window {
                                     Rectangle {
                                         anchors.fill: parent
                                         anchors.margins: 1
-                                        color: parent.parent.hovered ? Style.activePalette.button : "transparent"
+                                        color: parent.parent.hovered ? Style.activePalette.alternateBase : "transparent"
                                     }
                                 }
 
@@ -242,7 +242,7 @@ Window {
                             MenuSeparator {
                                 contentItem: Rectangle {
                                     implicitHeight: 1
-                                    color: Style.activePalette.windowText
+                                    color: Style.activePalette.alternateBase
                                 }
                             }
 
@@ -264,7 +264,7 @@ Window {
                                     Rectangle {
                                         anchors.fill: parent
                                         anchors.margins: 1
-                                        color: parent.parent.hovered ? Style.activePalette.button : "transparent"
+                                        color: parent.parent.hovered ? Style.activePalette.alternateBase : "transparent"
                                     }
                                 }
 
@@ -292,7 +292,7 @@ Window {
                                     Rectangle {
                                         anchors.fill: parent
                                         anchors.margins: 1
-                                        color: parent.parent.hovered ? Style.activePalette.button : "transparent"
+                                        color: parent.parent.hovered ? Style.activePalette.alternateBase : "transparent"
                                     }
                                 }
 
@@ -318,7 +318,7 @@ Window {
                                     Rectangle {
                                         anchors.fill: parent
                                         anchors.margins: 1
-                                        color: parent.parent.hovered ? Style.activePalette.button : "transparent"
+                                        color: parent.parent.hovered ? Style.activePalette.alternateBase : "transparent"
                                     }
                                 }
 
@@ -489,7 +489,7 @@ Window {
 
                         background: Rectangle {
                             color: Style.activePalette.window
-                            border.color: Style.activePalette.windowText
+                            border.color: Style.activePalette.alternateBase
                             radius: 2
                         }
 
@@ -542,7 +542,7 @@ Window {
                                     Rectangle {
                                         anchors.fill: parent
                                         anchors.margins: 1
-                                        color: appEntry.hovered ? Style.activePalette.button : "transparent"
+                                        color: appEntry.hovered ? Style.activePalette.alternateBase : "transparent"
                                     }
                                 }
 
@@ -604,7 +604,7 @@ Window {
 
                     Rectangle {
                         anchors.fill: parent
-                        color: (parent.containsMouse ? Style.activePalette.button : "transparent")
+                        color: (parent.containsMouse ? Style.activePalette.alternateBase : "transparent")
                     }
                 }
 
@@ -842,7 +842,7 @@ Window {
                         icon.source: "qrc:///client/theme/share.svg"
                         icon.color: Style.activePalette.windowText
                         background: Rectangle {
-                            color: parent.hovered ? Style.activePalette.button : "transparent"
+                            color: parent.hovered ? Style.activePalette.alternateBase : "transparent"
                         }
                         ToolTip.visible: hovered
                         ToolTip.delay: 1000

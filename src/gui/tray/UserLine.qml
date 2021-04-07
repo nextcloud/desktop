@@ -148,7 +148,7 @@ MenuItem {
                 }
                 background:
                     Rectangle {
-                    color: userMoreButtonMouseArea.containsMouse ? "grey" : "transparent"
+                    color: userMoreButtonMouseArea.containsMouse ? Style.activePalette.alternateBase : "transparent"
                     opacity: 0.2
                     height: userMoreButton.height - 2
                     y: userMoreButton.y + 1
@@ -160,7 +160,7 @@ MenuItem {
                     closePolicy: Menu.CloseOnPressOutsideParent | Menu.CloseOnEscape
 
                     background: Rectangle {
-                        border.color: Style.menuBorder
+                        border.color: Style.activePalette.alternateBase
                         color: Style.activePalette.window
                         radius: 2
                     }
@@ -187,7 +187,7 @@ MenuItem {
                             Rectangle {
                                 anchors.fill: parent
                                 anchors.margins: 1
-                                color: parent.parent.hovered ? Style.activePalette.button : "transparent"
+                                color: parent.parent.hovered ? Style.activePalette.alternateBase : "transparent"
                             }
                         }
 
@@ -220,7 +220,7 @@ MenuItem {
                             Rectangle {
                                 anchors.fill: parent
                                 anchors.margins: 1
-                                color: parent.parent.hovered ? Style.activePalette.button : "transparent"
+                                color: parent.parent.hovered ? Style.activePalette.alternateBase : "transparent"
                             }
                         }
 
