@@ -28,7 +28,7 @@ class UserStatus : public QObject
     
 public:
     explicit UserStatus(QObject *parent = nullptr);
-    enum Status {
+    enum class Status {
         Online,
         DoNotDisturb,
         Away,

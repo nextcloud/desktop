@@ -36,27 +36,27 @@ UserStatus::UserStatus(QObject *parent)
 UserStatus::Status UserStatus::stringToEnum(const QString &status) const 
 {
     // it needs to match the Status enum
-    const QHash<QString, Status> preDefinedStatus{{"online", Online},
-                                               {"dnd", DoNotDisturb}, //DoNotDisturb
-                                               {"away", Away},
-                                               {"offline", Offline},
-                                               {"invisible", Invisible}};
+    const QHash<QString, Status> preDefinedStatus{{"online", Status::Online},
+                                               {"dnd", Status::DoNotDisturb}, //DoNotDisturb
+                                               {"away", Status::Away},
+                                               {"offline", Status::Offline},
+                                               {"invisible", Status::Invisible}};
     
     // api should return invisible, dnd,... toLower() it is to make sure 
     // it matches _preDefinedStatus, otherwise the default is online (0)
     const auto statusKey = status.isEmpty() ? QStringLiteral("online") : status.toLower();
-    return preDefinedStatus.value(statusKey, Online);
+    return preDefinedStatus.value(statusKey, Status::Online);
 }
 
 QString UserStatus::enumToUserString(Status status) const 
 {
     switch (status) {
-    case Away:
+    case Status::Away:
         return tr("Away");
-    case DoNotDisturb:
+    case Status::DoNotDisturb:
         return tr("Do not disturb");
-    case Invisible:
-    case Offline:
+    case Status::Invisible:
+    case Status::Offline:
         return tr("Offline");
     default:
         return tr("Online");
@@ -113,12 +113,12 @@ QString UserStatus::message() const
 QUrl UserStatus::icon() const
 {
     switch (_status) {
-    case Away:
+    case Status::Away:
         return Theme::instance()->statusAwayImageSource();
-    case DoNotDisturb:
+    case Status::DoNotDisturb:
         return Theme::instance()->statusDoNotDisturbImageSource();
-    case Invisible:
-    case Offline:
+    case Status::Invisible:
+    case Status::Offline:
         return Theme::instance()->statusInvisibleImageSource();
     default:
         return Theme::instance()->statusOnlineImageSource();
