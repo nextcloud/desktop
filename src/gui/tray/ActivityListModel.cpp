@@ -76,12 +76,9 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
         return QVariant();
 
     switch (role) {
-    case IsColoredIcon: {
-        if (a._fileAction == "file_created" || a._fileAction == "file_deleted") {
-            return true;
-        }
-        return false;
-    }
+    case IsColoredIcon:
+        return a._fileAction == "file_created" || a._fileAction == "file_deleted";
+
 
     case DisplayPathRole:
         if (!a._file.isEmpty()) {
