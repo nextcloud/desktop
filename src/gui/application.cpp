@@ -364,7 +364,9 @@ Application::Application(int &argc, char **argv)
     // Update checks
     UpdaterScheduler *updaterScheduler = new UpdaterScheduler(this);
     connect(updaterScheduler, &UpdaterScheduler::updaterAnnouncement,
-        _gui.data(), &ownCloudGui::slotShowTrayMessage);
+        _gui.data(), [this](const QString &title, const QString &msg) {
+            _gui->slotShowTrayMessage(title, msg);
+        });
     connect(updaterScheduler, &UpdaterScheduler::requestRestart,
         _folderManager.data(), &FolderMan::slotScheduleAppRestart);
 

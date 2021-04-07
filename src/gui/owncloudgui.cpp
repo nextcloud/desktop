@@ -731,16 +731,17 @@ void ownCloudGui::updateContextMenuNeeded()
     }
 }
 
-void ownCloudGui::slotShowTrayMessage(const QString &title, const QString &msg)
+void ownCloudGui::slotShowTrayMessage(const QString &title, const QString &msg, const QIcon &icon)
 {
-    _tray->showMessage(title, msg);
+    // SyncResult::Problem is returns the info icon
+    _tray->showMessage(title, msg, icon.isNull() ? Theme::instance()->syncStateIcon(SyncResult::Problem) : icon);
 }
 
-void ownCloudGui::slotShowOptionalTrayMessage(const QString &title, const QString &msg)
+void ownCloudGui::slotShowOptionalTrayMessage(const QString &title, const QString &msg, const QIcon &icon)
 {
     ConfigFile cfg;
     if (cfg.optionalDesktopNotifications()) {
-        slotShowTrayMessage(title, msg);
+        slotShowTrayMessage(title, msg, icon);
     }
 }
 

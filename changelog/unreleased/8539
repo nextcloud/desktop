@@ -1,0 +1,5 @@
+Enhancement: Add an icon to the Windows system tray notification
+
+We now display a branded icon in the system tray notification.
+
+https://github.com/owncloud/client/pull/8539
