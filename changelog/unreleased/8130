@@ -1,0 +1,9 @@
+Enhancement: Make crash report IDs easy to copy
+
+Users can now click on crash report IDs to copy them to
+their personal clipboard. This way, they can easily
+reference them in bug reports.
+
+https://github.com/dschmidt/libcrashreporter-qt/pull/25
+https://github.com/owncloud/client/issues/8130
+https://github.com/owncloud/client/pull/8540
