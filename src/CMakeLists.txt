@@ -46,7 +46,7 @@ if (NOT BUILD_LIBRARIES_ONLY)
     add_subdirectory(cmd)
 
     if (WITH_CRASHREPORTER)
-        add_subdirectory(3rdparty/libcrashreporter-qt)
+        add_subdirectory(3rdparty/libcrashreporter-qt EXCLUDE_FROM_ALL)
         add_subdirectory(crashreporter)
     endif()
 endif(NOT BUILD_LIBRARIES_ONLY)
