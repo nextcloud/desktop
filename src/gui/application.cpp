@@ -749,6 +749,10 @@ void Application::setupTranslations()
                 installTranslator(qtTranslator);
             if (!qtkeychainTranslator->isEmpty())
                 installTranslator(qtkeychainTranslator);
+
+            // makes sure widgets with locale-dependent formatting, e.g., QDateEdit, display the correct formatting
+            QLocale::setDefault(QLocale{lang});
+
             break;
         }
         if (property("ui_lang").isNull())
