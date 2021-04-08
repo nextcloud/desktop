@@ -10,6 +10,8 @@
 #include "notificationconfirmjob.h"
 #include "logger.h"
 #include "guiutility.h"
+#include "syncfileitem.h"
+#include "tray/NotificationCache.h"
 
 #include <QDesktopServices>
 #include <QIcon>
@@ -58,11 +60,32 @@ User::User(AccountStatePtr &account, const bool &isCurrent, QObject *parent)
     connect(_activityModel, &ActivityListModel::sendNotificationRequest, this, &User::slotSendNotificationRequest);
 }
 
+void User::showDesktopNotification(const QString &title, const QString &message)
+{
+    ConfigFile cfg;
+    if (!cfg.optionalServerNotifications() || !isDesktopNotificationsAllowed()) {
+        return;
+    }
+
+    // after one hour, clear the gui log notification store
+    constexpr quint64 clearGuiLogInterval = 60 * 60 * 1000;
+    if (_guiLogTimer.elapsed() > clearGuiLogInterval) {
+        _notificationCache.clear();
+    }
+
+    const NotificationCache::Notification notification { title, message };
+    if (_notificationCache.contains(notification)) {
+        return;
+    }
+
+    _notificationCache.insert(notification);
+    emit guiLog(notification.title, notification.message);
+    // restart the gui log timer now that we show a new notification
+    _guiLogTimer.start();
+}
+
 void User::slotBuildNotificationDisplay(const ActivityList &list)
 {
-    // Whether a new notification was added to the list
-    bool newNotificationShown = false;
-
     _activityModel->clearNotifications();
 
     foreach (auto activity, list) {
@@ -70,39 +93,9 @@ void User::slotBuildNotificationDisplay(const ActivityList &list)
             qCInfo(lcActivity) << "Activity in blacklist, skip";
             continue;
         }
-
-        // handle gui logs. In order to NOT annoy the user with every fetching of the
-        // notifications the notification id is stored in a Set. Only if an id
-        // is not in the set, it qualifies for guiLog.
-        // Important: The _guiLoggedNotifications set must be wiped regularly which
-        // will repeat the gui log.
-
-        // after one hour, clear the gui log notification store
-        if (_guiLogTimer.elapsed() > 60 * 60 * 1000) {
-            _guiLoggedNotifications.clear();
-        }
-
-        if (!_guiLoggedNotifications.contains(activity._id)) {
-            newNotificationShown = true;
-            _guiLoggedNotifications.insert(activity._id);
-
-            // Assemble a tray notification for the NEW notification
-            ConfigFile cfg;
-            if (cfg.optionalServerNotifications() && isDesktopNotificationsAllowed()) {
-                if (AccountManager::instance()->accounts().count() == 1) {
-                    emit guiLog(activity._subject, "");
-                } else {
-                    emit guiLog(activity._subject, activity._accName);
-                }
-            }
-        }
-
+        const auto message = AccountManager::instance()->accounts().count() == 1 ? "" : activity._accName;
+        showDesktopNotification(activity._subject, message);
         _activityModel->addNotificationToActivityList(activity);
-    }
-
-    // restart the gui log timer now that we show a new notification
-    if (newNotificationShown) {
-        _guiLogTimer.start();
     }
 }
 
@@ -435,32 +428,17 @@ bool User::isUnsolvableConflict(const SyncFileItemPtr &item) const
     return item->_status == SyncFileItem::Conflict && !Utility::isConflictFile(item->_file);
 }
 
-void User::slotItemCompleted(const QString &folder, const SyncFileItemPtr &item)
+void User::processCompletedSyncItem(const Folder *folder, const SyncFileItemPtr &item)
 {
-    auto folderInstance = FolderMan::instance()->folder(folder);
-
-    if (!folderInstance)
-        return;
-
-    if (!isActivityOfCurrentAccount(folderInstance)) {
-        return;
-    }
-
-    if (isUnsolvableConflict(item)) {
-        return;
-    }
-
-    qCWarning(lcActivity) << "Item " << item->_file << " retrieved resulted in " << item->_errorString;
-
     Activity activity;
     activity._type = Activity::SyncFileItemType; //client activity
     activity._status = item->_status;
     activity._dateTime = QDateTime::currentDateTime();
     activity._message = item->_originalFile;
-    activity._link = folderInstance->accountState()->account()->url();
-    activity._accName = folderInstance->accountState()->account()->displayName();
+    activity._link = folder->accountState()->account()->url();
+    activity._accName = folder->accountState()->account()->displayName();
     activity._file = item->_file;
-    activity._folder = folder;
+    activity._folder = folder->alias();
     activity._fileAction = "";
 
     if (item->_instruction == CSYNC_INSTRUCTION_REMOVE) {
@@ -497,9 +475,24 @@ void User::slotItemCompleted(const QString &folder, const SyncFileItemPtr &item)
             _activityModel->addIgnoredFileToList(activity);
         } else {
             // add 'protocol error' to activity list
+            if (item->_status == SyncFileItem::Status::FileNameInvalid) {
+                showDesktopNotification(item->_file, activity._subject);
+            }
             _activityModel->addErrorToActivityList(activity);
         }
     }
+}
+
+void User::slotItemCompleted(const QString &folder, const SyncFileItemPtr &item)
+{
+    auto folderInstance = FolderMan::instance()->folder(folder);
+
+    if (!folderInstance || !isActivityOfCurrentAccount(folderInstance) || isUnsolvableConflict(item)) {
+        return;
+    }
+
+    qCWarning(lcActivity) << "Item " << item->_file << " retrieved resulted in " << item->_errorString;
+    processCompletedSyncItem(folderInstance, item);
 }
 
 AccountPtr User::account() const

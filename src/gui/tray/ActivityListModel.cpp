@@ -161,7 +161,8 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
             } else if (a._status == SyncFileItem::SoftError
                 || a._status == SyncFileItem::Conflict
                 || a._status == SyncFileItem::Restoration
-                || a._status == SyncFileItem::FileLocked) {
+                || a._status == SyncFileItem::FileLocked
+                || a._status == SyncFileItem::FileNameInvalid) {
                 return "qrc:///client/theme/black/state-warning.svg";
             } else if (a._status == SyncFileItem::FileIgnored) {
                 return "qrc:///client/theme/black/state-info.svg";

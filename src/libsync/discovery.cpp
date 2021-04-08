@@ -278,6 +278,7 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const QString &loc
                     item->_errorString = tr("The file name is a reserved name on this file system.");
                 }
             }
+            item->_status = SyncFileItem::FileNameInvalid;
             break;
         case CSYNC_FILE_EXCLUDE_TRAILING_SPACE:
             item->_errorString = tr("Filename contains trailing spaces.");
