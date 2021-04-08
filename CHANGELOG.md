@@ -22,6 +22,7 @@ Summary
 * Change - Add support for dynamic client registration with OIDC: [#8350](https://github.com/owncloud/client/pull/8350/)
 * Change - Include full os version in the about dialog: [#8374](https://github.com/owncloud/client/pull/8374)
 * Change - We removed the support for async jobs using OC-JobStatus-Location: [#8398](https://github.com/owncloud/client/pull/8398)
+* Enhancement - We reworked the server activity table: [#8158](https://github.com/owncloud/client/issues/8158)
 * Enhancement - Add initial support for backups triggered by an external tool: [#8437](https://github.com/owncloud/client/pull/8437)
 * Enhancement - Add language picker to general settings: [#8466](https://github.com/owncloud/client/issues/8466)
 * Enhancement - Attach the last 20 log lines to a crash report: [#8467](https://github.com/owncloud/client/issues/8467)
@@ -123,6 +124,14 @@ Details
    We removed the support of async polling jobs after discovering potential issues.
 
    https://github.com/owncloud/client/pull/8398
+
+* Enhancement - We reworked the server activity table: [#8158](https://github.com/owncloud/client/issues/8158)
+
+   We redone the server activity table, its now behaves as a proper table, is sortable, supports
+   right to left layouts and overall behave more smooth.
+
+   https://github.com/owncloud/client/issues/8158
+   https://github.com/owncloud/client/issues/4336
 
 * Enhancement - Add initial support for backups triggered by an external tool: [#8437](https://github.com/owncloud/client/pull/8437)
 
