@@ -751,7 +751,7 @@ void Application::setupTranslations()
                 installTranslator(qtkeychainTranslator);
 
             // makes sure widgets with locale-dependent formatting, e.g., QDateEdit, display the correct formatting
-            QLocale::setDefault(QLocale{lang});
+            QLocale::setDefault(QLocale(lang));
 
             break;
         }

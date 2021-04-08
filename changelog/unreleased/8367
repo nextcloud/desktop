@@ -1,0 +1,8 @@
+Bugfix: Set up default locale correctly
+
+Fixes the formatting in locale-dependent widgets,
+e.g., date pickers, like the one in the "share
+link" window.
+
+https://github.com/owncloud/client/issues/8367
+https://github.com/owncloud/client/pull/8541
