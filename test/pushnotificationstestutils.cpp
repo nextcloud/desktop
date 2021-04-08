@@ -1,8 +1,10 @@
 #include <QLoggingCategory>
 #include <QSignalSpy>
 #include <QTest>
+#include <functional>
 
 #include "pushnotificationstestutils.h"
+#include "pushnotifications.h"
 
 Q_LOGGING_CATEGORY(lcFakeWebSocketServer, "nextcloud.test.fakewebserver", QtInfoMsg)
 
@@ -10,18 +12,58 @@ FakeWebSocketServer::FakeWebSocketServer(quint16 port, QObject *parent)
     : QObject(parent)
     , _webSocketServer(new QWebSocketServer(QStringLiteral("Fake Server"), QWebSocketServer::NonSecureMode, this))
 {
-    if (_webSocketServer->listen(QHostAddress::Any, port)) {
-        connect(_webSocketServer, &QWebSocketServer::newConnection, this, &FakeWebSocketServer::onNewConnection);
-        connect(_webSocketServer, &QWebSocketServer::closed, this, &FakeWebSocketServer::closed);
-        qCInfo(lcFakeWebSocketServer) << "Open fake websocket server on port:" << port;
-        return;
+    if (!_webSocketServer->listen(QHostAddress::Any, port)) {
+        Q_UNREACHABLE();
     }
-    Q_UNREACHABLE();
+    connect(_webSocketServer, &QWebSocketServer::newConnection, this, &FakeWebSocketServer::onNewConnection);
+    connect(_webSocketServer, &QWebSocketServer::closed, this, &FakeWebSocketServer::closed);
+    qCInfo(lcFakeWebSocketServer) << "Open fake websocket server on port:" << port;
+    _processTextMessageSpy = std::make_unique<QSignalSpy>(this, &FakeWebSocketServer::processTextMessage);
 }
 
 FakeWebSocketServer::~FakeWebSocketServer()
 {
     close();
+}
+
+QWebSocket *FakeWebSocketServer::authenticateAccount(const OCC::AccountPtr account, std::function<void(OCC::PushNotifications *pushNotifications)> beforeAuthentication, std::function<void(void)> afterAuthentication)
+{
+    const auto pushNotifications = account->pushNotifications();
+    Q_ASSERT(pushNotifications);
+    QSignalSpy readySpy(pushNotifications, &OCC::PushNotifications::ready);
+
+    beforeAuthentication(pushNotifications);
+
+    // Wait for authentication
+    if (!waitForTextMessages()) {
+        return nullptr;
+    }
+
+    // Right authentication data should be sent
+    if (textMessagesCount() != 2) {
+        return nullptr;
+    }
+
+    const auto socket = socketForTextMessage(0);
+    const auto userSent = textMessage(0);
+    const auto passwordSent = textMessage(1);
+
+    if (userSent != account->credentials()->user() || passwordSent != account->credentials()->password()) {
+        return nullptr;
+    }
+
+    // Sent authenticated
+    socket->sendTextMessage("authenticated");
+
+    // Wait for ready signal
+    readySpy.wait();
+    if (readySpy.count() != 1 || !account->pushNotifications()->isReady()) {
+        return nullptr;
+    }
+
+    afterAuthentication();
+
+    return socket;
 }
 
 void FakeWebSocketServer::close()
@@ -64,7 +106,34 @@ void FakeWebSocketServer::socketDisconnected()
     }
 }
 
-OCC::AccountPtr FakeWebSocketServer::createAccount()
+bool FakeWebSocketServer::waitForTextMessages() const
+{
+    return _processTextMessageSpy->wait();
+}
+
+uint32_t FakeWebSocketServer::textMessagesCount() const
+{
+    return _processTextMessageSpy->count();
+}
+
+QString FakeWebSocketServer::textMessage(uint32_t messageNumber) const
+{
+    Q_ASSERT(messageNumber < _processTextMessageSpy->count());
+    return _processTextMessageSpy->at(messageNumber).at(1).toString();
+}
+
+QWebSocket *FakeWebSocketServer::socketForTextMessage(uint32_t messageNumber) const
+{
+    Q_ASSERT(messageNumber < _processTextMessageSpy->count());
+    return _processTextMessageSpy->at(messageNumber).at(0).value<QWebSocket *>();
+}
+
+void FakeWebSocketServer::clearTextMessages()
+{
+    _processTextMessageSpy->clear();
+}
+
+OCC::AccountPtr FakeWebSocketServer::createAccount(const QString &username, const QString &password)
 {
     auto account = OCC::Account::create();
 
@@ -86,6 +155,9 @@ OCC::AccountPtr FakeWebSocketServer::createAccount()
     capabilitiesMap["notify_push"] = notifyPushMap;
 
     account->setCapabilities(capabilitiesMap);
+
+    auto credentials = new CredentialsStub(username, password);
+    account->setCredentials(credentials);
 
     return account;
 }

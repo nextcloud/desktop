@@ -18,6 +18,7 @@
 
 #include <QWebSocketServer>
 #include <QWebSocket>
+#include <QSignalSpy>
 
 #include "creds/abstractcredentials.h"
 #include "account.h"
@@ -30,9 +31,22 @@ public:
 
     ~FakeWebSocketServer();
 
+    QWebSocket *authenticateAccount(
+        const OCC::AccountPtr account, std::function<void(OCC::PushNotifications *pushNotifications)> beforeAuthentication = [](OCC::PushNotifications *) {}, std::function<void(void)> afterAuthentication = [] {});
+
     void close();
 
-    static OCC::AccountPtr createAccount();
+    bool waitForTextMessages() const;
+
+    uint32_t textMessagesCount() const;
+
+    QString textMessage(uint32_t messageNumber) const;
+
+    QWebSocket *socketForTextMessage(uint32_t messageNumber) const;
+
+    void clearTextMessages();
+
+    static OCC::AccountPtr createAccount(const QString &username = "user", const QString &password = "password");
 
 signals:
     void closed();
@@ -46,6 +60,8 @@ private slots:
 private:
     QWebSocketServer *_webSocketServer;
     QList<QWebSocket *> _clients;
+
+    std::unique_ptr<QSignalSpy> _processTextMessageSpy;
 };
 
 class CredentialsStub : public OCC::AbstractCredentials
