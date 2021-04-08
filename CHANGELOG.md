@@ -22,6 +22,7 @@ Summary
 * Change - Add support for dynamic client registration with OIDC: [#8350](https://github.com/owncloud/client/pull/8350/)
 * Change - Include full os version in the about dialog: [#8374](https://github.com/owncloud/client/pull/8374)
 * Change - We removed the support for async jobs using OC-JobStatus-Location: [#8398](https://github.com/owncloud/client/pull/8398)
+* Enhancement - Make crash report IDs easy to copy: [#25](https://github.com/dschmidt/libcrashreporter-qt/pull/25)
 * Enhancement - We reworked the server activity table: [#8158](https://github.com/owncloud/client/issues/8158)
 * Enhancement - Add initial support for backups triggered by an external tool: [#8437](https://github.com/owncloud/client/pull/8437)
 * Enhancement - Add language picker to general settings: [#8466](https://github.com/owncloud/client/issues/8466)
@@ -124,6 +125,15 @@ Details
    We removed the support of async polling jobs after discovering potential issues.
 
    https://github.com/owncloud/client/pull/8398
+
+* Enhancement - Make crash report IDs easy to copy: [#25](https://github.com/dschmidt/libcrashreporter-qt/pull/25)
+
+   Users can now click on crash report IDs to copy them to their personal clipboard. This way, they
+   can easily reference them in bug reports.
+
+   https://github.com/owncloud/client/issues/8130
+   https://github.com/dschmidt/libcrashreporter-qt/pull/25
+   https://github.com/owncloud/client/pull/8540
 
 * Enhancement - We reworked the server activity table: [#8158](https://github.com/owncloud/client/issues/8158)
 
