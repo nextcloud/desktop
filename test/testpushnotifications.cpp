@@ -230,6 +230,31 @@ private slots:
         auto accountSent = pushNotificationsDisabledSpy.at(0).at(0).value<OCC::Account *>();
         QCOMPARE(accountSent, account.data());
     }
+
+    void testPingTimeout_pingTimedOut_reconnect()
+    {
+        FakeWebSocketServer fakeServer;
+        std::unique_ptr<QSignalSpy> filesChangedSpy;
+        std::unique_ptr<QSignalSpy> notificationsChangedSpy;
+        std::unique_ptr<QSignalSpy> activitiesChangedSpy;
+        auto account = FakeWebSocketServer::createAccount();
+        QVERIFY(fakeServer.authenticateAccount(account));
+
+        // Set the ping timeout interval to zero and check if the server attemps to authenticate again
+        fakeServer.clearTextMessages();
+        account->pushNotifications()->setPingInterval(0);
+        QVERIFY(fakeServer.authenticateAccount(
+            account, [&](OCC::PushNotifications *pushNotifications) {
+                filesChangedSpy.reset(new QSignalSpy(pushNotifications, &OCC::PushNotifications::filesChanged));
+                notificationsChangedSpy.reset(new QSignalSpy(pushNotifications, &OCC::PushNotifications::notificationsChanged));
+                activitiesChangedSpy.reset(new QSignalSpy(pushNotifications, &OCC::PushNotifications::activitiesChanged));
+            },
+            [&] {
+                QVERIFY(verifyCalledOnceWithAccount(*filesChangedSpy, account));
+                QVERIFY(verifyCalledOnceWithAccount(*notificationsChangedSpy, account));
+                QVERIFY(verifyCalledOnceWithAccount(*activitiesChangedSpy, account));
+            }));
+    }
 };
 
 QTEST_GUILESS_MAIN(TestPushNotifications)
