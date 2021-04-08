@@ -227,7 +227,7 @@ bool AccountState::isDesktopNotificationsAllowed() const
     return _isDesktopNotificationsAllowed;
 }
 
-void AccountState::setDesktopNotificationsAllowed(const bool isAllowed)
+void AccountState::setDesktopNotificationsAllowed(bool isAllowed)
 {
     _isDesktopNotificationsAllowed = isAllowed;
 }

@@ -182,7 +182,7 @@ public:
 
     /** Set desktop notifications status retrieved by the notificatons endpoint
     */
-    void setDesktopNotificationsAllowed(const bool isAllowed);
+    void setDesktopNotificationsAllowed(bool isAllowed);
 
     /** Fetch the user status (status, icon, message)
     */

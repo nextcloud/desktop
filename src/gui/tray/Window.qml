@@ -403,67 +403,57 @@ Window {
                     }
                 }
 
-                // Filler between account dropdown and header app buttons
-                Item {
-                    id: trayWindowHeaderSpacer
-                    Layout.fillWidth: true
-                }
+                RowLayout {
+                    id: openLocalFolderRowLayout
+                    spacing: 0
+                    Layout.preferredWidth:  Style.trayWindowHeaderHeight
+                    Layout.preferredHeight: Style.trayWindowHeaderHeight
+                    
+                    HeaderButton {
+                        id: openLocalFolderButton
+                        visible: UserModel.currentUser.hasLocalFolder
+                        icon.source: "qrc:///client/theme/white/folder.svg"
+                        onClicked: UserModel.openCurrentAccountLocalFolder()
+                        
+                        Rectangle {
+                            id: folderStateIndicatorBackground
+                            width: Style.folderStateIndicatorSize
+                            height: width
+                            anchors.top: openLocalFolderButton.verticalCenter
+                            anchors.left: openLocalFolderButton.horizontalCenter
+                            color: Style.ncBlue
+                            radius: width*0.5
+                            z: 1
+                        }
+                   }
 
-                HeaderButton {
-                    id: openLocalFolderButton
-
-                    visible: UserModel.currentUser.hasLocalFolder
-                    icon.source: "qrc:///client/theme/white/folder.svg"
-                    onClicked: UserModel.openCurrentAccountLocalFolder()
+                   Image {
+                        id: folderStateIndicator
+                        source: UserModel.isUserConnected(UserModel.currentUserId)
+                                ? Style.stateOnlineImageSource
+                                : Style.stateOfflineImageSource
+                        cache: false
+                        anchors.top: openLocalFolderButton.verticalCenter
+                        anchors.left: openLocalFolderButton.horizontalCenter
+                        
+                        sourceSize.width: Style.folderStateIndicatorSize
+                        sourceSize.height: Style.folderStateIndicatorSize
+    
+                        Accessible.role: Accessible.Indicator
+                        Accessible.name: UserModel.isUserConnected(UserModel.currentUserId()) ? qsTr("Connected") : qsTr("Disconnected")
+                    }
 
                     Accessible.role: Accessible.Button
                     Accessible.name: qsTr("Open local folder of current account")
-                    Accessible.onPressAction: openLocalFolderButton.clicked()
-                }
-
-                Rectangle {
-                    id: folderStateIndicatorBackground
-                    width: Style.folderStateIndicatorSize
-                    height: width
-                    anchors.top: openLocalFolderButton.verticalCenter
-                    anchors.left: openLocalFolderButton.horizontalCenter
-                    color: Style.ncBlue
-                    radius: width*0.5
-                }
-
-                Rectangle {
-                    id: folderStateRectangle
-                    width: Style.folderStateIndicatorSize
-                    height: width
-                    anchors.bottom: openLocalFolderButton.bottom
-                    anchors.right: openLocalFolderButton.right
-                    color: openLocalFolderButton.containsMouse ? "white" : "transparent"
-                    opacity: 0.2
-                    radius: width*0.5
-                }
-
-                Image {
-                    id: folderStateIndicator
-                    source: UserModel.isUserConnected(UserModel.currentUserId)
-                            ? Style.stateOnlineImageSource
-                            : Style.stateOfflineImageSource
-                    cache: false
-                    x: folderStateIndicatorBackground.x
-                    y: folderStateIndicatorBackground.y
-                    sourceSize.width: Style.folderStateIndicatorSize
-                    sourceSize.height: Style.folderStateIndicatorSize
-
-                    Accessible.role: Accessible.Indicator
-                    Accessible.name: UserModel.isUserConnected(UserModel.currentUserId()) ? qsTr("Connected") : qsTr("Disconnected")
                 }
 
                 HeaderButton {
                     id: trayWindowTalkButton
-
+                    
                     visible: UserModel.currentUser.serverHasTalk
                     icon.source: "qrc:///client/theme/white/talk-app.svg"
                     onClicked: UserModel.openCurrentAccountTalk()
-
+                    
                     Accessible.role: Accessible.Button
                     Accessible.name: qsTr("Open Nextcloud Talk in browser")
                     Accessible.onPressAction: trayWindowTalkButton.clicked()
@@ -472,6 +462,7 @@ Window {
                 HeaderButton {
                     id: trayWindowAppsButton
                     icon.source: "qrc:///client/theme/white/more-apps.svg"
+  
                     onClicked: {
                         if(appsMenu.count <= 0) {
                             UserModel.openCurrentAccountServer()

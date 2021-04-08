@@ -64,7 +64,7 @@ void ServerNotificationHandler::slotEtagResponseHeaderReceived(const QByteArray 
     }
 }
 
-void ServerNotificationHandler::slotAllowDesktopNotificationsChanged(const bool isAllowed)
+void ServerNotificationHandler::slotAllowDesktopNotificationsChanged(bool isAllowed)
 {
     auto *account = qvariant_cast<AccountState *>(sender()->property(propertyAccountStateC));
     if (account != nullptr) {

@@ -28,7 +28,7 @@ class UserStatus : public QObject
     
 public:
     explicit UserStatus(QObject *parent = nullptr);
-    enum Status {
+    enum class Status {
         Online,
         DoNotDisturb,
         Away,
@@ -42,23 +42,16 @@ public:
     QUrl icon() const;
 
 private slots:
-    void slotFetchUserStatusFinished(const QJsonDocument &json, const int statusCode);
+    void slotFetchUserStatusFinished(const QJsonDocument &json, int statusCode);
 
 signals:
     void fetchUserStatusFinished();
 
 private:
     Status stringToEnum(const QString &status) const;
-    
-    // it needs to match the Status enum
-    const QHash<QString, int> _preDefinedStatus{{"online", 0},
-                                               {"dnd", 1}, //DoNotDisturb
-                                               {"away", 2},
-                                               {"offline", 3},
-                                               {"invisible", 4}};
-
+    QString enumToString(Status status) const;
     QPointer<JsonApiJob> _job; // the currently running job
-    Status _status{Status::Online};
+    Status _status = Status::Online;
     QString _message;
 };
 
