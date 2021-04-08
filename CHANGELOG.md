@@ -13,6 +13,7 @@ Summary
 * Bugfix - Moves in folder sync connections where executed as a delete and upload: [#7838](https://github.com/owncloud/client/issues/7838)
 * Bugfix - Fix missing permission for newly created folder: [#8076](https://github.com/owncloud/client/pull/8076)
 * Bugfix - Don't recommend non default sync option: [#8317](https://github.com/owncloud/client/issues/8317)
+* Bugfix - Set up default locale correctly: [#8367](https://github.com/owncloud/client/issues/8367)
 * Bugfix - Fix brandings with space in the name: [#8482](https://github.com/owncloud/client/pull/8482)
 * Bugfix - We fixed an issue with the promptDeleteAllFiles setting: [#8484](https://github.com/owncloud/client/issues/8484)
 * Change - Don't ask the user to switch to http: [#8231](https://github.com/owncloud/client/issues/8231)
@@ -65,6 +66,14 @@ Details
    We fixed a bug where sync all was still recommended on Windows
 
    https://github.com/owncloud/client/issues/8317
+
+* Bugfix - Set up default locale correctly: [#8367](https://github.com/owncloud/client/issues/8367)
+
+   Fixes the formatting in locale-dependent widgets, e.g., date pickers, like the one in the
+   "share link" window.
+
+   https://github.com/owncloud/client/issues/8367
+   https://github.com/owncloud/client/pull/8541
 
 * Bugfix - Fix brandings with space in the name: [#8482](https://github.com/owncloud/client/pull/8482)
 
