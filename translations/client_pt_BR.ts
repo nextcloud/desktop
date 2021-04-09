@@ -3560,7 +3560,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="138"/>
         <source>%1 backup</source>
-        <translation type="unfinished"/>
+        <translation>1% cópia de segurança</translation>
     </message>
 </context>
 <context>
