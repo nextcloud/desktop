@@ -1,0 +1,6 @@
+Enhancement:  Show last sync date in tray menu
+
+Users can see what "Up to date" refers to explicitly now.
+
+https://github.com/owncloud/client/issues/5644
+https://github.com/owncloud/client/pull/8547

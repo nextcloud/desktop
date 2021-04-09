@@ -1230,11 +1230,9 @@ void FolderMan::setDirtyNetworkLimits()
     }
 }
 
-void FolderMan::trayOverallStatus(const QList<Folder *> &folders,
-    SyncResult::Status *status, bool *unresolvedConflicts)
+TrayOverallStatusResult FolderMan::trayOverallStatus(const QList<Folder *> &folders)
 {
-    *status = SyncResult::Undefined;
-    *unresolvedConflicts = false;
+    TrayOverallStatusResult result;
 
     int cnt = folders.count();
 
@@ -1249,22 +1247,33 @@ void FolderMan::trayOverallStatus(const QList<Folder *> &folders,
         if (folder) {
             auto syncResult = folder->syncResult();
             if (folder->syncPaused()) {
-                *status = SyncResult::Paused;
+                result.overallStatus = SyncResult::Paused;
             } else {
                 SyncResult::Status syncStatus = syncResult.status();
                 switch (syncStatus) {
                 case SyncResult::Undefined:
-                    *status = SyncResult::Error;
+                    result.overallStatus = SyncResult::Error;
                     break;
                 case SyncResult::Problem: // don't show the problem icon in tray.
-                    *status = SyncResult::Success;
+                    result.overallStatus = SyncResult::Success;
                     break;
                 default:
-                    *status = syncStatus;
+                    result.overallStatus = syncStatus;
                     break;
                 }
             }
-            *unresolvedConflicts = syncResult.hasUnresolvedConflicts();
+
+            result.hasUnresolvedConflicts = syncResult.hasUnresolvedConflicts();
+
+            auto currentFolderLastSyncDone = QDateTime::currentDateTime().addMSecs(-1 * folder->msecSinceLastSync().count());
+
+            if (result.lastSyncDone.isNull()) {
+                result.lastSyncDone = currentFolderLastSyncDone;
+            } else {
+                if (currentFolderLastSyncDone > result.lastSyncDone) {
+                    result.lastSyncDone = currentFolderLastSyncDone;
+                }
+            }
         }
     } else {
         int errorsSeen = 0;
@@ -1304,19 +1313,21 @@ void FolderMan::trayOverallStatus(const QList<Folder *> &folders,
                 }
             }
             if (folderResult.hasUnresolvedConflicts())
-                *unresolvedConflicts = true;
+                result.hasUnresolvedConflicts = true;
         }
         if (errorsSeen > 0) {
-            *status = SyncResult::Error;
+            result.overallStatus = SyncResult::Error;
         } else if (abortOrPausedSeen > 0 && abortOrPausedSeen == cnt) {
             // only if all folders are paused
-            *status = SyncResult::Paused;
+            result.overallStatus = SyncResult::Paused;
         } else if (runSeen > 0) {
-            *status = SyncResult::SyncRunning;
+            result.overallStatus = SyncResult::SyncRunning;
         } else if (goodSeen > 0) {
-            *status = SyncResult::Success;
+            result.overallStatus = SyncResult::Success;
         }
     }
+
+    return result;
 }
 
 QString FolderMan::trayTooltipStatusString(

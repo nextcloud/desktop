@@ -35,6 +35,18 @@ class SocketApi;
 class LockWatcher;
 
 /**
+ * @brief Return object for Folder::trayOverallStatus.
+ * @ingroup gui
+ */
+class TrayOverallStatusResult
+{
+public:
+    SyncResult::Status overallStatus;
+    bool hasUnresolvedConflicts;
+    QDateTime lastSyncDone;
+};
+
+/**
  * @brief The FolderMan class
  * @ingroup gui
  *
@@ -134,9 +146,11 @@ public:
     /// Produce text for use in the tray tooltip
     static QString trayTooltipStatusString(SyncResult::Status syncStatus, bool hasUnresolvedConflicts, bool paused);
 
-    /// Compute status summarizing multiple folders
-    static void trayOverallStatus(const QList<Folder *> &folders,
-        SyncResult::Status *status, bool *unresolvedConflicts);
+    /**
+     * Compute status summarizing multiple folders
+     * @return tuple containing folders, status, unresolvedConflicts and lastSyncDone
+     */
+    static TrayOverallStatusResult trayOverallStatus(const QList<Folder *> &folders);
 
     // Escaping of the alias which is used in QSettings AND the file
     // system, thus need to be escaped.

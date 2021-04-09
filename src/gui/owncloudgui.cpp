@@ -263,14 +263,12 @@ void ownCloudGui::slotComputeOverallSyncStatus()
     FolderMan *folderMan = FolderMan::instance();
     Folder::Map map = folderMan->map();
 
-    SyncResult::Status overallStatus = SyncResult::Undefined;
-    bool hasUnresolvedConflicts = false;
-    FolderMan::trayOverallStatus(map.values(), &overallStatus, &hasUnresolvedConflicts);
+    auto trayOverallStatusResult = FolderMan::trayOverallStatus(map.values());
 
     // If the sync succeeded but there are unresolved conflicts,
     // show the problem icon!
-    auto iconStatus = overallStatus;
-    if (iconStatus == SyncResult::Success && hasUnresolvedConflicts) {
+    auto iconStatus = trayOverallStatusResult.overallStatus;
+    if (iconStatus == SyncResult::Success && trayOverallStatusResult.hasUnresolvedConflicts) {
         iconStatus = SyncResult::Problem;
     }
 
@@ -286,7 +284,7 @@ void ownCloudGui::slotComputeOverallSyncStatus()
     if (map.count() > 0) {
 #ifdef Q_OS_WIN
         // Windows has a 128-char tray tooltip length limit.
-        trayMessage = folderMan->trayTooltipStatusString(overallStatus, hasUnresolvedConflicts, false);
+        trayMessage = folderMan->trayTooltipStatusString(trayOverallStatusResult.overallStatus, trayOverallStatusResult.hasUnresolvedConflicts, false);
 #else
         QStringList allStatusStrings;
         foreach (Folder *folder, map.values()) {
@@ -300,13 +298,22 @@ void ownCloudGui::slotComputeOverallSyncStatus()
 #endif
         _tray->setToolTip(trayMessage);
 
-        if (overallStatus == SyncResult::Success || overallStatus == SyncResult::Problem) {
-            if (hasUnresolvedConflicts) {
+        if (trayOverallStatusResult.overallStatus == SyncResult::Success || trayOverallStatusResult.overallStatus == SyncResult::Problem) {
+            if (trayOverallStatusResult.hasUnresolvedConflicts) {
                 setStatusText(tr("Unresolved conflicts"));
             } else {
-                setStatusText(tr("Up to date"));
+                QString lastSyncDoneString;
+
+                // display only the time in case the last sync was today
+                if (QDateTime::currentDateTime().date() == trayOverallStatusResult.lastSyncDone.date()) {
+                    lastSyncDoneString = QLocale().toString(trayOverallStatusResult.lastSyncDone.time());
+                } else {
+                    lastSyncDoneString = QLocale().toString(trayOverallStatusResult.lastSyncDone);
+                }
+
+                setStatusText(tr("Up to date (%1)").arg(lastSyncDoneString));
             }
-        } else if (overallStatus == SyncResult::Paused) {
+        } else if (trayOverallStatusResult.overallStatus == SyncResult::Paused) {
             setStatusText(tr("Synchronization is paused"));
         } else {
             setStatusText(tr("Error during synchronization"));
