@@ -76,10 +76,6 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
         return QVariant();
 
     switch (role) {
-    case IsColoredIcon:
-        return a._fileAction == "file_created" || a._fileAction == "file_deleted";
-
-
     case DisplayPathRole:
         if (!a._file.isEmpty()) {
             auto folder = FolderMan::instance()->folder(a._folder);
@@ -154,22 +150,22 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
     }
     case ActionIconRole: {
         if (a._type == Activity::NotificationType) {
-            return "qrc:///client/theme/black/bell.svg";
+            return "image://colorsvgimages/client/theme/black/bell.svg";
         } else if (a._type == Activity::SyncResultType) {
-            return "qrc:///client/theme/black/state-error.svg";
+            return "image://colorsvgimages/client/theme/black/state-error.svg";
         } else if (a._type == Activity::SyncFileItemType) {
             if (a._status == SyncFileItem::NormalError
                 || a._status == SyncFileItem::FatalError
                 || a._status == SyncFileItem::DetailError
                 || a._status == SyncFileItem::BlacklistedError) {
-                return "qrc:///client/theme/black/state-error.svg";
+                return "image://colorsvgimages/client/theme/black/state-error.svg";
             } else if (a._status == SyncFileItem::SoftError
                 || a._status == SyncFileItem::Conflict
                 || a._status == SyncFileItem::Restoration
                 || a._status == SyncFileItem::FileLocked) {
-                return "qrc:///client/theme/black/state-warning.svg";
+                return "image://colorsvgimages/client/theme/black/state-warning.svg";
             } else if (a._status == SyncFileItem::FileIgnored) {
-                return "qrc:///client/theme/black/state-info.svg";
+                return "image://colorsvgimages/client/theme/black/state-info.svg";
             } else {
                 // File sync successful
                 if (a._fileAction == "file_created") {
@@ -177,16 +173,16 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
                 } else if (a._fileAction == "file_deleted") {
                     return "qrc:///client/theme/colored/delete.svg";
                 } else {
-                    return "qrc:///client/theme/change.svg";
+                    return "image://colorsvgimages/client/theme/change.svg";
                 }
             }
         } else {
             // We have an activity
             if (!a._iconData.isEmpty()) {
-                const QString svgData = "data:image/svg+xml;utf8," + a._iconData;
+                const QString svgData = "image://colorsvgimages/data:image/svg+xml;utf8," + a._iconData;
                 return svgData;
             }
-            return "qrc:///client/theme/black/activity.svg";
+            return "image://colorsvgimages/client/theme/black/activity.svg";
         }
     }
     case ObjectTypeRole:

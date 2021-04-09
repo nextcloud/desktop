@@ -127,8 +127,8 @@ MenuItem {
                 Layout.preferredHeight: userLineLayout.height
                 flat: true
 
-                icon.source: "qrc:///client/theme/more.svg"
-                icon.color: Style.activePalette.windowText
+                icon.source: "image://colorsvgimages/client/theme/more.svg"
+                icon.color: "transparent"
 
                 Accessible.role: Accessible.ButtonMenu
                 Accessible.name: qsTr("Account actions")
@@ -149,7 +149,6 @@ MenuItem {
                 background:
                     Rectangle {
                     color: userMoreButtonMouseArea.containsMouse ? Style.activePalette.alternateBase : "transparent"
-                    opacity: 0.2
                     height: userMoreButton.height - 2
                     y: userMoreButton.y + 1
                 }

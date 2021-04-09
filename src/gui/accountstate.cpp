@@ -492,8 +492,8 @@ AccountApp::AccountApp(const QString &name, const QUrl &url,
     , _name(name)
     , _url(url)
     , _id(id)
-    , _iconUrl(iconUrl)
 {
+    _iconUrl = "image://colorsvgimages/" + iconUrl.toString();
 }
 
 QString AccountApp::name() const

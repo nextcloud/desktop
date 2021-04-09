@@ -17,6 +17,7 @@
 #include "theme.h"
 #include "config.h"
 #include "common/utility.h"
+#include "tray/ColorSvgImageProvider.h"
 #include "tray/UserModel.h"
 
 #include <QCursor>
@@ -57,6 +58,8 @@ void Systray::setTrayEngine(QQmlApplicationEngine *trayEngine)
 
     _trayEngine->addImportPath("qrc:/qml/theme");
     _trayEngine->addImageProvider("avatars", new ImageProvider);
+    // TODO: Better name
+    _trayEngine->addImageProvider(QLatin1String("colorsvgimages"), new ColorSvgImageProvider);
 }
 
 Systray::Systray()

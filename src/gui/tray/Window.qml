@@ -209,15 +209,9 @@ Window {
                                         id: addAccountImage
                                         Layout.leftMargin: 12
                                         verticalAlignment: Qt.AlignCenter
-                                        source: "qrc:///client/theme/black/add.svg"
+                                        source: "image://colorsvgimages/client/theme/black/add.svg"
                                         sourceSize.width: Style.headerButtonIconSize
                                         sourceSize.height: Style.headerButtonIconSize
-                                    }
-
-                                    ColorOverlay {
-                                        anchors.fill: addAccountImage
-                                        source: addAccountImage
-                                        color: Style.activePalette.windowText
                                     }
 
                                     Label {
@@ -415,19 +409,13 @@ Window {
                             }
                         }
 
-                        ColorOverlay {
-                            cached: true
-                            color: Style.ncTextColor
-                            width: source.width
-                            height: source.height
-                            source: Image {
+                        Image {
                                 Layout.alignment: Qt.AlignRight
                                 verticalAlignment: Qt.AlignCenter
                                 Layout.margins: Style.accountDropDownCaretMargin
                                 source: "qrc:///client/theme/white/caret-down.svg"
                                 sourceSize.width: Style.accountDropDownCaretSize
                                 sourceSize.height: Style.accountDropDownCaretSize
-                            }
                         }
                     }
                 }
@@ -622,13 +610,6 @@ Window {
                     sourceSize.width: 64
                 }
 
-                ColorOverlay {
-                    visible: !isColoredIcon
-                    anchors.fill: activityIcon
-                    source: activityIcon
-                    color: Style.activePalette.windowText
-                }
-
                 Column {
                     id: activityTextColumn
                     anchors.left: activityIcon.right
@@ -693,12 +674,12 @@ Window {
                     function actionButtonIcon(actionIndex) {
                         const verb = String(model.links[actionIndex].verb);
                         if (verb === "WEB" && (model.objectType === "chat" || model.objectType === "call")) {
-                            return "qrc:///client/theme/reply.svg";
+                            return "image://colorsvgimages/client/theme/reply.svg";
                         } else if (verb === "DELETE") {
-                            return "qrc:///client/theme/close.svg";
+                            return "image://colorsvgimages/client/theme/close.svg";
                         }
 
-                        return "qrc:///client/theme/confirm.svg";
+                        return "image://colorsvgimages/client/theme/confirm.svg";
                     }
 
                     Repeater {

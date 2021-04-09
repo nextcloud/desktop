@@ -114,6 +114,7 @@ set(client_SRCS
     tray/ActivityListModel.cpp
     tray/UserModel.cpp
     tray/NotificationHandler.cpp
+    tray/ColorSvgImageProvider.cpp
     creds/credentialsfactory.cpp
     creds/httpcredentialsgui.cpp
     creds/oauth.cpp
