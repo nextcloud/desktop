@@ -223,8 +223,6 @@ set( final_src
     ${MIRALL_RC_SRC}
     ${client_SRCS}
     ${client_UI_SRCS}
-    ${client_version}
-    ${client_manifest}
     ${guiMoc}
     ${client_I18N}
     ${3rdparty_SRC}
@@ -253,7 +251,7 @@ if(APPLE)
     file(GLOB_RECURSE OWNCLOUD_SIDEBAR_ICONS "${theme_dir}/colored/*-${APPLICATION_ICON_NAME}-sidebar*")
     MESSAGE(STATUS "OWNCLOUD_SIDEBAR_ICONS: ${APPLICATION_ICON_NAME}: ${OWNCLOUD_SIDEBAR_ICONS}")
 endif()
-ecm_add_app_icon(final_src ICONS "${OWNCLOUD_ICONS}" SIDEBAR_ICONS "${OWNCLOUD_SIDEBAR_ICONS}" OUTFILE_BASENAME "${APPLICATION_ICON_NAME}")
+ecm_add_app_icon(APP_ICON ICONS "${OWNCLOUD_ICONS}" SIDEBAR_ICONS "${OWNCLOUD_SIDEBAR_ICONS}" OUTFILE_BASENAME "${APPLICATION_ICON_NAME}")
 
 if(UNIX AND NOT APPLE)
   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIE")
@@ -315,13 +313,13 @@ if(NOT BUILD_OWNCLOUD_OSX_BUNDLE)
     endif()
 
     # we may not add MACOSX_BUNDLE here, if not building one
-    add_executable(${APPLICATION_EXECUTABLE} WIN32 main.cpp)
+    add_executable(${APPLICATION_EXECUTABLE} WIN32 main.cpp ${client_version} ${client_manifest} ${APP_ICON})
 else()
     # set(CMAKE_INSTALL_PREFIX ".") # Examples use /Applications. hurmpf.
     set(MACOSX_BUNDLE_ICON_FILE "${APPLICATION_ICON_NAME}.icns")
 
     # we must add MACOSX_BUNDLE only if building a bundle
-    add_executable(${APPLICATION_EXECUTABLE} WIN32 MACOSX_BUNDLE main.cpp)
+    add_executable(${APPLICATION_EXECUTABLE} WIN32 MACOSX_BUNDLE main.cpp ${APP_ICON})
 
     set (QM_DIR ${OWNCLOUD_OSX_BUNDLE}/Contents/Resources/Translations)
     install(FILES ${client_I18N} DESTINATION ${QM_DIR})
