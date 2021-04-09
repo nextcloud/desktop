@@ -452,6 +452,11 @@ void ShareLinkWidget::slotNameEdited(QTableWidgetItem *item)
     auto share = item->data(Qt::UserRole).value<QSharedPointer<LinkShare>>();
     if (share && newName != share->getName() && newName != share->getToken()) {
         share->setName(newName);
+
+        // the server doesn't necessarily apply the desired name but may assign a different one
+        // for instance, when the user removes a custom name by emptying the field, the server assigns the ID as name
+        // therefore, we need to fetch the name(s) from the server again to display accurate information
+        getShares();
     }
 }
 

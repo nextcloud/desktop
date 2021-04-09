@@ -1,0 +1,9 @@
+Bugfix: Keep share link names in sync with server
+
+When the name of a share link is changed, e.g., to an
+empty string, the server may not apply this, but assign
+a fallback value (e.g., the link ID). The client therefore
+needs to re-check the name after sending a change request.
+
+https://github.com/owncloud/client/issues/7549
+https://github.com/owncloud/client/pull/8546
