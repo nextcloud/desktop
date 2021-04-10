@@ -1396,7 +1396,7 @@ Ezabaketa nahigabea izan bada eta erabakitzen baduzu fitxategiok mantentzea, hau
     <message>
         <location filename="../src/gui/folderman.cpp" line="1492"/>
         <source>Sync finished with unresolved conflicts.</source>
-        <translation type="unfinished"/>
+        <translation>Sinkronizazioa burutu da, ebatzi gabeko gatazka batzuekin.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1494"/>
@@ -1832,7 +1832,7 @@ Ezabaketa nahigabea izan bada eta erabakitzen baduzu fitxategiok mantentzea, hau
     <message>
         <location filename="../src/gui/generalsettings.ui" line="89"/>
         <source>Show Server &amp;Notifications</source>
-        <translation>Erakutsi zerbitzariaren jakinarazpenak</translation>
+        <translation>Erakutsi zerbitzariaren &amp;jakinarazpenak</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="99"/>
@@ -1842,7 +1842,7 @@ Ezabaketa nahigabea izan bada eta erabakitzen baduzu fitxategiok mantentzea, hau
     <message>
         <location filename="../src/gui/generalsettings.ui" line="107"/>
         <source>&amp;Automatically check for Updates</source>
-        <translation>&amp;Automatikoki eguneraketak bilatu</translation>
+        <translation>A&amp;utomatikoki eguneraketak bilatu</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="127"/>
@@ -1893,12 +1893,12 @@ Ezabaketa nahigabea izan bada eta erabakitzen baduzu fitxategiok mantentzea, hau
     <message>
         <location filename="../src/gui/generalsettings.ui" line="277"/>
         <source>Show sync folders in &amp;Explorer&apos;s Navigation Pane</source>
-        <translation>Erakutsi sinkronizatutako karpetak arakatzailearen nabigazio panelean</translation>
+        <translation>Erakutsi sinkronizatutako karpetak arakatzailearen &amp;nabigazio panelean</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="294"/>
         <source>S&amp;how crash reporter</source>
-        <translation>Erakutsi kraskaduraren txostena</translation>
+        <translation>Erakutsi &amp;kraskaduraren txostena</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="305"/>
@@ -1930,7 +1930,9 @@ Ezabaketa nahigabea izan bada eta erabakitzen baduzu fitxategiok mantentzea, hau
         <source>The update channel determines which client updates will be offered for installation. The &quot;stable&quot; channel contains only upgrades that are considered reliable, while the versions in the &quot;beta&quot; channel may contain newer features and bugfixes, but have not yet been tested thoroughly.
 
 Note that this selects only what pool upgrades are taken from, and that there are no downgrades: So going back from the beta channel to the stable channel usually cannot be done immediately and means waiting for a stable version that is newer than the currently installed beta version.</source>
-        <translation type="unfinished"/>
+        <translation>Eguneratze kanalak zehazten du bezeroa eguneratzeko zein bertsio eskainiko diren. Kanal &quot;egonkorrak&quot; fidagarritzat hartzen diren eguneratzeak bakarrik dauzka, eta &quot;beta&quot; kanaleko eguneraketek sakon aztertu gabeko ezaugarri berriak eta bug konponketak izan ditzakete.
+
+Kontuan izan honek bertsio berriak nondik hartu bakarrik hautatzen duela, ezin dela bertsio zaharretara itzuli: beraz, beta kanaletik batzuetan ezin da automatikoki kanal egonkorrera itzuli, jarrita dagoena baino berriagoa den bertsio egonkor bati itxaron behar zaio.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="324"/>
@@ -2134,7 +2136,9 @@ Ezabatu daitezkeen elementuak ezabatu egingo dira karpeta bat ezabatzea ekiditen
         <source>The client can write debug logs to a temporary folder. These logs are very helpful for diagnosing problems.
 Since log files can get large, the client will start a new one for each sync run and compress older ones. It will also delete log files after a couple of hours to avoid consuming too much disk space.
 If enabled, logs will be written to %1</source>
-        <translation type="unfinished"/>
+        <translation>Bezeroak arazketa egunkariak idatz ditzake aldi baterako karpetan. Erregistro hauek oso lagungarriak dira arazoak diagnostikatzeko.
+Erregistro fitxategiak handiak izan daitezkeenez, bezeroak berria egiten du sinkronizazio bakoitzean eta zaharrak konprimatzen ditu. Ordu batzuen buruan ezabatzen ditu, diskoan espazio gehiegi ez hartzeko.
+Gaituz gero, erregistroak idatziko dira hona %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="64"/>
@@ -2166,7 +2170,7 @@ Kontuan izan erregistro-komando lerroaren edozein aukera erabiliz ezarpen hau ga
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="89"/>
         <source>&amp;Capture debug messages</source>
-        <translation>Arazketa mezuak &amp;gorde</translation>
+        <translation>Arazketa &amp;mezuak gorde</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="101"/>
@@ -2472,7 +2476,7 @@ pribilegio gehigarriak eskatzen ahal dizu prozesuan.</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="152"/>
         <source>Could not download update. Please open %1 to download the update manually.</source>
-        <translation type="unfinished"/>
+        <translation>Ezin izan da eguneraketa deskargatu. Ireki %1 eguneraketa eskuz deskargatzeko.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="154"/>
@@ -2482,7 +2486,7 @@ pribilegio gehigarriak eskatzen ahal dizu prozesuan.</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="156"/>
         <source>New %1 is available. Please open %2 to download the update.</source>
-        <translation type="unfinished"/>
+        <translation>%1 berria dago eskuragarri. Ireki %2 eguneraketa deskargatzeko.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="158"/>
@@ -2916,7 +2920,13 @@ The virtual files mode is mutually exclusive with selective sync. Currently unse
 Switching to this mode will abort any currently running synchronization.
 
 This is a new, experimental mode. If you decide to use it, please report any issues that come up.</source>
-        <translation type="unfinished"/>
+        <translation>&quot;Fitxategi birtualak&quot; aukera gaituta dagoenean hasiera batean ez da fitxategirik deskargatuko. Aitzitik, &quot;%1&quot; fitxategi txiki bat sortuko da zerbitzarian dagoen fitxategi bakoitzeko. Edukiak deskargatzeko fitxategi horiek ireki daitezke edo beraien testuinguru menua erabili.
+
+Fitxategi birtualen modua bateraezina da hautapen sinkronizazioarekin. Unean hautatu gabe dauden karpetak online-soilik karpetetara igaroko dira eta zure hautapen sinkronizazioa berrezarri egingo da.
+
+Modu honetara aldatzeak martxan legokeen sinkronizazioa bertan behera utziko du.
+
+Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen diren arazoen berri eman mesedez.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="416"/>
@@ -3257,7 +3267,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="170"/>
         <source>Could not rename %1 to %2, error: %3</source>
-        <translation type="unfinished"/>
+        <translation>Ezin izan zaio %1-ri %2 izena eman, errorea: %3</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="219"/>
@@ -4160,7 +4170,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="362"/>
         <source>Could not update virtual file metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Ezin izan dira fitxategi birtualaren metadatuak eguneratu: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="384"/>
@@ -4273,7 +4283,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="514"/>
         <source>Using virtual files with suffix, but suffix is not set</source>
-        <translation type="unfinished"/>
+        <translation>Suffix erabiltzen da fitxategi birtualak kudeatzeko, baina suffix ez dago konfiguratuta</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="521"/>
@@ -4328,7 +4338,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1024"/>
         <source>Aborted</source>
-        <translation type="unfinished"/>
+        <translation>Bertan behera utzia</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1041"/>
@@ -4426,7 +4436,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="480"/>
         <source>Synced %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 sinkronizatuta</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="482"/>
@@ -4487,12 +4497,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/userstatus.cpp" line="60"/>
         <source>Offline</source>
-        <translation type="unfinished"/>
+        <translation>Lineaz kanpo</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatus.cpp" line="62"/>
         <source>Online</source>
-        <translation type="unfinished"/>
+        <translation>Linean</translation>
     </message>
 </context>
 <context>
@@ -4500,7 +4510,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/common/vfs.cpp" line="82"/>
         <source>The Virtual filesystem feature requires a NTFS file system, %1 is using %2</source>
-        <translation type="unfinished"/>
+        <translation>Fitxategi birtualen sistemak NTFS fitxategi sistema bat behar du, %1-ek darabilena %2 da.</translation>
     </message>
 </context>
 <context>
@@ -4521,7 +4531,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="159"/>
         <source>You have been logged out of %1 as user %2. Please login again.</source>
-        <translation type="unfinished"/>
+        <translation>%1 saioa itxita daukazu %2 erabiltzaile gisa. Hasi saioa berriro.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="159"/>
@@ -4539,7 +4549,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="20"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Inprimakia</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="143"/>
@@ -4550,7 +4560,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="156"/>
         <source>Create account with Provider</source>
-        <translation type="unfinished"/>
+        <translation>Sortu kontua Provider bidez</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="67"/>
@@ -4593,7 +4603,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="229"/>
         <source>The server on account %1 runs an unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
-        <translation type="unfinished"/>
+        <translation>%1 kontuko zerbitzariak onartzen ez den %2 bertsioa darabil. Onartzen ez diren zerbitzari bertsioekin bezero hau erabiltzea probatu gabe dago eta potentzialki arriskutsua da. Zure ardurapean jarraitu.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="270"/>
@@ -4828,7 +4838,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="121"/>
         <source>User name</source>
-        <translation type="unfinished"/>
+        <translation>Erabiltzaile izena</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="131"/>
@@ -4838,17 +4848,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="148"/>
         <source>Ask for confirmation before synchroni&amp;zing folders larger than</source>
-        <translation>Eskatu baimena handiagoak diren karpetak sinkronizatu baino lehen</translation>
+        <translation>Eskatu baimena &amp;handiagoak diren karpetak sinkronizatu baino lehen</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="174"/>
         <source>Ask for confirmation before synchronizing e&amp;xternal storages</source>
-        <translation>Eskatu baimena kanpoko biltegiak sinkronizatu baino lehen</translation>
+        <translation>Eskatu baimena &amp;kanpoko biltegiak sinkronizatu baino lehen</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="175"/>
         <source>Sync Logo</source>
-        <translation type="unfinished"/>
+        <translation>Sinkronizazio logoa</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="225"/>
@@ -4858,17 +4868,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="244"/>
         <source>Local Folder</source>
-        <translation type="unfinished"/>
+        <translation>Karpeta lokala</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="408"/>
         <source>Synchronize everything from server</source>
-        <translation type="unfinished"/>
+        <translation>Sinkronizatu zerbitzarian dagoen guztia</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="464"/>
         <source>Ask before syncing folders larger than</source>
-        <translation type="unfinished"/>
+        <translation>Eskatu baimena hau baino handiagoak diren karpetak sinkronizatu aurretik</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="490"/>
@@ -4879,7 +4889,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="533"/>
         <source>Ask before syncing external storages</source>
-        <translation type="unfinished"/>
+        <translation>Eskatu baimena kanpoko biltegiak sinkronizatu baino lehen</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="576"/>
@@ -4894,7 +4904,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="344"/>
         <source>&amp;Keep local data</source>
-        <translation>Mantendu datu lo&amp;kalak</translation>
+        <translation>&amp;Mantendu datu lokalak</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="357"/>
@@ -4904,7 +4914,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="714"/>
         <source>Keep local data</source>
-        <translation type="unfinished"/>
+        <translation>Mantendu datu lokalak</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="730"/>
@@ -4914,7 +4924,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="733"/>
         <source>Erase local folder and start a clean sync</source>
-        <translation type="unfinished"/>
+        <translation>Ezabatu karpeta lokala eta sinkronizazio garbia egin</translation>
     </message>
 </context>
 <context>
@@ -4959,7 +4969,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="32"/>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="353"/>
         <source>TextLabel</source>
-        <translation type="unfinished"/>
+        <translation>TestuEtiketa</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="73"/>
@@ -4984,7 +4994,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="259"/>
         <source>This is the link to your %1 web interface when you open it in the browser.</source>
-        <translation type="unfinished"/>
+        <translation>Hau da zure %1 web interfazerako esteka, nabigatzailean irekitzen duzunean.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="343"/>
@@ -4994,7 +5004,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="359"/>
         <source>Sign up with a provider</source>
-        <translation type="unfinished"/>
+        <translation>Erregistratu hornitzaile batekin</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="365"/>
@@ -5084,7 +5094,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="15"/>
         <source>Account entry</source>
-        <translation type="unfinished"/>
+        <translation>Kontu sarrera</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="32"/>
@@ -5109,7 +5119,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="94"/>
         <source>Account not connected</source>
-        <translation type="unfinished"/>
+        <translation>Kontua ez dago konektatuta</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="140"/>
@@ -5217,7 +5227,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/common/checksums.cpp" line="362"/>
         <source>The downloaded file does not match the checksum, it will be resumed. &apos;%1&apos; != &apos;%2&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Deskargatu den fitxategia ez dator bat  kontroleko baturarekin, berrekin egingo da. &apos;%1&apos; != &apos;%2&apos;</translation>
     </message>
 </context>
 <context>
@@ -5226,7 +5236,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/tray/Window.qml" line="25"/>
         <location filename="../src/gui/tray/Window.qml" line="105"/>
         <source>Nextcloud desktop main dialog</source>
-        <translation type="unfinished"/>
+        <translation>Mahaigaineko Nextclouden elkarrizketa-koadro nagusia</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="131"/>
@@ -5248,7 +5258,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/Window.qml" line="169"/>
         <source>Account switcher and settings menu</source>
-        <translation type="unfinished"/>
+        <translation>Kontu txandakatze eta ezarpenen menua</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="214"/>
@@ -5258,7 +5268,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/Window.qml" line="227"/>
         <source>Add new account</source>
-        <translation type="unfinished"/>
+        <translation>Gehitu kontu berri bat</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="261"/>
@@ -5273,7 +5283,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/Window.qml" line="328"/>
         <source>Current user avatar</source>
-        <translation type="unfinished"/>
+        <translation>Uneko erabiltzailearen avatarra</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="360"/>
@@ -5298,12 +5308,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/Window.qml" line="447"/>
         <source>Open local folder of current account</source>
-        <translation type="unfinished"/>
+        <translation>Ireki uneko kontuaren karpeta lokala</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="458"/>
         <source>Open Nextcloud Talk in browser</source>
-        <translation type="unfinished"/>
+        <translation>Ireki Nextcloud Talk nabigatzailean</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="477"/>
@@ -5313,7 +5323,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/Window.qml" line="494"/>
         <source>Apps menu</source>
-        <translation type="unfinished"/>
+        <translation>Aplikazioen menua</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="522"/>
@@ -5328,13 +5338,13 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/Window.qml" line="563"/>
         <source>Open %1 locally</source>
-        <translation type="unfinished"/>
+        <translation>Ireki %1 lokalean</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="720"/>
         <location filename="../src/gui/tray/Window.qml" line="723"/>
         <source>Show more actions</source>
-        <translation type="unfinished"/>
+        <translation>Erakutsi ekintza gehiago</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="812"/>
@@ -5344,7 +5354,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/Window.qml" line="816"/>
         <source>Share %1</source>
-        <translation type="unfinished"/>
+        <translation>Partekatu %1</translation>
     </message>
 </context>
 <context>
@@ -5373,12 +5383,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="33"/>
         <source>Virtual file created</source>
-        <translation type="unfinished"/>
+        <translation>Fitxategi birtuala sortu da</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="35"/>
         <source>Replaced by virtual file</source>
-        <translation type="unfinished"/>
+        <translation>Fitxategi birtualak ordezkatua</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="37"/>
@@ -5545,32 +5555,32 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/guiutility.cpp" line="86"/>
         <source>Always available locally</source>
-        <translation type="unfinished"/>
+        <translation>Beti eskuragarri lokalean</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="88"/>
         <source>Currently available locally</source>
-        <translation type="unfinished"/>
+        <translation>Unean eskuragarri lokalean</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="90"/>
         <source>Some available online only</source>
-        <translation type="unfinished"/>
+        <translation>Batzuk online bakarrik eskuragarri</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="93"/>
         <source>Available online only</source>
-        <translation type="unfinished"/>
+        <translation>Online bakarrik eskuragarri</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="100"/>
         <source>Make always available locally</source>
-        <translation type="unfinished"/>
+        <translation>Egin beti eskuragarri lokalean</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="105"/>
         <source>Free up local space</source>
-        <translation type="unfinished"/>
+        <translation>Egin leku librea lokalean</translation>
     </message>
 </context>
 <context>
