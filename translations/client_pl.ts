@@ -3732,7 +3732,7 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="450"/>
         <source>Unshare</source>
-        <translation>Cofnij udostępnienie</translation>
+        <translation>Zatrzymaj udostępnianie</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="459"/>
@@ -4487,7 +4487,7 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
     <message>
         <location filename="../src/gui/userstatus.cpp" line="55"/>
         <source>Away</source>
-        <translation type="unfinished"/>
+        <translation>Bezczynny</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatus.cpp" line="57"/>
@@ -4497,12 +4497,12 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
     <message>
         <location filename="../src/gui/userstatus.cpp" line="60"/>
         <source>Offline</source>
-        <translation type="unfinished"/>
+        <translation>Offline</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatus.cpp" line="62"/>
         <source>Online</source>
-        <translation type="unfinished"/>
+        <translation>Online</translation>
     </message>
 </context>
 <context>
