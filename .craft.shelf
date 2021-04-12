@@ -75,7 +75,7 @@ version = 0.19.8.1
 version = 1.0.6
 
 [libs/libjpeg-turbo]
-version = 1.5.3
+version = 2.0.6
 
 [libs/liblzma]
 version = 5.2.3
@@ -90,7 +90,7 @@ version = 2.9.7
 version = 1.4.5
 
 [libs/openssl]
-version = 1.1.1i
+version = 1.1.1k
 
 [libs/pcre2]
 version = 10.35
@@ -139,4 +139,3 @@ version = 0.2
 
 [virtual/craft-blueprints-kde-base]
 version = 0.1
-

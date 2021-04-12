@@ -190,7 +190,9 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     _activitySettings = new ActivitySettings;
     _ui->stack->addWidget(_activitySettings);
     connect(_activitySettings, &ActivitySettings::guiLog, _gui,
-        &ownCloudGui::slotShowOptionalTrayMessage);
+        [this](const QString &title, const QString &msg) {
+            _gui->slotShowOptionalTrayMessage(title, msg);
+        });
     _activitySettings->setNotificationRefreshInterval(cfg.notificationRefreshInterval());
 
     QAction *generalAction = createActionWithIcon(QStringLiteral("settings"), tr("Settings"));

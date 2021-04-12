@@ -122,18 +122,6 @@ ProgressDispatcher::~ProgressDispatcher()
 {
 }
 
-void ProgressDispatcher::setProgressInfo(const QString &folder, const ProgressInfo &progress)
-{
-    if (folder.isEmpty())
-    // The update phase now also has progress
-    //            (progress._currentItems.size() == 0
-    //             && progress._totalFileCount == 0) )
-    {
-        return;
-    }
-    emit progressInfo(folder, progress);
-}
-
 ProgressInfo::ProgressInfo()
 {
     connect(&_updateEstimatesTimer, &QTimer::timeout, this, &ProgressInfo::updateEstimates);

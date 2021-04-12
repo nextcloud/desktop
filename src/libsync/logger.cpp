@@ -61,22 +61,6 @@ Logger::~Logger()
 #endif
 }
 
-
-void Logger::postGuiLog(const QString &title, const QString &message)
-{
-    emit guiLog(title, message);
-}
-
-void Logger::postOptionalGuiLog(const QString &title, const QString &message)
-{
-    emit optionalGuiLog(title, message);
-}
-
-void Logger::postGuiMessage(const QString &title, const QString &message)
-{
-    emit guiMessage(title, message);
-}
-
 bool Logger::isLoggingToFile() const
 {
     QMutexLocker lock(&_mutex);
@@ -103,7 +87,6 @@ void Logger::doLog(QtMsgType type, const QMessageLogContext &ctx, const QString 
 #endif
         }
     }
-    emit logWindowLog(msg);
 }
 
 void Logger::close()
@@ -138,11 +121,7 @@ void Logger::setLogFile(const QString &name)
     }
 
     if (!openSucceeded) {
-        locker.unlock(); // Just in case postGuiMessage has a qDebug()
-        postGuiMessage(tr("Error"),
-            QString(tr("<nobr>File '%1'<br/>cannot be opened for writing.<br/><br/>"
-                       "The log output can <b>not</b> be saved!</nobr>"))
-                .arg(name));
+        std::cerr << "Failed to open the log file" << std::endl;
         return;
     }
 

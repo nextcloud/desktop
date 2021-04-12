@@ -35,7 +35,7 @@ class Systray : public QSystemTrayIcon
     Q_OBJECT
 public:
     Systray(QObject *parent = nullptr);
-    void showMessage(const QString &title, const QString &message, MessageIcon icon = Information, int millisecondsTimeoutHint = 10000);
+    void showMessage(const QString &title, const QString &message, const QIcon &icon, int millisecondsTimeoutHint = 10000);
     void setToolTip(const QString &tip);
 };
 

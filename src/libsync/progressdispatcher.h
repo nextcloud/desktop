@@ -288,8 +288,6 @@ enum class ErrorCategory {
 class OWNCLOUDSYNC_EXPORT ProgressDispatcher : public QObject
 {
     Q_OBJECT
-
-    friend class Folder; // only allow Folder class to access the setting slots.
 public:
     static ProgressDispatcher *instance();
     ~ProgressDispatcher() override;
@@ -317,9 +315,6 @@ signals:
      * @brief Emitted for a folder when a sync is done, listing all pending conflicts
      */
     void folderConflicts(const QString &folder, const QStringList &conflictPaths);
-
-protected:
-    void setProgressInfo(const QString &folder, const ProgressInfo &progress);
 
 private:
     ProgressDispatcher(QObject *parent = nullptr);

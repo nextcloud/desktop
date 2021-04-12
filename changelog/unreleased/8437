@@ -3,3 +3,6 @@ Enhancement: Add initial support for backups triggered by an external tool
 We added a socket api function which allows creation of backups.
 
 https://github.com/owncloud/client/pull/8437
+https://github.com/owncloud/client/pull/8535
+https://github.com/owncloud/client/pull/8536
+https://github.com/owncloud/client/pull/8539

@@ -33,7 +33,7 @@ Systray::Systray(QObject *parent)
 {
 }
 
-void Systray::showMessage(const QString &title, const QString &message, MessageIcon icon, int millisecondsTimeoutHint)
+void Systray::showMessage(const QString &title, const QString &message, const QIcon &icon, int millisecondsTimeoutHint)
 {
 #ifdef USE_FDO_NOTIFICATIONS
     if(QDBusInterface(NOTIFICATIONS_SERVICE, NOTIFICATIONS_PATH, NOTIFICATIONS_IFACE).isValid()) {
