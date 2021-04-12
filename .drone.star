@@ -122,32 +122,10 @@ def build_and_test_client(ctx, c_compiler, cxx_compiler, build_type, generator, 
                 "commands": [
                     "git submodule update --init --recursive",
                 ],
-            },
-            {
-                "name": "cmake",
-                "image": "owncloudci/client",
-                "pull": "always",
-                "environment": {
-                    "LC_ALL": "C.UTF-8",
-                },
-                "commands": [
-                    'mkdir -p "' + build_dir + '"',
-                    'cd "' + build_dir + '"',
-                    'cmake -G"' + generator + '" -DCMAKE_C_COMPILER="' + c_compiler + '" -DCMAKE_CXX_COMPILER="' + cxx_compiler + '" -DCMAKE_BUILD_TYPE="' + build_type + '" -DBUILD_TESTING=1 ..',
-                ],
-            },
-            {
-                "name": build_command,
-                "image": "owncloudci/client",
-                "pull": "always",
-                "environment": {
-                    "LC_ALL": "C.UTF-8",
-                },
-                "commands": [
-                    'cd "' + build_dir + '"',
-                    build_command + " -j4",
-                ],
-            },
+            }
+        ] +
+          build_client(ctx, c_compiler, cxx_compiler, build_type, generator, build_command, build_dir)+
+        [
             {
                 "name": "ctest",
                 "image": "owncloudci/client",
@@ -166,6 +144,36 @@ def build_and_test_client(ctx, c_compiler, cxx_compiler, build_type, generator, 
         "trigger": trigger,
         "depends_on": depends_on,
     }
+
+def build_client(ctx, c_compiler, cxx_compiler, build_type, generator, build_command, build_dir):
+  return [
+    {
+        "name": "cmake",
+        "image": "owncloudci/client",
+        "pull": "always",
+        "environment": {
+            "LC_ALL": "C.UTF-8",
+        },
+        "commands": [
+            'mkdir -p "' + build_dir + '"',
+            'cd "' + build_dir + '"',
+            'cmake -G"' + generator + '" -DCMAKE_C_COMPILER="' + c_compiler + '" -DCMAKE_CXX_COMPILER="' + cxx_compiler + '" -DCMAKE_BUILD_TYPE="' + build_type + '" -DBUILD_TESTING=1 ..',
+        ],
+    },
+    {
+        "name": build_command,
+        "image": "owncloudci/client",
+        "pull": "always",
+        "environment": {
+            "LC_ALL": "C.UTF-8",
+        },
+        "commands": [
+            'cd "' + build_dir + '"',
+            build_command + " -j4",
+        ],
+    }
+  ]
+
 
 def build_client_docs(ctx):
     return {
@@ -283,7 +291,7 @@ def build_client_docs(ctx):
     }
 
 def changelog(ctx, trigger = {}, depends_on = []):
-    repo_slug = ctx.build.source_repo if ctx.build.source_repo else ctx.repo.slug
+#    repo_slug = ctx.build.source_repo if ctx.build.source_repo else ctx.repo.slug
     result = {
         'kind': 'pipeline',
         'type': 'docker',
@@ -300,7 +308,7 @@ def changelog(ctx, trigger = {}, depends_on = []):
                     'actions': [
                         'clone',
                     ],
-                    'remote': 'https://github.com/%s' % (repo_slug),
+                    'remote': 'https://github.com/%s', # % (repo_slug),
                     'branch': ctx.build.source if ctx.build.event == 'pull_request' else 'master',
                     'path': '/drone/src',
                     'netrc_machine': 'github.com',
