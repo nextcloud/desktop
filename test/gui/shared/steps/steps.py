@@ -416,3 +416,32 @@ def step(context, publicLinkName, resource):
     type(waitForObject(names.oCC_ShareLinkWidget_calendar_QDateEdit), expDate[1])
     type(waitForObject(names.oCC_ShareLinkWidget_calendar_QDateEdit), expDate[2])
     type(waitForObject(names.oCC_ShareLinkWidget_calendar_QDateEdit), expYear)
+    
+    
+@When('the user creates a new public link with permissions "|any|" for folder "|any|" without password using the client-UI')
+def step(context, permissions, resource):
+    resource = sanitizePath(substituteInLineCodes(context, resource))
+    openPublicLinkDialog(context, resource)
+    radioObjectName = ''
+    if permissions == 'Download / View':
+        radioObjectName = name.oCC_ShareLinkWidget_radio_readOnly_QRadioButton
+    elif permissions == 'Download / View / Edit':
+        radioObjectName = names.oCC_ShareLinkWidget_radio_readWrite_QRadioButton
+    elif permissions == 'Upload only (File Drop)':
+        radioObjectName = names.oCC_ShareLinkWidget_radio_uploadOnly_QRadioButton   
+    test.compare(str(waitForObjectExists(radioObjectName).text), permissions)
+
+    clickButton(waitForObject(radioObjectName))
+    clickButton(waitForObject(names.oCC_ShareLinkWidget_createShareButton_QPushButton))
+
+
+@When('the user creates a new public link with permissions "|any|" for folder "|any|" with password "|any|" using the client-UI')
+def step(context, permissions, resource, password):
+    resource = sanitizePath(substituteInLineCodes(context, resource))
+    openPublicLinkDialog(context, resource)
+    clickButton(waitForObject(names.oCC_ShareLinkWidget_checkBox_password_QCheckBox))
+    mouseClick(waitForObject(names.oCC_ShareLinkWidget_lineEdit_password_QLineEdit), 0, 0, Qt.NoModifier, Qt.LeftButton)
+    type(waitForObject(names.oCC_ShareLinkWidget_lineEdit_password_QLineEdit), password)
+    clickButton(waitForObject(names.oCC_ShareLinkWidget_createShareButton_QPushButton))
+    waitFor(lambda: (findObject(names.linkShares_0_0_QModelIndex).displayText == "Public link"))
+

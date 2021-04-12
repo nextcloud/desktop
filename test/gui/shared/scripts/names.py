@@ -101,3 +101,6 @@ oCC_ShareLinkWidget_qt_calendar_prevmonth_QPrevNextCalButton = {"container": qt_
 oCC_ShareLinkWidget_qt_calendar_calendarview_QCalendarView = {"container": qt_tabwidget_stackedwidget_OCC_ShareLinkWidget_OCC_ShareLinkWidget, "name": "qt_calendar_calendarview", "type": "QCalendarView", "visible": 1}
 oCC_ShareLinkWidget_qt_spinbox_lineedit_QLineEdit = {"container": qt_tabwidget_stackedwidget_OCC_ShareLinkWidget_OCC_ShareLinkWidget, "name": "qt_spinbox_lineedit", "type": "QLineEdit", "visible": 1}
 linkShares_0_0_QModelIndex = {"column": 0, "container": oCC_ShareLinkWidget_linkShares_QTableWidget, "row": 0, "type": "QModelIndex"}
+oCC_ShareLinkWidget_radio_readOnly_QRadioButton = {"container": qt_tabwidget_stackedwidget_OCC_ShareLinkWidget_OCC_ShareLinkWidget, "name": "radio_readOnly", "type": "QRadioButton", "visible": 1}
+oCC_ShareLinkWidget_radio_readWrite_QRadioButton = {"container": qt_tabwidget_stackedwidget_OCC_ShareLinkWidget_OCC_ShareLinkWidget, "name": "radio_readWrite", "type": "QRadioButton", "visible": 1}
+oCC_ShareLinkWidget_radio_uploadOnly_QRadioButton = {"container": qt_tabwidget_stackedwidget_OCC_ShareLinkWidget_OCC_ShareLinkWidget, "name": "radio_uploadOnly", "type": "QRadioButton", "visible": 1}
