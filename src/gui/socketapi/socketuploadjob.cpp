@@ -48,8 +48,14 @@ void SocketUploadJob::start()
     const auto pattern = _apiJob->arguments()[QLatin1String("pattern")].toString();
     const auto excludes = _apiJob->arguments()[QLatin1String("excludes")].toArray();
     const auto accname = _apiJob->arguments()[QLatin1String("account")][QLatin1String("name")].toString();
+    const auto accUUID = QUuid::fromString(_apiJob->arguments()[QLatin1String("account")][QLatin1String("uuid")].toString());
     AccountStatePtr account;
-    account = AccountManager::instance()->account(accname);
+    if (accUUID.isNull()) {
+        _apiJob->setWarning("Using the name as identifier is deprecated, please use the uuid");
+        account = AccountManager::instance()->account(accname);
+    } else {
+        account = AccountManager::instance()->account(accUUID);
+    }
 
     logMessage(_localPath, tr("Backup of %1 started").arg(QDir::toNativeSeparators(_localPath)));
 
