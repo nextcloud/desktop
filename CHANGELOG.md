@@ -28,6 +28,7 @@ Summary
 * Enhancement - Add initial support for backups triggered by an external tool: [#8437](https://github.com/owncloud/client/pull/8437)
 * Enhancement - Add language picker to general settings: [#8466](https://github.com/owncloud/client/issues/8466)
 * Enhancement - Attach the last 20 log lines to a crash report: [#8467](https://github.com/owncloud/client/issues/8467)
+* Enhancement - Add an icon to the Windows system tray notification: [#8539](https://github.com/owncloud/client/pull/8539)
 
 Details
 -------
@@ -157,6 +158,9 @@ Details
    We added a socket api function which allows creation of backups.
 
    https://github.com/owncloud/client/pull/8437
+   https://github.com/owncloud/client/pull/8535
+   https://github.com/owncloud/client/pull/8536
+   https://github.com/owncloud/client/pull/8539
 
 * Enhancement - Add language picker to general settings: [#8466](https://github.com/owncloud/client/issues/8466)
 
@@ -173,6 +177,12 @@ Details
 
    https://github.com/owncloud/client/issues/8467
    https://github.com/owncloud/client/pull/8469
+
+* Enhancement - Add an icon to the Windows system tray notification: [#8539](https://github.com/owncloud/client/pull/8539)
+
+   We now display a branded icon in the system tray notification.
+
+   https://github.com/owncloud/client/pull/8539
 
 Changelog for ownCloud Desktop Client [2.7.6] (2021-02-04)
 =======================================
