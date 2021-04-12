@@ -137,8 +137,8 @@ endif()
 
 if(INOTIFY_FOUND)
     target_include_directories(${synclib_NAME} PRIVATE ${INOTIFY_INCLUDE_DIR})
-    link_directories(${INOTIFY_LIBRARY_DIR})
-    target_link_libraries(${synclib_NAME} ${INOTIFY_LIBRARY} )
+    target_link_directories(${synclib_NAME} PUBLIC ${INOTIFY_LIBRARY_DIR})
+    target_link_libraries(${synclib_NAME} PUBLIC ${INOTIFY_LIBRARY})
 endif()
 
 GENERATE_EXPORT_HEADER( ${synclib_NAME}
