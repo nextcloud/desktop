@@ -29,6 +29,7 @@
 
 #ifdef Q_OS_WIN
 #include <io.h> // for stdout
+#include <fcntl.h>
 #endif
 
 namespace OCC {
@@ -149,6 +150,16 @@ void Logger::setLogFile(const QString &name)
 
     bool openSucceeded = false;
     if (name == QLatin1String("-")) {
+#ifdef Q_OS_WIN
+        if (AttachConsole(ATTACH_PARENT_PROCESS)) {
+            // atache to the parent console output, if its an interactive terminal
+            CONSOLE_SCREEN_BUFFER_INFO csbi;
+            if (GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi)) {
+                freopen("CONOUT$", "w", stdout);
+                freopen("CONOUT$", "w", stderr);
+            }
+        }
+#endif
         openSucceeded = _logFile.open(stdout, QIODevice::WriteOnly);
     } else {
         _logFile.setFileName(name);
