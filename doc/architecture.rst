@@ -369,3 +369,37 @@ is renamed or moved.
 Example:
 
   <oc:id>00000020oc5cfy6qqizm</oc:id>
+  
+Virtual Files
+----------------
+.. note::
+    * This feature is currently only available on ``Windows`` by default. ``Linux`` implementation is experimental and must be enabled by adding ``enableExperimentalOptions=true`` to the ``nextcloud.cfg`` configuration file in the ``App Data`` folder. ``macOS``, at the moment, is using the same backend as ``Linux`` one. It can be enabled with the same ``enableExperimentalOptions`` flag.
+
+Oftentimes, users are working with a huge amount of files that are big in size. Synchronizing every such file to a device that's running a Nextcloud desktop client is not always possible due to the user's device storage space limitation.
+Let's assume that your desktop client is connected to a server that has 1TB of data. You want all those files at hand, so you can quickly access any file via the file explorer. Your device has 512GB local storage device.
+Obviously, it's not possible to synchronize even half of 1TB of data that is on the server. What should you do in this case? Of course, you can just utilize the Selective Sync feature, and keep switching between different folders, in such a way that you only synchronize those folders that you are currently working with.
+Needless to say, this is far from being convenient.
+
+That's why, starting from 3.2.0, we are introducing the VFS (Virtual Files) feature. You may have had experience working with a similar feature in other cloud sync clients. This feature is known by different names: Files On-Demand, SmartSync, etc.
+The VFS does not occupy much space on the user's storage. It just creates placeholders for each file and folder. These files are quite small and only contain metadata needed to display them properly and to fetch the actual file when needed.
+
+One will see a hydration (in other words - file download) process when double-clicking on a file that must become available. There will be a progress-bar popup displayed if the file is large enough. So, the hydration process can be observed and it makes it easy to then find out, how long, it would take to fetch the actual file from the server.
+The "Hydration" can be thought of as "downloading" or "fetching" the file contents. As soon as hydration is complete, the file will then be opened normally as now it is a real file on the user's storage. It won't disappear, and, from now on, will always be available, unless it is manually dehydrated.
+.. figure:: images/vfs_hydration_progress_bar.png
+   :alt: VFS hydration progress bar
+
+As long as the VFS is enabled, a user can choose to remove files that are no longer needed from the local storage. This can be achieved by right-clicking the file/folder in the explorer, and then, choosing "Free up local space" from the context menu.
+Alternatively, space can be freed up by right-clicking the sync folder in the Settings dialog. It is also possible to make files always hydrated, or, in other words, always available locally. A user just needs to choose the "Make always available locally" option in the aforementioned context menus.
+.. figure:: images/vfs_context_menu_options.png
+   :alt: VFS context menu options
+
+The VFS can also be disabled if needed, so, the entire folder will then be synced normally. This option is available in the context menu of a sync folder in the Settings dialog. Once disabled, the VFS can also be enabled back by using the same context menu.
+Files that must be removed from the local storage only, need to be dehydrated via the "Free up local space" option, so, the placeholder will get created in place of real files.
+
+User Status
+----------------
+
+Starting from 3.2.0, user status is displayed in the Nextcloud desktop client's tray window. The icon and a text message are displayed as long as those are set in the user's account menu in the Web UI (server's website). At the moment, setting the status from the desktop client is not available.
+The status is updated almost immediately after it is set in the Web UI. Default user status is always "Online" if no other status is available from the server-side.
+.. figure:: images/status_feature_example.png
+   :alt: User Status feature in the tray window
