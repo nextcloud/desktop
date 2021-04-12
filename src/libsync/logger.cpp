@@ -161,6 +161,7 @@ void Logger::setLogFile(const QString &name)
     }
 
     _logstream.reset(new QTextStream(&_logFile));
+    _logstream->setCodec("UTF-8");
 }
 
 void Logger::setLogExpire(std::chrono::hours expire)
