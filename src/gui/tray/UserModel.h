@@ -6,10 +6,12 @@
 #include <QDateTime>
 #include <QStringList>
 #include <QQuickImageProvider>
+#include <QHash>
 
 #include "ActivityListModel.h"
 #include "accountmanager.h"
 #include "folderman.h"
+#include "NotificationCache.h"
 #include <chrono>
 
 namespace OCC {
@@ -25,7 +27,7 @@ class User : public QObject
     Q_PROPERTY(bool serverHasTalk READ serverHasTalk NOTIFY serverHasTalkChanged)
     Q_PROPERTY(QString avatar READ avatarUrl NOTIFY avatarChanged)
 public:
-    User(AccountStatePtr &account, const bool &isCurrent = false, QObject* parent = nullptr);
+    User(AccountStatePtr &account, const bool &isCurrent = false, QObject *parent = nullptr);
 
     AccountPtr account() const;
 
@@ -51,6 +53,7 @@ public:
     UserStatus::Status status() const;
     QString statusMessage() const;
     QUrl statusIcon() const;
+    void processCompletedSyncItem(const Folder *folder, const SyncFileItemPtr &item);
 
 signals:
     void guiLog(const QString &, const QString &);
@@ -91,6 +94,8 @@ private:
     bool isActivityOfCurrentAccount(const Folder *folder) const;
     bool isUnsolvableConflict(const SyncFileItemPtr &item) const;
 
+    void showDesktopNotification(const QString &title, const QString &message);
+
 private:
     AccountStatePtr _account;
     bool _isCurrentUser;
@@ -101,7 +106,7 @@ private:
     QHash<AccountState *, QElapsedTimer> _timeSinceLastCheck;
 
     QElapsedTimer _guiLogTimer;
-    QSet<int> _guiLoggedNotifications;
+    NotificationCache _notificationCache;
 
     // number of currently running notification requests. If non zero,
     // no query for notifications is started.

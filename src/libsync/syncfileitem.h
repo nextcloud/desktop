@@ -66,6 +66,11 @@ public:
         FileLocked, ///< The file is locked
         Restoration, ///< The file was restored because what should have been done was not allowed
 
+        /**
+         * The filename is invalid on this platform and could not created.
+         */
+        FileNameInvalid,
+
         /** For errors that should only appear in the error view.
          *
          * Some errors also produce a summary message. Usually displaying that message is
