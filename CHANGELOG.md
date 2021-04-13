@@ -9,6 +9,7 @@ Summary
 -------
 
 * Bugfix - Fix issues with long path: [#4405](https://github.com/owncloud/enterprise/issues/4405)
+* Bugfix - Keep share link names in sync with server: [#7549](https://github.com/owncloud/client/issues/7549)
 * Bugfix - SQLite wal file grows to several gigabyte: [#7646](https://github.com/owncloud/client/issues/7646)
 * Bugfix - Moves in folder sync connections where executed as a delete and upload: [#7838](https://github.com/owncloud/client/issues/7838)
 * Bugfix - Fix missing permission for newly created folder: [#8076](https://github.com/owncloud/client/pull/8076)
@@ -39,6 +40,15 @@ Details
    functions and files paths > 260 characters.
 
    https://github.com/owncloud/enterprise/issues/4405
+
+* Bugfix - Keep share link names in sync with server: [#7549](https://github.com/owncloud/client/issues/7549)
+
+   When the name of a share link is changed, e.g., to an empty string, the server may not apply this,
+   but assign a fallback value (e.g., the link ID). The client therefore needs to re-check the name
+   after sending a change request.
+
+   https://github.com/owncloud/client/issues/7549
+   https://github.com/owncloud/client/pull/8546
 
 * Bugfix - SQLite wal file grows to several gigabyte: [#7646](https://github.com/owncloud/client/issues/7646)
 
