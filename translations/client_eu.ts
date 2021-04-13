@@ -4487,7 +4487,7 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
     <message>
         <location filename="../src/gui/userstatus.cpp" line="55"/>
         <source>Away</source>
-        <translation type="unfinished"/>
+        <translation>Kanpoan</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatus.cpp" line="57"/>
