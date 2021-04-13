@@ -1,16 +1,5 @@
 name: ownCloud CI
 
-on: 
-  pull_request:
-    branches:
-      - "master"
-      - "2.7"
-    
-  push:
-    branches:
-      - "master"
-      - "2.7"
-
 defaults:
   run:
     shell: pwsh
