@@ -1,5 +1,7 @@
 name: ownCloud CI
 
+on: [push]
+
 defaults:
   run:
     shell: pwsh
