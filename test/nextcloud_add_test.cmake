@@ -8,8 +8,8 @@ macro(nextcloud_add_test test_class)
     add_executable(${OWNCLOUD_TEST_CLASS}Test test${OWNCLOUD_TEST_CLASS_LOWERCASE}.cpp)
     set_target_properties(${OWNCLOUD_TEST_CLASS}Test PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${BIN_OUTPUT_DIRECTORY})
 
-    target_link_libraries(${OWNCLOUD_TEST_CLASS}Test
-      ${APPLICATION_EXECUTABLE}sync
+    target_link_libraries(${OWNCLOUD_TEST_CLASS}Test PRIVATE
+      nextcloudsync
       testutils
       nextcloudCore
       cmdCore
@@ -18,19 +18,19 @@ macro(nextcloud_add_test test_class)
     )
 
     if (WIN32)
-        target_link_libraries(${OWNCLOUD_TEST_CLASS}Test
-            "${synclib_NAME}_vfs_cfapi"
+        target_link_libraries(${OWNCLOUD_TEST_CLASS}Test PRIVATE
+            nextcloudsync_vfs_cfapi
         )
     endif()
 
     if (UNIX)
-        target_link_libraries(${OWNCLOUD_TEST_CLASS}Test
-            "${synclib_NAME}_vfs_xattr"
+        target_link_libraries(${OWNCLOUD_TEST_CLASS}Test PRIVATE
+            nextcloudsync_vfs_xattr
         )
     endif()
 
     IF(BUILD_UPDATER)
-        target_link_libraries(${OWNCLOUD_TEST_CLASS}Test
+        target_link_libraries(${OWNCLOUD_TEST_CLASS}Test PRIVATE
             updater
         )
     endif()
@@ -58,7 +58,7 @@ macro(nextcloud_add_benchmark test_class)
     set_target_properties(${OWNCLOUD_TEST_CLASS}Bench PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${BIN_OUTPUT_DIRECTORY})
 
     target_link_libraries(${OWNCLOUD_TEST_CLASS}Bench
-      ${APPLICATION_EXECUTABLE}sync
+      nextcloudsync
       testutils
       nextcloudCore
       cmdCore

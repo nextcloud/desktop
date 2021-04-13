@@ -1,12 +1,10 @@
-add_library("${synclib_NAME}_vfs_suffix" SHARED
+add_library(nextcloudsync_vfs_suffix SHARED
     vfs_suffix.cpp
 )
 
-target_link_libraries("${synclib_NAME}_vfs_suffix"
-    "${synclib_NAME}"
-)
+target_link_libraries(nextcloudsync_vfs_suffix PRIVATE nextcloudsync)
 
-set_target_properties("${synclib_NAME}_vfs_suffix" PROPERTIES
+set_target_properties(nextcloudsync_vfs_suffix PROPERTIES
     LIBRARY_OUTPUT_DIRECTORY ${BIN_OUTPUT_DIRECTORY}
     RUNTIME_OUTPUT_DIRECTORY ${BIN_OUTPUT_DIRECTORY}
     PREFIX ""
@@ -16,7 +14,7 @@ set_target_properties("${synclib_NAME}_vfs_suffix" PROPERTIES
 if(APPLE)
     # for being loadable when client run from build dir
     set(vfs_buildoutputdir "${BIN_OUTPUT_DIRECTORY}/${OWNCLOUD_OSX_BUNDLE}/Contents/PlugIns/")
-    set_target_properties("${synclib_NAME}_vfs_suffix"
+    set_target_properties(nextcloudsync_vfs_suffix
         PROPERTIES
         LIBRARY_OUTPUT_DIRECTORY ${vfs_buildoutputdir}
         RUNTIME_OUTPUT_DIRECTORY ${vfs_buildoutputdir}
@@ -27,7 +25,7 @@ else()
     set(vfs_installdir "${PLUGINDIR}")
 endif()
 
-INSTALL(TARGETS "${synclib_NAME}_vfs_suffix"
+install(TARGETS nextcloudsync_vfs_suffix
   LIBRARY DESTINATION "${vfs_installdir}"
   RUNTIME DESTINATION "${vfs_installdir}"
 )
