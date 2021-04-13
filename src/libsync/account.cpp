@@ -215,6 +215,10 @@ void Account::trySetupPushNotifications()
 
             const auto deletePushNotifications = [this]() {
                 qCInfo(lcAccount) << "Delete push notifications object because authentication failed or connection lost";
+                if (!_pushNotifications) {
+                    return;
+                }
+                Q_ASSERT(!_pushNotifications->isReady());
                 _pushNotifications->deleteLater();
                 _pushNotifications = nullptr;
                 emit pushNotificationsDisabled(this);

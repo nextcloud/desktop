@@ -251,6 +251,7 @@ public:
     // Check for the directEditing capability
     void fetchDirectEditors(const QUrl &directEditingURL, const QString &directEditingETag);
 
+    void trySetupPushNotifications();
     PushNotifications *pushNotifications() const;
 
 public slots:
@@ -293,7 +294,6 @@ protected Q_SLOTS:
 private:
     Account(QObject *parent = nullptr);
     void setSharedThis(AccountPtr sharedThis);
-    void trySetupPushNotifications();
 
     QWeakPointer<Account> _sharedThis;
     QString _id;
