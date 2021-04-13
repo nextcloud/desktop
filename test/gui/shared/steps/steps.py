@@ -48,12 +48,35 @@ def step(context, displayname, host):
             ), displayname + "\n" + host
         )
 
-@Given('user "|any|" has set up a client with these settings and password |any|:')
-def step(context, username, password):
-    configContent = "\n".join(context.multiLineText)
-    configContent = substituteInLineCodes(context, configContent)
+def setUpClient(context, username, password, configContent):
+    userSetting = '''
+    [Accounts]
+    0/Folders/1/ignoreHiddenFiles=true
+    0/Folders/1/localPath={client_sync_path}
+    0/Folders/1/paused=false
+    0/Folders/1/targetPath=/
+    0/Folders/1/version=2
+    0/Folders/1/virtualFilesMode=off
+    0/dav_user={davUserName}
+    0/display-name={displayUserName}
+    0/http_oauth=false
+    0/http_user={davUserName}
+    0/url={local_server}
+    0/user={displayUserFirstName}
+    0/version=1
+    version=2
+    '''
+    userFirstName = username.split()
+    userSetting = userSetting + configContent
+    args = {'displayUserName': username,
+        'davUserName': username.lower(),
+        'displayUserFirstName': userFirstName[0],
+        'client_sync_path': context.userData['clientSyncPath'],
+        'local_server': context.userData['localBackendUrl']
+        }
+    userSetting = userSetting.format(**args)
     configFile = open(confFilePath, "w")
-    configFile.write(configContent)
+    configFile.write(userSetting)
     configFile.close()
 
     startApplication("owncloud -s --logfile - --confdir " + confdir)
@@ -64,6 +87,15 @@ def step(context, username, password):
         clickButton(waitForObject(names.enter_Password_OK_QPushButton))
     except LookupError:
         pass
+    
+@Given('user "|any|" has set up a client with these settings and password |any|:')
+def step(context, username, password):
+    configContent = "\n".join(context.multiLineText)
+    setUpClient(context, username, password, configContent)
+        
+@Given('user "|any|" has set up a client with default settings and password |any|')
+def step(context, username, password):
+    setUpClient(context, username, password,'')
 
 @Given('the user has started the client')
 def step(context):
