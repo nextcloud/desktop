@@ -352,7 +352,7 @@ void OwncloudSetupWizard::slotAuthError()
 
     auto *job = qobject_cast<PropfindJob *>(sender());
     if (!job) {
-        qCWarning(lcWizard) << "Can't check for authed redirects. This slot should be invoked from PropfindJob!";
+        qCWarning(lcWizard) << "Cannot check for authed redirects. This slot should be invoked from PropfindJob!";
         return;
     }
     QNetworkReply *reply = job->reply();
@@ -610,7 +610,7 @@ bool OwncloudSetupWizard::ensureStartFromScratch(const QString &localFolder)
         renameOk = FolderMan::instance()->startFromScratch(localFolder);
         if (!renameOk) {
             QMessageBox::StandardButton but = QMessageBox::question(nullptr, tr("Folder rename failed"),
-                tr("Can't remove and back up the folder because the folder or a file in it is open in another program."
+                tr("Cannot remove and back up the folder because the folder or a file in it is open in another program."
                    " Please close the folder or file and hit retry or cancel the setup."),
                 QMessageBox::Retry | QMessageBox::Abort, QMessageBox::Retry);
             if (but == QMessageBox::Abort) {

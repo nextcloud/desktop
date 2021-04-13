@@ -397,7 +397,7 @@ void PropagateDownloadFile::start()
         });
         connect(_downloadEncryptedHelper, &PropagateDownloadEncrypted::failed, [this] {
           done(SyncFileItem::NormalError,
-               tr("File %1 can not be downloaded because encryption information is missing.").arg(QDir::toNativeSeparators(_item->_file)));
+               tr("File %1 cannot be downloaded because encryption information is missing.").arg(QDir::toNativeSeparators(_item->_file)));
         });
         _downloadEncryptedHelper->start();
     }
@@ -510,7 +510,7 @@ void PropagateDownloadFile::startDownload()
 
     // do a klaas' case clash check.
     if (propagator()->localFileNameClash(_item->_file)) {
-        done(SyncFileItem::NormalError, tr("File %1 can not be downloaded because of a local file name clash!").arg(QDir::toNativeSeparators(_item->_file)));
+        done(SyncFileItem::NormalError, tr("File %1 cannot be downloaded because of a local file name clash!").arg(QDir::toNativeSeparators(_item->_file)));
         return;
     }
 
