@@ -287,7 +287,7 @@
         <location filename="../src/gui/accountsettings.cpp" line="208"/>
         <location filename="../src/gui/accountsettings.cpp" line="229"/>
         <source>This account supports end-to-end encryption</source>
-        <translation>このアカウントはエンドツーエンドの暗号化をサポートしています</translation>
+        <translation>このアカウントはE2E暗号化に対応しています</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="210"/>
@@ -457,7 +457,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="836"/>
         <source>Disable support</source>
-        <translation>サーポートを無効化</translation>
+        <translation>サポートを無効化</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="952"/>
@@ -3019,7 +3019,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="434"/>
         <source>permissions</source>
-        <translation type="unfinished"/>
+        <translation>権限</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="438"/>
@@ -3953,7 +3953,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="205"/>
         <source>No support for SSL session tickets/identifiers</source>
-        <translation>SSLセッションチケット/識別子はサポートされていません</translation>
+        <translation>SSLセッションチケット/識別子は対応していません</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="215"/>
@@ -4217,7 +4217,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="490"/>
         <source>Symbolic links are not supported in syncing.</source>
-        <translation>同期機能はシンボリックリンクをサポートしていません</translation>
+        <translation>同期機能はシンボリックリンクに対応していません</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="493"/>
@@ -4461,22 +4461,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/userstatus.cpp" line="55"/>
         <source>Away</source>
-        <translation type="unfinished"/>
+        <translation>離席中</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatus.cpp" line="57"/>
         <source>Do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>邪魔しないでください</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatus.cpp" line="60"/>
         <source>Offline</source>
-        <translation type="unfinished"/>
+        <translation>オフライン</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatus.cpp" line="62"/>
         <source>Online</source>
-        <translation type="unfinished"/>
+        <translation>オンライン</translation>
     </message>
 </context>
 <context>
