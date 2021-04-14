@@ -2883,6 +2883,11 @@ Si cunsìgiat de non ddu impreare.</translation>
         <translation>Non faghet a nche bogare o creare una còpia de seguesa de sa cartella ca sa cartella o un&apos;archìviu   in intro de issa est abertu in un àteru programma. Serra sa cartella o s&apos;archìviu e incarca Proa torra o annulla sa cunfiguratzione.</translation>
     </message>
     <message>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="613"/>
+        <source>Cannot remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="666"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
         <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Cartella locale %1 creada in manera curreta!&lt;/b&gt;&lt;/font&gt;</translation>
@@ -3112,6 +3117,11 @@ Custa est una modalidade noa, isperimentale. Si detzides de dda impreare, sinnal
         <translation>S&apos;archìviu %1 non podet èssere iscarrigadu pro sa mancàntzia de informatziones de tzifradura.</translation>
     </message>
     <message>
+        <location filename="../src/libsync/propagatedownload.cpp" line="400"/>
+        <source>File %1 cannot be downloaded because encryption information is missing.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="418"/>
         <location filename="../src/libsync/propagatedownload.cpp" line="1012"/>
         <source>File has changed since discovery</source>
@@ -3121,6 +3131,11 @@ Custa est una modalidade noa, isperimentale. Si detzides de dda impreare, sinnal
         <location filename="../src/libsync/propagatedownload.cpp" line="513"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
         <translation> S&apos;archìviu %1 non podet èssere iscarrigadu pro unu cunflitu cun un&apos;archìviu locale!</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagatedownload.cpp" line="513"/>
+        <source>File %1 cannot be downloaded because of a local file name clash!</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="565"/>
@@ -3214,6 +3229,11 @@ Custa est una modalidade noa, isperimentale. Si detzides de dda impreare, sinnal
 </context>
 <context>
     <name>OCC::PropagateLocalRename</name>
+    <message>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="226"/>
+        <source>File %1 cannot be renamed to %2 because of a local file name clash</source>
+        <translation type="unfinished"/>
+    </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="226"/>
         <source>File %1 can not be renamed to %2 because of a local file name clash</source>
@@ -3537,6 +3557,11 @@ Custa est una modalidade noa, isperimentale. Si detzides de dda impreare, sinnal
         <location filename="../src/gui/sharedialog.cpp" line="293"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
         <translation>Custu archìviu non faghet a ddu cumpartzire ca est cumpartzidu sena permissu.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharedialog.cpp" line="293"/>
+        <source>The file cannot be shared because it was shared without sharing permission.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="334"/>

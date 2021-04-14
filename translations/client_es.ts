@@ -2884,6 +2884,11 @@ No se recomienda usarla.</translation>
         <translation>No se puede eliminar y respaldar la carpeta porque la misma o un fichero en ella está abierto por otro programa. Por favor, cierre la carpeta o el fichero y reintente, o cancele la instalación.</translation>
     </message>
     <message>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="613"/>
+        <source>Cannot remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="666"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
         <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Carpeta de sincronización local %1 creada con éxito&lt;/b&gt;&lt;/font&gt;</translation>
@@ -3114,6 +3119,11 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
         <translation>El archivo %1 no se ha podido descargar porque falta la información de cifrado.</translation>
     </message>
     <message>
+        <location filename="../src/libsync/propagatedownload.cpp" line="400"/>
+        <source>File %1 cannot be downloaded because encryption information is missing.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="418"/>
         <location filename="../src/libsync/propagatedownload.cpp" line="1012"/>
         <source>File has changed since discovery</source>
@@ -3123,6 +3133,11 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
         <location filename="../src/libsync/propagatedownload.cpp" line="513"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
         <translation>¡El archivo %1 no se puede descargar a causa de un conflicto con el nombre de un archivo local!</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagatedownload.cpp" line="513"/>
+        <source>File %1 cannot be downloaded because of a local file name clash!</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="565"/>
@@ -3216,6 +3231,11 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
 </context>
 <context>
     <name>OCC::PropagateLocalRename</name>
+    <message>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="226"/>
+        <source>File %1 cannot be renamed to %2 because of a local file name clash</source>
+        <translation type="unfinished"/>
+    </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="226"/>
         <source>File %1 can not be renamed to %2 because of a local file name clash</source>
@@ -3539,6 +3559,11 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
         <location filename="../src/gui/sharedialog.cpp" line="293"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
         <translation>El archivo no puede compartirse ya que ha sido compartido sin los permisos correspondientes.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharedialog.cpp" line="293"/>
+        <source>The file cannot be shared because it was shared without sharing permission.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="334"/>

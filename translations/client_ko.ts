@@ -2866,6 +2866,11 @@ It is not advisable to use it.</source>
         <translation>폴더 나 폴더의 파일이 다른 프로그램에서 열려있어 폴더를 제거하고 백업 할 수 없습니다. 폴더 혹은 파일을 닫고 다시 시도하거나 설정을 취소하십시오.</translation>
     </message>
     <message>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="613"/>
+        <source>Cannot remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="666"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
         <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;로컬 동기화 폴더 %1이 성공적으로 생성되었습니다!&lt;/b&gt;&lt;/font&gt;</translation>
@@ -3090,6 +3095,11 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>암호화 정보가 없어서 %1 파일을 다운로드 할 수 없습니다.</translation>
     </message>
     <message>
+        <location filename="../src/libsync/propagatedownload.cpp" line="400"/>
+        <source>File %1 cannot be downloaded because encryption information is missing.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="418"/>
         <location filename="../src/libsync/propagatedownload.cpp" line="1012"/>
         <source>File has changed since discovery</source>
@@ -3099,6 +3109,11 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/propagatedownload.cpp" line="513"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
         <translation>로컬 파일 이름 충돌로 인해 %1 파일을 다운로드 할 수 없습니다!</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagatedownload.cpp" line="513"/>
+        <source>File %1 cannot be downloaded because of a local file name clash!</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="565"/>
@@ -3192,6 +3207,11 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 </context>
 <context>
     <name>OCC::PropagateLocalRename</name>
+    <message>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="226"/>
+        <source>File %1 cannot be renamed to %2 because of a local file name clash</source>
+        <translation type="unfinished"/>
+    </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="226"/>
         <source>File %1 can not be renamed to %2 because of a local file name clash</source>
@@ -3515,6 +3535,11 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/sharedialog.cpp" line="293"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
         <translation>파일을 공유 권한이 없기 때문에 파일을 공유 할 수 없습니다.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharedialog.cpp" line="293"/>
+        <source>The file cannot be shared because it was shared without sharing permission.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="334"/>
