@@ -140,7 +140,7 @@ ShareDialog::ShareDialog(QPointer<AccountState> accountState,
         qCWarning(lcSharing) << "Link shares have been disabled";
         sharingPossible = false;
     } else if (!(maxSharingPermissions & SharePermissionShare)) {
-        qCWarning(lcSharing) << "The file cannot be shared because it was shared without sharing permission.";
+        qCWarning(lcSharing) << "The file cannot be shared because it does not have sharing permission.";
         sharingPossible = false;
     }
 
@@ -290,7 +290,7 @@ void ShareDialog::showSharingUi()
 
     if (!canReshare) {
         auto label = new QLabel(this);
-        label->setText(tr("The file cannot be shared because it was shared without sharing permission."));
+        label->setText(tr("The file cannot be shared because it does not have sharing permission."));
         label->setWordWrap(true);
         _ui->verticalLayout->insertWidget(1, label);
         return;
