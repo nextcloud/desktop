@@ -16,6 +16,7 @@
 #define SHAREUSERGROUPWIDGET_H
 
 #include "accountfwd.h"
+#include "sharemanager.h"
 #include "sharepermissions.h"
 #include "sharee.h"
 #include "QProgressIndicator.h"
@@ -119,7 +120,7 @@ class ShareUserLine : public QWidget
     Q_OBJECT
 
 public:
-    explicit ShareUserLine(QSharedPointer<Share> Share,
+    explicit ShareUserLine(QSharedPointer<UserGroupShare> share,
         SharePermissions maxSharingPermissions,
         bool isFile,
         QWidget *parent = nullptr);
@@ -150,16 +151,22 @@ private:
     void loadAvatar();
     void customizeStyle();
 
-    Ui::ShareUserLine *_ui;
-    QSharedPointer<Share> _share;
-    bool _isFile;
+  void showNoteOptions(bool show);
+  void toggleNoteOptions(bool enable);
+  void onNoteConfirmButtonClicked();
+  void setNote(const QString &note);
 
-    // _permissionEdit is a checkbox
-    QAction *_permissionReshare;
-    QAction *_deleteShareButton;
-    QAction *_permissionCreate;
-    QAction *_permissionChange;
-    QAction *_permissionDelete;
+  Ui::ShareUserLine *_ui;
+  QSharedPointer<UserGroupShare> _share;
+  bool _isFile;
+
+  // _permissionEdit is a checkbox
+  QAction *_permissionReshare;
+  QAction *_deleteShareButton;
+  QAction *_permissionCreate;
+  QAction *_permissionChange;
+  QAction *_permissionDelete;
+  QAction *_noteLinkAction;
 };
 }
 

@@ -259,6 +259,30 @@ private:
     QUrl _url;
 };
 
+class UserGroupShare : public Share
+{
+    Q_OBJECT
+public:
+    UserGroupShare(AccountPtr account,
+        const QString &id,
+        const QString &owner,
+        const QString &ownerDisplayName,
+        const QString &path,
+        const ShareType shareType,
+        const Permissions permissions,
+        const QSharedPointer<Sharee> shareWith);
+
+    void setNote(const QString &note);
+
+    void slotNoteSet(const QJsonDocument &, const QVariant &note);
+
+signals:
+    void noteSet();
+
+private:
+    QString _note;
+};
+
 /**
  * The share manager allows for creating, retrieving and deletion
  * of shares. It abstracts away from the OCS Share API, all the usages
@@ -331,6 +355,7 @@ private slots:
     void slotOcsError(int statusCode, const QString &message);
 private:
     QSharedPointer<LinkShare> parseLinkShare(const QJsonObject &data);
+    QSharedPointer<UserGroupShare> parseUserGroupShare(const QJsonObject &data);
     QSharedPointer<Share> parseShare(const QJsonObject &data);
 
     AccountPtr _account;

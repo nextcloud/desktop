@@ -278,6 +278,34 @@ void LinkShare::slotNameSet(const QJsonDocument &, const QVariant &value)
     emit nameSet();
 }
 
+UserGroupShare::UserGroupShare(AccountPtr account,
+    const QString &id,
+    const QString &owner,
+    const QString &ownerDisplayName,
+    const QString &path,
+    const ShareType shareType,
+    const Permissions permissions,
+    const QSharedPointer<Sharee> shareWith)
+    : Share(account, id, owner, ownerDisplayName, path, shareType, permissions, shareWith)
+{
+    Q_ASSERT(shareType == TypeUser || shareType == TypeGroup);
+    Q_ASSERT(shareWith);
+}
+
+void UserGroupShare::setNote(const QString &note)
+{
+    auto *job = new OcsShareJob(_account);
+    connect(job, &OcsShareJob::shareJobFinished, this, &UserGroupShare::slotNoteSet);
+    connect(job, &OcsJob::ocsError, this, &UserGroupShare::slotOcsError);
+    job->setNote(getId(), note);
+}
+
+void UserGroupShare::slotNoteSet(const QJsonDocument &, const QVariant &note)
+{
+    _note = note.toString();
+    emit noteSet();
+}
+
 ShareManager::ShareManager(AccountPtr account, QObject *parent)
     : QObject(parent)
     , _account(account)
@@ -390,6 +418,8 @@ void ShareManager::slotSharesFetched(const QJsonDocument &reply)
 
         if (shareType == Share::TypeLink) {
             newShare = parseLinkShare(data);
+        } else if (shareType == Share::TypeGroup || shareType == Share::TypeUser) {
+            newShare = parseUserGroupShare(data);
         } else {
             newShare = parseShare(data);
         }
@@ -399,6 +429,22 @@ void ShareManager::slotSharesFetched(const QJsonDocument &reply)
 
     qCDebug(lcSharing) << "Sending " << shares.count() << "shares";
     emit sharesFetched(shares);
+}
+
+QSharedPointer<UserGroupShare> ShareManager::parseUserGroupShare(const QJsonObject &data)
+{
+    QSharedPointer<Sharee> sharee(new Sharee(data.value("share_with").toString(),
+        data.value("share_with_displayname").toString(),
+        static_cast<Sharee::Type>(data.value("share_type").toInt())));
+
+    return QSharedPointer<UserGroupShare>(new UserGroupShare(_account,
+        data.value("id").toVariant().toString(), // "id" used to be an integer, support both
+        data.value("uid_owner").toVariant().toString(),
+        data.value("displayname_owner").toVariant().toString(),
+        data.value("path").toString(),
+        static_cast<Share::ShareType>(data.value("share_type").toInt()),
+        static_cast<Share::Permissions>(data.value("permissions").toInt()),
+        sharee));
 }
 
 QSharedPointer<LinkShare> ShareManager::parseLinkShare(const QJsonObject &data)
