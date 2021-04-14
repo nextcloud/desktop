@@ -3,6 +3,8 @@ set(CMAKE_CXX_STANDARD 14)
 
 project(client)
 
+include(FeatureSummary)
+
 if(UNIT_TESTING)
     include(CTest)
     enable_testing()
@@ -188,7 +190,7 @@ if(BUILD_CLIENT)
     endif()
 
     if(UNIX AND NOT APPLE)
-        find_package(INotify REQUIRED)
+        find_package(Inotify REQUIRED)
     endif()
     find_package(Sphinx)
     find_package(PdfLatex)
@@ -274,3 +276,5 @@ elseif(BUILD_CLIENT)
     install( FILES sync-exclude.lst DESTINATION ${SYSCONFDIR}/${APPLICATION_SHORTNAME} )
     configure_file(sync-exclude.lst bin/sync-exclude.lst COPYONLY)
 endif()
+
+feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES INCLUDE_QUIET_PACKAGES)
