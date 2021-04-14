@@ -63,7 +63,7 @@ void SocketUploadJob::start()
         fail(tr("Local path must be a an absolute path"));
         return;
     }
-    auto tmp = new QTemporaryFile(this);
+    auto tmp = new QTemporaryFile();
     if (!tmp->open()) {
         fail(tr("Failed to create temporary database"));
         return;
@@ -72,6 +72,7 @@ void SocketUploadJob::start()
     auto db = new SyncJournalDb(tmp->fileName(), this);
     auto engine = new SyncEngine(account->account(), _localPath.endsWith(QLatin1Char('/')) ? _localPath : _localPath + QLatin1Char('/'), remotePath, db);
     engine->setParent(db);
+    tmp->setParent(db);
 
     for (const auto &i : excludes) {
         engine->excludedFiles().addManualExclude(i.toString());
