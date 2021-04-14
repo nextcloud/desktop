@@ -5,11 +5,6 @@ project(client)
 
 include(FeatureSummary)
 
-if(UNIT_TESTING)
-    include(CTest)
-    enable_testing()
-endif()
-
 set(BIN_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 
 
@@ -260,8 +255,8 @@ if(BUILD_SHELL_INTEGRATION)
     add_subdirectory(shell_integration)
 endif()
 
-include(CTest)
 if(BUILD_TESTING)
+    include(CTest)
     enable_testing()
     add_subdirectory(test)
 endif()
