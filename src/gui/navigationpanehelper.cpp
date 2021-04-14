@@ -86,9 +86,6 @@ void NavigationPaneHelper::updateCloudStorageRegistry()
         // We currently don't distinguish between new and existing CLSIDs, if it's there we just
         // save over it. We at least need to update the tile in case we are suddently using multiple accounts.
         foreach (Folder *folder, _folderMan->map()) {
-            if (folder->vfs().mode() == Vfs::WindowsCfApi) {
-                continue;
-            }
             if (!folder->navigationPaneClsid().isNull()) {
                 // If it already exists, unmark it for removal, this is a valid sync root.
                 entriesToRemove.removeOne(folder->navigationPaneClsid());
