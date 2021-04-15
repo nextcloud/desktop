@@ -19,7 +19,11 @@ include(DefineOptions.cmake)
 
 include(DefineInstallationPaths)
 
-find_package(SQLite3 3.8.0 REQUIRED)
+if (APPLE OR WIN32)
+    set(USE_OUR_OWN_SQLITE3 TRUE)
+else()
+    find_package(SQLite3 3.8.0 REQUIRED)
+endif()
 
 include(ConfigureChecks.cmake)
 include(../common/common.cmake)
@@ -52,10 +56,6 @@ else()
     )
 endif()
 
-if (USE_OUR_OWN_SQLITE3)
-    list(APPEND csync_SRCS ${SQLITE3_SOURCE})
-endif()
-
 configure_file(csync_version.h.in ${CMAKE_CURRENT_BINARY_DIR}/csync_version.h)
 
 add_library("${csync_NAME}" SHARED ${common_SOURCES} ${csync_SRCS})
@@ -65,12 +65,14 @@ target_include_directories(
   PUBLIC ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/std
 )
 
-find_package(SQLite3 3.9.0 REQUIRED)
-if (USE_OUR_OWN_SQLITE3)
-    # make sure that the path for the local sqlite3 is before the system one
-    target_include_directories("${csync_NAME}" BEFORE PUBLIC ${SQLITE3_INCLUDE_DIR})
+if(USE_OUR_OWN_SQLITE3)
+  message(STATUS "Using own sqlite3 version")
+  add_library(sqlite3 STATIC "${CMAKE_SOURCE_DIR}/src/3rdparty/sqlite3/sqlite3.c")
+  target_include_directories(sqlite3 PUBLIC "${CMAKE_SOURCE_DIR}/src/3rdparty/sqlite3")
+  target_link_libraries("${csync_NAME}" PUBLIC sqlite3)
 else()
-    target_include_directories("${csync_NAME}" PUBLIC ${SQLITE3_INCLUDE_DIR})
+  target_include_directories("${csync_NAME}" PUBLIC ${SQLITE3_INCLUDE_DIR})
+  target_link_libraries("${csync_NAME}" PUBLIC ${SQLITE3_LIBRARIES})
 endif()
 
 
@@ -80,13 +82,13 @@ generate_export_header("${csync_NAME}"
 )
 
 target_link_libraries("${csync_NAME}"
+  PUBLIC
   ${CSYNC_REQUIRED_LIBRARIES}
-  ${SQLITE3_LIBRARIES}
   Qt5::Core Qt5::Concurrent
 )
 
 if(ZLIB_FOUND)
-  target_link_libraries("${csync_NAME}" ZLIB::ZLIB)
+  target_link_libraries("${csync_NAME}" PUBLIC ZLIB::ZLIB)
 endif(ZLIB_FOUND)
 
 
@@ -94,7 +96,7 @@ endif(ZLIB_FOUND)
 if (APPLE)
     find_library(FOUNDATION_LIBRARY NAMES Foundation)
     find_library(CORESERVICES_LIBRARY NAMES CoreServices)
-    target_link_libraries("${csync_NAME}" ${FOUNDATION_LIBRARY} ${CORESERVICES_LIBRARY})
+    target_link_libraries("${csync_NAME}" PUBLIC ${FOUNDATION_LIBRARY} ${CORESERVICES_LIBRARY})
 endif()
 
 set_target_properties(

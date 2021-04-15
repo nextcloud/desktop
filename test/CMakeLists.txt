@@ -1,5 +1,4 @@
 include(DefinePlatformDefaults)
-find_package(SQLite3 3.8.0 REQUIRED)
 
 include(nextcloud_add_test.cmake)
 
