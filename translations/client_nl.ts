@@ -3568,7 +3568,7 @@ Fout bij instellen pin status
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="293"/>
-        <source>The file cannot be shared because it was shared without sharing permission.</source>
+        <source>The file cannot be shared because it does not have sharing permission.</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -4367,6 +4367,11 @@ Fout bij instellen pin status
         <translation>Ongeldige tekens, hernoem &quot;%1&quot;</translation>
     </message>
     <message>
+        <location filename="../src/libsync/syncengine.cpp" line="1110"/>
+        <source>File name contains at least one invalid character</source>
+        <translation>De bestandsnaam bevat ten minste één ongeldig teken</translation>
+    </message>
+    <message>
         <location filename="../src/libsync/syncengine.cpp" line="1024"/>
         <source>Aborted</source>
         <translation>Afgebroken</translation>
@@ -4375,11 +4380,6 @@ Fout bij instellen pin status
         <location filename="../src/libsync/syncengine.cpp" line="1041"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation>Schijfruimte laa: Downloads die de vrije ruimte tot onder %1 zouden reduceren, zijn overgeslagen.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1110"/>
-        <source>File name contains at least one invalid character</source>
-        <translation>De bestandsnaam bevat ten minste één ongeldig teken</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1048"/>
