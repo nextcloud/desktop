@@ -20,6 +20,29 @@ confdir = '/tmp/bdd-tests-owncloud-client/'
 confFilePath = confdir + 'owncloud.cfg'
 socketConnect = None
 
+passwords = {
+    'alt1': '1234',
+    'alt2': 'AaBb2Cc3Dd4',
+    'alt3': 'aVeryLongPassword42TheMeaningOfLife'
+}
+
+defaultUsers = {
+    'Alice': {
+        'displayname': 'Alice Hansen',
+        'password': passwords['alt1'],
+        'email': 'alice@example.org'
+    },
+    'Brian': {
+        'displayname': 'Brian Murphy',
+        'password': passwords['alt2'],
+        'email': 'brian@example.org'
+    },
+    'Carol': {
+        'displayname': 'Carol King',
+        'password': passwords['alt3'],
+        'email': 'carol@example.org'
+    }
+}
 
 @OnScenarioStart
 def hook(context):
@@ -88,11 +111,20 @@ def setUpClient(context, username, password, pollingInterval):
     except LookupError:
         pass
 
-@Given('user "|any|" has set up a client with poll interval settings and password "|any|"')
-def step(context, username, password):
+def getPasswordForUser(userId):
+    if userId in defaultUsers.keys():
+        return defaultUsers[userId]['password']
+    
+@Given('user "|any|" has set up a client with default settings and polling interval "|any|"')
+def step(context, username, interval):
     pollingInterval='''[ownCloud]
-    remotePollInterval=5000
+    remotePollInterval={pollingInterval}
     '''
+    args = {
+        'pollingInterval': interval
+    }
+    pollingInterval = pollingInterval.format(**args)
+    password = getPasswordForUser(username)
     setUpClient(context, username, password, pollingInterval)
 
 @Given('user "|any|" has set up a client with default settings and password "|any|"')
