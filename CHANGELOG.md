@@ -26,10 +26,12 @@ Summary
 * Change - We removed the support for async jobs using OC-JobStatus-Location: [#8398](https://github.com/owncloud/client/pull/8398)
 * Enhancement - Make crash report IDs easy to copy: [#25](https://github.com/dschmidt/libcrashreporter-qt/pull/25)
 * Enhancement - We reworked the server activity table: [#8158](https://github.com/owncloud/client/issues/8158)
+* Enhancement - Added branding option to enforce VFS: [#4144](https://github.com/owncloud/enterprise/issues/4144)
 * Enhancement - Add initial support for backups triggered by an external tool: [#8437](https://github.com/owncloud/client/pull/8437)
 * Enhancement - Add language picker to general settings: [#8466](https://github.com/owncloud/client/issues/8466)
 * Enhancement - Attach the last 20 log lines to a crash report: [#8467](https://github.com/owncloud/client/issues/8467)
 * Enhancement - Add an icon to the Windows system tray notification: [#8539](https://github.com/owncloud/client/pull/8539)
+* Enhancement - Encode the log file as UTF-8: [#8550](https://github.com/owncloud/client/pull/8550)
 
 Details
 -------
@@ -163,6 +165,13 @@ Details
    https://github.com/owncloud/client/issues/8158
    https://github.com/owncloud/client/issues/4336
 
+* Enhancement - Added branding option to enforce VFS: [#4144](https://github.com/owncloud/enterprise/issues/4144)
+
+   We added a branding option that enforces the use of Virtual Files on Windows.
+
+   https://github.com/owncloud/enterprise/issues/4144
+   https://github.com/owncloud/client/pull/8179/
+
 * Enhancement - Add initial support for backups triggered by an external tool: [#8437](https://github.com/owncloud/client/pull/8437)
 
    We added a socket api function which allows creation of backups.
@@ -193,6 +202,13 @@ Details
    We now display a branded icon in the system tray notification.
 
    https://github.com/owncloud/client/pull/8539
+
+* Enhancement - Encode the log file as UTF-8: [#8550](https://github.com/owncloud/client/pull/8550)
+
+   We fixed an issue where the log file might not have been encoded as UTF-8 and thus scrambled file
+   names.
+
+   https://github.com/owncloud/client/pull/8550
 
 Changelog for ownCloud Desktop Client [2.7.6] (2021-02-04)
 =======================================
