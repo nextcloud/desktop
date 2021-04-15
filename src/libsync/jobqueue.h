@@ -56,7 +56,7 @@ private:
     void clear();
 
     Account *_account;
-    int _blocked = 0;
+    uint _blocked = 0;
     std::vector<QPointer<AbstractNetworkJob>> _jobs;
 
     friend class JobQueueGuard;

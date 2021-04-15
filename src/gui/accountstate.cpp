@@ -135,7 +135,6 @@ void AccountState::setState(State state)
         if (_state == SignedOut) {
             _connectionStatus = ConnectionValidator::Undefined;
             _connectionErrors.clear();
-            _queueGuard.clear();
         } else if (oldState == SignedOut && _state == Disconnected) {
             // If we stop being voluntarily signed-out, try to connect and
             // auth right now!
@@ -154,7 +153,12 @@ void AccountState::setState(State state)
 
     // might not have changed but the underlying _connectionErrors might have
     if (_state == Connected) {
-        _queueGuard.unblock();
+        QTimer::singleShot(0, this, [this] {
+            // ensure the connection validator is done
+            _queueGuard.unblock();
+        });
+    } else {
+        _queueGuard.clear();
     }
     // don't anounce a state change from connected to connected
     // https://github.com/owncloud/client/commit/2c6c21d7532f0cbba4b768fde47810f6673ed931

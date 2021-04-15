@@ -36,9 +36,11 @@ void JobQueue::block()
 
 void JobQueue::unblock()
 {
+    if (!isBlocked()) {
+        return;
+    }
     _blocked--;
     qCDebug(lcJobQUeue) << "unblock:" << _blocked << _account->displayName();
-    OC_ENFORCE(_blocked >= 0);
     if (_blocked == 0) {
         auto tmp = std::move(_jobs);
         for (auto job : tmp) {
@@ -52,7 +54,7 @@ void JobQueue::unblock()
 
 bool JobQueue::isBlocked() const
 {
-    return _blocked;
+    return _blocked != 0;
 }
 
 bool JobQueue::retry(AbstractNetworkJob *job)
