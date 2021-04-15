@@ -94,7 +94,7 @@ bool PUTFileJob::finished()
 
     qCInfo(lcPutJob) << "PUT of" << reply()->request().url().toString() << "FINISHED WITH STATUS"
                      << replyStatusString()
-                     << reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute)
+                     << reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt()
                      << reply()->attribute(QNetworkRequest::HttpReasonPhraseAttribute);
 
     emit finishedSignal();

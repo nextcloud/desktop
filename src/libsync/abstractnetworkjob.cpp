@@ -181,6 +181,7 @@ void AbstractNetworkJob::adoptRequest(QNetworkReply *reply)
     setReply(reply);
     setupConnections(reply);
     newReplyHook(reply);
+    _request = reply->request();
 }
 
 QUrl AbstractNetworkJob::makeAccountUrl(const QString &relativePath) const
@@ -240,8 +241,8 @@ void AbstractNetworkJob::slotFinished()
         }
 
         if (!_ignoreCredentialFailure || _reply->error() != QNetworkReply::AuthenticationRequiredError) {
-            qCWarning(lcNetworkJob) << _reply->error() << errorString()
-                                    << _reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
+            qCWarning(lcNetworkJob) << this << _reply->error() << errorString()
+                                    << _reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
             if (_reply->error() == QNetworkReply::ProxyAuthenticationRequiredError) {
                 qCWarning(lcNetworkJob) << _reply->rawHeader("Proxy-Authenticate");
             }
@@ -272,7 +273,7 @@ void AbstractNetworkJob::slotFinished()
 
     bool discard = finished();
     if (discard) {
-        qCDebug(lcNetworkJob) << "Network job" << metaObject()->className() << "finished for" << path();
+        qCDebug(lcNetworkJob) << "Network job finished" << this;
         deleteLater();
     }
 }
@@ -445,3 +446,19 @@ void AbstractNetworkJob::abort()
 }
 
 } // namespace OCC
+
+QDebug operator<<(QDebug debug, const OCC::AbstractNetworkJob *job)
+{
+    QDebugStateSaver saver(debug);
+    debug.setAutoInsertSpaces(false);
+    debug << job->metaObject()->className() << "(" << job->url().toString();
+    if (auto reply = job->reply()) {
+        debug << ", " << reply->request().rawHeader("Original-Request-ID")
+              << ", " << reply->request().rawHeader("X-Request-ID");
+        if (reply->error() != QNetworkReply::NoError) {
+            debug << ", " << reply->errorString();
+        }
+    }
+    debug << ")";
+    return debug.maybeSpace();
+}

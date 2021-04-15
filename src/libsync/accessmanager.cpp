@@ -50,22 +50,26 @@ QByteArray AccessManager::generateRequestId()
 QNetworkReply *AccessManager::createRequest(QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *outgoingData)
 {
     QNetworkRequest newRequest(request);
-    newRequest.setRawHeader(QByteArray("User-Agent"), Utility::userAgentString());
+    newRequest.setRawHeader(QByteArrayLiteral("User-Agent"), Utility::userAgentString());
 
     // Some firewalls reject requests that have a "User-Agent" but no "Accept" header
-    newRequest.setRawHeader(QByteArray("Accept"), "*/*");
+    newRequest.setRawHeader(QByteArrayLiteral("Accept"), QByteArrayLiteral("*/*"));
 
     QByteArray verb = newRequest.attribute(QNetworkRequest::CustomVerbAttribute).toByteArray();
     // For PROPFIND (assumed to be a WebDAV op), set xml/utf8 as content type/encoding
     // This needs extension
-    if (verb == "PROPFIND") {
-        newRequest.setHeader(QNetworkRequest::ContentTypeHeader, QLatin1String("text/xml; charset=utf-8"));
+    if (verb == QByteArrayLiteral("PROPFIND")) {
+        newRequest.setHeader(QNetworkRequest::ContentTypeHeader, QByteArrayLiteral("text/xml; charset=utf-8"));
     }
 
     // Generate a new request id
-    QByteArray requestId = generateRequestId();
+    const QByteArray requestId = generateRequestId();
     qInfo(lcAccessManager) << op << verb << newRequest.url().toString() << "has X-Request-ID" << requestId;
-    newRequest.setRawHeader("X-Request-ID", requestId);
+    newRequest.setRawHeader(QByteArrayLiteral("X-Request-ID"), requestId);
+    const auto originalIdKey = QByteArrayLiteral("Original-Request-ID");
+    if (!newRequest.hasRawHeader(originalIdKey)) {
+        newRequest.setRawHeader(originalIdKey, requestId);
+    }
 
     if (newRequest.url().scheme() == QLatin1String("https")) { // Not for "http": QTBUG-61397
         // http2 seems to cause issues, as with our recommended server setup we don't support http2, disable it by default for now

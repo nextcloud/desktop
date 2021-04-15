@@ -430,7 +430,7 @@ void CheckServerJob::start()
     connect(reply(), &QNetworkReply::metaDataChanged, this, &CheckServerJob::metaDataChangedSlot);
     connect(reply(), &QNetworkReply::encrypted, this, &CheckServerJob::encryptedSlot);
     connect(reply(), &QNetworkReply::redirected, this, [this] {
-        const auto code = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute);
+        const auto code = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
         if (code == 302 || code == 307) {
             _redirectDistinct = false;
         }
@@ -837,7 +837,7 @@ bool JsonApiJob::finished()
     int statusCode = 0;
 
     if (reply()->error() != QNetworkReply::NoError) {
-        qCWarning(lcJsonApiJob) << "Network error: " << path() << errorString() << reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute);
+        qCWarning(lcJsonApiJob) << "Network error: " << this << errorString() << reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
         emit jsonReceived(QJsonDocument(), statusCode);
         return true;
     }

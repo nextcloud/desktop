@@ -232,3 +232,6 @@ QString OWNCLOUDSYNC_EXPORT errorMessage(const QString &baseError, const QByteAr
 QString OWNCLOUDSYNC_EXPORT networkReplyErrorString(const QNetworkReply &reply);
 
 } // namespace OCC
+
+
+OWNCLOUDSYNC_EXPORT QDebug operator<<(QDebug debug, const OCC::AbstractNetworkJob *job);
