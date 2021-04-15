@@ -343,8 +343,6 @@ IF(BUILD_UPDATER)
   target_link_libraries(nextcloudCore PUBLIC updater)
 endif()
 
-target_link_libraries(nextcloudCore PUBLIC ${OS_SPECIFIC_LINK_LIBRARIES})
-
 if(TARGET PkgConfig::CLOUDPROVIDERS)
     message("Building with libcloudproviderssupport")
     target_sources(nextcloudCore PRIVATE cloudproviders/cloudprovidermanager.cpp cloudproviders/cloudproviderwrapper.cpp)
