@@ -254,6 +254,7 @@ void AccountState::checkConnectivity(bool verifyServerState)
     }
 
     if (verifyServerState) {
+        _account->clearCookieJar();
         _queueGuard.block();
     }
     ConnectionValidator *conValidator = new ConnectionValidator(account());
