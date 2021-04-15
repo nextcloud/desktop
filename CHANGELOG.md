@@ -24,6 +24,7 @@ Summary
 * Change - Add support for dynamic client registration with OIDC: [#8350](https://github.com/owncloud/client/pull/8350/)
 * Change - Include full os version in the about dialog: [#8374](https://github.com/owncloud/client/pull/8374)
 * Change - We removed the support for async jobs using OC-JobStatus-Location: [#8398](https://github.com/owncloud/client/pull/8398)
+* Enhancement - Show last sync date in tray menu: [#5644](https://github.com/owncloud/client/issues/5644)
 * Enhancement - Make crash report IDs easy to copy: [#25](https://github.com/dschmidt/libcrashreporter-qt/pull/25)
 * Enhancement - We reworked the server activity table: [#8158](https://github.com/owncloud/client/issues/8158)
 * Enhancement - Added branding option to enforce VFS: [#4144](https://github.com/owncloud/enterprise/issues/4144)
@@ -147,6 +148,13 @@ Details
    We removed the support of async polling jobs after discovering potential issues.
 
    https://github.com/owncloud/client/pull/8398
+
+* Enhancement - Show last sync date in tray menu: [#5644](https://github.com/owncloud/client/issues/5644)
+
+   Users can see what "Up to date" refers to explicitly now.
+
+   https://github.com/owncloud/client/issues/5644
+   https://github.com/owncloud/client/pull/8547
 
 * Enhancement - Make crash report IDs easy to copy: [#25](https://github.com/dschmidt/libcrashreporter-qt/pull/25)
 
