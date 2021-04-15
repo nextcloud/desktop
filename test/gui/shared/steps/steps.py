@@ -458,7 +458,7 @@ def step(context, permissions, resource):
     openPublicLinkDialog(context, resource)
     radioObjectName = ''
     if permissions == 'Download / View':
-        radioObjectName = name.oCC_ShareLinkWidget_radio_readOnly_QRadioButton
+        radioObjectName = names.oCC_ShareLinkWidget_radio_readOnly_QRadioButton
     elif permissions == 'Download / View / Edit':
         radioObjectName = names.oCC_ShareLinkWidget_radio_readWrite_QRadioButton
     elif permissions == 'Upload only (File Drop)':
