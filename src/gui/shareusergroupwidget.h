@@ -156,6 +156,10 @@ private:
   void onNoteConfirmButtonClicked();
   void setNote(const QString &note);
 
+  void toggleExpireDateOptions(bool enable);
+  void showExpireDateOptions(bool show);
+  void setExpireDate();
+
   Ui::ShareUserLine *_ui;
   QSharedPointer<UserGroupShare> _share;
   bool _isFile;
@@ -167,6 +171,7 @@ private:
   QAction *_permissionChange;
   QAction *_permissionDelete;
   QAction *_noteLinkAction;
+  QAction *_expirationDateLinkAction;
 };
 }
 

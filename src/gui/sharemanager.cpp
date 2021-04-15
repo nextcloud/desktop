@@ -285,8 +285,10 @@ UserGroupShare::UserGroupShare(AccountPtr account,
     const QString &path,
     const ShareType shareType,
     const Permissions permissions,
-    const QSharedPointer<Sharee> shareWith)
+    const QSharedPointer<Sharee> shareWith,
+    const QDate &expireDate)
     : Share(account, id, owner, ownerDisplayName, path, shareType, permissions, shareWith)
+    , _expireDate(expireDate)
 {
     Q_ASSERT(shareType == TypeUser || shareType == TypeGroup);
     Q_ASSERT(shareWith);
@@ -304,6 +306,35 @@ void UserGroupShare::slotNoteSet(const QJsonDocument &, const QVariant &note)
 {
     _note = note.toString();
     emit noteSet();
+}
+
+QDate UserGroupShare::getExpireDate() const
+{
+    return _expireDate;
+}
+
+void UserGroupShare::setExpireDate(const QDate &date)
+{
+    auto *job = new OcsShareJob(_account);
+    connect(job, &OcsShareJob::shareJobFinished, this, &UserGroupShare::slotExpireDateSet);
+    connect(job, &OcsJob::ocsError, this, &UserGroupShare::slotOcsError);
+    job->setExpireDate(getId(), date);
+}
+
+void UserGroupShare::slotExpireDateSet(const QJsonDocument &reply, const QVariant &value)
+{
+    auto data = reply.object().value("ocs").toObject().value("data").toObject();
+
+    /*
+     * If the reply provides a data back (more REST style)
+     * they use this date.
+     */
+    if (data.value("expiration").isString()) {
+        _expireDate = QDate::fromString(data.value("expiration").toString(), "yyyy-MM-dd 00:00:00");
+    } else {
+        _expireDate = value.toDate();
+    }
+    emit expireDateSet();
 }
 
 ShareManager::ShareManager(AccountPtr account, QObject *parent)
@@ -437,6 +468,11 @@ QSharedPointer<UserGroupShare> ShareManager::parseUserGroupShare(const QJsonObje
         data.value("share_with_displayname").toString(),
         static_cast<Sharee::Type>(data.value("share_type").toInt())));
 
+    QDate expireDate;
+    if (data.value("expiration").isString()) {
+        expireDate = QDate::fromString(data.value("expiration").toString(), "yyyy-MM-dd 00:00:00");
+    }
+
     return QSharedPointer<UserGroupShare>(new UserGroupShare(_account,
         data.value("id").toVariant().toString(), // "id" used to be an integer, support both
         data.value("uid_owner").toVariant().toString(),
@@ -444,7 +480,8 @@ QSharedPointer<UserGroupShare> ShareManager::parseUserGroupShare(const QJsonObje
         data.value("path").toString(),
         static_cast<Share::ShareType>(data.value("share_type").toInt()),
         static_cast<Share::Permissions>(data.value("permissions").toInt()),
-        sharee));
+        sharee,
+        expireDate));
 }
 
 QSharedPointer<LinkShare> ShareManager::parseLinkShare(const QJsonObject &data)

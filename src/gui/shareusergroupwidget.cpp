@@ -445,6 +445,8 @@ ShareUserLine::ShareUserLine(QSharedPointer<UserGroupShare> share,
     _ui->permissionsEdit->setEnabled(enabled);
     connect(_ui->permissionsEdit, &QAbstractButton::clicked, this, &ShareUserLine::slotEditPermissionsChanged);
     connect(_ui->noteConfirmButton, &QAbstractButton::clicked, this, &ShareUserLine::onNoteConfirmButtonClicked);
+    connect(_ui->confirmExpirationDate, &QAbstractButton::clicked, this, &ShareUserLine::setExpireDate);
+    connect(_ui->calendar, &QDateTimeEdit::dateChanged, this, &ShareUserLine::setExpireDate);
 
     // create menu with checkable permissions
     auto *menu = new QMenu(this);
@@ -454,10 +456,23 @@ ShareUserLine::ShareUserLine(QSharedPointer<UserGroupShare> share,
     menu->addAction(_permissionReshare);
     connect(_permissionReshare, &QAction::triggered, this, &ShareUserLine::slotPermissionsChanged);
 
+    toggleNoteOptions(false);
     _noteLinkAction = new QAction(tr("Note to recipient"));
     _noteLinkAction->setCheckable(true);
     menu->addAction(_noteLinkAction);
     connect(_noteLinkAction, &QAction::triggered, this, &ShareUserLine::toggleNoteOptions);
+
+    toggleExpireDateOptions(false);
+    _expirationDateLinkAction = new QAction(tr("Set expiration date"));
+    _expirationDateLinkAction->setCheckable(true);
+    menu->addAction(_expirationDateLinkAction);
+    connect(_expirationDateLinkAction, &QAction::triggered, this, &ShareUserLine::toggleExpireDateOptions);
+    const auto expireDate = _share.data()->getExpireDate().isValid() ? share.data()->getExpireDate() : QDate();
+    if (!expireDate.isNull()) {
+        _ui->calendar->setDate(expireDate);
+        _expirationDateLinkAction->setChecked(true);
+        showExpireDateOptions(true);
+    }
 
     menu->addSeparator();
 
@@ -516,7 +531,6 @@ ShareUserLine::ShareUserLine(QSharedPointer<UserGroupShare> share,
     }
 
     loadAvatar();
-    toggleNoteOptions(false);
 
     customizeStyle();
 }
@@ -727,6 +741,7 @@ void ShareUserLine::customizeStyle()
     _deleteShareButton->setIcon(deleteicon);
 
     _ui->noteConfirmButton->setIcon(Theme::createColorAwareIcon(":/client/theme/confirm.svg"));
+    _ui->confirmExpirationDate->setIcon(Theme::createColorAwareIcon(":/client/theme/confirm.svg"));
 }
 
 void ShareUserLine::showNoteOptions(bool show)
@@ -763,5 +778,38 @@ void ShareUserLine::setNote(const QString &note)
         // _ui->errorLabel->hide();
         _share->setNote(note);
     }
+}
+
+void ShareUserLine::toggleExpireDateOptions(bool enable)
+{
+    showExpireDateOptions(enable);
+
+    if (enable) {
+        const QDate date = QDate::currentDate().addDays(1);
+        _ui->calendar->setDate(date);
+        _ui->calendar->setMinimumDate(date);
+        _ui->calendar->setFocus();
+    } else {
+        // 'deletes' expire date
+        if (_share)
+            _share->setExpireDate(QDate());
+    }
+}
+
+void ShareUserLine::showExpireDateOptions(bool show)
+{
+    _ui->expirationLabel->setVisible(show);
+    _ui->calendar->setVisible(show);
+    _ui->confirmExpirationDate->setVisible(show);
+    emit resizeRequested();
+}
+
+void ShareUserLine::setExpireDate()
+{
+    if (!_share) {
+        return;
+    }
+
+    _share->setExpireDate(_ui->calendar->date());
 }
 }
