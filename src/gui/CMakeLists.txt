@@ -424,8 +424,6 @@ set_target_properties(nextcloud PROPERTIES
 
 target_link_libraries(nextcloud PRIVATE nextcloudCore)
 
-target_link_libraries(nextcloudCore PUBLIC ${OS_SPECIFIC_LINK_LIBRARIES})
-
 if(TARGET PkgConfig::CLOUDPROVIDERS)
     message("Building with libcloudproviderssupport")
     target_sources(nextcloudCore PRIVATE cloudproviders/cloudprovidermanager.cpp cloudproviders/cloudproviderwrapper.cpp)
