@@ -271,9 +271,12 @@ public:
         const ShareType shareType,
         const Permissions permissions,
         const QSharedPointer<Sharee> shareWith,
-        const QDate &expireDate);
+        const QDate &expireDate,
+        const QString &note);
 
     void setNote(const QString &note);
+
+    QString getNote() const;
 
     void slotNoteSet(const QJsonDocument &, const QVariant &note);
 

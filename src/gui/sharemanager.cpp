@@ -286,9 +286,11 @@ UserGroupShare::UserGroupShare(AccountPtr account,
     const ShareType shareType,
     const Permissions permissions,
     const QSharedPointer<Sharee> shareWith,
-    const QDate &expireDate)
+    const QDate &expireDate,
+    const QString &note)
     : Share(account, id, owner, ownerDisplayName, path, shareType, permissions, shareWith)
     , _expireDate(expireDate)
+    , _note(note)
 {
     Q_ASSERT(shareType == TypeUser || shareType == TypeGroup);
     Q_ASSERT(shareWith);
@@ -300,6 +302,11 @@ void UserGroupShare::setNote(const QString &note)
     connect(job, &OcsShareJob::shareJobFinished, this, &UserGroupShare::slotNoteSet);
     connect(job, &OcsJob::ocsError, this, &UserGroupShare::slotOcsError);
     job->setNote(getId(), note);
+}
+
+QString UserGroupShare::getNote() const
+{
+    return _note;
 }
 
 void UserGroupShare::slotNoteSet(const QJsonDocument &, const QVariant &note)
@@ -473,6 +480,11 @@ QSharedPointer<UserGroupShare> ShareManager::parseUserGroupShare(const QJsonObje
         expireDate = QDate::fromString(data.value("expiration").toString(), "yyyy-MM-dd 00:00:00");
     }
 
+    QString note;
+    if (data.value("note").isString()) {
+        note = data.value("note").toString();
+    }
+
     return QSharedPointer<UserGroupShare>(new UserGroupShare(_account,
         data.value("id").toVariant().toString(), // "id" used to be an integer, support both
         data.value("uid_owner").toVariant().toString(),
@@ -481,7 +493,8 @@ QSharedPointer<UserGroupShare> ShareManager::parseUserGroupShare(const QJsonObje
         static_cast<Share::ShareType>(data.value("share_type").toInt()),
         static_cast<Share::Permissions>(data.value("permissions").toInt()),
         sharee,
-        expireDate));
+        expireDate,
+        note));
 }
 
 QSharedPointer<LinkShare> ShareManager::parseLinkShare(const QJsonObject &data)

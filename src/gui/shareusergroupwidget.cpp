@@ -461,13 +461,17 @@ ShareUserLine::ShareUserLine(QSharedPointer<UserGroupShare> share,
     _noteLinkAction->setCheckable(true);
     menu->addAction(_noteLinkAction);
     connect(_noteLinkAction, &QAction::triggered, this, &ShareUserLine::toggleNoteOptions);
+    if (!_share->getNote().isEmpty()) {
+        _noteLinkAction->setChecked(true);
+        toggleNoteOptions(true);
+    }
 
     toggleExpireDateOptions(false);
     _expirationDateLinkAction = new QAction(tr("Set expiration date"));
     _expirationDateLinkAction->setCheckable(true);
     menu->addAction(_expirationDateLinkAction);
     connect(_expirationDateLinkAction, &QAction::triggered, this, &ShareUserLine::toggleExpireDateOptions);
-    const auto expireDate = _share.data()->getExpireDate().isValid() ? share.data()->getExpireDate() : QDate();
+    const auto expireDate = _share->getExpireDate().isValid() ? share.data()->getExpireDate() : QDate();
     if (!expireDate.isNull()) {
         _ui->calendar->setDate(expireDate);
         _expirationDateLinkAction->setChecked(true);
@@ -758,11 +762,16 @@ void ShareUserLine::toggleNoteOptions(bool enable)
     showNoteOptions(enable);
 
     if (enable) {
+        const auto note = _share->getNote();
+        if (!note.isEmpty()) {
+            _ui->noteTextEdit->setText(note);
+        }
         _ui->noteTextEdit->setFocus();
     } else {
         // 'deletes' note
-        if (_share)
+        if (_share) {
             _share->setNote(QString());
+        }
     }
 }
 
@@ -774,8 +783,6 @@ void ShareUserLine::onNoteConfirmButtonClicked()
 void ShareUserLine::setNote(const QString &note)
 {
     if (_share) {
-        // slotToggleAnimation(true);
-        // _ui->errorLabel->hide();
         _share->setNote(note);
     }
 }
