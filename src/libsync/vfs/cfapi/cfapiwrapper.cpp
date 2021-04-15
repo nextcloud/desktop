@@ -59,6 +59,11 @@ void cfApiSendTransferInfo(const CF_CONNECTION_KEY &connectionKey, const CF_TRAN
         qCCritical(lcCfApiWrapper) << "Couldn't send transfer info" << QString::number(transferKey.QuadPart, 16) << ":" << cfExecuteresult << QString::fromWCharArray(_com_error(cfExecuteresult).ErrorMessage());
     }
 
+    const auto isDownloadFinished = ((offset + currentBlockLength) == totalLength);
+    if (isDownloadFinished) {
+        return;
+    }
+
     // refresh Windows Copy Dialog progress
     LARGE_INTEGER progressTotal;
     progressTotal.QuadPart = totalLength;
