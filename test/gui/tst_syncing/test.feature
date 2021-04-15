@@ -6,11 +6,7 @@ Feature: Syncing files
 
     Scenario: Syncing a file to the server
         Given user "Alice" has been created on the server with default attributes
-        And user "Alice" has set up a client with these settings and password "1234":
-        """
-        [ownCloud]
-        remotePollInterval=5000
-        """
+		And user "Alice" has set up a client with poll interval settings and password "1234"
         When the user creates a file "lorem-for-upload.txt" with the following content on the file system
             """
             test content
@@ -20,11 +16,7 @@ Feature: Syncing files
 
     Scenario: Syncing a file from the server
         Given user "Alice" has been created on the server with default attributes
-		And user "Alice" has set up a client with these settings and password "1234":
-        """
-        [ownCloud]
-        remotePollInterval=5000
-        """
+		And user "Alice" has set up a client with poll interval settings and password "1234"
         And user "Alice" has uploaded file on the server with content "test content" to "uploaded-lorem.txt"
         When the user waits for file "uploaded-lorem.txt" to be synced
         Then the file "uploaded-lorem.txt" should exist on the file system with the following content
@@ -34,11 +26,7 @@ Feature: Syncing files
 
     Scenario: Syncing a file from the server and creating a conflict
         Given user "Alice" has been created on the server with default attributes
-		And user "Alice" has set up a client with these settings and password "1234":
-        """
-        [ownCloud]
-        remotePollInterval=5000
-        """
+		And user "Alice" has set up a client with poll interval settings and password "1234"
         And user "Alice" has uploaded file on the server with content "test content" to "uploaded-lorem.txt"
         And the user has waited for file "conflict.txt" to be synced
         And the user has paused the file sync

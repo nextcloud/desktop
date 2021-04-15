@@ -48,7 +48,7 @@ def step(context, displayname, host):
             ), displayname + "\n" + host
         )
 
-def setUpClient(context, username, password, configContent):
+def setUpClient(context, username, password, pollingInterval):
     userSetting = '''
     [Accounts]
     0/Folders/1/ignoreHiddenFiles=true
@@ -67,7 +67,7 @@ def setUpClient(context, username, password, configContent):
     version=2
     '''
     userFirstName = username.split()
-    userSetting = userSetting + configContent
+    userSetting = userSetting + pollingInterval
     args = {'displayUserName': username,
         'davUserName': username.lower(),
         'displayUserFirstName': userFirstName[0],
@@ -87,13 +87,15 @@ def setUpClient(context, username, password, configContent):
         clickButton(waitForObject(names.enter_Password_OK_QPushButton))
     except LookupError:
         pass
-    
-@Given('user "|any|" has set up a client with these settings and password |any|:')
+
+@Given('user "|any|" has set up a client with poll interval settings and password "|any|"')
 def step(context, username, password):
-    configContent = "\n".join(context.multiLineText)
-    setUpClient(context, username, password, configContent)
-        
-@Given('user "|any|" has set up a client with default settings and password |any|')
+    pollingInterval='''[ownCloud]
+    remotePollInterval=5000
+    '''
+    setUpClient(context, username, password, pollingInterval)
+
+@Given('user "|any|" has set up a client with default settings and password "|any|"')
 def step(context, username, password):
     setUpClient(context, username, password,'')
 

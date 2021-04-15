@@ -30,11 +30,7 @@ Feature: Sharing
         And user "Alice" has shared folder "simple-folder" on the server with user "Brian"
         And user "Brian" has accepted the share "simple-folder" on the server offered by user "Alice"
         And user "Brian" has shared folder "Shares/simple-folder" on the server with user "Carol"
-        And user "Brian" has set up a client with these settings and password "AaBb2Cc3Dd4":
-        """
-        [ownCloud]
-        remotePollInterval=5000
-        """
+        And user "Brian" has set up a client with poll interval settings and password "AaBb2Cc3Dd4"
         And user "Alice" has updated the share permissions on the server for folder "/simple-folder" to "read" for user "Brian"
         When user "Brian" opens the sharing dialog of "%client_sync_path%/Shares/simple-folder" using the client-UI
         Then the error text "The file can not be shared because it was shared without sharing permission." should be displayed in the sharing dialog
