@@ -24,7 +24,8 @@ if ($args[0] -eq "--build") {
         "sonar.host.url=https://sonarcloud.io",
         "sonar.exclusions=docs/**,man/**,translations/**,admin/**,test/**,src/3rdparty/qtokenizer/test/**",
         "sonar.cfamily.threads=$env:NUMBER_OF_PROCESSORS",
-        "sonar.cfamily.cache.enabled=false")
+        "sonar.cfamily.cache.enabled=true",
+        "sonar.cfamily.cache.path=${HOME}/cache/sonarcloud")
     for($i = 0; $i -lt $defines.Length; $i++) {
         $defines[$i] = ("-D{0}" -f $defines[$i])
     }
