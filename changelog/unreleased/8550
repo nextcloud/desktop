@@ -1,0 +1,6 @@
+Enhancement: Encode the log file as UTF-8
+
+We fixed an issue where the log file might not have been encoded as UTF-8 and thus
+scrambled file names.
+
+https://github.com/owncloud/client/pull/8550

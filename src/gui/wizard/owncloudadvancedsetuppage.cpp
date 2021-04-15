@@ -131,21 +131,25 @@ void OwncloudAdvancedSetupPage::initializePage()
         qMax<int>(1.3 * labelSizeHint.height(), _progressIndi->height()));
 
     const auto vfsMode = bestAvailableVfsMode();
-    if (!Theme::instance()->showVirtualFilesOption() || vfsMode == Vfs::Off || (vfsMode != Vfs::WindowsCfApi && !Theme::instance()->enableExperimentalFeatures())) {
-        // If the layout were wrapped in a widget, the auto-grouping of the
-        // radio buttons no longer works and there are surprising margins.
-        // Just manually hide the button and remove the layout.
-        _ui.rVirtualFileSync->hide();
-        _ui.wSyncStrategy->layout()->removeItem(_ui.lVirtualFileSync);
+    if (Theme::instance()->forceVirtualFilesOption() && vfsMode == Vfs::WindowsCfApi) {
+        setRadioChecked(_ui.rVirtualFileSync);
+        _ui.syncTypeWidget->hide();
     } else {
+        if (!Theme::instance()->showVirtualFilesOption() || vfsMode == Vfs::Off || (vfsMode != Vfs::WindowsCfApi && !Theme::instance()->enableExperimentalFeatures())) {
+            // If the layout were wrapped in a widget, the auto-grouping of the
+            // radio buttons no longer works and there are surprising margins.
+            // Just manually hide the button and remove the layout.
+            _ui.rVirtualFileSync->hide();
+            _ui.wSyncStrategy->layout()->removeItem(_ui.lVirtualFileSync);
+        } else {
 #ifdef Q_OS_WIN
-        if (vfsMode == Vfs::WindowsCfApi) {
-            qobject_cast<QVBoxLayout *>(_ui.wSyncStrategy->layout())->insertItem(0, _ui.lVirtualFileSync);
-            setRadioChecked(_ui.rVirtualFileSync);
-        }
+            if (vfsMode == Vfs::WindowsCfApi) {
+                qobject_cast<QVBoxLayout *>(_ui.wSyncStrategy->layout())->insertItem(0, _ui.lVirtualFileSync);
+                setRadioChecked(_ui.rVirtualFileSync);
+            }
 #endif
+        }
     }
-
     _checking = false;
     _ui.lSelectiveSyncSizeLabel->setText(QString());
     _ui.lSyncEverythingSizeLabel->setText(QString());

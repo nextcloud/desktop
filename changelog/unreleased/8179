@@ -1,0 +1,6 @@
+Enhancement: Added branding option to enforce VFS
+
+We added a branding option that enforces the use of Virtual Files on Windows.
+
+https://github.com/owncloud/enterprise/issues/4144
+https://github.com/owncloud/client/pull/8179/
