@@ -3560,7 +3560,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="293"/>
-        <source>The file cannot be shared because it was shared without sharing permission.</source>
+        <source>The file cannot be shared because it does not have sharing permission.</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -4359,6 +4359,11 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
         <translation>Érvénytelen karakterek, nevezze át: „%1”</translation>
     </message>
     <message>
+        <location filename="../src/libsync/syncengine.cpp" line="1110"/>
+        <source>File name contains at least one invalid character</source>
+        <translation>A fájlnév legalább egy érvénytelen karaktert tartalmaz</translation>
+    </message>
+    <message>
         <location filename="../src/libsync/syncengine.cpp" line="1024"/>
         <source>Aborted</source>
         <translation>Megszakítva</translation>
@@ -4367,11 +4372,6 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
         <location filename="../src/libsync/syncengine.cpp" line="1041"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation>Túl kevés a tárterület: A letöltések, melyek %1 alá csökkentették volna a szabad tárhelyet, kihagyásra kerültek.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1110"/>
-        <source>File name contains at least one invalid character</source>
-        <translation>A fájlnév legalább egy érvénytelen karaktert tartalmaz</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1048"/>
@@ -4510,22 +4510,22 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
     <message>
         <location filename="../src/gui/userstatus.cpp" line="55"/>
         <source>Away</source>
-        <translation type="unfinished"/>
+        <translation>Távol</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatus.cpp" line="57"/>
         <source>Do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>Ne zavarjanak</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatus.cpp" line="60"/>
         <source>Offline</source>
-        <translation type="unfinished"/>
+        <translation>Offline</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatus.cpp" line="62"/>
         <source>Online</source>
-        <translation type="unfinished"/>
+        <translation>Online</translation>
     </message>
 </context>
 <context>
@@ -4992,7 +4992,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="32"/>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="353"/>
         <source>TextLabel</source>
-        <translation type="unfinished"/>
+        <translation>Címke</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="73"/>

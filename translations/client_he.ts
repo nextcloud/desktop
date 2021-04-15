@@ -3524,7 +3524,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="293"/>
-        <source>The file cannot be shared because it was shared without sharing permission.</source>
+        <source>The file cannot be shared because it does not have sharing permission.</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -4323,6 +4323,11 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>תווים שגויים, נא לשנות את השם של „%1”</translation>
     </message>
     <message>
+        <location filename="../src/libsync/syncengine.cpp" line="1110"/>
+        <source>File name contains at least one invalid character</source>
+        <translation>שם הקובץ מכיל אות שגויה אחת לפחות</translation>
+    </message>
+    <message>
         <location filename="../src/libsync/syncengine.cpp" line="1024"/>
         <source>Aborted</source>
         <translation type="unfinished"/>
@@ -4331,11 +4336,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/syncengine.cpp" line="1041"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation>אין די מקום פנוי בכונן: הורדות שעלולות להוריד את הנפח הפנוי מתחת לסף של %1 ידולגו.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1110"/>
-        <source>File name contains at least one invalid character</source>
-        <translation>שם הקובץ מכיל אות שגויה אחת לפחות</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1048"/>

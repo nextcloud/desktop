@@ -3560,7 +3560,7 @@ Custa est una modalidade noa, isperimentale. Si detzides de dda impreare, sinnal
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="293"/>
-        <source>The file cannot be shared because it was shared without sharing permission.</source>
+        <source>The file cannot be shared because it does not have sharing permission.</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -4359,6 +4359,11 @@ Custa est una modalidade noa, isperimentale. Si detzides de dda impreare, sinnal
         <translation type="unfinished"/>
     </message>
     <message>
+        <location filename="../src/libsync/syncengine.cpp" line="1110"/>
+        <source>File name contains at least one invalid character</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/libsync/syncengine.cpp" line="1024"/>
         <source>Aborted</source>
         <translation type="unfinished"/>
@@ -4366,11 +4371,6 @@ Custa est una modalidade noa, isperimentale. Si detzides de dda impreare, sinnal
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1041"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1110"/>
-        <source>File name contains at least one invalid character</source>
         <translation type="unfinished"/>
     </message>
     <message>
