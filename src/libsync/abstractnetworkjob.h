@@ -122,7 +122,7 @@ protected:
      * Takes ownership of the requestBody (to allow redirects).
      */
     void sendRequest(const QByteArray &verb, const QUrl &url,
-        QNetworkRequest req = QNetworkRequest(),
+        const QNetworkRequest &req = QNetworkRequest(),
         QIODevice *requestBody = nullptr);
 
     void setReply(QNetworkReply *reply);
