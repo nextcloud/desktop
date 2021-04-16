@@ -373,7 +373,7 @@ Example:
 Virtual Files
 ----------------
 .. note::
-    * This feature is currently only available on ``Windows`` by default. ``Linux`` implementation is experimental and must be enabled by adding ``enableExperimentalOptions=true`` to the ``nextcloud.cfg`` configuration file in the ``App Data`` folder. ``macOS``, at the moment, is using the same backend as ``Linux`` one. It can be enabled with the same ``enableExperimentalOptions`` flag.
+    * This feature is currently only available on ``Windows`` by default. ``Linux`` implementation is experimental and must be enabled by adding ``showExperimentalOptions=true`` to the ``nextcloud.cfg`` configuration file in the ``App Data`` folder. ``macOS``, at the moment, is using the same backend as ``Linux`` one. It can be enabled with the same ``showExperimentalOptions`` flag.
 
 Oftentimes, users are working with a huge amount of files that are big in size. Synchronizing every such file to a device that's running a Nextcloud desktop client is not always possible due to the user's device storage space limitation.
 Let's assume that your desktop client is connected to a server that has 1TB of data. You want all those files at hand, so you can quickly access any file via the file explorer. Your device has 512GB local storage device.
