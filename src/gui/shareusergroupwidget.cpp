@@ -12,6 +12,7 @@
  * for more details.
  */
 
+#include "sharee.h"
 #include "ui_shareusergroupwidget.h"
 #include "ui_shareuserline.h"
 #include "shareusergroupwidget.h"
@@ -456,17 +457,17 @@ ShareUserLine::ShareUserLine(QSharedPointer<UserGroupShare> share,
     menu->addAction(_permissionReshare);
     connect(_permissionReshare, &QAction::triggered, this, &ShareUserLine::slotPermissionsChanged);
 
-    toggleNoteOptions(false);
+    showNoteOptions(false);
     _noteLinkAction = new QAction(tr("Note to recipient"));
     _noteLinkAction->setCheckable(true);
     menu->addAction(_noteLinkAction);
     connect(_noteLinkAction, &QAction::triggered, this, &ShareUserLine::toggleNoteOptions);
     if (!_share->getNote().isEmpty()) {
         _noteLinkAction->setChecked(true);
-        toggleNoteOptions(true);
+        showNoteOptions(true);
     }
 
-    toggleExpireDateOptions(false);
+    showExpireDateOptions(false);
     _expirationDateLinkAction = new QAction(tr("Set expiration date"));
     _expirationDateLinkAction->setCheckable(true);
     menu->addAction(_expirationDateLinkAction);
@@ -753,6 +754,13 @@ void ShareUserLine::showNoteOptions(bool show)
     _ui->noteLabel->setVisible(show);
     _ui->noteTextEdit->setVisible(show);
     _ui->noteConfirmButton->setVisible(show);
+
+    if (show) {
+        const auto note = _share->getNote();
+        _ui->noteTextEdit->setText(note);
+        _ui->noteTextEdit->setFocus();
+    }
+
     emit resizeRequested();
 }
 
@@ -761,17 +769,9 @@ void ShareUserLine::toggleNoteOptions(bool enable)
 {
     showNoteOptions(enable);
 
-    if (enable) {
-        const auto note = _share->getNote();
-        if (!note.isEmpty()) {
-            _ui->noteTextEdit->setText(note);
-        }
-        _ui->noteTextEdit->setFocus();
-    } else {
-        // 'deletes' note
-        if (_share) {
-            _share->setNote(QString());
-        }
+    if (_share && !enable) {
+        // Delete note
+        _share->setNote(QString());
     }
 }
 
@@ -791,15 +791,8 @@ void ShareUserLine::toggleExpireDateOptions(bool enable)
 {
     showExpireDateOptions(enable);
 
-    if (enable) {
-        const QDate date = QDate::currentDate().addDays(1);
-        _ui->calendar->setDate(date);
-        _ui->calendar->setMinimumDate(date);
-        _ui->calendar->setFocus();
-    } else {
-        // 'deletes' expire date
-        if (_share)
-            _share->setExpireDate(QDate());
+    if (_share && !enable) {
+        _share->setExpireDate(QDate());
     }
 }
 
@@ -808,6 +801,14 @@ void ShareUserLine::showExpireDateOptions(bool show)
     _ui->expirationLabel->setVisible(show);
     _ui->calendar->setVisible(show);
     _ui->confirmExpirationDate->setVisible(show);
+
+    if (show) {
+        const QDate date = QDate::currentDate().addDays(1);
+        _ui->calendar->setDate(date);
+        _ui->calendar->setMinimumDate(date);
+        _ui->calendar->setFocus();
+    }
+
     emit resizeRequested();
 }
 
