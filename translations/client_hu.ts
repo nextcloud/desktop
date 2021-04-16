@@ -1099,7 +1099,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="433"/>
         <source>%1 and %n other file(s) have been added.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>A(z) %1 és %n további fájl hozzáadva.</numerusform><numerusform>A(z) %1 és %n további fájl hozzáadva.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="435"/>
@@ -1393,7 +1393,7 @@ Ha ez véletlen volt, és úgy dönt, hogy megtartja a fájljait, azokat újra s
     <message>
         <location filename="../src/gui/folderman.cpp" line="1492"/>
         <source>Sync finished with unresolved conflicts.</source>
-        <translation type="unfinished"/>
+        <translation>A szinkronizálás befejeződött, feloldatlan ütközések vannak.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1494"/>
@@ -2474,7 +2474,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="152"/>
         <source>Could not download update. Please open %1 to download the update manually.</source>
-        <translation type="unfinished"/>
+        <translation>Nem lehetett letölteni a frissítést. Kattintson &lt;a href=&apos;%1&apos;&gt;ide&lt;/a&gt; a frissítés kézi letöltéséhez.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="154"/>
@@ -2484,7 +2484,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="156"/>
         <source>New %1 is available. Please open %2 to download the update.</source>
-        <translation type="unfinished"/>
+        <translation>Új %1 elérhető. A frissítés letöltéséhez kattintson ide: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="158"/>
@@ -2884,7 +2884,7 @@ Használata nem ajánlott.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="613"/>
         <source>Cannot remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
-        <translation type="unfinished"/>
+        <translation>Nem távolíthatja el és készíthet biztonsági másolatot egy mappáról, mert a mappa, vagy egy benne lévő fájl meg van nyitva egy másik programban. Zárja be a mappát vagy fájlt, és nyomja meg az újrapróbálkozást, vagy szakítsa meg a beállítást.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="666"/>
@@ -3119,7 +3119,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="400"/>
         <source>File %1 cannot be downloaded because encryption information is missing.</source>
-        <translation type="unfinished"/>
+        <translation>A(z) %1 fájl nem tölthető le, mert hiányoznak a titkosítási információk.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="418"/>
@@ -3135,7 +3135,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="513"/>
         <source>File %1 cannot be downloaded because of a local file name clash!</source>
-        <translation type="unfinished"/>
+        <translation>A(z) %1 fájl nem tölthető le, mert ütközik egy helyi fájl nevével.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="565"/>
@@ -3232,7 +3232,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="226"/>
         <source>File %1 cannot be renamed to %2 because of a local file name clash</source>
-        <translation type="unfinished"/>
+        <translation>A(z) %1 fájl egy helyi fájl névütközése miatt nem nevezhető ár erre: %2, </translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="226"/>
@@ -3561,7 +3561,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="293"/>
         <source>The file cannot be shared because it does not have sharing permission.</source>
-        <translation type="unfinished"/>
+        <translation>A fájl nem osztható meg, mert nincs megosztási engedélye.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="334"/>
@@ -3779,7 +3779,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
         <location filename="../src/gui/sharee.cpp" line="133"/>
         <source>%1 (%2)</source>
         <comment>sharee (shareWithAdditionalInfo)</comment>
-        <translation type="unfinished"/>
+        <translation>%1 (%2)</translation>
     </message>
 </context>
 <context>
@@ -4364,17 +4364,17 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
         <translation>A fájlnév legalább egy érvénytelen karaktert tartalmaz</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1024"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1077"/>
         <source>Aborted</source>
         <translation>Megszakítva</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1041"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1094"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation>Túl kevés a tárterület: A letöltések, melyek %1 alá csökkentették volna a szabad tárhelyet, kihagyásra kerültek.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1048"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1101"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation>Egyes feltöltésekhez nincs elég hely a kiszolgálón.</translation>
     </message>
@@ -5127,12 +5127,12 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="92"/>
         <source>Current user status is online</source>
-        <translation type="unfinished"/>
+        <translation>A jelenlegi felhasználói állapot online</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="92"/>
         <source>Current user status is do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>A jelenlegi felhasználói állapot ne zavarjanak</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="94"/>
@@ -5311,12 +5311,12 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
     <message>
         <location filename="../src/gui/tray/Window.qml" line="360"/>
         <source>Current user status is online</source>
-        <translation type="unfinished"/>
+        <translation>A jelenlegi felhasználói állapot online</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="360"/>
         <source>Current user status is do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>A jelenlegi felhasználói állapot ne zavarjanak</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="443"/>

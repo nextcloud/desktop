@@ -4367,17 +4367,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Името на файла съдържа поне един невалиден знак</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1024"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1077"/>
         <source>Aborted</source>
         <translation>Прекратен</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1041"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1094"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation>Дисковото пространство е малко: Пропуснати са изтегляния, които биха намалили свободното място под% 1.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1048"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1101"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation>На сървъра няма достатъчно място за някои качвания.</translation>
     </message>

@@ -3563,7 +3563,7 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="293"/>
         <source>The file cannot be shared because it does not have sharing permission.</source>
-        <translation type="unfinished"/>
+        <translation>El archivo no se puede compartir porque no dispone de permisos para compartir.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="334"/>
@@ -4366,17 +4366,17 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
         <translation>Nombre de archivo contiene al menos un caracter no válido</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1024"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1077"/>
         <source>Aborted</source>
         <translation>Cancelado</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1041"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1094"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation>Poco espacio libre en disco: La descarga lo reducirá por debajo del %1, deberia abortar.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1048"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1101"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation>No hay suficiente espacio libre en el servidor para algunas subidas.</translation>
     </message>

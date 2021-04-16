@@ -2882,7 +2882,7 @@ Non è consigliabile utilizzarlo.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="613"/>
         <source>Cannot remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
-        <translation type="unfinished"/>
+        <translation>Impossibile rimuovere o copiare la cartella poiché la cartella o un file contenuto in essa è aperto in un altro programma. Chiudi la cartella o il file e premi Riprova o annulla la configurazione.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="666"/>
@@ -3111,7 +3111,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="400"/>
         <source>File %1 cannot be downloaded because encryption information is missing.</source>
-        <translation type="unfinished"/>
+        <translation>Il file %1 non può essere scaricato per la mancanza di informazioni di crittografia.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="418"/>
@@ -3127,7 +3127,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="513"/>
         <source>File %1 cannot be downloaded because of a local file name clash!</source>
-        <translation type="unfinished"/>
+        <translation>Il file %1 non può essere scaricato per un conflitto con il nome di un file locale!</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="565"/>
@@ -3224,7 +3224,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="226"/>
         <source>File %1 cannot be renamed to %2 because of a local file name clash</source>
-        <translation type="unfinished"/>
+        <translation>Il file %1 non può essere rinominato in %2 per un conflitto con il nome di un file locale</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="226"/>
@@ -3553,7 +3553,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="293"/>
         <source>The file cannot be shared because it does not have sharing permission.</source>
-        <translation type="unfinished"/>
+        <translation>Il file non può essere condiviso perché non ha permessi di condivisione.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="334"/>
@@ -4356,17 +4356,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Il nome del file contiene almeno un carattere non valido</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1024"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1077"/>
         <source>Aborted</source>
         <translation>Interrotto</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1041"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1094"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation>Lo spazio su disco è basso: gli scaricamenti che potrebbero ridurre lo spazio libero sotto %1 saranno saltati.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1048"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1101"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation>Spazio disponibile insufficiente sul server per alcuni caricamenti.</translation>
     </message>

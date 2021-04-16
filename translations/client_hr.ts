@@ -4366,17 +4366,17 @@ Ovo je novi, eksperimentalni način rada. Ako se odlučite aktivirati ga, prijav
         <translation>Naziv datoteke sadrži barem jedan nevažeći znak</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1024"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1077"/>
         <source>Aborted</source>
         <translation>Prekinuto</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1041"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1094"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation>Premalo prostora na disku: preskočena su preuzimanja koja bi smanjila slobodni prostor ispod %1.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1048"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1101"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation>Na nekim poslužiteljima nema dovoljno slobodnog prostora za određene otpreme.</translation>
     </message>

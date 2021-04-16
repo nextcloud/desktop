@@ -4343,17 +4343,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Un arouez fall ez eus d&apos;an neubeutañ en anv restr</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1024"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1077"/>
         <source>Aborted</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1041"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1094"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation>Plas el lenner re vihan : ar bellgargadennoù a lako ar plas dieub da mont dindan %1 a vo ankouaet.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1048"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1101"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation>N&apos;ez eus ket trawalc&apos;h a blas war ar servijour evit pelgasadennoù zo.</translation>
     </message>

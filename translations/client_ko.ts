@@ -4342,17 +4342,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>파일 이름에 유효하지 않은 문자가 하나 이상 있습니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1024"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1077"/>
         <source>Aborted</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1041"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1094"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation>디스크 공간이 부족합니다. 여유 공간이 %1 미만으로 남으면 다운로드를 건너 뜁니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1048"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1101"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation>일부 업로드를 위해 서버에 사용 가능한 공간이 부족합니다.</translation>
     </message>

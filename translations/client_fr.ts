@@ -4358,17 +4358,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Le nom de fichier contient au moins un caractère non valable</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1024"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1077"/>
         <source>Aborted</source>
         <translation>Annulé</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1041"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1094"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation>L&apos;espace disque est faible : les téléchargements qui amèneraient à réduire l&apos;espace libre en dessous de %1 ont été ignorés.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1048"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1101"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation>Il n&apos;y a pas suffisamment d’espace disponible sur le serveur pour certains téléversements.</translation>
     </message>

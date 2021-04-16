@@ -4340,17 +4340,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>ファイル名に1文字以上の無効な文字が含まれています</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1024"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1077"/>
         <source>Aborted</source>
         <translation>中止した</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1041"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1094"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation>ディスク容量が少ない：%1以下の空き容量を減らすダウンロードはスキップされました。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1048"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1101"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation>いくつかのアップロードのために、サーバーに十分なスペースがありません。</translation>
     </message>

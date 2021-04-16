@@ -2885,7 +2885,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="613"/>
         <source>Cannot remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
-        <translation type="unfinished"/>
+        <translation>無法移除與備份此資料夾，因為有其他的程式正在使用其中的資料夾或者檔案。請關閉使用中的資料夾或檔案並重試或者取消設定。</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="666"/>
@@ -3120,7 +3120,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="400"/>
         <source>File %1 cannot be downloaded because encryption information is missing.</source>
-        <translation type="unfinished"/>
+        <translation>%1檔案因缺乏加密資訊而未能下載。</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="418"/>
@@ -3136,7 +3136,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="513"/>
         <source>File %1 cannot be downloaded because of a local file name clash!</source>
-        <translation type="unfinished"/>
+        <translation>檔案 %1 無法被下載，因為近端端的檔案名稱已毀損!</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="565"/>
@@ -3233,7 +3233,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="226"/>
         <source>File %1 cannot be renamed to %2 because of a local file name clash</source>
-        <translation type="unfinished"/>
+        <translation>檔案 %1 無法更名成 %2，因為近端端的檔案名稱已毀損</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="226"/>
@@ -3562,7 +3562,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="293"/>
         <source>The file cannot be shared because it does not have sharing permission.</source>
-        <translation type="unfinished"/>
+        <translation>該檔案沒有分享權限，因此無法分享。</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="334"/>
@@ -4365,17 +4365,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>檔案名稱含有不合法的字元</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1024"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1077"/>
         <source>Aborted</source>
         <translation>已放棄</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1041"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1094"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation>剩餘空間不足：下載後將使剩餘空間降至低於%1的檔案一律跳過。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1048"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1101"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation>伺服器上的剩餘空間不足以容納某些要上載的檔案。</translation>
     </message>
