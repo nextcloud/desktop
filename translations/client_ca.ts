@@ -4332,17 +4332,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>El nom del fitxer conté com a mínim un caràcter no vàlid</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1024"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1077"/>
         <source>Aborted</source>
         <translation>S&apos;ha cancel·lat</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1041"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1094"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation>Queda poc espai en el disc: s&apos;han omès les baixades que reduirien l&apos;espai lliure per sota de %1.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1048"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1101"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation>No hi ha prou espai en el servidor per a pujar-hi alguns fitxers.</translation>
     </message>
