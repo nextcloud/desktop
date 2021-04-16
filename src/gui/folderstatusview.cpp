@@ -19,6 +19,7 @@ namespace OCC {
 
 FolderStatusView::FolderStatusView(QWidget *parent) : QTreeView(parent)
 {
+    this->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
 }
 
 QModelIndex FolderStatusView::indexAt(const QPoint &point) const
