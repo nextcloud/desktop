@@ -371,7 +371,8 @@ Example:
   <oc:id>00000020oc5cfy6qqizm</oc:id>
   
 Virtual Files
-----------------
+-------------
+
 .. note::
     * This feature is currently only available on ``Windows`` by default. ``Linux`` implementation is experimental and must be enabled by adding ``showExperimentalOptions=true`` to the ``nextcloud.cfg`` configuration file in the ``App Data`` folder. ``macOS``, at the moment, is using the same backend as ``Linux`` one. It can be enabled with the same ``showExperimentalOptions`` flag.
 
@@ -397,7 +398,7 @@ The VFS can also be disabled if needed, so, the entire folder will then be synce
 Files that must be removed from the local storage only, need to be dehydrated via the "Free up local space" option, so, the placeholder will get created in place of real files.
 
 User Status
-----------------
+-----------
 
 Starting from 3.2.0, user status is displayed in the Nextcloud desktop client's tray window. The icon and a text message are displayed as long as those are set in the user's account menu in the Web UI (server's website). At the moment, setting the status from the desktop client is not available.
 The status is updated almost immediately after it is set in the Web UI. Default user status is always "Online" if no other status is available from the server-side.
