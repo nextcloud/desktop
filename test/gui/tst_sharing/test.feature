@@ -80,3 +80,18 @@ Feature: Sharing
         When the user creates a new public link with permissions "Download / View " for folder "%client_sync_path%/simple-folder" with password "pass123" using the client-UI
         Then as user "Alice" the folder "simple-folder" should have a public link on the server
         And the public should be able to download the folder "lorem.txt" with password "pass123" from the last created public link by "Alice" on the server
+
+
+	Scenario: user changes the expiration date of an already existing public link for folder using client-UI
+        Given user "Alice" has been created on the server with default attributes
+        And user "Alice" has set up a client with default settings and password "1234"
+        And user "Alice" has created a public link on the server with following settings
+            | path       | simple-folder |
+            | name       | Public link   |
+            | expireDate | 2038-10-14    |
+            | permissions|read, update, create, delete|
+        When the user opens the public links dialog of "%client_sync_path%/simple-folder" using the client-UI
+        And the user edits the public link named "Public link" of file "simple-folder" changing following
+            | expireDate | 2038-07-21 |
+        Then the fields of the last public link share response of user "Alice" on the server should include
+            | expireDate | 2038-07-21 |
