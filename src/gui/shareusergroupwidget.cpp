@@ -451,6 +451,7 @@ ShareUserLine::ShareUserLine(QSharedPointer<UserGroupShare> share,
     connect(_ui->calendar, &QDateTimeEdit::dateChanged, this, &ShareUserLine::setExpireDate);
 
     connect(_share.data(), &UserGroupShare::noteSet, this, &ShareUserLine::disableProgessIndicatorAnimation);
+    connect(_share.data(), &UserGroupShare::noteSetError, this, &ShareUserLine::disableProgessIndicatorAnimation);
     connect(_share.data(), &UserGroupShare::expireDateSet, this, &ShareUserLine::disableProgessIndicatorAnimation);
 
     // create menu with checkable permissions

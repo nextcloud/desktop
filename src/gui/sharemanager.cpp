@@ -302,7 +302,7 @@ void UserGroupShare::setNote(const QString &note)
 {
     auto *job = new OcsShareJob(_account);
     connect(job, &OcsShareJob::shareJobFinished, this, &UserGroupShare::slotNoteSet);
-    connect(job, &OcsJob::ocsError, this, &UserGroupShare::slotOcsError);
+    connect(job, &OcsJob::ocsError, this, &UserGroupShare::noteSetError);
     job->setNote(getId(), note);
 }
 
