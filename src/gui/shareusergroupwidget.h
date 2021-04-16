@@ -160,6 +160,9 @@ private:
   void showExpireDateOptions(bool show);
   void setExpireDate();
 
+  void enableProgessIndicatorAnimation(bool enable);
+  void disableProgessIndicatorAnimation();
+
   Ui::ShareUserLine *_ui;
   QSharedPointer<UserGroupShare> _share;
   bool _isFile;

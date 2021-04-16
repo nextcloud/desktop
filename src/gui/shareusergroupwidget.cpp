@@ -433,6 +433,7 @@ ShareUserLine::ShareUserLine(QSharedPointer<UserGroupShare> share,
     , _share(share)
     , _isFile(isFile)
 {
+    Q_ASSERT(_share);
     _ui->setupUi(this);
 
     _ui->sharedWith->setElideMode(Qt::ElideRight);
@@ -448,6 +449,9 @@ ShareUserLine::ShareUserLine(QSharedPointer<UserGroupShare> share,
     connect(_ui->noteConfirmButton, &QAbstractButton::clicked, this, &ShareUserLine::onNoteConfirmButtonClicked);
     connect(_ui->confirmExpirationDate, &QAbstractButton::clicked, this, &ShareUserLine::setExpireDate);
     connect(_ui->calendar, &QDateTimeEdit::dateChanged, this, &ShareUserLine::setExpireDate);
+
+    connect(_share.data(), &UserGroupShare::noteSet, this, &ShareUserLine::disableProgessIndicatorAnimation);
+    connect(_share.data(), &UserGroupShare::expireDateSet, this, &ShareUserLine::disableProgessIndicatorAnimation);
 
     // create menu with checkable permissions
     auto *menu = new QMenu(this);
@@ -747,6 +751,7 @@ void ShareUserLine::customizeStyle()
 
     _ui->noteConfirmButton->setIcon(Theme::createColorAwareIcon(":/client/theme/confirm.svg"));
     _ui->confirmExpirationDate->setIcon(Theme::createColorAwareIcon(":/client/theme/confirm.svg"));
+    _ui->progressIndicator->setColor(QGuiApplication::palette().color(QPalette::WindowText));
 }
 
 void ShareUserLine::showNoteOptions(bool show)
@@ -769,7 +774,7 @@ void ShareUserLine::toggleNoteOptions(bool enable)
 {
     showNoteOptions(enable);
 
-    if (_share && !enable) {
+    if (!enable) {
         // Delete note
         _share->setNote(QString());
     }
@@ -782,16 +787,15 @@ void ShareUserLine::onNoteConfirmButtonClicked()
 
 void ShareUserLine::setNote(const QString &note)
 {
-    if (_share) {
-        _share->setNote(note);
-    }
+    enableProgessIndicatorAnimation(true);
+    _share->setNote(note);
 }
 
 void ShareUserLine::toggleExpireDateOptions(bool enable)
 {
     showExpireDateOptions(enable);
 
-    if (_share && !enable) {
+    if (!enable) {
         _share->setExpireDate(QDate());
     }
 }
@@ -814,10 +818,23 @@ void ShareUserLine::showExpireDateOptions(bool show)
 
 void ShareUserLine::setExpireDate()
 {
-    if (!_share) {
-        return;
-    }
-
+    enableProgessIndicatorAnimation(true);
     _share->setExpireDate(_ui->calendar->date());
+}
+
+void ShareUserLine::enableProgessIndicatorAnimation(bool enable)
+{
+    if (enable) {
+        if (!_ui->progressIndicator->isAnimated()) {
+            _ui->progressIndicator->startAnimation();
+        }
+    } else {
+        _ui->progressIndicator->stopAnimation();
+    }
+}
+
+void ShareUserLine::disableProgessIndicatorAnimation()
+{
+    enableProgessIndicatorAnimation(false);
 }
 }

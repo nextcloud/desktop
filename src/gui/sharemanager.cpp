@@ -23,6 +23,8 @@
 #include <QJsonObject>
 #include <QJsonArray>
 
+Q_LOGGING_CATEGORY(lcUserGroupShare, "nextcloud.gui.usergroupshare", QtInfoMsg)
+
 namespace OCC {
 
 /**
