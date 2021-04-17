@@ -2884,7 +2884,7 @@ Uporaba možnosti ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="613"/>
         <source>Cannot remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
-        <translation type="unfinished"/>
+        <translation>Mape ni mogoče odstraniti niti ni mogoče ustvariti varnostne kopije, ker je mapa, oziroma dokument v njej, odprt v drugem programu. Zaprite mapo oziroma dokument, ali pa prekinite namestitev.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="666"/>
@@ -3119,7 +3119,7 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="400"/>
         <source>File %1 cannot be downloaded because encryption information is missing.</source>
-        <translation type="unfinished"/>
+        <translation>Datoteke %1 ni mogoče prejeti zaradi manjkajočih podatkov šifriranja!</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="418"/>
@@ -3135,7 +3135,7 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="513"/>
         <source>File %1 cannot be downloaded because of a local file name clash!</source>
-        <translation type="unfinished"/>
+        <translation>Datoteke %1 ni mogoče prejeti zaradi neskladja z imenom krajevne datoteke!</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="565"/>
@@ -3232,7 +3232,7 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="226"/>
         <source>File %1 cannot be renamed to %2 because of a local file name clash</source>
-        <translation type="unfinished"/>
+        <translation>Datoteke %1 ni mogoče preimenovati v %2 zaradi že obstoječe datoteke s tem imenom.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="226"/>
@@ -3561,7 +3561,7 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="293"/>
         <source>The file cannot be shared because it does not have sharing permission.</source>
-        <translation type="unfinished"/>
+        <translation>Datoteke ni mogoče dodeliti v souporabo, ker ni navedenih ustreznih dovoljenj.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="334"/>
@@ -3885,7 +3885,7 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
     <message>
         <location filename="../src/gui/socketapi.cpp" line="1105"/>
         <source>Delete</source>
-        <translation>Brisanje</translation>
+        <translation>Izbriši</translation>
     </message>
 </context>
 <context>
