@@ -3526,12 +3526,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="55"/>
         <source>Backup of %1 started</source>
-        <translation type="unfinished"/>
+        <translation>เริ่มการสำรองข้อมูลของ %1 แล้ว</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="58"/>
         <source>Failed to find %1</source>
-        <translation type="unfinished"/>
+        <translation>ค้นห้า %1 ไม่พบ </translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="63"/>
@@ -3541,22 +3541,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="68"/>
         <source>Failed to create temporary database</source>
-        <translation type="unfinished"/>
+        <translation>ไม่สามารถสร้างฐานข้อมูลชั่วคราว</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="90"/>
         <source>Backup of %1 succeeded</source>
-        <translation type="unfinished"/>
+        <translation>สำรองข้อมูลของ %1 สำเร็จแล้ว</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="123"/>
         <source>Backup of %1 failed with: %2</source>
-        <translation type="unfinished"/>
+        <translation>สำรองข้อมูล %1 ล้มเหลว: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="139"/>
         <source>%1 backup</source>
-        <translation type="unfinished"/>
+        <translation>สำรอง %1</translation>
     </message>
 </context>
 <context>
