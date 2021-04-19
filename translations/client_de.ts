@@ -58,7 +58,7 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="218"/>
         <source>Open website</source>
-        <translation>Internetseite öffnen</translation>
+        <translation>Webseite öffnen</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="230"/>
