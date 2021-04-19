@@ -46,6 +46,7 @@ def main(ctx):
             "Ninja",
             trigger = build_trigger,
         ),
+        gui_tests(ctx, trigger = build_trigger),
         build_client_docs(ctx),
         notification(
             name = "build",
@@ -141,6 +142,54 @@ def build_and_test_client(ctx, c_compiler, cxx_compiler, build_type, generator, 
                 ],
             },
         ],
+        "trigger": trigger,
+        "depends_on": depends_on,
+    }
+
+def gui_tests(ctx, trigger = {}, depends_on = []):
+    pipeline_name = "GUI-tests"
+    build_dir = "build-" + pipeline_name
+
+    return {
+        "kind": "pipeline",
+        "name": pipeline_name,
+        "platform": {
+            "os": "linux",
+            "arch": "amd64",
+        },
+        "steps": [
+            {
+                "name": "submodules",
+                "image": "docker:git",
+                "commands": [
+                    "git submodule update --init --recursive",
+                ],
+            }
+        ] +
+          installCore('daily-master-qa') +
+          setupServerAndApp(2) +
+          fixPermissions() +
+          owncloudLog() +
+          build_client(ctx, "gcc", "g++", "Release", "Unix Makefiles", "make", build_dir)  +
+        [
+            {
+                "name": "GUItests",
+                "image": "owncloudci/squish:latest",
+                "pull": "always",
+                "environment": {
+                    "LICENSEKEY": from_secret("squish_license_server"),
+                    "CLIENT_REPO": "/drone/src/",
+                    "MIDDLEWARE_URL": "http://testmiddleware:3000/",
+                    "BACKEND_HOST": "http://owncloud/",
+                    "SERVER_INI": "/drone/src/test/gui/drone/server.ini",
+                },
+            },
+        ],
+        "services":
+            testMiddleware() +
+            owncloudService() +
+            databaseService(),
+
         "trigger": trigger,
         "depends_on": depends_on,
     }
@@ -291,7 +340,7 @@ def build_client_docs(ctx):
     }
 
 def changelog(ctx, trigger = {}, depends_on = []):
-#    repo_slug = ctx.build.source_repo if ctx.build.source_repo else ctx.repo.slug
+    repo_slug = ctx.build.source_repo if ctx.build.source_repo else ctx.repo.slug
     result = {
         'kind': 'pipeline',
         'type': 'docker',
@@ -308,7 +357,7 @@ def changelog(ctx, trigger = {}, depends_on = []):
                     'actions': [
                         'clone',
                     ],
-                    'remote': 'https://github.com/%s', # % (repo_slug),
+                    'remote': 'https://github.com/%s' % (repo_slug),
                     'branch': ctx.build.source if ctx.build.event == 'pull_request' else 'master',
                     'path': '/drone/src',
                     'netrc_machine': 'github.com',
@@ -464,3 +513,108 @@ def notification(name, depends_on = [], trigger = {}):
         "trigger": trigger,
         "depends_on": depends_on,
     }
+
+def databaseService():
+    service = {
+        'name': 'mysql',
+        'image': 'mysql:8.0',
+        'pull': 'always',
+        'environment': {
+            'MYSQL_USER': 'owncloud',
+            'MYSQL_PASSWORD': 'owncloud',
+            'MYSQL_DATABASE': 'owncloud',
+            'MYSQL_ROOT_PASSWORD': 'owncloud'
+        },
+        'command': ['--default-authentication-plugin=mysql_native_password']
+    }
+    return [service]
+
+def installCore(version):
+    stepDefinition = {
+        'name': 'install-core',
+        'image': 'owncloudci/core',
+        'pull': 'always',
+        'settings': {
+            'version': version,
+            'core_path': '/drone/src/server',
+            'db_type': 'mysql',
+            'db_name': 'owncloud',
+            'db_host': 'mysql',
+            'db_username': 'owncloud',
+            'db_password': 'owncloud'
+        }
+    }
+    return [stepDefinition]
+
+def setupServerAndApp(logLevel):
+    return [{
+        'name': 'setup-owncloud-server',
+        'image': 'owncloudci/php:7.4',
+        'pull': 'always',
+        'commands': [
+            'cd /drone/src/server/',
+            'php occ a:e testing',
+            'php occ config:system:set trusted_domains 1 --value=owncloud',
+            'php occ log:manage --level %s' % logLevel,
+            'php occ config:list',
+            'php occ config:system:set skeletondirectory --value=/var/www/owncloud/server/apps/testing/data/webUISkeleton',
+            'php occ config:system:set sharing.federation.allowHttpFallback --value=true --type=bool'
+        ]
+    }]
+
+
+def owncloudService():
+    return [{
+        'name': 'owncloud',
+        'image': 'owncloudci/php:7.4',
+        'pull': 'always',
+        'environment': {
+            'APACHE_WEBROOT': '/drone/src/server/',
+        },
+        'command': [
+            '/usr/local/bin/apachectl',
+            '-e',
+            'debug',
+            '-D',
+            'FOREGROUND'
+        ]
+    }]
+
+def testMiddleware():
+    return [{
+        'name': 'testmiddleware',
+        'image': 'owncloudci/nodejs:14',
+        'pull': 'always',
+        'environment': {
+            'HOST': 'testmiddleware',
+            'BACKEND_HOST': 'http://owncloud'
+        },
+        'commands': [
+            'git clone https://github.com/owncloud/owncloud-test-middleware.git /drone/src/middleware',
+            'cd /drone/src/middleware',
+            'npm install',
+            'node src/app.js'
+        ]
+    }]
+
+def owncloudLog():
+    return [{
+        'name': 'owncloud-log',
+        'image': 'owncloud/ubuntu:16.04',
+        'pull': 'always',
+        'detach': True,
+        'commands': [
+            'tail -f /drone/src/server/data/owncloud.log'
+        ]
+    }]
+
+def fixPermissions():
+    return [{
+        'name': 'fix-permissions',
+        'image': 'owncloudci/php:7.4',
+        'pull': 'always',
+        'commands': [
+            'cd /drone/src/server',
+            'chown www-data * -R'
+        ]
+    }]
