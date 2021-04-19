@@ -19,6 +19,7 @@
 #include "folderman.h"
 #include "creds/abstractcredentials.h"
 #include "theme.h"
+#include "capabilities.h"
 
 #include <QTimer>
 #include <QJsonDocument>
@@ -67,10 +68,14 @@ UserStatus::UserStatus(QObject *parent)
 
 void UserStatus::fetchUserStatus(AccountPtr account)
 {
+    if (!account->capabilities().userStatus()) {
+        return;
+    }
+    
     if (_job) {
         _job->deleteLater();
     }
-
+    
     _job = new JsonApiJob(account, QStringLiteral("/ocs/v2.php/apps/user_status/api/v1/user_status"), this);
     connect(_job.data(), &JsonApiJob::jsonReceived, this, &UserStatus::slotFetchUserStatusFinished);
     _job->start();

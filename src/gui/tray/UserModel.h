@@ -23,6 +23,7 @@ class User : public QObject
     Q_PROPERTY(QString server READ server CONSTANT)
     Q_PROPERTY(QUrl statusIcon READ statusIcon NOTIFY statusChanged)
     Q_PROPERTY(QString statusMessage READ statusMessage NOTIFY statusChanged)
+    Q_PROPERTY(bool serverHasUserStatus READ serverHasUserStatus)
     Q_PROPERTY(bool hasLocalFolder READ hasLocalFolder NOTIFY hasLocalFolderChanged)
     Q_PROPERTY(bool serverHasTalk READ serverHasTalk NOTIFY serverHasTalkChanged)
     Q_PROPERTY(QString avatar READ avatarUrl NOTIFY avatarChanged)
@@ -41,6 +42,7 @@ public:
     QString server(bool shortened = true) const;
     bool hasLocalFolder() const;
     bool serverHasTalk() const;
+    bool serverHasUserStatus() const;
     AccountApp *talkApp() const;
     bool hasActivities() const;
     AccountAppList appList() const;
@@ -161,6 +163,7 @@ public:
         AvatarRole,
         IsCurrentUserRole,
         IsConnectedRole,
+        ServerUserStatus,
         IdRole
     };
 

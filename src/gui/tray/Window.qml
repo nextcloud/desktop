@@ -39,6 +39,15 @@ Window {
         folderStateIndicator.source = UserModel.isUserConnected(UserModel.currentUserId)
                 ? Style.stateOnlineImageSource
                 : Style.stateOfflineImageSource
+        
+        currentAccountStatusIndicator.source = ""
+        currentUserStatus.visible = UserModel.isUserConnected(UserModel.currentUserId) &&
+                UserModel.currentUser.serverHasUserStatus
+        currentAccountStatusIndicatorMouseHover.visible = currentUserStatus.visible
+        currentAccountStatusIndicatorBackground.visible = currentUserStatus.visible
+        if (currentUserStatus.visible) {
+            currentAccountStatusIndicator.source = UserModel.currentUser.statusIcon
+        } 
 
         // HACK: reload account Instantiator immediately by restting it - could be done better I guess
         // see also id:accountMenu below
@@ -53,6 +62,15 @@ Window {
             folderStateIndicator.source = UserModel.isUserConnected(UserModel.currentUserId)
                     ? Style.stateOnlineImageSource
                     : Style.stateOfflineImageSource
+            
+            currentAccountStatusIndicator.source = ""
+            currentUserStatus.visible = UserModel.isUserConnected(UserModel.currentUserId) && 
+                    UserModel.currentUser.serverHasUserStatus
+            currentAccountStatusIndicatorMouseHover.visible = currentUserStatus.visible
+            currentAccountStatusIndicatorBackground.visible = currentUserStatus.visible
+            if (currentUserStatus.visible) {
+                currentAccountStatusIndicator.source = UserModel.currentUser.statusIcon
+            } 
         }
         onNewUserSelected: {
             accountMenu.close();
@@ -329,6 +347,8 @@ Window {
 
                             Rectangle {
                                 id: currentAccountStatusIndicatorBackground
+                                visible: UserModel.isUserConnected(UserModel.currentUserId()) 
+                                         && UserModel.currentUser.hasUserStatus
                                 width: Style.accountAvatarStateIndicatorSize + 2
                                 height: width
                                 anchors.bottom: currentAccountAvatar.bottom
@@ -338,6 +358,9 @@ Window {
                             }
 
                             Rectangle {
+                                id: currentAccountStatusIndicatorMouseHover
+                                visible: UserModel.isUserConnected(UserModel.currentUserId()) 
+                                         && UserModel.currentUser.hasUserStatus
                                 width: Style.accountAvatarStateIndicatorSize + 2
                                 height: width
                                 anchors.bottom: currentAccountAvatar.bottom
@@ -349,6 +372,7 @@ Window {
 
                             Image {
                                 id: currentAccountStatusIndicator
+                                visible: UserModel.isUserConnected(UserModel.currentUserId())
                                 source: UserModel.currentUser.statusIcon
                                 cache: false
                                 x: currentAccountStatusIndicatorBackground.x + 1
@@ -378,8 +402,19 @@ Window {
                             }
                             Label {
                                 id: currentUserStatus
+                                visible: UserModel.isUserConnected(UserModel.currentUserId()) &&
+                                         UserModel.currentUserHasUserStatus()
                                 width: Style.currentAccountLabelWidth
                                 text: UserModel.currentUser.statusMessage
+                                elide: Text.ElideRight
+                                color: Style.ncTextColor
+                                font.pixelSize: Style.subLinePixelSize
+                            }
+                            Label {
+                                id: currentUserServer
+                                visible: !currentUserStatus.visible
+                                width: Style.currentAccountLabelWidth
+                                text: UserModel.currentUser.server
                                 elide: Text.ElideRight
                                 color: Style.ncTextColor
                                 font.pixelSize: Style.subLinePixelSize
