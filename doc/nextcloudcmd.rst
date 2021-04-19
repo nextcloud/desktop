@@ -10,7 +10,7 @@ monitor for file system changes.
 
 
 Install ``nextcloudcmd``
-~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 CentOS
 

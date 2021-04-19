@@ -184,9 +184,9 @@ Then, in Terminal:
       
    .. code-block:: bash
 
-        % echo 'export CMAKE_INSTALL_PREFIX=~/Builds' >> ~/.nextcloud_build_variables
+      % echo 'export CMAKE_INSTALL_PREFIX=~/Builds' >> ~/.nextcloud_build_variables
       
-      Replace ``~/Builds`` with a different directory if you'd like the build to end up elsewhere.
+   Replace ``~/Builds`` with a different directory if you'd like the build to end up elsewhere.
    
 ..
 
@@ -218,7 +218,7 @@ follow `Windows Installer Build (Cross-Compile)`_ instead.
 2. Get the QtKeychain_ sources as well as the latest versions of the Nextcloud client
    from Git as follows
 
-   .. code-block::
+   .. code-block:: bash
    
       git clone https://github.com/frankosterfeld/qtkeychain.git
       git clone git://github.com/nextcloud/client.git
@@ -259,7 +259,7 @@ follow `Windows Installer Build (Cross-Compile)`_ instead.
 .. _`Windows Installer Build (Cross-Compile)`:
 
 Windows Installer (i.e. Deployment) Build (Cross-Compile)
----------------------------------------
+---------------------------------------------------------
 
 Due to the large number of dependencies, building the client installer for Windows
 is **currently only officially supported on openSUSE**, by using the MinGW cross compiler.
