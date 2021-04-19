@@ -418,11 +418,13 @@ The VFS does not occupy much space on the user's storage. It just creates placeh
 
 One will see a hydration (in other words - file download) process when double-clicking on a file that must become available. There will be a progress-bar popup displayed if the file is large enough. So, the hydration process can be observed and it makes it easy to then find out, how long, it would take to fetch the actual file from the server.
 The "Hydration" can be thought of as "downloading" or "fetching" the file contents. As soon as hydration is complete, the file will then be opened normally as now it is a real file on the user's storage. It won't disappear, and, from now on, will always be available, unless it is manually dehydrated.
+
 .. image:: images/vfs_hydration_progress_bar.png
    :alt: VFS hydration progress bar
 
 As long as the VFS is enabled, a user can choose to remove files that are no longer needed from the local storage. This can be achieved by right-clicking the file/folder in the explorer, and then, choosing "Free up local space" from the context menu.
 Alternatively, space can be freed up by right-clicking the sync folder in the Settings dialog. It is also possible to make files always hydrated, or, in other words, always available locally. A user just needs to choose the "Make always available locally" option in the aforementioned context menus.
+
 .. image:: images/vfs_context_menu_options.png
    :alt: VFS context menu options
 
@@ -438,5 +440,6 @@ User Status
 
 Starting from 3.2.0, user status is displayed in the Nextcloud desktop client's tray window. The icon and a text message are displayed as long as those are set in the user's account menu in the Web UI (server's website). At the moment, setting the status from the desktop client is not available.
 The status is updated almost immediately after it is set in the Web UI. Default user status is always "Online" if no other status is available from the server-side.
+
 .. image:: images/status_feature_example.png
    :alt: User Status feature in the tray window

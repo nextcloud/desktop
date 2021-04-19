@@ -26,7 +26,6 @@ The other options are:
 
 ``--logdebug``
         Also output debug-level messages in the log (equivalent to setting the env var QT_LOGGING_RULES="qt.*=true;*.debug=true").
-)
 
 ``--confdir`` `<dirname>`
         Uses the specified configuration directory.
