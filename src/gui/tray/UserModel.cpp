@@ -54,7 +54,7 @@ User::User(AccountStatePtr &account, const bool &isCurrent, QObject *parent)
 
     connect(_account->account().data(), &Account::accountChangedAvatar, this, &User::avatarChanged);
     connect(_account.data(), &AccountState::statusChanged, this, &User::statusChanged);
-
+    
     connect(_activityModel, &ActivityListModel::sendNotificationRequest, this, &User::slotSendNotificationRequest);
 }
 
@@ -221,7 +221,6 @@ void User::slotRefreshActivities()
 
 void User::slotRefreshUserStatus() 
 {
-    // TODO: check for _account->account()->capabilities().userStatus() 
     if (_account.data() && _account.data()->isConnected()) {
         _account.data()->fetchUserStatus();
     }
@@ -583,6 +582,10 @@ QUrl User::statusIcon() const
     return _account->statusIcon();
 }
 
+bool User::serverHasUserStatus() const {
+    return _account->account()->capabilities().userStatus();
+}
+
 QImage User::avatar() const
 {
     return AvatarJob::makeCircularAvatar(_account->account()->avatar());
@@ -888,6 +891,8 @@ QVariant UserModel::data(const QModelIndex &index, int role) const
         return _users[index.row()]->name();
     } else if (role == ServerRole) {
         return _users[index.row()]->server();
+    } else if (role == ServerUserStatus) {
+        return _users[index.row()]->serverHasUserStatus();
     } else if (role == StatusIconRole) {
         return _users[index.row()]->statusIcon();
     } else if (role == StatusMessageRole) {
@@ -914,6 +919,7 @@ QHash<int, QByteArray> UserModel::roleNames() const
     roles[AvatarRole] = "avatar";
     roles[IsCurrentUserRole] = "isCurrentUser";
     roles[IsConnectedRole] = "isConnected";
+    roles[ServerUserStatus] = "serverUserStatus";
     roles[IdRole] = "id";
     return roles;
 }

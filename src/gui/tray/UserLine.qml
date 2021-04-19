@@ -72,6 +72,8 @@ MenuItem {
                         Layout.preferredWidth: (userLineLayout.height -16)
                         Rectangle {
                             id: accountStatusIndicatorBackground
+                            visible: model.isConnected && 
+                                     model.serverUserStatus
                             width: accountStatusIndicator.sourceSize.width + 2
                             height: width
                             anchors.bottom: accountAvatar.bottom
@@ -81,7 +83,9 @@ MenuItem {
                         }
                         Image {
                             id: accountStatusIndicator
-                            source: model.statusIcon
+                            visible: model.isConnected && 
+                                     model.serverUserStatus
+                            source: model.statusIcon 
                             cache: false
                             x: accountStatusIndicatorBackground.x + 1
                             y: accountStatusIndicatorBackground.y + 1
@@ -109,6 +113,8 @@ MenuItem {
                         }
                         Label {
                             id: userStatusMessage
+                            visible: model.isConnected 
+                                     && model.serverUserStatus
                             width: 128
                             text: statusMessage
                             elide: Text.ElideRight
@@ -117,6 +123,7 @@ MenuItem {
                         }
                         Label {
                             id: accountServer
+                            visible: !userStatusMessage.visible
                             width: 128
                             text: server
                             elide: Text.ElideRight
