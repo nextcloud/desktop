@@ -97,6 +97,7 @@ version = 10.35
 
 [libs/qt5/qtbase]
 version = 5.12.10
+patchLevel = 1
 
 [libs/qt5/qtdeclarative]
 version = 5.12.10
