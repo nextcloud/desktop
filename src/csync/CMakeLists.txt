@@ -59,6 +59,7 @@ endif()
 configure_file(csync_version.h.in ${CMAKE_CURRENT_BINARY_DIR}/csync_version.h)
 
 add_library("${csync_NAME}" SHARED ${common_SOURCES} ${csync_SRCS})
+enable_sanitizers("${csync_NAME}")
 
 target_include_directories(
   "${csync_NAME}"

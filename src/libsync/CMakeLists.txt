@@ -113,6 +113,8 @@ ENDIF(NOT APPLE)
 
 find_package(Qt5 REQUIRED COMPONENTS WebSockets)
 add_library(${synclib_NAME} SHARED ${libsync_SRCS})
+enable_sanitizers(${synclib_NAME})
+
 target_link_libraries(${synclib_NAME}
   PUBLIC
   "${csync_NAME}"

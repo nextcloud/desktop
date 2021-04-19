@@ -304,6 +304,7 @@ if(NOT BUILD_OWNCLOUD_OSX_BUNDLE)
 
     # we may not add MACOSX_BUNDLE here, if not building one
     add_executable(${APPLICATION_EXECUTABLE} WIN32 main.cpp ${client_version} ${client_manifest} ${APP_ICON})
+    enable_sanitizers(${APPLICATION_EXECUTABLE})
 else()
     # set(CMAKE_INSTALL_PREFIX ".") # Examples use /Applications. hurmpf.
     set(MACOSX_BUNDLE_ICON_FILE "${APPLICATION_ICON_NAME}.icns")
@@ -337,7 +338,7 @@ set_target_properties( ${APPLICATION_EXECUTABLE} PROPERTIES
         RUNTIME_OUTPUT_DIRECTORY  ${BIN_OUTPUT_DIRECTORY}
 )
 
-target_link_libraries(${APPLICATION_EXECUTABLE} nextcloudCore)
+target_link_libraries(${APPLICATION_EXECUTABLE} PRIVATE nextcloudCore)
 
 IF(BUILD_UPDATER)
   target_link_libraries(nextcloudCore PUBLIC updater)
