@@ -88,8 +88,8 @@ void UserStatus::slotFetchUserStatusFinished(const QJsonDocument &json, int stat
     }
     
     const auto retrievedData = json.object().value("ocs").toObject().value("data").toObject(defaultValues);
-    const auto emoji = retrievedData.value("icon").toString();
-    const auto message = retrievedData.value("message").toString();
+    const auto emoji = retrievedData.value("icon").toString().trimmed();
+    const auto message = retrievedData.value("message").toString().trimmed();
     
     _status = stringToEnum(retrievedData.value("status").toString());
     const auto visibleStatusText = message.isEmpty() ? enumToString(_status) : message;
@@ -105,7 +105,7 @@ UserStatus::Status UserStatus::status() const
 
 QString UserStatus::message() const
 {
-    return _message.trimmed();
+    return _message;
 }
 
 QUrl UserStatus::icon() const
