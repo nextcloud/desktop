@@ -28,39 +28,41 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcUserStatus, "nextcloud.gui.userstatus", QtInfoMsg)
 
+namespace {
+    UserStatus::Status stringToEnum(const QString &status) 
+    {
+        // it needs to match the Status enum
+        const QHash<QString, UserStatus::Status> preDefinedStatus{{"online", UserStatus::Status::Online},
+            {"dnd", UserStatus::Status::DoNotDisturb}, //DoNotDisturb
+            {"away", UserStatus::Status::Away},
+            {"offline", UserStatus::Status::Offline},
+            {"invisible", UserStatus::Status::Invisible}};
+        
+        // api should return invisible, dnd,... toLower() it is to make sure 
+        // it matches _preDefinedStatus, otherwise the default is online (0)
+        const auto statusKey = status.isEmpty() ? QStringLiteral("online") : status.toLower();
+        return preDefinedStatus.value(statusKey, UserStatus::Status::Online);
+    }
+    
+    QString enumToString(UserStatus::Status status) 
+    {
+        switch (status) {
+        case UserStatus::Status::Away:
+            return QObject::tr("Away");
+        case UserStatus::Status::DoNotDisturb:
+            return QObject::tr("Do not disturb");
+        case UserStatus::Status::Invisible:
+        case UserStatus::Status::Offline:
+            return QObject::tr("Offline");
+        default:
+            return QObject::tr("Online");
+        }
+    }
+}
+
 UserStatus::UserStatus(QObject *parent)
     : QObject(parent)
 {
-}
-
-UserStatus::Status UserStatus::stringToEnum(const QString &status) const 
-{
-    // it needs to match the Status enum
-    const QHash<QString, Status> preDefinedStatus{{"online", Status::Online},
-                                               {"dnd", Status::DoNotDisturb}, //DoNotDisturb
-                                               {"away", Status::Away},
-                                               {"offline", Status::Offline},
-                                               {"invisible", Status::Invisible}};
-    
-    // api should return invisible, dnd,... toLower() it is to make sure 
-    // it matches _preDefinedStatus, otherwise the default is online (0)
-    const auto statusKey = status.isEmpty() ? QStringLiteral("online") : status.toLower();
-    return preDefinedStatus.value(statusKey, Status::Online);
-}
-
-QString UserStatus::enumToString(Status status) const 
-{
-    switch (status) {
-    case Status::Away:
-        return tr("Away");
-    case Status::DoNotDisturb:
-        return tr("Do not disturb");
-    case Status::Invisible:
-    case Status::Offline:
-        return tr("Offline");
-    default:
-        return tr("Online");
-    }
 }
 
 void UserStatus::fetchUserStatus(AccountPtr account)
