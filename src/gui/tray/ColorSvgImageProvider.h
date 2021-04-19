@@ -1,8 +1,11 @@
 #pragma once
 
-#include <qimage.h>
-#include <qpalette.h>
-#include <qquickimageprovider.h>
+#include <QImage>
+#include <QPalette>
+#include <QQuickImageProvider>
+#include <QQuickAsyncImageProvider>
+#include <QThreadPool>
+
 namespace OCC {
 
 class ColorSvgImageProvider : public QQuickImageProvider
@@ -14,5 +17,14 @@ public:
 
 private:
     QPalette _palette;
+};
+
+class AsyncColorSvgImageProvider : public QQuickAsyncImageProvider
+{
+public:
+    QQuickImageResponse *requestImageResponse(const QString &id, const QSize &requestedSize) override;
+
+private:
+    QThreadPool _pool;
 };
 }

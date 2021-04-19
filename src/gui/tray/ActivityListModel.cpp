@@ -18,6 +18,7 @@
 #include <QWidget>
 #include <QJsonObject>
 #include <QJsonDocument>
+#include <qloggingcategory.h>
 
 #include "account.h"
 #include "accountstate.h"
@@ -286,6 +287,7 @@ void ActivityListModel::slotActivitiesReceived(const QJsonDocument &json, int st
     foreach (auto activ, activities) {
         auto json = activ.toObject();
 
+        qCDebug(lcActivity) << "activity:" << activities;
         Activity a;
         a._type = Activity::ActivityType;
         a._objectType = json.value("object_type").toString();

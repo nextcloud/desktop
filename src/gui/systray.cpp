@@ -59,7 +59,7 @@ void Systray::setTrayEngine(QQmlApplicationEngine *trayEngine)
     _trayEngine->addImportPath("qrc:/qml/theme");
     _trayEngine->addImageProvider("avatars", new ImageProvider);
     // TODO: Better name
-    _trayEngine->addImageProvider(QLatin1String("colorsvgimages"), new ColorSvgImageProvider);
+    _trayEngine->addImageProvider(QLatin1String("colorsvgimages"), new AsyncColorSvgImageProvider);
 }
 
 Systray::Systray()
