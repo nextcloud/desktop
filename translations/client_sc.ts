@@ -1623,12 +1623,12 @@ Si custu fiat un&apos;errore e detzides de mantènnere is archìvios tuos, custo
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1152"/>
         <source>Waiting …</source>
-        <translation>Iseta …</translation>
+        <translation>Abeta …</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folderstatusmodel.cpp" line="1154"/>
         <source>Waiting for %n other folder(s) …</source>
-        <translation><numerusform>Isetende %n àteras cartella(s) …</numerusform><numerusform>Isetende %n àteras cartella(s) …</numerusform></translation>
+        <translation><numerusform>Isetende %n àteras cartella(s) …</numerusform><numerusform>Abetende %n àteras cartella(s) …</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1160"/>
