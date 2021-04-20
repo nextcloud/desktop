@@ -68,7 +68,6 @@ class ShareeModel : public QAbstractListModel
 public:
     enum LookupMode {
         LocalSearch = 0,
-        GlobalSearch = 1
     };
 
     explicit ShareeModel(const AccountPtr &account, const QString &type, QObject *parent = nullptr);

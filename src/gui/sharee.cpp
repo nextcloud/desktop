@@ -80,7 +80,7 @@ void ShareeModel::fetch(const QString &search, const ShareeSet &blacklist, Looku
     auto *job = new OcsShareeJob(_account);
     connect(job, &OcsShareeJob::shareeJobFinished, this, &ShareeModel::shareesFetched);
     connect(job, &OcsJob::ocsError, this, &ShareeModel::displayErrorMessage);
-    job->getSharees(_search, _type, 1, 50, lookupMode == GlobalSearch ? true : false);
+    job->getSharees(_search, _type, 1, 50, false);
 }
 
 void ShareeModel::shareesFetched(const QJsonDocument &reply)

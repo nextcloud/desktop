@@ -84,15 +84,15 @@ ShareUserGroupWidget::ShareUserGroupWidget(AccountPtr account,
     _completer->setCompletionMode(QCompleter::UnfilteredPopupCompletion);
     _ui->shareeLineEdit->setCompleter(_completer);
 
-    auto searchGloballyAction = new QAction(_ui->shareeLineEdit);
-    searchGloballyAction->setIcon(QIcon(":/client/theme/magnifying-glass.svg"));
-    searchGloballyAction->setToolTip(tr("Search globally"));
+    auto searchAction = new QAction(_ui->shareeLineEdit);
+    searchAction->setIcon(QIcon(":/client/theme/magnifying-glass.svg"));
+    searchAction->setToolTip(tr("Search"));
 
-    connect(searchGloballyAction, &QAction::triggered, this, [this]() {
-        searchForSharees(ShareeModel::GlobalSearch);
+    connect(searchAction, &QAction::triggered, this, [this]() {
+        searchForSharees(ShareeModel::LocalSearch);
     });
 
-    _ui->shareeLineEdit->addAction(searchGloballyAction, QLineEdit::LeadingPosition);
+    _ui->shareeLineEdit->addAction(searchAction, QLineEdit::LeadingPosition);
 
     _manager = new ShareManager(_account, this);
     connect(_manager, &ShareManager::sharesFetched, this, &ShareUserGroupWidget::slotSharesFetched);
