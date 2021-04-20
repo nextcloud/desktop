@@ -46,6 +46,8 @@ public:
     Capabilities(const QVariantMap &capabilities);
 
     bool shareAPI() const;
+    bool shareEmailPasswordEnabled() const;
+    bool shareEmailPasswordEnforced() const;
     bool sharePublicLink() const;
     bool sharePublicLinkAllowUpload() const;
     bool sharePublicLinkSupportsUploadOnly() const;

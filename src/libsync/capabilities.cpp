@@ -40,6 +40,16 @@ bool Capabilities::shareAPI() const
     }
 }
 
+bool Capabilities::shareEmailPasswordEnabled() const
+{
+    return _capabilities["files_sharing"].toMap()["sharebymail"].toMap()["password"].toMap()["enabled"].toBool();
+}
+
+bool Capabilities::shareEmailPasswordEnforced() const
+{
+    return _capabilities["files_sharing"].toMap()["sharebymail"].toMap()["password"].toMap()["enforced"].toBool();
+}
+
 bool Capabilities::sharePublicLink() const
 {
     if (_capabilities["files_sharing"].toMap().contains("public")) {

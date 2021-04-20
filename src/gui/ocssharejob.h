@@ -113,11 +113,13 @@ public:
      * @param shareType The type of share (user/group/link/federated)
      * @param shareWith The uid/gid/federated id to share with
      * @param permissions The permissions the share will have
+     * @param password The password to protect the share with
      */
     void createShare(const QString &path,
         const Share::ShareType shareType,
         const QString &shareWith = "",
-        const Share::Permissions permissions = SharePermissionRead);
+        const Share::Permissions permissions = SharePermissionRead,
+        const QString &password = "");
 
     /**
      * Returns information on the items shared with the current user.
