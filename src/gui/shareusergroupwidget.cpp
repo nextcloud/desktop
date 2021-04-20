@@ -12,6 +12,7 @@
  * for more details.
  */
 
+#include "sharee.h"
 #include "ui_shareusergroupwidget.h"
 #include "ui_shareuserline.h"
 #include "shareusergroupwidget.h"
@@ -228,7 +229,10 @@ void ShareUserGroupWidget::slotSharesFetched(const QList<QSharedPointer<Share>> 
             _ui->mainOwnerLabel->setText(QString("Shared with you by ").append(share->getOwnerDisplayName()));
         }
 
-        auto *s = new ShareUserLine(share, _maxSharingPermissions, _isFile, _parentScrollArea);
+
+        Q_ASSERT(share->getShareType() == Share::TypeUser || share->getShareType() == Share::TypeGroup);
+        auto userGroupShare = qSharedPointerDynamicCast<UserGroupShare>(share);
+        auto *s = new ShareUserLine(userGroupShare, _maxSharingPermissions, _isFile, _parentScrollArea);
         connect(s, &ShareUserLine::resizeRequested, this, &ShareUserGroupWidget::slotAdjustScrollWidgetSize);
         connect(s, &ShareUserLine::visualDeletionDone, this, &ShareUserGroupWidget::getShares);
         s->setBackgroundRole(layout->count() % 2 == 0 ? QPalette::Base : QPalette::AlternateBase);
@@ -267,12 +271,19 @@ void ShareUserGroupWidget::slotSharesFetched(const QList<QSharedPointer<Share>> 
 void ShareUserGroupWidget::slotAdjustScrollWidgetSize()
 {
     QScrollArea *scrollArea = _parentScrollArea;
-    int count = scrollArea->findChildren<ShareUserLine *>().count();
-    scrollArea->setVisible(count > 0);
-    if (count > 0 && count <= 3) {
+    const auto shareUserLineChilds = scrollArea->findChildren<ShareUserLine *>();
+
+    // Ask the child widgets to calculate their size
+    for (const auto shareUserLineChild : shareUserLineChilds) {
+        shareUserLineChild->adjustSize();
+    }
+
+    const auto shareUserLineChildsCount = shareUserLineChilds.count();
+    scrollArea->setVisible(shareUserLineChildsCount > 0);
+    if (shareUserLineChildsCount > 0 && shareUserLineChildsCount <= 3) {
         scrollArea->setFixedHeight(scrollArea->widget()->sizeHint().height());
     }
-    scrollArea->setFrameShape(count > 3 ? QFrame::StyledPanel : QFrame::NoFrame);
+    scrollArea->setFrameShape(shareUserLineChildsCount > 3 ? QFrame::StyledPanel : QFrame::NoFrame);
 }
 
 void ShareUserGroupWidget::slotPrivateLinkShare()
@@ -413,7 +424,7 @@ void ShareUserGroupWidget::activateShareeLineEdit()
     _ui->shareeLineEdit->setFocus();
 }
 
-ShareUserLine::ShareUserLine(QSharedPointer<Share> share,
+ShareUserLine::ShareUserLine(QSharedPointer<UserGroupShare> share,
     SharePermissions maxSharingPermissions,
     bool isFile,
     QWidget *parent)
@@ -422,6 +433,7 @@ ShareUserLine::ShareUserLine(QSharedPointer<Share> share,
     , _share(share)
     , _isFile(isFile)
 {
+    Q_ASSERT(_share);
     _ui->setupUi(this);
 
     _ui->sharedWith->setElideMode(Qt::ElideRight);
@@ -434,6 +446,12 @@ ShareUserLine::ShareUserLine(QSharedPointer<Share> share,
                                       maxSharingPermissions & SharePermissionDelete);
     _ui->permissionsEdit->setEnabled(enabled);
     connect(_ui->permissionsEdit, &QAbstractButton::clicked, this, &ShareUserLine::slotEditPermissionsChanged);
+    connect(_ui->noteConfirmButton, &QAbstractButton::clicked, this, &ShareUserLine::onNoteConfirmButtonClicked);
+    connect(_ui->confirmExpirationDate, &QAbstractButton::clicked, this, &ShareUserLine::setExpireDate);
+    connect(_ui->calendar, &QDateTimeEdit::dateChanged, this, &ShareUserLine::setExpireDate);
+
+    connect(_share.data(), &UserGroupShare::noteSet, this, &ShareUserLine::disableProgessIndicatorAnimation);
+    connect(_share.data(), &UserGroupShare::expireDateSet, this, &ShareUserLine::disableProgessIndicatorAnimation);
 
     // create menu with checkable permissions
     auto *menu = new QMenu(this);
@@ -442,6 +460,28 @@ ShareUserLine::ShareUserLine(QSharedPointer<Share> share,
     _permissionReshare->setEnabled(maxSharingPermissions & SharePermissionShare);
     menu->addAction(_permissionReshare);
     connect(_permissionReshare, &QAction::triggered, this, &ShareUserLine::slotPermissionsChanged);
+
+    showNoteOptions(false);
+    _noteLinkAction = new QAction(tr("Note to recipient"));
+    _noteLinkAction->setCheckable(true);
+    menu->addAction(_noteLinkAction);
+    connect(_noteLinkAction, &QAction::triggered, this, &ShareUserLine::toggleNoteOptions);
+    if (!_share->getNote().isEmpty()) {
+        _noteLinkAction->setChecked(true);
+        showNoteOptions(true);
+    }
+
+    showExpireDateOptions(false);
+    _expirationDateLinkAction = new QAction(tr("Set expiration date"));
+    _expirationDateLinkAction->setCheckable(true);
+    menu->addAction(_expirationDateLinkAction);
+    connect(_expirationDateLinkAction, &QAction::triggered, this, &ShareUserLine::toggleExpireDateOptions);
+    const auto expireDate = _share->getExpireDate().isValid() ? share.data()->getExpireDate() : QDate();
+    if (!expireDate.isNull()) {
+        _ui->calendar->setDate(expireDate);
+        _expirationDateLinkAction->setChecked(true);
+        showExpireDateOptions(true);
+    }
 
     menu->addSeparator();
 
@@ -708,6 +748,93 @@ void ShareUserLine::customizeStyle()
 
     QIcon deleteicon = QIcon::fromTheme(QLatin1String("user-trash"),Theme::createColorAwareIcon(QLatin1String(":/client/theme/delete.svg")));
     _deleteShareButton->setIcon(deleteicon);
+
+    _ui->noteConfirmButton->setIcon(Theme::createColorAwareIcon(":/client/theme/confirm.svg"));
+    _ui->confirmExpirationDate->setIcon(Theme::createColorAwareIcon(":/client/theme/confirm.svg"));
+    _ui->progressIndicator->setColor(QGuiApplication::palette().color(QPalette::WindowText));
 }
 
+void ShareUserLine::showNoteOptions(bool show)
+{
+    _ui->noteLabel->setVisible(show);
+    _ui->noteTextEdit->setVisible(show);
+    _ui->noteConfirmButton->setVisible(show);
+
+    if (show) {
+        const auto note = _share->getNote();
+        _ui->noteTextEdit->setText(note);
+        _ui->noteTextEdit->setFocus();
+    }
+
+    emit resizeRequested();
+}
+
+
+void ShareUserLine::toggleNoteOptions(bool enable)
+{
+    showNoteOptions(enable);
+
+    if (!enable) {
+        // Delete note
+        _share->setNote(QString());
+    }
+}
+
+void ShareUserLine::onNoteConfirmButtonClicked()
+{
+    setNote(_ui->noteTextEdit->toPlainText());
+}
+
+void ShareUserLine::setNote(const QString &note)
+{
+    enableProgessIndicatorAnimation(true);
+    _share->setNote(note);
+}
+
+void ShareUserLine::toggleExpireDateOptions(bool enable)
+{
+    showExpireDateOptions(enable);
+
+    if (!enable) {
+        _share->setExpireDate(QDate());
+    }
+}
+
+void ShareUserLine::showExpireDateOptions(bool show)
+{
+    _ui->expirationLabel->setVisible(show);
+    _ui->calendar->setVisible(show);
+    _ui->confirmExpirationDate->setVisible(show);
+
+    if (show) {
+        const QDate date = QDate::currentDate().addDays(1);
+        _ui->calendar->setDate(date);
+        _ui->calendar->setMinimumDate(date);
+        _ui->calendar->setFocus();
+    }
+
+    emit resizeRequested();
+}
+
+void ShareUserLine::setExpireDate()
+{
+    enableProgessIndicatorAnimation(true);
+    _share->setExpireDate(_ui->calendar->date());
+}
+
+void ShareUserLine::enableProgessIndicatorAnimation(bool enable)
+{
+    if (enable) {
+        if (!_ui->progressIndicator->isAnimated()) {
+            _ui->progressIndicator->startAnimation();
+        }
+    } else {
+        _ui->progressIndicator->stopAnimation();
+    }
+}
+
+void ShareUserLine::disableProgessIndicatorAnimation()
+{
+    enableProgessIndicatorAnimation(false);
+}
 }
