@@ -403,18 +403,12 @@ Window {
                             Label {
                                 id: currentUserStatus
                                 visible: UserModel.isUserConnected(UserModel.currentUserId()) &&
-                                         UserModel.currentUserHasUserStatus()
+                                         UserModel.currentUserHasUserStatus() &&
+                                         UserModel.currentUser.statusMessage !== ""
                                 width: Style.currentAccountLabelWidth
-                                text: UserModel.currentUser.statusMessage
-                                elide: Text.ElideRight
-                                color: Style.ncTextColor
-                                font.pixelSize: Style.subLinePixelSize
-                            }
-                            Label {
-                                id: currentUserServer
-                                visible: !currentUserStatus.visible
-                                width: Style.currentAccountLabelWidth
-                                text: UserModel.currentUser.server
+                                text: UserModel.currentUser.statusMessage !== ""
+                                      ? UserModel.currentUser.statusMessage 
+                                      : UserModel.currentUser.server
                                 elide: Text.ElideRight
                                 color: Style.ncTextColor
                                 font.pixelSize: Style.subLinePixelSize
