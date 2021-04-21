@@ -3749,9 +3749,35 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
         <translation>kann bearbeiten</translation>
     </message>
     <message>
+        <location filename="../src/gui/shareuserline.ui" line="122"/>
+        <source>Note:</source>
+        <translation>Notiz:</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/shareuserline.ui" line="148"/>
+        <location filename="../src/gui/shareuserline.ui" line="192"/>
+        <source>...</source>
+        <translation>…</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/shareuserline.ui" line="172"/>
+        <source>Expires:</source>
+        <translation>Läuft ab:</translation>
+    </message>
+    <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="440"/>
         <source>Can reshare</source>
         <translation>kann weiterteilen</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="465"/>
+        <source>Note to recipient</source>
+        <translation>Notiz an Empfänger</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="475"/>
+        <source>Set expiration date</source>
+        <translation>Ablaufdatum setzen</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="450"/>

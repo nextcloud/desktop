@@ -3749,9 +3749,35 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>可編輯</translation>
     </message>
     <message>
+        <location filename="../src/gui/shareuserline.ui" line="122"/>
+        <source>Note:</source>
+        <translation>備註：</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/shareuserline.ui" line="148"/>
+        <location filename="../src/gui/shareuserline.ui" line="192"/>
+        <source>...</source>
+        <translation>...</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/shareuserline.ui" line="172"/>
+        <source>Expires:</source>
+        <translation>到期日：</translation>
+    </message>
+    <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="440"/>
         <source>Can reshare</source>
         <translation>可以二次分享</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="465"/>
+        <source>Note to recipient</source>
+        <translation>給接收者的訊息</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="475"/>
+        <source>Set expiration date</source>
+        <translation>設定屆滿日期</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="450"/>

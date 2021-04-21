@@ -3750,9 +3750,35 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
         <translation>editatu dezake</translation>
     </message>
     <message>
+        <location filename="../src/gui/shareuserline.ui" line="122"/>
+        <source>Note:</source>
+        <translation>Oharra:</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/shareuserline.ui" line="148"/>
+        <location filename="../src/gui/shareuserline.ui" line="192"/>
+        <source>...</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/shareuserline.ui" line="172"/>
+        <source>Expires:</source>
+        <translation>Iraungitzea:</translation>
+    </message>
+    <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="440"/>
         <source>Can reshare</source>
         <translation>Birparteka daiteke</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="465"/>
+        <source>Note to recipient</source>
+        <translation>Oharra hartzailearentzat</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="475"/>
+        <source>Set expiration date</source>
+        <translation>Ezarri iraungitze-data</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="450"/>
