@@ -59,7 +59,7 @@ private slots:
     void slotSyncEverythingClicked();
     void slotSelectiveSyncClicked();
     void slotVirtualFileSyncClicked();
-    void slotQuotaRetrieved(const QVariantMap &result);
+    void slotQuotaRetrieved(const QMap<QString, QString> &result);
 
 private:
     void setRadioChecked(QRadioButton *radio);

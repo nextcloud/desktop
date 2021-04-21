@@ -156,14 +156,14 @@ void ShareDialog::done(int r)
     QDialog::done(r);
 }
 
-void ShareDialog::slotPropfindReceived(const QVariantMap &result)
+void ShareDialog::slotPropfindReceived(const QMap<QString, QString> &result)
 {
-    const QVariant receivedPermissions = result["share-permissions"];
-    if (!receivedPermissions.toString().isEmpty()) {
+    const auto &receivedPermissions = result["share-permissions"];
+    if (!receivedPermissions.isEmpty()) {
         _maxSharingPermissions = static_cast<SharePermissions>(receivedPermissions.toInt());
         qCInfo(lcSharing) << "Received sharing permissions for" << _sharePath << _maxSharingPermissions;
     }
-    auto privateLinkUrl = result["privatelink"].toString();
+    auto privateLinkUrl = result["privatelink"];
     if (!privateLinkUrl.isEmpty()) {
         qCInfo(lcSharing) << "Received private link url for" << _sharePath << privateLinkUrl;
         _privateLinkUrl = privateLinkUrl;

@@ -82,7 +82,6 @@ public:
     explicit LsColJob(AccountPtr account, const QString &path, QObject *parent = nullptr);
     explicit LsColJob(AccountPtr account, const QUrl &url, QObject *parent = nullptr);
     void start() override;
-    QHash<QString, qint64> _sizes;
 
     /**
      * Used to specify which properties shall be retrieved.
@@ -92,8 +91,10 @@ public:
      *  - contain a colon: and thus specify an explicit namespace,
      *    e.g. "ns:with:colons:bar", which is "bar" in the "ns:with:colons" namespace
      */
-    void setProperties(QList<QByteArray> properties);
+    void setProperties(const QList<QByteArray> &properties);
     QList<QByteArray> properties() const;
+
+    const QHash<QString, qint64> &sizes() const;
 
 signals:
     void directoryListingSubfolders(const QStringList &items);
@@ -104,9 +105,13 @@ signals:
 private slots:
     bool finished() override;
 
+protected:
+    void startImpl(const QNetworkRequest &req);
+
 private:
     QList<QByteArray> _properties;
     QUrl _url; // Used instead of path() if the url is specified in the constructor
+    QHash<QString, qint64> _sizes;
 };
 
 /**
@@ -119,33 +124,18 @@ private:
  *
  * @ingroup libsync
  */
-class OWNCLOUDSYNC_EXPORT PropfindJob : public AbstractNetworkJob
+class OWNCLOUDSYNC_EXPORT PropfindJob : public LsColJob
 {
     Q_OBJECT
 public:
-    explicit PropfindJob(AccountPtr account, const QString &path, QObject *parent = nullptr);
+    using LsColJob::LsColJob;
     void start() override;
 
-    /**
-     * Used to specify which properties shall be retrieved.
-     *
-     * The properties can
-     *  - contain no colon: they refer to a property in the DAV: namespace
-     *  - contain a colon: and thus specify an explicit namespace,
-     *    e.g. "ns:with:colons:bar", which is "bar" in the "ns:with:colons" namespace
-     */
-    void setProperties(QList<QByteArray> properties);
-    QList<QByteArray> properties() const;
-
 signals:
-    void result(const QVariantMap &values);
-    void finishedWithError(QNetworkReply *reply = nullptr);
-
-private slots:
-    bool finished() override;
+    void result(const QMap<QString, QString> &values);
 
 private:
-    QList<QByteArray> _properties;
+    bool _done = false;
 };
 
 #ifndef TOKEN_AUTH_ONLY

@@ -352,8 +352,13 @@ FakePropfindReply::FakePropfindReply(FileInfo &remoteRootFileInfo, QNetworkAcces
     };
 
     writeFileResponse(*fileInfo);
-    foreach (const FileInfo &childFileInfo, fileInfo->children)
-        writeFileResponse(childFileInfo);
+
+    const int depth = request.rawHeader(QByteArrayLiteral("Depth")).toInt();
+    if (depth > 0) {
+        for (const FileInfo &childFileInfo : fileInfo->children) {
+            writeFileResponse(childFileInfo);
+        }
+    }
     xml.writeEndElement(); // multistatus
     xml.writeEndDocument();
 

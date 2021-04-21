@@ -282,9 +282,8 @@ bool LsColXMLParser::parse(const QByteArray &xml, QHash<QString, qint64> *sizes,
                 } else if (reader.name() == QLatin1String("propstat")) {
                     insidePropstat = false;
                     if (currentPropsHaveHttp200) {
-                        currentHttp200Properties = QMap<QString, QString>(currentTmpProperties);
+                        currentHttp200Properties = std::move(currentTmpProperties);
                     }
-                    currentTmpProperties.clear();
                     currentPropsHaveHttp200 = false;
                 } else if (reader.name() == QLatin1String("prop")) {
                     insideProp = false;
@@ -310,7 +309,8 @@ bool LsColXMLParser::parse(const QByteArray &xml, QHash<QString, qint64> *sizes,
 /*********************************************************************************************/
 
 LsColJob::LsColJob(AccountPtr account, const QString &path, QObject *parent)
-    : AbstractNetworkJob(account, path, parent)
+    : AbstractNetworkJob(account, QString(), parent)
+    , _url(makeDavUrl(path))
 {
 }
 
@@ -320,7 +320,7 @@ LsColJob::LsColJob(AccountPtr account, const QUrl &url, QObject *parent)
 {
 }
 
-void LsColJob::setProperties(QList<QByteArray> properties)
+void LsColJob::setProperties(const QList<QByteArray> &properties)
 {
     _properties = properties;
 }
@@ -332,42 +332,9 @@ QList<QByteArray> LsColJob::properties() const
 
 void LsColJob::start()
 {
-    QList<QByteArray> properties = _properties;
-
-    if (properties.isEmpty()) {
-        qCWarning(lcLsColJob) << "Propfind with no properties!";
-    }
-    QByteArray propStr;
-    foreach (const QByteArray &prop, properties) {
-        if (prop.contains(':')) {
-            int colIdx = prop.lastIndexOf(":");
-            auto ns = prop.left(colIdx);
-            if (ns == "http://owncloud.org/ns") {
-                propStr += "    <oc:" + prop.mid(colIdx + 1) + " />\n";
-            } else {
-                propStr += "    <" + prop.mid(colIdx + 1) + " xmlns=\"" + ns + "\" />\n";
-            }
-        } else {
-            propStr += "    <d:" + prop + " />\n";
-        }
-    }
-
     QNetworkRequest req;
-    req.setRawHeader("Depth", "1");
-    QByteArray xml("<?xml version=\"1.0\" ?>\n"
-                   "<d:propfind xmlns:d=\"DAV:\" xmlns:oc=\"http://owncloud.org/ns\">\n"
-                   "  <d:prop>\n"
-        + propStr + "  </d:prop>\n"
-                    "</d:propfind>\n");
-    QBuffer *buf = new QBuffer(this);
-    buf->setData(xml);
-    buf->open(QIODevice::ReadOnly);
-    if (_url.isValid()) {
-        sendRequest("PROPFIND", _url, req, buf);
-    } else {
-        sendRequest("PROPFIND", makeDavUrl(path()), req, buf);
-    }
-    AbstractNetworkJob::start();
+    req.setRawHeader(QByteArrayLiteral("Depth"), QByteArrayLiteral("1"));
+    startImpl(req);
 }
 
 // TODO: Instead of doing all in this slot, we should iteratively parse in readyRead(). This
@@ -405,6 +372,43 @@ bool LsColJob::finished()
     }
 
     return true;
+}
+
+void LsColJob::startImpl(const QNetworkRequest &req)
+{
+    if (_properties.isEmpty()) {
+        qCWarning(lcLsColJob) << "Propfind with no properties!";
+    }
+    QByteArray data;
+    {
+        QTextStream stream(&data, QIODevice::WriteOnly);
+        stream.setCodec("UTF-8");
+        stream << QByteArrayLiteral("<?xml version=\"1.0\" encoding=\"utf-8\"?>"
+                                    "<d:propfind xmlns:d=\"DAV:\">"
+                                    "<d:prop>");
+
+        for (const QByteArray &prop : qAsConst(_properties)) {
+            const int colIdx = prop.lastIndexOf(':');
+            if (colIdx >= 0) {
+                stream << QByteArrayLiteral("<") << prop.mid(colIdx + 1) << QByteArrayLiteral(" xmlns=\"") << prop.left(colIdx) << QByteArrayLiteral("\"/>");
+            } else {
+                stream << QByteArrayLiteral("<d:") << prop << QByteArrayLiteral("/>");
+            }
+        }
+        stream << QByteArrayLiteral("</d:prop>M"
+                                    "</d:propfind>\n");
+    }
+
+    QBuffer *buf = new QBuffer(this);
+    buf->setData(data);
+    buf->open(QIODevice::ReadOnly);
+    sendRequest(QByteArrayLiteral("PROPFIND"), _url, req, buf);
+    AbstractNetworkJob::start();
+}
+
+const QHash<QString, qint64> &LsColJob::sizes() const
+{
+    return _sizes;
 }
 
 /*********************************************************************************************/
@@ -555,100 +559,23 @@ bool CheckServerJob::finished()
 
 /*********************************************************************************************/
 
-PropfindJob::PropfindJob(AccountPtr account, const QString &path, QObject *parent)
-    : AbstractNetworkJob(account, path, parent)
-{
-}
 
 void PropfindJob::start()
 {
-    QList<QByteArray> properties = _properties;
-
-    if (properties.isEmpty()) {
-        qCWarning(lcLsColJob) << "Propfind with no properties!";
-    }
+    connect(this, &LsColJob::directoryListingIterated, this, [this](const QString &, const QMap<QString, QString> &values) {
+        OC_ASSERT(!_done);
+        _done = true;
+        Q_EMIT result(values);
+    });
     QNetworkRequest req;
     // Always have a higher priority than the propagator because we use this from the UI
     // and really want this to be done first (no matter what internal scheduling QNAM uses).
     // Also possibly useful for avoiding false timeouts.
     req.setPriority(QNetworkRequest::HighPriority);
-    req.setRawHeader("Depth", "0");
-    QByteArray propStr;
-    foreach (const QByteArray &prop, properties) {
-        if (prop.contains(':')) {
-            int colIdx = prop.lastIndexOf(":");
-            propStr += "    <" + prop.mid(colIdx + 1) + " xmlns=\"" + prop.left(colIdx) + "\" />\n";
-        } else {
-            propStr += "    <d:" + prop + " />\n";
-        }
-    }
-    QByteArray xml = "<?xml version=\"1.0\" ?>\n"
-                     "<d:propfind xmlns:d=\"DAV:\">\n"
-                     "  <d:prop>\n"
-        + propStr + "  </d:prop>\n"
-                    "</d:propfind>\n";
-
-    QBuffer *buf = new QBuffer(this);
-    buf->setData(xml);
-    buf->open(QIODevice::ReadOnly);
-    sendRequest("PROPFIND", makeDavUrl(path()), req, buf);
-    AbstractNetworkJob::start();
+    req.setRawHeader(QByteArrayLiteral("Depth"), QByteArrayLiteral("0"));
+    startImpl(req);
 }
 
-void PropfindJob::setProperties(QList<QByteArray> properties)
-{
-    _properties = properties;
-}
-
-QList<QByteArray> PropfindJob::properties() const
-{
-    return _properties;
-}
-
-bool PropfindJob::finished()
-{
-    qCInfo(lcPropfindJob) << "PROPFIND of" << reply()->request().url() << "FINISHED WITH STATUS"
-                          << replyStatusString();
-
-    int http_result_code = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-
-    if (http_result_code == 207) {
-        // Parse DAV response
-        QXmlStreamReader reader(reply());
-        reader.addExtraNamespaceDeclaration(QXmlStreamNamespaceDeclaration(QStringLiteral("d"), QStringLiteral("DAV:")));
-
-        QVariantMap items;
-        // introduced to nesting is ignored
-        QStack<QString> curElement;
-
-        while (!reader.atEnd()) {
-            QXmlStreamReader::TokenType type = reader.readNext();
-            if (type == QXmlStreamReader::StartElement) {
-                if (!curElement.isEmpty() && curElement.top() == QLatin1String("prop")) {
-                    items.insert(reader.name().toString(), reader.readElementText(QXmlStreamReader::SkipChildElements));
-                } else {
-                    curElement.push(reader.name().toString());
-                }
-            }
-            if (type == QXmlStreamReader::EndElement) {
-                if (curElement.top() == reader.name()) {
-                    curElement.pop();
-                }
-            }
-        }
-        if (reader.hasError()) {
-            qCWarning(lcPropfindJob) << "XML parser error: " << reader.errorString();
-            emit finishedWithError(reply());
-        } else {
-            emit result(items);
-        }
-    } else {
-        qCWarning(lcPropfindJob) << "*not* successful, http result code is" << http_result_code
-                                 << (http_result_code == 302 ? reply()->header(QNetworkRequest::LocationHeader).toString() : QLatin1String(""));
-        emit finishedWithError(reply());
-    }
-    return true;
-}
 
 /*********************************************************************************************/
 
@@ -961,9 +888,9 @@ void fetchPrivateLinkUrl(AccountPtr account, const QString &remotePath, QObject 
         << "http://owncloud.org/ns:fileid" // numeric file id for fallback private link generation
         << "http://owncloud.org/ns:privatelink");
     job->setTimeout(10 * 1000);
-    QObject::connect(job, &PropfindJob::result, target, [=](const QVariantMap &result) {
-        auto privateLinkUrl = result[QStringLiteral("privatelink")].toString();
-        auto numericFileId = result[QStringLiteral("fileid")].toByteArray();
+    QObject::connect(job, &PropfindJob::result, target, [=](const QMap<QString, QString> &result) {
+        auto privateLinkUrl = result[QStringLiteral("privatelink")];
+        auto numericFileId = result[QStringLiteral("fileid")].toUtf8();
         if (!privateLinkUrl.isEmpty()) {
             targetFun(privateLinkUrl);
         }

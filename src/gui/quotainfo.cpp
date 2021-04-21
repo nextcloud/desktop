@@ -106,7 +106,7 @@ void QuotaInfo::slotCheckQuota()
     _job->start();
 }
 
-void QuotaInfo::slotUpdateLastQuota(const QVariantMap &result)
+void QuotaInfo::slotUpdateLastQuota(const QMap<QString, QString> &result)
 {
     // The server can return fractional bytes (#1374)
     // <d:quota-available-bytes>1374532061.2</d:quota-available-bytes>

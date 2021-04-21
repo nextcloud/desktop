@@ -547,8 +547,8 @@ void PropagateUploadFileCommon::finalize()
         auto permCheck = new PropfindJob(propagator()->account(), propagator()->fullRemotePath(_item->_file));
         _jobs.append(permCheck);
         permCheck->setProperties({ "http://owncloud.org/ns:permissions" });
-        connect(permCheck, &PropfindJob::result, this, [this, permCheck](const QVariantMap &map) {
-            _item->_remotePerm = RemotePermissions::fromServerString(map.value(QStringLiteral("permissions")).toString());
+        connect(permCheck, &PropfindJob::result, this, [this, permCheck](const QMap<QString, QString> &map) {
+            _item->_remotePerm = RemotePermissions::fromServerString(map.value(QStringLiteral("permissions")));
             finalize();
             slotJobDestroyed(permCheck);
         });

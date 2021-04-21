@@ -411,7 +411,7 @@ void OwncloudAdvancedSetupPage::slotSyncEverythingClicked()
     _selectiveSyncBlacklist.clear();
 }
 
-void OwncloudAdvancedSetupPage::slotQuotaRetrieved(const QVariantMap &result)
+void OwncloudAdvancedSetupPage::slotQuotaRetrieved(const QMap<QString, QString> &result)
 {
     _ui.lSyncEverythingSizeLabel->setText(tr("(%1)").arg(Utility::octetsToString(result["size"].toDouble())));
 }

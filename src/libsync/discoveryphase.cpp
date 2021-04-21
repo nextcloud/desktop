@@ -115,7 +115,7 @@ void DiscoveryPhase::checkSelectiveSyncNewFolder(const QString &path, RemotePerm
                                                    << "http://owncloud.org/ns:size");
     QObject::connect(propfindJob, &PropfindJob::finishedWithError,
         this, [=] { return callback(false); });
-    QObject::connect(propfindJob, &PropfindJob::result, this, [=](const QVariantMap &values) {
+    QObject::connect(propfindJob, &PropfindJob::result, this, [=](const QMap<QString, QString> &values) {
         auto result = values.value(QStringLiteral("size")).toLongLong();
         if (result >= limit) {
             // we tell the UI there is a new folder

@@ -63,7 +63,7 @@ public Q_SLOTS:
     void slotCheckQuota();
 
 private Q_SLOTS:
-    void slotUpdateLastQuota(const QVariantMap &);
+    void slotUpdateLastQuota(const QMap<QString, QString> &);
     void slotAccountStateChanged();
     void slotRequestFailed();
 

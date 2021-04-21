@@ -177,7 +177,7 @@ void ConnectionValidator::checkAuthentication()
     job->setAuthenticationJob(true); // don't retry
     job->setTimeout(timeoutToUseMsec);
     job->setProperties(QList<QByteArray>() << "getlastmodified");
-    connect(job, &PropfindJob::result, this, &ConnectionValidator::slotAuthSuccess);
+    connect(job, &PropfindJob::finishedWithoutError, this, &ConnectionValidator::slotAuthSuccess);
     connect(job, &PropfindJob::finishedWithError, this, &ConnectionValidator::slotAuthFailed);
     job->start();
 }
