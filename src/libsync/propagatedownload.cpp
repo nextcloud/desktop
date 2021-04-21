@@ -635,12 +635,10 @@ void PropagateDownloadFile::slotGetFinished()
     ASSERT(job);
 
     _item->_httpErrorCode = job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-    _item->_responseTimeStamp = job->responseTimestamp();
     _item->_requestId = job->requestId();
 
     QNetworkReply::NetworkError err = job->reply()->error();
     if (err != QNetworkReply::NoError) {
-
         // If we sent a 'Range' header and get 416 back, we want to retry
         // without the header.
         const bool badRangeHeader = job->resumeStart() > 0 && _item->_httpErrorCode == 416;
@@ -710,6 +708,8 @@ void PropagateDownloadFile::slotGetFinished()
         done(status, errorString);
         return;
     }
+
+    _item->_responseTimeStamp = job->responseTimestamp();
 
     if (!job->etag().isEmpty()) {
         // The etag will be empty if we used a direct download URL.
