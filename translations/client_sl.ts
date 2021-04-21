@@ -3750,18 +3750,18 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
     <message>
         <location filename="../src/gui/shareuserline.ui" line="122"/>
         <source>Note:</source>
-        <translation type="unfinished"/>
+        <translation>Opomba:</translation>
     </message>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="148"/>
         <location filename="../src/gui/shareuserline.ui" line="192"/>
         <source>...</source>
-        <translation type="unfinished"/>
+        <translation>...</translation>
     </message>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="172"/>
         <source>Expires:</source>
-        <translation type="unfinished"/>
+        <translation>Poteče:</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="440"/>
@@ -3771,12 +3771,12 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="465"/>
         <source>Note to recipient</source>
-        <translation type="unfinished"/>
+        <translation>Sporočilo za prejemnika</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="475"/>
         <source>Set expiration date</source>
-        <translation type="unfinished"/>
+        <translation>Nastavi datum preteka</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="450"/>

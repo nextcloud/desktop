@@ -3752,18 +3752,18 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
     <message>
         <location filename="../src/gui/shareuserline.ui" line="122"/>
         <source>Note:</source>
-        <translation type="unfinished"/>
+        <translation>Nota:</translation>
     </message>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="148"/>
         <location filename="../src/gui/shareuserline.ui" line="192"/>
         <source>...</source>
-        <translation type="unfinished"/>
+        <translation>...</translation>
     </message>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="172"/>
         <source>Expires:</source>
-        <translation type="unfinished"/>
+        <translation>Caduca:</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="440"/>
@@ -3773,12 +3773,12 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="465"/>
         <source>Note to recipient</source>
-        <translation type="unfinished"/>
+        <translation>Nota para el destinatario</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="475"/>
         <source>Set expiration date</source>
-        <translation type="unfinished"/>
+        <translation>Fijar fecha de caducidad</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="450"/>

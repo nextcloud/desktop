@@ -3752,7 +3752,7 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
     <message>
         <location filename="../src/gui/shareuserline.ui" line="122"/>
         <source>Note:</source>
-        <translation type="unfinished"/>
+        <translation>Oharra:</translation>
     </message>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="148"/>
@@ -3763,7 +3763,7 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
     <message>
         <location filename="../src/gui/shareuserline.ui" line="172"/>
         <source>Expires:</source>
-        <translation type="unfinished"/>
+        <translation>Iraungitzea:</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="440"/>
@@ -3773,12 +3773,12 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="465"/>
         <source>Note to recipient</source>
-        <translation type="unfinished"/>
+        <translation>Oharra hartzailearentzat</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="475"/>
         <source>Set expiration date</source>
-        <translation type="unfinished"/>
+        <translation>Ezarri iraungitze-data</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="450"/>
