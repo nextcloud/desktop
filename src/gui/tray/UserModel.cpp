@@ -925,22 +925,6 @@ ActivityListModel *UserModel::currentActivityModel()
     return _users[currentUserIndex()]->getActivityModel();
 }
 
-bool UserModel::currentUserHasActivities()
-{
-    if (currentUserIndex() < 0 || currentUserIndex() >= _users.size())
-        return false;
-
-    return _users[currentUserIndex()]->hasActivities();
-}
-
-bool UserModel::currentUserHasLocalFolder()
-{
-    if (currentUserIndex() < 0 || currentUserIndex() >= _users.size())
-        return false;
-
-    return _users[currentUserIndex()]->getFolder() != nullptr;
-}
-
 void UserModel::fetchCurrentActivityModel()
 {
     if (currentUserId() < 0 || currentUserId() >= _users.size())

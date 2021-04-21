@@ -143,8 +143,6 @@ public:
     Q_INVOKABLE void openCurrentAccountServer();
     Q_INVOKABLE int numUsers();
     Q_INVOKABLE QString currentUserServer();
-    Q_INVOKABLE bool currentUserHasActivities();
-    Q_INVOKABLE bool currentUserHasLocalFolder();
     int currentUserId() const;
     Q_INVOKABLE bool isUserConnected(const int &id);
     Q_INVOKABLE QUrl statusIcon(int id);
