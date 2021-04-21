@@ -86,7 +86,9 @@ void UserStatus::slotFetchUserStatusFinished(const QJsonDocument &json, int stat
     const QJsonObject defaultValues {
         {"icon", ""},
         {"message", ""},
-        {"status", "online"}
+        {"status", "online"},
+        {"messageIsPredefined", "false"},
+        {"statusIsUserDefined", "false"}
     };
     
     if (statusCode != 200) {
@@ -95,13 +97,16 @@ void UserStatus::slotFetchUserStatusFinished(const QJsonDocument &json, int stat
     }
     
     const auto retrievedData = json.object().value("ocs").toObject().value("data").toObject(defaultValues);
-    const auto emoji = retrievedData.value("icon").toString().trimmed();
-    const auto message = retrievedData.value("message").toString().trimmed();
+    const auto messageIsPredefined = retrievedData.value("messageIsPredefined").toBool();
+    const auto statusIsUserDefined = retrievedData.value("statusIsUserDefined").toBool();
     
+    const auto emoji = retrievedData.value("icon").toString().trimmed();
     _status = stringToEnum(retrievedData.value("status").toString());
-    const auto visibleStatusText = message.isEmpty() ? enumToString(_status) : message;
-
-    _message = QString("%1 %2").arg(emoji, visibleStatusText);
+    _message = retrievedData.value("message").toString().trimmed();
+    if (messageIsPredefined && statusIsUserDefined) {
+        _message = QString("%1 %2").arg(emoji, _message);
+    } 
+    
     emit fetchUserStatusFinished();
 }
 

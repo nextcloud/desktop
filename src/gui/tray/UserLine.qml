@@ -114,7 +114,8 @@ MenuItem {
                         Label {
                             id: userStatusMessage
                             visible: model.isConnected 
-                                     && model.serverUserStatus
+                                     && model.serverUserStatus 
+                                     && statusMessage != ""
                             width: 128
                             text: statusMessage
                             elide: Text.ElideRight
