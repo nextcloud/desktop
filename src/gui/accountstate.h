@@ -202,6 +202,7 @@ signals:
     void isConnectedChanged();
     void hasFetchedNavigationApps();
     void statusChanged();
+    void desktopNotificationsAllowedChanged();
 
 protected Q_SLOTS:
     void slotConnectionValidatorResult(ConnectionValidator::Status status, const QStringList &errors);
