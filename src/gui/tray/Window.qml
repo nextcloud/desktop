@@ -381,7 +381,7 @@ Window {
                                 sourceSize.height: Style.accountAvatarStateIndicatorSize
 
                                 Accessible.role: Accessible.Indicator
-                                Accessible.name: UserModel.isUserStatusOnline(UserModel.currentUserId()) ? qsTr("Current user status is online") : qsTr("Current user status is do not disturb")
+                                Accessible.name: UserModel.isDesktopNotificationsAllowed ? qsTr("Current user status is online") : qsTr("Current user status is do not disturb")
                             }
                         }
 

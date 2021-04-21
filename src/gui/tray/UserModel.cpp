@@ -56,6 +56,7 @@ User::User(AccountStatePtr &account, const bool &isCurrent, QObject *parent)
 
     connect(_account->account().data(), &Account::accountChangedAvatar, this, &User::avatarChanged);
     connect(_account.data(), &AccountState::statusChanged, this, &User::statusChanged);
+    connect(_account.data(), &AccountState::desktopNotificationsAllowedChanged, this, &User::desktopNotificationsAllowedChanged);
     
     connect(_activityModel, &ActivityListModel::sendNotificationRequest, this, &User::slotSendNotificationRequest);
 }
@@ -745,6 +746,11 @@ void UserModel::addUser(AccountStatePtr &user, const bool &isCurrent)
             emit dataChanged(index(row, 0), index(row, 0), {UserModel::StatusIconRole, 
                                                             UserModel::StatusMessageRole});
         });
+        
+        connect(u, &User::desktopNotificationsAllowedChanged, this, [this, row] {
+            emit dataChanged(index(row, 0), index(row, 0), {UserModel::DesktopNotificationsAllowedRole});
+        });
+        
 
         _users << u;
         if (isCurrent) {
@@ -884,12 +890,14 @@ QVariant UserModel::data(const QModelIndex &index, int role) const
         return _users[index.row()]->name();
     } else if (role == ServerRole) {
         return _users[index.row()]->server();
-    } else if (role == ServerUserStatus) {
+    } else if (role == ServerUserStatusRole) {
         return _users[index.row()]->serverHasUserStatus();
     } else if (role == StatusIconRole) {
         return _users[index.row()]->statusIcon();
     } else if (role == StatusMessageRole) {
         return _users[index.row()]->statusMessage();
+    } else if (role == DesktopNotificationsAllowedRole) {
+        return _users[index.row()]->isDesktopNotificationsAllowed();
     } else if (role == AvatarRole) {
         return _users[index.row()]->avatarUrl();
     } else if (role == IsCurrentUserRole) {
@@ -907,12 +915,13 @@ QHash<int, QByteArray> UserModel::roleNames() const
     QHash<int, QByteArray> roles;
     roles[NameRole] = "name";
     roles[ServerRole] = "server";
+    roles[ServerUserStatusRole] = "serverUserStatus";
     roles[StatusIconRole] = "statusIcon";
     roles[StatusMessageRole] = "statusMessage";
+    roles[DesktopNotificationsAllowedRole] = "isDesktopNotificationsAllowed";
     roles[AvatarRole] = "avatar";
     roles[IsCurrentUserRole] = "isCurrentUser";
     roles[IsConnectedRole] = "isConnected";
-    roles[ServerUserStatus] = "serverUserStatus";
     roles[IdRole] = "id";
     return roles;
 }

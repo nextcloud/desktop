@@ -93,7 +93,7 @@ MenuItem {
                             sourceSize.height: Style.accountAvatarStateIndicatorSize
 
                             Accessible.role: Accessible.Indicator
-                            Accessible.name: model.isStatusOnline ? qsTr("Current user status is online") : qsTr("Current user status is do not disturb")
+                            Accessible.name: model.isDesktopNotificationsAllowed ? qsTr("Current user status is online") : qsTr("Current user status is do not disturb")
                         }
                     }
 

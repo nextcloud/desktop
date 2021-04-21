@@ -230,6 +230,7 @@ bool AccountState::isDesktopNotificationsAllowed() const
 void AccountState::setDesktopNotificationsAllowed(bool isAllowed)
 {
     _isDesktopNotificationsAllowed = isAllowed;
+    emit desktopNotificationsAllowedChanged();
 }
 
 void AccountState::checkConnectivity()

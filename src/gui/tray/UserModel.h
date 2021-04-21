@@ -21,9 +21,10 @@ class User : public QObject
     Q_OBJECT
     Q_PROPERTY(QString name READ name NOTIFY nameChanged)
     Q_PROPERTY(QString server READ server CONSTANT)
+    Q_PROPERTY(bool serverHasUserStatus READ serverHasUserStatus)
     Q_PROPERTY(QUrl statusIcon READ statusIcon NOTIFY statusChanged)
     Q_PROPERTY(QString statusMessage READ statusMessage NOTIFY statusChanged)
-    Q_PROPERTY(bool serverHasUserStatus READ serverHasUserStatus)
+    Q_PROPERTY(QString isDesktopNotificationsAllowed READ isDesktopNotificationsAllowed NOTIFY desktopNotificationsAllowedChanged)
     Q_PROPERTY(bool hasLocalFolder READ hasLocalFolder NOTIFY hasLocalFolderChanged)
     Q_PROPERTY(bool serverHasTalk READ serverHasTalk NOTIFY serverHasTalkChanged)
     Q_PROPERTY(QString avatar READ avatarUrl NOTIFY avatarChanged)
@@ -65,6 +66,7 @@ signals:
     void avatarChanged();
     void accountStateChanged(int state);
     void statusChanged();
+    void desktopNotificationsAllowedChanged();
 
 public slots:
     void slotItemCompleted(const QString &folder, const SyncFileItemPtr &item);
@@ -156,12 +158,13 @@ public:
     enum UserRoles {
         NameRole = Qt::UserRole + 1,
         ServerRole,
+        ServerUserStatusRole,
         StatusIconRole,
         StatusMessageRole,
+        DesktopNotificationsAllowedRole,
         AvatarRole,
         IsCurrentUserRole,
         IsConnectedRole,
-        ServerUserStatus,
         IdRole
     };
 
