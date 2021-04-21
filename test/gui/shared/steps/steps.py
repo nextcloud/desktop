@@ -511,3 +511,23 @@ def step(context, permissions, resource, password):
     clickButton(waitForObject(names.oCC_ShareLinkWidget_createShareButton_QPushButton))
     waitFor(lambda: (findObject(names.linkShares_0_0_QModelIndex).displayText == "Public link"))
 
+
+@When('the user creates a new public link for folder "|any|" with "|any|" using the client-UI')
+def step(context, resource, role):
+    resource = sanitizePath(substituteInLineCodes(context, resource))
+    radioObjectName = ''
+    
+
+    if role == 'Viewer':
+        radioObjectName = names.oCC_ShareLinkWidget_radio_readOnly_QRadioButton
+    elif role == 'Editor':
+        radioObjectName = names.oCC_ShareLinkWidget_radio_readWrite_QRadioButton
+    elif role == 'Contributor':
+        radioObjectName = names.oCC_ShareLinkWidget_radio_uploadOnly_QRadioButton
+    else:
+        raise Exception("No such role found for resource")
+           
+    openPublicLinkDialog(context, resource)
+    clickButton(waitForObject(radioObjectName))
+    clickButton(waitForObject(names.oCC_ShareLinkWidget_createShareButton_QPushButton))       
+
