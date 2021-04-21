@@ -123,7 +123,6 @@ MenuItem {
                         }
                         Label {
                             id: accountServer
-                            visible: !userStatusMessage.visible
                             width: 128
                             text: server
                             elide: Text.ElideRight
