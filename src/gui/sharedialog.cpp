@@ -130,11 +130,8 @@ ShareDialog::ShareDialog(QPointer<AccountState> accountState,
     // Server versions >= 9.1 support the "share-permissions" property
     // older versions will just return share-permissions: ""
     auto job = new PropfindJob(accountState->account(), _sharePath);
-    job->setProperties(
-        QList<QByteArray>()
-        << "http://open-collaboration-services.org/ns:share-permissions"
-        << "http://owncloud.org/ns:fileid" // numeric file id for fallback private link generation
-        << "http://owncloud.org/ns:privatelink");
+    job->setProperties({ QByteArrayLiteral("http://open-collaboration-services.org/ns:share-permissions"),
+        QByteArrayLiteral("http://owncloud.org/ns:privatelink") });
     job->setTimeout(10 * 1000);
     connect(job, &PropfindJob::result, this, &ShareDialog::slotPropfindReceived);
     connect(job, &PropfindJob::finishedWithError, this, &ShareDialog::slotPropfindError);
