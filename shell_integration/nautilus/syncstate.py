@@ -262,7 +262,15 @@ class MenuExtension_ownCloud(GObject.GObject, Nautilus.MenuProvider):
                     elif line.startswith('MENU_ITEM:'):
                         args = line.split(':')
                         if len(args) >= 4:
-                            menu_items.append([args[1], 'd' not in args[2], ':'.join(args[3:])])
+                            action = args[1]
+                            label = ':'.join(args[3:])
+                            enabled = 'd' not in args[2]
+
+                            item = Nautilus.MenuItem(name=action, label=label, sensitive=enabled)
+                            item.connect("activate", self.context_menu_action, action, filesstring)
+
+                            menu_items.append(item)
+
                             line_handled = True
 
                     if line_handled:
@@ -275,19 +283,19 @@ class MenuExtension_ownCloud(GObject.GObject, Nautilus.MenuProvider):
         if not done:
             return self.legacy_menu_items(files)
 
-        if len(menu_items) == 0:
+        # if there are no items for the submenu, we don't have to create it at all
+        if not menu_items:
             return []
 
         # Set up the 'ownCloud...' submenu
         item_owncloud = Nautilus.MenuItem(
             name='IntegrationMenu', label=self.strings.get('CONTEXT_MENU_TITLE', appname))
-        menu = Nautilus.Menu()
-        item_owncloud.set_submenu(menu)
 
-        for action, enabled, label in menu_items:
-            item = Nautilus.MenuItem(name=action, label=label, sensitive=enabled)
-            item.connect("activate", self.context_menu_action, action, filesstring)
-            menu.append_item(item)
+        submenu = Nautilus.Menu()
+        item_owncloud.set_submenu(submenu)
+
+        for item in menu_items:
+            submenu.append_item(item)
 
         return [item_owncloud]
 
