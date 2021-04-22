@@ -241,23 +241,35 @@ class MenuExtension_ownCloud(GObject.GObject, Nautilus.MenuProvider):
         menu_items = []
         while not done:
             dt = time.time() - start
+
             if dt >= timeout:
                 break
+
             if not socketConnect.read_socket_data_with_timeout(timeout - dt):
                 break
+
             for line in socketConnect.get_available_responses():
-                # Process lines we don't care about
-                if done or not (line.startswith('GET_MENU_ITEMS:') or line.startswith('MENU_ITEM:')):
-                    socketConnect.handle_server_response(line)
-                    continue
-                if line == 'GET_MENU_ITEMS:END':
-                    done = True
-                    # don't break - we'd discard other responses
-                if line.startswith('MENU_ITEM:'):
-                    args = line.split(':')
-                    if len(args) < 4:
+                # if we're done with the menu items, we don't have to try to parse lines any more
+                if not done:
+                    # using a bool to keep track of this eliminates duplicate code when parsing succeeded
+                    line_handled = False
+
+                    if line == 'GET_MENU_ITEMS:END':
+                        done = True
+                        line_handled = True
+
+                    elif line.startswith('MENU_ITEM:'):
+                        args = line.split(':')
+                        if len(args) >= 4:
+                            menu_items.append([args[1], 'd' not in args[2], ':'.join(args[3:])])
+                            line_handled = True
+
+                    if line_handled:
+                        # we don't have to have call the handler any more below
                         continue
-                    menu_items.append([args[1], 'd' not in args[2], ':'.join(args[3:])])
+
+                # original comment: Process lines we don't care about
+                socketConnect.handle_server_response(line)
 
         if not done:
             return self.legacy_menu_items(files)
