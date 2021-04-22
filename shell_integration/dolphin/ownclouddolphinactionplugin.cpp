@@ -84,7 +84,7 @@ public:
                 menu->addSeparator();
             }
         });
-        QTimer::singleShot(100, &loop, SLOT(quit())); // add a timeout to be sure we don't freeze dolphin
+        QTimer::singleShot(500, &loop, SLOT(quit())); // add a timeout to be sure we don't freeze dolphin
         helper->sendCommand(QByteArray("GET_MENU_ITEMS:" + files + "\n"));
         loop.exec(QEventLoop::ExcludeUserInputEvents);
         disconnect(con);
