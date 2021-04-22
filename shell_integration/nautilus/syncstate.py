@@ -237,7 +237,8 @@ class MenuExtension_ownCloud(GObject.GObject, Nautilus.MenuProvider):
 
         done = False
         start = time.time()
-        timeout = 0.1 # 100ms
+        # timeout is specified in seconds
+        timeout = 0.5
         menu_items = []
         while not done:
             dt = time.time() - start
