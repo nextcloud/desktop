@@ -80,6 +80,8 @@ public:
                 connect(action, &QAction::triggered, [helper, call, files] {
                     helper->sendCommand(QByteArray(call + ":" + files + "\n"));
                 });
+            } else if (cmd.startsWith("MENU_SEPARATOR:")) {
+                menu->addSeparator();
             }
         });
         QTimer::singleShot(100, &loop, SLOT(quit())); // add a timeout to be sure we don't freeze dolphin
