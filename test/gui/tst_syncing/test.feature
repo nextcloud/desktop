@@ -26,15 +26,15 @@ Feature: Syncing files
 
     Scenario: Syncing a file from the server and creating a conflict
         Given user "Alice" has been created on the server with default attributes
+        And user "Alice" has uploaded file on the server with content "server content" to "/conflict.txt"
         And user "Alice" has set up a client with default settings and polling interval "5000"
-        And user "Alice" has uploaded file on the server with content "test content" to "uploaded-lorem.txt"
         And the user has waited for file "conflict.txt" to be synced
         And the user has paused the file sync
         And the user has changed the content of local file "conflict.txt" to:
             """
             client content
             """
-        And user "Alice" has uploaded file on the server with content "server content" to "uploaded-lorem.txt"
+        And user "Alice" has uploaded file on the server with content "changed server content" to "/conflict.txt"
         When the user resumes the file sync on the client
         And the user clicks on the activity tab
         And the user selects the unsynced files tab with 1 unsynced files
@@ -42,7 +42,7 @@ Feature: Syncing files
         Then the table of conflict warnings should include file "conflict.txt"
         And the file "conflict.txt" should exist on the file system with the following content
             """
-            server content
+            changed server content
             """
         And a conflict file for "conflict.txt" should exist on the file system with the following content
             """

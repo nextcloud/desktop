@@ -323,7 +323,7 @@ def step(context, filePath):
 
 @Given('the user has paused the file sync')
 def step(context):
-    mouseClick(waitForObjectItem(names.stack_folderList_QTreeView, "_1"), 718, 39, Qt.NoModifier, Qt.LeftButton)
+    openContextMenu(waitForObjectItem(names.stack_folderList_QTreeView, "_1"), 0, 0, Qt.NoModifier)
     activateItem(waitForObjectItem(names.settings_QMenu, "Pause sync"))
 
 
@@ -337,7 +337,7 @@ def step(context, filename):
 
 @When('the user resumes the file sync on the client')
 def step(context):
-    mouseClick(waitForObjectItem(names.stack_folderList_QTreeView, "_1"), 719, 38, Qt.NoModifier, Qt.LeftButton)
+    openContextMenu(waitForObjectItem(names.stack_folderList_QTreeView, "_1"), 0, 0, Qt.NoModifier)
     activateItem(waitForObjectItem(names.settings_QMenu, "Resume sync"))
 
 
