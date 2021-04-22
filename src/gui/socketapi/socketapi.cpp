@@ -1103,6 +1103,7 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
 
         // TODO: Should be a submenu, should use icons
         auto makePinContextMenu = [&](bool makeAvailableLocally, bool freeSpace) {
+            listener->sendMessage(QLatin1String("MENU_SEPARATOR:d::"));
             listener->sendMessage(QLatin1String("MENU_ITEM:CURRENT_PIN:d:")
                 + Utility::vfsCurrentAvailabilityText(*combined));
             listener->sendMessage(QLatin1String("MENU_ITEM:MAKE_AVAILABLE_LOCALLY:")
