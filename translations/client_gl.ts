@@ -3532,37 +3532,47 @@ Este é un modo novo e experimental. Se decide usalo, informe de calquera proble
 <context>
     <name>OCC::SocketUploadJob</name>
     <message>
-        <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="55"/>
+        <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="66"/>
+        <source>Failed to rerieve tags</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="98"/>
         <source>Backup of %1 started</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="58"/>
+        <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="101"/>
         <source>Failed to find %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="63"/>
+        <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="106"/>
         <source>Local path must be a an absolute path</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="68"/>
+        <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="111"/>
         <source>Failed to create temporary database</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="90"/>
+        <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="136"/>
         <source>Backup of %1 succeeded</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="123"/>
+        <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="139"/>
+        <source>Failed to set success tag</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="179"/>
         <source>Backup of %1 failed with: %2</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="139"/>
+        <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="195"/>
         <source>%1 backup</source>
         <translation type="unfinished"/>
     </message>
