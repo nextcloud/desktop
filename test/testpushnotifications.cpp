@@ -21,16 +21,41 @@
 #include "pushnotifications.h"
 #include "pushnotificationstestutils.h"
 
-bool verifyCalledOnceWithAccount(QSignalSpy &spy, OCC::AccountPtr account)
-{
-    if (spy.count() != 1) {
-        return false;
+#define RETURN_FALSE_ON_FAIL(expr) \
+    if (!(expr)) {                 \
+        return false;              \
     }
 
+bool verifyCalledOnceWithAccount(QSignalSpy &spy, OCC::AccountPtr account)
+{
+    RETURN_FALSE_ON_FAIL(spy.count() == 1);
     auto accountFromSpy = spy.at(0).at(0).value<OCC::Account *>();
-    if (accountFromSpy != account.data()) {
-        return false;
+    RETURN_FALSE_ON_FAIL(accountFromSpy == account.data());
+
+    return true;
+}
+
+bool failThreeAuthenticationAttempts(FakeWebSocketServer &fakeServer, OCC::AccountPtr account)
+{
+    RETURN_FALSE_ON_FAIL(account);
+    RETURN_FALSE_ON_FAIL(account->pushNotifications());
+
+    account->pushNotifications()->setReconnectTimerInterval(0);
+
+    QSignalSpy authenticationFailedSpy(account->pushNotifications(), &OCC::PushNotifications::authenticationFailed);
+
+    // Let three authentication attempts fail
+    for (uint8_t i = 0; i < 3; ++i) {
+        RETURN_FALSE_ON_FAIL(fakeServer.waitForTextMessages());
+        RETURN_FALSE_ON_FAIL(fakeServer.textMessagesCount() == 2);
+        auto socket = fakeServer.socketForTextMessage(0);
+        fakeServer.clearTextMessages();
+        socket->sendTextMessage("err: Invalid credentials");
     }
+
+    // Now the authenticationFailed Signal should be emitted
+    RETURN_FALSE_ON_FAIL(authenticationFailedSpy.wait());
+    RETURN_FALSE_ON_FAIL(authenticationFailedSpy.count() == 1);
 
     return true;
 }
@@ -138,6 +163,7 @@ private slots:
         FakeWebSocketServer fakeServer;
         auto account = FakeWebSocketServer::createAccount();
         QSignalSpy connectionLostSpy(account->pushNotifications(), &OCC::PushNotifications::connectionLost);
+        QSignalSpy pushNotificationsDisabledSpy(account.data(), &OCC::Account::pushNotificationsDisabled);
         QVERIFY(connectionLostSpy.isValid());
 
         // Wait for authentication and then sent a network error
@@ -147,38 +173,26 @@ private slots:
         socket->abort();
 
         QVERIFY(connectionLostSpy.wait());
-        // Account handled connectionLost signal and deleted PushNotifications
-        QCOMPARE(account->pushNotifications(), nullptr);
+        // Account handled connectionLost signal and disabled push notifications
+        QCOMPARE(pushNotificationsDisabledSpy.count(), 1);
     }
 
-    void testSetup_maxConnectionAttemptsReached_deletePushNotifications()
+    void testSetup_maxConnectionAttemptsReached_disablePushNotifications()
     {
         FakeWebSocketServer fakeServer;
         auto account = FakeWebSocketServer::createAccount();
-        account->pushNotifications()->setReconnectTimerInterval(0);
-        QSignalSpy authenticationFailedSpy(account->pushNotifications(), &OCC::PushNotifications::authenticationFailed);
-        QVERIFY(authenticationFailedSpy.isValid());
+        QSignalSpy pushNotificationsDisabledSpy(account.data(), &OCC::Account::pushNotificationsDisabled);
 
-        // Let three authentication attempts fail
-        for (uint8_t i = 0; i < 3; ++i) {
-            QVERIFY(fakeServer.waitForTextMessages());
-            QCOMPARE(fakeServer.textMessagesCount(), 2);
-            auto socket = fakeServer.socketForTextMessage(0);
-            fakeServer.clearTextMessages();
-            socket->sendTextMessage("err: Invalid credentials");
-        }
-
-        // Now the authenticationFailed Signal should be emitted
-        QVERIFY(authenticationFailedSpy.wait());
-        QCOMPARE(authenticationFailedSpy.count(), 1);
-        // Account deleted the push notifications
-        QCOMPARE(account->pushNotifications(), nullptr);
+        QVERIFY(failThreeAuthenticationAttempts(fakeServer, account));
+        // Account disabled the push notifications
+        QCOMPARE(pushNotificationsDisabledSpy.count(), 1);
     }
 
     void testOnWebSocketSslError_sslError_deletePushNotifications()
     {
         FakeWebSocketServer fakeServer;
         auto account = FakeWebSocketServer::createAccount();
+        QSignalSpy pushNotificationsDisabledSpy(account.data(), &OCC::Account::pushNotificationsDisabled);
 
         QVERIFY(fakeServer.waitForTextMessages());
         // FIXME: This a little bit ugly but I had no better idea how to trigger a error on the websocket client.
@@ -187,8 +201,8 @@ private slots:
         QVERIFY(pushNotificationsWebSocketChildren.size() == 1);
         emit pushNotificationsWebSocketChildren[0]->sslErrors(QList<QSslError>());
 
-        // Account handled connectionLost signal and deleted PushNotifications
-        QCOMPARE(account->pushNotifications(), nullptr);
+        // Account handled connectionLost signal and the authenticationFailed Signal should be emitted
+        QCOMPARE(pushNotificationsDisabledSpy.count(), 1);
     }
 
     void testAccount_web_socket_connectionLost_emitNotificationsDisabled()
@@ -222,25 +236,14 @@ private slots:
     {
         FakeWebSocketServer fakeServer;
         auto account = FakeWebSocketServer::createAccount();
-        account->pushNotifications()->setReconnectTimerInterval(0);
-        QSignalSpy authenticationFailedSpy(account->pushNotifications(), &OCC::PushNotifications::authenticationFailed);
-        QVERIFY(authenticationFailedSpy.isValid());
+        account->setPushNotificationsReconnectInterval(0);
         QSignalSpy pushNotificationsDisabledSpy(account.data(), &OCC::Account::pushNotificationsDisabled);
         QVERIFY(pushNotificationsDisabledSpy.isValid());
 
-        // Let three authentication attempts fail
-        for (uint8_t i = 0; i < 3; ++i) {
-            QVERIFY(fakeServer.waitForTextMessages());
-            QCOMPARE(fakeServer.textMessagesCount(), 2);
-            auto socket = fakeServer.socketForTextMessage(0);
-            fakeServer.clearTextMessages();
-            socket->sendTextMessage("err: Invalid credentials");
-        }
+        QVERIFY(failThreeAuthenticationAttempts(fakeServer, account));
 
-        // Now the authenticationFailed and pushNotificationsDisabled Signals should be emitted
-        QVERIFY(pushNotificationsDisabledSpy.wait());
+        // Now the pushNotificationsDisabled Signal should be emitted
         QCOMPARE(pushNotificationsDisabledSpy.count(), 1);
-        QCOMPARE(authenticationFailedSpy.count(), 1);
         auto accountSent = pushNotificationsDisabledSpy.at(0).at(0).value<OCC::Account *>();
         QCOMPARE(accountSent, account.data());
     }
