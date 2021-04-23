@@ -3756,8 +3756,8 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
     <message>
         <location filename="../src/gui/shareuserline.ui" line="148"/>
         <location filename="../src/gui/shareuserline.ui" line="192"/>
-        <source>...</source>
-        <translation>…</translation>
+        <source>…</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="172"/>

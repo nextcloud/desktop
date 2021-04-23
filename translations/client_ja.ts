@@ -2690,7 +2690,7 @@ for additional privileges during the process.</source>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="86"/>
         <source>The link to your %1 web interface when you open it in the browser.</source>
         <comment>%1 will be replaced with the application name</comment>
-        <translation>％1 のWeb画面をブラウザで開くときのURL</translation>
+        <translation>%1 のWeb画面をブラウザで開くときのURL</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="80"/>
@@ -3753,7 +3753,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/shareuserline.ui" line="148"/>
         <location filename="../src/gui/shareuserline.ui" line="192"/>
-        <source>...</source>
+        <source>…</source>
         <translation type="unfinished"/>
     </message>
     <message>
