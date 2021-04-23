@@ -71,6 +71,10 @@ def step(context, displayname, host):
             ), displayname + "\n" + host
         )
 
+def startClient():
+    startApplication("owncloud -s --logfile - --language en_US.utf8 --confdir " + confdir)
+    snooze(1)
+
 def setUpClient(context, username, password, pollingInterval):
     userSetting = '''
     [Accounts]
@@ -102,8 +106,8 @@ def setUpClient(context, username, password, pollingInterval):
     configFile.write(userSetting)
     configFile.close()
 
-    startApplication("owncloud -s --logfile - --confdir " + confdir)
-    snooze(1)
+    startClient()
+
     try:
         waitForObject(names.enter_Password_Field, 10000)
         type(waitForObject(names.enter_Password_Field), password)
@@ -133,8 +137,7 @@ def step(context, username, password):
 
 @Given('the user has started the client')
 def step(context):
-    startApplication("owncloud -s --logfile - --confdir " + confdir)
-    snooze(1)
+    startClient()
 
 @When('the user adds an account with')
 def step(context):
