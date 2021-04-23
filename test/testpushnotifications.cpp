@@ -188,7 +188,7 @@ private slots:
         QCOMPARE(pushNotificationsDisabledSpy.count(), 1);
     }
 
-    void testOnWebSocketSslError_sslError_deletePushNotifications()
+    void testOnWebSocketSslError_sslError_disablePushNotifications()
     {
         FakeWebSocketServer fakeServer;
         auto account = FakeWebSocketServer::createAccount();
@@ -271,6 +271,20 @@ private slots:
                 QVERIFY(verifyCalledOnceWithAccount(*notificationsChangedSpy, account));
                 QVERIFY(verifyCalledOnceWithAccount(*activitiesChangedSpy, account));
             }));
+    }
+
+    void testTryReconnect_capabilitesReportPushNotificationsAvailable_reconnectForEver()
+    {
+        FakeWebSocketServer fakeServer;
+        auto account = FakeWebSocketServer::createAccount();
+        account->setPushNotificationsReconnectInterval(0);
+
+        // Let if fail a few times
+        QVERIFY(failThreeAuthenticationAttempts(fakeServer, account));
+        QVERIFY(failThreeAuthenticationAttempts(fakeServer, account));
+
+        // Push notifications should try to reconnect
+        QVERIFY(fakeServer.authenticateAccount(account));
     }
 };
 

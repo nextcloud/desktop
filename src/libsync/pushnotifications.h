@@ -129,7 +129,7 @@ private:
     void emitActivitiesChanged();
 
     Account *_account = nullptr;
-    QWebSocket *_webSocket = nullptr;
+    QWebSocket *_webSocket;
     uint8_t _failedAuthenticationAttemptsCount = 0;
     QTimer *_reconnectTimer = nullptr;
     uint32_t _reconnectTimerInterval = 20 * 1000;

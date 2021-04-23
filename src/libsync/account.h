@@ -253,6 +253,7 @@ public:
 
     void trySetupPushNotifications();
     PushNotifications *pushNotifications() const;
+    void setPushNotificationsReconnectInterval(int interval);
 
 public slots:
     /// Used when forgetting credentials
@@ -299,6 +300,7 @@ private:
     QString _id;
     QString _davUser;
     QString _displayName;
+    QTimer _pushNotificationsReconnectTimer;
 #ifndef TOKEN_AUTH_ONLY
     QImage _avatarImg;
 #endif
