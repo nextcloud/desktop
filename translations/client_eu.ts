@@ -3757,7 +3757,7 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
     <message>
         <location filename="../src/gui/shareuserline.ui" line="148"/>
         <location filename="../src/gui/shareuserline.ui" line="192"/>
-        <source>...</source>
+        <source>…</source>
         <translation type="unfinished"/>
     </message>
     <message>
