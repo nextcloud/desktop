@@ -2,7 +2,7 @@
 Categories=Utility;X-SuSE-SyncUtility;
 Type=Application
 Exec=@APPLICATION_EXECUTABLE@
-Name=@APPLICATION_NAME@ desktop sync client 
+Name=@APPLICATION_NAME@ Desktop
 Comment=@APPLICATION_NAME@ desktop synchronization client
 GenericName=Folder Sync
 Icon=@APPLICATION_ICON_NAME@
@@ -22,6 +22,5 @@ Icon=@APPLICATION_EXECUTABLE@
 
 # Translations
 Icon[nb_NO]=@APPLICATION_ICON_NAME@
-Name[nb_NO]=@APPLICATION_NAME@ klient for synkroinisering
 Comment[nb_NO]=@APPLICATION_NAME@ klient for synkroinisering
 GenericName[nb_NO]=Mappe synkroinisering
