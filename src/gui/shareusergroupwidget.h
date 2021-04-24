@@ -162,9 +162,9 @@ private slots:
 
     void setPasswordConfirmed();
 
-    void on_lineEdit_password_returnPressed();
+    void slotLineEditPasswordReturnPressed();
 
-    void on_confirmPassword_clicked();
+    void slotConfirmPasswordClicked();
 
 private:
     void displayPermissions();

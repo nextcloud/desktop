@@ -508,6 +508,9 @@ ShareUserLine::ShareUserLine(AccountPtr account,
     connect(_share.data(), &UserGroupShare::noteSetError, this, &ShareUserLine::disableProgessIndicatorAnimation);
     connect(_share.data(), &UserGroupShare::expireDateSet, this, &ShareUserLine::disableProgessIndicatorAnimation);
 
+    connect(_ui->confirmPassword, &QToolButton::clicked, this, &ShareUserLine::slotConfirmPasswordClicked);
+    connect(_ui->lineEdit_password, &QLineEdit::returnPressed, this, &ShareUserLine::slotLineEditPasswordReturnPressed);
+
     // create menu with checkable permissions
     auto *menu = new QMenu(this);
     _permissionReshare= new QAction(tr("Can reshare"), this);
@@ -1017,12 +1020,12 @@ void ShareUserLine::setPasswordConfirmed()
     _share->setPassword(_ui->lineEdit_password->text());
 }
 
-void ShareUserLine::on_lineEdit_password_returnPressed()
+void ShareUserLine::slotLineEditPasswordReturnPressed()
 {
     setPasswordConfirmed();
 }
 
-void ShareUserLine::on_confirmPassword_clicked()
+void ShareUserLine::slotConfirmPasswordClicked()
 {
     setPasswordConfirmed();
 }
