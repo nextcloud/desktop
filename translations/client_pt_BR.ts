@@ -3530,7 +3530,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="66"/>
         <source>Failed to rerieve tags</source>
-        <translation type="unfinished"/>
+        <translation>Falha ao recuperar etiquetas</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="98"/>
@@ -3560,7 +3560,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="139"/>
         <source>Failed to set success tag</source>
-        <translation type="unfinished"/>
+        <translation>Falha ao definir etiqueta de sucesso</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="179"/>
