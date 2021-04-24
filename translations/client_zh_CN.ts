@@ -3740,7 +3740,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/shareuserline.ui" line="148"/>
         <location filename="../src/gui/shareuserline.ui" line="192"/>
         <source>…</source>
-        <translation type="unfinished"/>
+        <translation>… </translation>
     </message>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="172"/>

@@ -3757,7 +3757,7 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
         <location filename="../src/gui/shareuserline.ui" line="148"/>
         <location filename="../src/gui/shareuserline.ui" line="192"/>
         <source>…</source>
-        <translation type="unfinished"/>
+        <translation>…</translation>
     </message>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="172"/>

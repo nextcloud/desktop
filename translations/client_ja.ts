@@ -357,7 +357,7 @@ Wait for the new sync, then encrypt it.</source>
         <location filename="../src/gui/accountsettings.cpp" line="443"/>
         <location filename="../src/gui/accountsettings.cpp" line="519"/>
         <source>Edit Ignored Files</source>
-        <translation>無視するファイルを編集</translation>
+        <translation>除外ファイルリストを編集</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="446"/>
@@ -369,7 +369,7 @@ Wait for the new sync, then encrypt it.</source>
         <location filename="../src/gui/accountsettings.cpp" line="452"/>
         <location filename="../src/gui/accountsettings.cpp" line="548"/>
         <source>Availability</source>
-        <translation type="unfinished"/>
+        <translation>ローカルファイルの保持</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="527"/>
@@ -1740,7 +1740,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="512"/>
         <source>Use virtual files instead of downloading content immediately %1</source>
-        <translation>コンテンツをすぐにダウンロード同期する代わりに仮想ファイルを使用する %1</translation>
+        <translation>すぐにファイルを同期してダウンロードする代わりに仮想ファイルを利用する %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="512"/>
@@ -2937,7 +2937,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="417"/>
         <source>Stay safe</source>
-        <translation type="unfinished"/>
+        <translation>セキュリティーを確保</translation>
     </message>
 </context>
 <context>
@@ -3748,18 +3748,18 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/shareuserline.ui" line="122"/>
         <source>Note:</source>
-        <translation type="unfinished"/>
+        <translation>メモ:</translation>
     </message>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="148"/>
         <location filename="../src/gui/shareuserline.ui" line="192"/>
         <source>…</source>
-        <translation type="unfinished"/>
+        <translation>…</translation>
     </message>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="172"/>
         <source>Expires:</source>
-        <translation type="unfinished"/>
+        <translation>有効期限:</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="440"/>
@@ -3769,12 +3769,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="465"/>
         <source>Note to recipient</source>
-        <translation type="unfinished"/>
+        <translation>受信者へのメモ</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="475"/>
         <source>Set expiration date</source>
-        <translation type="unfinished"/>
+        <translation>有効期限を設定</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="450"/>
@@ -5141,7 +5141,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="15"/>
         <source>Account entry</source>
-        <translation type="unfinished"/>
+        <translation>アカウント登録</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="32"/>
@@ -5627,7 +5627,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/guiutility.cpp" line="105"/>
         <source>Free up local space</source>
-        <translation>ローカル領域の解放する</translation>
+        <translation>ローカル領域の確保</translation>
     </message>
 </context>
 <context>
