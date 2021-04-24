@@ -180,6 +180,8 @@ private:
   void showExpireDateOptions(bool show);
   void setExpireDate();
 
+  void togglePasswordSetProgressAnimation(bool show);
+
   void enableProgessIndicatorAnimation(bool enable);
   void disableProgessIndicatorAnimation();
 

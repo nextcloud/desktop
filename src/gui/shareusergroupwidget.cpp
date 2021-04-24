@@ -595,16 +595,18 @@ ShareUserLine::ShareUserLine(AccountPtr account,
             _ui->lineEdit_password->setPlaceholderText(QString::fromUtf8(passwordIsSetPlaceholder));
         }
 
-        refreshPasswordOptions();
-
         connect(_share.data(), &Share::passwordSet, this, &ShareUserLine::slotPasswordSet);
         connect(_share.data(), &Share::passwordSetError, this, &ShareUserLine::slotPasswordSetError);
     }
+
+    refreshPasswordOptions();
 
     _ui->errorLabel->hide();
 
     _ui->permissionToolButton->setMenu(menu);
     _ui->permissionToolButton->setPopupMode(QToolButton::InstantPopup);
+
+    _ui->passwordProgressIndicator->setVisible(false);
 
     // Set the permissions checkboxes
     displayPermissions();
@@ -765,14 +767,19 @@ void ShareUserLine::slotPermissionsChanged()
 void ShareUserLine::slotPasswordCheckboxChanged()
 {
     if (!_passwordProtectLinkAction->isChecked()) {
+        _ui->errorLabel->hide();
+        _ui->errorLabel->setText(QString());
+
         if (!_share->isPasswordSet()) {
             _ui->lineEdit_password->setText(QString());
+            refreshPasswordOptions();
         } else {
+            togglePasswordSetProgressAnimation(true);
             _share->setPassword(QString());
         }
+    } else {
+        refreshPasswordOptions();
     }
-
-    refreshPasswordOptions();
 
     if (_ui->lineEdit_password->isVisible() && _ui->lineEdit_password->isEnabled()) {
         _ui->lineEdit_password->setFocus();
@@ -793,10 +800,12 @@ void ShareUserLine::slotDeleteAnimationFinished()
 
 void ShareUserLine::refreshPasswordOptions()
 {
-    _ui->passwordLabel->setVisible(_passwordProtectLinkAction->isChecked());
-    _ui->lineEdit_password->setEnabled(_passwordProtectLinkAction->isChecked());
-    _ui->lineEdit_password->setVisible(_passwordProtectLinkAction->isChecked());
-    _ui->confirmPassword->setVisible(_passwordProtectLinkAction->isChecked());
+    const bool isEmailShare = _share->getShareType() == Share::TypeEmail;
+
+    _ui->passwordLabel->setVisible(isEmailShare && _passwordProtectLinkAction->isChecked());
+    _ui->lineEdit_password->setEnabled(isEmailShare && _passwordProtectLinkAction->isChecked());
+    _ui->lineEdit_password->setVisible(isEmailShare && _passwordProtectLinkAction->isChecked());
+    _ui->confirmPassword->setVisible(isEmailShare && _passwordProtectLinkAction->isChecked());
 
     emit resizeRequested();
 }
@@ -812,7 +821,7 @@ void ShareUserLine::refreshPasswordLineEditPlaceholder()
 
 void ShareUserLine::slotPasswordSet()
 {
-    enableProgessIndicatorAnimation(false);
+    togglePasswordSetProgressAnimation(false);
     _ui->lineEdit_password->setEnabled(true);
     _ui->confirmPassword->setEnabled(true);
 
@@ -821,11 +830,13 @@ void ShareUserLine::slotPasswordSet()
     _passwordProtectLinkAction->setEnabled(!_share->isPasswordSet() || !_account->capabilities().shareEmailPasswordEnforced());
 
     refreshPasswordLineEditPlaceholder();
+
+    refreshPasswordOptions();
 }
 
 void ShareUserLine::slotPasswordSetError(int statusCode, const QString &message)
 {
-    enableProgessIndicatorAnimation(false);
+    togglePasswordSetProgressAnimation(false);
     _ui->lineEdit_password->setEnabled(true);
     _ui->confirmPassword->setEnabled(true);
 
@@ -998,6 +1009,19 @@ void ShareUserLine::enableProgessIndicatorAnimation(bool enable)
     }
 }
 
+void ShareUserLine::togglePasswordSetProgressAnimation(bool show)
+{
+    _ui->confirmPassword->setVisible(!show && _passwordProtectLinkAction->isChecked());
+    _ui->passwordProgressIndicator->setVisible(show);
+    if (show) {
+        if (!_ui->passwordProgressIndicator->isAnimated()) {
+            _ui->passwordProgressIndicator->startAnimation();
+        }
+    } else {
+        _ui->passwordProgressIndicator->stopAnimation();
+    }
+}
+
 void ShareUserLine::disableProgessIndicatorAnimation()
 {
     enableProgessIndicatorAnimation(false);
@@ -1016,7 +1040,7 @@ void ShareUserLine::setPasswordConfirmed()
     _ui->errorLabel->hide();
     _ui->errorLabel->setText(QString());
 
-    enableProgessIndicatorAnimation(true);
+    togglePasswordSetProgressAnimation(true);
     _share->setPassword(_ui->lineEdit_password->text());
 }
 

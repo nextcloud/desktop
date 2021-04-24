@@ -209,12 +209,34 @@
      </item>
      <item>
       <widget class="QToolButton" name="confirmPassword">
+       <property name="minimumSize">
+        <size>
+         <width>28</width>
+         <height>28</height>
+        </size>
+       </property>
        <property name="text">
         <string>...</string>
        </property>
        <property name="icon">
         <iconset resource="../../theme.qrc">
          <normaloff>:/client/theme/confirm.svg</normaloff>:/client/theme/confirm.svg</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QProgressIndicator" name="passwordProgressIndicator" native="true">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>28</width>
+         <height>28</height>
+        </size>
        </property>
       </widget>
      </item>
@@ -343,15 +365,15 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>OCC::ElidedLabel</class>
-   <extends>QLabel</extends>
-   <header>elidedlabel.h</header>
-  </customwidget>
-  <customwidget>
    <class>QProgressIndicator</class>
    <extends>QWidget</extends>
    <header>QProgressIndicator.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>OCC::ElidedLabel</class>
+   <extends>QLabel</extends>
+   <header>elidedlabel.h</header>
   </customwidget>
  </customwidgets>
  <resources>
