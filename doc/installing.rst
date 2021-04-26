@@ -39,6 +39,7 @@ System Requirements
 - Fedora 25 & 26 & 27
 - Ubuntu 16.04 & 17.04 & 17.10
 - openSUSE Leap 42.2 & 42.3
+- FreeBSD
 
 .. note::
    For Linux distributions, we support, if technically feasible, the latest 2 versions per platform and the previous LTS.
