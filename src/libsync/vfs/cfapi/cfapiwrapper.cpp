@@ -23,6 +23,7 @@
 #include <QFileInfo>
 #include <QLocalSocket>
 #include <QLoggingCategory>
+#include <QUuid>
 
 #include <sddl.h>
 #include <cfapi.h>
@@ -467,14 +468,17 @@ OCC::Result<void, QString> OCC::CfApiWrapper::registerSyncRoot(const QString &pa
     const auto version = std::wstring(providerVersion.toStdWString().data());
 
     CF_SYNC_REGISTRATION info;
+    info.StructSize = sizeof(info) + (name.length() + version.length()) * sizeof(wchar_t);
     info.ProviderName = name.data();
     info.ProviderVersion = version.data();
     info.SyncRootIdentity = nullptr;
     info.SyncRootIdentityLength = 0;
     info.FileIdentity = nullptr;
     info.FileIdentityLength = 0;
+    info.ProviderId = QUuid::createUuid();
 
     CF_SYNC_POLICIES policies;
+    policies.StructSize = sizeof(policies);
     policies.Hydration.Primary = CF_HYDRATION_POLICY_FULL;
     policies.Hydration.Modifier = CF_HYDRATION_POLICY_MODIFIER_NONE;
     policies.Population.Primary = CF_POPULATION_POLICY_ALWAYS_FULL;
