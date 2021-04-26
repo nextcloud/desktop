@@ -618,20 +618,21 @@ void Application::parseOptions(const QStringList &options)
             // virtual file, open it after the Folder were created (if the app is not terminated)
             QTimer::singleShot(0, this, [this, option] { openVirtualFile(option); });
         } else {
-            showHint("Unrecognized option '" + option.toStdString() + "'");
+            showHint(QStringLiteral("Unrecognized option '%1'").arg(option));
         }
     }
 }
 
 // Helpers for displaying messages. Note that there is probably no console on Windows.
-static void displayHelpText(const QString &t)
+static void displayHelpText(const QString &t, std::ostream &stream = std::cout)
 {
-    std::cout << qUtf8Printable(t) << std::endl;
+    Logger::instance()->attacheToConsole();
+    stream << qUtf8Printable(t) << std::endl;
 #ifdef Q_OS_WIN
     // No console on Windows.
     QString spaces(80, ' '); // Add a line of non-wrapped space to make the messagebox wide enough.
-    QString text = QLatin1String("<qt><pre style='white-space:pre-wrap'>")
-        + t.toHtmlEscaped() + QLatin1String("</pre><pre>") + spaces + QLatin1String("</pre></qt>");
+    QString text = QStringLiteral("<qt><pre style='white-space:pre-wrap'>")
+        + t.toHtmlEscaped() + QStringLiteral("</pre><pre>") + spaces + QStringLiteral("</pre></qt>");
     QMessageBox::information(0, Theme::instance()->appNameGUI(), text);
 #endif
 }
@@ -663,11 +664,13 @@ void Application::showVersion()
     displayHelpText(Theme::instance()->versionSwitchOutput());
 }
 
-void Application::showHint(std::string errorHint)
+void Application::showHint(const QString &errorHint)
 {
-    static QString binName = QFileInfo(QCoreApplication::applicationFilePath()).fileName();
-    std::cerr << errorHint << std::endl;
-    std::cerr << "Try '" << binName.toStdString() << " --help' for more information" << std::endl;
+    QString out;
+    QTextStream hint(&out);
+    hint << errorHint << endl
+         << "Try '" << QFileInfo(QCoreApplication::applicationFilePath()).fileName() << " --help' for more information" << endl;
+    displayHelpText(out, std::cerr);
     std::exit(1);
 }
 

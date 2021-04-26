@@ -61,7 +61,7 @@ public:
 
     bool giveHelp();
     void showHelp();
-    void showHint(std::string errorHint);
+    void showHint(const QString &errorHint);
     bool debugMode();
     bool versionOnly(); // only display the version?
     void showVersion();
