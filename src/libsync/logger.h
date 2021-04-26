@@ -38,6 +38,8 @@ class OWNCLOUDSYNC_EXPORT Logger : public QObject
 public:
     bool isLoggingToFile() const;
 
+    void attacheToConsole();
+
     void doLog(QtMsgType type, const QMessageLogContext &ctx, const QString &message);
 
     static Logger *instance();
@@ -95,6 +97,7 @@ private:
     QSet<QString> _logRules;
     QVector<QString> _crashLog;
     int _crashLogIndex = 0;
+    bool _consoleIsAttached = false;
 };
 
 } // namespace OCC
