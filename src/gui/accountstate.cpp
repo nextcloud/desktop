@@ -229,6 +229,10 @@ bool AccountState::isDesktopNotificationsAllowed() const
 
 void AccountState::setDesktopNotificationsAllowed(bool isAllowed)
 {
+    if (_isDesktopNotificationsAllowed == isAllowed) {
+        return;
+    }
+    
     _isDesktopNotificationsAllowed = isAllowed;
     emit desktopNotificationsAllowedChanged();
 }
