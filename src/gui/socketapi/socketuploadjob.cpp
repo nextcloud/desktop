@@ -125,7 +125,11 @@ void SocketUploadJob::start()
         Q_EMIT ProgressDispatcher::instance()->progressInfo(_localPath, info);
     });
     connect(engine, &OCC::SyncEngine::itemCompleted, this, [this](const OCC::SyncFileItemPtr item) {
-        _syncedFiles.append(item->_file);
+        if (item->_errorString.isEmpty()) {
+            _syncedFiles.append(item->_file);
+        } else {
+            _errorFiles.append(QStringLiteral("%1: %2").arg(item->_file, item->_errorString));
+        }
     });
 
     connect(engine, &OCC::SyncEngine::finished, this, [engine, this](bool ok) {
@@ -141,6 +145,8 @@ void SocketUploadJob::start()
             });
             OC_ASSERT(_finisedTagId > 0);
             tagJob->startRequest(QByteArrayLiteral("PUT"), Utility::concatUrlPath(engine->account()->url(), QStringLiteral("remote.php/dav/systemtags-relations/files/%1/%2").arg(_backupFileId, QString::number(_finisedTagId))));
+        } else {
+            fail(tr("Failed to create backup: %1").arg(_errorFiles.join(", ")));
         }
     });
     connect(engine, &OCC::SyncEngine::syncError, this, [this](const QString &error, ErrorCategory) {
