@@ -336,19 +336,14 @@ void HttpCredentials::persist()
 
     // write secrets to the keychain
     if (!_clientCertBundle.isEmpty()) {
-        // Option 1: If we have a pkcs12 bundle, that'll be written to the config file
+        // If we have a pkcs12 bundle, that'll be written to the config file
         // and we'll just store the bundle password in the keychain. That's prefered
         // since the keychain on older Windows platforms can only store a limited number
         // of bytes per entry and key/cert may exceed that.
         _account->credentialManager()->set(clientCertPasswordC(), _clientCertPassword);
         _clientCertBundle.clear();
-    } else if (_account->credentialSetting(clientCertBundleC()).isNull() && !_clientSslCertificate.isNull()) {
-        // Option 2, pre 2.6 configs: We used to store the raw cert/key in the keychain and
-        // still do so if no bundle is available. We can't currently migrate to Option 1
-        // because we have no functions for creating an encrypted pkcs12 bundle.
-        _account->credentialManager()->set(clientCertificatePEMC(), _clientSslCertificate.toPem());
     } else {
-        // Option 3: no client certificate at all (or doesn't need to be written)
+        // no client certificate at all (or doesn't need to be written)
         _account->credentialManager()->set(PasswordKey(), isUsingOAuth() ? _refreshToken : _password);
     }
 }

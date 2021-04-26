@@ -6,6 +6,7 @@
 #include "configfile.h"
 #include "theme.h"
 
+#include <QApplication>
 #include <QLoggingCategory>
 
 #include <qt5keychain/keychain.h>
@@ -68,16 +69,10 @@ public:
     {
     }
 
-    /** Reads data from keychain locations
-     *
-     * Goes through
-     *   slotReadClientCertPEMJobDone to
-     *   slotReadClientCertPEMJobDone to
-     *   slotReadJobDone
-     */
     void fetchFromKeychainHelper()
     {
         _parent->_clientCertBundle = _parent->_account->credentialSetting(clientCertBundleC()).toByteArray();
+
         if (!_parent->_clientCertBundle.isEmpty()) {
             // New case (>=2.6): We have a bundle in the settings and read the password from
             // the keychain
@@ -88,19 +83,9 @@ public:
             job->start();
             return;
         }
-
-        // Old case (pre 2.6): Read client cert and then key from keychain
-        const QString kck = _parent->keychainKey(
-            _parent->_account->url().toString(),
-            _parent->_user + clientCertificatePEMC(),
-            _keychainMigration ? QString() : _parent->_account->id());
-
-        QKeychain::ReadPasswordJob *job = new QKeychain::ReadPasswordJob(Theme::instance()->appName());
-        addSettingsToJob(job);
-        job->setInsecureFallback(false);
-        job->setKey(kck);
-        connect(job, &QKeychain::Job::finished, this, &HttpLegacyCredentials::slotReadClientCertPEMJobDone);
-        job->start();
+        const auto msg = tr("The support of client side certificate saved in the keychein was removed, please start the setup withard again and follow the instructions.");
+        QMetaObject::invokeMethod(qApp, "slotShowGuiMessage", Qt::QueuedConnection, Q_ARG(QString, tr("Credentials")), Q_ARG(QString, msg));
+        qCWarning(lcHttpLegacyCredentials) << msg;
     }
 
 private:
@@ -148,57 +133,6 @@ private:
         // don't clear the password, we are migrating the old settings
         // _parent->_clientCertPassword.clear();
         // _parent->_clientCertBundle.clear();
-
-        slotReadPasswordFromKeychain();
-    }
-
-    void slotReadClientCertPEMJobDone(QKeychain::Job *incoming)
-    {
-        auto readJob = qobject_cast<QKeychain::ReadPasswordJob *>(incoming);
-        if (keychainUnavailableRetryLater(readJob))
-            return;
-
-        // Store PEM in memory
-        if (readJob->error() == QKeychain::NoError && readJob->binaryData().length() > 0) {
-            QList<QSslCertificate> sslCertificateList = QSslCertificate::fromData(readJob->binaryData(), QSsl::Pem);
-            if (sslCertificateList.length() >= 1) {
-                _parent->_clientSslCertificate = sslCertificateList.at(0);
-            }
-        }
-
-        // Load key too
-        const QString kck = _parent->keychainKey(
-            _parent->_account->url().toString(),
-            _parent->_user + clientKeyPEMC(),
-            _keychainMigration ? QString() : _parent->_account->id());
-
-        QKeychain::ReadPasswordJob *job = new QKeychain::ReadPasswordJob(Theme::instance()->appName());
-        addSettingsToJob(job);
-        job->setInsecureFallback(false);
-        job->setKey(kck);
-        connect(job, &QKeychain::ReadPasswordJob::finished, this, &HttpLegacyCredentials::slotReadClientKeyPEMJobDone);
-        job->start();
-    }
-
-    void slotReadClientKeyPEMJobDone(QKeychain::Job *incoming)
-    {
-        auto readJob = qobject_cast<QKeychain::ReadPasswordJob *>(incoming);
-        // Store key in memory
-        if (readJob->error() == QKeychain::NoError && readJob->binaryData().length() > 0) {
-            QByteArray clientKeyPEM = readJob->binaryData();
-            // FIXME Unfortunately Qt has a bug and we can't just use QSsl::Opaque to let it
-            // load whatever we have. So we try until it works.
-            _parent->_clientSslKey = QSslKey(clientKeyPEM, QSsl::Rsa);
-            if (_parent->_clientSslKey.isNull()) {
-                _parent->_clientSslKey = QSslKey(clientKeyPEM, QSsl::Dsa);
-            }
-            if (_parent->_clientSslKey.isNull()) {
-                _parent->_clientSslKey = QSslKey(clientKeyPEM, QSsl::Ec);
-            }
-            if (_parent->_clientSslKey.isNull()) {
-                qCWarning(lcHttpLegacyCredentials) << "Could not load SSL key into Qt!";
-            }
-        }
 
         slotReadPasswordFromKeychain();
     }
@@ -278,35 +212,6 @@ private:
         if (job && job->error() != QKeychain::NoError) {
             qCWarning(lcHttpLegacyCredentials) << "Error while writing password"
                                                << job->error() << job->errorString();
-        }
-    }
-
-    void slotWriteClientKeyPEMJobDone(QKeychain::Job *finishedJob)
-    {
-        if (finishedJob && finishedJob->error() != QKeychain::NoError) {
-            qCWarning(lcHttpLegacyCredentials) << "Could not write client key to credentials"
-                                               << finishedJob->error() << finishedJob->errorString();
-        }
-    }
-
-    void slotWriteClientCertPEMJobDone(QKeychain::Job *finishedJob)
-    {
-        if (finishedJob && finishedJob->error() != QKeychain::NoError) {
-            qCWarning(lcHttpLegacyCredentials) << "Could not write client cert to credentials"
-                                               << finishedJob->error() << finishedJob->errorString();
-        }
-
-        // write ssl key if there is one
-        if (!_parent->_clientSslKey.isNull()) {
-            QKeychain::WritePasswordJob *job = new QKeychain::WritePasswordJob(Theme::instance()->appName());
-            addSettingsToJob(job);
-            job->setInsecureFallback(false);
-            connect(job, &QKeychain::Job::finished, this, &HttpLegacyCredentials::slotWriteClientKeyPEMJobDone);
-            job->setKey(_parent->keychainKey(_parent->_account->url().toString(), _parent->_user + clientKeyPEMC(), _parent->_account->id()));
-            job->setBinaryData(_parent->_clientSslKey.toPem());
-            job->start();
-        } else {
-            slotWriteClientKeyPEMJobDone(nullptr);
         }
     }
 
