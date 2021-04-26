@@ -228,7 +228,7 @@ void ShareUserGroupWidget::slotSharesFetched(const QList<QSharedPointer<Share>> 
     int height = 0;
     QList<QString> linkOwners({});
 
-    QPointer<ShareUserLine> justCreatedShareThatNeedsOptionalPassword = nullptr;
+    ShareUserLine *justCreatedShareThatNeedsOptionalPassword = nullptr;
 
     foreach (const auto &share, shares) {
         // We don't handle link shares, only TypeUser or TypeGroup
