@@ -98,7 +98,7 @@ name: AppImage
 
 steps:
 - name: build
-  image: nextcloudci/client-5.12:client-5.12-9
+  image: nextcloudci/client-5.12:client-5.12-11
   environment:
     CI_UPLOAD_GIT_TOKEN:
       from_secret: CI_UPLOAD_GIT_TOKEN
