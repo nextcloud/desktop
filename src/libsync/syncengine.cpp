@@ -58,8 +58,6 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcEngine, "sync.engine", QtInfoMsg)
 
-bool SyncEngine::s_anySyncRunning = false;
-
 /** When the client touches a file, block change notifications for this duration (ms)
  *
  * On Linux and Windows the file watcher can't distinguish a change that originates
@@ -416,7 +414,6 @@ void SyncEngine::startSync()
         return;
     }
 
-    s_anySyncRunning = true;
     _syncRunning = true;
     _anotherSyncNeeded = NoFollowUpSync;
     _clearTouchedFilesTimer.stop();
@@ -817,7 +814,6 @@ void SyncEngine::finalize(bool success)
     if (_discoveryPhase) {
         _discoveryPhase.take()->deleteLater();
     }
-    s_anySyncRunning = false;
     _syncRunning = false;
     emit finished(success);
 

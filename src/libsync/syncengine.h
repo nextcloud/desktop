@@ -222,8 +222,6 @@ private:
     // cleanup and emit the finished signal
     void finalize(bool success);
 
-    static bool s_anySyncRunning; //true when one sync is running somewhere (for debugging)
-
     // Must only be acessed during update and reconcile
     QVector<SyncFileItemPtr> _syncItems;
 
