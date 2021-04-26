@@ -14,7 +14,9 @@
  */
 
 #include "openfilemanager.h"
+#include "application.h"
 #include "common/utility.h"
+
 #include <QProcess>
 #include <QSettings>
 #include <QDir>
@@ -160,7 +162,7 @@ void showInFileManager(const QString &localPath)
 
         static QString name;
         if (name.isEmpty()) {
-            name = desktopFile.value(QString::fromLatin1("Desktop Entry/Name[%1]").arg(qApp->property("ui_lang").toString())).toString();
+            name = desktopFile.value(QString::fromLatin1("Desktop Entry/Name[%1]").arg(ocApp()->displayLanguage())).toString();
             if (name.isEmpty()) {
                 name = desktopFile.value(QString::fromLatin1("Desktop Entry/Name")).toString();
             }

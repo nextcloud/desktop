@@ -70,6 +70,8 @@ public:
 
     ownCloudGui *gui() const;
 
+    QString displayLanguage() const;
+
 public slots:
     // TODO: this should not be public
     void slotownCloudWizardDone(int);
@@ -137,6 +139,7 @@ private:
     bool _userTriggeredConnect;
     bool _debugMode;
     QString _userEnforcedLanguage;
+    QString _displayLanguage;
 
     ClientProxy _proxy;
 
