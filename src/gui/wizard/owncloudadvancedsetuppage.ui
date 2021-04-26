@@ -586,7 +586,7 @@
            <item>
             <widget class="QLabel" name="lSelectiveSyncSizeLabel">
              <property name="text">
-              <string notr="true">TextLabel</string>
+              <string notr="true">Label text</string>
              </property>
              <property name="textFormat">
               <enum>Qt::PlainText</enum>
@@ -776,7 +776,7 @@
    <item>
     <widget class="QLabel" name="errorLabel">
      <property name="text">
-      <string notr="true">TextLabel</string>
+      <string notr="true">Label text</string>
      </property>
     </widget>
    </item>
@@ -786,7 +786,7 @@
    <item>
     <widget class="QLabel" name="bottomLabel">
      <property name="text">
-      <string notr="true">TextLabel</string>
+      <string notr="true">Label text</string>
      </property>
      <property name="textFormat">
       <enum>Qt::RichText</enum>
