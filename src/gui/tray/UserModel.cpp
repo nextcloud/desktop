@@ -57,7 +57,7 @@ User::User(AccountStatePtr &account, const bool &isCurrent, QObject *parent)
     connect(_account->account().data(), &Account::accountChangedAvatar, this, &User::avatarChanged);
     connect(_account.data(), &AccountState::statusChanged, this, &User::statusChanged);
     connect(_account.data(), &AccountState::desktopNotificationsAllowedChanged, this, &User::desktopNotificationsAllowedChanged);
-    
+
     connect(_activityModel, &ActivityListModel::sendNotificationRequest, this, &User::slotSendNotificationRequest);
 }
 
@@ -576,7 +576,8 @@ QUrl User::statusIcon() const
     return _account->statusIcon();
 }
 
-bool User::serverHasUserStatus() const {
+bool User::serverHasUserStatus() const
+{
     return _account->account()->capabilities().userStatus();
 }
 
@@ -918,7 +919,7 @@ QHash<int, QByteArray> UserModel::roleNames() const
     roles[ServerUserStatusRole] = "serverUserStatus";
     roles[StatusIconRole] = "statusIcon";
     roles[StatusMessageRole] = "statusMessage";
-    roles[DesktopNotificationsAllowedRole] = "isDesktopNotificationsAllowed";
+    roles[DesktopNotificationsAllowedRole] = "desktopNotificationsAllowed";
     roles[AvatarRole] = "avatar";
     roles[IsCurrentUserRole] = "isCurrentUser";
     roles[IsConnectedRole] = "isConnected";

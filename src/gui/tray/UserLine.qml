@@ -93,7 +93,7 @@ MenuItem {
                             sourceSize.height: Style.accountAvatarStateIndicatorSize
 
                             Accessible.role: Accessible.Indicator
-                            Accessible.name: model.isDesktopNotificationsAllowed ? qsTr("Current user status is online") : qsTr("Current user status is do not disturb")
+                            Accessible.name: model.desktopNotificationsAllowed ? qsTr("Current user status is online") : qsTr("Current user status is do not disturb")
                         }
                     }
 
@@ -113,9 +113,9 @@ MenuItem {
                         }
                         Label {
                             id: userStatusMessage
-                            visible: model.isConnected 
-                                     && model.serverUserStatus 
-                                     && statusMessage != ""
+                            visible: model.isConnected && 
+                                     model.serverUserStatus && 
+                                     statusMessage !== ""
                             width: 128
                             text: statusMessage
                             elide: Text.ElideRight
