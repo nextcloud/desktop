@@ -158,10 +158,12 @@ that does not change the status of the parent directories.
 Sharing From Your Desktop
 -------------------------
 
-The Nextcloud desktop sync client integrates with your file manager: Finder on
-macOS, Explorer on Windows, and Nautilus on Linux. (Linux users must install 
-the ``Nextcloud-client-nautilus`` plugin.) You can create share links, and share
-with internal Nextcloud users the same way as in your Nextcloud Web interface.
+The Nextcloud desktop sync client integrates with your file manager. Finder on
+macOS and Explorer on Windows. Linux users must install an additional package 
+depending on the used file manager. Available are e.g. ``nautilus-nextcloud`` 
+(Ubuntu/Debian), ``dolphin-nextcloud`` (Kubuntu), ``nemo-nextcloud`` and 
+``caja-nextcloud``. You can create  share links, and share with internal 
+Nextcloud users the same way as in your Nextcloud Web interface.
 
 .. figure:: images/mac-share.png
    :alt: Sync client integration in Windows Explorer.
