@@ -27,6 +27,7 @@ def hook(context):
         'clientSyncPath':  os.environ.get('CLIENT_SYNC_PATH', cfg.get('DEFAULT','CLIENT_SYNC_PATH')),
         'clientSyncTimeout':  os.environ.get('CLIENT_SYNC_TIMEOUT', cfg.get('DEFAULT','CLIENT_SYNC_TIMEOUT')),
         'middlewareUrl': os.environ.get('MIDDLEWARE_URL', cfg.get('DEFAULT','MIDDLEWARE_URL')),
+        'clientConfigFile': os.environ.get('CLIENT_LOG_FILE', cfg.get('DEFAULT','CLIENT_LOG_FILE')),
     }
 
     if context.userData['localBackendUrl'] == '':
@@ -45,6 +46,9 @@ def hook(context):
 
     if context.userData['middlewareUrl'] == '':
         context.userData['middlewareUrl']='http://localhost:3000/'
+
+    if context.userData['clientConfigFile'] == '':
+        context.userData['clientConfigFile']='-'
 
 @OnScenarioEnd
 def hook(context):
