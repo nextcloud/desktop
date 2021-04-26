@@ -94,7 +94,7 @@
         </sizepolicy>
        </property>
        <property name="text">
-        <string>can edit</string>
+        <string>Can edit</string>
        </property>
       </widget>
      </item>
