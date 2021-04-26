@@ -22,5 +22,6 @@ Icon=@APPLICATION_EXECUTABLE@
 
 # Translations
 Icon[tr]=@APPLICATION_ICON_NAME@
+Name[tr]=@APPLICATION_NAME@ Masaüstü
 Comment[tr]=@APPLICATION_NAME@ masaüstü eşitleme istemcisi
 GenericName[tr]=Klasör Eşitleme
