@@ -33,16 +33,17 @@ namespace {
     UserStatus::Status stringToEnum(const QString &status) 
     {
         // it needs to match the Status enum
-        const QHash<QString, UserStatus::Status> preDefinedStatus{{"online", UserStatus::Status::Online},
-            {"dnd", UserStatus::Status::DoNotDisturb}, //DoNotDisturb
+        const QHash<QString, UserStatus::Status> preDefinedStatus{
+            {"online", UserStatus::Status::Online},
+            {"dnd", UserStatus::Status::DoNotDisturb},
             {"away", UserStatus::Status::Away},
             {"offline", UserStatus::Status::Offline},
-            {"invisible", UserStatus::Status::Invisible}};
+            {"invisible", UserStatus::Status::Invisible}
+        };
         
         // api should return invisible, dnd,... toLower() it is to make sure 
         // it matches _preDefinedStatus, otherwise the default is online (0)
-        const auto statusKey = status.isEmpty() ? QStringLiteral("online") : status.toLower();
-        return preDefinedStatus.value(statusKey, UserStatus::Status::Online);
+        return preDefinedStatus.value(status.toLower(), UserStatus::Status::Online);
     }
     
     QString enumToString(UserStatus::Status status) 
@@ -75,7 +76,7 @@ void UserStatus::fetchUserStatus(AccountPtr account)
     if (_job) {
         _job->deleteLater();
     }
-    
+
     _job = new JsonApiJob(account, QStringLiteral("/ocs/v2.php/apps/user_status/api/v1/user_status"), this);
     connect(_job.data(), &JsonApiJob::jsonReceived, this, &UserStatus::slotFetchUserStatusFinished);
     _job->start();
