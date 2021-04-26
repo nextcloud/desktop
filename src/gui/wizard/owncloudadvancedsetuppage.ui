@@ -29,7 +29,7 @@
       </sizepolicy>
      </property>
      <property name="text">
-      <string notr="true">TextLabel</string>
+      <string notr="true">Label text</string>
      </property>
      <property name="textFormat">
       <enum>Qt::RichText</enum>
