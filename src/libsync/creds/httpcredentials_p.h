@@ -87,7 +87,7 @@ public:
             job->start();
             return;
         }
-        const auto msg = tr("The support of client side certificate saved in the keychein was removed, please start the setup wizard again and follow the instructions.");
+        const auto msg = tr("The support of client side certificate saved in the keychain was removed, please start the setup wizard again and follow the instructions.");
         QMetaObject::invokeMethod(qApp, "slotShowGuiMessage", Qt::QueuedConnection, Q_ARG(QString, tr("Credentials")), Q_ARG(QString, msg));
         qCWarning(lcHttpLegacyCredentials) << msg;
     }
