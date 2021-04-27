@@ -582,7 +582,7 @@ ShareUserLine::ShareUserLine(AccountPtr account,
     }
 
     // Adds action to display password widget (check box)
-    if (_share->isPasswordSet() || _account->capabilities().shareEmailPasswordEnabled()) {
+    if (_share->getShareType() == Share::TypeEmail && (_share->isPasswordSet() || _account->capabilities().shareEmailPasswordEnabled())) {
         _passwordProtectLinkAction = new QAction(tr("Password protect"), this);
         _passwordProtectLinkAction->setCheckable(true);
         _passwordProtectLinkAction->setChecked(_share->isPasswordSet());
