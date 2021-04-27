@@ -288,6 +288,7 @@ public:
 
 signals:
     void noteSet();
+    void noteSetError();
     void expireDateSet();
 
 private:

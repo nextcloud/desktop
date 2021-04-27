@@ -22,6 +22,7 @@
 #include <QDialog>
 #include <QSharedPointer>
 #include <QList>
+#include <QToolButton>
 
 class QMenu;
 class QTableWidgetItem;
@@ -59,9 +60,12 @@ public:
     void setLinkShare(QSharedPointer<LinkShare> linkShare);
     QSharedPointer<LinkShare> getLinkShare();
 
+    void focusPasswordLineEdit();
+
 public slots:
     void slotDeleteShareFetched();
-    void slotToggleAnimation(bool start);
+    void slotToggleShareLinkAnimation(bool start);
+    void slotToggleButtonAnimation(QToolButton *button, QProgressIndicator *progressIndicator, bool optionEnabled, bool start);
     void slotServerError(int code, const QString &message);
     void slotCreateShareRequiresPassword(const QString &message);
     void slotStyleChanged();
@@ -90,6 +94,8 @@ signals:
     void deleteLinkShare();
     void resizeRequested();
     void visualDeletionDone();
+    void createPassword(const QString &password);
+    void createPasswordProcessed();
 
 private:
     void displayError(const QString &errMsg);

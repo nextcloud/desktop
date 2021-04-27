@@ -39,7 +39,7 @@ QString createRandomPassword()
 {
     const auto words = OCC::WordList::getRandomWords(10);
 
-    const auto addFirstLetter = [](const QString &current, const QString &next) {
+    const auto addFirstLetter = [](const QString &current, const QString &next) -> QString {
         return current + next.at(0);
     };
 
@@ -152,48 +152,51 @@ ShareDialog::ShareDialog(QPointer<AccountState> accountState,
     }
 }
 
-void ShareDialog::addLinkShareWidget(const QSharedPointer<LinkShare> &linkShare){
+ShareLinkWidget *ShareDialog::addLinkShareWidget(const QSharedPointer<LinkShare> &linkShare)
+{
     _linkWidgetList.append(new ShareLinkWidget(_accountState->account(), _sharePath, _localPath, _maxSharingPermissions, this));
-    int index = _linkWidgetList.size()-1;
-    _linkWidgetList.at(index)->setLinkShare(linkShare);
 
-    connect(linkShare.data(), &Share::serverError, _linkWidgetList.at(index), &ShareLinkWidget::slotServerError);
-    connect(linkShare.data(), &Share::shareDeleted, _linkWidgetList.at(index), &ShareLinkWidget::slotDeleteShareFetched);
+    const auto linkShareWidget = _linkWidgetList.at(_linkWidgetList.size() - 1);
+    linkShareWidget->setLinkShare(linkShare);
+
+    connect(linkShare.data(), &Share::serverError, linkShareWidget, &ShareLinkWidget::slotServerError);
+    connect(linkShare.data(), &Share::shareDeleted, linkShareWidget, &ShareLinkWidget::slotDeleteShareFetched);
 
     if(_manager) {
-        connect(_manager, &ShareManager::linkShareRequiresPassword, _linkWidgetList.at(index), &ShareLinkWidget::slotCreateShareRequiresPassword);
-        connect(_manager, &ShareManager::serverError, _linkWidgetList.at(index), &ShareLinkWidget::slotServerError);
+        connect(_manager, &ShareManager::serverError, linkShareWidget, &ShareLinkWidget::slotServerError);
     }
 
     // Connect all shares signals to gui slots
-    connect(this, &ShareDialog::toggleAnimation, _linkWidgetList.at(index), &ShareLinkWidget::slotToggleAnimation);
-    connect(_linkWidgetList.at(index), &ShareLinkWidget::createLinkShare, this, &ShareDialog::slotCreateLinkShare);
-    connect(_linkWidgetList.at(index), &ShareLinkWidget::deleteLinkShare, this, &ShareDialog::slotDeleteShare);
+    connect(this, &ShareDialog::toggleShareLinkAnimation, linkShareWidget, &ShareLinkWidget::slotToggleShareLinkAnimation);
+    connect(linkShareWidget, &ShareLinkWidget::createLinkShare, this, &ShareDialog::slotCreateLinkShare);
+    connect(linkShareWidget, &ShareLinkWidget::deleteLinkShare, this, &ShareDialog::slotDeleteShare);
+    connect(linkShareWidget, &ShareLinkWidget::createPassword, this, &ShareDialog::slotCreatePasswordForLinkShare);
+
     //connect(_linkWidgetList.at(index), &ShareLinkWidget::resizeRequested, this, &ShareDialog::slotAdjustScrollWidgetSize);
 
     // Connect styleChanged events to our widget, so it can adapt (Dark-/Light-Mode switching)
-    connect(this, &ShareDialog::styleChanged, _linkWidgetList.at(index), &ShareLinkWidget::slotStyleChanged);
+    connect(this, &ShareDialog::styleChanged, linkShareWidget, &ShareLinkWidget::slotStyleChanged);
 
-    _ui->verticalLayout->insertWidget(_linkWidgetList.size()+1, _linkWidgetList.at(index));
-    _linkWidgetList.at(index)->setupUiOptions();
+    _ui->verticalLayout->insertWidget(_linkWidgetList.size() + 1, linkShareWidget);
+    linkShareWidget->setupUiOptions();
+
+    return linkShareWidget;
 }
 
-void ShareDialog::initLinkShareWidget(){
-    if(_linkWidgetList.size() == 0){
+void ShareDialog::initLinkShareWidget()
+{
+    if(_linkWidgetList.size() == 0) {
         _emptyShareLinkWidget = new ShareLinkWidget(_accountState->account(), _sharePath, _localPath, _maxSharingPermissions, this);
         _linkWidgetList.append(_emptyShareLinkWidget);
 
-        if (_manager) {
-            connect(_manager, &ShareManager::linkShareRequiresPassword, _emptyShareLinkWidget, &ShareLinkWidget::slotCreateShareRequiresPassword);
-        }
-
         connect(_emptyShareLinkWidget, &ShareLinkWidget::resizeRequested, this, &ShareDialog::slotAdjustScrollWidgetSize);
-//        connect(this, &ShareDialog::toggleAnimation, _emptyShareLinkWidget, &ShareLinkWidget::slotToggleAnimation);
+        connect(this, &ShareDialog::toggleShareLinkAnimation, _emptyShareLinkWidget, &ShareLinkWidget::slotToggleShareLinkAnimation);
         connect(_emptyShareLinkWidget, &ShareLinkWidget::createLinkShare, this, &ShareDialog::slotCreateLinkShare);
+
+        connect(_emptyShareLinkWidget, &ShareLinkWidget::createPassword, this, &ShareDialog::slotCreatePasswordForLinkShare);
 
         _ui->verticalLayout->insertWidget(_linkWidgetList.size()+1, _emptyShareLinkWidget);
         _emptyShareLinkWidget->show();
-
     } else if(_emptyShareLinkWidget) {
         _emptyShareLinkWidget->hide();
         _ui->verticalLayout->removeWidget(_emptyShareLinkWidget);
@@ -202,16 +205,20 @@ void ShareDialog::initLinkShareWidget(){
     }
 }
 
-void ShareDialog::slotAddLinkShareWidget(const QSharedPointer<LinkShare> &linkShare){
-    emit toggleAnimation(true);
-    addLinkShareWidget(linkShare);
+void ShareDialog::slotAddLinkShareWidget(const QSharedPointer<LinkShare> &linkShare)
+{
+    emit toggleShareLinkAnimation(true);
+    const auto addedLinkShareWidget = addLinkShareWidget(linkShare);
     initLinkShareWidget();
-    emit toggleAnimation(false);
+    if (linkShare->isPasswordSet()) {
+        addedLinkShareWidget->focusPasswordLineEdit();
+    }
+    emit toggleShareLinkAnimation(false);
 }
 
 void ShareDialog::slotSharesFetched(const QList<QSharedPointer<Share>> &shares)
 {
-    emit toggleAnimation(true);
+    emit toggleShareLinkAnimation(true);
 
     const QString versionString = _accountState->account()->serverVersion();
     qCInfo(lcSharing) << versionString << "Fetched" << shares.count() << "shares";
@@ -225,7 +232,7 @@ void ShareDialog::slotSharesFetched(const QList<QSharedPointer<Share>> &shares)
     }
 
     initLinkShareWidget();
-    emit toggleAnimation(false);
+    emit toggleShareLinkAnimation(false);
 }
 
 void ShareDialog::slotAdjustScrollWidgetSize()
@@ -327,18 +334,44 @@ void ShareDialog::slotCreateLinkShare()
     }
 }
 
+void ShareDialog::slotCreatePasswordForLinkShare(const QString &password)
+{
+    const auto shareLinkWidget = qobject_cast<ShareLinkWidget*>(sender());
+    Q_ASSERT(shareLinkWidget);
+    if (shareLinkWidget) {
+        connect(_manager, &ShareManager::linkShareRequiresPassword, shareLinkWidget, &ShareLinkWidget::slotCreateShareRequiresPassword);
+        connect(shareLinkWidget, &ShareLinkWidget::createPasswordProcessed, this, &ShareDialog::slotCreatePasswordForLinkShareProcessed);
+        shareLinkWidget->getLinkShare()->setPassword(password);
+    } else {
+        qCCritical(lcSharing) << "shareLinkWidget is not a sender!";
+    }
+}
+
+void ShareDialog::slotCreatePasswordForLinkShareProcessed()
+{
+    const auto shareLinkWidget = qobject_cast<ShareLinkWidget*>(sender());
+    Q_ASSERT(shareLinkWidget);
+    if (shareLinkWidget) {
+        disconnect(_manager, &ShareManager::linkShareRequiresPassword, shareLinkWidget, &ShareLinkWidget::slotCreateShareRequiresPassword);
+        disconnect(shareLinkWidget, &ShareLinkWidget::createPasswordProcessed, this, &ShareDialog::slotCreatePasswordForLinkShareProcessed);
+    } else {
+        qCCritical(lcSharing) << "shareLinkWidget is not a sender!";
+    }
+}
+
 void ShareDialog::slotLinkShareRequiresPassword()
 {
     bool ok = false;
     QString password = QInputDialog::getText(this,
                                              tr("Password for share required"),
                                              tr("Please enter a password for your link share:"),
-                                             QLineEdit::Normal,
+                                             QLineEdit::Password,
                                              QString(),
                                              &ok);
 
     if (!ok) {
         // The dialog was canceled so no need to do anything
+        emit toggleShareLinkAnimation(false);
         return;
     }
 

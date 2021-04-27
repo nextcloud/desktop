@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>365</width>
-    <height>192</height>
+    <height>238</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -53,7 +53,20 @@
       </spacer>
      </item>
      <item>
-      <widget class="QProgressIndicator" name="progressIndicator" native="true"/>
+      <widget class="QProgressIndicator" name="sharelinkProgressIndicator" native="true">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>28</width>
+         <height>27</height>
+        </size>
+       </property>
+      </widget>
      </item>
      <item>
       <spacer name="horizontalSpacer_2">
@@ -111,14 +124,14 @@
     </layout>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_7">
-     <property name="sizeConstraint">
-      <enum>QLayout::SetFixedSize</enum>
+    <layout class="QGridLayout" name="gridLayout">
+     <property name="leftMargin">
+      <number>22</number>
      </property>
-     <item>
+     <item row="0" column="0">
       <widget class="QLabel" name="noteLabel">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+        <sizepolicy hsizetype="MinimumExpanding" vsizetype="Minimum">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
@@ -130,20 +143,20 @@
         </size>
        </property>
        <property name="text">
-        <string>Note:</string>
+        <string>Note</string>
        </property>
        <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
        </property>
        <property name="indent">
-        <number>10</number>
+        <number>0</number>
        </property>
       </widget>
      </item>
-     <item>
+     <item row="0" column="1">
       <widget class="QTextEdit" name="textEdit_note">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
+        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
@@ -159,8 +172,14 @@
        </property>
       </widget>
      </item>
-     <item>
+     <item row="0" column="2">
       <widget class="QToolButton" name="confirmNote">
+       <property name="minimumSize">
+        <size>
+         <width>28</width>
+         <height>27</height>
+        </size>
+       </property>
        <property name="icon">
         <iconset resource="../../theme.qrc">
          <normaloff>:/client/theme/confirm.svg</normaloff>:/client/theme/confirm.svg</iconset>
@@ -170,14 +189,26 @@
        </property>
       </widget>
      </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_6">
-     <item>
+     <item row="0" column="2">
+      <widget class="QProgressIndicator" name="noteProgressIndicator" native="true">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>28</width>
+         <height>27</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
       <widget class="QLabel" name="passwordLabel">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+        <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
@@ -189,17 +220,17 @@
         </size>
        </property>
        <property name="text">
-        <string>Password:</string>
+        <string>Set password</string>
        </property>
        <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
        </property>
        <property name="indent">
-        <number>10</number>
+        <number>0</number>
        </property>
       </widget>
      </item>
-     <item>
+     <item row="1" column="1">
       <widget class="QLineEdit" name="lineEdit_password">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
@@ -212,8 +243,14 @@
        </property>
       </widget>
      </item>
-     <item>
+     <item row="1" column="2">
       <widget class="QToolButton" name="confirmPassword">
+       <property name="minimumSize">
+        <size>
+         <width>28</width>
+         <height>27</height>
+        </size>
+       </property>
        <property name="icon">
         <iconset resource="../../theme.qrc">
          <normaloff>:/client/theme/confirm.svg</normaloff>:/client/theme/confirm.svg</iconset>
@@ -223,14 +260,26 @@
        </property>
       </widget>
      </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_8">
-     <item>
+     <item row="1" column="2">
+      <widget class="QProgressIndicator" name="passwordProgressIndicator" native="true">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>28</width>
+         <height>27</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
       <widget class="QLabel" name="expirationLabel">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+        <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
@@ -242,17 +291,17 @@
         </size>
        </property>
        <property name="text">
-        <string>Expires:</string>
+        <string>Expires</string>
        </property>
        <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
        </property>
        <property name="indent">
-        <number>10</number>
+        <number>0</number>
        </property>
       </widget>
      </item>
-     <item>
+     <item row="2" column="1">
       <widget class="QDateEdit" name="calendar">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
@@ -262,8 +311,14 @@
        </property>
       </widget>
      </item>
-     <item>
+     <item row="2" column="2">
       <widget class="QToolButton" name="confirmExpirationDate">
+       <property name="minimumSize">
+        <size>
+         <width>28</width>
+         <height>27</height>
+        </size>
+       </property>
        <property name="icon">
         <iconset resource="../../theme.qrc">
          <normaloff>:/client/theme/confirm.svg</normaloff>:/client/theme/confirm.svg</iconset>
@@ -273,57 +328,77 @@
        </property>
       </widget>
      </item>
+     <item row="2" column="2">
+      <widget class="QProgressIndicator" name="expirationDateProgressIndicator" native="true">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>28</width>
+         <height>27</height>
+        </size>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
    <item>
-    <widget class="QLabel" name="errorLabel">
-     <property name="palette">
-      <palette>
-       <active>
-        <colorrole role="WindowText">
-         <brush brushstyle="SolidPattern">
-          <color alpha="255">
-           <red>255</red>
-           <green>0</green>
-           <blue>0</blue>
-          </color>
-         </brush>
-        </colorrole>
-       </active>
-       <inactive>
-        <colorrole role="WindowText">
-         <brush brushstyle="SolidPattern">
-          <color alpha="255">
-           <red>255</red>
-           <green>0</green>
-           <blue>0</blue>
-          </color>
-         </brush>
-        </colorrole>
-       </inactive>
-       <disabled>
-        <colorrole role="WindowText">
-         <brush brushstyle="SolidPattern">
-          <color alpha="255">
-           <red>123</red>
-           <green>121</green>
-           <blue>134</blue>
-          </color>
-         </brush>
-        </colorrole>
-       </disabled>
-      </palette>
-     </property>
-     <property name="text">
-      <string notr="true">TextLabel</string>
-     </property>
-     <property name="textFormat">
-      <enum>Qt::PlainText</enum>
-     </property>
-     <property name="wordWrap">
-      <bool>true</bool>
-     </property>
-    </widget>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QLabel" name="errorLabel">
+       <property name="palette">
+        <palette>
+         <active>
+          <colorrole role="WindowText">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>255</red>
+             <green>0</green>
+             <blue>0</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </active>
+         <inactive>
+          <colorrole role="WindowText">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>255</red>
+             <green>0</green>
+             <blue>0</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </inactive>
+         <disabled>
+          <colorrole role="WindowText">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>123</red>
+             <green>121</green>
+             <blue>134</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </disabled>
+        </palette>
+       </property>
+       <property name="text">
+        <string notr="true">TextLabel</string>
+       </property>
+       <property name="textFormat">
+        <enum>Qt::PlainText</enum>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
   </layout>
  </widget>
