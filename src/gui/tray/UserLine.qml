@@ -64,12 +64,12 @@ MenuItem {
                     spacing: 0
                     Image {
                         id: accountAvatar
-                        Layout.leftMargin: 4
+                        Layout.leftMargin: 7
                         verticalAlignment: Qt.AlignCenter
                         cache: false
                         source: model.avatar != "" ? model.avatar : "image://avatars/fallbackBlack"
-                        Layout.preferredHeight: (userLineLayout.height -16)
-                        Layout.preferredWidth: (userLineLayout.height -16)
+                        Layout.preferredHeight: Style.accountAvatarSize
+                        Layout.preferredWidth: Style.accountAvatarSize
                         Rectangle {
                             id: accountStatusIndicatorBackground
                             visible: model.isConnected && 
@@ -101,7 +101,7 @@ MenuItem {
                         id: accountLabels
                         spacing: 4
                         Layout.alignment: Qt.AlignLeft
-                        Layout.leftMargin: 6
+                        Layout.leftMargin: 9
                         Label {
                             id: accountUser
                             width: 128
