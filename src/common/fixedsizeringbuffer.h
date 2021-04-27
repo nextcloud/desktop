@@ -101,25 +101,20 @@ public:
      */
     void remove_if(const std::function<bool(const TYPE &)> &f)
     {
-        size_t pos = 0;
+        // filter and sort the data
+        FixedSizeRingBuffer<TYPE, _Size> tmp;
         const auto start = convertToIndex(0);
-        const auto end = size() - 1;
-        // filter and move the elements from to the corners of the buffer
-        for (auto it = _data.begin(); it != _data.begin() + start; ++it) {
-            if (f(*it)) {
-                _end--;
-            } else {
-                std::swap(*it, _data[pos++]);
+        for (auto it = begin() + start; it != end(); ++it) {
+            if (!f(*it)) {
+                tmp.push_back(std::move(*it));
             }
         }
-        pos = end;
-        for (auto it = std::make_reverse_iterator(this->end()); it != _data.rend() - start; ++it) {
-            if (f(*it)) {
-                _start++;
-            } else {
-                std::swap(*it, _data[pos--]);
+        for (auto it = begin(); it != begin() + start; ++it) {
+            if (!f(*it)) {
+                tmp.push_back(std::move(*it));
             }
         }
+        *this = std::move(tmp);
     }
 
     void reset(std::vector<TYPE> &&data)
