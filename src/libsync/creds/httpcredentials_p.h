@@ -87,9 +87,26 @@ public:
             job->start();
             return;
         }
-        const auto msg = tr("The support of client side certificate saved in the keychain was removed, please start the setup wizard again and follow the instructions.");
-        QMetaObject::invokeMethod(qApp, "slotShowGuiMessage", Qt::QueuedConnection, Q_ARG(QString, tr("Credentials")), Q_ARG(QString, msg));
-        qCWarning(lcHttpLegacyCredentials) << msg;
+        // Old case (pre 2.6): Read client cert and then key from keychain
+        const QString kck = _parent->keychainKey(
+            _parent->_account->url().toString(),
+            _parent->_user + clientCertificatePEMC(),
+            _keychainMigration ? QString() : _parent->_account->id());
+
+        QKeychain::ReadPasswordJob *job = new QKeychain::ReadPasswordJob(Theme::instance()->appName());
+        addSettingsToJob(job);
+        job->setInsecureFallback(false);
+        job->setKey(kck);
+        connect(job, &QKeychain::Job::finished, this, [job] {
+            if (job->error() != QKeychain::EntryNotFound) {
+                const auto msg = tr("The support of client side certificate saved in the keychain was removed, please start the setup wizard again and follow the instructions.");
+                QMetaObject::invokeMethod(qApp, "slotShowGuiMessage", Qt::QueuedConnection, Q_ARG(QString, tr("Credentials")), Q_ARG(QString, msg));
+                qCWarning(lcHttpLegacyCredentials) << msg;
+            }
+        });
+        job->start();
+
+        slotReadPasswordFromKeychain();
     }
 
 private:
