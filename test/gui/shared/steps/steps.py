@@ -72,7 +72,7 @@ def step(context, displayname, host):
         )
 
 def startClient():
-    startApplication("owncloud -s --logfile - --language en_US.utf8 --confdir " + confdir)
+    startApplication("owncloud -s --logfile - --language en_US --confdir " + confdir)
     snooze(1)
 
 def setUpClient(context, username, password, pollingInterval):
