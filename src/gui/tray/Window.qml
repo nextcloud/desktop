@@ -458,6 +458,7 @@ Window {
 
                    Image {
                         id: folderStateIndicator
+                        visible: UserModel.currentUser.hasLocalFolder
                         source: UserModel.isUserConnected(UserModel.currentUserId)
                                 ? Style.stateOnlineImageSource
                                 : Style.stateOfflineImageSource
