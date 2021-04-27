@@ -22,6 +22,6 @@ Icon=@APPLICATION_EXECUTABLE@
 
 # Translations
 Icon[es]=@APPLICATION_ICON_NAME@
-Name[es]=@APPLICATION_NAME@ Escritorio
-Comment[es]=Cliente de sincronización de escritorio @APPLICATION_NAME@
+Name[es]=@APPLICATION_NAME@ Desktop
+Comment[es]=@APPLICATION_NAME@ desktop synchronization client
 GenericName[es]=Sincronización de carpetas
