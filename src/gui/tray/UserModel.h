@@ -21,7 +21,7 @@ class User : public QObject
     Q_OBJECT
     Q_PROPERTY(QString name READ name NOTIFY nameChanged)
     Q_PROPERTY(QString server READ server CONSTANT)
-    Q_PROPERTY(bool serverHasUserStatus READ serverHasUserStatus)
+    Q_PROPERTY(bool serverHasUserStatus READ serverHasUserStatus CONSTANT)
     Q_PROPERTY(QUrl statusIcon READ statusIcon NOTIFY statusChanged)
     Q_PROPERTY(QString statusMessage READ statusMessage NOTIFY statusChanged)
     Q_PROPERTY(QString desktopNotificationsAllowed READ isDesktopNotificationsAllowed NOTIFY desktopNotificationsAllowedChanged)
@@ -158,7 +158,7 @@ public:
     enum UserRoles {
         NameRole = Qt::UserRole + 1,
         ServerRole,
-        ServerUserStatusRole,
+        ServerHasUserStatusRole,
         StatusIconRole,
         StatusMessageRole,
         DesktopNotificationsAllowedRole,

@@ -749,7 +749,7 @@ void UserModel::addUser(AccountStatePtr &user, const bool &isCurrent)
         });
         
         connect(u, &User::desktopNotificationsAllowedChanged, this, [this, row] {
-            emit dataChanged(index(row, 0), index(row, 0), {UserModel::DesktopNotificationsAllowedRole});
+            emit dataChanged(index(row, 0), index(row, 0), { UserModel::DesktopNotificationsAllowedRole });
         });
         
 
@@ -891,7 +891,7 @@ QVariant UserModel::data(const QModelIndex &index, int role) const
         return _users[index.row()]->name();
     } else if (role == ServerRole) {
         return _users[index.row()]->server();
-    } else if (role == ServerUserStatusRole) {
+    } else if (role == ServerHasUserStatusRole) {
         return _users[index.row()]->serverHasUserStatus();
     } else if (role == StatusIconRole) {
         return _users[index.row()]->statusIcon();
@@ -916,7 +916,7 @@ QHash<int, QByteArray> UserModel::roleNames() const
     QHash<int, QByteArray> roles;
     roles[NameRole] = "name";
     roles[ServerRole] = "server";
-    roles[ServerUserStatusRole] = "serverUserStatus";
+    roles[ServerHasUserStatusRole] = "serverHasUserStatus";
     roles[StatusIconRole] = "statusIcon";
     roles[StatusMessageRole] = "statusMessage";
     roles[DesktopNotificationsAllowedRole] = "desktopNotificationsAllowed";

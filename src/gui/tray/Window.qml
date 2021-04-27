@@ -40,14 +40,11 @@ Window {
                 ? Style.stateOnlineImageSource
                 : Style.stateOfflineImageSource
         
-        currentAccountStatusIndicator.source = ""
-        currentUserStatus.visible = UserModel.isUserConnected(UserModel.currentUserId) &&
+        currentUserStatus.visible = UserModel.isUserConnected(UserModel.currentUserId) && 
                 UserModel.currentUser.serverHasUserStatus
         currentAccountStatusIndicatorMouseHover.visible = currentUserStatus.visible
         currentAccountStatusIndicatorBackground.visible = currentUserStatus.visible
-        if (currentUserStatus.visible) {
-            currentAccountStatusIndicator.source = UserModel.currentUser.statusIcon
-        } 
+        currentAccountStatusIndicator.source = currentUserStatus.visible? UserModel.currentUser.statusIcon : ""
 
         // HACK: reload account Instantiator immediately by restting it - could be done better I guess
         // see also id:accountMenu below
@@ -63,14 +60,11 @@ Window {
                     ? Style.stateOnlineImageSource
                     : Style.stateOfflineImageSource
             
-            currentAccountStatusIndicator.source = ""
             currentUserStatus.visible = UserModel.isUserConnected(UserModel.currentUserId) && 
                     UserModel.currentUser.serverHasUserStatus
             currentAccountStatusIndicatorMouseHover.visible = currentUserStatus.visible
             currentAccountStatusIndicatorBackground.visible = currentUserStatus.visible
-            if (currentUserStatus.visible) {
-                currentAccountStatusIndicator.source = UserModel.currentUser.statusIcon
-            } 
+            currentAccountStatusIndicator.source = currentUserStatus.visible? UserModel.currentUser.statusIcon : ""
         }
         onNewUserSelected: {
             accountMenu.close();
