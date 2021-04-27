@@ -204,15 +204,14 @@ void HttpCredentials::fetchFromKeychainHelper()
     }
 
     auto readPassword = [this] {
-        auto job = _account->credentialManager()->get(passwordKeyC());
+        auto job = _account->credentialManager()->get(isUsingOAuth() ? refreshTokenKeyC() : passwordKeyC());
         connect(job, &CredentialJob::finished, this, [job, this] {
             const auto error = job->error();
             if (job->error() != error) {
                 qCWarning(lcHttpLegacyCredentials) << "Could not retrieve client password from keychain" << job->errorString();
                 return;
             }
-            bool isOauth = _account->credentialSetting(isOAuthC()).toBool();
-            if (isOauth) {
+            if (isUsingOAuth()) {
                 _refreshToken = job->data().toString();
             } else {
                 _password = job->data().toString();
@@ -347,7 +346,6 @@ void HttpCredentials::persist()
     }
 
     _account->setCredentialSetting(userC(), _user);
-    _account->setCredentialSetting(isOAuthC(), isUsingOAuth());
     if (!_clientCertBundle.isEmpty()) {
         // Note that the _clientCertBundle will often be cleared after usage,
         // it's just written if it gets passed into the constructor.

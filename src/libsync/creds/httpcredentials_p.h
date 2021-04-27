@@ -18,11 +18,6 @@ auto CredentialVersionKey()
     return QStringLiteral("CredentialVersion");
 }
 
-auto isOAuthC()
-{
-    return QStringLiteral("oauth");
-}
-
 const QString userC()
 {
     return QStringLiteral("user");
@@ -61,9 +56,10 @@ class HttpLegacyCredentials : public QObject
     {
         return QStringLiteral("_clientKeyPEM");
     }
-    const QString PasswordKey()
+
+    auto isOAuthC()
     {
-        return QStringLiteral("password");
+        return QStringLiteral("oauth");
     }
 
 public:
