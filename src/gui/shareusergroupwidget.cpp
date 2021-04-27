@@ -209,7 +209,7 @@ void ShareUserGroupWidget::getShares()
 
 void ShareUserGroupWidget::slotShareCreated(const QSharedPointer<Share> &share)
 {
-    if (share && _account->capabilities().shareEmailPasswordEnabled()) {
+    if (share && _account->capabilities().shareEmailPasswordEnabled() && !_account->capabilities().shareEmailPasswordEnforced()) {
         // remember this share Id so we can set it's password Line Edit to focus later
         _lastCreatedShareId = share->getId();
     }
@@ -228,7 +228,7 @@ void ShareUserGroupWidget::slotSharesFetched(const QList<QSharedPointer<Share>> 
     int height = 0;
     QList<QString> linkOwners({});
 
-    ShareUserLine *justCreatedShareThatNeedsOptionalPassword = nullptr;
+    ShareUserLine *justCreatedShareThatNeedsPassword = nullptr;
 
     foreach (const auto &share, shares) {
         // We don't handle link shares, only TypeUser or TypeGroup
@@ -261,8 +261,8 @@ void ShareUserGroupWidget::slotSharesFetched(const QList<QSharedPointer<Share>> 
 
         if (!_lastCreatedShareId.isEmpty() && share->getId() == _lastCreatedShareId) {
             _lastCreatedShareId = QString();
-            if (_account->capabilities().shareEmailPasswordEnabled()) {
-                justCreatedShareThatNeedsOptionalPassword = s;
+            if (_account->capabilities().shareEmailPasswordEnabled() && !_account->capabilities().shareEmailPasswordEnforced()) {
+                justCreatedShareThatNeedsPassword = s;
             }
         }
 
@@ -291,9 +291,9 @@ void ShareUserGroupWidget::slotSharesFetched(const QList<QSharedPointer<Share>> 
     _disableCompleterActivated = false;
     activateShareeLineEdit();
 
-    if (justCreatedShareThatNeedsOptionalPassword) {
+    if (justCreatedShareThatNeedsPassword) {
         // always set focus to a password Line Edit when the new email share is created on a server with optional passwords enabled for email shares
-        justCreatedShareThatNeedsOptionalPassword->focusPasswordLineEdit();
+        justCreatedShareThatNeedsPassword->focusPasswordLineEdit();
     }
 }
 
@@ -521,8 +521,10 @@ ShareUserLine::ShareUserLine(AccountPtr account,
 
     showNoteOptions(false);
 
-    if (_share->getShareType() != Share::ShareType::TypeEmail) {
-        // email shares do not support notes
+    // email shares do not support notes and expiration dates
+    const bool isNoteAndExpirationDateSupported = _share->getShareType() != Share::ShareType::TypeEmail;
+
+    if (isNoteAndExpirationDateSupported) {
         _noteLinkAction = new QAction(tr("Note to recipient"));
         _noteLinkAction->setCheckable(true);
         menu->addAction(_noteLinkAction);
@@ -535,7 +537,7 @@ ShareUserLine::ShareUserLine(AccountPtr account,
 
     showExpireDateOptions(false);
 
-    if (_share->getShareType() != Share::ShareType::TypeEmail) {
+    if (isNoteAndExpirationDateSupported) {
         // email shares do not support expiration dates
         _expirationDateLinkAction = new QAction(tr("Set expiration date"));
         _expirationDateLinkAction->setCheckable(true);
@@ -551,9 +553,9 @@ ShareUserLine::ShareUserLine(AccountPtr account,
 
     menu->addSeparator();
 
-    // Adds action to delete share widget
-    QIcon deleteicon = QIcon::fromTheme(QLatin1String("user-trash"),QIcon(QLatin1String(":/client/theme/delete.svg")));
-    _deleteShareButton= new QAction(deleteicon,tr("Unshare"), this);
+      // Adds action to delete share widget
+      QIcon deleteicon = QIcon::fromTheme(QLatin1String("user-trash"),QIcon(QLatin1String(":/client/theme/delete.svg")));
+      _deleteShareButton= new QAction(deleteicon,tr("Unshare"), this);
 
     menu->addAction(_deleteShareButton);
     connect(_deleteShareButton, &QAction::triggered, this, &ShareUserLine::on_deleteShareButton_clicked);
@@ -586,14 +588,13 @@ ShareUserLine::ShareUserLine(AccountPtr account,
         _passwordProtectLinkAction = new QAction(tr("Password protect"), this);
         _passwordProtectLinkAction->setCheckable(true);
         _passwordProtectLinkAction->setChecked(_share->isPasswordSet());
+        // checkbox can be checked/unchedkec if the password is not yet set or if it's not enforced
         _passwordProtectLinkAction->setEnabled(!_share->isPasswordSet() || !_account->capabilities().shareEmailPasswordEnforced());
 
         menu->addAction(_passwordProtectLinkAction);
         connect(_passwordProtectLinkAction, &QAction::triggered, this, &ShareUserLine::slotPasswordCheckboxChanged);
 
-        if (_share->isPasswordSet()) {
-            _ui->lineEdit_password->setPlaceholderText(QString::fromUtf8(passwordIsSetPlaceholder));
-        }
+        refreshPasswordLineEditPlaceholder();
 
         connect(_share.data(), &Share::passwordSet, this, &ShareUserLine::slotPasswordSet);
         connect(_share.data(), &Share::passwordSetError, this, &ShareUserLine::slotPasswordSetError);
@@ -774,15 +775,16 @@ void ShareUserLine::slotPasswordCheckboxChanged()
             _ui->lineEdit_password->setText(QString());
             refreshPasswordOptions();
         } else {
+            // do not call refreshPasswordOptions here, as it will be called after the network request is complete
             togglePasswordSetProgressAnimation(true);
             _share->setPassword(QString());
         }
     } else {
         refreshPasswordOptions();
-    }
 
-    if (_ui->lineEdit_password->isVisible() && _ui->lineEdit_password->isEnabled()) {
-        _ui->lineEdit_password->setFocus();
+        if (_ui->lineEdit_password->isVisible() && _ui->lineEdit_password->isEnabled()) {
+            focusPasswordLineEdit();
+        }
     }
 }
 
@@ -800,12 +802,12 @@ void ShareUserLine::slotDeleteAnimationFinished()
 
 void ShareUserLine::refreshPasswordOptions()
 {
-    const bool isEmailShare = _share->getShareType() == Share::TypeEmail;
+    const bool isPasswordEnabled = _share->getShareType() == Share::TypeEmail && _passwordProtectLinkAction->isChecked();
 
-    _ui->passwordLabel->setVisible(isEmailShare && _passwordProtectLinkAction->isChecked());
-    _ui->lineEdit_password->setEnabled(isEmailShare && _passwordProtectLinkAction->isChecked());
-    _ui->lineEdit_password->setVisible(isEmailShare && _passwordProtectLinkAction->isChecked());
-    _ui->confirmPassword->setVisible(isEmailShare && _passwordProtectLinkAction->isChecked());
+    _ui->passwordLabel->setVisible(isPasswordEnabled);
+    _ui->lineEdit_password->setEnabled(isPasswordEnabled);
+    _ui->lineEdit_password->setVisible(isPasswordEnabled);
+    _ui->confirmPassword->setVisible(isPasswordEnabled);
 
     emit resizeRequested();
 }
@@ -837,16 +839,17 @@ void ShareUserLine::slotPasswordSet()
 void ShareUserLine::slotPasswordSetError(int statusCode, const QString &message)
 {
     togglePasswordSetProgressAnimation(false);
+
     _ui->lineEdit_password->setEnabled(true);
     _ui->confirmPassword->setEnabled(true);
-
-    _passwordProtectLinkAction->setEnabled(!_share->isPasswordSet() || !_account->capabilities().shareEmailPasswordEnforced());
 
     qCWarning(lcSharing) << "Error from server" << statusCode << message;
 
     refreshPasswordLineEditPlaceholder();
 
-    _ui->lineEdit_password->setFocus();
+    refreshPasswordOptions();
+
+    focusPasswordLineEdit();
 
     _ui->errorLabel->show();
     _ui->errorLabel->setText(message);
@@ -1011,6 +1014,7 @@ void ShareUserLine::enableProgessIndicatorAnimation(bool enable)
 
 void ShareUserLine::togglePasswordSetProgressAnimation(bool show)
 {
+    // button and progress indicator are interchanged depending on if the network request is in progress or not
     _ui->confirmPassword->setVisible(!show && _passwordProtectLinkAction->isChecked());
     _ui->passwordProgressIndicator->setVisible(show);
     if (show) {
@@ -1034,7 +1038,6 @@ void ShareUserLine::setPasswordConfirmed()
     }
 
     _ui->lineEdit_password->setEnabled(false);
-
     _ui->confirmPassword->setEnabled(false);
 
     _ui->errorLabel->hide();
