@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Support and Questions
+    url: "https://help.nextcloud.com/"
+    about: "If you have trouble with setting up Nextcloud, please use the forum instead of opening an issue here."
