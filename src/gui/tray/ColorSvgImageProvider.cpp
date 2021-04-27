@@ -6,6 +6,7 @@
 #include <QSvgRenderer>
 #include <QNetworkReply>
 #include <qpalette.h>
+#include <qsvgrenderer.h>
 
 #include "ColorSvgImageProvider.h"
 
@@ -84,61 +85,33 @@ public:
     void run() override
     {
         qCDebug(lcColorSvgImageProvider) << "Load" << _id;
-        // QSvgRenderer svgRenderer;
-        // if (_id.startsWith("data")) {
-        //     const QString prefix("data:image/svg+xml;utf8,");
-        //     Q_ASSERT(_id.startsWith(prefix));
-        //     const auto svgData = QUrl::fromPercentEncoding(_id.toLocal8Bit()).mid(prefix.size()).toLocal8Bit();
-        //     Q_ASSERT(svgRenderer.load(svgData));
-        // } else if (_id.startsWith("http")) {
-        //     // const auto url = QUrl::fromUserInput(_id);
-        //     // auto networkAccessManager = new QNetworkAccessManager();
-        //     // auto reply = networkAccessManager->get(QNetworkRequest(url));
+        if (_id.startsWith("data")) {
+            const QString prefix("data:image/svg+xml;utf8,");
+            Q_ASSERT(_id.startsWith(prefix));
+            const auto svgData = QUrl::fromPercentEncoding(_id.toLocal8Bit()).mid(prefix.size()).toLocal8Bit();
+            auto image = renderColoredIcon(svgData);
+            // FIXME: Remove sleep statements. At the momemnt if I remove them, the app crashes
+            QThread::sleep(1);
+            emit done(image);
+            return;
+        } else if (_id.startsWith("http")) {
+            const auto url = QUrl::fromUserInput(_id);
+            auto networkAccessManager = new QNetworkAccessManager();
+            auto reply = networkAccessManager->get(QNetworkRequest(url));
 
-        //     // // TODO: This loop is a little bit ugly but had no better idea yet to do synchronious network request
-        //     // // I think doing a syncronious network request is fine because I hope that requestImage() gets executed async.
-        //     // QEventLoop loop;
-        //     // QObject::connect(reply, &QNetworkReply::readyRead, [&] {
-        //     //     qCDebug(lcColorSvgImageProvider) << "Loaded http";
-        //     //     svgRenderer.load(reply->readAll());
-        //     //     loop.quit();
-        //     // });
-        //     // QObject::connect(reply, &QNetworkReply::finished, reply, &QNetworkReply::deleteLater);
-        //     // loop.exec();
-
-        //     auto image = QImage(_requestedSize.width(), _requestedSize.height(), QImage::Format_ARGB32);
-        //     image.fill(Qt::red);
-        //     emit done(image);
-        //     return;
-        // } else {
-        //     const QString realId = QLatin1Char(':') + _id;
-        //     Q_ASSERT(svgRenderer.load(realId));
-        // }
-        // QImage svgImage(_requestedSize.width(), _requestedSize.height(), QImage::Format_ARGB32);
-        // QPainter svgImagePainter(&svgImage);
-        // svgImage.fill(Qt::GlobalColor::transparent);
-        // svgRenderer.render(&svgImagePainter);
-        // svgImagePainter.end();
-
-        // Q_ASSERT(_requestedSize.isValid());
-        // QImage image(_requestedSize.width(), _requestedSize.height(), QImage::Format_ARGB32);
-        // image.fill(_palette.windowText().color());
-        // QPainter imagePainter(&image);
-        // imagePainter.setCompositionMode(QPainter::CompositionMode_DestinationIn);
-        // imagePainter.drawImage(0, 0, svgImage);
-        // imagePainter.end();
-        QThread::sleep(1);
-
-        auto image = QImage(_requestedSize.width(), _requestedSize.height(), QImage::Format_ARGB32);
-        if (_id == QLatin1String("slow")) {
-            qDebug() << "Slow, red, sleeping for 5 seconds";
-            image.fill(Qt::red);
-        } else {
-            qDebug() << "Fast, blue, sleeping for 1 second";
-            image.fill(Qt::blue);
+            QObject::connect(reply, &QNetworkReply::readyRead, [&] {
+                auto image = renderColoredIcon(reply->readAll());
+                // FIXME: Remove sleep statements. At the momemnt if I remove them, the app crashes
+                QThread::sleep(1);
+                emit done(image);
+                reply->deleteLater();
+            });
+            return;
         }
-
-        qCDebug(lcColorSvgImageProvider) << "Done";
+        const QString resourcePath = QLatin1Char(':') + _id;
+        auto image = renderColoredIcon(resourcePath);
+        // FIXME: Remove sleep statements. At the momemnt if I remove them, the app crashes
+        QThread::sleep(1);
         emit done(image);
     }
 
@@ -146,6 +119,42 @@ private:
     QString _id;
     QPalette _palette;
     QSize _requestedSize;
+
+
+    QImage renderColoredIcon(const QByteArray &svgData)
+    {
+        QSvgRenderer svgRenderer;
+        svgRenderer.load(svgData);
+
+        return renderColoredIcon(svgRenderer);
+    }
+
+    QImage renderColoredIcon(const QString &svgData)
+    {
+        QSvgRenderer svgRenderer;
+        svgRenderer.load(svgData);
+
+        return renderColoredIcon(svgRenderer);
+    }
+
+    QImage renderColoredIcon(QSvgRenderer &svgRenderer)
+    {
+        QImage svgImage(_requestedSize.width(), _requestedSize.height(), QImage::Format_ARGB32);
+        QPainter svgImagePainter(&svgImage);
+        svgImage.fill(Qt::GlobalColor::transparent);
+        svgRenderer.render(&svgImagePainter);
+        svgImagePainter.end();
+
+        Q_ASSERT(_requestedSize.isValid());
+        QImage image(_requestedSize.width(), _requestedSize.height(), QImage::Format_ARGB32);
+        image.fill(_palette.windowText().color());
+        QPainter imagePainter(&image);
+        imagePainter.setCompositionMode(QPainter::CompositionMode_DestinationIn);
+        imagePainter.drawImage(0, 0, svgImage);
+        imagePainter.end();
+
+        return image;
+    }
 };
 
 
