@@ -332,7 +332,7 @@ Esta acción interromperá calquera sincronización que estea agora en proceso.<
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="868"/>
         <source>Connecting to %1...</source>
-        <translation>Connectando con %1...</translation>
+        <translation>Conectando con %1...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="873"/>
