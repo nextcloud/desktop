@@ -178,7 +178,7 @@ void PropagateLocalMkdir::startLocalMkdir()
     emit propagator()->touchedFile(newDirStr);
     QDir localDir(propagator()->localPath());
     if (!localDir.mkpath(_item->_file)) {
-        done(SyncFileItem::NormalError, tr("could not create folder %1").arg(newDirStr));
+        done(SyncFileItem::NormalError, tr("Could not create folder %1").arg(newDirStr));
         return;
     }
 

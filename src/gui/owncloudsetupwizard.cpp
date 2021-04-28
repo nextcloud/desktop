@@ -450,7 +450,7 @@ void OwncloudSetupWizard::slotCreateLocalAndRemoteFolders(const QString &localFo
         if (fi.mkpath(localFolder)) {
             FileSystem::setFolderMinimumPermissions(localFolder);
             Utility::setupFavLink(localFolder);
-            res += tr("ok");
+            res += tr("OK");
         } else {
             res += tr("failed.");
             qCWarning(lcWizard) << "Failed to create " << fi.path();
