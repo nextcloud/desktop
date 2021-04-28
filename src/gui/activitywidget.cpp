@@ -97,7 +97,7 @@ ActivityWidget::ActivityWidget(QWidget *parent)
             showLabels();
         }
 
-        for (const auto widget : _widgetForNotifId) {
+        for (const auto widget : qAsConst(_widgetForNotifId)) {
             if (widget->activity().uuid() == ast->account()->uuid()) {
                 scheduleWidgetToRemove(widget);
             }
@@ -313,16 +313,15 @@ void ActivityWidget::slotBuildNotificationDisplay(const ActivityList &list)
 
     const auto accId = list.first().uuid();
     QList<Activity::Identifier> strayCats;
-    for (const auto &id : _widgetForNotifId.keys()) {
-        NotificationWidget *widget = _widgetForNotifId[id];
+    for (auto it = _widgetForNotifId.cbegin(); it != _widgetForNotifId.cend(); ++it) {
         bool found = false;
         // do not mark widgets of other accounts to delete.
-        if (widget->activity().uuid() != accId) {
+        if (it.value()->activity().uuid() != accId) {
             continue;
         }
 
         for (const auto &activity : list) {
-            if (activity.id() == id) {
+            if (activity.id() == it.key()) {
                 // found an activity
                 found = true;
                 break;
@@ -330,7 +329,7 @@ void ActivityWidget::slotBuildNotificationDisplay(const ActivityList &list)
         }
         if (!found) {
             // the activity does not exist any more.
-            strayCats.append(id);
+            strayCats.append(it.key());
         }
     }
 
@@ -376,10 +375,10 @@ void ActivityWidget::slotSendNotificationRequest(const QString &accountName, con
     qCInfo(lcActivity) << "Server Notification Request " << verb << link << "on account" << accountName;
     NotificationWidget *theSender = qobject_cast<NotificationWidget *>(sender());
 
-    const QStringList validVerbs = QStringList() << "GET"
-                                                 << "PUT"
-                                                 << "POST"
-                                                 << "DELETE";
+    const QStringList validVerbs = { QStringLiteral("GET"),
+        QStringLiteral("PUT"),
+        QStringLiteral("POST"),
+        QStringLiteral("DELETE") };
 
     if (validVerbs.contains(verb)) {
         AccountStatePtr acc = AccountManager::instance()->account(accountName);
