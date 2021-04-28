@@ -3539,7 +3539,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Фајл се не може делити јер је подељен без дозволе за поновно дељење.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="293"/>
+        <location filename="../src/gui/sharedialog.cpp" line="300"/>
         <source>The file cannot be shared because it does not have sharing permission.</source>
         <translation type="unfinished"/>
     </message>
@@ -3562,19 +3562,29 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Веза дељења</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="133"/>
-        <source>Note:</source>
-        <translation>Белешка:</translation>
-    </message>
-    <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="192"/>
         <source>Password:</source>
         <translation>Лозинка:</translation>
     </message>
     <message>
+        <location filename="../src/gui/sharelinkwidget.ui" line="133"/>
+        <source>Note:</source>
+        <translation>Белешка:</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.ui" line="146"/>
+        <source>Note</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="171"/>
         <source>&amp;Share link</source>
         <translation>&amp;Подели везу</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.ui" line="223"/>
+        <source>Set password</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="239"/>
@@ -3585,6 +3595,11 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/sharelinkwidget.ui" line="245"/>
         <source>Expires:</source>
         <translation>Истиче:</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.ui" line="294"/>
+        <source>Expires</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="150"/>
@@ -3612,29 +3627,14 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Превлачење фајлова (само за отпремање)</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="170"/>
-        <source>Allow upload and editing</source>
-        <translation>Дозволи отпремање и уређивање</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="175"/>
-        <source>File drop (upload only)</source>
-        <translation>Превлачење фајлова (само за отпремање)</translation>
-    </message>
-    <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="184"/>
         <source>Password Protect</source>
         <translation>Заштита лозинком</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="190"/>
-        <source>Note to recipient</source>
-        <translation>Напомена примаоцу</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="200"/>
-        <source>Password protect</source>
-        <translation>Заштићено лозинком</translation>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="170"/>
+        <source>Allow upload and editing</source>
+        <translation>Дозволи отпремање и уређивање</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="201"/>
@@ -3642,14 +3642,29 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Датум истека</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="217"/>
-        <source>Set expiration date</source>
-        <translation>Постави датум истека</translation>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="175"/>
+        <source>File drop (upload only)</source>
+        <translation>Превлачење фајлова (само за отпремање)</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="190"/>
+        <source>Note to recipient</source>
+        <translation>Напомена примаоцу</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="220"/>
         <source>Unshare</source>
         <translation>Укини дељење</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="200"/>
+        <source>Password protect</source>
+        <translation>Заштићено лозинком</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="217"/>
+        <source>Set expiration date</source>
+        <translation>Постави датум истека</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="236"/>
@@ -3749,12 +3764,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Може да дели даље</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="465"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="466"/>
         <source>Note to recipient</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="475"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="476"/>
         <source>Set expiration date</source>
         <translation type="unfinished"/>
     </message>

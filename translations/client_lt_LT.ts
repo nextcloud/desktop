@@ -3537,7 +3537,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Failu dalintis negalima, bet jam nebuvo suteikta teisė dalintis.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="293"/>
+        <location filename="../src/gui/sharedialog.cpp" line="300"/>
         <source>The file cannot be shared because it does not have sharing permission.</source>
         <translation type="unfinished"/>
     </message>
@@ -3560,19 +3560,29 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Bendrinimo nuoroda</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="133"/>
-        <source>Note:</source>
-        <translation>Pastaba:</translation>
-    </message>
-    <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="192"/>
         <source>Password:</source>
         <translation>Slaptažodis:</translation>
     </message>
     <message>
+        <location filename="../src/gui/sharelinkwidget.ui" line="133"/>
+        <source>Note:</source>
+        <translation>Pastaba:</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.ui" line="146"/>
+        <source>Note</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="171"/>
         <source>&amp;Share link</source>
         <translation>&amp;Dalinimosi nuoroda</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.ui" line="223"/>
+        <source>Set password</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="239"/>
@@ -3583,6 +3593,11 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/sharelinkwidget.ui" line="245"/>
         <source>Expires:</source>
         <translation>Galioja iki:</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.ui" line="294"/>
+        <source>Expires</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="150"/>
@@ -3610,29 +3625,14 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Failo numetimas (tik įkėlimui)</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="170"/>
-        <source>Allow upload and editing</source>
-        <translation>Leisti įkelti ir redaguoti</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="175"/>
-        <source>File drop (upload only)</source>
-        <translation>Failų įmetimas (tik įkėlimas)</translation>
-    </message>
-    <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="184"/>
         <source>Password Protect</source>
         <translation>Apsaugota slaptažodžiu</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="190"/>
-        <source>Note to recipient</source>
-        <translation>Pastaba gavėjui</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="200"/>
-        <source>Password protect</source>
-        <translation>Apsaugoti slaptažodžiu</translation>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="170"/>
+        <source>Allow upload and editing</source>
+        <translation>Leisti įkelti ir redaguoti</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="201"/>
@@ -3640,14 +3640,29 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Galiojimo pabaigos data</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="217"/>
-        <source>Set expiration date</source>
-        <translation>Nustatyti galiojimo pabaigos datą</translation>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="175"/>
+        <source>File drop (upload only)</source>
+        <translation>Failų įmetimas (tik įkėlimas)</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="190"/>
+        <source>Note to recipient</source>
+        <translation>Pastaba gavėjui</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="220"/>
         <source>Unshare</source>
         <translation>Nustoti bendrinti</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="200"/>
+        <source>Password protect</source>
+        <translation>Apsaugoti slaptažodžiu</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="217"/>
+        <source>Set expiration date</source>
+        <translation>Nustatyti galiojimo pabaigos datą</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="236"/>
@@ -3747,12 +3762,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Gali pakartotinai bendrinti</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="465"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="466"/>
         <source>Note to recipient</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="475"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="476"/>
         <source>Set expiration date</source>
         <translation type="unfinished"/>
     </message>

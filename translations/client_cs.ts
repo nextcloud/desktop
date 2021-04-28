@@ -3560,7 +3560,7 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
         <translation>Tento soubor nelze sdílet, protože byl nasdílen bez umožnění dalšího sdílení dál.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="293"/>
+        <location filename="../src/gui/sharedialog.cpp" line="300"/>
         <source>The file cannot be shared because it does not have sharing permission.</source>
         <translation>Tento soubor nelze sdílet, protože nemá nastavené oprávnění ke sdílení.</translation>
     </message>
@@ -3583,19 +3583,29 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
         <translation>Odkaz sdílení</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="133"/>
-        <source>Note:</source>
-        <translation>Poznámka:</translation>
-    </message>
-    <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="192"/>
         <source>Password:</source>
         <translation>Heslo:</translation>
     </message>
     <message>
+        <location filename="../src/gui/sharelinkwidget.ui" line="133"/>
+        <source>Note:</source>
+        <translation>Poznámka:</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.ui" line="146"/>
+        <source>Note</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="171"/>
         <source>&amp;Share link</source>
         <translation>Odkaz pro &amp;sdílení</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.ui" line="223"/>
+        <source>Set password</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="239"/>
@@ -3606,6 +3616,11 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
         <location filename="../src/gui/sharelinkwidget.ui" line="245"/>
         <source>Expires:</source>
         <translation>Platnost skončí:</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.ui" line="294"/>
+        <source>Expires</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="150"/>
@@ -3633,29 +3648,14 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
         <translation>Přetažení souboru (pouze nahrání)</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="170"/>
-        <source>Allow upload and editing</source>
-        <translation>Povolit nahrávání a úpravy</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="175"/>
-        <source>File drop (upload only)</source>
-        <translation>Přetažení souboru (pouze nahrání)</translation>
-    </message>
-    <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="184"/>
         <source>Password Protect</source>
         <translation>Chránit heslem</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="190"/>
-        <source>Note to recipient</source>
-        <translation>Poznámka pro příjemce</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="200"/>
-        <source>Password protect</source>
-        <translation>Chránit heslem</translation>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="170"/>
+        <source>Allow upload and editing</source>
+        <translation>Povolit nahrávání a úpravy</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="201"/>
@@ -3663,14 +3663,29 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
         <translation>Datum skončení platnosti</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="217"/>
-        <source>Set expiration date</source>
-        <translation>Nastavit datum skončení platnosti</translation>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="175"/>
+        <source>File drop (upload only)</source>
+        <translation>Přetažení souboru (pouze nahrání)</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="190"/>
+        <source>Note to recipient</source>
+        <translation>Poznámka pro příjemce</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="220"/>
         <source>Unshare</source>
         <translation>Přestat sdílet</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="200"/>
+        <source>Password protect</source>
+        <translation>Chránit heslem</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="217"/>
+        <source>Set expiration date</source>
+        <translation>Nastavit datum skončení platnosti</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="236"/>
@@ -3770,12 +3785,12 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
         <translation>Příjemce tohoto sdílení může sám dále nasdílet dalším</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="465"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="466"/>
         <source>Note to recipient</source>
         <translation>Poznámka pro příjemce</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="475"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="476"/>
         <source>Set expiration date</source>
         <translation>Nastavit datum skončení platnosti</translation>
     </message>

@@ -3559,7 +3559,7 @@ Custa est una modalidade noa, isperimentale. Si detzides de dda impreare, sinnal
         <translation>Custu archìviu non faghet a ddu cumpartzire ca est cumpartzidu sena permissu.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="293"/>
+        <location filename="../src/gui/sharedialog.cpp" line="300"/>
         <source>The file cannot be shared because it does not have sharing permission.</source>
         <translation>S&apos;archìviu non faghet ddu cumpartzire ca non tenet permissu de cumpartzidura.</translation>
     </message>
@@ -3582,19 +3582,29 @@ Custa est una modalidade noa, isperimentale. Si detzides de dda impreare, sinnal
         <translation>Cumpartzi ligòngiu</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="133"/>
-        <source>Note:</source>
-        <translation>Nota:</translation>
-    </message>
-    <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="192"/>
         <source>Password:</source>
         <translation>Crae:</translation>
     </message>
     <message>
+        <location filename="../src/gui/sharelinkwidget.ui" line="133"/>
+        <source>Note:</source>
+        <translation>Nota:</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.ui" line="146"/>
+        <source>Note</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="171"/>
         <source>&amp;Share link</source>
         <translation>Cumpartzi&amp; ligòngiu</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.ui" line="223"/>
+        <source>Set password</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="239"/>
@@ -3605,6 +3615,11 @@ Custa est una modalidade noa, isperimentale. Si detzides de dda impreare, sinnal
         <location filename="../src/gui/sharelinkwidget.ui" line="245"/>
         <source>Expires:</source>
         <translation>Iscadet:</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.ui" line="294"/>
+        <source>Expires</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="150"/>
@@ -3632,29 +3647,14 @@ Custa est una modalidade noa, isperimentale. Si detzides de dda impreare, sinnal
         <translation>Trìsina archìviu (isceti pro carrigare)</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="170"/>
-        <source>Allow upload and editing</source>
-        <translation>Permite carrigamentos e modìficas</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="175"/>
-        <source>File drop (upload only)</source>
-        <translation>Tìsina archìviu (isceti pro carrigare)</translation>
-    </message>
-    <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="184"/>
         <source>Password Protect</source>
         <translation>Bàrdia crae</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="190"/>
-        <source>Note to recipient</source>
-        <translation>Nota pro sa persone destinatària</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="200"/>
-        <source>Password protect</source>
-        <translation>Bàrdia crae</translation>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="170"/>
+        <source>Allow upload and editing</source>
+        <translation>Permite carrigamentos e modìficas</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="201"/>
@@ -3662,14 +3662,29 @@ Custa est una modalidade noa, isperimentale. Si detzides de dda impreare, sinnal
         <translation>Data de iscadèntzia</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="217"/>
-        <source>Set expiration date</source>
-        <translation>Imposta data de iscadèntzia</translation>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="175"/>
+        <source>File drop (upload only)</source>
+        <translation>Tìsina archìviu (isceti pro carrigare)</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="190"/>
+        <source>Note to recipient</source>
+        <translation>Nota pro sa persone destinatària</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="220"/>
         <source>Unshare</source>
         <translation>Annulla sa cumpartzidura</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="200"/>
+        <source>Password protect</source>
+        <translation>Bàrdia crae</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="217"/>
+        <source>Set expiration date</source>
+        <translation>Imposta data de iscadèntzia</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="236"/>
@@ -3750,18 +3765,18 @@ Custa est una modalidade noa, isperimentale. Si detzides de dda impreare, sinnal
     <message>
         <location filename="../src/gui/shareuserline.ui" line="122"/>
         <source>Note:</source>
-        <translation type="unfinished"/>
+        <translation>Nota:</translation>
     </message>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="148"/>
         <location filename="../src/gui/shareuserline.ui" line="192"/>
         <source>…</source>
-        <translation type="unfinished"/>
+        <translation>…</translation>
     </message>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="172"/>
         <source>Expires:</source>
-        <translation type="unfinished"/>
+        <translation>Iscadet:</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="440"/>
@@ -3769,14 +3784,14 @@ Custa est una modalidade noa, isperimentale. Si detzides de dda impreare, sinnal
         <translation>Faghet a torrare a cumpartzire</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="465"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="466"/>
         <source>Note to recipient</source>
-        <translation type="unfinished"/>
+        <translation>Nota a sa persone destinatària</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="475"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="476"/>
         <source>Set expiration date</source>
-        <translation type="unfinished"/>
+        <translation>Imposta data de iscadèntzia</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="450"/>
@@ -4973,7 +4988,7 @@ Custa est una modalidade noa, isperimentale. Si detzides de dda impreare, sinnal
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="733"/>
         <source>Erase local folder and start a clean sync</source>
-        <translation type="unfinished"/>
+        <translation>Cantzella cartella locale e cumintza una sincronizatzione lìmpia</translation>
     </message>
 </context>
 <context>
@@ -4981,12 +4996,12 @@ Custa est una modalidade noa, isperimentale. Si detzides de dda impreare, sinnal
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.ui" line="73"/>
         <source>&amp;Username</source>
-        <translation type="unfinished"/>
+        <translation>Nùmene&amp;Utente</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.ui" line="83"/>
         <source>&amp;Password</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Crae</translation>
     </message>
 </context>
 <context>
@@ -4994,17 +5009,17 @@ Custa est una modalidade noa, isperimentale. Si detzides de dda impreare, sinnal
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="36"/>
         <source>Please switch to your browser to proceed.</source>
-        <translation type="unfinished"/>
+        <translation>Pro praghere passa a su navigadore tuo pro sighire.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="46"/>
         <source>An error occurred while connecting. Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>B&apos;at àpidu un&apos;errore connetende. Proa torra.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="56"/>
         <source>Re-open Browser</source>
-        <translation type="unfinished"/>
+        <translation>Torra a abèrrere su navigadore</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="69"/>
@@ -5018,52 +5033,52 @@ Custa est una modalidade noa, isperimentale. Si detzides de dda impreare, sinnal
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="32"/>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="353"/>
         <source>TextLabel</source>
-        <translation type="unfinished"/>
+        <translation>EtichetaTestu</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="73"/>
         <source>Logo</source>
-        <translation type="unfinished"/>
+        <translation>Logo</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="183"/>
         <source>Server address</source>
-        <translation type="unfinished"/>
+        <translation>Indiritzu serbidore</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="194"/>
         <source>Server Address</source>
-        <translation type="unfinished"/>
+        <translation>Indiritzu Serbidore</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="245"/>
         <source>This is the link to your %1 web interface when you open it in the browser.&lt;br/&gt;It looks like https://cloud.example.com or https://example.com/cloud</source>
-        <translation type="unfinished"/>
+        <translation>Custu est su ligòngiu a s&apos;interfache tua de %1 cando dda aberis in su navigadore.&lt;br/&gt;Paret comente a https://cloud.example.com or https://example.com/cloud</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="259"/>
         <source>This is the link to your %1 web interface when you open it in the browser.</source>
-        <translation type="unfinished"/>
+        <translation> Custu est su ligòngiu de s&apos;interfache ìnternet de %1 cando ddu aberis in su navigadore.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="343"/>
         <source>Register with a provider</source>
-        <translation type="unfinished"/>
+        <translation>Registra cun unu frunidore</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="359"/>
         <source>Sign up with a provider</source>
-        <translation type="unfinished"/>
+        <translation>Registra·ti cun unu frunidore</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="365"/>
         <source>Log in</source>
-        <translation type="unfinished"/>
+        <translation>Intra</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="381"/>
         <source>Log in to your %1</source>
-        <translation type="unfinished"/>
+        <translation>Intra in su %1 tuo</translation>
     </message>
 </context>
 <context>
@@ -5071,7 +5086,7 @@ Custa est una modalidade noa, isperimentale. Si detzides de dda impreare, sinnal
     <message>
         <location filename="../src/gui/wizard/owncloudwizardresultpage.ui" line="163"/>
         <source>Your entire account is synced to the local folder </source>
-        <translation type="unfinished"/>
+        <translation>Totu su contu est sincronizadu cun sa cartella locale</translation>
     </message>
 </context>
 <context>
@@ -5084,27 +5099,27 @@ Custa est una modalidade noa, isperimentale. Si detzides de dda impreare, sinnal
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="471"/>
         <source>%n day ago</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n die a como</numerusform><numerusform>%n die a oe</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="473"/>
         <source>%n days ago</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n dies a oe</numerusform><numerusform>%n days ago</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="477"/>
         <source>in the future</source>
-        <translation type="unfinished"/>
+        <translation>in futuro </translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="483"/>
         <source>%n hour ago</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n un&apos;ora a como</numerusform><numerusform>%n un&apos;ora a immoe</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="485"/>
         <source>%n hours ago</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n oras a como</numerusform><numerusform>%n oras a immoe</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="492"/>
@@ -5114,28 +5129,28 @@ Custa est una modalidade noa, isperimentale. Si detzides de dda impreare, sinnal
     <message>
         <location filename="../src/common/utility.cpp" line="494"/>
         <source>Less than a minute ago</source>
-        <translation type="unfinished"/>
+        <translation>Mancu unu minutu a immoe</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="498"/>
         <source>%n minute ago</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n minute ago</numerusform><numerusform>%n minutu a immoe</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="500"/>
         <source>%n minutes ago</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n minutos a immoe</numerusform><numerusform>%n minutos a immoe</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="504"/>
         <source>Some time ago</source>
-        <translation type="unfinished"/>
+        <translation>Dae pagu tempus</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncresult.cpp" line="139"/>
         <source>%1: %2</source>
         <extracomment>this displays an error string (%2) for a file %1</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1: %2</translation>
     </message>
 </context>
 <context>
@@ -5143,59 +5158,59 @@ Custa est una modalidade noa, isperimentale. Si detzides de dda impreare, sinnal
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="15"/>
         <source>Account entry</source>
-        <translation type="unfinished"/>
+        <translation>Insertada de datos</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="32"/>
         <source>Switch to account</source>
-        <translation type="unfinished"/>
+        <translation>Passa a su contu</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="92"/>
         <source>Current user status is online</source>
-        <translation type="unfinished"/>
+        <translation>S&apos;istadu atuale de s&apos;utente est in lìnia</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="92"/>
         <source>Current user status is do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>S&apos;istadu atuale de s&apos;utente est chi non si cheret istorbadu</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="94"/>
         <source>Account connected</source>
-        <translation type="unfinished"/>
+        <translation>Contu connètidu</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="94"/>
         <source>Account not connected</source>
-        <translation type="unfinished"/>
+        <translation>Contu non connètidu</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="140"/>
         <source>Account actions</source>
-        <translation type="unfinished"/>
+        <translation>Atziones de su contu</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="174"/>
         <location filename="../src/gui/tray/UserLine.qml" line="193"/>
         <source>Log out</source>
-        <translation type="unfinished"/>
+        <translation>Essi·nche</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="174"/>
         <location filename="../src/gui/tray/UserLine.qml" line="193"/>
         <source>Log in</source>
-        <translation type="unfinished"/>
+        <translation>Intra</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="173"/>
         <source>Remove Account</source>
-        <translation type="unfinished"/>
+        <translation>Boga·nche su contu</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="207"/>
         <source>Remove account</source>
-        <translation type="unfinished"/>
+        <translation>Boga·nche su contu</translation>
     </message>
 </context>
 <context>
@@ -5203,57 +5218,57 @@ Custa est una modalidade noa, isperimentale. Si detzides de dda impreare, sinnal
     <message>
         <location filename="../src/common/utility.cpp" line="130"/>
         <source>%L1 GB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 GB</translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="134"/>
         <source>%L1 MB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 MB</translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="138"/>
         <source>%L1 KB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 KB</translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="141"/>
         <source>%L1 B</source>
-        <translation type="unfinished"/>
+        <translation>%L1 B</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="324"/>
         <source>%n year(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n annu(os)</numerusform><numerusform>%n annu(os)</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="325"/>
         <source>%n month(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n mese(s)</numerusform><numerusform>%n mese(s)</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="326"/>
         <source>%n day(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n die(s)</numerusform><numerusform>%n die(s)</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="327"/>
         <source>%n hour(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n ora(s)</numerusform><numerusform>%n ora(s)</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="328"/>
         <source>%n minute(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n minuto(s)</numerusform><numerusform>%n minuto(s)</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="329"/>
         <source>%n second(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n minuto(s)</numerusform><numerusform>%n segundu(os)</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="353"/>
         <source>%1 %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 %2</translation>
     </message>
 </context>
 <context>
@@ -5261,22 +5276,22 @@ Custa est una modalidade noa, isperimentale. Si detzides de dda impreare, sinnal
     <message>
         <location filename="../src/common/checksums.cpp" line="331"/>
         <source>The checksum header is malformed.</source>
-        <translation type="unfinished"/>
+        <translation>S&apos;intestatzione de su còdighe de controllu.</translation>
     </message>
     <message>
         <location filename="../src/common/checksums.cpp" line="358"/>
         <source>The checksum header contained an unknown checksum type &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>S&apos;intestatzione de controllu cunteniat una genia de còdighe de controllu &apos;%1&apos; disconnotu</translation>
     </message>
     <message>
         <location filename="../src/common/checksums.cpp" line="252"/>
         <source>The downloaded file does not match the checksum, it will be resumed.</source>
-        <translation type="unfinished"/>
+        <translation>S&apos;archìviu iscarrigadu non torrat cun su còdighe de controllu, at a èssere ripristinadu.</translation>
     </message>
     <message>
         <location filename="../src/common/checksums.cpp" line="362"/>
         <source>The downloaded file does not match the checksum, it will be resumed. &apos;%1&apos; != &apos;%2&apos;</source>
-        <translation type="unfinished"/>
+        <translation> S&apos;archìviu iscarrigadu non torrat cun su còdighe de controllu, at a èssere ripristinadu. &apos;%1&apos; != &apos;%2&apos;</translation>
     </message>
 </context>
 <context>
@@ -5285,39 +5300,39 @@ Custa est una modalidade noa, isperimentale. Si detzides de dda impreare, sinnal
         <location filename="../src/gui/tray/Window.qml" line="25"/>
         <location filename="../src/gui/tray/Window.qml" line="105"/>
         <source>Nextcloud desktop main dialog</source>
-        <translation type="unfinished"/>
+        <translation>Bentana printzipale de Nextcloud de iscrivania</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="131"/>
         <source>Current account</source>
-        <translation type="unfinished"/>
+        <translation>Contu atuale</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="143"/>
         <location filename="../src/gui/tray/Window.qml" line="255"/>
         <source>Resume sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Riprìstina sincronizatzione pro totu</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="143"/>
         <location filename="../src/gui/tray/Window.qml" line="255"/>
         <source>Pause sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Pone in pasu sincronizatzione pro totu</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="169"/>
         <source>Account switcher and settings menu</source>
-        <translation type="unfinished"/>
+        <translation>Ischertadore de contu e impostatziones de su menu</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="214"/>
         <source>Add account</source>
-        <translation type="unfinished"/>
+        <translation>Agiunghe contu</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="227"/>
         <source>Add new account</source>
-        <translation type="unfinished"/>
+        <translation>Agiunghe unu contu</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="261"/>
@@ -5327,52 +5342,52 @@ Custa est una modalidade noa, isperimentale. Si detzides de dda impreare, sinnal
     <message>
         <location filename="../src/gui/tray/Window.qml" line="283"/>
         <source>Exit</source>
-        <translation type="unfinished"/>
+        <translation>Essi</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="328"/>
         <source>Current user avatar</source>
-        <translation type="unfinished"/>
+        <translation>Avatar atuale de s&apos;utente</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="360"/>
         <source>Current user status is online</source>
-        <translation type="unfinished"/>
+        <translation>S&apos;istadu atuale de s&apos;utente est in lìnia</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="360"/>
         <source>Current user status is do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>S&apos;istadu atuale de s&apos;utente est chi non si cheret istorbadu</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="443"/>
         <source>Connected</source>
-        <translation type="unfinished"/>
+        <translation>Connètidu</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="443"/>
         <source>Disconnected</source>
-        <translation type="unfinished"/>
+        <translation>Disconnètidu</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="447"/>
         <source>Open local folder of current account</source>
-        <translation type="unfinished"/>
+        <translation>Aberi sa cartella locale in su contu atuale</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="458"/>
         <source>Open Nextcloud Talk in browser</source>
-        <translation type="unfinished"/>
+        <translation>Aberi Nextcloud Talk in su navigadore</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="477"/>
         <source>More apps</source>
-        <translation type="unfinished"/>
+        <translation>Àteras aplicatziones</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="494"/>
         <source>Apps menu</source>
-        <translation type="unfinished"/>
+        <translation>Menu de aplicatziones</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="522"/>

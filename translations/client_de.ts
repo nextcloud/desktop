@@ -3560,7 +3560,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
         <translation>Die Datei kann nicht geteilt werden, weil sie ohne erneute Teilungs-Berechtigung für Sie geteilt wurde.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="293"/>
+        <location filename="../src/gui/sharedialog.cpp" line="300"/>
         <source>The file cannot be shared because it does not have sharing permission.</source>
         <translation>Die Datei kann nicht geteilt werden, weil sie keine Berechtigung zum Teilen hat.</translation>
     </message>
@@ -3583,19 +3583,29 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
         <translation>Link teilen</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="133"/>
-        <source>Note:</source>
-        <translation>Anmerkung:</translation>
-    </message>
-    <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="192"/>
         <source>Password:</source>
         <translation>Passwort:</translation>
     </message>
     <message>
+        <location filename="../src/gui/sharelinkwidget.ui" line="133"/>
+        <source>Note:</source>
+        <translation>Anmerkung:</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.ui" line="146"/>
+        <source>Note</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="171"/>
         <source>&amp;Share link</source>
         <translation>&amp;Link teilen</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.ui" line="223"/>
+        <source>Set password</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="239"/>
@@ -3606,6 +3616,11 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
         <location filename="../src/gui/sharelinkwidget.ui" line="245"/>
         <source>Expires:</source>
         <translation>Ablaufdatum:</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.ui" line="294"/>
+        <source>Expires</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="150"/>
@@ -3633,29 +3648,14 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
         <translation>Dateien ablegen (nur Hochladen)</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="170"/>
-        <source>Allow upload and editing</source>
-        <translation>Hochladen und Bearbeiten erlauben</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="175"/>
-        <source>File drop (upload only)</source>
-        <translation>Dateien ablegen (nur Hochladen)</translation>
-    </message>
-    <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="184"/>
         <source>Password Protect</source>
         <translation>Passwortschutz</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="190"/>
-        <source>Note to recipient</source>
-        <translation>Notiz an Empfänger</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="200"/>
-        <source>Password protect</source>
-        <translation>Passwortschutz</translation>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="170"/>
+        <source>Allow upload and editing</source>
+        <translation>Hochladen und Bearbeiten erlauben</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="201"/>
@@ -3663,14 +3663,29 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
         <translation>Ablaufdatum</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="217"/>
-        <source>Set expiration date</source>
-        <translation>Ablaufdatum setzen</translation>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="175"/>
+        <source>File drop (upload only)</source>
+        <translation>Dateien ablegen (nur Hochladen)</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="190"/>
+        <source>Note to recipient</source>
+        <translation>Notiz an Empfänger</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="220"/>
         <source>Unshare</source>
         <translation>Freigabe aufheben</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="200"/>
+        <source>Password protect</source>
+        <translation>Passwortschutz</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="217"/>
+        <source>Set expiration date</source>
+        <translation>Ablaufdatum setzen</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="236"/>
@@ -3770,12 +3785,12 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
         <translation>kann weiterteilen</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="465"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="466"/>
         <source>Note to recipient</source>
         <translation>Notiz an Empfänger</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="475"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="476"/>
         <source>Set expiration date</source>
         <translation>Ablaufdatum setzen</translation>
     </message>
