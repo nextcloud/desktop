@@ -1,3 +1,10 @@
+---
+name: Bugs
+about: Crashes and other bugs
+labels: 'bug'
+
+---
+
 <!--
 Thanks for reporting issues back to Nextcloud!
 
