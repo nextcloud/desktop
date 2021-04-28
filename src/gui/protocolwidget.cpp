@@ -78,6 +78,7 @@ void ProtocolWidget::showContextMenu(QWidget *parent, ProtocolItemModel *model, 
     auto menu = new QMenu(parent);
     menu->setAttribute(Qt::WA_DeleteOnClose);
 
+    // keep in sync with ActivityWidget::slotItemContextMenu
     menu->addAction(tr("Copy to clipboard"), parent, [text = Models::formatSelection(items)] {
         QApplication::clipboard()->setText(text);
     });
@@ -89,6 +90,7 @@ void ProtocolWidget::showContextMenu(QWidget *parent, ProtocolItemModel *model, 
             {
                 const QString localPath = folder->path() + data.path();
                 if (QFileInfo::exists(localPath)) {
+                    // keep in sync with ActivityWidget::slotItemContextMenu
                     menu->addAction(tr("Show in file browser"), parent, [localPath] {
                         if (QFileInfo::exists(localPath)) {
                             showInFileManager(localPath);
@@ -129,7 +131,6 @@ void ProtocolWidget::showContextMenu(QWidget *parent, ProtocolItemModel *model, 
 
 void ProtocolWidget::slotItemContextMenu()
 {
-    QModelIndexList list;
     auto rows = _ui->_tableView->selectionModel()->selectedRows();
     for (int i = 0; i < rows.size(); ++i) {
         rows[i] = _sortModel->mapToSource(rows[i]);

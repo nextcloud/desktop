@@ -122,6 +122,20 @@ QVariant ActivityListModel::headerData(int section, Qt::Orientation orientation,
                 Q_UNREACHABLE();
                 break;
             };
+        case Models::StringFormatWidthRole:
+            switch (actionRole) {
+            case ActivityRole::Text:
+                return 120;
+            case ActivityRole::Account:
+                return 20;
+            case ActivityRole::PointInTime:
+                return 20;
+            case ActivityRole::Path:
+                return 30;
+            case ActivityRole::ColumnCount:
+                Q_UNREACHABLE();
+                break;
+            }
         };
     }
     return QAbstractTableModel::headerData(section, orientation, role);

@@ -71,7 +71,6 @@ public:
     void checkActivityTabVisibility();
 
 public slots:
-    void slotOpenFile(QModelIndex indx);
     void slotRefreshActivities(AccountState *ptr);
     void slotRefreshNotifications(AccountState *ptr);
     void slotRemoveAccount(AccountState *ptr);
@@ -94,6 +93,7 @@ private slots:
     void slotCheckToCleanWidgets();
 
 private:
+    void slotItemContextMenu();
     void showLabels();
     QString timeString(QDateTime dt, QLocale::FormatType format) const;
     Ui::ActivityWidget *_ui;
@@ -113,6 +113,7 @@ private:
     int _notificationRequestsRunning;
 
     ActivityListModel *_model;
+    QSortFilterProxyModel *_sortModel;
     QVBoxLayout *_notificationsLayout;
 };
 

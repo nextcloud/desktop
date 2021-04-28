@@ -145,7 +145,6 @@ QVariant ProtocolItemModel::headerData(int section, Qt::Orientation orientation,
             };
 
         case Models::StringFormatWidthRole:
-            // TODO: fine tune
             switch (actionRole) {
             case ProtocolItemRole::Time:
                 return 20;

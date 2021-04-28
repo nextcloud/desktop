@@ -57,10 +57,10 @@ ActivityWidget::ActivityWidget(QWidget *parent)
     _ui->setupUi(this);
 
     _model = new ActivityListModel(this);
-    auto sortModel = new QSortFilterProxyModel(this);
-    sortModel->setSourceModel(_model);
-    _ui->_activityList->setModel(sortModel);
-    sortModel->setSortRole(Models::UnderlyingDataRole);
+    _sortModel = new QSortFilterProxyModel(this);
+    _sortModel->setSourceModel(_model);
+    _ui->_activityList->setModel(_sortModel);
+    _sortModel->setSortRole(Models::UnderlyingDataRole);
     _ui->_activityList->hideColumn(static_cast<int>(ActivityListModel::ActivityRole::Path));
     _ui->_activityList->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
     _ui->_activityList->horizontalHeader()->setSectionResizeMode(static_cast<int>(ActivityListModel::ActivityRole::Text), QHeaderView::Stretch);
@@ -105,8 +105,7 @@ ActivityWidget::ActivityWidget(QWidget *parent)
     });
 
     connect(_model, &QAbstractItemModel::modelReset, this, &ActivityWidget::dataChanged);
-
-    connect(_ui->_activityList, &QListView::activated, this, &ActivityWidget::slotOpenFile);
+    connect(_ui->_activityList, &QListView::customContextMenuRequested, this, &ActivityWidget::slotItemContextMenu);
 
     connect(&_removeTimer, &QTimer::timeout, this, &ActivityWidget::slotCheckToCleanWidgets);
     _removeTimer.setInterval(1000);
@@ -174,55 +173,6 @@ void ActivityWidget::slotAccountActivityStatus(AccountState *ast, int statusCode
     showLabels();
 }
 
-// FIXME: Reused from protocol widget. Move over to utilities.
-QString ActivityWidget::timeString(QDateTime dt, QLocale::FormatType format) const
-{
-    const QLocale loc = QLocale::system();
-    QString dtFormat = loc.dateTimeFormat(format);
-    static const QRegExp re("(HH|H|hh|h):mm(?!:s)");
-    dtFormat.replace(re, "\\1:mm:ss");
-    return loc.toString(dt, dtFormat);
-}
-
-void ActivityWidget::storeActivityList(QTextStream &ts)
-{
-    ActivityList activities = _model->activityList();
-
-    foreach (Activity activity, activities) {
-        ts << right
-           // account name
-           << qSetFieldWidth(30)
-           << activity.accName()
-           // separator
-           << qSetFieldWidth(0) << ","
-
-           // date and time
-           << qSetFieldWidth(34)
-           << activity.dateTime().toString()
-           // separator
-           << qSetFieldWidth(0) << ","
-
-           // file
-           << qSetFieldWidth(30)
-           << activity.file()
-           // separator
-           << qSetFieldWidth(0) << ","
-
-           // subject
-           << qSetFieldWidth(100)
-           << activity.subject()
-           // separator
-           << qSetFieldWidth(0) << ","
-
-           // message (mostly empty)
-           << qSetFieldWidth(55)
-           << activity.message()
-           //
-           << qSetFieldWidth(0)
-           << endl;
-    }
-}
-
 void ActivityWidget::checkActivityTabVisibility()
 {
     int accountCount = AccountManager::instance()->accounts().count();
@@ -237,16 +187,6 @@ void ActivityWidget::checkActivityTabVisibility()
     _ui->_notifyScroll->setVisible(hasNotifications);
 
     emit hideActivityTab(!hasAccountsWithActivity && !hasNotifications);
-}
-
-void ActivityWidget::slotOpenFile(QModelIndex indx)
-{
-    if (indx.isValid()) {
-        const auto fullPath = indx.data(static_cast<int>(ActivityListModel::ActivityRole::Path)).toString();
-        if (QFile::exists(fullPath)) {
-            showInFileManager(fullPath);
-        }
-    }
 }
 
 // GUI: Display the notifications.
@@ -499,6 +439,31 @@ void ActivityWidget::slotCheckToCleanWidgets()
         _ui->_notifyLabel->setHidden(true);
         _ui->_notifyScroll->setHidden(true);
     }
+}
+
+void ActivityWidget::slotItemContextMenu()
+{
+    auto rows = _ui->_activityList->selectionModel()->selectedRows();
+    auto menu = new QMenu(this);
+    menu->setAttribute(Qt::WA_DeleteOnClose);
+
+    // keep in sync with ProtocolWidget::showContextMenu
+    menu->addAction(tr("Copy to clipboard"), this, [text = Models::formatSelection(rows)] {
+        QApplication::clipboard()->setText(text);
+    });
+
+    if (rows.size() == 1) {
+        // keep in sync with ProtocolWidget::showContextMenu
+        const auto localPath = rows.first().siblingAtColumn(static_cast<int>(ActivityListModel::ActivityRole::Path)).data(Models::UnderlyingDataRole).toString();
+        if (!localPath.isEmpty()) {
+            menu->addAction(tr("Show in file browser"), this, [localPath] {
+                if (QFileInfo::exists(localPath)) {
+                    showInFileManager(localPath);
+                }
+            });
+        }
+    }
+    menu->popup(QCursor::pos());
 }
 
 
