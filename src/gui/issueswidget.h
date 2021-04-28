@@ -48,7 +48,6 @@ public:
     ~IssuesWidget() override;
 
 public slots:
-    //    void addError(const QString &folderAlias, const QString &message, ErrorCategory category);
     void slotProgressInfo(const QString &folder, const ProgressInfo &progress);
     void slotItemCompleted(const QString &folder, const SyncFileItemPtr &item);
 
@@ -59,9 +58,6 @@ private slots:
     void slotItemContextMenu();
 
 private:
-    /// Wipes all insufficient remote storgage blacklist entries
-    //    void retryInsufficentRemoteStorageErrors(const QString &folderAlias);
-
     ProtocolItemModel *_model;
     QSortFilterProxyModel *_sortModel;
 

@@ -175,43 +175,4 @@ void IssuesWidget::slotItemContextMenu()
     ProtocolWidget::showContextMenu(this, _model, rows);
 }
 
-// TODO: needs porting
-#if 0
-void IssuesWidget::addErrorWidget(QTreeWidgetItem *item, const QString &message, ErrorCategory category)
-{
-    QWidget *widget = nullptr;
-    if (category == ErrorCategory::InsufficientRemoteStorage) {
-        widget = new QWidget;
-        auto layout = new QHBoxLayout;
-        widget->setLayout(layout);
-
-        auto label = new ElidedLabel(message, widget);
-        label->setElideMode(Qt::ElideMiddle);
-        layout->addWidget(label);
-
-        auto button = new QPushButton("Retry all uploads", widget);
-        button->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding);
-        auto folderAlias = ProtocolItem::extraData(item).folderName;
-        connect(button, &QPushButton::clicked,
-            this, [this, folderAlias]() { retryInsufficentRemoteStorageErrors(folderAlias); });
-        layout->addWidget(button);
-    }
-
-    if (widget) {
-        item->setText(3, QString());
-    }
-    _ui->_treeWidget->setItemWidget(item, 3, widget);
-}
-
-void IssuesWidget::retryInsufficentRemoteStorageErrors(const QString &folderAlias)
-{
-    auto folderman = FolderMan::instance();
-    auto folder = folderman->folder(folderAlias);
-    if (!folder)
-        return;
-
-    folder->journalDb()->wipeErrorBlacklistCategory(SyncJournalErrorBlacklistRecord::InsufficientRemoteStorage);
-    folderman->scheduleFolderNext(folder);
-}
-#endif
 }
