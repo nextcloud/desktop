@@ -381,7 +381,7 @@ void ShareUserGroupWidget::slotCompleterActivated(const QModelIndex &index)
     } else {
         QString password;
         if (sharee->type() == Sharee::Email && _account->capabilities().shareEmailPasswordEnforced()) {
-            _ui->shareeLineEdit->setText(QString());
+            _ui->shareeLineEdit->clear();
             // always show a dialog for password-enforced email shares
             bool ok = false;
 
@@ -408,7 +408,7 @@ void ShareUserGroupWidget::slotCompleterActivated(const QModelIndex &index)
     }
 
     _ui->shareeLineEdit->setEnabled(false);
-    _ui->shareeLineEdit->setText(QString());
+    _ui->shareeLineEdit->clear();
 }
 
 void ShareUserGroupWidget::slotCompleterHighlighted(const QModelIndex &index)
@@ -769,10 +769,10 @@ void ShareUserLine::slotPasswordCheckboxChanged()
 {
     if (!_passwordProtectLinkAction->isChecked()) {
         _ui->errorLabel->hide();
-        _ui->errorLabel->setText(QString());
+        _ui->errorLabel->clear();
 
         if (!_share->isPasswordSet()) {
-            _ui->lineEdit_password->setText(QString());
+            _ui->lineEdit_password->clear();
             refreshPasswordOptions();
         } else {
             // do not call refreshPasswordOptions here, as it will be called after the network request is complete
@@ -838,12 +838,12 @@ void ShareUserLine::slotPasswordSet()
 
 void ShareUserLine::slotPasswordSetError(int statusCode, const QString &message)
 {
+    qCWarning(lcSharing) << "Error from server" << statusCode << message;
+
     togglePasswordSetProgressAnimation(false);
 
     _ui->lineEdit_password->setEnabled(true);
     _ui->confirmPassword->setEnabled(true);
-
-    qCWarning(lcSharing) << "Error from server" << statusCode << message;
 
     refreshPasswordLineEditPlaceholder();
 
@@ -1041,7 +1041,7 @@ void ShareUserLine::setPasswordConfirmed()
     _ui->confirmPassword->setEnabled(false);
 
     _ui->errorLabel->hide();
-    _ui->errorLabel->setText(QString());
+    _ui->errorLabel->clear();
 
     togglePasswordSetProgressAnimation(true);
     _share->setPassword(_ui->lineEdit_password->text());

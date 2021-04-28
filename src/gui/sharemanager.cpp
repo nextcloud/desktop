@@ -108,7 +108,7 @@ QSharedPointer<Sharee> Share::getShareWith() const
 
 void Share::setPassword(const QString &password)
 {
-    auto *job = new OcsShareJob(_account);
+    auto * const job = new OcsShareJob(_account);
     connect(job, &OcsShareJob::shareJobFinished, this, &Share::slotPasswordSet);
     connect(job, &OcsJob::ocsError, this, &Share::slotSetPasswordError);
     job->setPassword(getId(), password);
