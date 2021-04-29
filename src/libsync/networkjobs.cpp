@@ -844,7 +844,7 @@ void SimpleNetworkJob::start()
 }
 
 void SimpleNetworkJob::prepareRequest(const QByteArray &verb, const QUrl &url,
-    QNetworkRequest req, QIODevice *requestBody)
+    const QNetworkRequest &req, QIODevice *requestBody)
 {
     _simpleVerb = verb;
     _simpleUrl = url;

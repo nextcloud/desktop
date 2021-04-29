@@ -57,8 +57,8 @@ void SocketUploadJob::prepareTag(const AccountPtr &account)
         propfindJob->setProperties({ QByteArrayLiteral("http://owncloud.org/ns:display-name"), QByteArrayLiteral("http://owncloud.org/ns:id") });
 
         connect(propfindJob, &LsColJob::directoryListingIterated, this, [this](const QString &, const QMap<QString, QString> &data) {
-            if (data["display-name"] == backupTagNameC()) {
-                _finisedTagId = data["id"].toInt();
+            if (data[QStringLiteral("display-name")] == backupTagNameC()) {
+                _finisedTagId = data[QStringLiteral("id")].toInt();
             }
         });
         connect(propfindJob, &LsColJob::finishedWithError, this, [this] {

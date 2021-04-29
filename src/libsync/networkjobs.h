@@ -414,7 +414,7 @@ public:
     explicit SimpleNetworkJob(AccountPtr account, QObject *parent = nullptr);
 
     void prepareRequest(const QByteArray &verb, const QUrl &url,
-        QNetworkRequest req = QNetworkRequest(),
+        const QNetworkRequest &req = QNetworkRequest(),
         QIODevice *requestBody = nullptr);
 
     void prepareRequest(const QByteArray &verb, const QUrl &url,
