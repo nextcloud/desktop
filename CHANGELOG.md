@@ -173,6 +173,7 @@ Details
    https://github.com/owncloud/client/issues/8158
    https://github.com/owncloud/client/issues/4336
    https://github.com/owncloud/client/issues/8528
+   https://github.com/owncloud/client/pull/8584
 
 * Enhancement - Added branding option to enforce VFS: [#4144](https://github.com/owncloud/enterprise/issues/4144)
 
