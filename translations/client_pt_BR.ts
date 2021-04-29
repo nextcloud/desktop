@@ -3553,22 +3553,27 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <translation>Falha ao criar banco de dados temporário </translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="136"/>
+        <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="140"/>
         <source>Backup of %1 succeeded</source>
         <translation>Cópia de segurança de %1 bem sucedida </translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="139"/>
+        <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="143"/>
         <source>Failed to set success tag</source>
         <translation>Falha ao definir etiqueta de sucesso</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="179"/>
+        <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="149"/>
+        <source>Failed to create backup: %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="185"/>
         <source>Backup of %1 failed with: %2</source>
         <translation>Cópia de segurança de %1 falhou com: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="195"/>
+        <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="201"/>
         <source>%1 backup</source>
         <translation>1% cópia de segurança</translation>
     </message>
