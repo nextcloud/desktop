@@ -5,6 +5,18 @@ blueprintrepositories = https://invent.kde.org/packaging/craft-blueprints-kde.gi
 [core/cacert]
 version = 2020-12-08
 
+[craft/craft-blueprints-kde]
+version = master
+revision = eda9588b
+
+[craft/craft-blueprints-owncloud]
+version = master
+revision = 7cefadf
+
+[craft/craft-core]
+version = master
+revision = 741451311
+
 [dev-utils/autoconf]
 version = 2.69
 
@@ -97,6 +109,7 @@ version = 10.35
 
 [libs/qt5/qtbase]
 version = 5.12.10
+patchLevel = 1
 
 [libs/qt5/qtdeclarative]
 version = 5.12.10
@@ -139,3 +152,12 @@ version = 0.2
 
 [virtual/craft-blueprints-kde-base]
 version = 0.1
+
+[libs/freetype]
+version = 2.9.1
+
+[libs/glib]
+version = 2.66.4
+
+[libs/harfbuzz]
+version = 2.7.2

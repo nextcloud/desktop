@@ -23,6 +23,7 @@
 #include "syncengine.h"
 #include "theme.h"
 
+#include <QBuffer>
 #include <QDir>
 #include <QFileInfo>
 #include <QJsonArray>
@@ -31,10 +32,46 @@
 
 using namespace OCC;
 
+namespace {
+const QString backupTagNameC()
+{
+    return QStringLiteral("backup_finished");
+}
+const QUrl tagUrl(const OCC::AccountPtr &account)
+{
+    return Utility::concatUrlPath(account->url(), QStringLiteral("remote.php/dav/systemtags"));
+}
+}
+
 SocketUploadJob::SocketUploadJob(const QSharedPointer<SocketApiJobV2> &job)
     : _apiJob(job)
 {
     connect(job.data(), &SocketApiJobV2::finished, this, &SocketUploadJob::deleteLater);
+}
+
+void SocketUploadJob::prepareTag(const AccountPtr &account)
+{
+    auto tagJob = new OCC::SimpleNetworkJob(account, this);
+    connect(tagJob, &OCC::SimpleNetworkJob::finishedSignal, this, [account, this] {
+        auto propfindJob = new OCC::LsColJob(account, tagUrl(account), this);
+        propfindJob->setProperties({ QByteArrayLiteral("http://owncloud.org/ns:display-name"), QByteArrayLiteral("http://owncloud.org/ns:id") });
+
+        connect(propfindJob, &LsColJob::directoryListingIterated, this, [this](const QString &, const QMap<QString, QString> &data) {
+            if (data["display-name"] == backupTagNameC()) {
+                _finisedTagId = data["id"].toInt();
+            }
+        });
+        connect(propfindJob, &LsColJob::finishedWithError, this, [this] {
+            fail(tr("Failed to rerieve tags"));
+        });
+        propfindJob->start();
+    });
+    const QJsonObject json({ { QStringLiteral("name"), backupTagNameC() },
+        { QStringLiteral("userVisible"), QStringLiteral("true") },
+        { QStringLiteral("userAssignable"), QStringLiteral("false") } });
+    QNetworkRequest req;
+    tagJob->prepareRequest(QByteArrayLiteral("POST"), tagUrl(account), req, json);
+    tagJob->start();
 }
 
 void SocketUploadJob::start()
@@ -87,13 +124,29 @@ void SocketUploadJob::start()
         Q_EMIT ProgressDispatcher::instance()->progressInfo(_localPath, info);
     });
     connect(engine, &OCC::SyncEngine::itemCompleted, this, [this](const OCC::SyncFileItemPtr item) {
-        _syncedFiles.append(item->_file);
+        if (item->_errorString.isEmpty()) {
+            _syncedFiles.append(item->_file);
+        } else {
+            _errorFiles.append(QStringLiteral("%1: %2").arg(item->_file, item->_errorString));
+        }
     });
 
-    connect(engine, &OCC::SyncEngine::finished, this, [this](bool ok) {
+    connect(engine, &OCC::SyncEngine::finished, this, [engine, this](bool ok) {
         if (ok) {
-            logMessage(_localPath, tr("Backup of %1 succeeded").arg(QDir::toNativeSeparators(_localPath)));
-            _apiJob->success({ { QStringLiteral("localPath"), _localPath }, { QStringLiteral("syncedFiles"), QJsonArray::fromStringList(_syncedFiles) } });
+            auto tagJob = new OCC::SimpleNetworkJob(engine->account(), this);
+            connect(tagJob, &OCC::SimpleNetworkJob::finishedSignal, this, [tagJob, this] {
+                if (tagJob->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() == 201) {
+                    logMessage(_localPath, tr("Backup of %1 succeeded").arg(QDir::toNativeSeparators(_localPath)));
+                    _apiJob->success({ { QStringLiteral("localPath"), _localPath }, { QStringLiteral("syncedFiles"), QJsonArray::fromStringList(_syncedFiles) } });
+                } else {
+                    fail(tr("Failed to set success tag"));
+                }
+            });
+            OC_ASSERT(_finisedTagId > 0);
+            tagJob->prepareRequest(QByteArrayLiteral("PUT"), Utility::concatUrlPath(engine->account()->url(), QStringLiteral("remote.php/dav/systemtags-relations/files/%1/%2").arg(_backupFileId, QString::number(_finisedTagId))));
+            tagJob->start();
+        } else {
+            fail(tr("Failed to create backup: %1").arg(_errorFiles.join(", ")));
         }
     });
     connect(engine, &OCC::SyncEngine::syncError, this, [this](const QString &error, ErrorCategory) {
@@ -108,9 +161,15 @@ void SocketUploadJob::start()
     }
     engine->setSyncOptions(opt);
 
+    prepareTag(account->account());
+
     // create the dir, fail if it already exists
     auto mkdir = new OCC::MkColJob(engine->account(), remotePath);
-    connect(mkdir, &OCC::MkColJob::finishedWithoutError, engine, &OCC::SyncEngine::startSync);
+    connect(mkdir, &OCC::MkColJob::finishedWithoutError, this, [engine, mkdir, this]{
+        auto reply = mkdir->reply();
+        _backupFileId = reply->rawHeader(QByteArrayLiteral("OC-FileId"));
+        engine->startSync();
+    });
     connect(mkdir, &OCC::MkColJob::finishedWithError, this, [remotePath, this](QNetworkReply *reply) {
         if (reply->error() == 202) {
             fail(QStringLiteral("Destination %1 already exists").arg(remotePath));
