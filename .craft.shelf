@@ -156,9 +156,6 @@ version = 0.1
 [libs/freetype]
 version = 2.9.1
 
-[libs/gettext]
-version = 0.19.8.1
-
 [libs/glib]
 version = 2.66.4
 
