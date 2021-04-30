@@ -129,7 +129,7 @@ Result<void, QString> VfsCfApi::dehydratePlaceholder(const SyncFileItem &item)
 {
     const auto previousPin = pinState(item._file);
 
-    if (!QFile::remove(_setupParams.filesystemPath + item._file)) {
+    if (!FileSystem::remove(_setupParams.filesystemPath + item._file)) {
         return QStringLiteral("Couldn't remove %1 to fulfill dehydration").arg(item._file);
     }
 
