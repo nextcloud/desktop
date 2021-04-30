@@ -434,6 +434,11 @@ void PropagateDownloadFile::startAfterIsEncryptedIsChecked()
         _item->_type = ItemTypeFile;
     }
     if (_item->_type == ItemTypeVirtualFile) {
+        if (propagator()->localFileNameClash(_item->_file)) {
+            done(SyncFileItem::NormalError, tr("File %1 cannot be downloaded because of a local file name clash!").arg(QDir::toNativeSeparators(_item->_file)));
+            return;
+        }
+
         qCDebug(lcPropagateDownload) << "creating virtual file" << _item->_file;
         auto r = vfs->createPlaceholder(*_item);
         if (!r) {
