@@ -157,7 +157,7 @@
      <item>
       <widget class="QToolButton" name="noteConfirmButton">
        <property name="text">
-        <string>…</string>
+        <string notr="true">…</string>
        </property>
        <property name="icon">
         <iconset resource="../../theme.qrc">
@@ -276,7 +276,7 @@
      <item>
       <widget class="QToolButton" name="confirmExpirationDate">
        <property name="text">
-        <string>…</string>
+        <string notr="true">…</string>
        </property>
        <property name="icon">
         <iconset resource="../../theme.qrc">
