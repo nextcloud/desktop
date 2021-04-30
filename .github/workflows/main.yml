@@ -14,9 +14,6 @@ jobs:
     strategy:
         matrix:
             include:
-            - target: windows-msvc2017_32-cl
-              os: windows-latest
-              fetch-depth: 1
             - target: windows-msvc2017_64-cl
               os: windows-latest
               fetch-depth: 0
