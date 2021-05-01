@@ -3768,12 +3768,12 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="391"/>
         <source>Password for share required</source>
-        <translation type="unfinished"/>
+        <translation>Passwort für die Freigabe erforderlich</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="392"/>
         <source>Please enter a password for your email share:</source>
-        <translation type="unfinished"/>
+        <translation>Bitte geben Sie ein Passwort für die E-Mail-Freigabe ein:</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="386"/>
@@ -3804,20 +3804,9 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
         <translation>Notiz:</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareuserline.ui" line="160"/>
-        <location filename="../src/gui/shareuserline.ui" line="279"/>
-        <source>…</source>
-        <translation>…</translation>
-    </message>
-    <message>
         <location filename="../src/gui/shareuserline.ui" line="187"/>
         <source>Password:</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/shareuserline.ui" line="219"/>
-        <source>...</source>
-        <translation type="unfinished"/>
+        <translation>Passwort:</translation>
     </message>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="259"/>
@@ -3862,7 +3851,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="588"/>
         <source>Password protect</source>
-        <translation type="unfinished"/>
+        <translation>Passwortschutz</translation>
     </message>
 </context>
 <context>

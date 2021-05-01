@@ -3801,19 +3801,8 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>メモ:</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareuserline.ui" line="160"/>
-        <location filename="../src/gui/shareuserline.ui" line="279"/>
-        <source>…</source>
-        <translation>…</translation>
-    </message>
-    <message>
         <location filename="../src/gui/shareuserline.ui" line="187"/>
         <source>Password:</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/shareuserline.ui" line="219"/>
-        <source>...</source>
         <translation type="unfinished"/>
     </message>
     <message>

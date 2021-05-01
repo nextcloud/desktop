@@ -3804,19 +3804,8 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
         <translation>Poznámka:</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareuserline.ui" line="160"/>
-        <location filename="../src/gui/shareuserline.ui" line="279"/>
-        <source>…</source>
-        <translation>…</translation>
-    </message>
-    <message>
         <location filename="../src/gui/shareuserline.ui" line="187"/>
         <source>Password:</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/shareuserline.ui" line="219"/>
-        <source>...</source>
         <translation type="unfinished"/>
     </message>
     <message>
