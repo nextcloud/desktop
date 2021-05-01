@@ -3751,12 +3751,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="391"/>
         <source>Password for share required</source>
-        <translation type="unfinished"/>
+        <translation>需要共享密码 </translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="392"/>
         <source>Please enter a password for your email share:</source>
-        <translation type="unfinished"/>
+        <translation>请为你的电邮共享输入一个密码：</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="386"/>
@@ -3787,20 +3787,9 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>备注：</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareuserline.ui" line="160"/>
-        <location filename="../src/gui/shareuserline.ui" line="279"/>
-        <source>…</source>
-        <translation>… </translation>
-    </message>
-    <message>
         <location filename="../src/gui/shareuserline.ui" line="187"/>
         <source>Password:</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/shareuserline.ui" line="219"/>
-        <source>...</source>
-        <translation type="unfinished"/>
+        <translation>密码：</translation>
     </message>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="259"/>
@@ -3845,7 +3834,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="588"/>
         <source>Password protect</source>
-        <translation type="unfinished"/>
+        <translation>密码保护</translation>
     </message>
 </context>
 <context>

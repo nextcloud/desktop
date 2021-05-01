@@ -3769,12 +3769,12 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="391"/>
         <source>Password for share required</source>
-        <translation type="unfinished"/>
+        <translation>É necessária uma senha de compartilhamento</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="392"/>
         <source>Please enter a password for your email share:</source>
-        <translation type="unfinished"/>
+        <translation>Digite uma senha para seu compartilhamento por e-mail:</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="386"/>
@@ -3805,20 +3805,9 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <translation>Nota:</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareuserline.ui" line="160"/>
-        <location filename="../src/gui/shareuserline.ui" line="279"/>
-        <source>…</source>
-        <translation>…</translation>
-    </message>
-    <message>
         <location filename="../src/gui/shareuserline.ui" line="187"/>
         <source>Password:</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/shareuserline.ui" line="219"/>
-        <source>...</source>
-        <translation type="unfinished"/>
+        <translation>Senha:</translation>
     </message>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="259"/>
@@ -3863,7 +3852,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="588"/>
         <source>Password protect</source>
-        <translation type="unfinished"/>
+        <translation>Proteger com senha</translation>
     </message>
 </context>
 <context>
@@ -4504,7 +4493,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/gui/systray.cpp" line="100"/>
         <source>Exit %1</source>
-        <translation>Sair %1</translation>
+        <translation>Sair do %1</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="107"/>

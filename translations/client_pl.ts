@@ -117,7 +117,7 @@
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="174"/>
         <source>Could not remove folder &apos;%1&apos;</source>
-        <translation>Nie można usunąć folderu &apos;%1&apos;</translation>
+        <translation>Nie można usunąć katalogu &apos;%1&apos;</translation>
     </message>
 </context>
 <context>
@@ -163,7 +163,7 @@
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="33"/>
         <source>Pick a local folder on your computer to sync</source>
-        <translation>Wybierz folder lokalny na komputerze do synchronizacji</translation>
+        <translation>Wybierz katalog lokalny na komputerze do synchronizacji</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="44"/>
@@ -191,7 +191,7 @@
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="177"/>
         <source>Folders</source>
-        <translation>Foldery</translation>
+        <translation>Katalogi</translation>
     </message>
 </context>
 <context>
@@ -222,7 +222,7 @@
     <message>
         <location filename="../src/libsync/abstractpropagateremotedeleteencrypted.cpp" line="181"/>
         <source>&quot;%1 Failed to unlock encrypted folder %2&quot;.</source>
-        <translation>&quot;%1 Nie udało się odblokować zaszyfrowanego folderu %2&quot;.</translation>
+        <translation>&quot;%1 Nie udało się odblokować zaszyfrowanego katalogu %2&quot;.</translation>
     </message>
 </context>
 <context>
@@ -243,7 +243,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="31"/>
         <source>Unchecked folders will be &lt;b&gt;removed&lt;/b&gt; from your local file system and will not be synchronized to this computer anymore</source>
-        <translation>Niezaznaczone foldery zostaną &lt;b&gt;usunięte&lt;/b&gt; z lokalnego systemu plików i nie będą już więcej synchronizowane na tym komputerze.</translation>
+        <translation>Niezaznaczone katalogi zostaną &lt;b&gt;usunięte&lt;/b&gt; z lokalnego systemu plików i nie będą już więcej synchronizowane na tym komputerze.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="70"/>
@@ -339,14 +339,14 @@
         <location filename="../src/gui/accountsettings.cpp" line="304"/>
         <source>You cannot encrypt a folder with contents, please remove the files.
 Wait for the new sync, then encrypt it.</source>
-        <translation>Nie można zaszyfrować folderu z zawartością, usuń pliki.
+        <translation>Nie można zaszyfrować katalogu z zawartością, usuń pliki.
 Poczekaj na nową synchronizację, a następnie ją zaszyfruj.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="418"/>
         <location filename="../src/gui/accountsettings.cpp" line="516"/>
         <source>Open folder</source>
-        <translation>Otwórz folder</translation>
+        <translation>Otwórz katalog</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="435"/>
@@ -399,7 +399,7 @@ Poczekaj na nową synchronizację, a następnie ją zaszyfruj.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="544"/>
         <source>Remove folder sync connection</source>
-        <translation>Usuń folder synchronizacji</translation>
+        <translation>Usuń katalog synchronizacji</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="565"/>
@@ -424,22 +424,22 @@ Poczekaj na nową synchronizację, a następnie ją zaszyfruj.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="664"/>
         <source>&lt;p&gt;Could not create local folder &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Nie można utworzyć folderu lokalnego &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Nie można utworzyć katalogu lokalnego &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="719"/>
         <source>Confirm Folder Sync Connection Removal</source>
-        <translation>Potwierdź usunięcie folderu synchronizacji</translation>
+        <translation>Potwierdź usunięcie katalogu synchronizacji</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="720"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Czy na pewno chcesz zatrzymać synchronizację folderu &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Uwaga:&lt;/b&gt; Ta operacja &lt;b&gt;nie&lt;/b&gt; usunie żadnych plików.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Czy na pewno chcesz zatrzymać synchronizację katalogu &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Uwaga:&lt;/b&gt; Ta operacja &lt;b&gt;nie&lt;/b&gt; usunie żadnych plików.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="727"/>
         <source>Remove Folder Sync Connection</source>
-        <translation>Usuń folder synchronizacji</translation>
+        <translation>Usuń katalog synchronizacji</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="828"/>
@@ -477,7 +477,7 @@ Ta czynność spowoduje przerwanie aktualnie uruchomionej synchronizacji.</trans
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1036"/>
         <source>%1 (%3%) of %2 in use. Some folders, including network mounted or shared folders, might have different limits.</source>
-        <translation>%1 (%3%) z %2 w użyciu. Niektóre foldery, w tym zamontowane lub udostępnione foldery w sieci, mogą mieć różne ograniczenia.</translation>
+        <translation>%1 (%3%) z %2 w użyciu. Niektóre katalogi, w tym zamontowane lub udostępnione katalogi w sieci, mogą mieć różne ograniczenia.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1037"/>
@@ -999,7 +999,7 @@ Ta czynność spowoduje przerwanie aktualnie uruchomionej synchronizacji.</trans
         <location filename="../src/libsync/encryptfolderjob.cpp" line="79"/>
         <source>Could not generate the metadata for encryption, Unlocking the folder.
 This can be an issue with your OpenSSL libraries.</source>
-        <translation>Nie można wygenerować metadanych do szyfrowania, odblokowanie folderu.
+        <translation>Nie można wygenerować metadanych do szyfrowania, odblokowanie katalogu.
 Może to być problem z bibliotekami OpenSSL.</translation>
     </message>
 </context>
@@ -1073,12 +1073,12 @@ Może to być problem z bibliotekami OpenSSL.</translation>
     <message>
         <location filename="../src/gui/folder.cpp" line="173"/>
         <source>Local folder %1 does not exist.</source>
-        <translation>Folder lokalny %1 nie istnieje.</translation>
+        <translation>Katalog lokalny %1 nie istnieje.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="176"/>
         <source>%1 should be a folder but is not.</source>
-        <translation>%1 powinien być folderem, ale nim nie jest.</translation>
+        <translation>%1 powinien być katalogiem, ale nim nie jest.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="179"/>
@@ -1194,14 +1194,14 @@ Może to być problem z bibliotekami OpenSSL.</translation>
         <location filename="../src/gui/folder.cpp" line="1093"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
-        <translation>Dodano nowy folder większy niż %1 MB: %2.
+        <translation>Dodano nowy katalog większy niż %1 MB: %2.
 </translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1096"/>
         <source>A folder from an external storage has been added.
 </source>
-        <translation>Dodano folder z pamięci zewnętrznej.
+        <translation>Dodano katalog z pamięci zewnętrznej.
 </translation>
     </message>
     <message>
@@ -1212,7 +1212,7 @@ Może to być problem z bibliotekami OpenSSL.</translation>
     <message>
         <location filename="../src/gui/folder.cpp" line="1157"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
-        <translation>Folder %1 został utworzony, ale wcześniej został wykluczony z synchronizacji. Dane w nim zawarte nie zostaną zsynchronizowane.</translation>
+        <translation>Katalog %1 został utworzony, ale wcześniej został wykluczony z synchronizacji. Dane w nim zawarte nie zostaną zsynchronizowane.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1160"/>
@@ -1226,7 +1226,7 @@ Może to być problem z bibliotekami OpenSSL.</translation>
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
 
 %1</source>
-        <translation>Zmiany w zsynchronizowanych folderach nie mogły być śledzone w wiarygodny sposób.
+        <translation>Zmiany w zsynchronizowanych katalogach nie mogły być śledzone w wiarygodny sposób.
 
 Oznacza to, że klient synchronizacji może nie przesyłać natychmiast zmian lokalnych. Zamiast tego będzie skanował tylko zmiany lokalne i przesyłać je sporadycznie (domyślnie co dwie godziny).
 
@@ -1238,8 +1238,8 @@ Oznacza to, że klient synchronizacji może nie przesyłać natychmiast zmian lo
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation>Wszystkie pliki z folderu synchronizacji &apos;%1&apos; zostały usunięte z serwera.
-W momencie synchronizacji zostaną usunięte z lokalnego folderu, co spowoduje ich niedostępność, chyba że posiadasz prawo do przywracania.
+        <translation>Wszystkie pliki z katalogu synchronizacji &apos;%1&apos; zostały usunięte z serwera.
+W momencie synchronizacji zostaną one usunięte z lokalnego katalogu, co spowoduje ich niedostępność, chyba że posiadasz prawo do przywracania.
 Jeśli zdecydujesz się przywrócić pliki i posiadasz odpowiednie uprawnienia, zostaną one ponownie wysłane na serwer.
 Jeśli zdecydujesz się je usunąć, nie będą już dostępne.</translation>
     </message>
@@ -1248,7 +1248,7 @@ Jeśli zdecydujesz się je usunąć, nie będą już dostępne.</translation>
         <source>All files got deleted from your local sync folder '%1'.
 These files will be deleted from the server and will not be available on your other devices if they will not be restored.
 If this action was unintended you can restore the lost data now.</source>
-        <translation>Wszystkie pliki zostały usunięte z lokalnego folderu synchronizacji &apos;%1&apos;.
+        <translation>Wszystkie pliki zostały usunięte z lokalnego katalogu synchronizacji &apos;%1&apos;.
 Pliki te zostaną usunięte z serwera i nie będą dostępne na innych urządzeniach, chyba że zostaną przywrócone.
 Jeśli ta akcja była niezamierzona, możesz teraz przywrócić utracone dane.</translation>
     </message>
@@ -1272,7 +1272,7 @@ Jeśli ta akcja była niezamierzona, możesz teraz przywrócić utracone dane.</
         <source>This sync would reset the files to an earlier time in the sync folder '%1'.
 This might be because a backup was restored on the server.
 Continuing the sync as normal will cause all your files to be overwritten by an older file in an earlier state. Do you want to keep your local most recent files as conflict files?</source>
-        <translation>Ta synchronizacja spowoduje zresetowanie plików do wcześniejszego stanu w folderze synchronizacji &apos;%1&apos;.
+        <translation>Ta synchronizacja spowoduje zresetowanie plików do wcześniejszego stanu w katalogu synchronizacji &apos;%1&apos;.
 Przyczyną może być przywrócenie kopii zapasowej na serwerze.
 Kontynuowanie synchronizacji w normalny sposób spowoduje zastąpienie wszystkich plików przez starszy plik we wcześniejszym stanie. Czy chcesz zachować najnowsze pliki lokalne jako pliki konfliktu?</translation>
     </message>
@@ -1297,8 +1297,8 @@ Kontynuowanie synchronizacji w normalny sposób spowoduje zastąpienie wszystkic
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation>Wszystkie pliki z folderu synchronizacji &apos;%1&apos; zostały usunięte z serwera.
-W momencie synchronizacji zostaną usunięte z lokalnego folderu, co spowoduje ich niedostępność, chyba że posiadasz prawo do przywracania.
+        <translation>Wszystkie pliki z katalogu synchronizacji &apos;%1&apos; zostały usunięte z serwera.
+W momencie synchronizacji zostaną usunięte z lokalnego katalogu, co spowoduje ich niedostępność, chyba że posiadasz prawo do przywracania.
 Jeśli zdecydujesz się przywrócić pliki i posiadasz odpowiednie uprawnienia, zostaną one ponownie wysłane na serwer.
 Jeśli zdecydujesz się je usunąć, nie będą już dostępne. </translation>
     </message>
@@ -1307,7 +1307,7 @@ Jeśli zdecydujesz się je usunąć, nie będą już dostępne. </translation>
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
-        <translation>Wszystkie pliki w lokalnym folderze synchronizacji &apos;%1&apos; zostały usunięte. Te usunięcia zostaną zsynchronizowane z Twoim serwerem, co oznacza całkowite ich usunięcie
+        <translation>Wszystkie pliki w lokalnym katalogu synchronizacji &apos;%1&apos; zostały usunięte. Te usunięcia zostaną zsynchronizowane z Twoim serwerem, co oznacza całkowite ich usunięcie
 Czy na pewno chcesz zsynchronizować te działania z serwerem?
 Jeśli to był przypadek i zdecydujesz się zachować swoje pliki, zostaną one przywrócone z serwera.</translation>
     </message>
@@ -1360,7 +1360,7 @@ Jeśli to był przypadek i zdecydujesz się zachować swoje pliki, zostaną one 
     <message>
         <location filename="../src/gui/folderman.cpp" line="389"/>
         <source>Could not reset folder state</source>
-        <translation>Nie można zresetować stanu folderu</translation>
+        <translation>Nie można zresetować stanu katalogu</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="390"/>
@@ -1435,7 +1435,7 @@ Jeśli to był przypadek i zdecydujesz się zachować swoje pliki, zostaną one 
     <message>
         <location filename="../src/gui/folderman.cpp" line="1520"/>
         <source>No valid folder selected!</source>
-        <translation>Nie wybrano prawidłowego folderu!</translation>
+        <translation>Nie wybrano prawidłowego katalogu!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1532"/>
@@ -1445,27 +1445,27 @@ Jeśli to był przypadek i zdecydujesz się zachować swoje pliki, zostaną one 
     <message>
         <location filename="../src/gui/folderman.cpp" line="1536"/>
         <source>The selected path is not a folder!</source>
-        <translation>Wybrana ścieżka nie jest folderem!</translation>
+        <translation>Wybrana ścieżka nie jest katalogiem!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1540"/>
         <source>You have no permission to write to the selected folder!</source>
-        <translation>Nie masz uprawnień do zapisu w wybranym folderze!</translation>
+        <translation>Nie masz uprawnień do zapisu w wybranym katalogu!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1587"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
-        <translation>Folder lokalny %1 zawiera już folder używany w połączeniu do synchronizacji folderów. Wybierz inny!</translation>
+        <translation>Katalog lokalny %1 zawiera już katalog używany w połączeniu do synchronizacji katalogów. Wybierz inny!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1593"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
-        <translation>W folderze lokalnym %1 jest już zawarty folder używany w obsłudze do synchronizacji folderów. Wybierz inny!</translation>
+        <translation>W katalogu lokalnym %1 jest już zawarty katalog używany w obsłudze do synchronizacji katalogów. Wybierz inny!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1607"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
-        <translation>Ten folder jest już wybrany do synchronizacji z serwerem. Wybierz inny folder lokalny!</translation>
+        <translation>Ten katalog jest już wybrany do synchronizacji z serwerem. Wybierz inny katalog lokalny!</translation>
     </message>
 </context>
 <context>
@@ -1473,12 +1473,12 @@ Jeśli to był przypadek i zdecydujesz się zachować swoje pliki, zostaną one 
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="48"/>
         <source>Add Folder Sync Connection</source>
-        <translation>Dodaj folder synchronizacji</translation>
+        <translation>Dodaj katalog synchronizacji</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="256"/>
         <source>Synchronized with local folder (%1)</source>
-        <translation>Zsynchronizowany z folderem lokalnym (%1)</translation>
+        <translation>Zsynchronizowany z katalogiem lokalnym (%1)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="307"/>
@@ -1491,12 +1491,12 @@ Jeśli to był przypadek i zdecydujesz się zachować swoje pliki, zostaną one 
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="149"/>
         <source>You need to be connected to add a folder</source>
-        <translation>Musisz być połączony, aby dodać folder</translation>
+        <translation>Musisz być połączony, aby dodać katalog</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="151"/>
         <source>Click this button to add a folder to synchronize.</source>
-        <translation>Kliknij ten przycisk, aby dodać folder do synchronizacji.</translation>
+        <translation>Kliknij ten przycisk, aby dodać katalog do synchronizacji.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="162"/>
@@ -1533,12 +1533,12 @@ Jeśli to był przypadek i zdecydujesz się zachować swoje pliki, zostaną one 
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="299"/>
         <source>Synchronizing VirtualFiles with local folder</source>
-        <translation>Synchronizacja VirtualFiles z folderem lokalnym</translation>
+        <translation>Synchronizacja VirtualFiles z katalogiem lokalnym</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="301"/>
         <source>Synchronizing with local folder</source>
-        <translation>Synchronizacja z folderem lokalnym</translation>
+        <translation>Synchronizacja z katalogiem lokalnym</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="973"/>
@@ -1638,7 +1638,7 @@ Jeśli to był przypadek i zdecydujesz się zachować swoje pliki, zostaną one 
     <message numerus="yes">
         <location filename="../src/gui/folderstatusmodel.cpp" line="1154"/>
         <source>Waiting for %n other folder(s) …</source>
-        <translation><numerusform>Oczekiwanie na %n inny folder…</numerusform><numerusform>Oczekiwanie na %n inne foldery…</numerusform><numerusform>Oczekiwanie na %n innych folderów…</numerusform><numerusform>Oczekiwanie na %n inny folder(-y)…</numerusform></translation>
+        <translation><numerusform>Oczekiwanie na %n inny katalog…</numerusform><numerusform>Oczekiwanie na %n inne katalogi…</numerusform><numerusform>Oczekiwanie na %n innych katalogów…</numerusform><numerusform>Oczekiwanie na %n inny katalog(i)…</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1160"/>
@@ -1667,7 +1667,7 @@ Jeśli to był przypadek i zdecydujesz się zachować swoje pliki, zostaną one 
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="605"/>
         <source>Add Folder Sync Connection</source>
-        <translation>Dodaj folder synchronizacji</translation>
+        <translation>Dodaj katalog synchronizacji</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="607"/>
@@ -1680,17 +1680,17 @@ Jeśli to był przypadek i zdecydujesz się zachować swoje pliki, zostaną one 
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="69"/>
         <source>Click to select a local folder to sync.</source>
-        <translation>Kliknij, aby wybrać folder lokalny do synchronizacji.</translation>
+        <translation>Kliknij, aby wybrać katalog lokalny do synchronizacji.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="76"/>
         <source>Enter the path to the local folder.</source>
-        <translation>Wpisz ścieżkę do folderu lokalnego.</translation>
+        <translation>Wpisz ścieżkę do katalogu lokalnego.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="135"/>
         <source>Select the source folder</source>
-        <translation>Wybierz folder źródłowy</translation>
+        <translation>Wybierz katalog źródłowy</translation>
     </message>
 </context>
 <context>
@@ -1703,12 +1703,12 @@ Jeśli to był przypadek i zdecydujesz się zachować swoje pliki, zostaną one 
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="184"/>
         <source>Enter the name of the new folder to be created below &apos;%1&apos;:</source>
-        <translation>Wpisz nazwę dla nowego folderu, utworzonego poniżej &apos;%1&apos;:</translation>
+        <translation>Wpisz nazwę dla nowego katalogu, utworzonego poniżej &apos;%1&apos;:</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="214"/>
         <source>Folder was successfully created on %1.</source>
-        <translation>Folder został utworzony pomyślnie w %1</translation>
+        <translation>Katalog został utworzony pomyślnie w %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="225"/>
@@ -1718,12 +1718,12 @@ Jeśli to był przypadek i zdecydujesz się zachować swoje pliki, zostaną one 
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="227"/>
         <source>Failed to create the folder on %1. Please check manually.</source>
-        <translation>Nie udało się utworzyć folderu w %1. Sprawdź ręcznie.</translation>
+        <translation>Nie udało się utworzyć katalogu w %1. Sprawdź ręcznie.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="245"/>
         <source>Failed to list a folder. Error: %1</source>
-        <translation>Nie udało się wyświetlić listy folderów. Błąd: %1</translation>
+        <translation>Nie udało się wyświetlić listy katalogów. Błąd: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="326"/>
@@ -1733,17 +1733,17 @@ Jeśli to był przypadek i zdecydujesz się zachować swoje pliki, zostaną one 
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="469"/>
         <source>This folder is already being synced.</source>
-        <translation>Ten folder jest już synchronizowany.</translation>
+        <translation>Ten katalog jest już synchronizowany.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="471"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a parent folder of &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation>Synchronizujesz już &lt;i&gt;%1&lt;/i&gt;, który jest folderem nadrzędnym &lt;i&gt;%2&lt;/i&gt;.</translation>
+        <translation>Synchronizujesz już &lt;i&gt;%1&lt;/i&gt;, który jest katalogiem nadrzędnym &lt;i&gt;%2&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="473"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a subfolder of &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation>Synchronizujesz już &lt;i&gt;%1&lt;/i&gt;, który jest podfolderem &lt;i&gt;%2&lt;/i&gt;.</translation>
+        <translation>Synchronizujesz już &lt;i&gt;%1&lt;/i&gt;, który jest podkatalogiem &lt;i&gt;%2&lt;/i&gt;.</translation>
     </message>
 </context>
 <context>
@@ -1761,7 +1761,7 @@ Jeśli to był przypadek i zdecydujesz się zachować swoje pliki, zostaną one 
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="548"/>
         <source>Virtual files are not available for the selected folder</source>
-        <translation>Pliki wirtualne nie są dostępne dla wybranego folderu</translation>
+        <translation>Pliki wirtualne nie są dostępne dla wybranego katalogu</translation>
     </message>
 </context>
 <context>
@@ -1886,7 +1886,7 @@ Jeśli to był przypadek i zdecydujesz się zachować swoje pliki, zostaną one 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="222"/>
         <source>Ask for confirmation before synchronizing folders larger than</source>
-        <translation>Zapytaj o potwierdzenie przed synchronizacją folderów większych niż</translation>
+        <translation>Zapytaj o potwierdzenie przed synchronizacją katalogów większych niż</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="242"/>
@@ -1902,7 +1902,7 @@ Jeśli to był przypadek i zdecydujesz się zachować swoje pliki, zostaną one 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="277"/>
         <source>Show sync folders in &amp;Explorer&apos;s Navigation Pane</source>
-        <translation>Pokaż foldery synchronizacji w oknie &amp;Exploratora</translation>
+        <translation>Pokaż katalog synchronizacji w oknie &amp;Exploratora</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="294"/>
@@ -2084,7 +2084,7 @@ Zwróć uwagę, że wybiera to tylko, z której puli aktualizacje są pobierane 
         <source>Files or folders matching a pattern will not be synchronized.
 
 Items where deletion is allowed will be deleted if they prevent a directory from being removed. This is useful for meta data.</source>
-        <translation>Pliki lub foldery pasujące do szablonu nie będą zsynchronizowane.
+        <translation>Pliki lub katalogi pasujące do szablonu nie będą zsynchronizowane.
 
 Elementy, dla których usunięcie jest dozwolone, zostaną usunięte, o ile umożliwia na to katalog. Jest to przydatne w przypadku metadanych.</translation>
     </message>
@@ -2145,14 +2145,14 @@ Elementy, dla których usunięcie jest dozwolone, zostaną usunięte, o ile umo�
         <source>The client can write debug logs to a temporary folder. These logs are very helpful for diagnosing problems.
 Since log files can get large, the client will start a new one for each sync run and compress older ones. It will also delete log files after a couple of hours to avoid consuming too much disk space.
 If enabled, logs will be written to %1</source>
-        <translation>Klient może zapisywać dzienniki debugowania w folderze tymczasowym. Te dzienniki są bardzo pomocne przy diagnozowaniu problemów.
+        <translation>Klient może zapisywać dzienniki debugowania w katalogu tymczasowym. Te dzienniki są bardzo pomocne przy diagnozowaniu problemów.
 Ponieważ pliki dziennika mogą być duże, klient uruchomi nowy dla każdego przebiegu synchronizacji i skompresuje starsze. Pliki dziennika zostaną również usunięte po kilku godzinach, aby uniknąć zużywania zbyt dużej ilości miejsca na dysku.
 Jeśli jest włączone, dzienniki będą zapisywane w %1</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="64"/>
         <source>Enable logging to temporary folder</source>
-        <translation>Włącz logowanie do folderu tymczasowego</translation>
+        <translation>Włącz logowanie do katalogu tymczasowego</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="70"/>
@@ -2169,7 +2169,7 @@ Zauważ, że użycie jakichkolwiek opcji wiersza poleceń logowania spowoduje za
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="77"/>
         <source>Open folder</source>
-        <translation>Otwórz folder</translation>
+        <translation>Otwórz katalog</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="78"/>
@@ -2191,7 +2191,7 @@ Zauważ, że użycie jakichkolwiek opcji wiersza poleceń logowania spowoduje za
         <source>When this option is enabled and no other logging is configured, logs will be written to a temporary folder and expire after a few hours. This setting persists across client restarts.
 
 Logs will be written to %1</source>
-        <translation>Gdy ta opcja jest włączona i żadne inne logowanie nie jest skonfigurowane, dzienniki będą zapisywane w folderze tymczasowym i wygasną po kilku godzinach. To ustawienie utrzymuje się po ponownych uruchomieniach klienta.
+        <translation>Gdy ta opcja jest włączona i żadne inne logowanie nie jest skonfigurowane, dzienniki będą zapisywane w katalogu tymczasowym i wygasną po kilku godzinach. To ustawienie utrzymuje się po ponownych uruchomieniach klienta.
 
 Dzienniki zostaną zapisane w %1</translation>
     </message>
@@ -2534,7 +2534,7 @@ o dodatkowe uprawnienia podczas procesu aktualizacji.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="45"/>
         <source>Setup local folder options</source>
-        <translation>Skonfiguruj opcje folderu lokalnego</translation>
+        <translation>Skonfiguruj opcje katalogu lokalnego</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="60"/>
@@ -2559,17 +2559,17 @@ o dodatkowe uprawnienia podczas procesu aktualizacji.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="252"/>
         <source>%1 folder &apos;%2&apos; is synced to local folder &apos;%3&apos;</source>
-        <translation>Katalog %1 &apos;%2&apos; jest synchronizowany z folderem lokalnym &apos;%3&apos;</translation>
+        <translation>Katalog %1 &apos;%2&apos; jest synchronizowany z katalogiem lokalnym &apos;%3&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="255"/>
         <source>Sync the folder &apos;%1&apos;</source>
-        <translation>Synchronizuj folder &apos;%1&apos;</translation>
+        <translation>Synchronizuj katalog &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="162"/>
         <source>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Warning:&lt;/strong&gt; The local folder is not empty. Pick a resolution!&lt;/small&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Uwaga:&lt;/strong&gt; Folder lokalny nie jest pusty. Bądź ostrożny!&lt;/small&gt;&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Uwaga:&lt;/strong&gt; Katalog lokalny nie jest pusty. Bądź ostrożny!&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="171"/>
@@ -2579,7 +2579,7 @@ o dodatkowe uprawnienia podczas procesu aktualizacji.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="260"/>
         <source>Warning: The local folder is not empty. Pick a resolution!</source>
-        <translation>Uwaga: Folder lokalny nie jest pusty. Bądź ostrożny!</translation>
+        <translation>Uwaga: Katalog lokalny nie jest pusty. Bądź ostrożny!</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="268"/>
@@ -2590,12 +2590,12 @@ o dodatkowe uprawnienia podczas procesu aktualizacji.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="352"/>
         <source>Virtual files are not available for the selected folder</source>
-        <translation>Pliki wirtualne nie są dostępne dla wybranego folderu</translation>
+        <translation>Pliki wirtualne nie są dostępne dla wybranego katalogu</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="412"/>
         <source>Local Sync Folder</source>
-        <translation>Lokalny folder synchronizacji</translation>
+        <translation>Lokalny katalog synchronizacji</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="469"/>
@@ -2606,7 +2606,7 @@ o dodatkowe uprawnienia podczas procesu aktualizacji.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="527"/>
         <source>There isn&apos;t enough free space in the local folder!</source>
-        <translation>W folderze lokalnym nie ma wystarczającej ilości wolnego miejsca!</translation>
+        <translation>W katalogu lokalnym nie ma wystarczającej ilości wolnego miejsca!</translation>
     </message>
 </context>
 <context>
@@ -2799,12 +2799,12 @@ Nie zaleca się korzystania z niego.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="446"/>
         <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
-        <translation>Lokalny folder synchronizacji %1 już istnieje. Ustawiam go do synchronizacji.&lt;br/&gt;&lt;br/&gt;</translation>
+        <translation>Lokalny katalog synchronizacji %1 już istnieje. Ustawiam go do synchronizacji.&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="449"/>
         <source>Creating local sync folder %1 …</source>
-        <translation>Tworzenie lokalnego folderu synchronizacji %1…</translation>
+        <translation>Tworzenie lokalnego katalogu synchronizacji %1…</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="453"/>
@@ -2824,7 +2824,7 @@ Nie zaleca się korzystania z niego.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="457"/>
         <source>Could not create local folder %1</source>
-        <translation>Nie można utworzyć folderu lokalnego %1</translation>
+        <translation>Nie można utworzyć katalogu lokalnego %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="517"/>
@@ -2891,12 +2891,12 @@ Nie zaleca się korzystania z niego.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="612"/>
         <source>Folder rename failed</source>
-        <translation>Zmiana nazwy folderu nie powiodła się</translation>
+        <translation>Zmiana nazwy katalogu nie powiodła się</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="613"/>
         <source>Can&apos;t remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
-        <translation>Nie można usunąć i wykonać kopii zapasowej folderu, ponieważ folder lub plik znajdujący się w nim jest otwarty w innym programie. Zamknij folder lub plik i naciśnij przycisk &quot;Ponów próbę&quot; lub anuluj konfigurację.</translation>
+        <translation>Nie można usunąć i wykonać kopii zapasowej katalogu, ponieważ katalog lub plik znajdujący się w nim jest otwarty w innym programie. Zamknij katalog lub plik i naciśnij przycisk &quot;Ponów próbę&quot; lub anuluj konfigurację.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="613"/>
@@ -2906,7 +2906,7 @@ Nie zaleca się korzystania z niego.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="666"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
-        <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Utworzenie lokalnego folderu synchronizowanego %1 zakończone pomyślnie!&lt;/b&gt;&lt;/font&gt;</translation>
+        <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Utworzenie lokalnego katalogu synchronizowanego %1 zakończone pomyślnie!&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
 </context>
 <context>
@@ -2919,7 +2919,7 @@ Nie zaleca się korzystania z niego.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="93"/>
         <source>Skip folders configuration</source>
-        <translation>Pomiń konfigurację folderów</translation>
+        <translation>Pomiń konfigurację katalogów</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="91"/>
@@ -2942,7 +2942,7 @@ Switching to this mode will abort any currently running synchronization.
 This is a new, experimental mode. If you decide to use it, please report any issues that come up.</source>
         <translation>Gdy włączony jest tryb &quot;pliki wirtualne&quot;, żadne pliki nie będą początkowo pobierane. Zamiast tego dla każdego pliku istniejącego na serwerze zostanie utworzony mały plik &quot;%1&quot;. Zawartość można pobrać, uruchamiając te pliki lub korzystając z ich menu kontekstowego.
 
-Tryb plików wirtualnych wyklucza się wzajemnie z synchronizacją selektywną. Obecnie niezaznaczone foldery zostaną przekształcone na foldery dostępne tylko w trybie online, a ustawienia selektywnej synchronizacji zostaną zresetowane.
+Tryb plików wirtualnych wyklucza się wzajemnie z synchronizacją selektywną. Obecnie niezaznaczone katalogi zostaną przekształcone na katalogi dostępne tylko w trybie online, a ustawienia selektywnej synchronizacji zostaną zresetowane.
 
 Przełączenie do tego trybu spowoduje przerwanie aktualnie uruchomionej synchronizacji.
 
@@ -2969,7 +2969,7 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
     <message>
         <location filename="../src/gui/wizard/owncloudwizardresultpage.cpp" line="37"/>
         <source>Open Local Folder</source>
-        <translation>Otwórz folder lokalny</translation>
+        <translation>Otwórz katalog lokalny</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizardresultpage.cpp" line="46"/>
@@ -3030,7 +3030,7 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
     <message>
         <location filename="../src/libsync/discovery.cpp" line="289"/>
         <source>File/Folder is ignored because it&apos;s hidden.</source>
-        <translation>Plik/folder jest ignorowany, ponieważ jest ukryty.</translation>
+        <translation>Plik/katalog jest ignorowany, ponieważ jest ukryty.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="292"/>
@@ -3085,12 +3085,12 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1257"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
-        <translation>Niedozwolone, ponieważ nie masz uprawnień do dodawania podfolderów do tego folderu</translation>
+        <translation>Niedozwolone, ponieważ nie masz uprawnień do dodawania podkatalogów do tego katalogu</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1262"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
-        <translation>Niedozwolone, ponieważ nie masz uprawnień do dodawania plików w tym folderze</translation>
+        <translation>Niedozwolone, ponieważ nie masz uprawnień do dodawania plików w tym katalogu</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1275"/>
@@ -3200,7 +3200,7 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="300"/>
         <source>A file or folder was removed from a read only share, but restoring failed: %1</source>
-        <translation>Plik lub folder został usunięty z udostępnienia &quot;tylko do odczytu&quot;. Przywracanie nie powiodło się: %1</translation>
+        <translation>Plik lub katalog został usunięty z udostępnienia &quot;tylko do odczytu&quot;. Przywracanie nie powiodło się: %1</translation>
     </message>
 </context>
 <context>
@@ -3218,12 +3218,12 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="181"/>
         <source>Could not create folder %1</source>
-        <translation>Nie można utworzyć folderu %1</translation>
+        <translation>Nie można utworzyć katalogu %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="181"/>
         <source>could not create folder %1</source>
-        <translation>nie można utworzyć folderu %1</translation>
+        <translation>nie można utworzyć katalogu %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="193"/>
@@ -3241,7 +3241,7 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="104"/>
         <source>Could not remove folder &apos;%1&apos;</source>
-        <translation>Nie można usunąć folderu &apos;%1&apos;</translation>
+        <translation>Nie można usunąć katalogu &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="103"/>
@@ -3342,7 +3342,7 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
         <location filename="../src/libsync/propagateupload.cpp" line="284"/>
         <location filename="../src/libsync/propagateupload.cpp" line="678"/>
         <source>Upload of %1 exceeds the quota for the folder</source>
-        <translation>Wysłanie %1 przekroczy limit dla folderu</translation>
+        <translation>Wysłanie %1 przekracza limit dla katalogu</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="389"/>
@@ -3362,7 +3362,7 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="420"/>
         <source>Failed to unlock encrypted folder.</source>
-        <translation>Nie udało się odblokować zaszyfrowanego folderu.</translation>
+        <translation>Nie udało się odblokować zaszyfrowanego katalogu.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="769"/>
@@ -3493,7 +3493,7 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="296"/>
         <source>An error occurred while loading the list of sub folders.</source>
-        <translation>Wystąpił błąd podczas wczytywania listy podfolderów</translation>
+        <translation>Wystąpił błąd podczas wczytywania listy podkatalogów.</translation>
     </message>
 </context>
 <context>
@@ -3568,7 +3568,7 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="112"/>
         <source>Folder: %2</source>
-        <translation>Folder: %2</translation>
+        <translation>Katalog: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="115"/>
@@ -3769,12 +3769,12 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="391"/>
         <source>Password for share required</source>
-        <translation type="unfinished"/>
+        <translation>Wymagane hasło dla udostępnienia</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="392"/>
         <source>Please enter a password for your email share:</source>
-        <translation type="unfinished"/>
+        <translation>Wprowadź hasło dla udostępnienia e-mailem:</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="386"/>
@@ -3805,20 +3805,9 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
         <translation>Notatka:</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareuserline.ui" line="160"/>
-        <location filename="../src/gui/shareuserline.ui" line="279"/>
-        <source>…</source>
-        <translation>…</translation>
-    </message>
-    <message>
         <location filename="../src/gui/shareuserline.ui" line="187"/>
         <source>Password:</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/shareuserline.ui" line="219"/>
-        <source>...</source>
-        <translation type="unfinished"/>
+        <translation>Hasło:</translation>
     </message>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="259"/>
@@ -3863,7 +3852,7 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="588"/>
         <source>Password protect</source>
-        <translation type="unfinished"/>
+        <translation>Zabezpiecz hasłem</translation>
     </message>
 </context>
 <context>
@@ -3927,7 +3916,7 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
     <message>
         <location filename="../src/gui/socketapi.cpp" line="948"/>
         <source>Resharing this folder is not allowed</source>
-        <translation>Udostępnianie dalej tego folderu jest niedozwolone</translation>
+        <translation>Udostępnianie dalej tego katalogu jest niedozwolone</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="962"/>
@@ -4196,7 +4185,7 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="125"/>
         <source>Failed to load or create the journal file. Make sure you have read and write permissions in the local sync folder.</source>
-        <translation>Nie udało się wczytać lub utworzyć pliku dziennika. Upewnij się, że masz prawa do odczytu i zapisu w lokalnym folderze synchronizacji.</translation>
+        <translation>Nie udało się wczytać lub utworzyć pliku dziennika. Upewnij się, że masz prawa do odczytu i zapisu w lokalnym katalogu synchronizacji.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="129"/>
@@ -4226,7 +4215,7 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="144"/>
         <source>Tried to create a folder that already exists.</source>
-        <translation>Próbowano utworzyć folder, który już istnieje.</translation>
+        <translation>Próbowano utworzyć katalog, który już istnieje.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="147"/>
@@ -4251,7 +4240,7 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="159"/>
         <source>The mounted folder is temporarily not available on the server</source>
-        <translation>Zainstalowany folder jest tymczasowo niedostępny na serwerze</translation>
+        <translation>Zainstalowany katalog jest tymczasowo niedostępny na serwerze</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="162"/>
@@ -4261,12 +4250,12 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="165"/>
         <source>An error occurred while opening a folder</source>
-        <translation>Wystąpił błąd podczas otwierania folderu</translation>
+        <translation>Wystąpił błąd podczas otwierania katalogu</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="168"/>
         <source>Error while reading folder.</source>
-        <translation>Błąd podczas odczytu folderu.</translation>
+        <translation>Błąd podczas odczytu katalogu.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="173"/>
@@ -4308,17 +4297,17 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1455"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
-        <translation>Niedozwolone, ponieważ nie masz uprawnień do dodawania podfolderów do tego folderu</translation>
+        <translation>Niedozwolone, ponieważ nie masz uprawnień do dodawania podkatalogów do tego katalogu</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1470"/>
         <source>Not allowed because you don&apos;t have permission to add parent folder</source>
-        <translation>Niedozwolone, ponieważ nie masz uprawnień, aby dodać folder nadrzędny</translation>
+        <translation>Niedozwolone, ponieważ nie masz uprawnień, aby dodać katalog nadrzędny</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1477"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
-        <translation>Niedozwolone, ponieważ nie masz uprawnień do dodawania plików w tym folderze</translation>
+        <translation>Niedozwolone, ponieważ nie masz uprawnień do dodawania plików w tym katalogu</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1502"/>
@@ -4334,7 +4323,7 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1551"/>
         <source>Local files and share folder removed.</source>
-        <translation>Pliki lokalne i folder udostępniany został usunięty.</translation>
+        <translation>Pliki lokalne i katalog udostępniany został usunięty.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1605"/>
@@ -4374,7 +4363,7 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="498"/>
         <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
-        <translation>Nie można otworzyć lub utworzyć lokalnej bazy danych synchronizacji. Upewnij się, że masz dostęp do zapisu w folderze synchronizacji.</translation>
+        <translation>Nie można otworzyć lub utworzyć lokalnej bazy danych synchronizacji. Upewnij się, że masz dostęp do zapisu w katalogu synchronizacji.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="507"/>
@@ -4404,12 +4393,12 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="521"/>
         <source>File/Folder is ignored because it&apos;s hidden.</source>
-        <translation>Plik/folder jest ignorowany, ponieważ jest ukryty.</translation>
+        <translation>Plik/katalog jest ignorowany, ponieważ jest ukryty.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="524"/>
         <source>Folder hierarchy is too deep</source>
-        <translation>Zbyt głęboka hierarchia folderów</translation>
+        <translation>Hierarchia katalogów jest zbyt głęboka</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="527"/>
@@ -4770,7 +4759,7 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="345"/>
         <source>Folder %1: %2</source>
-        <translation>Folder %1: %2</translation>
+        <translation>Katalog %1: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="353"/>
@@ -4790,12 +4779,12 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="363"/>
         <source>There are no sync folders configured.</source>
-        <translation>Nie skonfigurowano żadnych folderów synchronizacji.</translation>
+        <translation>Nie skonfigurowano żadnych katalogów synchronizacji.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="364"/>
         <source>No sync folders configured</source>
-        <translation>Nie skonfigurowano folderów do synchronizacji</translation>
+        <translation>Nie skonfigurowano katalogów do synchronizacji</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="366"/>
@@ -4810,7 +4799,7 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="393"/>
         <source>Managed Folders:</source>
-        <translation>Zarządzane foldery:</translation>
+        <translation>Zarządzane katalogi:</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="396"/>
@@ -4820,12 +4809,12 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="404"/>
         <source>Resume all folders</source>
-        <translation>Przywróć wszystkie foldery</translation>
+        <translation>Przywróć wszystkie katalogi</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="409"/>
         <source>Pause all folders</source>
-        <translation>Wstrzymaj wszystkie foldery</translation>
+        <translation>Wstrzymaj wszystkie katalogi</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="415"/>
@@ -4964,7 +4953,7 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="148"/>
         <source>Ask for confirmation before synchroni&amp;zing folders larger than</source>
-        <translation>Zapytaj o potwierdzenie przed synchroni&amp;zacją folderów większych niż</translation>
+        <translation>Zapytaj o potwierdzenie przed synchroni&amp;zacją katalogów większych niż</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="174"/>
@@ -4979,12 +4968,12 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="225"/>
         <source>&amp;Local Folder</source>
-        <translation>&amp;Folder lokalny</translation>
+        <translation>&amp;Katalog lokalny</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="244"/>
         <source>Local Folder</source>
-        <translation>Folder lokalny</translation>
+        <translation>Katalog lokalny</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="408"/>
@@ -5025,7 +5014,7 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="357"/>
         <source>Start a &amp;clean sync (Erases the local folder!)</source>
-        <translation>Rozpocznij od &amp;czystej synchronizacji (usuwa folder lokalny!)</translation>
+        <translation>Rozpocznij od &amp;czystej synchronizacji (usuwa katalog lokalny!)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="714"/>
@@ -5035,12 +5024,12 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="730"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If this box is checked, existing content in the local folder will be erased to start a clean sync from the server.&lt;/p&gt;&lt;p&gt;Do not check this if the local content should be uploaded to the servers folder.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Jeśli to pole jest zaznaczone, istniejąca zawartość w folderze lokalnym zostanie usunięta, aby rozpocząć czystą synchronizację z serwerem.&lt;/p&gt;&lt;p&gt;Nie zaznaczaj tego pola, jeśli zawartość lokalna powinna zostać wysłana do katalogu na serwerach.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Jeśli to pole jest zaznaczone, istniejąca zawartość w katalogu lokalnym zostanie usunięta, aby rozpocząć czystą synchronizację z serwerem.&lt;/p&gt;&lt;p&gt;Nie zaznaczaj tego pola, jeśli zawartość lokalna powinna zostać wysłana do katalogu na serwerach.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="733"/>
         <source>Erase local folder and start a clean sync</source>
-        <translation>Wyczyść folder lokalny i rozpocznij czystą synchronizację</translation>
+        <translation>Wyczyść katalog lokalny i rozpocznij czystą synchronizację</translation>
     </message>
 </context>
 <context>
@@ -5138,7 +5127,7 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
     <message>
         <location filename="../src/gui/wizard/owncloudwizardresultpage.ui" line="163"/>
         <source>Your entire account is synced to the local folder </source>
-        <translation>Twoje całe konto zostało zsynchronizowane z folderem lokalnym</translation>
+        <translation>Twoje całe konto zostało zsynchronizowane z katalogiem lokalnym</translation>
     </message>
 </context>
 <context>
@@ -5424,7 +5413,7 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
     <message>
         <location filename="../src/gui/tray/Window.qml" line="447"/>
         <source>Open local folder of current account</source>
-        <translation>Otwórz folder lokalny bieżącego konta</translation>
+        <translation>Otwórz katalog lokalny bieżącego konta</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="458"/>
