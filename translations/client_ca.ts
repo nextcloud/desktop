@@ -4231,7 +4231,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="187"/>
         <source>%1 (skipped due to earlier error, trying again in %2)</source>
-        <translation>%1 (s&apos;ha omès a causa d&apos;un error anterior, torneu-ho a provar d&apos;aquí a %2)</translation>
+        <translation>%1 (s&apos;ha omès a causa d&apos;un error anterior, torneu-ho a provar d&apos;aquí %2)</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="352"/>
