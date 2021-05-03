@@ -16,6 +16,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
+#include "utility.h"
+
 #include <CoreServices/CoreServices.h>
 #include <CoreFoundation/CoreFoundation.h>
 
@@ -82,35 +84,40 @@ void setLaunchOnStartup_private(const QString &appName, const QString &guiName, 
     CFStringRef folderCFStr = CFStringCreateWithCString(0, filePath.toUtf8().data(), kCFStringEncodingUTF8);
     CFURLRef urlRef = CFURLCreateWithFileSystemPath(0, folderCFStr, kCFURLPOSIXPathStyle, true);
     LSSharedFileListRef loginItems = LSSharedFileListCreate(0, kLSSharedFileListSessionLoginItems, 0);
-
-    if (loginItems && enable) {
-        //Insert an item to the list.
-        LSSharedFileListItemRef item = LSSharedFileListInsertItemURL(loginItems,
-            kLSSharedFileListItemLast, 0, 0,
-            urlRef, 0, 0);
-        if (item)
-            CFRelease(item);
-        CFRelease(loginItems);
-    } else if (loginItems && !enable) {
-        // We need to iterate over the items and check which one is "ours".
-        UInt32 seedValue;
-        CFArrayRef itemsArray = LSSharedFileListCopySnapshot(loginItems, &seedValue);
-        CFStringRef appUrlRefString = CFURLGetString(urlRef);
-        for (int i = 0; i < CFArrayGetCount(itemsArray); i++) {
-            LSSharedFileListItemRef item = (LSSharedFileListItemRef)CFArrayGetValueAtIndex(itemsArray, i);
-            CFURLRef itemUrlRef = NULL;
-
-            if (LSSharedFileListItemResolve(item, 0, &itemUrlRef, NULL) == noErr && itemUrlRef) {
-                CFStringRef itemUrlString = CFURLGetString(itemUrlRef);
-                if (CFStringCompare(itemUrlString, appUrlRefString, 0) == kCFCompareEqualTo) {
-                    LSSharedFileListItemRemove(loginItems, item); // remove it!
-                }
-                CFRelease(itemUrlRef);
+    if (!loginItems) {
+        qCWarning(lcUtility) << "Failed to retrieve loginItems";
+    } else {
+        if (enable) {
+            //Insert an item to the list.
+            LSSharedFileListItemRef item = LSSharedFileListInsertItemURL(loginItems,
+                kLSSharedFileListItemLast, 0, 0,
+                urlRef, 0, 0);
+            if (item) {
+                CFRelease(item);
+            } else {
+                qCWarning(lcUtility) << "Failed to insert ourself into launch on startup list";
             }
-        }
-        CFRelease(itemsArray);
+        } else {
+            // We need to iterate over the items and check which one is "ours".
+            UInt32 seedValue;
+            CFArrayRef itemsArray = LSSharedFileListCopySnapshot(loginItems, &seedValue);
+            CFStringRef appUrlRefString = CFURLGetString(urlRef);
+            for (int i = 0; i < CFArrayGetCount(itemsArray); i++) {
+                LSSharedFileListItemRef item = (LSSharedFileListItemRef)CFArrayGetValueAtIndex(itemsArray, i);
+                CFURLRef itemUrlRef = NULL;
+
+                if (LSSharedFileListItemResolve(item, 0, &itemUrlRef, NULL) == noErr && itemUrlRef) {
+                    CFStringRef itemUrlString = CFURLGetString(itemUrlRef);
+                    if (CFStringCompare(itemUrlString, appUrlRefString, 0) == kCFCompareEqualTo) {
+                        LSSharedFileListItemRemove(loginItems, item); // remove it!
+                    }
+                    CFRelease(itemUrlRef);
+                }
+            }
+            CFRelease(itemsArray);
+        };
         CFRelease(loginItems);
-    };
+    }
 
     CFRelease(folderCFStr);
     CFRelease(urlRef);
