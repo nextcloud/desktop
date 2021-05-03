@@ -99,7 +99,7 @@ pygments_style = 'sphinx'
 #html_theme_options = {}
 
 # Add any paths that contain custom themes here, relative to this directory.
-html_theme_path = ['_shared_assets/themes']
+html_theme_path = ['@CMAKE_CURRENT_SOURCE_DIR@/_shared_assets/themes']
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
