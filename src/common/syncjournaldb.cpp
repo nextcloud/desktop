@@ -408,6 +408,12 @@ bool SyncJournalDb::checkConnect()
         return sqlFail(QStringLiteral("Create table metadata"), createQuery);
     }
 
+    createQuery.prepare("CREATE TABLE IF NOT EXISTS key_value_store(key VARCHAR(4096), value VARCHAR(4096), PRIMARY KEY(key));");
+
+    if (!createQuery.exec()) {
+        return sqlFail(QStringLiteral("Create table key_value_store"), createQuery);
+    }
+
     createQuery.prepare("CREATE TABLE IF NOT EXISTS downloadinfo("
                         "path VARCHAR(4096),"
                         "tmpfile VARCHAR(4096),"
@@ -968,6 +974,43 @@ bool SyncJournalDb::setFileRecord(const SyncJournalFileRecord &_record)
         qCWarning(lcDb) << "Failed to connect database.";
         return false; // checkConnect failed.
     }
+}
+
+void SyncJournalDb::keyValueStoreSet(const QString &key, qint64 value)
+{
+    QMutexLocker locker(&_mutex);
+    if (!checkConnect()) {
+        return;
+    }
+
+    if (!_setKeyValueStoreQuery.initOrReset(QByteArrayLiteral("INSERT OR REPLACE INTO key_value_store (key, value) VALUES(?1, ?2);"), _db)) {
+        return;
+    }
+
+    _setKeyValueStoreQuery.bindValue(1, key);
+    _setKeyValueStoreQuery.bindValue(2, QString::number(value));
+    _setKeyValueStoreQuery.exec();
+}
+
+qint64 SyncJournalDb::keyValueStoreGetInt(const QString &key, qint64 defaultValue)
+{
+    QMutexLocker locker(&_mutex);
+    if (!checkConnect()) {
+        return defaultValue;
+    }
+
+    if (!_getKeyValueStoreQuery.initOrReset(QByteArrayLiteral("SELECT value FROM key_value_store WHERE key = ?1;"), _db)) {
+        return defaultValue;
+    }
+
+    _getKeyValueStoreQuery.bindValue(1, key);
+    _getKeyValueStoreQuery.exec();
+
+    if (!_getKeyValueStoreQuery.next().hasData) {
+        return defaultValue;
+    }
+
+    return _getKeyValueStoreQuery.int64Value(0);
 }
 
 // TODO: filename -> QBytearray?

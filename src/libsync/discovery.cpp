@@ -329,6 +329,13 @@ void ProcessDirectoryJob::processFile(PathTuple path,
                               << " | e2ee: " << dbEntry._isE2eEncrypted << "/" << serverEntry.isE2eEncrypted
                               << " | e2eeMangledName: " << dbEntry.e2eMangledName() << "/" << serverEntry.e2eMangledName;
 
+    if (localEntry.isValid()
+        && !serverEntry.isValid()
+        && !dbEntry.isValid()
+        && localEntry.modtime < _lastSyncTimestamp) {
+        qCWarning(lcDisco) << "File" << path._original << "was modified before the last sync run and is not in the sync journal and server";
+    }
+
     if (_discoveryData->isRenamed(path._original)) {
         qCDebug(lcDisco) << "Ignoring renamed";
         return; // Ignore this.
@@ -1185,7 +1192,8 @@ void ProcessDirectoryJob::processFileFinalize(
         recurse = false;
     }
     if (recurse) {
-        auto job = new ProcessDirectoryJob(path, item, recurseQueryLocal, recurseQueryServer, this);
+        auto job = new ProcessDirectoryJob(path, item, recurseQueryLocal, recurseQueryServer,
+            _lastSyncTimestamp, this);
         job->setInsideEncryptedTree(isInsideEncryptedTree() || item->_isEncrypted);
         if (removed) {
             job->setParent(_discoveryData);
@@ -1228,7 +1236,7 @@ void ProcessDirectoryJob::processBlacklisted(const PathTuple &path, const OCC::L
     qCInfo(lcDisco) << "Discovered (blacklisted) " << item->_file << item->_instruction << item->_direction << item->isDirectory();
 
     if (item->isDirectory() && item->_instruction != CSYNC_INSTRUCTION_IGNORE) {
-        auto job = new ProcessDirectoryJob(path, item, NormalQuery, InBlackList, this);
+        auto job = new ProcessDirectoryJob(path, item, NormalQuery, InBlackList, _lastSyncTimestamp, this);
         connect(job, &ProcessDirectoryJob::finished, this, &ProcessDirectoryJob::subJobFinished);
         _queuedJobs.push_back(job);
     } else {

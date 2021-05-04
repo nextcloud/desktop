@@ -111,6 +111,9 @@ SyncEngine::SyncEngine(AccountPtr account, const QString &localPath,
     _clearTouchedFilesTimer.setSingleShot(true);
     _clearTouchedFilesTimer.setInterval(30 * 1000);
     connect(&_clearTouchedFilesTimer, &QTimer::timeout, this, &SyncEngine::slotClearTouchedFiles);
+    connect(this, &SyncEngine::finished, [this](bool /* finished */) {
+        _journal->keyValueStoreSet("last_sync", QDateTime::currentSecsSinceEpoch());
+    });
 }
 
 SyncEngine::~SyncEngine()
@@ -586,7 +589,7 @@ void SyncEngine::startSync()
         _syncFileStatusTracker.data(), &SyncFileStatusTracker::slotAddSilentlyExcluded);
 
     auto discoveryJob = new ProcessDirectoryJob(
-        _discoveryPhase.data(), PinState::AlwaysLocal, _discoveryPhase.data());
+        _discoveryPhase.data(), PinState::AlwaysLocal, _journal->keyValueStoreGetInt("last_sync", 0), _discoveryPhase.data());
     _discoveryPhase->startJob(discoveryJob);
     connect(discoveryJob, &ProcessDirectoryJob::etag, this, &SyncEngine::slotRootEtagReceived);
 }
