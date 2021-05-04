@@ -1811,7 +1811,7 @@ Si custu fiat un&apos;errore e detzides de mantènnere is archìvios tuos, custo
         <location filename="../src/gui/generalsettings.ui" line="20"/>
         <location filename="../src/gui/generalsettings.ui" line="32"/>
         <source>About</source>
-        <translation>Informatziones</translation>
+        <translation>In contu de</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="41"/>
@@ -4248,7 +4248,7 @@ Custa est una modalidade noa, isperimentale. Si detzides de dda impreare, sinnal
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="165"/>
         <source>An error occurred while opening a folder</source>
-        <translation>Est acontèssidu un errore aberende una cartella</translation>
+        <translation>B&apos;at àpidu un&apos;errore aberende una cartella</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="168"/>
@@ -5143,7 +5143,7 @@ Custa est una modalidade noa, isperimentale. Si detzides de dda impreare, sinnal
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="473"/>
         <source>%n days ago</source>
-        <translation><numerusform>%n dies a oe</numerusform><numerusform>%n days ago</numerusform></translation>
+        <translation><numerusform>%n dies a oe</numerusform><numerusform>%n dies a oe</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="477"/>
