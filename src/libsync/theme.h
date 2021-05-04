@@ -370,6 +370,12 @@ public:
     virtual QString oauthClientSecret() const;
 
     /**
+     * Defaults to http://localhost due to historic reasons,
+     * can be set to http://127.0.0.1 reasons.
+     */
+    virtual QString oauthLocalhost() const;
+
+    /**
      * By default the client tries to get the OAuth access endpoint and the OAuth token endpoint from /.well-known/openid-configuration
      * Setting this allow authentication without a well known url
      *

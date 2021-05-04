@@ -111,7 +111,7 @@ private:
             }
         });
         const QJsonObject json({ { QStringLiteral("client_name"), QStringLiteral("%1 %2").arg(Theme::instance()->appNameGUI(), Theme::instance()->version()) },
-            { QStringLiteral("redirect_uris"), QJsonArray { QStringLiteral("http://localhost") } },
+            { QStringLiteral("redirect_uris"), QJsonArray { Theme::instance()->oauthLocalhost() } },
             { QStringLiteral("application_type"), QStringLiteral("native") },
             { QStringLiteral("token_endpoint_auth_method"), QStringLiteral("client_secret_basic") } });
         job->prepareRequest("POST", _registrationEndpoint, QNetworkRequest(), json);
@@ -221,12 +221,12 @@ void OAuth::startAuthentication()
                     httpReplyAndClose(socket, QByteArrayLiteral("400 Bad Request"), QByteArrayLiteral("<html><head><title>400 Bad Request</title></head><body><center><h1>400 Bad Request</h1></center></body></html>"));
                     return;
                 }
-              auto job = postTokenRequest({
+                auto job = postTokenRequest({
                     { QStringLiteral("grant_type"), QStringLiteral("authorization_code") },
                     { QStringLiteral("code"), args.queryItemValue(QStringLiteral("code")) },
-                    { QStringLiteral("redirect_uri"), QStringLiteral("http://localhost:%1").arg(_server.serverPort()) },
+                    { QStringLiteral("redirect_uri"), QStringLiteral("%1:%2").arg(Theme::instance()->oauthLocalhost(), QString::number(_server.serverPort())) },
                     { QStringLiteral("code_verifier"), QString::fromUtf8(_pkceCodeVerifier) },
-                    });
+                });
                 QObject::connect(job, &SimpleNetworkJob::finishedSignal, this, [this, socket](QNetworkReply *reply) {
                     const auto jsonData = reply->readAll();
                     QJsonParseError jsonParseError;
@@ -424,7 +424,7 @@ QUrl OAuth::authorisationLink() const
                                           .toBase64(QByteArray::Base64UrlEncoding | QByteArray::OmitTrailingEquals);
     query.setQueryItems({ { QStringLiteral("response_type"), QStringLiteral("code") },
         { QStringLiteral("client_id"), _clientId },
-        { QStringLiteral("redirect_uri"), QStringLiteral("http://localhost:%1").arg(QString::number(_server.serverPort())) },
+        { QStringLiteral("redirect_uri"), QStringLiteral("%1:%2").arg(Theme::instance()->oauthLocalhost(), QString::number(_server.serverPort())) },
         { QStringLiteral("code_challenge"), QString::fromLatin1(code_challenge) },
         { QStringLiteral("code_challenge_method"), QStringLiteral("S256") },
         { QStringLiteral("scope"), Theme::instance()->openIdConnectScopes() },

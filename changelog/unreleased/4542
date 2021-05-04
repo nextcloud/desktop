@@ -1,0 +1,8 @@
+Enhancement: Add branding parameter to change the Oauth localhost presentation
+
+We added a branding parameter which allows to specify http://127.0.0.1 instead
+of http://localhost as Oauth redirect uri.
+We recommend to use http://127.0.0.1 but for compatibility reasons we can't
+change the default.
+
+https://github.com/owncloud/enterprise/issues/4542

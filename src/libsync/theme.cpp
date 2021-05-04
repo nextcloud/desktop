@@ -645,6 +645,11 @@ QString Theme::oauthClientSecret() const
     return QStringLiteral("UBntmLjC2yYCeHwsyj73Uwo9TAaecAetRwMw0xYcvNL9yRdLSUi0hUAHfvCHFeFh");
 }
 
+QString Theme::oauthLocalhost() const
+{
+    return QStringLiteral("http://localhost");
+}
+
 QPair<QString, QString> Theme::oauthOverrideAuthUrl() const
 {
     return {};
