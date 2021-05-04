@@ -67,6 +67,7 @@
 
 * [ ] QA/DEV: Update [stable channel](https://confluence.owncloud.com/display/OG/Online+Updater%2C+Crash+reporter%2C+Transifex#OnlineUpdater,Crashreporter,Transifex-UpdatetheUpdater) in the owncloud hosted auto updater
 * [ ] QA/DEV: Ensure that the [client patch release template](https://github.com/owncloud/client/blob/master/.github/patch_release_template.md) is up to date and in sync with other client templates
+* [ ] QA/DEV: Ensure that the [client test plan template](https://github.com/owncloud/QA/blob/master/Desktop/Regression_Test_Plan_Patch_Release.md) is up to date.
 * [ ] QA: Update [supported platforms](https://confluence.owncloud.com/display/OG/Supported+Platforms)
 
 ### A Few Days After the Release
