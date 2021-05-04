@@ -671,7 +671,7 @@ Současně tato akce zruší jakoukoli právě probíhající synchronizaci.</tr
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="35"/>
         <source>Certificate &amp; Key (pkcs12):</source>
-        <translation type="unfinished"/>
+        <translation>Certifikát a klíč (pkcs12):</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="35"/>
@@ -928,7 +928,7 @@ Současně tato akce zruší jakoukoli právě probíhající synchronizaci.</tr
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="159"/>
         <source>Timeout</source>
-        <translation type="unfinished"/>
+        <translation>Časový limit</translation>
     </message>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="159"/>
@@ -2813,7 +2813,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="453"/>
         <source>OK</source>
-        <translation type="unfinished"/>
+        <translation>OK</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="455"/>
@@ -3217,7 +3217,7 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="181"/>
         <source>Could not create folder %1</source>
-        <translation type="unfinished"/>
+        <translation>Nepodařilo se vytvořit složku %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="181"/>
@@ -3615,7 +3615,7 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="146"/>
         <source>Note</source>
-        <translation type="unfinished"/>
+        <translation>Poznámka</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="171"/>
@@ -3625,7 +3625,7 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="223"/>
         <source>Set password</source>
-        <translation type="unfinished"/>
+        <translation>Nastavit heslo</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="239"/>
@@ -3640,7 +3640,7 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="294"/>
         <source>Expires</source>
-        <translation type="unfinished"/>
+        <translation>Platnost končí</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="150"/>
@@ -3768,12 +3768,12 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="391"/>
         <source>Password for share required</source>
-        <translation type="unfinished"/>
+        <translation>K sdílení je vyžadováno heslo</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="392"/>
         <source>Please enter a password for your email share:</source>
-        <translation type="unfinished"/>
+        <translation>Zadejte heslo e-mailového sdílení</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="386"/>
@@ -3796,7 +3796,7 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
     <message>
         <location filename="../src/gui/shareuserline.ui" line="97"/>
         <source>Can edit</source>
-        <translation type="unfinished"/>
+        <translation>Může upravovat</translation>
     </message>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="131"/>
@@ -3806,7 +3806,7 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
     <message>
         <location filename="../src/gui/shareuserline.ui" line="187"/>
         <source>Password:</source>
-        <translation type="unfinished"/>
+        <translation>Heslo:</translation>
     </message>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="259"/>
@@ -3851,7 +3851,7 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="588"/>
         <source>Password protect</source>
-        <translation type="unfinished"/>
+        <translation>Chránit heslem</translation>
     </message>
 </context>
 <context>

@@ -671,7 +671,7 @@ Questa azione interromperà qualsiasi sincronizzazione attualmente in esecuzione
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="35"/>
         <source>Certificate &amp; Key (pkcs12):</source>
-        <translation type="unfinished"/>
+        <translation>Certificato e chiave (pkcs12):</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="35"/>
@@ -928,7 +928,7 @@ Questa azione interromperà qualsiasi sincronizzazione attualmente in esecuzione
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="159"/>
         <source>Timeout</source>
-        <translation type="unfinished"/>
+        <translation>Scadenza</translation>
     </message>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="159"/>
@@ -2810,7 +2810,7 @@ Non è consigliabile utilizzarlo.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="453"/>
         <source>OK</source>
-        <translation type="unfinished"/>
+        <translation>OK</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="455"/>
@@ -3208,7 +3208,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="181"/>
         <source>Could not create folder %1</source>
-        <translation type="unfinished"/>
+        <translation>Impossibile creare la cartella %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="181"/>
@@ -3606,7 +3606,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="146"/>
         <source>Note</source>
-        <translation type="unfinished"/>
+        <translation>Nota</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="171"/>
@@ -3616,7 +3616,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="223"/>
         <source>Set password</source>
-        <translation type="unfinished"/>
+        <translation>Imposta password</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="239"/>
@@ -3631,7 +3631,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="294"/>
         <source>Expires</source>
-        <translation type="unfinished"/>
+        <translation>Scade</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="150"/>
@@ -3759,12 +3759,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="391"/>
         <source>Password for share required</source>
-        <translation type="unfinished"/>
+        <translation>Richiesta password per condivisione</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="392"/>
         <source>Please enter a password for your email share:</source>
-        <translation type="unfinished"/>
+        <translation>Digita una password per la condivisione dell&apos;email:</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="386"/>
@@ -3787,22 +3787,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/shareuserline.ui" line="97"/>
         <source>Can edit</source>
-        <translation type="unfinished"/>
+        <translation>Può modificare</translation>
     </message>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="131"/>
         <source>Note:</source>
-        <translation type="unfinished"/>
+        <translation>Nota:</translation>
     </message>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="187"/>
         <source>Password:</source>
-        <translation type="unfinished"/>
+        <translation>Password:</translation>
     </message>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="259"/>
         <source>Expires:</source>
-        <translation type="unfinished"/>
+        <translation>Scade:</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="440"/>
@@ -3812,12 +3812,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="528"/>
         <source>Note to recipient</source>
-        <translation type="unfinished"/>
+        <translation>Nota al destinatario</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="542"/>
         <source>Set expiration date</source>
-        <translation type="unfinished"/>
+        <translation>Imposta data di scadenza</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="450"/>
@@ -3842,7 +3842,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="588"/>
         <source>Password protect</source>
-        <translation type="unfinished"/>
+        <translation>Protezione con password</translation>
     </message>
 </context>
 <context>
