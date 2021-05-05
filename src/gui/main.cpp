@@ -78,6 +78,10 @@ int main(int argc, char **argv)
         app.showVersion();
         return 0;
     }
+    if (app.listAvailableTranslationsOnly()) {
+        app.listAvailableTranslations();
+        return 0;
+    }
 
 // check a environment variable for core dumps
 #ifdef Q_OS_UNIX

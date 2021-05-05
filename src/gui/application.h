@@ -65,6 +65,8 @@ public:
     bool debugMode();
     bool versionOnly(); // only display the version?
     void showVersion();
+    bool listAvailableTranslationsOnly();
+    void listAvailableTranslations();
 
     void showSettingsDialog();
 
@@ -122,6 +124,7 @@ private:
 
     bool _helpOnly;
     bool _versionOnly;
+    bool _listAvailableTranslationsOnly;
 
 
 #ifdef Q_OS_LINUX

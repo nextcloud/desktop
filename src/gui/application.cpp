@@ -88,6 +88,7 @@ namespace {
             "  --logflush           : flush the log file after every write.\n"
             "  --logdebug           : also output debug-level messages in the log.\n"
             "  --language <locale>  : override UI language\n"
+            "  --list-languages     : list available translations (for use with --language)\n"
             "  --confdir <dirname>  : Use the given configuration folder.");
     }
 }
@@ -171,6 +172,7 @@ Application::Application(int &argc, char **argv)
     , _helpOnly(false)
     , _versionOnly(false)
     , _showLogWindow(false)
+    , _listAvailableTranslationsOnly(false)
     , _logExpire(0)
     , _logFlush(false)
     , _logDebug(false)
@@ -275,7 +277,7 @@ Application::Application(int &argc, char **argv)
         qCInfo(lcApplication) << "VFS suffix plugin is available";
 
     //no need to waste time;
-    if (_helpOnly || _versionOnly)
+    if (_helpOnly || _versionOnly || _listAvailableTranslationsOnly)
         return;
 
     if (_quitInstance) {
@@ -623,6 +625,8 @@ void Application::parseOptions(const QStringList &options)
             } else {
                 showHint("--language expects a parameter");
             }
+        } else if (option == QLatin1String("--list-languages")) {
+            _listAvailableTranslationsOnly = true;
         } else if (option.endsWith(QStringLiteral(APPLICATION_DOTVIRTUALFILE_SUFFIX))) {
             // virtual file, open it after the Folder were created (if the app is not terminated)
             QTimer::singleShot(0, this, [this, option] { openVirtualFile(option); });
@@ -671,6 +675,13 @@ void Application::showHelp()
 void Application::showVersion()
 {
     displayHelpText(Theme::instance()->versionSwitchOutput());
+}
+
+void Application::listAvailableTranslations()
+{
+    auto availableTranslations = Translations::listAvailableTranslations().toList();
+    availableTranslations.sort(Qt::CaseInsensitive);
+    displayHelpText("Available translations: " + availableTranslations.join(", "));
 }
 
 void Application::showHint(const QString &errorHint)
@@ -794,6 +805,11 @@ bool Application::giveHelp()
 bool Application::versionOnly()
 {
     return _versionOnly;
+}
+
+bool Application::listAvailableTranslationsOnly()
+{
+    return _listAvailableTranslationsOnly;
 }
 
 void Application::showSettingsDialog()
