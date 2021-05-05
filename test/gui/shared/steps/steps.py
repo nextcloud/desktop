@@ -96,7 +96,7 @@ def setUpClient(context, username, password, pollingInterval):
     userFirstName = username.split()
     userSetting = userSetting + pollingInterval
     args = {'displayUserName': username,
-        'davUserName': username.lower(),
+        'davUserName': userFirstName[0].lower(),
         'displayUserFirstName': userFirstName[0],
         'client_sync_path': context.userData['clientSyncPath'],
         'local_server': context.userData['localBackendUrl']
