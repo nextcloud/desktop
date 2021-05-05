@@ -196,7 +196,6 @@ void HttpCredentials::fetchFromKeychain()
 void HttpCredentials::fetchFromKeychainHelper()
 {
     const int version = _account->credentialSetting(CredentialVersionKey()).toInt();
-    _account->setCredentialSetting(CredentialVersionKey(), CredentialVersion);
     if (version < CredentialVersion) {
         auto legacyCreds = new HttpLegacyCredentials(this);
         legacyCreds->fetchFromKeychainHelper();
@@ -344,7 +343,7 @@ void HttpCredentials::persist()
         // We never connected or fetched the user, there is nothing to save.
         return;
     }
-
+    _account->setCredentialSetting(CredentialVersionKey(), CredentialVersion);
     _account->setCredentialSetting(userC(), _user);
     if (!_clientCertBundle.isEmpty()) {
         // Note that the _clientCertBundle will often be cleared after usage,
