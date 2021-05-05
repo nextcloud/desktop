@@ -88,6 +88,8 @@ QKeychain::Job *CredentialManager::set(const QString &key, const QVariant &data)
 QKeychain::Job *CredentialManager::remove(const QString &key)
 {
     OC_ASSERT(contains(key));
+    // remove immediately to prevent double invocation by clear()
+    credentialsList()->remove(key);
     qCInfo(lcCredentaislManager) << "del" << scopedKey(this, key);
     auto keychainJob = new QKeychain::DeletePasswordJob(Theme::instance()->appName());
     keychainJob->setKey(scopedKey(this, key));
@@ -95,7 +97,6 @@ QKeychain::Job *CredentialManager::remove(const QString &key)
         OC_ASSERT(keychainJob->error() != QKeychain::EntryNotFound);
         if (keychainJob->error() == QKeychain::NoError) {
             qCInfo(lcCredentaislManager) << "removed" << scopedKey(this, key);
-            credentialsList()->remove(key);
         } else {
             qCWarning(lcCredentaislManager) << "Failed to remove:" << scopedKey(this, key) << keychainJob->errorString();
         }
