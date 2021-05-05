@@ -111,7 +111,7 @@ private:
             }
         });
         const QJsonObject json({ { QStringLiteral("client_name"), QStringLiteral("%1 %2").arg(Theme::instance()->appNameGUI(), Theme::instance()->version()) },
-            { QStringLiteral("redirect_uris"), QJsonArray { Theme::instance()->oauthLocalhost() } },
+            { QStringLiteral("redirect_uris"), QJsonArray { QStringLiteral("http://127.0.0.1") } },
             { QStringLiteral("application_type"), QStringLiteral("native") },
             { QStringLiteral("token_endpoint_auth_method"), QStringLiteral("client_secret_basic") } });
         job->prepareRequest("POST", _registrationEndpoint, QNetworkRequest(), json);
@@ -162,6 +162,7 @@ OAuth::OAuth(Account *account, QObject *parent)
     , _account(account)
     , _clientId(Theme::instance()->oauthClientId())
     , _clientSecret(Theme::instance()->oauthClientSecret())
+    , _redirectUrl(Theme::instance()->oauthLocalhost())
 {
 }
 
@@ -224,7 +225,7 @@ void OAuth::startAuthentication()
                 auto job = postTokenRequest({
                     { QStringLiteral("grant_type"), QStringLiteral("authorization_code") },
                     { QStringLiteral("code"), args.queryItemValue(QStringLiteral("code")) },
-                    { QStringLiteral("redirect_uri"), QStringLiteral("%1:%2").arg(Theme::instance()->oauthLocalhost(), QString::number(_server.serverPort())) },
+                    { QStringLiteral("redirect_uri"), QStringLiteral("%1:%2").arg(_redirectUrl, QString::number(_server.serverPort())) },
                     { QStringLiteral("code_verifier"), QString::fromUtf8(_pkceCodeVerifier) },
                 });
                 QObject::connect(job, &SimpleNetworkJob::finishedSignal, this, [this, socket](QNetworkReply *reply) {
@@ -424,7 +425,7 @@ QUrl OAuth::authorisationLink() const
                                           .toBase64(QByteArray::Base64UrlEncoding | QByteArray::OmitTrailingEquals);
     query.setQueryItems({ { QStringLiteral("response_type"), QStringLiteral("code") },
         { QStringLiteral("client_id"), _clientId },
-        { QStringLiteral("redirect_uri"), QStringLiteral("%1:%2").arg(Theme::instance()->oauthLocalhost(), QString::number(_server.serverPort())) },
+        { QStringLiteral("redirect_uri"), QStringLiteral("%1:%2").arg(_redirectUrl, QString::number(_server.serverPort())) },
         { QStringLiteral("code_challenge"), QString::fromLatin1(code_challenge) },
         { QStringLiteral("code_challenge_method"), QStringLiteral("S256") },
         { QStringLiteral("scope"), Theme::instance()->openIdConnectScopes() },
@@ -487,6 +488,7 @@ void OAuth::fetchWellKnown()
                     _authEndpoint = QUrl::fromEncoded(json[QStringLiteral("authorization_endpoint")].toString().toUtf8());
                     _tokenEndpoint = QUrl::fromEncoded(json[QStringLiteral("token_endpoint")].toString().toUtf8());
                     _registrationEndpoint = QUrl::fromEncoded(json[QStringLiteral("registration_endpoint")].toString().toUtf8());
+                    _redirectUrl = QStringLiteral("http://127.0.0.1");
                 } else if (jsonParseError.error == QJsonParseError::IllegalValue) {
                     qCDebug(lcOauth) << ".well-known did not return json, the server most probably does not support oidc";
                 } else {

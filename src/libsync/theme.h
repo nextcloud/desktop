@@ -372,6 +372,7 @@ public:
     /**
      * Defaults to http://localhost due to historic reasons,
      * can be set to http://127.0.0.1 reasons.
+     * This option is only available with oauth2 not with OpenID Connect.
      */
     virtual QString oauthLocalhost() const;
 

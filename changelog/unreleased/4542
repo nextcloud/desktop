@@ -1,8 +1,8 @@
-Enhancement: Add branding parameter to change the Oauth localhost presentation
+Enhancement: Prefer 127.0.0.1 as oauth redirect url
 
-We added a branding parameter which allows to specify http://127.0.0.1 instead
-of http://localhost as Oauth redirect uri.
-We recommend to use http://127.0.0.1 but for compatibility reasons we can't
-change the default.
+When using OpenID Connect we now always use http://127.0.0.1
+as redirect url instead of http://localhost, following the recommendations in RFC 8252   (https://tools.ietf.org/html/rfc8252).
+For OAuth2 we added a branding parameter which allows to specify http://127.0.0.1 instead
+of http://localhost.
 
 https://github.com/owncloud/enterprise/issues/4542

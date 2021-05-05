@@ -86,7 +86,6 @@ signals:
     void fetchWellKnownFinished();
 
 private:
-
     void fetchWellKnown();
     void finalize(const QPointer<QTcpSocket> &socket, const QString &accessToken,
         const QString &refreshToken, const QString &userId, const QUrl &messageUrl);
@@ -106,6 +105,7 @@ private:
     QUrl _authEndpoint;
     QUrl _tokenEndpoint;
     QUrl _registrationEndpoint;
+    QString _redirectUrl;
     QByteArray _pkceCodeVerifier;
     QByteArray _state;
 };

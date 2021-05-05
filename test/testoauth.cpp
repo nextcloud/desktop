@@ -98,6 +98,9 @@ public:
         TokenAsked,
         CustomState } state = StartState;
     Q_ENUM(State);
+
+    // for oauth2 we use localhost, for oidc we use 127.0.0.1
+    QString localHost = QStringLiteral("localhost");
     bool replyToBrowserOk = false;
     bool gotAuthOk = false;
     virtual bool done() const { return replyToBrowserOk && gotAuthOk; }
@@ -139,13 +142,13 @@ public:
     virtual void openBrowserHook(const QUrl &url) {
         QCOMPARE(state, StatusPhpState);
         state = BrowserOpened;
-        QCOMPARE(url.path(), QString(sOAuthTestServer.path() + "/index.php/apps/oauth2/authorize"));
+        QCOMPARE(url.path(), sOAuthTestServer.path() + QStringLiteral("/index.php/apps/oauth2/authorize"));
         QVERIFY(url.toString().startsWith(sOAuthTestServer.toString()));
         QUrlQuery query(url);
-        QCOMPARE(query.queryItemValue(QLatin1String("response_type")), QLatin1String("code"));
-        QCOMPARE(query.queryItemValue(QLatin1String("client_id")), Theme::instance()->oauthClientId());
-        QUrl redirectUri(query.queryItemValue(QLatin1String("redirect_uri")));
-        QCOMPARE(redirectUri.host(), QLatin1String("localhost"));
+        QCOMPARE(query.queryItemValue(QStringLiteral("response_type")), QLatin1String("code"));
+        QCOMPARE(query.queryItemValue(QStringLiteral("client_id")), Theme::instance()->oauthClientId());
+        QUrl redirectUri(query.queryItemValue(QStringLiteral("redirect_uri")));
+        QCOMPARE(redirectUri.host(), localHost);
         redirectUri.setQuery(QStringLiteral("code=%1&state=%2").arg(code, query.queryItemValue(QStringLiteral("state"))));
         createBrowserReply(QNetworkRequest(redirectUri));
     }
@@ -355,6 +358,11 @@ private slots:
 
     void testWellKnown() {
         struct Test : OAuthTestCase {
+            Test()
+            {
+                localHost = QLatin1String("127.0.0.1");
+            }
+
             QNetworkReply * wellKnownReply(QNetworkAccessManager::Operation op, const QNetworkRequest & req) override {
                 OC_ASSERT(op == QNetworkAccessManager::GetOperation);
                 QJsonDocument jsondata(QJsonObject{
