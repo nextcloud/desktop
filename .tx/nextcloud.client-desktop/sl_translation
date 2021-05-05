@@ -22,5 +22,6 @@ Icon=@APPLICATION_EXECUTABLE@
 
 # Translations
 Icon[sl]=@APPLICATION_ICON_NAME@
-Comment[sl]=@APPLICATION_NAME@ program za usklajevanje
+Name[sl]=Namizni program @APPLICATION_NAME@
+Comment[sl]=Program za usklajevanje @APPLICATION_NAME@
 GenericName[sl]=Usklajevanje map
