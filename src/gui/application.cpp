@@ -623,7 +623,8 @@ void Application::parseOptions(const QStringList &options)
             if (it.hasNext() && !it.peekNext().startsWith(QLatin1String("--"))) {
                 _userEnforcedLanguage = it.next();
             } else {
-                showHint("--language expects a parameter");
+                std::cerr << "Error: --language expects a locale as parameter (for example: --language en)" << std::endl;
+                _listAvailableTranslationsOnly = true;
             }
         } else if (option == QLatin1String("--list-languages")) {
             _listAvailableTranslationsOnly = true;
