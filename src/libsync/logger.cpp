@@ -30,10 +30,24 @@
 #ifdef Q_OS_WIN
 #include <io.h> // for stdout
 #include <fcntl.h>
+#include <comdef.h>
 #endif
 
 namespace {
 constexpr int CrashLogSize = 20;
+
+bool isDebuggerPresent()
+{
+#ifdef Q_OS_WIN
+    BOOL debugged;
+    if (!CheckRemoteDebuggerPresent(GetCurrentProcess(), &debugged)) {
+        const auto error = GetLastError();
+        qDebug() << "Failed to detect debugger" << QString::fromWCharArray(_com_error(error).ErrorMessage());
+    }
+    return debugged;
+#endif
+    return false;
+}
 }
 namespace OCC {
 
@@ -70,16 +84,21 @@ bool Logger::isLoggingToFile() const
 
 void Logger::doLog(QtMsgType type, const QMessageLogContext &ctx, const QString &message)
 {
-    const QString msg = qFormatLogMessage(type, ctx, message);
+    const QString msg = qFormatLogMessage(type, ctx, message) + QLatin1Char('\n');
     {
         QMutexLocker lock(&_mutex);
         _crashLogIndex = (_crashLogIndex + 1) % CrashLogSize;
         _crashLog[_crashLogIndex] = msg;
         if (_logstream) {
-            (*_logstream) << msg << endl;
+            (*_logstream) << msg;
             if (_doFileFlush)
                 _logstream->flush();
         }
+#if defined(Q_OS_WIN)
+        if (isDebuggerPresent()) {
+            OutputDebugStringW(reinterpret_cast<const wchar_t *>(msg.utf16()));
+        }
+#endif
         if (type == QtFatalMsg) {
             close();
 #if defined(Q_OS_WIN)
@@ -204,7 +223,7 @@ void Logger::dumpCrashLog()
     if (logFile.open(QFile::WriteOnly)) {
         QTextStream out(&logFile);
         for (int i = 1; i <= CrashLogSize; ++i) {
-            out << _crashLog[(_crashLogIndex + i) % CrashLogSize] << QLatin1Char('\n');
+            out << _crashLog[(_crashLogIndex + i) % CrashLogSize];
         }
     }
 }
@@ -293,7 +312,7 @@ void OCC::Logger::attacheToConsole()
     }
     _consoleIsAttached = true;
 #ifdef Q_OS_WIN
-    if (AttachConsole(ATTACH_PARENT_PROCESS)) {
+    if (!isDebuggerPresent() && AttachConsole(ATTACH_PARENT_PROCESS)) {
         // atache to the parent console output, if its an interactive terminal
         CONSOLE_SCREEN_BUFFER_INFO csbi;
         if (GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi)) {
