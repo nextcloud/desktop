@@ -430,7 +430,7 @@ void PropagateDownloadFile::startAfterIsEncryptedIsChecked()
 
         if (!_item->_remotePerm.isNull() && !_item->_remotePerm.hasPermission(RemotePermissions::CanWrite)) {
             // make sure ReadOnly flag is preserved for placeholder, similarly to regular files
-            FileSystem::setFileReadOnlyWeak(propagator()->fullLocalPath(_item->_file), true);
+            FileSystem::setFileReadOnly(propagator()->fullLocalPath(_item->_file), true);
         }
 
         return;
@@ -455,7 +455,7 @@ void PropagateDownloadFile::startAfterIsEncryptedIsChecked()
 
         if (!_item->_remotePerm.isNull() && !_item->_remotePerm.hasPermission(RemotePermissions::CanWrite)) {
             // make sure ReadOnly flag is preserved for placeholder, similarly to regular files
-            FileSystem::setFileReadOnlyWeak(propagator()->fullLocalPath(_item->_file), true);
+            FileSystem::setFileReadOnly(propagator()->fullLocalPath(_item->_file), true);
         }
 
         return;
