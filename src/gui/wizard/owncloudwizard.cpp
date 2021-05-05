@@ -116,7 +116,10 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
 void OwncloudWizard::centerWindow()
 {
     const auto wizardWindow = window();
-    const auto screenGeometry = QGuiApplication::screenAt(wizardWindow->pos())->geometry();
+    const auto screen = QGuiApplication::screenAt(wizardWindow->pos())
+        ? QGuiApplication::screenAt(wizardWindow->pos())
+        : QGuiApplication::primaryScreen();
+    const auto screenGeometry = screen->geometry();
     const auto windowGeometry = wizardWindow->geometry();
     const auto newWindowPosition = screenGeometry.center() - QPoint(windowGeometry.width() / 2, windowGeometry.height() / 2);
     wizardWindow->move(newWindowPosition);
