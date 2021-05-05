@@ -70,7 +70,7 @@ void OwncloudOAuthCredsPage::initializePage()
 {
     OwncloudWizard *ocWizard = qobject_cast<OwncloudWizard *>(wizard());
     Q_ASSERT(ocWizard);
-    ocWizard->account()->setCredentials(new HttpCredentialsGui(DetermineAuthTypeJob::AuthType::Unknown));
+    ocWizard->account()->setCredentials(new HttpCredentialsGui);
     _asyncAuth.reset(new OAuth(ocWizard->account().data(), this));
     connect(_asyncAuth.data(), &OAuth::result, this, &OwncloudOAuthCredsPage::asyncAuthResult, Qt::QueuedConnection);
     _asyncAuth->startAuthentication();

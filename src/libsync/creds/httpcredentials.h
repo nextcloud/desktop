@@ -56,7 +56,6 @@ public:
     /// Don't add credentials if this is set on a QNetworkRequest
     static constexpr QNetworkRequest::Attribute DontAddCredentialsAttribute = QNetworkRequest::User;
 
-    HttpCredentials(DetermineAuthTypeJob::AuthType authType);
     explicit HttpCredentials(DetermineAuthTypeJob::AuthType authType, const QString &user, const QString &password,
             const QByteArray &clientCertBundle = QByteArray(), const QByteArray &clientCertPassword = QByteArray());
 
@@ -67,8 +66,6 @@ public:
     bool stillValid(QNetworkReply *reply) override;
     void persist() override;
     QString user() const override;
-    // the password or token
-    QString password() const;
     void invalidateToken() override;
     void forgetSensitiveData() override;
     QString fetchUser();
@@ -85,6 +82,7 @@ public:
     // Whether we are using OAuth
     bool isUsingOAuth() const { return _authType == DetermineAuthTypeJob::AuthType::OAuth; }
 protected:
+    HttpCredentials() = default;
 
     /// Wipes legacy keychain locations
     void deleteOldKeychainEntries();

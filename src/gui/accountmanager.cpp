@@ -311,9 +311,7 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
             continue;
         acc->_settingsMap.insert(key, settings.value(key));
     }
-    DetermineAuthTypeJob::AuthType authType = settings.value(QStringLiteral("http_oauth"), false).toBool() ?
-                DetermineAuthTypeJob::AuthType::OAuth : DetermineAuthTypeJob::AuthType::Basic;
-    acc->setCredentials(new HttpCredentialsGui(authType));
+    acc->setCredentials(new HttpCredentialsGui);
 
     // now the server cert, it is in the general group
     settings.beginGroup(QLatin1String("General"));

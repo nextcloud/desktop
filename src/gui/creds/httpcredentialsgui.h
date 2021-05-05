@@ -29,11 +29,10 @@ class HttpCredentialsGui : public HttpCredentials
 {
     Q_OBJECT
 public:
-    explicit HttpCredentialsGui(DetermineAuthTypeJob::AuthType authType)
-        : HttpCredentials(authType)
+    HttpCredentialsGui()
+        : HttpCredentials()
     {
     }
-
     HttpCredentialsGui(const QString &user, const QString &password,
             const QByteArray &clientCertBundle, const QByteArray &clientCertPassword)
         : HttpCredentials(DetermineAuthTypeJob::AuthType::Basic, user, password, clientCertBundle, clientCertPassword)

@@ -38,6 +38,11 @@ Q_LOGGING_CATEGORY(lcHttpCredentials, "sync.credentials.http", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcHttpLegacyCredentials, "sync.credentials.http.legacy", QtInfoMsg)
 
 namespace {
+auto isOAuthC()
+{
+    return QStringLiteral("oauth");
+}
+
 auto passwordKeyC()
 {
     return QStringLiteral("http/password");
@@ -76,11 +81,11 @@ protected:
     {
         QNetworkRequest req(request);
         if (!req.attribute(HttpCredentials::DontAddCredentialsAttribute).toBool()) {
-            if (_cred && !_cred->password().isEmpty()) {
+            if (_cred && !_cred->_password.isEmpty()) {
                 if (_cred->isUsingOAuth()) {
-                    req.setRawHeader("Authorization", "Bearer " + _cred->password().toUtf8());
+                    req.setRawHeader("Authorization", "Bearer " + _cred->_password.toUtf8());
                 } else {
-                    QByteArray credHash = QByteArray(_cred->user().toUtf8() + ":" + _cred->password().toUtf8()).toBase64();
+                    QByteArray credHash = QByteArray(_cred->user().toUtf8() + ":" + _cred->_password.toUtf8()).toBase64();
                     req.setRawHeader("Authorization", "Basic " + credHash);
                 }
             } else if (!request.url().password().isEmpty()) {
@@ -108,12 +113,6 @@ private:
     QPointer<const HttpCredentials> _cred;
 };
 
-HttpCredentials::HttpCredentials(DetermineAuthTypeJob::AuthType authType)
-    : _authType(authType)
-{
-}
-
-// From wizard
 HttpCredentials::HttpCredentials(DetermineAuthTypeJob::AuthType authType, const QString &user, const QString &password, const QByteArray &clientCertBundle, const QByteArray &clientCertPassword)
     : _user(user)
     , _password(password)
@@ -138,16 +137,15 @@ QString HttpCredentials::user() const
     return _user;
 }
 
-QString HttpCredentials::password() const
-{
-    return _password;
-}
-
 void HttpCredentials::setAccount(Account *account)
 {
     AbstractCredentials::setAccount(account);
     if (_user.isEmpty()) {
         fetchUser();
+    }
+    const auto isOauth = account->credentialSetting(isOAuthC());
+    if (isOauth.isValid()) {
+        _authType = isOauth.toBool() ? DetermineAuthTypeJob::AuthType::OAuth : DetermineAuthTypeJob::AuthType::Basic;
     }
 }
 
@@ -345,6 +343,7 @@ void HttpCredentials::persist()
     }
     _account->setCredentialSetting(CredentialVersionKey(), CredentialVersion);
     _account->setCredentialSetting(userC(), _user);
+    _account->setCredentialSetting(isOAuthC(), isUsingOAuth());
     if (!_clientCertBundle.isEmpty()) {
         // Note that the _clientCertBundle will often be cleared after usage,
         // it's just written if it gets passed into the constructor.
