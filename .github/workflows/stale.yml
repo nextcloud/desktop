@@ -9,6 +9,7 @@ jobs:
         steps:
             -   uses: actions/stale@v3
                 with:
+                    operations-per-run: 1500
                     days-before-stale: 28
                     days-before-close: 14
                     days-before-pr-close: -1
