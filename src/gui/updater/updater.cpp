@@ -28,6 +28,8 @@
 #include "config.h"
 #include "configfile.h"
 
+#include <QSysInfo>
+
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcUpdater, "nextcloud.gui.updater", QtInfoMsg)
@@ -88,6 +90,9 @@ QUrlQuery Updater::getQueryParams()
     }
     query.addQueryItem(QStringLiteral("version"), clientVersion());
     query.addQueryItem(QStringLiteral("platform"), platform);
+    query.addQueryItem(QStringLiteral("osRelease"), QSysInfo::productType());
+    query.addQueryItem(QStringLiteral("osVersion"), QSysInfo::productVersion());
+    query.addQueryItem(QStringLiteral("kernelVersion"), QSysInfo::kernelVersion());
     query.addQueryItem(QStringLiteral("oem"), theme->appName());
     query.addQueryItem(QStringLiteral("buildArch"), QSysInfo::buildCpuArchitecture());
     query.addQueryItem(QStringLiteral("currentArch"), QSysInfo::currentCpuArchitecture());
