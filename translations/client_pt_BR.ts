@@ -3565,7 +3565,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="149"/>
         <source>Failed to create backup: %1</source>
-        <translation type="unfinished"/>
+        <translation>Falha ao criar backup: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="185"/>
