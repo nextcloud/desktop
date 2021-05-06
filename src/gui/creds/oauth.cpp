@@ -114,7 +114,7 @@ void OAuth::start()
                             errorReason = tr("Error returned from the server: <em>%1</em>")
                                               .arg(errorFromJson.toHtmlEscaped());
                         } else if (reply->error() != QNetworkReply::NoError) {
-                            errorReason = tr("There was an error accessing the 'token' endpoint: <br><em>%1</em>")
+                            errorReason = tr("There was an error accessing the \"token\" endpoint: <br><em>%1</em>")
                                               .arg(reply->errorString().toHtmlEscaped());
                         } else if (jsonData.isEmpty()) {
                             // Can happen if a funky load balancer strips away POST data, e.g. BigIP APM my.policy
