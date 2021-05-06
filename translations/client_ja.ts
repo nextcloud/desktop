@@ -517,7 +517,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1085"/>
         <source>Connected to %1.</source>
-        <translation>%1 に接続しています。</translation>
+        <translation>%1 に接続中</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1089"/>
@@ -1531,7 +1531,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="299"/>
         <source>Synchronizing VirtualFiles with local folder</source>
-        <translation>仮想ファイルをローカルフォルダーと同期する</translation>
+        <translation>ローカルフォルダーに仮想ファイルで同期中</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="301"/>
@@ -1815,7 +1815,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.ui" line="41"/>
         <source>Legal notice</source>
-        <translation>法的通知</translation>
+        <translation>法律上の告知</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="66"/>
@@ -1938,14 +1938,14 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <source>The update channel determines which client updates will be offered for installation. The &quot;stable&quot; channel contains only upgrades that are considered reliable, while the versions in the &quot;beta&quot; channel may contain newer features and bugfixes, but have not yet been tested thoroughly.
 
 Note that this selects only what pool upgrades are taken from, and that there are no downgrades: So going back from the beta channel to the stable channel usually cannot be done immediately and means waiting for a stable version that is newer than the currently installed beta version.</source>
-        <translation>アップデートチャネルで、どのタイプのアップデートでクライアントにインストールするかを決定します。”安定版&quot; チャネルには、信頼できると考えられるアップグレードのみが含まれ、”ベータ版&quot; チャネルのバージョンには、新しい機能やバグフィックスが含まれているかもしれませんが、まだ十分にテストされていません。
+        <translation>クライアントをアップデートするときにどの更新チャネルからダウンロードするかを指定します。”安定版&quot; チャネルでは、信頼性が高いと考えられるパッケージのみ利用できます。一方、”ベータ版&quot; チャネルでは、新しい機能やバグ修正のあるパッケージが入っていますが、テストが十分とは限りません。
 
-これは、アップグレードがどのプールのようなものから取得されるかのみを選択し、ダウングレードはできないことに注意してください。ベータ版から安定版への移行は、通常すぐにはできず、現在インストールされているベータ版よりも新しいものの安定版を待たなければなりません。</translation>
+これはアップデートをどちらのチャネルからダウンロードするのかを決めるだけで、パッケージをダウングレードすることはできないことに注意してください。その為、ベータ版から安定版へ変更しても、通常はすぐに古いパッケージに戻されるわけではありません。現在インストールされているベータ版よりも新しい安定版が出るまで待つ必要があります。</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="324"/>
         <source>Change update channel</source>
-        <translation>アップデートチャンネルを変更</translation>
+        <translation>更新チャネルを変更</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="325"/>
@@ -2112,12 +2112,17 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <location filename="../src/gui/legalnotice.ui" line="14"/>
         <location filename="../src/gui/legalnotice.ui" line="25"/>
         <source>Legal notice</source>
-        <translation>法的通知</translation>
+        <translation>法律上の告知</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.ui" line="57"/>
         <source>Close</source>
         <translation>閉じる</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/legalnotice.cpp" line="55"/>
+        <source>&lt;p&gt;Copyright 2017-2021 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2018 ownCloud GmbH&lt;/p&gt;</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="55"/>
@@ -2923,12 +2928,12 @@ It is not advisable to use it.</source>
         <translation>%1 接続ウィザード</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="401"/>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="404"/>
         <source>Enable experimental feature?</source>
         <translation>試験的な機能を有効化しますか?</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="402"/>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="405"/>
         <source>When the &quot;virtual files&quot; mode is enabled no files will be downloaded initially. Instead, a tiny &quot;%1&quot; file will be created for each file that exists on the server. The contents can be downloaded by running these files or by using their context menu.
 
 The virtual files mode is mutually exclusive with selective sync. Currently unselected folders will be translated to online-only folders and your selective sync settings will be reset.
@@ -2945,12 +2950,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 これは新しい機能で、実験モードです。使用していて問題があったら報告をおねがいします。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="416"/>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="419"/>
         <source>Enable experimental placeholder mode</source>
         <translation>試験的なプレースホルダーモードを有効にする</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="417"/>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="420"/>
         <source>Stay safe</source>
         <translation>セキュリティーを確保</translation>
     </message>
@@ -3146,7 +3151,8 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>ファイル %1 はローカルファイル名が衝突しているためダウンロードできません！</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="513"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="438"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="518"/>
         <source>File %1 cannot be downloaded because of a local file name clash!</source>
         <translation>ローカルファイル名が競合しているため、ファイル %1 をダウンロードできませんでした</translation>
     </message>
@@ -4444,7 +4450,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1077"/>
         <source>Aborted</source>
-        <translation>中止した</translation>
+        <translation>中断しました</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1094"/>
@@ -4629,7 +4635,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/webview.cpp" line="204"/>
         <source>The host &quot;%1&quot; provided an invalid certificate. Continue?</source>
-        <translation>ホスト &quot;％1&quot;によって無効な証明書が提供されました。 続けますか？</translation>
+        <translation>ホスト &quot;%1&quot;によって無効な証明書が提供されました。 続けますか？</translation>
     </message>
 </context>
 <context>

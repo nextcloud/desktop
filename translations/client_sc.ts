@@ -2124,6 +2124,11 @@ Is elementos in ue est permitidu ant a èssere cantzellados si impedint de catza
     </message>
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="55"/>
+        <source>&lt;p&gt;Copyright 2017-2021 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2018 ownCloud GmbH&lt;/p&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/legalnotice.cpp" line="55"/>
         <source>&lt;p&gt;Copyright 2017-2020 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2018 ownCloud GmbH&lt;/p&gt;</source>
         <translation>&lt;p&gt;Copyright 2017-2020 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2018 ownCloud GmbH&lt;/p&gt;</translation>
     </message>
@@ -2926,12 +2931,12 @@ Si cunsìgiat de non ddu impreare.</translation>
         <translation>Protzedura ghiada de connessione de %1 </translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="401"/>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="404"/>
         <source>Enable experimental feature?</source>
         <translation>Boles ativare sa funtzionalidade isperimentale?</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="402"/>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="405"/>
         <source>When the &quot;virtual files&quot; mode is enabled no files will be downloaded initially. Instead, a tiny &quot;%1&quot; file will be created for each file that exists on the server. The contents can be downloaded by running these files or by using their context menu.
 
 The virtual files mode is mutually exclusive with selective sync. Currently unselected folders will be translated to online-only folders and your selective sync settings will be reset.
@@ -2947,12 +2952,12 @@ Passende a custa modalidade s&apos;at a interrumpire cale si siat sincronizatzio
 Custa est una modalidade noa, isperimentale. Si detzides de dda impreare, sinnala is problemas chi ant a essire a campu.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="416"/>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="419"/>
         <source>Enable experimental placeholder mode</source>
         <translation>Ativa sa modalidade isperimentale marcalogu</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="417"/>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="420"/>
         <source>Stay safe</source>
         <translation>Abarra in su seguru</translation>
     </message>
@@ -3148,7 +3153,8 @@ Custa est una modalidade noa, isperimentale. Si detzides de dda impreare, sinnal
         <translation> S&apos;archìviu %1 non podet èssere iscarrigadu pro unu cunflitu cun un&apos;archìviu locale!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="513"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="438"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="518"/>
         <source>File %1 cannot be downloaded because of a local file name clash!</source>
         <translation>S&apos;archìviu %1 nn faghet a dd&apos;iscarrigare pro unu cunflitu cun su nùmene de s&apos;archìviu locale!</translation>
     </message>

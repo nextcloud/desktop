@@ -2112,6 +2112,11 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     </message>
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="55"/>
+        <source>&lt;p&gt;Copyright 2017-2021 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2018 ownCloud GmbH&lt;/p&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/legalnotice.cpp" line="55"/>
         <source>&lt;p&gt;Copyright 2017-2020 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2018 ownCloud GmbH&lt;/p&gt;</source>
         <translation>&lt;p&gt;Πνευματικά δικαιώματα 2017-2020 Nextcloud GmbH&lt;br /&gt;Πνευματικά δικαιώματα 2012-2018 ownCloud GmbH&lt;/p&gt;</translation>
     </message>
@@ -2913,12 +2918,12 @@ It is not advisable to use it.</source>
         <translation>%1 Οδηγός Σύνδεσης</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="401"/>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="404"/>
         <source>Enable experimental feature?</source>
         <translation>Ενεργοποίηση πειραματικής λειτουργίας;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="402"/>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="405"/>
         <source>When the &quot;virtual files&quot; mode is enabled no files will be downloaded initially. Instead, a tiny &quot;%1&quot; file will be created for each file that exists on the server. The contents can be downloaded by running these files or by using their context menu.
 
 The virtual files mode is mutually exclusive with selective sync. Currently unselected folders will be translated to online-only folders and your selective sync settings will be reset.
@@ -2929,12 +2934,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Όταν είναι ενεργοποιημένη η λειτουργία &quot;εικονικά αρχεία&quot;, κανένα αρχείο δε θα ληφθεί αρχικά. Αντ &apos;αυτού, θα δημιουργηθεί ένα μικρό &quot;% 1&quot; αρχείο για κάθε αρχείο που υπάρχει στο διακομιστή. Μπορείτε να κατεβάσετε τα περιεχόμενα εκτελώντας αυτά τα αρχεία ή χρησιμοποιώντας το μενού περιβάλλοντος. Η λειτουργία εικονικών αρχείων είναι αμοιβαία αποκλειστική με επιλεκτικό συγχρονισμό. Πρόσφατα μη επιλεγμένοι φάκελοι θα μεταφράζονται σε μόνο- διαδικτυακούς φακέλους και οι επιλεγμένες ρυθμίσει συγχρονισμού θα επαναφέρονται. Η μετάβαση σε αυτήν τη λειτουργία θα ακυρώσει οποιονδήποτε τρέχοντα συγχρονισμό. Πρόκειται για μια νέα, πειραματική λειτουργία. Εάν αποφασίσετε να τη χρησιμοποιήσετε, παρακαλώ όπως αναφέρετε τυχόν προβλήματα που προκύψουν.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="416"/>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="419"/>
         <source>Enable experimental placeholder mode</source>
         <translation>Ενεργοποίηση πειραματικής λειτουργίας κράτησης θέσης.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="417"/>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="420"/>
         <source>Stay safe</source>
         <translation>Μείνετε ασφαλής.</translation>
     </message>
@@ -3130,7 +3135,8 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Το αρχείο %1 δεν είναι δυνατό να ληφθεί λόγω διένεξης με το όνομα ενός τοπικού αρχείου!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="513"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="438"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="518"/>
         <source>File %1 cannot be downloaded because of a local file name clash!</source>
         <translation type="unfinished"/>
     </message>
