@@ -621,7 +621,15 @@ void Application::parseOptions(const QStringList &options)
             _versionOnly = true;
         } else if (option == QLatin1String("--language")) {
             if (it.hasNext() && !it.peekNext().startsWith(QLatin1String("--"))) {
-                _userEnforcedLanguage = it.next();
+                auto languageParam = it.next();
+
+                // fail if the language is unknown
+                if (!Translations::listAvailableTranslations().contains(languageParam)) {
+                    std::cerr << "Error: unknown language " << languageParam.toStdString() << std::endl;
+                    _listAvailableTranslationsOnly = true;
+                } else {
+                    _userEnforcedLanguage = languageParam;
+                }
             } else {
                 std::cerr << "Error: --language expects a locale as parameter (for example: --language en)" << std::endl;
                 _listAvailableTranslationsOnly = true;
