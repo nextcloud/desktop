@@ -73,7 +73,7 @@ OCSYNC_EXPORT void csync_exclude_expand_escapes(QByteArray &input)
             line[o++] = line[i];
         }
     }
-    input.resize(OCC::Utility::convertSizeToUint(o));
+    input.resize(OCC::Utility::convertSizeToInt(o));
 }
 
 // See http://support.microsoft.com/kb/74496 and
@@ -139,7 +139,7 @@ static CSYNC_EXCLUDE_TYPE _csync_excluded_common(const QString &path, bool exclu
         bname = path.midRef(lastSlash + 1);
     }
 
-    size_t blen = bname.size();
+    qsizetype blen = bname.size();
     // 9 = strlen(".sync_.db")
     if (blen >= 9 && bname.at(0) == QLatin1Char('.')) {
         if (bname.contains(QLatin1String(".db"))) {

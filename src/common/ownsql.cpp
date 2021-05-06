@@ -275,20 +275,19 @@ int SqlQuery::prepare(const QByteArray &sql, bool allow_failure)
  * There is no overloads to QByteArray::startWith that takes Qt::CaseInsensitive.
  * Returns true if 'a' starts with 'b' in a case insensitive way
  */
-static bool startsWithInsensitive(const QByteArray &a, const char *b)
+static bool startsWithInsensitive(const QByteArray &a, const QByteArray &b)
 {
-    size_t len = strlen(b);
-    return a.size() >= len && qstrnicmp(a.constData(), b, Utility::convertSizeToUint(len)) == 0;
+    return a.size() >= b.size() && qstrnicmp(a.constData(), b.constData(), static_cast<uint>(b.size())) == 0;
 }
 
 bool SqlQuery::isSelect()
 {
-    return startsWithInsensitive(_sql, "SELECT");
+    return startsWithInsensitive(_sql, QByteArrayLiteral("SELECT"));
 }
 
 bool SqlQuery::isPragma()
 {
-    return startsWithInsensitive(_sql, "PRAGMA");
+    return startsWithInsensitive(_sql, QByteArrayLiteral("PRAGMA"));
 }
 
 bool SqlQuery::exec()

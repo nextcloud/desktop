@@ -72,7 +72,7 @@ IFACEMETHODIMP_(ULONG) NCContextMenu::Release()
 
 // Initialize the context menu handler.
 IFACEMETHODIMP NCContextMenu::Initialize(
-    LPCITEMIDLIST pidlFolder, LPDATAOBJECT pDataObj, HKEY hKeyProgID)
+    LPCITEMIDLIST, LPDATAOBJECT pDataObj, HKEY)
 {
     m_selectedFiles.clear();
 

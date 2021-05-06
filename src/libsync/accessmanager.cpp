@@ -49,7 +49,7 @@ AccessManager::AccessManager(QObject *parent)
     setCookieJar(new CookieJar);
 }
 
-static QByteArray generateRequestId()
+QByteArray AccessManager::generateRequestId()
 {
     // Use a UUID with the starting and ending curly brace removed.
     auto uuid = QUuid::createUuid().toByteArray();

@@ -141,7 +141,7 @@ bool FileSystem::rename(const QString &originFileName,
             (wchar_t *)dest.utf16(),
             MOVEFILE_COPY_ALLOWED | MOVEFILE_WRITE_THROUGH);
         if (!success) {
-            error = Utility::formatLastWinError();
+            error = Utility::formatWinError(GetLastError());
         }
     } else
 #endif
