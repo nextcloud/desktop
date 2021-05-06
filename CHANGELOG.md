@@ -3,20 +3,16 @@ Changelog for ownCloud Desktop Client [unreleased] (UNRELEASED)
 The following sections list the changes in ownCloud Desktop Client unreleased relevant to
 ownCloud admins and users.
 
-[unreleased]: https://github.com/owncloud/client/compare/v2.7.6...master
+[unreleased]: https://github.com/owncloud/client/compare/v2.8.0...master
 
 Summary
 -------
 
-* Bugfix - Fix issues with long path: [#4405](https://github.com/owncloud/enterprise/issues/4405)
 * Bugfix - Keep share link names in sync with server: [#7549](https://github.com/owncloud/client/issues/7549)
 * Bugfix - SQLite wal file grows to several gigabyte: [#7646](https://github.com/owncloud/client/issues/7646)
-* Bugfix - Moves in folder sync connections where executed as a delete and upload: [#7838](https://github.com/owncloud/client/issues/7838)
 * Bugfix - Fix missing permission for newly created folder: [#8076](https://github.com/owncloud/client/pull/8076)
 * Bugfix - Don't recommend non default sync option: [#8317](https://github.com/owncloud/client/issues/8317)
 * Bugfix - Set up default locale correctly: [#8367](https://github.com/owncloud/client/issues/8367)
-* Bugfix - Fix brandings with space in the name: [#8482](https://github.com/owncloud/client/pull/8482)
-* Bugfix - We fixed an issue with the promptDeleteAllFiles setting: [#8484](https://github.com/owncloud/client/issues/8484)
 * Change - Don't ask the user to switch to http: [#8231](https://github.com/owncloud/client/issues/8231)
 * Change - Remove support for http redirects: [#8293](https://github.com/owncloud/client/pull/8293)
 * Change - We no longer try to locate an ownCloud install at /owncloud: [#8273](https://github.com/owncloud/client/issues/8273)
@@ -28,22 +24,11 @@ Summary
 * Enhancement - Show last sync date in tray menu: [#5644](https://github.com/owncloud/client/issues/5644)
 * Enhancement - Make crash report IDs easy to copy: [#25](https://github.com/dschmidt/libcrashreporter-qt/pull/25)
 * Enhancement - We reworked the tables: [#8158](https://github.com/owncloud/client/issues/8158)
-* Enhancement - Added branding option to enforce VFS: [#4144](https://github.com/owncloud/enterprise/issues/4144)
-* Enhancement - Add initial support for backups triggered by an external tool: [#8437](https://github.com/owncloud/client/pull/8437)
 * Enhancement - Add language picker to general settings: [#8466](https://github.com/owncloud/client/issues/8466)
 * Enhancement - Attach the last 20 log lines to a crash report: [#8467](https://github.com/owncloud/client/issues/8467)
-* Enhancement - Add an icon to the Windows system tray notification: [#8539](https://github.com/owncloud/client/pull/8539)
-* Enhancement - Encode the log file as UTF-8: [#8550](https://github.com/owncloud/client/pull/8550)
 
 Details
 -------
-
-* Bugfix - Fix issues with long path: [#4405](https://github.com/owncloud/enterprise/issues/4405)
-
-   We fixed an issue introduced in dd641fae997d71c8396b77def2fa25ad96fdf47f with some
-   functions and files paths > 260 characters.
-
-   https://github.com/owncloud/enterprise/issues/4405
 
 * Bugfix - Keep share link names in sync with server: [#7549](https://github.com/owncloud/client/issues/7549)
 
@@ -59,16 +44,6 @@ Details
    We fixed a bug where the SQLite wal file growed until the client was quit.
 
    https://github.com/owncloud/client/issues/7646
-
-* Bugfix - Moves in folder sync connections where executed as a delete and upload: [#7838](https://github.com/owncloud/client/issues/7838)
-
-   We fixed a bug where moves in folder sync connections where executed as a delete and upload.
-
-   https://github.com/owncloud/client/issues/7838
-   https://github.com/owncloud/enterprise/issues/4428
-   https://github.com/owncloud/client/pull/8453
-   https://github.com/owncloud/client/pull/8456
-   https://github.com/owncloud/client/pull/8459
 
 * Bugfix - Fix missing permission for newly created folder: [#8076](https://github.com/owncloud/client/pull/8076)
 
@@ -89,18 +64,6 @@ Details
 
    https://github.com/owncloud/client/issues/8367
    https://github.com/owncloud/client/pull/8541
-
-* Bugfix - Fix brandings with space in the name: [#8482](https://github.com/owncloud/client/pull/8482)
-
-   We fix a build system issue with brandings containing spaces.
-
-   https://github.com/owncloud/client/pull/8482
-
-* Bugfix - We fixed an issue with the promptDeleteAllFiles setting: [#8484](https://github.com/owncloud/client/issues/8484)
-
-   When promptDeleteAllFiles=false is set the client will now correctly delete all files.
-
-   https://github.com/owncloud/client/issues/8484
 
 * Change - Don't ask the user to switch to http: [#8231](https://github.com/owncloud/client/issues/8231)
 
@@ -185,22 +148,6 @@ Details
    https://github.com/owncloud/client/issues/8528
    https://github.com/owncloud/client/pull/8584
 
-* Enhancement - Added branding option to enforce VFS: [#4144](https://github.com/owncloud/enterprise/issues/4144)
-
-   We added a branding option that enforces the use of Virtual Files on Windows.
-
-   https://github.com/owncloud/enterprise/issues/4144
-   https://github.com/owncloud/client/pull/8179/
-
-* Enhancement - Add initial support for backups triggered by an external tool: [#8437](https://github.com/owncloud/client/pull/8437)
-
-   We added a socket api function which allows creation of backups.
-
-   https://github.com/owncloud/client/pull/8437
-   https://github.com/owncloud/client/pull/8535
-   https://github.com/owncloud/client/pull/8536
-   https://github.com/owncloud/client/pull/8539
-
 * Enhancement - Add language picker to general settings: [#8466](https://github.com/owncloud/client/issues/8466)
 
    Users can override the automatically chosen language by selecting a custom language in a
@@ -216,6 +163,73 @@ Details
 
    https://github.com/owncloud/client/issues/8467
    https://github.com/owncloud/client/pull/8469
+
+Changelog for ownCloud Desktop Client [2.8.0] (2021-05-06)
+=======================================
+The following sections list the changes in ownCloud Desktop Client 2.8.0 relevant to
+ownCloud admins and users.
+
+[2.8.0]: https://github.com/owncloud/client/compare/v2.7.6...v2.8.0
+
+Summary
+-------
+
+* Bugfix - Fix issues with long path: [#4405](https://github.com/owncloud/enterprise/issues/4405)
+* Bugfix - Moves in folder sync connections where executed as a delete and upload: [#7838](https://github.com/owncloud/client/issues/7838)
+* Bugfix - Fix brandings with space in the name: [#8482](https://github.com/owncloud/client/pull/8482)
+* Bugfix - We fixed an issue with the promptDeleteAllFiles setting: [#8484](https://github.com/owncloud/client/issues/8484)
+* Enhancement - Added branding option to enforce VFS: [#4144](https://github.com/owncloud/enterprise/issues/4144)
+* Enhancement - Add initial support for backups triggered by an external tool: [#8437](https://github.com/owncloud/client/pull/8437)
+* Enhancement - Add an icon to the Windows system tray notification: [#8539](https://github.com/owncloud/client/pull/8539)
+* Enhancement - Encode the log file as UTF-8: [#8550](https://github.com/owncloud/client/pull/8550)
+
+Details
+-------
+
+* Bugfix - Fix issues with long path: [#4405](https://github.com/owncloud/enterprise/issues/4405)
+
+   We fixed an issue introduced in dd641fae997d71c8396b77def2fa25ad96fdf47f with some
+   functions and files paths > 260 characters.
+
+   https://github.com/owncloud/enterprise/issues/4405
+
+* Bugfix - Moves in folder sync connections where executed as a delete and upload: [#7838](https://github.com/owncloud/client/issues/7838)
+
+   We fixed a bug where moves in folder sync connections where executed as a delete and upload.
+
+   https://github.com/owncloud/client/issues/7838
+   https://github.com/owncloud/enterprise/issues/4428
+   https://github.com/owncloud/client/pull/8453
+   https://github.com/owncloud/client/pull/8456
+   https://github.com/owncloud/client/pull/8459
+
+* Bugfix - Fix brandings with space in the name: [#8482](https://github.com/owncloud/client/pull/8482)
+
+   We fix a build system issue with brandings containing spaces.
+
+   https://github.com/owncloud/client/pull/8482
+
+* Bugfix - We fixed an issue with the promptDeleteAllFiles setting: [#8484](https://github.com/owncloud/client/issues/8484)
+
+   When promptDeleteAllFiles=false is set the client will now correctly delete all files.
+
+   https://github.com/owncloud/client/issues/8484
+
+* Enhancement - Added branding option to enforce VFS: [#4144](https://github.com/owncloud/enterprise/issues/4144)
+
+   We added a branding option that enforces the use of Virtual Files on Windows.
+
+   https://github.com/owncloud/enterprise/issues/4144
+   https://github.com/owncloud/client/pull/8179/
+
+* Enhancement - Add initial support for backups triggered by an external tool: [#8437](https://github.com/owncloud/client/pull/8437)
+
+   We added a socket api function which allows creation of backups.
+
+   https://github.com/owncloud/client/pull/8437
+   https://github.com/owncloud/client/pull/8535
+   https://github.com/owncloud/client/pull/8536
+   https://github.com/owncloud/client/pull/8539
 
 * Enhancement - Add an icon to the Windows system tray notification: [#8539](https://github.com/owncloud/client/pull/8539)
 
