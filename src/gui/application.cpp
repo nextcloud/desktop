@@ -717,11 +717,17 @@ void Application::setupTranslations()
 
     // allow user and theme to enforce a language via a commandline parameter
     const auto themeEnforcedLocale = Theme::instance()->enforcedLocale();
+
+    // we need to track the enforced languages separately, since we need to distinguish between locale-provided
+    // and user-enforced ones below
+    QSet<QString> enforcedLanguages;
+
     // note that user-enforced languages are prioritized over the theme enforced one
     // to make testing easier, --language overrides the setting from the config file
     // as we are prepending to the list of languages, the list passed to the loop must be sorted with ascending priority
     for (const auto &enforcedLocale : { themeEnforcedLocale, cfg.uiLanguage(), _userEnforcedLanguage }) {
         if (!enforcedLocale.isEmpty()) {
+            enforcedLanguages.insert(enforcedLocale);
             uiLanguages.prepend(enforcedLocale);
         }
     }
@@ -765,7 +771,15 @@ void Application::setupTranslations()
                 installTranslator(qtkeychainTranslator);
 
             // makes sure widgets with locale-dependent formatting, e.g., QDateEdit, display the correct formatting
-            QLocale::setDefault(QLocale(lang));
+            // if the language is provided by the system locale anyway (i.e., coming from QLocale::system().uiLanguages()), we should
+            // not mess with the system locale, though
+            // if we did, we would enforce a locale for no apparent reason
+            // see https://github.com/owncloud/client/issues/8608 for more information
+            if (enforcedLanguages.contains(lang)) {
+                QLocale newLocale(lang);
+                qCDebug(lcApplication) << "language" << lang << "was enforced, changing default locale to" << newLocale;
+                QLocale::setDefault(newLocale);
+            }
 
             break;
         }
