@@ -181,3 +181,5 @@ CPackOptions.cmake
 CPackSourceConfig.cmake
 
 compile_commands.json
+convert.exe
+.dir-locals.el
