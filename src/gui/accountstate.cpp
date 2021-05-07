@@ -43,7 +43,11 @@ void AccountState::updateUrlDialog(AccountPtr account, const QUrl &newUrl, std::
         }
     };
     // the urls are identical, previous versions of owncloud cropped the /
-    if (newUrl.path() == QLatin1Char('/')) {
+    auto newPath = newUrl.path();
+    if (newPath.endsWith(QLatin1Char('/'))) {
+        newPath.truncate(1);
+    }
+    if (newPath == account->url().path()) {
         auto tmp = newUrl;
         tmp.setPath(QString());
         if (tmp == account->url()) {
