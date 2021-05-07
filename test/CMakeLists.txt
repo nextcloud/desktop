@@ -13,6 +13,7 @@ add_library(testutils
 
 target_link_libraries(testutils PUBLIC ${APPLICATION_EXECUTABLE}sync Qt5::Test)
 target_include_directories(testutils PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+set_target_properties(testutils PROPERTIES FOLDER Tests)
 
 nextcloud_add_test(NextcloudPropagator)
 
