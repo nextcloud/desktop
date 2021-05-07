@@ -84,7 +84,7 @@ public:
             if (job->data().isValid()) {
                 rgisterClientFinished(job->data().value<QVariantMap>());
             } else {
-                qCCritical(lcOauth) << "Failed to read client id" << job->error();
+                qCCritical(lcOauth) << "Failed to read client id" << job->errorString();
                 rgisterClientOnline();
             }
         });
