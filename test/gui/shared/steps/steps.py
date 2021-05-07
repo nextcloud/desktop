@@ -118,7 +118,7 @@ def setUpClient(context, username, password, pollingInterval):
 def getPasswordForUser(userId):
     if userId in defaultUsers.keys():
         return defaultUsers[userId]['password']
-    
+
 @Given('user "|any|" has set up a client with default settings and polling interval "|any|"')
 def step(context, username, interval):
     pollingInterval='''[ownCloud]
@@ -481,12 +481,16 @@ def step(context, publicLinkName, resource):
         if row[0] == 'expireDate':
             expDate = row[1].split("-")
     expYear = expDate[0][2:]
-    doubleClick(waitForObject(names.oCC_ShareLinkWidget_qt_spinbox_lineedit_QLineEdit), 5, 9, Qt.NoModifier, Qt.LeftButton)
-    type(waitForObject(names.oCC_ShareLinkWidget_calendar_QDateEdit), expDate[1])
-    type(waitForObject(names.oCC_ShareLinkWidget_calendar_QDateEdit), expDate[2])
-    type(waitForObject(names.oCC_ShareLinkWidget_calendar_QDateEdit), expYear)
-    
-    
+    mouseClick(waitForObject(names.oCC_ShareLinkWidget_qt_spinbox_lineedit_QLineEdit), 0, 0, Qt.NoModifier, Qt.LeftButton)
+    nativeType("<Delete>")
+    nativeType("<Delete>")
+    nativeType(expDate[1])
+    nativeType(expDate[2])
+    nativeType(expYear)
+    nativeType("<Tab>")
+    waitFor(lambda: (test.vp("publicLinkExpirationProgressIndicator")))
+
+
 @When('the user creates a new public link with permissions "|any|" for folder "|any|" without password using the client-UI')
 def step(context, permissions, resource):
     resource = sanitizePath(substituteInLineCodes(context, resource))
@@ -497,7 +501,7 @@ def step(context, permissions, resource):
     elif permissions == 'Download / View / Edit':
         radioObjectName = names.oCC_ShareLinkWidget_radio_readWrite_QRadioButton
     elif permissions == 'Upload only (File Drop)':
-        radioObjectName = names.oCC_ShareLinkWidget_radio_uploadOnly_QRadioButton   
+        radioObjectName = names.oCC_ShareLinkWidget_radio_uploadOnly_QRadioButton
     test.compare(str(waitForObjectExists(radioObjectName).text), permissions)
 
     clickButton(waitForObject(radioObjectName))
@@ -518,7 +522,7 @@ def step(context, permissions, resource, password):
 def createPublicShare(context, resource, role):
     resource = sanitizePath(substituteInLineCodes(context, resource))
     radioObjectName = ''
-    
+
     if role == 'Viewer':
         radioObjectName = names.oCC_ShareLinkWidget_radio_readOnly_QRadioButton
     elif role == 'Editor':
@@ -530,8 +534,8 @@ def createPublicShare(context, resource, role):
 
     openPublicLinkDialog(context, resource)
     clickButton(waitForObject(radioObjectName))
-    clickButton(waitForObject(names.oCC_ShareLinkWidget_createShareButton_QPushButton))  
-    
+    clickButton(waitForObject(names.oCC_ShareLinkWidget_createShareButton_QPushButton))
+
 @When('the user creates a new public link for folder "|any|" using the client-UI with these details:')
 def step(context, resource):
     role = ''
@@ -544,10 +548,10 @@ def step(context, resource):
         raise Exception("No role has been found")
     else:
         createPublicShare(context, resource, role)
-    
-    
+
+
 @When('the user creates a new public link for folder "|any|" with "|any|" using the client-UI')
 def step(context, resource, role):
     createPublicShare(context, resource, role)
-    
+
 

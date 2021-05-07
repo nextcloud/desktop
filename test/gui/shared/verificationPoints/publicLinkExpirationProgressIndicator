@@ -1,0 +1,93 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<VerificationPoint type="Visual" version="5">
+    <Description/>
+    <Verification object="oCC_ShareLinkWidget_checkBox_expire_QProgressIndicator">
+        <visual>
+            <ui version="1.0">
+                <execution>
+                    <state>
+                        <element id="178fe141603" class="QProgressIndicator">
+                            <image type="PNG">iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAIklEQVQ4jWN8//79fwYqAiZqGjZq4KiBowaOGjhq4FAyEACDpgP0OKH6SQAAAABJRU5ErkJggg==</image>
+                            <superclass>
+                                <class>QWidget</class>
+                                <class>QObject</class>
+                            </superclass>
+                            <abstractProperties>
+                                <visual isTopLevel="1"/>
+                                <geometry isRelative="0">
+                                    <x>528</x>
+                                    <y>604</y>
+                                    <height>20</height>
+                                    <width>20</width>
+                                </geometry>
+                            </abstractProperties>
+                            <properties>
+                                <property name="isActiveWindow">
+                                    <string>true</string>
+                                </property>
+                                <property name="focus">
+                                    <string>false</string>
+                                </property>
+                                <property name="focusPolicy">
+                                    <string>0</string>
+                                </property>
+                                <property name="autoFillBackground">
+                                    <string>false</string>
+                                </property>
+                                <property name="maximized">
+                                    <string>false</string>
+                                </property>
+                                <property name="fullScreen">
+                                    <string>false</string>
+                                </property>
+                                <property name="displayedWhenStopped">
+                                    <string>false</string>
+                                </property>
+                                <property name="delay">
+                                    <string>40</string>
+                                </property>
+                                <property name="whatsThis"/>
+                                <property name="windowIconText"/>
+                                <property name="statusTip"/>
+                                <property name="enabled">
+                                    <string>true</string>
+                                </property>
+                                <property name="windowOpacity">
+                                    <string>1</string>
+                                </property>
+                                <property name="toolTipDuration">
+                                    <string>-1</string>
+                                </property>
+                                <property name="toolTip"/>
+                                <property name="styleSheet"/>
+                                <property name="minimized">
+                                    <string>false</string>
+                                </property>
+                                <property name="windowFilePath"/>
+                                <property name="layoutDirection">
+                                    <string>0</string>
+                                </property>
+                                <property name="windowModality">
+                                    <string>0</string>
+                                </property>
+                                <property name="tabletTracking">
+                                    <string>false</string>
+                                </property>
+                                <property name="accessibleDescription"/>
+                                <property name="windowTitle"/>
+                            </properties>
+                            <identifyingProperties>
+                                <property name="accessibleName"/>
+                                <property name="objectName"/>
+                            </identifyingProperties>
+                        </element>
+                    </state>
+                </execution>
+            </ui>
+            <check type="identifying"/>
+            <check type="screenshot">
+                <PropertyVerification element-id="178fe141603"/>
+            </check>
+        </visual>
+    </Verification>
+</VerificationPoint>
