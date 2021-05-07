@@ -2128,7 +2128,7 @@ Onderdelen die gewist mogen worden, worden verwijderd als ze verhinderen dat een
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="55"/>
         <source>&lt;p&gt;Copyright 2017-2021 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2018 ownCloud GmbH&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Copyright 2017-2021 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2018 ownCloud GmbH&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="55"/>
@@ -3158,8 +3158,8 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
         <translation>Bestand %1 kan niet worden gedownload, omdat de naam conflicteert met een lokaal bestand</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="438"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="518"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="444"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="530"/>
         <source>File %1 cannot be downloaded because of a local file name clash!</source>
         <translation>Bestand %1 kan niet worden gedownload, omdat de naam conflicteert met een lokaal bestand</translation>
     </message>

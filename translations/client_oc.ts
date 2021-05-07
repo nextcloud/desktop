@@ -542,17 +542,17 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1114"/>
         <source>No connection to %1 at %2.</source>
-        <translation type="unfinished"/>
+        <translation>Cap de connexion a %1 a %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1119"/>
         <source>Server configuration error: %1 at %2.</source>
-        <translation type="unfinished"/>
+        <translation>Error de configuracion servidor : %1 a %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1130"/>
         <source>No %1 connection configured.</source>
-        <translation type="unfinished"/>
+        <translation>Cap de connexion %1 configurat.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1302"/>
@@ -666,7 +666,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="35"/>
         <source>Certificate &amp; Key (pkcs12):</source>
-        <translation type="unfinished"/>
+        <translation>Certificat e clau (pkcs12) :</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="35"/>
@@ -770,7 +770,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1147"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Error en escrivent las metadonadas dins la basa de donadas</translation>
     </message>
 </context>
 <context>
@@ -797,7 +797,7 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/gui/conflictdialog.ui" line="20"/>
         <location filename="../src/gui/conflictdialog.cpp" line="94"/>
         <source>Conflicting versions of %1.</source>
-        <translation type="unfinished"/>
+        <translation>Versions conflictualas de %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="32"/>
@@ -889,7 +889,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="90"/>
         <source>Confirm deletion</source>
-        <translation type="unfinished"/>
+        <translation>Confirmar la supression</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="134"/>
@@ -963,7 +963,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="262"/>
         <source>Error while opening directory %1</source>
-        <translation type="unfinished"/>
+        <translation>Error en dobrissent lo repertòri %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="264"/>
@@ -973,7 +973,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="268"/>
         <source>Directory not found: %1</source>
-        <translation type="unfinished"/>
+        <translation>Repertòri pas trobat : %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="299"/>
@@ -983,7 +983,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="318"/>
         <source>Error while reading directory %1</source>
-        <translation type="unfinished"/>
+        <translation>Error en legissent lo repertòri %1</translation>
     </message>
 </context>
 <context>
@@ -1354,12 +1354,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="1478"/>
         <source>Undefined State.</source>
-        <translation type="unfinished"/>
+        <translation>Estat desconegut.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1481"/>
         <source>Waiting to start syncing.</source>
-        <translation type="unfinished"/>
+        <translation>En espèra del començament de la sincronizacion.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1484"/>
@@ -1389,7 +1389,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="1500"/>
         <source>Setup Error.</source>
-        <translation type="unfinished"/>
+        <translation>Error de parametratge.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1503"/>
@@ -2093,7 +2093,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="55"/>
         <source>&lt;p&gt;Copyright 2017-2021 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2018 ownCloud GmbH&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Copyright 2017-2021 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2018 ownCloud GmbH&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="55"/>
@@ -2880,12 +2880,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="88"/>
         <source>Add %1 account</source>
-        <translation type="unfinished"/>
+        <translation>Apondre compte %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="93"/>
         <source>Skip folders configuration</source>
-        <translation type="unfinished"/>
+        <translation>Passar la configuracion dels dossièrs</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="91"/>
@@ -2916,7 +2916,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="420"/>
         <source>Stay safe</source>
-        <translation type="unfinished"/>
+        <translation>Demoratz en seguretat</translation>
     </message>
 </context>
 <context>
@@ -3110,8 +3110,8 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="438"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="518"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="444"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="530"/>
         <source>File %1 cannot be downloaded because of a local file name clash!</source>
         <translation type="unfinished"/>
     </message>
@@ -3148,7 +3148,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="1077"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Error en escrivent las metadonadas dins la basa de donadas</translation>
     </message>
 </context>
 <context>

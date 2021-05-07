@@ -150,7 +150,7 @@
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="73"/>
         <source>Switch to your browser to connect your account</source>
-        <translation type="unfinished"/>
+        <translation>Ak sa chcete pripojiť k účtu, prepnite sa do svojho prehliadača</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="148"/>
@@ -1056,12 +1056,12 @@ Môže to byť problém s knižnicami OpenSSL.</translation>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="215"/>
         <source>Reopen Browser</source>
-        <translation type="unfinished"/>
+        <translation>Znovu otvoriť prehliadač</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="218"/>
         <source>Copy Link</source>
-        <translation type="unfinished"/>
+        <translation>Kopírovať odkaz</translation>
     </message>
 </context>
 <context>
@@ -3134,8 +3134,8 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Súbor %1 nie je možné stiahnuť, pretože súbor s rovnakým menom už existuje!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="438"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="518"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="444"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="530"/>
         <source>File %1 cannot be downloaded because of a local file name clash!</source>
         <translation type="unfinished"/>
     </message>

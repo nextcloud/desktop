@@ -3135,8 +3135,8 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Filen %1 kan inte hämtas på grund av namnkonflikt med en lokal fil!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="438"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="518"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="444"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="530"/>
         <source>File %1 cannot be downloaded because of a local file name clash!</source>
         <translation type="unfinished"/>
     </message>

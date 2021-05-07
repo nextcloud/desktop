@@ -818,7 +818,7 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/gui/conflictdialog.ui" line="57"/>
         <location filename="../src/gui/conflictdialog.ui" line="165"/>
         <source>Click to open the file</source>
-        <translation>クリークしてファイルを開く</translation>
+        <translation>クリックしてファイルを開く</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="96"/>
@@ -1335,7 +1335,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/foldercreationdialog.ui" line="42"/>
         <source>Enter folder name</source>
-        <translation>フォルダー名のを入力</translation>
+        <translation>フォルダー名を入力</translation>
     </message>
     <message>
         <location filename="../src/gui/foldercreationdialog.ui" line="61"/>
@@ -3151,8 +3151,8 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>ファイル %1 はローカルファイル名が衝突しているためダウンロードできません！</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="438"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="518"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="444"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="530"/>
         <source>File %1 cannot be downloaded because of a local file name clash!</source>
         <translation>ローカルファイル名が競合しているため、ファイル %1 をダウンロードできませんでした</translation>
     </message>
@@ -4086,7 +4086,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="205"/>
         <source>No support for SSL session tickets/identifiers</source>
-        <translation>SSLセッションチケット/識別子は対応していません</translation>
+        <translation>SSLセッションチケット/識別子に対応していません</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="215"/>
@@ -4548,27 +4548,27 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="480"/>
         <source>Synced %1</source>
-        <translation>「%1」を同期しました</translation>
+        <translation>%1 を同期しました</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="482"/>
         <source>You renamed %1</source>
-        <translation>あなたは「%1」の名前を変更しました</translation>
+        <translation>%1 の名前を変更しました</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="484"/>
         <source>You deleted %1</source>
-        <translation>あなたは「%1$s」を削除しました</translation>
+        <translation>%1 を削除しました</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="486"/>
         <source>You created %1</source>
-        <translation>あなたは「%1$s」を作成しました</translation>
+        <translation>%1 を作成しました</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="488"/>
         <source>You changed %1</source>
-        <translation>あなたは「%1$s」を変更しました</translation>
+        <translation>%1 を変更しました</translation>
     </message>
 </context>
 <context>
@@ -4604,7 +4604,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/userstatus.cpp" line="57"/>
         <source>Do not disturb</source>
-        <translation>邪魔しないでください</translation>
+        <translation>取り込み中</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatus.cpp" line="60"/>

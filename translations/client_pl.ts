@@ -2125,7 +2125,7 @@ Elementy, dla których usunięcie jest dozwolone, zostaną usunięte, o ile umo�
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="55"/>
         <source>&lt;p&gt;Copyright 2017-2021 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2018 ownCloud GmbH&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Copyright 2017-2021 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2018 ownCloud GmbH&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="55"/>
@@ -2416,7 +2416,7 @@ Dzienniki zostaną zapisane w %1</translation>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="117"/>
         <source>There was an error accessing the &apos;token&apos; endpoint: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
-        <translation>Wystąpił błąd podczas uzyskiwania dostępu do &apos;token&apos;: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
+        <translation>Wystąpił błąd podczas uzyskiwania dostępu do punktu końcowego „tokena”: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="121"/>
@@ -3155,8 +3155,8 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
         <translation>Nie można pobrać pliku %1 ze względu na konflikt nazwy pliku lokalnego!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="438"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="518"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="444"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="530"/>
         <source>File %1 cannot be downloaded because of a local file name clash!</source>
         <translation>Nie można pobrać pliku %1 z powodu konfliktu nazwy pliku lokalnego!</translation>
     </message>
@@ -4709,7 +4709,7 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="228"/>
         <source>Unsupported Server Version</source>
-        <translation>Nie wspierana wersja serwera</translation>
+        <translation>Niewspierana wersja serwera</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="232"/>
@@ -5483,7 +5483,7 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
     <message>
         <location filename="../src/gui/main.cpp" line="45"/>
         <source>%1 requires on a working system tray. If you are running XFCE, please follow &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;these instructions&lt;/a&gt;. Otherwise, please install a system tray application such as &apos;trayer&apos; and try again.</source>
-        <translation>Wymaganie %1 na działającym pasku systemowym. Jeśli korzystasz z XFCE, postępuj zgodnie &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;z tymi instrukcjami&lt;/a&gt;. W przeciwnym razie zainstaluj aplikację paska systemowego i spróbuj ponownie.</translation>
+        <translation>%1 wymaga działającego zasobnika systemowego. Jeśli korzystasz z XFCE, postępuj zgodnie &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;z tymi instrukcjami&lt;/a&gt;. W przeciwnym razie zainstaluj aplikację zasobnika systemowego, taką jak &quot;trayer&quot; i spróbuj ponownie.</translation>
     </message>
 </context>
 <context>
