@@ -182,6 +182,7 @@ def gui_tests(ctx, trigger = {}, depends_on = []):
                     "MIDDLEWARE_URL": "http://testmiddleware:3000/",
                     "BACKEND_HOST": "http://owncloud/",
                     "SERVER_INI": "/drone/src/test/gui/drone/server.ini",
+                    "SQUISH_PARAMETERS": "--retry 1",
                 },
             },
         ],
