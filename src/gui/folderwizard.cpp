@@ -536,6 +536,21 @@ void FolderWizardSelectiveSync::initializePage()
         initialBlacklist = QStringList("/");
     }
     _selectiveSync->setFolderInfo(targetPath, alias, initialBlacklist);
+
+    if (_virtualFilesCheckBox) {
+        // TODO: remove when UX decision is made
+        if (Utility::isPathWindowsDrivePartitionRoot(wizard()->field(QStringLiteral("sourceFolder")).toString())) {
+            _virtualFilesCheckBox->setChecked(false);
+            _virtualFilesCheckBox->setEnabled(false);
+            _virtualFilesCheckBox->setText(tr("Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter."));
+        } else {
+            _virtualFilesCheckBox->setChecked(bestAvailableVfsMode() == Vfs::WindowsCfApi);
+            _virtualFilesCheckBox->setEnabled(true);
+            _virtualFilesCheckBox->setText(tr("Use virtual files instead of downloading content immediately %1").arg(bestAvailableVfsMode() == Vfs::WindowsCfApi ? QString() : tr("(experimental)")));
+        }
+        //
+    }
+
     QWizardPage::initializePage();
 }
 
