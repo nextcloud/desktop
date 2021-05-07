@@ -93,8 +93,8 @@ public:
         addSettingsToJob(job);
         job->setInsecureFallback(false);
         job->setKey(kck);
-        connect(job, &QKeychain::Job::finished, this, [job] {
-            if (job->error() == QKeychain::NoError) {
+        connect(job, &QKeychain::ReadPasswordJob::finished, this, [job] {
+            if (job->error() == QKeychain::NoError && !job->binaryData().isEmpty()) {
                 const auto msg = tr("The support of client side certificate saved in the keychain was removed, please start the setup wizard again and follow the instructions.");
                 QMetaObject::invokeMethod(qApp, "slotShowGuiMessage", Qt::QueuedConnection, Q_ARG(QString, tr("Credentials")), Q_ARG(QString, msg));
                 qCWarning(lcHttpLegacyCredentials) << msg;
