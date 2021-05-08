@@ -12,6 +12,7 @@ admin/win/nsi/l10n/pofiles/*.po
 *~$
 build*
 cscope.*
+install.sh
 tags
 t1.cfg
 
