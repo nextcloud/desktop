@@ -713,7 +713,7 @@ QVariant ConfigFile::getValue(const QString &param, const QString &group,
     QVariant systemSetting;
     if (Utility::isMac()) {
         // QSettings systemSettings(QString("/Library/Preferences/" Theme::instance()->appRevDomain() ".plist"), QSettings::NativeFormat);
-        QSettings systemSettings(QStandardPaths::writableLocation(QStandardPaths::ConfigLocation) + "/" + Theme::instance()->appRevDomain() + "/" + Theme::instance()->appName() ".plist", QSettings::NativeFormat);
+        QSettings systemSettings(QStandardPaths::writableLocation(QStandardPaths::ConfigLocation) + "/" + Theme::instance()->appRevDomain() + "/" + Theme::instance()->appName() + ".plist", QSettings::NativeFormat);
         if (!group.isEmpty()) {
             systemSettings.beginGroup(group);
         }
