@@ -316,6 +316,10 @@ IF( APPLE )
             macOS/progressobserver.m)
     endif()
 
+    list(APPEND client_SRCS foregroundbackground_interface.h)
+    list(APPEND client_SRCS foregroundbackground_mac.mm)
+    list(APPEND client_SRCS foregroundbackground_cocoa.mm)
+
     if(SPARKLE_FOUND AND BUILD_UPDATER)
         # Define this, we need to check in updater.cpp
         add_definitions(-DHAVE_SPARKLE)
