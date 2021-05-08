@@ -3893,6 +3893,11 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <name>OCC::Vfs</name>
     <message>
         <location filename="../src/common/vfs.cpp" line="72"/>
+        <source>The Virtual filesystem feature does not support a drive as sync root</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/common/vfs.cpp" line="76"/>
         <source>The Virtual filesystem feature requires a NTFS file system, %1 is using %2</source>
         <translation>虛擬文件系統功能需要一個NTFS檔案系統，％1正在使用％2</translation>
     </message>
