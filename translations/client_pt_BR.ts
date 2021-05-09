@@ -3891,7 +3891,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/common/vfs.cpp" line="72"/>
         <source>The Virtual filesystem feature does not support a drive as sync root</source>
-        <translation type="unfinished"/>
+        <translation>O recurso Sistema de Arquivos Virtual não suporta uma unidade de drive como raiz de sincronização</translation>
     </message>
     <message>
         <location filename="../src/common/vfs.cpp" line="76"/>
