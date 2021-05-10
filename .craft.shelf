@@ -6,10 +6,10 @@ blueprintrepositories = https://invent.kde.org/packaging/craft-blueprints-kde.gi
 version = 2020-12-08
 
 [dev-utils/autoconf]
-version = 2.69
+version = 2.71
 
 [dev-utils/automake]
-version = 1.16.1
+version = 1.16.3
 
 [dev-utils/bison]
 version = 3.3.2
@@ -45,7 +45,7 @@ version = 2.4.6
 version = 1.4.18
 
 [dev-utils/nasm]
-version = 2.14.02
+version = 2.15.05
 
 [dev-utils/ninja]
 version = 1.10.2
@@ -65,14 +65,35 @@ version = 2
 [dev-utils/python3]
 version = 3
 
+[dev-utils/texinfo]
+version = 6.4
+
 [kde/frameworks/extra-cmake-modules]
-version = 5.79.0
+version = 5.81.0
+
+[libs/cairo]
+version = 1.16.0
+
+[libs/fontconfig]
+version = 2.13.1
+
+[libs/freetype]
+version = 2.9.1
 
 [libs/gettext]
 version = 0.19.8.1
 
+[libs/glib]
+version = 2.66.4
+
+[libs/harfbuzz]
+version = 2.7.2
+
 [libs/libbzip2]
 version = 1.0.6
+
+[libs/libffi]
+version = 3.3
 
 [libs/libjpeg-turbo]
 version = 2.0.6
@@ -95,9 +116,11 @@ version = 1.1.1k
 [libs/pcre2]
 version = 10.35
 
+[libs/pixman]
+version = 0.40.0
+
 [libs/qt5/qtbase]
 version = 5.12.10
-patchLevel = 1
 
 [libs/qt5/qtdeclarative]
 version = 5.12.10
@@ -121,10 +144,19 @@ version = 5.12.10
 version = 1.24.0
 
 [libs/sqlite]
-version = 3.31.1
+version = 3.35.4
 
 [libs/zlib]
 version = 1.2.11
+
+[python-modules/meson]
+version = master
+
+[python-modules/pip]
+version = 3.5
+
+[python-modules/pip-system]
+version = 3.5
 
 [python-modules/virtualenv]
 version = master
@@ -141,11 +173,3 @@ version = 0.2
 [virtual/craft-blueprints-kde-base]
 version = 0.1
 
-[libs/freetype]
-version = 2.9.1
-
-[libs/glib]
-version = 2.66.4
-
-[libs/harfbuzz]
-version = 2.7.2
