@@ -494,7 +494,10 @@ def step(context, publicLinkName, resource):
     nativeType(expDate.day)
     nativeType(expYear)
     nativeType("<Return>")
-    waitFor(lambda: (test.vp("publicLinkExpirationProgressIndicator")))
+    testSettings.silentVerifications=True
+    waitFor(lambda: (test.xvp("publicLinkExpirationProgressIndicatorInvisible")))
+    waitFor(lambda: (test.vp("publicLinkExpirationProgressIndicatorInvisible")))
+    testSettings.silentVerifications=False
     test.compare(
         str(waitForObjectExists(names.oCC_ShareLinkWidget_qt_spinbox_lineedit_QLineEdit).displayText),
         str(expDate.month) + "/" + str(expDate.day) + "/" + str(expYear)
