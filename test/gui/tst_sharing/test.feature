@@ -62,7 +62,7 @@ Feature: Sharing
         And user "Alice" has created a public link on the server with following settings
             | path       | textfile0.txt |
             | name       | Public link   |
-            | expireDate | 2038-10-14    |
+            | expireDate | 2031-10-14    |
         When the user opens the public links dialog of "%client_sync_path%/textfile0.txt" using the client-UI
         And the user edits the public link named "Public link" of file "textfile0.txt" changing following
             | expireDate | 2038-07-21 |
@@ -92,7 +92,7 @@ Feature: Sharing
         And user "Alice" has created a public link on the server with following settings
             | path       | simple-folder |
             | name       | Public link   |
-            | expireDate | 2038-10-14    |
+            | expireDate | 2031-10-14    |
             | permissions|read, update, create, delete|
         When the user opens the public links dialog of "%client_sync_path%/simple-folder" using the client-UI
         And the user edits the public link named "Public link" of file "simple-folder" changing following
