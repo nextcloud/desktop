@@ -25,6 +25,7 @@
 #include "folder.h"
 #include "openfilemanager.h"
 #include "guiutility.h"
+#include "accountmanager.h"
 #include "accountstate.h"
 #include "syncfileitem.h"
 
@@ -45,6 +46,10 @@ ProtocolWidget::ProtocolWidget(QWidget *parent)
         this, &ProtocolWidget::slotItemCompleted);
 
     connect(_ui->_tableView, &QTreeWidget::customContextMenuRequested, this, &ProtocolWidget::slotItemContextMenu);
+    _ui->_tableView->horizontalHeader()->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(_ui->_tableView->horizontalHeader(), &QHeaderView::customContextMenuRequested, this, [this] {
+        showHeaderContextMenu(this, _sortModel);
+    });
 
     _model = new ProtocolItemModel(this);
     _sortModel = new QSortFilterProxyModel(this);
@@ -71,6 +76,16 @@ ProtocolWidget::ProtocolWidget(QWidget *parent)
 ProtocolWidget::~ProtocolWidget()
 {
     delete _ui;
+}
+
+void ProtocolWidget::showHeaderContextMenu(QWidget *parent, QSortFilterProxyModel *model)
+{
+    QStringList accounts;
+    accounts.reserve(AccountManager::instance()->accounts().size());
+    for (const auto &a : AccountManager::instance()->accounts()) {
+        accounts << a->account()->displayName();
+    }
+    Models::displayFilterDialog(accounts, model, static_cast<int>(ProtocolItemModel::ProtocolItemRole::Account), Qt::DisplayRole, parent);
 }
 
 void ProtocolWidget::showContextMenu(QWidget *parent, ProtocolItemModel *model, const QModelIndexList &items)

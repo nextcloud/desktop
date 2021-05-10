@@ -16,6 +16,8 @@
 #include <QApplication>
 #include <QItemSelectionRange>
 #include <QTextStream>
+#include <QSortFilterProxyModel>
+#include <QMenu>
 
 QString OCC::Models::formatSelection(const QModelIndexList &items)
 {
@@ -46,4 +48,33 @@ QString OCC::Models::formatSelection(const QModelIndexList &items)
         stream << endl;
     }
     return out;
+}
+
+void OCC::Models::displayFilterDialog(const QStringList &candidates, QSortFilterProxyModel *model, int column, int role, QWidget *parent)
+{
+    auto menu = new QMenu(parent);
+    menu->setAttribute(Qt::WA_DeleteOnClose);
+    menu->addAction(qApp->translate("OCC::Models", "Filter by"));
+    menu->addSeparator();
+
+    const auto currentFilter = model->filterRegExp().pattern();
+    auto addAction = [=](const QString &s, const QString &filter) {
+        auto action = menu->addAction(s, parent, [=]() {
+            model->setFilterRole(role);
+            model->setFilterKeyColumn(column);
+            model->setFilterFixedString(filter);
+        });
+        action->setCheckable(true);
+        if (currentFilter == filter) {
+            action->setChecked(true);
+        }
+    };
+
+
+    addAction(qApp->translate("OCC::Models", "No filter"), QString());
+
+    for (const auto &c : candidates) {
+        addAction(c, c);
+    }
+    menu->popup(QCursor::pos());
 }

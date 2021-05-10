@@ -17,6 +17,8 @@
 #include <QString>
 #include <QtGlobal>
 
+class QSortFilterProxyModel;
+
 namespace OCC {
 
 namespace Models {
@@ -31,5 +33,8 @@ namespace Models {
     QString formatSelection(const QModelIndexList &items);
 
 
-}
+    void displayFilterDialog(const QStringList &candidates, QSortFilterProxyModel *model, int column, int role, QWidget *parent = nullptr);
+
+
+};
 }

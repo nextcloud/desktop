@@ -77,6 +77,10 @@ IssuesWidget::IssuesWidget(QWidget *parent)
     _sortModel->setSourceModel(_model);
     _ui->_tableView->setModel(_sortModel);
     connect(_ui->_tableView, &QTreeView::customContextMenuRequested, this, &IssuesWidget::slotItemContextMenu);
+    _ui->_tableView->horizontalHeader()->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(_ui->_tableView->horizontalHeader(), &QHeaderView::customContextMenuRequested, this, [this] {
+        ProtocolWidget::showHeaderContextMenu(this, _sortModel);
+    });
 
     _ui->_tableView->horizontalHeader()->setObjectName(QStringLiteral("ActivityErrorListHeaderV2"));
     _ui->_tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
