@@ -45,8 +45,9 @@ bool isDebuggerPresent()
         qDebug() << "Failed to detect debugger" << QString::fromWCharArray(_com_error(error).ErrorMessage());
     }
     return debugged;
-#endif
+#else
     return false;
+#endif
 }
 }
 namespace OCC {
