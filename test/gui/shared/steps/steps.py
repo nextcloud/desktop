@@ -493,11 +493,13 @@ def step(context, publicLinkName, resource):
     nativeType(expDate.month)
     nativeType(expDate.day)
     nativeType(expYear)
+    nativeType("<Return>")
     waitFor(lambda: (test.vp("publicLinkExpirationProgressIndicator")))
     test.compare(
         str(waitForObjectExists(names.oCC_ShareLinkWidget_qt_spinbox_lineedit_QLineEdit).displayText),
         str(expDate.month) + "/" + str(expDate.day) + "/" + str(expYear)
     )
+
 
 @When('the user creates a new public link with permissions "|any|" for folder "|any|" without password using the client-UI')
 def step(context, permissions, resource):
