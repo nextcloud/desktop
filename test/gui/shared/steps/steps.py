@@ -7,6 +7,7 @@ from os.path import isfile, join
 import re
 import urllib.request
 import json
+import datetime
 
 from objectmaphelper import RegularExpression
 
@@ -484,17 +485,19 @@ def step(context, publicLinkName, resource):
     expDate = []
     for row in context.table:
         if row[0] == 'expireDate':
-            expDate = row[1].split("-")
-    expYear = expDate[0][2:]
+            expDate = datetime.datetime.strptime(row[1],'%Y-%m-%d')
+    expYear = expDate.year-2000
     mouseClick(waitForObject(names.oCC_ShareLinkWidget_qt_spinbox_lineedit_QLineEdit), 0, 0, Qt.NoModifier, Qt.LeftButton)
     nativeType("<Delete>")
     nativeType("<Delete>")
-    nativeType(expDate[1])
-    nativeType(expDate[2])
+    nativeType(expDate.month)
+    nativeType(expDate.day)
     nativeType(expYear)
-    nativeType("<Tab>")
     waitFor(lambda: (test.vp("publicLinkExpirationProgressIndicator")))
-
+    test.compare(
+        str(waitForObjectExists(names.oCC_ShareLinkWidget_qt_spinbox_lineedit_QLineEdit).displayText),
+        str(expDate.month) + "/" + str(expDate.day) + "/" + str(expYear)
+    )
 
 @When('the user creates a new public link with permissions "|any|" for folder "|any|" without password using the client-UI')
 def step(context, permissions, resource):
