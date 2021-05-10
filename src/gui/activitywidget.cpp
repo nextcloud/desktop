@@ -15,7 +15,6 @@
 #include <QtGui>
 #include <QtWidgets>
 
-#include "activitylistmodel.h"
 #include "activitywidget.h"
 #include "configfile.h"
 #include "syncresult.h"
@@ -29,7 +28,6 @@
 #include "account.h"
 #include "accountstate.h"
 #include "accountmanager.h"
-#include "models.h"
 #include "protocolwidget.h"
 #include "issueswidget.h"
 #include "QProgressIndicator.h"
@@ -38,6 +36,9 @@
 #include "servernotificationhandler.h"
 #include "theme.h"
 #include "ocsjob.h"
+
+#include "models/activitylistmodel.h"
+#include "models/models.h"
 
 #include "ui_activitywidget.h"
 

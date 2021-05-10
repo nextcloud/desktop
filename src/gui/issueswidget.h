@@ -20,7 +20,7 @@
 #include <QLocale>
 #include <QTimer>
 
-#include "protocolitemmodel.h"
+#include "models/protocolitemmodel.h"
 #include "progressdispatcher.h"
 #include "owncloudgui.h"
 

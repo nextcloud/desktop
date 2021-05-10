@@ -6,7 +6,7 @@
  *
  */
 
-#include "gui/protocolitemmodel.h"
+#include "gui/models/protocolitemmodel.h"
 
 #include <QTest>
 #include <QAbstractItemModelTester>

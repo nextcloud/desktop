@@ -24,7 +24,7 @@
 #include "folderman.h"
 #include "syncfileitem.h"
 #include "folder.h"
-#include "models.h"
+#include "models/models.h"
 #include "openfilemanager.h"
 #include "protocolwidget.h"
 #include "accountstate.h"

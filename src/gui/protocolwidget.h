@@ -21,7 +21,7 @@
 
 #include "progressdispatcher.h"
 #include "owncloudgui.h"
-#include "protocolitemmodel.h"
+#include "models/protocolitemmodel.h"
 
 #include "protocolitem.h"
 #include "ui_protocolwidget.h"

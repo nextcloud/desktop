@@ -49,7 +49,6 @@ set(client_SRCS
     ignorelisteditor.cpp
     lockwatcher.cpp
     logbrowser.cpp
-    models.cpp
     networksettings.cpp
     ocsjob.cpp
     ocssharejob.cpp
@@ -59,10 +58,8 @@ set(client_SRCS
     owncloudsetupwizard.cpp
     protocolwidget.cpp
     protocolitem.cpp
-    protocolitemmodel.cpp
     issueswidget.cpp
     activitydata.cpp
-    activitylistmodel.cpp
     activitywidget.cpp
     selectivesyncdialog.cpp
     settingsdialog.cpp
@@ -90,6 +87,11 @@ set(client_SRCS
     elidedlabel.cpp
     translations.cpp
     creds/httpcredentialsgui.cpp
+
+    models/activitylistmodel.cpp
+    models/models.cpp
+    models/protocolitemmodel.cpp
+
     wizard/postfixlineedit.cpp
     wizard/abstractcredswizardpage.cpp
     wizard/owncloudadvancedsetuppage.cpp

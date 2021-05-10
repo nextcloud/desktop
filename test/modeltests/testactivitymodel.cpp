@@ -6,7 +6,7 @@
  *
  */
 
-#include "gui/activitylistmodel.h"
+#include "gui/models/activitylistmodel.h"
 #include "gui/accountmanager.h"
 
 #include <QTest>

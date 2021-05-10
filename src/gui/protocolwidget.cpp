@@ -16,7 +16,6 @@
 #include <QtGui>
 #include <QtWidgets>
 
-#include "activitylistmodel.h"
 #include "protocolwidget.h"
 #include "configfile.h"
 #include "syncresult.h"
@@ -24,13 +23,14 @@
 #include "theme.h"
 #include "folderman.h"
 #include "folder.h"
-#include "models.h"
 #include "openfilemanager.h"
 #include "guiutility.h"
 #include "accountstate.h"
 #include "syncfileitem.h"
 
-#include "activitylistmodel.h"
+#include "models/models.h"
+#include "models/activitylistmodel.h"
+
 #include "ui_protocolwidget.h"
 
 namespace OCC {
