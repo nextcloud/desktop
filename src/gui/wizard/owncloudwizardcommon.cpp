@@ -24,27 +24,6 @@ namespace OCC {
 
 namespace WizardCommon {
 
-    void setupCustomMedia(const QVariant &variant, QLabel *label)
-    {
-        if (!label)
-            return;
-
-        QPixmap pix = variant.value<QPixmap>();
-        if (!pix.isNull()) {
-            label->setPixmap(pix);
-            label->setAlignment(Qt::AlignTop | Qt::AlignRight);
-            label->setVisible(true);
-        } else {
-            QString str = variant.toString();
-            if (!str.isEmpty()) {
-                label->setText(str);
-                label->setTextFormat(Qt::RichText);
-                label->setVisible(true);
-                label->setOpenExternalLinks(true);
-            }
-        }
-    }
-
     QString titleTemplate()
     {
         return QString::fromLatin1("<font color=\"%1\" size=\"5\">").arg(Theme::instance()->wizardHeaderTitleColor().name()) + QString::fromLatin1("%1</font>");

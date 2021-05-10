@@ -23,7 +23,6 @@ namespace OCC {
 
 namespace WizardCommon {
 
-    void setupCustomMedia(const QVariant &variant, QLabel *label);
     QString titleTemplate();
     QString subTitleTemplate();
     void initErrorLabel(QLabel *errorLabel);

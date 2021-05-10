@@ -69,15 +69,6 @@ void OwncloudHttpCredsPage::setupCustomization()
     // set defaults for the customize labels.
     _ui.topLabel->hide();
     _ui.bottomLabel->hide();
-
-    Theme *theme = Theme::instance();
-    QVariant variant = theme->customMedia(Theme::oCSetupTop);
-    if (!variant.isNull()) {
-        WizardCommon::setupCustomMedia(variant, _ui.topLabel);
-    }
-
-    variant = theme->customMedia(Theme::oCSetupBottom);
-    WizardCommon::setupCustomMedia(variant, _ui.bottomLabel);
 }
 
 void OwncloudHttpCredsPage::initializePage()

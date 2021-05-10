@@ -34,13 +34,6 @@ ownCloudTheme::ownCloudTheme()
 }
 
 #ifndef TOKEN_AUTH_ONLY
-QVariant ownCloudTheme::customMedia(CustomMediaType)
-{
-    return QVariant();
-}
-#endif
-
-#ifndef TOKEN_AUTH_ONLY
 QColor ownCloudTheme::wizardHeaderBackgroundColor() const
 {
     return QColor(4, 30, 66);

@@ -84,9 +84,6 @@ void OwncloudWizardResultPage::setupCustomization()
     // set defaults for the customize labels.
     _ui.topLabel->setText(QString());
     _ui.topLabel->hide();
-
-    QVariant variant = Theme::instance()->customMedia(Theme::oCSetupResultTop);
-    WizardCommon::setupCustomMedia(variant, _ui.topLabel);
 }
 
 void OwncloudWizardResultPage::slotOpenLocal()

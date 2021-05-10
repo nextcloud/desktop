@@ -467,39 +467,6 @@ bool Theme::aboutShowCopyright() const
 }
 
 #ifndef TOKEN_AUTH_ONLY
-QVariant Theme::customMedia(CustomMediaType type)
-{
-    QVariant re;
-    QString key;
-
-    switch (type) {
-    case oCSetupTop:
-        key = QStringLiteral("oCSetupTop");
-        break;
-    case oCSetupSide:
-        key = QStringLiteral("oCSetupSide");
-        break;
-    case oCSetupBottom:
-        key = QStringLiteral("oCSetupBottom");
-        break;
-    case oCSetupResultTop:
-        key = QStringLiteral("oCSetupResultTop");
-        break;
-    }
-
-    QString imgPath = QStringLiteral(":/client/%1/theme/colored/%2.png").arg(appName(), key);
-    if (QFile::exists(imgPath)) {
-        QPixmap pix(imgPath);
-        if (pix.isNull()) {
-            // pixmap loading hasn't succeeded. We take the text instead.
-            re.setValue(key);
-        } else {
-            re.setValue(pix);
-        }
-    }
-    return re;
-}
-
 QIcon Theme::syncStateIcon(SyncResult::Status status, bool sysTray, bool sysTrayMenuVisible) const
 {
     // FIXME: Mind the size!

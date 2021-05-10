@@ -51,7 +51,6 @@ public:
     AccountPtr account() const;
     void setOCUrl(const QString &);
 
-    void setupCustomMedia(QVariant, QLabel *);
     QString ocUrl() const;
     QString localFolder() const;
     QStringList selectiveSyncBlacklist() const;

@@ -33,13 +33,8 @@ OwncloudOAuthCredsPage::OwncloudOAuthCredsPage()
 {
     _ui.setupUi(this);
 
-    Theme *theme = Theme::instance();
     _ui.topLabel->hide();
     _ui.bottomLabel->hide();
-    QVariant variant = theme->customMedia(Theme::oCSetupTop);
-    WizardCommon::setupCustomMedia(variant, _ui.topLabel);
-    variant = theme->customMedia(Theme::oCSetupBottom);
-    WizardCommon::setupCustomMedia(variant, _ui.bottomLabel);
 
     WizardCommon::initErrorLabel(_ui.errorLabel);
 
