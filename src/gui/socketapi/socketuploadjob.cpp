@@ -67,9 +67,7 @@ void SocketUploadJob::prepareTag(const AccountPtr &account)
         });
         propfindJob->start();
     });
-    const QJsonObject json({ { QStringLiteral("name"), backupTagNameC() },
-        { QStringLiteral("userVisible"), QStringLiteral("true") },
-        { QStringLiteral("userAssignable"), QStringLiteral("false") } });
+    const QJsonObject json({ { QStringLiteral("name"), backupTagNameC() } });
     QNetworkRequest req;
     // TODO: 2.9 prepareRequest
     // remove version.h include
