@@ -407,7 +407,7 @@ def step(context, filename):
             "text": RegularExpression(buildConflictedRegex(filename)),
             "type": "QModelIndex"
     })
-    
+
 
 @When('the user selects the unsynced files tab')
 def step(context):
@@ -519,6 +519,7 @@ def step(context, permissions, resource):
 
     clickButton(waitForObject(radioObjectName))
     clickButton(waitForObject(names.oCC_ShareLinkWidget_createShareButton_QPushButton))
+    waitFor(lambda: (findObject(names.linkShares_0_0_QModelIndex).displayText == "Public link"))
 
 
 @When('the user creates a new public link with permissions "|any|" for folder "|any|" with password "|any|" using the client-UI')
@@ -548,6 +549,7 @@ def createPublicShare(context, resource, role):
     openPublicLinkDialog(context, resource)
     clickButton(waitForObject(radioObjectName))
     clickButton(waitForObject(names.oCC_ShareLinkWidget_createShareButton_QPushButton))
+    waitFor(lambda: (findObject(names.linkShares_0_0_QModelIndex).displayText == "Public link"))
 
 @When('the user creates a new public link for folder "|any|" using the client-UI with these details:')
 def step(context, resource):
