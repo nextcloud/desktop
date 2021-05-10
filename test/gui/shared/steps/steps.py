@@ -402,18 +402,18 @@ def step(context, filename):
     waitForObject(names.settings_OCC_SettingsDialog)
     waitForObjectExists({
             "column": 1,
-            "container": names.oCC_IssuesWidget_treeWidget_QTreeWidget,
+            "container": names.oCC_IssuesWidget_tableView_QTableView,
             "text": RegularExpression(buildConflictedRegex(filename)),
             "type": "QModelIndex"
     })
+    
 
-
-@When('the user selects the unsynced files tab with |integer| unsynced files')
-def step(context, number):
+@When('the user selects the unsynced files tab')
+def step(context):
     # TODO: find some way to dynamically select the tab name
     # It might take some time for all files to sync except the expected number of unsynced files
     snooze(10)
-    clickTab(waitForObject(names.stack_QTabWidget), "Not Synced ({})".format(number))
+    clickTab(waitForObject(names.stack_QTabWidget), "Not Synced")
 
 
 def openPublicLinkDialog(context, resource):

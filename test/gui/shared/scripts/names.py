@@ -106,3 +106,5 @@ oCC_ShareLinkWidget_radio_readWrite_QRadioButton = {"container": qt_tabwidget_st
 oCC_ShareLinkWidget_radio_uploadOnly_QRadioButton = {"container": qt_tabwidget_stackedwidget_OCC_ShareLinkWidget_OCC_ShareLinkWidget, "name": "radio_uploadOnly", "type": "QRadioButton", "visible": 1}
 oCC_ShareLinkWidget_checkBox_expire_QCheckBox = {"container": qt_tabwidget_stackedwidget_OCC_ShareLinkWidget_OCC_ShareLinkWidget, "name": "checkBox_expire", "type": "QCheckBox", "visible": 1}
 oCC_ShareLinkWidget_checkBox_expire_QProgressIndicator = {"aboveWidget": oCC_ShareLinkWidget_lineEdit_password_QLineEdit, "container": qt_tabwidget_stackedwidget_OCC_ShareLinkWidget_OCC_ShareLinkWidget, "leftWidget": oCC_ShareLinkWidget_checkBox_expire_QCheckBox, "type": "QProgressIndicator", "unnamed": 1, "visible": 1}
+oCC_IssuesWidget_tableView_QTableView = {"container": qt_tabwidget_stackedwidget_OCC_IssuesWidget_OCC_IssuesWidget, "name": "_tableView", "type": "QTableView", "visible": 1}
+o_tableView_0_1_QModelIndex = {"column": 1, "container": oCC_IssuesWidget_tableView_QTableView, "row": 0, "type": "QModelIndex"}

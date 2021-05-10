@@ -37,7 +37,7 @@ Feature: Syncing files
         And user "Alice" has uploaded file on the server with content "changed server content" to "/conflict.txt"
         When the user resumes the file sync on the client
         And the user clicks on the activity tab
-        And the user selects the unsynced files tab with 1 unsynced files
+        And the user selects the unsynced files tab
         # Then a conflict warning should be shown for 1 files
         Then the table of conflict warnings should include file "conflict.txt"
         And the file "conflict.txt" should exist on the file system with the following content
