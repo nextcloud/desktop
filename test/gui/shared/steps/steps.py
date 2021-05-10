@@ -444,6 +444,7 @@ def step(context):
 def step(context, receiver, resource):
     resource = sanitizePath(substituteInLineCodes(context, resource))
     waitFor(lambda: isFolderSynced(resource), context.userData['clientSyncTimeout'] * 1000)
+    waitFor(lambda: shareResource(resource), context.userData['clientSyncTimeout'] * 1000)
 
 
 @Then('the error text "|any|" should be displayed in the sharing dialog')
