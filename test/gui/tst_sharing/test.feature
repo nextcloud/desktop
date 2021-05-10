@@ -22,7 +22,7 @@ Feature: Sharing
         When the user opens the public links dialog of "%client_sync_path%/textfile0.txt" using the client-UI
         And the user toggles the password protection using the client-UI
         And the user toggles the password protection using the client-UI
-        Then the progress indicator should not be visible in the client-UI
+        Then the password progress indicator should not be visible in the client-UI - expected to fail
 
     @issue-7423
     Scenario: unshare a reshared file

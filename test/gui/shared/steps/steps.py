@@ -432,13 +432,17 @@ def step(context):
     clickButton(waitForObject(names.oCC_ShareLinkWidget_checkBox_password_QCheckBox))
 
 
-@Then('the progress indicator should not be visible in the client-UI')
+@Then('the password progress indicator should not be visible in the client-UI')
 def step(context):
-    test.compare(
-        waitForObjectExists(names.oCC_ShareLinkWidget_checkBox_password_QProgressIndicator).visible,
-        False
-    )
+    waitFor(lambda: (test.vp(
+        "publicLinkPasswordProgressIndicatorInvisible"
+    )))
 
+@Then('the password progress indicator should not be visible in the client-UI - expected to fail')
+def step(context):
+    waitFor(lambda: (test.xvp(
+        "publicLinkPasswordProgressIndicatorInvisible"
+    )))
 
 @When('user "|any|" opens the sharing dialog of "|any|" using the client-UI')
 def step(context, receiver, resource):
