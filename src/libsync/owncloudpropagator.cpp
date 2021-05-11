@@ -510,7 +510,7 @@ void OwncloudPropagator::setSyncOptions(const SyncOptions &syncOptions)
     _chunkSize = syncOptions._initialChunkSize;
 }
 
-bool OwncloudPropagator::localFileNameClash(const QString &relFile)
+Result<QString, bool> OwncloudPropagator::localFileNameClash(const QString &relFile)
 {
     const QString file(_localDir + relFile);
     OC_ASSERT(!file.isEmpty());
@@ -526,7 +526,7 @@ bool OwncloudPropagator::localFileNameClash(const QString &relFile)
             const QString cName = fileInfo.canonicalFilePath().normalized(QString::NormalizationForm_C);
             if (file != cName && !cName.endsWith(relFile, Qt::CaseSensitive)) {
                 qCWarning(lcPropagator) << "Detected case clash between" << file << "and" << cName;
-                return true;
+                return cName;
             }
         }
 #elif defined(Q_OS_WIN)
@@ -534,15 +534,14 @@ bool OwncloudPropagator::localFileNameClash(const QString &relFile)
         HANDLE hFind;
 
         hFind = FindFirstFileW(reinterpret_cast<const wchar_t *>(FileSystem::longWinPath(file).utf16()), &FindFileData);
-        if (hFind == INVALID_HANDLE_VALUE) {
-            // returns false.
-        } else {
+        if (hFind != INVALID_HANDLE_VALUE) {
             const QString realFileName = QString::fromWCharArray(FindFileData.cFileName);
             FindClose(hFind);
 
             if (!file.endsWith(realFileName, Qt::CaseSensitive)) {
-                qCWarning(lcPropagator) << "Detected case clash between" << file << "and" << realFileName;
-                return true;
+                const QString clashName = _localDir + realFileName;
+                qCWarning(lcPropagator) << "Detected case clash between" << file << "and" << clashName;
+                return clashName;
             }
         }
 #else
@@ -552,7 +551,7 @@ bool OwncloudPropagator::localFileNameClash(const QString &relFile)
         const QString fn = fileInfo.fileName();
         const QStringList list = fileInfo.dir().entryList({ fn });
         if (list.count() > 1 || (list.count() == 1 && list[0] != fn)) {
-            return true;
+            return list[0];
         }
 #endif
     }

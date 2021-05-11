@@ -465,8 +465,9 @@ public:
 
     /** Check whether a download would clash with an existing file
      * in filesystems that are only case-preserving.
+     * Returns the path of the clashed file
      */
-    bool localFileNameClash(const QString &relfile);
+    Result<QString, bool> localFileNameClash(const QString &relfile);
 
     /** Check whether a file is properly accessible for upload.
      *

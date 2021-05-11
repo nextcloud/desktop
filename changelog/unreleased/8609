@@ -1,0 +1,6 @@
+Enhancement: Mention the local file name when a file name clash occurs
+
+We now display the name of the file we detected the clash with.
+
+https://github.com/owncloud/client/issues/8609
+https://github.com/owncloud/client/pull/8630
