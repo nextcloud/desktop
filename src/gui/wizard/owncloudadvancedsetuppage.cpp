@@ -221,6 +221,24 @@ void OwncloudAdvancedSetupPage::fetchUserData()
     _ui.userNameLabel->setText(userName);
 }
 
+void OwncloudAdvancedSetupPage::refreshVirtualFilesAvailibility(const QString &path)
+{
+    // TODO: remove when UX decision is made
+    if (!_ui.rVirtualFileSync->isVisible()) {
+        return;
+    }
+
+    if (Utility::isPathWindowsDrivePartitionRoot(path)) {
+        _ui.rVirtualFileSync->setText(tr("Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter."));
+        setRadioChecked(_ui.rSyncEverything);
+        _ui.rVirtualFileSync->setEnabled(false);
+    } else {
+        _ui.rVirtualFileSync->setText(tr("Use &virtual files instead of downloading content immediately %1").arg(bestAvailableVfsMode() == Vfs::WindowsCfApi ? QString() : tr("(experimental)")));
+        _ui.rVirtualFileSync->setEnabled(true);
+    }
+    //
+}
+
 void OwncloudAdvancedSetupPage::setServerAddressLabelUrl(const QUrl &url)
 {
     if (!url.isValid()) {
@@ -411,6 +429,9 @@ void OwncloudAdvancedSetupPage::slotSelectFolder()
 {
     QString dir = QFileDialog::getExistingDirectory(nullptr, tr("Local Sync Folder"), QDir::homePath());
     if (!dir.isEmpty()) {
+        // TODO: remove when UX decision is made
+        refreshVirtualFilesAvailibility(dir);
+
         setLocalFolderPushButtonPath(dir);
         wizard()->setProperty("localFolder", dir);
         updateStatus();

@@ -676,6 +676,26 @@ QByteArray Utility::conflictFileBaseNameFromPattern(const QByteArray &conflictNa
     return conflictName.left(tagStart) + conflictName.mid(tagEnd);
 }
 
+bool Utility::isPathWindowsDrivePartitionRoot(const QString &path)
+{
+    Q_UNUSED(path)
+#ifdef Q_OS_WIN
+    // should be 2 or 3 characters length
+    if (!(path.size() >= 2 && path.size() <= 3)) {
+        return false;
+    }
+
+    // must mutch a pattern "[A-Za-z]:"
+    if (!(path.at(1) == QLatin1Char(':') && path.at(0).isLetter())) {
+        return false;
+    }
+
+    // final check - last character should be either slash/backslash, or, it should be missing
+    return path.size() < 3 || path.at(2) == QLatin1Char('/') || path.at(2) == QLatin1Char('\\');
+#endif
+    return false;
+}
+
 QString Utility::sanitizeForFileName(const QString &name)
 {
     const auto invalid = QStringLiteral(R"(/?<>\:*|")");
