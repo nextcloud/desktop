@@ -109,12 +109,7 @@ ActivityWidget::ActivityWidget(QWidget *parent)
     connect(_ui->_activityList, &QListView::customContextMenuRequested, this, &ActivityWidget::slotItemContextMenu);
     _ui->_activityList->horizontalHeader()->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(_ui->_activityList->horizontalHeader(), &QListView::customContextMenuRequested, this, [this] {
-        QStringList accounts;
-        accounts.reserve(AccountManager::instance()->accounts().size());
-        for (const auto &a : AccountManager::instance()->accounts()) {
-            accounts << a->account()->displayName();
-        }
-        Models::displayFilterDialog(accounts, _sortModel, static_cast<int>(ActivityListModel::ActivityRole::Account), Qt::DisplayRole, this);
+        Models::displayFilterDialog(AccountManager::instance()->accountNames().toList(), _sortModel, static_cast<int>(ActivityListModel::ActivityRole::Account), Qt::DisplayRole, this);
     });
 
     connect(&_removeTimer, &QTimer::timeout, this, &ActivityWidget::slotCheckToCleanWidgets);

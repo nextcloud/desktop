@@ -227,6 +227,17 @@ void AccountManager::saveAccountState(AccountState *a)
     qCDebug(lcAccountManager) << "Saved account state settings, status:" << settings->status();
 }
 
+QStringList AccountManager::accountNames() const
+{
+    QStringList accounts;
+    accounts.reserve(AccountManager::instance()->accounts().size());
+    for (const auto &a : AccountManager::instance()->accounts()) {
+        accounts << a->account()->displayName();
+    }
+    std::sort(accounts.begin(), accounts.end());
+    return accounts;
+}
+
 void AccountManager::saveAccountHelper(Account *acc, QSettings &settings, bool saveCredentials)
 {
     settings.setValue(QLatin1String(versionC), maxAccountVersion);

@@ -88,6 +88,11 @@ public:
      */
     static void backwardMigrationSettingsKeys(QStringList *deleteKeys, QStringList *ignoreKeys);
 
+    /**
+     * Returns a sorted list of displayNames
+     */
+    QStringList accountNames() const;
+
 private:
     // saving and loading Account to settings
     void saveAccountHelper(Account *account, QSettings &settings, bool saveCredentials = true);
