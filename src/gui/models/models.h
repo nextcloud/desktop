@@ -30,7 +30,7 @@ namespace Models {
     /**
      * Returns a cvs representation of a table
      */
-    QString formatSelection(const QModelIndexList &items);
+    QString formatSelection(const QModelIndexList &items, int dataRole = Qt::DisplayRole);
 
 
     void displayFilterDialog(const QStringList &candidates, QSortFilterProxyModel *model, int column, int role, QWidget *parent = nullptr);

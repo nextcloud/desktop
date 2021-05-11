@@ -453,7 +453,7 @@ void ActivityWidget::slotItemContextMenu()
     menu->setAttribute(Qt::WA_DeleteOnClose);
 
     // keep in sync with ProtocolWidget::showContextMenu
-    menu->addAction(tr("Copy to clipboard"), this, [text = Models::formatSelection(rows)] {
+    menu->addAction(tr("Copy to clipboard"), this, [text = Models::formatSelection(rows, Models::UnderlyingDataRole)] {
         QApplication::clipboard()->setText(text);
     });
 

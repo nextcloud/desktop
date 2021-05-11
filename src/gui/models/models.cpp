@@ -19,7 +19,9 @@
 #include <QSortFilterProxyModel>
 #include <QMenu>
 
-QString OCC::Models::formatSelection(const QModelIndexList &items)
+#include <functional>
+
+QString OCC::Models::formatSelection(const QModelIndexList &items, int dataRole)
 {
     if (items.isEmpty()) {
         return {};
@@ -28,23 +30,47 @@ QString OCC::Models::formatSelection(const QModelIndexList &items)
     QString out;
     QTextStream stream(&out);
 
-    for (int c = 0; c < columns; ++c) {
+    QString begin;
+    QString end;
+
+    const auto iterate = [columns](const std::function<void(int)> &f) {
+        if (qApp->layoutDirection() != Qt::RightToLeft) {
+            for (int c = 0; c < columns; ++c) {
+                f(c);
+            }
+        } else {
+            for (int c = columns - 1; c >= 0; --c) {
+                f(c);
+            }
+        }
+    };
+    if (qApp->layoutDirection() == Qt::RightToLeft) {
+        stream << right;
+        begin = QLatin1Char(',');
+    } else {
+        stream << left;
+        end = QLatin1Char(',');
+    }
+
+    iterate([&](int c) {
         const auto width = items.first().model()->headerData(c, Qt::Horizontal, StringFormatWidthRole).toInt();
         Q_ASSERT(width);
-        stream << right
+        stream << begin
                << qSetFieldWidth(width)
                << items.first().model()->headerData(c, Qt::Horizontal).toString()
-               << qSetFieldWidth(0) << ",";
-    }
+               << qSetFieldWidth(0)
+               << end;
+    });
     stream << endl;
     for (const auto &index : items) {
-        for (int c = 0; c < columns; ++c) {
+        iterate([&](int c) {
             const auto &child = index.siblingAtColumn(c);
-            stream << right
+            stream << begin
                    << qSetFieldWidth(child.model()->headerData(c, Qt::Horizontal, StringFormatWidthRole).toInt())
-                   << child.data(Qt::DisplayRole).toString()
-                   << qSetFieldWidth(0) << ",";
-        }
+                   << child.data(dataRole).toString()
+                   << qSetFieldWidth(0)
+                   << end;
+        });
         stream << endl;
     }
     return out;
