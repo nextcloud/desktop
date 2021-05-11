@@ -16,6 +16,12 @@ def main(ctx):
             'refs/pull/**',
         ],
     }
+    notification_trigger = {
+         "ref": [
+            'refs/heads/master',
+            'refs/tags/v*',
+        ],
+    }
     pipelines = [
         # Build changelog
         changelog(
@@ -50,6 +56,7 @@ def main(ctx):
                 "clang-debug-ninja",
                 "build-docs",
             ],
+            trigger = notification_trigger,
         ),
 
         # Sync translations
