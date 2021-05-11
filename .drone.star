@@ -10,23 +10,17 @@ def main(ctx):
         "cron": ["translations-2-7"],
     }
     build_trigger = {
-        "event": [
-            "push",
-            "pull_request",
-            "tag",
-        ],
-    }
-    changelog_trigger = {
          "ref": [
-            "refs/heads/master",
-            "refs/pull/**",
+            'refs/heads/master',
+            'refs/tags/v*',
+            'refs/pull/**',
         ],
     }
     pipelines = [
         # Build changelog
         changelog(
             ctx,
-            trigger = changelog_trigger,
+            trigger = build_trigger,
             depends_on = [],
         ),
         # Build client and docs
