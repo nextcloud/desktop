@@ -327,6 +327,7 @@ def step(context, filePath):
 
 @Given('the user has paused the file sync')
 def step(context):
+    waitFor(lambda: isFolderSynced(context.userData['clientSyncPath']), context.userData['clientSyncTimeout'] * 1000)
     openContextMenu(waitForObjectItem(names.stack_folderList_QTreeView, "_1"), 0, 0, Qt.NoModifier)
     activateItem(waitForObjectItem(names.settings_QMenu, "Pause sync"))
 
