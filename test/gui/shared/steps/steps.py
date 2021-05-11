@@ -10,6 +10,9 @@ import json
 import datetime
 
 from objectmaphelper import RegularExpression
+from pageObjects.AccountConnectionWizard import AccountConnectionWizard
+from helpers.SetupClientHelper import substituteInLineCodes
+
 
 # the script needs to use the system wide python
 # to switch from the built-in interpreter see https://kb.froglogic.com/squish/howto/using-external-python-interpreter-squish-6-6/
@@ -58,7 +61,8 @@ def hook(context):
 
 @When('the user adds the first account with')
 def step(context):
-    addAccount(context)
+    newAccount = AccountConnectionWizard()
+    newAccount.addAccount(context)
 
 @Then('an account should be displayed with the displayname |any| and host |any|')
 def step(context, displayname, host):
@@ -149,37 +153,9 @@ def step(context):
 def step(context):
     clickButton(waitForObject(names.settings_settingsdialog_toolbutton_Add_account_QToolButton))
 
-    addAccount(context)
+    newAccount = AccountConnectionWizard()
+    newAccount.addAccount(context)
 
-def addAccount(context):
-    for row in context.table[0:]:
-        row[1] = substituteInLineCodes(context, row[1])
-        if row[0] == 'server':
-            server = row[1]
-        elif row[0] == 'user':
-            user = row[1]
-        elif row[0] == 'password':
-            password = row[1]
-        elif row[0] == 'localfolder':
-            localfolder = row[1]
-    try:
-        os.makedirs(localfolder, 0o0755)
-    except:
-        pass
-
-    mouseClick(waitForObject(names.leUrl_OCC_PostfixLineEdit), 0, 0, Qt.NoModifier, Qt.LeftButton)
-    type(waitForObject(names.leUrl_OCC_PostfixLineEdit), server)
-    clickButton(waitForObject(names.owncloudWizard_qt_passive_wizardbutton1_QPushButton))
-    mouseClick(waitForObject(names.leUrl_OCC_PostfixLineEdit), 0, 0, Qt.NoModifier, Qt.LeftButton)
-    type(waitForObject(names.leUsername_QLineEdit), user)
-    type(waitForObject(names.leUsername_QLineEdit), "<Tab>")
-    type(waitForObject(names.lePassword_QLineEdit), password)
-    clickButton(waitForObject(names.owncloudWizard_qt_passive_wizardbutton1_QPushButton))
-    clickButton(waitForObject(names.pbSelectLocalFolder_QPushButton))
-    mouseClick(waitForObject(names.fileNameEdit_QLineEdit), 0, 0, Qt.NoModifier, Qt.LeftButton)
-    type(waitForObject(names.fileNameEdit_QLineEdit), localfolder)
-    clickButton(waitForObject(names.qFileDialog_Choose_QPushButton))
-    clickButton(waitForObject(names.owncloudWizard_qt_passive_wizardbutton1_QPushButton))
 
 def isItemSynced(type, itemName):
     if type != 'FILE' and type != 'FOLDER':
@@ -206,14 +182,6 @@ def waitForFileToBeSynced(context, fileName):
         lambda: isFileSynced(context.userData['clientSyncPath'] + fileName),
         context.userData['clientSyncTimeout'] * 1000
     )
-
-def substituteInLineCodes(context, value):
-    from urllib.parse import urlparse
-    value = value.replace('%local_server%', context.userData['localBackendUrl'])
-    value = value.replace('%client_sync_path%', context.userData['clientSyncPath'])
-    value = value.replace('%local_server_hostname%', urlparse(context.userData['localBackendUrl']).netloc)
-
-    return value
 
 def sanitizePath(path):
     return path.replace('//','/')
