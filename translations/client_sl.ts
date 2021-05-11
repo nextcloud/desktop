@@ -2124,8 +2124,8 @@ Predmeti v mapah, ki jih je dovoljeno izbrisati, bodo odstranjeni, če prepreču
     </message>
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="55"/>
-        <source>&lt;p&gt;Copyright 2017-2021 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2018 ownCloud GmbH&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Avtorske pravice 2017–2021 Nextcloud GmbH&lt;br /&gt;Avtorske pravice 2012–2018 ownCloud GmbH&lt;/p&gt;</translation>
+        <source>&lt;p&gt;Copyright 2017-2021 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2021 ownCloud GmbH&lt;/p&gt;</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="55"/>

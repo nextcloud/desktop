@@ -2111,7 +2111,7 @@ Elementer hvor sletning er tilladt vil blive slettet hvis de hindre en folder fr
     </message>
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="55"/>
-        <source>&lt;p&gt;Copyright 2017-2021 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2018 ownCloud GmbH&lt;/p&gt;</source>
+        <source>&lt;p&gt;Copyright 2017-2021 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2021 ownCloud GmbH&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
