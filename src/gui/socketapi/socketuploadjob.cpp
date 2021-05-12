@@ -162,13 +162,23 @@ void SocketUploadJob::start()
     prepareTag(account->account());
 
     // create the dir, fail if it already exists
-    auto mkdir = new OCC::MkColJob(engine->account(), remotePath);
+    auto mkdir = new OCC::MkColJob(engine->account(), remotePath, this);
     connect(mkdir, qOverload<QNetworkReply::NetworkError>(&OCC::MkColJob::finished), this, [remotePath, engine, mkdir, this]() {
         auto reply = mkdir->reply();
 
         if (reply->error() == QNetworkReply::NoError) {
-            _backupFileId = reply->rawHeader(QByteArrayLiteral("OC-FileId"));
-            engine->startSync();
+            // we need the int file id without the instance id so we can't use the OC-FileId
+            auto propfindJob = new PropfindJob(engine->account(), remotePath, this);
+            propfindJob->setProperties({ QByteArrayLiteral("http://owncloud.org/ns:fileid") });
+
+            connect(propfindJob, &PropfindJob::result, this, [engine, this](const QVariantMap &data) {
+                _backupFileId = data[QStringLiteral("fileid")].toByteArray();
+                engine->startSync();
+            });
+            connect(propfindJob, &PropfindJob::finishedWithError, this, [this] {
+                fail(tr("Failed to file id tags"));
+            });
+            propfindJob->start();
         } else if (reply->error() == 202) {
             fail(QStringLiteral("Destination %1 already exists").arg(remotePath));
         } else {
