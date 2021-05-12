@@ -1,0 +1,5 @@
+Bugfix: We fixed an issue with the assignment of tags
+
+We fixed the file id used for the assignment of the tag.
+
+https://github.com/owncloud/client/pull/8633/
