@@ -26,6 +26,7 @@ Summary
 * Enhancement - We reworked the tables: [#8158](https://github.com/owncloud/client/issues/8158)
 * Enhancement - Add language picker to general settings: [#8466](https://github.com/owncloud/client/issues/8466)
 * Enhancement - Attach the last 20 log lines to a crash report: [#8467](https://github.com/owncloud/client/issues/8467)
+* Enhancement - Mention the local file name when a file name clash occurs: [#8609](https://github.com/owncloud/client/issues/8609)
 
 Details
 -------
@@ -163,6 +164,13 @@ Details
 
    https://github.com/owncloud/client/issues/8467
    https://github.com/owncloud/client/pull/8469
+
+* Enhancement - Mention the local file name when a file name clash occurs: [#8609](https://github.com/owncloud/client/issues/8609)
+
+   We now display the name of the file we detected the clash with.
+
+   https://github.com/owncloud/client/issues/8609
+   https://github.com/owncloud/client/pull/8630
 
 Changelog for ownCloud Desktop Client [2.8.0] (2021-05-06)
 =======================================
