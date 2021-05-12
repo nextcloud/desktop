@@ -222,7 +222,7 @@
     <message>
         <location filename="../src/libsync/abstractpropagateremotedeleteencrypted.cpp" line="181"/>
         <source>&quot;%1 Failed to unlock encrypted folder %2&quot;.</source>
-        <translation>&quot;％1 暗号化されたフォルダ ％2 のロックを解除できませんでした。”</translation>
+        <translation>&quot;%1 暗号化されたフォルダ %2 のロックを解除できませんでした。”</translation>
     </message>
 </context>
 <context>
@@ -409,7 +409,7 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="573"/>
         <source>Enable virtual file support %1 …</source>
-        <translation>仮想ファイルを有効にする ％1…</translation>
+        <translation>仮想ファイルを有効にする %1…</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="573"/>
@@ -739,7 +739,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/application.cpp" line="312"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your user.</source>
-        <translation>％1の設定ファイルのアクセス中にエラーが発生しました。 ユーザーがファイルにアクセスできることを確認してください。</translation>
+        <translation>%1の設定ファイルのアクセス中にエラーが発生しました。 ユーザーがファイルにアクセスできることを確認してください。</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="315"/>
@@ -1212,12 +1212,12 @@ This can be an issue with your OpenSSL libraries.</source>
     <message>
         <location filename="../src/gui/folder.cpp" line="1157"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
-        <translation>フォルダ％1は作成されましたが、以前に同期から除外されました。 中のデータは同期されません。</translation>
+        <translation>フォルダ%1は作成されましたが、以前に同期から除外されました。 中のデータは同期されません。</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1160"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
-        <translation>ファイル％1は作成されましたが、以前に同期から除外されました。 このファイルは同期されません。</translation>
+        <translation>ファイル %1 は作成されましたが、以前に同期から除外されました。 このファイルは同期されません。</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1171"/>
@@ -1238,7 +1238,7 @@ This means that the synchronization client might not upload local changes immedi
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation>同期フォルダー &apos;％1&apos;のすべてのファイルがサーバー上で削除されました。
+        <translation>同期フォルダー &apos;%1&apos;のすべてのファイルがサーバー上で削除されました。
 これらの削除はローカルの同期フォルダーに同期され、復元する権限がない場合、ファイルは利用できなくなります。
 削除されたファイルを復元する場合、ファイルを復元する権限があれば、ファイルはサーバーに再同期されます。
 ファイルを削除する場合、あなたがファイルを所有していない限り、ファイルは利用できなくなります。</translation>
@@ -1248,7 +1248,7 @@ If you decide to delete the files, they will be unavailable to you, unless you a
         <source>All files got deleted from your local sync folder '%1'.
 These files will be deleted from the server and will not be available on your other devices if they will not be restored.
 If this action was unintended you can restore the lost data now.</source>
-        <translation>ローカル同期フォルダー &apos;％1&apos;からすべてのファイルが削除されました。
+        <translation>ローカル同期フォルダー &apos;%1&apos;からすべてのファイルが削除されました。
 これらのファイルはサーバーから削除され、復元されない場合、他のデバイスで使用できなくなります。
 この操作が意図しないものであった場合、削除されたデータはすぐに復元できます。</translation>
     </message>
@@ -1295,7 +1295,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation>同期フォルダ &apos;％1&apos;フォルダ内のすべてのファイルがサーバー上で削除されました。
+        <translation>同期フォルダ &apos;%1&apos;フォルダ内のすべてのファイルがサーバー上で削除されました。
 これらの削除はローカル同期フォルダーと同期され、復元する権限がない限り、ファイルは使用できなくなります。 
 ファイルを復元したい場合、権限があればサーバーと再同期されます。
 ファイルを削除することにした場合、所有者でない限り、ファイルは利用できなくなります。</translation>
@@ -1305,7 +1305,7 @@ If you decide to delete the files, they will be unavailable to you, unless you a
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
-        <translation>ローカル同期フォルダ &apos;％1&apos;内のすべてのファイルが削除されました。この削除はサーバーに同期され、復元されない限りそのファイルは使用できなくなります。
+        <translation>ローカル同期フォルダ &apos;%1&apos;内のすべてのファイルが削除されました。この削除はサーバーに同期され、復元されない限りそのファイルは使用できなくなります。
 このアクションをサーバーと同期してもよろしいですか？
 これが操作ミスであり、ファイルを維持することにした場合、ファイルはサーバーから再同期されます。</translation>
     </message>
@@ -1742,7 +1742,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="473"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a subfolder of &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation>&lt;i&gt;％2 &lt;/i&gt;のサブフォルダーである&lt;i&gt;％1 &lt;/i&gt;を既に同期しています。</translation>
+        <translation>&lt;i&gt;%2 &lt;/i&gt;のサブフォルダーである&lt;i&gt;%1 &lt;/i&gt;を既に同期しています。</translation>
     </message>
 </context>
 <context>
@@ -1756,6 +1756,11 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <location filename="../src/gui/folderwizard.cpp" line="512"/>
         <source>(experimental)</source>
         <translation>(試験的)</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderwizard.cpp" line="545"/>
+        <source>Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="548"/>
@@ -2149,7 +2154,7 @@ Since log files can get large, the client will start a new one for each sync run
 If enabled, logs will be written to %1</source>
         <translation>クライアントは、デバッグログを一時フォルダに書き込むようにできます。これらのログは、問題の診断に非常に役立ちます。
 ログファイルは大きくなる可能性があるため、クライアントは同期の実行ごとに新しいログファイルを開始し、古いログファイルを圧縮します。また、ディスク領域の消費を防ぐために、数時間後にログファイルが削除されます。
-有効にすると、ログは ％1 に書き込まれます</translation>
+有効にすると、ログは %1 に書き込まれます</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="64"/>
@@ -2195,7 +2200,7 @@ Note that using any logging command line options will override this setting.</so
 Logs will be written to %1</source>
         <translation>このオプションが有効になっていて、他のログが設定されていない場合、ログは一時フォルダに書き込まれ、数時間後に期限切れになります。 この設定はクライアントの再起動後も持続します。
 
-ログは％1に書き込まれます</translation>
+ログは %1 に書き込まれます</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="115"/>
@@ -2438,7 +2443,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="139"/>
         <source>&lt;h1&gt;Wrong user&lt;/h1&gt;&lt;p&gt;You logged-in with user &lt;em&gt;%1&lt;/em&gt;, but must login with user &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please log out of %3 in another tab, then &lt;a href=&apos;%4&apos;&gt;click here&lt;/a&gt; and log in as user %2&lt;/p&gt;</source>
-        <translation>&lt;h1&gt;間違ったユーザー&lt;/h1&gt;&lt;p&gt;ユーザー&lt;em&gt;％1&lt;/em&gt;でログインしましたが、ユーザー&lt;em&gt;％2&lt;/em&gt;でログインする必要があります。&lt;br&gt;別のタブで％3からログアウトしてから、&lt;a href=&apos;%4&apos;&gt;ここをクリック&lt;/a&gt;してユーザー％2&lt;/p&gt;としてログインしてください。</translation>
+        <translation>&lt;h1&gt;間違ったユーザー&lt;/h1&gt;&lt;p&gt;ユーザー&lt;em&gt;%1&lt;/em&gt;でログインしましたが、ユーザー&lt;em&gt;%2&lt;/em&gt;でログインする必要があります。&lt;br&gt;別のタブで%3からログアウトしてから、&lt;a href=&apos;%4&apos;&gt;ここをクリック&lt;/a&gt;してユーザー%2&lt;/p&gt;としてログインしてください。</translation>
     </message>
 </context>
 <context>
@@ -2487,7 +2492,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="152"/>
         <source>Could not download update. Please open %1 to download the update manually.</source>
-        <translation>アップデートをダウンロードできませんでした。更新を手動でダウンロードするには、％1 を開いてください。</translation>
+        <translation>アップデートをダウンロードできませんでした。更新を手動でダウンロードするには、%1 を開いてください。</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="154"/>
@@ -2497,7 +2502,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="156"/>
         <source>New %1 is available. Please open %2 to download the update.</source>
-        <translation>新しい ％1 が利用可能です。更新をダウンロードするには、％2 を開いてください。</translation>
+        <translation>新しい %1 が利用可能です。更新をダウンロードするには、%2 を開いてください。</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="158"/>
@@ -2550,12 +2555,17 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="88"/>
         <source>Use &amp;virtual files instead of downloading content immediately %1</source>
-        <translation>コンテンツをすぐにダウンロードする代わりに &amp;仮想ファイルを使用する ％1</translation>
+        <translation>コンテンツをすぐにダウンロードする代わりに &amp;仮想ファイルを使用する %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="88"/>
         <source>(experimental)</source>
         <translation>(試験的)</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="232"/>
+        <source>Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="252"/>
@@ -2720,7 +2730,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="96"/>
         <source>This is the link to your %1 web interface when you open it in the browser.&lt;br/&gt;It looks like https://cloud.example.com or https://example.com/cloud</source>
-        <translation>％1 のWeb画面をブラウザで開くときのURL&lt;br/&gt;https://cloud.example.com や https://example.com/cloud のようなものです</translation>
+        <translation>%1 のWeb画面をブラウザで開くときのURLです。&lt;br/&gt;https://cloud.example.com や https://example.com/cloud のようになります。</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="185"/>
@@ -2941,7 +2951,7 @@ The virtual files mode is mutually exclusive with selective sync. Currently unse
 Switching to this mode will abort any currently running synchronization.
 
 This is a new, experimental mode. If you decide to use it, please report any issues that come up.</source>
-        <translation>&quot;仮想ファイル&quot; モードを有効にした場合、最初にファイルがダウンロードされません。同期ダウンロードされる代わりに、サーバー上に存在するファイルごとにローカルに小さな ”％1&quot; ファイルが作成されます。これらのファイルを実行した時やコンテキストメニューを使用するとコンテンツをダウンロードできます。
+        <translation>&quot;仮想ファイル&quot; モードを有効にした場合、最初にファイルがダウンロードされません。同期ダウンロードされる代わりに、サーバー上に存在するファイルごとにローカルに小さな ”%1&quot; ファイルが作成されます。これらのファイルを実行した時やコンテキストメニューを使用するとコンテンツをダウンロードできます。
 
 仮想ファイルモードは、選択同期モードとどちらかの排他利用です。現在選択されていないフォルダはオンライン専用フォルダに変換され、選択同期モードの設定はリセットされます。
 
@@ -4222,7 +4232,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="147"/>
         <source>No space on %1 server available.</source>
-        <translation>％1サーバーに空きスペースがありません。</translation>
+        <translation>%1サーバーに空きスペースがありません。</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="150"/>
@@ -5101,12 +5111,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="245"/>
         <source>This is the link to your %1 web interface when you open it in the browser.&lt;br/&gt;It looks like https://cloud.example.com or https://example.com/cloud</source>
-        <translation>これは、％1 のWeb画面をブラウザで開くときのURLです。&lt;br/&gt;https://cloud.example.com や https://example.com/cloud のようなものです</translation>
+        <translation>%1 のWeb画面をブラウザで開くときのURLです。&lt;br/&gt;https://cloud.example.com や https://example.com/cloud のようになります。</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="259"/>
         <source>This is the link to your %1 web interface when you open it in the browser.</source>
-        <translation>これは、％1 のWeb画面をブラウザで開くときのURLです。</translation>
+        <translation>これは、%1 のWeb画面をブラウザで開くときのURLです。</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="343"/>
