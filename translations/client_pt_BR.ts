@@ -3568,12 +3568,17 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <translation>Falha ao criar backup: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="183"/>
+        <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="179"/>
+        <source>Failed to file id tags</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="193"/>
         <source>Backup of %1 failed with: %2</source>
         <translation>Cópia de segurança de %1 falhou com: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="199"/>
+        <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="209"/>
         <source>%1 backup</source>
         <translation>1% cópia de segurança</translation>
     </message>

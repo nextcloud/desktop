@@ -3573,12 +3573,17 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="183"/>
+        <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="179"/>
+        <source>Failed to file id tags</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="193"/>
         <source>Backup of %1 failed with: %2</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="199"/>
+        <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="209"/>
         <source>%1 backup</source>
         <translation type="unfinished"/>
     </message>
