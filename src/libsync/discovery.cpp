@@ -1045,7 +1045,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
     } else {
         // We must query the server to know if the etag has not changed
         _pendingAsyncJobs++;
-        QString serverOriginalPath = _discoveryData->adjustRenamedPath(originalPath, SyncFileItem::Down);
+        QString serverOriginalPath = _discoveryData->_remoteFolder +_discoveryData->adjustRenamedPath(originalPath, SyncFileItem::Down);
         if (base.isVirtualFile() && isVfsWithSuffix())
             chopVirtualFileSuffix(serverOriginalPath);
         auto job = new RequestEtagJob(_discoveryData->_account, serverOriginalPath, this);
