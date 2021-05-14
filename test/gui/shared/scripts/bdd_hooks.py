@@ -16,6 +16,8 @@
 # See the section 'Performing Actions During Test Execution Via Hooks' in the Squish
 # manual for a complete reference of the available API.
 import shutil
+import urllib.request
+import os
 
 @OnScenarioStart
 def hook(context):
@@ -49,6 +51,18 @@ def hook(context):
 
     if context.userData['clientConfigFile'] == '':
         context.userData['clientConfigFile']='-'
+        
+    req = urllib.request.Request(
+        os.path.join(context.userData['middlewareUrl'], 'init'),
+        headers={"Content-Type": "application/json"}, method='POST'
+    )
+    try:
+        urllib.request.urlopen(req)
+    except urllib.error.HTTPError as e:
+        raise Exception(
+            "Step execution through test middleware failed. Error: " + e.read().decode()
+        )
+    
 
 @OnScenarioEnd
 def hook(context):
