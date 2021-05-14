@@ -3570,7 +3570,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="179"/>
         <source>Failed to file id tags</source>
-        <translation type="unfinished"/>
+        <translation>Falha ao arquivar as etiquetas de identificação</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="193"/>
