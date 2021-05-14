@@ -1761,7 +1761,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="545"/>
         <source>Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter.</source>
-        <translation type="unfinished"/>
+        <translation>Kot krajevne datoteke na ravni korenske mape v okolju Windows navidezne datoteke niso podprte. Izbrati je treba ustrezno podrejeno mapo na črkovnem pogonu.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="548"/>
@@ -2130,7 +2130,7 @@ Predmeti v mapah, ki jih je dovoljeno izbrisati, bodo odstranjeni, če prepreču
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="55"/>
         <source>&lt;p&gt;Copyright 2017-2021 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2021 ownCloud GmbH&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Avtorske pravice 2017–2021 Nextcloud GmbH&lt;br /&gt;Avtorske pravice 2012–2021 ownCloud GmbH&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="55"/>
@@ -2567,7 +2567,7 @@ zahteva skrbniška dovoljenja za dokončanje opravila.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="232"/>
         <source>Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter.</source>
-        <translation type="unfinished"/>
+        <translation>Kot krajevne datoteke na ravni korenske mape v okolju Windows navidezne datoteke niso podprte. Izbrati je treba ustrezno podrejeno mapo na črkovnem pogonu.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="252"/>

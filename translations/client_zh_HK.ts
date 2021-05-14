@@ -5094,7 +5094,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="32"/>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="353"/>
         <source>TextLabel</source>
-        <translation type="unfinished"/>
+        <translation>無需翻譯。 桌面僅使用官方翻譯。</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="73"/>
