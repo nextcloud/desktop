@@ -3526,7 +3526,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="66"/>
         <source>Failed to rerieve tags</source>
-        <translation type="unfinished"/>
+        <translation>เรียกข้อมูลแท็กไม่สำเร็จ</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="96"/>
@@ -3541,7 +3541,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="104"/>
         <source>Local path must be a an absolute path</source>
-        <translation type="unfinished"/>
+        <translation>พาธต้นทางต้องเป็นเส้นทางที่แน่นอน</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="109"/>
@@ -3556,17 +3556,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="141"/>
         <source>Failed to set success tag</source>
-        <translation type="unfinished"/>
+        <translation>ไม่สามารถตั้งค่าแท็กความสำเร็จ</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="147"/>
         <source>Failed to create backup: %1</source>
-        <translation type="unfinished"/>
+        <translation>สร้างการสำรองข้อมูลไม่สำเร็จ: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="179"/>
         <source>Failed to file id tags</source>
-        <translation type="unfinished"/>
+        <translation>ไม่พบแท็ก ID</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="193"/>
@@ -3890,7 +3890,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/common/vfs.cpp" line="72"/>
         <source>The Virtual filesystem feature does not support a drive as sync root</source>
-        <translation type="unfinished"/>
+        <translation>ฟีดเจอร์ระบบไฟล์เสมือนไม่สนับสนุนไดรฟ์ที่เป็นซิงค์รูท</translation>
     </message>
     <message>
         <location filename="../src/common/vfs.cpp" line="76"/>

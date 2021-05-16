@@ -2395,7 +2395,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="533"/>
         <source>Folder rename failed</source>
-        <translation>Hernoemen map mislukt</translation>
+        <translation>Map hernoemen mislukt</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="534"/>
@@ -3579,7 +3579,7 @@ Dit is een nieuwe, experimentele modus. Als je besluit deze te gebruiken, meld d
     <message>
         <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="179"/>
         <source>Failed to file id tags</source>
-        <translation type="unfinished"/>
+        <translation>Kon id tags niet verwerken</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="193"/>
