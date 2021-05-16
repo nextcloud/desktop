@@ -570,7 +570,7 @@ Vous prenez vos propres risques.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1305"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
-        <translation>Certains dossiers n&apos;ont pas été synchronisés par qu&apos;ils sont localisés sur un stockage externe ou qu&apos;ils sont de taille trop importante :</translation>
+        <translation>Certains dossiers n&apos;ont pas été synchronisés parce qu&apos;ils sont localisés sur un stockage externe ou qu&apos;ils sont de taille trop importante :</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1317"/>
