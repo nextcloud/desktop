@@ -12,12 +12,7 @@ set(LIBRARY_VERSION ${MIRALL_VERSION})
 set(LIBRARY_SOVERSION "0")
 
 # add definitions
-include(DefineCMakeDefaults)
-include(DefinePlatformDefaults)
-include(DefineCompilerFlags)
 include(DefineOptions.cmake)
-
-include(DefineInstallationPaths)
 
 if (APPLE OR WIN32)
     set(USE_OUR_OWN_SQLITE3 TRUE)
