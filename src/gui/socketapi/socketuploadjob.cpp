@@ -66,9 +66,7 @@ void SocketUploadJob::prepareTag(const AccountPtr &account)
         });
         propfindJob->start();
     });
-    const QJsonObject json({ { QStringLiteral("name"), backupTagNameC() },
-        { QStringLiteral("userVisible"), QStringLiteral("true") },
-        { QStringLiteral("userAssignable"), QStringLiteral("false") } });
+    const QJsonObject json({ { QStringLiteral("name"), backupTagNameC() } });
     QNetworkRequest req;
     tagJob->prepareRequest(QByteArrayLiteral("POST"), tagUrl(account), req, json);
     tagJob->start();
@@ -165,10 +163,20 @@ void SocketUploadJob::start()
 
     // create the dir, fail if it already exists
     auto mkdir = new OCC::MkColJob(engine->account(), remotePath);
-    connect(mkdir, &OCC::MkColJob::finishedWithoutError, this, [engine, mkdir, this]{
-        auto reply = mkdir->reply();
-        _backupFileId = reply->rawHeader(QByteArrayLiteral("OC-FileId"));
-        engine->startSync();
+    connect(mkdir, &OCC::MkColJob::finishedWithoutError, this, [engine, remotePath, this]{
+
+        // we need the int file id without the instance id so we can't use the OC-FileId
+        auto propfindJob = new PropfindJob(engine->account(), remotePath, this);
+        propfindJob->setProperties({ QByteArrayLiteral("http://owncloud.org/ns:fileid") });
+
+        connect(propfindJob, &PropfindJob::result, this, [engine, this](const QVariantMap &data) {
+            _backupFileId = data[QStringLiteral("fileid")].toByteArray();
+            engine->startSync();
+        });
+        connect(propfindJob, &PropfindJob::finishedWithError, this, [this] {
+            fail(tr("Failed to file id tags"));
+        });
+        propfindJob->start();
     });
     connect(mkdir, &OCC::MkColJob::finishedWithError, this, [remotePath, this](QNetworkReply *reply) {
         if (reply->error() == 202) {

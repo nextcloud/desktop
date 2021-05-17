@@ -3511,47 +3511,52 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="98"/>
+        <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="96"/>
         <source>Backup of %1 started</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="101"/>
+        <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="99"/>
         <source>Failed to find %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="106"/>
+        <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="104"/>
         <source>Local path must be a an absolute path</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="111"/>
+        <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="109"/>
         <source>Failed to create temporary database</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="140"/>
+        <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="138"/>
         <source>Backup of %1 succeeded</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="143"/>
+        <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="141"/>
         <source>Failed to set success tag</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="149"/>
+        <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="147"/>
         <source>Failed to create backup: %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="185"/>
+        <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="179"/>
+        <source>Failed to file id tags</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="193"/>
         <source>Backup of %1 failed with: %2</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="201"/>
+        <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="209"/>
         <source>%1 backup</source>
         <translation type="unfinished"/>
     </message>
@@ -3868,6 +3873,11 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <name>OCC::Vfs</name>
     <message>
         <location filename="../src/common/vfs.cpp" line="72"/>
+        <source>The Virtual filesystem feature does not support a drive as sync root</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/common/vfs.cpp" line="76"/>
         <source>The Virtual filesystem feature requires a NTFS file system, %1 is using %2</source>
         <translation type="unfinished"/>
     </message>

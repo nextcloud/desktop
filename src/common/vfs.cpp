@@ -23,6 +23,7 @@
 
 #include "common/filesystembase.h"
 
+#include <QDir>
 #include <QPluginLoader>
 #include <QLoggingCategory>
 
@@ -67,6 +68,9 @@ Result<bool, QString> Vfs::checkAvailability(const QString &path)
     const auto mode = bestAvailableVfsMode();
 #ifdef Q_OS_WIN
     if (mode == Mode::WindowsCfApi) {
+        if (QDir(QDir(path).canonicalPath()).isRoot()) {
+            return tr("The Virtual filesystem feature does not support a drive as sync root");
+        }
         const auto fs = FileSystem::fileSystemForPath(path);
         if (fs != QLatin1String("NTFS")) {
             return tr("The Virtual filesystem feature requires a NTFS file system, %1 is using %2").arg(path, fs);

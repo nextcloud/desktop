@@ -1,0 +1,6 @@
+Enhancement: Prevent user from setting up a VFS sync to the root of a drive
+
+We now display a warning when a user tries to sync to a drive like D:\ instead of a folder and prevent this.
+Previous versions of the client used to crash.
+
+https://github.com/owncloud/client/pull/8615

@@ -3533,47 +3533,52 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <translation>Falha ao recuperar etiquetas</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="98"/>
+        <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="96"/>
         <source>Backup of %1 started</source>
         <translation>Cópia de segurança de %1 iniciada </translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="101"/>
+        <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="99"/>
         <source>Failed to find %1</source>
         <translation>Falha para encontrar  %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="106"/>
+        <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="104"/>
         <source>Local path must be a an absolute path</source>
         <translation>O caminho local deve ser um caminho absoluto </translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="111"/>
+        <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="109"/>
         <source>Failed to create temporary database</source>
         <translation>Falha ao criar banco de dados temporário </translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="140"/>
+        <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="138"/>
         <source>Backup of %1 succeeded</source>
         <translation>Cópia de segurança de %1 bem sucedida </translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="143"/>
+        <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="141"/>
         <source>Failed to set success tag</source>
         <translation>Falha ao definir etiqueta de sucesso</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="149"/>
+        <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="147"/>
         <source>Failed to create backup: %1</source>
         <translation>Falha ao criar backup: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="185"/>
+        <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="179"/>
+        <source>Failed to file id tags</source>
+        <translation>Falha ao arquivar as etiquetas de identificação</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="193"/>
         <source>Backup of %1 failed with: %2</source>
         <translation>Cópia de segurança de %1 falhou com: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="201"/>
+        <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="209"/>
         <source>%1 backup</source>
         <translation>1% cópia de segurança</translation>
     </message>
@@ -3890,6 +3895,11 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <name>OCC::Vfs</name>
     <message>
         <location filename="../src/common/vfs.cpp" line="72"/>
+        <source>The Virtual filesystem feature does not support a drive as sync root</source>
+        <translation>O recurso Sistema de Arquivos Virtual não suporta uma unidade de drive como raiz de sincronização</translation>
+    </message>
+    <message>
+        <location filename="../src/common/vfs.cpp" line="76"/>
         <source>The Virtual filesystem feature requires a NTFS file system, %1 is using %2</source>
         <translation>O recurso de sistema de arquivos virtual requer um sistema de arquivos NTFS, %1 está usando %2</translation>
     </message>
