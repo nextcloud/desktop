@@ -171,6 +171,8 @@ find_package(Qt5 REQUIRED COMPONENTS WebSockets)
 add_library(nextcloudsync SHARED ${libsync_SRCS})
 add_library(Nextcloud::sync ALIAS nextcloudsync)
 
+source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} PREFIX "Source Files" FILES ${libsync_SRCS})
+
 target_link_libraries(nextcloudsync
   PUBLIC
   Nextcloud::csync
