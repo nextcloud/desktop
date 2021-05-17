@@ -792,8 +792,8 @@ void Folder::startSync(const QStringList &pathList)
     _syncResult.setStatus(SyncResult::SyncPrepare);
     emit syncStateChange();
 
-    qCInfo(lcFolder) << "*** Start syncing " << remoteUrl().toString() << " -" << APPLICATION_NAME << "client version"
-                     << qPrintable(Theme::instance()->version());
+    qCInfo(lcFolder) << "*** Start syncing " << remoteUrl().toString() << "client version"
+                     << Theme::instance()->aboutVersions(Theme::VersionFormat::OneLiner);
 
     _fileLog->start(path());
 
@@ -899,10 +899,7 @@ void Folder::slotSyncStarted()
 
 void Folder::slotSyncFinished(bool success)
 {
-    qCInfo(lcFolder) << "Client version" << qPrintable(Theme::instance()->version())
-                     << " Qt" << qVersion()
-                     << " SSL " << QSslSocket::sslLibraryVersionString().toUtf8().data()
-        ;
+    qCInfo(lcFolder) << "Client version" << Theme::instance()->aboutVersions(Theme::VersionFormat::OneLiner);
 
     bool syncError = !_syncResult.errorStrings().isEmpty();
     if (syncError) {
