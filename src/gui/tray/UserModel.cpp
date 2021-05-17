@@ -681,7 +681,6 @@ void UserModel::buildUserList()
     }
     if (_init) {
         _users.first()->setCurrentUser(true);
-        connect(_users.first(), &User::accountStateChanged, this, &UserModel::refreshCurrentUserGui);
         _init = false;
     }
 }
@@ -759,11 +758,13 @@ void UserModel::addUser(AccountStatePtr &user, const bool &isCurrent)
             emit dataChanged(index(row, 0), index(row, 0), { UserModel::DesktopNotificationsAllowedRole });
         });
         
+        connect(u, &User::accountStateChanged, this, [this, row] {
+            emit dataChanged(index(row, 0), index(row, 0), { UserModel::IsConnectedRole });
+        });
 
         _users << u;
         if (isCurrent) {
             _currentUserId = _users.indexOf(_users.last());
-            connect(u, &User::accountStateChanged, this, &UserModel::refreshCurrentUserGui);
         }
 
         endInsertRows();
@@ -816,13 +817,10 @@ Q_INVOKABLE void UserModel::switchCurrentUser(const int &id)
 {
     if (_currentUserId < 0 || _currentUserId >= _users.size())
         return;
-
-    disconnect(_users[_currentUserId], &User::accountStateChanged, this, &UserModel::refreshCurrentUserGui);
+    
     _users[_currentUserId]->setCurrentUser(false);
     _users[id]->setCurrentUser(true);
-    connect(_users[id], &User::accountStateChanged, this, &UserModel::refreshCurrentUserGui);
     _currentUserId = id;
-    emit refreshCurrentUserGui();
     emit newUserSelected();
 }
 
@@ -832,7 +830,6 @@ Q_INVOKABLE void UserModel::login(const int &id)
         return;
 
     _users[id]->login();
-    emit refreshCurrentUserGui();
 }
 
 Q_INVOKABLE void UserModel::logout(const int &id)
@@ -841,7 +838,6 @@ Q_INVOKABLE void UserModel::logout(const int &id)
         return;
 
     _users[id]->logout();
-    emit refreshCurrentUserGui();
 }
 
 Q_INVOKABLE void UserModel::removeAccount(const int &id)
@@ -864,10 +860,6 @@ Q_INVOKABLE void UserModel::removeAccount(const int &id)
         return;
     }
 
-    if (_users[id]->isCurrentUser()) {
-        disconnect(_users[id], &User::accountStateChanged, this, &UserModel::refreshCurrentUserGui);
-    }
-
     if (_users[id]->isCurrentUser() && _users.count() > 1) {
         id == 0 ? switchCurrentUser(1) : switchCurrentUser(0);
     }
@@ -878,8 +870,6 @@ Q_INVOKABLE void UserModel::removeAccount(const int &id)
     beginRemoveRows(QModelIndex(), id, id);
     _users.removeAt(id);
     endRemoveRows();
-
-    emit refreshCurrentUserGui();
 }
 
 int UserModel::rowCount(const QModelIndex &parent) const
