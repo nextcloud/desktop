@@ -73,7 +73,7 @@ MenuItem {
                         Rectangle {
                             id: accountStatusIndicatorBackground
                             visible: model.isConnected && 
-                                     model.serverUserStatus
+                                     model.serverHasUserStatus
                             width: accountStatusIndicator.sourceSize.width + 2
                             height: width
                             anchors.bottom: accountAvatar.bottom
@@ -84,7 +84,7 @@ MenuItem {
                         Image {
                             id: accountStatusIndicator
                             visible: model.isConnected && 
-                                     model.serverUserStatus
+                                     model.serverHasUserStatus
                             source: model.statusIcon 
                             cache: false
                             x: accountStatusIndicatorBackground.x + 1
@@ -114,7 +114,7 @@ MenuItem {
                         Label {
                             id: userStatusMessage
                             visible: model.isConnected && 
-                                     model.serverUserStatus && 
+                                     model.serverHasUserStatus && 
                                      statusMessage !== ""
                             width: 128
                             text: statusMessage
