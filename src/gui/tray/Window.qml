@@ -35,17 +35,6 @@ Window {
     }
 
     onVisibleChanged: {
-        folderStateIndicator.source = ""
-        folderStateIndicator.source = UserModel.isUserConnected(UserModel.currentUserId)
-                ? Style.stateOnlineImageSource
-                : Style.stateOfflineImageSource
-        
-        currentUserStatus.visible = UserModel.isUserConnected(UserModel.currentUserId) && 
-                UserModel.currentUser.serverHasUserStatus
-        currentAccountStatusIndicatorMouseHover.visible = currentUserStatus.visible
-        currentAccountStatusIndicatorBackground.visible = currentUserStatus.visible
-        currentAccountStatusIndicator.source = currentUserStatus.visible? UserModel.currentUser.statusIcon : ""
-
         // HACK: reload account Instantiator immediately by restting it - could be done better I guess
         // see also id:accountMenu below
         userLineInstantiator.active = false;
@@ -54,18 +43,6 @@ Window {
 
     Connections {
         target: UserModel
-        onRefreshCurrentUserGui: {
-            folderStateIndicator.source = ""
-            folderStateIndicator.source = UserModel.isUserConnected(UserModel.currentUserId)
-                    ? Style.stateOnlineImageSource
-                    : Style.stateOfflineImageSource
-            
-            currentUserStatus.visible = UserModel.isUserConnected(UserModel.currentUserId) && 
-                    UserModel.currentUser.serverHasUserStatus
-            currentAccountStatusIndicatorMouseHover.visible = currentUserStatus.visible
-            currentAccountStatusIndicatorBackground.visible = currentUserStatus.visible
-            currentAccountStatusIndicator.source = currentUserStatus.visible? UserModel.currentUser.statusIcon : ""
-        }
         onNewUserSelected: {
             accountMenu.close();
         }
@@ -341,8 +318,8 @@ Window {
 
                             Rectangle {
                                 id: currentAccountStatusIndicatorBackground
-                                visible: UserModel.isUserConnected(UserModel.currentUserId()) 
-                                         && UserModel.currentUser.hasUserStatus
+                                visible: UserModel.currentUser.isConnected
+                                         && UserModel.currentUser.serverHasUserStatus
                                 width: Style.accountAvatarStateIndicatorSize + 2
                                 height: width
                                 anchors.bottom: currentAccountAvatar.bottom
@@ -353,8 +330,8 @@ Window {
 
                             Rectangle {
                                 id: currentAccountStatusIndicatorMouseHover
-                                visible: UserModel.isUserConnected(UserModel.currentUserId()) 
-                                         && UserModel.currentUser.hasUserStatus
+                                visible: UserModel.currentUser.isConnected
+                                         && UserModel.currentUser.serverHasUserStatus
                                 width: Style.accountAvatarStateIndicatorSize + 2
                                 height: width
                                 anchors.bottom: currentAccountAvatar.bottom
@@ -366,7 +343,7 @@ Window {
 
                             Image {
                                 id: currentAccountStatusIndicator
-                                visible: UserModel.isUserConnected(UserModel.currentUserId())
+                                visible: UserModel.currentUser.isConnected
                                 source: UserModel.currentUser.statusIcon
                                 cache: false
                                 x: currentAccountStatusIndicatorBackground.x + 1
@@ -396,8 +373,8 @@ Window {
                             }
                             Label {
                                 id: currentUserStatus
-                                visible: UserModel.isUserConnected(UserModel.currentUserId()) &&
-                                         UserModel.currentUserHasUserStatus() &&
+                                visible: UserModel.currentUser.isConnected &&
+                                         UserModel.currentUser.serverHasUserStatus &&
                                          UserModel.currentUser.statusMessage !== ""
                                 width: Style.currentAccountLabelWidth
                                 text: UserModel.currentUser.statusMessage !== ""
