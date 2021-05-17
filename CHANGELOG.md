@@ -3,7 +3,7 @@ Changelog for ownCloud Desktop Client [unreleased] (UNRELEASED)
 The following sections list the changes in ownCloud Desktop Client unreleased relevant to
 ownCloud admins and users.
 
-[unreleased]: https://github.com/owncloud/client/compare/v2.8.0...master
+[unreleased]: https://github.com/owncloud/client/compare/v2.8.1...master
 
 Summary
 -------
@@ -171,6 +171,35 @@ Details
 
    https://github.com/owncloud/client/issues/8609
    https://github.com/owncloud/client/pull/8630
+
+Changelog for ownCloud Desktop Client [2.8.1] (2021-05-21)
+=======================================
+The following sections list the changes in ownCloud Desktop Client 2.8.1 relevant to
+ownCloud admins and users.
+
+[2.8.1]: https://github.com/owncloud/client/compare/v2.8.0...v2.8.1
+
+Summary
+-------
+
+* Bugfix - We fixed an issue with the assignment of tags: [#8633](https://github.com/owncloud/client/pull/8633/)
+* Enhancement - Prevent user from setting up a VFS sync to the root of a drive: [#8615](https://github.com/owncloud/client/pull/8615)
+
+Details
+-------
+
+* Bugfix - We fixed an issue with the assignment of tags: [#8633](https://github.com/owncloud/client/pull/8633/)
+
+   We fixed the file id used for the assignment of the tag.
+
+   https://github.com/owncloud/client/pull/8633/
+
+* Enhancement - Prevent user from setting up a VFS sync to the root of a drive: [#8615](https://github.com/owncloud/client/pull/8615)
+
+   We now display a warning when a user tries to sync to a drive like D:\ instead of a folder and
+   prevent this. Previous versions of the client used to crash.
+
+   https://github.com/owncloud/client/pull/8615
 
 Changelog for ownCloud Desktop Client [2.8.0] (2021-05-06)
 =======================================
