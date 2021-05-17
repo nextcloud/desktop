@@ -169,8 +169,8 @@ void SocketUploadJob::start()
         auto propfindJob = new PropfindJob(engine->account(), remotePath, this);
         propfindJob->setProperties({ QByteArrayLiteral("http://owncloud.org/ns:fileid") });
 
-        connect(propfindJob, &PropfindJob::result, this, [engine, this](const QVariantMap &data) {
-            _backupFileId = data[QStringLiteral("fileid")].toByteArray();
+        connect(propfindJob, &PropfindJob::result, this, [engine, this](const QMap<QString, QString> &data) {
+            _backupFileId = data[QStringLiteral("fileid")].toUtf8();
             engine->startSync();
         });
         connect(propfindJob, &PropfindJob::finishedWithError, this, [this] {
