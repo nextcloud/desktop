@@ -56,9 +56,11 @@ namespace {
         case UserStatus::Status::Invisible:
         case UserStatus::Status::Offline:
             return QObject::tr("Offline");
-        default:
+        case UserStatus::Status::Online:
             return QObject::tr("Online");
         }
+        
+        Q_UNREACHABLE();
     }
 }
 
@@ -131,9 +133,11 @@ QUrl UserStatus::icon() const
     case Status::Invisible:
     case Status::Offline:
         return Theme::instance()->statusInvisibleImageSource();
-    default:
+    case Status::Online:
         return Theme::instance()->statusOnlineImageSource();
     }
+    
+    Q_UNREACHABLE();
 }
 
 } // namespace OCC
