@@ -28,6 +28,7 @@ class User : public QObject
     Q_PROPERTY(bool hasLocalFolder READ hasLocalFolder NOTIFY hasLocalFolderChanged)
     Q_PROPERTY(bool serverHasTalk READ serverHasTalk NOTIFY serverHasTalkChanged)
     Q_PROPERTY(QString avatar READ avatarUrl NOTIFY avatarChanged)
+    Q_PROPERTY(bool isConnected READ isConnected NOTIFY accountStateChanged)
 public:
     User(AccountStatePtr &account, const bool &isCurrent = false, QObject *parent = nullptr);
 
@@ -172,7 +173,6 @@ public:
 
 signals:
     Q_INVOKABLE void addAccount();
-    Q_INVOKABLE void refreshCurrentUserGui();
     Q_INVOKABLE void newUserSelected();
 
 protected:
