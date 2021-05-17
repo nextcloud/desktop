@@ -2,6 +2,8 @@
 # Redistribution and use is allowed according to the terms of the BSD license.
 # For details see the accompanying COPYING* file.
 
+set(BIN_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
+
 if (UNIX)
   # Suffix for Linux
   SET(LIB_SUFFIX
