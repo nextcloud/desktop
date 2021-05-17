@@ -24,6 +24,9 @@
 #include <QLocalSocket>
 #include <QLoggingCategory>
 #include <QUuid>
+#include <QGlobalStatic>
+#include <set>
+#include <mutex>
 
 #include <sddl.h>
 #include <cfapi.h>
@@ -38,8 +41,50 @@ Q_LOGGING_CATEGORY(lcCfApiWrapper, "nextcloud.sync.vfs.cfapi.wrapper", QtInfoMsg
       FIELD_SIZE( CF_OPERATION_PARAMETERS, field ) )
 
 namespace {
+
+Q_GLOBAL_STATIC(std::mutex, activeRequestsMutex);
+Q_GLOBAL_STATIC(std::set<QString>, activeRequestIds);
+
+
+bool startHydrationRequest(const QString &requestId)
+{
+    std::lock_guard<std::mutex> guard(*activeRequestsMutex);
+
+    if (activeRequestIds->find(requestId) != activeRequestIds->end()) {
+        qCWarning(lcCfApiWrapper) << "Can not start request. Request with id" << requestId << "is already running";
+        return false;
+    }
+
+    activeRequestIds->insert(requestId);
+    return true;
+}
+
+bool finishHydrationRequest(const QString &requestId)
+{
+    std::lock_guard<std::mutex> guard(*activeRequestsMutex);
+
+    if (activeRequestIds->find(requestId) == activeRequestIds->end()) {
+        qCWarning(lcCfApiWrapper) << "Can not finish request. Request with id" << requestId << "is not running";
+        return false;
+    }
+
+    activeRequestIds->erase(requestId);
+    return true;
+}
+
+bool isHydrationValid(const QString &requestId)
+{
+    std::lock_guard<std::mutex> guard(*activeRequestsMutex);
+
+    return activeRequestIds->find(requestId) != activeRequestIds->end();
+}
+
 void cfApiSendTransferInfo(const CF_CONNECTION_KEY &connectionKey, const CF_TRANSFER_KEY &transferKey, NTSTATUS status, void *buffer, qint64 offset, qint64 currentBlockLength, qint64 totalLength)
 {
+    const auto requestId = QString::number(transferKey.QuadPart, 16);
+    if (!isHydrationValid(requestId)) {
+        return;
+    }
 
     CF_OPERATION_INFO opInfo = { 0 };
     CF_OPERATION_PARAMETERS opParams = { 0 };
@@ -81,6 +126,12 @@ void cfApiSendTransferInfo(const CF_CONNECTION_KEY &connectionKey, const CF_TRAN
 void CALLBACK cfApiFetchDataCallback(const CF_CALLBACK_INFO *callbackInfo, const CF_CALLBACK_PARAMETERS *callbackParameters)
 {
     qDebug(lcCfApiWrapper) << "Fetch data callback called. File size:" << callbackInfo->FileSize.QuadPart;
+
+    const auto requestId = QString::number(callbackInfo->TransferKey.QuadPart, 16);
+    if (!startHydrationRequest(requestId)) {
+        return;
+    }
+
     const auto sendTransferError = [=] {
         cfApiSendTransferInfo(callbackInfo->ConnectionKey,
                               callbackInfo->TransferKey,
@@ -104,7 +155,6 @@ void CALLBACK cfApiFetchDataCallback(const CF_CALLBACK_INFO *callbackInfo, const
     auto vfs = reinterpret_cast<OCC::VfsCfApi *>(callbackInfo->CallbackContext);
     Q_ASSERT(vfs->metaObject()->className() == QByteArrayLiteral("OCC::VfsCfApi"));
     const auto path = QString(QString::fromWCharArray(callbackInfo->VolumeDosName) + QString::fromWCharArray(callbackInfo->NormalizedPath));
-    const auto requestId = QString::number(callbackInfo->TransferKey.QuadPart, 16);
 
     const auto invokeResult = QMetaObject::invokeMethod(vfs, [=] { vfs->requestHydration(requestId, path); }, Qt::QueuedConnection);
     if (!invokeResult) {
@@ -198,6 +248,11 @@ void CALLBACK cfApiFetchDataCallback(const CF_CALLBACK_INFO *callbackInfo, const
         qDebug(lcCfApiWrapper) << "Send remaining protruding data. Size:" << protrudingData.size();
         sendTransferInfo(protrudingData, dataOffset);
     }
+
+    // Request might got cancelled
+    if (isHydrationValid(requestId)) {
+        finishHydrationRequest(requestId);
+    }
 }
 
 void CALLBACK cfApiCancelFetchData(const CF_CALLBACK_INFO *callbackInfo, const CF_CALLBACK_PARAMETERS * /*callbackParameters*/)
@@ -206,9 +261,13 @@ void CALLBACK cfApiCancelFetchData(const CF_CALLBACK_INFO *callbackInfo, const C
 
     qInfo(lcCfApiWrapper) << "Cancel fetch data of" << path;
 
+    const auto requestId = QString::number(callbackInfo->TransferKey.QuadPart, 16);
+    if (!finishHydrationRequest(requestId)) {
+        return;
+    }
+
     auto vfs = reinterpret_cast<OCC::VfsCfApi *>(callbackInfo->CallbackContext);
     Q_ASSERT(vfs->metaObject()->className() == QByteArrayLiteral("OCC::VfsCfApi"));
-    const auto requestId = QString::number(callbackInfo->TransferKey.QuadPart, 16);
 
     const auto invokeResult = QMetaObject::invokeMethod(
         vfs, [=] { vfs->cancelHydration(requestId, path); }, Qt::QueuedConnection);

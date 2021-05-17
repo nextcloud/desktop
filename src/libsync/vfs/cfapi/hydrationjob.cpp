@@ -25,7 +25,6 @@ Q_LOGGING_CATEGORY(lcHydration, "nextcloud.sync.vfs.hydrationjob", QtInfoMsg)
 OCC::HydrationJob::HydrationJob(QObject *parent)
     : QObject(parent)
 {
-    connect(this, &HydrationJob::finished, this, &HydrationJob::deleteLater);
 }
 
 OCC::AccountPtr OCC::HydrationJob::account() const
@@ -119,6 +118,9 @@ void OCC::HydrationJob::start()
 void OCC::HydrationJob::cancel()
 {
     if (!_job) {
+        // The _job object might be already finsished and gone.
+        // Emit the cancellation signal anyway, because other objects may depend on it
+        emitCanceled();
         return;
     }
 
@@ -177,6 +179,8 @@ void OCC::HydrationJob::onGetFinished()
         emitFinished(Error);
         return;
     }
+    // GETFileJob deletes itself after this signal was handled
+    _job = nullptr;
 
     SyncJournalFileRecord record;
     _journal->getFileRecord(_folderPath, &record);

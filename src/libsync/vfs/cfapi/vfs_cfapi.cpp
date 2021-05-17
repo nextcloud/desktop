@@ -358,6 +358,7 @@ void VfsCfApi::onHydrationJobFinished(HydrationJob *job)
     qCInfo(lcCfApi) << "Hydration job finished" << job->requestId() << job->folderPath() << job->status();
     emit hydrationRequestFinished(job->requestId(), job->status());
     d->hydrationJobs.removeAll(job);
+    job->deleteLater();
     if (d->hydrationJobs.isEmpty()) {
         emit doneHydrating();
     }
@@ -365,11 +366,21 @@ void VfsCfApi::onHydrationJobFinished(HydrationJob *job)
 
 void VfsCfApi::onHydrationJobCanceled(HydrationJob *job)
 {
+    d->hydrationJobs.removeAll(job);
+    job->deleteLater();
+
     const auto folderRelativePath = job->folderPath();
     SyncJournalFileRecord record;
     if (!params().journal->getFileRecord(folderRelativePath, &record)) {
         qCWarning(lcCfApi) << "Could not read file record from journal for canceled hydration request.";
         return;
+    }
+
+    Q_ASSERT(record.isValid());
+    if (record.isValid()) {
+        // File might be already downloaded complete, and is not marked virtual anymore
+        record._type = ItemTypeVirtualFile;
+        params().journal->setFileRecord(record);
     }
 
     // Remove placeholder file because there might be already pumped
@@ -380,6 +391,10 @@ void VfsCfApi::onHydrationJobCanceled(HydrationJob *job)
     // Create a new placeholder file
     const auto item = SyncFileItem::fromSyncJournalFileRecord(record);
     createPlaceholder(*item);
+
+    if (d->hydrationJobs.isEmpty()) {
+        emit doneHydrating();
+    }
 }
 
 VfsCfApi::HydratationAndPinStates VfsCfApi::computeRecursiveHydrationAndPinStates(const QString &folderPath, const Optional<PinState> &basePinState)
