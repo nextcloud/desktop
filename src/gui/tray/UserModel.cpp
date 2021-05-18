@@ -576,6 +576,11 @@ QUrl User::statusIcon() const
     return _account->statusIcon();
 }
 
+QString User::statusEmoji() const
+{
+    return _account->statusEmoji();
+}
+
 bool User::serverHasUserStatus() const
 {
     return _account->account()->capabilities().userStatus();
@@ -696,16 +701,6 @@ Q_INVOKABLE bool UserModel::isUserConnected(const int &id)
     return _users[id]->isConnected();
 }
 
-Q_INVOKABLE QUrl UserModel::statusIcon(int id)
-{
-    if (id < 0 || id >= _users.size()) {
-        return {};
-    }
-
-    return _users[id]->statusIcon();
-}
-
-
 QImage UserModel::avatarById(const int &id)
 {
     if (id < 0 || id >= _users.size())
@@ -744,6 +739,7 @@ void UserModel::addUser(AccountStatePtr &user, const bool &isCurrent)
 
         connect(u, &User::statusChanged, this, [this, row] {
             emit dataChanged(index(row, 0), index(row, 0), {UserModel::StatusIconRole, 
+			    				    UserModel::StatusEmojiRole,     
                                                             UserModel::StatusMessageRole});
         });
         
@@ -885,6 +881,8 @@ QVariant UserModel::data(const QModelIndex &index, int role) const
         return _users[index.row()]->serverHasUserStatus();
     } else if (role == StatusIconRole) {
         return _users[index.row()]->statusIcon();
+    } else if (role == StatusEmojiRole) {
+        return _users[index.row()]->statusEmoji();
     } else if (role == StatusMessageRole) {
         return _users[index.row()]->statusMessage();
     } else if (role == DesktopNotificationsAllowedRole) {
@@ -908,6 +906,7 @@ QHash<int, QByteArray> UserModel::roleNames() const
     roles[ServerRole] = "server";
     roles[ServerHasUserStatusRole] = "serverHasUserStatus";
     roles[StatusIconRole] = "statusIcon";
+    roles[StatusEmojiRole] = "statusEmoji";
     roles[StatusMessageRole] = "statusMessage";
     roles[DesktopNotificationsAllowedRole] = "desktopNotificationsAllowed";
     roles[AvatarRole] = "avatar";

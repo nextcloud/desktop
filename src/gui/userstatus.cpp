@@ -100,16 +100,11 @@ void UserStatus::slotFetchUserStatusFinished(const QJsonDocument &json, int stat
     }
     
     const auto retrievedData = json.object().value("ocs").toObject().value("data").toObject(defaultValues);
-    const auto messageIsPredefined = retrievedData.value("messageIsPredefined").toBool();
-    const auto statusIsUserDefined = retrievedData.value("statusIsUserDefined").toBool();
-    
-    const auto emoji = retrievedData.value("icon").toString().trimmed();
+
+    _emoji = retrievedData.value("icon").toString().trimmed();
     _status = stringToEnum(retrievedData.value("status").toString());
     _message = retrievedData.value("message").toString().trimmed();
-    if (messageIsPredefined && statusIsUserDefined) {
-        _message = QString("%1 %2").arg(emoji, _message);
-    } 
-    
+
     emit fetchUserStatusFinished();
 }
 
@@ -121,6 +116,11 @@ UserStatus::Status UserStatus::status() const
 QString UserStatus::message() const
 {
     return _message;
+}
+
+QString UserStatus::emoji() const
+{
+    return _emoji;
 }
 
 QUrl UserStatus::icon() const

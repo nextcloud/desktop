@@ -44,6 +44,8 @@ QtObject {
     property int headerButtonIconSize: 32
 
     property int activityLabelBaseWidth: 240
+    
+    property int userStatusEmojiSize: 8
 
     // Visual behaviour
     property bool hoverEffectsEnabled: true
