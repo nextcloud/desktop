@@ -111,16 +111,27 @@ MenuItem {
                             font.pixelSize: 12
                             font.bold: true
                         }
-                        Label {
-                            id: userStatusMessage
+                        Row {
+                            id: userStatus
+                            spacing: 8
                             visible: model.isConnected && 
-                                     model.serverHasUserStatus && 
-                                     statusMessage !== ""
-                            width: 128
-                            text: statusMessage
-                            elide: Text.ElideRight
-                            color: "black"
-                            font.pixelSize: 10
+                                     model.serverHasUserStatus
+                            Label {
+                                id: emoji
+                                visible: model.statusEmoji !== ""
+                                width: Style.userStatusEmojiSize
+                                text: statusEmoji
+                            }
+                            Label {
+                                id: message
+                                anchors.bottom: emoji.bottom
+                                visible: model.statusMessage !== ""
+                                width: 128
+                                text: statusMessage
+                                elide: Text.ElideRight
+                                color: "black"
+                                font.pixelSize: 10
+                            }
                         }
                         Label {
                             id: accountServer

@@ -344,6 +344,7 @@ Window {
                             Image {
                                 id: currentAccountStatusIndicator
                                 visible: UserModel.currentUser.isConnected
+                                         && UserModel.currentUser.serverHasUserStatus
                                 source: UserModel.currentUser.statusIcon
                                 cache: false
                                 x: currentAccountStatusIndicatorBackground.x + 1
@@ -371,18 +372,29 @@ Window {
                                 font.pixelSize: Style.topLinePixelSize
                                 font.bold: true
                             }
-                            Label {
+                            Row {
                                 id: currentUserStatus
+                                spacing: 8
                                 visible: UserModel.currentUser.isConnected &&
-                                         UserModel.currentUser.serverHasUserStatus &&
-                                         UserModel.currentUser.statusMessage !== ""
-                                width: Style.currentAccountLabelWidth
-                                text: UserModel.currentUser.statusMessage !== ""
-                                      ? UserModel.currentUser.statusMessage 
-                                      : UserModel.currentUser.server
-                                elide: Text.ElideRight
-                                color: Style.ncTextColor
-                                font.pixelSize: Style.subLinePixelSize
+                                         UserModel.currentUser.serverHasUserStatus
+                                Label {
+                                    id: emoji
+                                    visible: UserModel.currentUser.statusEmoji !== ""
+                                    width: Style.userStatusEmojiSize
+                                    text: UserModel.currentUser.statusEmoji
+                                }
+                                Label {
+                                    id: message
+                                    anchors.bottom: emoji.bottom
+                                    visible: UserModel.currentUser.statusMessage !== ""
+                                    width: Style.currentAccountLabelWidth
+                                    text: UserModel.currentUser.statusMessage !== ""
+                                          ? UserModel.currentUser.statusMessage 
+                                          : UserModel.currentUser.server
+                                    elide: Text.ElideRight
+                                    color: Style.ncTextColor
+                                    font.pixelSize: Style.subLinePixelSize
+                                }
                             }
                         }
 
@@ -430,7 +442,7 @@ Window {
                    Image {
                         id: folderStateIndicator
                         visible: UserModel.currentUser.hasLocalFolder
-                        source: UserModel.isUserConnected(UserModel.currentUserId)
+                        source: UserModel.currentUser.isConnected
                                 ? Style.stateOnlineImageSource
                                 : Style.stateOfflineImageSource
                         cache: false
@@ -441,7 +453,7 @@ Window {
                         sourceSize.height: Style.folderStateIndicatorSize
     
                         Accessible.role: Accessible.Indicator
-                        Accessible.name: UserModel.isUserConnected(UserModel.currentUserId()) ? qsTr("Connected") : qsTr("Disconnected")
+                        Accessible.name: UserModel.currentUser.isConnected ? qsTr("Connected") : qsTr("Disconnected")
                     }
 
                     Accessible.role: Accessible.Button

@@ -39,6 +39,7 @@ public:
     void fetchUserStatus(AccountPtr account);
     Status status() const;
     QString message() const;
+    QString emoji() const;
     QUrl icon() const;
 
 private slots:
@@ -51,6 +52,7 @@ private:
     QPointer<JsonApiJob> _job; // the currently running job
     Status _status = Status::Online;
     QString _message;
+    QString _emoji;
 };
 
 

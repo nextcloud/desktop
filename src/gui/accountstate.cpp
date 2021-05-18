@@ -142,6 +142,11 @@ QUrl AccountState::statusIcon() const
     return _userStatus->icon();
 }
 
+QString AccountState::statusEmoji() const
+{
+    return _userStatus->emoji();
+}
+
 QString AccountState::stateString(State state)
 {
     switch (state) {

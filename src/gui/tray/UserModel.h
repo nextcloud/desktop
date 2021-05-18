@@ -21,6 +21,7 @@ class User : public QObject
     Q_PROPERTY(QString server READ server CONSTANT)
     Q_PROPERTY(bool serverHasUserStatus READ serverHasUserStatus CONSTANT)
     Q_PROPERTY(QUrl statusIcon READ statusIcon NOTIFY statusChanged)
+    Q_PROPERTY(QString statusEmoji READ statusEmoji NOTIFY statusChanged)
     Q_PROPERTY(QString statusMessage READ statusMessage NOTIFY statusChanged)
     Q_PROPERTY(QString desktopNotificationsAllowed READ isDesktopNotificationsAllowed NOTIFY desktopNotificationsAllowedChanged)
     Q_PROPERTY(bool hasLocalFolder READ hasLocalFolder NOTIFY hasLocalFolderChanged)
@@ -143,7 +144,6 @@ public:
     Q_INVOKABLE QString currentUserServer();
     int currentUserId() const;
     Q_INVOKABLE bool isUserConnected(const int &id);
-    Q_INVOKABLE QUrl statusIcon(int id);
     Q_INVOKABLE void switchCurrentUser(const int &id);
     Q_INVOKABLE void login(const int &id);
     Q_INVOKABLE void logout(const int &id);
@@ -156,6 +156,7 @@ public:
         ServerRole,
         ServerHasUserStatusRole,
         StatusIconRole,
+        StatusEmojiRole,
         StatusMessageRole,
         DesktopNotificationsAllowedRole,
         AvatarRole,
