@@ -4108,7 +4108,7 @@ Dit is een nieuwe, experimentele modus. Als je besluit deze te gebruiken, meld d
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="786"/>
         <source>About %1</source>
-        <translation>About %1</translation>
+        <translation>Over %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="819"/>
@@ -4118,7 +4118,7 @@ Dit is een nieuwe, experimentele modus. Als je besluit deze te gebruiken, meld d
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="841"/>
         <source>Checking for changes in remote &apos;%1&apos;</source>
-        <translation>Aan het controleren op wijzigingen in afstandelijke locatie &apos;%1&apos;</translation>
+        <translation>Aan het controleren op wijzigingen op server &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="844"/>
