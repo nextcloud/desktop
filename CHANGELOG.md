@@ -148,6 +148,7 @@ Details
    https://github.com/owncloud/client/issues/4336
    https://github.com/owncloud/client/issues/8528
    https://github.com/owncloud/client/pull/8584
+   https://github.com/owncloud/client/pull/8585
 
 * Enhancement - Add language picker to general settings: [#8466](https://github.com/owncloud/client/issues/8466)
 
