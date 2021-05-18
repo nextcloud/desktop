@@ -29,11 +29,12 @@ macro(nextcloud_add_test test_class)
         COMMAND ${OWNCLOUD_TEST_CLASS}Test
         WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 
-      target_include_directories(${OWNCLOUD_TEST_CLASS}Test
+    target_include_directories(${OWNCLOUD_TEST_CLASS}Test
         PRIVATE
         "${CMAKE_SOURCE_DIR}/test/"
         ${CMAKE_SOURCE_DIR}/src/3rdparty/qtokenizer
         )
+    set_target_properties(${OWNCLOUD_TEST_CLASS}Test PROPERTIES FOLDER Tests)
 endmacro()
 
 macro(nextcloud_add_benchmark test_class)
@@ -63,4 +64,5 @@ macro(nextcloud_add_benchmark test_class)
 
     add_definitions(-DOWNCLOUD_TEST)
     add_definitions(-DOWNCLOUD_BIN_PATH="${CMAKE_BINARY_DIR}/bin")
+    set_target_properties(${OWNCLOUD_TEST_CLASS}Bench PROPERTIES FOLDER Tests/Benchmarks)
 endmacro()

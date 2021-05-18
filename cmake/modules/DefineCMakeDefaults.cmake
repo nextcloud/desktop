@@ -25,3 +25,5 @@ set(GENERIC_LIB_SOVERSION "0")
 # set -Werror
 set(CMAKE_ENABLE_WERROR ON)
 
+# enables folders for targets to be visible in an IDE
+set_property(GLOBAL PROPERTY USE_FOLDERS ON)
