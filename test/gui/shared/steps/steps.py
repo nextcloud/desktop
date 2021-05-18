@@ -219,9 +219,7 @@ def executeStepThroughMiddleware(context, step):
 
 @When('the user adds "|any|" as collaborator of resource "|any|" with permissions "|any|" using the client-UI')
 def step(context, receiver, resource, permissions):
-    resource = sanitizePath(substituteInLineCodes(context, resource))
-    waitFor(lambda: isFileSynced(resource), context.userData['clientSyncTimeout'] * 1000)
-    waitFor(lambda: shareResource(resource), context.userData['clientSyncTimeout'] * 1000)
+    openSharingDialog(context, resource)
 
     mouseClick(waitForObject(names.sharingDialogUG_shareeLineEdit_QLineEdit), 0, 0, Qt.NoModifier, Qt.LeftButton)
     type(waitForObject(names.sharingDialogUG_shareeLineEdit_QLineEdit), receiver)
@@ -391,10 +389,20 @@ def step(context):
     clickTab(waitForObject(names.stack_QTabWidget), "Not Synced")
 
 
-def openPublicLinkDialog(context, resource):
+def openSharingDialog(context, resource, itemType='file'):
     resource = sanitizePath(substituteInLineCodes(context, resource))
-    waitFor(lambda: isFileSynced(resource), context.userData['clientSyncTimeout'] * 1000)
+    
+    if itemType == 'folder':
+        waitFor(lambda: isFolderSynced(resource), context.userData['clientSyncTimeout'] * 1000)
+    elif itemType == 'file':
+        waitFor(lambda: isFileSynced(resource), context.userData['clientSyncTimeout'] * 1000)
+    else:
+        raise Exception("No such item type for resource")    
+            
     waitFor(lambda: shareResource(resource), context.userData['clientSyncTimeout'] * 1000)
+    
+def openPublicLinkDialog(context, resource, itemType='file'):
+    openSharingDialog(context, resource, itemType)
     mouseClick(waitForObject(names.qt_tabwidget_tabbar_Public_Links_TabItem), 0, 0, Qt.NoModifier, Qt.LeftButton)
 
 @When('the user opens the public links dialog of "|any|" using the client-UI')
@@ -421,10 +429,7 @@ def step(context):
 
 @When('user "|any|" opens the sharing dialog of "|any|" using the client-UI')
 def step(context, receiver, resource):
-    resource = sanitizePath(substituteInLineCodes(context, resource))
-    waitFor(lambda: isFolderSynced(resource), context.userData['clientSyncTimeout'] * 1000)
-    waitFor(lambda: shareResource(resource), context.userData['clientSyncTimeout'] * 1000)
-
+    openSharingDialog(context, resource, 'folder')
 
 @Then('the error text "|any|" should be displayed in the sharing dialog')
 def step(context, fileShareContext):
