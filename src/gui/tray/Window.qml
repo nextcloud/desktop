@@ -359,12 +359,13 @@ Window {
 
                         Column {
                             id: accountLabels
-                            spacing: 4
+                            spacing: Style.userStatusSpacing
                             Layout.alignment: Qt.AlignLeft
-                            Layout.leftMargin: 6
+                            Layout.leftMargin: Style.userStatusSpacing
+                            anchors.top: currentAccountAvatar.top
+                            anchors.topMargin: Style.userStatusSpacing
                             Label {
                                 id: currentAccountUser
-
                                 width: Style.currentAccountLabelWidth
                                 text: UserModel.currentUser.name
                                 elide: Text.ElideRight
@@ -374,9 +375,9 @@ Window {
                             }
                             Row {
                                 id: currentUserStatus
-                                spacing: 8
                                 visible: UserModel.currentUser.isConnected &&
                                          UserModel.currentUser.serverHasUserStatus
+                                anchors.top: currentAccountUser.bottom
                                 Label {
                                     id: emoji
                                     visible: UserModel.currentUser.statusEmoji !== ""
@@ -386,6 +387,8 @@ Window {
                                 Label {
                                     id: message
                                     anchors.bottom: emoji.bottom
+                                    anchors.left: emoji.right
+                                    anchors.leftMargin: emoji.width + Style.userStatusSpacing
                                     visible: UserModel.currentUser.statusMessage !== ""
                                     width: Style.currentAccountLabelWidth
                                     text: UserModel.currentUser.statusMessage !== ""
