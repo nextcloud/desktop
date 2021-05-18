@@ -2719,7 +2719,7 @@ o dodatkowe uprawnienia podczas procesu aktualizacji.</translation>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="86"/>
         <source>The link to your %1 web interface when you open it in the browser.</source>
         <comment>%1 will be replaced with the application name</comment>
-        <translation>To jest link do interfejsu internetowego %1, aby otworzyć go w przeglądarce.</translation>
+        <translation>Link do interfejsu internetowego %1, aby otworzyć w przeglądarce.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="80"/>
@@ -2734,7 +2734,7 @@ o dodatkowe uprawnienia podczas procesu aktualizacji.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="96"/>
         <source>This is the link to your %1 web interface when you open it in the browser.&lt;br/&gt;It looks like https://cloud.example.com or https://example.com/cloud</source>
-        <translation>To jest link do interfejsu internetowego %1, aby otworzyć go w przeglądarce.&lt;br/&gt;Powinien wyglądać następująco: https://chmura.przyklad.com lub https://przyklad.com/chmura</translation>
+        <translation>Jest to link do interfejsu internetowego %1, aby otworzyć w przeglądarce.&lt;br/&gt;Powinien wyglądać następująco: https://chmura.przyklad.com lub https://przyklad.com/chmura</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="185"/>
@@ -5115,12 +5115,12 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="245"/>
         <source>This is the link to your %1 web interface when you open it in the browser.&lt;br/&gt;It looks like https://cloud.example.com or https://example.com/cloud</source>
-        <translation>To jest link do interfejsu internetowego %1, aby otworzyć go w przeglądarce.&lt;br/&gt;Powinien wyglądać następująco: https://chmura.przyklad.com lub https://przyklad.com/chmura</translation>
+        <translation>Jest to link do interfejsu internetowego %1, aby otworzyć w przeglądarce.&lt;br/&gt;Powinien wyglądać następująco: https://chmura.przyklad.com lub https://przyklad.com/chmura</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="259"/>
         <source>This is the link to your %1 web interface when you open it in the browser.</source>
-        <translation>To jest link do interfejsu internetowego %1, aby otworzyć go w przeglądarce.</translation>
+        <translation>Jest to link do interfejsu internetowego %1, aby otworzyć w przeglądarce.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="343"/>
