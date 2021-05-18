@@ -99,23 +99,27 @@ MenuItem {
 
                     Column {
                         id: accountLabels
-                        spacing: 4
+                        spacing: Style.accountLabelsSpacing
                         Layout.alignment: Qt.AlignLeft
-                        Layout.leftMargin: 9
+                        Layout.leftMargin: Style.accountLabelsLayoutMargin
+                        anchors.top: accountAvatar.top
+                        anchors.topMargin: Style.userStatusAnchorsMargin
+                        anchors.left: accountAvatar.right
+                        anchors.leftMargin: Style.accountLabelsAnchorsMargin
                         Label {
                             id: accountUser
                             width: 128
                             text: name
                             elide: Text.ElideRight
                             color: "black"
-                            font.pixelSize: 12
+                            font.pixelSize: Style.topLinePixelSize
                             font.bold: true
                         }
                         Row {
                             id: userStatus
-                            spacing: 8
                             visible: model.isConnected && 
                                      model.serverHasUserStatus
+                            anchors.top: accountUser.bottom
                             Label {
                                 id: emoji
                                 visible: model.statusEmoji !== ""
@@ -125,21 +129,27 @@ MenuItem {
                             Label {
                                 id: message
                                 anchors.bottom: emoji.bottom
+                                anchors.left: emoji.right
+                                anchors.leftMargin: emoji.width + Style.userStatusSpacing
                                 visible: model.statusMessage !== ""
-                                width: 128
+                                width: Style.currentAccountLabelWidth
                                 text: statusMessage
                                 elide: Text.ElideRight
                                 color: "black"
-                                font.pixelSize: 10
+                                font.pixelSize: Style.subLinePixelSize
                             }
                         }
                         Label {
                             id: accountServer
-                            width: 128
+                            anchors.top: userStatus.bottom
+                            anchors.topMargin: message.visible
+                                               ? message.height + Style.accountServerAnchorsMargin
+                                               : Style.userStatusAnchorsMargin
+                            width: Style.currentAccountLabelWidth
                             text: server
                             elide: Text.ElideRight
                             color: "black"
-                            font.pixelSize: 10
+                            font.pixelSize: Style.subLinePixelSize
                         }
                     }
                 }

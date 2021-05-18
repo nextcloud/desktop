@@ -170,7 +170,7 @@ public:
     /** Returns the user status Message (text)
     */
     QString statusMessage() const;
-    
+
     /** Returns the user status icon url
     */
     QUrl statusIcon() const;
