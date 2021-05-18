@@ -55,8 +55,6 @@
 #include <QVariant>
 #include <QJsonDocument>
 #include <QToolTip>
-#include <qstringlistmodel.h>
-#include <qpropertyanimation.h>
 
 #include "account.h"
 
@@ -65,6 +63,8 @@ constexpr auto propertyFolderInfo = "folderInfo";
 }
 
 namespace OCC {
+
+class AccountSettings;
 
 Q_LOGGING_CATEGORY(lcAccountSettings, "nextcloud.gui.account.settings", QtInfoMsg)
 
@@ -77,6 +77,24 @@ static const char progressBarStyleC[] =
     "QProgressBar::chunk {"
     "background-color: %1; width: 1px;"
     "}";
+
+bool showEnableE2eeWithVirtualFilesWarningDialog()
+{
+    QMessageBox e2eeWithVirtualFilesWarningMsgBox;
+    e2eeWithVirtualFilesWarningMsgBox.setText(AccountSettings::tr("End-to-End Encryption with Virtual Files"));
+    e2eeWithVirtualFilesWarningMsgBox.setInformativeText(AccountSettings::tr("You seem to have the Virtual Files feature enabled on this folder. At "
+                                                                             " the moment, it is not possible to implicitly download virtual files that are "
+                                                                             "End-to-End encrypted. To get the best experience with Virtual Files and"
+                                                                             " End-to-End Encryption, make sure the encrypted folder is marked with"
+                                                                             " \"Make always available locally\"."));
+    e2eeWithVirtualFilesWarningMsgBox.setIcon(QMessageBox::Warning);
+    const auto dontEncryptButton = e2eeWithVirtualFilesWarningMsgBox.button(QMessageBox::StandardButton::Ok);
+    const auto encryptButton = e2eeWithVirtualFilesWarningMsgBox.button(QMessageBox::StandardButton::Cancel);
+    dontEncryptButton->setText(AccountSettings::tr("Don't encrypt folder"));
+    encryptButton->setText(AccountSettings::tr("Encrypt folder"));
+
+    return e2eeWithVirtualFilesWarningMsgBox.clickedButton() != dontEncryptButton;
+}
 
 /**
  * Adjusts the mouse cursor based on the region it is on over the folder tree view.
@@ -312,6 +330,14 @@ bool AccountSettings::canEncryptOrDecrypt (const FolderStatusModel::SubFolderInf
 void AccountSettings::slotMarkSubfolderEncrypted(FolderStatusModel::SubFolderInfo* folderInfo)
 {
     if (!canEncryptOrDecrypt(folderInfo)) {
+        return;
+    }
+
+    const auto folder = folderInfo->_folder;
+    Q_ASSERT(folder);
+    if (folder->virtualFilesEnabled()
+        && folder->vfs().mode() == Vfs::WindowsCfApi
+        && !showEnableE2eeWithVirtualFilesWarningDialog()) {
         return;
     }
 
