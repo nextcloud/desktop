@@ -30,11 +30,7 @@
 #include "owncloudtheme.h"
 
 #ifdef THEME_INCLUDE
-#define Mirall OCC // namespace hack to make old themes work
-#define QUOTEME(M) #M
-#define INCLUDE_FILE(M) QUOTEME(M)
-#include INCLUDE_FILE(THEME_INCLUDE)
-#undef Mirall
+#include THEME_INCLUDE
 #endif
 
 namespace {
@@ -453,12 +449,12 @@ QString Theme::about() const
               "%5 and the %5 logo are registered trademarks of %4 in the "
               "United States, other countries, or both.</p>"
               "<p><small>%6</small></p>")
-            .arg(Utility::escape(version()),
-                 Utility::escape(QStringLiteral("https://" MIRALL_STRINGIFY(APPLICATION_DOMAIN))),
-                 Utility::escape(QStringLiteral(MIRALL_STRINGIFY(APPLICATION_DOMAIN))),
-                 Utility::escape(vendor),
-                 Utility::escape(appNameGUI()),
-                 aboutVersions(Theme::VersionFormat::RichText));
+        .arg(Utility::escape(version()),
+            Utility::escape(QStringLiteral("https://" APPLICATION_DOMAIN)),
+            Utility::escape(QStringLiteral(APPLICATION_DOMAIN)),
+            Utility::escape(vendor),
+            Utility::escape(appNameGUI()),
+            aboutVersions(Theme::VersionFormat::RichText));
 }
 
 bool Theme::aboutShowCopyright() const
