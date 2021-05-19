@@ -84,7 +84,7 @@ bool showEnableE2eeWithVirtualFilesWarningDialog()
     e2eeWithVirtualFilesWarningMsgBox.setText(AccountSettings::tr("End-to-End Encryption with Virtual Files"));
     e2eeWithVirtualFilesWarningMsgBox.setInformativeText(AccountSettings::tr("You seem to have the Virtual Files feature enabled on this folder. At "
                                                                              " the moment, it is not possible to implicitly download virtual files that are "
-                                                                             "End-to-End encrypted. To get the best experience with Virtual Files and"
+                                                                             "end-to-end encrypted. To get the best experience with Virtual Files and"
                                                                              " End-to-End Encryption, make sure the encrypted folder is marked with"
                                                                              " \"Make always available locally\"."));
     e2eeWithVirtualFilesWarningMsgBox.setIcon(QMessageBox::Warning);
