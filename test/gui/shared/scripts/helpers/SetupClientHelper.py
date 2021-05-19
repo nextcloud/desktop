@@ -1,9 +1,12 @@
 from urllib.parse import urlparse
 
+
 def substituteInLineCodes(context, value):
     value = value.replace('%local_server%', context.userData['localBackendUrl'])
     value = value.replace('%client_sync_path%', context.userData['clientSyncPath'])
-    value = value.replace('%local_server_hostname%', urlparse(context.userData['localBackendUrl']).netloc)
+    value = value.replace(
+        '%local_server_hostname%', urlparse(context.userData['localBackendUrl']).netloc
+    )
 
     return value
 
@@ -20,7 +23,7 @@ def getClientDetails(context):
         elif row[0] == 'localfolder':
             localfolder = row[1]
         try:
-            os.makedirs(localfolder, 0o0755)           
+            os.makedirs(localfolder, 0o0755)
         except:
             pass
-    return server, user, password, localfolder    
+    return server, user, password, localfolder

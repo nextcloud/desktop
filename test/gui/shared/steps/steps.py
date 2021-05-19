@@ -27,26 +27,27 @@ socketConnect = None
 passwords = {
     'alt1': '1234',
     'alt2': 'AaBb2Cc3Dd4',
-    'alt3': 'aVeryLongPassword42TheMeaningOfLife'
+    'alt3': 'aVeryLongPassword42TheMeaningOfLife',
 }
 
 defaultUsers = {
     'Alice': {
         'displayname': 'Alice Hansen',
         'password': passwords['alt1'],
-        'email': 'alice@example.org'
+        'email': 'alice@example.org',
     },
     'Brian': {
         'displayname': 'Brian Murphy',
         'password': passwords['alt2'],
-        'email': 'brian@example.org'
+        'email': 'brian@example.org',
     },
     'Carol': {
         'displayname': 'Carol King',
         'password': passwords['alt3'],
-        'email': 'carol@example.org'
-    }
+        'email': 'carol@example.org',
+    },
 }
+
 
 @OnScenarioStart
 def hook(context):
@@ -59,10 +60,12 @@ def hook(context):
     except:
         pass
 
+
 @When('the user adds the first account with')
 def step(context):
     newAccount = AccountConnectionWizard()
     newAccount.addAccount(context)
+
 
 @Then('an account should be displayed with the displayname |any| and host |any|')
 def step(context, displayname, host):
@@ -71,19 +74,28 @@ def step(context, displayname, host):
     test.compare(
         str(
             waitForObjectExists(
-                {"name": "settingsdialog_toolbutton_" + displayname + "@" + host, "type": "QToolButton", "visible": 1}
-                ).text
-            ), displayname + "\n" + host
-        )
+                {
+                    "name": "settingsdialog_toolbutton_" + displayname + "@" + host,
+                    "type": "QToolButton",
+                    "visible": 1,
+                }
+            ).text
+        ),
+        displayname + "\n" + host,
+    )
+
 
 def startClient(context):
     startApplication(
-        "owncloud -s" +
-        " --logfile " + context.userData['clientConfigFile'] +
-        " --language en_US" +
-        " --confdir " + confdir
+        "owncloud -s"
+        + " --logfile "
+        + context.userData['clientConfigFile']
+        + " --language en_US"
+        + " --confdir "
+        + confdir
     )
     snooze(1)
+
 
 def setUpClient(context, username, password, pollingInterval):
     userSetting = '''
@@ -105,12 +117,13 @@ def setUpClient(context, username, password, pollingInterval):
     '''
     userFirstName = username.split()
     userSetting = userSetting + pollingInterval
-    args = {'displayUserName': username,
+    args = {
+        'displayUserName': username,
         'davUserName': userFirstName[0].lower(),
         'displayUserFirstName': userFirstName[0],
         'client_sync_path': context.userData['clientSyncPath'],
-        'local_server': context.userData['localBackendUrl']
-        }
+        'local_server': context.userData['localBackendUrl'],
+    }
     userSetting = userSetting.format(**args)
     configFile = open(confFilePath, "w")
     configFile.write(userSetting)
@@ -125,33 +138,40 @@ def setUpClient(context, username, password, pollingInterval):
     except LookupError:
         pass
 
+
 def getPasswordForUser(userId):
     if userId in defaultUsers.keys():
         return defaultUsers[userId]['password']
 
-@Given('user "|any|" has set up a client with default settings and polling interval "|any|"')
+
+@Given(
+    'user "|any|" has set up a client with default settings and polling interval "|any|"'
+)
 def step(context, username, interval):
-    pollingInterval='''[ownCloud]
+    pollingInterval = '''[ownCloud]
     remotePollInterval={pollingInterval}
     '''
-    args = {
-        'pollingInterval': interval
-    }
+    args = {'pollingInterval': interval}
     pollingInterval = pollingInterval.format(**args)
     password = getPasswordForUser(username)
     setUpClient(context, username, password, pollingInterval)
 
+
 @Given('user "|any|" has set up a client with default settings and password "|any|"')
 def step(context, username, password):
-    setUpClient(context, username, password,'')
+    setUpClient(context, username, password, '')
+
 
 @Given('the user has started the client')
 def step(context):
     startClient(context)
 
+
 @When('the user adds an account with')
 def step(context):
-    clickButton(waitForObject(names.settings_settingsdialog_toolbutton_Add_account_QToolButton))
+    clickButton(
+        waitForObject(names.settings_settingsdialog_toolbutton_Add_account_QToolButton)
+    )
 
     newAccount = AccountConnectionWizard()
     newAccount.addAccount(context)
@@ -161,30 +181,35 @@ def isItemSynced(type, itemName):
     if type != 'FILE' and type != 'FOLDER':
         raise Exception("type must be 'FILE' or 'FOLDER'")
     socketConnect = syncstate.SocketConnect()
-    socketConnect.sendCommand("RETRIEVE_" + type + "_STATUS:" + itemName + "\n");
+    socketConnect.sendCommand("RETRIEVE_" + type + "_STATUS:" + itemName + "\n")
 
     if not socketConnect.read_socket_data_with_timeout(0.1):
         return False
     for line in socketConnect.get_available_responses():
-        if (line.startswith('STATUS:OK') and line.endswith(itemName)):
+        if line.startswith('STATUS:OK') and line.endswith(itemName):
             return True
         elif line.endswith(itemName):
             return False
 
+
 def isFolderSynced(folderName):
     return isItemSynced('FOLDER', folderName)
+
 
 def isFileSynced(fileName):
     return isItemSynced('FILE', fileName)
 
+
 def waitForFileToBeSynced(context, fileName):
     waitFor(
         lambda: isFileSynced(context.userData['clientSyncPath'] + fileName),
-        context.userData['clientSyncTimeout'] * 1000
+        context.userData['clientSyncTimeout'] * 1000,
     )
 
+
 def sanitizePath(path):
-    return path.replace('//','/')
+    return path.replace('//', '/')
+
 
 def shareResource(resource):
     socketConnect = syncstate.SocketConnect()
@@ -192,14 +217,14 @@ def shareResource(resource):
     if not socketConnect.read_socket_data_with_timeout(0.1):
         return False
     for line in socketConnect.get_available_responses():
-        if (line.startswith('SHARE:OK') and line.endswith(resource)):
+        if line.startswith('SHARE:OK') and line.endswith(resource):
             return True
         elif line.endswith(resource):
             return False
 
+
 def executeStepThroughMiddleware(context, step):
-    body = {
-    "step": step}
+    body = {"step": step}
     if hasattr(context, "table"):
         body["table"] = context.table
 
@@ -208,7 +233,8 @@ def executeStepThroughMiddleware(context, step):
     req = urllib.request.Request(
         context.userData['middlewareUrl'] + 'execute',
         data=params,
-        headers={"Content-Type": "application/json"}, method='POST'
+        headers={"Content-Type": "application/json"},
+        method='POST',
     )
     try:
         urllib.request.urlopen(req)
@@ -217,46 +243,87 @@ def executeStepThroughMiddleware(context, step):
             "Step execution through test middleware failed. Error: " + e.read().decode()
         )
 
-@When('the user adds "|any|" as collaborator of resource "|any|" with permissions "|any|" using the client-UI')
+
+@When(
+    'the user adds "|any|" as collaborator of resource "|any|" with permissions "|any|" using the client-UI'
+)
 def step(context, receiver, resource, permissions):
     openSharingDialog(context, resource)
 
-    mouseClick(waitForObject(names.sharingDialogUG_shareeLineEdit_QLineEdit), 0, 0, Qt.NoModifier, Qt.LeftButton)
+    mouseClick(
+        waitForObject(names.sharingDialogUG_shareeLineEdit_QLineEdit),
+        0,
+        0,
+        Qt.NoModifier,
+        Qt.LeftButton,
+    )
     type(waitForObject(names.sharingDialogUG_shareeLineEdit_QLineEdit), receiver)
-    mouseClick(waitForObjectItem(names.o_QListView, receiver), 0, 0, Qt.NoModifier, Qt.LeftButton)
+    mouseClick(
+        waitForObjectItem(names.o_QListView, receiver),
+        0,
+        0,
+        Qt.NoModifier,
+        Qt.LeftButton,
+    )
     permissionsList = permissions.split(",")
 
-    editChecked = waitForObjectExists(names.scrollArea_permissionsEdit_QCheckBox).checked
-    shareChecked = waitForObjectExists(names.scrollArea_permissionShare_QCheckBox).checked
-    if ('edit' in permissionsList and editChecked == False) or ('edit' not in permissionsList and editChecked == True):
+    editChecked = waitForObjectExists(
+        names.scrollArea_permissionsEdit_QCheckBox
+    ).checked
+    shareChecked = waitForObjectExists(
+        names.scrollArea_permissionShare_QCheckBox
+    ).checked
+    if ('edit' in permissionsList and editChecked == False) or (
+        'edit' not in permissionsList and editChecked == True
+    ):
         clickButton(waitForObject(names.scrollArea_permissionsEdit_QCheckBox))
-    if ('share' in permissionsList and shareChecked == False) or ('share' not in permissionsList and shareChecked == True):
+    if ('share' in permissionsList and shareChecked == False) or (
+        'share' not in permissionsList and shareChecked == True
+    ):
         clickButton(waitForObject(names.scrollArea_permissionShare_QCheckBox))
 
     clickButton(waitForObject(names.sharingDialog_Close_QPushButton))
 
-@Then('user "|any|" should be listed in the collaborators list for file "|any|" with permissions "|any|" on the client-UI')
+
+@Then(
+    'user "|any|" should be listed in the collaborators list for file "|any|" with permissions "|any|" on the client-UI'
+)
 def step(context, receiver, resource, permissions):
     resource = substituteInLineCodes(context, resource)
     socketConnect = syncstate.SocketConnect()
     socketConnect.sendCommand("SHARE:" + resource + "\n")
     permissionsList = permissions.split(',')
 
-    test.compare(str(waitForObjectExists(names.scrollArea_sharedWith_QLabel).text), receiver)
-    test.compare(waitForObjectExists(names.scrollArea_permissionsEdit_QCheckBox).checked, ('edit' in permissionsList))
-    test.compare(waitForObjectExists(names.scrollArea_permissionShare_QCheckBox).checked, ('share' in permissionsList))
+    test.compare(
+        str(waitForObjectExists(names.scrollArea_sharedWith_QLabel).text), receiver
+    )
+    test.compare(
+        waitForObjectExists(names.scrollArea_permissionsEdit_QCheckBox).checked,
+        ('edit' in permissionsList),
+    )
+    test.compare(
+        waitForObjectExists(names.scrollArea_permissionShare_QCheckBox).checked,
+        ('share' in permissionsList),
+    )
+
 
 @When('the user waits for the files to sync')
 def step(context):
-    waitFor(lambda: isFolderSynced(context.userData['clientSyncPath']), context.userData['clientSyncTimeout'] * 1000)
+    waitFor(
+        lambda: isFolderSynced(context.userData['clientSyncPath']),
+        context.userData['clientSyncTimeout'] * 1000,
+    )
+
 
 @When('the user waits for file "|any|" to be synced')
 def step(context, fileName):
     waitForFileToBeSynced(context, fileName)
 
+
 @Given('the user has waited for file "|any|" to be synced')
 def step(context, fileName):
     waitForFileToBeSynced(context, fileName)
+
 
 @When('the user creates a file "|any|" with the following content on the file system')
 def step(context, filename):
@@ -265,27 +332,21 @@ def step(context, filename):
     f.write(fileContent)
     f.close()
 
+
 @Given(r"^(.*) on the server (.*)$", regexp=True)
 def step(context, stepPart1, stepPart2):
-    executeStepThroughMiddleware(
-        context,
-        "Given " + stepPart1 + " " + stepPart2
-    )
+    executeStepThroughMiddleware(context, "Given " + stepPart1 + " " + stepPart2)
+
 
 @Then(r"^(.*) on the server (.*)$", regexp=True)
 def step(context, stepPart1, stepPart2):
-    executeStepThroughMiddleware(
-        context,
-        "Then " + stepPart1 + " " + stepPart2
-    )
+    executeStepThroughMiddleware(context, "Then " + stepPart1 + " " + stepPart2)
 
 
 @Then(r"^(.*) on the server$", regexp=True)
 def step(context, stepPart1):
-    executeStepThroughMiddleware(
-        context,
-        "Then " + stepPart1
-    )
+    executeStepThroughMiddleware(context, "Then " + stepPart1)
+
 
 @Then('the file "|any|" should exist on the file system with the following content')
 def step(context, filePath):
@@ -293,13 +354,24 @@ def step(context, filePath):
     filePath = context.userData['clientSyncPath'] + filePath
     f = open(filePath, 'r')
     contents = f.read()
-    test.compare(expected, contents, "file expected to exist with content " + expected + " but does not have the expected content")
+    test.compare(
+        expected,
+        contents,
+        "file expected to exist with content "
+        + expected
+        + " but does not have the expected content",
+    )
 
 
 @Given('the user has paused the file sync')
 def step(context):
-    waitFor(lambda: isFolderSynced(context.userData['clientSyncPath']), context.userData['clientSyncTimeout'] * 1000)
-    openContextMenu(waitForObjectItem(names.stack_folderList_QTreeView, "_1"), 0, 0, Qt.NoModifier)
+    waitFor(
+        lambda: isFolderSynced(context.userData['clientSyncPath']),
+        context.userData['clientSyncTimeout'] * 1000,
+    )
+    openContextMenu(
+        waitForObjectItem(names.stack_folderList_QTreeView, "_1"), 0, 0, Qt.NoModifier
+    )
     activateItem(waitForObjectItem(names.settings_QMenu, "Pause sync"))
 
 
@@ -313,23 +385,37 @@ def step(context, filename):
 
 @When('the user resumes the file sync on the client')
 def step(context):
-    openContextMenu(waitForObjectItem(names.stack_folderList_QTreeView, "_1"), 0, 0, Qt.NoModifier)
+    openContextMenu(
+        waitForObjectItem(names.stack_folderList_QTreeView, "_1"), 0, 0, Qt.NoModifier
+    )
     activateItem(waitForObjectItem(names.settings_QMenu, "Resume sync"))
 
 
 @When('the user triggers force sync on the client')
 def step(context):
-    mouseClick(waitForObjectItem(names.stack_folderList_QTreeView, "_1"), 720, 36, Qt.NoModifier, Qt.LeftButton)
+    mouseClick(
+        waitForObjectItem(names.stack_folderList_QTreeView, "_1"),
+        720,
+        36,
+        Qt.NoModifier,
+        Qt.LeftButton,
+    )
     activateItem(waitForObjectItem(names.settings_QMenu, "Force sync now"))
 
 
-@Then('a conflict file for "|any|" should exist on the file system with the following content')
+@Then(
+    'a conflict file for "|any|" should exist on the file system with the following content'
+)
 def step(context, filename):
     expected = "\n".join(context.multiLineText)
 
     namepart = filename.split('.')[0]
     extpart = filename.split('.')[1]
-    onlyfiles = [f for f in listdir(context.userData['clientSyncPath']) if isfile(join(context.userData['clientSyncPath'], f))]
+    onlyfiles = [
+        f
+        for f in listdir(context.userData['clientSyncPath'])
+        if isfile(join(context.userData['clientSyncPath'], f))
+    ]
     found = False
     pattern = re.compile(buildConflictedRegex(filename))
     for file in onlyfiles:
@@ -346,18 +432,29 @@ def step(context, filename):
 
 @When('the user clicks on the activity tab')
 def step(context):
-    clickButton(waitForObject(names.settings_settingsdialog_toolbutton_Activity_QToolButton))
+    clickButton(
+        waitForObject(names.settings_settingsdialog_toolbutton_Activity_QToolButton)
+    )
 
 
 @Then('a conflict warning should be shown for |integer| files')
 def step(context, files):
     clickTab(waitForObject(names.stack_QTabWidget), "Not Synced ({})".format(files))
     test.compare(
-        waitForObjectExists(names.oCC_IssuesWidget_treeWidget_QTreeWidget).topLevelItemCount,
-        files
+        waitForObjectExists(
+            names.oCC_IssuesWidget_treeWidget_QTreeWidget
+        ).topLevelItemCount,
+        files,
     )
-    test.compare(waitForObjectExists(names.oCC_IssuesWidget_treeWidget_QTreeWidget).visible, True)
-    test.compare(waitForObjectExists(names.o_treeWidget_Conflict_Server_version_downloaded_local_copy_renamed_and_not_uploaded_QModelIndex).displayText, "Conflict: Server version downloaded, local copy renamed and not uploaded.")
+    test.compare(
+        waitForObjectExists(names.oCC_IssuesWidget_treeWidget_QTreeWidget).visible, True
+    )
+    test.compare(
+        waitForObjectExists(
+            names.o_treeWidget_Conflict_Server_version_downloaded_local_copy_renamed_and_not_uploaded_QModelIndex
+        ).displayText,
+        "Conflict: Server version downloaded, local copy renamed and not uploaded.",
+    )
 
 
 def buildConflictedRegex(filename):
@@ -365,7 +462,10 @@ def buildConflictedRegex(filename):
         # TODO: improve this for complex filenames
         namepart = filename.split('.')[0]
         extpart = filename.split('.')[1]
-        return '%s \(conflicted copy \d{4}-\d{2}-\d{2} \d{6}\)\.%s' % (namepart, extpart)
+        return '%s \(conflicted copy \d{4}-\d{2}-\d{2} \d{6}\)\.%s' % (
+            namepart,
+            extpart,
+        )
     else:
         return '%s \(conflicted copy \d{4}-\d{2}-\d{2} \d{6}\)' % (filename)
 
@@ -373,12 +473,14 @@ def buildConflictedRegex(filename):
 @Then('the table of conflict warnings should include file "|any|"')
 def step(context, filename):
     waitForObject(names.settings_OCC_SettingsDialog)
-    waitForObjectExists({
+    waitForObjectExists(
+        {
             "column": 1,
             "container": names.oCC_IssuesWidget_tableView_QTableView,
             "text": RegularExpression(buildConflictedRegex(filename)),
-            "type": "QModelIndex"
-    })
+            "type": "QModelIndex",
+        }
+    )
 
 
 @When('the user selects the unsynced files tab')
@@ -391,23 +493,38 @@ def step(context):
 
 def openSharingDialog(context, resource, itemType='file'):
     resource = sanitizePath(substituteInLineCodes(context, resource))
-    
+
     if itemType == 'folder':
-        waitFor(lambda: isFolderSynced(resource), context.userData['clientSyncTimeout'] * 1000)
+        waitFor(
+            lambda: isFolderSynced(resource),
+            context.userData['clientSyncTimeout'] * 1000,
+        )
     elif itemType == 'file':
-        waitFor(lambda: isFileSynced(resource), context.userData['clientSyncTimeout'] * 1000)
+        waitFor(
+            lambda: isFileSynced(resource), context.userData['clientSyncTimeout'] * 1000
+        )
     else:
-        raise Exception("No such item type for resource")    
-            
-    waitFor(lambda: shareResource(resource), context.userData['clientSyncTimeout'] * 1000)
-    
+        raise Exception("No such item type for resource")
+
+    waitFor(
+        lambda: shareResource(resource), context.userData['clientSyncTimeout'] * 1000
+    )
+
+
 def openPublicLinkDialog(context, resource, itemType='file'):
     openSharingDialog(context, resource, itemType)
-    mouseClick(waitForObject(names.qt_tabwidget_tabbar_Public_Links_TabItem), 0, 0, Qt.NoModifier, Qt.LeftButton)
+    mouseClick(
+        waitForObject(names.qt_tabwidget_tabbar_Public_Links_TabItem),
+        0,
+        0,
+        Qt.NoModifier,
+        Qt.LeftButton,
+    )
+
 
 @When('the user opens the public links dialog of "|any|" using the client-UI')
 def step(context, resource):
-    openPublicLinkDialog(context,resource)
+    openPublicLinkDialog(context, resource)
 
 
 @When("the user toggles the password protection using the client-UI")
@@ -417,73 +534,121 @@ def step(context):
 
 @Then('the password progress indicator should not be visible in the client-UI')
 def step(context):
-    waitFor(lambda: (test.vp(
-        "publicLinkPasswordProgressIndicatorInvisible"
-    )))
+    waitFor(lambda: (test.vp("publicLinkPasswordProgressIndicatorInvisible")))
 
-@Then('the password progress indicator should not be visible in the client-UI - expected to fail')
+
+@Then(
+    'the password progress indicator should not be visible in the client-UI - expected to fail'
+)
 def step(context):
-    waitFor(lambda: (test.xvp(
-        "publicLinkPasswordProgressIndicatorInvisible"
-    )))
+    waitFor(lambda: (test.xvp("publicLinkPasswordProgressIndicatorInvisible")))
+
 
 @When('user "|any|" opens the sharing dialog of "|any|" using the client-UI')
 def step(context, receiver, resource):
     openSharingDialog(context, resource, 'folder')
 
+
 @Then('the error text "|any|" should be displayed in the sharing dialog')
 def step(context, fileShareContext):
-    test.compare(str(waitForObjectExists(names.sharingDialog_The_file_can_not_be_shared_because_it_was_shared_without_sharing_permission_QLabel).text), fileShareContext)
+    test.compare(
+        str(
+            waitForObjectExists(
+                names.sharingDialog_The_file_can_not_be_shared_because_it_was_shared_without_sharing_permission_QLabel
+            ).text
+        ),
+        fileShareContext,
+    )
 
 
-@When('the user creates a new public link for file "|any|" without password using the client-UI')
+@When(
+    'the user creates a new public link for file "|any|" without password using the client-UI'
+)
 def step(context, resource):
     resource = sanitizePath(substituteInLineCodes(context, resource))
     openPublicLinkDialog(context, resource)
-    test.compare(str(waitForObjectExists(names.sharingDialog_label_name_QLabel).text), resource.replace(context.userData['clientSyncPath'], ''))
+    test.compare(
+        str(waitForObjectExists(names.sharingDialog_label_name_QLabel).text),
+        resource.replace(context.userData['clientSyncPath'], ''),
+    )
     clickButton(waitForObject(names.oCC_ShareLinkWidget_createShareButton_QPushButton))
-    waitFor(lambda: (waitForObject(names.linkShares_0_0_QModelIndex).displayText == "Public link"))
+    waitFor(
+        lambda: (
+            waitForObject(names.linkShares_0_0_QModelIndex).displayText == "Public link"
+        )
+    )
 
 
-@When('the user creates a new public link for file "|any|" with password "|any|" using the client-UI')
+@When(
+    'the user creates a new public link for file "|any|" with password "|any|" using the client-UI'
+)
 def step(context, resource, password):
     resource = sanitizePath(substituteInLineCodes(context, resource))
     openPublicLinkDialog(context, resource)
-    test.compare(str(waitForObjectExists(names.sharingDialog_label_name_QLabel).text), resource.replace(context.userData['clientSyncPath'], ''))
+    test.compare(
+        str(waitForObjectExists(names.sharingDialog_label_name_QLabel).text),
+        resource.replace(context.userData['clientSyncPath'], ''),
+    )
     clickButton(waitForObject(names.oCC_ShareLinkWidget_checkBox_password_QCheckBox))
-    mouseClick(waitForObject(names.oCC_ShareLinkWidget_lineEdit_password_QLineEdit), 0, 0, Qt.NoModifier, Qt.LeftButton)
+    mouseClick(
+        waitForObject(names.oCC_ShareLinkWidget_lineEdit_password_QLineEdit),
+        0,
+        0,
+        Qt.NoModifier,
+        Qt.LeftButton,
+    )
     type(waitForObject(names.oCC_ShareLinkWidget_lineEdit_password_QLineEdit), password)
     clickButton(waitForObject(names.oCC_ShareLinkWidget_createShareButton_QPushButton))
-    waitFor(lambda: (findObject(names.linkShares_0_0_QModelIndex).displayText == "Public link"))
+    waitFor(
+        lambda: (
+            findObject(names.linkShares_0_0_QModelIndex).displayText == "Public link"
+        )
+    )
 
 
 @When('the user edits the public link named "|any|" of file "|any|" changing following')
 def step(context, publicLinkName, resource):
-    test.compare(str(waitForObjectExists(names.sharingDialog_label_name_QLabel).text), resource)
-    test.compare(str(waitForObjectExists(names.linkShares_0_0_QModelIndex).text), publicLinkName)
+    test.compare(
+        str(waitForObjectExists(names.sharingDialog_label_name_QLabel).text), resource
+    )
+    test.compare(
+        str(waitForObjectExists(names.linkShares_0_0_QModelIndex).text), publicLinkName
+    )
     expDate = []
     for row in context.table:
         if row[0] == 'expireDate':
-            expDate = datetime.datetime.strptime(row[1],'%Y-%m-%d')
-    expYear = expDate.year-2000
-    mouseClick(waitForObject(names.oCC_ShareLinkWidget_qt_spinbox_lineedit_QLineEdit), 0, 0, Qt.NoModifier, Qt.LeftButton)
+            expDate = datetime.datetime.strptime(row[1], '%Y-%m-%d')
+    expYear = expDate.year - 2000
+    mouseClick(
+        waitForObject(names.oCC_ShareLinkWidget_qt_spinbox_lineedit_QLineEdit),
+        0,
+        0,
+        Qt.NoModifier,
+        Qt.LeftButton,
+    )
     nativeType("<Delete>")
     nativeType("<Delete>")
     nativeType(expDate.month)
     nativeType(expDate.day)
     nativeType(expYear)
     nativeType("<Return>")
-    testSettings.silentVerifications=True
+    testSettings.silentVerifications = True
     waitFor(lambda: (test.xvp("publicLinkExpirationProgressIndicatorInvisible")))
     waitFor(lambda: (test.vp("publicLinkExpirationProgressIndicatorInvisible")))
-    testSettings.silentVerifications=False
+    testSettings.silentVerifications = False
     test.compare(
-        str(waitForObjectExists(names.oCC_ShareLinkWidget_qt_spinbox_lineedit_QLineEdit).displayText),
-        str(expDate.month) + "/" + str(expDate.day) + "/" + str(expYear)
+        str(
+            waitForObjectExists(
+                names.oCC_ShareLinkWidget_qt_spinbox_lineedit_QLineEdit
+            ).displayText
+        ),
+        str(expDate.month) + "/" + str(expDate.day) + "/" + str(expYear),
     )
 
 
-@When('the user creates a new public link with permissions "|any|" for folder "|any|" without password using the client-UI')
+@When(
+    'the user creates a new public link with permissions "|any|" for folder "|any|" without password using the client-UI'
+)
 def step(context, permissions, resource):
     resource = sanitizePath(substituteInLineCodes(context, resource))
     openPublicLinkDialog(context, resource)
@@ -498,18 +663,34 @@ def step(context, permissions, resource):
 
     clickButton(waitForObject(radioObjectName))
     clickButton(waitForObject(names.oCC_ShareLinkWidget_createShareButton_QPushButton))
-    waitFor(lambda: (findObject(names.linkShares_0_0_QModelIndex).displayText == "Public link"))
+    waitFor(
+        lambda: (
+            findObject(names.linkShares_0_0_QModelIndex).displayText == "Public link"
+        )
+    )
 
 
-@When('the user creates a new public link with permissions "|any|" for folder "|any|" with password "|any|" using the client-UI')
+@When(
+    'the user creates a new public link with permissions "|any|" for folder "|any|" with password "|any|" using the client-UI'
+)
 def step(context, permissions, resource, password):
     resource = sanitizePath(substituteInLineCodes(context, resource))
     openPublicLinkDialog(context, resource)
     clickButton(waitForObject(names.oCC_ShareLinkWidget_checkBox_password_QCheckBox))
-    mouseClick(waitForObject(names.oCC_ShareLinkWidget_lineEdit_password_QLineEdit), 0, 0, Qt.NoModifier, Qt.LeftButton)
+    mouseClick(
+        waitForObject(names.oCC_ShareLinkWidget_lineEdit_password_QLineEdit),
+        0,
+        0,
+        Qt.NoModifier,
+        Qt.LeftButton,
+    )
     type(waitForObject(names.oCC_ShareLinkWidget_lineEdit_password_QLineEdit), password)
     clickButton(waitForObject(names.oCC_ShareLinkWidget_createShareButton_QPushButton))
-    waitFor(lambda: (findObject(names.linkShares_0_0_QModelIndex).displayText == "Public link"))
+    waitFor(
+        lambda: (
+            findObject(names.linkShares_0_0_QModelIndex).displayText == "Public link"
+        )
+    )
 
 
 def createPublicShare(context, resource, role):
@@ -528,14 +709,21 @@ def createPublicShare(context, resource, role):
     openPublicLinkDialog(context, resource)
     clickButton(waitForObject(radioObjectName))
     clickButton(waitForObject(names.oCC_ShareLinkWidget_createShareButton_QPushButton))
-    waitFor(lambda: (findObject(names.linkShares_0_0_QModelIndex).displayText == "Public link"))
+    waitFor(
+        lambda: (
+            findObject(names.linkShares_0_0_QModelIndex).displayText == "Public link"
+        )
+    )
 
-@When('the user creates a new public link for folder "|any|" using the client-UI with these details:')
+
+@When(
+    'the user creates a new public link for folder "|any|" using the client-UI with these details:'
+)
 def step(context, resource):
     role = ''
     for row in context.table:
         if row[0] == 'role':
-            role=row[1]
+            role = row[1]
             break
 
     if role == '':
@@ -544,8 +732,8 @@ def step(context, resource):
         createPublicShare(context, resource, role)
 
 
-@When('the user creates a new public link for folder "|any|" with "|any|" using the client-UI')
+@When(
+    'the user creates a new public link for folder "|any|" with "|any|" using the client-UI'
+)
 def step(context, resource, role):
     createPublicShare(context, resource, role)
-
-

@@ -23,6 +23,8 @@ def main(ctx):
         ],
     }
     pipelines = [
+        # check the format of gui test code
+        gui_tests_format(),
         # Build changelog
         changelog(
             ctx,
@@ -340,6 +342,25 @@ def build_client_docs(ctx):
             ],
         },
     }
+
+def  gui_tests_format():
+    return {
+        "kind": "pipeline",
+        "type": "docker",
+        "name": "guitestformat",
+        "steps": [
+            {
+                "name": "black",
+                "image": "cytopia/black",
+                "pull": "always",
+                "commands": [
+                    'cd /drone/src/test/gui',
+                    'black --check --diff .',
+                ],
+            },
+        ],
+    }
+
 
 def changelog(ctx, trigger = {}, depends_on = []):
     repo_slug = ctx.build.source_repo if ctx.build.source_repo else ctx.repo.slug

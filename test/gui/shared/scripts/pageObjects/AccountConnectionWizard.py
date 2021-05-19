@@ -3,7 +3,7 @@ import squish
 from helpers.SetupClientHelper import getClientDetails
 
 
-class AccountConnectionWizard():
+class AccountConnectionWizard:
     SERVER_ADDRESS_BOX = names.leUrl_OCC_PostfixLineEdit
     NEXT_BUTTON = names.owncloudWizard_qt_passive_wizardbutton1_QPushButton
     USERNAME_BOX = names.leUsername_QLineEdit
@@ -13,13 +13,12 @@ class AccountConnectionWizard():
     CHOOSE_BUTTON = names.qFileDialog_Choose_QPushButton
     CONNECT_BUTTON = names.owncloudWizard_qt_passive_wizardbutton1_QPushButton
 
-
     def __init__(self):
         pass
 
-    def addAccount(self, context):  
-        server, user, password, localfolder =  getClientDetails(context)
-        
+    def addAccount(self, context):
+        server, user, password, localfolder = getClientDetails(context)
+
         squish.mouseClick(squish.waitForObject(self.SERVER_ADDRESS_BOX))
         squish.type(squish.waitForObject(self.SERVER_ADDRESS_BOX), server)
         squish.clickButton(squish.waitForObject(self.NEXT_BUTTON))

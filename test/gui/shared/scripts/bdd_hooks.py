@@ -19,42 +19,59 @@ import shutil
 import urllib.request
 import os
 
+
 @OnScenarioStart
 def hook(context):
     from configparser import ConfigParser
+
     cfg = ConfigParser()
     cfg.read('../config.ini')
     context.userData = {
-        'localBackendUrl': os.environ.get('BACKEND_HOST', cfg.get('DEFAULT','BACKEND_HOST')),
-        'clientSyncPath':  os.environ.get('CLIENT_SYNC_PATH', cfg.get('DEFAULT','CLIENT_SYNC_PATH')),
-        'clientSyncTimeout':  os.environ.get('CLIENT_SYNC_TIMEOUT', cfg.get('DEFAULT','CLIENT_SYNC_TIMEOUT')),
-        'middlewareUrl': os.environ.get('MIDDLEWARE_URL', cfg.get('DEFAULT','MIDDLEWARE_URL')),
-        'clientConfigFile': os.environ.get('CLIENT_LOG_FILE', cfg.get('DEFAULT','CLIENT_LOG_FILE')),
+        'localBackendUrl': os.environ.get(
+            'BACKEND_HOST', cfg.get('DEFAULT', 'BACKEND_HOST')
+        ),
+        'clientSyncPath': os.environ.get(
+            'CLIENT_SYNC_PATH', cfg.get('DEFAULT', 'CLIENT_SYNC_PATH')
+        ),
+        'clientSyncTimeout': os.environ.get(
+            'CLIENT_SYNC_TIMEOUT', cfg.get('DEFAULT', 'CLIENT_SYNC_TIMEOUT')
+        ),
+        'middlewareUrl': os.environ.get(
+            'MIDDLEWARE_URL', cfg.get('DEFAULT', 'MIDDLEWARE_URL')
+        ),
+        'clientConfigFile': os.environ.get(
+            'CLIENT_LOG_FILE', cfg.get('DEFAULT', 'CLIENT_LOG_FILE')
+        ),
     }
 
     if context.userData['localBackendUrl'] == '':
-        context.userData['localBackendUrl']='https://localhost:9200'
+        context.userData['localBackendUrl'] = 'https://localhost:9200'
     if context.userData['clientSyncPath'] == '':
-        context.userData['clientSyncPath']='/tmp/client-bdd/'
+        context.userData['clientSyncPath'] = '/tmp/client-bdd/'
     else:
-        context.userData['clientSyncPath'] = context.userData['clientSyncPath'].rstrip("/") + "/" # make sure there is always one trailing slash
+        context.userData['clientSyncPath'] = (
+            context.userData['clientSyncPath'].rstrip("/") + "/"
+        )  # make sure there is always one trailing slash
     if context.userData['clientSyncTimeout'] == '':
-        context.userData['clientSyncTimeout']=60
+        context.userData['clientSyncTimeout'] = 60
     else:
-        context.userData['clientSyncTimeout']=int(context.userData['clientSyncTimeout'])
+        context.userData['clientSyncTimeout'] = int(
+            context.userData['clientSyncTimeout']
+        )
 
     if not os.path.exists(context.userData['clientSyncPath']):
         os.makedirs(context.userData['clientSyncPath'])
 
     if context.userData['middlewareUrl'] == '':
-        context.userData['middlewareUrl']='http://localhost:3000/'
+        context.userData['middlewareUrl'] = 'http://localhost:3000/'
 
     if context.userData['clientConfigFile'] == '':
-        context.userData['clientConfigFile']='-'
-        
+        context.userData['clientConfigFile'] = '-'
+
     req = urllib.request.Request(
         os.path.join(context.userData['middlewareUrl'], 'init'),
-        headers={"Content-Type": "application/json"}, method='POST'
+        headers={"Content-Type": "application/json"},
+        method='POST',
     )
     try:
         urllib.request.urlopen(req)
@@ -62,14 +79,14 @@ def hook(context):
         raise Exception(
             "Step execution through test middleware failed. Error: " + e.read().decode()
         )
-    
+
 
 @OnScenarioEnd
 def hook(context):
     # Detach (i.e. potentially terminate) all AUTs at the end of a scenario
     for ctx in applicationContextList():
         ctx.detach()
-        snooze(5) #ToDo wait smarter till the app died
+        snooze(5)  # ToDo wait smarter till the app died
 
     # delete local files/folders
     for filename in os.listdir(context.userData['clientSyncPath']):
