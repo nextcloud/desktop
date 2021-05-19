@@ -63,8 +63,10 @@ public:
      *
      * The base pin state is used if the root dir's pin state can't be retrieved.
      */
-    explicit ProcessDirectoryJob(DiscoveryPhase *data, PinState basePinState, QObject *parent)
+    explicit ProcessDirectoryJob(DiscoveryPhase *data, PinState basePinState,
+        qint64 lastSyncTimestamp, QObject *parent)
         : QObject(parent)
+        , _lastSyncTimestamp(lastSyncTimestamp)
         , _discoveryData(data)
     {
         computePinState(basePinState);
@@ -72,7 +74,7 @@ public:
 
     /// For creating subjobs
     explicit ProcessDirectoryJob(const PathTuple &path, const SyncFileItemPtr &dirItem,
-        QueryMode queryLocal, QueryMode queryServer,
+        QueryMode queryLocal, QueryMode queryServer, qint64 lastSyncTimestamp,
         ProcessDirectoryJob *parent)
         : QObject(parent)
         , _dirItem(dirItem)
@@ -80,6 +82,7 @@ public:
         , _queryLocal(queryLocal)
         , _discoveryData(parent->_discoveryData)
         , _currentFolder(path)
+        , _lastSyncTimestamp(lastSyncTimestamp)
     {
         computePinState(parent->_pinState);
     }
@@ -241,6 +244,8 @@ private:
      * _type field accordingly.
      */
     void setupDbPinStateActions(SyncJournalFileRecord &record);
+
+    qint64 _lastSyncTimestamp = 0;
 
     QueryMode _queryServer = QueryMode::NormalQuery;
     QueryMode _queryLocal = QueryMode::NormalQuery;
