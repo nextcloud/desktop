@@ -1016,10 +1016,10 @@ void FolderStatusModel::slotSetProgress(const ProgressInfo &progress)
         auto fileName = QFileInfo(citm._item._file).fileName();
         if (allFilenames.length() > 0) {
             //: Build a list of file names
-            allFilenames.append(tr(", '%1'").arg(fileName));
+            allFilenames.append(QStringLiteral(", \"%1\"").arg(fileName));
         } else {
             //: Argument is a file name
-            allFilenames.append(tr("'%1'").arg(fileName));
+            allFilenames.append(QStringLiteral("\"%1\"").arg(fileName));
         }
     }
     if (curItemProgress == -1) {
