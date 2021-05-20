@@ -83,6 +83,7 @@ set(client_SRCS
     selectivesyncdialog.cpp
     settingsdialog.cpp
     sharedialog.cpp
+    activityjob.cpp
     sharelinkwidget.cpp
     sharemanager.cpp
     shareusergroupwidget.cpp
