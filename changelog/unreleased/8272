@@ -1,0 +1,5 @@
+Bugfix: Correctly detect network drives
+
+We fixed a bug which allowed to use Virtual files on Windows network drives, which is not supported by Windows.
+
+https://github.com/owncloud/client/issues/8272
