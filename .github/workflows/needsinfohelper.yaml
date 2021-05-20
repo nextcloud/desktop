@@ -1,0 +1,13 @@
+name: Remove Labels
+
+on: [issue_comment]
+
+jobs:
+  remove_labels:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-ecosystem/action-remove-labels@v1
+        if: ${{ ! startsWith(github.event.comment.body, 'This issue has been marked as "needs info" 4 weeks ago.') }}
+        with:
+          labels: 'needs info'
