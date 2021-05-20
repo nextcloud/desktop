@@ -615,8 +615,8 @@ def testMiddleware():
         'commands': [
             'git clone https://github.com/owncloud/owncloud-test-middleware.git /drone/src/middleware',
             'cd /drone/src/middleware',
-            'npm install',
-            'node src/app.js'
+            'yarn install',
+            'yarn start'
         ]
     }]
 
