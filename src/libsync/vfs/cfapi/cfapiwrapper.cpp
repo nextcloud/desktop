@@ -92,7 +92,6 @@ void CALLBACK cfApiFetchDataCallback(const CF_CALLBACK_INFO *callbackInfo, const
     };
 
     const auto sendTransferInfo = [=](QByteArray &data, qint64 offset) {
-        qDebug(lcCfApiWrapper) << "Send transfer info. Offset:" << offset;
         cfApiSendTransferInfo(callbackInfo->ConnectionKey,
                               callbackInfo->TransferKey,
                               STATUS_SUCCESS,
@@ -165,7 +164,6 @@ void CALLBACK cfApiFetchDataCallback(const CF_CALLBACK_INFO *callbackInfo, const
         protrudingData = data.right(protudingSize);
         data.chop(protudingSize);
 
-        qDebug(lcCfApiWrapper) << "Send data block. Size:" << data.size();
         sendTransferInfo(data, dataOffset);
         dataOffset += data.size();
     };

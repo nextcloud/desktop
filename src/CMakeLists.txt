@@ -2,6 +2,8 @@
 if(NOT TOKEN_AUTH_ONLY)
 endif()
 
+include(ECMEnableSanitizers)
+
 set(synclib_NAME ${APPLICATION_EXECUTABLE}sync)
 
 find_package(Qt5 5.12 COMPONENTS Core Network Xml Concurrent WebEngineWidgets WebEngine REQUIRED)
