@@ -65,6 +65,7 @@ Details
 
    https://github.com/owncloud/client/issues/8367
    https://github.com/owncloud/client/pull/8541
+   https://github.com/owncloud/client/pull/8617
 
 * Change - Don't ask the user to switch to http: [#8231](https://github.com/owncloud/client/issues/8231)
 
