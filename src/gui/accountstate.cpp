@@ -44,20 +44,23 @@ void AccountState::updateUrlDialog(const QUrl &newUrl)
         Q_EMIT urlUpdated();
     };
 
-    // the urls are identical, previous versions of owncloud cropped the /
-    auto newPath = newUrl.path();
-    if (newPath.endsWith(QLatin1Char('/'))) {
-        newPath.truncate(1);
-    }
-    if (newPath == _account->url().path()) {
-        auto tmp = newUrl;
-        tmp.setPath(QString());
-        if (tmp == _account->url()) {
-            // silently accept the /
-            accept();
-            return;
+    auto matchUrl = [](QUrl url1, QUrl url2) {
+        // ensure https://demo.owncloud.org/ matches https://demo.owncloud.org
+        // the empty path was the legacy formating before 2.9
+        if (url1.path().isEmpty()) {
+            url1.setPath(QStringLiteral("/"));
         }
+        if (url2.path().isEmpty()) {
+            url2.setPath(QStringLiteral("/"));
+        }
+        return url1.matches(url2, QUrl::StripTrailingSlash | QUrl::NormalizePathSegments);
+    };
+
+    if (matchUrl(newUrl, _account->url())) {
+        accept();
+        return;
     }
+
     _updateUrlDialog = new QMessageBox(QMessageBox::Warning, tr("Url update requested for %1").arg(_account->displayName()),
         tr("The url for %1 changed from %2 to %3, do you want to accept the changed url?").arg(_account->displayName(), _account->url().toString(), newUrl.toString()),
         QMessageBox::NoButton, ocApp()->gui()->settingsDialog());
