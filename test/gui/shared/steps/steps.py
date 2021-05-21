@@ -97,7 +97,16 @@ def startClient(context):
     snooze(1)
 
 
-def setUpClient(context, username, password, pollingInterval):
+def getPollingInterval():
+    pollingInterval = '''[ownCloud]
+    remotePollInterval={pollingInterval}
+    '''
+    args = {'pollingInterval': 5000}
+    pollingInterval = pollingInterval.format(**args)
+    return pollingInterval
+
+
+def setUpClient(context, username, password):
     userSetting = '''
     [Accounts]
     0/Folders/1/ignoreHiddenFiles=true
@@ -116,7 +125,7 @@ def setUpClient(context, username, password, pollingInterval):
     version=2
     '''
     userFirstName = username.split()
-    userSetting = userSetting + pollingInterval
+    userSetting = userSetting + getPollingInterval()
     args = {
         'displayUserName': username,
         'davUserName': userFirstName[0].lower(),
@@ -139,27 +148,9 @@ def setUpClient(context, username, password, pollingInterval):
         pass
 
 
-def getPasswordForUser(userId):
-    if userId in defaultUsers.keys():
-        return defaultUsers[userId]['password']
-
-
-@Given(
-    'user "|any|" has set up a client with default settings and polling interval "|any|"'
-)
-def step(context, username, interval):
-    pollingInterval = '''[ownCloud]
-    remotePollInterval={pollingInterval}
-    '''
-    args = {'pollingInterval': interval}
-    pollingInterval = pollingInterval.format(**args)
-    password = getPasswordForUser(username)
-    setUpClient(context, username, password, pollingInterval)
-
-
 @Given('user "|any|" has set up a client with default settings and password "|any|"')
 def step(context, username, password):
-    setUpClient(context, username, password, '')
+    setUpClient(context, username, password)
 
 
 @Given('the user has started the client')
