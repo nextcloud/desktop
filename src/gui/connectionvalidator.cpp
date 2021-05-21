@@ -91,7 +91,11 @@ void ConnectionValidator::slotCheckServerAndAuth()
     checkJob->setTimeout(timeoutToUseMsec);
     connect(checkJob, &CheckServerJob::instanceFound, this, &ConnectionValidator::slotStatusFound);
     connect(checkJob, &CheckServerJob::instanceNotFound, this, &ConnectionValidator::slotNoStatusFound);
-    connect(checkJob, &CheckServerJob::timeout, this, &ConnectionValidator::slotJobTimeout);
+    connect(checkJob, &CheckServerJob::timeout, this, [checkJob, this] {
+        qCWarning(lcConnectionValidator) << checkJob;
+        _errors.append(tr("timeout"));
+        reportResult(Timeout);
+    });
     checkJob->start();
 }
 
@@ -135,7 +139,7 @@ void ConnectionValidator::slotStatusFound(const QUrl &url, const QJsonObject &in
 void ConnectionValidator::slotNoStatusFound(QNetworkReply *reply)
 {
     auto job = qobject_cast<CheckServerJob *>(sender());
-    qCWarning(lcConnectionValidator) << reply->error() << job->errorString() << reply->peek(1024);
+    qCWarning(lcConnectionValidator) << reply->error() << job << reply->peek(1024);
     if (reply->error() == QNetworkReply::SslHandshakeFailedError) {
         reportResult(SslError);
         return;
@@ -151,15 +155,6 @@ void ConnectionValidator::slotNoStatusFound(QNetworkReply *reply)
     }
     reportResult(StatusNotFound);
 }
-
-void ConnectionValidator::slotJobTimeout(const QUrl &url)
-{
-    Q_UNUSED(url);
-    //_errors.append(tr("Unable to connect to %1").arg(url.toString()));
-    _errors.append(tr("timeout"));
-    reportResult(Timeout);
-}
-
 
 void ConnectionValidator::checkAuthentication()
 {
@@ -193,7 +188,7 @@ void ConnectionValidator::slotAuthFailed(QNetworkReply *reply)
 
     } else if (reply->error() == QNetworkReply::AuthenticationRequiredError
         || !_account->credentials()->stillValid(reply)) {
-        qCWarning(lcConnectionValidator) << "******** Password is wrong!" << reply->error() << job->errorString();
+        qCWarning(lcConnectionValidator) << "******** Password is wrong!" << reply->error() << job;
         _errors << tr("The provided credentials are not correct");
         stat = CredentialsWrong;
 
@@ -256,7 +251,6 @@ void ConnectionValidator::fetchUser()
 
 bool ConnectionValidator::setAndCheckServerVersion(const QString &version)
 {
-    qCInfo(lcConnectionValidator) << _account->url() << "has server version" << version;
     _account->setServerVersion(version);
 
     // We cannot deal with servers < 7.0.0

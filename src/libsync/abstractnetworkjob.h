@@ -32,6 +32,9 @@
 
 class QUrl;
 
+
+OWNCLOUDSYNC_EXPORT QDebug operator<<(QDebug debug, const OCC::AbstractNetworkJob *job);
+
 namespace OCC {
 
 class AbstractSslErrorHandler;
@@ -192,6 +195,8 @@ private:
 
     bool _isAuthenticationJob = false;
     int _retryCount = 0;
+
+    friend QDebug(::operator<<)(QDebug debug, const AbstractNetworkJob *job);
 };
 
 /**
@@ -233,5 +238,3 @@ QString OWNCLOUDSYNC_EXPORT networkReplyErrorString(const QNetworkReply &reply);
 
 } // namespace OCC
 
-
-OWNCLOUDSYNC_EXPORT QDebug operator<<(QDebug debug, const OCC::AbstractNetworkJob *job);

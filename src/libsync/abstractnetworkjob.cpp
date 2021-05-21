@@ -336,13 +336,13 @@ void AbstractNetworkJob::start()
     const QString displayUrl = QStringLiteral("%1://%2%3").arg(url.scheme()).arg(url.host()).arg(url.path());
 
     QByteArray parentMetaObjectName = parent() ? parent()->metaObject()->className() : QByteArray();
-    qCInfo(lcNetworkJob) << metaObject()->className() << "created for" << displayUrl << "+" << path() << parentMetaObjectName;
+    qCInfo(lcNetworkJob) << this << "created for" << displayUrl << "+" << path() << parentMetaObjectName;
 }
 
 void AbstractNetworkJob::slotTimeout()
 {
     _timedout = true;
-    qCWarning(lcNetworkJob) << "Network job timeout" << (reply() ? reply()->request().url().path() : path());
+    qCWarning(lcNetworkJob) << "Network job" << this << "timeout";
     onTimedOut();
 }
 
@@ -451,13 +451,21 @@ QDebug operator<<(QDebug debug, const OCC::AbstractNetworkJob *job)
 {
     QDebugStateSaver saver(debug);
     debug.setAutoInsertSpaces(false);
-    debug << job->metaObject()->className() << "(" << job->url().toString();
+    debug << job->metaObject()->className() << "(" << job->url().toDisplayString();
     if (auto reply = job->reply()) {
         debug << ", " << reply->request().rawHeader("Original-Request-ID")
               << ", " << reply->request().rawHeader("X-Request-ID");
+
+        const auto errorString = reply->rawHeader(QByteArrayLiteral("OC-ErrorString"));
+        if (!errorString.isEmpty()) {
+            debug << ", " << errorString;
+        }
         if (reply->error() != QNetworkReply::NoError) {
             debug << ", " << reply->errorString();
         }
+    }
+    if (job->_timedout) {
+        debug << ", timedout";
     }
     debug << ")";
     return debug.maybeSpace();
