@@ -3888,14 +3888,19 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::Vfs</name>
     <message>
-        <location filename="../src/common/vfs.cpp" line="72"/>
+        <location filename="../src/common/vfs.cpp" line="73"/>
         <source>The Virtual filesystem feature does not support a drive as sync root</source>
         <translation>ฟีดเจอร์ระบบไฟล์เสมือนไม่สนับสนุนไดรฟ์ที่เป็นซิงค์รูท</translation>
     </message>
     <message>
-        <location filename="../src/common/vfs.cpp" line="76"/>
+        <location filename="../src/common/vfs.cpp" line="77"/>
         <source>The Virtual filesystem feature requires a NTFS file system, %1 is using %2</source>
         <translation>คุณลักษณะระบบไฟล์เสมือนต้องการระบบไฟล์ NTFS, %1 กำลังใช้งาน %2</translation>
+    </message>
+    <message>
+        <location filename="../src/common/vfs.cpp" line="81"/>
+        <source>The Virtual filesystem feature is not supported on network drives</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

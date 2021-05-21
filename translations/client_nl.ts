@@ -3903,14 +3903,19 @@ Dit is een nieuwe, experimentele modus. Als je besluit deze te gebruiken, meld d
 <context>
     <name>OCC::Vfs</name>
     <message>
-        <location filename="../src/common/vfs.cpp" line="72"/>
+        <location filename="../src/common/vfs.cpp" line="73"/>
         <source>The Virtual filesystem feature does not support a drive as sync root</source>
         <translation>De Virtuele bestandssysteem-feature ondersteunt geen schijf als synchronisatiebron</translation>
     </message>
     <message>
-        <location filename="../src/common/vfs.cpp" line="76"/>
+        <location filename="../src/common/vfs.cpp" line="77"/>
         <source>The Virtual filesystem feature requires a NTFS file system, %1 is using %2</source>
         <translation>De Virtuele bestandssysteem-feature vereist een NTFS-bestandssysteem, %1 gebruikt %2</translation>
+    </message>
+    <message>
+        <location filename="../src/common/vfs.cpp" line="81"/>
+        <source>The Virtual filesystem feature is not supported on network drives</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -4108,7 +4113,7 @@ Dit is een nieuwe, experimentele modus. Als je besluit deze te gebruiken, meld d
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="786"/>
         <source>About %1</source>
-        <translation>About %1</translation>
+        <translation>Over %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="819"/>
@@ -4118,7 +4123,7 @@ Dit is een nieuwe, experimentele modus. Als je besluit deze te gebruiken, meld d
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="841"/>
         <source>Checking for changes in remote &apos;%1&apos;</source>
-        <translation>Aan het controleren op wijzigingen in afstandelijke locatie &apos;%1&apos;</translation>
+        <translation>Aan het controleren op wijzigingen op server &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="844"/>
