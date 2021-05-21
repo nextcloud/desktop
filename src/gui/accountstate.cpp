@@ -21,6 +21,7 @@
 #include "logger.h"
 #include "configfile.h"
 #include "settingsdialog.h"
+#include "theme.h"
 
 #include <QMessageBox>
 #include <QSettings>
@@ -262,7 +263,6 @@ void AccountState::checkConnectivity(bool verifyServerState)
     }
 
     if (verifyServerState) {
-        _account->clearCookieJar();
         _queueGuard.block();
     }
     ConnectionValidator *conValidator = new ConnectionValidator(account());
@@ -273,6 +273,10 @@ void AccountState::checkConnectivity(bool verifyServerState)
         // Use a small authed propfind as a minimal ping when we're
         // already connected.
         if (verifyServerState) {
+            if (Theme::instance()->connectionValidatorClearCookies()) {
+                // clear the cookies directly before we try to validate
+                connect(conValidator, &ConnectionValidator::aboutToStart, _account.get(), &Account::clearCookieJar, Qt::DirectConnection);
+            }
             conValidator->checkServer();
         } else {
             conValidator->checkServerAndUpdate();

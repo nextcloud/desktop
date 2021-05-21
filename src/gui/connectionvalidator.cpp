@@ -96,6 +96,7 @@ void ConnectionValidator::slotCheckServerAndAuth()
         _errors.append(tr("timeout"));
         reportResult(Timeout);
     });
+    Q_EMIT aboutToStart();
     checkJob->start();
 }
 

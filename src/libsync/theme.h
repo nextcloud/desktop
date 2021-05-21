@@ -407,6 +407,13 @@ public:
      */
     virtual bool enableExperimentalFeatures() const;
 
+    /**
+     * Whether to clear cookies before checking status.php
+     * This is used with F5 BIG-IP seups.
+     */
+    virtual bool connectionValidatorClearCookies() const;
+
+
 protected:
 #ifndef TOKEN_AUTH_ONLY
     QIcon themeUniversalIcon(const QString &name, IconType iconType = IconType::BrandedIcon) const;

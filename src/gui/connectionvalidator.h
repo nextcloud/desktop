@@ -106,6 +106,10 @@ public slots:
     void systemProxyLookupDone(const QNetworkProxy &proxy);
 
 signals:
+    /**
+     * Emited before the actual validation starts
+     */
+    void aboutToStart();
     void connectionResult(ConnectionValidator::Status status, const QStringList &errors);
 
 protected slots:

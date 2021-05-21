@@ -648,4 +648,9 @@ bool Theme::enableExperimentalFeatures() const
     return ConfigFile().showExperimentalOptions();
 }
 
+bool Theme::connectionValidatorClearCookies() const
+{
+    return false;
+}
+
 } // end namespace client
