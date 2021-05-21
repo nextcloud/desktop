@@ -26,6 +26,7 @@
 #include <memory>
 
 class QSettings;
+class QMessageBox;
 
 namespace OCC {
 
@@ -44,7 +45,6 @@ class AccountState : public QObject, public QSharedData
     Q_PROPERTY(AccountPtr account MEMBER _account)
 
 public:
-    static void updateUrlDialog(AccountPtr account, const QUrl &url, std::function<void()> callback = {});
     enum State {
         /// Not even attempting to connect, most likely because the
         /// user explicitly signed out or cancelled a credential dialog.
@@ -134,6 +134,7 @@ public:
      *  was not so long ago.
      */
     void tagLastSuccessfullETagRequest(const QDateTime &tp);
+    void updateUrlDialog(const QUrl &url);
 
 public slots:
     /// Triggers a ping to the server to update state and
@@ -147,6 +148,7 @@ private:
 signals:
     void stateChanged(State state);
     void isConnectedChanged();
+    void urlUpdated();
 
 protected Q_SLOTS:
     void slotConnectionValidatorResult(ConnectionValidator::Status status, const QStringList &errors);
@@ -163,6 +165,7 @@ private:
     bool _waitingForNewCredentials;
     QDateTime _timeOfLastETagCheck;
     QPointer<ConnectionValidator> _connectionValidator;
+    QPointer<QMessageBox> _updateUrlDialog;
 
     /**
      * Starts counting when the server starts being back up after 503 or

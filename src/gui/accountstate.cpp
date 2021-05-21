@@ -32,41 +32,44 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcAccountState, "gui.account.state", QtInfoMsg)
 
-void AccountState::updateUrlDialog(AccountPtr account, const QUrl &newUrl, std::function<void()> callback)
+void AccountState::updateUrlDialog(const QUrl &newUrl)
 {
-    auto accept = [=](bool accepted) {
-        if (accepted) {
-            account->setUrl(newUrl);
-            Q_EMIT account->wantsAccountSaved(account.data());
-        }
-        if (callback) {
-            callback();
-        }
+    // guard to prevent multiple dialogs
+    if (_updateUrlDialog) {
+        return;
+    }
+    auto accept = [=] {
+        _account->setUrl(newUrl);
+        Q_EMIT _account->wantsAccountSaved(_account.data());
+        Q_EMIT urlUpdated();
     };
+
     // the urls are identical, previous versions of owncloud cropped the /
     auto newPath = newUrl.path();
     if (newPath.endsWith(QLatin1Char('/'))) {
         newPath.truncate(1);
     }
-    if (newPath == account->url().path()) {
+    if (newPath == _account->url().path()) {
         auto tmp = newUrl;
         tmp.setPath(QString());
-        if (tmp == account->url()) {
+        if (tmp == _account->url()) {
             // silently accept the /
-            accept(true);
+            accept();
             return;
         }
     }
-    auto diag = new QMessageBox(QMessageBox::Warning, tr("Url update requested for %1").arg(account->displayName()),
-        tr("The url for %1 changed from %2 to %3, do you want to accept the changed url?").arg(account->displayName(), account->url().toString(), newUrl.toString()),
+    _updateUrlDialog = new QMessageBox(QMessageBox::Warning, tr("Url update requested for %1").arg(_account->displayName()),
+        tr("The url for %1 changed from %2 to %3, do you want to accept the changed url?").arg(_account->displayName(), _account->url().toString(), newUrl.toString()),
         QMessageBox::NoButton, ocApp()->gui()->settingsDialog());
-    diag->setAttribute(Qt::WA_DeleteOnClose);
-    auto yes = diag->addButton(tr("Change url permanently to %1").arg(newUrl.toString()), QMessageBox::AcceptRole);
-    diag->addButton(tr("Reject"), QMessageBox::RejectRole);
-    QObject::connect(diag, &QMessageBox::finished, account.data(), [diag, yes, accept] {
-        accept(diag->clickedButton() == yes);
+    _updateUrlDialog->setAttribute(Qt::WA_DeleteOnClose);
+    auto yes = _updateUrlDialog->addButton(tr("Change url permanently to %1").arg(newUrl.toString()), QMessageBox::AcceptRole);
+    _updateUrlDialog->addButton(tr("Reject"), QMessageBox::RejectRole);
+    connect(_updateUrlDialog, &QMessageBox::finished, _account.data(), [yes, accept, this] {
+        if (_updateUrlDialog->clickedButton() == yes) {
+            accept();
+        }
     });
-    diag->show();
+    _updateUrlDialog->show();
 }
 
 AccountState::AccountState(AccountPtr account)
@@ -90,8 +93,9 @@ AccountState::AccountState(AccountPtr account)
         this, [this] {
             checkConnectivity(true);
         });
-    connect(account.data(), &Account::requestUrlUpdate, this, [this](const QUrl &newUrl) {
-        updateUrlDialog(_account, newUrl, [this] { checkConnectivity(); });
+    connect(account.data(), &Account::requestUrlUpdate, this, &AccountState::updateUrlDialog);
+    connect(this, &AccountState::urlUpdated, this, [this] {
+        checkConnectivity(false);
     });
 }
 

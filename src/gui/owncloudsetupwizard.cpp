@@ -194,7 +194,9 @@ void OwncloudSetupWizard::slotFoundServer(const QUrl &url, const QJsonObject &in
         if (url.scheme() == QLatin1String("https") && oldUrl.host() == url.host()) {
             _ocWizard->account()->setUrl(url);
         } else {
-            AccountState::updateUrlDialog(_ocWizard->account(), url, [this] { slotDetermineAuthType(); });
+            auto accountState = AccountManager::instance()->account(_ocWizard->account());
+            connect(accountState.data(), &AccountState::urlUpdated, this, &OwncloudSetupWizard::slotDetermineAuthType);
+            accountState->updateUrlDialog(url);
             return;
         }
     }
