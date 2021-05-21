@@ -11,6 +11,7 @@ Summary
 * Bugfix - Keep share link names in sync with server: [#7549](https://github.com/owncloud/client/issues/7549)
 * Bugfix - SQLite wal file grows to several gigabyte: [#7646](https://github.com/owncloud/client/issues/7646)
 * Bugfix - Fix missing permission for newly created folder: [#8076](https://github.com/owncloud/client/pull/8076)
+* Bugfix - Correctly detect network drives: [#8272](https://github.com/owncloud/client/issues/8272)
 * Bugfix - Don't recommend non default sync option: [#8317](https://github.com/owncloud/client/issues/8317)
 * Bugfix - Set up default locale correctly: [#8367](https://github.com/owncloud/client/issues/8367)
 * Change - Don't ask the user to switch to http: [#8231](https://github.com/owncloud/client/issues/8231)
@@ -51,6 +52,13 @@ Details
    We fixed a bug where a newly created folder had no permissions set.
 
    https://github.com/owncloud/client/pull/8076
+
+* Bugfix - Correctly detect network drives: [#8272](https://github.com/owncloud/client/issues/8272)
+
+   We fixed a bug which allowed to use Virtual files on Windows network drives, which is not
+   supported by Windows.
+
+   https://github.com/owncloud/client/issues/8272
 
 * Bugfix - Don't recommend non default sync option: [#8317](https://github.com/owncloud/client/issues/8317)
 
