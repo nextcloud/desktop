@@ -286,17 +286,17 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="84"/>
         <source>End-to-End Encryption with Virtual Files</source>
-        <translation type="unfinished"/>
+        <translation>Muturretik muturrerako zifratzea fitxategi birtualekin</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="85"/>
         <source>You seem to have the Virtual Files feature enabled on this folder. At  the moment, it is not possible to implicitly download virtual files that are End-to-End encrypted. To get the best experience with Virtual Files and End-to-End Encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Badirudi fitxategi birtualak ezaugarria gaituta duzula karpeta honetan. Momentu honetan, ez da posible muturretik muturrera enkriptatuta dauden fitxategi birtualak inplizituki deskargatzea. Fitxategi birtualekin eta muturretik muturrerako enkriptatzearekin esperientzia onena lortzeko, ziurtatu enkriptatutako karpeta &quot;Beti lokalki eskuragarri&quot; aukera markatuta duela.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="93"/>
         <source>Don&apos;t encrypt folder</source>
-        <translation type="unfinished"/>
+        <translation>Ez enkriptatu karpeta</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="94"/>
@@ -2446,7 +2446,7 @@ Erregistroak %1(e)an idatziko dira.</translation>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="117"/>
         <source>There was an error accessing the &quot;token&quot; endpoint: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Errorea gertatu da &quot;token&quot; amaiera-puntua atzitzean: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="121"/>
@@ -4669,7 +4669,7 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
     <message>
         <location filename="../src/libsync/vfs/cfapi/vfs_cfapi.cpp" line="314"/>
         <source>Download of End-to-End encrypted file failed</source>
-        <translation type="unfinished"/>
+        <translation>Muturretik muturrerako fitxategi zifratuaren deskargak huts egin du</translation>
     </message>
     <message>
         <location filename="../src/libsync/vfs/cfapi/vfs_cfapi.cpp" line="315"/>
