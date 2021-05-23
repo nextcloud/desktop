@@ -2446,7 +2446,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="117"/>
         <source>There was an error accessing the &quot;token&quot; endpoint: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
-        <translation type="unfinished"/>
+        <translation>存取「權杖」進入點發生錯誤：&lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="121"/>
@@ -5536,7 +5536,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/main.cpp" line="45"/>
         <source>%1 requires on a working system tray. If you are running XFCE, please follow &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;these instructions&lt;/a&gt;. Otherwise, please install a system tray application such as &quot;trayer&quot; and try again.</source>
-        <translation type="unfinished"/>
+        <translation>%1 需要可運作的系統匣。如果您正在執行 XFCE，請遵循&lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;這些介紹&lt;/a&gt;。否則請安裝如「trayer」等系統匣應用程式並再試一次。</translation>
     </message>
 </context>
 <context>
