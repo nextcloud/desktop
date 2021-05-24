@@ -706,8 +706,8 @@ QByteArray decryptStringAsymmetric(EVP_PKEY *privateKey, const QByteArray& data)
     QByteArray out(outlen, '\0');
 
     if (EVP_PKEY_decrypt(ctx, unsignedData(out), &outlen, (unsigned char *)data.constData(), data.size()) <= 0) {
-        qCInfo(lcCseDecryption()) << "Could not decrypt the data.";
-        ERR_print_errors_fp(stdout); // This line is not printing anything.
+        qCCritical(lcCseDecryption()) << "Could not decrypt the data.";
+        qCCritical(lcCseDecryption()) << handleErrors();
         return {};
     } else {
         qCInfo(lcCseDecryption()) << "data decrypted successfully";
