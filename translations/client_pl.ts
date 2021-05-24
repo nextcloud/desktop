@@ -1320,7 +1320,7 @@ If you decide to delete the files, they will be unavailable to you, unless you a
         <translation>Wszystkie pliki z katalogu synchronizacji &apos;%1&apos; zostały usunięte z serwera.
 W momencie synchronizacji zostaną usunięte z lokalnego katalogu, co spowoduje ich niedostępność, chyba że posiadasz prawo do przywracania.
 Jeśli zdecydujesz się przywrócić pliki i posiadasz odpowiednie uprawnienia, zostaną one ponownie wysłane na serwer.
-Jeśli zdecydujesz się je usunąć, nie będą już dostępne. </translation>
+Jeśli zdecydujesz się je usunąć, nie będą już dostępne.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1250"/>
@@ -2441,7 +2441,7 @@ Dzienniki zostaną zapisane w %1</translation>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="117"/>
         <source>There was an error accessing the &apos;token&apos; endpoint: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
-        <translation>Wystąpił błąd podczas uzyskiwania dostępu do punktu końcowego „tokena”: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
+        <translation>Wystąpił błąd podczas uzyskiwania dostępu do punktu końcowego &quot;tokena&quot;: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="117"/>
