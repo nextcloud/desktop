@@ -83,10 +83,18 @@ void PUTFileJob::start()
 
     req.setPriority(QNetworkRequest::LowPriority); // Long uploads must not block non-propagation jobs.
 
+    QUrl urlForLog;
+
     if (_url.isValid()) {
-        sendRequest("PUT", _url, req, _device);
+        urlForLog = _url;
+        sendRequest("PUT", urlForLog, req, _device);
     } else {
-        sendRequest("PUT", makeDavUrl(path()), req, _device);
+        urlForLog = makeDavUrl(path());
+        sendRequest("PUT", urlForLog, req, _device);
+    }
+
+    if (_headers.contains(checkSumHeaderC)) {
+        qCInfo(lcPutJob) << "Starting PUTFileJob with" << checkSumHeaderC << " " << _headers.value(checkSumHeaderC) << " for URL" << urlForLog;
     }
 
     if (reply()->error() != QNetworkReply::NoError) {
@@ -107,6 +115,10 @@ bool PUTFileJob::finished()
                      << replyStatusString()
                      << reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute)
                      << reply()->attribute(QNetworkRequest::HttpReasonPhraseAttribute);
+
+    if (!reply()->request().rawHeader(checkSumHeaderC).isEmpty()) {
+        qCInfo(lcPutJob) << "PUTFileJob finished with" << checkSumHeaderC << " " << reply()->request().rawHeader(checkSumHeaderC) << " for URL" << reply()->url();
+    }
 
     emit finishedSignal();
     return true;
@@ -327,6 +339,7 @@ void PropagateUploadFileCommon::slotComputeContentChecksum()
     QByteArray existingChecksumType, existingChecksum;
     parseChecksumHeader(_item->_checksumHeader, &existingChecksumType, &existingChecksum);
     if (existingChecksumType == checksumType) {
+        qCInfo(lcPropagateUpload) << "existingChecksumType equals to checksumType, so, skipping the first compute...";
         slotComputeTransmissionChecksum(checksumType, existingChecksum);
         return;
     }
@@ -339,6 +352,7 @@ void PropagateUploadFileCommon::slotComputeContentChecksum()
         this, &PropagateUploadFileCommon::slotComputeTransmissionChecksum);
     connect(computeChecksum, &ComputeChecksum::done,
         computeChecksum, &QObject::deleteLater);
+    qCInfo(lcPropagateUpload) << "Going to start ComputeChecksum job of checksumType" << computeChecksum->checksumType() << " for _fileToUpload" << _fileToUpload._path;
     computeChecksum->start(_fileToUpload._path);
 }
 
@@ -346,13 +360,18 @@ void PropagateUploadFileCommon::slotComputeTransmissionChecksum(const QByteArray
 {
     _item->_checksumHeader = makeChecksumHeader(contentChecksumType, contentChecksum);
 
+    qCInfo(lcPropagateUpload) << "contentChecksumType" << contentChecksumType << "contentChecksum" << contentChecksum << " _item->_checksumHeader" << _item->_checksumHeader;
+
     // Reuse the content checksum as the transmission checksum if possible
     const auto supportedTransmissionChecksums =
         propagator()->account()->capabilities().supportedChecksumTypes();
     if (supportedTransmissionChecksums.contains(contentChecksumType)) {
+        qCInfo(lcPropagateUpload) << "supportedTransmissionChecksums.contains(contentChecksumType) is true, so, starting the upload now...";
         slotStartUpload(contentChecksumType, contentChecksum);
         return;
     }
+
+    qCInfo(lcPropagateUpload) << "uploadChecksumEnabled() is" << uploadChecksumEnabled();
 
     // Compute the transmission checksum.
     auto computeChecksum = new ComputeChecksum(this);
@@ -366,11 +385,13 @@ void PropagateUploadFileCommon::slotComputeTransmissionChecksum(const QByteArray
         this, &PropagateUploadFileCommon::slotStartUpload);
     connect(computeChecksum, &ComputeChecksum::done,
         computeChecksum, &QObject::deleteLater);
+    qCInfo(lcPropagateUpload) << "Going to start ComputeChecksum job of checksumType" << computeChecksum->checksumType() << " for _fileToUpload" << _fileToUpload._path;
     computeChecksum->start(_fileToUpload._path);
 }
 
 void PropagateUploadFileCommon::slotStartUpload(const QByteArray &transmissionChecksumType, const QByteArray &transmissionChecksum)
 {
+    qCInfo(lcPropagateUpload) << "transmissionChecksumType" << transmissionChecksumType << " transmissionChecksum" << transmissionChecksum;
     // Remove ourselfs from the list of active job, before any posible call to done()
     // When we start chunks, we will add it again, once for every chunks.
     propagator()->_activeJobList.removeOne(this);
@@ -379,6 +400,7 @@ void PropagateUploadFileCommon::slotStartUpload(const QByteArray &transmissionCh
 
     // If no checksum header was not set, reuse the transmission checksum as the content checksum.
     if (_item->_checksumHeader.isEmpty()) {
+        qCInfo(lcPropagateUpload) << "_item->_checksumHeader was empty, so setting it to _transmissionChecksumHeader" << _transmissionChecksumHeader;
         _item->_checksumHeader = _transmissionChecksumHeader;
     }
 

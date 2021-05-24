@@ -51,10 +51,18 @@ void MoveJob::start()
     for (auto it = _extraHeaders.constBegin(); it != _extraHeaders.constEnd(); ++it) {
         req.setRawHeader(it.key(), it.value());
     }
+
+    QUrl urlForLog;
     if (_url.isValid()) {
-        sendRequest("MOVE", _url, req);
+        urlForLog = _url;
+        sendRequest("MOVE", urlForLog, req);
     } else {
-        sendRequest("MOVE", makeDavUrl(path()), req);
+        urlForLog = makeDavUrl(path());
+        sendRequest("MOVE", urlForLog, req);
+    }
+
+    if (_extraHeaders.contains(checkSumHeaderC)) {
+        qCInfo(lcMoveJob) << "Starting MoveJob with" << checkSumHeaderC << " " << _extraHeaders.value(checkSumHeaderC) << " for URL" << urlForLog << "with _destination" << _destination;
     }
 
     if (reply()->error() != QNetworkReply::NoError) {
@@ -68,6 +76,10 @@ bool MoveJob::finished()
 {
     qCInfo(lcMoveJob) << "MOVE of" << reply()->request().url() << "FINISHED WITH STATUS"
                       << replyStatusString();
+
+    if (!reply()->request().rawHeader(checkSumHeaderC).isEmpty()) {
+        qCInfo(lcMoveJob) << "MoveJob finished with" << checkSumHeaderC << " " << reply()->request().rawHeader(checkSumHeaderC) << " for URL" << reply()->url() << "with _destination" << _destination;
+    }
 
     emit finishedSignal();
     return true;
