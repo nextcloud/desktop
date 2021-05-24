@@ -39,6 +39,7 @@
 #include "account.h"
 #include "owncloudpropagator.h"
 #include "clientsideencryption.h"
+#include "config.h"
 
 #include "creds/abstractcredentials.h"
 #include "creds/httpcredentials.h"
@@ -906,7 +907,7 @@ void DetermineAuthTypeJob::start()
     // Don't reuse previous auth credentials
     req.setAttribute(QNetworkRequest::AuthenticationReuseAttribute, QNetworkRequest::Manual);
 
-    // Start three parallel requests
+    // Start two parallel requests
 
     // 1. determines whether it's a basic auth server
     auto get = _account->sendRequest("GET", _account->url(), req);
@@ -914,15 +915,10 @@ void DetermineAuthTypeJob::start()
     // 2. checks the HTTP auth method.
     auto propfind = _account->sendRequest("PROPFIND", _account->davUrl(), req);
 
-    // 3. Determines if the old flow has to be used (GS for now)
-    auto oldFlowRequired = new JsonApiJob(_account, "/ocs/v2.php/cloud/capabilities", this);
-
     get->setTimeout(30 * 1000);
     propfind->setTimeout(30 * 1000);
-    oldFlowRequired->setTimeout(30 * 1000);
     get->setIgnoreCredentialFailure(true);
     propfind->setIgnoreCredentialFailure(true);
-    oldFlowRequired->setIgnoreCredentialFailure(true);
 
     connect(get, &SimpleNetworkJob::finishedSignal, this, [this, get]() {
         if (get->reply()->error() == QNetworkReply::AuthenticationRequiredError) {
@@ -948,56 +944,28 @@ void DetermineAuthTypeJob::start()
         _propfindDone = true;
         checkAllDone();
     });
-    connect(oldFlowRequired, &JsonApiJob::jsonReceived, this, [this](const QJsonDocument &json, int statusCode) {
-        if (statusCode == 200) {
-            _resultOldFlow = LoginFlowV2;
-
-            auto data = json.object().value("ocs").toObject().value("data").toObject().value("capabilities").toObject();
-            auto gs = data.value("globalscale");
-            if (gs != QJsonValue::Undefined) {
-                auto flow = gs.toObject().value("desktoplogin");
-                if (flow != QJsonValue::Undefined) {
-                    if (flow.toInt() == 1) {
-                        _resultOldFlow = WebViewFlow;
-                    }
-                }
-            }
-        } else {
-            _resultOldFlow = Basic;
-        }
-        _oldFlowDone = true;
-        checkAllDone();
-    });
-
-    oldFlowRequired->start();
 }
 
 void DetermineAuthTypeJob::checkAllDone()
 {
     // Do not conitunue until eve
-    if (!_getDone || !_propfindDone || !_oldFlowDone) {
+    if (!_getDone || !_propfindDone) {
         return;
     }
 
     Q_ASSERT(_resultGet != NoAuthType);
     Q_ASSERT(_resultPropfind != NoAuthType);
-    Q_ASSERT(_resultOldFlow != NoAuthType);
 
     auto result = _resultPropfind;
 
-    // WebViewFlow > OAuth > Basic
+    // OAuth > Basic
     if (_account->serverVersionInt() >= Account::makeServerVersion(12, 0, 0)) {
-        result = WebViewFlow;
+        result = OAuth;
     }
 
-    // LoginFlowV2 > WebViewFlow > OAuth > Basic
+    // LoginFlowV2 > OAuth > Basic
     if (_account->serverVersionInt() >= Account::makeServerVersion(16, 0, 0)) {
         result = LoginFlowV2;
-    }
-
-    // If we determined that we need the webview flow (GS for example) then we switch to that
-    if (_resultOldFlow == WebViewFlow) {
-        result = WebViewFlow;
     }
 
     // If we determined that a simple get gave us an authentication required error

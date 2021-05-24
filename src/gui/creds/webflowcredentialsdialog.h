@@ -20,15 +20,10 @@ class WebFlowCredentialsDialog : public QDialog
 {
     Q_OBJECT
 public:
-    WebFlowCredentialsDialog(Account *account, bool useFlow2, QWidget *parent = nullptr);
+    WebFlowCredentialsDialog(Account *account, QWidget *parent = nullptr);
 
-    void setUrl(const QUrl &url);
     void setInfo(const QString &msg);
     void setError(const QString &error);
-
-    bool isUsingFlow2() const {
-        return _useFlow2;
-    }
 
 protected:
     void closeEvent(QCloseEvent * e) override;
@@ -47,10 +42,7 @@ signals:
 private:
     void customizeStyle();
 
-    bool _useFlow2;
-
     Flow2AuthWidget *_flow2AuthWidget;
-    WebView *_webView;
 
     QLabel *_errorLabel;
     QLabel *_infoLabel;

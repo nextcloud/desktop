@@ -18,6 +18,8 @@
 
 #include <QString>
 
+#include "config.h"
+
 class QVariant;
 class QLabel;
 class QRadioButton;
@@ -46,7 +48,9 @@ namespace WizardCommon {
         Page_HttpCreds,
         Page_OAuthCreds,
         Page_Flow2AuthCreds,
+#ifdef WITH_WEBENGINE
         Page_WebView,
+#endif
         Page_AdvancedSetup,
         Page_Result
     };

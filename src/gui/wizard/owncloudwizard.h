@@ -24,6 +24,7 @@
 #include "networkjobs.h"
 #include "wizard/owncloudwizardcommon.h"
 #include "accountfwd.h"
+#include "config.h"
 
 namespace OCC {
 
@@ -37,7 +38,9 @@ class OwncloudAdvancedSetupPage;
 class OwncloudWizardResultPage;
 class AbstractCredentials;
 class AbstractCredentialsWizardPage;
+#ifdef WITH_WEBENGINE
 class WebViewPage;
+#endif
 class Flow2AuthCredsPage;
 
 /**
@@ -58,8 +61,6 @@ public:
     void setAccount(AccountPtr account);
     AccountPtr account() const;
     void setOCUrl(const QString &);
-    bool registration();
-    void setRegistration(bool registration);
 
     void setupCustomMedia(QVariant, QLabel *);
     QString ocUrl() const;
@@ -128,11 +129,11 @@ private:
     OwncloudAdvancedSetupPage *_advancedSetupPage;
     OwncloudWizardResultPage *_resultPage;
     AbstractCredentialsWizardPage *_credentialsPage = nullptr;
+#ifdef WITH_WEBENGINE
     WebViewPage *_webViewPage;
+#endif
 
     QStringList _setupLog;
-
-    bool _registration = false;
 
     friend class OwncloudSetupWizard;
 };

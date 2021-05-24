@@ -6,7 +6,10 @@ include(ECMEnableSanitizers)
 
 set(synclib_NAME ${APPLICATION_EXECUTABLE}sync)
 
-find_package(Qt5 5.12 COMPONENTS Core Network Xml Concurrent WebEngineWidgets WebEngine REQUIRED)
+find_package(Qt5 5.12 COMPONENTS Core Network Xml Concurrent REQUIRED)
+if(WITH_WEBENGINE)
+    find_package(Qt5 5.12 COMPONENTS WebEngineWidgets WebEngine REQUIRED)
+endif()
 get_target_property (QT_QMAKE_EXECUTABLE Qt5::qmake IMPORTED_LOCATION)
 message(STATUS "Using Qt ${Qt5Core_VERSION} (${QT_QMAKE_EXECUTABLE})")
 

@@ -42,16 +42,7 @@ WebViewPage::~WebViewPage() = default;
 void WebViewPage::initializePage() {
     //QNetworkProxy::setApplicationProxy(QNetworkProxy::applicationProxy());
 
-    QString url;
-    if (_ocWizard->registration()) {
-        url = "https://nextcloud.com/register";
-    } else {
-        url = _ocWizard->ocUrl();
-        if (!url.endsWith('/')) {
-            url += "/";
-        }
-        url += "index.php/login/flow";
-    }
+    QString url = "https://nextcloud.com/register";
     qCInfo(lcWizardWebiewPage()) << "Url to auth at: " << url;
     _webView->setUrl(QUrl(url));
 

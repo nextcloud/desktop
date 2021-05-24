@@ -26,7 +26,9 @@
 #include "wizard/owncloudoauthcredspage.h"
 #include "wizard/owncloudadvancedsetuppage.h"
 #include "wizard/owncloudwizardresultpage.h"
+#ifdef WITH_WEBENGINE
 #include "wizard/webviewpage.h"
+#endif
 #include "wizard/flow2authcredspage.h"
 
 #include "common/vfs.h"
@@ -54,7 +56,9 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
     , _flow2CredsPage(new Flow2AuthCredsPage)
     , _advancedSetupPage(new OwncloudAdvancedSetupPage(this))
     , _resultPage(new OwncloudWizardResultPage)
+#ifdef WITH_WEBENGINE
     , _webViewPage(new WebViewPage(this))
+#endif
 {
     setObjectName("owncloudWizard");
 
@@ -66,7 +70,9 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
     setPage(WizardCommon::Page_Flow2AuthCreds, _flow2CredsPage);
     setPage(WizardCommon::Page_AdvancedSetup, _advancedSetupPage);
     setPage(WizardCommon::Page_Result, _resultPage);
+#ifdef WITH_WEBENGINE
     setPage(WizardCommon::Page_WebView, _webViewPage);
+#endif
 
     connect(this, &QDialog::finished, this, &OwncloudWizard::basicSetupFinished);
 
@@ -78,7 +84,9 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
     connect(_httpCredsPage, &OwncloudHttpCredsPage::connectToOCUrl, this, &OwncloudWizard::connectToOCUrl);
     connect(_browserCredsPage, &OwncloudOAuthCredsPage::connectToOCUrl, this, &OwncloudWizard::connectToOCUrl);
     connect(_flow2CredsPage, &Flow2AuthCredsPage::connectToOCUrl, this, &OwncloudWizard::connectToOCUrl);
+#ifdef WITH_WEBENGINE
     connect(_webViewPage, &WebViewPage::connectToOCUrl, this, &OwncloudWizard::connectToOCUrl);
+#endif
     connect(_advancedSetupPage, &OwncloudAdvancedSetupPage::createLocalAndRemoteFolders,
         this, &OwncloudWizard::createLocalAndRemoteFolders);
     connect(this, &QWizard::customButtonClicked, this, &OwncloudWizard::skipFolderConfiguration);
@@ -191,17 +199,6 @@ QString OwncloudWizard::ocUrl() const
     return url;
 }
 
-bool OwncloudWizard::registration()
-{
-    return _registration;
-}
-
-void OwncloudWizard::setRegistration(bool registration)
-{
-    _registration = registration;
-}
-
-
 void OwncloudWizard::enableFinishOnResultWidget(bool enable)
 {
     _resultPage->setComplete(enable);
@@ -230,9 +227,11 @@ void OwncloudWizard::successfulStep()
         _flow2CredsPage->setConnected();
         break;
 
+#ifdef WITH_WEBENGINE
     case WizardCommon::Page_WebView:
         _webViewPage->setConnected();
         break;
+#endif
 
     case WizardCommon::Page_AdvancedSetup:
         _advancedSetupPage->directoriesCreated();
@@ -256,8 +255,6 @@ void OwncloudWizard::setAuthType(DetermineAuthTypeJob::AuthType type)
         _credentialsPage = _browserCredsPage;
     } else if (type == DetermineAuthTypeJob::LoginFlowV2) {
         _credentialsPage = _flow2CredsPage;
-    } else if (type == DetermineAuthTypeJob::WebViewFlow) {
-        _credentialsPage = _webViewPage;
     } else { // try Basic auth even for "Unknown"
         _credentialsPage = _httpCredsPage;
     }
@@ -281,7 +278,12 @@ void OwncloudWizard::slotCurrentPageChanged(int id)
         button(QWizard::NextButton)->setHidden(true);
         // Need to set it from here, otherwise it has no effect
         _welcomePage->setLoginButtonDefault();
-    } else if (id == WizardCommon::Page_WebView || id == WizardCommon::Page_Flow2AuthCreds) {
+    } else if (
+#ifdef WITH_WEBENGINE
+        id == WizardCommon::Page_WebView ||
+#endif
+        id == WizardCommon::Page_Flow2AuthCreds
+      ) {
         setButtonLayout({ QWizard::Stretch, QWizard::BackButton });
     } else if (id == WizardCommon::Page_AdvancedSetup) {
         setButtonLayout({ QWizard::Stretch, QWizard::CustomButton1, QWizard::BackButton, QWizard::NextButton });

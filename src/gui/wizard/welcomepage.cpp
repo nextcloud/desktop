@@ -12,10 +12,12 @@
  * for more details.
  */
 
+#include "config.h"
 #include "welcomepage.h"
 #include "theme.h"
 #include "wizard/owncloudwizard.h"
 #include "wizard/slideshow.h"
+#include "guiutility.h"
 #include "ui_welcomepage.h"
 
 namespace OCC {
@@ -94,11 +96,17 @@ void WelcomePage::setupLoginButton()
 
 void WelcomePage::setupCreateAccountButton()
 {
+#ifdef WITH_PROVIDERS
     connect(_ui->createAccountButton, &QPushButton::clicked, this, [this](bool /*checked*/) {
-        _ocWizard->setRegistration(true);
+#ifdef WITH_WEBENGINE
         _nextPage = WizardCommon::Page_WebView;
         _ocWizard->next();
+#else
+        auto url = QUrl("https://nextcloud.com/register");
+        Utility::openBrowser(url);
+#endif
     });
+#endif
 }
 
 void WelcomePage::setupHostYourOwnServerLabel()

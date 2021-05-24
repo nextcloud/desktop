@@ -134,12 +134,17 @@ set(client_SRCS
     wizard/owncloudwizardcommon.cpp
     wizard/owncloudwizard.cpp
     wizard/owncloudwizardresultpage.cpp
-    wizard/webviewpage.cpp
-    wizard/webview.cpp
     wizard/slideshow.cpp
     wizard/welcomepage.cpp
     wizard/linklabel.cpp
 )
+
+IF(WITH_WEBENGINE)
+    list(APPEND client_SRCS
+        wizard/webviewpage.cpp
+        wizard/webview.cpp
+    )
+endif()
 
 IF(BUILD_UPDATER)
     set(updater_SRCS
@@ -265,9 +270,15 @@ target_link_libraries(nextcloudCore
   Qt5::Qml
   Qt5::Quick
   Qt5::QuickControls2
-  Qt5::WebEngineWidgets
   ${synclib_NAME}
 )
+
+if(WITH_WEBENGINE)
+  target_link_libraries(nextcloudCore
+    PUBLIC
+    Qt5::WebEngineWidgets
+  )
+endif()
 
 set_target_properties(nextcloudCore
   PROPERTIES

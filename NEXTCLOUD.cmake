@@ -31,7 +31,7 @@ option( WITH_CRASHREPORTER "Build crashreporter" OFF )
 option( BUILD_UPDATER "Build updater" OFF )
 
 option( WITH_PROVIDERS "Build with providers list" ON )
-
+option( WITH_WEBENGINE "Enable use of QtWebEngine" ON )
 
 ## Theming options
 set(NEXTCLOUD_BACKGROUND_COLOR "#0082c9" CACHE STRING "Default Nextcloud background color")

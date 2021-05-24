@@ -88,7 +88,6 @@ void OwncloudSetupPage::setupServerAddressDescriptionLabel()
 
 void OwncloudSetupPage::setServerUrl(const QString &newUrl)
 {
-    _ocWizard->setRegistration(false);
     _oCUrl = newUrl;
     if (_oCUrl.isEmpty()) {
         _ui.leUrl->clear();
@@ -118,21 +117,6 @@ void OwncloudSetupPage::setupCustomization()
     leUrlPalette.setColor(QPalette::Base, Qt::white);
     _ui.leUrl->setPalette(leUrlPalette);
 }
-
-#ifdef WITH_PROVIDERS
-void OwncloudSetupPage::slotLogin()
-{
-    _ocWizard->setRegistration(false);
-}
-void OwncloudSetupPage::slotGotoProviderList()
-{
-    _ocWizard->setRegistration(true);
-    _ocWizard->setAuthType(DetermineAuthTypeJob::AuthType::WebViewFlow);
-    _authTypeKnown = true;
-    _checking = false;
-    emit completeChanged();
-}
-#endif
 
 // slot hit from textChanged of the url entry field.
 void OwncloudSetupPage::slotUrlChanged(const QString &url)
@@ -228,8 +212,6 @@ int OwncloudSetupPage::nextId() const
         return WizardCommon::Page_OAuthCreds;
     case DetermineAuthTypeJob::LoginFlowV2:
         return WizardCommon::Page_Flow2AuthCreds;
-    case DetermineAuthTypeJob::WebViewFlow:
-        return WizardCommon::Page_WebView;
     }
     return WizardCommon::Page_HttpCreds;
 }
