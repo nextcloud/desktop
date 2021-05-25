@@ -61,7 +61,7 @@ MenuItem {
                     id: accountControlRowLayout
                     height: accountButton.height
                     width: accountButton.width
-                    spacing: 0
+                    spacing: Style.userStatusSpacing
                     Image {
                         id: accountAvatar
                         Layout.leftMargin: 7
@@ -99,15 +99,10 @@ MenuItem {
 
                     Column {
                         id: accountLabels
-                        spacing: Style.accountLabelsSpacing
-                        Layout.alignment: Qt.AlignLeft
-                        Layout.leftMargin: Style.accountLabelsLayoutMargin
-                        anchors.top: accountAvatar.top
-                        anchors.topMargin: Style.userStatusAnchorsMargin
-                        anchors.left: accountAvatar.right
-                        anchors.leftMargin: Style.accountLabelsAnchorsMargin
+                        Layout.leftMargin: Style.accountLabelsSpacing
                         Label {
                             id: accountUser
+                            Layout.alignment: Qt.AlignLeft | Qt.AlignBottom
                             width: 128
                             text: name
                             elide: Text.ElideRight
@@ -115,11 +110,12 @@ MenuItem {
                             font.pixelSize: Style.topLinePixelSize
                             font.bold: true
                         }
-                        Row {
+                        RowLayout {
                             id: userStatus
                             visible: model.isConnected && 
                                      model.serverHasUserStatus
-                            anchors.top: accountUser.bottom
+                            spacing: Style.userStatusAnchorsMargin
+                            Layout.alignment: Qt.AlignLeft | Qt.AlignTop
                             Label {
                                 id: emoji
                                 visible: model.statusEmoji !== ""
@@ -128,9 +124,8 @@ MenuItem {
                             }
                             Label {
                                 id: message
-                                anchors.bottom: emoji.bottom
-                                anchors.left: emoji.right
-                                anchors.leftMargin: emoji.width + Style.userStatusSpacing
+                                Layout.alignment: Qt.AlignLeft | Qt.AlignBottom
+                                Layout.leftMargin: Style.userStatusAnchorsMargin
                                 visible: model.statusMessage !== ""
                                 width: Style.currentAccountLabelWidth
                                 text: statusMessage
@@ -141,10 +136,7 @@ MenuItem {
                         }
                         Label {
                             id: accountServer
-                            anchors.top: userStatus.bottom
-                            anchors.topMargin: message.visible
-                                               ? message.height + Style.accountServerAnchorsMargin
-                                               : Style.userStatusAnchorsMargin
+                            Layout.alignment: Qt.AlignLeft | Qt.AlignBottom
                             width: Style.currentAccountLabelWidth
                             text: server
                             elide: Text.ElideRight

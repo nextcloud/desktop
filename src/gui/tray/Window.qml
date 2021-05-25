@@ -353,12 +353,12 @@ Window {
 
                         Column {
                             id: accountLabels
-                            spacing: Style.userStatusSpacing
-                            Layout.alignment: Qt.AlignLeft | Qt.AlignTop
+                            spacing: 0
+                            Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
                             Layout.leftMargin: Style.userStatusSpacing
-                            Layout.topMargin: Style.accountLabelsLayoutTopMargin
                             Label {
                                 id: currentAccountUser
+                                Layout.alignment: Qt.AlignLeft | Qt.AlignBottom
                                 width: Style.currentAccountLabelWidth
                                 text: UserModel.currentUser.name
                                 elide: Text.ElideRight
@@ -366,11 +366,11 @@ Window {
                                 font.pixelSize: Style.topLinePixelSize
                                 font.bold: true
                             }
-                            Row {
+                            RowLayout {
                                 id: currentUserStatus
                                 visible: UserModel.currentUser.isConnected &&
                                          UserModel.currentUser.serverHasUserStatus
-                                anchors.top: currentAccountUser.bottom
+                                spacing: Style.accountLabelsSpacing
                                 Label {
                                     id: emoji
                                     visible: UserModel.currentUser.statusEmoji !== ""
@@ -379,9 +379,7 @@ Window {
                                 }
                                 Label {
                                     id: message
-                                    anchors.bottom: emoji.bottom
-                                    anchors.left: emoji.right
-                                    anchors.leftMargin: emoji.width + Style.userStatusSpacing
+                                    Layout.alignment: Qt.AlignLeft | Qt.AlignBottom
                                     visible: UserModel.currentUser.statusMessage !== ""
                                     width: Style.currentAccountLabelWidth
                                     text: UserModel.currentUser.statusMessage !== ""
