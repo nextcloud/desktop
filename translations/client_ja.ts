@@ -359,7 +359,7 @@
         <location filename="../src/gui/accountsettings.cpp" line="304"/>
         <source>You cannot encrypt a folder with contents, please remove the files.
 Wait for the new sync, then encrypt it.</source>
-        <translation>フォルダが空でないと暗号化できません。ファイルを削除してください。
+        <translation>フォルダーが空でないと暗号化できません。ファイルを削除してください。
 新しい同期を待ってから、暗号化します。</translation>
     </message>
     <message>
@@ -473,7 +473,7 @@ Wait for the new sync, then encrypt it.</source>
 The only advantage of disabling virtual file support is that the selective sync feature will become available again.
 
 This action will abort any currently running synchronization.</source>
-        <translation>この操作により、仮想ファイルが無効になります。その結果、現在「オンラインでのみ利用可能」とマークされているフォルダのコンテンツがダウンロードされます。
+        <translation>この操作により、仮想ファイルが無効になります。その結果、現在「オンラインでのみ利用可能」とマークされているフォルダーのコンテンツがダウンロードされます。
 
 仮想ファイルを無効にすることの唯一の利点は、選択的同期機能が再び利用可能になることです。
 
@@ -1019,7 +1019,7 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/libsync/encryptfolderjob.cpp" line="79"/>
         <source>Could not generate the metadata for encryption, Unlocking the folder.
 This can be an issue with your OpenSSL libraries.</source>
-        <translation>暗号化用のメタデータを生成できませんでした。フォルダのロックを解除します。
+        <translation>暗号化用のメタデータを生成できませんでした。フォルダーのロックを解除します。
 これは、OpenSSLライブラリの問題の可能性があります。</translation>
     </message>
 </context>
@@ -1246,7 +1246,7 @@ This can be an issue with your OpenSSL libraries.</source>
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
 
 %1</source>
-        <translation>同期フォルダの変更を確実に追跡できませんでした。
+        <translation>同期フォルダーの変更を確実に追跡できませんでした。
 
 これは、同期クライアントはすぐにローカルの変更をアップロードしない場合がありますが、代わりにローカルの変更をスキャンし（デフォルトでは2時間ごとに）時折それらをアップロードすることを意味します。
 
@@ -1370,7 +1370,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/foldercreationdialog.cpp" line="76"/>
         <source>Could not create a folder! Check your write permissions.</source>
-        <translation>フォルダを作成できませんでした！書き込み権限を確認してください。</translation>
+        <translation>フォルダーを作成できませんでした！書き込み権限を確認してください。</translation>
     </message>
 </context>
 <context>
@@ -2172,7 +2172,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <source>The client can write debug logs to a temporary folder. These logs are very helpful for diagnosing problems.
 Since log files can get large, the client will start a new one for each sync run and compress older ones. It will also delete log files after a couple of hours to avoid consuming too much disk space.
 If enabled, logs will be written to %1</source>
-        <translation>クライアントは、デバッグログを一時フォルダに書き込むようにできます。これらのログは、問題の診断に非常に役立ちます。
+        <translation>クライアントは、デバッグログを一時フォルダーに書き込むようにできます。これらのログは、問題の診断に非常に役立ちます。
 ログファイルは大きくなる可能性があるため、クライアントは同期の実行ごとに新しいログファイルを開始し、古いログファイルを圧縮します。また、ディスク領域の消費を防ぐために、数時間後にログファイルが削除されます。
 有効にすると、ログは %1 に書き込まれます</translation>
     </message>
@@ -2218,7 +2218,7 @@ Note that using any logging command line options will override this setting.</so
         <source>When this option is enabled and no other logging is configured, logs will be written to a temporary folder and expire after a few hours. This setting persists across client restarts.
 
 Logs will be written to %1</source>
-        <translation>このオプションが有効になっていて、他のログが設定されていない場合、ログは一時フォルダに書き込まれ、数時間後に期限切れになります。 この設定はクライアントの再起動後も持続します。
+        <translation>このオプションが有効になっていて、他のログが設定されていない場合、ログは一時フォルダーに書き込まれ、数時間後に期限切れになります。 この設定はクライアントの再起動後も持続します。
 
 ログは %1 に書き込まれます</translation>
     </message>
@@ -2642,7 +2642,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="527"/>
         <source>There isn&apos;t enough free space in the local folder!</source>
-        <translation>ローカルフォルダに十分な空き容量がありません。</translation>
+        <translation>ローカルフォルダーに十分な空き容量がありません。</translation>
     </message>
 </context>
 <context>
@@ -2937,7 +2937,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="613"/>
         <source>Cannot remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
-        <translation>フォルダまたはその中のファイルが別のプログラムで開かれているため、フォルダを削除およびバックアップできません。フォルダまたはファイルを閉じて、再試行を押すか、セットアップをキャンセルしてください。</translation>
+        <translation>フォルダーまたはその中のファイルが別のプログラムで開かれているため、フォルダーを削除およびバックアップできません。フォルダーまたはファイルを閉じて、再試行を押すか、セットアップをキャンセルしてください。</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="666"/>
@@ -2978,7 +2978,7 @@ Switching to this mode will abort any currently running synchronization.
 This is a new, experimental mode. If you decide to use it, please report any issues that come up.</source>
         <translation>&quot;仮想ファイル&quot; モードを有効にした場合、最初にファイルがダウンロードされません。同期ダウンロードされる代わりに、サーバー上に存在するファイルごとにローカルに小さな ”%1&quot; ファイルが作成されます。これらのファイルを実行した時やコンテキストメニューを使用するとコンテンツをダウンロードできます。
 
-仮想ファイルモードは、選択同期モードとどちらかの排他利用です。現在選択されていないフォルダはオンライン専用フォルダに変換され、選択同期モードの設定はリセットされます。
+仮想ファイルモードは、選択同期モードとどちらかの排他利用です。現在選択されていないフォルダーはオンライン専用フォルダに変換され、選択同期モードの設定はリセットされます。
 
 このモードに切り替えると、現在実行中の同期は中止されます。
 
@@ -3121,12 +3121,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1257"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
-        <translation>そのフォルダにサブフォルダを追加する権限がありません</translation>
+        <translation>そのフォルダーにサブフォルダーを追加する権限がありません</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1262"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
-        <translation>そのフォルダにファイルを追加する権限がありません</translation>
+        <translation>そのフォルダーにファイルを追加する権限がありません</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1275"/>
@@ -3399,7 +3399,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="420"/>
         <source>Failed to unlock encrypted folder.</source>
-        <translation>暗号化されたフォルダの解除に失敗しました。</translation>
+        <translation>暗号化されたフォルダーの解除に失敗しました。</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="769"/>
@@ -5084,7 +5084,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="733"/>
         <source>Erase local folder and start a clean sync</source>
-        <translation>ローカルフォルダを消去して、クリーン同期を開始します</translation>
+        <translation>ローカルフォルダーを消去して、クリーン同期を開始します</translation>
     </message>
 </context>
 <context>
@@ -5159,7 +5159,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="343"/>
         <source>Register with a provider</source>
-        <translation>プロバイダに登録する</translation>
+        <translation>プロバイダーに登録する</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="359"/>
@@ -5468,7 +5468,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/Window.qml" line="447"/>
         <source>Open local folder of current account</source>
-        <translation>現在のアカウントのローカルフォルダを開く</translation>
+        <translation>現在のアカウントのローカルフォルダーを開く</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="458"/>
