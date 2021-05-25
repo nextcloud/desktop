@@ -354,10 +354,9 @@ Window {
                         Column {
                             id: accountLabels
                             spacing: Style.userStatusSpacing
-                            Layout.alignment: Qt.AlignLeft
+                            Layout.alignment: Qt.AlignLeft | Qt.AlignTop
                             Layout.leftMargin: Style.userStatusSpacing
-                            anchors.top: currentAccountAvatar.top
-                            anchors.topMargin: Style.userStatusSpacing
+                            Layout.topMargin: Style.accountLabelsLayoutTopMargin
                             Label {
                                 id: currentAccountUser
                                 width: Style.currentAccountLabelWidth
@@ -419,6 +418,7 @@ Window {
                     spacing: 0
                     Layout.preferredWidth:  Style.trayWindowHeaderHeight
                     Layout.preferredHeight: Style.trayWindowHeaderHeight
+                    Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                     
                     HeaderButton {
                         id: openLocalFolderButton
@@ -436,24 +436,27 @@ Window {
                             radius: width*0.5
                             z: 1
                         }
-                   }
-
-                   Image {
-                        id: folderStateIndicator
-                        visible: UserModel.currentUser.hasLocalFolder
-                        source: UserModel.currentUser.isConnected
-                                ? Style.stateOnlineImageSource
-                                : Style.stateOfflineImageSource
-                        cache: false
-                        anchors.top: openLocalFolderButton.verticalCenter
-                        anchors.left: openLocalFolderButton.horizontalCenter
-                        
-                        sourceSize.width: Style.folderStateIndicatorSize
-                        sourceSize.height: Style.folderStateIndicatorSize
     
-                        Accessible.role: Accessible.Indicator
-                        Accessible.name: UserModel.currentUser.isConnected ? qsTr("Connected") : qsTr("Disconnected")
+                        Image {
+                            id: folderStateIndicator
+                            visible: UserModel.currentUser.hasLocalFolder
+                            source: UserModel.currentUser.isConnected
+                                    ? Style.stateOnlineImageSource
+                                    : Style.stateOfflineImageSource
+                            cache: false
+                            
+                            anchors.top: openLocalFolderButton.verticalCenter
+                            anchors.left: openLocalFolderButton.horizontalCenter  
+                            sourceSize.width: Style.folderStateIndicatorSize
+                            sourceSize.height: Style.folderStateIndicatorSize
+        
+                            Accessible.role: Accessible.Indicator
+                            Accessible.name: UserModel.currentUser.isConnected ? qsTr("Connected") : qsTr("Disconnected")
+                            z: 2
+                        }
                     }
+                    
+ 
 
                     Accessible.role: Accessible.Button
                     Accessible.name: qsTr("Open local folder of current account")

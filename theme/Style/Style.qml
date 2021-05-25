@@ -52,6 +52,7 @@ QtObject {
     property int accountLabelsSpacing: 4
     property int accountLabelsAnchorsMargin: 7
     property int accountLabelsLayoutMargin: 9
+    property int accountLabelsLayoutTopMargin: 12
 
     // Visual behaviour
     property bool hoverEffectsEnabled: true
