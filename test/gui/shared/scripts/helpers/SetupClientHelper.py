@@ -1,4 +1,9 @@
 from urllib.parse import urlparse
+import squish
+
+
+confdir = '/tmp/bdd-tests-owncloud-client/'
+confFilePath = confdir + 'owncloud.cfg'
 
 
 def substituteInLineCodes(context, value):
@@ -27,3 +32,59 @@ def getClientDetails(context):
         except:
             pass
     return server, user, password, localfolder
+
+
+def startClient(context):
+    squish.startApplication(
+        "owncloud -s"
+        + " --logfile "
+        + context.userData['clientConfigFile']
+        + " --language en_US"
+        + " --confdir "
+        + confdir
+    )
+    squish.snooze(1)
+
+
+def getPollingInterval():
+    pollingInterval = '''[ownCloud]
+    remotePollInterval={pollingInterval}
+    '''
+    args = {'pollingInterval': 5000}
+    pollingInterval = pollingInterval.format(**args)
+    return pollingInterval
+
+
+def setUpClient(context, username, confFilePath):
+    userSetting = '''
+    [Accounts]
+    0/Folders/1/ignoreHiddenFiles=true
+    0/Folders/1/localPath={client_sync_path}
+    0/Folders/1/paused=false
+    0/Folders/1/targetPath=/
+    0/Folders/1/version=2
+    0/Folders/1/virtualFilesMode=off
+    0/dav_user={davUserName}
+    0/display-name={displayUserName}
+    0/http_oauth=false
+    0/http_user={davUserName}
+    0/url={local_server}
+    0/user={displayUserFirstName}
+    0/version=1
+    version=2
+    '''
+    userFirstName = username.split()
+    userSetting = userSetting + getPollingInterval()
+    args = {
+        'displayUserName': username,
+        'davUserName': userFirstName[0].lower(),
+        'displayUserFirstName': userFirstName[0],
+        'client_sync_path': context.userData['clientSyncPath'],
+        'local_server': context.userData['localBackendUrl'],
+    }
+    userSetting = userSetting.format(**args)
+    configFile = open(confFilePath, "w")
+    configFile.write(userSetting)
+    configFile.close()
+
+    startClient(context)

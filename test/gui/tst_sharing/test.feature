@@ -81,7 +81,7 @@ Feature: Sharing
 	Scenario: simple sharing of a folder by public link with password
         Given user "Alice" has created on the server folder "simple-folder"
         And user "Alice" has set up a client with default settings and password "1234"
-        When the user creates a new public link with permissions "Download / View " for folder "%client_sync_path%/simple-folder" with password "pass123" using the client-UI
+        When the user creates a new public link with permissions "Download / View" for folder "%client_sync_path%/simple-folder" with password "pass123" using the client-UI
         Then as user "Alice" the folder "simple-folder" should have a public link on the server
         And the public should be able to download the folder "lorem.txt" with password "pass123" from the last created public link by "Alice" on the server
 
