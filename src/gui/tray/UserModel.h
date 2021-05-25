@@ -21,11 +21,15 @@ class User : public QObject
     Q_OBJECT
     Q_PROPERTY(QString name READ name NOTIFY nameChanged)
     Q_PROPERTY(QString server READ server CONSTANT)
+    Q_PROPERTY(bool serverHasUserStatus READ serverHasUserStatus CONSTANT)
     Q_PROPERTY(QUrl statusIcon READ statusIcon NOTIFY statusChanged)
+    Q_PROPERTY(QString statusEmoji READ statusEmoji NOTIFY statusChanged)
     Q_PROPERTY(QString statusMessage READ statusMessage NOTIFY statusChanged)
+    Q_PROPERTY(QString desktopNotificationsAllowed READ isDesktopNotificationsAllowed NOTIFY desktopNotificationsAllowedChanged)
     Q_PROPERTY(bool hasLocalFolder READ hasLocalFolder NOTIFY hasLocalFolderChanged)
     Q_PROPERTY(bool serverHasTalk READ serverHasTalk NOTIFY serverHasTalkChanged)
     Q_PROPERTY(QString avatar READ avatarUrl NOTIFY avatarChanged)
+    Q_PROPERTY(bool isConnected READ isConnected NOTIFY accountStateChanged)
 public:
     User(AccountStatePtr &account, const bool &isCurrent = false, QObject *parent = nullptr);
 
@@ -41,6 +45,7 @@ public:
     QString server(bool shortened = true) const;
     bool hasLocalFolder() const;
     bool serverHasTalk() const;
+    bool serverHasUserStatus() const;
     AccountApp *talkApp() const;
     bool hasActivities() const;
     AccountAppList appList() const;
@@ -53,6 +58,7 @@ public:
     UserStatus::Status status() const;
     QString statusMessage() const;
     QUrl statusIcon() const;
+    QString statusEmoji() const;
     void processCompletedSyncItem(const Folder *folder, const SyncFileItemPtr &item);
 
 signals:
@@ -63,6 +69,7 @@ signals:
     void avatarChanged();
     void accountStateChanged(int state);
     void statusChanged();
+    void desktopNotificationsAllowedChanged();
 
 public slots:
     void slotItemCompleted(const QString &folder, const SyncFileItemPtr &item);
@@ -141,11 +148,8 @@ public:
     Q_INVOKABLE void openCurrentAccountServer();
     Q_INVOKABLE int numUsers();
     Q_INVOKABLE QString currentUserServer();
-    Q_INVOKABLE bool currentUserHasActivities();
-    Q_INVOKABLE bool currentUserHasLocalFolder();
     int currentUserId() const;
     Q_INVOKABLE bool isUserConnected(const int &id);
-    Q_INVOKABLE QUrl statusIcon(int id);
     Q_INVOKABLE void switchCurrentUser(const int &id);
     Q_INVOKABLE void login(const int &id);
     Q_INVOKABLE void logout(const int &id);
@@ -156,8 +160,11 @@ public:
     enum UserRoles {
         NameRole = Qt::UserRole + 1,
         ServerRole,
+        ServerHasUserStatusRole,
         StatusIconRole,
+        StatusEmojiRole,
         StatusMessageRole,
+        DesktopNotificationsAllowedRole,
         AvatarRole,
         IsCurrentUserRole,
         IsConnectedRole,
@@ -168,7 +175,6 @@ public:
 
 signals:
     Q_INVOKABLE void addAccount();
-    Q_INVOKABLE void refreshCurrentUserGui();
     Q_INVOKABLE void newUserSelected();
 
 protected:

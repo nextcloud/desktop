@@ -167,13 +167,17 @@ public:
     */
     UserStatus::Status status() const;
 
-    /** Returns the user status Message (emoji + text)
+    /** Returns the user status Message (text)
     */
     QString statusMessage() const;
 
     /** Returns the user status icon url
     */
     QUrl statusIcon() const;
+    
+    /** Returns the user status emoji
+    */
+    QString statusEmoji() const;
 
     /** Returns the notifications status retrieved by the notificatons endpoint
      *  https://github.com/nextcloud/desktop/issues/2318#issuecomment-680698429
@@ -202,6 +206,7 @@ signals:
     void isConnectedChanged();
     void hasFetchedNavigationApps();
     void statusChanged();
+    void desktopNotificationsAllowedChanged();
 
 protected Q_SLOTS:
     void slotConnectionValidatorResult(ConnectionValidator::Status status, const QStringList &errors);

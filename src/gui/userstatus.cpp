@@ -19,6 +19,7 @@
 #include "folderman.h"
 #include "creds/abstractcredentials.h"
 #include "theme.h"
+#include "capabilities.h"
 
 #include <QTimer>
 #include <QJsonDocument>
@@ -28,43 +29,52 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcUserStatus, "nextcloud.gui.userstatus", QtInfoMsg)
 
+namespace {
+    UserStatus::Status stringToEnum(const QString &status) 
+    {
+        // it needs to match the Status enum
+        const QHash<QString, UserStatus::Status> preDefinedStatus{
+            {"online", UserStatus::Status::Online},
+            {"dnd", UserStatus::Status::DoNotDisturb},
+            {"away", UserStatus::Status::Away},
+            {"offline", UserStatus::Status::Offline},
+            {"invisible", UserStatus::Status::Invisible}
+        };
+        
+        // api should return invisible, dnd,... toLower() it is to make sure 
+        // it matches _preDefinedStatus, otherwise the default is online (0)
+        return preDefinedStatus.value(status.toLower(), UserStatus::Status::Online);
+    }
+    
+    QString enumToString(UserStatus::Status status) 
+    {
+        switch (status) {
+        case UserStatus::Status::Away:
+            return QObject::tr("Away");
+        case UserStatus::Status::DoNotDisturb:
+            return QObject::tr("Do not disturb");
+        case UserStatus::Status::Invisible:
+        case UserStatus::Status::Offline:
+            return QObject::tr("Offline");
+        case UserStatus::Status::Online:
+            return QObject::tr("Online");
+        }
+        
+        Q_UNREACHABLE();
+    }
+}
+
 UserStatus::UserStatus(QObject *parent)
     : QObject(parent)
 {
 }
 
-UserStatus::Status UserStatus::stringToEnum(const QString &status) const 
-{
-    // it needs to match the Status enum
-    const QHash<QString, Status> preDefinedStatus{{"online", Status::Online},
-                                               {"dnd", Status::DoNotDisturb}, //DoNotDisturb
-                                               {"away", Status::Away},
-                                               {"offline", Status::Offline},
-                                               {"invisible", Status::Invisible}};
-    
-    // api should return invisible, dnd,... toLower() it is to make sure 
-    // it matches _preDefinedStatus, otherwise the default is online (0)
-    const auto statusKey = status.isEmpty() ? QStringLiteral("online") : status.toLower();
-    return preDefinedStatus.value(statusKey, Status::Online);
-}
-
-QString UserStatus::enumToString(Status status) const 
-{
-    switch (status) {
-    case Status::Away:
-        return tr("Away");
-    case Status::DoNotDisturb:
-        return tr("Do not disturb");
-    case Status::Invisible:
-    case Status::Offline:
-        return tr("Offline");
-    default:
-        return tr("Online");
-    }
-}
-
 void UserStatus::fetchUserStatus(AccountPtr account)
 {
+    if (!account->capabilities().userStatus()) {
+        return;
+    }
+    
     if (_job) {
         _job->deleteLater();
     }
@@ -79,7 +89,9 @@ void UserStatus::slotFetchUserStatusFinished(const QJsonDocument &json, int stat
     const QJsonObject defaultValues {
         {"icon", ""},
         {"message", ""},
-        {"status", "online"}
+        {"status", "online"},
+        {"messageIsPredefined", "false"},
+        {"statusIsUserDefined", "false"}
     };
     
     if (statusCode != 200) {
@@ -88,13 +100,11 @@ void UserStatus::slotFetchUserStatusFinished(const QJsonDocument &json, int stat
     }
     
     const auto retrievedData = json.object().value("ocs").toObject().value("data").toObject(defaultValues);
-    const auto emoji = retrievedData.value("icon").toString();
-    const auto message = retrievedData.value("message").toString();
-    
-    _status = stringToEnum(retrievedData.value("status").toString());
-    const auto visibleStatusText = message.isEmpty() ? enumToString(_status) : message;
 
-    _message = QString("%1 %2").arg(emoji, visibleStatusText);
+    _emoji = retrievedData.value("icon").toString().trimmed();
+    _status = stringToEnum(retrievedData.value("status").toString());
+    _message = retrievedData.value("message").toString().trimmed();
+
     emit fetchUserStatusFinished();
 }
 
@@ -105,7 +115,12 @@ UserStatus::Status UserStatus::status() const
 
 QString UserStatus::message() const
 {
-    return _message.trimmed();
+    return _message;
+}
+
+QString UserStatus::emoji() const
+{
+    return _emoji;
 }
 
 QUrl UserStatus::icon() const
@@ -118,9 +133,11 @@ QUrl UserStatus::icon() const
     case Status::Invisible:
     case Status::Offline:
         return Theme::instance()->statusInvisibleImageSource();
-    default:
+    case Status::Online:
         return Theme::instance()->statusOnlineImageSource();
     }
+    
+    Q_UNREACHABLE();
 }
 
 } // namespace OCC

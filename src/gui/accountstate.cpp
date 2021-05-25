@@ -142,6 +142,11 @@ QUrl AccountState::statusIcon() const
     return _userStatus->icon();
 }
 
+QString AccountState::statusEmoji() const
+{
+    return _userStatus->emoji();
+}
+
 QString AccountState::stateString(State state)
 {
     switch (state) {
@@ -229,7 +234,12 @@ bool AccountState::isDesktopNotificationsAllowed() const
 
 void AccountState::setDesktopNotificationsAllowed(bool isAllowed)
 {
+    if (_isDesktopNotificationsAllowed == isAllowed) {
+        return;
+    }
+    
     _isDesktopNotificationsAllowed = isAllowed;
+    emit desktopNotificationsAllowedChanged();
 }
 
 void AccountState::checkConnectivity()

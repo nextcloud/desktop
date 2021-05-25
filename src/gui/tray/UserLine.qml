@@ -64,14 +64,16 @@ MenuItem {
                     spacing: 0
                     Image {
                         id: accountAvatar
-                        Layout.leftMargin: 4
+                        Layout.leftMargin: 7
                         verticalAlignment: Qt.AlignCenter
                         cache: false
                         source: model.avatar != "" ? model.avatar : "image://avatars/fallbackBlack"
-                        Layout.preferredHeight: (userLineLayout.height -16)
-                        Layout.preferredWidth: (userLineLayout.height -16)
+                        Layout.preferredHeight: Style.accountAvatarSize
+                        Layout.preferredWidth: Style.accountAvatarSize
                         Rectangle {
                             id: accountStatusIndicatorBackground
+                            visible: model.isConnected && 
+                                     model.serverHasUserStatus
                             width: accountStatusIndicator.sourceSize.width + 2
                             height: width
                             anchors.bottom: accountAvatar.bottom
@@ -81,7 +83,9 @@ MenuItem {
                         }
                         Image {
                             id: accountStatusIndicator
-                            source: model.statusIcon
+                            visible: model.isConnected && 
+                                     model.serverHasUserStatus
+                            source: model.statusIcon 
                             cache: false
                             x: accountStatusIndicatorBackground.x + 1
                             y: accountStatusIndicatorBackground.y + 1
@@ -89,39 +93,63 @@ MenuItem {
                             sourceSize.height: Style.accountAvatarStateIndicatorSize
 
                             Accessible.role: Accessible.Indicator
-                            Accessible.name: model.isStatusOnline ? qsTr("Current user status is online") : qsTr("Current user status is do not disturb")
+                            Accessible.name: model.desktopNotificationsAllowed ? qsTr("Current user status is online") : qsTr("Current user status is do not disturb")
                         }
                     }
 
                     Column {
                         id: accountLabels
-                        spacing: 4
+                        spacing: Style.accountLabelsSpacing
                         Layout.alignment: Qt.AlignLeft
-                        Layout.leftMargin: 6
+                        Layout.leftMargin: Style.accountLabelsLayoutMargin
+                        anchors.top: accountAvatar.top
+                        anchors.topMargin: Style.userStatusAnchorsMargin
+                        anchors.left: accountAvatar.right
+                        anchors.leftMargin: Style.accountLabelsAnchorsMargin
                         Label {
                             id: accountUser
                             width: 128
                             text: name
                             elide: Text.ElideRight
                             color: "black"
-                            font.pixelSize: 12
+                            font.pixelSize: Style.topLinePixelSize
                             font.bold: true
                         }
-                        Label {
-                            id: userStatusMessage
-                            width: 128
-                            text: statusMessage
-                            elide: Text.ElideRight
-                            color: "black"
-                            font.pixelSize: 10
+                        Row {
+                            id: userStatus
+                            visible: model.isConnected && 
+                                     model.serverHasUserStatus
+                            anchors.top: accountUser.bottom
+                            Label {
+                                id: emoji
+                                visible: model.statusEmoji !== ""
+                                width: Style.userStatusEmojiSize
+                                text: statusEmoji
+                            }
+                            Label {
+                                id: message
+                                anchors.bottom: emoji.bottom
+                                anchors.left: emoji.right
+                                anchors.leftMargin: emoji.width + Style.userStatusSpacing
+                                visible: model.statusMessage !== ""
+                                width: Style.currentAccountLabelWidth
+                                text: statusMessage
+                                elide: Text.ElideRight
+                                color: "black"
+                                font.pixelSize: Style.subLinePixelSize
+                            }
                         }
                         Label {
                             id: accountServer
-                            width: 128
+                            anchors.top: userStatus.bottom
+                            anchors.topMargin: message.visible
+                                               ? message.height + Style.accountServerAnchorsMargin
+                                               : Style.userStatusAnchorsMargin
+                            width: Style.currentAccountLabelWidth
                             text: server
                             elide: Text.ElideRight
                             color: "black"
-                            font.pixelSize: 10
+                            font.pixelSize: Style.subLinePixelSize
                         }
                     }
                 }

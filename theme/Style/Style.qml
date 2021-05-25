@@ -44,6 +44,14 @@ QtObject {
     property int headerButtonIconSize: 32
 
     property int activityLabelBaseWidth: 240
+    
+    property int userStatusEmojiSize: 8
+    property int userStatusSpacing: 6
+    property int userStatusAnchorsMargin: 2
+    property int accountServerAnchorsMargin: 10
+    property int accountLabelsSpacing: 4
+    property int accountLabelsAnchorsMargin: 7
+    property int accountLabelsLayoutMargin: 9
 
     // Visual behaviour
     property bool hoverEffectsEnabled: true

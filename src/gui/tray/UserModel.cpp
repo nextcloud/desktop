@@ -56,6 +56,7 @@ User::User(AccountStatePtr &account, const bool &isCurrent, QObject *parent)
 
     connect(_account->account().data(), &Account::accountChangedAvatar, this, &User::avatarChanged);
     connect(_account.data(), &AccountState::statusChanged, this, &User::statusChanged);
+    connect(_account.data(), &AccountState::desktopNotificationsAllowedChanged, this, &User::desktopNotificationsAllowedChanged);
 
     connect(_activityModel, &ActivityListModel::sendNotificationRequest, this, &User::slotSendNotificationRequest);
 }
@@ -214,7 +215,6 @@ void User::slotRefreshActivities()
 
 void User::slotRefreshUserStatus() 
 {
-    // TODO: check for _account->account()->capabilities().userStatus() 
     if (_account.data() && _account.data()->isConnected()) {
         _account.data()->fetchUserStatus();
     }
@@ -576,6 +576,16 @@ QUrl User::statusIcon() const
     return _account->statusIcon();
 }
 
+QString User::statusEmoji() const
+{
+    return _account->statusEmoji();
+}
+
+bool User::serverHasUserStatus() const
+{
+    return _account->account()->capabilities().userStatus();
+}
+
 QImage User::avatar() const
 {
     return AvatarJob::makeCircularAvatar(_account->account()->avatar());
@@ -669,7 +679,6 @@ void UserModel::buildUserList()
     }
     if (_init) {
         _users.first()->setCurrentUser(true);
-        connect(_users.first(), &User::accountStateChanged, this, &UserModel::refreshCurrentUserGui);
         _init = false;
     }
 }
@@ -691,16 +700,6 @@ Q_INVOKABLE bool UserModel::isUserConnected(const int &id)
 
     return _users[id]->isConnected();
 }
-
-Q_INVOKABLE QUrl UserModel::statusIcon(int id)
-{
-    if (id < 0 || id >= _users.size()) {
-        return {};
-    }
-
-    return _users[id]->statusIcon();
-}
-
 
 QImage UserModel::avatarById(const int &id)
 {
@@ -740,13 +739,21 @@ void UserModel::addUser(AccountStatePtr &user, const bool &isCurrent)
 
         connect(u, &User::statusChanged, this, [this, row] {
             emit dataChanged(index(row, 0), index(row, 0), {UserModel::StatusIconRole, 
+			    				    UserModel::StatusEmojiRole,     
                                                             UserModel::StatusMessageRole});
+        });
+        
+        connect(u, &User::desktopNotificationsAllowedChanged, this, [this, row] {
+            emit dataChanged(index(row, 0), index(row, 0), { UserModel::DesktopNotificationsAllowedRole });
+        });
+        
+        connect(u, &User::accountStateChanged, this, [this, row] {
+            emit dataChanged(index(row, 0), index(row, 0), { UserModel::IsConnectedRole });
         });
 
         _users << u;
         if (isCurrent) {
             _currentUserId = _users.indexOf(_users.last());
-            connect(u, &User::accountStateChanged, this, &UserModel::refreshCurrentUserGui);
         }
 
         endInsertRows();
@@ -799,13 +806,10 @@ Q_INVOKABLE void UserModel::switchCurrentUser(const int &id)
 {
     if (_currentUserId < 0 || _currentUserId >= _users.size())
         return;
-
-    disconnect(_users[_currentUserId], &User::accountStateChanged, this, &UserModel::refreshCurrentUserGui);
+    
     _users[_currentUserId]->setCurrentUser(false);
     _users[id]->setCurrentUser(true);
-    connect(_users[id], &User::accountStateChanged, this, &UserModel::refreshCurrentUserGui);
     _currentUserId = id;
-    emit refreshCurrentUserGui();
     emit newUserSelected();
 }
 
@@ -815,7 +819,6 @@ Q_INVOKABLE void UserModel::login(const int &id)
         return;
 
     _users[id]->login();
-    emit refreshCurrentUserGui();
 }
 
 Q_INVOKABLE void UserModel::logout(const int &id)
@@ -824,7 +827,6 @@ Q_INVOKABLE void UserModel::logout(const int &id)
         return;
 
     _users[id]->logout();
-    emit refreshCurrentUserGui();
 }
 
 Q_INVOKABLE void UserModel::removeAccount(const int &id)
@@ -847,10 +849,6 @@ Q_INVOKABLE void UserModel::removeAccount(const int &id)
         return;
     }
 
-    if (_users[id]->isCurrentUser()) {
-        disconnect(_users[id], &User::accountStateChanged, this, &UserModel::refreshCurrentUserGui);
-    }
-
     if (_users[id]->isCurrentUser() && _users.count() > 1) {
         id == 0 ? switchCurrentUser(1) : switchCurrentUser(0);
     }
@@ -861,8 +859,6 @@ Q_INVOKABLE void UserModel::removeAccount(const int &id)
     beginRemoveRows(QModelIndex(), id, id);
     _users.removeAt(id);
     endRemoveRows();
-
-    emit refreshCurrentUserGui();
 }
 
 int UserModel::rowCount(const QModelIndex &parent) const
@@ -881,10 +877,16 @@ QVariant UserModel::data(const QModelIndex &index, int role) const
         return _users[index.row()]->name();
     } else if (role == ServerRole) {
         return _users[index.row()]->server();
+    } else if (role == ServerHasUserStatusRole) {
+        return _users[index.row()]->serverHasUserStatus();
     } else if (role == StatusIconRole) {
         return _users[index.row()]->statusIcon();
+    } else if (role == StatusEmojiRole) {
+        return _users[index.row()]->statusEmoji();
     } else if (role == StatusMessageRole) {
         return _users[index.row()]->statusMessage();
+    } else if (role == DesktopNotificationsAllowedRole) {
+        return _users[index.row()]->isDesktopNotificationsAllowed();
     } else if (role == AvatarRole) {
         return _users[index.row()]->avatarUrl();
     } else if (role == IsCurrentUserRole) {
@@ -902,8 +904,11 @@ QHash<int, QByteArray> UserModel::roleNames() const
     QHash<int, QByteArray> roles;
     roles[NameRole] = "name";
     roles[ServerRole] = "server";
+    roles[ServerHasUserStatusRole] = "serverHasUserStatus";
     roles[StatusIconRole] = "statusIcon";
+    roles[StatusEmojiRole] = "statusEmoji";
     roles[StatusMessageRole] = "statusMessage";
+    roles[DesktopNotificationsAllowedRole] = "desktopNotificationsAllowed";
     roles[AvatarRole] = "avatar";
     roles[IsCurrentUserRole] = "isCurrentUser";
     roles[IsConnectedRole] = "isConnected";
@@ -917,22 +922,6 @@ ActivityListModel *UserModel::currentActivityModel()
         return nullptr;
 
     return _users[currentUserIndex()]->getActivityModel();
-}
-
-bool UserModel::currentUserHasActivities()
-{
-    if (currentUserIndex() < 0 || currentUserIndex() >= _users.size())
-        return false;
-
-    return _users[currentUserIndex()]->hasActivities();
-}
-
-bool UserModel::currentUserHasLocalFolder()
-{
-    if (currentUserIndex() < 0 || currentUserIndex() >= _users.size())
-        return false;
-
-    return _users[currentUserIndex()]->getFolder() != nullptr;
 }
 
 void UserModel::fetchCurrentActivityModel()

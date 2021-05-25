@@ -35,11 +35,6 @@ Window {
     }
 
     onVisibleChanged: {
-        folderStateIndicator.source = ""
-        folderStateIndicator.source = UserModel.isUserConnected(UserModel.currentUserId)
-                ? Style.stateOnlineImageSource
-                : Style.stateOfflineImageSource
-
         // HACK: reload account Instantiator immediately by restting it - could be done better I guess
         // see also id:accountMenu below
         userLineInstantiator.active = false;
@@ -48,12 +43,6 @@ Window {
 
     Connections {
         target: UserModel
-        onRefreshCurrentUserGui: {
-            folderStateIndicator.source = ""
-            folderStateIndicator.source = UserModel.isUserConnected(UserModel.currentUserId)
-                    ? Style.stateOnlineImageSource
-                    : Style.stateOfflineImageSource
-        }
         onNewUserSelected: {
             accountMenu.close();
         }
@@ -329,6 +318,8 @@ Window {
 
                             Rectangle {
                                 id: currentAccountStatusIndicatorBackground
+                                visible: UserModel.currentUser.isConnected
+                                         && UserModel.currentUser.serverHasUserStatus
                                 width: Style.accountAvatarStateIndicatorSize + 2
                                 height: width
                                 anchors.bottom: currentAccountAvatar.bottom
@@ -338,6 +329,9 @@ Window {
                             }
 
                             Rectangle {
+                                id: currentAccountStatusIndicatorMouseHover
+                                visible: UserModel.currentUser.isConnected
+                                         && UserModel.currentUser.serverHasUserStatus
                                 width: Style.accountAvatarStateIndicatorSize + 2
                                 height: width
                                 anchors.bottom: currentAccountAvatar.bottom
@@ -349,6 +343,8 @@ Window {
 
                             Image {
                                 id: currentAccountStatusIndicator
+                                visible: UserModel.currentUser.isConnected
+                                         && UserModel.currentUser.serverHasUserStatus
                                 source: UserModel.currentUser.statusIcon
                                 cache: false
                                 x: currentAccountStatusIndicatorBackground.x + 1
@@ -357,18 +353,19 @@ Window {
                                 sourceSize.height: Style.accountAvatarStateIndicatorSize
 
                                 Accessible.role: Accessible.Indicator
-                                Accessible.name: UserModel.isUserStatusOnline(UserModel.currentUserId()) ? qsTr("Current user status is online") : qsTr("Current user status is do not disturb")
+                                Accessible.name: UserModel.desktopNotificationsAllowed ? qsTr("Current user status is online") : qsTr("Current user status is do not disturb")
                             }
                         }
 
                         Column {
                             id: accountLabels
-                            spacing: 4
+                            spacing: Style.userStatusSpacing
                             Layout.alignment: Qt.AlignLeft
-                            Layout.leftMargin: 6
+                            Layout.leftMargin: Style.userStatusSpacing
+                            anchors.top: currentAccountAvatar.top
+                            anchors.topMargin: Style.userStatusSpacing
                             Label {
                                 id: currentAccountUser
-
                                 width: Style.currentAccountLabelWidth
                                 text: UserModel.currentUser.name
                                 elide: Text.ElideRight
@@ -376,13 +373,31 @@ Window {
                                 font.pixelSize: Style.topLinePixelSize
                                 font.bold: true
                             }
-                            Label {
+                            Row {
                                 id: currentUserStatus
-                                width: Style.currentAccountLabelWidth
-                                text: UserModel.currentUser.statusMessage
-                                elide: Text.ElideRight
-                                color: Style.ncTextColor
-                                font.pixelSize: Style.subLinePixelSize
+                                visible: UserModel.currentUser.isConnected &&
+                                         UserModel.currentUser.serverHasUserStatus
+                                anchors.top: currentAccountUser.bottom
+                                Label {
+                                    id: emoji
+                                    visible: UserModel.currentUser.statusEmoji !== ""
+                                    width: Style.userStatusEmojiSize
+                                    text: UserModel.currentUser.statusEmoji
+                                }
+                                Label {
+                                    id: message
+                                    anchors.bottom: emoji.bottom
+                                    anchors.left: emoji.right
+                                    anchors.leftMargin: emoji.width + Style.userStatusSpacing
+                                    visible: UserModel.currentUser.statusMessage !== ""
+                                    width: Style.currentAccountLabelWidth
+                                    text: UserModel.currentUser.statusMessage !== ""
+                                          ? UserModel.currentUser.statusMessage 
+                                          : UserModel.currentUser.server
+                                    elide: Text.ElideRight
+                                    color: Style.ncTextColor
+                                    font.pixelSize: Style.subLinePixelSize
+                                }
                             }
                         }
 
@@ -429,7 +444,8 @@ Window {
 
                    Image {
                         id: folderStateIndicator
-                        source: UserModel.isUserConnected(UserModel.currentUserId)
+                        visible: UserModel.currentUser.hasLocalFolder
+                        source: UserModel.currentUser.isConnected
                                 ? Style.stateOnlineImageSource
                                 : Style.stateOfflineImageSource
                         cache: false
@@ -440,7 +456,7 @@ Window {
                         sourceSize.height: Style.folderStateIndicatorSize
     
                         Accessible.role: Accessible.Indicator
-                        Accessible.name: UserModel.isUserConnected(UserModel.currentUserId()) ? qsTr("Connected") : qsTr("Disconnected")
+                        Accessible.name: UserModel.currentUser.isConnected ? qsTr("Connected") : qsTr("Disconnected")
                     }
 
                     Accessible.role: Accessible.Button
