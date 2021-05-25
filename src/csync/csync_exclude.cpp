@@ -319,12 +319,13 @@ bool ExcludedFiles::isExcluded(
     const QString &basePath,
     bool excludeHidden) const
 {
-    const QFileInfo fileInfo(filePath);
-    if (!fileInfo.exists(filePath)) {
-        return true;
-    }
     if (!filePath.startsWith(basePath, Utility::fsCasePreserving() ? Qt::CaseInsensitive : Qt::CaseSensitive)) {
         // Mark paths we're not responsible for as excluded...
+        return true;
+    }
+
+    const QFileInfo fileInfo(filePath);
+    if (!fileInfo.exists(filePath)) {
         return true;
     }
 
@@ -341,10 +342,18 @@ bool ExcludedFiles::isExcluded(
             fi = {fi.absolutePath()};
         }
     }
-
     ItemType type = ItemTypeFile;
     if (fileInfo.isDir()) {
         type = ItemTypeDirectory;
+    }
+    return isExcludedRemote(filePath, basePath, type);
+}
+
+bool ExcludedFiles::isExcludedRemote(const QString &filePath, const QString &basePath, ItemType type) const
+{
+    if (!filePath.startsWith(basePath, Utility::fsCasePreserving() ? Qt::CaseInsensitive : Qt::CaseSensitive)) {
+        // Mark paths we're not responsible for as excluded...
+        return true;
     }
 
     auto relativePath = filePath.midRef(basePath.size());

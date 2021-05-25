@@ -98,6 +98,15 @@ public:
         bool excludeHidden) const;
 
     /**
+     * Checks whether a remote file or directory should be excluded.
+     *
+     * @param filePath     the absolute path to the file
+     * @param basePath     folder path from which to apply exclude rules, ends with a /
+     */
+    bool isExcludedRemote(const QString &filePath,
+        const QString &basePath, ItemType type = ItemTypeFile) const;
+
+    /**
      * Adds an exclude pattern.
      *
      * Primarily used in tests. Patterns added this way are preserved when

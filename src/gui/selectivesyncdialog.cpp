@@ -184,27 +184,17 @@ void SelectiveSyncWidget::recursiveInsert(QTreeWidgetItem *parent, QStringList p
 void SelectiveSyncWidget::slotUpdateDirectories(QStringList list)
 {
     auto job = qobject_cast<LsColJob *>(sender());
-    QScopedValueRollback<bool> isInserting(_inserting);
-    _inserting = true;
+    QScopedValueRollback<bool> isInserting(_inserting, true);
 
     SelectiveSyncTreeViewItem *root = static_cast<SelectiveSyncTreeViewItem *>(_folderTree->topLevelItem(0));
 
-    QUrl url = _account->davUrl();
-    QString pathToRemove = url.path();
-    if (!pathToRemove.endsWith('/')) {
-        pathToRemove.append('/');
-    }
-    pathToRemove.append(_folderPath);
-    if (!_folderPath.isEmpty())
-        pathToRemove.append('/');
+    const QString pathToRemove = Utility::concatUrlPath(_account->davUrl(), _folderPath).path();
 
     // Check for excludes.
-    QMutableListIterator<QString> it(list);
-    while (it.hasNext()) {
-        it.next();
-        if (_excludedFiles.isExcluded(it.value(), pathToRemove, FolderMan::instance()->ignoreHiddenFiles()))
-            it.remove();
-    }
+    list.erase(std::remove_if(list.begin(), list.end(), [&pathToRemove, this](const QString &it) {
+        return _excludedFiles.isExcludedRemote(it, pathToRemove, ItemTypeDirectory);
+    }),
+        list.end());
 
     // Since / cannot be in the blacklist, expand it to the actual
     // list of top-level folders as soon as possible.
@@ -282,11 +272,7 @@ void SelectiveSyncWidget::slotItemExpanded(QTreeWidgetItem *item)
     QString dir = item->data(0, Qt::UserRole).toString();
     if (dir.isEmpty())
         return;
-    QString prefix;
-    if (!_folderPath.isEmpty()) {
-        prefix = _folderPath + QLatin1Char('/');
-    }
-    LsColJob *job = new LsColJob(_account, prefix + dir, this);
+    LsColJob *job = new LsColJob(_account, _folderPath + dir, this);
     job->setProperties(QList<QByteArray>() << "resourcetype"
                                            << "http://owncloud.org/ns:size");
     connect(job, &LsColJob::directoryListingSubfolders,
