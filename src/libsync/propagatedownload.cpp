@@ -427,6 +427,12 @@ void PropagateDownloadFile::startAfterIsEncryptedIsChecked()
         }
         propagator()->_journal->deleteFileRecord(_item->_originalFile);
         updateMetadata(false);
+
+        if (!_item->_remotePerm.isNull() && !_item->_remotePerm.hasPermission(RemotePermissions::CanWrite)) {
+            // make sure ReadOnly flag is preserved for placeholder, similarly to regular files
+            FileSystem::setFileReadOnly(propagator()->fullLocalPath(_item->_file), true);
+        }
+
         return;
     }
     if (vfs->mode() == Vfs::Off && _item->_type == ItemTypeVirtualFile) {
@@ -441,6 +447,12 @@ void PropagateDownloadFile::startAfterIsEncryptedIsChecked()
             return;
         }
         updateMetadata(false);
+
+        if (!_item->_remotePerm.isNull() && !_item->_remotePerm.hasPermission(RemotePermissions::CanWrite)) {
+            // make sure ReadOnly flag is preserved for placeholder, similarly to regular files
+            FileSystem::setFileReadOnly(propagator()->fullLocalPath(_item->_file), true);
+        }
+
         return;
     }
 
