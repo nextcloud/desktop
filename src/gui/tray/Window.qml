@@ -21,9 +21,6 @@ Window {
 
     readonly property int maxMenuHeight: Style.trayWindowHeight - Style.trayWindowHeaderHeight - 2 * Style.trayWindowBorderWidth
 
-    Accessible.role: Accessible.Application
-    Accessible.name: qsTr("Nextcloud desktop main dialog")
-
     Component.onCompleted: Systray.forceWindowInit(trayWindow)
 
     // Close tray window when focus is lost (e.g. click somewhere else on the screen)
@@ -153,9 +150,6 @@ Window {
                                 border.color: Style.menuBorder
                                 radius: Style.currentAccountButtonRadius
                             }
-
-                            Accessible.role: PopupMenu
-                            Accessible.name: qsTr("Account switcher and settings menu")
 
                             onClosed: {
                                 // HACK: reload account Instantiator immediately by restting it - could be done better I guess
@@ -413,6 +407,8 @@ Window {
                                 source: "qrc:///client/theme/white/caret-down.svg"
                                 sourceSize.width: Style.accountDropDownCaretSize
                                 sourceSize.height: Style.accountDropDownCaretSize
+                                Accessible.role: PopupMenu
+                                Accessible.name: qsTr("Account switcher and settings menu")
                             }
                         }
                     }
@@ -506,9 +502,6 @@ Window {
                             radius: 2
                         }
 
-                        Accessible.role: Accessible.PopupMenu
-                        Accessible.name: qsTr("Apps menu")
-
                         Instantiator {
                             id: appsMenuInstantiator
                             model: UserAppsModel
@@ -532,6 +525,9 @@ Window {
                                         anchors.margins: 1
                                         color: appEntry.hovered ? Style.lightHover : "transparent"
                                     }
+                                    
+                                    Accessible.role: Accessible.PopupMenu
+                                    Accessible.name: qsTr("Apps menu")
                                 }
 
                                 Accessible.role: Accessible.MenuItem
