@@ -286,7 +286,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="84"/>
         <source>End-to-End Encryption with Virtual Files</source>
-        <translation type="unfinished"/>
+        <translation>Crittografia End-to-End con File Virtuali</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="85"/>
@@ -296,7 +296,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="93"/>
         <source>Don&apos;t encrypt folder</source>
-        <translation type="unfinished"/>
+        <translation>Non crittografare la cartella</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="94"/>
@@ -4659,7 +4659,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/vfs/cfapi/vfs_cfapi.cpp" line="314"/>
         <source>Download of End-to-End encrypted file failed</source>
-        <translation type="unfinished"/>
+        <translation>Scaricamento del file crittografato End-to-End fallito</translation>
     </message>
     <message>
         <location filename="../src/libsync/vfs/cfapi/vfs_cfapi.cpp" line="315"/>
