@@ -19,8 +19,8 @@
 
 class __declspec(dllexport) StringUtil {
 public:
-    static std::string  toUtf8(const wchar_t* utf16, int len = -1);
-    static std::wstring toUtf16(const char* utf8, int len = -1);
+    static std::string toUtf8(const wchar_t *utf16, size_t len);
+    static std::wstring toUtf16(const char *utf8, size_t len);
 
     template<class T>
     static bool begins_with(const T& input, const T& match)

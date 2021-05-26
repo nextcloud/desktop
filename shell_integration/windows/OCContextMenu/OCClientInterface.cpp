@@ -67,7 +67,7 @@ void sendV2(const CommunicationSocket &socket, const wstring &command, const nlo
     const auto data = json.dump();
     wstringstream tmp;
     tmp << command << L":" << StringUtil::toUtf16(data.data(), data.size()) << L"\n";
-    socket.SendMsg(tmp.str().data());
+    socket.SendMsg(tmp.str());
 }
 
 pair<wstring, nlohmann::json> parseV2(const wstring &data)
@@ -116,7 +116,7 @@ OCClientInterface::ContextMenuInfo OCClientInterface::FetchInfo(const std::wstri
     }
     sendV2(socket, L"V2/GET_CLIENT_ICON", { { "size", 16 } });
     socket.SendMsg(L"GET_STRINGS:CONTEXT_MENU_TITLE\n");
-    socket.SendMsg((L"GET_MENU_ITEMS:" + files + L"\n").data());
+    socket.SendMsg(L"GET_MENU_ITEMS:" + files + L"\n");
 
     ContextMenuInfo info;
     std::wstring response;
@@ -160,7 +160,7 @@ OCClientInterface::ContextMenuInfo OCClientInterface::FetchInfo(const std::wstri
     return info;
 }
 
-void OCClientInterface::SendRequest(const wchar_t *verb, const std::wstring &path)
+void OCClientInterface::SendRequest(const wstring &verb, const std::wstring &path)
 {
     auto pipename = CommunicationSocket::DefaultPipePath();
 
@@ -172,5 +172,5 @@ void OCClientInterface::SendRequest(const wchar_t *verb, const std::wstring &pat
         return;
     }
 
-    socket.SendMsg((verb + (L":" + path + L"\n")).data());
+    socket.SendMsg(verb + L":" + path + L"\n");
 }

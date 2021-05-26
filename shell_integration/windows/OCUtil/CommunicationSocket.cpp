@@ -80,12 +80,12 @@ bool CommunicationSocket::Connect(const std::wstring &pipename)
     return true;
 }
 
-bool CommunicationSocket::SendMsg(const wchar_t* message) const
+bool CommunicationSocket::SendMsg(const wstring &message) const
 {
-    auto utf8_msg = StringUtil::toUtf8(message);
+    auto utf8_msg = StringUtil::toUtf8(message.data(), message.size());
 
     DWORD numBytesWritten = 0;
-    auto result = WriteFile( _pipe, utf8_msg.c_str(), DWORD(utf8_msg.size()), &numBytesWritten, NULL);
+    auto result = WriteFile(_pipe, utf8_msg.c_str(), static_cast<DWORD>(utf8_msg.size()), &numBytesWritten, NULL);
 
     if (result) {
         return true;
@@ -112,7 +112,7 @@ bool CommunicationSocket::ReadLine(wstring* response)
         int lbPos = 0;
         auto it = std::find(_buffer.begin() + lbPos, _buffer.end(), '\n');
         if (it != _buffer.end()) {
-            *response = StringUtil::toUtf16(_buffer.data(), DWORD(it - _buffer.begin()));
+            *response = StringUtil::toUtf16(_buffer.data(), distance(_buffer.begin(), it));
             _buffer.erase(_buffer.begin(), it + 1);
             return true;
         }

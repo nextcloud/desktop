@@ -62,7 +62,7 @@ void RemotePathChecker::workerThreadLoop()
                 lock.unlock();
                 if (!asked.count(filePath)) {
                     asked.insert(filePath);
-                    socket.SendMsg(wstring(L"RETRIEVE_FILE_STATUS:" + filePath + L'\n').data());
+                    socket.SendMsg(L"RETRIEVE_FILE_STATUS:" + filePath + L'\n');
                 }
                 lock.lock();
             }
