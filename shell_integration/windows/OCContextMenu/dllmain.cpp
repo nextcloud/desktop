@@ -17,6 +17,11 @@
 #include "OCContextMenuRegHandler.h"
 #include "OCContextMenuFactory.h"
 
+// gdiplus min/max
+using namespace std;
+#include <algorithm>
+#include <gdiplus.h>
+
 // {841A0AAD-AA11-4B50-84D9-7F8E727D77D7}
 static const GUID CLSID_FileContextMenuExt = { 0x841a0aad, 0xaa11, 0x4b50, { 0x84, 0xd9, 0x7f, 0x8e, 0x72, 0x7d, 0x77, 0xd7 } };
 
@@ -25,18 +30,24 @@ long        g_cDllRef = 0;
 
 BOOL APIENTRY DllMain(HMODULE hModule, DWORD dwReason, LPVOID lpReserved)
 {
-	switch (dwReason)
-	{
-	case DLL_PROCESS_ATTACH:
-		// Hold the instance of this DLL module, we will use it to get the 
-		// path of the DLL to register the component.
-		g_hInst = hModule;
-		DisableThreadLibraryCalls(hModule);
-		break;
-	case DLL_THREAD_ATTACH:
+    static ULONG_PTR gdiplusToken = 0;
+    switch (dwReason) {
+    case DLL_PROCESS_ATTACH: {
+        // Hold the instance of this DLL module, we will use it to get the
+        // path of the DLL to register the component.
+        g_hInst = hModule;
+        DisableThreadLibraryCalls(hModule);
+
+        Gdiplus::GdiplusStartupInput gdiplusStartupInput;
+        Gdiplus::GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, NULL);
+        break;
+    }
+        case DLL_THREAD_ATTACH:
 	case DLL_THREAD_DETACH:
-	case DLL_PROCESS_DETACH:
-		break;
+            break;
+        case DLL_PROCESS_DETACH:
+            Gdiplus::GdiplusShutdown(gdiplusToken);
+            break;
 	}
 	return TRUE;
 }

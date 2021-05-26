@@ -1,0 +1,5 @@
+Enhancement: Display an icon in the Windows explorer context menu
+
+We now display the ownCloud icon in the context menu.
+
+https://github.com/owncloud/client/issues/4627

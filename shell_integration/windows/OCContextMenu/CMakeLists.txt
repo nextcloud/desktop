@@ -9,7 +9,10 @@ add_library(OCContextMenu MODULE
 )
 
 target_link_libraries(OCContextMenu
-    OCUtil)
+                      OCUtil
+                      crypt32
+                      gdiplus)
+target_compile_definitions(OCContextMenu PRIVATE JSON_NOEXCEPTION)
 
 install(TARGETS OCContextMenu
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}

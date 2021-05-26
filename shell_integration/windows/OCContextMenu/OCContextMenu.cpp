@@ -149,6 +149,10 @@ IFACEMETHODIMP OCContextMenu::QueryContextMenu(HMENU hMenu, UINT indexMenu, UINT
         mii.hSubMenu = hSubmenu;
         mii.fType = MFT_STRING;
         mii.dwTypeData = &m_info.contextMenuTitle[0];
+        if (m_info.icon) {
+            mii.fMask |= MIIM_BITMAP;
+            mii.hbmpItem = *m_info.icon;
+        }
 
         if (!InsertMenuItem(hMenu, indexMenu++, TRUE, &mii))
             return HRESULT_FROM_WIN32(GetLastError());

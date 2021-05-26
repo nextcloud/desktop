@@ -24,12 +24,84 @@
 #include <algorithm>
 #include <iostream>
 #include <sstream>
+#include <string>
 #include <iterator>
 #include <unordered_set>
 
+// use std::min in gdiplus
 using namespace std;
 
+#include <comdef.h>
+#include <gdiplus.h>
+#include <wincrypt.h>
+#include <shlwapi.h>
+#include <wrl/client.h>
+
+#include "../3rdparty/nlohmann-json/json.hpp"
+
+using Microsoft::WRL::ComPtr;
+
 #define PIPE_TIMEOUT  5*1000 //ms
+
+namespace {
+
+template <typename T = wstring>
+void log(const wstring &msg, const T &error = {})
+{
+    wstringstream tmp;
+    tmp << L"ownCloud: " << msg;
+    if (!error.empty()) {
+        tmp << L" " << error.data();
+    }
+    OutputDebugStringW(tmp.str().data());
+}
+void logWinError(const wstring &msg, const DWORD &error = GetLastError())
+{
+    log(msg, wstring(_com_error(error).ErrorMessage()));
+}
+
+void sendV2(const CommunicationSocket &socket, const wstring &command, const nlohmann::json &j)
+{
+    static int messageId = 0;
+    const nlohmann::json json { { "id", to_string(messageId++) }, { "arguments", j } };
+    const auto data = json.dump();
+    wstringstream tmp;
+    tmp << command << L":" << StringUtil::toUtf16(data.data(), data.size()) << L"\n";
+    socket.SendMsg(tmp.str().data());
+}
+
+pair<wstring, nlohmann::json> parseV2(const wstring &data)
+{
+    const auto index = data.find(L":");
+    const auto argStart = data.cbegin() + index + 1;
+    const auto cData = StringUtil::toUtf8(&*argStart, distance(argStart, data.cend()));
+    return { data.substr(0, index), nlohmann::json::parse(cData) };
+}
+
+std::shared_ptr<HBITMAP> saveImage(const string &data)
+{
+    DWORD size = 2 * 1024;
+    std::vector<BYTE> buf(size, 0);
+    DWORD skipped;
+    if (!CryptStringToBinaryA(data.data(), 0, CRYPT_STRING_BASE64, buf.data(), &size, &skipped, nullptr)) {
+        logWinError(L"Failed to decode icon");
+        return {};
+    }
+    ComPtr<IStream> stream = SHCreateMemStream(buf.data(), size);
+    if (!stream) {
+        log(L"Failed to create stream");
+        return {};
+    };
+    HBITMAP result;
+    Gdiplus::Bitmap bitmap(stream.Get(), true);
+    const auto status = bitmap.GetHBITMAP(0, &result);
+    if (status != Gdiplus::Ok) {
+        log(L"Failed to get HBITMAP", to_wstring(status));
+        return {};
+    }
+    return std::shared_ptr<HBITMAP> { new HBITMAP(result), &DeleteObject };
+}
+}
 
 OCClientInterface::ContextMenuInfo OCClientInterface::FetchInfo(const std::wstring &files)
 {
@@ -42,6 +114,7 @@ OCClientInterface::ContextMenuInfo OCClientInterface::FetchInfo(const std::wstri
     if (!socket.Connect(pipename)) {
         return {};
     }
+    sendV2(socket, L"V2/GET_CLIENT_ICON", { { "size", 16 } });
     socket.SendMsg(L"GET_STRINGS:CONTEXT_MENU_TITLE\n");
     socket.SendMsg((L"GET_MENU_ITEMS:" + files + L"\n").data());
 
@@ -50,11 +123,21 @@ OCClientInterface::ContextMenuInfo OCClientInterface::FetchInfo(const std::wstri
     int sleptCount = 0;
     while (sleptCount < 5) {
         if (socket.ReadLine(&response)) {
-            if (StringUtil::begins_with(response, wstring(L"REGISTER_PATH:"))) {
+            if (StringUtil::begins_with(response, wstring(L"V2/"))) {
+                const auto msg = parseV2(response);
+                const auto &arguments = msg.second["arguments"];
+                if (msg.first == L"V2/GET_CLIENT_ICON_RESULT") {
+                    if (arguments.contains("error")) {
+                        log(L"V2/GET_CLIENT_ICON failed", arguments["error"].get<string>());
+                    } else {
+                        info.icon = saveImage(arguments["png"].get<string>());
+                    }
+                }
+
+            } else if (StringUtil::begins_with(response, wstring(L"REGISTER_PATH:"))) {
                 wstring responsePath = response.substr(14); // length of REGISTER_PATH
                 info.watchedDirectories.push_back(responsePath);
-            }
-            else if (StringUtil::begins_with(response, wstring(L"STRING:"))) {
+            } else if (StringUtil::begins_with(response, wstring(L"STRING:"))) {
                 wstring stringName, stringValue;
                 if (!StringUtil::extractChunks(response, stringName, stringValue))
                     continue;

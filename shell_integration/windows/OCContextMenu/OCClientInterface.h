@@ -38,6 +38,8 @@
 #include <atomic>
 #include <condition_variable>
 
+#include <windows.h>
+
 class CommunicationSocket;
 
 class OCClientInterface
@@ -46,6 +48,7 @@ public:
     struct ContextMenuInfo {
         std::vector<std::wstring> watchedDirectories;
         std::wstring contextMenuTitle;
+        std::shared_ptr<HBITMAP> icon;
         struct MenuItem
         {
             std::wstring command, flags, title;
