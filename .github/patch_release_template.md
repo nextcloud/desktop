@@ -1,7 +1,6 @@
 ### Create Changelog
 
 * [ ] DEV: Update [ChangeLog](https://confluence.owncloud.com/display/OG/ChangeLog)
-* [ ] QA: 1h later check [ChangeLog on website](https://owncloud.org/changelog/desktop-client/)
 
 ### Prerequisites
 
