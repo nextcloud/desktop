@@ -159,6 +159,7 @@ Details
    https://github.com/owncloud/client/issues/8528
    https://github.com/owncloud/client/pull/8584
    https://github.com/owncloud/client/pull/8585
+   https://github.com/owncloud/client/pull/8627
 
 * Enhancement - Provide a socket api call to get the client icon and: [#8464](https://github.com/owncloud/client/issues/8464)
 
