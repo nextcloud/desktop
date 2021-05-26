@@ -25,6 +25,7 @@ Summary
 * Enhancement - Show last sync date in tray menu: [#5644](https://github.com/owncloud/client/issues/5644)
 * Enhancement - Make crash report IDs easy to copy: [#25](https://github.com/dschmidt/libcrashreporter-qt/pull/25)
 * Enhancement - We reworked the tables: [#8158](https://github.com/owncloud/client/issues/8158)
+* Enhancement - Provide a socket api call to get the client icon and: [#8464](https://github.com/owncloud/client/issues/8464)
 * Enhancement - Add language picker to general settings: [#8466](https://github.com/owncloud/client/issues/8466)
 * Enhancement - Attach the last 20 log lines to a crash report: [#8467](https://github.com/owncloud/client/issues/8467)
 * Enhancement - Mention the local file name when a file name clash occurs: [#8609](https://github.com/owncloud/client/issues/8609)
@@ -158,6 +159,15 @@ Details
    https://github.com/owncloud/client/issues/8528
    https://github.com/owncloud/client/pull/8584
    https://github.com/owncloud/client/pull/8585
+
+* Enhancement - Provide a socket api call to get the client icon and: [#8464](https://github.com/owncloud/client/issues/8464)
+
+   Add the icon to the dolphin right click menu
+
+   We added support to get the ownCloud client icon of the current theme to the socket api. We show
+   the client icon in the dolphin file browser context menu.
+
+   https://github.com/owncloud/client/issues/8464
 
 * Enhancement - Add language picker to general settings: [#8466](https://github.com/owncloud/client/issues/8466)
 
