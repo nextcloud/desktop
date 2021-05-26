@@ -20,7 +20,7 @@ Feature: adding accounts
 
      Scenario: Adding multiple accounts
         Given user "Brian" has been created on the server with default attributes and without skeleton files
-        And user "Alice Hansen" has set up a client with default settings and password "1234"
+        And user "Alice" has set up a client with default settings
         When the user adds an account with
             | server      | %local_server%     |
             | user        | Brian              |

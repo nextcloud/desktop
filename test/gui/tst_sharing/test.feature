@@ -5,20 +5,20 @@ Feature: Sharing
     So that those users can access the files and folders
 
 
-	Background:
+    Background:
         Given user "Alice" has been created on the server with default attributes and without skeleton files
 
     Scenario: simple sharing
         Given user "Brian" has been created on the server with default attributes and without skeleton files
         And user "Alice" has uploaded on the server file with content "ownCloud test text file 0" to "/textfile0.txt"
-        And user "Alice" has set up a client with default settings and password "1234"
+        And user "Alice" has set up a client with default settings
         When the user adds "Brian Murphy" as collaborator of resource "%client_sync_path%/textfile0.txt" with permissions "edit,share" using the client-UI
         Then user "Brian Murphy" should be listed in the collaborators list for file "%client_sync_path%/textfile0.txt" with permissions "edit,share" on the client-UI
 
     @issue-7459
     Scenario: Progress indicator should not be visible after unselecting the password protection checkbox while sharing through public link
         Given user "Alice" has uploaded on the server file with content "ownCloud test text file 0" to "/textfile0.txt"
-        And user "Alice" has set up a client with default settings and password "1234"
+        And user "Alice" has set up a client with default settings
         When the user opens the public links dialog of "%client_sync_path%/textfile0.txt" using the client-UI
         And the user toggles the password protection using the client-UI
         And the user toggles the password protection using the client-UI
@@ -34,7 +34,7 @@ Feature: Sharing
         And user "Alice" has shared folder "simple-folder" on the server with user "Brian"
         And user "Brian" has accepted the share "simple-folder" on the server offered by user "Alice"
         And user "Brian" has shared folder "Shares/simple-folder" on the server with user "Carol"
-        And user "Brian" has set up a client with default settings and password "AaBb2Cc3Dd4"
+        And user "Brian" has set up a client with default settings
         And user "Alice" has updated the share permissions on the server for folder "/simple-folder" to "read" for user "Brian"
         When user "Brian" opens the sharing dialog of "%client_sync_path%/Shares/simple-folder" using the client-UI
         Then the error text "The file can not be shared because it was shared without sharing permission." should be displayed in the sharing dialog
@@ -42,14 +42,14 @@ Feature: Sharing
 
     Scenario: simple sharing of a file by public link without password
         Given user "Alice" has uploaded on the server file with content "ownCloud test text file 0" to "/textfile0.txt"
-        And user "Alice" has set up a client with default settings and password "1234"
+        And user "Alice" has set up a client with default settings
         When the user creates a new public link for file "%client_sync_path%/textfile0.txt" without password using the client-UI
         Then as user "Alice" the file "textfile0.txt" should have a public link on the server
         And the public should be able to download the file "textfile0.txt" without password from the last created public link by "Alice" on the server
 
 
     Scenario: simple sharing of a file by public link with password
-        Given user "Alice" has set up a client with default settings and password "1234"
+        Given user "Alice" has set up a client with default settings
         And user "Alice" has uploaded on the server file with content "ownCloud test text file 0" to "/textfile0.txt"
         When the user creates a new public link for file "%client_sync_path%/textfile0.txt" with password "pass123" using the client-UI
         Then as user "Alice" the file "textfile0.txt" should have a public link on the server
@@ -58,7 +58,7 @@ Feature: Sharing
 
     Scenario: user changes the expiration date of an already existing public link using webUI
         Given user "Alice" has uploaded on the server file with content "ownCloud test text file 0" to "/textfile0.txt"
-        And user "Alice" has set up a client with default settings and password "1234"
+        And user "Alice" has set up a client with default settings
         And user "Alice" has created a public link on the server with following settings
             | path       | textfile0.txt |
             | name       | Public link   |
@@ -70,30 +70,30 @@ Feature: Sharing
             | expireDate | 2038-07-21 |
 
 
-	Scenario: simple sharing of a folder by public link without password
+    Scenario: simple sharing of a folder by public link without password
         Given user "Alice" has created on the server folder "simple-folder"
-        And user "Alice" has set up a client with default settings and password "1234"
+        And user "Alice" has set up a client with default settings
         When the user creates a new public link with permissions "Download / View" for folder "%client_sync_path%/simple-folder" without password using the client-UI
         Then as user "Alice" the folder "simple-folder" should have a public link on the server
         And the public should be able to download the folder "lorem.txt" without password from the last created public link by "Alice" on the server
 
 
-	Scenario: simple sharing of a folder by public link with password
+    Scenario: simple sharing of a folder by public link with password
         Given user "Alice" has created on the server folder "simple-folder"
-        And user "Alice" has set up a client with default settings and password "1234"
+        And user "Alice" has set up a client with default settings
         When the user creates a new public link with permissions "Download / View" for folder "%client_sync_path%/simple-folder" with password "pass123" using the client-UI
         Then as user "Alice" the folder "simple-folder" should have a public link on the server
         And the public should be able to download the folder "lorem.txt" with password "pass123" from the last created public link by "Alice" on the server
 
 
-	Scenario: user changes the expiration date of an already existing public link for folder using client-UI
+    Scenario: user changes the expiration date of an already existing public link for folder using client-UI
         Given user "Alice" has created on the server folder "simple-folder"
-        And user "Alice" has set up a client with default settings and password "1234"
+        And user "Alice" has set up a client with default settings
         And user "Alice" has created a public link on the server with following settings
-            | path       | simple-folder |
-            | name       | Public link   |
-            | expireDate | 2031-10-14    |
-            | permissions|read, update, create, delete|
+            | path        | simple-folder                |
+            | name        | Public link                  |
+            | expireDate  | 2031-10-14                   |
+            | permissions | read, update, create, delete |
         When the user opens the public links dialog of "%client_sync_path%/simple-folder" using the client-UI
         And the user edits the public link named "Public link" of file "simple-folder" changing following
             | expireDate | 2038-07-21 |
@@ -103,7 +103,7 @@ Feature: Sharing
 
     Scenario Outline: simple sharing of folder by public link with different roles
         Given user "Alice" has created on the server folder "simple-folder"
-        And user "Alice" has set up a client with default settings and password "1234"
+        And user "Alice" has set up a client with default settings
         When the user creates a new public link for folder "%client_sync_path%/simple-folder" using the client-UI with these details:
             | role | <role> |
         Then user "Alice" on the server should have a share with these details:
@@ -123,7 +123,7 @@ Feature: Sharing
     Scenario: sharing by public link with "Uploader" role
         Given user "Alice" has created on the server folder "simple-folder"
         And user "Alice" on the server has created file "simple-folder/lorem.txt"
-        And user "Alice" has set up a client with default settings and password "1234"
+        And user "Alice" has set up a client with default settings
         When the user creates a new public link for folder "%client_sync_path%/simple-folder" with "Contributor" using the client-UI
         Then user "Alice" on the server should have a share with these details:
             | field       | value          |

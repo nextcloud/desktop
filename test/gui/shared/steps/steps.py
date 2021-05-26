@@ -87,9 +87,21 @@ def step(context, displayname, host):
     )
 
 
-@Given('user "|any|" has set up a client with default settings and password "|any|"')
-def step(context, username, password):
-    setUpClient(context, username, confFilePath)
+def getDisplayname(username):
+    if username in defaultUsers.keys():
+        return defaultUsers[username]['displayname']
+
+
+def getPasswordForUser(username):
+    if username in defaultUsers.keys():
+        return defaultUsers[username]['password']
+
+
+@Given('user "|any|" has set up a client with default settings')
+def step(context, username):
+    password = getPasswordForUser(username)
+    displayName = getDisplayname(username)
+    setUpClient(context, username, displayName, confFilePath)
     enterUserPassword = EnterPassword()
     enterUserPassword.enterPassword(password)
 

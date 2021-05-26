@@ -55,7 +55,7 @@ def getPollingInterval():
     return pollingInterval
 
 
-def setUpClient(context, username, confFilePath):
+def setUpClient(context, username, displayName, confFilePath):
     userSetting = '''
     [Accounts]
     0/Folders/1/ignoreHiddenFiles=true
@@ -76,7 +76,7 @@ def setUpClient(context, username, confFilePath):
     userFirstName = username.split()
     userSetting = userSetting + getPollingInterval()
     args = {
-        'displayUserName': username,
+        'displayUserName': displayName,
         'davUserName': userFirstName[0].lower(),
         'displayUserFirstName': userFirstName[0],
         'client_sync_path': context.userData['clientSyncPath'],
