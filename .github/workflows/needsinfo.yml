@@ -14,6 +14,7 @@ jobs:
                     days-before-close: 14
                     days-before-pr-close: -1
                     only-labels: 'needs info'
+                    stale-issue-label: 'stale needs info'
                     exempt-issue-labels: 'bug'
                     stale-issue-message: 'This issue has been marked as "needs info" 4 weeks ago.
                                         Please take a look again and try to provide the information requested,
