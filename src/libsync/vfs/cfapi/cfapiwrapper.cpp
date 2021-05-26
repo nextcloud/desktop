@@ -558,6 +558,14 @@ OCC::CfApiWrapper::FileHandle OCC::CfApiWrapper::handleForPath(const QString &pa
         return {};
     }
 
+    {
+        const auto fInfo = QFileInfo(path);
+        if (fInfo.exists()) {
+            const QString typeFromFileInfo = fInfo.isDir() ? "directory" : "file";
+            qCInfo(lcCfApiWrapper) << path << " exists and it is a" << typeFromFileInfo;
+        }
+    }
+
     if (QFileInfo(path).isDir()) {
         HANDLE handle = nullptr;
         const qint64 openResult = CfOpenFileWithOplock(path.toStdWString().data(), CF_OPEN_FILE_FLAG_NONE, &handle);

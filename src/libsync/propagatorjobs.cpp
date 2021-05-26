@@ -149,6 +149,8 @@ void PropagateLocalMkdir::startLocalMkdir()
     QDir newDir(propagator()->fullLocalPath(_item->_file));
     QString newDirStr = QDir::toNativeSeparators(newDir.path());
 
+    qCInfo(lcPropagateLocalMkdir) << "Starting Local Mkdir for:" << newDirStr;
+
     // When turning something that used to be a file into a directory
     // we need to delete the file first.
     QFileInfo fi(newDirStr);
@@ -156,6 +158,7 @@ void PropagateLocalMkdir::startLocalMkdir()
         if (_deleteExistingFile) {
             QString removeError;
             if (!FileSystem::remove(newDirStr, &removeError)) {
+                qCCritical(lcPropagateLocalMkdir) << QString("could not delete file %1, error: %2").arg(newDirStr, removeError);
                 done(SyncFileItem::NormalError,
                     tr("could not delete file %1, error: %2")
                         .arg(newDirStr, removeError));
@@ -164,6 +167,7 @@ void PropagateLocalMkdir::startLocalMkdir()
         } else if (_item->_instruction == CSYNC_INSTRUCTION_CONFLICT) {
             QString error;
             if (!propagator()->createConflict(_item, _associatedComposite, &error)) {
+                qCCritical(lcPropagateLocalMkdir) << "Failed to create conflict for:" << newDirStr << " with error: " << error;
                 done(SyncFileItem::SoftError, error);
                 return;
             }
@@ -178,6 +182,7 @@ void PropagateLocalMkdir::startLocalMkdir()
     emit propagator()->touchedFile(newDirStr);
     QDir localDir(propagator()->localPath());
     if (!localDir.mkpath(_item->_file)) {
+        qCCritical(lcPropagateLocalMkdir) << QString("Could not create folder %1 in %2").arg(_item->_file).arg(localDir.path());
         done(SyncFileItem::NormalError, tr("Could not create folder %1").arg(newDirStr));
         return;
     }
@@ -189,6 +194,7 @@ void PropagateLocalMkdir::startLocalMkdir()
     // before the correct etag is stored.
     SyncFileItem newItem(*_item);
     newItem._etag = "_invalid_";
+    qCInfo(lcPropagateLocalMkdir) << "Created folder:" << newDirStr << " updating the metadata for newItem._file:" << newItem._file << "newItem._type:" << newItem._type << " QFileInfo(newDirStr).isDir():" << QFileInfo(newDirStr).isDir();
     if (!propagator()->updateMetadata(newItem)) {
         done(SyncFileItem::FatalError, tr("Error writing metadata to the database"));
         return;
