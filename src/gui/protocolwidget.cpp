@@ -80,7 +80,7 @@ ProtocolWidget::~ProtocolWidget()
 
 void ProtocolWidget::showHeaderContextMenu(QWidget *parent, QSortFilterProxyModel *model)
 {
-    Models::displayFilterDialog(AccountManager::instance()->accountNames().toList(), model, static_cast<int>(ProtocolItemModel::ProtocolItemRole::Account), Qt::DisplayRole, parent);
+    Models::displayFilterDialog(AccountManager::instance()->accountNames(), model, static_cast<int>(ProtocolItemModel::ProtocolItemRole::Account), Qt::DisplayRole, parent);
 }
 
 void ProtocolWidget::showContextMenu(QWidget *parent, ProtocolItemModel *model, const QModelIndexList &items)
