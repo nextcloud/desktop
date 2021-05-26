@@ -21,8 +21,13 @@
 #include <qcoreevent.h>
 #include <QStandardPaths>
 #include <QFile>
+#include <QLoggingCategory>
 #include "ownclouddolphinpluginhelper.h"
 #include "config.h"
+#include <QJsonObject>
+#include <QJsonDocument>
+
+Q_LOGGING_CATEGORY(lcPluginHelper, "owncloud.dolphin", QtInfoMsg)
 
 OwncloudDolphinPluginHelper* OwncloudDolphinPluginHelper::instance()
 {
@@ -58,6 +63,16 @@ void OwncloudDolphinPluginHelper::sendCommand(const char* data)
     _socket.flush();
 }
 
+void OwncloudDolphinPluginHelper::sendGetClientIconCommand(int size)
+{
+    const QByteArray cmd = QByteArrayLiteral("V2/GET_CLIENT_ICON:");
+    const QByteArray newLine = QByteArrayLiteral("\n");
+    const QJsonObject args { { QStringLiteral("size"), size } };
+    const QJsonObject obj { { QStringLiteral("id"), QString::number(_msgId++) }, { QStringLiteral("arguments"), args } };
+    const auto json = QJsonDocument(obj).toJson(QJsonDocument::Compact);
+    sendCommand(QByteArray(cmd + json + newLine));
+}
+
 void OwncloudDolphinPluginHelper::slotConnected()
 {
     sendCommand("VERSION:\n");
@@ -69,7 +84,7 @@ void OwncloudDolphinPluginHelper::tryConnect()
     if (_socket.state() != QLocalSocket::UnconnectedState) {
         return;
     }
-    
+
     QString socketPath = QStandardPaths::locate(QStandardPaths::RuntimeLocation,
                                                 APPLICATION_SHORTNAME,
                                                 QStandardPaths::LocateDirectory);
@@ -83,36 +98,70 @@ void OwncloudDolphinPluginHelper::slotReadyRead()
 {
     while (_socket.bytesAvailable()) {
         _line += _socket.readLine();
-        if (!_line.endsWith("\n"))
+        if (!_line.endsWith("\n")) {
             continue;
+        }
         QByteArray line;
         qSwap(line, _line);
         line.chop(1);
         if (line.isEmpty())
             continue;
+        const int firstColon = line.indexOf(':');
+        if (firstColon == -1) {
+            continue;
+        }
+        // get the command (at begin of line, before first ':')
+        const QByteArray command = line.left(firstColon);
+        // rest of line contains the information
+        const QByteArray info = line.mid(firstColon + 1);
 
-        if (line.startsWith("REGISTER_PATH:")) {
-            auto col = line.indexOf(':');
-            QString file = QString::fromUtf8(line.constData() + col + 1, line.size() - col - 1);
+        if (command == QByteArrayLiteral("REGISTER_PATH")) {
+            const QString file = QString::fromUtf8(info);
             _paths.append(file);
             continue;
-        } else if (line.startsWith("STRING:")) {
-            auto args = QString::fromUtf8(line).split(QLatin1Char(':'));
-            if (args.size() >= 3) {
-                _strings[args[1]] = args.mid(2).join(QLatin1Char(':'));
+        } else if (command == QByteArrayLiteral("STRING")) {
+            auto args = QString::fromUtf8(info).split(':');
+            if (args.size() >= 2) {
+                _strings[args[0]] = args.mid(1).join(':');
             }
             continue;
-        } else if (line.startsWith("VERSION:")) {
-            auto args = line.split(':');
-            auto version = args.value(2);
-            _version = version;
-            if (!version.startsWith("1.")) {
+        } else if (command == QByteArrayLiteral("VERSION")) {
+            auto args = info.split(':');
+            if (args.size() >= 2) {
+                auto version = args.value(1);
+                _version = version;
+            }
+            if (!_version.startsWith("1.")) {
                 // Incompatible version, disconnect forever
                 _connectTimer.stop();
                 _socket.disconnectFromServer();
                 return;
             }
+        } else if (command == QByteArrayLiteral("V2/GET_CLIENT_ICON_RESULT")) {
+            QJsonParseError error;
+            auto json = QJsonDocument::fromJson(info, &error).object();
+            if (error.error != QJsonParseError::NoError) {
+                qCWarning(lcPluginHelper) << "Error while parsing result: " << error.error;
+                continue;
+            }
+
+            auto jsonArgs = json.value("arguments").toObject();
+            if (jsonArgs.isEmpty()) {
+                auto jsonErr = json.value("error").toObject();
+                qCWarning(lcPluginHelper) << "Error getting client icon: " << jsonErr;
+                continue;
+            }
+
+            const QByteArray pngBase64 = jsonArgs.value("png").toString().toUtf8();
+            QByteArray png = QByteArray::fromBase64(pngBase64);
+
+            QPixmap pixmap;
+            bool isLoaded = pixmap.loadFromData(png, "PNG");
+            if (isLoaded) {
+                _clientIcon = pixmap;
+            }
         }
+
         emit commandRecieved(line);
     }
 }

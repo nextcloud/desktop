@@ -22,6 +22,7 @@
 #include <QBasicTimer>
 #include <QLocalSocket>
 #include <QRegularExpression>
+#include <QPixmap>
 #include "ownclouddolphinpluginhelper_export.h"
 
 class OWNCLOUDDOLPHINPLUGINHELPER_EXPORT OwncloudDolphinPluginHelper : public QObject {
@@ -31,6 +32,8 @@ public:
 
     bool isConnected() const;
     void sendCommand(const char *data);
+    void sendGetClientIconCommand(int size);
+
     QVector<QString> paths() const { return _paths; }
 
     QString contextMenuTitle() const
@@ -40,6 +43,10 @@ public:
     QString shareActionTitle() const
     {
         return _strings.value("SHARE_MENU_TITLE", "Share...");
+    }
+    QPixmap clientIcon() const
+    {
+        return _clientIcon;
     }
 
     QString copyPrivateLinkTitle() const { return _strings["COPY_PRIVATE_LINK_MENU_TITLE"]; }
@@ -65,4 +72,6 @@ private:
 
     QMap<QString, QString> _strings;
     QByteArray _version;
+    QPixmap _clientIcon;
+    int _msgId = 1;
 };

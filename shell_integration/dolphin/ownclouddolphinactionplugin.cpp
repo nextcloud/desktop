@@ -86,6 +86,9 @@ public:
         });
         QTimer::singleShot(500, &loop, SLOT(quit())); // add a timeout to be sure we don't freeze dolphin
         helper->sendCommand(QByteArray("GET_MENU_ITEMS:" + files + "\n"));
+
+        helper->sendGetClientIconCommand(16); // get client icon with size 16x16
+
         loop.exec(QEventLoop::ExcludeUserInputEvents);
         disconnect(con);
         if (menu->actions().isEmpty()) {
@@ -95,7 +98,9 @@ public:
 
         auto menuaction = new QAction(parentWidget);
         menuaction->setText(helper->contextMenuTitle());
+        menuaction->setIcon(QIcon(helper->clientIcon()));
         menuaction->setMenu(menu);
+
         return { menuaction };
     }
 

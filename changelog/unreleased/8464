@@ -1,0 +1,8 @@
+Enhancement: Provide a socket api call to get the client icon and 
+add the icon to the dolphin right click menu
+
+We added support to get the ownCloud client icon of the current theme to
+the socket api.
+We show the client icon in the dolphin file browser context menu.
+
+https://github.com/owncloud/client/issues/8464

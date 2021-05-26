@@ -40,7 +40,7 @@ endif()
 #---HELPER---
 set(OWNCLOUDDOLPHINHELPER ${APPLICATION_EXECUTABLE}dolphinpluginhelper)
 add_library(${OWNCLOUDDOLPHINHELPER} SHARED ownclouddolphinpluginhelper.cpp)
-target_link_libraries(${OWNCLOUDDOLPHINHELPER} Qt5::Network)
+target_link_libraries(${OWNCLOUDDOLPHINHELPER} Qt5::Network Qt5::Gui)
 generate_export_header(${OWNCLOUDDOLPHINHELPER} BASE_NAME ownclouddolphinpluginhelper)
 install(TARGETS ${OWNCLOUDDOLPHINHELPER} LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
 
