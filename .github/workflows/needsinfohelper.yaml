@@ -7,6 +7,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions-ecosystem/action-remove-labels@v1
-        if: ${{ ! startsWith(github.event.comment.body, 'This issue has been marked as "needs info" 4 weeks ago.') }}
+        if: ${{ ! startsWith(github.event.comment.body, 'This issue has been marked as "needs info" 4 weeks ago.') && ! startsWith(github.event.comment.body, 'This bug report did not receive an update in the last 4 weeks.')}}
         with:
           labels: 'needs info'
