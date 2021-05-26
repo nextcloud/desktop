@@ -3915,7 +3915,7 @@ Dit is een nieuwe, experimentele modus. Als je besluit deze te gebruiken, meld d
     <message>
         <location filename="../src/common/vfs.cpp" line="81"/>
         <source>The Virtual filesystem feature is not supported on network drives</source>
-        <translation type="unfinished"/>
+        <translation>De virtuele filesystem feature wordt niet ondersteund op netwerkschijven</translation>
     </message>
 </context>
 <context>
@@ -4222,7 +4222,7 @@ Dit is een nieuwe, experimentele modus. Als je besluit deze te gebruiken, meld d
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="279"/>
         <source>Manually create folder sync connections </source>
-        <translation>Hanmatig map-synchronisatie verbindingen aanmaken</translation>
+        <translation>Handmatig map-synchronisatie verbindingen aanmaken</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="400"/>
