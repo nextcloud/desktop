@@ -14,6 +14,7 @@
 
 
 #include "accountsettings.h"
+#include "common/syncjournalfilerecord.h"
 #include "ui_accountsettings.h"
 
 #include "theme.h"
@@ -61,7 +62,8 @@
 #include "account.h"
 
 namespace {
-constexpr auto propertyFolderInfo = "folderInfo";
+constexpr auto propertyFolder = "folder";
+constexpr auto propertyPath = "path";
 }
 
 namespace OCC {
@@ -245,9 +247,10 @@ void AccountSettings::slotEncryptFolderFinished(int status)
         QMessageBox::warning(nullptr, tr("Warning"), job->errorString());
     }
 
-    const auto folderInfo = job->property(propertyFolderInfo).value<FolderStatusModel::SubFolderInfo*>();
-    Q_ASSERT(folderInfo);
-    const auto index = _model->indexForPath(folderInfo->_folder, folderInfo->_path);
+    const auto folder = job->property(propertyFolder).value<Folder *>();
+    const auto path = job->property(propertyPath).value<QString>();
+    Q_ASSERT(folder);
+    const auto index = _model->indexForPath(folder, path);
     Q_ASSERT(index.isValid());
     _model->resetAndFetch(index.parent());
 
