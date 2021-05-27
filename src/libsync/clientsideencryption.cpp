@@ -16,6 +16,7 @@
 
 #include <map>
 #include <string>
+#include <algorithm>
 
 #include <cstdio>
 
@@ -32,6 +33,7 @@
 #include <QIODevice>
 #include <QUuid>
 #include <QScopeGuard>
+#include <QRandomGenerator>
 
 #include <qt5keychain/keychain.h>
 #include "common/utility.h"
@@ -800,6 +802,32 @@ void ClientSideEncryption::fetchFromKeyChain(const AccountPtr &account)
     job->start();
 }
 
+bool ClientSideEncryption::checkPublicKeyValidity(const AccountPtr &account) const
+{
+    QByteArray data = EncryptionHelper::generateRandom(64);
+
+    Bio publicKeyBio;
+    QByteArray publicKeyPem = account->e2e()->_publicKey.toPem();
+    BIO_write(publicKeyBio, publicKeyPem.constData(), publicKeyPem.size());
+    auto publicKey = PKey::readPublicKey(publicKeyBio);
+
+    auto encryptedData = EncryptionHelper::encryptStringAsymmetric(publicKey, data.toBase64());
+
+    Bio privateKeyBio;
+    QByteArray privateKeyPem = account->e2e()->_privateKey;
+    BIO_write(privateKeyBio, privateKeyPem.constData(), privateKeyPem.size());
+    auto key = PKey::readPrivateKey(privateKeyBio);
+
+    QByteArray decryptResult = QByteArray::fromBase64(EncryptionHelper::decryptStringAsymmetric( key, QByteArray::fromBase64(encryptedData)));
+
+    if (data != decryptResult) {
+        qCInfo(lcCse()) << "invalid private key";
+        return false;
+    }
+
+    return true;
+}
+
 void ClientSideEncryption::publicKeyFetched(Job *incoming)
 {
     auto *readJob = static_cast<ReadPasswordJob *>(incoming);
@@ -1174,7 +1202,7 @@ void ClientSideEncryption::decryptPrivateKey(const AccountPtr &account, const QB
 
             qCInfo(lcCse()) << "Private key: " << _privateKey;
 
-            if (!_privateKey.isNull()) {
+            if (!_privateKey.isNull() && checkPublicKeyValidity(account)) {
                 writePrivateKey(account);
                 writeCertificate(account);
                 writeMnemonic(account);

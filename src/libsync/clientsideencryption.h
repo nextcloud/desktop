@@ -103,6 +103,7 @@ private:
 
     void fetchFromKeyChain(const AccountPtr &account);
 
+    bool checkPublicKeyValidity(const AccountPtr &account) const;
     void writePrivateKey(const AccountPtr &account);
     void writeCertificate(const AccountPtr &account);
     void writeMnemonic(const AccountPtr &account);
