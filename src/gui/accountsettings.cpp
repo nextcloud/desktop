@@ -88,10 +88,14 @@ bool showEnableE2eeWithVirtualFilesWarningDialog()
                                                                              " End-to-End Encryption, make sure the encrypted folder is marked with"
                                                                              " \"Make always available locally\"."));
     e2eeWithVirtualFilesWarningMsgBox.setIcon(QMessageBox::Warning);
-    const auto dontEncryptButton = e2eeWithVirtualFilesWarningMsgBox.button(QMessageBox::StandardButton::Ok);
-    const auto encryptButton = e2eeWithVirtualFilesWarningMsgBox.button(QMessageBox::StandardButton::Cancel);
+    const auto dontEncryptButton = e2eeWithVirtualFilesWarningMsgBox.addButton(QMessageBox::StandardButton::Ok);
+    Q_ASSERT(dontEncryptButton);
     dontEncryptButton->setText(AccountSettings::tr("Don't encrypt folder"));
+    const auto encryptButton = e2eeWithVirtualFilesWarningMsgBox.addButton(QMessageBox::StandardButton::Cancel);
+    Q_ASSERT(encryptButton);
     encryptButton->setText(AccountSettings::tr("Encrypt folder"));
+    e2eeWithVirtualFilesWarningMsgBox.exec();
+
 
     return e2eeWithVirtualFilesWarningMsgBox.clickedButton() != dontEncryptButton;
 }
