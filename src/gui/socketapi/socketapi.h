@@ -26,7 +26,8 @@
 #include "socketapisocket_mac.h"
 #else
 #include <QLocalServer>
-typedef QLocalServer SocketApiServer;
+using SocketApiServer = QLocalServer;
+using SocketApiSocket = QLocalSocket;
 #endif
 
 class QUrl;
@@ -66,8 +67,6 @@ signals:
 
 private slots:
     void slotNewConnection();
-    void onLostConnection();
-    void slotSocketDestroyed(QObject *obj);
     void slotReadSocket();
 
     static void copyUrlToClipboard(const QString &link);
@@ -157,7 +156,7 @@ private:
     QString buildRegisterPathMessage(const QString &path);
 
     QSet<QString> _registeredAliases;
-    QMap<QIODevice *, QSharedPointer<SocketListener>> _listeners;
+    QMap<SocketApiSocket *, QSharedPointer<SocketListener>> _listeners;
     SocketApiServer _localServer;
 };
 }

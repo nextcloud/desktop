@@ -1,0 +1,5 @@
+Bugfix: We fixed a potential crash in the socket api
+
+We fixed a crash in the Mac implementation of the socket api.
+
+https://github.com/owncloud/client/pull/8664

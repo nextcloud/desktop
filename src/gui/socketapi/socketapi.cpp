@@ -296,15 +296,22 @@ void SocketApi::slotNewConnection()
 {
     // Note that on macOS this is not actually a line-based QIODevice, it's a SocketApiSocket which is our
     // custom message based macOS IPC.
-    QIODevice *socket = _localServer.nextPendingConnection();
+    SocketApiSocket *socket = _localServer.nextPendingConnection();
 
     if (!socket) {
         return;
     }
     qCInfo(lcSocketApi) << "New connection" << socket;
-    connect(socket, &QIODevice::readyRead, this, &SocketApi::slotReadSocket);
-    connect(socket, SIGNAL(disconnected()), this, SLOT(onLostConnection()));
-    connect(socket, &QObject::destroyed, this, &SocketApi::slotSocketDestroyed);
+    connect(socket, &SocketApiSocket::readyRead, this, &SocketApi::slotReadSocket);
+    connect(socket, &SocketApiSocket::disconnected, this, [socket] {
+        qCInfo(lcSocketApi) << "Lost connection " << socket;
+        // will trigger destroyed in the next execution of the main loop
+        // a direct removal can cause issues when iterating on _listeners
+        socket->deleteLater();
+    });
+    connect(socket, &SocketApiSocket::destroyed, this, [socket, this] {
+        _listeners.remove(socket);
+    });
     OC_ASSERT(socket->readAll().isEmpty());
 
     auto listener = QSharedPointer<SocketListener>::create(socket);
@@ -317,25 +324,9 @@ void SocketApi::slotNewConnection()
     }
 }
 
-void SocketApi::onLostConnection()
-{
-    qCInfo(lcSocketApi) << "Lost connection " << sender();
-    sender()->deleteLater();
-
-    auto socket = qobject_cast<QIODevice *>(sender());
-    OC_ASSERT(socket);
-    _listeners.remove(socket);
-}
-
-void SocketApi::slotSocketDestroyed(QObject *obj)
-{
-    QIODevice *socket = static_cast<QIODevice *>(obj);
-    _listeners.remove(socket);
-}
-
 void SocketApi::slotReadSocket()
 {
-    QIODevice *socket = qobject_cast<QIODevice *>(sender());
+    SocketApiSocket *socket = qobject_cast<SocketApiSocket *>(sender());
     OC_ENFORCE(socket);
 
     // Find the SocketListener
@@ -432,10 +423,7 @@ void SocketApi::slotRegisterPath(const QString &alias)
 
     Folder *f = FolderMan::instance()->folder(alias);
     if (f) {
-        const QString message = buildRegisterPathMessage(removeTrailingSlash(f->path()));
-        for (const auto &listener : qAsConst(_listeners)) {
-            listener->sendMessage(message);
-        }
+        broadcastMessage(buildRegisterPathMessage(removeTrailingSlash(f->path())));
     }
 
     _registeredAliases.insert(alias);
