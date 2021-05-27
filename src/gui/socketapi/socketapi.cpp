@@ -418,7 +418,7 @@ void SocketApi::slotReadSocket()
                 OC_ASSERT(thread() == QThread::currentThread())
                 staticMetaObject.method(indexOfMethod)
                     .invoke(this, Qt::DirectConnection, Q_ARG(QString, argument.toString()),
-                        Q_ARG(SocketListener *, listener.data()));
+                        Q_ARG(SocketListener*, listener.data()));
             }
         }
     }
