@@ -3906,7 +3906,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/common/vfs.cpp" line="81"/>
         <source>The Virtual filesystem feature is not supported on network drives</source>
-        <translation type="unfinished"/>
+        <translation>O recurso de sistema de arquivos virtual não é compatível com unidades de rede </translation>
     </message>
 </context>
 <context>

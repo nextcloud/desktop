@@ -1474,7 +1474,7 @@ Si ha sido un accidente, y decide mantener los archivos, serán re-sincronizados
     <message>
         <location filename="../src/gui/generalsettings.ui" line="136"/>
         <source>Advanced - Approval of folder sync (Non virtual file mode only)</source>
-        <translation type="unfinished"/>
+        <translation>Avanzado - aprobación de la sincronización de carpetas (solo en modo de archivo no virtual)</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="196"/>
@@ -1796,7 +1796,8 @@ Los objetos donde se permite el borrado serán borrados si impiden que un direct
         <location filename="../src/gui/logbrowser.ui" line="71"/>
         <source>The client can write debug logs to a temporary folder. These logs are very helpful for diagnosing problems.
 Since log files can get large, the client will start a new one for each sync run and compress older ones. It is also recommended to enable deleting log files after a couple of hours to avoid consuming too much disk space.</source>
-        <translation type="unfinished"/>
+        <translation>El cliente puede escribir registros de depuración en una carpeta temporal. Estos registros son muy útiles para diagnosticar problemas.
+Dado que los archivos de registro pueden aumentar de tamaño, el cliente iniciará uno nuevo para cada ejecución de sincronización y comprimirá los más antiguos. También se recomienda habilitar la eliminación de archivos de registro después de un par de horas para evitar consumir demasiado espacio en el disco.</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.ui" line="84"/>
@@ -1811,7 +1812,7 @@ Since log files can get large, the client will start a new one for each sync run
     <message>
         <location filename="../src/gui/logbrowser.ui" line="123"/>
         <source>Log Http traffic </source>
-        <translation type="unfinished"/>
+        <translation>Registro de tráfico HTTP</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.ui" line="143"/>
@@ -2179,7 +2180,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="89"/>
         <source>Use &amp;virtual files instead of downloading content immediately%1</source>
-        <translation type="unfinished"/>
+        <translation>Utiliza &amp;virtual files en lugar de descargar inmediatamente el contenido %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="198"/>
@@ -3530,57 +3531,57 @@ Este es un nuevo modo experimental. Si decide utilizarlo, reporte cualquier prob
     <message>
         <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="66"/>
         <source>Failed to rerieve tags</source>
-        <translation type="unfinished"/>
+        <translation>Error al recuperar las etiquetas</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="96"/>
         <source>Backup of %1 started</source>
-        <translation type="unfinished"/>
+        <translation>Copia de seguridad de %1 iniciada</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="99"/>
         <source>Failed to find %1</source>
-        <translation type="unfinished"/>
+        <translation>No se pudo encontrar %1</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="104"/>
         <source>Local path must be a an absolute path</source>
-        <translation type="unfinished"/>
+        <translation>La ruta local debe ser una ruta absoluta</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="109"/>
         <source>Failed to create temporary database</source>
-        <translation type="unfinished"/>
+        <translation>Error al crear la base de datos temporal</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="138"/>
         <source>Backup of %1 succeeded</source>
-        <translation type="unfinished"/>
+        <translation>Copia de seguridad de %1 se completó exitosamente</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="141"/>
         <source>Failed to set success tag</source>
-        <translation type="unfinished"/>
+        <translation>Error al establecer la etiqueta de éxito</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="147"/>
         <source>Failed to create backup: %1</source>
-        <translation type="unfinished"/>
+        <translation>Error al crear la copia de seguridad: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="179"/>
         <source>Failed to file id tags</source>
-        <translation type="unfinished"/>
+        <translation>No se pudieron presentar las etiquetas de identificación</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="193"/>
         <source>Backup of %1 failed with: %2</source>
-        <translation type="unfinished"/>
+        <translation>Copia de seguridad de %1 fallo con: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="209"/>
         <source>%1 backup</source>
-        <translation type="unfinished"/>
+        <translation>%1 copia de seguridad</translation>
     </message>
 </context>
 <context>
@@ -3824,7 +3825,7 @@ Este es un nuevo modo experimental. Si decide utilizarlo, reporte cualquier prob
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="346"/>
         <source>Could not update file : %1</source>
-        <translation type="unfinished"/>
+        <translation>No se pudo actualizar el archivo: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="356"/>
@@ -3870,7 +3871,7 @@ Este es un nuevo modo experimental. Si decide utilizarlo, reporte cualquier prob
     <message>
         <location filename="../src/libsync/theme.cpp" line="432"/>
         <source>&lt;p&gt;Version %1. For more information visit &lt;a href=&quot;%2&quot;&gt;https://%3&lt;/a&gt;&lt;/p&gt;&lt;p&gt;For known issues and help, please visit: &lt;a href=&quot;https://central.owncloud.org/c/desktop-client&quot;&gt;https://central.owncloud.org&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz,  Jan-Christoph Borchardt, Thomas Müller, Dominik Schmidt, Michael Stingl, Hannah von Reth, and others.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;&lt;p&gt;Distributed by %4 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br/&gt;%5 and the %5 logo are registered trademarks of %4 in the United States, other countries, or both.&lt;/p&gt;&lt;p&gt;&lt;small&gt;%6&lt;/small&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Versión %1. Para más información visite&lt;a href=&quot;%2&quot;&gt;https://%3&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Para saber más acerca de problemas y ayuda, por favor visite: &lt;a href=&quot;https://central.owncloud.org/c/desktop-client&quot;&gt;https://central.owncloud.org&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;Por Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz, Jan-Christoph Borchardt, Thomas Müller, Dominik Schmidt, Michael Stingl, Hannah von Reth y otros. &lt;/small&gt;&lt;/p&gt;&lt;p&gt;Derechos de autor ownCloud GmbH &lt;/p&gt;&lt;p&gt;Distribuido por %4 y licencia por GNU General Public License (GPL) Versión 2.0. &lt;br/&gt;%5 y el %5 logo son marcas registradas de %4 en los Estados Unidos, otras países, o ambos. &lt;/p&gt;&lt;p&gt;&lt;small&gt;%6&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -3896,17 +3897,17 @@ Este es un nuevo modo experimental. Si decide utilizarlo, reporte cualquier prob
     <message>
         <location filename="../src/common/vfs.cpp" line="73"/>
         <source>The Virtual filesystem feature does not support a drive as sync root</source>
-        <translation type="unfinished"/>
+        <translation>La función del sistema de archivos virtual no apoya una unidad como raíz de sincronización</translation>
     </message>
     <message>
         <location filename="../src/common/vfs.cpp" line="77"/>
         <source>The Virtual filesystem feature requires a NTFS file system, %1 is using %2</source>
-        <translation type="unfinished"/>
+        <translation>La función del sistema de archivos virtual requiere un sistema de archivos NTFS, %1 usa %2</translation>
     </message>
     <message>
         <location filename="../src/common/vfs.cpp" line="81"/>
         <source>The Virtual filesystem feature is not supported on network drives</source>
-        <translation type="unfinished"/>
+        <translation>La función de sistema de archivos virtual no es compatible con la unidad de red</translation>
     </message>
 </context>
 <context>
@@ -4455,7 +4456,7 @@ Este es un nuevo modo experimental. Si decide utilizarlo, reporte cualquier prob
     <message>
         <location filename="../src/libsync/theme.cpp" line="410"/>
         <source>%1 %2 %3 %4%8%9Libraries Qt %5, %6%8Using virtual files plugin: %7%8</source>
-        <translation type="unfinished"/>
+        <translation>%1 %2 %3 %4%8%9 Bibliotecas Qt %5, %6%8Usando el complemento de archivos virtuales: %7%8</translation>
     </message>
 </context>
 <context>
@@ -4463,7 +4464,7 @@ Este es un nuevo modo experimental. Si decide utilizarlo, reporte cualquier prob
     <message>
         <location filename="../src/libsync/theme.cpp" line="400"/>
         <source>%1 (Built against Qt %1)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (construido contra Qt %1)</translation>
     </message>
 </context>
 <context>

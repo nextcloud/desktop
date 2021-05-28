@@ -3900,7 +3900,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/common/vfs.cpp" line="81"/>
         <source>The Virtual filesystem feature is not supported on network drives</source>
-        <translation type="unfinished"/>
+        <translation>ไม่รองรับฟีเจอร์ระบบไฟล์เสมือนบนไดรฟ์เครือข่าย</translation>
     </message>
 </context>
 <context>
