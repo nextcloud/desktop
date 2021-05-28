@@ -299,7 +299,7 @@
         <translation>不加密資料夾</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="94"/>
+        <location filename="../src/gui/accountsettings.cpp" line="96"/>
         <source>Encrypt folder</source>
         <translation>加密資料夾</translation>
     </message>

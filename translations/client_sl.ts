@@ -299,7 +299,7 @@
         <translation>Ne šifriraj mape</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="94"/>
+        <location filename="../src/gui/accountsettings.cpp" line="96"/>
         <source>Encrypt folder</source>
         <translation>Šifriraj mapo</translation>
     </message>
