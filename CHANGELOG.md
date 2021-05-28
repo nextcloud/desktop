@@ -22,6 +22,7 @@ Summary
 * Change - Include full os version in the about dialog: [#8374](https://github.com/owncloud/client/pull/8374)
 * Change - We removed the support for async jobs using OC-JobStatus-Location: [#8398](https://github.com/owncloud/client/pull/8398)
 * Enhancement - Prefer 127.0.0.1 as oauth redirect url: [#4542](https://github.com/owncloud/enterprise/issues/4542)
+* Enhancement - Display an icon in the Windows explorer context menu: [#4627](https://github.com/owncloud/client/issues/4627)
 * Enhancement - Show last sync date in tray menu: [#5644](https://github.com/owncloud/client/issues/5644)
 * Enhancement - Make crash report IDs easy to copy: [#25](https://github.com/dschmidt/libcrashreporter-qt/pull/25)
 * Enhancement - We reworked the tables: [#8158](https://github.com/owncloud/client/issues/8158)
@@ -132,6 +133,12 @@ Details
    allows to specify http://127.0.0.1 instead of http://localhost.
 
    https://github.com/owncloud/enterprise/issues/4542
+
+* Enhancement - Display an icon in the Windows explorer context menu: [#4627](https://github.com/owncloud/client/issues/4627)
+
+   We now display the ownCloud icon in the context menu.
+
+   https://github.com/owncloud/client/issues/4627
 
 * Enhancement - Show last sync date in tray menu: [#5644](https://github.com/owncloud/client/issues/5644)
 
