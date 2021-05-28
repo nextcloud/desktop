@@ -3,7 +3,7 @@ Changelog for ownCloud Desktop Client [unreleased] (UNRELEASED)
 The following sections list the changes in ownCloud Desktop Client unreleased relevant to
 ownCloud admins and users.
 
-[unreleased]: https://github.com/owncloud/client/compare/v2.8.1...master
+[unreleased]: https://github.com/owncloud/client/compare/v2.8.2...master
 
 Summary
 -------
@@ -11,7 +11,6 @@ Summary
 * Bugfix - Keep share link names in sync with server: [#7549](https://github.com/owncloud/client/issues/7549)
 * Bugfix - SQLite wal file grows to several gigabyte: [#7646](https://github.com/owncloud/client/issues/7646)
 * Bugfix - Fix missing permission for newly created folder: [#8076](https://github.com/owncloud/client/pull/8076)
-* Bugfix - Correctly detect network drives: [#8272](https://github.com/owncloud/client/issues/8272)
 * Bugfix - Don't recommend non default sync option: [#8317](https://github.com/owncloud/client/issues/8317)
 * Bugfix - Set up default locale correctly: [#8367](https://github.com/owncloud/client/issues/8367)
 * Change - Don't ask the user to switch to http: [#8231](https://github.com/owncloud/client/issues/8231)
@@ -54,13 +53,6 @@ Details
    We fixed a bug where a newly created folder had no permissions set.
 
    https://github.com/owncloud/client/pull/8076
-
-* Bugfix - Correctly detect network drives: [#8272](https://github.com/owncloud/client/issues/8272)
-
-   We fixed a bug which allowed to use Virtual files on Windows network drives, which is not
-   supported by Windows.
-
-   https://github.com/owncloud/client/issues/8272
 
 * Bugfix - Don't recommend non default sync option: [#8317](https://github.com/owncloud/client/issues/8317)
 
@@ -200,6 +192,35 @@ Details
 
    https://github.com/owncloud/client/issues/8609
    https://github.com/owncloud/client/pull/8630
+
+Changelog for ownCloud Desktop Client [2.8.2] (2021-05-28)
+=======================================
+The following sections list the changes in ownCloud Desktop Client 2.8.2 relevant to
+ownCloud admins and users.
+
+[2.8.2]: https://github.com/owncloud/client/compare/v2.8.1...v2.8.2
+
+Summary
+-------
+
+* Bugfix - Correctly detect network drives: [#8272](https://github.com/owncloud/client/issues/8272)
+* Bugfix - We fixed a potential crash in the socket api: [#8664](https://github.com/owncloud/client/pull/8664)
+
+Details
+-------
+
+* Bugfix - Correctly detect network drives: [#8272](https://github.com/owncloud/client/issues/8272)
+
+   We fixed a bug which allowed to use Virtual files on Windows network drives, which is not
+   supported by Windows.
+
+   https://github.com/owncloud/client/issues/8272
+
+* Bugfix - We fixed a potential crash in the socket api: [#8664](https://github.com/owncloud/client/pull/8664)
+
+   We fixed a crash in the Mac implementation of the socket api.
+
+   https://github.com/owncloud/client/pull/8664
 
 Changelog for ownCloud Desktop Client [2.8.1] (2021-05-21)
 =======================================
