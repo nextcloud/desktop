@@ -29,3 +29,6 @@ The other options are:
 
 ``--confdir`` `<dirname>`
         Uses the specified configuration directory.
+
+``--background``
+        Launch the application in the background (i.e. without opening the main dialog).
