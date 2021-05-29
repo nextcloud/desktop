@@ -3751,7 +3751,7 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="236"/>
         <source>Delete share link</source>
-        <translation>Usuń link udostępniania</translation>
+        <translation>Usuń link udostępnienia</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="241"/>
@@ -5509,7 +5509,7 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
     <message>
         <location filename="../src/gui/tray/Window.qml" line="812"/>
         <source>Open share dialog</source>
-        <translation>Otwórz okno udostępniania</translation>
+        <translation>Otwórz okno udostępnienia</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="816"/>

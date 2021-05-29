@@ -125,12 +125,12 @@
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="26"/>
         <source>Browser Authentication</source>
-        <translation>ブラウザ認証</translation>
+        <translation>ブラウザー認証</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="32"/>
         <source>Please switch to your browser to proceed.</source>
-        <translation>続行するには、ブラウザに切り替えてください。</translation>
+        <translation>続行するには、ブラウザーに切り替えてください。</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="52"/>
@@ -150,7 +150,7 @@
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="73"/>
         <source>Switch to your browser to connect your account</source>
-        <translation>ブラウザに切り替えてアカウントに接続します</translation>
+        <translation>ブラウザーに切り替えてアカウントに接続します</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="148"/>
@@ -222,7 +222,7 @@
     <message>
         <location filename="../src/libsync/abstractpropagateremotedeleteencrypted.cpp" line="181"/>
         <source>&quot;%1 Failed to unlock encrypted folder %2&quot;.</source>
-        <translation>&quot;%1 暗号化されたフォルダ %2 のロックを解除できませんでした。”</translation>
+        <translation>&quot;%1 暗号化されたフォルダー %2 のロックを解除できませんでした。”</translation>
     </message>
 </context>
 <context>
@@ -557,7 +557,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1105"/>
         <source>Obtaining authorization from the browser. &lt;a href=&apos;%1&apos;&gt;Click here&lt;/a&gt; to re-open the browser.</source>
-        <translation>ブラウザーから許可を取得。&lt;a href=&apos;%1&apos;&gt;ここをクリック&lt;/a&gt; してブラウザを再度開きます。</translation>
+        <translation>ブラウザーから許可を取得。&lt;a href=&apos;%1&apos;&gt;ここをクリック&lt;/a&gt; してブラウザーを再度開きます。</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1109"/>
@@ -1055,7 +1055,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="91"/>
         <source>Unable to open the Browser, please copy the link to your Browser.</source>
-        <translation>ブラウザーを開くことができませんでした。リンクをブラウザにコピーしてください。</translation>
+        <translation>ブラウザーを開くことができませんでした。リンクをブラウザーにコピーしてください。</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="154"/>
@@ -1080,7 +1080,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="215"/>
         <source>Reopen Browser</source>
-        <translation>ブラウザを再度開く</translation>
+        <translation>ブラウザーを再度開く</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="218"/>
@@ -1232,7 +1232,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message>
         <location filename="../src/gui/folder.cpp" line="1157"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
-        <translation>フォルダ%1は作成されましたが、以前に同期から除外されました。 中のデータは同期されません。</translation>
+        <translation>フォルダー %1 は作成されましたが、以前に同期から除外されました。 中のデータは同期されません。</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1160"/>
@@ -1315,7 +1315,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation>同期フォルダ &apos;%1&apos;フォルダ内のすべてのファイルがサーバー上で削除されました。
+        <translation>同期フォルダー &apos;%1&apos;フォルダー内のすべてのファイルがサーバー上で削除されました。
 これらの削除はローカル同期フォルダーと同期され、復元する権限がない限り、ファイルは使用できなくなります。 
 ファイルを復元したい場合、権限があればサーバーと再同期されます。
 ファイルを削除することにした場合、所有者でない限り、ファイルは利用できなくなります。</translation>
@@ -1325,7 +1325,7 @@ If you decide to delete the files, they will be unavailable to you, unless you a
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
-        <translation>ローカル同期フォルダ &apos;%1&apos;内のすべてのファイルが削除されました。この削除はサーバーに同期され、復元されない限りそのファイルは使用できなくなります。
+        <translation>ローカル同期フォルダー &apos;%1&apos;内のすべてのファイルが削除されました。この削除はサーバーに同期され、復元されない限りそのファイルは使用できなくなります。
 このアクションをサーバーと同期してもよろしいですか？
 これが操作ミスであり、ファイルを維持することにした場合、ファイルはサーバーから再同期されます。</translation>
     </message>
@@ -2179,7 +2179,7 @@ If enabled, logs will be written to %1</source>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="64"/>
         <source>Enable logging to temporary folder</source>
-        <translation>一時フォルダへのログ記録を有効にする</translation>
+        <translation>一時フォルダーへのログ記録を有効にする</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="70"/>
@@ -2615,7 +2615,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="260"/>
         <source>Warning: The local folder is not empty. Pick a resolution!</source>
-        <translation>警告: ローカルフォルダは空ではありません。対処法を選択してください！</translation>
+        <translation>警告: ローカルフォルダーは空ではありません。対処法を選択してください！</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="268"/>
@@ -2706,7 +2706,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="46"/>
         <source>Login in your browser</source>
-        <translation>ブラウザにログイン</translation>
+        <translation>ブラウザーにログイン</translation>
     </message>
 </context>
 <context>
@@ -2740,7 +2740,7 @@ for additional privileges during the process.</source>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="86"/>
         <source>The link to your %1 web interface when you open it in the browser.</source>
         <comment>%1 will be replaced with the application name</comment>
-        <translation>%1 のWeb画面をブラウザで開くときのURL</translation>
+        <translation>%1 のWeb画面をブラウザーで開くときのURL</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="80"/>
@@ -2755,7 +2755,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="96"/>
         <source>This is the link to your %1 web interface when you open it in the browser.&lt;br/&gt;It looks like https://cloud.example.com or https://example.com/cloud</source>
-        <translation>%1 のWeb画面をブラウザで開くときのURLです。&lt;br/&gt;https://cloud.example.com や https://example.com/cloud のようになります。</translation>
+        <translation>%1 のWeb画面をブラウザーで開くときのURLです。&lt;br/&gt;https://cloud.example.com や https://example.com/cloud のようになります。</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="185"/>
@@ -2978,11 +2978,11 @@ Switching to this mode will abort any currently running synchronization.
 This is a new, experimental mode. If you decide to use it, please report any issues that come up.</source>
         <translation>&quot;仮想ファイル&quot; モードを有効にした場合、最初にファイルがダウンロードされません。同期ダウンロードされる代わりに、サーバー上に存在するファイルごとにローカルに小さな ”%1&quot; ファイルが作成されます。これらのファイルを実行した時やコンテキストメニューを使用するとコンテンツをダウンロードできます。
 
-仮想ファイルモードは、選択同期モードとどちらかの排他利用です。現在選択されていないフォルダーはオンライン専用フォルダに変換され、選択同期モードの設定はリセットされます。
+仮想ファイルモードは、選択同期モードとどちらかの排他利用です。現在選択されていないフォルダーはオンライン専用フォルダーに変換され、選択同期モードの設定はリセットされます。
 
 このモードに切り替えると、現在実行中の同期は中止されます。
 
-これは新しい機能で、実験モードです。使用していて問題があったら報告をおねがいします。</translation>
+これは新しい機能で、実験モードです。使用していて問題があったら報告をお願いします。</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="419"/>
@@ -5081,7 +5081,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="36"/>
         <source>Please switch to your browser to proceed.</source>
-        <translation>続行するには、ブラウザに切り替えてください。</translation>
+        <translation>続行するには、ブラウザーに切り替えてください。</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="46"/>
@@ -5091,7 +5091,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="56"/>
         <source>Re-open Browser</source>
-        <translation>ブラウザを再度開く</translation>
+        <translation>ブラウザーを再度開く</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="69"/>
@@ -5125,12 +5125,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="245"/>
         <source>This is the link to your %1 web interface when you open it in the browser.&lt;br/&gt;It looks like https://cloud.example.com or https://example.com/cloud</source>
-        <translation>%1 のWeb画面をブラウザで開くときのURLです。&lt;br/&gt;https://cloud.example.com や https://example.com/cloud のようになります。</translation>
+        <translation>%1 のWeb画面をブラウザーで開くときのURLです。&lt;br/&gt;https://cloud.example.com や https://example.com/cloud のようになります。</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="259"/>
         <source>This is the link to your %1 web interface when you open it in the browser.</source>
-        <translation>これは、%1 のWeb画面をブラウザで開くときのURLです。</translation>
+        <translation>これは、%1 のWeb画面をブラウザーで開くときのURLです。</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="343"/>
@@ -5469,7 +5469,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/Window.qml" line="458"/>
         <source>Open Nextcloud Talk in browser</source>
-        <translation>Nextcloud Talk をブラウザで開く</translation>
+        <translation>Nextcloud Talk をブラウザーで開く</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="477"/>
@@ -5696,12 +5696,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/guiutility.cpp" line="46"/>
         <source>Could not open browser</source>
-        <translation>ブラウザを開くことができませんでした</translation>
+        <translation>ブラウザーを開くことができませんでした</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="47"/>
         <source>There was an error when launching the browser to go to URL %1. Maybe no default browser is configured?</source>
-        <translation>ブラウザを起動してURL%1に行ったときにエラーが発生しました。 デフォルトのブラウザが設定されていない可能性がありますか？</translation>
+        <translation>ブラウザーを起動してURL%1に行ったときにエラーが発生しました。 デフォルトのブラウザーが設定されていない可能性がありますか？</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="70"/>
@@ -5764,7 +5764,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/activityitemdelegate.cpp" line="252"/>
         <source>Open Browser</source>
-        <translation>ブラウザを開く</translation>
+        <translation>ブラウザーを開く</translation>
     </message>
 </context>
 <context>
@@ -5808,7 +5808,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/flow2authcredspage.cpp" line="37"/>
         <source>Login in your browser (Login Flow v2)</source>
-        <translation>ブラウザにログイン (Login Flow v2)</translation>
+        <translation>ブラウザーにログイン (Login Flow v2)</translation>
     </message>
 </context>
 <context>
