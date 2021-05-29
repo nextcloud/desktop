@@ -5175,22 +5175,22 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/gui/userstatus.cpp" line="53"/>
         <source>Away</source>
-        <translation type="unfinished"/>
+        <translation>Afastado</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatus.cpp" line="55"/>
         <source>Do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>Não perturbe </translation>
     </message>
     <message>
         <location filename="../src/gui/userstatus.cpp" line="58"/>
         <source>Offline</source>
-        <translation type="unfinished"/>
+        <translation>Desligado</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatus.cpp" line="60"/>
         <source>Online</source>
-        <translation type="unfinished"/>
+        <translation>Online</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="471"/>
