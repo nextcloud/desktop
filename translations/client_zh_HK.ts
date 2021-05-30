@@ -2758,7 +2758,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="96"/>
         <source>This is the link to your %1 web interface when you open it in the browser.&lt;br/&gt;It looks like https://cloud.example.com or https://example.com/cloud</source>
-        <translation>這是在瀏覽器中打開 %1 web 界面時的連結 它類似於https：//cloud。example。com 或 https：//example。com/cloud</translation>
+        <translation>這是您在瀏覽器中打開 %1 Web 界面時的鏈接。&lt;br/&gt;示例為https://cloud.example.com或https://example.com/cloud</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="185"/>
@@ -5128,7 +5128,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="245"/>
         <source>This is the link to your %1 web interface when you open it in the browser.&lt;br/&gt;It looks like https://cloud.example.com or https://example.com/cloud</source>
-        <translation>這是在瀏覽器中打開 %1 web 界面時的連結 它類似於https：//cloud。example。com 或 https：//example。com/cloud</translation>
+        <translation>這是您在瀏覽器中打開 %1 web 界面時的鏈接。&lt;br/&gt;示例為https://cloud.example.com或https://example.com/cloud</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="259"/>
