@@ -100,8 +100,7 @@ void OCUpdater::setUpdateUrl(const QUrl &url)
 
 bool OCUpdater::performUpdate()
 {
-    ConfigFile cfg;
-    QSettings settings(cfg.configFile(), QSettings::IniFormat);
+    QSettings settings(ConfigFile::configFile(), QSettings::IniFormat);
     QString updateFile = settings.value(updateAvailableC).toString();
     if (!updateFile.isEmpty() && QFile(updateFile).exists()
         && !updateSucceeded() /* Someone might have run the updater manually between restarts */) {
@@ -187,8 +186,7 @@ void OCUpdater::setDownloadState(DownloadState state)
 
 void OCUpdater::slotStartInstaller()
 {
-    ConfigFile cfg;
-    QSettings settings(cfg.configFile(), QSettings::IniFormat);
+    QSettings settings(ConfigFile::configFile(), QSettings::IniFormat);
     QString updateFile = settings.value(updateAvailableC).toString();
     settings.setValue(autoUpdateAttemptedC, true);
     settings.sync();
@@ -209,7 +207,7 @@ void OCUpdater::slotStartInstaller()
             return QDir::toNativeSeparators(path);
         };
 
-        QString msiLogFile = cfg.configPath() + "msi.log";
+        QString msiLogFile = ConfigFile::configPath() + "msi.log";
         QString command = QString("&{msiexec /norestart /passive /i '%1' /L*V '%2'| Out-Null ; &'%3'}")
              .arg(preparePathForPowershell(updateFile))
              .arg(preparePathForPowershell(msiLogFile))
@@ -236,8 +234,7 @@ void OCUpdater::slotOpenUpdateUrl()
 
 bool OCUpdater::updateSucceeded() const
 {
-    ConfigFile cfg;
-    QSettings settings(cfg.configFile(), QSettings::IniFormat);
+    QSettings settings(ConfigFile::configFile(), QSettings::IniFormat);
 
     qint64 targetVersionInt = Helper::stringVersionToInt(settings.value(updateTargetVersionC).toString());
     qint64 currentVersion = Helper::currentVersionToInt();
@@ -289,8 +286,7 @@ void NSISUpdater::slotWriteFile()
 
 void NSISUpdater::wipeUpdateData()
 {
-    ConfigFile cfg;
-    QSettings settings(cfg.configFile(), QSettings::IniFormat);
+    QSettings settings(ConfigFile::configFile(), QSettings::IniFormat);
     QString updateFileName = settings.value(updateAvailableC).toString();
     if (!updateFileName.isEmpty())
         QFile::remove(updateFileName);
@@ -312,8 +308,7 @@ void NSISUpdater::slotDownloadFinished()
     QUrl url(reply->url());
     _file->close();
 
-    ConfigFile cfg;
-    QSettings settings(cfg.configFile(), QSettings::IniFormat);
+    QSettings settings(ConfigFile::configFile(), QSettings::IniFormat);
 
     // remove previously downloaded but not used installer
     QFile oldTargetFile(settings.value(updateAvailableC).toString());
@@ -331,8 +326,7 @@ void NSISUpdater::slotDownloadFinished()
 
 void NSISUpdater::versionInfoArrived(const UpdateInfo &info)
 {
-    ConfigFile cfg;
-    QSettings settings(cfg.configFile(), QSettings::IniFormat);
+    QSettings settings(ConfigFile::configFile(), QSettings::IniFormat);
     qint64 infoVersion = Helper::stringVersionToInt(info.version());
     auto seenString = settings.value(seenVersionC).toString();
     qint64 seenVersion = Helper::stringVersionToInt(seenString);
@@ -357,7 +351,7 @@ void NSISUpdater::versionInfoArrived(const UpdateInfo &info)
         if (url.isEmpty()) {
             showNoUrlDialog(info);
         } else {
-            _targetFile = cfg.configPath() + url.mid(url.lastIndexOf('/')+1);
+            _targetFile = ConfigFile::configPath() + url.mid(url.lastIndexOf('/') + 1);
             if (QFile(_targetFile).exists()) {
                 setDownloadState(DownloadComplete);
             } else {
@@ -490,7 +484,7 @@ void NSISUpdater::showUpdateErrorDialog(const QString &targetVersion)
 bool NSISUpdater::handleStartup()
 {
     ConfigFile cfg;
-    QSettings settings(cfg.configFile(), QSettings::IniFormat);
+    QSettings settings(ConfigFile::configFile(), QSettings::IniFormat);
     QString updateFileName = settings.value(updateAvailableC).toString();
     // has the previous run downloaded an update?
     if (!updateFileName.isEmpty() && QFile(updateFileName).exists()) {
@@ -520,8 +514,7 @@ bool NSISUpdater::handleStartup()
 
 void NSISUpdater::slotSetSeenVersion()
 {
-    ConfigFile cfg;
-    QSettings settings(cfg.configFile(), QSettings::IniFormat);
+    QSettings settings(ConfigFile::configFile(), QSettings::IniFormat);
     settings.setValue(seenVersionC, updateInfo().version());
 }
 

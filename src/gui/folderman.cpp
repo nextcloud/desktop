@@ -290,9 +290,7 @@ void FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account,
 
 int FolderMan::setupFoldersMigration()
 {
-    ConfigFile cfg;
-    QDir storageDir(cfg.configPath());
-    _folderConfigPath = cfg.configPath() + QLatin1String("folders");
+    _folderConfigPath = ConfigFile::configPath() + QLatin1String("folders");
 
     qCInfo(lcFolderMan) << "Setup folders from " << _folderConfigPath << "(migration)";
 
