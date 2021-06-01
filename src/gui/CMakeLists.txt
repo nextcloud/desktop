@@ -89,6 +89,7 @@ set(client_SRCS
     creds/httpcredentialsgui.cpp
 
     models/activitylistmodel.cpp
+    models/expandingheaderview.cpp
     models/models.cpp
     models/protocolitemmodel.cpp
 

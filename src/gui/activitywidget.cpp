@@ -38,6 +38,7 @@
 #include "ocsjob.h"
 
 #include "models/activitylistmodel.h"
+#include "models/expandingheaderview.h"
 #include "models/models.h"
 
 #include "ui_activitywidget.h"
@@ -62,19 +63,11 @@ ActivityWidget::ActivityWidget(QWidget *parent)
     _sortModel->setSourceModel(_model);
     _ui->_activityList->setModel(_sortModel);
     _sortModel->setSortRole(Models::UnderlyingDataRole);
-    _ui->_activityList->hideColumn(static_cast<int>(ActivityListModel::ActivityRole::Path));
-    _ui->_activityList->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
-    _ui->_activityList->horizontalHeader()->setSectionResizeMode(static_cast<int>(ActivityListModel::ActivityRole::Text), QHeaderView::Stretch);
-    _ui->_activityList->horizontalHeader()->setSortIndicator(static_cast<int>(ActivityListModel::ActivityRole::PointInTime), Qt::DescendingOrder);
-
-    ConfigFile cfg;
-    _ui->_activityList->horizontalHeader()->setObjectName(QStringLiteral("ActivityListModelHeader"));
-    cfg.restoreGeometryHeader(_ui->_activityList->horizontalHeader());
-
-    connect(qApp, &QApplication::aboutToQuit, this, [this] {
-        ConfigFile cfg;
-        cfg.saveGeometryHeader(_ui->_activityList->horizontalHeader());
-    });
+    auto header = new ExpandingHeaderView(QStringLiteral("ActivityListModelHeader"), _ui->_activityList);
+    _ui->_activityList->setHorizontalHeader(header);
+    header->hideSection(static_cast<int>(ActivityListModel::ActivityRole::Path));
+    header->setSectionResizeMode(QHeaderView::Interactive);
+    header->setSortIndicator(static_cast<int>(ActivityListModel::ActivityRole::PointInTime), Qt::DescendingOrder);
 
     _ui->_notifyLabel->hide();
     _ui->_notifyScroll->hide();
@@ -107,9 +100,11 @@ ActivityWidget::ActivityWidget(QWidget *parent)
 
     connect(_model, &QAbstractItemModel::modelReset, this, &ActivityWidget::dataChanged);
     connect(_ui->_activityList, &QListView::customContextMenuRequested, this, &ActivityWidget::slotItemContextMenu);
-    _ui->_activityList->horizontalHeader()->setContextMenuPolicy(Qt::CustomContextMenu);
-    connect(_ui->_activityList->horizontalHeader(), &QListView::customContextMenuRequested, this, [this] {
-        Models::displayFilterDialog(AccountManager::instance()->accountNames(), _sortModel, static_cast<int>(ActivityListModel::ActivityRole::Account), Qt::DisplayRole, this);
+    header->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(header, &QListView::customContextMenuRequested, header, [header, this] {
+        auto menu = Models::displayFilterDialog(AccountManager::instance()->accountNames(), _sortModel, static_cast<int>(ActivityListModel::ActivityRole::Account), Qt::DisplayRole, this);
+        menu->addSeparator();
+        menu->addAction(tr("Reset column sizes"), this, [header] { header->resizeColumns(true); });
     });
 
     connect(&_removeTimer, &QTimer::timeout, this, &ActivityWidget::slotCheckToCleanWidgets);

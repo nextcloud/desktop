@@ -24,6 +24,7 @@
 #include "folderman.h"
 #include "syncfileitem.h"
 #include "folder.h"
+#include "models/expandingheaderview.h"
 #include "models/models.h"
 #include "openfilemanager.h"
 #include "protocolwidget.h"
@@ -76,23 +77,18 @@ IssuesWidget::IssuesWidget(QWidget *parent)
     _sortModel = new QSortFilterProxyModel(this);
     _sortModel->setSourceModel(_model);
     _ui->_tableView->setModel(_sortModel);
+
+    auto header = new ExpandingHeaderView(QStringLiteral("ActivityErrorListHeaderV2"), _ui->_tableView);
+    _ui->_tableView->setHorizontalHeader(header);
+    header->setSectionResizeMode(QHeaderView::Interactive);
+    header->setExpandingColumn(static_cast<int>(ProtocolItemModel::ProtocolItemRole::Action));
+    header->setSortIndicator(static_cast<int>(ProtocolItemModel::ProtocolItemRole::Time), Qt::DescendingOrder);
+
+
     connect(_ui->_tableView, &QTreeView::customContextMenuRequested, this, &IssuesWidget::slotItemContextMenu);
     _ui->_tableView->horizontalHeader()->setContextMenuPolicy(Qt::CustomContextMenu);
-    connect(_ui->_tableView->horizontalHeader(), &QHeaderView::customContextMenuRequested, this, [this] {
-        ProtocolWidget::showHeaderContextMenu(this, _sortModel);
-    });
-
-    _ui->_tableView->horizontalHeader()->setObjectName(QStringLiteral("ActivityErrorListHeaderV2"));
-    _ui->_tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
-    _ui->_tableView->horizontalHeader()->setSectionResizeMode(static_cast<int>(ProtocolItemModel::ProtocolItemRole::Action), QHeaderView::Stretch);
-    _ui->_tableView->horizontalHeader()->setSortIndicator(static_cast<int>(ProtocolItemModel::ProtocolItemRole::Time), Qt::DescendingOrder);
-
-    ConfigFile cfg;
-    cfg.restoreGeometryHeader(_ui->_tableView->horizontalHeader());
-
-    connect(qApp, &QApplication::aboutToQuit, this, [this] {
-        ConfigFile cfg;
-        cfg.saveGeometryHeader(_ui->_tableView->horizontalHeader());
+    connect(header, &QHeaderView::customContextMenuRequested, header, [header, this] {
+        ProtocolWidget::showHeaderContextMenu(header, _sortModel);
     });
 
 

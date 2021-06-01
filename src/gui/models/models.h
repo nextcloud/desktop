@@ -18,6 +18,7 @@
 #include <QtGlobal>
 
 class QSortFilterProxyModel;
+class QMenu;
 
 namespace OCC {
 
@@ -33,8 +34,28 @@ namespace Models {
     QString formatSelection(const QModelIndexList &items, int dataRole = Qt::DisplayRole);
 
 
-    void displayFilterDialog(const QStringList &candidates, QSortFilterProxyModel *model, int column, int role, QWidget *parent = nullptr);
+    QMenu *displayFilterDialog(const QStringList &candidates, QSortFilterProxyModel *model, int column, int role, QWidget *parent = nullptr);
 
 
+    /**
+     * Returns a vector with indices
+     * This is handy to iterate over the columns
+     */
+    template <typename T>
+    auto range(T start, T end)
+    {
+        std::vector<T> out;
+        out.reserve(end - start);
+        for (auto i = start; i < end; ++i) {
+            out.push_back(i);
+        }
+        return out;
+    }
+
+    template <typename T>
+    auto range(T end)
+    {
+        return range<T>(0, end);
+    }
 };
 }

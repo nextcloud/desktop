@@ -18,6 +18,7 @@
 #include <QTextStream>
 #include <QSortFilterProxyModel>
 #include <QMenu>
+#include <QTimer>
 
 #include <functional>
 
@@ -76,7 +77,7 @@ QString OCC::Models::formatSelection(const QModelIndexList &items, int dataRole)
     return out;
 }
 
-void OCC::Models::displayFilterDialog(const QStringList &candidates, QSortFilterProxyModel *model, int column, int role, QWidget *parent)
+QMenu *OCC::Models::displayFilterDialog(const QStringList &candidates, QSortFilterProxyModel *model, int column, int role, QWidget *parent)
 {
     auto menu = new QMenu(parent);
     menu->setAttribute(Qt::WA_DeleteOnClose);
@@ -102,5 +103,8 @@ void OCC::Models::displayFilterDialog(const QStringList &candidates, QSortFilter
     for (const auto &c : candidates) {
         addAction(c, c);
     }
-    menu->popup(QCursor::pos());
+    QTimer::singleShot(0, menu, [menu] {
+        menu->popup(QCursor::pos());
+    });
+    return menu;
 }

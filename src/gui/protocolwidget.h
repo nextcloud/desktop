@@ -30,6 +30,7 @@ class QPushButton;
 class QSortFilterProxyModel;
 
 namespace OCC {
+class ExpandingHeaderView;
 
 namespace Ui {
     class ProtocolWidget;
@@ -47,7 +48,7 @@ public:
     explicit ProtocolWidget(QWidget *parent = nullptr);
     ~ProtocolWidget() override;
 
-    static void showHeaderContextMenu(QWidget *parent, QSortFilterProxyModel *model);
+    static void showHeaderContextMenu(ExpandingHeaderView *header, QSortFilterProxyModel *model);
     static void showContextMenu(QWidget *parent, ProtocolItemModel *model, const QModelIndexList &items);
 
 

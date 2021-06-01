@@ -29,8 +29,9 @@
 #include "accountstate.h"
 #include "syncfileitem.h"
 
-#include "models/models.h"
 #include "models/activitylistmodel.h"
+#include "models/expandingheaderview.h"
+#include "models/models.h"
 
 #include "ui_protocolwidget.h"
 
@@ -46,10 +47,6 @@ ProtocolWidget::ProtocolWidget(QWidget *parent)
         this, &ProtocolWidget::slotItemCompleted);
 
     connect(_ui->_tableView, &QTreeWidget::customContextMenuRequested, this, &ProtocolWidget::slotItemContextMenu);
-    _ui->_tableView->horizontalHeader()->setContextMenuPolicy(Qt::CustomContextMenu);
-    connect(_ui->_tableView->horizontalHeader(), &QHeaderView::customContextMenuRequested, this, [this] {
-        showHeaderContextMenu(this, _sortModel);
-    });
 
     _model = new ProtocolItemModel(this);
     _sortModel = new QSortFilterProxyModel(this);
@@ -57,18 +54,16 @@ ProtocolWidget::ProtocolWidget(QWidget *parent)
     _sortModel->setSortRole(Models::UnderlyingDataRole);
     _ui->_tableView->setModel(_sortModel);
 
-    _ui->_tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
-    _ui->_tableView->horizontalHeader()->setSectionResizeMode(static_cast<int>(ProtocolItemModel::ProtocolItemRole::File), QHeaderView::Stretch);
-    _ui->_tableView->horizontalHeader()->setSortIndicator(static_cast<int>(ProtocolItemModel::ProtocolItemRole::Time), Qt::DescendingOrder);
-
-    _ui->_tableView->horizontalHeader()->setObjectName(QStringLiteral("ActivityListHeaderV2"));
-    ConfigFile cfg;
-    cfg.restoreGeometryHeader(_ui->_tableView->horizontalHeader());
-
-    connect(qApp, &QApplication::aboutToQuit, this, [this] {
-        ConfigFile cfg;
-        cfg.saveGeometryHeader(_ui->_tableView->horizontalHeader());
+    auto header = new ExpandingHeaderView(QStringLiteral("ActivityListHeaderV2"), _ui->_tableView);
+    _ui->_tableView->setHorizontalHeader(header);
+    header->setSectionResizeMode(QHeaderView::Interactive);
+    header->setExpandingColumn(static_cast<int>(ProtocolItemModel::ProtocolItemRole::File));
+    header->setSortIndicator(static_cast<int>(ProtocolItemModel::ProtocolItemRole::Time), Qt::DescendingOrder);
+    header->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(header, &QHeaderView::customContextMenuRequested, header, [header, this] {
+        showHeaderContextMenu(header, _sortModel);
     });
+
 
     _ui->_headerLabel->setText(tr("Local sync protocol"));
 }
@@ -78,9 +73,11 @@ ProtocolWidget::~ProtocolWidget()
     delete _ui;
 }
 
-void ProtocolWidget::showHeaderContextMenu(QWidget *parent, QSortFilterProxyModel *model)
+void ProtocolWidget::showHeaderContextMenu(ExpandingHeaderView *header, QSortFilterProxyModel *model)
 {
-    Models::displayFilterDialog(AccountManager::instance()->accountNames(), model, static_cast<int>(ProtocolItemModel::ProtocolItemRole::Account), Qt::DisplayRole, parent);
+    auto menu = Models::displayFilterDialog(AccountManager::instance()->accountNames(), model, static_cast<int>(ProtocolItemModel::ProtocolItemRole::Account), Qt::DisplayRole, header);
+    menu->addSeparator();
+    menu->addAction(tr("Reset column sizes"), header, [header] { header->resizeColumns(true); });
 }
 
 void ProtocolWidget::showContextMenu(QWidget *parent, ProtocolItemModel *model, const QModelIndexList &items)
