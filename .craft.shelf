@@ -1,6 +1,6 @@
 [General]
 version = 2
-blueprintrepositories = https://invent.kde.org/packaging/craft-blueprints-kde.git|master|;https://github.com/owncloud/craft-blueprints-owncloud.git|master|
+blueprintrepositories = https://github.com/owncloud/craft-blueprints-owncloud.git|master|;https://invent.kde.org/packaging/craft-blueprints-kde.git|master|
 
 [core/cacert]
 version = 2020-12-08
@@ -16,6 +16,10 @@ version = 3.3.2
 
 [dev-utils/breakpad-tools]
 version = cmake
+revision = e2a857c4
+
+[dev-utils/ccache]
+version = 4.2.1
 
 [dev-utils/cmake]
 version = latest
@@ -69,7 +73,7 @@ version = 3
 version = 6.4
 
 [kde/frameworks/extra-cmake-modules]
-version = 5.81.0
+version = 5.82.0
 
 [libs/cairo]
 version = 1.16.0
@@ -120,25 +124,25 @@ version = 10.35
 version = 0.40.0
 
 [libs/qt5/qtbase]
-version = 5.12.10
+version = 5.12.11
 
 [libs/qt5/qtdeclarative]
-version = 5.12.10
+version = 5.12.11
 
 [libs/qt5/qtmacextras]
-version = 5.12.10
+version = 5.12.11
 
 [libs/qt5/qtsvg]
-version = 5.12.10
+version = 5.12.11
 
 [libs/qt5/qttools]
-version = 5.12.10
+version = 5.12.11
 
 [libs/qt5/qttranslations]
-version = 5.12.10
+version = 5.12.11
 
 [libs/qt5/qtxmlpatterns]
-version = 5.12.10
+version = 5.12.11
 
 [libs/sparkle]
 version = 1.24.0
