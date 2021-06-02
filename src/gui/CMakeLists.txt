@@ -231,6 +231,75 @@ if (NOT DEFINED APPLICATION_ICON_NAME)
     set(APPLICATION_ICON_NAME ${APPLICATION_SHORTNAME})
 endif()
 
+# Generate png icons from svg
+find_program(INKSCAPE
+  NAMES inkscape inkscape.exe
+  REQUIRED
+  HINTS "C:\\Program Files\\Inkscape\\bin" "/usr/bin" ENV INKSCAPE_DIR)
+# REQUIRED keyword is only supported on CMake 3.18 and above
+if (NOT INKSCAPE)
+  message(FATAL_ERROR "Could not find inkscape. Set INKSCAPE_DIR to the path of executable.")
+endif()
+
+function(generate_sized_png_from_svg icon_path size)
+  get_filename_component(icon_name_dir ${icon_path} DIRECTORY)
+  get_filename_component(icon_name_wle ${icon_path} NAME_WLE)
+
+  if (EXISTS "${icon_name_dir}/${size}-${icon_name_wle}.png")
+    return()
+  endif()
+
+  set(icon_output_name "${size}-${icon_name_wle}.png")
+  message(STATUS "Generate ${icon_output_name}")
+  execute_process(COMMAND
+    "${INKSCAPE}" -w ${size} -h ${size} "${icon_path}" -o "${icon_output_name}"
+    WORKING_DIRECTORY "${icon_name_dir}"
+    RESULT_VARIABLE
+    INKSCAPE_SIDEBAR_ERROR
+    OUTPUT_QUIET
+    ERROR_QUIET)
+
+  if (INKSCAPE_SIDEBAR_ERROR)
+    message(FATAL_ERROR
+      "inkscape could not generate icon: ${INKSCAPE_SIDEBAR_ERROR}")
+  else()
+  endif()
+endfunction()
+
+if ((APPLICATION_ICON_SET MATCHES "PNG")
+    AND
+    (NOT EXISTS "${theme_dir}/colored/${APPLICATION_ICON_NAME}-icon.svg"))
+  # We may have no svg application icon in when customers use PNG
+  # icons in brander, but theme.qrc expects a svg icon.
+  file(TOUCH "${theme_dir}/colored/${APPLICATION_ICON_NAME}-icon.svg")
+endif()
+
+if(APPLE)
+  set(MACOS_SIDEBAR_ICON_SVG "${theme_dir}/colored/${APPLICATION_ICON_NAME}-sidebar.svg")
+  generate_sized_png_from_svg(${MACOS_SIDEBAR_ICON_SVG} 16)
+  generate_sized_png_from_svg(${MACOS_SIDEBAR_ICON_SVG} 32)
+  generate_sized_png_from_svg(${MACOS_SIDEBAR_ICON_SVG} 64)
+  generate_sized_png_from_svg(${MACOS_SIDEBAR_ICON_SVG} 128)
+  generate_sized_png_from_svg(${MACOS_SIDEBAR_ICON_SVG} 256)
+endif()
+
+if(WIN32)
+  set(STARTMENU_ICON_SVG "${theme_dir}/colored/${APPLICATION_ICON_NAME}-w10startmenu.svg")
+  generate_sized_png_from_svg(${STARTMENU_ICON_SVG} 70)
+  generate_sized_png_from_svg(${STARTMENU_ICON_SVG} 150)
+endif()
+
+set(APP_ICON_SVG "${theme_dir}/colored/${APPLICATION_ICON_NAME}-icon.svg")
+generate_sized_png_from_svg(${APP_ICON_SVG} 16)
+generate_sized_png_from_svg(${APP_ICON_SVG} 24)
+generate_sized_png_from_svg(${APP_ICON_SVG} 32)
+generate_sized_png_from_svg(${APP_ICON_SVG} 48)
+generate_sized_png_from_svg(${APP_ICON_SVG} 64)
+generate_sized_png_from_svg(${APP_ICON_SVG} 128)
+generate_sized_png_from_svg(${APP_ICON_SVG} 256)
+generate_sized_png_from_svg(${APP_ICON_SVG} 512)
+generate_sized_png_from_svg(${APP_ICON_SVG} 1024)
+
 file(GLOB_RECURSE OWNCLOUD_ICONS "${theme_dir}/colored/*-${APPLICATION_ICON_NAME}-icon*")
 if(APPLE)
     file(GLOB_RECURSE OWNCLOUD_SIDEBAR_ICONS "${theme_dir}/colored/*-${APPLICATION_ICON_NAME}-sidebar*")
