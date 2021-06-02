@@ -377,9 +377,32 @@ void OAuth::fetchWellKnown()
     }
 }
 
+/**
+ * Checks whether a URL returned by the server is valid.
+ * @param url URL to validate
+ * @return true if validation is successful, false otherwise
+ */
+bool isUrlValid(const QUrl &url)
+{
+    qCDebug(lcOauth()) << "Checking URL for validity:" << url;
+
+    // the following allowlist contains URL schemes accepted as valid
+    // OAuth 2.0 URLs must be HTTPS to be in compliance with the specification
+    // for unit tests, we also permit the nonexisting oauthtest scheme
+    const QStringList allowedSchemes({ QStringLiteral("https"), QStringLiteral("oauthtest") });
+    return allowedSchemes.contains(url.scheme());
+}
+
 void OAuth::openBrowser()
 {
     authorisationLinkAsync([this](const QUrl &link) {
+        if (!isUrlValid(link)) {
+            qCWarning(lcOauth) << "URL validation failed";
+            // TODO: show dialog to inform user about what went wrong
+            emit result(Error, QString());
+            return;
+        }
+
         if (!QDesktopServices::openUrl(link)) {
             qCWarning(lcOauth) << "QDesktopServices::openUrl Failed";
             // We cannot open the browser, then we claim we don't support OAuth.
