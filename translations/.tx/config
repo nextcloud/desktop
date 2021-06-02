@@ -10,7 +10,7 @@ type = TS
 # de_DE holds the formal translation which we want as default
 lang_map = de_DE: de, pt_PT: pt, cs_CZ: cs, et_EE: et, fi_FI: fi, ja_JP: ja, hu_HU: hu, sk_SK: client_sk, th_TH: th
 
-[owncloud.client-desktop]
-source_file = ../mirall.desktop.in
-source_lang = en
-type = DESKTOP
+#[owncloud.client-desktop]
+#source_file = ../mirall.desktop.in
+#source_lang = en
+#type = DESKTOP
