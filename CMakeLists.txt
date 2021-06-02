@@ -7,13 +7,7 @@ include(FeatureSummary)
 
 set(BIN_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 
-
-set(OEM_THEME_DIR "" CACHE STRING "Define directory containing a custom theme")
-if ( EXISTS ${OEM_THEME_DIR}/OEM.cmake )
-     include ( ${OEM_THEME_DIR}/OEM.cmake )
-else ()
-     include ( ${CMAKE_SOURCE_DIR}/NEXTCLOUD.cmake )
-endif()
+include(${CMAKE_SOURCE_DIR}/NEXTCLOUD.cmake)
 
 # Default suffix if the theme doesn't define one
 if(NOT DEFINED APPLICATION_VIRTUALFILE_SUFFIX)

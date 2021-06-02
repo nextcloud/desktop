@@ -1,14 +1,14 @@
 <RCC>
     <qresource prefix="/client">
-        <file alias="theme/colored/Nextcloud-icon-16.png">theme/colored/16-Nextcloud-icon.png</file>
-        <file alias="theme/colored/Nextcloud-icon-24.png">theme/colored/24-Nextcloud-icon.png</file>
-        <file alias="theme/colored/Nextcloud-icon-32.png">theme/colored/32-Nextcloud-icon.png</file>
-        <file alias="theme/colored/Nextcloud-icon-48.png">theme/colored/48-Nextcloud-icon.png</file>
-        <file alias="theme/colored/Nextcloud-icon-64.png">theme/colored/64-Nextcloud-icon.png</file>
-        <file alias="theme/colored/Nextcloud-icon-128.png">theme/colored/128-Nextcloud-icon.png</file>
-        <file alias="theme/colored/Nextcloud-icon-256.png">theme/colored/256-Nextcloud-icon.png</file>
-        <file alias="theme/colored/Nextcloud-icon-512.png">theme/colored/512-Nextcloud-icon.png</file>
-        <file alias="theme/colored/Nextcloud-icon-1024.png">theme/colored/1024-Nextcloud-icon.png</file>
+        <file alias="theme/colored/@APPLICATION_ICON_NAME@-icon-16.png">theme/colored/16-@APPLICATION_ICON_NAME@-icon.png</file>
+        <file alias="theme/colored/@APPLICATION_ICON_NAME@-icon-24.png">theme/colored/24-@APPLICATION_ICON_NAME@-icon.png</file>
+        <file alias="theme/colored/@APPLICATION_ICON_NAME@-icon-32.png">theme/colored/32-@APPLICATION_ICON_NAME@-icon.png</file>
+        <file alias="theme/colored/@APPLICATION_ICON_NAME@-icon-48.png">theme/colored/48-@APPLICATION_ICON_NAME@-icon.png</file>
+        <file alias="theme/colored/@APPLICATION_ICON_NAME@-icon-64.png">theme/colored/64-@APPLICATION_ICON_NAME@-icon.png</file>
+        <file alias="theme/colored/@APPLICATION_ICON_NAME@-icon-128.png">theme/colored/128-@APPLICATION_ICON_NAME@-icon.png</file>
+        <file alias="theme/colored/@APPLICATION_ICON_NAME@-icon-256.png">theme/colored/256-@APPLICATION_ICON_NAME@-icon.png</file>
+        <file alias="theme/colored/@APPLICATION_ICON_NAME@-icon-512.png">theme/colored/512-@APPLICATION_ICON_NAME@-icon.png</file>
+        <file alias="theme/colored/@APPLICATION_ICON_NAME@-icon-1024.png">theme/colored/1024-@APPLICATION_ICON_NAME@-icon.png</file>
         <file>theme/colored/state-error-32.png</file>
         <file>theme/colored/state-error-64.png</file>
         <file>theme/colored/state-error-128.png</file>
@@ -189,7 +189,7 @@
         <file>theme/account.svg</file>
         <file>theme/colored/add.svg</file>
         <file>theme/colored/delete.svg</file>
-        <file>theme/colored/Nextcloud-icon.svg</file>
+        <file>theme/colored/@APPLICATION_ICON_NAME@-icon.svg</file>
         <file>theme/add.svg</file>
         <file>theme/share.svg</file>
         <file>theme/reply.svg</file>
