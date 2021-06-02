@@ -9,16 +9,11 @@ IF(BUILD_UPDATER)
     add_subdirectory(updater)
 endif()
 
-set(MIRALL_RC_SRC ../../resources.qrc)
-if (EXISTS "${OEM_THEME_DIR}/theme.qrc")
-    list(APPEND MIRALL_RC_SRC ${OEM_THEME_DIR}/theme.qrc)
-    set(theme_dir ${OEM_THEME_DIR}/theme)
-else()
-    list(APPEND MIRALL_RC_SRC ../../theme.qrc)
-    set(theme_dir ${CMAKE_SOURCE_DIR}/theme)
-endif()
+configure_file(${CMAKE_SOURCE_DIR}/theme.qrc.in ${CMAKE_SOURCE_DIR}/theme.qrc)
 
-#set (QML_IMPORT_PATH "${CMAKE_SOURCE_DIR}/src/gui/tray" CACHE STRING "Extra qml module import paths" FORCE)
+set(MIRALL_RC_SRC ../../resources.qrc)
+list(APPEND MIRALL_RC_SRC ${CMAKE_SOURCE_DIR}/theme.qrc)
+set(theme_dir ${CMAKE_SOURCE_DIR}/theme)
 
 set(client_UI_SRCS
     accountsettings.ui
