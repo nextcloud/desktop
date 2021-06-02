@@ -236,6 +236,58 @@ private slots:
         CHECK_NORMALIZE_ETAG("\"foo\"-gzip", "foo");
         CHECK_NORMALIZE_ETAG("\"foo-gzip\"", "foo");
     }
+
+    void testIsPathWindowsDrivePartitionRoot()
+    {
+#ifdef Q_OS_WIN
+        // a non-root of a Windows partition
+        QVERIFY(!isPathWindowsDrivePartitionRoot("c:/a"));
+        QVERIFY(!isPathWindowsDrivePartitionRoot("c:\\a"));
+
+        // a root of a Windows partition (c, d, e)
+        QVERIFY(isPathWindowsDrivePartitionRoot("c:"));
+        QVERIFY(isPathWindowsDrivePartitionRoot("c:/"));
+        QVERIFY(isPathWindowsDrivePartitionRoot("c:\\"));
+
+        QVERIFY(isPathWindowsDrivePartitionRoot("d:"));
+        QVERIFY(isPathWindowsDrivePartitionRoot("d:/"));
+        QVERIFY(isPathWindowsDrivePartitionRoot("d:\\"));
+
+        QVERIFY(isPathWindowsDrivePartitionRoot("e:"));
+        QVERIFY(isPathWindowsDrivePartitionRoot("e:/"));
+        QVERIFY(isPathWindowsDrivePartitionRoot("e:\\"));
+
+        // a single character
+        QVERIFY(!isPathWindowsDrivePartitionRoot("a"));
+
+        // a missing second chracter
+        QVERIFY(!isPathWindowsDrivePartitionRoot("c/"));
+        QVERIFY(!isPathWindowsDrivePartitionRoot("c\\"));
+
+        // an incorrect second character
+        QVERIFY(!isPathWindowsDrivePartitionRoot("c;"));
+        QVERIFY(!isPathWindowsDrivePartitionRoot("c;/"));
+        QVERIFY(!isPathWindowsDrivePartitionRoot("c;\\"));
+
+        // a non-missing, but, incorrect last character
+        QVERIFY(!isPathWindowsDrivePartitionRoot("c:!"));
+
+        // an incorrect path length
+        QVERIFY(!isPathWindowsDrivePartitionRoot("cd:"));
+        QVERIFY(!isPathWindowsDrivePartitionRoot("cd:/"));
+        QVERIFY(!isPathWindowsDrivePartitionRoot("cd:\\"));
+
+        // a non-alphabetic first character
+        QVERIFY(!isPathWindowsDrivePartitionRoot("0:"));
+        QVERIFY(!isPathWindowsDrivePartitionRoot("0:/"));
+        QVERIFY(!isPathWindowsDrivePartitionRoot("0:\\"));
+#else
+        // should always return false on non-Windows
+        QVERIFY(!isPathWindowsDrivePartitionRoot("c:"));
+        QVERIFY(!isPathWindowsDrivePartitionRoot("c:/"));
+        QVERIFY(!isPathWindowsDrivePartitionRoot("c:\\"));
+#endif
+    }
 };
 
 QTEST_GUILESS_MAIN(TestUtility)
