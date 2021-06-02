@@ -24,6 +24,7 @@
 #include <QLoggingCategory>
 #include <QDir>
 #include <QDirIterator>
+#include <QStandardPaths>
 
 namespace OCC {
 
@@ -43,19 +44,18 @@ namespace Translations {
 
     QString applicationTrPath()
     {
-        QString devTrPath = qApp->applicationDirPath() + QString::fromLatin1("/../src/gui/");
-        if (QDir(devTrPath).exists()) {
+        const auto devTrPath = QDir(qApp->applicationDirPath() + QStringLiteral("/../src/gui/"));
+        if (devTrPath.exists()) {
             // might miss Qt, QtKeyChain, etc.
             qCWarning(lcTranslations) << "Running from build location! Translations may be incomplete!";
-            return devTrPath;
+            return devTrPath.absolutePath();
         }
-#if defined(Q_OS_WIN)
-        return QApplication::applicationDirPath();
-#elif defined(Q_OS_MAC)
-        return QApplication::applicationDirPath() + QLatin1String("/../Resources/Translations"); // path defaults to app dir.
-#elif defined(Q_OS_UNIX)
-        return QStringLiteral(SHAREDIR "/" APPLICATION_EXECUTABLE "/i18n/");
+#ifdef Q_OS_MAC
+        const auto translationDir = QStringLiteral("Translations");
+#else
+        const auto translationDir = QStringLiteral("i18n");
 #endif
+        return QStandardPaths::locate(QStandardPaths::DataLocation, translationDir, QStandardPaths::LocateDirectory);
     }
 
     QSet<QString> listAvailableTranslations()

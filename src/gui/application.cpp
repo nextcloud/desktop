@@ -732,6 +732,11 @@ QString substLang(const QString &lang)
 
 void Application::setupTranslations()
 {
+    const QString trPath = Translations::applicationTrPath();
+    if (trPath.isEmpty()) {
+        qCWarning(lcApplication) << "Failed to find translations";
+        return;
+    }
     QStringList uiLanguages = QLocale::system().uiLanguages();
 
     // the user can also set a locale in the settings, so we need to load the config file
@@ -761,7 +766,6 @@ void Application::setupTranslations()
     for (QString lang : qAsConst(uiLanguages)) {
         lang.replace(QLatin1Char('-'), QLatin1Char('_')); // work around QTBUG-25973
         lang = substLang(lang);
-        const QString trPath = Translations::applicationTrPath();
         const QString trFile = Translations::translationsFilePrefix() + lang;
         if (translator->load(trFile, trPath) || lang.startsWith(QLatin1String("en"))) {
             // Permissive approach: Qt and keychain translations

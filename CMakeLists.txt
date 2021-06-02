@@ -86,11 +86,6 @@ endif()
 message(STATUS "GIT_SHA1 ${GIT_SHA1}")
 
 set(SYSCONFDIR ${SYSCONF_INSTALL_DIR})
-set(DATADIR ${DATA_INSTALL_DIR})
-if(WIN32)
-set(DATADIR "share")
-endif(WIN32)
-set(SHAREDIR ${DATADIR})
 
 # this option removes Http authentication, keychain, shibboleth etc and is intended for
 # external authentication mechanisms

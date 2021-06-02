@@ -26,7 +26,6 @@
 #cmakedefine ZLIB_FOUND @ZLIB_FOUND@
 
 #cmakedefine SYSCONFDIR "@SYSCONFDIR@"
-#cmakedefine SHAREDIR "@SHAREDIR@"
 #cmakedefine OC_PLUGIN_DIR "@OC_PLUGIN_DIR@"
 
 #cmakedefine01 GUI_TESTING
