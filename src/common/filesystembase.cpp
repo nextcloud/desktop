@@ -482,7 +482,7 @@ bool FileSystem::isLnkFile(const QString &filename)
 
 bool FileSystem::isExcludeFile(const QString &filename)
 {
-    return filename.endsWith(QLatin1String(".sync-exclude.lst"));
+    return filename.endsWith(QStringLiteral("sync-exclude.lst")) || filename.endsWith(QStringLiteral("exclude.lst"));
 }
 
 bool FileSystem::isJunction(const QString &filename)
