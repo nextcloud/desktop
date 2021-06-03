@@ -11,9 +11,13 @@ import json
 from objectmaphelper import RegularExpression
 from pageObjects.AccountConnectionWizard import AccountConnectionWizard
 from helpers.SetupClientHelper import *
+from helpers.FilesHelper import buildConflictedRegex
 from pageObjects.EnterPassword import EnterPassword
 from pageObjects.PublicLinkDialog import PublicLinkDialog
 from pageObjects.SharingDialog import SharingDialog
+from pageObjects.SyncWizard import SyncWizard
+from pageObjects.Toolbar import Toolbar
+from pageObjects.Activity import Activity
 
 
 # the script needs to use the system wide python
@@ -281,10 +285,8 @@ def step(context):
         lambda: isFolderSynced(context.userData['clientSyncPath']),
         context.userData['clientSyncTimeout'] * 1000,
     )
-    openContextMenu(
-        waitForObjectItem(names.stack_folderList_QTreeView, "_1"), 0, 0, Qt.NoModifier
-    )
-    activateItem(waitForObjectItem(names.settings_QMenu, "Pause sync"))
+    syncWizard = SyncWizard()
+    syncWizard.performAction("Pause sync")
 
 
 @Given('the user has changed the content of local file "|any|" to:')
@@ -297,10 +299,8 @@ def step(context, filename):
 
 @When('the user resumes the file sync on the client')
 def step(context):
-    openContextMenu(
-        waitForObjectItem(names.stack_folderList_QTreeView, "_1"), 0, 0, Qt.NoModifier
-    )
-    activateItem(waitForObjectItem(names.settings_QMenu, "Resume sync"))
+    syncWizard = SyncWizard()
+    syncWizard.performAction("Resume sync")
 
 
 @When('the user triggers force sync on the client')
@@ -344,9 +344,8 @@ def step(context, filename):
 
 @When('the user clicks on the activity tab')
 def step(context):
-    clickButton(
-        waitForObject(names.settings_settingsdialog_toolbutton_Activity_QToolButton)
-    )
+    toolbar = Toolbar()
+    toolbar.clickActivity()
 
 
 @Then('a conflict warning should be shown for |integer| files')
@@ -369,38 +368,16 @@ def step(context, files):
     )
 
 
-def buildConflictedRegex(filename):
-    if '.' in filename:
-        # TODO: improve this for complex filenames
-        namepart = filename.split('.')[0]
-        extpart = filename.split('.')[1]
-        return '%s \(conflicted copy \d{4}-\d{2}-\d{2} \d{6}\)\.%s' % (
-            namepart,
-            extpart,
-        )
-    else:
-        return '%s \(conflicted copy \d{4}-\d{2}-\d{2} \d{6}\)' % (filename)
-
-
 @Then('the table of conflict warnings should include file "|any|"')
 def step(context, filename):
-    waitForObject(names.settings_OCC_SettingsDialog)
-    waitForObjectExists(
-        {
-            "column": 1,
-            "container": names.oCC_IssuesWidget_tableView_QTableView,
-            "text": RegularExpression(buildConflictedRegex(filename)),
-            "type": "QModelIndex",
-        }
-    )
+    activity = Activity()
+    activity.checkFileExist(filename)
 
 
 @When('the user selects the unsynced files tab')
 def step(context):
-    # TODO: find some way to dynamically select the tab name
-    # It might take some time for all files to sync except the expected number of unsynced files
-    snooze(10)
-    clickTab(waitForObject(names.stack_QTabWidget), "Not Synced")
+    activity = Activity()
+    activity.clickTab("Not Synced")
 
 
 def openSharingDialog(context, resource, itemType='file'):
