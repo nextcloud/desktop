@@ -512,3 +512,79 @@ def step(context, resource):
 )
 def step(context, resource, role):
     createPublicShareWithRole(context, resource, role)
+
+
+@When('the user logs out of the client-UI')
+def step(context):
+    toolbar = Toolbar()
+    toolbar.userLogout()
+
+
+def isUserSignedOut(context, username):
+    displayname = getDisplayname(username)
+    server = context.userData['localBackendUrl']
+    toolbar = Toolbar()
+    test.compare(
+        str(waitForObjectExists(toolbar.SIGNED_OUT_TEXT_BAR).text),
+        'Signed out from <a href="'
+        + server
+        + '">'
+        + server
+        + '</a> as <i>'
+        + displayname
+        + '</i>.',
+    )
+
+
+def isUserSignedIn(context, username):
+    displayname = getDisplayname(username)
+    server = context.userData['localBackendUrl']
+    toolbar = Toolbar()
+
+    test.compare(
+        str(waitForObjectExists(toolbar.SIGNED_OUT_TEXT_BAR).text),
+        'Connected '
+        + 'to <a href="'
+        + server
+        + '">'
+        + server
+        + '</a> as <i>'
+        + displayname
+        + '</i>.',
+    )
+
+
+@Then('user "|any|" should be signed out')
+def step(context, username):
+    isUserSignedOut(context, username)
+
+
+@Given('user "|any|" has logged out of the client-UI')
+def step(context, username):
+    waitFor(
+        lambda: isFolderSynced(context.userData['clientSyncPath']),
+        context.userData['clientSyncTimeout'] * 1000,
+    )
+    # TODO: find some way to dynamically to check if files are synced
+    # It might take some time for all files to sync
+    snooze(5)
+    toolbar = Toolbar()
+    toolbar.userLogout()
+    isUserSignedOut(context, username)
+
+
+@When('user "|any|" logs in to the client-UI')
+def step(context, username):
+    toolbar = Toolbar()
+    toolbar.userLogsIn()
+    password = getPasswordForUser(username)
+    enterUserPassword = EnterPassword()
+    enterUserPassword.enterPassword(password)
+
+
+@Then('user "|any|" should be connect to the client-UI')
+def step(context, username):
+    # TODO: find some way to dynamically to check if files are synced
+    # It might take some time for all files to sync and connect to ther server
+    snooze(5)
+    isUserSignedIn(context, username)
