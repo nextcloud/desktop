@@ -10,4 +10,4 @@ jobs:
         if: ${{ ! startsWith(github.event.comment.body, 'This issue has been marked as "needs info" 4 weeks ago.') && ! startsWith(github.event.comment.body, 'This bug report did not receive an update in the last 4 weeks.')}}
         with:
           labels: 'needs info'
-          github_token: ${{ secrets.github_token }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
