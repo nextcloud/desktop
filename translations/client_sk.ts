@@ -3199,6 +3199,11 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Prebratý súbor je prázdny napriek tomu, že server oznámil, že mal mať %1.</translation>
     </message>
     <message>
+        <location filename="../src/libsync/propagatedownload.cpp" line="783"/>
+        <source>The downloaded file is empty, but the server said it should have been %1.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="974"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
         <translation>Súbor %1 nie je možné uložiť, pretože jeho názov koliduje s názvom lokálneho súboru!</translation>
