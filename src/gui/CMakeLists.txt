@@ -375,6 +375,11 @@ else()
     # we must add MACOSX_BUNDLE only if building a bundle
     add_executable(${APPLICATION_EXECUTABLE} WIN32 MACOSX_BUNDLE main.cpp ${APP_ICON})
 
+    if (BUILD_OWNCLOUD_OSX_BUNDLE)
+      set_target_properties(${APPLICATION_EXECUTABLE} PROPERTIES
+        OUTPUT_NAME "${APPLICATION_NAME}")
+    endif()
+
     set (QM_DIR ${OWNCLOUD_OSX_BUNDLE}/Contents/Resources/Translations)
     install(FILES ${client_I18N} DESTINATION ${QM_DIR})
     get_target_property(_qmake Qt5::qmake LOCATION)

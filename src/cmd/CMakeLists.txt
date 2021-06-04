@@ -27,24 +27,20 @@ if(CMAKE_SYSTEM_NAME STREQUAL "FreeBSD")
 endif()
 
 if(NOT BUILD_LIBRARIES_ONLY)
-    add_executable(${cmd_NAME} cmd.cpp)
+  add_executable(${cmd_NAME} cmd.cpp)
+
+  if(BUILD_OWNCLOUD_OSX_BUNDLE)
     set_target_properties(${cmd_NAME} PROPERTIES
-        RUNTIME_OUTPUT_DIRECTORY  ${BIN_OUTPUT_DIRECTORY} )
+      RUNTIME_OUTPUT_DIRECTORY "${BIN_OUTPUT_DIRECTORY}/${OWNCLOUD_OSX_BUNDLE}/Contents/MacOS")
+  else()
+    set_target_properties(${cmd_NAME} PROPERTIES
+      RUNTIME_OUTPUT_DIRECTORY ${BIN_OUTPUT_DIRECTORY})
 
-    target_link_libraries(${cmd_NAME} cmdCore)
-endif()
-
-# OSX: Copy nextcloudcmd to app bundle, src/gui will run macdeployqt
-if(BUILD_OWNCLOUD_OSX_BUNDLE)
-    add_custom_command(TARGET ${cmd_NAME} POST_BUILD
-        COMMAND "cp"
-            "$<TARGET_FILE:${cmd_NAME}>"
-            "${BIN_OUTPUT_DIRECTORY}/${OWNCLOUD_OSX_BUNDLE}/Contents/MacOS"
-        COMMENT "Copying nextcloudcmd..."
-    )
-elseif(NOT BUILD_LIBRARIES_ONLY)
     install(TARGETS ${cmd_NAME}
-	    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-	    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-	    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
+	  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+	  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+	  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
+  endif()
+
+  target_link_libraries(${cmd_NAME} cmdCore)
 endif()
