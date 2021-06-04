@@ -3219,6 +3219,11 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>已下載的檔案為空，儘管伺服器所宣佈的檔案大小為%1。</translation>
     </message>
     <message>
+        <location filename="../src/libsync/propagatedownload.cpp" line="783"/>
+        <source>The downloaded file is empty, but the server said it should have been %1.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="974"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
         <translation>檔案 %1 無法存檔，因為近端端的檔案名稱已毀損!</translation>
