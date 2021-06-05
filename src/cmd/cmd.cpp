@@ -485,9 +485,6 @@ int main(int argc, char **argv)
         }
     }
 
-    // take the unmodified url to pass to csync_create()
-    QByteArray remUrl = options.target_url.toUtf8();
-
     // Find the folder and the original owncloud url
     QStringList splitted = url.path().split("/" + account->davPath());
     url.setPath(splitted.value(0));
