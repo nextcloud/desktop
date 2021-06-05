@@ -488,7 +488,7 @@ QString ExcludedFiles::convertToRegexpSyntax(QString exclude, bool wildcardsMatc
             // Translate [! to [^
             QString bracketExpr = exclude.mid(i, j - i + 1);
             if (bracketExpr.startsWith(QLatin1String("[!")))
-                bracketExpr[1] = '^';
+                bracketExpr[1] = QLatin1Char('^');
             regex.append(bracketExpr);
             i = j;
             break;
