@@ -204,7 +204,7 @@ bool uploadChecksumEnabled()
 
 static bool checksumComputationEnabled()
 {
-    static bool enabled = qgetenv("OWNCLOUD_DISABLE_CHECKSUM_COMPUTATIONS").isEmpty();
+    static bool enabled = qEnvironmentVariableIsEmpty("OWNCLOUD_DISABLE_CHECKSUM_COMPUTATIONS");
     return enabled;
 }
 
