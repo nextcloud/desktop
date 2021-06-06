@@ -3225,7 +3225,7 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="783"/>
         <source>The downloaded file is empty, but the server said it should have been %1.</source>
-        <translation type="unfinished"/>
+        <translation>Het gedownloade bestand is leeg, maar de server meldde dat het %1 zou moeten zijn.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="974"/>
@@ -5186,22 +5186,22 @@ Fout bij instellen pin status
     <message>
         <location filename="../src/gui/userstatus.cpp" line="53"/>
         <source>Away</source>
-        <translation type="unfinished"/>
+        <translation>Afwezig</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatus.cpp" line="55"/>
         <source>Do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>Niet storen</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatus.cpp" line="58"/>
         <source>Offline</source>
-        <translation type="unfinished"/>
+        <translation>Offline</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatus.cpp" line="60"/>
         <source>Online</source>
-        <translation type="unfinished"/>
+        <translation>Online</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="471"/>
