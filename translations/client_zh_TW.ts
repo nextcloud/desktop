@@ -3222,7 +3222,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="783"/>
         <source>The downloaded file is empty, but the server said it should have been %1.</source>
-        <translation type="unfinished"/>
+        <translation>已下載的檔案為空，但伺服器表示其應為 %1。</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="974"/>
