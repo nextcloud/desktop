@@ -5,7 +5,7 @@
 if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
 
     # Use this only for Clang
-    if (CMAKE_CXX_COMPILER MATCHES "Clang")
+    if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -pedantic -Wno-long-long -Wno-gnu-zero-variadic-macro-arguments")
     endif()
 
