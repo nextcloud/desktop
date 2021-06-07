@@ -417,6 +417,7 @@ def update_translations(ctx, name, path, read_image = "owncloudci/transifex:late
                     "commit": True,
                     "commit_message": "[tx] updated " + name + " translations from transifex",
                     "no_verify": True,
+                    "remote": "git@github.com:owncloud/client.git",
                 },
             }),
         ],
