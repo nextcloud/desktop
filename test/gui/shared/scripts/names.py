@@ -3,7 +3,6 @@
 from objectmaphelper import *
 
 settings_OCC_SettingsDialog = {"name": "Settings", "type": "OCC::SettingsDialog", "visible": 1}
-settings_settingsdialog_toolbutton_Add_account_QToolButton = {"name": "settingsdialog_toolbutton_Add account", "type": "QToolButton", "visible": 1, "window": settings_OCC_SettingsDialog}
 owncloudWizard_OCC_OwncloudWizard = {"name": "owncloudWizard", "type": "OCC::OwncloudWizard", "visible": 1}
 owncloudWizard_label_2_QLabel = {"name": "label_2", "type": "QLabel", "visible": 1, "window": owncloudWizard_OCC_OwncloudWizard}
 leUrl_OCC_PostfixLineEdit = {"buddy": owncloudWizard_label_2_QLabel, "name": "leUrl", "type": "OCC::PostfixLineEdit", "visible": 1}
@@ -24,7 +23,6 @@ settings_settingsdialog_toolbutton_admin_localhost_QToolButton = {"name": "setti
 settings_stack_QStackedWidget = {"name": "stack", "type": "QStackedWidget", "visible": 1, "window": settings_OCC_SettingsDialog}
 stack_accountToolbox_QToolButton = {"container": settings_stack_QStackedWidget, "name": "_accountToolbox", "type": "QToolButton", "visible": 1}
 settings_QMenu = {"type": "QMenu", "unnamed": 1, "visible": 1, "window": settings_OCC_SettingsDialog}
-stack_Remove_connection_QPushButton = {"container": settings_stack_QStackedWidget, "text": "Remove connection", "type": "QPushButton", "unnamed": 1, "visible": 1}
 owncloudWizard_usernameLabel_QLabel = {"name": "usernameLabel", "type": "QLabel", "visible": 1, "window": owncloudWizard_OCC_OwncloudWizard}
 owncloudWizard_passwordLabel_QLabel = {"name": "passwordLabel", "type": "QLabel", "visible": 1, "window": owncloudWizard_OCC_OwncloudWizard}
 qFileDialog_fileNameLabel_QLabel = {"name": "fileNameLabel", "type": "QLabel", "visible": 1, "window": qFileDialog_QFileDialog}
