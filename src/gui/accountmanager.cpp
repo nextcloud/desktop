@@ -254,8 +254,11 @@ void AccountManager::saveAccountHelper(Account *acc, QSettings &settings, bool s
             // re-persisting them)
             acc->_credentials->persist();
         }
-        Q_FOREACH (QString key, acc->_settingsMap.keys()) {
-            settings.setValue(key, acc->_settingsMap.value(key));
+
+        auto i = acc->_settingsMap.constBegin();
+        while (i != acc->_settingsMap.constEnd()) {
+            settings.setValue(i.key(), i.value());
+            ++i;
         }
 
         // HACK: Save http_user also as user
@@ -266,8 +269,9 @@ void AccountManager::saveAccountHelper(Account *acc, QSettings &settings, bool s
     // Save accepted certificates.
     settings.beginGroup(QLatin1String("General"));
     qCInfo(lcAccountManager) << "Saving " << acc->approvedCerts().count() << " unknown certs.";
+    const auto approvedCerts = acc->approvedCerts();
     QByteArray certs;
-    Q_FOREACH (const QSslCertificate &cert, acc->approvedCerts()) {
+    for (const auto &cert : approvedCerts) {
         certs += cert.toPem() + '\n';
     }
     if (!certs.isEmpty()) {
@@ -317,7 +321,8 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
     // We want to only restore settings for that auth type and the user value
     acc->_settingsMap.insert(QLatin1String(userC), settings.value(userC));
     const QString authTypePrefix = QStringLiteral("http_");
-    Q_FOREACH (QString key, settings.childKeys()) {
+    const auto childKeys = settings.childKeys();
+    for (const auto &key : childKeys) {
         if (!key.startsWith(authTypePrefix))
             continue;
         acc->_settingsMap.insert(key, settings.value(key));

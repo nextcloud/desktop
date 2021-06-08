@@ -50,7 +50,7 @@ QString FormatWarningsWizardPage::formatWarnings(const QStringList &warnings) co
         ret = tr("<b>Warning:</b> %1").arg(warnings.first());
     } else if (warnings.count() > 1) {
         ret = tr("<b>Warning:</b>") + " <ul>";
-        Q_FOREACH (QString warning, warnings) {
+        for (const auto &warning : warnings) {
             ret += QString::fromLatin1("<li>%1</li>").arg(warning);
         }
         ret += "</ul>";

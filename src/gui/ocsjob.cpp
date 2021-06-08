@@ -80,7 +80,7 @@ void OcsJob::start()
     } else if (_verb == "POST" || _verb == "PUT") {
         // Url encode the _postParams and put them in a buffer.
         QByteArray postData;
-        Q_FOREACH (auto tmp, _params) {
+        for (const auto &tmp : qAsConst(_params)) {
             if (!postData.isEmpty()) {
                 postData.append("&");
             }
