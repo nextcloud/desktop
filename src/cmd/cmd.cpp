@@ -39,9 +39,6 @@
 #include "config.h"
 #include "csync_exclude.h"
 
-
-#include "cmd.h"
-
 #include "theme.h"
 #include "netrcparser.h"
 #include "libsync/logger.h"
@@ -147,21 +144,20 @@ void sync(const SyncCTX &ctx, int restartCount)
     opt.verifyChunkSizes();
     auto engine = new SyncEngine(ctx.account, ctx.options.source_dir, ctx.folder, db);
     engine->setParent(db);
-    auto cmd = new Cmd(engine);
 
-    QObject::connect(engine, &SyncEngine::finished, engine, [engine, ctx, cmd](bool result) {
+    QObject::connect(engine, &SyncEngine::finished, engine, [engine, ctx, restartCount = std::make_shared<int>(0)](bool result) {
         if (!result) {
             qWarning() << "Failed to sync";
             qApp->exit(EXIT_FAILURE);
         } else {
             if (engine->isAnotherSyncNeeded() != NoFollowUpSync) {
-                if (cmd->_restartCount < ctx.options.restartTimes) {
-                    cmd->_restartCount++;
-                    qDebug() << "Restarting Sync, because another sync is needed" << cmd->_restartCount;
+                if (*restartCount < ctx.options.restartTimes) {
+                    (*restartCount)++;
+                    qDebug() << "Restarting Sync, because another sync is needed" << *restartCount;
                     engine->startSync();
                     return;
                 }
-                qWarning() << "Another sync is needed, but not done because restart count is exceeded" << cmd->_restartCount;
+                qWarning() << "Another sync is needed, but not done because restart count is exceeded" << *restartCount;
             } else {
                 qApp->quit();
             }
@@ -170,7 +166,6 @@ void sync(const SyncCTX &ctx, int restartCount)
     engine->setSyncOptions(opt);
     engine->setIgnoreHiddenFiles(ctx.options.ignoreHiddenFiles);
     engine->setNetworkLimits(ctx.options.uplimit, ctx.options.downlimit);
-    QObject::connect(engine, &SyncEngine::transmissionProgress, cmd, &Cmd::transmissionProgressSlot);
     QObject::connect(engine, &SyncEngine::syncError, engine,
         [](const QString &error) { qWarning() << "Sync error:" << error; });
 
@@ -413,8 +408,6 @@ int main(int argc, char **argv)
     QString opensslConf = QCoreApplication::applicationDirPath() + QString("/openssl.cnf");
     qputenv("OPENSSL_CONF", opensslConf.toLocal8Bit());
 #endif
-
-
     qsrand(std::random_device()());
     SyncCTX ctx { parseOptions(app.arguments()) };
 
