@@ -255,10 +255,8 @@ void AccountManager::saveAccountHelper(Account *acc, QSettings &settings, bool s
             acc->_credentials->persist();
         }
 
-        auto i = acc->_settingsMap.constBegin();
-        while (i != acc->_settingsMap.constEnd()) {
-            settings.setValue(i.key(), i.value());
-            ++i;
+        for (auto it = acc->_settingsMap.constBegin(); it != acc->_settingsMap.constEnd(); ++it) {
+            settings.setValue(it.key(), it.value());
         }
 
         // HACK: Save http_user also as user
