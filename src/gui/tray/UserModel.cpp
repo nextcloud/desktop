@@ -24,6 +24,11 @@
 // refreshes of the notifications
 #define NOTIFICATION_REQUEST_FREE_PERIOD 15000
 
+namespace {
+    constexpr qint64 expiredActivitiesCheckIntervalMsecs = 1000 * 60;
+    constexpr qint64 activityDefaultExpirationTimeMsecs = 1000 * 60 * 10;
+}
+
 namespace OCC {
 
 User::User(AccountStatePtr &account, const bool &isCurrent, QObject *parent)
@@ -39,9 +44,14 @@ User::User(AccountStatePtr &account, const bool &isCurrent, QObject *parent)
         this, &User::slotItemCompleted);
     connect(ProgressDispatcher::instance(), &ProgressDispatcher::syncError,
         this, &User::slotAddError);
+    connect(ProgressDispatcher::instance(), &ProgressDispatcher::addErrorToGui,
+        this, &User::slotAddErrorToGui);
 
     connect(&_notificationCheckTimer, &QTimer::timeout,
         this, &User::slotRefresh);
+
+    connect(&_expiredActivitiesCheckTimer, &QTimer::timeout,
+        this, &User::slotCheckExpiredActivities);
 
     connect(_account.data(), &AccountState::stateChanged,
             [=]() { if (isConnected()) {slotRefreshImmediately();} });
@@ -142,6 +152,19 @@ void User::slotReceivedPushActivity(Account *account)
 {
     if (account->id() == _account->account()->id()) {
         slotRefreshActivities();
+    }
+}
+
+void User::slotCheckExpiredActivities()
+{
+    for (const Activity &activity : _activityModel->errorsList()) {
+        if (activity._expireAtMsecs > 0 && QDateTime::currentDateTime().toMSecsSinceEpoch() >= activity._expireAtMsecs) {
+            _activityModel->removeActivityFromActivityList(activity);
+        }
+    }
+
+    if (_activityModel->errorsList().size() == 0) {
+        _expiredActivitiesCheckTimer.stop();
     }
 }
 
@@ -328,6 +351,10 @@ void User::slotProgressInfo(const QString &folder, const ProgressInfo &progress)
         const auto &engine = f->syncEngine();
         const auto style = engine.lastLocalDiscoveryStyle();
         foreach (Activity activity, _activityModel->errorsList()) {
+            if (activity._expireAtMsecs != -1) {
+                // we process expired activities in a different slot
+                continue;
+            }
             if (activity._folder != folder) {
                 continue;
             }
@@ -414,6 +441,39 @@ void User::slotAddError(const QString &folderAlias, const QString &message, Erro
 
         // add 'other errors' to activity list
         _activityModel->addErrorToActivityList(activity);
+    }
+}
+
+void User::slotAddErrorToGui(const QString &folderAlias, SyncFileItem::Status status, const QString &errorMessage, const QString &subject)
+{
+    const auto folderInstance = FolderMan::instance()->folder(folderAlias);
+    if (!folderInstance) {
+        return;
+    }
+
+    if (folderInstance->accountState() == _account.data()) {
+        qCWarning(lcActivity) << "Item " << folderInstance->shortGuiLocalPath() << " retrieved resulted in " << errorMessage;
+
+        Activity activity;
+        activity._type = Activity::SyncFileItemType;
+        activity._status = status;
+        const auto currentDateTime = QDateTime::currentDateTime();
+        activity._dateTime = QDateTime::fromString(currentDateTime.toString(), Qt::ISODate);
+        activity._expireAtMsecs = currentDateTime.addMSecs(activityDefaultExpirationTimeMsecs).toMSecsSinceEpoch();
+        activity._subject = !subject.isEmpty() ? subject : folderInstance->shortGuiLocalPath();
+        activity._message = errorMessage;
+        activity._link = folderInstance->shortGuiLocalPath();
+        activity._accName = folderInstance->accountState()->account()->displayName();
+        activity._folder = folderAlias;
+
+        // add 'other errors' to activity list
+        _activityModel->addErrorToActivityList(activity);
+
+        showDesktopNotification(activity._subject, activity._message);
+
+        if (!_expiredActivitiesCheckTimer.isActive()) {
+            _expiredActivitiesCheckTimer.start(expiredActivitiesCheckIntervalMsecs);
+        }
     }
 }
 

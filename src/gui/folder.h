@@ -370,6 +370,8 @@ private slots:
      */
     void slotSyncError(const QString &message, ErrorCategory category = ErrorCategory::Normal);
 
+    void slotAddErrorToGui(SyncFileItem::Status status, const QString &errorMessage, const QString &subject = {});
+
     void slotTransmissionProgress(const ProgressInfo &pi);
     void slotItemCompleted(const SyncFileItemPtr &);
 

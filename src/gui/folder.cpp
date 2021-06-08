@@ -105,6 +105,8 @@ Folder::Folder(const FolderDefinition &definition,
         this, &Folder::slotLogPropagationStart);
     connect(_engine.data(), &SyncEngine::syncError, this, &Folder::slotSyncError);
 
+    connect(_engine.data(), &SyncEngine::addErrorToGui, this, &Folder::slotAddErrorToGui);
+
     _scheduleSelfTimer.setSingleShot(true);
     _scheduleSelfTimer.setInterval(SyncEngine::minimumFileAgeForUpload);
     connect(&_scheduleSelfTimer, &QTimer::timeout,
@@ -934,6 +936,11 @@ void Folder::slotSyncError(const QString &message, ErrorCategory category)
 {
     _syncResult.appendErrorString(message);
     emit ProgressDispatcher::instance()->syncError(alias(), message, category);
+}
+
+void Folder::slotAddErrorToGui(SyncFileItem::Status status, const QString &errorMessage, const QString &subject)
+{
+    emit ProgressDispatcher::instance()->addErrorToGui(alias(), status, errorMessage, subject);
 }
 
 void Folder::slotSyncStarted()
