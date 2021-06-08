@@ -609,7 +609,7 @@ def testMiddleware():
         'image': 'owncloudci/nodejs:14',
         'pull': 'always',
         'environment': {
-            'HOST': 'testmiddleware',
+            'MIDDLEWARE_HOST': 'testmiddleware',
             'BACKEND_HOST': 'http://owncloud'
         },
         'commands': [
