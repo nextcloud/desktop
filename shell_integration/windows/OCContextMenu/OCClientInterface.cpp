@@ -80,6 +80,10 @@ pair<wstring, nlohmann::json> parseV2(const wstring &data)
 
 std::shared_ptr<HBITMAP> saveImage(const string &data)
 {
+    ULONG_PTR gdiplusToken = 0;
+    Gdiplus::GdiplusStartupInput gdiplusStartupInput;
+    Gdiplus::GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, nullptr);
+
     DWORD size = 2 * 1024;
     std::vector<BYTE> buf(size, 0);
     DWORD skipped;
@@ -99,7 +103,10 @@ std::shared_ptr<HBITMAP> saveImage(const string &data)
         log(L"Failed to get HBITMAP", to_wstring(status));
         return {};
     }
-    return std::shared_ptr<HBITMAP> { new HBITMAP(result), &DeleteObject };
+    return std::shared_ptr<HBITMAP> { new HBITMAP(result), [gdiplusToken](auto o) {
+                                         DeleteObject(o);
+                                         Gdiplus::GdiplusShutdown(gdiplusToken);
+                                     } };
 }
 }
 
