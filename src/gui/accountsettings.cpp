@@ -823,7 +823,7 @@ void AccountSettings::slotAccountStateChanged()
         QUrl safeUrl(account->url());
         safeUrl.setPassword(QString()); // Remove the password from the URL to avoid showing it in the UI
         FolderMan *folderMan = FolderMan::instance();
-        for (Folder *folder : folderMan->map().values()) {
+        for (Folder *folder : folderMan->map()) {
             _model->slotUpdateFolderState(folder);
         }
 
@@ -961,7 +961,7 @@ void AccountSettings::refreshSelectiveSyncStatus()
 {
     QString msg;
     int cnt = 0;
-    for (Folder *folder : FolderMan::instance()->map().values()) {
+    for (Folder *folder : FolderMan::instance()->map()) {
         if (folder->accountState() != _accountState) {
             continue;
         }

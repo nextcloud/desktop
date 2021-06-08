@@ -543,7 +543,7 @@ Folder *FolderMan::folder(const QString &alias)
 
 void FolderMan::scheduleAllFolders()
 {
-    foreach (Folder *f, _folderMap.values()) {
+    foreach (Folder *f, _folderMap) {
         if (f && f->canSync()) {
             scheduleFolder(f);
         }
@@ -663,7 +663,7 @@ void FolderMan::slotAccountStateChanged()
     if (accountState->isConnected()) {
         qCInfo(lcFolderMan) << "Account" << accountName << "connected, scheduling its folders";
 
-        foreach (Folder *f, _folderMap.values()) {
+        foreach (Folder *f, _folderMap) {
             if (f
                 && f->canSync()
                 && f->accountState() == accountState) {
@@ -674,7 +674,7 @@ void FolderMan::slotAccountStateChanged()
         qCInfo(lcFolderMan) << "Account" << accountName << "disconnected or paused, "
                                                            "terminating or descheduling sync folders";
 
-        foreach (Folder *f, _folderMap.values()) {
+        foreach (Folder *f, _folderMap) {
             if (f
                 && f->isSyncRunning()
                 && f->accountState() == accountState) {
@@ -1047,7 +1047,7 @@ Folder *FolderMan::folderForPath(const QString &path, QString *relativePath)
 {
     QString absolutePath = QDir::cleanPath(path) + QLatin1Char('/');
 
-    foreach (Folder *folder, this->map().values()) {
+    foreach (Folder *folder, this->map()) {
         const QString folderPath = folder->cleanPath() + QLatin1Char('/');
 
         if (absolutePath.startsWith(folderPath, (Utility::isWindows() || Utility::isMac()) ? Qt::CaseInsensitive : Qt::CaseSensitive)) {
@@ -1073,7 +1073,7 @@ QStringList FolderMan::findFileInLocalFolders(const QString &relPath, const Acco
     if (!serverPath.startsWith('/'))
         serverPath.prepend('/');
 
-    foreach (Folder *folder, this->map().values()) {
+    foreach (Folder *folder, this->map()) {
         if (acc != nullptr && folder->accountState()->account() != acc) {
             continue;
         }
@@ -1206,7 +1206,7 @@ bool FolderMan::startFromScratch(const QString &localFolder)
 
 void FolderMan::setDirtyProxy()
 {
-    foreach (Folder *f, _folderMap.values()) {
+    foreach (Folder *f, _folderMap) {
         if (f) {
             if (f->accountState() && f->accountState()->account()
                 && f->accountState()->account()->networkAccessManager()) {
@@ -1220,7 +1220,7 @@ void FolderMan::setDirtyProxy()
 
 void FolderMan::setDirtyNetworkLimits()
 {
-    foreach (Folder *f, _folderMap.values()) {
+    foreach (Folder *f, _folderMap) {
         // set only in busy folders. Otherwise they read the config anyway.
         if (f && f->isBusy()) {
             f->setDirtyNetworkLimits();
