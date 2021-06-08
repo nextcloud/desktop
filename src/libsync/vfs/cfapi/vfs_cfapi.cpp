@@ -186,6 +186,8 @@ bool VfsCfApi::statTypeVirtualFile(csync_file_stat_t *stat, void *statData)
 
     const auto isWindowsShortcut = !isDirectory && FileSystem::isLnkFile(stat->path);
 
+    const auto isExcludeFile = !isDirectory && FileSystem::isExcludeFile(stat->path);
+
     // It's a dir with a reparse point due to the placeholder info (hence the cloud tag)
     // if we don't remove the reparse point flag the discovery will end up thinking
     // it is a file... let's prevent it
@@ -197,7 +199,7 @@ bool VfsCfApi::statTypeVirtualFile(csync_file_stat_t *stat, void *statData)
     } else if (isSparseFile && isPinned) {
         stat->type = ItemTypeVirtualFileDownload;
         return true;
-    } else if (!isSparseFile && isUnpinned && !isWindowsShortcut){
+    } else if (!isSparseFile && isUnpinned && !isWindowsShortcut && !isExcludeFile) {
         stat->type = ItemTypeVirtualFileDehydration;
         return true;
     } else if (isSparseFile) {
