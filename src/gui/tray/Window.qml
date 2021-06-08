@@ -404,7 +404,7 @@ Window {
                                 source: "qrc:///client/theme/white/caret-down.svg"
                                 sourceSize.width: Style.accountDropDownCaretSize
                                 sourceSize.height: Style.accountDropDownCaretSize
-                                Accessible.role: PopupMenu
+                                Accessible.role: Accessible.PopupMenu
                                 Accessible.name: qsTr("Account switcher and settings menu")
                             }
                         }
