@@ -480,6 +480,14 @@ bool FileSystem::isLnkFile(const QString &filename)
     return filename.endsWith(QLatin1String(".lnk"));
 }
 
+bool FileSystem::isExcludeFile(const QString &filename)
+{
+    return filename.compare(QStringLiteral(".sync-exclude.lst"), Qt::CaseInsensitive) == 0
+        || filename.compare(QStringLiteral("exclude.lst"), Qt::CaseInsensitive) == 0
+        || filename.endsWith(QStringLiteral("/.sync-exclude.lst"), Qt::CaseInsensitive)
+        || filename.endsWith(QStringLiteral("/exclude.lst"), Qt::CaseInsensitive);
+}
+
 bool FileSystem::isJunction(const QString &filename)
 {
 #ifdef Q_OS_WIN
