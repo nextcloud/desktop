@@ -12,7 +12,7 @@ def main(ctx):
     build_trigger = {
         "ref": [
             "refs/heads/master",
-            "refs/tags/v*",
+            "refs/tags/**",
             "refs/pull/**",
         ],
     }
@@ -25,6 +25,11 @@ def main(ctx):
     pipelines = [
         # check the format of gui test code
         gui_tests_format(),
+        # Check starlark
+        check_starlark(
+            ctx,
+            build_trigger,
+        ),
         # Build changelog
         changelog(
             ctx,
@@ -51,7 +56,9 @@ def main(ctx):
         gui_tests(ctx, trigger = build_trigger),
         notification(
             name = "build",
+            trigger = build_trigger,
             depends_on = [
+                "check-starlark",
                 "changelog",
                 "gcc-release-make",
                 "clang-debug-ninja",
@@ -103,6 +110,39 @@ def whenPush(dict):
 def from_secret(name):
     return {
         "from_secret": name,
+    }
+
+def check_starlark(ctx, trigger = {}, depends_on = []):
+    return {
+        "kind": "pipeline",
+        "type": "docker",
+        "name": "check-starlark",
+        "steps": [
+            {
+                "name": "format-check-starlark",
+                "image": "owncloudci/bazel-buildifier",
+                "pull": "always",
+                "commands": [
+                    "buildifier --mode=check .drone.star",
+                ],
+            },
+            {
+                "name": "show-diff",
+                "image": "owncloudci/bazel-buildifier",
+                "pull": "always",
+                "commands": [
+                    "buildifier --mode=fix .drone.star",
+                    "git diff",
+                ],
+                "when": {
+                    "status": [
+                        "failure",
+                    ],
+                },
+            },
+        ],
+        "depends_on": depends_on,
+        "trigger": trigger,
     }
 
 def build_and_test_client(ctx, c_compiler, cxx_compiler, build_type, generator, trigger = {}, depends_on = []):
