@@ -36,6 +36,8 @@ class OWNCLOUDSYNC_EXPORT Logger : public QObject
 {
     Q_OBJECT
 public:
+    static QString loggerPattern();
+
     bool isLoggingToFile() const;
 
     void attacheToConsole();

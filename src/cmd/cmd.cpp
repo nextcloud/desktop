@@ -192,12 +192,6 @@ void sync(const SyncCTX &ctx, int restartCount)
 
 }
 
-
-static void nullMessageHandler(QtMsgType, const QMessageLogContext &, const QString &)
-{
-}
-
-
 class EchoDisabler
 {
 public:
@@ -412,9 +406,9 @@ int main(int argc, char **argv)
     SyncCTX ctx { parseOptions(app.arguments()) };
 
     if (ctx.options.silent) {
-        qInstallMessageHandler(nullMessageHandler);
+        qInstallMessageHandler([](QtMsgType, const QMessageLogContext &, const QString &) {});
     } else {
-        qSetMessagePattern("%{time MM-dd hh:mm:ss:zzz} [ %{type} %{category} ]%{if-debug}\t[ %{function} ]%{endif}:\t%{message}");
+        qSetMessagePattern(Logger::loggerPattern());
     }
 
     ctx.account = Account::create();
@@ -435,7 +429,6 @@ int main(int argc, char **argv)
         auto tmp = QUrl::fromUserInput(ctx.options.target_url);
         // Find the folder and the original owncloud url
         QStringList splitted = tmp.path().split("/" + ctx.account->davPath());
-        qDebug() << tmp.path() << ctx.account->davPath() << splitted;
         tmp.setPath(splitted.value(0));
         tmp.setScheme(tmp.scheme().replace("owncloud", "http"));
 

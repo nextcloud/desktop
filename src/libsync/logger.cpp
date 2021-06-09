@@ -61,7 +61,7 @@ Logger *Logger::instance()
 Logger::Logger(QObject *parent)
     : QObject(parent)
 {
-    qSetMessagePattern(QStringLiteral("%{time MM-dd hh:mm:ss:zzz} [ %{type} %{category} ]%{if-debug}\t[ %{function} ]%{endif}:\t%{message}"));
+    qSetMessagePattern(loggerPattern());
     _crashLog.resize(CrashLogSize);
 #ifndef NO_MSG_HANDLER
     qInstallMessageHandler([](QtMsgType type, const QMessageLogContext &ctx, const QString &message) {
@@ -75,6 +75,11 @@ Logger::~Logger()
 #ifndef NO_MSG_HANDLER
     qInstallMessageHandler(0);
 #endif
+}
+
+QString Logger::loggerPattern()
+{
+    return QStringLiteral("%{time MM-dd hh:mm:ss:zzz} [ %{type} %{category} ]%{if-debug}\t[ %{function} ]%{endif}:\t%{message}");
 }
 
 bool Logger::isLoggingToFile() const
