@@ -63,7 +63,6 @@ def main(ctx):
                 "gcc-release-make",
                 "clang-debug-ninja",
             ],
-            trigger = notification_trigger,
         ),
 
         # Sync translations
