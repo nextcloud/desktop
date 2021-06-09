@@ -1,6 +1,0 @@
-name: desktop
-title: Desktop Client
-version: '2.8'
-start_page: ROOT:index.adoc
-nav:
-- modules/ROOT/nav.adoc

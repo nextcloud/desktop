@@ -29,7 +29,7 @@ def main(ctx):
             trigger = changelog_trigger,
             depends_on = [],
         ),
-        # Build client and docs
+        # Build client
         build_and_test_client(
             ctx,
             "gcc",
@@ -46,14 +46,12 @@ def main(ctx):
             "Ninja",
             trigger = build_trigger,
         ),
-        build_client_docs(ctx),
         notification(
             name = "build",
             depends_on = [
                 "changelog",
                 "gcc-release-make",
                 "clang-debug-ninja",
-                "build-docs",
             ],
         ),
 
@@ -167,120 +165,6 @@ def build_and_test_client(ctx, c_compiler, cxx_compiler, build_type, generator, 
         "depends_on": depends_on,
     }
 
-def build_client_docs(ctx):
-    return {
-        "kind": "pipeline",
-        "name": "build-docs",
-        "platform": {
-            "os": "linux",
-            "arch": "amd64",
-        },
-        "steps": [
-            whenOnline({
-                "name": "cache-restore",
-                "image": "plugins/s3-cache:1",
-                "pull": "always",
-                "settings": {
-                    "endpoint": from_secret("cache_s3_endpoint"),
-                    "access_key": from_secret("cache_s3_access_key"),
-                    "secret_key": from_secret("cache_s3_secret_key"),
-                    "restore": True,
-                },
-            }),
-            {
-                "name": "docs-deps",
-                "image": "owncloudci/nodejs:11",
-                "pull": "always",
-                "commands": [
-                    "cd docs/",
-                    "yarn install",
-                ],
-            },
-            {
-                "name": "docs-validate",
-                "image": "owncloudci/nodejs:11",
-                "pull": "always",
-                "commands": [
-                    "cd docs/",
-                    "yarn validate",
-                ],
-            },
-            {
-                "name": "docs-build",
-                "image": "owncloudci/nodejs:11",
-                "pull": "always",
-                "commands": [
-                    "cd docs/",
-                    "yarn antora",
-                ],
-            },
-            {
-                "name": "docs-pdf",
-                "image": "owncloudci/asciidoctor:latest",
-                "pull": "always",
-                "commands": [
-                    "cd docs/",
-                    "make pdf",
-                ],
-            },
-            {
-                "name": "docs-artifacts",
-                "image": "owncloud/ubuntu:latest",
-                "pull": "always",
-                "commands": [
-                    "tree docs/public/",
-                ],
-            },
-            whenOnline(whenPush({
-                "name": "cache-rebuild",
-                "image": "plugins/s3-cache:1",
-                "pull": "always",
-                "settings": {
-                    "endpoint": from_secret("cache_s3_endpoint"),
-                    "access_key": from_secret("cache_s3_access_key"),
-                    "secret_key": from_secret("cache_s3_secret_key"),
-                    "rebuild": True,
-                    "mount": "docs/cache",
-                },
-            })),
-            whenOnline(whenPush({
-                "name": "cache-flush",
-                "image": "plugins/s3-cache:1",
-                "pull": "always",
-                "settings": {
-                    "endpoint": from_secret("cache_s3_endpoint"),
-                    "access_key": from_secret("cache_s3_access_key"),
-                    "secret_key": from_secret("cache_s3_secret_key"),
-                    "flush": True,
-                    "flush_age": 14,
-                },
-            })),
-            whenOnline(whenPush({
-                "name": "upload-pdf",
-                "image": "plugins/s3-sync:1",
-                "pull": "always",
-                "environment": {
-                    "AWS_ACCESS_KEY_ID": from_secret("aws_access_key_id"),
-                    "AWS_SECRET_ACCESS_KEY": from_secret("aws_secret_access_key"),
-                },
-                "settings": {
-                    "bucket": "uploads",
-                    "endpoint": "https://doc.owncloud.com",
-                    "path_style": True,
-                    "source": "docs/build/",
-                    "target": "/deploy/",
-                    "delete": False,
-                },
-            })),
-        ],
-        "trigger": {
-            "ref": [
-                "refs/heads/master",
-                "refs/tags/**",
-                "refs/pull/**",
-            ],
-        },
-    }
 
 def changelog(ctx, trigger = {}, depends_on = []):
     repo_slug = ctx.build.source_repo if ctx.build.source_repo else ctx.repo.slug
