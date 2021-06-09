@@ -1,0 +1,49 @@
+name: "Update translations"
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 3 * * *"
+
+jobs:
+  update-translations:
+    runs-on: ubuntu-latest
+
+    env:
+      TX_TOKEN: ${{ secrets.TX_TOKEN }}
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+
+      - name: l10n-read
+        run: docker run --user "$(id -u)" --rm -i -e TX_TOKEN -v "$(readlink -f .)":/ws rabits/qt:5.12-desktop sh -c "cd /ws/translations && make l10n-read"
+
+      - name: l10n-push
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+        run: docker run --user "$(id -u)" --rm -i -e TX_TOKEN -v "$(readlink -f .)":/ws --entrypoint sh owncloudci/transifex:latest -c "cd /ws/translations && make l10n-push"
+
+      - name: l10n-pull
+        run: docker run --user "$(id -u)" --rm -i -e TX_TOKEN -v "$(readlink -f .)":/ws --entrypoint sh owncloudci/transifex:latest -c "cd /ws/translations && make l10n-pull"
+
+      - name: l10n-write
+        run: docker run --user "$(id -u)" --rm -i -e TX_TOKEN -v "$(readlink -f .)":/ws --entrypoint sh owncloudci/transifex:latest -c "cd /ws/translations && make l10n-write"
+
+      - name: l10n-clean
+        run: docker run --user "$(id -u)" --rm -i -e TX_TOKEN -v "$(readlink -f .)":/ws --entrypoint sh owncloudci/transifex:latest -c "cd /ws/translations && make l10n-clean"
+
+      - name: update-repo-before-commit
+        run: |
+          git diff
+          git stash
+          git pull --ff-only origin ${{ env.GITHUB_REF }}
+          [[ "$(git stash list)" != "" ]] || git stash pop
+
+      - name: commit and push
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+        run: |
+          git config user.name "ownClouders"
+          git config user.email "devops@owncloud.com"
+          git commit -m "[tx] updated " + name + " translations from transifex" .
+          git push
