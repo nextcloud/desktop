@@ -3391,48 +3391,48 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
 <context>
     <name>OCC::SocketApi</name>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="583"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="571"/>
         <source>Share with %1</source>
         <comment>parameter is ownCloud</comment>
         <translation>Via %1 teilen</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="616"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="604"/>
         <source>Context menu share</source>
         <translation>Teilen über das Kontextmenü</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="621"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="609"/>
         <source>Context menu share %1</source>
         <translation>Freigabe %1 über das Kontextmenü</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="790"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="778"/>
         <source>Confirm deletion</source>
         <translation>Löschung bestätigen</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="792"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="780"/>
         <source>Do you want to delete the directory &lt;i&gt;%1&lt;/i&gt; and all its contents permanently?</source>
         <translation>Möchten Sie den Ordner &lt;i&gt;%1&lt;/i&gt; und alle seine Inhalte dauerhaft löschen?</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="793"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="781"/>
         <source>Do you want to delete the file &lt;i&gt;%1&lt;/i&gt; permanently?</source>
         <translation>Möchten Sie die Datei &lt;i&gt;%1&lt;/i&gt; dauerhaft löschen?</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="832"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="820"/>
         <source>Select new location...</source>
         <translation>Neuen Ort wählen...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="842"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="830"/>
         <source>Error</source>
         <translation>Fehler</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="843"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="831"/>
         <source>Moving file failed:
 
 %1</source>
@@ -3441,85 +3441,85 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="866"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="854"/>
         <source>I shared something with you</source>
         <translation>Ich habe etwas mit Ihnen geteilt</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="879"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="909"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="867"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="897"/>
         <source>Share...</source>
         <translation>Teilen…</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="881"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="925"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="869"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="913"/>
         <source>Copy private link to clipboard</source>
         <translation>Privater Link in die Zwischenablage kopiert</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="882"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="870"/>
         <source>Send private link by email...</source>
         <translation>Sende privaten Link per Email...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="907"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="895"/>
         <source>Resharing this file is not allowed</source>
         <translation>Weiter-Teilen dieser Datei ist nicht erlaubt.</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="907"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="895"/>
         <source>Resharing this folder is not allowed</source>
         <translation>Weiterteilen des Ordners ist nicht erlaubt</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="919"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="921"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="907"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="909"/>
         <source>Copy public link to clipboard</source>
         <translation>Öffentlichen Link in die Zwischenablage kopieren</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1012"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1000"/>
         <source>Open in browser</source>
         <translation>Im Browser öffnen</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1020"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1008"/>
         <source>Show file versions in browser</source>
         <translation>Zeige Dateiversionen im Browser</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1043"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1031"/>
         <source>Rename...</source>
         <translation>Umbenennen...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1046"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1034"/>
         <source>Rename and upload...</source>
         <translation>Umbenennen und hochladen...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1051"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1039"/>
         <source>Move and rename...</source>
         <translation>Verschieben und umbenennen...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1054"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1042"/>
         <source>Move, rename and upload...</source>
         <translation>Verschieben, umbenennen und hochladen...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1057"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1045"/>
         <source>Delete local changes</source>
         <translation>Lokale Änderungen löschen</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1062"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1050"/>
         <source>Move and upload...</source>
         <translation>Verschieben und hochladen...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1063"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1051"/>
         <source>Delete</source>
         <translation>Löschen</translation>
     </message>
