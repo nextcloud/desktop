@@ -16,6 +16,7 @@
 
 #include "common/syncjournaldb.h"
 #include "propagatedownload.h"
+#include "vfs/cfapi/vfs_cfapi.h"
 
 #include <QLocalServer>
 #include <QLocalSocket>
@@ -25,7 +26,6 @@ Q_LOGGING_CATEGORY(lcHydration, "nextcloud.sync.vfs.hydrationjob", QtInfoMsg)
 OCC::HydrationJob::HydrationJob(QObject *parent)
     : QObject(parent)
 {
-    connect(this, &HydrationJob::finished, this, &HydrationJob::deleteLater);
 }
 
 OCC::AccountPtr OCC::HydrationJob::account() const
@@ -104,90 +104,131 @@ void OCC::HydrationJob::start()
     Q_ASSERT(_localPath.endsWith('/'));
     Q_ASSERT(!_folderPath.startsWith('/'));
 
-    _server = new QLocalServer(this);
-    const auto listenResult = _server->listen(_requestId);
-    if (!listenResult) {
-        qCCritical(lcHydration) << "Couldn't get server to listen" << _requestId << _localPath << _folderPath;
-        emitFinished(Error);
+    const auto startServer = [this](const QString &serverName) -> QLocalServer * {
+        const auto server = new QLocalServer(this);
+        const auto listenResult = server->listen(serverName);
+        if (!listenResult) {
+            qCCritical(lcHydration) << "Couldn't get server to listen" << serverName
+                                    << _localPath << _folderPath;
+            if (!_isCancelled) {
+                emitFinished(Error);
+            }
+            return nullptr;
+        }
+        qCInfo(lcHydration) << "Server ready, waiting for connections" << serverName
+                            << _localPath << _folderPath;
+        return server;
+    };
+
+    // Start cancellation server
+    _signalServer = startServer(_requestId + ":cancellation");
+    Q_ASSERT(_signalServer);
+    if (!_signalServer) {
         return;
     }
+    connect(_signalServer, &QLocalServer::newConnection, this, &HydrationJob::onCancellationServerNewConnection);
 
-    qCInfo(lcHydration) << "Server ready, waiting for connections" << _requestId << _localPath << _folderPath;
-    connect(_server, &QLocalServer::newConnection, this, &HydrationJob::onNewConnection);
+    // Start transfer data server
+    _transferDataServer = startServer(_requestId);
+    Q_ASSERT(_transferDataServer);
+    if (!_transferDataServer) {
+        return;
+    }
+    connect(_transferDataServer, &QLocalServer::newConnection, this, &HydrationJob::onNewConnection);
 }
 
 void OCC::HydrationJob::cancel()
 {
-    if (!_job) {
-        return;
+    Q_ASSERT(_signalSocket);
+
+    _isCancelled = true;
+    if (_job) {
+        _job->cancel();
     }
 
-    _job->cancel();
+    _signalSocket->write("cancelled");
+
+    emitFinished(Cancelled);
 }
 
 void OCC::HydrationJob::emitFinished(Status status)
 {
     _status = status;
+    _signalSocket->close();
+
     if (status == Success) {
-        connect(_socket, &QLocalSocket::disconnected, this, [=]{
-            _socket->close();
+        connect(_transferDataSocket, &QLocalSocket::disconnected, this, [=] {
+            _transferDataSocket->close();
             emit finished(this);
         });
-        _socket->disconnectFromServer();
-    } else {
-        _socket->close();
-        emit finished(this);
+        _transferDataSocket->disconnectFromServer();
+        return;
     }
+    _transferDataSocket->close();
+
+    emit finished(this);
 }
 
-void OCC::HydrationJob::emitCanceled()
+void OCC::HydrationJob::onCancellationServerNewConnection()
 {
-    connect(_socket, &QLocalSocket::disconnected, this, [=] {
-        _socket->close();
-    });
-    _socket->disconnectFromServer();
+    Q_ASSERT(!_signalSocket);
 
-    emit canceled(this);
+    qCInfo(lcHydration) << "Got new connection on cancellation server" << _requestId << _folderPath;
+    _signalSocket = _signalServer->nextPendingConnection();
 }
 
 void OCC::HydrationJob::onNewConnection()
 {
-    Q_ASSERT(!_socket);
+    Q_ASSERT(!_transferDataSocket);
     Q_ASSERT(!_job);
 
     qCInfo(lcHydration) << "Got new connection starting GETFileJob" << _requestId << _folderPath;
-    _socket = _server->nextPendingConnection();
-    _job = new GETFileJob(_account, _remotePath + _folderPath, _socket, {}, {}, 0, this);
+    _transferDataSocket = _transferDataServer->nextPendingConnection();
+    _job = new GETFileJob(_account, _remotePath + _folderPath, _transferDataSocket, {}, {}, 0, this);
     connect(_job, &GETFileJob::finishedSignal, this, &HydrationJob::onGetFinished);
-    connect(_job, &GETFileJob::canceled, this, &HydrationJob::onGetCanceled);
     _job->start();
 }
 
-void OCC::HydrationJob::onGetCanceled()
+void OCC::HydrationJob::finalize(OCC::VfsCfApi *vfs)
 {
-    qCInfo(lcHydration) << "GETFileJob canceled" << _requestId << _folderPath << _job->reply()->error();
-    emitCanceled();
+    // Mark the file as hydrated in the sync journal
+    SyncJournalFileRecord record;
+    _journal->getFileRecord(_folderPath, &record);
+    Q_ASSERT(record.isValid());
+    if (!record.isValid()) {
+        qCWarning(lcHydration) << "Couldn't find record to update after hydration" << _requestId << _folderPath;
+        // emitFinished(Error);
+        return;
+    }
+
+    if (_isCancelled) {
+        // Remove placeholder file because there might be already pumped
+        // some data into it
+        QFile::remove(_localPath + _folderPath);
+        // Create a new placeholder file
+        const auto item = SyncFileItem::fromSyncJournalFileRecord(record);
+        vfs->createPlaceholder(*item);
+        return;
+    }
+
+    record._type = ItemTypeFile;
+    _journal->setFileRecord(record);
 }
 
 void OCC::HydrationJob::onGetFinished()
 {
     qCInfo(lcHydration) << "GETFileJob finished" << _requestId << _folderPath << _job->reply()->error();
 
-    if (_job->reply()->error()) {
-        emitFinished(Error);
+    const auto isGetJobResultError = _job->reply()->error();
+    // GETFileJob deletes itself after this signal was handled
+    _job = nullptr;
+    if (_isCancelled) {
         return;
     }
 
-    SyncJournalFileRecord record;
-    _journal->getFileRecord(_folderPath, &record);
-    Q_ASSERT(record.isValid());
-    if (!record.isValid()) {
-        qCWarning(lcHydration) << "Couldn't find record to update after hydration" << _requestId << _folderPath;
+    if (isGetJobResultError) {
         emitFinished(Error);
         return;
     }
-
-    record._type = ItemTypeFile;
-    _journal->setFileRecord(record);
     emitFinished(Success);
 }
