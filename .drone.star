@@ -17,7 +17,7 @@ def main(ctx):
         ],
     }
     changelog_trigger = {
-         "ref": [
+        "ref": [
             "refs/heads/master",
             "refs/pull/**",
         ],
@@ -67,7 +67,7 @@ def main(ctx):
             name = "translations",
             trigger = translations_trigger,
             depends_on = [
-                "translations-client"
+                "translations-client",
             ],
         ),
     ]
@@ -165,86 +165,85 @@ def build_and_test_client(ctx, c_compiler, cxx_compiler, build_type, generator, 
         "depends_on": depends_on,
     }
 
-
 def changelog(ctx, trigger = {}, depends_on = []):
     repo_slug = ctx.build.source_repo if ctx.build.source_repo else ctx.repo.slug
     result = {
-        'kind': 'pipeline',
-        'type': 'docker',
-        'name': 'changelog',
-        'clone': {
-            'disable': True,
+        "kind": "pipeline",
+        "type": "docker",
+        "name": "changelog",
+        "clone": {
+            "disable": True,
         },
-        'steps': [
+        "steps": [
             {
-                'name': 'clone',
-                'image': 'plugins/git-action:1',
-                'pull': 'always',
-                'settings': {
-                    'actions': [
-                        'clone',
+                "name": "clone",
+                "image": "plugins/git-action:1",
+                "pull": "always",
+                "settings": {
+                    "actions": [
+                        "clone",
                     ],
-                    'remote': 'https://github.com/%s' % (repo_slug),
-                    'branch': ctx.build.source if ctx.build.event == 'pull_request' else 'master',
-                    'path': '/drone/src',
-                    'netrc_machine': 'github.com',
-                    'netrc_username': from_secret('github_username'),
-                    'netrc_password': from_secret('github_token'),
+                    "remote": "https://github.com/%s" % (repo_slug),
+                    "branch": ctx.build.source if ctx.build.event == "pull_request" else "master",
+                    "path": "/drone/src",
+                    "netrc_machine": "github.com",
+                    "netrc_username": from_secret("github_username"),
+                    "netrc_password": from_secret("github_token"),
                 },
             },
             {
-                'name': 'generate',
-                'image': 'toolhippie/calens:latest',
-                'pull': 'always',
-                'commands': [
-                    'calens >| CHANGELOG.md',
+                "name": "generate",
+                "image": "toolhippie/calens:latest",
+                "pull": "always",
+                "commands": [
+                    "calens >| CHANGELOG.md",
                 ],
             },
             {
-                'name': 'diff',
-                'image': 'owncloud/alpine:latest',
-                'pull': 'always',
-                'commands': [
-                    'git diff',
+                "name": "diff",
+                "image": "owncloud/alpine:latest",
+                "pull": "always",
+                "commands": [
+                    "git diff",
                 ],
             },
             {
-                'name': 'output',
-                'image': 'toolhippie/calens:latest',
-                'pull': 'always',
-                'commands': [
-                    'cat CHANGELOG.md',
+                "name": "output",
+                "image": "toolhippie/calens:latest",
+                "pull": "always",
+                "commands": [
+                    "cat CHANGELOG.md",
                 ],
             },
             {
-                'name': 'publish',
-                'image': 'plugins/git-action:1',
-                'pull': 'always',
-                'settings': {
-                    'actions': [
-                        'commit',
-                        'push',
+                "name": "publish",
+                "image": "plugins/git-action:1",
+                "pull": "always",
+                "settings": {
+                    "actions": [
+                        "commit",
+                        "push",
                     ],
-                    'message': 'Automated changelog update [skip ci]',
-                    'branch': 'master',
-                    'author_email': 'devops@owncloud.com',
-                    'author_name': 'ownClouders',
-                    'netrc_machine': 'github.com',
-                    'netrc_username': from_secret('github_username'),
-                    'netrc_password': from_secret('github_token'),
+                    "message": "Automated changelog update [skip ci]",
+                    "branch": "master",
+                    "author_email": "devops@owncloud.com",
+                    "author_name": "ownClouders",
+                    "netrc_machine": "github.com",
+                    "netrc_username": from_secret("github_username"),
+                    "netrc_password": from_secret("github_token"),
                 },
-                'when': {
-                    'ref': {
-                        'exclude': [
-                            'refs/pull/**',
-                            'refs/tags/**'
+                "when": {
+                    "ref": {
+                        "exclude": [
+                            "refs/pull/**",
+                            "refs/tags/**",
                         ],
                     },
                 },
             },
         ],
-        'trigger': trigger,
-        'depends_on': depends_on,
+        "trigger": trigger,
+        "depends_on": depends_on,
     }
 
     return result
