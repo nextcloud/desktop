@@ -3121,42 +3121,42 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>伺服器報告沒有 %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1224"/>
+        <location filename="../src/libsync/discovery.cpp" line="1225"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>被忽略，因為它在“選擇要同步的內容”黑名單中</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1257"/>
+        <location filename="../src/libsync/discovery.cpp" line="1258"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>拒絕此操作，您沒有在此新增子資料夾的權限。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1262"/>
+        <location filename="../src/libsync/discovery.cpp" line="1263"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>拒絕此操作，您沒有新增檔案在此資料夾的權限。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1275"/>
+        <location filename="../src/libsync/discovery.cpp" line="1276"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>不允許上傳此檔案，因為它在伺服器上是唯讀的，正在還原</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1297"/>
+        <location filename="../src/libsync/discovery.cpp" line="1298"/>
         <source>Moved to invalid target, restoring</source>
         <translation>已移至無效目標，正在還原</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1310"/>
+        <location filename="../src/libsync/discovery.cpp" line="1311"/>
         <source>Not allowed to remove, restoring</source>
         <translation>不允許刪除，還原</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1419"/>
+        <location filename="../src/libsync/discovery.cpp" line="1420"/>
         <source>Error while reading the database</source>
         <translation>讀取數據庫時發生錯誤。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1480"/>
+        <location filename="../src/libsync/discovery.cpp" line="1481"/>
         <source>Server replied with an error while reading directory &apos;%1&apos; : %2</source>
         <translation>伺服器讀取目錄 &apos;%1&apos; 時發生錯誤：%2</translation>
     </message>
@@ -4651,12 +4651,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::VfsCfApi</name>
     <message>
-        <location filename="../src/libsync/vfs/cfapi/vfs_cfapi.cpp" line="314"/>
+        <location filename="../src/libsync/vfs/cfapi/vfs_cfapi.cpp" line="316"/>
         <source>Download of End-to-End encrypted file failed</source>
         <translation>端到端加密檔案下載失敗</translation>
     </message>
     <message>
-        <location filename="../src/libsync/vfs/cfapi/vfs_cfapi.cpp" line="315"/>
+        <location filename="../src/libsync/vfs/cfapi/vfs_cfapi.cpp" line="317"/>
         <source>It seems that you are trying to download a virtual file that is End-to-End encrypted. Implicitly downloading such files is not supported at the moment. To workaround this issue, go to the settings and mark the encrypted folder with &quot;Make always available locally&quot;.</source>
         <translation>似乎您正在嘗試下載經過端到端加密的虛擬檔案。目前不支持隱式下載此類檔案。要變通解決此問題，請轉到設置並將加密的文件夾標記為“使近端始終可用”。</translation>
     </message>

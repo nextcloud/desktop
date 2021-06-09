@@ -3088,42 +3088,42 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1224"/>
+        <location filename="../src/libsync/discovery.cpp" line="1225"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1257"/>
+        <location filename="../src/libsync/discovery.cpp" line="1258"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Не е дозволено бидејќи немате дозвола да додавате потпапки во оваа папка</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1262"/>
+        <location filename="../src/libsync/discovery.cpp" line="1263"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Не е дозволено бидејќи немате дозвола да додавате датотеки во оваа папка</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1275"/>
+        <location filename="../src/libsync/discovery.cpp" line="1276"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Не е дозволено да ја прикачите оваа датотека бидејќи е само за читање на серверот, враќање</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1297"/>
+        <location filename="../src/libsync/discovery.cpp" line="1298"/>
         <source>Moved to invalid target, restoring</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1310"/>
+        <location filename="../src/libsync/discovery.cpp" line="1311"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Не е дозволено бришење, враќање</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1419"/>
+        <location filename="../src/libsync/discovery.cpp" line="1420"/>
         <source>Error while reading the database</source>
         <translation>Грешка при вчитување на податоци од датабазата</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1480"/>
+        <location filename="../src/libsync/discovery.cpp" line="1481"/>
         <source>Server replied with an error while reading directory &apos;%1&apos; : %2</source>
         <translation>Серверот одговори со грешка при читање на папката &apos;%1&apos; : %2</translation>
     </message>
@@ -4618,12 +4618,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::VfsCfApi</name>
     <message>
-        <location filename="../src/libsync/vfs/cfapi/vfs_cfapi.cpp" line="314"/>
+        <location filename="../src/libsync/vfs/cfapi/vfs_cfapi.cpp" line="316"/>
         <source>Download of End-to-End encrypted file failed</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/vfs/cfapi/vfs_cfapi.cpp" line="315"/>
+        <location filename="../src/libsync/vfs/cfapi/vfs_cfapi.cpp" line="317"/>
         <source>It seems that you are trying to download a virtual file that is End-to-End encrypted. Implicitly downloading such files is not supported at the moment. To workaround this issue, go to the settings and mark the encrypted folder with &quot;Make always available locally&quot;.</source>
         <translation type="unfinished"/>
     </message>
