@@ -53,4 +53,4 @@ jobs:
           git config user.email "devops@owncloud.com"
           git add translations/
           git commit -m "[tx] updated client translations from transifex [skip ci]"
-          git push
+          git push git@github.com:owncloud/client.git
