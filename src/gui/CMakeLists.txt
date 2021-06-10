@@ -237,7 +237,7 @@ if(NOT APPLE)
         endforeach(_file)
     endif()
 
-    install(FILES ${client_I18N} DESTINATION ${DATA_INSTALL_DIR}/${APPLICATION_EXECUTABLE}/i18n)
+    install(FILES ${client_I18N} DESTINATION ${DATA_INSTALL_DIR}/${APPLICATION_NAME}/i18n)
 
     # we may not add MACOSX_BUNDLE here, if not building one
 else()
