@@ -49,6 +49,10 @@
 #define DEFAULT_REMOTE_POLL_INTERVAL 30000 // default remote poll time in milliseconds
 #define DEFAULT_MAX_LOG_LINES 20000
 
+namespace {
+    static constexpr char allowChecksumValidationFailC[] = "allowChecksumValidationFail";
+}
+
 namespace OCC {
 
 namespace chrono = std::chrono;
@@ -101,7 +105,6 @@ static const char useNewBigFolderSizeLimitC[] = "useNewBigFolderSizeLimit";
 static const char confirmExternalStorageC[] = "confirmExternalStorage";
 static const char moveToTrashC[] = "moveToTrash";
 
-
 const char certPath[] = "http_certificatePath";
 const char certPasswd[] = "http_certificatePasswd";
 QString ConfigFile::_confDir = QString();
@@ -112,7 +115,6 @@ static chrono::milliseconds millisecondsValue(const QSettings &setting, const ch
 {
     return chrono::milliseconds(setting.value(QLatin1String(key), qlonglong(defaultValue.count())).toLongLong());
 }
-
 
 bool copy_dir_recursive(QString from_dir, QString to_dir)
 {
@@ -887,6 +889,11 @@ bool ConfigFile::moveToTrash() const
 void ConfigFile::setMoveToTrash(bool isChecked)
 {
     setValue(moveToTrashC, isChecked);
+}
+
+bool ConfigFile::allowChecksumValidationFail() const
+{
+    return getValue(allowChecksumValidationFailC, {}, false).toBool();
 }
 
 bool ConfigFile::promptDeleteFiles() const

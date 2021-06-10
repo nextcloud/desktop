@@ -976,7 +976,7 @@ bool SyncJournalDb::setFileRecord(const SyncJournalFileRecord &_record)
     }
 }
 
-void SyncJournalDb::keyValueStoreSet(const QString &key, qint64 value)
+void SyncJournalDb::keyValueStoreSet(const QString &key, QVariant value)
 {
     QMutexLocker locker(&_mutex);
     if (!checkConnect()) {
@@ -988,7 +988,7 @@ void SyncJournalDb::keyValueStoreSet(const QString &key, qint64 value)
     }
 
     _setKeyValueStoreQuery.bindValue(1, key);
-    _setKeyValueStoreQuery.bindValue(2, QString::number(value));
+    _setKeyValueStoreQuery.bindValue(2, value);
     _setKeyValueStoreQuery.exec();
 }
 
@@ -1011,6 +1011,40 @@ qint64 SyncJournalDb::keyValueStoreGetInt(const QString &key, qint64 defaultValu
     }
 
     return _getKeyValueStoreQuery.int64Value(0);
+}
+
+QVariant SyncJournalDb::keyValueStoreGet(const QString &key, QVariant defaultValue)
+{
+    QMutexLocker locker(&_mutex);
+    if (!checkConnect()) {
+        return defaultValue;
+    }
+
+    if (!_getKeyValueStoreQuery.initOrReset(QByteArrayLiteral("SELECT value FROM key_value_store WHERE key = ?1;"), _db)) {
+        return defaultValue;
+    }
+
+    _getKeyValueStoreQuery.bindValue(1, key);
+    _getKeyValueStoreQuery.exec();
+
+    if (!_getKeyValueStoreQuery.next().hasData) {
+        return defaultValue;
+    }
+
+    return _getKeyValueStoreQuery.stringValue(0);
+}
+
+void SyncJournalDb::keyValueStoreDelete(const QString &key)
+{
+    if (!_deleteKeyValueStoreQuery.initOrReset("DELETE FROM key_value_store WHERE key=?1;", _db)) {
+        qCWarning(lcDb) << "Failed to initOrReset _deleteKeyValueStoreQuery";
+        Q_ASSERT(false);
+    }
+    _deleteKeyValueStoreQuery.bindValue(1, key);
+    if (!_deleteKeyValueStoreQuery.exec()) {
+        qCWarning(lcDb) << "Failed to exec _deleteKeyValueStoreQuery for key" << key;
+        Q_ASSERT(false);
+    }
 }
 
 // TODO: filename -> QBytearray?
