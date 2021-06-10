@@ -17,6 +17,7 @@ l10n-clean:
 
 .PHONY: l10n-read
 l10n-read:
+	sudo chown -R user .
 	cd .. && lupdate src -no-obsolete -ts translations/client_en.ts
 
 .PHONY: l10n-write

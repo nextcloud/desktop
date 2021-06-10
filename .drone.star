@@ -6,6 +6,9 @@
 #
 
 def main(ctx):
+    translations_trigger = {
+        "cron": ["translations-2-7"],
+    }
     build_trigger = {
         "ref": [
             "refs/heads/master",
@@ -59,6 +62,22 @@ def main(ctx):
                 "changelog",
                 "gcc-release-make",
                 "clang-debug-ninja",
+            ],
+        ),
+
+        # Sync translations
+        update_translations(
+            ctx,
+            "client",
+            "translations",
+            read_image = "rabits/qt:5.12-desktop",
+            trigger = translations_trigger,
+        ),
+        notification(
+            name = "translations",
+            trigger = translations_trigger,
+            depends_on = [
+                "translations-client",
             ],
         ),
     ]
@@ -356,6 +375,51 @@ def make(target, path, image = "owncloudci/transifex:latest"):
             'cd "' + path + '"',
             "make " + target,
         ],
+    }
+
+def update_translations(ctx, name, path, read_image = "owncloudci/transifex:latest", write_image = "owncloudci/transifex:latest", trigger = {}, depends_on = []):
+    return {
+        "kind": "pipeline",
+        "name": "translations-" + name,
+        "platform": {
+            "os": "linux",
+            "arch": "amd64",
+        },
+        "steps": [
+            make("l10n-read", path, read_image),
+            make("l10n-push", path),
+            make("l10n-pull", path),
+            make("l10n-write", path, write_image),
+            make("l10n-clean", path),
+            # keep time window for commit races as small as possible
+            {
+                "name": "update-repo-before-commit",
+                "image": "docker:git",
+                "commands": [
+                    "git stash",
+                    "git pull --ff-only origin +refs/heads/$${DRONE_BRANCH}",
+                    '[ "$(git stash list)" = "" ] || git stash pop',
+                ],
+            },
+            whenOnline({
+                "name": "commit",
+                "image": "appleboy/drone-git-push",
+                "pull": "always",
+                "settings": {
+                    "ssh_key": from_secret("git_push_ssh_key"),
+                    "author_name": "ownClouders",
+                    "author_email": "devops@owncloud.com",
+                    "remote_name": "origin",
+                    "branch": "${DRONE_BRANCH}",
+                    "empty_commit": False,
+                    "commit": True,
+                    "commit_message": "[tx] updated " + name + " translations from transifex",
+                    "no_verify": True,
+                },
+            }),
+        ],
+        "trigger": trigger,
+        "depends_on": depends_on,
     }
 
 def notification(name, depends_on = [], trigger = {}):
