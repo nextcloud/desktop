@@ -49,7 +49,6 @@ jobs:
           install -d -m 0700 ~/.ssh
           echo "$DEPLOYMENT_SSH_KEY" > ~/.ssh/id_ed25519
           chmod 0600 ~/.ssh/id_ed25519
-          ssh -v git@github.com
           git config user.name "ownClouders"
           git config user.email "devops@owncloud.com"
           git add translations/
