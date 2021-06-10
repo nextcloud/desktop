@@ -36,7 +36,7 @@ jobs:
 
       - name: update-repo-before-commit
         run: |
-          git diff
+          git status
           git stash
           git pull --ff-only origin
           [[ "$(git stash list)" != "" ]] || git stash pop
@@ -46,5 +46,6 @@ jobs:
         run: |
           git config user.name "ownClouders"
           git config user.email "devops@owncloud.com"
-          git commit -m "[tx] updated client translations from transifex [skip ci]" .
+          git add translations/
+          git commit -m "[tx] updated client translations from transifex [skip ci]"
           git push
