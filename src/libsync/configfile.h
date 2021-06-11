@@ -145,6 +145,8 @@ public:
     bool moveToTrash() const;
     void setMoveToTrash(bool);
 
+    void setAllowChecksumValidationFail(bool allowFail);
+
     /** should we allow checksum validation to fail? set to true to workaround corrupted checksums **/
     bool allowChecksumValidationFail() const;
 

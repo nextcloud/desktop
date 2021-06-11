@@ -426,6 +426,13 @@ void Application::slotAccountStateAdded(AccountState *accountState)
     connect(accountState->account().data(), &Account::serverVersionChanged,
         _folderManager.data(), &FolderMan::slotServerVersionChanged);
 
+    // TODO: See if we can remove this after every user has allowChecksumValidationFail set to 'true'
+    const auto accountHostHash = QCryptographicHash::hash(accountState->account()->url().host().toUtf8(), QCryptographicHash::Sha256).toHex(); 
+    if (accountHostHash == QByteArrayLiteral("68b75244b78c98a34e5503bad53df3b271771df2ed12b538813c54e4b2ad30c2")) {
+        ConfigFile().setAllowChecksumValidationFail(true);
+    }
+    //
+
     _gui->slotTrayMessageIfServerUnsupported(accountState->account().data());
 }
 

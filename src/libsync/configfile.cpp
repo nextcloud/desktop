@@ -891,6 +891,11 @@ void ConfigFile::setMoveToTrash(bool isChecked)
     setValue(moveToTrashC, isChecked);
 }
 
+void ConfigFile::setAllowChecksumValidationFail(bool allowFail)
+{
+    setValue(allowChecksumValidationFailC, allowFail);
+}
+
 bool ConfigFile::allowChecksumValidationFail() const
 {
     return getValue(allowChecksumValidationFailC, {}, false).toBool();
