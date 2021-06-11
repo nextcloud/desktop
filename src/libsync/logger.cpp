@@ -223,6 +223,7 @@ void Logger::dumpCrashLog()
     QFile logFile(QDir::tempPath() + QStringLiteral("/" APPLICATION_NAME "-crash.log"));
     if (logFile.open(QFile::WriteOnly)) {
         QTextStream out(&logFile);
+        out.setCodec("UTF-8");
         for (int i = 1; i <= CrashLogSize; ++i) {
             out << _crashLog[(_crashLogIndex + i) % CrashLogSize];
         }
