@@ -3144,7 +3144,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>No es pot baixar el fitxer %1 perquè falta la informació de xifratge.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="400"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="407"/>
         <source>File %1 cannot be downloaded because encryption information is missing.</source>
         <translation type="unfinished"/>
     </message>
@@ -3190,7 +3190,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>El fitxer baixat està buit malgrat que el servidor ha informat que tindria una mida de %1.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="783"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="790"/>
         <source>The downloaded file is empty, but the server said it should have been %1.</source>
         <translation type="unfinished"/>
     </message>
