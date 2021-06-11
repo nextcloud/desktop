@@ -14,7 +14,6 @@
 #pragma once
 
 #include <QObject>
-#include <QCoreApplication>
 #include <QScopedPointer>
 #include <QSharedPointer>
 
@@ -126,9 +125,6 @@ public:
     using AvailabilityResult = Result<VfsItemAvailability, AvailabilityError>;
 
 public:
-    using Factory = Vfs* (*)();
-    static void registerPlugin(const QString &name, Factory factory);
-
     explicit Vfs(QObject* parent = nullptr);
     virtual ~Vfs();
 

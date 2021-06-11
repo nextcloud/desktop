@@ -52,9 +52,6 @@
     <Property Id="INSTALLDIR">
         <RegistrySearch Id="RegistryInstallDir" Type="raw" Root="HKLM" Key="Software\$(var.AppVendor)\$(var.AppName)" Win64="no" />
     </Property>
-	<Property Id="WINDOWSRELEASEID">
-        <RegistrySearch Id="RegistryWindowsReleaseId" Type="raw" Root="HKLM" Key="Software\Microsoft\Windows NT\CurrentVersion" Name="ReleaseId"/>
-    </Property>
 
     <!-- Detect legacy NSIS installation -->
     <Property Id="NSIS_UNINSTALLEXE">

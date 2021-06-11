@@ -182,5 +182,3 @@ void VfsXAttr::fileStatusChanged(const QString &, SyncFileStatus)
 }
 
 } // namespace OCC
-
-OCC_DEFINE_VFS_FACTORY("xattr", OCC::VfsXAttr)
