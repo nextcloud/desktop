@@ -3155,7 +3155,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Ar restr %1 n&apos;eo ket posupl bezhaén pellkarget peogwir e vank titouroù sifrañ.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="400"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="407"/>
         <source>File %1 cannot be downloaded because encryption information is missing.</source>
         <translation type="unfinished"/>
     </message>
@@ -3201,7 +3201,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Ar restr pellkarget a zo goulo memes m&apos;en doa laret ar servijour e kemerfe %1.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="783"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="790"/>
         <source>The downloaded file is empty, but the server said it should have been %1.</source>
         <translation type="unfinished"/>
     </message>

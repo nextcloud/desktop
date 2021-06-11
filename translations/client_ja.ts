@@ -261,7 +261,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="118"/>
         <source>Connected with &lt;server&gt; as &lt;user&gt;</source>
-        <translation>&lt;server&gt; に &lt;user&gt; で接続中</translation>
+        <translation> &lt;user&gt; として &lt;server&gt; に接続中</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="148"/>
@@ -3174,7 +3174,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>暗号化情報がないため、ファイル%1をダウンロードできません。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="400"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="407"/>
         <source>File %1 cannot be downloaded because encryption information is missing.</source>
         <translation>暗号化情報がないため、ファイル%1をダウンロードできません。</translation>
     </message>
@@ -3220,7 +3220,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>サーバーが通知しているファイルは %1 であるべきですが、ダウンロードファイルは空でした。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="783"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="790"/>
         <source>The downloaded file is empty, but the server said it should have been %1.</source>
         <translation type="unfinished"/>
     </message>

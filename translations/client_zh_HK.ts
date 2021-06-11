@@ -3177,7 +3177,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>%1檔案因缺乏加密資訊而未能下載。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="400"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="407"/>
         <source>File %1 cannot be downloaded because encryption information is missing.</source>
         <translation>%1檔案因缺乏加密資訊而未能下載。</translation>
     </message>
@@ -3223,7 +3223,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>已下載的檔案為空，儘管伺服器所宣佈的檔案大小為%1。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="783"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="790"/>
         <source>The downloaded file is empty, but the server said it should have been %1.</source>
         <translation>已下載的檔案為空，儘管伺服器說檔案大小為%1。</translation>
     </message>
