@@ -3156,7 +3156,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Фајл %1 се не може преузети јер недостају подаци о шифровању.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="400"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="407"/>
         <source>File %1 cannot be downloaded because encryption information is missing.</source>
         <translation type="unfinished"/>
     </message>
@@ -3202,7 +3202,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Преузети фајл је празан иако је сервер рекао да треба да је %1.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="783"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="790"/>
         <source>The downloaded file is empty, but the server said it should have been %1.</source>
         <translation type="unfinished"/>
     </message>

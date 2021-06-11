@@ -3178,7 +3178,7 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
         <translation>El archivo %1 no se ha podido descargar porque falta la información de cifrado.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="400"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="407"/>
         <source>File %1 cannot be downloaded because encryption information is missing.</source>
         <translation>El archivo %1 no puede ser descargado porque falta la información de cifrado,</translation>
     </message>
@@ -3224,7 +3224,7 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
         <translation>El archivo descargado está vacío a pesar de que el servidor comunicó que debería haber sido %1.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="783"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="790"/>
         <source>The downloaded file is empty, but the server said it should have been %1.</source>
         <translation type="unfinished"/>
     </message>
