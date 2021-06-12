@@ -5219,7 +5219,7 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="483"/>
         <source>%n hour ago</source>
-        <translation><numerusform>%n godzinę temu</numerusform><numerusform>%n godziny temu</numerusform><numerusform>%n godzin temu</numerusform><numerusform>%n godzinę temu</numerusform></translation>
+        <translation><numerusform>%n godzinę temu</numerusform><numerusform>%n godziny temu</numerusform><numerusform>%n godzin temu</numerusform><numerusform>%n godzin temu</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="485"/>
