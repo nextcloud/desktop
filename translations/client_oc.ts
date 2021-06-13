@@ -1637,7 +1637,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1160"/>
         <source>Preparing to sync …</source>
-        <translation>Preparacion de la sincro. …</translation>
+        <translation>Preparacion de la sincro.…</translation>
     </message>
 </context>
 <context>
