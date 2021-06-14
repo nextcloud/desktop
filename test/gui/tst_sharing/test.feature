@@ -8,6 +8,7 @@ Feature: Sharing
     Background:
         Given user "Alice" has been created on the server with default attributes and without skeleton files
 
+    @smokeTest
     Scenario: simple sharing
         Given user "Brian" has been created on the server with default attributes and without skeleton files
         And user "Alice" has uploaded on the server file with content "ownCloud test text file 0" to "/textfile0.txt"

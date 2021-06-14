@@ -50,7 +50,8 @@ def main(ctx):
             "Ninja",
             trigger = build_trigger,
         ),
-        gui_tests(ctx, trigger = build_trigger),
+        gui_tests(ctx, trigger = build_trigger, filterTags = ["@smokeTest"]),
+        gui_tests(ctx, trigger = build_trigger, depends_on = ["GUI-tests-@smokeTest"], filterTags = ["~@smokeTest"]),
         notification(
             name = "build",
             trigger = build_trigger,
@@ -167,9 +168,15 @@ def build_and_test_client(ctx, c_compiler, cxx_compiler, build_type, generator, 
         "depends_on": depends_on,
     }
 
-def gui_tests(ctx, trigger = {}, depends_on = []):
+def gui_tests(ctx, trigger = {}, depends_on = [], filterTags = []):
     pipeline_name = "GUI-tests"
     build_dir = "build-" + pipeline_name
+    squish_parameters = "--retry 1"
+
+    if (len(filterTags) > 0):
+        for tags in filterTags:
+            squish_parameters += " --tags " + tags
+            pipeline_name += "-" + tags
 
     return {
         "kind": "pipeline",
@@ -203,7 +210,7 @@ def gui_tests(ctx, trigger = {}, depends_on = []):
                              "MIDDLEWARE_URL": "http://testmiddleware:3000/",
                              "BACKEND_HOST": "http://owncloud/",
                              "SERVER_INI": "/drone/src/test/gui/drone/server.ini",
-                             "SQUISH_PARAMETERS": "--retry 1",
+                             "SQUISH_PARAMETERS": squish_parameters,
                          },
                      },
                  ],
