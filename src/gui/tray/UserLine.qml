@@ -102,7 +102,6 @@ MenuItem {
                         Layout.leftMargin: Style.accountLabelsSpacing
                         Label {
                             id: accountUser
-                            Layout.alignment: Qt.AlignLeft | Qt.AlignBottom
                             width: 128
                             text: name
                             elide: Text.ElideRight
@@ -110,34 +109,32 @@ MenuItem {
                             font.pixelSize: Style.topLinePixelSize
                             font.bold: true
                         }
-                        RowLayout {
-                            id: userStatus
+                        Row {
                             visible: model.isConnected && 
                                      model.serverHasUserStatus
-                            spacing: Style.userStatusAnchorsMargin
-                            Layout.alignment: Qt.AlignLeft | Qt.AlignTop
+                            width: Style.currentAccountLabelWidth + Style.userStatusEmojiSize
                             Label {
                                 id: emoji
+                                height: Style.topLinePixelSize
                                 visible: model.statusEmoji !== ""
-                                width: Style.userStatusEmojiSize
                                 text: statusEmoji
+                                topPadding: -Style.accountLabelsSpacing
                             }
                             Label {
                                 id: message
-                                Layout.alignment: Qt.AlignLeft | Qt.AlignBottom
-                                Layout.leftMargin: Style.userStatusAnchorsMargin
+                                height: Style.topLinePixelSize
                                 visible: model.statusMessage !== ""
-                                width: Style.currentAccountLabelWidth
                                 text: statusMessage
                                 elide: Text.ElideRight
                                 color: "black"
                                 font.pixelSize: Style.subLinePixelSize
+                                leftPadding: Style.accountLabelsSpacing
                             }
                         }
                         Label {
                             id: accountServer
-                            Layout.alignment: Qt.AlignLeft | Qt.AlignBottom
                             width: Style.currentAccountLabelWidth
+                            height: Style.topLinePixelSize
                             text: server
                             elide: Text.ElideRight
                             color: "black"
