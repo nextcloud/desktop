@@ -932,10 +932,13 @@ void FolderMan::slotFolderSyncStarted()
     if (!f)
         return;
 
-    qCInfo(lcFolderMan, ">========== Sync started for folder [%s] of account [%s] with remote [%s]",
-        qPrintable(f->shortGuiLocalPath()),
-        qPrintable(f->accountState()->account()->displayName()),
-        qPrintable(f->remoteUrl().toString()));
+    qCInfo(lcFolderMan) << ">========== Sync started for folder ["
+                        << f->shortGuiLocalPath()
+                        << "] of account ["
+                        << f->accountState()->account()->displayName()
+                        << "] with remote ["
+                        << f->remoteUrl().toDisplayString()
+                        << "]";
 }
 
 /*
@@ -951,11 +954,13 @@ void FolderMan::slotFolderSyncFinished(const SyncResult &)
     if (!f)
         return;
 
-    qCInfo(lcFolderMan, "<========== Sync finished for folder [%s] of account [%s] with remote [%s]",
-        qPrintable(f->shortGuiLocalPath()),
-        qPrintable(f->accountState()->account()->displayName()),
-        qPrintable(f->remoteUrl().toString()));
-
+    qCInfo(lcFolderMan) << "<========== Sync finished for folder ["
+                        << f->shortGuiLocalPath()
+                        << "] of account ["
+                        << f->accountState()->account()->displayName()
+                        << "] with remote ["
+                        << f->remoteUrl().toDisplayString()
+                        << "]";
     if (f == _currentSyncFolder) {
         _lastSyncFolder = _currentSyncFolder;
         _currentSyncFolder = nullptr;

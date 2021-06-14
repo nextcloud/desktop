@@ -239,7 +239,7 @@ private:
 QString queryPassword(const QString &user)
 {
     EchoDisabler disabler;
-    std::cout << "Password for user " << qPrintable(user) << ": ";
+    std::cout << "Password for user " << qUtf8Printable(user) << ": ";
     std::string s;
     std::getline(std::cin, s);
     return QString::fromStdString(s);
@@ -342,7 +342,7 @@ void parseOptions(const QStringList &app_args, CmdOptions *options)
     }
     QFileInfo fi(options->source_dir);
     if (!fi.exists()) {
-        std::cerr << "Source dir '" << qPrintable(options->source_dir) << "' does not exist." << std::endl;
+        std::cerr << "Source dir '" << qUtf8Printable(options->source_dir) << "' does not exist." << std::endl;
         exit(1);
     }
     options->source_dir = fi.absoluteFilePath();

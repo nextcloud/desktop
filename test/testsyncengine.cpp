@@ -621,7 +621,7 @@ private slots:
     {
         const auto utf8Locale = QTextCodec::codecForLocale();
         if (utf8Locale->mibEnum() != 106) {
-            QSKIP(qPrintable(QStringLiteral("Test only works for UTF8 locale, but current locale is %1").arg(QString::fromUtf8(utf8Locale->name()))));
+            QSKIP(qUtf8Printable(QStringLiteral("Test only works for UTF8 locale, but current locale is %1").arg(QString::fromUtf8(utf8Locale->name()))));
         }
 
         FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
