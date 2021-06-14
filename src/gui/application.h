@@ -59,14 +59,7 @@ public:
     explicit Application(int &argc, char **argv);
     ~Application() override;
 
-    bool giveHelp();
-    void showHelp();
-    void showHint(const QString &errorHint);
     bool debugMode();
-    bool versionOnly(); // only display the version?
-    void showVersion();
-    bool listAvailableTranslationsOnly();
-    void listAvailableTranslations();
 
     void showSettingsDialog();
 
@@ -110,8 +103,6 @@ protected slots:
     void slotSystemOnlineConfigurationChanged(QNetworkConfiguration);
 
 private:
-    void setHelp();
-
     /**
      * Maybe a newer version of the client was used with this config file:
      * if so, backup, confirm with user and remove the config that can't be read.
@@ -122,17 +113,11 @@ private:
 
     Theme *_theme;
 
-    bool _helpOnly;
-    bool _versionOnly;
-    bool _listAvailableTranslationsOnly;
-
-
 #ifdef Q_OS_LINUX
     QElapsedTimer _startedAt;
 #endif
 
     // options from command line:
-    bool _showLogWindow;
     bool _showSettings = false;
     bool _quitInstance = false;
     QString _logFile;

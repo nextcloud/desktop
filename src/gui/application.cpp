@@ -70,31 +70,6 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcApplication, "gui.application", QtInfoMsg)
 
-namespace {
-
-    const QString optionsC()
-    {
-        return QStringLiteral(
-            "Options:\n"
-            "  -h --help            : show this help screen.\n"
-            "  -s --showsettings    : show the settings dialog while starting.\n"
-            "  -q --quit            : quit the running instance\n"
-            "  --logfile <filename> : write log output to file <filename>.\n"
-            "  --logfile -          : write log output to stdout.\n"
-            "  --logdir <name>      : write each sync log output in a new file\n"
-            "                         in folder <name>.\n"
-            "  --logexpire <hours>  : removes logs older than <hours> hours.\n"
-            "                         (to be used with --logdir)\n"
-            "  --logflush           : flush the log file after every write.\n"
-            "  --logdebug           : also output debug-level messages in the log.\n"
-            "  --language <locale>  : override UI language\n"
-            "  --list-languages     : list available translations (for use with --language)\n"
-            "  --confdir <dirname>  : Use the given configuration folder.");
-    }
-}
-
-// ----------------------------------------------------------------------------------
-
 bool Application::configVersionMigration()
 {
     QStringList deleteKeys, ignoreKeys;
@@ -169,10 +144,6 @@ Application::Application(int &argc, char **argv)
     : SharedTools::QtSingleApplication(Theme::instance()->appName(), argc, argv)
     , _gui(nullptr)
     , _theme(Theme::instance())
-    , _helpOnly(false)
-    , _versionOnly(false)
-    , _showLogWindow(false)
-    , _listAvailableTranslationsOnly(false)
     , _logExpire(0)
     , _logFlush(false)
     , _logDebug(false)
@@ -232,6 +203,9 @@ Application::Application(int &argc, char **argv)
         }
     }
 
+    // needed during commandline options parsing
+    setApplicationVersion(_theme->versionSwitchOutput());
+
     parseOptions(arguments());
 
     if (isRunning())
@@ -276,10 +250,6 @@ Application::Application(int &argc, char **argv)
     if (isVfsPluginAvailable(Vfs::WithSuffix))
         qCInfo(lcApplication) << "VFS suffix plugin is available";
 
-    //no need to waste time;
-    if (_helpOnly || _versionOnly || _listAvailableTranslationsOnly)
-        return;
-
     if (_quitInstance) {
         QTimer::singleShot(0, qApp, &QApplication::quit);
         return;
@@ -318,9 +288,6 @@ Application::Application(int &argc, char **argv)
     // Setting up the gui class will allow tray notifications for the
     // setup that follows, like folder setup
     _gui = new ownCloudGui(this);
-    if (_showLogWindow) {
-        _gui->slotToggleLogBrowser(); // _showLogWindow is set in parseOptions.
-    }
     if (_showSettings) {
         _gui->slotShowSettings();
     }
@@ -537,13 +504,9 @@ void Application::slotParseMessage(const QString &msg, QObject *)
     if (msg.startsWith(QLatin1String("MSG_PARSEOPTIONS:"))) {
         const int lengthOfMsgPrefix = 17;
         QStringList options = msg.mid(lengthOfMsgPrefix).split(QLatin1Char('|'));
-        _showLogWindow = false;
         _showSettings = false;
         parseOptions(options);
         setupLogging();
-        if (_showLogWindow) {
-            _gui->slotToggleLogBrowser(); // _showLogWindow is set in parseOptions.
-        }
         if (_showSettings) {
             _gui->slotShowSettings();
         }
@@ -564,89 +527,6 @@ void Application::slotParseMessage(const QString &msg, QObject *)
     }
 }
 
-void Application::parseOptions(const QStringList &options)
-{
-    QStringListIterator it(options);
-    // skip file name;
-    if (it.hasNext())
-        it.next();
-
-    //parse options; if help or bad option exit
-    while (it.hasNext()) {
-        QString option = it.next();
-        if (option == QLatin1String("--help") || option == QLatin1String("-h")) {
-            setHelp();
-            break;
-        } else if (option == QLatin1String("--showsettings") || option == QLatin1String("-s")) {
-            _showSettings = true;
-        } else if (option == QLatin1String("--quit") || option == QLatin1String("-q")) {
-            _quitInstance = true;
-        } else if (option == QLatin1String("--logwindow") || option == QLatin1String("-l")) {
-            _showLogWindow = true;
-        } else if (option == QLatin1String("--logfile")) {
-            if (it.hasNext() && !it.peekNext().startsWith(QLatin1String("--"))) {
-                _logFile = it.next();
-            } else {
-                showHint("Log file not specified");
-            }
-        } else if (option == QLatin1String("--logdir")) {
-            if (it.hasNext() && !it.peekNext().startsWith(QLatin1String("--"))) {
-                _logDir = it.next();
-            } else {
-                showHint("Log dir not specified");
-            }
-        } else if (option == QLatin1String("--logexpire")) {
-            if (it.hasNext() && !it.peekNext().startsWith(QLatin1String("--"))) {
-                _logExpire = std::chrono::hours(it.next().toInt());
-            } else {
-                showHint("Log expiration not specified");
-            }
-        } else if (option == QLatin1String("--logflush")) {
-            _logFlush = true;
-        } else if (option == QLatin1String("--logdebug")) {
-            _logDebug = true;
-        } else if (option == QLatin1String("--confdir")) {
-            if (it.hasNext() && !it.peekNext().startsWith(QLatin1String("--"))) {
-                QString confDir = it.next();
-                if (!ConfigFile::setConfDir(confDir)) {
-                    showHint("Invalid path passed to --confdir");
-                }
-            } else {
-                showHint("Path for confdir not specified");
-            }
-        } else if (option == QLatin1String("--debug")) {
-            _logDebug = true;
-            _debugMode = true;
-        } else if (option == QLatin1String("--version")) {
-            _versionOnly = true;
-        } else if (option == QLatin1String("--language")) {
-            auto showLanguageHint = [this](const QString &message) {
-                showHint(message + " (use --list-languages to get a complete list of supported translations)");
-            };
-
-            if (it.hasNext() && !it.peekNext().startsWith(QLatin1String("--"))) {
-                auto languageParam = it.next();
-
-                // fail if the language is unknown
-                if (!Translations::listAvailableTranslations().contains(languageParam)) {
-                    showLanguageHint("Error: unknown language \"" + languageParam + "\"");
-                } else {
-                    _userEnforcedLanguage = languageParam;
-                }
-            } else {
-                showLanguageHint("Error: --language expects a locale as parameter");
-            }
-        } else if (option == QLatin1String("--list-languages")) {
-            _listAvailableTranslationsOnly = true;
-        } else if (option.endsWith(QStringLiteral(APPLICATION_DOTVIRTUALFILE_SUFFIX))) {
-            // virtual file, open it after the Folder were created (if the app is not terminated)
-            QTimer::singleShot(0, this, [this, option] { openVirtualFile(option); });
-        } else {
-            showHint(QStringLiteral("Unrecognized option '%1'").arg(option));
-        }
-    }
-}
-
 // Helpers for displaying messages. Note that there is probably no console on Windows.
 static void displayHelpText(const QString &t, std::ostream &stream = std::cout)
 {
@@ -661,58 +541,111 @@ static void displayHelpText(const QString &t, std::ostream &stream = std::cout)
 #endif
 }
 
-void Application::showHelp()
+void Application::parseOptions(const QStringList &arguments)
 {
-    setHelp();
-    QString helpText;
-    QTextStream stream(&helpText);
-    stream << _theme->appName()
-           << QLatin1String(" version ")
-           << _theme->version() << endl;
+    QCommandLineParser parser;
 
-    stream << QLatin1String("File synchronisation desktop utility.") << endl
-           << endl
-           << optionsC();
+    QString descriptionText;
+    QTextStream descriptionTextStream(&descriptionText);
+
+    descriptionTextStream << tr("%1 version %2\r\nFile synchronization desktop utility.").arg(_theme->appName(), _theme->version()) << endl;
 
     if (_theme->appName() == QLatin1String("ownCloud")) {
-        stream << endl
-               << endl
-               << "For more information, see http://www.owncloud.org";
+        descriptionTextStream << endl
+                              << endl
+                              << tr("For more information, see http://www.owncloud.org");
     }
 
-    displayHelpText(helpText);
-}
+    parser.setApplicationDescription(descriptionText);
 
-void Application::showVersion()
-{
-    displayHelpText(Theme::instance()->versionSwitchOutput());
-}
+    auto helpOption = parser.addHelpOption();
+    auto versionOption = parser.addVersionOption();
 
-void Application::listAvailableTranslations()
-{
-    auto availableTranslations = Translations::listAvailableTranslations().toList();
-    availableTranslations.sort(Qt::CaseInsensitive);
-    displayHelpText("Available translations: " + availableTranslations.join(", "));
-}
+    // this little snippet saves a few lines below
+    auto addOption = [&parser](const QCommandLineOption &option) {
+        parser.addOption(option);
+        return option;
+    };
 
-void Application::showHint(const QString &errorHint)
-{
-    QString out;
-    QTextStream hint(&out);
-    hint << errorHint << endl
-         << "Try '" << QFileInfo(QCoreApplication::applicationFilePath()).fileName() << " --help' for more information" << endl;
-    displayHelpText(out, std::cerr);
-    std::exit(1);
+    auto showSettingsOption = addOption({ { "s", "showsettings" }, tr("Show the settings dialog while starting.") });
+    auto quitInstanceOption = addOption({ { "q", "quit" }, tr("Quit the running instance.") });
+    auto logFileOption = addOption({ "logfile", tr("Write log to file (use - to write to stdout)."), "filename" });
+    auto logDirOption = addOption({ "logdir", tr("Write each sync log output in a new file in folder."), "name" });
+    auto logExpireOption = addOption({ "logexpire", tr("Remove logs older than <hours> hours (to be used with --logdir)."), "hours" });
+    auto logFlushOption = addOption({ "logflush", tr("Flush the log file after every write.") });
+    auto logDebugOption = addOption({ "logdebug", tr("Output debug-level messages in the log.") });
+    auto languageOption = addOption({ "language", tr("Override UI language."), "language" });
+    auto listLanguagesOption = addOption({ "list-languages", tr("Override UI language.") });
+    auto confDirOption = addOption({ "confdir", tr("Use the given configuration folder."), "dirname" });
+    auto debugOption = addOption({ "debug", tr("Enable debug mode.") });
+
+    // virtual file system parameters (optional)
+    parser.addPositionalArgument("vfs file", tr("Virtual file system file to be opened (optional)."), { tr("[<vfs file>]") });
+
+    parser.process(arguments);
+
+    // TODO: rename this option (see #8234 for more information)
+    if (parser.isSet(showSettingsOption)) {
+        _showSettings = true;
+    }
+    if (parser.isSet(quitInstanceOption)) {
+        _quitInstance = true;
+    }
+    if (parser.isSet(logFileOption)) {
+        _logFile = parser.value(logFileOption);
+    }
+    if (parser.isSet(logDirOption)) {
+        _logDir = parser.value(logDirOption);
+    }
+    if (parser.isSet(logExpireOption)) {
+        _logExpire = std::chrono::hours(parser.value(logExpireOption).toInt());
+    }
+    if (parser.isSet(logFlushOption)) {
+        _logFlush = true;
+    }
+    if (parser.isSet(logDebugOption)) {
+        _logDebug = true;
+    }
+    if (parser.isSet(confDirOption)) {
+        const auto confDir = parser.value(confDirOption);
+        if (!ConfigFile::setConfDir(confDir)) {
+            displayHelpText(tr("Invalid path passed to --confdir"));
+            std::exit(1);
+        }
+    }
+    if (parser.isSet(debugOption)) {
+        _logDebug = true;
+        _debugMode = true;
+    }
+    if (parser.isSet(languageOption)) {
+        const auto languageValue = parser.value(languageOption);
+
+        // fail if the language is unknown
+        if (!Translations::listAvailableTranslations().contains(languageValue)) {
+            displayHelpText(tr("Error: unknown language \"%1\" (use --list-languages to get a complete list of supported translations)").arg(languageValue));
+            std::exit(1);
+        } else {
+            _userEnforcedLanguage = languageValue;
+        }
+    }
+    if (parser.isSet(listLanguagesOption)) {
+        auto availableTranslations = Translations::listAvailableTranslations().toList();
+        availableTranslations.sort(Qt::CaseInsensitive);
+        displayHelpText(tr("Available translations: %1").arg(availableTranslations.join(", ")));
+        std::exit(1);
+    }
+
+    auto positionalArguments = parser.positionalArguments();
+
+    // ignore any positional arguments beyond the first one
+    if (!positionalArguments.empty()) {
+        QTimer::singleShot(0, this, [this, positionalArguments] { openVirtualFile(positionalArguments.front()); });
+    }
 }
 
 bool Application::debugMode()
 {
     return _debugMode;
-}
-
-void Application::setHelp()
-{
-    _helpOnly = true;
 }
 
 QString substLang(const QString &lang)
@@ -810,21 +743,6 @@ void Application::setupTranslations()
             break;
         }
     }
-}
-
-bool Application::giveHelp()
-{
-    return _helpOnly;
-}
-
-bool Application::versionOnly()
-{
-    return _versionOnly;
-}
-
-bool Application::listAvailableTranslationsOnly()
-{
-    return _listAvailableTranslationsOnly;
 }
 
 void Application::showSettingsDialog()
