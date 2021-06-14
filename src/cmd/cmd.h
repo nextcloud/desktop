@@ -26,10 +26,11 @@ class Cmd : public QObject
 {
     Q_OBJECT
 public:
-    Cmd()
-        : QObject()
+    Cmd(QObject *parent)
+        : QObject(parent)
     {
     }
+    int _restartCount = 0;
 public slots:
     void transmissionProgressSlot()
     {
