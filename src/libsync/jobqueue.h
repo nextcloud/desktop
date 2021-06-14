@@ -72,6 +72,8 @@ public:
     bool unblock();
     bool clear();
 
+    JobQueue *queue() const;
+
 private:
     JobQueue *_queue;
     bool _blocked = false;

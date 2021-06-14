@@ -138,4 +138,9 @@ bool JobQueueGuard::clear()
     }
     return false;
 }
+
+JobQueue *JobQueueGuard::queue() const
+{
+    return _queue;
+}
 }

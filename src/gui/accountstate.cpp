@@ -239,13 +239,18 @@ void AccountState::tagLastSuccessfullETagRequest(const QDateTime &tp)
     _timeOfLastETagCheck = tp;
 }
 
-void AccountState::checkConnectivity(bool verifyServerState)
+void AccountState::checkConnectivity(bool blockJobs)
 {
-    qCWarning(lcAccountState) << "checkConnectivity verifyOnly:" << verifyServerState;
+    qCWarning(lcAccountState) << "checkConnectivity blocking:" << blockJobs;
     if (isSignedOut() || _waitingForNewCredentials) {
         return;
     }
 
+    if (_connectionValidator && blockJobs && !_queueGuard.queue()->isBlocked()) {
+        // abort already running non blocking validator
+        _connectionValidator->deleteLater();
+        _connectionValidator.clear();
+    }
     if (_connectionValidator) {
         qCWarning(lcAccountState) << "ConnectionValidator already running, ignoring" << account()->displayName();
         return;
@@ -263,30 +268,29 @@ void AccountState::checkConnectivity(bool verifyServerState)
     // if the last successful etag check job is not so long ago.
     const auto polltime = std::chrono::duration_cast<std::chrono::seconds>(ConfigFile().remotePollInterval());
     const auto elapsed = _timeOfLastETagCheck.secsTo(QDateTime::currentDateTimeUtc());
-    if (!verifyServerState && isConnected() && _timeOfLastETagCheck.isValid()
+    if (!blockJobs && isConnected() && _timeOfLastETagCheck.isValid()
         && elapsed <= polltime.count()) {
         qCDebug(lcAccountState) << account()->displayName() << "The last ETag check succeeded within the last " << polltime.count() << "s (" << elapsed << "s). No connection check needed!";
         return;
     }
 
-    if (verifyServerState) {
+    if (blockJobs) {
         _queueGuard.block();
     }
-    ConnectionValidator *conValidator = new ConnectionValidator(account());
-    _connectionValidator = conValidator;
-    connect(conValidator, &ConnectionValidator::connectionResult,
+    _connectionValidator = new ConnectionValidator(account());
+    connect(_connectionValidator, &ConnectionValidator::connectionResult,
         this, &AccountState::slotConnectionValidatorResult);
     if (isConnected()) {
         // Use a small authed propfind as a minimal ping when we're
         // already connected.
-        if (verifyServerState) {
+        if (blockJobs) {
             if (Theme::instance()->connectionValidatorClearCookies()) {
                 // clear the cookies directly before we try to validate
-                connect(conValidator, &ConnectionValidator::aboutToStart, _account.get(), &Account::clearCookieJar, Qt::DirectConnection);
+                connect(_connectionValidator, &ConnectionValidator::aboutToStart, _account.get(), &Account::clearCookieJar, Qt::DirectConnection);
             }
-            conValidator->checkServer();
+            _connectionValidator->checkServer();
         } else {
-            conValidator->checkServerAndUpdate();
+            _connectionValidator->checkServerAndUpdate();
         }
     } else {
         // Check the server and then the auth.
@@ -304,7 +308,7 @@ void AccountState::checkConnectivity(bool verifyServerState)
         // ssl config that does not have a sensible certificate chain.
         account()->setSslConfiguration(QSslConfiguration());
         //#endif
-        conValidator->checkServerAndUpdate();
+        _connectionValidator->checkServerAndUpdate();
     }
 }
 
