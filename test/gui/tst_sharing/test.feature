@@ -40,7 +40,7 @@ Feature: Sharing
         When user "Brian" opens the sharing dialog of "%client_sync_path%/Shares/simple-folder" using the client-UI
         Then the error text "The file can not be shared because it was shared without sharing permission." should be displayed in the sharing dialog
 
-
+    @smokeTest
     Scenario: simple sharing of a file by public link without password
         Given user "Alice" has uploaded on the server file with content "ownCloud test text file 0" to "/textfile0.txt"
         And user "Alice" has set up a client with default settings
@@ -70,7 +70,7 @@ Feature: Sharing
         Then the fields of the last public link share response of user "Alice" should include on the server
             | expireDate | 2038-07-21 |
 
-
+    @smokeTest
     Scenario: simple sharing of a folder by public link without password
         Given user "Alice" has created on the server folder "simple-folder"
         And user "Alice" has set up a client with default settings

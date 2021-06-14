@@ -7,6 +7,7 @@ Feature: Syncing files
     Background:
         Given user "Alice" has been created on the server with default attributes and without skeleton files
 
+    @smokeTest
     Scenario: Syncing a file to the server
         Given user "Alice" has set up a client with default settings
         When the user creates a file "lorem-for-upload.txt" with the following content on the file system
