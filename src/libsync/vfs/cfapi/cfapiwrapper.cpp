@@ -679,7 +679,7 @@ OCC::Result<void, QString> OCC::CfApiWrapper::updatePlaceholderInfo(const FileHa
 
     const qint64 result = CfUpdatePlaceholder(handle.get(), &metadata,
                                               fileIdentity.data(), sizeToDWORD(fileIdentitySize),
-                                              nullptr, 0, CF_UPDATE_FLAG_NONE, nullptr, nullptr);
+                                              nullptr, 0, CF_UPDATE_FLAG_MARK_IN_SYNC, nullptr, nullptr);
 
     if (result != S_OK) {
         qCWarning(lcCfApiWrapper) << "Couldn't update placeholder info for" << pathForHandle(handle) << ":" << _com_error(result).ErrorMessage();
