@@ -982,7 +982,7 @@ void FakeFolder::fromDisk(QDir &dir, FileInfo &templateFi)
     }
 }
 
-FileInfo &findOrCreateDirs(FileInfo &base, PathComponents components)
+static FileInfo &findOrCreateDirs(FileInfo &base, PathComponents components)
 {
     if (components.isEmpty())
         return base;
