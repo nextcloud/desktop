@@ -51,7 +51,7 @@ def main(ctx):
             trigger = build_trigger,
         ),
         gui_tests(ctx, trigger = build_trigger, filterTags = ["@smokeTest"]),
-        gui_tests(ctx, trigger = build_trigger, depends_on = ["GUI-tests-@smokeTest"], filterTags = ["~@smokeTest"]),
+        gui_tests(ctx, trigger = build_trigger, depends_on = ["GUI-tests-@smokeTest"], filterTags = ["~@smokeTest", "~@skip"]),
         notification(
             name = "build",
             trigger = build_trigger,
