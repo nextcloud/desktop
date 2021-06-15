@@ -12,6 +12,7 @@
  * for more details.
  */
 
+#include <QDate>
 #include <QRegExp>
 
 #include "syncrunfilelog.h"
@@ -19,45 +20,49 @@
 #include "filesystem.h"
 #include <qfileinfo.h>
 
+namespace {
+auto dateTimeStr(const QDateTime &dt = QDateTime::currentDateTimeUtc())
+{
+    return dt.toString(Qt::ISODate);
+}
+
+}
 namespace OCC {
 
 SyncRunFileLog::SyncRunFileLog()
 {
 }
 
-QString SyncRunFileLog::dateTimeStr(const QDateTime &dt)
-{
-    return dt.toString(Qt::ISODate);
-}
 
 void SyncRunFileLog::start(const QString &folderPath)
 {
     const qint64 logfileMaxSize = 10 * 1024 * 1024; // 10MiB
 
     // Note; this name is ignored in csync_exclude.c
-    const QString filename = folderPath + QLatin1String(".owncloudsync.log");
+    const QString filename = folderPath + QStringLiteral(".owncloudsync.log");
 
     // When the file is too big, just rename it to an old name.
     QFileInfo info(filename);
     bool exists = info.exists();
     if (exists && info.size() > logfileMaxSize) {
         exists = false;
-        QString newFilename = filename + QLatin1String(".1");
+        QString newFilename = filename + QStringLiteral(".1");
         QFile::remove(newFilename);
         QFile::rename(filename, newFilename);
     }
     _file.reset(new QFile(filename));
 
     _file->open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text);
-    _out.setDevice(_file.data());
+    _out.reset(new QDebug(_file.data()));
+    _out->noquote();
 
 
     if (!exists) {
         // We are creating a new file, add the note.
-        _out << "# timestamp | duration | file | instruction | dir | modtime | etag | "
-                "size | fileId | status | errorString | http result code | "
-                "other size | other modtime | X-Request-ID"
-             << endl;
+        *_out << "# timestamp | duration | file | instruction | dir | modtime | etag | "
+                 "size | fileId | status | errorString | http result code | "
+                 "other size | other modtime | X-Request-ID"
+              << endl;
 
         FileSystem::setFileHidden(filename, true);
     }
@@ -65,7 +70,7 @@ void SyncRunFileLog::start(const QString &folderPath)
 
     _totalDuration.start();
     _lapDuration.start();
-    _out << "#=#=#=# Syncrun started " << dateTimeStr(QDateTime::currentDateTimeUtc()) << endl;
+    *_out << "#=#=#=# Syncrun started " << dateTimeStr() << endl;
 }
 
 void SyncRunFileLog::logItem(const SyncFileItem &item)
@@ -75,50 +80,39 @@ void SyncRunFileLog::logItem(const SyncFileItem &item)
         || item._instruction == CSYNC_INSTRUCTION_IGNORE) {
         return;
     }
-    QString ts = QString::fromLatin1(item._responseTimeStamp);
-    if (ts.length() > 6) {
-        QRegExp rx("(\\d\\d:\\d\\d:\\d\\d)");
-        if (ts.contains(rx)) {
-            ts = rx.cap(0);
-        }
-    }
-
     const QChar L = QLatin1Char('|');
-    _out << ts << L;
-    _out << L;
-    if (item._instruction != CSYNC_INSTRUCTION_RENAME) {
-        _out << item.destination() << L;
-    } else {
-        _out << item._file << QLatin1String(" -> ") << item._renameTarget << L;
-    }
-    _out << item._instruction << L;
-    _out << item._direction << L;
-    _out << QString::number(item._modtime) << L;
-    _out << item._etag << L;
-    _out << QString::number(item._size) << L;
-    _out << item._fileId << L;
-    _out << item._status << L;
-    _out << item._errorString << L;
-    _out << QString::number(item._httpErrorCode) << L;
-    _out << QString::number(item._previousSize) << L;
-    _out << QString::number(item._previousModtime) << L;
-    _out << item._requestId << L;
-
-    _out << endl;
+    *_out << dateTimeStr(QDateTime::fromString(QString::fromUtf8(item._responseTimeStamp), Qt::RFC2822Date)) << L
+          << ((item._instruction != CSYNC_INSTRUCTION_RENAME) ? item.destination() : item._file + QStringLiteral(" -> ") + item._renameTarget) << L
+          << item._instruction << L
+          << item._direction << L
+          << L
+          << item._modtime << L
+          << item._etag << L
+          << item._size << L
+          << item._fileId << L
+          << item._status << L
+          << item._errorString << L
+          << item._httpErrorCode << L
+          << item._previousSize << L
+          << item._previousModtime << L
+          << item._requestId << L
+          << endl;
 }
 
 void SyncRunFileLog::logLap(const QString &name)
 {
-    _out << "#=#=#=#=# " << name << " " << dateTimeStr(QDateTime::currentDateTimeUtc())
-         << " (last step: " << _lapDuration.restart() << " msec"
-         << ", total: " << _totalDuration.elapsed() << " msec)" << endl;
+    *_out << "#=#=#=#=#" << name << dateTimeStr()
+          << "(last step:" << _lapDuration.restart() << "msec"
+          << ", total:" << _totalDuration.elapsed() << "msec)"
+          << endl;
 }
 
 void SyncRunFileLog::finish()
 {
-    _out << "#=#=#=# Syncrun finished " << dateTimeStr(QDateTime::currentDateTimeUtc())
-         << " (last step: " << _lapDuration.elapsed() << " msec"
-         << ", total: " << _totalDuration.elapsed() << " msec)" << endl;
+    *_out << "#=#=#=# Syncrun finished" << dateTimeStr()
+          << "(last step:" << _lapDuration.elapsed() << "msec"
+          << ", total:" << _totalDuration.elapsed() << "msec)"
+          << endl;
     _file->close();
 }
 }

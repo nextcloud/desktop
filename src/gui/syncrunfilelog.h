@@ -40,12 +40,10 @@ public:
 
 protected:
 private:
-    QString dateTimeStr(const QDateTime &dt);
-
     QScopedPointer<QFile> _file;
-    QTextStream _out;
     QElapsedTimer _totalDuration;
     QElapsedTimer _lapDuration;
+    QScopedPointer<QDebug> _out;
 };
 }
 

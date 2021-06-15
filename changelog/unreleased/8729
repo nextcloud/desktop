@@ -1,0 +1,6 @@
+Bugfix: Properly print the sync events in .owncloudsync.log
+
+We fixed a bug in the .owncloudsync.log logger which caused enum values
+to be printed as a number rather than a string.
+
+https://github.com/owncloud/client/issues/8729
