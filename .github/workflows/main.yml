@@ -1,6 +1,6 @@
 name: ownCloud CI
 
-on: [push]
+on: [push, pull_request]
 
 defaults:
   run:
