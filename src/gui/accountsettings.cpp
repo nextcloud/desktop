@@ -82,24 +82,24 @@ static const char progressBarStyleC[] =
 
 void showEnableE2eeWithVirtualFilesWarningDialog(std::function<void(void)> onAccept)
 {
-    const auto e2eeWithVirtualFilesWarningMsgBox = new QMessageBox;
-    e2eeWithVirtualFilesWarningMsgBox->setAttribute(Qt::WA_DeleteOnClose);
-    e2eeWithVirtualFilesWarningMsgBox->setText(AccountSettings::tr("End-to-End Encryption with Virtual Files"));
-    e2eeWithVirtualFilesWarningMsgBox->setInformativeText(AccountSettings::tr("You seem to have the Virtual Files feature enabled on this folder. At "
-                                                                              " the moment, it is not possible to implicitly download virtual files that are "
-                                                                              "End-to-End encrypted. To get the best experience with Virtual Files and"
-                                                                              " End-to-End Encryption, make sure the encrypted folder is marked with"
-                                                                              " \"Make always available locally\"."));
-    e2eeWithVirtualFilesWarningMsgBox->setIcon(QMessageBox::Warning);
-    const auto dontEncryptButton = e2eeWithVirtualFilesWarningMsgBox->addButton(QMessageBox::StandardButton::Cancel);
+    const auto messageBox = new QMessageBox;
+    messageBox->setAttribute(Qt::WA_DeleteOnClose);
+    messageBox->setText(AccountSettings::tr("End-to-End Encryption with Virtual Files"));
+    messageBox->setInformativeText(AccountSettings::tr("You seem to have the Virtual Files feature enabled on this folder. At "
+                                                       " the moment, it is not possible to implicitly download virtual files that are "
+                                                       "End-to-End encrypted. To get the best experience with Virtual Files and"
+                                                       " End-to-End Encryption, make sure the encrypted folder is marked with"
+                                                       " \"Make always available locally\"."));
+    messageBox->setIcon(QMessageBox::Warning);
+    const auto dontEncryptButton = messageBox->addButton(QMessageBox::StandardButton::Cancel);
     Q_ASSERT(dontEncryptButton);
     dontEncryptButton->setText(AccountSettings::tr("Don't encrypt folder"));
-    const auto encryptButton = e2eeWithVirtualFilesWarningMsgBox->addButton(QMessageBox::StandardButton::Ok);
+    const auto encryptButton = messageBox->addButton(QMessageBox::StandardButton::Ok);
     Q_ASSERT(encryptButton);
     encryptButton->setText(AccountSettings::tr("Encrypt folder"));
-    QObject::connect(e2eeWithVirtualFilesWarningMsgBox, &QMessageBox::accepted, onAccept);
+    QObject::connect(messageBox, &QMessageBox::accepted, onAccept);
 
-    e2eeWithVirtualFilesWarningMsgBox->open();
+    messageBox->open();
 }
 
 /**
@@ -270,8 +270,8 @@ void AccountSettings::slotEncryptFolderFinished(int status)
     }
 
     const auto folder = job->property(propertyFolder).value<Folder *>();
-    const auto path = job->property(propertyPath).value<QString>();
     Q_ASSERT(folder);
+    const auto path = job->property(propertyPath).value<QString>();
     const auto index = _model->indexForPath(folder, path);
     Q_ASSERT(index.isValid());
     _model->resetAndFetch(index.parent());
@@ -353,6 +353,7 @@ void AccountSettings::slotMarkSubfolderEncrypted(FolderStatusModel::SubFolderInf
         // Does the file still exist?
         SyncJournalFileRecord record;
         if (!folder->journalDb()->getFileRecord(choppedPath, &record) || !record.isValid()) {
+            qCWarning(lcAccountSettings) << "Could not encrypt folder because" << path << "does not exist anymore";
             return;
         }
 
