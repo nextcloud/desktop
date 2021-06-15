@@ -70,6 +70,7 @@ add_definitions(
     -DQT_USE_QSTRINGBUILDER
     -DQT_MESSAGELOGCONTEXT #enable function name and line number in debug output
     -DQT_DEPRECATED_WARNINGS
+    -DQT_NO_FOREACH
 )
 
 # if we cannot get it from git, directly try .tag (packages)
