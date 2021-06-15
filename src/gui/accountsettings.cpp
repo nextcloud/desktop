@@ -248,8 +248,8 @@ void AccountSettings::slotEncryptFolderFinished(int status)
     }
 
     const auto folder = job->property(propertyFolder).value<Folder *>();
-    const auto path = job->property(propertyPath).value<QString>();
     Q_ASSERT(folder);
+    const auto path = job->property(propertyPath).value<QString>();
     const auto index = _model->indexForPath(folder, path);
     Q_ASSERT(index.isValid());
     _model->resetAndFetch(index.parent());
