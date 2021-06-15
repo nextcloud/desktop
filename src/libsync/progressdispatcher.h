@@ -291,6 +291,15 @@ signals:
     void syncError(const QString &folder, const QString &message, ErrorCategory category);
 
     /**
+     * @brief Emitted when an error needs to be added into GUI
+     * @param[out] folder The folder which is being processed
+     * @param[out] status of the error
+     * @param[out] full error message
+     * @param[out] subject (optional)
+     */
+    void addErrorToGui(const QString &folder, SyncFileItem::Status status, const QString &errorMessage, const QString &subject);
+
+    /**
      * @brief Emitted for a folder when a sync is done, listing all pending conflicts
      */
     void folderConflicts(const QString &folder, const QStringList &conflictPaths);

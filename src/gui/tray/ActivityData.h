@@ -71,6 +71,7 @@ public:
     QString _file;
     QUrl _link;
     QDateTime _dateTime;
+    qint64 _expireAtMsecs = -1;
     QString _accName;
     QString _icon;
     QString _iconData;
