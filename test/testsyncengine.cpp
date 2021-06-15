@@ -600,7 +600,7 @@ private slots:
         // We can't depend on currentLocalState for hidden files since
         // it should rightfully skip things like download temporaries
         auto localFileExists = [&](QString name) {
-            return QFileInfo(fakeFolder.localPath() + name).exists();
+            return QFileInfo::exists(fakeFolder.localPath() + name);
         };
 
         fakeFolder.syncEngine().setIgnoreHiddenFiles(true);

@@ -267,7 +267,7 @@ void SyncEngine::conflictRecordMaintenance()
     auto conflictRecordPaths = _journal->conflictRecordPaths();
     for (const auto &path : conflictRecordPaths) {
         auto fsPath = _propagator->fullLocalPath(QString::fromUtf8(path));
-        if (!QFileInfo(fsPath).exists()) {
+        if (!QFileInfo::exists(fsPath)) {
             _journal->deleteConflictRecord(path);
         }
     }
