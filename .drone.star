@@ -222,7 +222,7 @@ def changelog(ctx, trigger = {}, depends_on = []):
             },
             {
                 "name": "diff",
-                "image": "owncloud/alpine:latest",
+                "image": "owncloudci/alpine:latest",
                 "pull": "always",
                 "commands": [
                     "git diff",
