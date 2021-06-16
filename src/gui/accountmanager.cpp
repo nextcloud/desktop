@@ -397,9 +397,8 @@ AccountPtr AccountManager::createAccount()
 
 void AccountManager::shutdown()
 {
-    const auto accountsCopy = _accounts;
-    _accounts.clear();
-    for (const auto &acc : accountsCopy) {
+    const auto accounts = std::move(_accounts);
+    for (const auto &acc : accounts) {
         emit accountRemoved(acc.data());
     }
 }
