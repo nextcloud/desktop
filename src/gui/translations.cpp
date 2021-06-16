@@ -55,7 +55,7 @@ namespace Translations {
 #else
         const auto translationDir = QStringLiteral("i18n");
 #endif
-        return QStandardPaths::locate(QStandardPaths::DataLocation, translationDir, QStandardPaths::LocateDirectory);
+        return QStandardPaths::locate(QStandardPaths::GenericDataLocation, translationDir, QStandardPaths::LocateDirectory);
     }
 
     QSet<QString> listAvailableTranslations()
