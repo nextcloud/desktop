@@ -21,9 +21,6 @@ Window {
 
     readonly property int maxMenuHeight: Style.trayWindowHeight - Style.trayWindowHeaderHeight - 2 * Style.trayWindowBorderWidth
 
-    Accessible.role: Accessible.Application
-    Accessible.name: qsTr("Nextcloud desktop main dialog")
-
     Component.onCompleted: Systray.forceWindowInit(trayWindow)
 
     // Close tray window when focus is lost (e.g. click somewhere else on the screen)
@@ -153,9 +150,6 @@ Window {
                                 border.color: Style.menuBorder
                                 radius: Style.currentAccountButtonRadius
                             }
-
-                            Accessible.role: PopupMenu
-                            Accessible.name: qsTr("Account switcher and settings menu")
 
                             onClosed: {
                                 // HACK: reload account Instantiator immediately by restting it - could be done better I guess
@@ -359,13 +353,12 @@ Window {
 
                         Column {
                             id: accountLabels
-                            spacing: Style.userStatusSpacing
-                            Layout.alignment: Qt.AlignLeft
+                            spacing: 0
+                            Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
                             Layout.leftMargin: Style.userStatusSpacing
-                            anchors.top: currentAccountAvatar.top
-                            anchors.topMargin: Style.userStatusSpacing
                             Label {
                                 id: currentAccountUser
+                                Layout.alignment: Qt.AlignLeft | Qt.AlignBottom
                                 width: Style.currentAccountLabelWidth
                                 text: UserModel.currentUser.name
                                 elide: Text.ElideRight
@@ -373,11 +366,11 @@ Window {
                                 font.pixelSize: Style.topLinePixelSize
                                 font.bold: true
                             }
-                            Row {
+                            RowLayout {
                                 id: currentUserStatus
                                 visible: UserModel.currentUser.isConnected &&
                                          UserModel.currentUser.serverHasUserStatus
-                                anchors.top: currentAccountUser.bottom
+                                spacing: Style.accountLabelsSpacing
                                 Label {
                                     id: emoji
                                     visible: UserModel.currentUser.statusEmoji !== ""
@@ -386,9 +379,7 @@ Window {
                                 }
                                 Label {
                                     id: message
-                                    anchors.bottom: emoji.bottom
-                                    anchors.left: emoji.right
-                                    anchors.leftMargin: emoji.width + Style.userStatusSpacing
+                                    Layout.alignment: Qt.AlignLeft | Qt.AlignBottom
                                     visible: UserModel.currentUser.statusMessage !== ""
                                     width: Style.currentAccountLabelWidth
                                     text: UserModel.currentUser.statusMessage !== ""
@@ -413,6 +404,8 @@ Window {
                                 source: "qrc:///client/theme/white/caret-down.svg"
                                 sourceSize.width: Style.accountDropDownCaretSize
                                 sourceSize.height: Style.accountDropDownCaretSize
+                                Accessible.role: Accessible.PopupMenu
+                                Accessible.name: qsTr("Account switcher and settings menu")
                             }
                         }
                     }
@@ -423,6 +416,7 @@ Window {
                     spacing: 0
                     Layout.preferredWidth:  Style.trayWindowHeaderHeight
                     Layout.preferredHeight: Style.trayWindowHeaderHeight
+                    Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                     
                     HeaderButton {
                         id: openLocalFolderButton
@@ -440,24 +434,27 @@ Window {
                             radius: width*0.5
                             z: 1
                         }
-                   }
-
-                   Image {
-                        id: folderStateIndicator
-                        visible: UserModel.currentUser.hasLocalFolder
-                        source: UserModel.currentUser.isConnected
-                                ? Style.stateOnlineImageSource
-                                : Style.stateOfflineImageSource
-                        cache: false
-                        anchors.top: openLocalFolderButton.verticalCenter
-                        anchors.left: openLocalFolderButton.horizontalCenter
-                        
-                        sourceSize.width: Style.folderStateIndicatorSize
-                        sourceSize.height: Style.folderStateIndicatorSize
     
-                        Accessible.role: Accessible.Indicator
-                        Accessible.name: UserModel.currentUser.isConnected ? qsTr("Connected") : qsTr("Disconnected")
+                        Image {
+                            id: folderStateIndicator
+                            visible: UserModel.currentUser.hasLocalFolder
+                            source: UserModel.currentUser.isConnected
+                                    ? Style.stateOnlineImageSource
+                                    : Style.stateOfflineImageSource
+                            cache: false
+                            
+                            anchors.top: openLocalFolderButton.verticalCenter
+                            anchors.left: openLocalFolderButton.horizontalCenter  
+                            sourceSize.width: Style.folderStateIndicatorSize
+                            sourceSize.height: Style.folderStateIndicatorSize
+        
+                            Accessible.role: Accessible.Indicator
+                            Accessible.name: UserModel.currentUser.isConnected ? qsTr("Connected") : qsTr("Disconnected")
+                            z: 2
+                        }
                     }
+                    
+ 
 
                     Accessible.role: Accessible.Button
                     Accessible.name: qsTr("Open local folder of current account")
@@ -506,9 +503,6 @@ Window {
                             radius: 2
                         }
 
-                        Accessible.role: Accessible.PopupMenu
-                        Accessible.name: qsTr("Apps menu")
-
                         Instantiator {
                             id: appsMenuInstantiator
                             model: UserAppsModel
@@ -532,6 +526,9 @@ Window {
                                         anchors.margins: 1
                                         color: appEntry.hovered ? Style.lightHover : "transparent"
                                     }
+                                    
+                                    Accessible.role: Accessible.PopupMenu
+                                    Accessible.name: qsTr("Apps menu")
                                 }
 
                                 Accessible.role: Accessible.MenuItem
