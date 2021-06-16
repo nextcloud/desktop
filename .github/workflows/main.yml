@@ -1,6 +1,13 @@
 name: ownCloud CI
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - master
+      - v*
+  pull_request:
+    branches:
+      - '*'
 
 defaults:
   run:
