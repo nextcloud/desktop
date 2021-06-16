@@ -69,10 +69,6 @@ public:
      * Return the account state pointer for an account identified by its display name
      */
     AccountStatePtr account(const QUuid uuid);
-    AccountStatePtr account(const AccountPtr &acc)
-    {
-        return account(acc->uuid());
-    }
 
     /**
      * Delete the AccountState
