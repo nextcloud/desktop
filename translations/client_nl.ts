@@ -3125,6 +3125,16 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
         <translation>Server meldde geen %1</translation>
     </message>
     <message>
+        <location filename="../src/libsync/discovery.cpp" line="924"/>
+        <source>Conflict when uploading a folder. It&apos;s going to get cleared!</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="930"/>
+        <source>Conflict when uploading some files to a folder. Those, conflicted, are going to get cleared!</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/libsync/discovery.cpp" line="1225"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Genegeerd vanwege de &quot;wat synchroniseren&quot; negeerlijst</translation>
