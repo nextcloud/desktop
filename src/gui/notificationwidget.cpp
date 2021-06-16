@@ -112,7 +112,7 @@ void NotificationWidget::slotNotificationRequestFinished(int statusCode)
     // the ocs API returns stat code 100 or 200 inside the xml if it succeeded.
     if (statusCode != OCS_SUCCESS_STATUS_CODE && statusCode != OCS_SUCCESS_STATUS_CODE_V2) {
         qCWarning(lcNotifications) << "Notification Request to Server failed, leave button visible.";
-        for (auto button : _buttons) {
+        for (auto *button : qAsConst(_buttons)) {
             button->setEnabled(true);
         }
         //: The second parameter is a time, such as 'failed at 09:58pm'

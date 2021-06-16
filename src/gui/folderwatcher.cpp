@@ -166,7 +166,7 @@ void FolderWatcher::changeDetected(const QStringList &paths)
     }
 
     qCInfo(lcFolderWatcher) << "Detected changes in paths:" << changedPaths;
-    foreach (const QString &path, changedPaths) {
+    for (const auto &path : qAsConst(changedPaths)) {
         emit pathChanged(path);
     }
 }

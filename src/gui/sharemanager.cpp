@@ -30,7 +30,7 @@ namespace OCC {
  */
 static void updateFolder(const AccountPtr &account, const QString &path)
 {
-    foreach (Folder *f, FolderMan::instance()->map()) {
+    for (auto *f : FolderMan::instance()->map()) {
         if (f->accountState()->account() != account)
             continue;
         auto folderPath = f->remotePath();
@@ -302,7 +302,8 @@ void ShareManager::createShare(const QString &path,
 
             // Find existing share permissions (if this was shared with us)
             Share::Permissions existingPermissions = SharePermissionDefault;
-            foreach (const QJsonValue &element, reply.object()["ocs"].toObject()["data"].toArray()) {
+            const auto &array = reply.object()[QLatin1String("ocs")].toObject()[QLatin1String("data")].toArray();
+            for (const auto &element : array) {
                 auto map = element.toObject();
                 if (map["file_target"] == path)
                     existingPermissions = Share::Permissions(map["permissions"].toInt());
@@ -348,13 +349,13 @@ void ShareManager::fetchShares(const QString &path)
 
 void ShareManager::slotSharesFetched(const QJsonDocument &reply)
 {
-    auto tmpShares = reply.object().value("ocs").toObject().value("data").toArray();
+    const auto &tmpShares = reply.object().value(QLatin1String("ocs")).toObject().value(QLatin1String("data")).toArray();
     const QString versionString = _account->serverVersion();
     qCDebug(lcSharing) << versionString << "Fetched" << tmpShares.count() << "shares";
 
     QList<QSharedPointer<Share>> shares;
 
-    foreach (const auto &share, tmpShares) {
+    for (const auto &share : tmpShares) {
         auto data = share.toObject();
 
         auto shareType = data.value("share_type").toInt();

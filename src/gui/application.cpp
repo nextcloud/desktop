@@ -122,7 +122,7 @@ bool Application::configVersionMigration()
         settings->endGroup();
 
         // Wipe confusing keys from the future, ignore the others
-        for (const auto &badKey : deleteKeys)
+        for (const auto &badKey : qAsConst(deleteKeys))
             settings->remove(badKey);
     }
 
@@ -302,7 +302,7 @@ Application::Application(int &argc, char **argv)
         this, &Application::slotAccountStateAdded);
     connect(AccountManager::instance(), &AccountManager::accountRemoved,
         this, &Application::slotAccountStateRemoved);
-    foreach (auto ai, AccountManager::instance()->accounts()) {
+    for (const auto &ai : AccountManager::instance()->accounts()) {
         slotAccountStateAdded(ai.data());
     }
 
@@ -403,8 +403,8 @@ void Application::slotSystemOnlineConfigurationChanged(QNetworkConfiguration cnf
 
 void Application::slotCheckConnection()
 {
-    auto list = AccountManager::instance()->accounts();
-    foreach (const auto &accountState, list) {
+    const auto &list = AccountManager::instance()->accounts();
+    for (const auto &accountState : list) {
         AccountState::State state = accountState->state();
 
         // Don't check if we're manually signed out or

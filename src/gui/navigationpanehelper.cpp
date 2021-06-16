@@ -42,7 +42,7 @@ void NavigationPaneHelper::setShowInExplorerNavigationPane(bool show)
     _showInExplorerNavigationPane = show;
     // Re-generate a new CLSID when enabling, possibly throwing away the old one.
     // updateCloudStorageRegistry will take care of removing any unknown CLSID our application owns from the registry.
-    foreach (Folder *folder, _folderMan->map())
+    for (auto *folder : _folderMan->map())
         folder->setNavigationPaneClsid(show ? QUuid::createUuid() : QUuid());
 
     scheduleUpdateCloudStorageRegistry();
@@ -75,7 +75,7 @@ void NavigationPaneHelper::updateCloudStorageRegistry()
     // Then re-save every folder that has a valid navigationPaneClsid to the registry.
     // We currently don't distinguish between new and existing CLSIDs, if it's there we just
     // save over it. We at least need to update the tile in case we are suddently using multiple accounts.
-    foreach (Folder *folder, _folderMan->map()) {
+    for (auto *folder : _folderMan->map()) {
         if (folder->vfs().mode() == Vfs::WindowsCfApi)
         {
             continue;
@@ -141,7 +141,7 @@ void NavigationPaneHelper::updateCloudStorageRegistry()
     }
 
     // Then remove anything that isn't in our folder list anymore.
-    foreach (auto &clsid, entriesToRemove) {
+    for (const auto &clsid : qAsConst(entriesToRemove)) {
         QString clsidStr = clsid.toString();
         QString clsidPath = QString() % "Software\\Classes\\CLSID\\" % clsidStr;
         QString clsidPathWow64 = QString() % "Software\\Classes\\Wow6432Node\\CLSID\\" % clsidStr;

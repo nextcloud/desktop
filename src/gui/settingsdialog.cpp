@@ -227,7 +227,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
         this, &SettingsDialog::accountAdded);
     connect(AccountManager::instance(), &AccountManager::accountRemoved,
         this, &SettingsDialog::accountRemoved);
-    foreach (auto ai, AccountManager::instance()->accounts()) {
+    for (const auto &ai : AccountManager::instance()->accounts()) {
         accountAdded(ai.data());
     }
 
@@ -441,7 +441,8 @@ void SettingsDialog::customizeStyle()
     QString background(palette().base().color().name());
     _ui->toolBar->setStyleSheet(TOOLBAR_CSS().arg(background, dark, highlightColor, highlightTextColor));
 
-    for (auto a : findChildren<ToolButtonAction *>()) {
+    const auto &toolButtonActions = findChildren<ToolButtonAction *>();
+    for (auto *a : toolButtonActions) {
         a->updateIcon();
     }
 }

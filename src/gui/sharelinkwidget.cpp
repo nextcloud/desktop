@@ -230,7 +230,7 @@ void ShareLinkWidget::slotSharesFetched(const QList<QSharedPointer<Share>> &shar
     auto deleteIcon = QIcon::fromTheme(QStringLiteral("user-trash"),
         Utility::getCoreIcon(QStringLiteral("delete")));
 
-    foreach (auto share, shares) {
+    for (const auto &share : shares) {
         if (share->getShareType() != Share::TypeLink) {
             continue;
         }

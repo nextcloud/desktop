@@ -211,7 +211,7 @@ void SyncFileStatusTracker::slotAboutToPropagate(SyncFileItemVector &items)
     ProblemsMap oldProblems;
     std::swap(_syncProblems, oldProblems);
 
-    foreach (const SyncFileItemPtr &item, items) {
+    for (const auto &item : qAsConst(items)) {
         qCDebug(lcStatusTracker) << "Investigating" << item->destination() << item->_status << item->_instruction;
         _dirtyPaths.remove(item->destination());
 

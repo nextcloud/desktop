@@ -872,7 +872,7 @@ bool SyncJournalDb::setFileRecord(const SyncJournalFileRecord &_record)
     if (!_etagStorageFilter.isEmpty()) {
         // If we are a directory that should not be read from db next time, don't write the etag
         QByteArray prefix = record._path + "/";
-        foreach (const QByteArray &it, _etagStorageFilter) {
+        for (const auto &it : qAsConst(_etagStorageFilter)) {
             if (it.startsWith(prefix)) {
                 qCInfo(lcDb) << "Filtered writing the etag of" << prefix << "because it is a prefix of" << it;
                 record._etag = "_invalid_";
@@ -1314,7 +1314,7 @@ static bool deleteBatch(SqlQuery &query, const QStringList &entries, const QStri
 
     qCDebug(lcDb) << "Removing stale" << name << "entries:" << entries.join(QStringLiteral(", "));
     // FIXME: Was ported from execBatch, check if correct!
-    foreach (const QString &entry, entries) {
+    for (const auto &entry : entries) {
         query.reset_and_clear_bindings();
         query.bindValue(1, entry);
         if (!query.exec()) {
@@ -1769,7 +1769,7 @@ void SyncJournalDb::setSelectiveSyncList(SyncJournalDb::SelectiveSyncListType ty
     }
 
     SqlQuery insQuery("INSERT INTO selectivesync VALUES (?1, ?2)", _db);
-    foreach (const auto &path, list) {
+    for (const auto &path : list) {
         insQuery.reset_and_clear_bindings();
         insQuery.bindValue(1, path);
         insQuery.bindValue(2, int(type));

@@ -313,7 +313,7 @@ private slots:
                 QTimer::singleShot(0, this, [this, request] {
                     auto port = request.url().port();
                     state = CustomState;
-                    QVector<QByteArray> payloads = {
+                    const QVector<QByteArray> payloads = {
                         "GET FOFOFO HTTP 1/1\n\n",
                         "GET /?code=invalie HTTP 1/1\n\n",
                         "GET /?code=xxxxx&bar=fff",
@@ -322,7 +322,7 @@ private slots:
                         QByteArray("GET /?code=éléphant\xa5 HTTP\n"),
                         QByteArray("\n\n\n\n"),
                     };
-                    foreach (const auto &x, payloads) {
+                    for (const auto &x : payloads) {
                         auto socket = new QTcpSocket(this);
                         socket->connectToHost("localhost", port);
                         QVERIFY(socket->waitForConnected());

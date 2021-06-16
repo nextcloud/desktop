@@ -504,7 +504,7 @@ int Folder::slotDiscardDownloadProgress()
     QSet<QString> keep_nothing;
     const QVector<SyncJournalDb::DownloadInfo> deleted_infos =
         _journal.getAndDeleteStaleDownloadInfos(keep_nothing);
-    foreach (const SyncJournalDb::DownloadInfo &deleted_info, deleted_infos) {
+    for (const auto &deleted_info : deleted_infos) {
         const QString tmppath = folderpath.filePath(deleted_info._tmpfile);
         qCInfo(lcFolder) << "Deleting temporary file: " << tmppath;
         FileSystem::remove(tmppath);
@@ -673,7 +673,7 @@ void Folder::saveToSettings() const
 
     // True if the folder path appears in only one account
     bool oneAccountOnly = true;
-    foreach (Folder *other, FolderMan::instance()->map()) {
+    for (auto *other : FolderMan::instance()->map()) {
         if (other != this && other->cleanPath() == this->cleanPath()) {
             oneAccountOnly = false;
             break;

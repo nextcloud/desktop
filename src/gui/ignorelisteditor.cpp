@@ -96,7 +96,7 @@ void IgnoreListEditor::slotUpdateLocalIgnoreList()
             if (patternItem->data(isGlobalRole).toBool())
                 continue;
 
-            QStringList skippedLines = patternItem->data(skippedLinesRole).toStringList();
+            const auto &skippedLines = patternItem->data(skippedLinesRole).toStringList();
             for (const auto &line : skippedLines)
                 ignores.write(line.toUtf8() + '\n');
 
@@ -119,7 +119,7 @@ void IgnoreListEditor::slotUpdateLocalIgnoreList()
     // We need to force a remote discovery after a change of the ignore list.
     // Otherwise we would not download the files/directories that are no longer
     // ignored (because the remote etag did not change)   (issue #3172)
-    foreach (Folder *folder, folderMan->map()) {
+    for (auto *folder : folderMan->map()) {
         folder->journalDb()->forceRemoteDiscoveryNextSync();
         folder->slotNextSyncFullLocalDiscovery();
         folderMan->scheduleFolder(folder);

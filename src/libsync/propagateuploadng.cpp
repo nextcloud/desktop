@@ -166,8 +166,11 @@ void PropagateUploadFileNG::slotPropfindFinished()
     _currentChunkOffset = 0;
     _sent = 0;
 
-    for (auto chunkOffset : _serverChunks.keys()) {
-        auto chunkSize = _serverChunks[chunkOffset].size;
+    // here is a copy because we might need to remove item(s) during iteration
+    const auto serverChunks = _serverChunks;
+    for (auto it = serverChunks.cbegin(); it != serverChunks.cend(); ++it) {
+        const auto &chunkOffset = it.key();
+        const auto &chunkSize = it.value().size;
         if (markRangeAsDone(chunkOffset, chunkSize)) {
             qCDebug(lcPropagateUploadNG) << "Reusing existing data:" << chunkOffset << chunkSize;
             _sent += chunkSize;
@@ -255,7 +258,7 @@ void PropagateUploadFileNG::slotDeleteJobFinished()
 
     // If no more Delete jobs are running, we can continue
     bool runningDeleteJobs = false;
-    for (auto otherJob : _jobs) {
+    for (auto *otherJob : qAsConst(_jobs)) {
         if (qobject_cast<DeleteJob *>(otherJob))
             runningDeleteJobs = true;
     }

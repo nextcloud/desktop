@@ -72,8 +72,7 @@ void FolderStatusModel::setAccountState(const AccountState *accountState)
     connect(FolderMan::instance(), &FolderMan::scheduleQueueChanged,
         this, &FolderStatusModel::slotFolderScheduleQueueChanged, Qt::UniqueConnection);
 
-    auto folders = FolderMan::instance()->map();
-    foreach (auto f, folders) {
+    for (const auto &f : FolderMan::instance()->map()) {
         if (!accountState)
             break;
         if (f->accountState() != accountState)
@@ -299,7 +298,7 @@ bool FolderStatusModel::setData(const QModelIndex &index, const QVariant &value,
                 auto parentInfo = infoForIndex(parent);
                 if (parentInfo && parentInfo->_checked != Qt::Checked) {
                     bool hasUnchecked = false;
-                    foreach (const auto &sub, parentInfo->_subs) {
+                    for (const auto &sub : qAsConst(parentInfo->_subs)) {
                         if (sub._checked != Qt::Checked) {
                             hasUnchecked = true;
                             break;
@@ -659,7 +658,7 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
     }
 
     std::set<QString> selectiveSyncUndecidedSet; // not QSet because it's not sorted
-    foreach (const QString &str, selectiveSyncUndecidedList) {
+    for (const auto &str : qAsConst(selectiveSyncUndecidedList)) {
         if (str.startsWith(parentInfo->_path) || parentInfo->_path == QLatin1String("/")) {
             selectiveSyncUndecidedSet.insert(str);
         }
@@ -675,7 +674,7 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
 
     QVector<SubFolderInfo> newSubs;
     newSubs.reserve(sortedSubfolders.size());
-    foreach (const QString &path, sortedSubfolders) {
+    for (const auto &path : qAsConst(sortedSubfolders)) {
         auto relativePath = path.mid(pathToRemove.size());
         if (parentInfo->_folder->isFileExcludedRelative(relativePath)) {
             continue;
@@ -698,7 +697,7 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
         } else if (parentInfo->_checked == Qt::Checked) {
             newInfo._checked = Qt::Checked;
         } else {
-            foreach (const QString &str, selectiveSyncBlackList) {
+            for (const auto &str : qAsConst(selectiveSyncBlackList)) {
                 if (str == relativePath || str == QLatin1String("/")) {
                     newInfo._checked = Qt::Unchecked;
                     break;
@@ -793,7 +792,7 @@ QStringList FolderStatusModel::createBlackList(const FolderStatusModel::SubFolde
     } else {
         // We did not load from the server so we re-use the one from the old black list
         const QString path = root._path;
-        foreach (const QString &it, oldBlackList) {
+        for (const auto &it : oldBlackList) {
             if (it.startsWith(path))
                 result += it;
         }
@@ -848,14 +847,14 @@ void FolderStatusModel::slotApplySelectiveSync()
         folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, QStringList());
 
         // do the sync if there were changes
-        auto changes = (oldBlackListSet - blackListSet) + (blackListSet - oldBlackListSet);
+        const auto changes = (oldBlackListSet - blackListSet) + (blackListSet - oldBlackListSet);
         if (!changes.isEmpty()) {
             if (folder->isBusy()) {
                 folder->slotTerminateSync();
             }
             //The part that changed should not be read from the DB on next sync because there might be new folders
             // (the ones that are no longer in the blacklist)
-            foreach (const auto &it, changes) {
+            for (const auto &it : changes) {
                 folder->journalDb()->schedulePathForRemoteDiscovery(it);
                 folder->schedulePathForLocalDiscovery(it);
             }
@@ -931,7 +930,7 @@ void FolderStatusModel::slotSetProgress(const ProgressInfo &progress)
     quint64 estimatedUpBw = 0;
     quint64 estimatedDownBw = 0;
     QString allFilenames;
-    foreach (const ProgressInfo::ProgressItem &citm, progress._currentItems) {
+    for (const auto &citm : progress._currentItems) {
         if (curItemProgress == -1 || (ProgressInfo::isSizeDependent(citm._item)
                                          && biggerItemSize < citm._item._size)) {
             curItemProgress = citm._progress.completed();
@@ -1108,7 +1107,7 @@ void FolderStatusModel::slotFolderSyncStateChange(Folder *f)
 void FolderStatusModel::slotFolderScheduleQueueChanged()
 {
     // Update messages on waiting folders.
-    foreach (Folder *f, FolderMan::instance()->map()) {
+    for (auto *f : FolderMan::instance()->map()) {
         slotFolderSyncStateChange(f);
     }
 }
@@ -1128,7 +1127,7 @@ void FolderStatusModel::slotSyncAllPendingBigFolders()
         auto folder = _folders.at(i)._folder;
 
         bool ok;
-        auto undecidedList = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, &ok);
+        const auto &undecidedList = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, &ok);
         if (!ok) {
             qCWarning(lcFolderStatus) << "Could not read selective sync list from db.";
             return;
@@ -1145,7 +1144,7 @@ void FolderStatusModel::slotSyncAllPendingBigFolders()
             qCWarning(lcFolderStatus) << "Could not read selective sync list from db.";
             return;
         }
-        foreach (const auto &undecidedFolder, undecidedList) {
+        for (const auto &undecidedFolder : undecidedList) {
             blackList.removeAll(undecidedFolder);
         }
         folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, blackList);
@@ -1168,7 +1167,7 @@ void FolderStatusModel::slotSyncAllPendingBigFolders()
         }
         // The part that changed should not be read from the DB on next sync because there might be new folders
         // (the ones that are no longer in the blacklist)
-        foreach (const auto &it, undecidedList) {
+        for (const auto &it : undecidedList) {
             folder->journalDb()->schedulePathForRemoteDiscovery(it);
             folder->schedulePathForLocalDiscovery(it);
         }

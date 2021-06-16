@@ -190,7 +190,9 @@ QString SqlDatabase::error() const
 void SqlDatabase::close()
 {
     if (_db) {
-        foreach (auto q, _queries) {
+        // we need a copy because query is removed from a set in finish()
+        const auto queries = _queries;
+        for (auto *q : queries) {
             q->finish();
         }
         SQLITE_DO(sqlite3_close(_db));

@@ -84,13 +84,14 @@ bool AccountManager::restore()
     }
 
     // If there are no accounts, check the old format.
-    if (settings->childGroups().isEmpty()
+    const auto &childGroups = settings->childGroups();
+    if (childGroups.isEmpty()
         && !settings->contains(QLatin1String(versionC))) {
         restoreFromLegacySettings();
         return true;
     }
 
-    foreach (const auto &accountId, settings->childGroups()) {
+    for (const auto &accountId : childGroups) {
         settings->beginGroup(accountId);
         if (!skipSettingsKeys.contains(settings->group())) {
             if (auto acc = loadAccountHelper(*settings)) {
@@ -118,7 +119,8 @@ void AccountManager::backwardMigrationSettingsKeys(QStringList *deleteKeys, QStr
     auto settings = ConfigFile::settingsWithGroup(QLatin1String(accountsC));
     const int accountsVersion = settings->value(QLatin1String(versionC)).toInt();
     if (accountsVersion <= maxAccountsVersion) {
-        foreach (const auto &accountId, settings->childGroups()) {
+        const auto &childGroups = settings->childGroups();
+        for (const auto &accountId : childGroups) {
             settings->beginGroup(accountId);
             const int accountVersion = settings->value(QLatin1String(versionC), 1).toInt();
             if (accountVersion > maxAccountVersion) {
@@ -192,7 +194,7 @@ void AccountManager::save(bool saveCredentials)
 {
     auto settings = ConfigFile::settingsWithGroup(QLatin1String(accountsC));
     settings->setValue(QLatin1String(versionC), maxAccountsVersion);
-    foreach (const auto &acc, _accounts) {
+    for (const auto &acc : qAsConst(_accounts)) {
         settings->beginGroup(acc->account()->id());
         saveAccountHelper(acc->account().data(), *settings, saveCredentials);
         acc->writeToSettings(*settings);
@@ -339,7 +341,7 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
 
 AccountStatePtr AccountManager::account(const QString &name)
 {
-    for (const auto &acc : _accounts) {
+    for (const auto &acc : qAsConst(_accounts)) {
         if (acc->account()->displayName() == name) {
             return acc;
         }
@@ -395,16 +397,16 @@ AccountPtr AccountManager::createAccount()
 
 void AccountManager::shutdown()
 {
-    auto accountsCopy = _accounts;
+    const auto accountsCopy = _accounts;
     _accounts.clear();
-    foreach (const auto &acc, accountsCopy) {
+    for (const auto &acc : accountsCopy) {
         emit accountRemoved(acc.data());
     }
 }
 
 bool AccountManager::isAccountIdAvailable(const QString &id) const
 {
-    foreach (const auto &acc, _accounts) {
+    for (const auto &acc : _accounts) {
         if (acc->account()->id() == id) {
             return false;
         }

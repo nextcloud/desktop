@@ -69,7 +69,7 @@ bool PropagateLocalRemove::removeRecursively(const QString &path)
         // We need to delete the entries from the database now from the deleted vector.
         // Do it while avoiding redundant delete calls to the journal.
         QString deletedDir;
-        foreach (const auto &it, deleted) {
+        for (const auto &it : qAsConst(deleted)) {
             if (!it.first.startsWith(propagator()->localPath()))
                 continue;
             if (!deletedDir.isEmpty() && it.first.startsWith(deletedDir))

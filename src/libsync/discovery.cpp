@@ -242,17 +242,15 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const QString &loc
             if (item->_file.endsWith(QLatin1Char('.'))) {
                 item->_errorString = tr("File names ending with a period are not supported on this file system.");
             } else {
-                char invalid = '\0';
-                for (const char x : QByteArrayLiteral("\\:?*\"<>|")) {
-                    if (item->_file.contains(QLatin1Char(x))) {
-                        invalid = x;
+                const auto unsupportedCharacters = QStringLiteral("\\:?*\"<>|");
+                for (const auto &x : unsupportedCharacters) {
+                    if (item->_file.contains(x)) {
+                        item->_errorString = tr("File names containing the character '%1' are not supported on this file system.")
+                                                 .arg(x);
                         break;
                     }
                 }
-                if (invalid) {
-                    item->_errorString = tr("File names containing the character '%1' are not supported on this file system.")
-                                             .arg(QLatin1Char(invalid));
-                }
+
                 if (isInvalidPattern) {
                     item->_errorString = tr("File name contains at least one invalid character");
                 } else {
@@ -1339,7 +1337,7 @@ int ProcessDirectoryJob::processSubJobs(int nbJobs)
     }
 
     int started = 0;
-    foreach (auto *rj, _runningJobs) {
+    for (auto *rj : qAsConst(_runningJobs)) {
         started += rj->processSubJobs(nbJobs - started);
         if (started >= nbJobs)
             return started;

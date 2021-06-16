@@ -275,11 +275,11 @@ void Logger::enterNextLogFile()
         QString newLogName = now.toString(QStringLiteral("yyyyMMdd_HHmm")) + QStringLiteral("_owncloud.log");
 
         // Expire old log files and deal with conflicts
-        QStringList files = dir.entryList(QStringList(QStringLiteral("*owncloud.log.*")),
+        const auto &files = dir.entryList(QStringList(QStringLiteral("*owncloud.log.*")),
             QDir::Files, QDir::Name);
         QRegExp rx(QStringLiteral(R"(.*owncloud\.log\.(\d+).*)"));
         int maxNumber = -1;
-        foreach (const QString &s, files) {
+        for (const auto &s : files) {
             if (_logExpire.count() > 0) {
                 std::chrono::seconds expireSeconds(_logExpire);
                 QFileInfo fileInfo(dir.absoluteFilePath(s));

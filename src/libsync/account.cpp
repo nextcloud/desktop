@@ -354,14 +354,14 @@ void Account::slotHandleSslErrors(QNetworkReply *reply, QList<QSslError> errors)
     NetworkJobTimeoutPauser pauser(reply);
     QString out;
     QDebug(&out) << "SSL-Errors happened for url " << reply->url().toString();
-    foreach (const QSslError &error, errors) {
+    for (const auto &error : qAsConst(errors)) {
         QDebug(&out) << "\tError in " << error.certificate() << ":"
                      << error.errorString() << "(" << error.error() << ")"
                      << "\n";
     }
 
     bool allPreviouslyRejected = true;
-    foreach (const QSslError &error, errors) {
+    for (const auto &error : qAsConst(errors)) {
         if (!_rejectedCertificates.contains(error.certificate())) {
             allPreviouslyRejected = false;
         }
@@ -408,7 +408,7 @@ void Account::slotHandleSslErrors(QNetworkReply *reply, QList<QSslError> errors)
             return;
 
         // Mark all involved certificates as rejected, so we don't ask the user again.
-        foreach (const QSslError &error, errors) {
+        for (const auto &error : qAsConst(errors)) {
             if (!_rejectedCertificates.contains(error.certificate())) {
                 _rejectedCertificates.append(error.certificate());
             }

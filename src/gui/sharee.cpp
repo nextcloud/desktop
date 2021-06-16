@@ -88,44 +88,44 @@ void ShareeModel::shareesFetched(const QJsonDocument &reply)
      */
     auto exact = data.value("exact").toObject();
     {
-        auto users = exact.value("users").toArray();
-        foreach (auto user, users) {
+        const auto &users = exact.value("users").toArray();
+        for (const auto &user : users) {
             newSharees.append(parseSharee(user.toObject()));
         }
-        auto groups = exact.value("groups").toArray();
-        foreach (auto group, groups) {
+        const auto &groups = exact.value("groups").toArray();
+        for (const auto &group : groups) {
             newSharees.append(parseSharee(group.toObject()));
         }
-        auto remotes = exact.value("remotes").toArray();
-        foreach (auto remote, remotes) {
+        const auto &remotes = exact.value("remotes").toArray();
+        for (const auto &remote : remotes) {
             newSharees.append(parseSharee(remote.toObject()));
         }
     }
 
     {
-        auto users = data.value("users").toArray();
-        foreach (auto user, users) {
+        const auto &users = data.value("users").toArray();
+        for (const auto &user : users) {
             newSharees.append(parseSharee(user.toObject()));
         }
     }
     {
-        auto groups = data.value("groups").toArray();
-        foreach (auto group, groups) {
+        const auto &groups = data.value("groups").toArray();
+        for (const auto &group : groups) {
             newSharees.append(parseSharee(group.toObject()));
         }
     }
     {
-        auto remotes = data.value("remotes").toArray();
-        foreach (auto remote, remotes) {
+        const auto &remotes = data.value("remotes").toArray();
+        for (const auto &remote : remotes) {
             newSharees.append(parseSharee(remote.toObject()));
         }
     }
 
     // Filter sharees that we have already shared with
     QVector<QSharedPointer<Sharee>> filteredSharees;
-    foreach (const auto &sharee, newSharees) {
+    for (const auto &sharee : qAsConst(newSharees)) {
         bool found = false;
-        foreach (const auto &blacklistSharee, _shareeBlacklist) {
+        for (const auto &blacklistSharee : qAsConst(_shareeBlacklist)) {
             if (sharee->type() == blacklistSharee->type() && sharee->shareWith() == blacklistSharee->shareWith()) {
                 found = true;
                 break;
@@ -188,7 +188,7 @@ void ShareeModel::setNewSharees(const QVector<QSharedPointer<Sharee>> &newSharee
 
     QModelIndexList newPersistant;
     newPersistant.reserve(persistent.size());
-    foreach (const QSharedPointer<Sharee> &sharee, oldPersistantSharee) {
+    for (const auto &sharee : qAsConst(oldPersistantSharee)) {
         FindShareeHelper helper = { sharee };
         auto it = std::find_if(_sharees.constBegin(), _sharees.constEnd(), helper);
         if (it == _sharees.constEnd()) {

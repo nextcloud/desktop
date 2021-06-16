@@ -52,7 +52,7 @@ void LockWatcher::checkFiles()
 {
     QSet<QString> unlocked;
 
-    foreach (const QString &path, _watchedPaths) {
+    for (const auto &path : qAsConst(_watchedPaths)) {
         if (!FileSystem::isFileLocked(path)) {
             qCInfo(lcLockWatcher) << "Lock of" << path << "was released";
             emit fileUnlocked(path);

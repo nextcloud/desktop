@@ -298,7 +298,7 @@ bool FolderWizardRemotePath::selectByPath(QString path)
     QTreeWidgetItem *it = _ui.folderTreeWidget->topLevelItem(0);
     if (!path.isEmpty()) {
         const QStringList pathTrail = path.split(QLatin1Char('/'));
-        foreach (const QString &path, pathTrail) {
+        for (const auto &path : pathTrail) {
             if (!it) {
                 return false;
             }
@@ -328,7 +328,7 @@ void FolderWizardRemotePath::slotUpdateDirectories(const QStringList &list)
     }
     QStringList sortedList = list;
     Utility::sortFilenames(sortedList);
-    foreach (QString path, sortedList) {
+    for (auto path : qAsConst(sortedList)) {
         path.remove(webdavFolder);
         QStringList paths = path.split('/');
         if (paths.last().isEmpty())

@@ -281,12 +281,12 @@ private slots:
             << "foo bla bar/file"
             << "fo_"
             << "fo_/file";
-        for (auto elem : elements)
+        for (const auto &elem : qAsConst(elements))
             makeEntry(elem);
 
         auto checkElements = [&]() {
             bool ok = true;
-            for (auto elem : elements) {
+            for (const auto &elem : qAsConst(elements)) {
                 SyncJournalFileRecord record;
                 _db.getFileRecord(elem, &record);
                 if (!record.isValid()) {

@@ -365,7 +365,7 @@ void GeneralSettings::loadLanguageNamesIntoDropdown()
     QStringList availableTranslations(localesToLanguageNamesMap.values());
     availableTranslations.sort(Qt::CaseInsensitive);
 
-    for (const auto &i : availableTranslations) {
+    for (const auto &i : qAsConst(availableTranslations)) {
         _ui->languageDropdown->addItem(i);
     }
 }

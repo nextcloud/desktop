@@ -164,7 +164,8 @@ void ShareUserGroupWidget::searchForSharees()
     QSharedPointer<Sharee> currentUser(new Sharee(_account->credentials()->user(), "", Sharee::Type::User));
     blacklist << currentUser;
 
-    foreach (auto sw, _ui->scrollArea->findChildren<ShareUserLine *>()) {
+    const auto &shareUserLines = _ui->scrollArea->findChildren<ShareUserLine *>();
+    for (auto *sw : shareUserLines) {
         blacklist << sw->share()->getShareWith();
     }
     _ui->errorLabel->hide();
@@ -188,7 +189,7 @@ void ShareUserGroupWidget::slotSharesFetched(const QList<QSharedPointer<Share>> 
     QSize minimumSize = newViewPort->sizeHint();
     int x = 0;
 
-    foreach (const auto &share, shares) {
+    for (const auto &share : shares) {
         // We don't handle link shares
         if (share->getShareType() == Share::TypeLink) {
             continue;
@@ -320,9 +321,7 @@ void ShareUserGroupWidget::displayError(int code, const QString &message)
     _pi_sharee.stopAnimation();
 
     // Also remove the spinner in the widget list, if any
-    foreach (auto pi, _ui->scrollArea->findChildren<QProgressIndicator *>()) {
-        delete pi;
-    }
+    qDeleteAll(_ui->scrollArea->findChildren<QProgressIndicator *>());
 
     qCWarning(lcSharing) << "Sharing error from server" << code << message;
     _ui->errorLabel->setText(message);

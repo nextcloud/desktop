@@ -58,7 +58,7 @@ static QUrlQuery percentEncodeQueryItems(
     QUrlQuery result;
     // Note: QUrlQuery::setQueryItems() does not fully percent encode
     // the query items, see #5042
-    foreach (const auto &item, items) {
+    for (const auto &item : items) {
         result.addQueryItem(
             QUrl::toPercentEncoding(item.first),
             QUrl::toPercentEncoding(item.second));
