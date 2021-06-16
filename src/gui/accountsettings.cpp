@@ -15,6 +15,7 @@
 
 #include "accountsettings.h"
 #include "common/syncjournalfilerecord.h"
+#include "qmessagebox.h"
 #include "ui_accountsettings.h"
 
 #include "theme.h"
@@ -342,21 +343,22 @@ void AccountSettings::slotMarkSubfolderEncrypted(FolderStatusModel::SubFolderInf
 
     const auto folder = folderInfo->_folder;
     Q_ASSERT(folder);
+
+    const auto folderAlias = folder->alias();
     const auto path = folderInfo->_path;
     const auto fileId = folderInfo->_fileId;
-    const auto encryptFolder = [this, fileId, folder, path] {
+    const auto encryptFolder = [this, fileId, path, folderAlias] {
+        const auto folder = FolderMan::instance()->folder(folderAlias);
+        if (!folder) {
+            qCWarning(lcAccountSettings) << "Could not encrypt folder because folder" << folderAlias << "does not exist anymore";
+            QMessageBox::warning(nullptr, tr("Encryption failed"), tr("Could not encrypt folder because the folder does not exist anymore"));
+            return;
+        }
+
         // Folder info have directory paths in Foo/Bar/ convention...
         Q_ASSERT(!path.startsWith('/') && path.endsWith('/'));
         // But EncryptFolderJob expects directory path Foo/Bar convention
         const auto choppedPath = path.chopped(1);
-
-        // Does the file still exist?
-        SyncJournalFileRecord record;
-        if (!folder->journalDb()->getFileRecord(choppedPath, &record) || !record.isValid()) {
-            qCWarning(lcAccountSettings) << "Could not encrypt folder because" << path << "does not exist anymore";
-            return;
-        }
-
         auto job = new OCC::EncryptFolderJob(accountsState()->account(), folder->journalDb(), choppedPath, fileId, this);
         job->setProperty(propertyFolder, QVariant::fromValue(folder));
         job->setProperty(propertyPath, QVariant::fromValue(path));
