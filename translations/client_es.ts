@@ -3122,6 +3122,16 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
         <translation>el servidor informó de no %1</translation>
     </message>
     <message>
+        <location filename="../src/libsync/discovery.cpp" line="924"/>
+        <source>Conflict when uploading a folder. It&apos;s going to get cleared!</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="930"/>
+        <source>Conflict when uploading some files to a folder. Those, conflicted, are going to get cleared!</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/libsync/discovery.cpp" line="1225"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Ignorado porque se encuentra en la lista negra de «elija qué va a sincronizar»</translation>
