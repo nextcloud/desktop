@@ -13,6 +13,11 @@ def main(ctx):
             "refs/pull/**",
         ],
     }
+    cron_trigger = {
+        "event": [
+            "cron",
+        ],
+    }
     notification_trigger = {
         "ref": [
             "refs/heads/master",
@@ -50,8 +55,8 @@ def main(ctx):
             "Ninja",
             trigger = build_trigger,
         ),
-        gui_tests(ctx, trigger = build_trigger, filterTags = ["@smokeTest"]),
-        gui_tests(ctx, trigger = build_trigger, depends_on = ["GUI-tests-@smokeTest"], filterTags = ["~@smokeTest", "~@skip"]),
+        gui_tests(ctx, trigger = build_trigger, filterTags = ["@smokeTest"], version = "latest"),
+        gui_tests(ctx, trigger = build_trigger, depends_on = ["GUI-tests-@smokeTest"], filterTags = ["~@smokeTest"], version = "latest"),
         notification(
             name = "build",
             trigger = build_trigger,
@@ -63,8 +68,32 @@ def main(ctx):
             ],
         ),
     ]
+    cron_pipelines = [
+        # Build client
+        build_and_test_client(
+            ctx,
+            "gcc",
+            "g++",
+            "Release",
+            "Unix Makefiles",
+            trigger = cron_trigger,
+        ),
+        build_and_test_client(
+            ctx,
+            "clang",
+            "clang++",
+            "Debug",
+            "Ninja",
+            trigger = cron_trigger,
+        ),
+        gui_tests(ctx, trigger = cron_trigger, filterTags = ["@smokeTest"]),
+        gui_tests(ctx, trigger = cron_trigger, depends_on = ["GUI-tests-@smokeTest"], filterTags = ["~@smokeTest"]),
+    ]
 
-    return pipelines
+    if ctx.build.event == "cron":
+        return cron_pipelines
+    else:
+        return pipelines
 
 def whenOnline(dict):
     if not "when" in dict:
@@ -168,7 +197,7 @@ def build_and_test_client(ctx, c_compiler, cxx_compiler, build_type, generator, 
         "depends_on": depends_on,
     }
 
-def gui_tests(ctx, trigger = {}, depends_on = [], filterTags = []):
+def gui_tests(ctx, trigger = {}, depends_on = [], filterTags = [], version = "daily-master-qa"):
     pipeline_name = "GUI-tests"
     build_dir = "build-" + pipeline_name
     squish_parameters = "--retry 1"
@@ -194,7 +223,7 @@ def gui_tests(ctx, trigger = {}, depends_on = [], filterTags = []):
                          ],
                      },
                  ] +
-                 installCore("daily-master-qa") +
+                 installCore(version) +
                  setupServerAndApp(2) +
                  fixPermissions() +
                  owncloudLog() +
