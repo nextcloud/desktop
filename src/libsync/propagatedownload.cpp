@@ -351,11 +351,13 @@ void GETFileJob::slotReadyRead()
 
 void GETFileJob::cancel()
 {
-    if (reply()->isRunning()) {
-        reply()->abort();
+    const auto networkReply = reply();
+    if (networkReply && networkReply->isRunning()) {
+        networkReply->abort();
     }
-
-    emit canceled();
+    if (_device && _device->isOpen()) {
+        _device->close();
+    }
 }
 
 void GETFileJob::onTimedOut()
