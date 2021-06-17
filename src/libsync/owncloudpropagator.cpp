@@ -512,20 +512,18 @@ void OwncloudPropagator::setSyncOptions(const SyncOptions &syncOptions)
 
 Result<QString, bool> OwncloudPropagator::localFileNameClash(const QString &relFile)
 {
-    const QString file(_localDir + relFile);
-    OC_ASSERT(!file.isEmpty());
-
-    if (!file.isEmpty() && Utility::fsCasePreserving()) {
-        qCDebug(lcPropagator) << "CaseClashCheck for " << file;
+    OC_ASSERT(!relFile.isEmpty());
+    if (!relFile.isEmpty() && Utility::fsCasePreserving()) {
+        const QFileInfo fileInfo(_localDir + relFile);
+        qCDebug(lcPropagator) << "CaseClashCheck for " << fileInfo.filePath();
 #ifdef Q_OS_MAC
-        const QFileInfo fileInfo(file);
         if (!fileInfo.exists()) {
             return false;
         } else {
             // Need to normalize to composited form because of QTBUG-39622/QTBUG-55896
             const QString cName = fileInfo.canonicalFilePath().normalized(QString::NormalizationForm_C);
-            if (file != cName && !cName.endsWith(relFile, Qt::CaseSensitive)) {
-                qCWarning(lcPropagator) << "Detected case clash between" << file << "and" << cName;
+            if (fileInfo.filePath() != cName && !cName.endsWith(relFile, Qt::CaseSensitive)) {
+                qCWarning(lcPropagator) << "Detected case clash between" << fileInfo.filePath() << "and" << cName;
                 return cName;
             }
         }
@@ -533,21 +531,20 @@ Result<QString, bool> OwncloudPropagator::localFileNameClash(const QString &relF
         WIN32_FIND_DATA FindFileData;
         HANDLE hFind;
 
-        hFind = FindFirstFileW(reinterpret_cast<const wchar_t *>(FileSystem::longWinPath(file).utf16()), &FindFileData);
+        hFind = FindFirstFileW(reinterpret_cast<const wchar_t *>(FileSystem::longWinPath(fileInfo.filePath()).utf16()), &FindFileData);
         if (hFind != INVALID_HANDLE_VALUE) {
             const QString realFileName = QString::fromWCharArray(FindFileData.cFileName);
             FindClose(hFind);
 
-            if (!file.endsWith(realFileName, Qt::CaseSensitive)) {
-                const QString clashName = _localDir + realFileName;
-                qCWarning(lcPropagator) << "Detected case clash between" << file << "and" << clashName;
+            if (!fileInfo.filePath().endsWith(realFileName, Qt::CaseSensitive)) {
+                const QString clashName = fileInfo.path() + QLatin1Char('/') + realFileName;
+                qCWarning(lcPropagator) << "Detected case clash between" << fileInfo.filePath() << "and" << clashName;
                 return clashName;
             }
         }
 #else
         // On Linux, the file system is case sensitive, but this code is useful for testing.
         // Just check that there is no other file with the same name and different casing.
-        QFileInfo fileInfo(file);
         const QString fn = fileInfo.fileName();
         const QStringList list = fileInfo.dir().entryList({ fn });
         if (list.count() > 1 || (list.count() == 1 && list[0] != fn)) {
