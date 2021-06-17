@@ -5436,11 +5436,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Пауза в синхронизирането за всички</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="169"/>
-        <source>Account switcher and settings menu</source>
-        <translation>Меню за превключване на профил и настройки</translation>
-    </message>
-    <message>
         <location filename="../src/gui/tray/Window.qml" line="214"/>
         <source>Add account</source>
         <translation>Добавяне на регистрация</translation>
@@ -5474,6 +5469,11 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/tray/Window.qml" line="360"/>
         <source>Current user status is do not disturb</source>
         <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="169"/>
+        <source>Account switcher and settings menu</source>
+        <translation>Меню за превключване на профил и настройки</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="443"/>

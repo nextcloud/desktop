@@ -3123,12 +3123,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="924"/>
         <source>Conflict when uploading a folder. It&apos;s going to get cleared!</source>
-        <translation type="unfinished"/>
+        <translation>上傳資料夾時發生衝突。將被清除！</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="930"/>
         <source>Conflict when uploading some files to a folder. Those, conflicted, are going to get cleared!</source>
-        <translation type="unfinished"/>
+        <translation>將某些檔案上傳到資料夾時發生衝突。 那些有衝突的檔案將被清除！</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1225"/>
@@ -5434,11 +5434,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>暫停所有同步</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="169"/>
-        <source>Account switcher and settings menu</source>
-        <translation>帳戶切換器和設置選項單</translation>
-    </message>
-    <message>
         <location filename="../src/gui/tray/Window.qml" line="214"/>
         <source>Add account</source>
         <translation>新增賬戶</translation>
@@ -5472,6 +5467,11 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/tray/Window.qml" line="360"/>
         <source>Current user status is do not disturb</source>
         <translation>目前用戶狀態為請勿打擾</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="169"/>
+        <source>Account switcher and settings menu</source>
+        <translation>帳戶切換器和設置選項單</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="443"/>
