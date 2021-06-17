@@ -1,0 +1,6 @@
+Bugfix: VFS support for folders in the drive root
+
+We fixed a bug where it was not possible to use a folder in 
+C:\ as sync folder.
+
+https://github.com/owncloud/enterprise/issues/4639
