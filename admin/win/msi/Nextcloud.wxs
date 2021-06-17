@@ -214,6 +214,5 @@
             <Condition Level="0">(NO_DESKTOP_SHORTCUT=1)</Condition>
         </Feature>
     </Feature>
-	<Condition Message="This application only runs on Windows 10, version 1709 or higher!">(VersionNT>=603 AND WINDOWSRELEASEID>=1709)</Condition>
     </Product>
 </Wix>
