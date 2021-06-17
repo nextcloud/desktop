@@ -5435,11 +5435,6 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
         <translation>Por en pausa a sincronización para todos</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="169"/>
-        <source>Account switcher and settings menu</source>
-        <translation>Cambiador de contas e menú de configuración</translation>
-    </message>
-    <message>
         <location filename="../src/gui/tray/Window.qml" line="214"/>
         <source>Add account</source>
         <translation>Engadir unha conta</translation>
@@ -5473,6 +5468,11 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
         <location filename="../src/gui/tray/Window.qml" line="360"/>
         <source>Current user status is do not disturb</source>
         <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="169"/>
+        <source>Account switcher and settings menu</source>
+        <translation>Cambiador de contas e menú de configuración</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="443"/>

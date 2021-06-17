@@ -5432,11 +5432,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Приостановить синхронизацию всех учётных записей</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="169"/>
-        <source>Account switcher and settings menu</source>
-        <translation>Переключение уч. записей и настройки</translation>
-    </message>
-    <message>
         <location filename="../src/gui/tray/Window.qml" line="214"/>
         <source>Add account</source>
         <translation>Добавить аккаунт</translation>
@@ -5470,6 +5465,11 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/tray/Window.qml" line="360"/>
         <source>Current user status is do not disturb</source>
         <translation>Текущий статус пользователя - не беспокоить</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="169"/>
+        <source>Account switcher and settings menu</source>
+        <translation>Переключение уч. записей и настройки</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="443"/>

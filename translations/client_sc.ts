@@ -5433,11 +5433,6 @@ Custa est una modalidade noa, isperimentale. Si detzides de dda impreare, sinnal
         <translation>Pone in pasu sincronizatzione pro totu</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="169"/>
-        <source>Account switcher and settings menu</source>
-        <translation>Ischertadore de contu e impostatziones de su menu</translation>
-    </message>
-    <message>
         <location filename="../src/gui/tray/Window.qml" line="214"/>
         <source>Add account</source>
         <translation>Agiunghe contu</translation>
@@ -5471,6 +5466,11 @@ Custa est una modalidade noa, isperimentale. Si detzides de dda impreare, sinnal
         <location filename="../src/gui/tray/Window.qml" line="360"/>
         <source>Current user status is do not disturb</source>
         <translation>S&apos;istadu atuale de s&apos;utente est chi non si cheret istorbadu</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="169"/>
+        <source>Account switcher and settings menu</source>
+        <translation>Ischertadore de contu e impostatziones de su menu</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="443"/>
