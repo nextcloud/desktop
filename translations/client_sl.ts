@@ -5433,11 +5433,6 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
         <translation>Ustavi usklajevanje za vse</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="169"/>
-        <source>Account switcher and settings menu</source>
-        <translation>Preklopnik računov in meni nastavitev</translation>
-    </message>
-    <message>
         <location filename="../src/gui/tray/Window.qml" line="214"/>
         <source>Add account</source>
         <translation>Dodaj račun</translation>
@@ -5471,6 +5466,11 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
         <location filename="../src/gui/tray/Window.qml" line="360"/>
         <source>Current user status is do not disturb</source>
         <translation>Trenutno uporabnik ne želi motenj</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="169"/>
+        <source>Account switcher and settings menu</source>
+        <translation>Preklopnik računov in meni nastavitev</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="443"/>

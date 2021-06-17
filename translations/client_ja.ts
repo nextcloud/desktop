@@ -5431,11 +5431,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>全ての同期を一時停止</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="169"/>
-        <source>Account switcher and settings menu</source>
-        <translation>アカウントスイッチャーと設定メニュー</translation>
-    </message>
-    <message>
         <location filename="../src/gui/tray/Window.qml" line="214"/>
         <source>Add account</source>
         <translation>アカウントを追加</translation>
@@ -5469,6 +5464,11 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/tray/Window.qml" line="360"/>
         <source>Current user status is do not disturb</source>
         <translation>現在のユーザーステータスは取り込み中です</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="169"/>
+        <source>Account switcher and settings menu</source>
+        <translation>アカウントスイッチャーと設定メニュー</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="443"/>

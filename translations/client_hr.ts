@@ -5435,11 +5435,6 @@ Ovo je novi, eksperimentalni način rada. Ako se odlučite aktivirati ga, prijav
         <translation>Pauziraj sinkronizaciju za sve</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="169"/>
-        <source>Account switcher and settings menu</source>
-        <translation>Izmjenjivač računa i izbornik postavki</translation>
-    </message>
-    <message>
         <location filename="../src/gui/tray/Window.qml" line="214"/>
         <source>Add account</source>
         <translation>Dodaj račun</translation>
@@ -5473,6 +5468,11 @@ Ovo je novi, eksperimentalni način rada. Ako se odlučite aktivirati ga, prijav
         <location filename="../src/gui/tray/Window.qml" line="360"/>
         <source>Current user status is do not disturb</source>
         <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="169"/>
+        <source>Account switcher and settings menu</source>
+        <translation>Izmjenjivač računa i izbornik postavki</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="443"/>

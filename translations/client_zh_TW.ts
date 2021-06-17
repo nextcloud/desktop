@@ -5435,11 +5435,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>暫停所有同步</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="169"/>
-        <source>Account switcher and settings menu</source>
-        <translation>帳號切換器與設定選單</translation>
-    </message>
-    <message>
         <location filename="../src/gui/tray/Window.qml" line="214"/>
         <source>Add account</source>
         <translation>新增帳號</translation>
@@ -5473,6 +5468,11 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/tray/Window.qml" line="360"/>
         <source>Current user status is do not disturb</source>
         <translation>目前的使用者狀態為請勿打擾</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="169"/>
+        <source>Account switcher and settings menu</source>
+        <translation>帳號切換器與設定選單</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="443"/>

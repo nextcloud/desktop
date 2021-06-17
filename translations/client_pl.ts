@@ -3124,12 +3124,12 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
     <message>
         <location filename="../src/libsync/discovery.cpp" line="924"/>
         <source>Conflict when uploading a folder. It&apos;s going to get cleared!</source>
-        <translation type="unfinished"/>
+        <translation>Konflikt podczas wysyłania katalogu. To się wyjaśni!</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="930"/>
         <source>Conflict when uploading some files to a folder. Those, conflicted, are going to get cleared!</source>
-        <translation type="unfinished"/>
+        <translation>Konflikt podczas wysyłania niektórych plików do katalogu. Konfliktowe zostaną wyjaśnione!</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1225"/>
@@ -5435,11 +5435,6 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
         <translation>Wstrzymaj synchronizację dla wszystkich</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="169"/>
-        <source>Account switcher and settings menu</source>
-        <translation>Przełączenie konta i menu ustawień</translation>
-    </message>
-    <message>
         <location filename="../src/gui/tray/Window.qml" line="214"/>
         <source>Add account</source>
         <translation>Dodaj konto</translation>
@@ -5473,6 +5468,11 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
         <location filename="../src/gui/tray/Window.qml" line="360"/>
         <source>Current user status is do not disturb</source>
         <translation>Aktualny status użytkownika to &quot;Nie przeszkadzać&quot;</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="169"/>
+        <source>Account switcher and settings menu</source>
+        <translation>Przełączenie konta i menu ustawień</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="443"/>

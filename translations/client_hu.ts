@@ -5433,11 +5433,6 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
         <translation>Szinkronizálás szüneteltetése mindenkinek</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="169"/>
-        <source>Account switcher and settings menu</source>
-        <translation>Fiókváltó és beállítások menü</translation>
-    </message>
-    <message>
         <location filename="../src/gui/tray/Window.qml" line="214"/>
         <source>Add account</source>
         <translation>Fiók hozzáadása</translation>
@@ -5471,6 +5466,11 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
         <location filename="../src/gui/tray/Window.qml" line="360"/>
         <source>Current user status is do not disturb</source>
         <translation>A jelenlegi felhasználói állapot ne zavarjanak</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="169"/>
+        <source>Account switcher and settings menu</source>
+        <translation>Fiókváltó és beállítások menü</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="443"/>
