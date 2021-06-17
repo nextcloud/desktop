@@ -902,6 +902,10 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             return;
         }
 
+        if (!localEntry.isVirtualFile && !localEntry.isDirectory) {
+            return;
+        }
+
         Q_ASSERT(item->_instruction == CSYNC_INSTRUCTION_NEW);
         if (item->_instruction != CSYNC_INSTRUCTION_NEW) {
             qCWarning(lcDisco) << "Trying to wipe a virtual item" << path._local << " with item->_instruction" << item->_instruction;
@@ -914,13 +918,19 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         // either correct availability, or a result with error if the folder is new or otherwise has no availability set yet
         const auto folderAvailability = localEntry.isDirectory ? _discoveryData->_syncOptions._vfs->availability(path._local) : Vfs::AvailabilityError::NoSuchItem;
 
-        if (!isFilePlaceHolder && !folderAvailability) {
+        const auto folderPinState = localEntry.isDirectory ? _discoveryData->_syncOptions._vfs->pinState(path._local) : PinState::Unspecified;
+
+        if (!isFilePlaceHolder && !folderAvailability && !folderPinState) {
             // not a file placeholder and not a synced folder placeholder (new local folder)
             return;
         }
 
-        // a folder must be online-only (no files should be hydrated)
-        const auto isOnlineOnlyFolder = folderAvailability && *folderAvailability == VfsItemAvailability::OnlineOnly;
+        const auto isFolderPinStateOnlineOnly = (folderPinState && *folderPinState == PinState::OnlineOnly);
+
+        const auto isFolderAvailabilityOnlineOnly = (folderAvailability && *folderAvailability == VfsItemAvailability::OnlineOnly);
+
+        // a folder is considered online-only if: no files are hydrated, or, if it's an empty folder
+        const auto isOnlineOnlyFolder = isFolderAvailabilityOnlineOnly || !folderAvailability && isFolderPinStateOnlineOnly;
 
         if (!isFilePlaceHolder && !isOnlineOnlyFolder) {
             if (localEntry.isDirectory && folderAvailability && !isOnlineOnlyFolder) {
@@ -942,6 +952,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             emit _discoveryData->addErrorToGui(SyncFileItem::SoftError, tr("Conflict when uploading a folder. It's going to get cleared!"), path._local);
         } else {
             qCInfo(lcDisco) << "Wiping virtual file without db entry for" << path._local;
+            emit _discoveryData->addErrorToGui(SyncFileItem::SoftError, tr("Conflict when uploading a file. It's going to get removed!"), path._local);
         }
         item->_instruction = CSYNC_INSTRUCTION_REMOVE;
         item->_direction = SyncFileItem::Down;
