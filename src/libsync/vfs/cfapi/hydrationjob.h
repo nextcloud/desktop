@@ -23,6 +23,7 @@ class QLocalSocket;
 namespace OCC {
 class GETFileJob;
 class SyncJournalDb;
+class VfsCfApi;
 
 class OWNCLOUDSYNC_EXPORT HydrationJob : public QObject
 {
@@ -31,6 +32,7 @@ public:
     enum Status {
         Success = 0,
         Error,
+        Cancelled,
     };
     Q_ENUM(Status)
 
@@ -58,29 +60,31 @@ public:
 
     void start();
     void cancel();
+    void finalize(OCC::VfsCfApi *vfs);
 
 signals:
     void finished(HydrationJob *job);
-    void canceled(HydrationJob *job);
 
 private:
     void emitFinished(Status status);
-    void emitCanceled();
 
     void onNewConnection();
+    void onCancellationServerNewConnection();
     void onGetFinished();
-    void onGetCanceled();
 
     AccountPtr _account;
     QString _remotePath;
     QString _localPath;
     SyncJournalDb *_journal = nullptr;
+    bool _isCancelled = false;
 
     QString _requestId;
     QString _folderPath;
 
-    QLocalServer *_server = nullptr;
-    QLocalSocket *_socket = nullptr;
+    QLocalServer *_transferDataServer = nullptr;
+    QLocalServer *_signalServer = nullptr;
+    QLocalSocket *_transferDataSocket = nullptr;
+    QLocalSocket *_signalSocket = nullptr;
     GETFileJob *_job = nullptr;
     Status _status = Success;
 };
