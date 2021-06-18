@@ -104,7 +104,7 @@ public:
      * @param basePath     folder path from which to apply exclude rules, ends with a /
      */
     bool isExcludedRemote(const QString &filePath,
-        const QString &basePath, ItemType type = ItemTypeFile) const;
+        const QString &basePath, bool excludeHidden, ItemType type) const;
 
     /**
      * Adds an exclude pattern.

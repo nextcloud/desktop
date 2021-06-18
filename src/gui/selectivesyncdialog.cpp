@@ -192,7 +192,7 @@ void SelectiveSyncWidget::slotUpdateDirectories(QStringList list)
 
     // Check for excludes.
     list.erase(std::remove_if(list.begin(), list.end(), [&pathToRemove, this](const QString &it) {
-        return _excludedFiles.isExcludedRemote(it, pathToRemove, ItemTypeDirectory);
+        return _excludedFiles.isExcludedRemote(it, pathToRemove, FolderMan::instance()->ignoreHiddenFiles(), ItemTypeDirectory);
     }),
         list.end());
 

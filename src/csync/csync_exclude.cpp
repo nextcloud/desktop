@@ -325,7 +325,7 @@ bool ExcludedFiles::isExcluded(
     }
 
     const QFileInfo fileInfo(filePath);
-    if (!fileInfo.exists(filePath)) {
+    if (!fileInfo.exists()) {
         return isExcluded(fileInfo.path(), basePath, excludeHidden);
     }
 
@@ -334,7 +334,7 @@ bool ExcludedFiles::isExcluded(
         // Check all path subcomponents, but to *not* check the base path:
         // We do want to be able to sync with a hidden folder as the target.
         while (fi.filePath().size() > basePath.size()) {
-            if (fi.isHidden() || fi.fileName().startsWith(QLatin1Char('.'))) {
+            if (fi.isHidden()) {
                 return true;
             }
 
@@ -346,10 +346,10 @@ bool ExcludedFiles::isExcluded(
     if (fileInfo.isDir()) {
         type = ItemTypeDirectory;
     }
-    return isExcludedRemote(filePath, basePath, type);
+    return isExcludedRemote(filePath, basePath, excludeHidden, type);
 }
 
-bool ExcludedFiles::isExcludedRemote(const QString &filePath, const QString &basePath, ItemType type) const
+bool ExcludedFiles::isExcludedRemote(const QString &filePath, const QString &basePath, bool excludeHidden, ItemType type) const
 {
     if (!filePath.startsWith(basePath, Utility::fsCasePreserving() ? Qt::CaseInsensitive : Qt::CaseSensitive)) {
         // Mark paths we're not responsible for as excluded...
@@ -360,6 +360,14 @@ bool ExcludedFiles::isExcludedRemote(const QString &filePath, const QString &bas
     if (relativePath.endsWith(QLatin1Char('/'))) {
         relativePath.chop(1);
     }
+
+    if (excludeHidden) {
+        // Check their parent directories for . hidden files
+        if (relativePath.startsWith(QLatin1Char('.')) || relativePath.contains(QLatin1String("/."))) {
+            return true;
+        }
+    }
+
 
     return fullPatternMatch(relativePath, type) != CSYNC_NOT_EXCLUDED;
 }
