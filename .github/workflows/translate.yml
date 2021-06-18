@@ -39,7 +39,7 @@ jobs:
           git status
           git stash
           git pull --ff-only origin
-          [[ "$(git stash list)" != "" ]] || git stash pop
+          [[ "$(git stash list)" != "" ]] && git stash pop
 
       - name: commit and push
         if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
