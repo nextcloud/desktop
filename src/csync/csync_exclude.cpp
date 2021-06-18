@@ -326,7 +326,7 @@ bool ExcludedFiles::isExcluded(
 
     const QFileInfo fileInfo(filePath);
     if (!fileInfo.exists(filePath)) {
-        return true;
+        return isExcluded(fileInfo.path(), basePath, excludeHidden);
     }
 
     if (excludeHidden) {
