@@ -339,7 +339,7 @@ bool ExcludedFiles::isExcluded(
             }
 
             // Get the parent path
-            fi = {fi.absolutePath()};
+            fi = { fi.path() };
         }
     }
     ItemType type = ItemTypeFile;
