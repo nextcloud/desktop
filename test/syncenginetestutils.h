@@ -7,6 +7,7 @@
 #pragma once
 
 #include "account.h"
+#include "common/result.h"
 #include "creds/abstractcredentials.h"
 #include "logger.h"
 #include "filesystem.h"
@@ -435,7 +436,7 @@ class FakeFolder
     std::unique_ptr<OCC::SyncEngine> _syncEngine;
 
 public:
-    FakeFolder(const FileInfo &fileTemplate);
+    FakeFolder(const FileInfo &fileTemplate, const OCC::Optional<FileInfo> &localFileInfo = {}, const QString &remotePath = {});
 
     void switchToVfs(QSharedPointer<OCC::Vfs> vfs);
 

@@ -288,7 +288,11 @@ FakePropfindReply::FakePropfindReply(FileInfo &remoteRootFileInfo, QNetworkAcces
     auto writeFileResponse = [&](const FileInfo &fileInfo) {
         xml.writeStartElement(davUri, QStringLiteral("response"));
 
-        xml.writeTextElement(davUri, QStringLiteral("href"), prefix + QString::fromUtf8(QUrl::toPercentEncoding(fileInfo.path(), "/")));
+        QString url = prefix + QString::fromUtf8(QUrl::toPercentEncoding(fileInfo.path(), "/"));
+        if (!url.endsWith(QChar('/'))) {
+            url.append(QChar('/'));
+        }
+        xml.writeTextElement(davUri, QStringLiteral("href"), url);
         xml.writeStartElement(davUri, QStringLiteral("propstat"));
         xml.writeStartElement(davUri, QStringLiteral("prop"));
 
@@ -832,7 +836,7 @@ QNetworkReply *FakeQNAM::createRequest(QNetworkAccessManager::Operation op, cons
     return reply;
 }
 
-FakeFolder::FakeFolder(const FileInfo &fileTemplate)
+FakeFolder::FakeFolder(const FileInfo &fileTemplate, const OCC::Optional<FileInfo> &localFileInfo, const QString &remotePath)
     : _localModifier(_tempDir.path())
 {
     // Needs to be done once
@@ -841,7 +845,11 @@ FakeFolder::FakeFolder(const FileInfo &fileTemplate)
 
     QDir rootDir { _tempDir.path() };
     qDebug() << "FakeFolder operating on" << rootDir;
-    toDisk(rootDir, fileTemplate);
+    if (localFileInfo) {
+        toDisk(rootDir, *localFileInfo);
+    } else {
+        toDisk(rootDir, fileTemplate);
+    }
 
     _fakeQnam = new FakeQNAM(fileTemplate);
     _account = OCC::Account::create();
@@ -851,7 +859,7 @@ FakeFolder::FakeFolder(const FileInfo &fileTemplate)
     _account->setServerVersion(QStringLiteral("10.0.0"));
 
     _journalDb = std::make_unique<OCC::SyncJournalDb>(localPath() + QStringLiteral(".sync_test.db"));
-    _syncEngine = std::make_unique<OCC::SyncEngine>(_account, localPath(), QString(), _journalDb.get());
+    _syncEngine = std::make_unique<OCC::SyncEngine>(_account, localPath(), remotePath, _journalDb.get());
     // Ignore temporary files from the download. (This is in the default exclude list, but we don't load it)
     _syncEngine->excludedFiles().addManualExclude(QStringLiteral("]*.~*"));
 
@@ -1034,5 +1042,4 @@ FakeReply::FakeReply(QObject *parent)
     setRawHeader(QByteArrayLiteral("Date"), QDateTime::currentDateTimeUtc().toString(Qt::RFC2822Date).toUtf8());
 }
 
-FakeReply::~FakeReply()
-= default;
+FakeReply::~FakeReply() = default;
