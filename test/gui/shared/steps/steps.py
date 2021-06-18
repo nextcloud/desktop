@@ -640,3 +640,9 @@ def step(context):
         'Ser&ver Address',
     )
     waitForObject(AccountConnectionWizard.SERVER_ADDRESS_BOX)
+
+
+@Then("the following tabs in the toolbar should match the default baseline")
+def step(context):
+    for tabName in context.table:
+        test.vp(tabName[0])
