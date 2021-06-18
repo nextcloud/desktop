@@ -97,14 +97,9 @@ bool NetrcParser::parse()
     }
 }
 
-NetrcParser::LoginPair NetrcParser::find(const QString &machine)
+NetrcParser::LoginPair NetrcParser::find(const QString &machine) const
 {
-    QHash<QString, LoginPair>::const_iterator it = _entries.find(machine);
-    if (it != _entries.end()) {
-        return *it;
-    } else {
-        return _default;
-    }
+    return _entries.value(machine, _default);
 }
 
 } // namespace OCC

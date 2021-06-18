@@ -31,7 +31,7 @@ public:
 
     NetrcParser(const QString &file = QString());
     bool parse();
-    LoginPair find(const QString &machine);
+    LoginPair find(const QString &machine) const;
 
 private:
     void tryAddEntryAndClear(QString &machine, LoginPair &pair, bool &isDefault);
