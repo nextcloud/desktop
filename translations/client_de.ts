@@ -290,8 +290,8 @@
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="85"/>
-        <source>You seem to have the Virtual Files feature enabled on this folder. At  the moment, it is not possible to implicitly download virtual files that are End-to-End encrypted. To get the best experience with Virtual Files and End-to-End Encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
-        <translation>Sie scheinen die Funktion &quot;Virtuelle Dateien&quot; für diesen Ordner aktiviert zu haben. Im Moment ist es nicht möglich, virtuelle Dateien, die Ende-zu-Ende-verschlüsselt sind, implizit herunterzuladen. Um die beste Erfahrung mit virtuellen Dateien und Ende-zu-Ende-Verschlüsselung zu machen, stellen Sie sicher, dass der verschlüsselte Ordner mit &quot;Immer lokal verfügbar machen&quot; markiert ist.</translation>
+        <source>You seem to have the Virtual Files feature enabled on this folder. At  the moment, it is not possible to implicitly download virtual files that are end-to-end encrypted. To get the best experience with Virtual Files and End-to-End Encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="93"/>
@@ -3187,7 +3187,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
         <translation>Datei %1 kann nicht heruntergeladen werden, da keine Verschlüsselungsinformationen vorhanden sind.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="407"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="409"/>
         <source>File %1 cannot be downloaded because encryption information is missing.</source>
         <translation>Die Datei %1 kann nicht heruntergeladen werden, da die Verschlüsselungsinformationen fehlen.</translation>
     </message>
@@ -3233,7 +3233,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
         <translation>Die heruntergeladene Datei ist leer, obwohl der Server %1  als Größe übermittelt hat.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="790"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="792"/>
         <source>The downloaded file is empty, but the server said it should have been %1.</source>
         <translation>Die heruntergeladene Datei ist leer, obwohl der Server %1  als Größe übermittelt hat.</translation>
     </message>
@@ -4661,14 +4661,14 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
 <context>
     <name>OCC::VfsCfApi</name>
     <message>
-        <location filename="../src/libsync/vfs/cfapi/vfs_cfapi.cpp" line="316"/>
-        <source>Download of End-to-End encrypted file failed</source>
-        <translation>Herunterladen einer Ende-zu-Ende-verschlüsselten Datei fehlgeschlagen</translation>
+        <location filename="../src/libsync/vfs/cfapi/vfs_cfapi.cpp" line="328"/>
+        <source>Download of end-to-end encrypted file failed</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/vfs/cfapi/vfs_cfapi.cpp" line="317"/>
-        <source>It seems that you are trying to download a virtual file that is End-to-End encrypted. Implicitly downloading such files is not supported at the moment. To workaround this issue, go to the settings and mark the encrypted folder with &quot;Make always available locally&quot;.</source>
-        <translation>Es scheint, dass Sie versuchen, eine virtuelle Datei herunterzuladen, die Ende-zu-Ende-verschlüsselt ist. Das implizite Herunterladen solcher Dateien wird derzeit nicht unterstützt. Um dieses Problem zu umgehen, gehen Sie in die Einstellungen und markieren Sie den verschlüsselten Ordner mit &quot;Immer lokal verfügbar machen&quot;.</translation>
+        <location filename="../src/libsync/vfs/cfapi/vfs_cfapi.cpp" line="329"/>
+        <source>It seems that you are trying to download a virtual file that is end-to-end encrypted. Implicitly downloading such files is not supported at the moment. To workaround this issue, go to the settings and mark the encrypted folder with &quot;Make always available locally&quot;.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

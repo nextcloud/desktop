@@ -290,8 +290,8 @@
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="85"/>
-        <source>You seem to have the Virtual Files feature enabled on this folder. At  the moment, it is not possible to implicitly download virtual files that are End-to-End encrypted. To get the best experience with Virtual Files and End-to-End Encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
-        <translation>Il semble que vous ayez activé le support de fichiers virtuels. Pour l&apos;instant, il n&apos;est pas possible de télécharger de façon implicite les fichiers virtuels. De façon à avoir le meilleur résultat avec le chiffrement de bout en bout et les fichiers virtuels, il faut rendre le dossier chiffré toujours disponible localement.</translation>
+        <source>You seem to have the Virtual Files feature enabled on this folder. At  the moment, it is not possible to implicitly download virtual files that are end-to-end encrypted. To get the best experience with Virtual Files and End-to-End Encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="93"/>
@@ -3179,7 +3179,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Le fichier %1 ne peut pas être téléchargé car les informations de chiffrement sont manquantes.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="407"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="409"/>
         <source>File %1 cannot be downloaded because encryption information is missing.</source>
         <translation type="unfinished"/>
     </message>
@@ -3225,7 +3225,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Le fichier reçu est vide bien que le serveur indique que sa taille devrait être de %1.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="790"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="792"/>
         <source>The downloaded file is empty, but the server said it should have been %1.</source>
         <translation type="unfinished"/>
     </message>
@@ -4654,14 +4654,14 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::VfsCfApi</name>
     <message>
-        <location filename="../src/libsync/vfs/cfapi/vfs_cfapi.cpp" line="316"/>
-        <source>Download of End-to-End encrypted file failed</source>
-        <translation>Le téléchargement d&apos;un fichier chiffré de bout en bout à échoué</translation>
+        <location filename="../src/libsync/vfs/cfapi/vfs_cfapi.cpp" line="328"/>
+        <source>Download of end-to-end encrypted file failed</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/vfs/cfapi/vfs_cfapi.cpp" line="317"/>
-        <source>It seems that you are trying to download a virtual file that is End-to-End encrypted. Implicitly downloading such files is not supported at the moment. To workaround this issue, go to the settings and mark the encrypted folder with &quot;Make always available locally&quot;.</source>
-        <translation>l semble que vous essayé de télécharger un fichier virtuel qui est chiffré de bout en bout. Le téléchargement implicite de ce type de fichiers n&apos;est pour l&apos;instant pas possible. De façon à avoir le meilleur résultat avec le chiffrement de bout en bout et les fichiers virtuels, il faut rendre le dossier chiffré toujours disponible localement.</translation>
+        <location filename="../src/libsync/vfs/cfapi/vfs_cfapi.cpp" line="329"/>
+        <source>It seems that you are trying to download a virtual file that is end-to-end encrypted. Implicitly downloading such files is not supported at the moment. To workaround this issue, go to the settings and mark the encrypted folder with &quot;Make always available locally&quot;.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

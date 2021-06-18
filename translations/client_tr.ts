@@ -290,8 +290,8 @@
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="85"/>
-        <source>You seem to have the Virtual Files feature enabled on this folder. At  the moment, it is not possible to implicitly download virtual files that are End-to-End encrypted. To get the best experience with Virtual Files and End-to-End Encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
-        <translation>Görünüşe göre bu klasör için sanal dosyalar özelliğini etkinleştirmişsiniz. Şu anda uçtan uca şifrelenmiş sanal dosyaların örtülü olarak indirilmesi desteklenmiyor. Sanal dosyalar ve uçtan uca şifreleme ile en iyi deneyimi elde etmek için, şifrelenmiş klasörün &quot;Her zaman yerel olarak kullanılabilsin&quot; olarak işaretlendiğinden emin olun.</translation>
+        <source>You seem to have the Virtual Files feature enabled on this folder. At  the moment, it is not possible to implicitly download virtual files that are end-to-end encrypted. To get the best experience with Virtual Files and End-to-End Encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="93"/>
@@ -3187,7 +3187,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
         <translation>%1 dosyası, adının şifreleme bilgilerinin eksik olması nedeniyle indirilemedi.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="407"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="409"/>
         <source>File %1 cannot be downloaded because encryption information is missing.</source>
         <translation>%1 dosyası, adının şifreleme bilgilerinin eksik olması nedeniyle indirilemedi.</translation>
     </message>
@@ -3233,7 +3233,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
         <translation>Sunucu tarafından boyutu %1 olarak bildirilmesine rağmen indirilen dosya boş.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="790"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="792"/>
         <source>The downloaded file is empty, but the server said it should have been %1.</source>
         <translation>İndirilen dosya boş. Ancak sunucu tarafından dosya boyutu %1 olarak bildirildi.</translation>
     </message>
@@ -4661,14 +4661,14 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
 <context>
     <name>OCC::VfsCfApi</name>
     <message>
-        <location filename="../src/libsync/vfs/cfapi/vfs_cfapi.cpp" line="316"/>
-        <source>Download of End-to-End encrypted file failed</source>
-        <translation>Uçtan uca şifrelenmiş dosya indirilemedi </translation>
+        <location filename="../src/libsync/vfs/cfapi/vfs_cfapi.cpp" line="328"/>
+        <source>Download of end-to-end encrypted file failed</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/vfs/cfapi/vfs_cfapi.cpp" line="317"/>
-        <source>It seems that you are trying to download a virtual file that is End-to-End encrypted. Implicitly downloading such files is not supported at the moment. To workaround this issue, go to the settings and mark the encrypted folder with &quot;Make always available locally&quot;.</source>
-        <translation>Görünüşe göre uçtan uca şifrelenmiş sanal bir dosyayı indirmeye çalışıyorsunuz. Şu anda bu tür dosyaların örtülü olarak indirilmesi desteklenmiyor. Bu sorunu çözmek için, ayarlar bölümüne giderek, şifrelenmiş klasör için &quot;Her zaman yerel olarak kullanılabilsin&quot; seçeceğini etkinleştirin.</translation>
+        <location filename="../src/libsync/vfs/cfapi/vfs_cfapi.cpp" line="329"/>
+        <source>It seems that you are trying to download a virtual file that is end-to-end encrypted. Implicitly downloading such files is not supported at the moment. To workaround this issue, go to the settings and mark the encrypted folder with &quot;Make always available locally&quot;.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
