@@ -916,24 +916,24 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         const bool isFilePlaceHolder = !localEntry.isDirectory && _discoveryData->_syncOptions._vfs->isDehydratedPlaceholder(_discoveryData->_localDir + path._local);
 
         // either correct availability, or a result with error if the folder is new or otherwise has no availability set yet
-        const auto folderAvailability = localEntry.isDirectory ? _discoveryData->_syncOptions._vfs->availability(path._local) : Vfs::AvailabilityError::NoSuchItem;
+        const auto folderAvailability = localEntry.isDirectory ? _discoveryData->_syncOptions._vfs->availability(path._local) : Vfs::AvailabilityResult(Vfs::AvailabilityError::NoSuchItem);
 
-        const auto folderPinState = localEntry.isDirectory ? _discoveryData->_syncOptions._vfs->pinState(path._local) : PinState::Unspecified;
+        const auto folderPinState = localEntry.isDirectory ? _discoveryData->_syncOptions._vfs->pinState(path._local) : Optional<PinStateEnums::PinState>(PinState::Unspecified);
 
-        if (!isFilePlaceHolder && !folderAvailability && !folderPinState) {
+        if (!isFilePlaceHolder && !folderAvailability.isValid() && !folderPinState.isValid()) {
             // not a file placeholder and not a synced folder placeholder (new local folder)
             return;
         }
 
-        const auto isFolderPinStateOnlineOnly = (folderPinState && *folderPinState == PinState::OnlineOnly);
+        const auto isFolderPinStateOnlineOnly = (folderPinState.isValid() && *folderPinState == PinState::OnlineOnly);
 
-        const auto isFolderAvailabilityOnlineOnly = (folderAvailability && *folderAvailability == VfsItemAvailability::OnlineOnly);
+        const auto isFolderAvailabilityOnlineOnly = (folderAvailability.isValid() && *folderAvailability == VfsItemAvailability::OnlineOnly);
 
         // a folder is considered online-only if: no files are hydrated, or, if it's an empty folder
         const auto isOnlineOnlyFolder = isFolderAvailabilityOnlineOnly || !folderAvailability && isFolderPinStateOnlineOnly;
 
         if (!isFilePlaceHolder && !isOnlineOnlyFolder) {
-            if (localEntry.isDirectory && folderAvailability && !isOnlineOnlyFolder) {
+            if (localEntry.isDirectory && folderAvailability.isValid() && !isOnlineOnlyFolder) {
                 // a VFS folder but is not online0only (has some files hydrated)
                 qCInfo(lcDisco) << "Virtual directory without db entry for" << path._local << "but it contains hydrated file(s), so let's keep it and reupload.";
                 emit _discoveryData->addErrorToGui(SyncFileItem::SoftError, tr("Conflict when uploading some files to a folder. Those, conflicted, are going to get cleared!"), path._local);
