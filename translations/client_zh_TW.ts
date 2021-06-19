@@ -1827,7 +1827,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>伺服器回傳了錯誤的內容長度</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="359"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="361"/>
         <source>Connection Timeout</source>
         <translation>連線逾時</translation>
     </message>
@@ -3183,7 +3183,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateDownloadFile</name>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="400"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="402"/>
         <source>File %1 can not be downloaded because encryption information is missing.</source>
         <translation>%1 檔案因為缺少加密資訊而無法下載。</translation>
     </message>
@@ -3193,43 +3193,43 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>%1 檔案因為缺少加密資訊而無法下載。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="418"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1029"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="420"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1031"/>
         <source>File has changed since discovery</source>
         <translation>尋找的過程中檔案已經被更改</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="530"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="532"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
         <translation>檔案 %1 無法被下載，因為本機檔案名稱有衝突！</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="444"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="446"/>
         <source>File %1 cannot be downloaded because of a local file name clash!</source>
         <translation>檔案 %1 無法被下載，因為本機檔案名稱有衝突！</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="582"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="584"/>
         <source>The download would reduce free local disk space below the limit</source>
         <translation>下載將會減少剩餘的本機磁碟空間，使其低於限制</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="586"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="588"/>
         <source>Free space on disk is less than %1</source>
         <translation>可用的磁碟空間已經少於 %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="709"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="711"/>
         <source>File was deleted from server</source>
         <translation>檔案已從伺服器刪除</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="776"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="778"/>
         <source>The file could not be downloaded completely.</source>
         <translation>檔案下載無法完成。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="783"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="785"/>
         <source>The downloaded file is empty despite that the server announced it should have been %1.</source>
         <translation>儘管伺服器宣告其應為 %1，但下載的檔案為空。</translation>
     </message>
@@ -3239,12 +3239,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>已下載的檔案為空，但伺服器表示其應為 %1。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="974"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="976"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
         <translation>檔案 %1 無法儲存，因為本機檔案名稱有衝突！</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1094"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1096"/>
         <source>Error writing metadata to the database</source>
         <translation>將詮釋資料寫入到資料庫時發生錯誤</translation>
     </message>

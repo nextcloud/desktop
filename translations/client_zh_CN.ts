@@ -291,7 +291,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="85"/>
         <source>You seem to have the Virtual Files feature enabled on this folder. At  the moment, it is not possible to implicitly download virtual files that are end-to-end encrypted. To get the best experience with Virtual Files and End-to-End Encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>您似乎在此文件夹上启用了虚拟文件功能。目前，不可能隐式下载端到端加密的虚拟文件。为了获得虚拟文件和端到端加密的最佳体验，请确保加密文件夹被标记为“始终在本地可用”。  </translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="93"/>
@@ -1818,7 +1818,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>服务器返回了错误的内容长度</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="359"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="361"/>
         <source>Connection Timeout</source>
         <translation>连接超时</translation>
     </message>
@@ -3165,7 +3165,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateDownloadFile</name>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="400"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="402"/>
         <source>File %1 can not be downloaded because encryption information is missing.</source>
         <translation>由于加密信息丢失，文件 %1 无法下载。</translation>
     </message>
@@ -3175,43 +3175,43 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>文件 %1 无法被下载，因为加密信息丢失。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="418"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1029"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="420"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1031"/>
         <source>File has changed since discovery</source>
         <translation>自从发现文件以来，它已经被修改了</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="530"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="532"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
         <translation>由于本地文件名冲突，文件 %1 无法下载。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="444"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="446"/>
         <source>File %1 cannot be downloaded because of a local file name clash!</source>
         <translation>文件 %1 无法被下载，因为一个本地文件名冲突！</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="582"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="584"/>
         <source>The download would reduce free local disk space below the limit</source>
         <translation>下载将减少低于限制的空闲本地磁盘空间</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="586"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="588"/>
         <source>Free space on disk is less than %1</source>
         <translation>空闲磁盘空间少于 %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="709"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="711"/>
         <source>File was deleted from server</source>
         <translation>已从服务器删除文件</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="776"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="778"/>
         <source>The file could not be downloaded completely.</source>
         <translation>文件无法完整下载。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="783"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="785"/>
         <source>The downloaded file is empty despite that the server announced it should have been %1.</source>
         <translation>虽然服务器宣称已完成 %1，但实际下载文件为空。</translation>
     </message>
@@ -3221,12 +3221,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>已下载的文件为空，但是服务器说它应该是 %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="974"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="976"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
         <translation>由于本地文件名冲突，文件 %1 无法保存。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1094"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1096"/>
         <source>Error writing metadata to the database</source>
         <translation>向数据库写入元数据错误</translation>
     </message>
@@ -4646,12 +4646,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/vfs/cfapi/vfs_cfapi.cpp" line="328"/>
         <source>Download of end-to-end encrypted file failed</source>
-        <translation type="unfinished"/>
+        <translation>下载端到端加密文件失败 </translation>
     </message>
     <message>
         <location filename="../src/libsync/vfs/cfapi/vfs_cfapi.cpp" line="329"/>
         <source>It seems that you are trying to download a virtual file that is end-to-end encrypted. Implicitly downloading such files is not supported at the moment. To workaround this issue, go to the settings and mark the encrypted folder with &quot;Make always available locally&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>你似乎正尝试下载一个端到端加密的虚拟文件。目前不支持隐式下载此类文件。要解决此问题，请进入设置，并将加密文件夹标记为“始终在本地可用”。 </translation>
     </message>
 </context>
 <context>

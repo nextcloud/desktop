@@ -291,7 +291,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="85"/>
         <source>You seem to have the Virtual Files feature enabled on this folder. At  the moment, it is not possible to implicitly download virtual files that are end-to-end encrypted. To get the best experience with Virtual Files and End-to-End Encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Parece que o recurso Arquivos virtuais está ativado nesta pasta. No momento, não é possível baixar implicitamente arquivos virtuais criptografados de ponta a ponta. Para obter a melhor experiência com arquivos virtuais e criptografia de ponta a ponta, certifique-se de que a pasta criptografada esteja marcada com &quot;Tornar sempre disponível localmente&quot;. </translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="93"/>
@@ -1827,7 +1827,7 @@ Se isso foi um acidente e você decidir manter seus arquivos, eles serão sincro
         <translation>O servidor retornou um conteúdo errado</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="359"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="361"/>
         <source>Connection Timeout</source>
         <translation>Tempo Limite de Conexão Atingido</translation>
     </message>
@@ -3183,7 +3183,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
 <context>
     <name>OCC::PropagateDownloadFile</name>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="400"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="402"/>
         <source>File %1 can not be downloaded because encryption information is missing.</source>
         <translation>O arquivo %1 não pode ser baixado porque a informação de criptografia está faltando.</translation>
     </message>
@@ -3193,43 +3193,43 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <translation>O arquivo %1 não pode ser baixado porque está faltando informações de criptografia.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="418"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1029"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="420"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1031"/>
         <source>File has changed since discovery</source>
         <translation>O arquivo foi alterado desde a descoberta</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="530"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="532"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
         <translation>O arquivo %1 não pode ser baixado devido a um conflito local no nome do arquivo!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="444"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="446"/>
         <source>File %1 cannot be downloaded because of a local file name clash!</source>
         <translation>O arquivo %1 não pode ser baixado devido a um conflito local no nome do arquivo!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="582"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="584"/>
         <source>The download would reduce free local disk space below the limit</source>
         <translation>O download reduziria o espaço livre no disco local abaixo do limite</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="586"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="588"/>
         <source>Free space on disk is less than %1</source>
         <translation>O espaço livre no disco é inferior a %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="709"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="711"/>
         <source>File was deleted from server</source>
         <translation>O arquivo foi excluído do servidor</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="776"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="778"/>
         <source>The file could not be downloaded completely.</source>
         <translation>O arquivo não pôde ser baixado completamente.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="783"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="785"/>
         <source>The downloaded file is empty despite that the server announced it should have been %1.</source>
         <translation>O arquivo baixado está vazio apesar do servidor ter anunciado que ele deveria ter %1.</translation>
     </message>
@@ -3239,12 +3239,12 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <translation>O arquivo baixado está vazio, mas o servidor disse que deveria ser %1.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="974"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="976"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
         <translation>O arquivo %1 não pôde ser salvo devido a um conflito com um nome de arquivo local!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1094"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1096"/>
         <source>Error writing metadata to the database</source>
         <translation>Ocorreu um erro ao escrever metadados no banco de dados</translation>
     </message>
@@ -4664,12 +4664,12 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/libsync/vfs/cfapi/vfs_cfapi.cpp" line="328"/>
         <source>Download of end-to-end encrypted file failed</source>
-        <translation type="unfinished"/>
+        <translation>Falha ao baixar o arquivo criptografado ponta-a-ponta</translation>
     </message>
     <message>
         <location filename="../src/libsync/vfs/cfapi/vfs_cfapi.cpp" line="329"/>
         <source>It seems that you are trying to download a virtual file that is end-to-end encrypted. Implicitly downloading such files is not supported at the moment. To workaround this issue, go to the settings and mark the encrypted folder with &quot;Make always available locally&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Parece que você está tentando baixar um arquivo virtual criptografado de ponta a ponta. O download implícito de tais arquivos não é suportado no momento. Para contornar esse problema, vá para as configurações e marque a pasta criptografada com &quot;Tornar sempre disponível localmente&quot;. </translation>
     </message>
 </context>
 <context>
