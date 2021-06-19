@@ -36,6 +36,7 @@ jobs:
 
       - name: update-repo-before-commit
         run: |
+          set -x
           git status
           git stash
           git pull --ff-only origin
