@@ -527,7 +527,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1086"/>
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
-        <translation type="unfinished"/>
+        <translation>Tjenerversjon %1 er utdatert og ikke støttet! Fortsett på egen risiko!</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1088"/>
@@ -739,12 +739,12 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/application.cpp" line="146"/>
         <source>Quit</source>
-        <translation type="unfinished"/>
+        <translation>Avslutt</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="147"/>
         <source>Continue</source>
-        <translation type="unfinished"/>
+        <translation>Fortsett</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="311"/>
@@ -811,7 +811,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="14"/>
         <source>Sync Conflict</source>
-        <translation type="unfinished"/>
+        <translation>Synkroniseringskonflikt</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="20"/>
@@ -923,7 +923,9 @@ This action will abort any currently running synchronization.</source>
         <source>Moving file failed:
 
 %1</source>
-        <translation type="unfinished"/>
+        <translation>Kunne ikke flytte filen
+
+%1</translation>
     </message>
 </context>
 <context>
@@ -1003,7 +1005,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="318"/>
         <source>Error while reading directory %1</source>
-        <translation type="unfinished"/>
+        <translation>Kunne ikke lese katalogen %1</translation>
     </message>
 </context>
 <context>
@@ -1072,12 +1074,12 @@ This can be an issue with your OpenSSL libraries.</source>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="215"/>
         <source>Reopen Browser</source>
-        <translation type="unfinished"/>
+        <translation>Gjenåpne nettleser</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="218"/>
         <source>Copy Link</source>
-        <translation type="unfinished"/>
+        <translation>Kopier lenke</translation>
     </message>
 </context>
 <context>
@@ -1804,7 +1806,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>Serveren returnerte feil content-range</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="359"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="361"/>
         <source>Connection Timeout</source>
         <translation>Tidsavbrudd ved tilkobling</translation>
     </message>
@@ -3144,7 +3146,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateDownloadFile</name>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="400"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="402"/>
         <source>File %1 can not be downloaded because encryption information is missing.</source>
         <translation type="unfinished"/>
     </message>
@@ -3154,43 +3156,43 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="418"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1029"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="420"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1031"/>
         <source>File has changed since discovery</source>
         <translation>Filen er endret siden den ble oppdaget</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="530"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="532"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
         <translation>Fil %1 kan ikke lastes ned på grunn av lokalt sammenfall av filnavn!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="444"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="446"/>
         <source>File %1 cannot be downloaded because of a local file name clash!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="582"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="584"/>
         <source>The download would reduce free local disk space below the limit</source>
         <translation>Nedlastingen ville redusert ledig lokal diskplass til under grensen</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="586"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="588"/>
         <source>Free space on disk is less than %1</source>
         <translation>Ledig plass på disk er mindre enn %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="709"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="711"/>
         <source>File was deleted from server</source>
         <translation>Filen ble slettet fra serveren</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="776"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="778"/>
         <source>The file could not be downloaded completely.</source>
         <translation>Hele filen kunne ikke lastes ned.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="783"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="785"/>
         <source>The downloaded file is empty despite that the server announced it should have been %1.</source>
         <translation type="unfinished"/>
     </message>
@@ -3200,12 +3202,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="974"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="976"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
         <translation>Fil %1 kan ikke lagres på grunn av lokal konflikt med filnavn.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1094"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1096"/>
         <source>Error writing metadata to the database</source>
         <translation>Feil ved skriving av metadata til databasen</translation>
     </message>
