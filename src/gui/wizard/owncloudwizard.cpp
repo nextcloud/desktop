@@ -178,7 +178,7 @@ DetermineAuthTypeJob::AuthType OwncloudWizard::authType() const
 void OwncloudWizard::setAuthType(DetermineAuthTypeJob::AuthType type)
 {
     _authType = type;
-    _setupPage->setAuthType(type);
+    _setupPage->setAuthType();
     if (type == DetermineAuthTypeJob::AuthType::OAuth) {
         _credentialsPage = _oauthCredsPage;
     } else { // try Basic auth even for "Unknown"

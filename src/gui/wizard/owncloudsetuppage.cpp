@@ -225,7 +225,7 @@ bool OwncloudSetupPage::validatePage()
     }
 }
 
-void OwncloudSetupPage::setAuthType(DetermineAuthTypeJob::AuthType type)
+void OwncloudSetupPage::setAuthType()
 {
     _authTypeKnown = true;
     stopSpinner();

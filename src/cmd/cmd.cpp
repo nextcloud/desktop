@@ -114,7 +114,7 @@ void selectiveSyncFixup(OCC::SyncJournalDb *journal, const QStringList &newList)
 }
 
 
-void sync(const SyncCTX &ctx, int restartCount)
+void sync(const SyncCTX &ctx)
 {
     QStringList selectiveSyncList;
     if (!ctx.options.unsyncedfolders.isEmpty()) {
@@ -537,7 +537,7 @@ int main(int argc, char **argv)
 
             // much lower age than the default since this utility is usually made to be run right after a change in the tests
             SyncEngine::minimumFileAgeForUpload = std::chrono::milliseconds(0);
-            sync(ctx, 0);
+            sync(ctx);
         });
         userJob->start();
     });

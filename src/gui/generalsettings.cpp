@@ -51,7 +51,9 @@ GeneralSettings::GeneralSettings(QWidget *parent)
 
     connect(_ui->desktopNotificationsCheckBox, &QAbstractButton::toggled,
         this, &GeneralSettings::slotToggleOptionalDesktopNotifications);
+#ifdef Q_OS_WIN
     connect(_ui->showInExplorerNavigationPaneCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::slotShowInExplorerNavigationPane);
+#endif
 
     reloadConfig();
     loadMiscSettings();
@@ -302,15 +304,15 @@ void GeneralSettings::slotToggleOptionalDesktopNotifications(bool enable)
     cfgFile.setOptionalDesktopNotifications(enable);
 }
 
+#ifdef Q_OS_WIN
 void GeneralSettings::slotShowInExplorerNavigationPane(bool checked)
 {
-#ifdef Q_OS_WIN
     ConfigFile cfgFile;
     cfgFile.setShowInExplorerNavigationPane(checked);
     // Now update the registry with the change.
     FolderMan::instance()->navigationPaneHelper().setShowInExplorerNavigationPane(checked);
-#endif
 }
+#endif
 
 void GeneralSettings::slotIgnoreFilesEditor()
 {

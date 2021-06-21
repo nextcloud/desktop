@@ -46,7 +46,9 @@ private slots:
     void saveMiscSettings();
     void slotToggleLaunchOnStartup(bool);
     void slotToggleOptionalDesktopNotifications(bool);
+#ifdef Q_OS_WIN
     void slotShowInExplorerNavigationPane(bool);
+#endif
     void slotUpdateInfo();
     void slotUpdateChannelChanged(int index);
     void slotIgnoreFilesEditor();

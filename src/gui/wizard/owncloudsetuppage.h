@@ -53,7 +53,7 @@ public:
     QString localFolder() const;
     void setRemoteFolder(const QString &remoteFolder);
     void setMultipleFoldersExist(bool exist);
-    void setAuthType(DetermineAuthTypeJob::AuthType type);
+    void setAuthType();
 
 public slots:
     void setErrorString(const QString &);
