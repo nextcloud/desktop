@@ -50,20 +50,17 @@ bool LockWatcher::contains(const QString &path)
 
 void LockWatcher::checkFiles()
 {
+    // copy as emit fileUnlocked might trigger a new insert
+    const auto watchedPathsCopy = _watchedPaths;
     QSet<QString> unlocked;
-
-    for (auto it = _watchedPaths.cbegin(); it != _watchedPaths.cend(); ++it) {
+    for (auto it = watchedPathsCopy.cbegin(); it != watchedPathsCopy.cend(); ++it) {
         if (!FileSystem::isFileLocked(it.key(), it.value())) {
             qCInfo(lcLockWatcher) << "Lock of" << it.key() << "was released";
             emit fileUnlocked(it.key());
             unlocked.insert(it.key());
         }
     }
-
-    // Doing it this way instead of with a QMutableSetIterator
-    // ensures that calling back into addFile from connected
-    // slots isn't a problem.
-    for (const auto &removed : unlocked) {
+    for (const auto &removed : qAsConst(unlocked)) {
         _watchedPaths.remove(removed);
     }
 }
