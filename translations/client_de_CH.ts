@@ -1081,107 +1081,107 @@ Falls dies ein Missgeschick war und du dich zum Behalten der Datei entscheidest,
 <context>
     <name>OCC::FolderMan</name>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="356"/>
+        <location filename="../src/gui/folderman.cpp" line="354"/>
         <source>Could not reset folder state</source>
         <translation>Ordnerzustand konnte nicht zurückgesetzt werden</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="357"/>
+        <location filename="../src/gui/folderman.cpp" line="355"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
         <translation>Ein altes Synchronisations-Journal &apos;%1&apos; wurde gefunden, konnte jedoch nicht entfernt werden. Bitte stelle sicher, dass keine Anwendung es verwendet.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1145"/>
+        <location filename="../src/gui/folderman.cpp" line="1143"/>
         <source> (backup)</source>
         <translation>(Backup)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1150"/>
+        <location filename="../src/gui/folderman.cpp" line="1148"/>
         <source> (backup %1)</source>
         <translation>(Backup %1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1328"/>
+        <location filename="../src/gui/folderman.cpp" line="1326"/>
         <source>Undefined State.</source>
         <translation>Undefinierter Zustand.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1331"/>
+        <location filename="../src/gui/folderman.cpp" line="1329"/>
         <source>Waiting to start syncing.</source>
         <translation>Warten auf Beginn der Synchronisation</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1334"/>
+        <location filename="../src/gui/folderman.cpp" line="1332"/>
         <source>Preparing for sync.</source>
         <translation>Synchronisation wird vorbereitet.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1337"/>
+        <location filename="../src/gui/folderman.cpp" line="1335"/>
         <source>Sync is running.</source>
         <translation>Synchronisation läuft.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1342"/>
+        <location filename="../src/gui/folderman.cpp" line="1340"/>
         <source>Sync was successful, unresolved conflicts.</source>
         <translation>Synchronisation war erfolgreich, ungelöste Konflikte. </translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1344"/>
+        <location filename="../src/gui/folderman.cpp" line="1342"/>
         <source>Last Sync was successful.</source>
         <translation>Die letzte Synchronisation war erfolgreich.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1350"/>
+        <location filename="../src/gui/folderman.cpp" line="1348"/>
         <source>Setup Error.</source>
         <translation>Installationsfehler.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1353"/>
+        <location filename="../src/gui/folderman.cpp" line="1351"/>
         <source>User Abort.</source>
         <translation>Benutzer-Abbruch</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1356"/>
+        <location filename="../src/gui/folderman.cpp" line="1354"/>
         <source>Sync is paused.</source>
         <translation>Synchronisation wurde angehalten.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1362"/>
+        <location filename="../src/gui/folderman.cpp" line="1360"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (Synchronisation ist pausiert)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1370"/>
+        <location filename="../src/gui/folderman.cpp" line="1368"/>
         <source>No valid folder selected!</source>
         <translation>Keinen gültigen Ordner ausgewählt!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1382"/>
+        <location filename="../src/gui/folderman.cpp" line="1380"/>
         <source>The selected path does not exist!</source>
         <translation>Der gewählte Pfad existiert nicht!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1386"/>
+        <location filename="../src/gui/folderman.cpp" line="1384"/>
         <source>The selected path is not a folder!</source>
         <translation>Der gewählte Pfad ist kein Verzeichnis!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1390"/>
+        <location filename="../src/gui/folderman.cpp" line="1388"/>
         <source>You have no permission to write to the selected folder!</source>
         <translation>Sie sind nicht berechtigt, in diesen Ordner zu schreiben!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1457"/>
+        <location filename="../src/gui/folderman.cpp" line="1455"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
         <translation>Es exisitiert bereits eine Synchronisation vom Server zu diesem lokalen Ordner. Bitte wähle ein anderes lokales Verzeichnis!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1437"/>
+        <location filename="../src/gui/folderman.cpp" line="1435"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
         <translation>Das lokale Verzeichnis %1 enthält schon ein Verzeichnis, das schon mit einer anderen Verbindung synchronisiert wird. Bitte wähle ein anderes Verzeichnis!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1443"/>
+        <location filename="../src/gui/folderman.cpp" line="1441"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation>Das lokale Verzeichnis %1 liegt innerhalb eines Verzeichnisses, das schon synchronisiert wird. Bitte wähle ein anderes Verzeichnis! </translation>
     </message>
@@ -1900,53 +1900,53 @@ Beachten Sie, dass Kommandozeilenoptionen zum Logging diese Einstellungen übers
 <context>
     <name>OCC::NSISUpdater</name>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="392"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="386"/>
         <source>New Version Available</source>
         <translation>Eine neue Version ist verfügbar.</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="398"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="392"/>
         <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Eine neue Version des %1 Clients ist verfügbar.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; steht zum Herunterladen bereit. Die installierte Version ist %3.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="411"/>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="462"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="405"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="456"/>
         <source>Skip this version</source>
         <translation>Diese Version auslassen</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="412"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="406"/>
         <source>Skip this time</source>
         <translation>Dieses Mal überspringen</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="413"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="407"/>
         <source>Get update</source>
         <translation>Update durchführen</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="443"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="437"/>
         <source>Update Failed</source>
         <translation>Update fehlgeschlagen</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="449"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="443"/>
         <source>&lt;p&gt;A new version of the %1 Client is available but the updating process failed.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; has been downloaded. The installed version is %3.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Eine neue Version des %1 Clients ist verfügbar, aber der Aktualisierungs-Prozess ist fehlgeschlagen.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; wurde heruntergeladen. Die installierte Version ist %3.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="463"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="457"/>
         <source>Ask again later</source>
         <translation>Später noch einmal fragen</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="464"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="458"/>
         <source>Restart and update</source>
         <translation>Neustarten und aktualisieren</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="465"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="459"/>
         <source>Update manually</source>
         <translation>Manuell aktualisieren</translation>
     </message>
@@ -2169,58 +2169,58 @@ Empfangene Daten: %2</translation>
 <context>
     <name>OCC::OCUpdater</name>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="109"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="108"/>
         <source>New %1 Update Ready</source>
         <translation>Neues %1 Update verfügbar</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="110"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="109"/>
         <source>A new update for %1 is about to be installed. The updater may ask
 for additional privileges during the process.</source>
         <translation>Ein neues Update für %1 wird installiert. Während des Updatevorganges werden Sie eventuell gefragt zusätzliche Rechte im Rahmen des Updatevorganges zu gewähren.</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="153"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="152"/>
         <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; to download the update manually.</source>
         <translation>Aktualisierung kann nicht herunter geladen werden. Bitte klicke &lt;a href=&apos;%1&apos;&gt;hier&lt;/a&gt; um die Aktualisierung manuell herunter zu laden.</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="155"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="154"/>
         <source>Could not check for new updates.</source>
         <translation>Auf neue Aktualisierungen kann nicht geprüft werden.</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="149"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="148"/>
         <source>Downloading %1. Please wait...</source>
         <translation>Herunterladen von %1. Bitte warten…</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="151"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="150"/>
         <source>%1 available. Restart application to start the update.</source>
         <translation>%1 ist verfügbar. Anwendung zum Start der Aktualisierung neu starten.</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="157"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="156"/>
         <source>New %1 available. Please use the system&apos;s update tool to install it.</source>
         <translation>Aktualisierung von %1 verfügbar. Bitte nutzen Sie zur Installation das Systemaktualisierungstool.</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="159"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="158"/>
         <source>Checking update server...</source>
         <translation>Update-Server wird überprüft…</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="161"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="160"/>
         <source>Update status is unknown: Did not check for new updates.</source>
         <translation>Updatestatus unbekannt: Auf neue Updates wurde nicht geprüft.</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="165"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="164"/>
         <source>No updates available. Your installation is at the latest version.</source>
         <translation>Keine Updates verfügbar. Ihre Installation ist die aktuelle Version.</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="184"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="183"/>
         <source>Update Check</source>
         <translation>Aktualisierungsüberprüfung</translation>
     </message>

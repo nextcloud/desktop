@@ -1079,107 +1079,107 @@ Nếu đây là sự cố và bạn muốn giữ lại các tệp tin của mìn
 <context>
     <name>OCC::FolderMan</name>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="356"/>
+        <location filename="../src/gui/folderman.cpp" line="354"/>
         <source>Could not reset folder state</source>
         <translation>Không thể đặt lại trạng thái thư mục</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="357"/>
+        <location filename="../src/gui/folderman.cpp" line="355"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
         <translation>Một nhật ký đồng bộ cũ &apos;%1&apos; được tìm thấy, nhưng không thể xóa. Vui lòng chắc chắn rằng không có ứng dụng nào đang sử dụng nó.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1145"/>
+        <location filename="../src/gui/folderman.cpp" line="1143"/>
         <source> (backup)</source>
         <translation> (sao lưu)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1150"/>
+        <location filename="../src/gui/folderman.cpp" line="1148"/>
         <source> (backup %1)</source>
         <translation> (sao lưu %1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1328"/>
+        <location filename="../src/gui/folderman.cpp" line="1326"/>
         <source>Undefined State.</source>
         <translation>Tình trạng không xác định.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1331"/>
+        <location filename="../src/gui/folderman.cpp" line="1329"/>
         <source>Waiting to start syncing.</source>
         <translation>Đang đợi để bắt đầu đồng bộ.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1334"/>
+        <location filename="../src/gui/folderman.cpp" line="1332"/>
         <source>Preparing for sync.</source>
         <translation>Chuẩn bị đồng bộ.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1337"/>
+        <location filename="../src/gui/folderman.cpp" line="1335"/>
         <source>Sync is running.</source>
         <translation>Đang đồng bộ.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1342"/>
+        <location filename="../src/gui/folderman.cpp" line="1340"/>
         <source>Sync was successful, unresolved conflicts.</source>
         <translation>Đồng bộ thành công, chưa giải quyết xung đột.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1344"/>
+        <location filename="../src/gui/folderman.cpp" line="1342"/>
         <source>Last Sync was successful.</source>
         <translation> Lần đồng bộ sau cùng thành công</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1350"/>
+        <location filename="../src/gui/folderman.cpp" line="1348"/>
         <source>Setup Error.</source>
         <translation>Thiết lập lỗi.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1353"/>
+        <location filename="../src/gui/folderman.cpp" line="1351"/>
         <source>User Abort.</source>
         <translation>Người dùng hủy bỏ.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1356"/>
+        <location filename="../src/gui/folderman.cpp" line="1354"/>
         <source>Sync is paused.</source>
         <translation>Đồng bộ đang được tạm dừng</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1362"/>
+        <location filename="../src/gui/folderman.cpp" line="1360"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (Đồng bộ được tạm dừng)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1370"/>
+        <location filename="../src/gui/folderman.cpp" line="1368"/>
         <source>No valid folder selected!</source>
         <translation>Không có thư mục được lựa chọn!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1382"/>
+        <location filename="../src/gui/folderman.cpp" line="1380"/>
         <source>The selected path does not exist!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1386"/>
+        <location filename="../src/gui/folderman.cpp" line="1384"/>
         <source>The selected path is not a folder!</source>
         <translation>Đường dẫn lựa chọn không phải thư mục!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1390"/>
+        <location filename="../src/gui/folderman.cpp" line="1388"/>
         <source>You have no permission to write to the selected folder!</source>
         <translation>Bạn không có quyền ghi vào thư mục!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1457"/>
+        <location filename="../src/gui/folderman.cpp" line="1455"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
         <translation>Thư mục đã được đồng bộ từ máy chủ. Vui lòng chọn thư mục khác!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1437"/>
+        <location filename="../src/gui/folderman.cpp" line="1435"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
         <translation>Thư mục %1 đã chứa 1 thư mục được sử dụng trong kết nối đồng bộ hóa. Vui lòng chọn thư mục khác!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1443"/>
+        <location filename="../src/gui/folderman.cpp" line="1441"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation>Thư mục %1 nằm trong một thư mục được sử dụng trong kết nối đồng bộ hóa. Vui lòng chọn thư mục khác!</translation>
     </message>
@@ -1894,53 +1894,53 @@ Note that using any logging command line options will override the settings.</so
 <context>
     <name>OCC::NSISUpdater</name>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="392"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="386"/>
         <source>New Version Available</source>
         <translation>Đã có phiên bản mới</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="398"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="392"/>
         <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Có phiên bản mới của máy khách %1 đã sẵn sàng.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; đã sẵn sàng để tải về. Phiên bản đã cài đặt là %3.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="411"/>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="462"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="405"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="456"/>
         <source>Skip this version</source>
         <translation>Bỏ qua phiên bản này</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="412"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="406"/>
         <source>Skip this time</source>
         <translation>Bỏ qua lần này</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="413"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="407"/>
         <source>Get update</source>
         <translation>Lấy bản cập nhật</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="443"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="437"/>
         <source>Update Failed</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="449"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="443"/>
         <source>&lt;p&gt;A new version of the %1 Client is available but the updating process failed.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; has been downloaded. The installed version is %3.&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="463"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="457"/>
         <source>Ask again later</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="464"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="458"/>
         <source>Restart and update</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="465"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="459"/>
         <source>Update manually</source>
         <translation type="unfinished"/>
     </message>
@@ -2160,58 +2160,58 @@ Received data: %2</source>
 <context>
     <name>OCC::OCUpdater</name>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="109"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="108"/>
         <source>New %1 Update Ready</source>
         <translation>Bản cập nhật mới %1 sẵn sàng</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="110"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="109"/>
         <source>A new update for %1 is about to be installed. The updater may ask
 for additional privileges during the process.</source>
         <translation>Bản cập nhật mới cho %1 đã sẵn sàng. Các quyền bổ sung có thể được yêu cầu trong quá trình cài đặt.</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="153"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="152"/>
         <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; to download the update manually.</source>
         <translation>Không thể tải về bản cập nhật. Vui lòng bấm &lt;a href=&apos;%1&apos;&gt;vào đây&lt;/a&gt; để tải về thủ công.</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="155"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="154"/>
         <source>Could not check for new updates.</source>
         <translation>Không thể xác nhận bản cập nhật mới.</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="149"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="148"/>
         <source>Downloading %1. Please wait...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="151"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="150"/>
         <source>%1 available. Restart application to start the update.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="157"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="156"/>
         <source>New %1 available. Please use the system&apos;s update tool to install it.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="159"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="158"/>
         <source>Checking update server...</source>
         <translation>Kiểm tra cập nhật máy chủ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="161"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="160"/>
         <source>Update status is unknown: Did not check for new updates.</source>
         <translation>Trạng thái cập nhật không xác định: Không thể xác nhận phiên bản cập nhật mới.</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="165"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="164"/>
         <source>No updates available. Your installation is at the latest version.</source>
         <translation>Không có phiên bản mới. Phiên bản của bạn đang là phiên bản mới nhất.</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="184"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="183"/>
         <source>Update Check</source>
         <translation>Kiểm tra phiên bản mới</translation>
     </message>
