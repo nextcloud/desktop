@@ -81,7 +81,13 @@ private Q_SLOTS:
                 });
             });
         });
-        QTest::qWaitFor([this] { return _finished; });
+#ifdef Q_OS_LINUX
+        // As we have the skip condition on linux the wait might time out here.
+        bool ok = QTest::qWaitFor([this] { return _finished; });
+        Q_UNUSED(ok)
+#else
+        QVERIFY(QTest::qWaitFor([this] { return _finished; }));
+#endif
     }
 
     void testSetGet2()
