@@ -82,6 +82,7 @@ QVariant ProtocolItemModel::data(const QModelIndex &index, int role) const
             Q_UNREACHABLE();
             break;
         }
+        break;
     case Qt::DecorationRole:
         if (column == ProtocolItemRole::Action) {
             const auto status = item.status();
@@ -98,6 +99,7 @@ QVariant ProtocolItemModel::data(const QModelIndex &index, int role) const
                 //                return Theme::instance()->syncStateIcon(SyncResult::Success);
             }
         }
+        break;
     case Models::UnderlyingDataRole:
         switch (column) {
         case ProtocolItemRole::Time:
@@ -116,6 +118,7 @@ QVariant ProtocolItemModel::data(const QModelIndex &index, int role) const
             Q_UNREACHABLE();
             break;
         }
+        break;
     }
     return {};
 }
@@ -142,8 +145,8 @@ QVariant ProtocolItemModel::headerData(int section, Qt::Orientation orientation,
             case ProtocolItemRole::ColumnCount:
                 Q_UNREACHABLE();
                 break;
-            };
-
+            }
+            break;
         case Models::StringFormatWidthRole:
             switch (actionRole) {
             case ProtocolItemRole::Time:
@@ -162,7 +165,8 @@ QVariant ProtocolItemModel::headerData(int section, Qt::Orientation orientation,
                 Q_UNREACHABLE();
                 break;
             }
-        };
+            break;
+        }
     }
     return QAbstractTableModel::headerData(section, orientation, role);
 }

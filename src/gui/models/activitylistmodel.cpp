@@ -121,7 +121,8 @@ QVariant ActivityListModel::headerData(int section, Qt::Orientation orientation,
             case ActivityRole::ColumnCount:
                 Q_UNREACHABLE();
                 break;
-            };
+            }
+            break;
         case Models::StringFormatWidthRole:
             switch (actionRole) {
             case ActivityRole::Text:
@@ -136,7 +137,8 @@ QVariant ActivityListModel::headerData(int section, Qt::Orientation orientation,
                 Q_UNREACHABLE();
                 break;
             }
-        };
+            break;
+        }
     }
     return QAbstractTableModel::headerData(section, orientation, role);
 }
