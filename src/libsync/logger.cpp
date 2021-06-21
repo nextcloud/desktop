@@ -36,19 +36,17 @@
 namespace {
 constexpr int CrashLogSize = 20;
 
+#ifdef Q_OS_WIN
 bool isDebuggerPresent()
 {
-#ifdef Q_OS_WIN
     BOOL debugged;
     if (!CheckRemoteDebuggerPresent(GetCurrentProcess(), &debugged)) {
         const auto error = GetLastError();
         qDebug() << "Failed to detect debugger" << QString::fromWCharArray(_com_error(error).ErrorMessage());
     }
     return debugged;
-#else
-    return false;
-#endif
 }
+#endif
 }
 namespace OCC {
 

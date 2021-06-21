@@ -487,8 +487,6 @@ private:
     static void fromDisk(QDir &dir, FileInfo &templateFi);
 };
 
-static FileInfo &findOrCreateDirs(FileInfo &base, PathComponents components);
-
 
 /* Return the FileInfo for a conflict file for the specified relative filename */
 inline const FileInfo *findConflict(FileInfo &dir, const QString &filename)

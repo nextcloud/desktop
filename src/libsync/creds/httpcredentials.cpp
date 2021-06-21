@@ -38,6 +38,9 @@ Q_LOGGING_CATEGORY(lcHttpCredentials, "sync.credentials.http", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcHttpLegacyCredentials, "sync.credentials.http.legacy", QtInfoMsg)
 
 namespace {
+constexpr int CredentialVersion = 1;
+const char authenticationFailedC[] = "owncloud-authentication-failed";
+
 auto isOAuthC()
 {
     return QStringLiteral("oauth");
@@ -61,6 +64,16 @@ auto clientCertBundleKeyC()
 auto clientCertPasswordKeyC()
 {
     return QStringLiteral("clientsideCert/password");
+}
+
+auto CredentialVersionKey()
+{
+    return QStringLiteral("CredentialVersion");
+}
+
+const QString userC()
+{
+    return QStringLiteral("user");
 }
 }
 

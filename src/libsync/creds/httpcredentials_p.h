@@ -12,25 +12,12 @@
 #include <qt5keychain/keychain.h>
 
 namespace {
-constexpr int CredentialVersion = 1;
-auto CredentialVersionKey()
-{
-    return QStringLiteral("CredentialVersion");
-}
-
-const QString userC()
-{
-    return QStringLiteral("user");
-}
-const char authenticationFailedC[] = "owncloud-authentication-failed";
-
 void addSettingsToJob(QKeychain::Job *job)
 {
     auto settings = OCC::ConfigFile::settingsWithGroup(OCC::Theme::instance()->appName());
     settings->setParent(job); // make the job parent to make setting deleted properly
     job->setSettings(settings.release());
 }
-
 } // ns
 
 Q_DECLARE_LOGGING_CATEGORY(lcHttpLegacyCredentials)
