@@ -81,6 +81,10 @@ struct CmdOptions
 
 struct SyncCTX
 {
+    explicit SyncCTX(const CmdOptions &cmdOptions)
+        : options { cmdOptions }
+    {
+    }
     CmdOptions options;
     QUrl credentialFreeUrl;
     QString folder;
