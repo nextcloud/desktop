@@ -404,8 +404,6 @@ void Folder::createGuiLog(const QString &filename, LogStatus status, int count,
     const QString &renameTarget)
 {
     if (count > 0) {
-        Logger *logger = Logger::instance();
-
         QString file = QDir::toNativeSeparators(filename);
         QString text;
 
