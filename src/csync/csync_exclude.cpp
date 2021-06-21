@@ -202,7 +202,7 @@ static CSYNC_EXCLUDE_TYPE _csync_excluded_common(const QStringRef &path, bool ex
 
     /* Do not sync desktop.ini files anywhere in the tree. */
     const auto desktopIniFile = QStringLiteral("desktop.ini");
-    if (blen == static_cast<size_t>(desktopIniFile.length()) && bname.compare(desktopIniFile, Qt::CaseInsensitive) == 0) {
+    if (blen == static_cast<qsizetype>(desktopIniFile.length()) && bname.compare(desktopIniFile, Qt::CaseInsensitive) == 0) {
         return CSYNC_FILE_SILENTLY_EXCLUDED;
     }
 
