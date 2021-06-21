@@ -556,9 +556,9 @@ void FolderMan::slotScheduleAppRestart()
     qCInfo(lcFolderMan) << "Application restart requested!";
 }
 
-void FolderMan::slotSyncOnceFileUnlocks(const QString &path)
+void FolderMan::slotSyncOnceFileUnlocks(const QString &path, FileSystem::LockMode mode)
 {
-    _lockWatcher->addFile(path);
+    _lockWatcher->addFile(path, mode);
 }
 
 /*

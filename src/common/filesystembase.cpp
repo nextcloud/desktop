@@ -438,18 +438,19 @@ bool FileSystem::moveToTrash(const QString &fileName, QString *errorString)
 #endif
 }
 
-bool FileSystem::isFileLocked(const QString &fileName)
+bool FileSystem::isFileLocked(const QString &fileName, LockMode mode)
 {
 #ifdef Q_OS_WIN
     // Check if file exists
     const QString fName = longWinPath(fileName);
+    auto accessMode = mode == LockMode::Exclusive ? 0 : FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE;
     DWORD attr = GetFileAttributesW(reinterpret_cast<const wchar_t *>(fName.utf16()));
     if (attr != INVALID_FILE_ATTRIBUTES) {
         // Try to open the file with as much access as possible..
         HANDLE win_h = CreateFileW(
             reinterpret_cast<const wchar_t *>(fName.utf16()),
             GENERIC_READ | GENERIC_WRITE,
-            FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE,
+            accessMode,
             NULL, OPEN_EXISTING,
             FILE_ATTRIBUTE_NORMAL | FILE_FLAG_BACKUP_SEMANTICS,
             NULL);
@@ -460,6 +461,11 @@ bool FileSystem::isFileLocked(const QString &fileName)
             return true;
         } else {
             CloseHandle(win_h);
+        }
+    } else {
+        const auto error = GetLastError();
+        if (error != ERROR_FILE_NOT_FOUND && error != ERROR_PATH_NOT_FOUND) {
+            qCWarning(lcFileSystem()) << "GetFileAttributesW" << Utility::formatWinError(error);
         }
     }
 #else
@@ -521,3 +527,5 @@ QString FileSystem::pathtoUNC(const QString &str)
 }
 
 } // namespace OCC
+
+#include "moc_filesystembase.cpp"

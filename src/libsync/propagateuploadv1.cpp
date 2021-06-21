@@ -129,16 +129,18 @@ void PropagateUploadFileV1::startNextChunk()
     }
 
     const QString fileName = propagator()->fullLocalPath(_item->_file);
+    // If the file is currently locked, we want to retry the sync
+    // when it becomes available again.
+    const auto lockMode = propagator()->syncOptions().requiredLockMode();
+    if (FileSystem::isFileLocked(fileName, lockMode)) {
+        emit propagator()->seenLockedFile(fileName, lockMode);
+        abortWithError(SyncFileItem::SoftError, tr("File is locked"));
+        return;
+    }
     auto device = std::unique_ptr<UploadDevice>(new UploadDevice(
             fileName, chunkStart, currentChunkSize, &propagator()->_bandwidthManager));
     if (!device->open(QIODevice::ReadOnly)) {
         qCWarning(lcPropagateUploadV1) << "Could not prepare upload device: " << device->errorString();
-
-        // If the file is currently locked, we want to retry the sync
-        // when it becomes available again.
-        if (FileSystem::isFileLocked(fileName)) {
-            emit propagator()->seenLockedFile(fileName);
-        }
         // Soft error because this is likely caused by the user modifying his files while syncing
         abortWithError(SyncFileItem::SoftError, device->errorString());
         return;

@@ -61,8 +61,8 @@ private slots:
         }
         QVERIFY(QFile::exists(tmpFile));
 
-        QVERIFY(!FileSystem::isFileLocked(tmpFile));
-        watcher.addFile(tmpFile);
+        QVERIFY(!FileSystem::isFileLocked(tmpFile, FileSystem::LockMode::Shared));
+        watcher.addFile(tmpFile, FileSystem::LockMode::Shared);
         QVERIFY(watcher.contains(tmpFile));
 
         QEventLoop loop;
@@ -75,8 +75,8 @@ private slots:
 
 #ifdef Q_OS_WIN
         auto h = makeHandle(tmpFile, 0);
-        QVERIFY(FileSystem::isFileLocked(tmpFile));
-        watcher.addFile(tmpFile);
+        QVERIFY(FileSystem::isFileLocked(tmpFile, FileSystem::LockMode::Shared));
+        watcher.addFile(tmpFile, FileSystem::LockMode::Shared);
 
         count = 0;
         file.clear();
@@ -88,7 +88,7 @@ private slots:
         QVERIFY(watcher.contains(tmpFile));
 
         CloseHandle(h);
-        QVERIFY(!FileSystem::isFileLocked(tmpFile));
+        QVERIFY(!FileSystem::isFileLocked(tmpFile, FileSystem::LockMode::Shared));
 
         QThread::msleep(120);
         qApp->processEvents();

@@ -259,7 +259,7 @@ public slots:
      * Automatically detemines the folder that's responsible for the file.
      * See slotWatchedFileUnlocked().
      */
-    void slotSyncOnceFileUnlocks(const QString &path);
+    void slotSyncOnceFileUnlocks(const QString &path, FileSystem::LockMode mode);
 
     // slot to schedule an ETag job (from Folder only)
     void slotScheduleETagJob(const QString &alias, RequestEtagJob *job);

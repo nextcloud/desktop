@@ -948,8 +948,8 @@ void PropagateDownloadFile::downloadFinished()
         qCWarning(lcPropagateDownload) << QStringLiteral("Rename failed: %1 => %2").arg(_tmpFile.fileName()).arg(fn);
         // If the file is locked, we want to retry this sync when it
         // becomes available again, otherwise try again directly
-        if (FileSystem::isFileLocked(fn)) {
-            emit propagator()->seenLockedFile(fn);
+        if (FileSystem::isFileLocked(fn, FileSystem::LockMode::Exclusive)) {
+            emit propagator()->seenLockedFile(fn, FileSystem::LockMode::Exclusive);
         } else {
             propagator()->_anotherSyncNeeded = true;
         }

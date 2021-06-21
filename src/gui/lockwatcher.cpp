@@ -32,10 +32,10 @@ LockWatcher::LockWatcher(QObject *parent)
     _timer.start(check_frequency);
 }
 
-void LockWatcher::addFile(const QString &path)
+void LockWatcher::addFile(const QString &path, FileSystem::LockMode mode)
 {
     qCInfo(lcLockWatcher) << "Watching for lock of" << path << "being released";
-    _watchedPaths.insert(path);
+    _watchedPaths.insert(path, mode);
 }
 
 void LockWatcher::setCheckInterval(std::chrono::milliseconds interval)
@@ -52,16 +52,18 @@ void LockWatcher::checkFiles()
 {
     QSet<QString> unlocked;
 
-    foreach (const QString &path, _watchedPaths) {
-        if (!FileSystem::isFileLocked(path)) {
-            qCInfo(lcLockWatcher) << "Lock of" << path << "was released";
-            emit fileUnlocked(path);
-            unlocked.insert(path);
+    for (auto it = _watchedPaths.cbegin(); it != _watchedPaths.cend(); ++it) {
+        if (!FileSystem::isFileLocked(it.key(), it.value())) {
+            qCInfo(lcLockWatcher) << "Lock of" << it.key() << "was released";
+            emit fileUnlocked(it.key());
+            unlocked.insert(it.key());
         }
     }
 
     // Doing it this way instead of with a QMutableSetIterator
     // ensures that calling back into addFile from connected
     // slots isn't a problem.
-    _watchedPaths.subtract(unlocked);
+    for (const auto &removed : unlocked) {
+        _watchedPaths.remove(removed);
+    }
 }

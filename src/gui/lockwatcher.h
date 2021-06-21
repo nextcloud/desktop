@@ -15,6 +15,7 @@
 #pragma once
 
 #include "config.h"
+#include "filesystem.h"
 
 #include <QList>
 #include <QObject>
@@ -51,7 +52,7 @@ public:
      * If the file is not locked later on, the fileUnlocked signal will be
      * emitted once.
      */
-    void addFile(const QString &path);
+    void addFile(const QString &path, OCC::FileSystem::LockMode mode);
 
     /** Adjusts the default interval for checking whether the lock is still present */
     void setCheckInterval(std::chrono::milliseconds interval);
@@ -68,7 +69,7 @@ private slots:
     void checkFiles();
 
 private:
-    QSet<QString> _watchedPaths;
+    QMap<QString, FileSystem::LockMode> _watchedPaths;
     QTimer _timer;
 };
 }

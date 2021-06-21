@@ -168,7 +168,7 @@ signals:
      *
      * Forwarded from OwncloudPropagator::seenLockedFile.
      */
-    void seenLockedFile(const QString &fileName);
+    void seenLockedFile(const QString &fileName, FileSystem::LockMode mode);
 
 private slots:
     void slotFolderDiscovered(bool local, const QString &folder);
