@@ -25,7 +25,7 @@ class User : public QObject
     Q_PROPERTY(QUrl statusIcon READ statusIcon NOTIFY statusChanged)
     Q_PROPERTY(QString statusEmoji READ statusEmoji NOTIFY statusChanged)
     Q_PROPERTY(QString statusMessage READ statusMessage NOTIFY statusChanged)
-    Q_PROPERTY(QString desktopNotificationsAllowed READ isDesktopNotificationsAllowed NOTIFY desktopNotificationsAllowedChanged)
+    Q_PROPERTY(bool desktopNotificationsAllowed READ isDesktopNotificationsAllowed NOTIFY desktopNotificationsAllowedChanged)
     Q_PROPERTY(bool hasLocalFolder READ hasLocalFolder NOTIFY hasLocalFolderChanged)
     Q_PROPERTY(bool serverHasTalk READ serverHasTalk NOTIFY serverHasTalkChanged)
     Q_PROPERTY(QString avatar READ avatarUrl NOTIFY avatarChanged)
@@ -67,7 +67,7 @@ signals:
     void hasLocalFolderChanged();
     void serverHasTalkChanged();
     void avatarChanged();
-    void accountStateChanged(int state);
+    void accountStateChanged();
     void statusChanged();
     void desktopNotificationsAllowedChanged();
 
