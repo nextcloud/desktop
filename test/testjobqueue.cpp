@@ -24,7 +24,7 @@ public:
     {
     }
 
-    void start()
+    void start() override
     {
         QNetworkRequest req;
         req.setRawHeader("Depth", "0");
@@ -44,7 +44,7 @@ public:
     }
 
 protected:
-    bool finished()
+    bool finished() override
     {
         return true;
     }
