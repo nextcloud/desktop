@@ -140,7 +140,7 @@
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="56"/>
         <source>Logo</source>
-        <translation type="unfinished"/>
+        <translation>לוגו</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="65"/>
@@ -296,12 +296,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="93"/>
         <source>Don&apos;t encrypt folder</source>
-        <translation type="unfinished"/>
+        <translation>לא להצפין תיקייה</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="96"/>
         <source>Encrypt folder</source>
-        <translation type="unfinished"/>
+        <translation>הצפנת תיקייה</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="208"/>
@@ -383,7 +383,7 @@ Wait for the new sync, then encrypt it.</source>
         <location filename="../src/gui/accountsettings.cpp" line="446"/>
         <location filename="../src/gui/accountsettings.cpp" line="522"/>
         <source>Create new folder</source>
-        <translation type="unfinished"/>
+        <translation>יצירת תיקייה חדשה</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="452"/>
@@ -429,12 +429,12 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="573"/>
         <source>Enable virtual file support %1 …</source>
-        <translation type="unfinished"/>
+        <translation>הפעלת תמיכה וירטואלית בקבצים %1…</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="573"/>
         <source>(experimental)</source>
-        <translation type="unfinished"/>
+        <translation>(ניסיוני)</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="666"/>
@@ -568,7 +568,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1122"/>
         <source>Server configuration error: %1 at %2.</source>
-        <translation type="unfinished"/>
+        <translation>שגיאה בתצורת השרת: %1 ב־%2.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1133"/>
@@ -687,7 +687,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="35"/>
         <source>Certificate &amp; Key (pkcs12):</source>
-        <translation type="unfinished"/>
+        <translation>אישור ומפתח (pkcs12):</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="35"/>
@@ -707,7 +707,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="79"/>
         <source>An encrypted pkcs12 bundle is strongly recommended as a copy will be stored in the configuration file.</source>
-        <translation type="unfinished"/>
+        <translation>מאגד pkcs12 מוצפן מומלץ בחום כיוון שיישמר עותק בקובץ ההגדרות.</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.cpp" line="38"/>
@@ -740,12 +740,12 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/application.cpp" line="146"/>
         <source>Quit</source>
-        <translation type="unfinished"/>
+        <translation>יציאה</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="147"/>
         <source>Continue</source>
-        <translation type="unfinished"/>
+        <translation>המשך</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="311"/>
@@ -812,13 +812,13 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="14"/>
         <source>Sync Conflict</source>
-        <translation type="unfinished"/>
+        <translation>סתירת סנכרון</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="20"/>
         <location filename="../src/gui/conflictdialog.cpp" line="94"/>
         <source>Conflicting versions of %1.</source>
-        <translation type="unfinished"/>
+        <translation>גרסאות סותרות של %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="32"/>
@@ -828,13 +828,13 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="46"/>
         <source>Local version</source>
-        <translation type="unfinished"/>
+        <translation>גרסה מקומית</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="57"/>
         <location filename="../src/gui/conflictdialog.ui" line="165"/>
         <source>Click to open the file</source>
-        <translation type="unfinished"/>
+        <translation>לחיצה לפתיחת הקובץ</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="96"/>
@@ -846,12 +846,12 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/gui/conflictdialog.ui" line="103"/>
         <location filename="../src/gui/conflictdialog.ui" line="211"/>
         <source>0 byte</source>
-        <translation type="unfinished"/>
+        <translation>0 בתים</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="110"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Open local version&lt;/a&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;a href=&quot;%1&quot;&gt;פתיחת הגרסה המקומית&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="154"/>
@@ -861,38 +861,38 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="218"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Open server version&lt;/a&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;a href=&quot;%1&quot;&gt;פתיחת גרסת השרת&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="54"/>
         <location filename="../src/gui/conflictdialog.cpp" line="177"/>
         <source>Keep selected version</source>
-        <translation type="unfinished"/>
+        <translation>להשאיר את הגרסה שנבחרה</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="148"/>
         <source>Open local version</source>
-        <translation type="unfinished"/>
+        <translation>פתיחת הגרסה המקומית</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="156"/>
         <source>Open server version</source>
-        <translation type="unfinished"/>
+        <translation>פתיחת גרסת השרת</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="174"/>
         <source>Keep both versions</source>
-        <translation type="unfinished"/>
+        <translation>להשאיר את שתי הגרסאות</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="175"/>
         <source>Keep local version</source>
-        <translation type="unfinished"/>
+        <translation>להשאיר את הגרסה המקומית</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="176"/>
         <source>Keep server version</source>
-        <translation type="unfinished"/>
+        <translation>להשאיר את גרסת השרת</translation>
     </message>
 </context>
 <context>
@@ -910,7 +910,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="90"/>
         <source>Confirm deletion</source>
-        <translation type="unfinished"/>
+        <translation>אישור מחיקה</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="134"/>
@@ -924,7 +924,9 @@ This action will abort any currently running synchronization.</source>
         <source>Moving file failed:
 
 %1</source>
-        <translation type="unfinished"/>
+        <translation>העברת קובץ נכשלה:
+
+%1</translation>
     </message>
 </context>
 <context>
@@ -994,17 +996,17 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="268"/>
         <source>Directory not found: %1</source>
-        <translation type="unfinished"/>
+        <translation>תיקייה לא נמצאה: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="299"/>
         <source>Filename encoding is not valid</source>
-        <translation type="unfinished"/>
+        <translation>קידוד שם הקובץ לא תקין</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="318"/>
         <source>Error while reading directory %1</source>
-        <translation type="unfinished"/>
+        <translation>שגיאה בקריאת התיקייה %1</translation>
     </message>
 </context>
 <context>
@@ -1073,12 +1075,12 @@ This can be an issue with your OpenSSL libraries.</source>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="215"/>
         <source>Reopen Browser</source>
-        <translation type="unfinished"/>
+        <translation>פתיחת דפדפן מחדש</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="218"/>
         <source>Copy Link</source>
-        <translation type="unfinished"/>
+        <translation>העתקת קישור</translation>
     </message>
 </context>
 <context>
@@ -1311,17 +1313,17 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folder.cpp" line="1254"/>
         <source>Remove All Files?</source>
-        <translation type="unfinished"/>
+        <translation>להסיר את כל הקבצים?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1258"/>
         <source>Remove all files</source>
-        <translation type="unfinished"/>
+        <translation>להסיר את כל הקבצים</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1259"/>
         <source>Keep files</source>
-        <translation type="unfinished"/>
+        <translation>לשמור על הקבצים</translation>
     </message>
 </context>
 <context>
@@ -1329,27 +1331,27 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/foldercreationdialog.ui" line="14"/>
         <source>Create new folder</source>
-        <translation type="unfinished"/>
+        <translation>ליצור תיקייה חדשה</translation>
     </message>
     <message>
         <location filename="../src/gui/foldercreationdialog.ui" line="42"/>
         <source>Enter folder name</source>
-        <translation type="unfinished"/>
+        <translation>נא למלא את שם התיקייה</translation>
     </message>
     <message>
         <location filename="../src/gui/foldercreationdialog.ui" line="61"/>
         <source>Folder already exists</source>
-        <translation type="unfinished"/>
+        <translation>התיקייה כבר קיימת</translation>
     </message>
     <message>
         <location filename="../src/gui/foldercreationdialog.cpp" line="76"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>שגיאה</translation>
     </message>
     <message>
         <location filename="../src/gui/foldercreationdialog.cpp" line="76"/>
         <source>Could not create a folder! Check your write permissions.</source>
-        <translation type="unfinished"/>
+        <translation>לא ניתן ליצור תיקייה! נא לבדוק שיש לך הרשאות כתיבה.</translation>
     </message>
 </context>
 <context>
@@ -1402,7 +1404,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="1492"/>
         <source>Sync finished with unresolved conflicts.</source>
-        <translation type="unfinished"/>
+        <translation>הסנכרון הסתיים עם סתירות בלתי פתורות.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1494"/>
@@ -1437,7 +1439,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="1532"/>
         <source>The selected path does not exist!</source>
-        <translation type="unfinished"/>
+        <translation>הנתיב הנבחר לא קיים!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1536"/>
@@ -1520,7 +1522,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="235"/>
         <source>Virtual file support is enabled.</source>
-        <translation type="unfinished"/>
+        <translation>מופעלת תמיכה בקבצים וירטואליים.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="257"/>
@@ -1755,7 +1757,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <location filename="../src/gui/folderwizard.cpp" line="512"/>
         <location filename="../src/gui/folderwizard.cpp" line="549"/>
         <source>(experimental)</source>
-        <translation type="unfinished"/>
+        <translation>(ניסיוני)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="545"/>
@@ -1860,7 +1862,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.ui" line="127"/>
         <source>&amp;Channel</source>
-        <translation type="unfinished"/>
+        <translation>&amp;ערוץ</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="144"/>
@@ -1936,7 +1938,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="310"/>
         <source>Change update channel?</source>
-        <translation type="unfinished"/>
+        <translation>להחליף את ערוץ העדכונים?</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="311"/>
@@ -1948,12 +1950,12 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="324"/>
         <source>Change update channel</source>
-        <translation type="unfinished"/>
+        <translation>החלפת ערוץ העדכונים</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="325"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>ביטול</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="418"/>
@@ -1963,7 +1965,7 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="418"/>
         <source>Zip Archives</source>
-        <translation type="unfinished"/>
+        <translation>ארכיוני Zip</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="424"/>
@@ -2171,7 +2173,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="77"/>
         <source>Open folder</source>
-        <translation type="unfinished"/>
+        <translation>פתיחת תיקייה</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="78"/>
@@ -2285,17 +2287,17 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="463"/>
         <source>Ask again later</source>
-        <translation type="unfinished"/>
+        <translation>לשאול שוב מאוחר יותר</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="464"/>
         <source>Restart and update</source>
-        <translation type="unfinished"/>
+        <translation>להפעיל מחדש ולעדכן</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="465"/>
         <source>Update manually</source>
-        <translation type="unfinished"/>
+        <translation>לעדכן ידנית</translation>
     </message>
 </context>
 <context>
@@ -2421,7 +2423,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="121"/>
         <source>Empty JSON from OAuth2 redirect</source>
-        <translation type="unfinished"/>
+        <translation>JSON ריק מהפניית OAuth2</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="126"/>
@@ -2561,7 +2563,7 @@ for additional privileges during the process.</source>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="88"/>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="236"/>
         <source>(experimental)</source>
-        <translation type="unfinished"/>
+        <translation>(ניסיוני)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="232"/>
@@ -2597,7 +2599,7 @@ for additional privileges during the process.</source>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="286"/>
         <source>%1 free space</source>
         <comment>%1 gets replaced with the size and a matching unit. Example: 3 MB or 5 GB</comment>
-        <translation type="unfinished"/>
+        <translation>%1 מקום פנוי</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="370"/>
@@ -2753,7 +2755,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="250"/>
         <source>Server address does not seem to be valid</source>
-        <translation type="unfinished"/>
+        <translation>כתובת השרת כנראה שגויה</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="293"/>
@@ -2826,7 +2828,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="453"/>
         <source>OK</source>
-        <translation type="unfinished"/>
+        <translation>אישור</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="455"/>
@@ -2926,7 +2928,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="88"/>
         <source>Add %1 account</source>
-        <translation type="unfinished"/>
+        <translation>הוספת חשבון %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="93"/>
@@ -2941,7 +2943,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="404"/>
         <source>Enable experimental feature?</source>
-        <translation type="unfinished"/>
+        <translation>להפעיל יכולת ניסיונית?</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="405"/>
@@ -3026,12 +3028,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="283"/>
         <source>Filename contains trailing spaces.</source>
-        <translation type="unfinished"/>
+        <translation>שם הקובץ מכיל רווחים עוקבים.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="286"/>
         <source>Filename is too long.</source>
-        <translation type="unfinished"/>
+        <translation>שם הקובץ ארוך מדי.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="289"/>
@@ -4221,7 +4223,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="135"/>
         <source>A HTTP transmission error happened.</source>
-        <translation type="unfinished"/>
+        <translation>אירעה שגיאה בהעברת HTTP.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="138"/>

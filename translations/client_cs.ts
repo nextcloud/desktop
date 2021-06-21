@@ -348,7 +348,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="261"/>
         <source>Show E2E mnemonic</source>
-        <translation>Zobrazit mnemotechnickou frázi pro šifr mezi konc. body</translation>
+        <translation>Zobrazit mnemotechnickou frázi pro šifr. mezi konc. body</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="245"/>
@@ -1130,7 +1130,7 @@ Toto může být způsobeno problémem s OpenSSL knihovnami.</translation>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="433"/>
         <source>%1 and %n other file(s) have been added.</source>
-        <translation><numerusform>%1 a %n další soubor byl přidán.</numerusform><numerusform>%1 a %n další soubory byly přidány.</numerusform><numerusform>%1 a %n dalších souborů bylo přidáno.</numerusform><numerusform>%1 a %n další soubory byly přidány.</numerusform></translation>
+        <translation><numerusform>%1 byl přidán.</numerusform><numerusform>%1 a %n další soubory byly přidány.</numerusform><numerusform>%1 a %n dalších souborů bylo přidáno.</numerusform><numerusform>%1 a %n další soubory byly přidány.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="435"/>
