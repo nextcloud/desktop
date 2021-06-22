@@ -73,7 +73,6 @@ UploadDevice *PropagateUploadFileTUS::prepareDevice(const quint64 &chunkSize)
 
         // Soft error because this is likely caused by the user modifying his files while syncing
         abortWithError(SyncFileItem::SoftError, device->errorString());
-        delete device;
         return nullptr;
     }
     return device.release();
