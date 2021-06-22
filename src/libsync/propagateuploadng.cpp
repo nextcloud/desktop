@@ -375,17 +375,18 @@ void PropagateUploadFileNG::startNextChunk()
     _currentChunkSize = qMin(propagator()->_chunkSize, _rangesToUpload.first().size);
 
     const QString fileName = propagator()->fullLocalPath(_item->_file);
-
+    // If the file is currently locked, we want to retry the sync
+    // when it becomes available again.
+    const auto lockMode = propagator()->syncOptions().requiredLockMode();
+    if (FileSystem::isFileLocked(fileName, lockMode)) {
+        emit propagator()->seenLockedFile(fileName, lockMode);
+        abortWithError(SyncFileItem::SoftError, tr("%1 the file is currently in use").arg(fileName));
+        return;
+    }
     auto device = std::unique_ptr<UploadDevice>(new UploadDevice(
             fileName, _currentChunkOffset, _currentChunkSize, &propagator()->_bandwidthManager));
     if (!device->open(QIODevice::ReadOnly)) {
         qCWarning(lcPropagateUploadNG) << "Could not prepare upload device: " << device->errorString();
-
-        // If the file is currently locked, we want to retry the sync
-        // when it becomes available again.
-        if (FileSystem::isFileLocked(fileName)) {
-            emit propagator()->seenLockedFile(fileName);
-        }
         // Soft error because this is likely caused by the user modifying his files while syncing
         abortWithError(SyncFileItem::SoftError, device->errorString());
         return;

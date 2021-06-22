@@ -291,9 +291,7 @@ void FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account,
 
 int FolderMan::setupFoldersMigration()
 {
-    ConfigFile cfg;
-    QDir storageDir(cfg.configPath());
-    _folderConfigPath = cfg.configPath() + QLatin1String("folders");
+    _folderConfigPath = ConfigFile::configPath() + QLatin1String("folders");
 
     qCInfo(lcFolderMan) << "Setup folders from " << _folderConfigPath << "(migration)";
 
@@ -559,9 +557,9 @@ void FolderMan::slotScheduleAppRestart()
     qCInfo(lcFolderMan) << "Application restart requested!";
 }
 
-void FolderMan::slotSyncOnceFileUnlocks(const QString &path)
+void FolderMan::slotSyncOnceFileUnlocks(const QString &path, FileSystem::LockMode mode)
 {
-    _lockWatcher->addFile(path);
+    _lockWatcher->addFile(path, mode);
 }
 
 /*

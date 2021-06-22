@@ -358,13 +358,17 @@ void PropagateDownloadFile::start()
 
     // For virtual files just dehydrate or create the file and be done
     if (_item->_type == ItemTypeVirtualFileDehydration) {
-        QString fsPath = propagator()->fullLocalPath(_item->_file);
+        const QString fsPath = propagator()->fullLocalPath(_item->_file);
         if (!FileSystem::verifyFileUnchanged(fsPath, _item->_previousSize, _item->_previousModtime)) {
             propagator()->_anotherSyncNeeded = true;
             done(SyncFileItem::SoftError, tr("File has changed since discovery"));
             return;
         }
-
+        if (FileSystem::isFileLocked(fsPath, FileSystem::LockMode::Exclusive)) {
+            Q_EMIT propagator()->seenLockedFile(fsPath, FileSystem::LockMode::Exclusive);
+            done(SyncFileItem::SoftError, tr("Failed to dehydrate %1, the file is currently in use").arg(fsPath));
+            return;
+        }
         qCDebug(lcPropagateDownload) << "dehydrating file" << _item->_file;
         auto r = vfs->dehydratePlaceholder(*_item);
         if (!r) {
@@ -464,7 +468,14 @@ void PropagateDownloadFile::startDownload()
         done(SyncFileItem::NormalError, tr("File %1 can not be downloaded because of a local file name clash with %2!").arg(QDir::toNativeSeparators(_item->_file), QDir::toNativeSeparators(clash.get())));
         return;
     }
-
+    // If the file is locked, we want to retry this sync when it
+    // becomes available again
+    const auto targetFile = propagator()->fullLocalPath(_item->_file);
+    if (FileSystem::isFileLocked(targetFile, FileSystem::LockMode::Exclusive)) {
+        emit propagator()->seenLockedFile(targetFile, FileSystem::LockMode::Exclusive);
+        done(SyncFileItem::SoftError, tr("%1 is currently in use").arg(QDir::toNativeSeparators(_item->_file)));
+        return;
+    }
     propagator()->reportProgress(*_item, 0);
 
     QString tmpFileName;
@@ -946,20 +957,20 @@ void PropagateDownloadFile::downloadFinished()
             return;
         }
     }
+    // If the file is locked, we want to retry this sync when it
+    // becomes available again
+    if (FileSystem::isFileLocked(fn, FileSystem::LockMode::Exclusive)) {
+        emit propagator()->seenLockedFile(fn, FileSystem::LockMode::Exclusive);
+        done(SyncFileItem::SoftError, tr("%1 is currently in use").arg(fn));
+        return;
+    }
 
     QString error;
     emit propagator()->touchedFile(fn);
     // The fileChanged() check is done above to generate better error messages.
     if (!FileSystem::uncheckedRenameReplace(_tmpFile.fileName(), fn, &error)) {
-        qCWarning(lcPropagateDownload) << QStringLiteral("Rename failed: %1 => %2").arg(_tmpFile.fileName()).arg(fn);
-        // If the file is locked, we want to retry this sync when it
-        // becomes available again, otherwise try again directly
-        if (FileSystem::isFileLocked(fn)) {
-            emit propagator()->seenLockedFile(fn);
-        } else {
-            propagator()->_anotherSyncNeeded = true;
-        }
-
+        qCWarning(lcPropagateDownload) << "Rename failed:" << _tmpFile.fileName() << "=>" << fn;
+        propagator()->_anotherSyncNeeded = true;
         done(SyncFileItem::SoftError, error);
         return;
     }

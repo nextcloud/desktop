@@ -1,0 +1,5 @@
+Bugfix: Settings migration from v2.4
+
+We fixed the migration of settings of version 2.4 to the current location.
+
+https://github.com/owncloud/enterprise/issues/4597

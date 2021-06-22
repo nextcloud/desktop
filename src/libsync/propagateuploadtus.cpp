@@ -59,21 +59,24 @@ Q_LOGGING_CATEGORY(lcPropagateUploadTUS, "sync.propagator.upload.tus", QtDebugMs
 UploadDevice *PropagateUploadFileTUS::prepareDevice(const quint64 &chunkSize)
 {
     const QString localFileName = propagator()->fullLocalPath(_item->_file);
-    auto device = new UploadDevice(localFileName, _currentOffset, chunkSize, &propagator()->_bandwidthManager);
+    // If the file is currently locked, we want to retry the sync
+    // when it becomes available again.
+    const auto lockMode = propagator()->syncOptions().requiredLockMode();
+    if (FileSystem::isFileLocked(localFileName, lockMode)) {
+        emit propagator()->seenLockedFile(localFileName, lockMode);
+        abortWithError(SyncFileItem::SoftError, tr("%1 the file is currently in use").arg(localFileName));
+        return nullptr;
+    }
+    auto device = std::make_unique<UploadDevice>(localFileName, _currentOffset, chunkSize, &propagator()->_bandwidthManager);
     if (!device->open(QIODevice::ReadOnly)) {
         qCWarning(lcPropagateUploadTUS) << "Could not prepare upload device: " << device->errorString();
 
-        // If the file is currently locked, we want to retry the sync
-        // when it becomes available again.
-        if (FileSystem::isFileLocked(localFileName)) {
-            emit propagator()->seenLockedFile(localFileName);
-        }
         // Soft error because this is likely caused by the user modifying his files while syncing
         abortWithError(SyncFileItem::SoftError, device->errorString());
         delete device;
         return nullptr;
     }
-    return device;
+    return device.release();
 }
 
 

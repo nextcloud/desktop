@@ -69,7 +69,7 @@ Result<bool, QString> Vfs::checkAvailability(const QString &path)
 #ifdef Q_OS_WIN
     if (mode == Mode::WindowsCfApi) {
         const auto info = QFileInfo(path);
-        if (QDir(info.canonicalPath()).isRoot()) {
+        if (QDir(info.canonicalFilePath()).isRoot()) {
             return tr("The Virtual filesystem feature does not support a drive as sync root");
         }
         const auto fs = FileSystem::fileSystemForPath(info.absoluteFilePath());

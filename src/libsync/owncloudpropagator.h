@@ -584,7 +584,7 @@ signals:
     void finished(bool success);
 
     /** Emitted when propagation has problems with a locked file. */
-    void seenLockedFile(const QString &fileName);
+    void seenLockedFile(const QString &fileName, FileSystem::LockMode mode);
 
     /** Emitted when propagation touches a file.
      *

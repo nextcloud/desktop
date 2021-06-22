@@ -134,10 +134,13 @@ bool FileSystem::rename(const QString &originFileName,
     bool success = false;
     QString error;
 #ifdef Q_OS_WIN
-    QString orig = longWinPath(originFileName);
-    QString dest = longWinPath(destinationFileName);
-
-    if (isLnkFile(originFileName) || isLnkFile(destinationFileName)) {
+    const QString orig = longWinPath(originFileName);
+    const QString dest = longWinPath(destinationFileName);
+    if (FileSystem::isFileLocked(dest, FileSystem::LockMode::Exclusive)) {
+        error = QCoreApplication::translate("FileSystem", "Can't rename %1, the file is currently in use").arg(destinationFileName);
+    } else if (FileSystem::isFileLocked(orig, FileSystem::LockMode::Exclusive)) {
+        error = QCoreApplication::translate("FileSystem", "Can't rename %1, the file is currently in use").arg(originFileName);
+    } else if (isLnkFile(originFileName) || isLnkFile(destinationFileName)) {
         success = MoveFileEx((wchar_t *)orig.utf16(),
             (wchar_t *)dest.utf16(),
             MOVEFILE_COPY_ALLOWED | MOVEFILE_WRITE_THROUGH);
@@ -169,6 +172,7 @@ bool FileSystem::uncheckedRenameReplace(const QString &originFileName,
     const QString &destinationFileName,
     QString *errorString)
 {
+    Q_ASSERT(errorString);
 #ifndef Q_OS_WIN
     bool success;
     QFile orig(originFileName);
@@ -196,13 +200,20 @@ bool FileSystem::uncheckedRenameReplace(const QString &originFileName,
     if (!QFileInfo(destinationFileName).isWritable()) {
         setFileReadOnly(destinationFileName, false);
     }
-
-    BOOL ok;
-    QString orig = longWinPath(originFileName);
-    QString dest = longWinPath(destinationFileName);
-
-    ok = MoveFileEx((wchar_t *)orig.utf16(),
-        (wchar_t *)dest.utf16(),
+    const QString orig = longWinPath(originFileName);
+    const QString dest = longWinPath(destinationFileName);
+    if (FileSystem::isFileLocked(dest, FileSystem::LockMode::Exclusive)) {
+        *errorString = QCoreApplication::translate("FileSystem", "Can't rename %1, the file is currently in use").arg(destinationFileName);
+        qCWarning(lcFileSystem) << "Renaming failed: " << *errorString;
+        return false;
+    }
+    if (FileSystem::isFileLocked(orig, FileSystem::LockMode::Exclusive)) {
+        *errorString = QCoreApplication::translate("FileSystem", "Can't rename %1, the file is currently in use").arg(originFileName);
+        qCWarning(lcFileSystem) << "Renaming failed: " << *errorString;
+        return false;
+    }
+    const BOOL ok = MoveFileEx(reinterpret_cast<const wchar_t *>(orig.utf16()),
+        reinterpret_cast<const wchar_t *>(dest.utf16()),
         MOVEFILE_REPLACE_EXISTING + MOVEFILE_COPY_ALLOWED + MOVEFILE_WRITE_THROUGH);
     if (!ok) {
         *errorString = Utility::formatWinError(GetLastError());
@@ -440,28 +451,35 @@ bool FileSystem::moveToTrash(const QString &fileName, QString *errorString)
 #endif
 }
 
-bool FileSystem::isFileLocked(const QString &fileName)
+bool FileSystem::isFileLocked(const QString &fileName, LockMode mode)
 {
 #ifdef Q_OS_WIN
     // Check if file exists
     const QString fName = longWinPath(fileName);
+    auto accessMode = mode == LockMode::Exclusive ? 0 : FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE;
     DWORD attr = GetFileAttributesW(reinterpret_cast<const wchar_t *>(fName.utf16()));
     if (attr != INVALID_FILE_ATTRIBUTES) {
         // Try to open the file with as much access as possible..
         HANDLE win_h = CreateFileW(
             reinterpret_cast<const wchar_t *>(fName.utf16()),
             GENERIC_READ | GENERIC_WRITE,
-            FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE,
+            accessMode,
             NULL, OPEN_EXISTING,
             FILE_ATTRIBUTE_NORMAL | FILE_FLAG_BACKUP_SEMANTICS,
             NULL);
 
         if (win_h == INVALID_HANDLE_VALUE) {
-            /* could not be opened, so locked? */
-            /* 32 == ERROR_SHARING_VIOLATION */
-            return true;
+            if (GetLastError() == ERROR_SHARING_VIOLATION) {
+                return true;
+            }
+            return false;
         } else {
             CloseHandle(win_h);
+        }
+    } else {
+        const auto error = GetLastError();
+        if (error != ERROR_FILE_NOT_FOUND && error != ERROR_PATH_NOT_FOUND) {
+            qCWarning(lcFileSystem()) << "GetFileAttributesW" << Utility::formatWinError(error);
         }
     }
 #else
@@ -518,3 +536,5 @@ QString FileSystem::pathtoUNC(const QString &_str)
 #endif
 
 } // namespace OCC
+
+#include "moc_filesystembase.cpp"

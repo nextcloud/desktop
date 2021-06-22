@@ -1,0 +1,10 @@
+Bugfix: Locked files are not correctly synced
+
+We fixed an issue where files locked by office etc, where not correctly synced,
+when Windows Virtual files are enabled.
+
+https://github.com/owncloud/client/issues/8761
+https://github.com/owncloud/client/issues/8765
+https://github.com/owncloud/client/issues/8766
+https://github.com/owncloud/client/pull/8763
+https://github.com/owncloud/client/pull/8768    

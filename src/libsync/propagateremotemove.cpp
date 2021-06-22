@@ -76,9 +76,6 @@ void PropagateRemoteMove::start()
 
     QString origin = propagator()->adjustRenamedPath(_item->_file);
     qCDebug(lcPropagateRemoteMove) << origin << _item->_renameTarget;
-
-    QString targetFile(propagator()->fullLocalPath(_item->_renameTarget));
-
     if (origin == _item->_renameTarget) {
         // The parent has been renamed already so there is nothing more to do.
         finalize();
@@ -143,8 +140,6 @@ void PropagateRemoteMove::start()
                                           << folderTargetAlt << "to" << folderTarget;
         }
     }
-    qCDebug(lcPropagateRemoteMove) << remoteSource << remoteDestination;
-
     _job = new MoveJob(propagator()->account(), remoteSource, remoteDestination, this);
     connect(_job.data(), &MoveJob::finishedSignal, this, &PropagateRemoteMove::slotMoveJobFinished);
     propagator()->_activeJobList.append(this);

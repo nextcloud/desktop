@@ -39,13 +39,15 @@ class AbstractCredentials;
 class OWNCLOUDSYNC_EXPORT ConfigFile
 {
 public:
+    static QString configPath();
+    static QString configFile();
+    static bool exists();
+
     ConfigFile();
 
     enum Scope { UserScope,
         SystemScope };
 
-    QString configPath() const;
-    QString configFile() const;
     QString excludeFile(Scope scope) const;
     static QString excludeFileFromSystem(); // doesn't access config dir
 
@@ -56,7 +58,6 @@ public:
      */
     QString backup() const;
 
-    bool exists();
 
     QString defaultConnection() const;
 

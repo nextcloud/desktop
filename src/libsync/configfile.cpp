@@ -269,7 +269,7 @@ QVariant ConfigFile::getPolicySetting(const QString &setting, const QVariant &de
     return defaultValue;
 }
 
-QString ConfigFile::configPath() const
+QString ConfigFile::configPath()
 {
     if (_confDir.isEmpty()) {
         // On Unix, use the AppConfigLocation for the settings, that's configurable with the XDG_CONFIG_HOME env variable.
@@ -372,15 +372,14 @@ QString ConfigFile::backup() const
     return backupFile;
 }
 
-QString ConfigFile::configFile() const
+QString ConfigFile::configFile()
 {
     return configPath() + Theme::instance()->configFileName();
 }
 
 bool ConfigFile::exists()
 {
-    QFile file(configFile());
-    return file.exists();
+    return QFileInfo::exists(configFile());
 }
 
 QString ConfigFile::defaultConnection() const
@@ -884,16 +883,9 @@ void ConfigFile::setClientVersionString(const QString &version)
     settings.setValue(clientVersionC(), version);
 }
 
-Q_GLOBAL_STATIC(QString, g_configFileName)
-
 std::unique_ptr<QSettings> ConfigFile::settingsWithGroup(const QString &group, QObject *parent)
 {
-    if (g_configFileName()->isEmpty()) {
-        // cache file name
-        ConfigFile cfg;
-        *g_configFileName() = cfg.configFile();
-    }
-    std::unique_ptr<QSettings> settings(new QSettings(*g_configFileName(), QSettings::IniFormat, parent));
+    std::unique_ptr<QSettings> settings(new QSettings(ConfigFile::configFile(), QSettings::IniFormat, parent));
     settings->beginGroup(group);
     return settings;
 }

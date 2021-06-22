@@ -15,6 +15,7 @@
 #pragma once
 
 #include "owncloudlib.h"
+#include "common/filesystembase.h"
 #include "common/vfs.h"
 
 #include <QRegularExpression>
@@ -103,6 +104,15 @@ public:
      * A pattern like /own.*\/.*txt matching the full path
      */
     void setPathPattern(const QString &pattern);
+
+
+    /**
+     * The required file lock mode
+     */
+    FileSystem::LockMode requiredLockMode() const
+    {
+        return _vfs->mode() == Vfs::WindowsCfApi ? FileSystem::LockMode::Exclusive : FileSystem::LockMode::Shared;
+    }
 
 private:
     /**

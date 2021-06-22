@@ -168,7 +168,7 @@ Application::Application(int &argc, char **argv)
     setApplicationName(_theme->appName());
     setWindowIcon(_theme->applicationIcon());
 
-    if (!ConfigFile().exists()) {
+    if (!ConfigFile::exists()) {
         // Migrate from version <= 2.4
         setApplicationName(_theme->appNameGUI());
         // We need to use the deprecated QDesktopServices::storageLocation because of its Qt4
@@ -177,7 +177,7 @@ Application::Application(int &argc, char **argv)
         if (oldDir.endsWith('/')) oldDir.chop(1); // macOS 10.11.x does not like trailing slash for rename/move.
         setApplicationName(_theme->appName());
         if (QFileInfo(oldDir).isDir()) {
-            auto confDir = ConfigFile().configPath();
+            auto confDir = ConfigFile::configPath();
             if (confDir.endsWith('/')) confDir.chop(1);  // macOS 10.11.x does not like trailing slash for rename/move.
             qCInfo(lcApplication) << "Migrating old config from" << oldDir << "to" << confDir;
 
@@ -271,7 +271,7 @@ Application::Application(int &argc, char **argv)
                 tr("Error accessing the configuration file"),
                 tr("There was an error while accessing the configuration "
                    "file at %1.")
-                    .arg(ConfigFile().configFile()),
+                    .arg(ConfigFile::configFile()),
                 tr("Quit %1").arg(Theme::instance()->appNameGUI()));
             QTimer::singleShot(0, qApp, SLOT(quit()));
             return;
