@@ -284,22 +284,22 @@
         <translation>应用手工修改</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="84"/>
+        <location filename="../src/gui/accountsettings.cpp" line="88"/>
         <source>End-to-End Encryption with Virtual Files</source>
         <translation>虚拟文件端到端加密</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="85"/>
-        <source>You seem to have the Virtual Files feature enabled on this folder. At  the moment, it is not possible to implicitly download virtual files that are end-to-end encrypted. To get the best experience with Virtual Files and End-to-End Encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
-        <translation>您似乎在此文件夹上启用了虚拟文件功能。目前，不可能隐式下载端到端加密的虚拟文件。为了获得虚拟文件和端到端加密的最佳体验，请确保加密文件夹被标记为“始终在本地可用”。  </translation>
+        <location filename="../src/gui/accountsettings.cpp" line="89"/>
+        <source>You seem to have the Virtual Files feature enabled on this folder. At  the moment, it is not possible to implicitly download virtual files that are End-to-End encrypted. To get the best experience with Virtual Files and End-to-End Encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="93"/>
+        <location filename="../src/gui/accountsettings.cpp" line="97"/>
         <source>Don&apos;t encrypt folder</source>
         <translation>不加密文件夹</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="96"/>
+        <location filename="../src/gui/accountsettings.cpp" line="100"/>
         <source>Encrypt folder</source>
         <translation>加密文件夹</translation>
     </message>
@@ -361,6 +361,16 @@
 Wait for the new sync, then encrypt it.</source>
         <translation>您无法使用内容加密文件夹，请删除文件。
 等待新的同步，然后对其进行加密。</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="354"/>
+        <source>Encryption failed</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="354"/>
+        <source>Could not encrypt folder because the folder does not exist anymore</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="418"/>

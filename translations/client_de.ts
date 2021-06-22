@@ -284,22 +284,22 @@
         <translation>Manuelle Änderungen anwenden</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="84"/>
+        <location filename="../src/gui/accountsettings.cpp" line="88"/>
         <source>End-to-End Encryption with Virtual Files</source>
         <translation>Ende-zu-Ende-Verschlüsselung mit virtuellen Dateien</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="85"/>
-        <source>You seem to have the Virtual Files feature enabled on this folder. At  the moment, it is not possible to implicitly download virtual files that are end-to-end encrypted. To get the best experience with Virtual Files and End-to-End Encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
-        <translation>Sie scheinen die Funktion Virtuelle Dateien für diesen Ordner aktiviert zu haben. Im Moment ist es nicht möglich, virtuelle Dateien, die Ende-zu-Ende-verschlüsselt sind, implizit herunterzuladen. Um die beste Erfahrung mit virtuellen Dateien und Ende-zu-Ende-Verschlüsselung zu machen, stellen Sie sicher, dass der verschlüsselte Ordner mit &quot;Immer lokal verfügbar machen&quot; markiert ist.</translation>
+        <location filename="../src/gui/accountsettings.cpp" line="89"/>
+        <source>You seem to have the Virtual Files feature enabled on this folder. At  the moment, it is not possible to implicitly download virtual files that are End-to-End encrypted. To get the best experience with Virtual Files and End-to-End Encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="93"/>
+        <location filename="../src/gui/accountsettings.cpp" line="97"/>
         <source>Don&apos;t encrypt folder</source>
         <translation>Ordner nicht verschlüsseln</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="96"/>
+        <location filename="../src/gui/accountsettings.cpp" line="100"/>
         <source>Encrypt folder</source>
         <translation>Ordner verschlüsseln</translation>
     </message>
@@ -361,6 +361,16 @@
 Wait for the new sync, then encrypt it.</source>
         <translation>Sie können einen Ordner nicht mit Inhalten verschlüsseln, bitte Dateien entfernen.
 Warten Sie auf die neue Synchronisierung und verschlüsseln Sie sie dann.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="354"/>
+        <source>Encryption failed</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="354"/>
+        <source>Could not encrypt folder because the folder does not exist anymore</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="418"/>

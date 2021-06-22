@@ -284,22 +284,22 @@
         <translation>Uplatnit ručně provedené změny</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="84"/>
+        <location filename="../src/gui/accountsettings.cpp" line="88"/>
         <source>End-to-End Encryption with Virtual Files</source>
         <translation>Šifrování mezi koncovými body u virtuálních souborů</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="85"/>
-        <source>You seem to have the Virtual Files feature enabled on this folder. At  the moment, it is not possible to implicitly download virtual files that are end-to-end encrypted. To get the best experience with Virtual Files and End-to-End Encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
-        <translation>Zdá se, že pro tuto složku máte zapnutou funkci Virtuální soubory. V tuto chvíli není možné výslovně stahovat virtuální soubory, které jsou šifrovány mezi koncovými body. Pokud chcete, aby vám virtuální soubory a šifrování mezi koncovými body fungovalo co nejlépe, ověřte, že šifrovaná složka je označena jako „Vždy zpřístupnit lokálně“.</translation>
+        <location filename="../src/gui/accountsettings.cpp" line="89"/>
+        <source>You seem to have the Virtual Files feature enabled on this folder. At  the moment, it is not possible to implicitly download virtual files that are End-to-End encrypted. To get the best experience with Virtual Files and End-to-End Encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="93"/>
+        <location filename="../src/gui/accountsettings.cpp" line="97"/>
         <source>Don&apos;t encrypt folder</source>
         <translation>Nešifrovat složku</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="96"/>
+        <location filename="../src/gui/accountsettings.cpp" line="100"/>
         <source>Encrypt folder</source>
         <translation>Zašifrovat složku</translation>
     </message>
@@ -361,6 +361,16 @@
 Wait for the new sync, then encrypt it.</source>
         <translation>Není možné zašifrovat složku, která něco obsahuje – přesuňte soubory pryč.
 Počkejte na příští synchronizaci a pak složku zašifrujte.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="354"/>
+        <source>Encryption failed</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="354"/>
+        <source>Could not encrypt folder because the folder does not exist anymore</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="418"/>
@@ -2747,7 +2757,7 @@ můžete být požádáni o dodatečná oprávnění.</translation>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="86"/>
         <source>The link to your %1 web interface when you open it in the browser.</source>
         <comment>%1 will be replaced with the application name</comment>
-        <translation>Odkaz k vašemu %1 webovému rozhraní pro otevření v internetovém prohlížeči.</translation>
+        <translation>Odkaz na webové rozhraní vámi využívané instance %1, když ho otevíráte ve webovém prohlížeči.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="80"/>
@@ -2762,7 +2772,7 @@ můžete být požádáni o dodatečná oprávnění.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="96"/>
         <source>This is the link to your %1 web interface when you open it in the browser.&lt;br/&gt;It looks like https://cloud.example.com or https://example.com/cloud</source>
-        <translation>Když ho otevřete ve webovém prohlížeči, toto je odkaz na rozhraní vašeho %1.&lt;br/&gt;Má podobu jako https://cloud.example.com nebo https://example.com/cloud</translation>
+        <translation>Toto je odkaz na webové rozhraní vámi využívaného %1.&lt;br/&gt;Má podobu jako https://cloud.example.com nebo https://example.com/cloud</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="185"/>
@@ -5152,7 +5162,7 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="259"/>
         <source>This is the link to your %1 web interface when you open it in the browser.</source>
-        <translation>Toto je odkaz k vašemu %1 webovému rozhraní pro otevření v internetovém prohlížeči.</translation>
+        <translation>Toto je odkaz na webové rozhraní vámi využívané instance %1, když ho otevíráte ve webovém prohlížeči.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="343"/>

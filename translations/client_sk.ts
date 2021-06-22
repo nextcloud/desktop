@@ -140,7 +140,7 @@
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="56"/>
         <source>Logo</source>
-        <translation type="unfinished"/>
+        <translation>Logo</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="65"/>
@@ -222,7 +222,7 @@
     <message>
         <location filename="../src/libsync/abstractpropagateremotedeleteencrypted.cpp" line="181"/>
         <source>&quot;%1 Failed to unlock encrypted folder %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>&quot;%1 Zlyhalo odomknutie zašifrovaného adresára %2&quot;.</translation>
     </message>
 </context>
 <context>
@@ -284,24 +284,24 @@
         <translation>Uplatniť ručne vykonané zmeny</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="84"/>
+        <location filename="../src/gui/accountsettings.cpp" line="88"/>
         <source>End-to-End Encryption with Virtual Files</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="85"/>
-        <source>You seem to have the Virtual Files feature enabled on this folder. At  the moment, it is not possible to implicitly download virtual files that are end-to-end encrypted. To get the best experience with Virtual Files and End-to-End Encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
+        <location filename="../src/gui/accountsettings.cpp" line="89"/>
+        <source>You seem to have the Virtual Files feature enabled on this folder. At  the moment, it is not possible to implicitly download virtual files that are End-to-End encrypted. To get the best experience with Virtual Files and End-to-End Encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="93"/>
+        <location filename="../src/gui/accountsettings.cpp" line="97"/>
         <source>Don&apos;t encrypt folder</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="96"/>
+        <location filename="../src/gui/accountsettings.cpp" line="100"/>
         <source>Encrypt folder</source>
-        <translation type="unfinished"/>
+        <translation>Zašifrovať adresár</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="208"/>
@@ -363,6 +363,16 @@ Wait for the new sync, then encrypt it.</source>
 Počkajte na novú synchronizáciu a potom ho zašifrujte.</translation>
     </message>
     <message>
+        <location filename="../src/gui/accountsettings.cpp" line="354"/>
+        <source>Encryption failed</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="354"/>
+        <source>Could not encrypt folder because the folder does not exist anymore</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/accountsettings.cpp" line="418"/>
         <location filename="../src/gui/accountsettings.cpp" line="516"/>
         <source>Open folder</source>
@@ -383,7 +393,7 @@ Počkajte na novú synchronizáciu a potom ho zašifrujte.</translation>
         <location filename="../src/gui/accountsettings.cpp" line="446"/>
         <location filename="../src/gui/accountsettings.cpp" line="522"/>
         <source>Create new folder</source>
-        <translation type="unfinished"/>
+        <translation>Vytvoriť nový adresár</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="452"/>
@@ -434,7 +444,7 @@ Počkajte na novú synchronizáciu a potom ho zašifrujte.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="573"/>
         <source>(experimental)</source>
-        <translation type="unfinished"/>
+        <translation>(experimentálne)</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="666"/>
@@ -478,7 +488,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="839"/>
         <source>Disable support</source>
-        <translation type="unfinished"/>
+        <translation>Zakázať podporu</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="955"/>
@@ -944,7 +954,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="159"/>
         <source>Timeout</source>
-        <translation type="unfinished"/>
+        <translation>Časový limit</translation>
     </message>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="159"/>
@@ -996,7 +1006,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="268"/>
         <source>Directory not found: %1</source>
-        <translation type="unfinished"/>
+        <translation>Adresár nebol nájdený: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="299"/>
@@ -1132,7 +1142,7 @@ Môže to byť problém s knižnicami OpenSSL.</translation>
         <location filename="../src/gui/folder.cpp" line="435"/>
         <source>%1 has been added.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 bol pridaný.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="440"/>
@@ -1325,17 +1335,17 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folder.cpp" line="1254"/>
         <source>Remove All Files?</source>
-        <translation type="unfinished"/>
+        <translation>Odstrániť všetky súbory?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1258"/>
         <source>Remove all files</source>
-        <translation type="unfinished"/>
+        <translation>Odstrániť všetky súbory</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1259"/>
         <source>Keep files</source>
-        <translation type="unfinished"/>
+        <translation>Ponechať súbory</translation>
     </message>
 </context>
 <context>
@@ -1343,12 +1353,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/foldercreationdialog.ui" line="14"/>
         <source>Create new folder</source>
-        <translation type="unfinished"/>
+        <translation>Vytvoriť nový adresár</translation>
     </message>
     <message>
         <location filename="../src/gui/foldercreationdialog.ui" line="42"/>
         <source>Enter folder name</source>
-        <translation type="unfinished"/>
+        <translation>Zadať názov adresára</translation>
     </message>
     <message>
         <location filename="../src/gui/foldercreationdialog.ui" line="61"/>

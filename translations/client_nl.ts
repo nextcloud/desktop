@@ -284,22 +284,22 @@
         <translation>Handmatige wijzigingen toepassen</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="84"/>
+        <location filename="../src/gui/accountsettings.cpp" line="88"/>
         <source>End-to-End Encryption with Virtual Files</source>
         <translation>Begin-tot-eind versleuteling met virtuele bestanden</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="85"/>
-        <source>You seem to have the Virtual Files feature enabled on this folder. At  the moment, it is not possible to implicitly download virtual files that are end-to-end encrypted. To get the best experience with Virtual Files and End-to-End Encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
-        <translation>Het lijkt erop dat de functie Virtuele bestanden voor deze map is ingeschakeld. Momenteel is het niet mogelijk om impliciet virtuele bestanden te downloaden die end-to-end versleuteld zijn. Om de beste ervaring met virtuele bestanden en end-to-end-versleuteling te krijgen, moet je ervoor zorgen dat de versleutelde map is gemarkeerd met &quot;Altijd lokaal beschikbaar maken&quot;.</translation>
+        <location filename="../src/gui/accountsettings.cpp" line="89"/>
+        <source>You seem to have the Virtual Files feature enabled on this folder. At  the moment, it is not possible to implicitly download virtual files that are End-to-End encrypted. To get the best experience with Virtual Files and End-to-End Encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="93"/>
+        <location filename="../src/gui/accountsettings.cpp" line="97"/>
         <source>Don&apos;t encrypt folder</source>
         <translation>Niet versleutelen map</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="96"/>
+        <location filename="../src/gui/accountsettings.cpp" line="100"/>
         <source>Encrypt folder</source>
         <translation>Versleutelen map</translation>
     </message>
@@ -360,6 +360,16 @@
         <source>You cannot encrypt a folder with contents, please remove the files.
 Wait for the new sync, then encrypt it.</source>
         <translation>Je kunt een map met inhoud niet versleutelen, verwijder de bestanden. Wacht op de nieuwe synchronisatie en versleutel ze vervolgens.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="354"/>
+        <source>Encryption failed</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="354"/>
+        <source>Could not encrypt folder because the folder does not exist anymore</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="418"/>
