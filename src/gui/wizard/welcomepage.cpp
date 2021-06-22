@@ -94,11 +94,13 @@ void WelcomePage::setupLoginButton()
 
 void WelcomePage::setupCreateAccountButton()
 {
+#ifdef WITH_WEBENGINE
     connect(_ui->createAccountButton, &QPushButton::clicked, this, [this](bool /*checked*/) {
         _ocWizard->setRegistration(true);
         _nextPage = WizardCommon::Page_WebView;
         _ocWizard->next();
     });
+#endif // WITH_WEBENGINE
 }
 
 void WelcomePage::setupHostYourOwnServerLabel()

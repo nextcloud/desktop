@@ -213,8 +213,10 @@ int OwncloudSetupPage::nextId() const
         return WizardCommon::Page_OAuthCreds;
     case DetermineAuthTypeJob::LoginFlowV2:
         return WizardCommon::Page_Flow2AuthCreds;
+#ifdef WITH_WEBENGINE
     case DetermineAuthTypeJob::WebViewFlow:
         return WizardCommon::Page_WebView;
+#endif // WITH_WEBENGINE
     }
     return WizardCommon::Page_HttpCreds;
 }

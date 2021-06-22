@@ -27,6 +27,8 @@ option( WITH_CRASHREPORTER "Build crashreporter" OFF )
 #set( CRASHREPORTER_SUBMIT_URL "https://crash-reports.owncloud.com/submit" CACHE STRING "URL for crash reporter" )
 #set( CRASHREPORTER_ICON ":/owncloud-icon.png" )
 
+option(WITH_WEBENGINE "Enable use of QWebEngine" ON)
+
 ## Updater options
 option( BUILD_UPDATER "Build updater" OFF )
 
