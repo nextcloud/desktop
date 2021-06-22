@@ -177,6 +177,10 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
             }
         } else {
             // We have an activity
+            if (a._icon.isEmpty()) {
+                return "qrc:///client/theme/black/activity.svg";
+            }
+
             return a._icon;
         }
     }
