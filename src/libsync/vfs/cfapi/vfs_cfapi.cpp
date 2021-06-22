@@ -187,6 +187,8 @@ bool VfsCfApi::statTypeVirtualFile(csync_file_stat_t *stat, void *statData)
 
     const auto isWindowsShortcut = !isDirectory && FileSystem::isLnkFile(stat->path);
 
+    const auto isExcludeFile = !isDirectory && FileSystem::isExcludeFile(stat->path);
+
     // It's a dir with a reparse point due to the placeholder info (hence the cloud tag)
     // if we don't remove the reparse point flag the discovery will end up thinking
     // it is a file... let's prevent it
@@ -198,7 +200,7 @@ bool VfsCfApi::statTypeVirtualFile(csync_file_stat_t *stat, void *statData)
     } else if (isSparseFile && isPinned) {
         stat->type = ItemTypeVirtualFileDownload;
         return true;
-    } else if (!isSparseFile && isUnpinned && !isWindowsShortcut){
+    } else if (!isSparseFile && isUnpinned && !isWindowsShortcut && !isExcludeFile) {
         stat->type = ItemTypeVirtualFileDehydration;
         return true;
     } else if (isSparseFile) {
@@ -267,16 +269,28 @@ Vfs::AvailabilityResult VfsCfApi::availability(const QString &folderPath)
     return AvailabilityError::NoSuchItem;
 }
 
-void VfsCfApi::cancelHydration(const QString &requestId, const QString & /*path*/)
+HydrationJob *VfsCfApi::findHydrationJob(const QString &requestId) const
 {
     // Find matching hydration job for request id
     const auto hydrationJobsIter = std::find_if(d->hydrationJobs.cbegin(), d->hydrationJobs.cend(), [&](const HydrationJob *job) {
         return job->requestId() == requestId;
     });
 
-    // If found, cancel it
     if (hydrationJobsIter != d->hydrationJobs.cend()) {
-        (*hydrationJobsIter)->cancel();
+        return *hydrationJobsIter;
+    }
+
+    return nullptr;
+}
+
+void VfsCfApi::cancelHydration(const QString &requestId, const QString & /*path*/)
+{
+    // Find matching hydration job for request id
+    const auto hydrationJob = findHydrationJob(requestId);
+    // If found, cancel it
+    if (hydrationJob) {
+        qCInfo(lcCfApi) << "Cancel hydration";
+        hydrationJob->cancel();
     }
 }
 
@@ -311,9 +325,9 @@ void VfsCfApi::requestHydration(const QString &requestId, const QString &path)
         qCInfo(lcCfApi) << "Couldn't hydrate, the file is E2EE this is not supported";
 
         QMessageBox e2eeFileDownloadRequestWarningMsgBox;
-        e2eeFileDownloadRequestWarningMsgBox.setText(tr("Download of End-to-End encrypted file failed"));
+        e2eeFileDownloadRequestWarningMsgBox.setText(tr("Download of end-to-end encrypted file failed"));
         e2eeFileDownloadRequestWarningMsgBox.setInformativeText(tr("It seems that you are trying to download a virtual file that"
-                                                                   " is End-to-End encrypted. Implicitly downloading such files is not"
+                                                                   " is end-to-end encrypted. Implicitly downloading such files is not"
                                                                    " supported at the moment. To workaround this issue, go to the"
                                                                    " settings and mark the encrypted folder with \"Make always available"
                                                                    " locally\"."));
@@ -358,7 +372,6 @@ void VfsCfApi::scheduleHydrationJob(const QString &requestId, const QString &fol
     job->setRequestId(requestId);
     job->setFolderPath(folderPath);
     connect(job, &HydrationJob::finished, this, &VfsCfApi::onHydrationJobFinished);
-    connect(job, &HydrationJob::canceled, this, &VfsCfApi::onHydrationJobCanceled);
     d->hydrationJobs << job;
     job->start();
     emit hydrationRequestReady(requestId);
@@ -368,30 +381,27 @@ void VfsCfApi::onHydrationJobFinished(HydrationJob *job)
 {
     Q_ASSERT(d->hydrationJobs.contains(job));
     qCInfo(lcCfApi) << "Hydration job finished" << job->requestId() << job->folderPath() << job->status();
-    emit hydrationRequestFinished(job->requestId(), job->status());
-    d->hydrationJobs.removeAll(job);
-    if (d->hydrationJobs.isEmpty()) {
-        emit doneHydrating();
-    }
+    emit hydrationRequestFinished(job->requestId());
 }
 
-void VfsCfApi::onHydrationJobCanceled(HydrationJob *job)
+int VfsCfApi::finalizeHydrationJob(const QString &requestId)
 {
-    const auto folderRelativePath = job->folderPath();
-    SyncJournalFileRecord record;
-    if (!params().journal->getFileRecord(folderRelativePath, &record)) {
-        qCWarning(lcCfApi) << "Could not read file record from journal for canceled hydration request.";
-        return;
+    qCDebug(lcCfApi) << "Finalize hydration job" << requestId;
+    // Find matching hydration job for request id
+    const auto hydrationJob = findHydrationJob(requestId);
+
+    // If found, finalize it
+    if (hydrationJob) {
+        hydrationJob->finalize(this);
+        d->hydrationJobs.removeAll(hydrationJob);
+        hydrationJob->deleteLater();
+        if (d->hydrationJobs.isEmpty()) {
+            emit doneHydrating();
+        }
+        return hydrationJob->status();
     }
 
-    // Remove placeholder file because there might be already pumped
-    // some data into it
-    const auto folderPath = job->localPath();
-    QFile::remove(folderPath + folderRelativePath);
-
-    // Create a new placeholder file
-    const auto item = SyncFileItem::fromSyncJournalFileRecord(record);
-    createPlaceholder(*item);
+    return HydrationJob::Status::Error;
 }
 
 VfsCfApi::HydratationAndPinStates VfsCfApi::computeRecursiveHydrationAndPinStates(const QString &folderPath, const Optional<PinState> &basePinState)

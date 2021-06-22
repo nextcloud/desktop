@@ -146,6 +146,22 @@ void CALLBACK cfApiFetchDataCallback(const CF_CALLBACK_INFO *callbackInfo, const
         return;
     }
 
+    QLocalSocket signalSocket;
+    const QString signalSocketName = requestId + ":cancellation";
+    signalSocket.connectToServer(signalSocketName);
+    const auto cancellationSocketConnectResult = signalSocket.waitForConnected();
+    if (!cancellationSocketConnectResult) {
+        qCWarning(lcCfApiWrapper) << "Couldn't connect the socket" << signalSocketName
+                                  << signalSocket.error() << signalSocket.errorString();
+        sendTransferError();
+        return;
+    }
+
+    auto hydrationRequestCancelled = false;
+    QObject::connect(&signalSocket, &QLocalSocket::readyRead, &loop, [&] {
+        hydrationRequestCancelled = true;
+    });
+
     // CFAPI expects sent blocks to be of a multiple of a block size.
     // Only the last sent block is allowed to be of a different size than
     // a multiple of a block size
@@ -169,6 +185,11 @@ void CALLBACK cfApiFetchDataCallback(const CF_CALLBACK_INFO *callbackInfo, const
     };
 
     QObject::connect(&socket, &QLocalSocket::readyRead, &loop, [&] {
+        if (hydrationRequestCancelled) {
+            qCDebug(lcCfApiWrapper) << "Don't transfer data because request" << requestId << "was cancelled";
+            return;
+        }
+
         const auto receivedData = socket.readAll();
         if (receivedData.isEmpty()) {
             qCWarning(lcCfApiWrapper) << "Unexpected empty data received" << requestId;
@@ -180,24 +201,34 @@ void CALLBACK cfApiFetchDataCallback(const CF_CALLBACK_INFO *callbackInfo, const
         alignAndSendData(receivedData);
     });
 
-    QObject::connect(vfs, &OCC::VfsCfApi::hydrationRequestFinished, &loop, [&](const QString &id, int s) {
+    QObject::connect(vfs, &OCC::VfsCfApi::hydrationRequestFinished, &loop, [&](const QString &id) {
         qDebug(lcCfApiWrapper) << "Hydration finished for request" << id;
         if (requestId == id) {
-            const auto status = static_cast<OCC::HydrationJob::Status>(s);
-            qCInfo(lcCfApiWrapper) << "Hydration done for" << path << requestId << status;
-            if (status != OCC::HydrationJob::Success) {
-                sendTransferError();
-            }
+            socket.close();
+            signalSocket.close();
             loop.quit();
         }
     });
 
     loop.exec();
 
-    if (!protrudingData.isEmpty()) {
+    if (!hydrationRequestCancelled && !protrudingData.isEmpty()) {
         qDebug(lcCfApiWrapper) << "Send remaining protruding data. Size:" << protrudingData.size();
         sendTransferInfo(protrudingData, dataOffset);
     }
+
+    int hydrationJobResult = OCC::HydrationJob::Status::Error;
+    const auto invokeFinalizeResult = QMetaObject::invokeMethod(
+        vfs, [=] { vfs->finalizeHydrationJob(requestId); }, Qt::BlockingQueuedConnection,
+        &hydrationJobResult);
+    if (!invokeFinalizeResult) {
+        qCritical(lcCfApiWrapper) << "Failed to finalize hydration job for" << path << requestId;
+    }
+
+    if (static_cast<OCC::HydrationJob::Status>(hydrationJobResult) == OCC::HydrationJob::Success) {
+        sendTransferError();
+    }
+}
 }
 
 void CALLBACK cfApiCancelFetchData(const CF_CALLBACK_INFO *callbackInfo, const CF_CALLBACK_PARAMETERS * /*callbackParameters*/)
@@ -216,7 +247,6 @@ void CALLBACK cfApiCancelFetchData(const CF_CALLBACK_INFO *callbackInfo, const C
         qCritical(lcCfApiWrapper) << "Failed to cancel hydration for" << path << requestId;
     }
 }
-
 
 CF_CALLBACK_REGISTRATION cfApiCallbacks[] = {
     { CF_CALLBACK_TYPE_FETCH_DATA, cfApiFetchDataCallback },
@@ -290,8 +320,6 @@ CF_SET_PIN_FLAGS pinRecurseModeToCfSetPinFlags(OCC::CfApiWrapper::SetPinRecurseM
         Q_UNREACHABLE();
         return CF_SET_PIN_FLAG_NONE;
     }
-}
-
 }
 
 OCC::CfApiWrapper::ConnectionKey::ConnectionKey()
@@ -677,7 +705,7 @@ OCC::Result<void, QString> OCC::CfApiWrapper::updatePlaceholderInfo(const FileHa
 
     const qint64 result = CfUpdatePlaceholder(handle.get(), &metadata,
                                               fileIdentity.data(), sizeToDWORD(fileIdentitySize),
-                                              nullptr, 0, CF_UPDATE_FLAG_NONE, nullptr, nullptr);
+                                              nullptr, 0, CF_UPDATE_FLAG_MARK_IN_SYNC, nullptr, nullptr);
 
     if (result != S_OK) {
         qCWarning(lcCfApiWrapper) << "Couldn't update placeholder info for" << pathForHandle(handle) << ":" << _com_error(result).ErrorMessage();

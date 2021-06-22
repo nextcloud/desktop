@@ -18,6 +18,7 @@
 
 #include "filesystembase.h"
 #include "utility.h"
+#include "common/asserts.h"
 
 #include <QDateTime>
 #include <QDir>
@@ -204,14 +205,8 @@ bool FileSystem::uncheckedRenameReplace(const QString &originFileName,
         (wchar_t *)dest.utf16(),
         MOVEFILE_REPLACE_EXISTING + MOVEFILE_COPY_ALLOWED + MOVEFILE_WRITE_THROUGH);
     if (!ok) {
-        wchar_t *string = 0;
-        FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
-            nullptr, ::GetLastError(), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-            (LPWSTR)&string, 0, nullptr);
-
-        *errorString = QString::fromWCharArray(string);
+        *errorString = Utility::formatWinError(GetLastError());
         qCWarning(lcFileSystem) << "Renaming temp file to final failed: " << *errorString;
-        LocalFree((HLOCAL)string);
         return false;
     }
 #endif
@@ -448,13 +443,13 @@ bool FileSystem::moveToTrash(const QString &fileName, QString *errorString)
 bool FileSystem::isFileLocked(const QString &fileName)
 {
 #ifdef Q_OS_WIN
-    const wchar_t *wuri = reinterpret_cast<const wchar_t *>(fileName.utf16());
     // Check if file exists
-    DWORD attr = GetFileAttributesW(wuri);
+    const QString fName = longWinPath(fileName);
+    DWORD attr = GetFileAttributesW(reinterpret_cast<const wchar_t *>(fName.utf16()));
     if (attr != INVALID_FILE_ATTRIBUTES) {
         // Try to open the file with as much access as possible..
         HANDLE win_h = CreateFileW(
-            wuri,
+            reinterpret_cast<const wchar_t *>(fName.utf16()),
             GENERIC_READ | GENERIC_WRITE,
             FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE,
             nullptr, OPEN_EXISTING,
@@ -480,11 +475,19 @@ bool FileSystem::isLnkFile(const QString &filename)
     return filename.endsWith(QLatin1String(".lnk"));
 }
 
+bool FileSystem::isExcludeFile(const QString &filename)
+{
+    return filename.compare(QStringLiteral(".sync-exclude.lst"), Qt::CaseInsensitive) == 0
+        || filename.compare(QStringLiteral("exclude.lst"), Qt::CaseInsensitive) == 0
+        || filename.endsWith(QStringLiteral("/.sync-exclude.lst"), Qt::CaseInsensitive)
+        || filename.endsWith(QStringLiteral("/exclude.lst"), Qt::CaseInsensitive);
+}
+
 bool FileSystem::isJunction(const QString &filename)
 {
 #ifdef Q_OS_WIN
     WIN32_FIND_DATA findData;
-    HANDLE hFind = FindFirstFileEx((const wchar_t *)filename.utf16(), FindExInfoBasic, &findData, FindExSearchNameMatch, nullptr, 0);
+    HANDLE hFind = FindFirstFileEx(reinterpret_cast<const wchar_t *>(longWinPath(filename).utf16()), FindExInfoBasic, &findData, FindExSearchNameMatch, nullptr, 0);
     if (hFind != INVALID_HANDLE_VALUE) {
         FindClose(hFind);
         return false;
@@ -501,6 +504,7 @@ bool FileSystem::isJunction(const QString &filename)
 #ifdef Q_OS_WIN
 QString FileSystem::pathtoUNC(const QString &_str)
 {
+    Q_ASSERT(QFileInfo(_str).isAbsolute());
     if (_str.isEmpty()) {
         return _str;
     }
@@ -514,6 +518,7 @@ QString FileSystem::pathtoUNC(const QString &_str)
     // prepend \\?\ and to support long names
 
     if (str.at(0) == sep) {
+        // should not happen as we require the path to be absolute
         return QStringLiteral(R"(\\?)") + str;
     }
     return QStringLiteral(R"(\\?\)") + str;

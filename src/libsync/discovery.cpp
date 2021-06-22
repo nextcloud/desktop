@@ -521,7 +521,8 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
         if (!localEntry.isValid()
             && item->_type == ItemTypeFile
             && opts._vfs->mode() != Vfs::Off
-            && _pinState != PinState::AlwaysLocal) {
+            && _pinState != PinState::AlwaysLocal
+            && !FileSystem::isExcludeFile(item->_file)) {
             item->_type = ItemTypeVirtualFile;
             if (isVfsWithSuffix())
                 addVirtualFileSuffix(tmp_path._original);
@@ -893,13 +894,43 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
     _childModified = true;
 
     auto postProcessLocalNew = [item, localEntry, path, this]() {
-        if (localEntry.isVirtualFile) {
-            const bool isPlaceHolder = _discoveryData->_syncOptions._vfs->isDehydratedPlaceholder(_discoveryData->_localDir + path._local);
-            if (isPlaceHolder) {
-                qCWarning(lcDisco) << "Wiping virtual file without db entry for" << path._local;
+        // TODO: We may want to execute the same logic for non-VFS mode, as, moving/renaming the same folder by 2 or more clients at the same time is not possible in Web UI.
+        // Keeping it like this (for VFS files and folders only) just to fix a user issue.
+        const auto isVfsEnabled = _discoveryData->_syncOptions._vfs && _discoveryData->_syncOptions._vfs->mode() != Vfs::Off;
+        if (localEntry.isVirtualFile || (localEntry.isDirectory && isVfsEnabled)) {
+            // must be a dehydrated placeholder
+            const bool isFilePlaceHolder = !localEntry.isDirectory && _discoveryData->_syncOptions._vfs->isDehydratedPlaceholder(_discoveryData->_localDir + path._local);
+
+            // a folder must be online-only (no files should be hydrated)
+            const bool isFolderPlaceholder = localEntry.isDirectory && *_discoveryData->_syncOptions._vfs->availability(path._local) == VfsItemAvailability::OnlineOnly;
+
+            Q_ASSERT(item->_instruction == CSYNC_INSTRUCTION_NEW);
+            if (item->_instruction != CSYNC_INSTRUCTION_NEW) {
+                qCWarning(lcDisco) << "Wiping virtual file without db entry for" << path._local << ". But, item->_instruction is" << item->_instruction;
+            }
+
+            // must be a file placeholder or an online-only folder placeholder
+            if (isFilePlaceHolder || isFolderPlaceholder) {
+                if (isFolderPlaceholder) {
+                    qCInfo(lcDisco) << "Wiping virtual folder without db entry for" << path._local;
+                } else {
+                    qCInfo(lcDisco) << "Wiping virtual file without db entry for" << path._local;
+                }
                 item->_instruction = CSYNC_INSTRUCTION_REMOVE;
                 item->_direction = SyncFileItem::Down;
+                // this flag needs to be unset, otherwise a folder would get marked as new in the processSubJobs
+                _childModified = false;
+                if (isFolderPlaceholder && _discoveryData) {
+                    emit _discoveryData->addErrorToGui(SyncFileItem::SoftError, tr("Conflict when uploading a folder. It's going to get cleared!"), path._local);
+                }
             } else {
+                if (localEntry.isDirectory && !isFolderPlaceholder) {
+                    qCInfo(lcDisco) << "Virtual directory without db entry for" << path._local << "but it contains hydrated file(s), so let's keep it and reupload.";
+                    if (_discoveryData) {
+                        emit _discoveryData->addErrorToGui(SyncFileItem::SoftError, tr("Conflict when uploading some files to a folder. Those, conflicted, are going to get cleared!"), path._local);
+                    }                    
+                    return;
+                }
                 qCWarning(lcDisco) << "Virtual file without db entry for" << path._local
                                    << "but looks odd, keeping";
                 item->_instruction = CSYNC_INSTRUCTION_IGNORE;

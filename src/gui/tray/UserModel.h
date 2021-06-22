@@ -75,6 +75,7 @@ public slots:
     void slotItemCompleted(const QString &folder, const SyncFileItemPtr &item);
     void slotProgressInfo(const QString &folder, const ProgressInfo &progress);
     void slotAddError(const QString &folderAlias, const QString &message, ErrorCategory category);
+    void slotAddErrorToGui(const QString &folderAlias, SyncFileItem::Status status, const QString &errorMessage, const QString &subject = {});
     void slotNotificationRequestFinished(int statusCode);
     void slotNotifyNetworkError(QNetworkReply *reply);
     void slotEndNotificationRequest(int replyCode);
@@ -94,6 +95,7 @@ private:
     void slotDisconnectPushNotifications();
     void slotReceivedPushNotification(Account *account);
     void slotReceivedPushActivity(Account *account);
+    void slotCheckExpiredActivities();
 
     void connectPushNotifications() const;
     bool checkPushNotificationsAreReady() const;
@@ -109,6 +111,7 @@ private:
     ActivityListModel *_activityModel;
     ActivityList _blacklistedNotifications;
 
+    QTimer _expiredActivitiesCheckTimer;
     QTimer _notificationCheckTimer;
     QHash<AccountState *, QElapsedTimer> _timeSinceLastCheck;
 

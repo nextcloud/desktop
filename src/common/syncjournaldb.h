@@ -23,6 +23,7 @@
 #include <QDateTime>
 #include <QHash>
 #include <QMutex>
+#include <QVariant>
 #include <functional>
 
 #include "common/utility.h"
@@ -66,8 +67,10 @@ public:
     bool listFilesInPath(const QByteArray &path, const std::function<void(const SyncJournalFileRecord&)> &rowCallback);
     bool setFileRecord(const SyncJournalFileRecord &record);
 
-    void keyValueStoreSet(const QString &key, qint64 value);
+    void keyValueStoreSet(const QString &key, QVariant value);
     qint64 keyValueStoreGetInt(const QString &key, qint64 defaultValue);
+    QVariant keyValueStoreGet(const QString &key, QVariant defaultValue = {});
+    void keyValueStoreDelete(const QString &key);
 
     bool deleteFileRecord(const QString &filename, bool recursively = false);
     bool updateFileRecordChecksum(const QString &filename,
@@ -423,6 +426,7 @@ private:
     SqlQuery _setDataFingerprintQuery2;
     SqlQuery _setKeyValueStoreQuery;
     SqlQuery _getKeyValueStoreQuery;
+    SqlQuery _deleteKeyValueStoreQuery;
     SqlQuery _getConflictRecordQuery;
     SqlQuery _setConflictRecordQuery;
     SqlQuery _deleteConflictRecordQuery;

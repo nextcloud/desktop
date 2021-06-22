@@ -110,7 +110,6 @@ public:
     void setExpectedContentLength(qint64 size) { _expectedContentLength = size; }
 
 signals:
-    void canceled();
     void finishedSignal();
     void downloadProgress(qint64, qint64);
 private slots:
@@ -202,11 +201,13 @@ private slots:
 
     void abort(PropagatorJob::AbortType abortType) override;
     void slotDownloadProgress(qint64, qint64);
-    void slotChecksumFail(const QString &errMsg);
+    void slotChecksumFail(const QString &errMsg, const QByteArray &checksumType, const QByteArray &checksum, const QString &filePath);
 
 private:
     void startAfterIsEncryptedIsChecked();
     void deleteExistingFolder();
+
+    void startContentChecksumCompute(const QByteArray &checksumType, const QString &path);
 
     qint64 _resumeStart;
     qint64 _downloadProgress;

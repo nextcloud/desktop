@@ -154,6 +154,11 @@ namespace FileSystem {
     bool OCSYNC_EXPORT isLnkFile(const QString &filename);
 
     /**
+     * Returns whether the file is an exclude file (contains patterns to exclude from sync)
+     */
+    bool OCSYNC_EXPORT isExcludeFile(const QString &filename);
+
+    /**
      * Returns whether the file is a junction (windows only)
      */
     bool OCSYNC_EXPORT isJunction(const QString &filename);

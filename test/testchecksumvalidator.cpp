@@ -42,7 +42,7 @@ using namespace OCC::Utility;
          _successDown = true;
     }
 
-    void slotDownError( const QString& errMsg ) {
+    void slotDownError(const QString &errMsg, const QByteArray&, const QByteArray&, const QString&) {
          QCOMPARE(_expectedError, errMsg);
          _errorSeen = true;
     }
@@ -179,8 +179,8 @@ using namespace OCC::Utility;
         QSKIP("ZLIB not found.", SkipSingle);
 #else
         auto *vali = new ValidateChecksumHeader(this);
-        connect(vali, SIGNAL(validated(QByteArray,QByteArray)), this, SLOT(slotDownValidated()));
-        connect(vali, SIGNAL(validationFailed(QString)), this, SLOT(slotDownError(QString)));
+        connect(vali, &ValidateChecksumHeader::validated, this, &TestChecksumValidator::slotDownValidated);
+        connect(vali, &ValidateChecksumHeader::validationFailed, this, &TestChecksumValidator::slotDownError);
 
         auto file = new QFile(_testfile, vali);
         file->open(QIODevice::ReadOnly);

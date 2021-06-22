@@ -61,7 +61,7 @@ MenuItem {
                     id: accountControlRowLayout
                     height: accountButton.height
                     width: accountButton.width
-                    spacing: 0
+                    spacing: Style.userStatusSpacing
                     Image {
                         id: accountAvatar
                         Layout.leftMargin: 7
@@ -99,13 +99,7 @@ MenuItem {
 
                     Column {
                         id: accountLabels
-                        spacing: Style.accountLabelsSpacing
-                        Layout.alignment: Qt.AlignLeft
-                        Layout.leftMargin: Style.accountLabelsLayoutMargin
-                        anchors.top: accountAvatar.top
-                        anchors.topMargin: Style.userStatusAnchorsMargin
-                        anchors.left: accountAvatar.right
-                        anchors.leftMargin: Style.accountLabelsAnchorsMargin
+                        Layout.leftMargin: Style.accountLabelsSpacing
                         Label {
                             id: accountUser
                             width: 128
@@ -116,36 +110,31 @@ MenuItem {
                             font.bold: true
                         }
                         Row {
-                            id: userStatus
                             visible: model.isConnected && 
                                      model.serverHasUserStatus
-                            anchors.top: accountUser.bottom
+                            width: Style.currentAccountLabelWidth + Style.userStatusEmojiSize
                             Label {
                                 id: emoji
+                                height: Style.topLinePixelSize
                                 visible: model.statusEmoji !== ""
-                                width: Style.userStatusEmojiSize
                                 text: statusEmoji
+                                topPadding: -Style.accountLabelsSpacing
                             }
                             Label {
                                 id: message
-                                anchors.bottom: emoji.bottom
-                                anchors.left: emoji.right
-                                anchors.leftMargin: emoji.width + Style.userStatusSpacing
+                                height: Style.topLinePixelSize
                                 visible: model.statusMessage !== ""
-                                width: Style.currentAccountLabelWidth
                                 text: statusMessage
                                 elide: Text.ElideRight
                                 color: "black"
                                 font.pixelSize: Style.subLinePixelSize
+                                leftPadding: Style.accountLabelsSpacing
                             }
                         }
                         Label {
                             id: accountServer
-                            anchors.top: userStatus.bottom
-                            anchors.topMargin: message.visible
-                                               ? message.height + Style.accountServerAnchorsMargin
-                                               : Style.userStatusAnchorsMargin
                             width: Style.currentAccountLabelWidth
+                            height: Style.topLinePixelSize
                             text: server
                             elide: Text.ElideRight
                             color: "black"

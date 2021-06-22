@@ -548,7 +548,7 @@ bool OwncloudPropagator::localFileNameClash(const QString &relFile)
         WIN32_FIND_DATA FindFileData;
         HANDLE hFind;
 
-        hFind = FindFirstFileW((wchar_t *)file.utf16(), &FindFileData);
+        hFind = FindFirstFileW(reinterpret_cast<const wchar_t *>(FileSystem::longWinPath(file).utf16()), &FindFileData);
         if (hFind == INVALID_HANDLE_VALUE) {
             // returns false.
         } else {
@@ -582,7 +582,7 @@ bool OwncloudPropagator::hasCaseClashAccessibilityProblem(const QString &relfile
     WIN32_FIND_DATA FindFileData;
     HANDLE hFind;
 
-    hFind = FindFirstFileW(reinterpret_cast<const wchar_t *>(file.utf16()), &FindFileData);
+    hFind = FindFirstFileW(reinterpret_cast<const wchar_t *>(FileSystem::longWinPath(file).utf16()), &FindFileData);
     if (hFind != INVALID_HANDLE_VALUE) {
         QString firstFile = QString::fromWCharArray(FindFileData.cFileName);
         if (FindNextFile(hFind, &FindFileData)) {

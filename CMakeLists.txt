@@ -7,13 +7,7 @@ include(FeatureSummary)
 
 set(BIN_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 
-
-set(OEM_THEME_DIR "" CACHE STRING "Define directory containing a custom theme")
-if ( EXISTS ${OEM_THEME_DIR}/OEM.cmake )
-     include ( ${OEM_THEME_DIR}/OEM.cmake )
-else ()
-     include ( ${CMAKE_SOURCE_DIR}/NEXTCLOUD.cmake )
-endif()
+include(${CMAKE_SOURCE_DIR}/NEXTCLOUD.cmake)
 
 # Default suffix if the theme doesn't define one
 if(NOT DEFINED APPLICATION_VIRTUALFILE_SUFFIX)
@@ -108,9 +102,9 @@ set(SHAREDIR ${DATADIR})
 # BUILD_OWNCLOUD_OSX_BUNDLE was not initialized OR set to true on OSX
 if(APPLE AND (NOT DEFINED BUILD_OWNCLOUD_OSX_BUNDLE OR BUILD_OWNCLOUD_OSX_BUNDLE))
     set(BUILD_OWNCLOUD_OSX_BUNDLE ON)
-    set(OWNCLOUD_OSX_BUNDLE "${APPLICATION_EXECUTABLE}.app")
-    set(LIB_INSTALL_DIR "${APPLICATION_EXECUTABLE}.app/Contents/MacOS")
-    set(BIN_INSTALL_DIR "${APPLICATION_EXECUTABLE}.app/Contents/MacOS")
+    set(OWNCLOUD_OSX_BUNDLE "${APPLICATION_NAME}.app")
+    set(LIB_INSTALL_DIR "${APPLICATION_NAME}.app/Contents/MacOS")
+    set(BIN_INSTALL_DIR "${APPLICATION_NAME}.app/Contents/MacOS")
 
 # BUILD_OWNCLOUD_OSX_BUNDLE was disabled on OSX
 elseif(APPLE AND NOT BUILD_OWNCLOUD_OSX_BUNDLE)

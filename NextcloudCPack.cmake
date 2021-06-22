@@ -2,11 +2,7 @@ include( InstallRequiredSystemLibraries )
 
 set( CPACK_PACKAGE_CONTACT  "Dominik Schmidt <domme@tomahawk-player.org>" )
 
-if ( DEFINED OEM_THEME_DIR AND EXISTS ${OEM_THEME_DIR}/OEM.cmake )
-     include ( "${OEM_THEME_DIR}/OEM.cmake" )
-else ()
-     include ( "${CMAKE_SOURCE_DIR}/NEXTCLOUD.cmake" )
-endif()
+include("${CMAKE_SOURCE_DIR}/NEXTCLOUD.cmake")
 
 include( VERSION.cmake )
 set( CPACK_PACKAGE_VERSION_MAJOR  ${MIRALL_VERSION_MAJOR} )

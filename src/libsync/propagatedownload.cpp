@@ -28,6 +28,8 @@
 #include "propagatedownloadencrypted.h"
 #include "common/vfs.h"
 
+#include "configfile.h"
+
 #include <QLoggingCategory>
 #include <QNetworkAccessManager>
 #include <QFileInfo>
@@ -37,6 +39,11 @@
 #ifdef Q_OS_UNIX
 #include <unistd.h>
 #endif
+
+namespace {
+    constexpr quint16 numChecksumFailuresAllowed = 1;
+    constexpr char *checksumFailureDbRecordPrefix = "ChecksumValidationFailed_";
+}
 
 namespace OCC {
 
@@ -344,11 +351,13 @@ void GETFileJob::slotReadyRead()
 
 void GETFileJob::cancel()
 {
-    if (reply()->isRunning()) {
-        reply()->abort();
+    const auto networkReply = reply();
+    if (networkReply && networkReply->isRunning()) {
+        networkReply->abort();
     }
-
-    emit canceled();
+    if (_device && _device->isOpen()) {
+        _device->close();
+    }
 }
 
 void GETFileJob::onTimedOut()
@@ -780,7 +789,7 @@ void PropagateDownloadFile::slotGetFinished()
     if (_tmpFile.size() == 0 && _item->_size > 0) {
         FileSystem::remove(_tmpFile.fileName());
         done(SyncFileItem::NormalError,
-            tr("The downloaded file is empty despite that the server announced it should have been %1.")
+            tr("The downloaded file is empty, but the server said it should have been %1.")
                 .arg(Utility::octetsToString(_item->_size)));
         return;
     }
@@ -821,8 +830,38 @@ void PropagateDownloadFile::slotGetFinished()
     validator->start(_tmpFile.fileName(), checksumHeader);
 }
 
-void PropagateDownloadFile::slotChecksumFail(const QString &errMsg)
+void PropagateDownloadFile::slotChecksumFail(const QString &errMsg, const QByteArray &checksumType, const QByteArray &checksum, const QString &filePath)
 {
+    if (!checksumType.isEmpty() && !checksum.isEmpty() && !filePath.isEmpty()) {
+        ConfigFile cfgFile;
+
+        if (cfgFile.allowChecksumValidationFail()) {
+            const auto key = QString(checksumFailureDbRecordPrefix + _item->_fileId);
+            const QStringList mismatchEntryForFileSplitted = propagator()->_journal->keyValueStoreGet(key).toString().split(":", QString::SkipEmptyParts);
+            const QByteArray mismatchChecksumForFile = mismatchEntryForFileSplitted.size() > 0 ? mismatchEntryForFileSplitted[0].toUtf8() : QByteArray();
+            const auto numChecksumMismatchCases = mismatchEntryForFileSplitted.size() > 1 ? mismatchEntryForFileSplitted[1].toInt() : 0;
+
+            // format must be CHECKSUM:COUNT
+            Q_ASSERT(mismatchEntryForFileSplitted.size() != 1);
+            if (mismatchEntryForFileSplitted.size() == 1) {
+                qCCritical(lcPropagateDownload) << "mismatchEntryForFile has incorrect format. Should be CHECKSUM:COUNT";
+            }
+
+            if (numChecksumMismatchCases < numChecksumFailuresAllowed || mismatchChecksumForFile != checksum) {
+                // not enough failures or different checksum this time
+                qCInfo(lcPropagateDownload) << "Checksum validation has failed" << numChecksumMismatchCases << " times, with previous checksum<" << mismatchChecksumForFile << "> and, current checksum<" << checksum << ">, but, allowChecksumValidationFail is set.Let's give it another try...";
+                const auto numCasesToSet = mismatchChecksumForFile != checksum ? 1 : numChecksumMismatchCases + 1;
+                const QString value = QString::fromUtf8(checksum) + QStringLiteral(":") + QString::number(numCasesToSet);
+                propagator()->_journal->keyValueStoreSet(key, value);
+            } else {
+                propagator()->_journal->keyValueStoreDelete(key);
+                qCInfo(lcPropagateDownload) << "Checksum validation has failed" << numChecksumMismatchCases << " times, but, allowChecksumValidationFail is set, so, let's continue...";
+                startContentChecksumCompute(checksumType, filePath);
+                return;
+            }
+        }
+    }
+    
     FileSystem::remove(_tmpFile.fileName());
     propagator()->_anotherSyncNeeded = true;
     done(SyncFileItem::SoftError, errMsg); // tr("The file downloaded with a broken checksum, will be redownloaded."));
@@ -848,6 +887,18 @@ void PropagateDownloadFile::deleteExistingFolder()
     if (!propagator()->createConflict(_item, _associatedComposite, &error)) {
         done(SyncFileItem::NormalError, error);
     }
+}
+
+void PropagateDownloadFile::startContentChecksumCompute(const QByteArray &checksumType, const QString &path)
+{
+    qCInfo(lcPropagateDownload) << "Start checksum compute with checksumType:" << checksumType << " for path:" << path;
+    // Compute the content checksum.
+    const auto computeChecksum = new ComputeChecksum(this);
+    computeChecksum->setChecksumType(checksumType);
+
+    connect(computeChecksum, &ComputeChecksum::done,
+        this, &PropagateDownloadFile::contentChecksumComputed);
+    computeChecksum->start(path);
 }
 
 namespace { // Anonymous namespace for the recall feature
@@ -938,13 +989,9 @@ void PropagateDownloadFile::transmissionChecksumValidated(const QByteArray &chec
         return contentChecksumComputed(checksumType, checksum);
     }
 
-    // Compute the content checksum.
-    auto computeChecksum = new ComputeChecksum(this);
-    computeChecksum->setChecksumType(theContentChecksumType);
+    startContentChecksumCompute(theContentChecksumType, _tmpFile.fileName());
 
-    connect(computeChecksum, &ComputeChecksum::done,
-        this, &PropagateDownloadFile::contentChecksumComputed);
-    computeChecksum->start(_tmpFile.fileName());
+    propagator()->_journal->keyValueStoreDelete(QString(checksumFailureDbRecordPrefix + _item->_fileId));
 }
 
 void PropagateDownloadFile::contentChecksumComputed(const QByteArray &checksumType, const QByteArray &checksum)
