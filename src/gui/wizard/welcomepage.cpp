@@ -13,6 +13,7 @@
  */
 
 #include "welcomepage.h"
+#include "guiutility.h"
 #include "theme.h"
 #include "wizard/owncloudwizard.h"
 #include "wizard/slideshow.h"
@@ -99,6 +100,11 @@ void WelcomePage::setupCreateAccountButton()
         _ocWizard->setRegistration(true);
         _nextPage = WizardCommon::Page_WebView;
         _ocWizard->next();
+    });
+#else // WITH_WEBENGINE
+    connect(_ui->createAccountButton, &QPushButton::clicked, this, [this](bool /*checked*/) {
+        _ocWizard->setRegistration(true);
+        Utility::openBrowser(QStringLiteral("https://nextcloud.com/register"));
     });
 #endif // WITH_WEBENGINE
 }
