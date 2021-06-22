@@ -688,9 +688,6 @@ bool OwncloudPropagator::createConflict(const SyncFileItemPtr &item,
         item->_file, Utility::qDateTimeFromTime_t(conflictModTime), conflictUserName);
     QString conflictFilePath = fullLocalPath(conflictFileName);
 
-    emit touchedFile(fn);
-    emit touchedFile(conflictFilePath);
-
     // If the file is locked, we want to retry this sync when it
     // becomes available again.
     if (FileSystem::isFileLocked(fn, FileSystem::LockMode::Exclusive)) {
@@ -699,6 +696,9 @@ bool OwncloudPropagator::createConflict(const SyncFileItemPtr &item,
             *error = tr("File %1 is currently in use").arg(fn);
         return false;
     }
+
+    emit touchedFile(fn);
+    emit touchedFile(conflictFilePath);
     if (!FileSystem::rename(fn, conflictFilePath, &renameError)) {
         // If the rename fails, don't replace it.
         if (error)

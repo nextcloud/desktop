@@ -467,9 +467,10 @@ bool FileSystem::isFileLocked(const QString &fileName, LockMode mode)
             NULL);
 
         if (win_h == INVALID_HANDLE_VALUE) {
-            /* could not be opened, so locked? */
-            /* 32 == ERROR_SHARING_VIOLATION */
-            return true;
+            if (GetLastError() == ERROR_SHARING_VIOLATION) {
+                return true;
+            }
+            return false;
         } else {
             CloseHandle(win_h);
         }
