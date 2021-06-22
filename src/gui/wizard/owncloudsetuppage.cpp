@@ -119,21 +119,6 @@ void OwncloudSetupPage::setupCustomization()
     _ui.leUrl->setPalette(leUrlPalette);
 }
 
-#ifdef WITH_PROVIDERS
-void OwncloudSetupPage::slotLogin()
-{
-    _ocWizard->setRegistration(false);
-}
-void OwncloudSetupPage::slotGotoProviderList()
-{
-    _ocWizard->setRegistration(true);
-    _ocWizard->setAuthType(DetermineAuthTypeJob::AuthType::WebViewFlow);
-    _authTypeKnown = true;
-    _checking = false;
-    emit completeChanged();
-}
-#endif
-
 // slot hit from textChanged of the url entry field.
 void OwncloudSetupPage::slotUrlChanged(const QString &url)
 {
