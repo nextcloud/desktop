@@ -133,10 +133,13 @@ bool FileSystem::rename(const QString &originFileName,
     bool success = false;
     QString error;
 #ifdef Q_OS_WIN
-    QString orig = longWinPath(originFileName);
-    QString dest = longWinPath(destinationFileName);
-
-    if (isLnkFile(originFileName) || isLnkFile(destinationFileName)) {
+    const QString orig = longWinPath(originFileName);
+    const QString dest = longWinPath(destinationFileName);
+    if (FileSystem::isFileLocked(dest, FileSystem::LockMode::Exclusive)) {
+        error = QCoreApplication::translate("FileSystem", "Can't rename %1, the file is currently in use").arg(destinationFileName);
+    } else if (FileSystem::isFileLocked(orig, FileSystem::LockMode::Exclusive)) {
+        error = QCoreApplication::translate("FileSystem", "Can't rename %1, the file is currently in use").arg(originFileName);
+    } else if (isLnkFile(originFileName) || isLnkFile(destinationFileName)) {
         success = MoveFileEx((wchar_t *)orig.utf16(),
             (wchar_t *)dest.utf16(),
             MOVEFILE_COPY_ALLOWED | MOVEFILE_WRITE_THROUGH);
@@ -168,6 +171,7 @@ bool FileSystem::uncheckedRenameReplace(const QString &originFileName,
     const QString &destinationFileName,
     QString *errorString)
 {
+    Q_ASSERT(errorString);
 #ifndef Q_OS_WIN
     bool success;
     QFile orig(originFileName);
@@ -195,13 +199,20 @@ bool FileSystem::uncheckedRenameReplace(const QString &originFileName,
     if (!QFileInfo(destinationFileName).isWritable()) {
         setFileReadOnly(destinationFileName, false);
     }
-
-    BOOL ok;
-    QString orig = longWinPath(originFileName);
-    QString dest = longWinPath(destinationFileName);
-
-    ok = MoveFileEx((wchar_t *)orig.utf16(),
-        (wchar_t *)dest.utf16(),
+    const QString orig = longWinPath(originFileName);
+    const QString dest = longWinPath(destinationFileName);
+    if (FileSystem::isFileLocked(dest, FileSystem::LockMode::Exclusive)) {
+        *errorString = QCoreApplication::translate("FileSystem", "Can't rename %1, the file is currently in use").arg(destinationFileName);
+        qCWarning(lcFileSystem) << "Renaming failed: " << *errorString;
+        return false;
+    }
+    if (FileSystem::isFileLocked(orig, FileSystem::LockMode::Exclusive)) {
+        *errorString = QCoreApplication::translate("FileSystem", "Can't rename %1, the file is currently in use").arg(originFileName);
+        qCWarning(lcFileSystem) << "Renaming failed: " << *errorString;
+        return false;
+    }
+    const BOOL ok = MoveFileEx(reinterpret_cast<const wchar_t *>(orig.utf16()),
+        reinterpret_cast<const wchar_t *>(dest.utf16()),
         MOVEFILE_REPLACE_EXISTING + MOVEFILE_COPY_ALLOWED + MOVEFILE_WRITE_THROUGH);
     if (!ok) {
         *errorString = Utility::formatWinError(GetLastError());

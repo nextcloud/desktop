@@ -215,11 +215,15 @@ void PropagateLocalRename::start()
             // it would have to come out the localFileNameClash function
             done(SyncFileItem::NormalError,
                 tr("File %1 can not be renamed to %2 because of a local file name clash")
-                    .arg(QDir::toNativeSeparators(_item->_file))
-                    .arg(QDir::toNativeSeparators(_item->_renameTarget)));
+                    .arg(QDir::toNativeSeparators(_item->_file),
+                        QDir::toNativeSeparators(_item->_renameTarget)));
             return;
         }
-
+        if (FileSystem::isFileLocked(existingFile, FileSystem::LockMode::Exclusive)) {
+            emit propagator()->seenLockedFile(existingFile, FileSystem::LockMode::Exclusive);
+            done(SyncFileItem::SoftError, tr("Could not rename %1 to %2, file is locked").arg(existingFile, targetFile));
+            return;
+        }
         emit propagator()->touchedFile(existingFile);
         emit propagator()->touchedFile(targetFile);
         QString renameError;

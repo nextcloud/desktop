@@ -458,7 +458,14 @@ void PropagateDownloadFile::startDownload()
         done(SyncFileItem::NormalError, tr("File %1 can not be downloaded because of a local file name clash!").arg(QDir::toNativeSeparators(_item->_file)));
         return;
     }
-
+    // If the file is locked, we want to retry this sync when it
+    // becomes available again
+    const auto targetFile = propagator()->fullLocalPath(_item->_file);
+    if (FileSystem::isFileLocked(targetFile, FileSystem::LockMode::Exclusive)) {
+        emit propagator()->seenLockedFile(targetFile, FileSystem::LockMode::Exclusive);
+        done(SyncFileItem::SoftError, tr("File %1 is locked").arg(QDir::toNativeSeparators(_item->_file)));
+        return;
+    }
     propagator()->reportProgress(*_item, 0);
 
     QString tmpFileName;
@@ -940,20 +947,20 @@ void PropagateDownloadFile::downloadFinished()
             return;
         }
     }
+    // If the file is locked, we want to retry this sync when it
+    // becomes available again
+    if (FileSystem::isFileLocked(fn, FileSystem::LockMode::Exclusive)) {
+        emit propagator()->seenLockedFile(fn, FileSystem::LockMode::Exclusive);
+        done(SyncFileItem::SoftError, tr("File %1 is locked").arg(fn));
+        return;
+    }
 
     QString error;
     emit propagator()->touchedFile(fn);
     // The fileChanged() check is done above to generate better error messages.
     if (!FileSystem::uncheckedRenameReplace(_tmpFile.fileName(), fn, &error)) {
-        qCWarning(lcPropagateDownload) << QStringLiteral("Rename failed: %1 => %2").arg(_tmpFile.fileName()).arg(fn);
-        // If the file is locked, we want to retry this sync when it
-        // becomes available again, otherwise try again directly
-        if (FileSystem::isFileLocked(fn, FileSystem::LockMode::Exclusive)) {
-            emit propagator()->seenLockedFile(fn, FileSystem::LockMode::Exclusive);
-        } else {
-            propagator()->_anotherSyncNeeded = true;
-        }
-
+        qCWarning(lcPropagateDownload) << "Rename failed:" << _tmpFile.fileName() << "=>" << fn;
+        propagator()->_anotherSyncNeeded = true;
         done(SyncFileItem::SoftError, error);
         return;
     }

@@ -691,15 +691,16 @@ bool OwncloudPropagator::createConflict(const SyncFileItemPtr &item,
     emit touchedFile(fn);
     emit touchedFile(conflictFilePath);
 
+    // If the file is locked, we want to retry this sync when it
+    // becomes available again.
+    if (FileSystem::isFileLocked(fn, FileSystem::LockMode::Exclusive)) {
+        emit seenLockedFile(fn, FileSystem::LockMode::Exclusive);
+        if (error)
+            *error = tr("File %1 is locked").arg(fn);
+        return false;
+    }
     if (!FileSystem::rename(fn, conflictFilePath, &renameError)) {
         // If the rename fails, don't replace it.
-
-        // If the file is locked, we want to retry this sync when it
-        // becomes available again.
-        if (FileSystem::isFileLocked(fn, FileSystem::LockMode::Exclusive)) {
-            emit seenLockedFile(fn, FileSystem::LockMode::Exclusive);
-        }
-
         if (error)
             *error = renameError;
         return false;
