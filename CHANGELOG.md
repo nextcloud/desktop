@@ -8,12 +8,15 @@ ownCloud admins and users.
 Summary
 -------
 
+* Bugfix - Settings migration from v2.4: [#4597](https://github.com/owncloud/enterprise/issues/4597)
+* Bugfix - VFS support for folders in the drive root: [#4639](https://github.com/owncloud/enterprise/issues/4639)
 * Bugfix - Keep share link names in sync with server: [#7549](https://github.com/owncloud/client/issues/7549)
 * Bugfix - SQLite wal file grows to several gigabyte: [#7646](https://github.com/owncloud/client/issues/7646)
 * Bugfix - Fix missing permission for newly created folder: [#8076](https://github.com/owncloud/client/pull/8076)
 * Bugfix - Don't recommend non default sync option: [#8317](https://github.com/owncloud/client/issues/8317)
 * Bugfix - Set up default locale correctly: [#8367](https://github.com/owncloud/client/issues/8367)
 * Bugfix - Properly print the sync events in .owncloudsync.log: [#8729](https://github.com/owncloud/client/issues/8729)
+* Bugfix - Locked files are not correctly synced: [#8761](https://github.com/owncloud/client/issues/8761)
 * Change - Don't ask the user to switch to http: [#8231](https://github.com/owncloud/client/issues/8231)
 * Change - Remove support for http redirects: [#8293](https://github.com/owncloud/client/pull/8293)
 * Change - We no longer try to locate an ownCloud install at /owncloud: [#8273](https://github.com/owncloud/client/issues/8273)
@@ -33,6 +36,18 @@ Summary
 
 Details
 -------
+
+* Bugfix - Settings migration from v2.4: [#4597](https://github.com/owncloud/enterprise/issues/4597)
+
+   We fixed the migration of settings of version 2.4 to the current location.
+
+   https://github.com/owncloud/enterprise/issues/4597
+
+* Bugfix - VFS support for folders in the drive root: [#4639](https://github.com/owncloud/enterprise/issues/4639)
+
+   We fixed a bug where it was not possible to use a folder in C:\ as sync folder.
+
+   https://github.com/owncloud/enterprise/issues/4639
 
 * Bugfix - Keep share link names in sync with server: [#7549](https://github.com/owncloud/client/issues/7549)
 
@@ -76,6 +91,17 @@ Details
    rather than a string.
 
    https://github.com/owncloud/client/issues/8729
+
+* Bugfix - Locked files are not correctly synced: [#8761](https://github.com/owncloud/client/issues/8761)
+
+   We fixed an issue where files locked by office etc, where not correctly synced, when Windows
+   Virtual files are enabled.
+
+   https://github.com/owncloud/client/issues/8761
+   https://github.com/owncloud/client/issues/8765
+   https://github.com/owncloud/client/issues/8766
+   https://github.com/owncloud/client/pull/8763
+   https://github.com/owncloud/client/pull/8768
 
 * Change - Don't ask the user to switch to http: [#8231](https://github.com/owncloud/client/issues/8231)
 
