@@ -358,13 +358,17 @@ void PropagateDownloadFile::start()
 
     // For virtual files just dehydrate or create the file and be done
     if (_item->_type == ItemTypeVirtualFileDehydration) {
-        QString fsPath = propagator()->fullLocalPath(_item->_file);
+        const QString fsPath = propagator()->fullLocalPath(_item->_file);
         if (!FileSystem::verifyFileUnchanged(fsPath, _item->_previousSize, _item->_previousModtime)) {
             propagator()->_anotherSyncNeeded = true;
             done(SyncFileItem::SoftError, tr("File has changed since discovery"));
             return;
         }
-
+        if (FileSystem::isFileLocked(fsPath, FileSystem::LockMode::Exclusive)) {
+            Q_EMIT propagator()->seenLockedFile(fsPath, FileSystem::LockMode::Exclusive);
+            done(SyncFileItem::SoftError, tr("Failed to dehydrate %1, the file is currently in use").arg(fsPath));
+            return;
+        }
         qCDebug(lcPropagateDownload) << "dehydrating file" << _item->_file;
         auto r = vfs->dehydratePlaceholder(*_item);
         if (!r) {
