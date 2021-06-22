@@ -64,7 +64,7 @@ UploadDevice *PropagateUploadFileTUS::prepareDevice(const quint64 &chunkSize)
     const auto lockMode = propagator()->syncOptions().requiredLockMode();
     if (FileSystem::isFileLocked(localFileName, lockMode)) {
         emit propagator()->seenLockedFile(localFileName, lockMode);
-        abortWithError(SyncFileItem::SoftError, tr("File is locked"));
+        abortWithError(SyncFileItem::SoftError, tr("%1 the file is currently in use").arg(localFileName));
         return nullptr;
     }
     auto device = std::make_unique<UploadDevice>(localFileName, _currentOffset, chunkSize, &propagator()->_bandwidthManager);

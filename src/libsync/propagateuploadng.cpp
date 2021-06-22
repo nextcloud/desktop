@@ -375,7 +375,7 @@ void PropagateUploadFileNG::startNextChunk()
     const auto lockMode = propagator()->syncOptions().requiredLockMode();
     if (FileSystem::isFileLocked(fileName, lockMode)) {
         emit propagator()->seenLockedFile(fileName, lockMode);
-        abortWithError(SyncFileItem::SoftError, tr("File is locked"));
+        abortWithError(SyncFileItem::SoftError, tr("%1 the file is currently in use").arg(fileName));
         return;
     }
     auto device = std::unique_ptr<UploadDevice>(new UploadDevice(

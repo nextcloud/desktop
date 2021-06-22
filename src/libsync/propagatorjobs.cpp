@@ -221,7 +221,7 @@ void PropagateLocalRename::start()
         }
         if (FileSystem::isFileLocked(existingFile, FileSystem::LockMode::Exclusive)) {
             emit propagator()->seenLockedFile(existingFile, FileSystem::LockMode::Exclusive);
-            done(SyncFileItem::SoftError, tr("Could not rename %1 to %2, file is locked").arg(existingFile, targetFile));
+            done(SyncFileItem::SoftError, tr("Could not rename %1 to %2, the file is currently in use").arg(existingFile, targetFile));
             return;
         }
         emit propagator()->touchedFile(existingFile);
