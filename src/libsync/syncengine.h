@@ -274,7 +274,7 @@ private:
     AnotherSyncNeeded _anotherSyncNeeded;
 
     /** Stores the time since a job touched a file. */
-    QMultiMap<QElapsedTimer, QString> _touchedFiles;
+    std::multimap<QElapsedTimer, QString> _touchedFiles;
 
     QElapsedTimer _lastUpdateProgressCallbackCall;
 

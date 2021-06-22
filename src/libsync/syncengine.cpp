@@ -875,26 +875,28 @@ void SyncEngine::slotAddTouchedFile(const QString &fn)
 {
     QElapsedTimer now;
     now.start();
-    QString file = QDir::cleanPath(fn);
+    const QString file = QDir::cleanPath(fn);
 
     // Iterate from the oldest and remove anything older than 15 seconds.
     while (true) {
-        auto first = _touchedFiles.begin();
-        if (first == _touchedFiles.end())
+        // don't use a loop as we do erase in here
+        // don't use remove_if as we can stop as soon as we find the first new item
+        auto start = _touchedFiles.cbegin();
+        if (start == _touchedFiles.cend()) {
             break;
+        }
         // Compare to our new QElapsedTimer instead of using elapsed().
         // This avoids querying the current time from the OS for every loop.
-        auto elapsed = std::chrono::milliseconds(now.msecsSinceReference() - first.key().msecsSinceReference());
+        const auto elapsed = std::chrono::milliseconds(now.msecsSinceReference() - start->first.msecsSinceReference());
         if (elapsed <= s_touchedFilesMaxAgeMs) {
             // We found the first path younger than the maximum age, keep the rest.
             break;
         }
-
-        _touchedFiles.erase(first);
+        _touchedFiles.erase(start);
     }
 
     // This should be the largest QElapsedTimer yet, use constEnd() as hint.
-    _touchedFiles.insert(_touchedFiles.constEnd(), now, file);
+    _touchedFiles.insert(_touchedFiles.cend(), { now, file });
 }
 
 void SyncEngine::slotClearTouchedFiles()
@@ -905,10 +907,9 @@ void SyncEngine::slotClearTouchedFiles()
 bool SyncEngine::wasFileTouched(const QString &fn) const
 {
     // Start from the end (most recent) and look for our path. Check the time just in case.
-    auto begin = _touchedFiles.constBegin();
-    for (auto it = _touchedFiles.constEnd(); it != begin; --it) {
-        if ((it-1).value() == fn)
-            return std::chrono::milliseconds((it-1).key().elapsed()) <= s_touchedFilesMaxAgeMs;
+    for (auto it = _touchedFiles.crbegin(); it != _touchedFiles.crend(); ++it) {
+        if (it->second == fn)
+            return std::chrono::milliseconds(it->first.elapsed()) <= s_touchedFilesMaxAgeMs;
     }
     return false;
 }
