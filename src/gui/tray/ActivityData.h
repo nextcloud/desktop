@@ -74,7 +74,6 @@ public:
     qint64 _expireAtMsecs = -1;
     QString _accName;
     QString _icon;
-    QString _iconData;
 
     // Stores information about the error
     int _status;
