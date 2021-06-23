@@ -1,6 +1,7 @@
 #pragma once
 
 #include "httpcredentials.h"
+#include "common/depreaction.h"
 
 #include "account.h"
 #include "configfile.h"
@@ -10,6 +11,8 @@
 #include <QLoggingCategory>
 
 #include <qt5keychain/keychain.h>
+
+OC_DISABLE_DEPRECATED_WARNING
 
 namespace {
 void addSettingsToJob(QKeychain::Job *job)
@@ -256,3 +259,5 @@ private:
 };
 
 }
+
+OC_ENABLE_DEPRECATED_WARNING
