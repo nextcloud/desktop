@@ -14,6 +14,7 @@
 
 #include "theme.h"
 #include "config.h"
+#include "common/depreaction.h"
 #include "common/utility.h"
 #include "version.h"
 #include "configfile.h"
@@ -316,6 +317,17 @@ QString Theme::conflictHelpUrl() const
 QString Theme::overrideServerUrl() const
 {
     return QString();
+}
+
+QString Theme::overrideServerUrlV2() const
+{
+    static const auto serverOverride = qEnvironmentVariable("OWNCLOUD_OVERRIDE_SERVER_URL");
+    if (serverOverride.isEmpty()) {
+        OC_DISABLE_DEPRECATED_WARNING
+        return overrideServerUrl();
+        OC_ENABLE_DEPRECATED_WARNING
+    }
+    return serverOverride;
 }
 
 QString Theme::forceConfigAuthType() const

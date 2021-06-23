@@ -67,7 +67,7 @@ void OwncloudSetupWizard::startWizard()
 {
     AccountPtr account = AccountManager::createAccount();
     account->setCredentials(new DummyCredentials);
-    account->setUrl(Theme::instance()->overrideServerUrl());
+    account->setUrl(Theme::instance()->overrideServerUrlV2());
     _ocWizard->setAccount(account);
     _ocWizard->setOCUrl(account->url().toString());
 

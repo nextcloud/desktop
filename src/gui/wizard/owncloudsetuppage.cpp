@@ -53,7 +53,7 @@ OwncloudSetupPage::OwncloudSetupPage(QWidget *parent)
     setTitle(WizardCommon::titleTemplate().arg(tr("Connect to %1").arg(theme->appNameGUI())));
     setSubTitle(WizardCommon::subTitleTemplate().arg(tr("Setup %1 server").arg(theme->appNameGUI())));
 
-    if (theme->overrideServerUrl().isEmpty()) {
+    if (theme->overrideServerUrlV2().isEmpty()) {
         _ui->leUrl->setPostfix(theme->wizardUrlPostfix());
         _ui->leUrl->setPlaceholderText(theme->wizardUrlHint());
     } else {
@@ -169,7 +169,7 @@ void OwncloudSetupPage::initializePage()
     // If url is overriden by theme, it's already set and
     // we just check the server type and switch to second page
     // immediately.
-    if (Theme::instance()->overrideServerUrl().isEmpty()) {
+    if (Theme::instance()->overrideServerUrlV2().isEmpty()) {
         _ui->leUrl->setFocus();
     } else {
         setCommitPage(true);

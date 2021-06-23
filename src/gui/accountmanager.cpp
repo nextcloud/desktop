@@ -159,7 +159,7 @@ bool AccountManager::restoreFromLegacySettings()
             oCSettings->beginGroup(QLatin1String("ownCloud"));
 
             // Check the theme url to see if it is the same url that the oC config was for
-            QString overrideUrl = Theme::instance()->overrideServerUrl();
+            QString overrideUrl = Theme::instance()->overrideServerUrlV2();
             if (!overrideUrl.isEmpty()) {
                 if (overrideUrl.endsWith('/')) {
                     overrideUrl.chop(1);
@@ -303,7 +303,7 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
 
     auto acc = createAccount();
 
-    QString overrideUrl = Theme::instance()->overrideServerUrl();
+    QString overrideUrl = Theme::instance()->overrideServerUrlV2();
     QString forceAuth = Theme::instance()->forceConfigAuthType();
     if (!forceAuth.isEmpty() && !overrideUrl.isEmpty()) {
         // If forceAuth is set, this might also mean the overrideURL has changed.

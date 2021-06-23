@@ -160,8 +160,15 @@ public:
      * Setting a value here will pre-define the server url.
      *
      * The respective UI controls will be disabled
+     * Deprecated: Use overrideServerUrlV2 as it allows overrides
      */
+    Q_DECL_DEPRECATED_X("Use overrideServerUrlV2")
     virtual QString overrideServerUrl() const;
+
+    /** Same as overrideServerUrl allows override by
+     *  setting $OWNCLOUD_OVERRIDE_SERVER_URL
+     */
+    QString overrideServerUrlV2() const;
 
     /**
      * This is only usefull when previous version had a different overrideServerUrl
