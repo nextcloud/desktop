@@ -227,7 +227,7 @@ def gui_tests(ctx, trigger = {}, depends_on = [], filterTags = [], version = "da
                  setupServerAndApp(2) +
                  fixPermissions() +
                  owncloudLog() +
-                 build_client(ctx, "gcc", "g++", "Release", "Unix Makefiles", "make", build_dir) +
+                 build_client(ctx, "gcc", "g++", "Debug", "Ninja", "ninja", build_dir) +
                  [
                      {
                          "name": "GUItests",
