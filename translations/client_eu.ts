@@ -365,7 +365,7 @@ Itxaron berriro sinkronizatu arte, ondoren enkriptatu.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="354"/>
         <source>Encryption failed</source>
-        <translation type="unfinished"/>
+        <translation>Zifratzeak huts egin du</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="354"/>
