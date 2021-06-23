@@ -150,7 +150,7 @@
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="73"/>
         <source>Switch to your browser to connect your account</source>
-        <translation type="unfinished"/>
+        <translation>נא לעבור לדפדפן כדי להתחבר לחשבון שלך</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="148"/>
@@ -222,7 +222,7 @@
     <message>
         <location filename="../src/libsync/abstractpropagateremotedeleteencrypted.cpp" line="181"/>
         <source>&quot;%1 Failed to unlock encrypted folder %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>&quot;%1 שחרור הצפנת התיקייה נכשל %2&quot;.</translation>
     </message>
 </context>
 <context>
@@ -286,7 +286,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="88"/>
         <source>End-to-End Encryption with Virtual Files</source>
-        <translation type="unfinished"/>
+        <translation>הצפנה מקצה לקצה עם קבצים וירטואליים</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="89"/>
@@ -365,12 +365,12 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="354"/>
         <source>Encryption failed</source>
-        <translation type="unfinished"/>
+        <translation>ההצפנה נכשלה</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="354"/>
         <source>Could not encrypt folder because the folder does not exist anymore</source>
-        <translation type="unfinished"/>
+        <translation>לא ניתן להצפין את התיקייה כיוון שהתיקייה לא קיימת עוד</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="418"/>
