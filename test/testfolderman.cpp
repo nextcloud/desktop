@@ -51,7 +51,6 @@ private slots:
         Utility::NtfsPermissionLookupRAII ntfs_perm;
 #endif
         QTemporaryDir dir;
-        ConfigFile::setConfDir(dir.path()); // we don't want to pollute the user's config file
         QVERIFY(dir.isValid());
         QDir dir2(dir.path());
         QVERIFY(dir2.mkpath("sub/ownCloud1/folder/f"));
