@@ -81,7 +81,7 @@
         <location filename="../src/common/filesystembase.cpp" line="205"/>
         <location filename="../src/common/filesystembase.cpp" line="210"/>
         <source>Can&apos;t rename %1, the file is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>S’riemërtohet dot %1, kartela është aktualisht në përdorim</translation>
     </message>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="393"/>
@@ -2372,7 +2372,7 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="696"/>
         <source>File %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Kartela %1 është aktualisht në përdorim</translation>
     </message>
 </context>
 <context>
@@ -2712,7 +2712,7 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
         <location filename="../src/libsync/propagatedownload.cpp" line="470"/>
         <location filename="../src/libsync/propagatedownload.cpp" line="958"/>
         <source>%1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>%1 është aktualisht në përdorim</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="520"/>
@@ -2753,7 +2753,7 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="369"/>
         <source>Failed to dehydrate %1, the file is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>S’u arrit të dehidratohet %1, kartela është aktualisht në përdorim</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="1016"/>
@@ -2815,7 +2815,7 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="224"/>
         <source>Could not rename %1 to %2, the file is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>S’u riemërtua dot %1 si %2, kartela është aktualisht në përdorim</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="252"/>
