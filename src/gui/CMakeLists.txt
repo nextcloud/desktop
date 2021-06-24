@@ -134,7 +134,7 @@ set(client_SRCS
     wizard/linklabel.cpp
     )
 
-if (WITH_WEBENGINE)
+if (Qt5WebEngine_FOUND AND Qt5WebEngineWidgets_FOUND)
   list(APPEND client_SRCS
     wizard/webviewpage.cpp
     wizard/webview.cpp
@@ -337,7 +337,7 @@ target_link_libraries(nextcloudCore
   ${synclib_NAME}
   )
 
-if(WITH_WEBENGINE)
+if(Qt5WebEngine_FOUND AND Qt5WebEngineWidgets_FOUND)
   target_link_libraries(nextcloudCore PUBLIC Qt5::WebEngineWidgets)
 endif()
 
