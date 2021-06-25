@@ -2965,6 +2965,11 @@ Nedoporučuje se jí používat.</translation>
 <context>
     <name>OCC::OwncloudWizard</name>
     <message>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="91"/>
+        <source>%1 Connection Wizard</source>
+        <translation>%1 Průvodce spojením</translation>
+    </message>
+    <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="88"/>
         <source>Add %1 account</source>
         <translation>Přidat %1 účet</translation>
@@ -2973,11 +2978,6 @@ Nedoporučuje se jí používat.</translation>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="93"/>
         <source>Skip folders configuration</source>
         <translation>Přeskočit nastavení složek</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="91"/>
-        <source>%1 Connection Wizard</source>
-        <translation>%1 Průvodce spojením</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="404"/>
@@ -4698,13 +4698,13 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
     <name>OCC::WebFlowCredentials</name>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="159"/>
-        <source>You have been logged out of %1 as user %2. Please login again.</source>
-        <translation>Byli jste odhlášeni z %1 jako uživatel %2. Znovu se přihlaste.</translation>
+        <source>You have been logged out of %1 as user %2. Please login again</source>
+        <translation>Byli jste odhlášeni z %1 jako uživatel %2. Znovu se přihlaste</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="159"/>
-        <source>You have been logged out of %1 as user %2. Please login again</source>
-        <translation>Byli jste odhlášeni z %1 jako uživatel %2. Znovu se přihlaste</translation>
+        <source>You have been logged out of %1 as user %2. Please login again.</source>
+        <translation>Byli jste odhlášeni z %1 jako uživatel %2. Znovu se přihlaste.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="183"/>

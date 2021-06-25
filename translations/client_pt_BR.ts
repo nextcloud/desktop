@@ -2965,6 +2965,11 @@ Não é aconselhado usá-la.</translation>
 <context>
     <name>OCC::OwncloudWizard</name>
     <message>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="91"/>
+        <source>%1 Connection Wizard</source>
+        <translation>Assistente de Conexão %1</translation>
+    </message>
+    <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="88"/>
         <source>Add %1 account</source>
         <translation>Adicionar conta %1 </translation>
@@ -2973,11 +2978,6 @@ Não é aconselhado usá-la.</translation>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="93"/>
         <source>Skip folders configuration</source>
         <translation>Pular a configuração de pastas</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="91"/>
-        <source>%1 Connection Wizard</source>
-        <translation>Assistente de Conexão %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="404"/>
@@ -4699,13 +4699,13 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <name>OCC::WebFlowCredentials</name>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="159"/>
-        <source>You have been logged out of %1 as user %2. Please login again.</source>
-        <translation>Você foi desconectado de %1 como usuário %2. Por favor faça login novamente.</translation>
+        <source>You have been logged out of %1 as user %2. Please login again</source>
+        <translation>Você foi deslogado de %1 como usuário %2. Logue-se novamente</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="159"/>
-        <source>You have been logged out of %1 as user %2. Please login again</source>
-        <translation>Você foi deslogado de %1 como usuário %2. Logue-se novamente</translation>
+        <source>You have been logged out of %1 as user %2. Please login again.</source>
+        <translation>Você foi desconectado de %1 como usuário %2. Por favor faça login novamente.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="183"/>
