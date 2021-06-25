@@ -12,28 +12,38 @@ as an icon in the system tray (Windows, KDE), status bar
 
 .. image:: images/icon.png
 
+Main dialog
+~~~~~~~~~~~
+
+.. index:: activity, recent changes, sync activity, main dialog, adding account, account, add account, remove account
+
+The main dialog, which can be invoked from the tray icon in the
+taskbar, will show files information about the activities of the sync
+client and Nextcloud. If there are any synchronization issues, they
+will show up here. The dialog also gives information about other
+activities or notifications like Talk mentions or file changes. It
+does also show the status of the user.
+
+.. image:: images/main_dialog.png
+
+When clicking on the avatar a menu opens where it is possible to add a
+new account or removing an existing account.
+
 Menu
 ----
 
-.. image:: images/menu.png
+.. image:: images/traymenu.png
 
-A right click on the icon (left click on Ubuntu and macOS)
-provides the following menu:
+A right click on the icon provides the following menu:
 
-* ``Open Nextcloud in browser``: Opens the Nextcloud web interface
-* ``Open folder 'Nextcloud'``: Opens the local folder.  If multiple
-  sync targets have been defined, an entry will exist for each local folder.
-* **Disk space indicator**: Shows how much space is used on the server.
-* Operation indicator: Shows the status of the current sync process, or
-  ``Up to date`` if server and client are in sync.
-* **Recent Changes**: shows the last six files modified by sync operations,
-  and provides access to the Sync status, which lists all changes
-  since the last restart of Nextcloud Client.
-* ``Settings...``: provides access to the settings menu.
-* ``Help``: Opens a browser to display this help.
-* ``Log out``: Logs the client out of the server.
-* ``Quit Nextcloud``: Quits Nextcloud Client, ending a currently running
+* ``Open main dialog``: Opens the main dialog.
+* ``Pause sync``: Pauses the synchronization.
+* ``Settings``: Provides access to the settings menu.
+* ``Exit Nextcloud``: Quits Nextcloud Client, ending a currently running
   sync run.
+
+.. NOTE::
+    This menu is not available on macOS.
 
 Settings
 --------
@@ -51,28 +61,41 @@ Where:
 * ``Connected to <Nextcloud instance> as <user>``: Indicates the Nextcloud server
   which the client is syncing with and the user account on that server.
 
-* ``Add Folder Sync Connection...``: Provides the ability to add another folder to the sync
+* If the End-to-End encryption app is installed, then the current used
+  passphrase can be shown with clicking on ``Display mnemonic``.
+
+Clicking on the tree dot menu or doing a right click on the folder
+opens up a context menu with the following options:
+
+* ``Open folder``: Opens the folder in the file explorer which the
+  operating system provides. In example on Windows it will open the Windows Explorer.
+* ``Create new folder``: Creates a new folder.
+* ``Force sync now``: Forces a synchronization run.
+* ``Availability``: This entry is only available if the folder uses the
+  virtual files feature. The files in the folder can be either made
+  available offline with ``Make always available locally`` or if disk
+  space needs to be saved, they can be turned into placeholder files
+  with ``Free up local space``. ``Free up local space`` will not
+  delete any files.
+* ``Add folder sync connection``: Provides the ability to add another folder to the sync
   (see ``Adding a folder sync connection``).
-* ``Pause/Resume``: Will pause the current sync or prevent the client from
+* ``Pause sync/Resume sync``: Will pause the current sync or prevent the client from
   starting a new sync.  Resume will resume the sync process.
-* ``Remove``: Will remove the selected folder from being synced.  This is used,
+* ``Remove folder sync connection``: Will remove the selected folder from being synced.  This is used,
   for instance, when there is a desire to sync only a few folders and not the
   root.  First, remove the root from sync, then add the folders to sync as
   desired.
-* ``Storage Usage``: Provides further details on the storage utilization on the
-  Nextcloud server.
 * ``Edit Ignored Files``: Provides a list of files which will be ignored, i.e.,
   will not sync between the client and server. The ignored files editor allows
   adding patterns for files or directories that should be excluded from the
   sync process. Besides normal characters, wild cards may be used, an asterisk
   ‘*’ indicating multiple characters, or a question mark ‘?’ indicating a single
   character.
+* ``Enable virtual file support/Disable virtual file support``: Enable
+  or disable virtual file support for this folder.
 
-* ``Modify Account``: Allows the user to change the Nextcloud server being synced
-  to. It brings up the Setting up an Account (see above) windows.
 
-.. image:: images/settings_account.png
-   :scale: 50 %
+.. image:: images/settingsdialog.png
 
 Adding a Folder Sync Connection
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -81,32 +104,15 @@ Adding a new sync is initiated by clicking ``Add Folder Sync Connection`` in
 the ``Account`` settings.
 
 .. image:: images/folderwizard_local.png
-   :scale: 50 %
 
 The Directory and alias name must be unique.
 
-.. image:: images/folderwizard_remote.png
-   :scale: 50 %
-
-Select the folder on the server to sync with.  It is important to note that, a
+Then select the folder on the server to sync with.  It is important to note that, a
 server folder can only sync to the client one time.  So, in the above example,
 the sync is to the server root directory and thus it is not possible to select
 another folder under the root to sync.
 
-Activity
-~~~~~~~~
-
-.. index:: activity, recent changes, sync activity
-
-The Activity window, which can be invoked either from the main menu (``Recent
-Changes -> View more activity…``) or the Activity tab on the left side of the settings
-window, provides an in-depth account of the recent sync activity.  It will show
-files that have not been synced because they are on the ignored files list, or
-because they cannot be synced in a cross-platform manner due to containing
-special characters that cannot be stored on certain file systems.
-
-.. image:: images/settings_activity.png
-   :scale: 50 %
+.. image:: images/folderwizard_remote.png
 
 General
 ~~~~~~~
@@ -116,7 +122,6 @@ General
 The tab provides several useful options:
 
 .. image:: images/settings_general.png
-   :scale: 50 %
 
 * ``Launch on System Startup``: This option is automatically activated
   once a user has conimaged his account. Un-checking the box will cause
