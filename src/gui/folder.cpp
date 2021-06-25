@@ -527,7 +527,7 @@ int Folder::slotWipeErrorBlacklist()
 
 void Folder::slotWatchedPathChanged(const QString &path, ChangeReason reason)
 {
-    if (!path.startsWith(this->path())) {
+    if (!FileSystem::isChildPathOf(path, this->path())) {
         qCDebug(lcFolder) << "Changed path is not contained in folder, ignoring:" << path;
         return;
     }

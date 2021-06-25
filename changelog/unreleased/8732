@@ -1,0 +1,6 @@
+Bugfix: Correctly handle file path comparison on Windows
+
+We fixed a bug in which a change in the casing og the sync root made the client
+ignore changes in it.
+
+https://github.com/owncloud/client/issues/8732
