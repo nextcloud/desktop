@@ -163,6 +163,8 @@ namespace FileSystem {
      * Returns whether the file is a junction (windows only)
      */
     bool OCSYNC_EXPORT isJunction(const QString &filename);
+
+    bool OCSYNC_EXPORT isChildPathOf(QStringView child, QStringView parent);
 }
 
 /** @} */

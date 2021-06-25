@@ -263,10 +263,12 @@ void Utility::usleep(int usec)
 }
 
 // This can be overriden from the tests
-OCSYNC_EXPORT bool fsCasePreserving_override = []()-> bool {
-    QByteArray env = qgetenv("OWNCLOUD_TEST_CASE_PRESERVING");
-    if (!env.isEmpty())
-        return env.toInt();
+OCSYNC_EXPORT bool fsCasePreserving_override = []() -> bool {
+    static bool ok = false;
+    static int env = qEnvironmentVariableIntValue("OWNCLOUD_TEST_CASE_PRESERVING", &ok);
+    if (ok) {
+        return env;
+    }
     return Utility::isWindows() || Utility::isMac();
 }();
 
