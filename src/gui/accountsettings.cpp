@@ -1124,7 +1124,7 @@ void AccountSettings::slotAccountStateChanged()
             if (user.isEmpty()) {
                 user = cred->user();
             }
-            serverWithUser = tr("%1 as <i>%2</i>").arg(server, Utility::escape(user));
+            serverWithUser = tr("%1 as %2").arg(server, Utility::escape(user));
         }
 
         switch (state) {
