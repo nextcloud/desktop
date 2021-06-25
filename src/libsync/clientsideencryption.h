@@ -99,11 +99,13 @@ signals:
 private:
     void getPrivateKeyFromServer(const AccountPtr &account);
     void getPublicKeyFromServer(const AccountPtr &account);
+    void getServerPublicKeyFromServer(const AccountPtr &account);
     void decryptPrivateKey(const AccountPtr &account, const QByteArray &key);
 
     void fetchFromKeyChain(const AccountPtr &account);
 
     bool checkPublicKeyValidity(const AccountPtr &account) const;
+    bool checkServerPublicKeyValidity(const QString &serverPublicKeyString) const;
     void writePrivateKey(const AccountPtr &account);
     void writeCertificate(const AccountPtr &account);
     void writeMnemonic(const AccountPtr &account);
