@@ -535,6 +535,11 @@ This action will abort any currently running synchronization.</source>
         <translation>Најава</translation>
     </message>
     <message>
+        <location filename="../src/gui/accountsettings.cpp" line="1127"/>
+        <source>%1 as %2</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/accountsettings.cpp" line="1086"/>
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
         <translation>Верзијата на серверот %1 е застарена и не е поддржана! Продолжете на сопствен ризик.</translation>
