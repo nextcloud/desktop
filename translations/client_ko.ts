@@ -540,6 +540,11 @@ This action will abort any currently running synchronization.</source>
         <translation>로그인</translation>
     </message>
     <message>
+        <location filename="../src/gui/accountsettings.cpp" line="1127"/>
+        <source>%1 as %2</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/accountsettings.cpp" line="1086"/>
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
         <translation>서버 버전 %1은 오래되어 지원되지 않습니다. 책임 하에 진행하십시오.</translation>

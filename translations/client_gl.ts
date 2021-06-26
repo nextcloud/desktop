@@ -540,6 +540,11 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
         <translation>Acceder</translation>
     </message>
     <message>
+        <location filename="../src/gui/accountsettings.cpp" line="1127"/>
+        <source>%1 as %2</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/accountsettings.cpp" line="1086"/>
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
         <translation>Este servidor da versión %1 non ten asistencia técnica! Proceda baixo a súa propia responsabilidade.</translation>

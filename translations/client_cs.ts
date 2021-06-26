@@ -540,6 +540,11 @@ Současně tato akce zruší jakoukoli právě probíhající synchronizaci.</tr
         <translation>Přihlásit</translation>
     </message>
     <message>
+        <location filename="../src/gui/accountsettings.cpp" line="1127"/>
+        <source>%1 as %2</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/accountsettings.cpp" line="1086"/>
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
         <translation>Verze serveru %1 není podporována! Pokračujte jen na vlastní nebezpečí.</translation>

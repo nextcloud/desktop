@@ -537,6 +537,11 @@ Cette action entraînera l&apos;interruption de toute synchronisation en cours.<
         <translation>Se connecter</translation>
     </message>
     <message>
+        <location filename="../src/gui/accountsettings.cpp" line="1127"/>
+        <source>%1 as %2</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/accountsettings.cpp" line="1086"/>
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
         <translation>La version %1 du serveur n&apos;est pas maintenue !
