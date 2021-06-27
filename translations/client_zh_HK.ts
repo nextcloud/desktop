@@ -737,7 +737,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/addcertificatedialog.cpp" line="38"/>
         <source>Certificate files (*.p12 *.pfx)</source>
-        <translation>憑證檔案（*。p12 *。pfx)</translation>
+        <translation>憑證檔案（*.p12 *.pfx)</translation>
     </message>
 </context>
 <context>
@@ -1198,7 +1198,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="468"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
-        <translation><numerusform>%1 與%n 其他檔案因為錯誤無法被同步。請從紀錄檔觀看細節。</numerusform></translation>
+        <translation><numerusform>%1 與 %n 其他檔案因為錯誤無法被同步。請從紀錄檔觀看細節。</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="470"/>
@@ -4431,7 +4431,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="497"/>
         <source>File names ending with a period are not supported on this file system.</source>
-        <translation>此檔案系統不支援以「。」結尾的檔案名。</translation>
+        <translation>此檔案系統不支援以 &quot;.&quot; 結尾的檔案名。</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="498"/>

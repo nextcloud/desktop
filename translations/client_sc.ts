@@ -4292,7 +4292,7 @@ Custa est una modalidade noa, isperimentale. Si detzides de dda impreare, sinnal
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="147"/>
         <source>No space on %1 server available.</source>
-        <translation>Non ddoe est tretu lìberu in su serbidore %1 .</translation>
+        <translation>Non b&apos;est tretu lìberu in su serbidore %1 .</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="150"/>
@@ -5777,7 +5777,7 @@ Custa est una modalidade noa, isperimentale. Si detzides de dda impreare, sinnal
     <message>
         <location filename="../src/gui/guiutility.cpp" line="105"/>
         <source>Free up local space</source>
-        <translation>Fàghe logu </translation>
+        <translation>Faghe logu </translation>
     </message>
 </context>
 <context>

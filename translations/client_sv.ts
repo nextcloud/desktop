@@ -2733,7 +2733,7 @@ ytterligare rättigheter under processen.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="77"/>
         <source>Keep your data secure and under your control</source>
-        <translation>Håll dina data säkra och under din kontroll</translation>
+        <translation>Håll din data säkra och under din kontroll</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="78"/>
