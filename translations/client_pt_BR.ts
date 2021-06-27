@@ -81,7 +81,7 @@
         <location filename="../src/common/filesystembase.cpp" line="205"/>
         <location filename="../src/common/filesystembase.cpp" line="210"/>
         <source>Can&apos;t rename %1, the file is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Não foi possível renomear %1, o arquivo está atualmente em uso</translation>
     </message>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="393"/>
@@ -2370,7 +2370,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="696"/>
         <source>File %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>O arquivo %1 está atualmente em uso</translation>
     </message>
 </context>
 <context>
@@ -2709,7 +2709,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <location filename="../src/libsync/propagatedownload.cpp" line="470"/>
         <location filename="../src/libsync/propagatedownload.cpp" line="958"/>
         <source>%1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>%1  está atualmente em uso</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="520"/>
@@ -2750,7 +2750,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="369"/>
         <source>Failed to dehydrate %1, the file is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Falha ao desidratar %1, o arquivo está em uso</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="1016"/>
@@ -2812,7 +2812,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="224"/>
         <source>Could not rename %1 to %2, the file is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Não foi possível renomear %1 para %2, o arquivo está em uso</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="252"/>
@@ -2910,7 +2910,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="378"/>
         <source>%1 the file is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>%1  o arquivo está atualmente em uso</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="473"/>
@@ -2948,7 +2948,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/libsync/propagateuploadtus.cpp" line="67"/>
         <source>%1 the file is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>%1  o arquivo está atualmente em uso</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadtus.cpp" line="207"/>
@@ -2966,7 +2966,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="137"/>
         <source>%1 the file is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>%1  o arquivo está atualmente em uso</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="225"/>
