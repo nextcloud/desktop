@@ -34,6 +34,7 @@ Summary
 * Enhancement - Add language picker to general settings: [#8466](https://github.com/owncloud/client/issues/8466)
 * Enhancement - Attach the last 20 log lines to a crash report: [#8467](https://github.com/owncloud/client/issues/8467)
 * Enhancement - Mention the local file name when a file name clash occurs: [#8609](https://github.com/owncloud/client/issues/8609)
+* Enhancement - Improved handling of errors during local file updates: [#8787](https://github.com/owncloud/client/pull/8787)
 
 Details
 -------
@@ -233,6 +234,13 @@ Details
 
    https://github.com/owncloud/client/issues/8609
    https://github.com/owncloud/client/pull/8630
+
+* Enhancement - Improved handling of errors during local file updates: [#8787](https://github.com/owncloud/client/pull/8787)
+
+   If a local metadata update fails we now provide the proper error in the ui. In case that the error
+   was caused by a locked file we now retry the operation.
+
+   https://github.com/owncloud/client/pull/8787
 
 Changelog for ownCloud Desktop Client [2.8.2] (2021-05-28)
 =======================================
