@@ -484,7 +484,7 @@ Wait for the new sync, then encrypt it.</source>
 The only advantage of disabling virtual file support is that the selective sync feature will become available again.
 
 This action will abort any currently running synchronization.</source>
-        <translation>此操作將禁用虛擬檔案支持。 結果，將下載當前標記為“僅在線可用”的資料夾的內容。
+        <translation>此操作將禁用虛擬檔案支持。結果，將下載當前標記為“僅在線可用”的資料夾的內容。
 
 禁用虛擬檔案支持的唯一好處是選擇性同步功能將再次變得可用。
 
@@ -737,7 +737,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/addcertificatedialog.cpp" line="38"/>
         <source>Certificate files (*.p12 *.pfx)</source>
-        <translation>憑證檔案（*.p12 *.pfx)</translation>
+        <translation>憑證檔案（*.p12 *.pfx）</translation>
     </message>
 </context>
 <context>
@@ -798,12 +798,12 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="37"/>
         <source>&amp;User:</source>
-        <translation>用戶（&amp;U)：</translation>
+        <translation>用戶（&amp;U）：</translation>
     </message>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="38"/>
         <source>&amp;Password:</source>
-        <translation>密碼（&amp;P)：</translation>
+        <translation>密碼（&amp;P）：</translation>
     </message>
 </context>
 <context>
@@ -811,7 +811,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1147"/>
         <source>Error writing metadata to the database</source>
-        <translation>寫入後設資料(metadata）時發生錯誤</translation>
+        <translation>寫入後設資料（metadata）時發生錯誤</translation>
     </message>
 </context>
 <context>
@@ -1409,7 +1409,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="1233"/>
         <source> (backup %1)</source>
-        <translation>(備份 %1)</translation>
+        <translation>（備份 %1）</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1478"/>
@@ -1464,7 +1464,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="1512"/>
         <source>%1 (Sync is paused)</source>
-        <translation>%1（同步暫停)</translation>
+        <translation>%1（同步暫停）</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1520"/>
@@ -1537,7 +1537,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <location filename="../src/gui/folderstatusmodel.cpp" line="164"/>
         <source>%1 (%2)</source>
         <extracomment>Example text: &quot;File.txt (23KB)&quot;</extracomment>
-        <translation>%1（%2)</translation>
+        <translation>%1（%2）</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="200"/>
@@ -1639,7 +1639,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <location filename="../src/gui/folderstatusmodel.cpp" line="1070"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (2MB of 2MB)&quot;</extracomment>
-        <translation>%1 %2（%4 之 %3)</translation>
+        <translation>%1 %2（%4 之 %3）</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1074"/>
@@ -1797,7 +1797,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="545"/>
         <source>Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter.</source>
-        <translation>Windows分區根目錄不支持將虛擬文件作為近端資料夾使用。 請在硬盤驅動器號下選擇一個有效的子資料夾。</translation>
+        <translation>Windows分區根目錄不支持將虛擬文件作為近端資料夾使用。請在硬盤驅動器號下選擇一個有效的子資料夾。</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="563"/>
@@ -1897,7 +1897,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.ui" line="127"/>
         <source>&amp;Channel</source>
-        <translation>頻道(&amp;C)</translation>
+        <translation>頻道（&amp;C）</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="144"/>
@@ -1912,7 +1912,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.ui" line="176"/>
         <source>&amp;Restart &amp;&amp; Update</source>
-        <translation>重新啟動並更新（&amp;R)</translation>
+        <translation>重新啟動並更新（&amp;R）</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="191"/>
@@ -1980,7 +1980,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <source>The update channel determines which client updates will be offered for installation. The &quot;stable&quot; channel contains only upgrades that are considered reliable, while the versions in the &quot;beta&quot; channel may contain newer features and bugfixes, but have not yet been tested thoroughly.
 
 Note that this selects only what pool upgrades are taken from, and that there are no downgrades: So going back from the beta channel to the stable channel usually cannot be done immediately and means waiting for a stable version that is newer than the currently installed beta version.</source>
-        <translation>更新通道確定將提供哪些客戶端更新來進行安裝。 “穩定”通道僅包含被認為可靠的升級，而“測試版”通道中的版本可能包含較新的功能和錯誤修正，但尚未經過全面測試。
+        <translation>更新通道確定將提供哪些客戶端更新來進行安裝。“穩定”通道僅包含被認為可靠的升級，而“測試版”通道中的版本可能包含較新的功能和錯誤修正，但尚未經過全面測試。
 
 請注意，這僅選擇從哪個池升級中進行升級，並且沒有降級：因此通常無法立即從Beta通道返回到穩定通道，這意味著要等待比當前安裝的測試版本更新的穩定版本。</translation>
     </message>
@@ -2220,7 +2220,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="78"/>
         <source>&amp;Find</source>
-        <translation>尋找（&amp;F)：</translation>
+        <translation>尋找（&amp;F）：</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="89"/>
@@ -2254,7 +2254,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="122"/>
         <source>S&amp;ave</source>
-        <translation>儲存（&amp;A)</translation>
+        <translation>儲存（&amp;A）</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="123"/>
@@ -2439,7 +2439,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="41"/>
         <source>HTTP(S) proxy</source>
-        <translation>HTTP(S）代理伺服器</translation>
+        <translation>HTTP(S) 代理伺服器</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="42"/>
@@ -2547,7 +2547,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="156"/>
         <source>New %1 is available. Please open %2 to download the update.</source>
-        <translation>新版本 %1 已發布。 請打開 %2 以下載更新。</translation>
+        <translation>新版本 %1 已發布。請打開 %2 以下載更新。</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="158"/>
@@ -2567,7 +2567,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="164"/>
         <source>No updates available. Your installation is at the latest version.</source>
-        <translation>沒有可用的更新。 您的安裝是最新版本。</translation>
+        <translation>沒有可用的更新。您的安裝是最新版本。</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="183"/>
@@ -2601,7 +2601,7 @@ for additional privileges during the process.</source>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="88"/>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="236"/>
         <source>Use &amp;virtual files instead of downloading content immediately %1</source>
-        <translation>使用虛擬檔案(&amp;v)，而不是立即下載內容 %1</translation>
+        <translation>使用虛擬檔案（&amp;v），而不是立即下載內容 %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="88"/>
@@ -2612,7 +2612,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="232"/>
         <source>Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter.</source>
-        <translation>Windows分區根目錄不支持將虛擬文件作為近端資料夾使用。 請在硬盤驅動器號下選擇一個有效的子資料夾。</translation>
+        <translation>Windows分區根目錄不支持將虛擬文件作為近端資料夾使用。請在硬盤驅動器號下選擇一個有效的子資料夾。</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="270"/>
@@ -2637,7 +2637,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="278"/>
         <source>Warning: The local folder is not empty. Pick a resolution!</source>
-        <translation>警告：近端資料夾不為空。 選擇一個解決方案！</translation>
+        <translation>警告：近端資料夾不為空。選擇一個解決方案！</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="286"/>
@@ -2659,7 +2659,7 @@ for additional privileges during the process.</source>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="490"/>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="531"/>
         <source>(%1)</source>
-        <translation>(%1)</translation>
+        <translation>（%1）</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="548"/>
@@ -2687,7 +2687,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="62"/>
         <source>Retry unencrypted over HTTP (insecure)</source>
-        <translation>透過未加密HTTP重試（不安全)</translation>
+        <translation>透過未加密HTTP重試（不安全）</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="69"/>
@@ -2817,7 +2817,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="262"/>
         <source>&lt;font color=&quot;green&quot;&gt;Successfully connected to %1: %2 version %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</source>
-        <translation>&lt;font color=&quot;green&quot;&gt;成功連線到 %1： %2 版本 %3（%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</translation>
+        <translation>&lt;font color=&quot;green&quot;&gt;成功連線到 %1： %2 版本 %3（%4）&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="288"/>
@@ -3004,7 +3004,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 
 切換到此模式將中止任何當前正在運行的同步。
 
-這是一種新的實驗模式。 如果您決定使用它，請報告出現的任何問題。</translation>
+這是一種新的實驗模式。如果您決定使用它，請報告出現的任何問題。</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="419"/>
@@ -3143,7 +3143,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="930"/>
         <source>Conflict when uploading some files to a folder. Those, conflicted, are going to get cleared!</source>
-        <translation>將某些檔案上傳到資料夾時發生衝突。 那些有衝突的檔案將被清除！</translation>
+        <translation>將某些檔案上傳到資料夾時發生衝突。那些有衝突的檔案將被清除！</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1225"/>
@@ -3191,7 +3191,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1016"/>
         <source>Error writing metadata to the database</source>
-        <translation>寫入後設資料(metadata）時發生錯誤</translation>
+        <translation>寫入後設資料（metadata）時發生錯誤</translation>
     </message>
 </context>
 <context>
@@ -3260,7 +3260,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="1096"/>
         <source>Error writing metadata to the database</source>
-        <translation>寫入後設資料(metadata）時發生錯誤</translation>
+        <translation>寫入後設資料（metadata）時發生錯誤</translation>
     </message>
 </context>
 <context>
@@ -3301,7 +3301,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="193"/>
         <source>Error writing metadata to the database</source>
-        <translation>寫入後設資料(metadata）時發生錯誤</translation>
+        <translation>寫入後設資料（metadata）時發生錯誤</translation>
     </message>
 </context>
 <context>
@@ -3372,7 +3372,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="263"/>
         <source>Error writing metadata to the database</source>
-        <translation>寫入後設資料(metadata）時發生錯誤</translation>
+        <translation>寫入後設資料（metadata）時發生錯誤</translation>
     </message>
 </context>
 <context>
@@ -3391,7 +3391,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/propagateremotemove.cpp" line="256"/>
         <location filename="../src/libsync/propagateremotemove.cpp" line="268"/>
         <source>Error writing metadata to the database</source>
-        <translation>寫入後設資料(metadata）時發生錯誤</translation>
+        <translation>寫入後設資料（metadata）時發生錯誤</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="261"/>
@@ -3420,7 +3420,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="389"/>
         <source>File Removed (start upload) %1</source>
-        <translation>移除檔案(開始上傳）%1</translation>
+        <translation>移除檔案（開始上傳）%1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="399"/>
@@ -3440,7 +3440,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="769"/>
         <source>Error writing metadata to the database</source>
-        <translation>寫入後設資料(metadata）時發生錯誤</translation>
+        <translation>寫入後設資料（metadata）時發生錯誤</translation>
     </message>
 </context>
 <context>
@@ -3463,7 +3463,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="475"/>
         <source>Unexpected return code from server (%1)</source>
-        <translation>伺服器回傳未知的錯誤碼(%1)</translation>
+        <translation>伺服器回傳未知的錯誤碼（%1）</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="482"/>
@@ -3496,7 +3496,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="265"/>
         <source>The server did not acknowledge the last chunk. (No e-tag was present)</source>
-        <translation>伺服器不承認檔案的最後一個分割檔。(e-tag不存在)</translation>
+        <translation>伺服器不承認檔案的最後一個分割檔。（e-tag不存在）</translation>
     </message>
 </context>
 <context>
@@ -3759,7 +3759,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="175"/>
         <source>File drop (upload only)</source>
-        <translation>拖曳檔案(僅供上傳)</translation>
+        <translation>拖曳檔案（僅供上傳）</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="190"/>
@@ -3934,7 +3934,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/sharee.cpp" line="133"/>
         <source>%1 (%2)</source>
         <comment>sharee (shareWithAdditionalInfo)</comment>
-        <translation>%1（%2)</translation>
+        <translation>%1（%2）</translation>
     </message>
 </context>
 <context>
@@ -4220,7 +4220,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="189"/>
         <source>Fingerprint (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation>指紋（SHA1)：&amp;lt;tt&amp;gt;%1&amp;lt;/tt&amp;gt;</translation>
+        <translation>指紋（SHA1）：&amp;lt;tt&amp;gt;%1&amp;lt;/tt&amp;gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="194"/>
@@ -4907,7 +4907,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="437"/>
         <source>Syncing %1 of %2 (%3 left)</source>
-        <translation>正在同步 %1，共%2（剩餘 %3)</translation>
+        <translation>正在同步 %1，共%2（剩餘 %3）</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="442"/>
@@ -5036,7 +5036,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="225"/>
         <source>&amp;Local Folder</source>
-        <translation>近端資料夾（&amp;L)</translation>
+        <translation>近端資料夾（&amp;L）</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="244"/>
@@ -5077,12 +5077,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="344"/>
         <source>&amp;Keep local data</source>
-        <translation>保留近端資料（&amp;K)</translation>
+        <translation>保留近端資料（&amp;K）</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="357"/>
         <source>Start a &amp;clean sync (Erases the local folder!)</source>
-        <translation>開始清除同步(將資料從近端端刪除)</translation>
+        <translation>開始清除同步（將資料從近端端刪除）</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="714"/>
@@ -5105,12 +5105,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.ui" line="73"/>
         <source>&amp;Username</source>
-        <translation>用戶名稱（&amp;U)</translation>
+        <translation>用戶名稱（&amp;U）</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.ui" line="83"/>
         <source>&amp;Password</source>
-        <translation>密碼（&amp;P)</translation>
+        <translation>密碼（&amp;P）</translation>
     </message>
 </context>
 <context>
@@ -5142,7 +5142,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="32"/>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="353"/>
         <source>TextLabel</source>
-        <translation>無需翻譯。 桌面僅使用官方翻譯。</translation>
+        <translation>無需翻譯。桌面僅使用官方翻譯。</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="73"/>
@@ -5162,7 +5162,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="245"/>
         <source>This is the link to your %1 web interface when you open it in the browser.&lt;br/&gt;It looks like https://cloud.example.com or https://example.com/cloud</source>
-        <translation>這是您在瀏覽器中打開 %1 web 界面時的鏈接。&lt;br/&gt;示例為https://cloud.example.com或https://example.com/cloud</translation>
+        <translation>這是您在瀏覽器中打開 %1 web 界面時的鏈接。&lt;br/&gt;示例為 https://cloud.example.com 或 https://example.com/cloud</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="259"/>
@@ -5560,7 +5560,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/main.cpp" line="45"/>
         <source>%1 requires on a working system tray. If you are running XFCE, please follow &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;these instructions&lt;/a&gt;. Otherwise, please install a system tray application such as &apos;trayer&apos; and try again.</source>
-        <translation>%1需要可運作的系統常駐程式區。若您正在執行XFCE，請參考 &lt;a href=&quot;http：//docs。xfce。org/xfce/xfce4-panel/systray&quot;&gt;這份教學&lt;/a&gt;。若非如此則請安裝一個系統常駐的應用程式，如&apos;trayer&apos;，並再度嘗試。</translation>
+        <translation>%1需要可運作的系統常駐程式區。若您正在執行XFCE，請參考 &lt;a href=&quot;http://docs。xfce。org/xfce/xfce4-panel/systray&quot;&gt;這份教學&lt;/a&gt;。若非如此則請安裝一個系統常駐的應用程式，如&apos;trayer&apos;，並再度嘗試。</translation>
     </message>
     <message>
         <location filename="../src/gui/main.cpp" line="45"/>
@@ -5845,7 +5845,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/flow2authcredspage.cpp" line="37"/>
         <source>Login in your browser (Login Flow v2)</source>
-        <translation>請在瀏覽器上登入(Login Flow v2)</translation>
+        <translation>請在瀏覽器上登入（Login Flow v2）</translation>
     </message>
 </context>
 <context>

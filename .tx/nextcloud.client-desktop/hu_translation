@@ -22,5 +22,6 @@ Icon=@APPLICATION_EXECUTABLE@
 
 # Translations
 Icon[hu_HU]=@APPLICATION_ICON_NAME@
+Name[hu_HU]=@APPLICATION_NAME@ Desktop
 Comment[hu_HU]=@APPLICATION_NAME@ asztali szinkronizálási kliens
 GenericName[hu_HU]=Mappaszinkronizálás
