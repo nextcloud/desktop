@@ -105,7 +105,7 @@ void GETFileJob::start()
     }
 
     QNetworkRequest req;
-    for (QMap<QByteArray, QByteArray>::const_iterator it = _headers.begin(); it != _headers.end(); ++it) {
+    for (auto it = _headers.cbegin(); it != _headers.cend(); ++it) {
         req.setRawHeader(it.key(), it.value());
     }
 
