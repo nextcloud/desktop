@@ -35,6 +35,7 @@ public:
         : _result(std::move(value))
         , _isError(false)
     {
+        static_assert(!std::is_same<T, bool>::value, "Bool is not supported as this class overrides the bool operator");
     }
     // TODO: This doesn't work if T and Error are too similar
     Result(Error error)

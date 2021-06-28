@@ -63,7 +63,7 @@ Optional<Vfs::Mode> Vfs::modeFromString(const QString &str)
     return {};
 }
 
-Result<bool, QString> Vfs::checkAvailability(const QString &path)
+Result<void, QString> Vfs::checkAvailability(const QString &path)
 {
 #ifdef Q_OS_WIN
     const auto mode = bestAvailableVfsMode();
@@ -84,7 +84,7 @@ Result<bool, QString> Vfs::checkAvailability(const QString &path)
 #else
     Q_UNUSED(path);
 #endif
-    return true;
+    return {};
 }
 
 void Vfs::start(const VfsSetupParams &params)
