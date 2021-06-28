@@ -1,0 +1,6 @@
+Enhancement: Improved handling of errors during local file updates
+
+If a local metadata update fails we now provide the proper error in the ui.
+In case that the error was caused by a locked file we now retry the operation.
+
+https://github.com/owncloud/client/pull/8787

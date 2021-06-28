@@ -554,8 +554,7 @@ public:
      *
      * Will also trigger a Vfs::convertToPlaceholder.
      */
-    static bool updateMetadata(const SyncFileItem &item, const QString &localFolderPath, SyncJournalDb &journal, Vfs &vfs);
-    bool updateMetadata(const SyncFileItem &item); // convenience for the above
+    Result<Vfs::ConvertToPlaceholderResult, QString> updateMetadata(const SyncFileItem &item);
 
 private slots:
 

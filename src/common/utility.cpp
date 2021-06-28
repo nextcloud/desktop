@@ -637,4 +637,5 @@ QString Utility::sanitizeForFileName(const QString &name)
     }
     return result;
 }
+
 } // namespace OCC
