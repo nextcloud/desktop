@@ -81,7 +81,7 @@
         <location filename="../src/common/filesystembase.cpp" line="205"/>
         <location filename="../src/common/filesystembase.cpp" line="210"/>
         <source>Can&apos;t rename %1, the file is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Невозможно переименовать %1, файл сейчас используется</translation>
     </message>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="393"/>
@@ -2372,7 +2372,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="696"/>
         <source>File %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Файл %1 сейчас используется</translation>
     </message>
 </context>
 <context>
@@ -2712,7 +2712,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/propagatedownload.cpp" line="470"/>
         <location filename="../src/libsync/propagatedownload.cpp" line="958"/>
         <source>%1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>%1 сейчас используется</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="520"/>
@@ -2815,7 +2815,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="224"/>
         <source>Could not rename %1 to %2, the file is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Не удалось переименовать %1 в %2, файл сейчас используется</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="252"/>
@@ -2913,7 +2913,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="378"/>
         <source>%1 the file is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Файл %1 сейчас используется</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="473"/>
@@ -2951,7 +2951,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateuploadtus.cpp" line="67"/>
         <source>%1 the file is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Файл %1 сейчас используется</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadtus.cpp" line="207"/>
@@ -2969,7 +2969,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="137"/>
         <source>%1 the file is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Файл %1 сейчас используется</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="225"/>
