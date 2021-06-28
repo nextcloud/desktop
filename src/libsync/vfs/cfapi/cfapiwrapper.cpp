@@ -622,14 +622,14 @@ OCC::CfApiWrapper::PlaceHolderInfo OCC::CfApiWrapper::findPlaceholderInfo(const 
     }
 }
 
-OCC::Result<void, QString> OCC::CfApiWrapper::setPinState(const FileHandle &handle, OCC::PinStateEnums::PinState state, SetPinRecurseMode mode)
+OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> OCC::CfApiWrapper::setPinState(const FileHandle &handle, OCC::PinStateEnums::PinState state, SetPinRecurseMode mode)
 {
     const auto cfState = pinStateToCfPinState(state);
     const auto flags = pinRecurseModeToCfSetPinFlags(mode);
 
     const qint64 result = CfSetPinState(handle.get(), cfState, flags, nullptr);
     if (result == S_OK) {
-        return {};
+        return OCC::Vfs::ConvertToPlaceholderResult::Ok;
     } else {
         qCWarning(lcCfApiWrapper) << "Couldn't set pin state" << state << "for" << pathForHandle(handle) << "with recurse mode" << mode << ":" << QString::fromWCharArray(_com_error(result).ErrorMessage());
         return { "Couldn't set pin state" };
@@ -682,7 +682,7 @@ OCC::Result<void, QString> OCC::CfApiWrapper::createPlaceholderInfo(const QStrin
     return {};
 }
 
-OCC::Result<void, QString> OCC::CfApiWrapper::updatePlaceholderInfo(const FileHandle &handle, time_t modtime, qint64 size, const QByteArray &fileId, const QString &replacesPath)
+OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> OCC::CfApiWrapper::updatePlaceholderInfo(const FileHandle &handle, time_t modtime, qint64 size, const QByteArray &fileId, const QString &replacesPath)
 {
     Q_ASSERT(handle);
 
@@ -717,10 +717,10 @@ OCC::Result<void, QString> OCC::CfApiWrapper::updatePlaceholderInfo(const FileHa
         return { "Couldn't restore pin state" };
     }
 
-    return {};
+    return OCC::Vfs::ConvertToPlaceholderResult::Ok;
 }
 
-OCC::Result<void, QString> OCC::CfApiWrapper::convertToPlaceholder(const FileHandle &handle, time_t modtime, qint64 size, const QByteArray &fileId, const QString &replacesPath)
+OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> OCC::CfApiWrapper::convertToPlaceholder(const FileHandle &handle, time_t modtime, qint64 size, const QByteArray &fileId, const QString &replacesPath)
 {
     Q_UNUSED(modtime);
     Q_UNUSED(size);
