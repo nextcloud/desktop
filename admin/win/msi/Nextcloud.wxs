@@ -75,10 +75,10 @@
 
     <InstallExecuteSequence>
         <!-- Install: Remove previous NSIS installation, if detected -->
-        <Custom Action="ExecNsisUninstaller" Before="ProcessComponents">NSIS_UNINSTALLEXE AND NOT Installed</Custom>
+        <Custom Action="ExecNsisUninstaller" Before="ProcessComponents">NSIS_UNINSTALLEXE AND NOT Installed AND NOT (OLDINSTALLDIR = "")</Custom>
 
         <!-- Uninstall: Remove sync folders from Explorer's Navigation Pane, only effective for the current user (home users) -->
-        <Custom Action="RemoveNavigationPaneEntries" After="RemoveFiles">(NOT UPGRADINGPRODUCTCODE) AND (REMOVE="ALL")</Custom>
+        <Custom Action="RemoveNavigationPaneEntries" After="RemoveFiles">(NOT UPGRADINGPRODUCTCODE) AND (REMOVE="ALL") AND NOT (OLDINSTALLDIR = "")</Custom>
 
         <!-- Schedule Reboot for the Shell Extensions (in silent installation mode only, or if SCHEDULE_REBOOT argument is set-->
         <ScheduleReboot After="InstallFinalize">(SCHEDULE_REBOOT=1) OR NOT (UILevel=2)</ScheduleReboot>
