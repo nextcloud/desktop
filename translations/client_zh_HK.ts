@@ -543,7 +543,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1127"/>
         <source>%1 as %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 為 %2</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1086"/>
