@@ -356,11 +356,9 @@ QString ConfigFile::backup() const
     auto versionString = clientVersionString();
     if (!versionString.isEmpty())
         versionString.prepend(QLatin1Char('_'));
-    QString backupFile =
+    const QString backupFile =
         QStringLiteral("%1.backup_%2%3")
-            .arg(baseFile)
-            .arg(QDateTime::currentDateTime().toString(QStringLiteral("yyyyMMdd_HHmmss")))
-            .arg(versionString);
+            .arg(baseFile, QDateTime::currentDateTime().toString(QStringLiteral("yyyyMMdd_HHmmss")), versionString);
 
     // If this exact file already exists it's most likely that a backup was
     // already done. (two backup calls directly after each other, potentially
