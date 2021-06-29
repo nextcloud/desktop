@@ -1434,7 +1434,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="1492"/>
         <source>Sync finished with unresolved conflicts.</source>
-        <translation type="unfinished"/>
+        <translation>Synchronizácia skončila s nevyriešenými konfliktami.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1494"/>
@@ -1552,7 +1552,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="235"/>
         <source>Virtual file support is enabled.</source>
-        <translation type="unfinished"/>
+        <translation>Podpora virtuálnych súborov povolená.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="257"/>
@@ -1963,7 +1963,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="162"/>
         <source>You cannot disable autostart because system-wide autostart is enabled.</source>
-        <translation type="unfinished"/>
+        <translation>Nemôžete vypnúť autoštart pretože autoštart je zapnutý na systémov úrovni.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="310"/>
@@ -1980,7 +1980,7 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="324"/>
         <source>Change update channel</source>
-        <translation type="unfinished"/>
+        <translation>Zmeniť aktualizáciu kanálu</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="325"/>
@@ -2000,12 +2000,12 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="424"/>
         <source>Debug Archive Created</source>
-        <translation type="unfinished"/>
+        <translation>Archív ladiacich informácii vytvorený</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="424"/>
         <source>Debug archive is created at %1</source>
-        <translation type="unfinished"/>
+        <translation>Archív ladiacich informácií vytvorený %1</translation>
     </message>
 </context>
 <context>
@@ -2369,7 +2369,7 @@ Záznamy udalostí sa budú zapisovať do %1</translation>
     <message>
         <location filename="../src/gui/networksettings.ui" line="176"/>
         <source>Note: proxy settings have no effects for accounts on localhost</source>
-        <translation type="unfinished"/>
+        <translation>Poznámka: nastavenia proxy nemajú žiadny efekt pre účty na localhoste</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="197"/>
@@ -2638,7 +2638,7 @@ môžu byť vyžadované dodatočné oprávnenia.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="370"/>
         <source>Virtual files are not available for the selected folder</source>
-        <translation type="unfinished"/>
+        <translation>Virtuálne súbory sú nedostupné pre vybraný priečinok</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="430"/>
@@ -2752,7 +2752,7 @@ môžu byť vyžadované dodatočné oprávnenia.</translation>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="86"/>
         <source>The link to your %1 web interface when you open it in the browser.</source>
         <comment>%1 will be replaced with the application name</comment>
-        <translation type="unfinished"/>
+        <translation>Odkaz k vášmu %1 webovému rozhraniu keď ho otvoríte v prehliadači.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="80"/>
@@ -3151,7 +3151,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1298"/>
         <source>Moved to invalid target, restoring</source>
-        <translation type="unfinished"/>
+        <translation>Presunuté do neplatného cieľa, obnovujem</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1311"/>
@@ -3310,7 +3310,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="226"/>
         <source>File %1 cannot be renamed to %2 because of a local file name clash</source>
-        <translation type="unfinished"/>
+        <translation>Súbor %1 nemôže byť premenovaný na %2 z dôvodu, že tento názov je už použitý</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="226"/>
@@ -4584,7 +4584,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/theme.cpp" line="469"/>
         <source>&lt;p&gt;&lt;small&gt;Using virtual files plugin: %1&lt;/small&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;small&gt;Používa zásuvný modul virtuálnych súborov: %1&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="482"/>
@@ -4661,7 +4661,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/vfs/cfapi/vfs_cfapi.cpp" line="328"/>
         <source>Download of end-to-end encrypted file failed</source>
-        <translation type="unfinished"/>
+        <translation>Stiahovanie end-to-end šifrovaného súboru zlyhalo</translation>
     </message>
     <message>
         <location filename="../src/libsync/vfs/cfapi/vfs_cfapi.cpp" line="329"/>
@@ -5160,7 +5160,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="359"/>
         <source>Sign up with a provider</source>
-        <translation type="unfinished"/>
+        <translation>Zaregistrovať sa u poskytovateľa</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="365"/>
@@ -5270,7 +5270,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="15"/>
         <source>Account entry</source>
-        <translation type="unfinished"/>
+        <translation>Zadanie účtu</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="32"/>
@@ -5290,12 +5290,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="92"/>
         <source>Current user status is online</source>
-        <translation type="unfinished"/>
+        <translation>Stav aktuálneho užívateľa je pripojený</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="92"/>
         <source>Current user status is do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>Stav aktuálneho užívateľa je nerušiť</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="140"/>
@@ -5454,17 +5454,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/Window.qml" line="328"/>
         <source>Current user avatar</source>
-        <translation type="unfinished"/>
+        <translation>Avatar aktuálneho užívateľa</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="360"/>
         <source>Current user status is online</source>
-        <translation type="unfinished"/>
+        <translation>Stav aktuálneho užívateľa je pripojený</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="360"/>
         <source>Current user status is do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>Stav aktuálneho užívateľa je nerušiť</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="169"/>
@@ -5489,7 +5489,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/Window.qml" line="458"/>
         <source>Open Nextcloud Talk in browser</source>
-        <translation type="unfinished"/>
+        <translation>Otvoriť Nextcloud Talk v prehliadači</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="477"/>
@@ -5499,7 +5499,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/Window.qml" line="494"/>
         <source>Apps menu</source>
-        <translation type="unfinished"/>
+        <translation>Menu aplikácií</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="522"/>
@@ -5564,7 +5564,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="33"/>
         <source>Virtual file created</source>
-        <translation type="unfinished"/>
+        <translation>Virtuálny súbor vytvorený</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="35"/>
@@ -5736,7 +5736,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/guiutility.cpp" line="86"/>
         <source>Always available locally</source>
-        <translation type="unfinished"/>
+        <translation>Vždy lokálne dostupné</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="88"/>
@@ -5751,17 +5751,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/guiutility.cpp" line="93"/>
         <source>Available online only</source>
-        <translation type="unfinished"/>
+        <translation>Dostupné iba online</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="100"/>
         <source>Make always available locally</source>
-        <translation type="unfinished"/>
+        <translation>Vždy dostupné lokálne</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="105"/>
         <source>Free up local space</source>
-        <translation type="unfinished"/>
+        <translation>Uvoľniť lokálny priestor</translation>
     </message>
 </context>
 <context>

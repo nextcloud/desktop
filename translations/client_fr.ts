@@ -1913,7 +1913,7 @@ S&apos;il s&apos;agissait d&apos;un accident et que vous choisissiez de conserve
     <message>
         <location filename="../src/gui/generalsettings.ui" line="176"/>
         <source>&amp;Restart &amp;&amp; Update</source>
-        <translation>&amp;Redémarrer &amp;&amp; Mettre à jour</translation>
+        <translation>Redémarrer et Mettre à jour</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="191"/>
