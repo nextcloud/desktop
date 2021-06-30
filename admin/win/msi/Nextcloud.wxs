@@ -58,9 +58,9 @@
 
     <!-- Detect legacy NSIS installation -->
     <Property Id="NSIS_UNINSTALLEXE">
-        <DirectorySearch Id="LegacyUninstallVersion" Path="[INSTALLDIR]">
-            <FileSearch Name="Uninstall.exe" />
-        </DirectorySearch>
+        <RegistrySearch Id="RegistryLegacyUninstallString" Type="file" Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Uninstall\$(var.AppName)" Name="UninstallString" Win64="no">
+		    <FileSearch Id="LegacyUninstallFileName" Name="Uninstall.exe"/>
+	    </RegistrySearch>
     </Property>
 
     <!-- Property to disable update checks -->
