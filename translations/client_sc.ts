@@ -2369,7 +2369,7 @@ Logs ant a èssere iscritos in %1</translation>
     <message>
         <location filename="../src/gui/networksettings.ui" line="80"/>
         <source>Host</source>
-        <translation>Acollidore</translation>
+        <translation>Retzidore</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="131"/>
