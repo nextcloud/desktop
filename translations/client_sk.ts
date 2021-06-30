@@ -291,7 +291,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="89"/>
         <source>You seem to have the Virtual Files feature enabled on this folder. At  the moment, it is not possible to implicitly download virtual files that are End-to-End encrypted. To get the best experience with Virtual Files and End-to-End Encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Vyzerá, že podpora Virtuálnych Súborov je na tomto priečinku zapnutá. V súčasnosti nie je možné stiahnuť virtuálne súbory ktoré sú šifrované End-to-End. Pre získanie najlepšieho výsledku s Virtuálnymi súbormi a End-to-End šifrovaním, ubezpečte sa že šifrovaný priečinok je označený ako &quot;Vždy dostupné lokálne&quot;.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="97"/>
@@ -370,7 +370,7 @@ Počkajte na novú synchronizáciu a potom ho zašifrujte.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="354"/>
         <source>Could not encrypt folder because the folder does not exist anymore</source>
-        <translation type="unfinished"/>
+        <translation>Nemôžem zašifrovať priečinok, pretože daný priečinok už neexituje</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="418"/>
@@ -434,12 +434,12 @@ Počkajte na novú synchronizáciu a potom ho zašifrujte.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="565"/>
         <source>Disable virtual file support …</source>
-        <translation type="unfinished"/>
+        <translation>Vypnúť podporu virtuálnych súborov ...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="573"/>
         <source>Enable virtual file support %1 …</source>
-        <translation type="unfinished"/>
+        <translation>Zapnúť podproru virtuálnych súborov %1 …</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="573"/>
@@ -474,7 +474,7 @@ Počkajte na novú synchronizáciu a potom ho zašifrujte.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="831"/>
         <source>Disable virtual file support?</source>
-        <translation type="unfinished"/>
+        <translation>Vypnúť podporu virtuálnych súborov?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="832"/>
@@ -483,7 +483,11 @@ Počkajte na novú synchronizáciu a potom ho zašifrujte.</translation>
 The only advantage of disabling virtual file support is that the selective sync feature will become available again.
 
 This action will abort any currently running synchronization.</source>
-        <translation type="unfinished"/>
+        <translation>Táto akcia vypne podporu pre virtuálne súbory. Ako dôsledok obsah priečinkov ktoré sú v súčasnosti označené ako &quot;prístupné iba online&quot; budú stiahnuté.
+
+Jediná výhoda vypnutia podpory virtuálnych súborov je možnosť opätovného používania selektívnej synchronizácie.
+
+Táto akcia zruší všetky prebiehajúce synchronizácie.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="839"/>
@@ -538,12 +542,12 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1127"/>
         <source>%1 as %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 ako %2</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1086"/>
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
-        <translation type="unfinished"/>
+        <translation>Verzia serveru %1 nie je podporovaná! Pokračujte na vlastné nebezpečenstvo.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1088"/>
@@ -583,7 +587,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1122"/>
         <source>Server configuration error: %1 at %2.</source>
-        <translation type="unfinished"/>
+        <translation>Chyba konfigurácie serveru: %1 na %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1133"/>
@@ -740,12 +744,12 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/application.cpp" line="131"/>
         <source>Continuing will mean &lt;b&gt;deleting these settings&lt;/b&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Pokračovanie bude znamenať &lt;b&gt;zmazanie týchto nastavení &lt;/b&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="133"/>
         <source>Continuing will mean &lt;b&gt;ignoring these settings&lt;/b&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Pokračovanie bude znamenať &lt;b&gt;ignorovanie týchto nastavení &lt;/b&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="139"/>
@@ -838,7 +842,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="32"/>
         <source>Which version of the file do you want to keep?&lt;br/&gt;If you select both versions, the local file will have a number added to its name.</source>
-        <translation type="unfinished"/>
+        <translation>Ktoré súbory si chcete ponechať?&lt;br/&gt;Ak vyberiete obe verzie, lokálny súbor bude mať k svojmu názvu pridané číslo.</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="46"/>
@@ -1006,7 +1010,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="264"/>
         <source>Directory not accessible on client, permission denied</source>
-        <translation type="unfinished"/>
+        <translation>Priečinok nie je prístupný pre klienta, prístup odmietnutý</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="268"/>
@@ -1381,7 +1385,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/foldercreationdialog.cpp" line="76"/>
         <source>Could not create a folder! Check your write permissions.</source>
-        <translation type="unfinished"/>
+        <translation>Nemôžem vytvoriť priečinok! Skontrolujte vaše práva pre zápis.</translation>
     </message>
 </context>
 <context>
@@ -1562,7 +1566,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="299"/>
         <source>Synchronizing VirtualFiles with local folder</source>
-        <translation type="unfinished"/>
+        <translation>Synchronizujem virtuálne súbory s lokálnym priečinkom</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="301"/>
@@ -1781,7 +1785,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <location filename="../src/gui/folderwizard.cpp" line="512"/>
         <location filename="../src/gui/folderwizard.cpp" line="549"/>
         <source>Use virtual files instead of downloading content immediately %1</source>
-        <translation type="unfinished"/>
+        <translation>Použiť virtuálne súbory namiesto okamžitého sťahovania lokálneho obsahu %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="512"/>
@@ -1792,12 +1796,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="545"/>
         <source>Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter.</source>
-        <translation type="unfinished"/>
+        <translation>Virtuálne súbory nie sú podporované na koreňovej partícii Windows ako lokálny priečinok. Prosím vyberte validný priečinok pod písmenom disku.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="563"/>
         <source>Virtual files are not available for the selected folder</source>
-        <translation type="unfinished"/>
+        <translation>Virtuálne súbory sú nedostupné pre vybraný priečinok</translation>
     </message>
 </context>
 <context>
@@ -1968,7 +1972,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="310"/>
         <source>Change update channel?</source>
-        <translation type="unfinished"/>
+        <translation>Zmeniť aktualizáciu kanálu?</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="311"/>
@@ -2537,7 +2541,7 @@ môžu byť vyžadované dodatočné oprávnenia.</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="156"/>
         <source>New %1 is available. Please open %2 to download the update.</source>
-        <translation type="unfinished"/>
+        <translation>Je dostupná nová %1. Prosím otvorte %2 pre stiahnutie aktualizácie.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="158"/>
@@ -2591,7 +2595,7 @@ môžu byť vyžadované dodatočné oprávnenia.</translation>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="88"/>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="236"/>
         <source>Use &amp;virtual files instead of downloading content immediately %1</source>
-        <translation type="unfinished"/>
+        <translation>Použiť virtuálne súbory namiesto okamžitého sťahovania obsahu %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="88"/>
@@ -2602,7 +2606,7 @@ môžu byť vyžadované dodatočné oprávnenia.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="232"/>
         <source>Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter.</source>
-        <translation type="unfinished"/>
+        <translation>Virtuálne súbory nie sú podporované na koreňovej partícii Windows ako lokálny priečinok. Prosím vyberte validný priečinok pod písmenom disku.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="270"/>
@@ -2627,7 +2631,7 @@ môžu byť vyžadované dodatočné oprávnenia.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="278"/>
         <source>Warning: The local folder is not empty. Pick a resolution!</source>
-        <translation type="unfinished"/>
+        <translation>Varovanie: Lokálny priečinok nie je prázdny. Vyberte riešenie!</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="286"/>
@@ -2948,7 +2952,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="613"/>
         <source>Cannot remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
-        <translation type="unfinished"/>
+        <translation>Nemožno odstrániť a zazálohovať priečinok, pretože priečinok alebo súbor je otvorený v inom programe. Prosím zatvorte priečinok alebo súbor a skúste to znovu alebo zrušte akciu.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="666"/>
@@ -3086,7 +3090,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="299"/>
         <source>The filename cannot be encoded on your file system.</source>
-        <translation type="unfinished"/>
+        <translation>Názov súboru nemôže byť na tomto súborovom systéme enkódovaný.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="302"/>
@@ -4331,7 +4335,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="362"/>
         <source>Could not update virtual file metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Nemôžem aktualizovať metadáta virtuálneho súboru: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="384"/>
@@ -4449,7 +4453,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="514"/>
         <source>Using virtual files with suffix, but suffix is not set</source>
-        <translation type="unfinished"/>
+        <translation>Používate virtuálne súbory s príponou, ale prípona nie je nastavená</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="524"/>
@@ -4653,7 +4657,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/common/vfs.cpp" line="82"/>
         <source>The Virtual filesystem feature requires a NTFS file system, %1 is using %2</source>
-        <translation type="unfinished"/>
+        <translation>Funkcia Virtuálneho súborového systému vyžaduje NTFS, %1 používa %2</translation>
     </message>
 </context>
 <context>
@@ -4692,7 +4696,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="159"/>
         <source>You have been logged out of %1 as user %2. Please login again.</source>
-        <translation type="unfinished"/>
+        <translation>Boli ste odhlásení z %1 ako používateľ %2. Prosím prihláste sa znovu.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="183"/>
@@ -4716,7 +4720,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="156"/>
         <source>Create account with Provider</source>
-        <translation type="unfinished"/>
+        <translation>Vytvoriť účet cez Poskytovateľa</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="67"/>

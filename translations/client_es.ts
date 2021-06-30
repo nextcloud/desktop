@@ -542,7 +542,7 @@ Además, esta acción interrumpirá cualquier sincronización en curso.</transla
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1127"/>
         <source>%1 as %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 como %2</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1086"/>
