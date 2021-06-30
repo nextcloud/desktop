@@ -82,3 +82,5 @@ QString SyncFileStatus::toSocketAPIString() const
     return statusString;
 }
 }
+
+#include "syncfilestatus.moc"

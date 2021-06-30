@@ -29,6 +29,7 @@ namespace OCC {
  */
 class OCSYNC_EXPORT SyncFileStatus
 {
+    Q_GADGET
 public:
     enum SyncFileStatusTag {
         StatusNone,
@@ -38,6 +39,7 @@ public:
         StatusError,
         StatusExcluded,
     };
+    Q_ENUM(SyncFileStatusTag);
 
     SyncFileStatus();
     SyncFileStatus(SyncFileStatusTag);
