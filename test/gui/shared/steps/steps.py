@@ -260,6 +260,13 @@ def step(context, stepPart1, stepPart2):
     usersDataFromMiddleware = None
 
 
+@Given(r"^(.*) on the server$", regexp=True)
+def step(context, stepPart1):
+    executeStepThroughMiddleware(context, "Given " + stepPart1)
+    global usersDataFromMiddleware
+    usersDataFromMiddleware = None
+
+
 @Then(r"^(.*) on the server (.*)$", regexp=True)
 def step(context, stepPart1, stepPart2):
     executeStepThroughMiddleware(context, "Then " + stepPart1 + " " + stepPart2)
