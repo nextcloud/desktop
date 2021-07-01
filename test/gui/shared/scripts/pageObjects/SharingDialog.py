@@ -44,6 +44,15 @@ class SharingDialog:
         "window": names.sharingDialog_OCC_ShareDialog,
     }
 
+    def getAvailablePermission(self):
+
+        editChecked = squish.waitForObjectExists(self.EDIT_PERMISSIONS_CHECKBOX).checked
+        shareChecked = squish.waitForObjectExists(
+            self.SHARE_PERMISSIONS_CHECKBOX
+        ).checked
+
+        return editChecked, shareChecked
+
     def addCollaborator(self, receiver, permissions):
         squish.mouseClick(
             squish.waitForObject(self.SHARE_WITH_COLLABORATOR_INPUT_FIELD),
@@ -65,10 +74,8 @@ class SharingDialog:
         )
         permissionsList = permissions.split(",")
 
-        editChecked = squish.waitForObjectExists(self.EDIT_PERMISSIONS_CHECKBOX).checked
-        shareChecked = squish.waitForObjectExists(
-            self.SHARE_PERMISSIONS_CHECKBOX
-        ).checked
+        editChecked, shareChecked = self.getAvailablePermission()
+
         if ('edit' in permissionsList and editChecked == False) or (
             'edit' not in permissionsList and editChecked == True
         ):
@@ -82,3 +89,20 @@ class SharingDialog:
 
     def getErrorText(self):
         return str(squish.waitForObjectExists(self.ERROR_SHOWN_ON_SHARING_DIALOG).text)
+
+    def removePermissions(self, permissions):
+        removePermissionsList = permissions.split(",")
+        (
+            isEditPermissionAvailable,
+            isSharePermissionAvailable,
+        ) = self.getAvailablePermission()
+
+        if 'share' in removePermissionsList and isSharePermissionAvailable:
+            squish.clickButton(
+                squish.waitForObject(names.scrollArea_permissionShare_QCheckBox)
+            )
+
+        if 'edit' in removePermissionsList and isEditPermissionAvailable:
+            squish.clickButton(
+                squish.waitForObject(names.scrollArea_permissionsEdit_QCheckBox)
+            )

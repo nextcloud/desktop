@@ -646,3 +646,37 @@ def step(context):
 def step(context):
     for tabName in context.table:
         test.vp(tabName[0])
+
+
+@When(
+    'the user removes permissions "|any|" for user "|any|" of resource "|any|" using the client-UI'
+)
+def step(context, permissions, receiver, resource):
+    openSharingDialog(context, resource)
+    test.compare(
+        str(waitForObjectExists(names.scrollArea_sharedWith_QLabel).text), receiver
+    )
+
+    shareItem = SharingDialog()
+    shareItem.removePermissions(permissions)
+
+
+@When("the user closes the sharing dialog")
+def step(context):
+    clickButton(waitForObject(names.sharingDialog_Close_QPushButton))
+
+
+@Then(
+    '"|any|" permissions should not be displayed for user "|any|" for resource "|any|" on the client-UI'
+)
+def step(context, permissions, user, resource):
+    permissionsList = permissions.split(',')
+
+    shareItem = SharingDialog()
+    editChecked, shareChecked = shareItem.getAvailablePermission()
+
+    if 'edit' in permissionsList:
+        test.compare(editChecked, False)
+
+    if 'share' in permissionsList:
+        test.compare(shareChecked, False)

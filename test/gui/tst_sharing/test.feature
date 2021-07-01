@@ -134,3 +134,41 @@ Feature: Sharing
             | path        | /simple-folder |
             | name        | Public link    |
         And the public should not be able to download the file "lorem.txt" from the last created public link by "Alice" on the server
+
+
+    Scenario Outline: change collaborator permissions of a file & folder
+        Given user "Alice" has created on the server folder "simple-folder"
+        And user "Alice" on the server has created file "lorem.txt"
+        And user "Brian" has been created on the server with default attributes and without skeleton files
+        And user "Alice" on the server has shared folder "simple-folder" with user "Brian" with "all" permissions
+        And user "Alice" on the server has shared file "lorem.txt" with user "Brian" with "all" permissions
+        And user "Alice" has set up a client with default settings
+        When the user removes permissions "<permissions>" for user "Brian Murphy" of resource "%client_sync_path%/simple-folder" using the client-UI
+        And the user closes the sharing dialog
+        And the user removes permissions "<permissions>" for user "Brian Murphy" of resource "%client_sync_path%/lorem.txt" using the client-UI
+        Then "<permissions>" permissions should not be displayed for user "Brian Murphy" for resource "%client_sync_path%/simple-folder" on the client-UI
+        And "<permissions>" permissions should not be displayed for user "Brian Murphy" for resource "%client_sync_path%/lorem.txt" on the client-UI
+        And user "Alice" on the server should have a share with these details:
+            | field       | value                        |
+            | uid_owner   | Alice                        |
+            | share_with  | Brian                        |
+            | share_type  | user                         |
+            | file_target | /Shares/simple-folder        |
+            | item_type   | folder                       |
+            | permissions | <expected-folder-permission> |
+        And user "Alice" on the server should have a share with these details:
+            | field       | value                      |
+            | uid_owner   | Alice                      |
+            | share_with  | Brian                      |
+            | share_type  | user                       |
+            | file_target | /Shares/lorem.txt          |
+            | item_type   | file                       |
+            | permissions | <expected-file-permission> |
+        Examples:
+            | permissions | expected-folder-permission   | expected-file-permission |
+            | edit        | read, share                  | read, share              |
+            | share       | read, update, create, delete | read,update              |
+            | edit,share  | read                         | read                     |
+
+
+
