@@ -126,6 +126,8 @@ public:
         ASSERT(_isError);
         return std::move(_error);
     }
+
+    bool isValid() const { return !_isError; }
 };
 
 namespace detail {
