@@ -238,12 +238,60 @@ namespace {
             return _pkey;
         }
 
+        operator EVP_PKEY*() const
+        {
+            return _pkey;
+        }
+
     private:
         Q_DISABLE_COPY(PKey)
 
         PKey() = default;
 
         EVP_PKEY* _pkey = nullptr;
+    };
+
+    class X509Certificate {
+    public:
+        ~X509Certificate()
+        {
+            X509_free(_certificate);
+        }
+
+        // The move constructor is needed for pre-C++17 where
+        // return-value optimization (RVO) is not obligatory
+        // and we have a static functions that return
+        // an instance of this class
+        X509Certificate(X509Certificate&& other)
+        {
+            std::swap(_certificate, other._certificate);
+        }
+
+        X509Certificate& operator=(X509Certificate&& other) = delete;
+
+        static X509Certificate readCertificate(Bio &bio)
+        {
+            X509Certificate result;
+            result._certificate = PEM_read_bio_X509(bio, nullptr, nullptr, nullptr);
+            return result;
+        }
+
+        operator X509*()
+        {
+            return _certificate;
+        }
+
+        operator X509*() const
+        {
+            return _certificate;
+        }
+
+    private:
+        Q_DISABLE_COPY(X509Certificate)
+
+        X509Certificate() = default;
+
+        X509* _certificate = nullptr;
     };
 
     QByteArray BIO2ByteArray(Bio &b) {
@@ -828,6 +876,30 @@ bool ClientSideEncryption::checkPublicKeyValidity(const AccountPtr &account) con
     return true;
 }
 
+bool ClientSideEncryption::checkServerPublicKeyValidity(const QByteArray &serverPublicKeyString) const
+{
+    Bio serverPublicKeyBio;
+    BIO_write(serverPublicKeyBio, serverPublicKeyString.constData(), serverPublicKeyString.size());
+    const auto serverPublicKey = PKey::readPrivateKey(serverPublicKeyBio);
+
+    Bio certificateBio;
+    const auto certificatePem = _certificate.toPem();
+    BIO_write(certificateBio, certificatePem.constData(), certificatePem.size());
+    const auto x509Certificate = X509Certificate::readCertificate(certificateBio);
+    if (!x509Certificate) {
+        qCInfo(lcCse()) << "Client certificate is invalid. Could not check it against the server public key";
+        return false;
+    }
+
+    if (X509_verify(x509Certificate, serverPublicKey) == 0) {
+        qCInfo(lcCse()) << "Client certificate is not valid against the server public key";
+        return false;
+    }
+
+    qCDebug(lcCse()) << "Client certificate is valid against server public key";
+    return true;
+}
+
 void ClientSideEncryption::publicKeyFetched(Job *incoming)
 {
     auto *readJob = static_cast<ReadPasswordJob *>(incoming);
@@ -1113,8 +1185,7 @@ void ClientSideEncryption::generateCSR(const AccountPtr &account, EVP_PKEY *keyP
             QString cert = json.object().value("ocs").toObject().value("data").toObject().value("public-key").toString();
             _certificate = QSslCertificate(cert.toLocal8Bit(), QSsl::Pem);
             _publicKey = _certificate.publicKey();
-            qCInfo(lcCse()) << "Certificate saved, Encrypting Private Key.";
-            encryptPrivateKey(account);
+            fetchAndValidatePublicKeyFromServer(account);
         }
         qCInfo(lcCse()) << retCode;
     });
@@ -1247,15 +1318,45 @@ void ClientSideEncryption::getPublicKeyFromServer(const AccountPtr &account)
                 QString publicKey = doc.object()["ocs"].toObject()["data"].toObject()["public-keys"].toObject()[account->davUser()].toString();
                 _certificate = QSslCertificate(publicKey.toLocal8Bit(), QSsl::Pem);
                 _publicKey = _certificate.publicKey();
-                qCInfo(lcCse()) << publicKey;
-                qCInfo(lcCse()) << "Found Public key, requesting Private Key.";
-                getPrivateKeyFromServer(account);
+                qCInfo(lcCse()) << "Found Public key, requesting Server Public Key. Public key:" << publicKey;
+                fetchAndValidatePublicKeyFromServer(account);
             } else if (retCode == 404) {
                 qCInfo(lcCse()) << "No public key on the server";
                 generateKeyPair(account);
             } else {
                 qCInfo(lcCse()) << "Error while requesting public key: " << retCode;
             }
+    });
+    job->start();
+}
+
+void ClientSideEncryption::fetchAndValidatePublicKeyFromServer(const AccountPtr &account)
+{
+    qCInfo(lcCse()) << "Retrieving public key from server";
+    auto job = new JsonApiJob(account, baseUrl() + "server-key", this);
+    connect(job, &JsonApiJob::jsonReceived, [this, account](const QJsonDocument& doc, int retCode) {
+        if (retCode == 200) {
+            const auto serverPublicKey = doc.object()["ocs"].toObject()["data"].toObject()["public-key"].toString().toLatin1();
+            qCInfo(lcCse()) << "Found Server Public key, checking it. Server public key:" << serverPublicKey;
+            if (checkServerPublicKeyValidity(serverPublicKey)) {
+                if (_privateKey.isEmpty()) {
+                    qCInfo(lcCse()) << "Valid Server Public key, requesting Private Key.";
+                    getPrivateKeyFromServer(account);
+                } else {
+                    qCInfo(lcCse()) << "Certificate saved, Encrypting Private Key.";
+                    encryptPrivateKey(account);
+                }
+            } else {
+                qCInfo(lcCse()) << "Error invalid server public key";
+                _certificate = QSslCertificate();
+                _publicKey = QSslKey();
+                _privateKey = QByteArray();
+                getPublicKeyFromServer(account);
+                return;
+            }
+        } else {
+            qCInfo(lcCse()) << "Error while requesting server public key: " << retCode;
+        }
     });
     job->start();
 }
