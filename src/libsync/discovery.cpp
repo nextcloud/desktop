@@ -282,9 +282,11 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const QString &loc
             break;
         case CSYNC_FILE_EXCLUDE_TRAILING_SPACE:
             item->_errorString = tr("Filename contains trailing spaces.");
+            item->_status = SyncFileItem::FileNameInvalid;
             break;
         case CSYNC_FILE_EXCLUDE_LONG_FILENAME:
             item->_errorString = tr("Filename is too long.");
+            item->_status = SyncFileItem::FileNameInvalid;
             break;
         case CSYNC_FILE_EXCLUDE_HIDDEN:
             item->_errorString = tr("File/Folder is ignored because it's hidden.");
