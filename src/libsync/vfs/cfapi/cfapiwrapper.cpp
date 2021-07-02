@@ -631,7 +631,7 @@ OCC::Result<void, QString> OCC::CfApiWrapper::setPinState(const FileHandle &hand
     if (result == S_OK) {
         return {};
     } else {
-        qCWarning(lcCfApiWrapper) << "Couldn't set pin state" << state << "for" << pathForHandle(handle) << "with recurse mode" << mode << ":" << _com_error(result).ErrorMessage();
+        qCWarning(lcCfApiWrapper) << "Couldn't set pin state" << state << "for" << pathForHandle(handle) << "with recurse mode" << mode << ":" << QString::fromWCharArray(_com_error(result).ErrorMessage());
         return { "Couldn't set pin state" };
     }
 }
@@ -666,7 +666,7 @@ OCC::Result<void, QString> OCC::CfApiWrapper::createPlaceholderInfo(const QStrin
 
     const qint64 result = CfCreatePlaceholders(localBasePath.data(), &cloudEntry, 1, CF_CREATE_FLAG_NONE, nullptr);
     if (result != S_OK) {
-        qCWarning(lcCfApiWrapper) << "Couldn't create placeholder info for" << path << ":" << _com_error(result).ErrorMessage();
+        qCWarning(lcCfApiWrapper) << "Couldn't create placeholder info for" << path << ":" << QString::fromWCharArray(_com_error(result).ErrorMessage());
         return { "Couldn't create placeholder info" };
     }
 
@@ -708,7 +708,7 @@ OCC::Result<void, QString> OCC::CfApiWrapper::updatePlaceholderInfo(const FileHa
                                               nullptr, 0, CF_UPDATE_FLAG_MARK_IN_SYNC, nullptr, nullptr);
 
     if (result != S_OK) {
-        qCWarning(lcCfApiWrapper) << "Couldn't update placeholder info for" << pathForHandle(handle) << ":" << _com_error(result).ErrorMessage();
+        qCWarning(lcCfApiWrapper) << "Couldn't update placeholder info for" << pathForHandle(handle) << ":" << QString::fromWCharArray(_com_error(result).ErrorMessage());
         return { "Couldn't update placeholder info" };
     }
 
@@ -732,7 +732,7 @@ OCC::Result<void, QString> OCC::CfApiWrapper::convertToPlaceholder(const FileHan
     const qint64 result = CfConvertToPlaceholder(handle.get(), fileIdentity.data(), sizeToDWORD(fileIdentitySize), CF_CONVERT_FLAG_MARK_IN_SYNC, nullptr, nullptr);
     Q_ASSERT(result == S_OK);
     if (result != S_OK) {
-        qCCritical(lcCfApiWrapper) << "Couldn't convert to placeholder" << pathForHandle(handle) << ":" << _com_error(result).ErrorMessage();
+        qCCritical(lcCfApiWrapper) << "Couldn't convert to placeholder" << pathForHandle(handle) << ":" << QString::fromWCharArray(_com_error(result).ErrorMessage());
         return { "Couldn't convert to placeholder" };
     }
 
