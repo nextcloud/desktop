@@ -378,8 +378,6 @@ void FolderWizardRemotePath::slotFolderEntryEdited(const QString &text)
 void FolderWizardRemotePath::slotLsColFolderEntry()
 {
     QString path = _ui.folderEntry->text();
-    if (path.startsWith(QLatin1Char('/')))
-        path = path.mid(1);
 
     LsColJob *job = runLsColJob(path);
     // No error handling, no updating, we do this manually
