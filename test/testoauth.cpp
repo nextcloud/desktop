@@ -9,7 +9,7 @@
 #include <QDesktopServices>
 
 #include "libsync/creds/oauth.h"
-#include "syncenginetestutils.h"
+#include "testutils/syncenginetestutils.h"
 #include "theme.h"
 #include "common/asserts.h"
 

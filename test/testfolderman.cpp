@@ -14,36 +14,15 @@
 #include "account.h"
 #include "accountstate.h"
 #include "configfile.h"
-#include "creds/httpcredentials.h"
+
+#include "testutils/testutils.h"
 
 using namespace OCC;
-
-class HttpCredentialsTest : public HttpCredentials {
-public:
-    HttpCredentialsTest(const QString& user, const QString& password)
-        : HttpCredentials(DetermineAuthTypeJob::AuthType::Basic, user, password)
-    {}
-
-    void askFromUser() override {
-
-    }
-};
-
-static FolderDefinition folderDefinition(const QString &path) {
-    FolderDefinition d;
-    d.localPath = path;
-    d.targetPath = path;
-    d.alias = path;
-    return d;
-}
 
 
 class TestFolderMan: public QObject
 {
     Q_OBJECT
-
-    FolderMan _fm;
-
 private slots:
     void testCheckPathValidityForNewFolder()
     {
@@ -64,17 +43,12 @@ private slots:
         }
         QString dirPath = dir2.canonicalPath();
 
-        AccountPtr account = Account::create();
-        QUrl url("http://example.de");
-        HttpCredentialsTest *cred = new HttpCredentialsTest("testuser", "secret");
-        account->setCredentials(cred);
-        account->setUrl( url );
-
+        AccountPtr account = TestUtils::createDummyAccount();
         AccountStatePtr newAccountState(new AccountState(account));
-        FolderMan *folderman = FolderMan::instance();
-        QCOMPARE(folderman, &_fm);
-        QVERIFY(folderman->addFolder(newAccountState.data(), folderDefinition(dirPath + "/sub/ownCloud1")));
-        QVERIFY(folderman->addFolder(newAccountState.data(), folderDefinition(dirPath + "/ownCloud2")));
+        FolderMan *folderman = TestUtils::folderMan();
+        QCOMPARE(folderman, FolderMan::instance());
+        QVERIFY(folderman->addFolder(newAccountState.data(), TestUtils::createDummyFolderDefinition(dirPath + "/sub/ownCloud1")));
+        QVERIFY(folderman->addFolder(newAccountState.data(), TestUtils::createDummyFolderDefinition(dirPath + "/ownCloud2")));
 
 
         // those should be allowed
@@ -91,7 +65,7 @@ private slots:
         QVERIFY(!folderman->checkPathValidityForNewFolder(dirPath + "/sub/file.txt").isNull());
 
         // There are folders configured in those folders, url needs to be taken into account: -> ERROR
-        QUrl url2(url);
+        QUrl url2(account->url());
         const QString user = account->credentials()->user();
         url2.setUserName(user);
 
@@ -174,7 +148,6 @@ private slots:
         // SETUP
 
         QTemporaryDir dir;
-        ConfigFile::setConfDir(dir.path()); // we don't want to pollute the user's config file
         QVERIFY(dir.isValid());
         QDir dir2(dir.path());
         QVERIFY(dir2.mkpath("sub/ownCloud1/folder/f"));
@@ -185,18 +158,14 @@ private slots:
         QVERIFY(dir2.mkpath("free2/sub"));
         QString dirPath = dir2.canonicalPath();
 
-        AccountPtr account = Account::create();
-        QUrl url("http://example.de");
-        HttpCredentialsTest *cred = new HttpCredentialsTest("testuser", "secret");
-        account->setCredentials(cred);
-        account->setUrl( url );
-        url.setUserName(cred->user());
+        AccountPtr account = TestUtils::createDummyAccount();
+        QUrl url(account->url());
+        url.setUserName(account->credentials()->user());
 
         AccountStatePtr newAccountState(new AccountState(account));
-        FolderMan *folderman = FolderMan::instance();
-        QCOMPARE(folderman, &_fm);
-        QVERIFY(folderman->addFolder(newAccountState.data(), folderDefinition(dirPath + "/sub/ownCloud/")));
-        QVERIFY(folderman->addFolder(newAccountState.data(), folderDefinition(dirPath + "/ownCloud2/")));
+        FolderMan *folderman = TestUtils::folderMan();
+        QVERIFY(folderman->addFolder(newAccountState.data(), TestUtils::createDummyFolderDefinition(dirPath + "/sub/ownCloud/")));
+        QVERIFY(folderman->addFolder(newAccountState.data(), TestUtils::createDummyFolderDefinition(dirPath + "/ownCloud2/")));
 
         // TEST
 

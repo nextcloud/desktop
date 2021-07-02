@@ -84,13 +84,11 @@ IssuesWidget::IssuesWidget(QWidget *parent)
     header->setExpandingColumn(static_cast<int>(ProtocolItemModel::ProtocolItemRole::Action));
     header->setSortIndicator(static_cast<int>(ProtocolItemModel::ProtocolItemRole::Time), Qt::DescendingOrder);
 
-
     connect(_ui->_tableView, &QTreeView::customContextMenuRequested, this, &IssuesWidget::slotItemContextMenu);
     _ui->_tableView->horizontalHeader()->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(header, &QHeaderView::customContextMenuRequested, header, [header, this] {
         ProtocolWidget::showHeaderContextMenu(header, _sortModel);
     });
-
 
     _ui->_tooManyIssuesWarning->hide();
     connect(_model, &ProtocolItemModel::rowsInserted, this, [this] {
@@ -104,6 +102,12 @@ IssuesWidget::IssuesWidget(QWidget *parent)
     _ui->_conflictHelp->setText(
         tr("There were conflicts. <a href=\"%1\">Check the documentation on how to resolve them.</a>")
             .arg(Theme::instance()->conflictHelpUrl()));
+
+    connect(FolderMan::instance(), &FolderMan::folderRemoved, this, [this](Folder *f) {
+        _model->remove_if([f](const ProtocolItem &item) {
+            return item.folder() == f;
+        });
+    });
 }
 
 IssuesWidget::~IssuesWidget()
@@ -122,7 +126,7 @@ void IssuesWidget::slotProgressInfo(const QString &folder, const ProgressInfo &p
         const auto &engine = f->syncEngine();
         const auto style = engine.lastLocalDiscoveryStyle();
         _model->remove_if([&](const ProtocolItem &item) {
-            if (item.folderName() != folder) {
+            if (item.folder()->path() != folder) {
                 return false;
             }
             if (style == LocalDiscoveryStyle::FilesystemOnly) {
@@ -148,7 +152,7 @@ void IssuesWidget::slotProgressInfo(const QString &folder, const ProgressInfo &p
         // Inform other components about them.
         QStringList conflicts;
         for (const auto &data : _model->rawData()) {
-            if (data.folderName() == folder
+            if (data.folder()->path() == folder
                 && data.status() == SyncFileItem::Conflict) {
                 conflicts.append(data.path());
             }

@@ -25,9 +25,11 @@
 #include "navigationpanehelper.h"
 #include "syncfileitem.h"
 
-class TestFolderMan;
-
 namespace OCC {
+namespace TestUtils {
+    // prototype for test friend
+    FolderMan *folderMan();
+}
 
 class Application;
 class SyncResult;
@@ -99,8 +101,7 @@ public:
      */
     static void backwardMigrationSettingsKeys(QStringList *deleteKeys, QStringList *ignoreKeys);
 
-    const Folder::Map &map() const;
-    QList<Folder *> list() const;
+    const QMap<QString, Folder *> &map() const;
 
     /** Adds a folder for an account, ensures the journal is gone and saves it in the settings.
       */
@@ -216,7 +217,7 @@ public:
     bool isAnySyncRunning() const;
 
     /** Removes all folders */
-    int unloadAndDeleteAllFolders();
+    void unloadAndDeleteAllFolders();
 
     /**
      * If enabled is set to false, no new folders will start to sync.
@@ -252,7 +253,8 @@ signals:
     /**
      * Emitted whenever the list of configured folders changes.
      */
-    void folderListChanged(const Folder::Map &);
+    void folderListChanged(const QMap<QString, Folder *> &);
+    void folderRemoved(Folder *folder);
 
 public slots:
 
@@ -341,7 +343,7 @@ private:
     void setupFoldersHelper(QSettings &settings, AccountStatePtr account, const QStringList &ignoreKeys, bool backwardsCompatible, bool foldersWithPlaceholders);
 
     QSet<Folder *> _disabledFolders;
-    Folder::Map _folderMap;
+    QMap<QString, Folder *> _folderMap;
     QString _folderConfigPath;
     Folder *_currentSyncFolder;
     QPointer<Folder> _lastSyncFolder;
@@ -377,7 +379,7 @@ private:
     static FolderMan *_instance;
     explicit FolderMan(QObject *parent = nullptr);
     friend class OCC::Application;
-    friend class ::TestFolderMan;
+    friend OCC::FolderMan *OCC::TestUtils::folderMan();
 };
 
 } // namespace OCC

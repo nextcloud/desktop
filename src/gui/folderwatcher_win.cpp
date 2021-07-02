@@ -216,10 +216,8 @@ FolderWatcherPrivate::FolderWatcherPrivate(FolderWatcher *p, const QString &path
     : _parent(p)
 {
     _thread = new WatcherThread(path);
-    connect(_thread, SIGNAL(changed(const QString &)),
-        _parent, SLOT(changeDetected(const QString &)));
-    connect(_thread, SIGNAL(lostChanges()),
-        _parent, SIGNAL(lostChanges()));
+    connect(_thread, &WatcherThread::changed, _parent, qOverload<const QString &>(&FolderWatcher::changeDetected));
+    connect(_thread, &WatcherThread::lostChanges, _parent, &FolderWatcher::lostChanges);
     connect(_thread, &WatcherThread::ready,
         this, [this]() { _ready = 1; });
     _thread->start();

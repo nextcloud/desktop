@@ -9,6 +9,8 @@
 #include "gui/models/activitylistmodel.h"
 #include "gui/accountmanager.h"
 
+#include "testutils/testutils.h"
+
 #include <QTest>
 #include <QAbstractItemModelTester>
 
@@ -25,19 +27,8 @@ private Q_SLOTS:
 
         new QAbstractItemModelTester(model, this);
 
-        auto manager = AccountManager::instance();
-
-        auto createAcc = [&] {
-            // don't use the account manager to create the account, it would try to use widgets
-            auto acc = Account::create();
-            acc->setUrl(QUrl(QStringLiteral("http://admin:admin@localhost/owncloud")));
-            acc->setDavDisplayName(QStringLiteral("fakename") + acc->uuid().toString());
-            acc->setServerVersion(QStringLiteral("10.0.0"));
-            manager->addAccount(acc);
-            return acc;
-        };
-        auto acc1 = createAcc();
-        auto acc2 = createAcc();
+        auto acc1 = TestUtils::createDummyAccount();
+        auto acc2 = TestUtils::createDummyAccount();
 
         model->setActivityList({
             Activity { Activity::ActivityType, 1, acc1, "test", "test", "foo.cpp", QUrl::fromUserInput("https://owncloud.com"), QDateTime::currentDateTime() },
@@ -49,7 +40,7 @@ private Q_SLOTS:
             Activity { Activity::ActivityType, 2, acc1, "test", "test", "foo.cpp", QUrl::fromUserInput("https://owncloud.com"), QDateTime::currentDateTime() },
             Activity { Activity::ActivityType, 4, acc2, "test", "test", "foo.cpp", QUrl::fromUserInput("https://owncloud.com"), QDateTime::currentDateTime() },
         });
-        model->slotRemoveAccount(manager->accounts().first().data());
+        model->slotRemoveAccount(AccountManager::instance()->accounts().first().data());
     }
 };
 }

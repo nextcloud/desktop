@@ -9,7 +9,7 @@
 #include "abstractnetworkjob.h"
 #include "account.h"
 
-#include "syncenginetestutils.h"
+#include "testutils/syncenginetestutils.h"
 
 #include <QTest>
 

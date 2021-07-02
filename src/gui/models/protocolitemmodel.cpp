@@ -22,15 +22,6 @@
 
 #include <QIcon>
 
-namespace {
-auto getFolder(const OCC::ProtocolItem &item)
-{
-    auto f = OCC::FolderMan::instance()->folder(item.folderName());
-    OC_ASSERT(f);
-    return f;
-}
-}
-
 using namespace OCC;
 
 ProtocolItemModel::ProtocolItemModel(QObject *parent, bool issueMode)
@@ -69,7 +60,7 @@ QVariant ProtocolItemModel::data(const QModelIndex &index, int role) const
         case ProtocolItemRole::Time:
             return item.timestamp();
         case ProtocolItemRole::Folder:
-            return getFolder(item)->shortGuiLocalPath();
+            return item.folder()->shortGuiLocalPath();
         case ProtocolItemRole::Action:
             return item.message();
         case ProtocolItemRole::Size:
@@ -77,7 +68,7 @@ QVariant ProtocolItemModel::data(const QModelIndex &index, int role) const
         case ProtocolItemRole::File:
             return Utility::fileNameForGuiUse(item.path());
         case ProtocolItemRole::Account:
-            return getFolder(item)->accountState()->account()->displayName();
+            return item.folder()->accountState()->account()->displayName();
         case ProtocolItemRole::ColumnCount:
             Q_UNREACHABLE();
             break;
@@ -105,7 +96,7 @@ QVariant ProtocolItemModel::data(const QModelIndex &index, int role) const
         case ProtocolItemRole::Time:
             return item.timestamp();
         case ProtocolItemRole::Folder:
-            return item.folderName();
+            return item.folder()->path();
         case ProtocolItemRole::Action:
             return item.message();
         case ProtocolItemRole::Size:
@@ -113,7 +104,7 @@ QVariant ProtocolItemModel::data(const QModelIndex &index, int role) const
         case ProtocolItemRole::File:
             return item.path();
         case ProtocolItemRole::Account:
-            return getFolder(item)->accountState()->account()->displayName();
+            return item.folder()->accountState()->account()->displayName();
         case ProtocolItemRole::ColumnCount:
             Q_UNREACHABLE();
             break;

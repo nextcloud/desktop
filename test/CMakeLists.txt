@@ -1,6 +1,6 @@
 include(owncloud_add_test.cmake)
 
-add_library(syncenginetestutils STATIC syncenginetestutils.cpp)
+add_library(syncenginetestutils STATIC testutils/syncenginetestutils.cpp testutils/testutils.cpp)
 target_link_libraries(syncenginetestutils PUBLIC owncloudCore Qt5::Test)
 
 owncloud_add_test(OwncloudPropagator)

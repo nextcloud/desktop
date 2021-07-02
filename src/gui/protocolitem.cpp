@@ -13,6 +13,7 @@
  */
 #include "protocolitem.h"
 
+#include "folderman.h"
 #include "progressdispatcher.h"
 
 #include <QApplication>
@@ -20,11 +21,12 @@
 #include <QMenu>
 #include <QPointer>
 
+
 using namespace OCC;
 
 ProtocolItem::ProtocolItem(const QString &folder, const SyncFileItemPtr &item)
     : _path(item->destination())
-    , _folderName(folder)
+    , _folder(FolderMan::instance()->folder(folder))
     , _size(item->_size)
     , _status(item->_status)
     , _direction(item->_direction)
@@ -46,9 +48,9 @@ QString ProtocolItem::path() const
     return _path;
 }
 
-QString ProtocolItem::folderName() const
+Folder *ProtocolItem::folder() const
 {
-    return _folderName;
+    return _folder;
 }
 
 QDateTime ProtocolItem::timestamp() const

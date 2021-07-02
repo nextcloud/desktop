@@ -7,9 +7,15 @@
  */
 
 #include "gui/models/protocolitemmodel.h"
+#include "gui/accountmanager.h"
+#include "gui/accountstate.h"
+#include "gui/folderman.h"
+
+#include "testutils/testutils.h"
 
 #include <QTest>
 #include <QAbstractItemModelTester>
+#include <folder.h>
 
 namespace OCC {
 
@@ -24,6 +30,20 @@ private Q_SLOTS:
 
         new QAbstractItemModelTester(model, this);
 
+        QTemporaryDir dir;
+
+        auto account = TestUtils::createDummyAccount();
+
+        AccountStatePtr newAccountState(new AccountState(account));
+        const QDir d(dir.path());
+        QVERIFY(d.mkdir("foo"));
+        QVERIFY(d.mkdir("bar"));
+        const QString foo = dir.path() + QStringLiteral("/foo");
+        const QString bar = dir.path() + QStringLiteral("/bar");
+        QVERIFY(TestUtils::folderMan()->addFolder(newAccountState.data(), TestUtils::createDummyFolderDefinition(foo)));
+        QVERIFY(TestUtils::folderMan()->addFolder(newAccountState.data(), TestUtils::createDummyFolderDefinition(bar)));
+
+
         // populate with dummy data
         // -1 to test the ring buffer window roll over
         const auto size = model->rawData().capacity() - 1;
@@ -31,13 +51,15 @@ private Q_SLOTS:
         std::vector<ProtocolItem> tmp;
         tmp.reserve(size);
         for (size_t i = 0; i < size; ++i) {
-            tmp.emplace_back(QStringLiteral("foo") + QString::number(i), item);
+            item->_file = QString::number(i);
+            tmp.emplace_back(foo, item);
         }
         model->reset(std::move(tmp));
 
         // test some inserts
         for (int i = 0; i < 5; ++i) {
-            model->addProtocolItem(ProtocolItem { QStringLiteral("bar") + QString::number(i), item });
+            item->_file = QString::number(i);
+            model->addProtocolItem(ProtocolItem { bar, item });
         }
 
         const auto oldSize = model->rowCount();
@@ -45,8 +67,8 @@ private Q_SLOTS:
         // pick one from the middle
         const auto toBeRemoved = {
             model->protocolItem(model->index(0, 0)),
-            model->protocolItem(model->index(model->rawData().capacity() / 2, 0)),
-            model->protocolItem(model->index(model->rawData().capacity() / 3, 0))
+            model->protocolItem(model->index(static_cast<int>(model->rawData().capacity()) / 2, 0)),
+            model->protocolItem(model->index(static_cast<int>(model->rawData().capacity()) / 3, 0))
         };
 
         std::vector<ProtocolItem> copy;
@@ -58,7 +80,7 @@ private Q_SLOTS:
         int matches = 0;
         const auto filter = [&toBeRemoved, &matches](const ProtocolItem &pi) {
             for (const auto &tb : toBeRemoved) {
-                if (pi.folderName() == tb.folderName()) {
+                if (pi.folder() == tb.folder() && pi.path() == tb.path()) {
                     matches++;
                     return true;
                 }
@@ -74,7 +96,7 @@ private Q_SLOTS:
 
         // ensure we kept the original order
         for (int i = 0; i < model->rowCount(); ++i) {
-            QCOMPARE(model->protocolItem(model->index(i, 0)).folderName(), copy[i].folderName());
+            QCOMPARE(model->protocolItem(model->index(i, 0)).folder(), copy[i].folder());
         }
     }
 };

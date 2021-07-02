@@ -424,10 +424,7 @@ bool FolderWizardRemotePath::isComplete() const
     }
     wizard()->setProperty("targetPath", dir);
 
-    Folder::Map map = FolderMan::instance()->map();
-    Folder::Map::const_iterator i = map.constBegin();
-    for (i = map.constBegin(); i != map.constEnd(); i++) {
-        Folder *f = static_cast<Folder *>(i.value());
+    for (auto *f : qAsConst(FolderMan::instance()->map())) {
         if (f->accountState()->account() != _account) {
             continue;
         }

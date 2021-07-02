@@ -6,7 +6,7 @@
  */
 
 #include <QtTest>
-#include "syncenginetestutils.h"
+#include "testutils/syncenginetestutils.h"
 #include "common/vfs.h"
 #include "config.h"
 #include <syncengine.h>

@@ -6,7 +6,7 @@
  */
 
 #include <QtTest>
-#include "syncenginetestutils.h"
+#include "testutils/syncenginetestutils.h"
 #include "lockwatcher.h"
 #include <syncengine.h>
 #include <localdiscoverytracker.h>

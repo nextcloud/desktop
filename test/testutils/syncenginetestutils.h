@@ -10,6 +10,7 @@
 #include "creds/abstractcredentials.h"
 #include "logger.h"
 #include "filesystem.h"
+#include "folder.h"
 #include "syncengine.h"
 #include "common/syncjournaldb.h"
 #include "common/syncjournalfilerecord.h"
@@ -34,7 +35,8 @@ static const QUrl sRootUrl = QUrl::fromEncoded("owncloud://somehost/owncloud/rem
 static const QUrl sRootUrl2 = QUrl::fromEncoded("owncloud://somehost/owncloud/remote.php/dav/files/admin/");
 static const QUrl sUploadUrl = QUrl::fromEncoded("owncloud://somehost/owncloud/remote.php/dav/uploads/admin/");
 
-inline QString getFilePathFromUrl(const QUrl &url) {
+inline QString getFilePathFromUrl(const QUrl &url)
+{
     QString path = url.path();
     if (path.startsWith(sRootUrl.path()))
         return path.mid(sRootUrl.path().length());
@@ -46,14 +48,17 @@ inline QString getFilePathFromUrl(const QUrl &url) {
 }
 
 
-inline QByteArray generateEtag() {
+inline QByteArray generateEtag()
+{
     return QByteArray::number(QDateTime::currentDateTimeUtc().toMSecsSinceEpoch(), 16) + QByteArray::number(qrand(), 16);
 }
-inline QByteArray generateFileId() {
+inline QByteArray generateFileId()
+{
     return QByteArray::number(qrand(), 16);
 }
 
-class PathComponents : public QStringList {
+class PathComponents : public QStringList
+{
 public:
     PathComponents(const char *path);
     PathComponents(const QString &path);
@@ -61,7 +66,11 @@ public:
 
     PathComponents parentDirComponents() const;
     PathComponents subComponents() const &;
-    PathComponents subComponents() && { removeFirst(); return std::move(*this); }
+    PathComponents subComponents() &&
+    {
+        removeFirst();
+        return std::move(*this);
+    }
     QString pathRoot() const { return first(); }
     QString fileName() const { return last(); }
 };
@@ -83,8 +92,12 @@ public:
 class DiskFileModifier : public FileModifier
 {
     QDir _rootDir;
+
 public:
-    DiskFileModifier(const QString &rootDirPath) : _rootDir(rootDirPath) { }
+    DiskFileModifier(const QString &rootDirPath)
+        : _rootDir(rootDirPath)
+    {
+    }
     void remove(const QString &relativePath) override;
     void insert(const QString &relativePath, qint64 size = 64, char contentChar = 'W') override;
     void setContents(const QString &relativePath, char contentChar) override;
@@ -102,9 +115,23 @@ public:
     static FileInfo A12_B12_C12_S12();
 
     FileInfo() = default;
-    FileInfo(const QString &name) : name{name} { }
-    FileInfo(const QString &name, qint64 size) : name{name}, isDir{false}, size{size} { }
-    FileInfo(const QString &name, qint64 size, char contentChar) : name{name}, isDir{false}, size{size}, contentChar{contentChar} { }
+    FileInfo(const QString &name)
+        : name { name }
+    {
+    }
+    FileInfo(const QString &name, qint64 size)
+        : name { name }
+        , isDir { false }
+        , size { size }
+    {
+    }
+    FileInfo(const QString &name, qint64 size, char contentChar)
+        : name { name }
+        , isDir { false }
+        , size { size }
+        , contentChar { contentChar }
+    {
+    }
     FileInfo(const QString &name, const std::initializer_list<FileInfo> &children);
 
     void addChild(const FileInfo &info);
@@ -131,13 +158,15 @@ public:
 
     FileInfo *create(const QString &relativePath, qint64 size, char contentChar);
 
-    bool operator<(const FileInfo &other) const {
+    bool operator<(const FileInfo &other) const
+    {
         return name < other.name;
     }
 
     bool operator==(const FileInfo &other) const;
 
-    bool operator!=(const FileInfo &other) const {
+    bool operator!=(const FileInfo &other) const
+    {
         return !operator==(other);
     }
 
@@ -164,7 +193,8 @@ public:
 
     FileInfo *findInvalidatingEtags(PathComponents pathComponents);
 
-    friend inline QDebug operator<<(QDebug dbg, const FileInfo& fi) {
+    friend inline QDebug operator<<(QDebug dbg, const FileInfo &fi)
+    {
         return dbg << "{ " << fi.path() << ": " << fi.children;
     }
 };
@@ -202,6 +232,7 @@ class FakePutReply : public FakeReply
 {
     Q_OBJECT
     FileInfo *fileInfo;
+
 public:
     FakePutReply(FileInfo &remoteRootFileInfo, QNetworkAccessManager::Operation op, const QNetworkRequest &request, const QByteArray &putPayload, QObject *parent);
 
@@ -217,6 +248,7 @@ class FakeMkcolReply : public FakeReply
 {
     Q_OBJECT
     FileInfo *fileInfo;
+
 public:
     FakeMkcolReply(FileInfo &remoteRootFileInfo, QNetworkAccessManager::Operation op, const QNetworkRequest &request, QObject *parent);
 
@@ -292,6 +324,7 @@ class FakeChunkMoveReply : public FakeReply
 {
     Q_OBJECT
     FileInfo *fileInfo;
+
 public:
     FakeChunkMoveReply(FileInfo &uploadsFileInfo, FileInfo &remoteRootFileInfo,
         QNetworkAccessManager::Operation op, const QNetworkRequest &request,
@@ -317,7 +350,7 @@ public:
 
     void respond();
 
-    void abort() override {}
+    void abort() override { }
     qint64 readData(char *buf, qint64 max) override;
     qint64 bytesAvailable() const override;
     QByteArray _body;
@@ -334,8 +367,8 @@ public:
     Q_INVOKABLE virtual void respond();
 
     // make public to give tests easy interface
-    using QNetworkReply::setError;
     using QNetworkReply::setAttribute;
+    using QNetworkReply::setError;
 
 public slots:
     void slotSetFinished();
@@ -365,7 +398,7 @@ class DelayedReply : public OriginalReply
 {
 public:
     template <typename... Args>
-    explicit DelayedReply(quint64 delayMS, Args &&... args)
+    explicit DelayedReply(quint64 delayMS, Args &&...args)
         : OriginalReply(std::forward<Args>(args)...)
         , _delayMs(delayMS)
     {
@@ -411,8 +444,12 @@ protected:
 class FakeCredentials : public OCC::AbstractCredentials
 {
     QNetworkAccessManager *_qnam;
+
 public:
-    FakeCredentials(QNetworkAccessManager *qnam) : _qnam{qnam} { }
+    FakeCredentials(QNetworkAccessManager *qnam)
+        : _qnam { qnam }
+    {
+    }
     QString authType() const override { return QStringLiteral("test"); }
     QString user() const override { return QStringLiteral("admin"); }
     QNetworkAccessManager *createQNAM() const override { return _qnam; }
@@ -452,13 +489,16 @@ public:
     FileInfo &uploadState() { return _fakeQnam->uploadState(); }
     FileInfo dbState() const;
 
-    struct ErrorList {
+    struct ErrorList
+    {
         FakeQNAM *_qnam;
         void append(const QString &path, int error = 500)
-        { _qnam->errorPaths().insert(path, error); }
+        {
+            _qnam->errorPaths().insert(path, error);
+        }
         void clear() { _qnam->errorPaths().clear(); }
     };
-    ErrorList serverErrorPaths() { return {_fakeQnam}; }
+    ErrorList serverErrorPaths() { return { _fakeQnam }; }
     void setServerOverride(const FakeQNAM::Override &override) { _fakeQnam->setOverride(override); }
 
     QString localPath() const;
@@ -469,14 +509,16 @@ public:
 
     void execUntilItemCompleted(const QString &relativePath);
 
-    bool execUntilFinished() {
+    bool execUntilFinished()
+    {
         QSignalSpy spy(_syncEngine.get(), SIGNAL(finished(bool)));
         bool ok = spy.wait(3600000);
         Q_ASSERT(ok && "Sync timed out");
         return spy[0][0].toBool();
     }
 
-    bool syncOnce() {
+    bool syncOnce()
+    {
         scheduleSync();
         return execUntilFinished();
     }
@@ -504,19 +546,22 @@ inline const FileInfo *findConflict(FileInfo &dir, const QString &filename)
     return nullptr;
 }
 
-struct ItemCompletedSpy : QSignalSpy {
+struct ItemCompletedSpy : QSignalSpy
+{
     explicit ItemCompletedSpy(FakeFolder &folder)
         : QSignalSpy(&folder.syncEngine(), &OCC::SyncEngine::itemCompleted)
-    {}
+    {
+    }
 
     OCC::SyncFileItemPtr findItem(const QString &path) const;
 };
 
 // QTest::toString overloads
 namespace OCC {
-    inline char *toString(const SyncFileStatus &s) {
-        return QTest::toString(QStringLiteral("SyncFileStatus(%1)").arg(s.toSocketAPIString()));
-    }
+inline char *toString(const SyncFileStatus &s)
+{
+    return QTest::toString(QStringLiteral("SyncFileStatus(%1)").arg(s.toSocketAPIString()));
+}
 }
 
 inline void addFiles(QStringList &dest, const FileInfo &fi)
@@ -548,20 +593,11 @@ inline void addFilesDbData(QStringList &dest, const FileInfo &fi)
 {
     // could include etag, permissions etc, but would need extra work
     if (fi.isDir) {
-        dest += QStringLiteral("%1 - %2 %3 %4").arg(
-            fi.name,
-            fi.isDir ? QStringLiteral("dir") : QStringLiteral("file"),
-            QString::number(fi.lastModified.toSecsSinceEpoch()),
-            QString::fromUtf8(fi.fileId));
+        dest += QStringLiteral("%1 - %2 %3 %4").arg(fi.name, fi.isDir ? QStringLiteral("dir") : QStringLiteral("file"), QString::number(fi.lastModified.toSecsSinceEpoch()), QString::fromUtf8(fi.fileId));
         for (const auto &fi : fi.children)
             addFilesDbData(dest, fi);
     } else {
-        dest += QStringLiteral("%1 - %2 %3 %4 %5").arg(
-            fi.name,
-            fi.isDir ? QStringLiteral("dir") : QStringLiteral("file"),
-            QString::number(fi.size),
-            QString::number(fi.lastModified.toSecsSinceEpoch()),
-            QString::fromUtf8(fi.fileId));
+        dest += QStringLiteral("%1 - %2 %3 %4 %5").arg(fi.name, fi.isDir ? QStringLiteral("dir") : QStringLiteral("file"), QString::number(fi.size), QString::number(fi.lastModified.toSecsSinceEpoch()), QString::fromUtf8(fi.fileId));
     }
 }
 

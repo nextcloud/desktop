@@ -58,14 +58,12 @@ public:
     bool isComplete() const override;
     void initializePage() override;
     void cleanupPage() override;
-
-    void setFolderMap(const Folder::Map &fm) { _folderMap = fm; }
 protected slots:
     void slotChooseLocalFolder();
 
 private:
     Ui_FolderWizardSourcePage _ui;
-    Folder::Map _folderMap;
+    QMap<QString, Folder *> _folderMap;
     AccountPtr _account;
 };
 

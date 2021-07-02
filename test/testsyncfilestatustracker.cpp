@@ -6,7 +6,7 @@
  */
 
 #include <QtTest>
-#include "syncenginetestutils.h"
+#include "testutils/syncenginetestutils.h"
 #include "csync_exclude.h"
 
 using namespace OCC;

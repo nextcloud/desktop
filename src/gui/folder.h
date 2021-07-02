@@ -124,10 +124,6 @@ public:
     Folder(const FolderDefinition &definition, AccountState *accountState, std::unique_ptr<Vfs> vfs, QObject *parent = nullptr);
 
     ~Folder() override;
-
-    typedef QMap<QString, Folder *> Map;
-    typedef QMapIterator<QString, Folder *> MapIterator;
-
     /**
      * The account the folder is configured on.
      */

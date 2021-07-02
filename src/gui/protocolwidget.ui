@@ -17,7 +17,7 @@
    <item>
     <widget class="QLabel" name="_headerLabel">
      <property name="text">
-      <string>TextLabel</string>
+      <string>Local sync protocol</string>
      </property>
      <property name="textFormat">
       <enum>Qt::PlainText</enum>

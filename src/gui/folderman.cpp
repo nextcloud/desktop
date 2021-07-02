@@ -95,21 +95,14 @@ FolderMan::~FolderMan()
     _instance = nullptr;
 }
 
-const OCC::Folder::Map &FolderMan::map() const
+const QMap<QString, Folder *> &FolderMan::map() const
 {
     return _folderMap;
 }
 
-QList<Folder *> FolderMan::list() const
-{
-    return _folderMap.values();
-}
-
 void FolderMan::unloadFolder(Folder *f)
 {
-    if (!f) {
-        return;
-    }
+    Q_ASSERT(f);
 
     _socketApi->slotUnregisterPath(f->alias());
 
@@ -129,28 +122,19 @@ void FolderMan::unloadFolder(Folder *f)
         &f->syncEngine().syncFileStatusTracker(), &SyncFileStatusTracker::slotPathTouched);
 }
 
-int FolderMan::unloadAndDeleteAllFolders()
+void FolderMan::unloadAndDeleteAllFolders()
 {
-    int cnt = 0;
-
     // clear the list of existing folders.
-    Folder::MapIterator i(_folderMap);
-    while (i.hasNext()) {
-        i.next();
-        Folder *f = i.value();
-        unloadFolder(f);
-        delete f;
-        cnt++;
+    const auto folders = std::move(_folderMap);
+    for (auto *folder : folders) {
+        _socketApi->slotUnregisterPath(folder->alias());
+        folder->deleteLater();
     }
-    OC_ASSERT(_folderMap.isEmpty());
-
     _lastSyncFolder = nullptr;
     _currentSyncFolder = nullptr;
     _scheduledFolders.clear();
     emit folderListChanged(_folderMap);
     emit scheduleQueueChanged();
-
-    return cnt;
 }
 
 void FolderMan::registerFolderWithSocketApi(Folder *folder)
@@ -704,7 +688,7 @@ void FolderMan::setSyncEnabled(bool enabled)
     }
     _syncEnabled = enabled;
     // force a redraw in case the network connect status changed
-    emit(folderSyncStateChange(nullptr));
+    Q_EMIT folderSyncStateChange(nullptr);
 }
 
 void FolderMan::startScheduledSyncSoon()
@@ -825,16 +809,14 @@ void FolderMan::slotEtagPollTimerTimeout()
 
 void FolderMan::slotRemoveFoldersForAccount(AccountState *accountState)
 {
-    QVarLengthArray<Folder *, 16> foldersToRemove;
-    Folder::MapIterator i(_folderMap);
-    while (i.hasNext()) {
-        i.next();
-        Folder *folder = i.value();
+    QList<Folder *> foldersToRemove;
+    // reserve a magic number
+    foldersToRemove.reserve(16);
+    for (auto *folder : qAsConst(_folderMap)) {
         if (folder->accountState() == accountState) {
             foldersToRemove.append(folder);
         }
     }
-
     for (const auto &f : foldersToRemove) {
         removeFolder(f);
     }
@@ -1128,13 +1110,13 @@ void FolderMan::removeFolder(Folder *f)
         // Let the folder delete itself when done.
         connect(f, &Folder::syncFinished, f, &QObject::deleteLater);
     } else {
-        delete f;
+        f->deleteLater();
     }
 
 #ifdef Q_OS_WIN
     _navigationPaneHelper.scheduleUpdateCloudStorageRegistry();
 #endif
-
+    Q_EMIT folderRemoved(f);
     emit folderListChanged(_folderMap);
 }
 

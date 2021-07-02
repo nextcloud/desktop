@@ -13,6 +13,8 @@
  */
 #pragma once
 
+#include "folder.h"
+
 #include "csync/csync.h"
 #include "libsync/syncfileitem.h"
 
@@ -29,7 +31,7 @@ public:
 
     QString path() const;
 
-    QString folderName() const;
+    Folder *folder() const;
 
     QDateTime timestamp() const;
 
@@ -45,7 +47,7 @@ public:
 
 private:
     QString _path;
-    QString _folderName;
+    Folder *_folder;
     QDateTime _timestamp;
     qint64 _size;
     SyncFileItem::Status _status BITFIELD(4);
@@ -53,6 +55,8 @@ private:
 
     QString _message;
     bool _sizeIsRelevant;
+
+    friend class TestProtocolModel;
 };
 
 }

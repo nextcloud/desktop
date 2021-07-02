@@ -64,8 +64,11 @@ ProtocolWidget::ProtocolWidget(QWidget *parent)
         showHeaderContextMenu(header, _sortModel);
     });
 
-
-    _ui->_headerLabel->setText(tr("Local sync protocol"));
+    connect(FolderMan::instance(), &FolderMan::folderRemoved, this, [this](Folder *f) {
+        _model->remove_if([f](const ProtocolItem &item) {
+            return item.folder() == f;
+        });
+    });
 }
 
 ProtocolWidget::~ProtocolWidget()
@@ -92,22 +95,19 @@ void ProtocolWidget::showContextMenu(QWidget *parent, ProtocolItemModel *model, 
 
     if (items.size() == 1) {
         const auto &data = model->protocolItem(items.first());
-        auto folder = FolderMan::instance()->folder(data.folderName());
-        if (folder) {
-            {
-                const QString localPath = folder->path() + data.path();
-                if (QFileInfo::exists(localPath)) {
-                    // keep in sync with ActivityWidget::slotItemContextMenu
-                    menu->addAction(tr("Show in file browser"), parent, [localPath] {
-                        if (QFileInfo::exists(localPath)) {
-                            showInFileManager(localPath);
-                        }
-                    });
-                }
+        {
+            const QString localPath = data.folder()->path() + data.path();
+            if (QFileInfo::exists(localPath)) {
+                // keep in sync with ActivityWidget::slotItemContextMenu
+                menu->addAction(tr("Show in file browser"), parent, [localPath] {
+                    if (QFileInfo::exists(localPath)) {
+                        showInFileManager(localPath);
+                    }
+                });
             }
             // "Open in Browser" action
             {
-                fetchPrivateLinkUrl(folder->accountState()->account(), folder->remotePathTrailingSlash() + data.path(), parent, [parent, menu = QPointer<QMenu>(menu)](const QString &url) {
+                fetchPrivateLinkUrl(data.folder()->accountState()->account(), data.folder()->remotePathTrailingSlash() + data.path(), parent, [parent, menu = QPointer<QMenu>(menu)](const QString &url) {
                     // as fetchPrivateLinkUrl is async we need to check the menu still exists
                     if (menu) {
                         menu->addAction(tr("Show in web browser"), parent, [url, parent] {
@@ -123,9 +123,9 @@ void ProtocolWidget::showContextMenu(QWidget *parent, ProtocolItemModel *model, 
                 case SyncFileItem::SoftError:
                     Q_FALLTHROUGH();
                 case SyncFileItem::BlacklistedError:
-                    menu->addAction(tr("Retry sync"), parent, [folder, &data] {
-                        folder->journalDb()->wipeErrorBlacklistEntry(data.path());
-                        FolderMan::instance()->scheduleFolderNext(folder);
+                    menu->addAction(tr("Retry sync"), parent, [&data] {
+                        data.folder()->journalDb()->wipeErrorBlacklistEntry(data.path());
+                        FolderMan::instance()->scheduleFolderNext(data.folder());
                     });
                 default:
                     break;

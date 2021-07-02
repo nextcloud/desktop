@@ -7,7 +7,7 @@
 #include "account.h"
 #include "libsync/creds/credentialmanager.h"
 
-#include "syncenginetestutils.h"
+#include "testutils/syncenginetestutils.h"
 
 #include <QTest>
 
