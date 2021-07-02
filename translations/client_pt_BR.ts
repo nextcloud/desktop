@@ -3137,14 +3137,19 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <translation>servidor relatou não  %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="924"/>
+        <location filename="../src/libsync/discovery.cpp" line="939"/>
+        <source>Conflict when uploading some files to a folder. Those, conflicted, are going to get cleared!</source>
+        <translation>Conflito ao enviar alguns arquivos para uma pasta. Esses, em conflito, serão eliminados! </translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="952"/>
         <source>Conflict when uploading a folder. It&apos;s going to get cleared!</source>
         <translation>Conflito ao enviar uma pasta. Vai ser limpa! </translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="930"/>
-        <source>Conflict when uploading some files to a folder. Those, conflicted, are going to get cleared!</source>
-        <translation>Conflito ao enviar alguns arquivos para uma pasta. Esses, em conflito, serão eliminados! </translation>
+        <location filename="../src/libsync/discovery.cpp" line="955"/>
+        <source>Conflict when uploading a file. It&apos;s going to get removed!</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1225"/>

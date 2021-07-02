@@ -3135,13 +3135,18 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
         <translation>szerver nem jelentett %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="924"/>
+        <location filename="../src/libsync/discovery.cpp" line="939"/>
+        <source>Conflict when uploading some files to a folder. Those, conflicted, are going to get cleared!</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="952"/>
         <source>Conflict when uploading a folder. It&apos;s going to get cleared!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="930"/>
-        <source>Conflict when uploading some files to a folder. Those, conflicted, are going to get cleared!</source>
+        <location filename="../src/libsync/discovery.cpp" line="955"/>
+        <source>Conflict when uploading a file. It&apos;s going to get removed!</source>
         <translation type="unfinished"/>
     </message>
     <message>
