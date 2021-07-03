@@ -3136,17 +3136,17 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
         <translation>sunucu numarası %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="939"/>
+        <location filename="../src/libsync/discovery.cpp" line="941"/>
         <source>Conflict when uploading some files to a folder. Those, conflicted, are going to get cleared!</source>
         <translation>Bazı dosyalar bir klasöre yüklenirken çalışma oldu. Çakışmalar temizlenecek!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="952"/>
+        <location filename="../src/libsync/discovery.cpp" line="954"/>
         <source>Conflict when uploading a folder. It&apos;s going to get cleared!</source>
         <translation>Bir klasör yüklenirken çakışma oldu. Çakışma temizlenecek!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="955"/>
+        <location filename="../src/libsync/discovery.cpp" line="957"/>
         <source>Conflict when uploading a file. It&apos;s going to get removed!</source>
         <translation type="unfinished"/>
     </message>

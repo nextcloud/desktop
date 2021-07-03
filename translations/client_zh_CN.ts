@@ -3119,19 +3119,19 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>服务器报告无 %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="939"/>
+        <location filename="../src/libsync/discovery.cpp" line="941"/>
         <source>Conflict when uploading some files to a folder. Those, conflicted, are going to get cleared!</source>
         <translation>上传文件到文件夹时发生冲突。那些冲突的会被清除!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="952"/>
+        <location filename="../src/libsync/discovery.cpp" line="954"/>
         <source>Conflict when uploading a folder. It&apos;s going to get cleared!</source>
         <translation>上传文件夹时发生冲突。它会被清除!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="955"/>
+        <location filename="../src/libsync/discovery.cpp" line="957"/>
         <source>Conflict when uploading a file. It&apos;s going to get removed!</source>
-        <translation type="unfinished"/>
+        <translation>上传时发生冲突。它将被移除！</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1225"/>

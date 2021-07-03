@@ -3135,17 +3135,17 @@ Custa est una modalidade noa, isperimentale. Si detzides de dda impreare, sinnal
         <translation>su serbidore no at torradu perunu %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="939"/>
+        <location filename="../src/libsync/discovery.cpp" line="941"/>
         <source>Conflict when uploading some files to a folder. Those, conflicted, are going to get cleared!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="952"/>
+        <location filename="../src/libsync/discovery.cpp" line="954"/>
         <source>Conflict when uploading a folder. It&apos;s going to get cleared!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="955"/>
+        <location filename="../src/libsync/discovery.cpp" line="957"/>
         <source>Conflict when uploading a file. It&apos;s going to get removed!</source>
         <translation type="unfinished"/>
     </message>
