@@ -1,0 +1,5 @@
+Bugfix: Prompt the user of the cmd client what to do if all files where removed
+
+We now prompt the user, previously the cmd client got stuck.
+
+https://github.com/owncloud/client/issues/8804
