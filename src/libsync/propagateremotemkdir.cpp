@@ -21,7 +21,10 @@
 
 #include <QFile>
 #include <QLoggingCategory>
-
+#include <QtConcurrent>
+namespace {
+auto UpdateMetaDataRetyTimeOut = std::chrono::seconds(30);
+}
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcPropagateRemoteMkdir, "sync.propagator.remotemkdir", QtInfoMsg)
@@ -131,15 +134,58 @@ void PropagateRemoteMkdir::success()
     itemCopy._etag.clear();
 
     // save the file id already so we can detect rename or remove
+    // also convert to a placeholder for the proper behaviour of the file
+    Q_ASSERT(thread() == qApp->thread());
     const auto result = propagator()->updateMetadata(itemCopy);
     if (!result) {
         done(SyncFileItem::FatalError, tr("Error writing metadata to the database: %1").arg(result.error()));
         return;
-    } else if (result.get() == Vfs::ConvertToPlaceholderResult::Locked) {
-        done(SyncFileItem::FatalError, tr("The file %1 is currently in use").arg(_item->_file));
+    }
+#ifdef Q_OS_WIN
+    else if (result.get() == Vfs::ConvertToPlaceholderResult::Locked) {
+        // updateMetadata invokes convertToPlaceholder
+        // On Windows convertToPlaceholder can be blocked by the OS
+        // in case the file lock is active.
+        // Retry the conversion for UpdateMetaDataRetyTimeOut
+        // TODO: make update updateMetadata async in general
+
+        // QtConcurrent does not support moves
+        // use shared_ptr to manage the Result object
+        using resultType = decltype(result);
+        using resultTypePtr = decltype(std::shared_ptr<resultType>());
+
+        auto *watcher = new QFutureWatcher<resultTypePtr>(this);
+        connect(watcher, &QFutureWatcherBase::finished, this, [watcher, this] {
+            const auto *result = watcher->result().get();
+            if (*result) {
+                Q_ASSERT(result->get() == Vfs::ConvertToPlaceholderResult::Ok);
+                done(SyncFileItem::Success);
+            } else {
+                done(SyncFileItem::FatalError, result->error());
+            }
+        });
+
+        watcher->setFuture(QtConcurrent::run([p = propagator(), itemCopy] {
+            // Try to update the meta data with a 30s timeout
+            const auto start = std::chrono::steady_clock::now();
+            while ((std::chrono::steady_clock::now() - start) < UpdateMetaDataRetyTimeOut) {
+                QThread::sleep(1);
+                auto result = std::make_shared<resultType>(p->updateMetadata(itemCopy));
+                if (*result) {
+                    if (result->get() == Vfs::ConvertToPlaceholderResult::Locked) {
+                        continue;
+                    } else {
+                        return result;
+                    }
+                } else {
+                    return result;
+                }
+            }
+            return std::make_shared<resultType>(tr("UpdateMetadata Timed out"));
+        }));
         return;
     }
-
+#endif
     done(SyncFileItem::Success);
 }
 }
