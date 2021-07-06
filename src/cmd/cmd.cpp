@@ -167,9 +167,9 @@ void sync(const SyncCTX &ctx)
             }
         }
     });
-    QObject::connect(engine, &SyncEngine::aboutToRemoveAllFiles, engine, [ctx](OCC::SyncFileItem::Direction dir, std::function<void(bool)> callback) {
+    QObject::connect(engine, &SyncEngine::aboutToRemoveAllFiles, engine, [ctx](OCC::SyncFileItem::Direction dir, std::function<void(bool)> abort) {
         if (!ctx.options.interactive) {
-            callback(false);
+            abort(false);
         } else {
             std::cout << (dir == SyncFileItem::Down ? "All files in the sync folder '%1' folder were deleted on the server.\n"
                                                       "These deletes will be synchronized to your local sync folder, making such files "
@@ -186,9 +186,9 @@ void sync(const SyncCTX &ctx)
                 std::cout << "Remove all files?[y,n]";
                 std::getline(std::cin, s);
                 if (s == "y") {
-                    callback(false);
+                    abort(false);
                 } else if (s == "n") {
-                    callback(true);
+                    abort(true);
                 } else {
                     continue;
                 }

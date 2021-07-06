@@ -157,9 +157,9 @@ signals:
     /**
      * Emited when the sync engine detects that all the files have been removed or change.
      * This usually happen when the server was reset or something.
-     * Set *cancel to true in a slot connected from this signal to abort the sync.
+     * Call abort(true) slot connected from this signal to abort the sync.
      */
-    void aboutToRemoveAllFiles(SyncFileItem::Direction direction, std::function<void(bool)> f);
+    void aboutToRemoveAllFiles(SyncFileItem::Direction direction, std::function<void(bool)> abort);
 
     // A new folder was discovered and was not synced because of the confirmation feature
     void newBigFolder(const QString &folder, bool isExternal);

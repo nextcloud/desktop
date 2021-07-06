@@ -317,7 +317,7 @@ public slots:
     void slotTerminateSync();
 
     // connected to the corresponding signals in the SyncEngine
-    void slotAboutToRemoveAllFiles(SyncFileItem::Direction, std::function<void(bool)> callback);
+    void slotAboutToRemoveAllFiles(SyncFileItem::Direction, std::function<void(bool)> abort);
 
     /**
       * Starts a sync operation

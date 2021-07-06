@@ -1184,11 +1184,11 @@ bool Folder::virtualFilesEnabled() const
     return _definition.virtualFilesMode != Vfs::Off && !isVfsOnOffSwitchPending();
 }
 
-void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction dir, std::function<void(bool)> callback)
+void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction dir, std::function<void(bool)> abort)
 {
     ConfigFile cfgFile;
     if (!cfgFile.promptDeleteFiles()) {
-        callback(false);
+        abort(false);
         return;
     }
     const QString msg = dir == SyncFileItem::Down ? tr("All files in the sync folder '%1' folder were deleted on the server.\n"
@@ -1208,9 +1208,9 @@ void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction dir, std::functio
     QPushButton *keepBtn = msgBox->addButton(tr("Keep files"), QMessageBox::AcceptRole);
     bool oldPaused = syncPaused();
     setSyncPaused(true);
-    connect(msgBox, &QMessageBox::finished, this, [msgBox, keepBtn, callback, oldPaused, this] {
+    connect(msgBox, &QMessageBox::finished, this, [msgBox, keepBtn, abort, oldPaused, this] {
         const bool cancel = msgBox->clickedButton() == keepBtn;
-        callback(cancel);
+        abort(cancel);
         if (cancel) {
             FileSystem::setFolderMinimumPermissions(path());
             journalDb()->clearFileTable();
