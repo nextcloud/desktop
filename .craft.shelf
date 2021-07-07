@@ -156,12 +156,6 @@ version = 1.2.11
 [python-modules/meson]
 version = master
 
-[python-modules/pip]
-version = 3.5
-
-[python-modules/pip-system]
-version = 3.5
-
 [python-modules/virtualenv]
 version = master
 
