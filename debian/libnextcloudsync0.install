@@ -1,2 +1,3 @@
 usr/lib/*/libnextcloudsync.so.*
 usr/lib/*/libnextcloud_csync.so.*
+usr/lib/*/nextcloudsync_vfs_*.so
