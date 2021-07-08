@@ -349,6 +349,10 @@ void ProcessDirectoryJob::processFile(PathTuple path,
     item->_previousSize = dbEntry._fileSize;
     item->_previousModtime = dbEntry._modtime;
 
+    if (dbEntry._modtime == localEntry.modtime && dbEntry._type == ItemTypeVirtualFile && localEntry.type == ItemTypeFile) {
+        item->_type = ItemTypeFile;
+    }
+
     // The item shall only have this type if the db request for the virtual download
     // was successful (like: no conflicting remote remove etc). This decision is done
     // either in processFileAnalyzeRemoteInfo() or further down here.
@@ -710,8 +714,9 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         item->_type = ItemTypeVirtualFile;
     }
 
-    if (dbEntry.isVirtualFile() && !virtualFileDownload)
+    if (dbEntry.isVirtualFile() && (!localEntry.isValid() || localEntry.isVirtualFile) && !virtualFileDownload) {
         item->_type = ItemTypeVirtualFile;
+    }
 
     _childModified |= serverModified;
 
