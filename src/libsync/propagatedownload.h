@@ -13,6 +13,7 @@
  */
 #pragma once
 
+#include "owncloudlib.h"
 #include "owncloudpropagator.h"
 #include "networkjobs.h"
 #include "clientsideencryption.h"
@@ -27,7 +28,7 @@ class PropagateDownloadEncrypted;
  * @brief The GETFileJob class
  * @ingroup libsync
  */
-class GETFileJob : public AbstractNetworkJob
+class OWNCLOUDSYNC_EXPORT GETFileJob : public AbstractNetworkJob
 {
     Q_OBJECT
     QIODevice *_device;

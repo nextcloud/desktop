@@ -58,25 +58,7 @@ set(libsync_SRCS
     creds/abstractcredentials.cpp
     creds/credentialscommon.cpp
     creds/keychainchunk.cpp
-    vfs/suffix/vfs_suffix.cpp
 )
-
-if (WIN32)
-    set(libsync_SRCS ${libsync_SRCS}
-        vfs/cfapi/cfapiwrapper.cpp
-        vfs/cfapi/hydrationjob.cpp
-        vfs/cfapi/vfs_cfapi.cpp
-    )
-    add_definitions(-D_WIN32_WINNT=_WIN32_WINNT_WIN10)
-    list(APPEND OS_SPECIFIC_LINK_LIBRARIES cldapi)
-elseif(LINUX) # elseif(LINUX OR APPLE)
-    set(libsync_SRCS ${libsync_SRCS} vfs/xattr/vfs_xattr.cpp)
-    if (APPLE)
-        set(libsync_SRCS ${libsync_SRCS} vfs/xattr/xattrwrapper_mac.cpp)
-    else()
-        set(libsync_SRCS ${libsync_SRCS} vfs/xattr/xattrwrapper_linux.cpp)
-    endif()
-endif()
 
 if(TOKEN_AUTH_ONLY)
     set (libsync_SRCS ${libsync_SRCS} creds/tokencredentials.cpp)
@@ -159,3 +141,6 @@ if(NOT BUILD_OWNCLOUD_OSX_BUNDLE)
 else()
     install(TARGETS ${synclib_NAME} DESTINATION ${OWNCLOUD_OSX_BUNDLE}/Contents/MacOS)
 endif()
+
+
+add_subdirectory(vfs)

@@ -63,6 +63,10 @@ if( UNIX AND NOT APPLE )
 endif(UNIX AND NOT APPLE)
 
 if (WIN32)
+    include_directories(
+        ${CMAKE_BINARY_DIR}/src/libsync/vfs/cfapi
+    )
+
     nextcloud_add_test(LongWinPath)
     nextcloud_add_test(SyncCfApi)
 elseif(LINUX) # elseif(LINUX OR APPLE)

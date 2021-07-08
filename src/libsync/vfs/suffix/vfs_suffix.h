@@ -17,6 +17,7 @@
 #include <QScopedPointer>
 
 #include "common/vfs.h"
+#include "common/plugin.h"
 
 namespace OCC {
 
@@ -58,6 +59,13 @@ public slots:
 
 protected:
     void startImpl(const VfsSetupParams &params) override;
+};
+
+class SuffixVfsPluginFactory : public QObject, public DefaultPluginFactory<VfsSuffix>
+{
+    Q_OBJECT
+    Q_PLUGIN_METADATA(IID "org.owncloud.PluginFactory" FILE "vfspluginmetadata.json")
+    Q_INTERFACES(OCC::PluginFactory)
 };
 
 } // namespace OCC

@@ -25,7 +25,7 @@ class GETFileJob;
 class SyncJournalDb;
 class VfsCfApi;
 
-class OWNCLOUDSYNC_EXPORT HydrationJob : public QObject
+class HydrationJob : public QObject
 {
     Q_OBJECT
 public:

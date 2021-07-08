@@ -17,6 +17,18 @@ macro(nextcloud_add_test test_class)
       Qt5::Quick
     )
 
+    if (WIN32)
+        target_link_libraries(${OWNCLOUD_TEST_CLASS}Test
+            "${synclib_NAME}_vfs_cfapi"
+        )
+    endif()
+
+    if (UNIX)
+        target_link_libraries(${OWNCLOUD_TEST_CLASS}Test
+            "${synclib_NAME}_vfs_xattr"
+        )
+    endif()
+
     IF(BUILD_UPDATER)
         target_link_libraries(${OWNCLOUD_TEST_CLASS}Test
             updater

@@ -17,6 +17,7 @@
  */
 
 #include "vfs.h"
+#include "plugin.h"
 #include "version.h"
 #include "syncjournaldb.h"
 
@@ -26,15 +27,6 @@
 #include <QLoggingCategory>
 
 using namespace OCC;
-
-using MetaObjectHash = QHash<QString, Vfs::Factory>;
-Q_GLOBAL_STATIC(MetaObjectHash, vfsFactoryHash);
-
-void Vfs::registerPlugin(const QString &name, Factory factory)
-{
-    Q_ASSERT(!vfsFactoryHash()->contains(name));
-    vfsFactoryHash()->insert(name, factory);
-}
 
 Vfs::Vfs(QObject* parent)
     : QObject(parent)
@@ -83,7 +75,8 @@ Result<bool, QString> Vfs::checkAvailability(const QString &path)
         }
     }
 #else
-    Q_UNUSED(path);
+    Q_UNUSED(mode)
+    Q_UNUSED(path)
 #endif
     return true;
 }
@@ -146,7 +139,7 @@ static QString modeToPluginName(Vfs::Mode mode)
     if (mode == Vfs::WithSuffix)
         return QStringLiteral("suffix");
     if (mode == Vfs::WindowsCfApi)
-        return QStringLiteral("win");
+        return QStringLiteral("cfapi");
     if (mode == Vfs::XAttr)
         return QStringLiteral("xattr");
     return QString();
@@ -157,14 +150,41 @@ Q_LOGGING_CATEGORY(lcPlugin, "plugins", QtInfoMsg)
 bool OCC::isVfsPluginAvailable(Vfs::Mode mode)
 {
     // TODO: cache plugins available?
-    if (mode == Vfs::Off)
+    if (mode == Vfs::Off) {
         return true;
-    auto name = modeToPluginName(mode);
-    if (name.isEmpty())
-        return false;
+    }
 
-    if (!vfsFactoryHash()->contains(name)) {
-        qCDebug(lcPlugin) << "Plugin isn't registered:" << name;
+    auto name = modeToPluginName(mode);
+    if (name.isEmpty()) {
+        return false;
+    }
+
+    QPluginLoader loader(pluginFileName(QStringLiteral("vfs"), name));
+
+    const auto baseMetaData = loader.metaData();
+    if (baseMetaData.isEmpty() || !baseMetaData.contains(QStringLiteral("IID"))) {
+        qCDebug(lcPlugin) << "Plugin doesn't exist" << loader.fileName();
+        return false;
+    }
+    if (baseMetaData[QStringLiteral("IID")].toString() != QStringLiteral("org.owncloud.PluginFactory")) {
+        qCWarning(lcPlugin) << "Plugin has wrong IID" << loader.fileName() << baseMetaData[QStringLiteral("IID")];
+        return false;
+    }
+
+    const auto metadata = baseMetaData[QStringLiteral("MetaData")].toObject();
+    if (metadata[QStringLiteral("type")].toString() != QStringLiteral("vfs")) {
+        qCWarning(lcPlugin) << "Plugin has wrong type" << loader.fileName() << metadata[QStringLiteral("type")];
+        return false;
+    }
+    if (metadata[QStringLiteral("version")].toString() != QStringLiteral(MIRALL_VERSION_STRING)) {
+        qCWarning(lcPlugin) << "Plugin has wrong version" << loader.fileName() << metadata[QStringLiteral("version")];
+        return false;
+    }
+
+    // Attempting to load the plugin is essential as it could have dependencies that
+    // can't be resolved and thus not be available after all.
+    if (!loader.load()) {
+        qCWarning(lcPlugin) << "Plugin failed to load:" << loader.errorString();
         return false;
     }
 
@@ -210,26 +230,36 @@ std::unique_ptr<Vfs> OCC::createVfsFromPlugin(Vfs::Mode mode)
         return std::unique_ptr<Vfs>(new VfsOff);
 
     auto name = modeToPluginName(mode);
-    if (name.isEmpty())
+    if (name.isEmpty()) {
         return nullptr;
+    }
+
+    const auto pluginPath = pluginFileName(QStringLiteral("vfs"), name);
 
     if (!isVfsPluginAvailable(mode)) {
-        qCCritical(lcPlugin) << "Could not load plugin: not existant" << name;
+        qCCritical(lcPlugin) << "Could not load plugin: not existant or bad metadata" << pluginPath;
         return nullptr;
     }
 
-    const auto factory = vfsFactoryHash()->value(name);
+    QPluginLoader loader(pluginPath);
+    auto plugin = loader.instance();
+    if (!plugin) {
+        qCCritical(lcPlugin) << "Could not load plugin" << pluginPath << loader.errorString();
+        return nullptr;
+    }
+
+    auto factory = qobject_cast<PluginFactory *>(plugin);
     if (!factory) {
-        qCCritical(lcPlugin) << "Could not load plugin" << name;
+        qCCritical(lcPlugin) << "Plugin" << loader.fileName() << "does not implement PluginFactory";
         return nullptr;
     }
 
-    auto vfs = std::unique_ptr<Vfs>(qobject_cast<Vfs *>(factory()));
+    auto vfs = std::unique_ptr<Vfs>(qobject_cast<Vfs *>(factory->create(nullptr)));
     if (!vfs) {
-        qCCritical(lcPlugin) << "Plugin" << name << "does not create a Vfs instance";
+        qCCritical(lcPlugin) << "Plugin" << loader.fileName() << "does not create a Vfs instance";
         return nullptr;
     }
 
-    qCInfo(lcPlugin) << "Created VFS instance for:" << name;
+    qCInfo(lcPlugin) << "Created VFS instance from plugin" << pluginPath;
     return vfs;
 }

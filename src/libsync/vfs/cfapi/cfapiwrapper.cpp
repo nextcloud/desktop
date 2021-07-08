@@ -19,6 +19,8 @@
 #include "hydrationjob.h"
 #include "vfs_cfapi.h"
 
+#include <QCoreApplication>
+#include <QEventLoop>
 #include <QDir>
 #include <QFileInfo>
 #include <QLocalSocket>

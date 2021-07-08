@@ -18,6 +18,8 @@
 #include "owncloudlib.h"
 #include "common/result.h"
 
+#include "xattrexport.h"
+
 namespace OCC {
 
 namespace XAttrWrapper

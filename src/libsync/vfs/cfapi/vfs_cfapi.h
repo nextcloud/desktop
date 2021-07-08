@@ -17,6 +17,7 @@
 #include <QScopedPointer>
 
 #include "common/vfs.h"
+#include "common/plugin.h"
 
 namespace OCC {
 class HydrationJob;
@@ -85,6 +86,13 @@ private:
     HydratationAndPinStates computeRecursiveHydrationAndPinStates(const QString &path, const Optional<PinState> &basePinState);
 
     QScopedPointer<VfsCfApiPrivate> d;
+};
+
+class CfApiVfsPluginFactory : public QObject, public DefaultPluginFactory<VfsCfApi>
+{
+    Q_OBJECT
+    Q_PLUGIN_METADATA(IID "org.owncloud.PluginFactory" FILE "vfspluginmetadata.json")
+    Q_INTERFACES(OCC::PluginFactory)
 };
 
 } // namespace OCC
