@@ -3201,12 +3201,12 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1025"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Chyba při aktualizování metadat: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1029"/>
         <source>File is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Soubor je v tuto chvíli používán jinou aplikací</translation>
     </message>
 </context>
 <context>
@@ -3280,12 +3280,12 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="1141"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Chyba při aktualizování metadat: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="1144"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Soubor %1 je v tuto chvíli používán jinou aplikací</translation>
     </message>
 </context>
 <context>
@@ -3326,12 +3326,12 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="194"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Chyba při aktualizování metadat: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="197"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Soubor %1 je v tuto chvíli používán jinou aplikací</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="193"/>
@@ -3372,17 +3372,17 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="262"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Chyba při aktualizování metadat: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="265"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Soubor %1 je v tuto chvíli používán jinou aplikací</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="271"/>
         <source>Failed to rename file</source>
-        <translation type="unfinished"/>
+        <translation>Nepodařilo se přejmenovat soubor</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="257"/>
@@ -3427,12 +3427,12 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="264"/>
         <source>Error writing metadata to the database: %1</source>
-        <translation type="unfinished"/>
+        <translation>Chyba zápisu metadat do databáze: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="267"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Soubor %1 je v tuto chvíli používán jinou aplikací</translation>
     </message>
 </context>
 <context>
@@ -3450,12 +3450,12 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="257"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Chyba při aktualizování metadat: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="260"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Soubor %1 je v tuto chvíli používán jinou aplikací</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="261"/>
@@ -3515,12 +3515,12 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="770"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Chyba při aktualizování metadat: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="773"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Soubor %1 je v tuto chvíli používán jinou aplikací</translation>
     </message>
 </context>
 <context>
@@ -5367,7 +5367,7 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
     <message>
         <location filename="../src/common/syncjournaldb.cpp" line="975"/>
         <source>Failed to connect database.</source>
-        <translation type="unfinished"/>
+        <translation>Nepodařilo se připojit k databázi.</translation>
     </message>
 </context>
 <context>
