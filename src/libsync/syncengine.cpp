@@ -1019,6 +1019,16 @@ void SyncEngine::wipeVirtualFiles(const QString &localPath, SyncJournalDb &journ
     // But hydrated placeholders may still be around.
 }
 
+void SyncEngine::switchToVirtualFiles(const QString &localPath, SyncJournalDb &journal, Vfs &vfs)
+{
+    qCInfo(lcEngine) << "Convert to virtual files inside" << localPath;
+    journal.getFilesBelowPath({}, [&](const SyncJournalFileRecord &rec) {
+        SyncFileItem item;
+        QString localFile = localPath + rec.path();
+        vfs.convertToPlaceholder(localFile, item, localFile);
+    });
+}
+
 void SyncEngine::abort()
 {
     if (_propagator)

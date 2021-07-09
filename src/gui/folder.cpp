@@ -669,8 +669,10 @@ void Folder::setVirtualFilesEnabled(bool enabled)
 
         _definition.virtualFilesMode = newMode;
         startVfs();
-        if (newMode != Vfs::Off)
+        if (newMode != Vfs::Off) {
             _saveInFoldersWithPlaceholders = true;
+            SyncEngine::switchToVirtualFiles(path(), _journal, *_vfs);
+        }
         saveToSettings();
     }
 }
