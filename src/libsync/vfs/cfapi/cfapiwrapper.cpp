@@ -618,6 +618,7 @@ OCC::CfApiWrapper::PlaceHolderInfo OCC::CfApiWrapper::findPlaceholderInfo(const 
     if (result == S_OK) {
         return info;
     } else {
+        qCWarning(lcCfApiWrapper()) << "Couldn't get placeholder info" << QString::fromWCharArray(_com_error(result).ErrorMessage());
         return {};
     }
 }
