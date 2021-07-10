@@ -3141,17 +3141,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>서버가 %1이(가) 없다고(아니라고) 보고함</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="941"/>
+        <location filename="../src/libsync/discovery.cpp" line="946"/>
         <source>Conflict when uploading some files to a folder. Those, conflicted, are going to get cleared!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="954"/>
+        <location filename="../src/libsync/discovery.cpp" line="959"/>
         <source>Conflict when uploading a folder. It&apos;s going to get cleared!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="957"/>
+        <location filename="../src/libsync/discovery.cpp" line="962"/>
         <source>Conflict when uploading a file. It&apos;s going to get removed!</source>
         <translation type="unfinished"/>
     </message>

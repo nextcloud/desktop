@@ -3137,17 +3137,17 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
         <translation>serwer zgłosił brak %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="941"/>
+        <location filename="../src/libsync/discovery.cpp" line="946"/>
         <source>Conflict when uploading some files to a folder. Those, conflicted, are going to get cleared!</source>
         <translation>Konflikt podczas wysyłania niektórych plików do katalogu. Konfliktowe zostaną wyjaśnione!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="954"/>
+        <location filename="../src/libsync/discovery.cpp" line="959"/>
         <source>Conflict when uploading a folder. It&apos;s going to get cleared!</source>
         <translation>Konflikt podczas wysyłania katalogu. To się wyjaśni!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="957"/>
+        <location filename="../src/libsync/discovery.cpp" line="962"/>
         <source>Conflict when uploading a file. It&apos;s going to get removed!</source>
         <translation>Konflikt podczas wysyłania pliku. Zostanie usunięty!</translation>
     </message>
