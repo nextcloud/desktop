@@ -4613,7 +4613,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/systray.cpp" line="94"/>
         <source>Open main dialog</source>
-        <translation>Otvorte hlavné dialógové okno</translation>
+        <translation>Otvoriť hlavné dialógové okno</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="97"/>
