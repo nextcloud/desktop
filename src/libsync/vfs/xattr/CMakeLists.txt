@@ -1,4 +1,4 @@
-if (UNIX)
+if (LINUX)
     set(vfs_xattr_SRCS vfs_xattr.cpp)
     if (APPLE)
         set(vfs_xattr_SRCS ${vfs_xattr_SRCS} xattrwrapper_mac.cpp)
