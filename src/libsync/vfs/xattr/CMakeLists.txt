@@ -1,10 +1,8 @@
 if (LINUX)
-    set(vfs_xattr_SRCS vfs_xattr.cpp)
-    if (APPLE)
-        set(vfs_xattr_SRCS ${vfs_xattr_SRCS} xattrwrapper_mac.cpp)
-    else()
-        set(vfs_xattr_SRCS ${vfs_xattr_SRCS} xattrwrapper_linux.cpp)
-    endif()
+    set(vfs_xattr_SRCS
+        vfs_xattr.cpp
+        xattrwrapper_linux.cpp
+    )
 
     add_library("${synclib_NAME}_vfs_xattr" SHARED
         ${vfs_xattr_SRCS}
