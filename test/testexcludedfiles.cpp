@@ -69,7 +69,7 @@ private slots:
         bool excludeHidden = true;
         bool keepHidden = false;
 
-        auto check_isExcluded = [&](const QString &a, bool keepHidden) {
+        auto check_isExcluded = [&](const QString &a, bool keepHidden, bool create = true) {
             QTemporaryDir tmp;
             Q_ASSERT(tmp.isValid());
 
@@ -89,7 +89,9 @@ private slots:
                 file.write("ownCloud");
                 file.close();
             };
-            createTree(a);
+            if (create) {
+                createTree(a);
+            }
             return excluded.isExcluded(tmp.path() + a, tmp.path() + QStringLiteral("/a"), keepHidden);
         };
 
@@ -110,7 +112,7 @@ private slots:
         QVERIFY(check_isExcluded(QStringLiteral("/a/.b"), excludeHidden));
 
         // test non exisitng folder
-        QVERIFY(excluded.isExcluded(QStringLiteral("/a/.b"), QStringLiteral("/a"), excludeHidden));
+        QVERIFY(check_isExcluded(QStringLiteral("/a/.b"), excludeHidden, false));
     }
 
     void check_csync_exclude_add()
