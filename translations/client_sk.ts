@@ -4773,12 +4773,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="159"/>
         <source>You have been logged out of %1 as user %2. Please login again</source>
-        <translation>Boli ste odhlásení z %1 ako používateľ %2. Znovu sa prihláste</translation>
+        <translation>Boli ste odhlásený z %1 ako používateľ %2. Opäť sa prihláste, prosím</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="159"/>
         <source>You have been logged out of %1 as user %2. Please login again.</source>
-        <translation>Boli ste odhlásení z %1 ako používateľ %2. Prosím prihláste sa znovu.</translation>
+        <translation>Boli ste odhlásený z %1 ako používateľ %2. Prosím, prihláste sa znovu.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="183"/>
