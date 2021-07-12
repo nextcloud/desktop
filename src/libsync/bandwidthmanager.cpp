@@ -93,8 +93,8 @@ BandwidthManager::~BandwidthManager()
 
 void BandwidthManager::registerUploadDevice(UploadDevice *p)
 {
-    _absoluteUploadDeviceList.append(p);
-    _relativeUploadDeviceList.append(p);
+    _absoluteUploadDeviceList.push_back(p);
+    _relativeUploadDeviceList.push_back(p);
     QObject::connect(p, &QObject::destroyed, this, &BandwidthManager::unregisterUploadDevice);
 
     if (usingAbsoluteUploadLimit()) {
@@ -112,8 +112,8 @@ void BandwidthManager::registerUploadDevice(UploadDevice *p)
 void BandwidthManager::unregisterUploadDevice(QObject *o)
 {
     auto p = reinterpret_cast<UploadDevice *>(o); // note, we might already be in the ~QObject
-    _absoluteUploadDeviceList.removeAll(p);
-    _relativeUploadDeviceList.removeAll(p);
+    _absoluteUploadDeviceList.remove(p);
+    _relativeUploadDeviceList.remove(p);
     if (p == _relativeLimitCurrentMeasuredDevice) {
         _relativeLimitCurrentMeasuredDevice = nullptr;
         _relativeUploadLimitProgressAtMeasuringRestart = 0;
@@ -122,7 +122,7 @@ void BandwidthManager::unregisterUploadDevice(QObject *o)
 
 void BandwidthManager::registerDownloadJob(GETJob *j)
 {
-    _downloadJobList.append(j);
+    _downloadJobList.push_back(j);
     QObject::connect(j, &QObject::destroyed, this, &BandwidthManager::unregisterDownloadJob);
 
     if (usingAbsoluteDownloadLimit()) {
@@ -140,7 +140,7 @@ void BandwidthManager::registerDownloadJob(GETJob *j)
 void BandwidthManager::unregisterDownloadJob(QObject *o)
 {
     GETJob *j = reinterpret_cast<GETJob *>(o); // note, we might already be in the ~QObject
-    _downloadJobList.removeAll(j);
+    _downloadJobList.remove(j);
     if (_relativeLimitCurrentMeasuredJob == j) {
         _relativeLimitCurrentMeasuredJob = nullptr;
         _relativeDownloadLimitProgressAtMeasuringRestart = 0;
@@ -149,7 +149,7 @@ void BandwidthManager::unregisterDownloadJob(QObject *o)
 
 void BandwidthManager::relativeUploadMeasuringTimerExpired()
 {
-    if (!usingRelativeUploadLimit() || _relativeUploadDeviceList.count() == 0) {
+    if (!usingRelativeUploadLimit() || _relativeUploadDeviceList.empty()) {
         // Not in this limiting mode, just wait 1 sec to continue the cycle
         _relativeUploadDelayTimer.setInterval(1000);
         _relativeUploadDelayTimer.start();
@@ -162,7 +162,7 @@ void BandwidthManager::relativeUploadMeasuringTimerExpired()
         return;
     }
 
-    qCDebug(lcBandwidthManager) << _relativeUploadDeviceList.count() << "Starting Delay";
+    qCDebug(lcBandwidthManager) << _relativeUploadDeviceList.size() << "Starting Delay";
 
     qint64 relativeLimitProgressMeasured = (_relativeLimitCurrentMeasuredDevice->_readWithProgress
                                                + _relativeLimitCurrentMeasuredDevice->_read)
@@ -193,9 +193,9 @@ void BandwidthManager::relativeUploadMeasuringTimerExpired()
     _relativeUploadDelayTimer.setInterval(realWaitTimeMsec);
     _relativeUploadDelayTimer.start();
 
-    int deviceCount = _relativeUploadDeviceList.count();
+    auto deviceCount = _relativeUploadDeviceList.size();
     qint64 quotaPerDevice = relativeLimitProgressDifference * (uploadLimitPercent / 100.0) / deviceCount + 1.0;
-    for (auto *ud : qAsConst(_relativeUploadDeviceList)) {
+    for (auto *ud : _relativeUploadDeviceList) {
         ud->setBandwidthLimited(true);
         ud->setChoked(false);
         ud->giveBandwidthQuota(quotaPerDevice);
@@ -213,15 +213,16 @@ void BandwidthManager::relativeUploadDelayTimerExpired()
         return; // oh, not actually needed
     }
 
-    if (_relativeUploadDeviceList.isEmpty()) {
+    if (_relativeUploadDeviceList.empty()) {
         return;
     }
 
-    qCDebug(lcBandwidthManager) << _relativeUploadDeviceList.count() << "Starting measuring";
+    qCDebug(lcBandwidthManager) << _relativeUploadDeviceList.size() << "Starting measuring";
 
     // Take first device and then append it again (= we round robin all devices)
-    _relativeLimitCurrentMeasuredDevice = _relativeUploadDeviceList.takeFirst();
-    _relativeUploadDeviceList.append(_relativeLimitCurrentMeasuredDevice);
+    _relativeLimitCurrentMeasuredDevice = _relativeUploadDeviceList.front();
+    _relativeUploadDeviceList.pop_front();
+    _relativeUploadDeviceList.push_back(_relativeLimitCurrentMeasuredDevice);
 
     _relativeUploadLimitProgressAtMeasuringRestart = (_relativeLimitCurrentMeasuredDevice->_readWithProgress
                                                          + _relativeLimitCurrentMeasuredDevice->_read)
@@ -243,7 +244,7 @@ void BandwidthManager::relativeUploadDelayTimerExpired()
 // for downloads:
 void BandwidthManager::relativeDownloadMeasuringTimerExpired()
 {
-    if (!usingRelativeDownloadLimit() || _downloadJobList.count() == 0) {
+    if (!usingRelativeDownloadLimit() || _downloadJobList.empty()) {
         // Not in this limiting mode, just wait 1 sec to continue the cycle
         _relativeDownloadDelayTimer.setInterval(1000);
         _relativeDownloadDelayTimer.start();
@@ -256,7 +257,7 @@ void BandwidthManager::relativeDownloadMeasuringTimerExpired()
         return;
     }
 
-    qCDebug(lcBandwidthManager) << _downloadJobList.count() << "Starting Delay";
+    qCDebug(lcBandwidthManager) << _downloadJobList.size() << "Starting Delay";
 
     qint64 relativeLimitProgressMeasured = _relativeLimitCurrentMeasuredJob->currentDownloadPosition();
     qint64 relativeLimitProgressDifference = relativeLimitProgressMeasured - _relativeDownloadLimitProgressAtMeasuringRestart;
@@ -282,14 +283,14 @@ void BandwidthManager::relativeDownloadMeasuringTimerExpired()
     _relativeDownloadDelayTimer.setInterval(realWaitTimeMsec);
     _relativeDownloadDelayTimer.start();
 
-    int jobCount = _downloadJobList.count();
+    auto jobCount = _downloadJobList.size();
     qint64 quota = relativeLimitProgressDifference * (downloadLimitPercent / 100.0);
     if (quota > 20 * 1024) {
         qCInfo(lcBandwidthManager) << "ADJUSTING QUOTA FROM " << quota << " TO " << quota - 20 * 1024;
         quota -= 20 * 1024;
     }
     qint64 quotaPerJob = quota / jobCount + 1.0;
-    for (auto *gfj : qAsConst(_downloadJobList)) {
+    for (auto *gfj : _downloadJobList) {
         gfj->setBandwidthLimited(true);
         gfj->setChoked(false);
         gfj->giveBandwidthQuota(quotaPerJob);
@@ -307,23 +308,24 @@ void BandwidthManager::relativeDownloadDelayTimerExpired()
         return; // oh, not actually needed
     }
 
-    if (_downloadJobList.isEmpty()) {
-        qCDebug(lcBandwidthManager) << _downloadJobList.count() << "No jobs?";
+    if (_downloadJobList.empty()) {
+        qCDebug(lcBandwidthManager) << _downloadJobList.size() << "No jobs?";
         return;
     }
 
-    qCDebug(lcBandwidthManager) << _downloadJobList.count() << "Starting measuring";
+    qCDebug(lcBandwidthManager) << _downloadJobList.size() << "Starting measuring";
 
     // Take first device and then append it again (= we round robin all devices)
-    _relativeLimitCurrentMeasuredJob = _downloadJobList.takeFirst();
-    _downloadJobList.append(_relativeLimitCurrentMeasuredJob);
+    _relativeLimitCurrentMeasuredJob = _downloadJobList.front();
+    _downloadJobList.pop_front();
+    _downloadJobList.push_back(_relativeLimitCurrentMeasuredJob);
 
     _relativeDownloadLimitProgressAtMeasuringRestart = _relativeLimitCurrentMeasuredJob->currentDownloadPosition();
     _relativeLimitCurrentMeasuredJob->setBandwidthLimited(false);
     _relativeLimitCurrentMeasuredJob->setChoked(false);
 
     // choke all other download jobs
-    for (auto *gfj : qAsConst(_downloadJobList)) {
+    for (auto *gfj : _downloadJobList) {
         if (gfj != _relativeLimitCurrentMeasuredJob) {
             gfj->setBandwidthLimited(true);
             gfj->setChoked(true);
@@ -341,7 +343,7 @@ void BandwidthManager::switchingTimerExpired()
     if (newUploadLimit != _currentUploadLimit) {
         qCInfo(lcBandwidthManager) << "Upload Bandwidth limit changed" << _currentUploadLimit << newUploadLimit;
         _currentUploadLimit = newUploadLimit;
-        for (auto *ud : qAsConst(_relativeUploadDeviceList)) {
+        for (auto *ud : _relativeUploadDeviceList) {
             if (newUploadLimit == 0) {
                 ud->setBandwidthLimited(false);
                 ud->setChoked(false);
@@ -358,7 +360,7 @@ void BandwidthManager::switchingTimerExpired()
     if (newDownloadLimit != _currentDownloadLimit) {
         qCInfo(lcBandwidthManager) << "Download Bandwidth limit changed" << _currentDownloadLimit << newDownloadLimit;
         _currentDownloadLimit = newDownloadLimit;
-        for (auto *j : qAsConst(_downloadJobList)) {
+        for (auto *j : _downloadJobList) {
             if (usingAbsoluteDownloadLimit()) {
                 j->setBandwidthLimited(true);
                 j->setChoked(false);
@@ -375,18 +377,18 @@ void BandwidthManager::switchingTimerExpired()
 
 void BandwidthManager::absoluteLimitTimerExpired()
 {
-    if (usingAbsoluteUploadLimit() && _absoluteUploadDeviceList.count() > 0) {
-        qint64 quotaPerDevice = _currentUploadLimit / qMax(1, _absoluteUploadDeviceList.count());
-        qCDebug(lcBandwidthManager) << quotaPerDevice << _absoluteUploadDeviceList.count() << _currentUploadLimit;
+    if (usingAbsoluteUploadLimit() && !_absoluteUploadDeviceList.empty()) {
+        qint64 quotaPerDevice = _currentUploadLimit / _absoluteUploadDeviceList.size();
+        qCDebug(lcBandwidthManager) << quotaPerDevice << _absoluteUploadDeviceList.size() << _currentUploadLimit;
         for (auto *device : qAsConst(_absoluteUploadDeviceList)) {
             device->giveBandwidthQuota(quotaPerDevice);
             qCDebug(lcBandwidthManager) << "Gave " << quotaPerDevice / 1024.0 << " kB to" << device;
         }
     }
-    if (usingAbsoluteDownloadLimit() && _downloadJobList.count() > 0) {
-        qint64 quotaPerJob = _currentDownloadLimit / qMax(1, _downloadJobList.count());
-        qCDebug(lcBandwidthManager) << quotaPerJob << _downloadJobList.count() << _currentDownloadLimit;
-        for (auto *j : qAsConst(_downloadJobList)) {
+    if (usingAbsoluteDownloadLimit() && !_downloadJobList.empty()) {
+        qint64 quotaPerJob = _currentDownloadLimit / _downloadJobList.size();
+        qCDebug(lcBandwidthManager) << quotaPerJob << _downloadJobList.size() << _currentDownloadLimit;
+        for (auto *j : _downloadJobList) {
             j->giveBandwidthQuota(quotaPerJob);
             qCDebug(lcBandwidthManager) << "Gave " << quotaPerJob / 1024.0 << " kB to" << j;
         }
