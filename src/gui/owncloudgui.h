@@ -107,10 +107,11 @@ public slots:
 
     void slotRemoveDestroyedShareDialogs();
 
+    void slotNewAccountWizard();
+
 private slots:
     void slotLogin();
     void slotLogout();
-    void slotNewAccountWizard();
 
 private:
     QPointer<Systray> _tray;

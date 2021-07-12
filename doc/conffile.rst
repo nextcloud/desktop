@@ -33,33 +33,35 @@ Some interesting values that can be set on the configuration file are:
 +---------------------------------+---------------+--------------------------------------------------------------------------------------------------------+
 
 
-+-------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| ``[General]`` section                                                                                                                                             |
-+=================================+===============+=================================================================================================================+
-| Variable                        | Default       | Meaning                                                                                                         |
-+---------------------------------+------------------------+--------------------------------------------------------------------------------------------------------+
-| ``chunkSize``                   | ``10000000`` (10 MB)   | Specifies the chunk size of uploaded files in bytes.                                                   |
-|                                 |                        | The client will dynamically adjust this size within the maximum and minimum bounds (see below).        |
-+---------------------------------+------------------------+--------------------------------------------------------------------------------------------------------+
-| ``maxChunkSize``                | ``100000000`` (100 MB) | Specifies the maximum chunk size of uploaded files in bytes.                                           |
-+---------------------------------+------------------------+--------------------------------------------------------------------------------------------------------+
-| ``minChunkSize``                | ``1000000`` (1 MB)     | Specifies the minimum chunk size of uploaded files in bytes.                                           |
-+---------------------------------+------------------------+--------------------------------------------------------------------------------------------------------+
-| ``targetChunkUploadDuration``   | ``6000`` (1 minute)    | Target duration in milliseconds for chunk uploads.                                                     |
-|                                 |                        | The client adjusts the chunk size until each chunk upload takes approximately this long.               |
-|                                 |                        | Set to 0 to disable dynamic chunk sizing.                                                              |
-+---------------------------------+------------------------+--------------------------------------------------------------------------------------------------------+
-| ``promptDeleteAllFiles``        | ``true``               | If a UI prompt should ask for confirmation if it was detected that all files and folders were deleted. |
-+---------------------------------+------------------------+--------------------------------------------------------------------------------------------------------+
-| ``timeout``                     | ``300``                | The timeout for network connections in seconds.                                                        |
-+---------------------------------+------------------------+--------------------------------------------------------------------------------------------------------+
-| ``moveToTrash``                 | ``false``              | If non-locally deleted files should be moved to trash instead of deleting them completely.             |
-|                                 |                        | This option only works on linux                                                                        |
-+---------------------------------+------------------------+--------------------------------------------------------------------------------------------------------+
-| ``showExperimentalOptions``     | ``false``              | Whether to show experimental options that are still undergoing testing in the user interface.          |
-|                                 |                        | Turning this on does not enable experimental behavior on its own. It does enable user inferface        |
-|                                 |                        | options that can be used to opt in to experimental features.                                           |
-+---------------------------------+------------------------+--------------------------------------------------------------------------------------------------------+
++--------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| ``[General]`` section                                                                                                                                              |
++==================================+===============+=================================================================================================================+
+| Variable                         | Default       | Meaning                                                                                                         |
++----------------------------------+------------------------+--------------------------------------------------------------------------------------------------------+
+| ``chunkSize``                    | ``10000000`` (10 MB)   | Specifies the chunk size of uploaded files in bytes.                                                   |
+|                                  |                        | The client will dynamically adjust this size within the maximum and minimum bounds (see below).        |
++----------------------------------+------------------------+--------------------------------------------------------------------------------------------------------+
+| ``maxChunkSize``                 | ``100000000`` (100 MB) | Specifies the maximum chunk size of uploaded files in bytes.                                           |
++----------------------------------+------------------------+--------------------------------------------------------------------------------------------------------+
+| ``minChunkSize``                 | ``1000000`` (1 MB)     | Specifies the minimum chunk size of uploaded files in bytes.                                           |
++----------------------------------+------------------------+--------------------------------------------------------------------------------------------------------+
+| ``targetChunkUploadDuration``    | ``6000`` (1 minute)    | Target duration in milliseconds for chunk uploads.                                                     |
+|                                  |                        | The client adjusts the chunk size until each chunk upload takes approximately this long.               |
+|                                  |                        | Set to 0 to disable dynamic chunk sizing.                                                              |
++----------------------------------+------------------------+--------------------------------------------------------------------------------------------------------+
+| ``promptDeleteAllFiles``         | ``true``               | If a UI prompt should ask for confirmation if it was detected that all files and folders were deleted. |
++----------------------------------+------------------------+--------------------------------------------------------------------------------------------------------+
+| ``timeout``                      | ``300``                | The timeout for network connections in seconds.                                                        |
++----------------------------------+------------------------+--------------------------------------------------------------------------------------------------------+
+| ``moveToTrash``                  | ``false``              | If non-locally deleted files should be moved to trash instead of deleting them completely.             |
+|                                  |                        | This option only works on linux                                                                        |
++----------------------------------+------------------------+--------------------------------------------------------------------------------------------------------+
+| ``showExperimentalOptions``      | ``false``              | Whether to show experimental options that are still undergoing testing in the user interface.          |
+|                                  |                        | Turning this on does not enable experimental behavior on its own. It does enable user inferface        |
+|                                  |                        | options that can be used to opt in to experimental features.                                           |
++----------------------------------+------------------------+--------------------------------------------------------------------------------------------------------+
+| ``showMainDialogAsNormalWindow`` | ``false``              | Whether the main dialog should be shown as a normal window even if tray icons are available.           |
++----------------------------------+------------------------+--------------------------------------------------------------------------------------------------------+
 
 
 +----------------------------------------------------------------------------------------------------------------------------------------------------------+

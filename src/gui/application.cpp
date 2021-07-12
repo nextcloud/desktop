@@ -555,7 +555,13 @@ void Application::slotParseMessage(const QString &msg, QObject *)
             qCWarning(lcApplication) << "Ignoring MSG_SHOWMAINDIALOG, possibly double-invocation of client via session restore and auto start";
             return;
         }
-        showMainDialog();
+
+        // Show the main dialog only if there is at least one account configured
+        if (!AccountManager::instance()->accounts().isEmpty()) {
+            showMainDialog();
+        } else {
+            _gui->slotNewAccountWizard();
+        }
     }
 }
 

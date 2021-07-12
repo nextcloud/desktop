@@ -50,7 +50,8 @@
 #define DEFAULT_MAX_LOG_LINES 20000
 
 namespace {
-    static constexpr char allowChecksumValidationFailC[] = "allowChecksumValidationFail";
+static constexpr char allowChecksumValidationFailC[] = "allowChecksumValidationFail";
+static constexpr char showMainDialogAsNormalWindowC[] = "showMainDialogAsNormalWindow";
 }
 
 namespace OCC {
@@ -894,6 +895,10 @@ void ConfigFile::setMoveToTrash(bool isChecked)
 bool ConfigFile::allowChecksumValidationFail() const
 {
     return getValue(allowChecksumValidationFailC, {}, false).toBool();
+}
+
+bool ConfigFile::showMainDialogAsNormalWindow() const {
+    return getValue(showMainDialogAsNormalWindowC, {}, false).toBool();
 }
 
 bool ConfigFile::promptDeleteFiles() const

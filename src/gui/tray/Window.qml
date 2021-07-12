@@ -14,10 +14,13 @@ import com.nextcloud.desktopclient 1.0
 Window {
     id:         trayWindow
 
-    width:      Style.trayWindowWidth
+    title:      Systray.windowTitle
+    // If the main dialog is displayed as a regular window we want it to be quadratic
+    width:      Systray.useNormalWindow ? Style.trayWindowHeight : Style.trayWindowWidth
     height:     Style.trayWindowHeight
     color:      "transparent"
-    flags:      Qt.Dialog | Qt.FramelessWindowHint
+    flags:      Qt.WindowTitleHint | Qt.CustomizeWindowHint | Qt.WindowCloseButtonHint | (Systray.useNormalWindow ? Qt.Dialog : Qt.Dialog | Qt.FramelessWindowHint)
+
 
     readonly property int maxMenuHeight: Style.trayWindowHeight - Style.trayWindowHeaderHeight - 2 * Style.trayWindowBorderWidth
 
@@ -25,10 +28,14 @@ Window {
 
     // Close tray window when focus is lost (e.g. click somewhere else on the screen)
     onActiveChanged: {
-        if(!active) {
-            trayWindow.hide();
-            Systray.setClosed();
+        if (!Systray.useNormalWindow && !active) {
+            hide();
+            setClosed();
         }
+   }
+
+    onClosing: {
+        Systray.setClosed()
     }
 
     onVisibleChanged: {
@@ -51,7 +58,9 @@ Window {
             accountMenu.close();
             appsMenu.close();
 
-            Systray.positionWindow(trayWindow);
+            if (!Systray.useNormalWindow) {
+                Systray.positionWindow(trayWindow);
+            }
 
             trayWindow.show();
             trayWindow.raise();
@@ -75,7 +84,7 @@ Window {
         maskSource: Rectangle {
             width: trayWindowBackground.width
             height: trayWindowBackground.height
-            radius: trayWindowBackground.radius
+            radius: Systray.useNormalWindow ? 0.0 : Style.trayWindowRadius
         }
     }
 
@@ -83,7 +92,7 @@ Window {
         id: trayWindowBackground
 
         anchors.fill:   parent
-        radius:         Style.trayWindowRadius
+        radius: Systray.useNormalWindow ? 0.0 : Style.trayWindowRadius
         border.width:   Style.trayWindowBorderWidth
         border.color:   Style.menuBorder
 
@@ -411,6 +420,11 @@ Window {
                     }
                 }
 
+                // Add space between items
+                Item {
+                    Layout.fillWidth: true
+                }
+                
                 RowLayout {
                     id: openLocalFolderRowLayout
                     spacing: 0
