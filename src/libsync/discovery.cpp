@@ -462,11 +462,14 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
     if (dbEntry.isValid()) {
         qint64 size = serverEntry.size;
 
+        bool metaDataSizeNeedsUpdateForE2EEFile = false;
+
         if (dbEntry.isVirtualFile() && (!item->_encryptedFileName.isEmpty()) && size > 0) {
             // make sure we set correct size when file was downloaded previously and has now been changed on the server
             // serverEntry always includes extra CommonConstants::e2EeTagSize bytes for e2e encrypted files
             // we don't need those neither when creating a placeholder nor when storing hydrated file on disk
             size = serverEntry.size - CommonConstants::e2EeTagSize;
+            metaDataSizeNeedsUpdateForE2EEFile = dbEntry._fileSize == serverEntry.size;
         }
 
         if (serverEntry.isDirectory != dbEntry.isDirectory()) {
@@ -496,14 +499,32 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
             } else {
                 item->_instruction = CSYNC_INSTRUCTION_SYNC;
             }
-        } else if (dbEntry._remotePerm != serverEntry.remotePerm || dbEntry._fileId != serverEntry.fileId) {
+        } else if (dbEntry._remotePerm != serverEntry.remotePerm || dbEntry._fileId != serverEntry.fileId || metaDataSizeNeedsUpdateForE2EEFile) {
+            if (metaDataSizeNeedsUpdateForE2EEFile) {
+                item->_size = serverEntry.size - CommonConstants::e2EeTagSize;
+            }
             item->_instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
             item->_direction = SyncFileItem::Down;
         } else {
             // if (is virtual mode enabled and folder is encrypted - check if the size is the same as on the server and then - trigger server query
             // to update a placeholder with corrected size (-16 Bytes)
             // or, maybe, add a flag to the database - vfsE2eeSizeCorrected? if it is not set - subtract it from the placeholder's size and re-create/update a placeholder?
-            processFileAnalyzeLocalInfo(item, path, localEntry, serverEntry, dbEntry, ParentNotChanged);
+            QueryMode serverQueryMode = ParentNotChanged;
+            if (dbEntry.isDirectory() && dbEntry._isE2eEncrypted) {
+                qint64 totalSizeOfPath = 0;
+                if (_discoveryData->_statedb->listFilesInPath(dbEntry.path().toUtf8(), [this, &totalSizeOfPath](const OCC::SyncJournalFileRecord &record) {
+                        if (record.isFile()) {
+                            totalSizeOfPath += record._fileSize + CommonConstants::e2EeTagSize;
+                        } else if (record.isVirtualFile()) {
+                            totalSizeOfPath += record._fileSize;
+                        }
+                    })) {
+                    if (totalSizeOfPath != 0 && totalSizeOfPath == serverEntry.sizeOfFolder) {
+                        serverQueryMode = NormalQuery;
+                    }
+                }
+            }
+            processFileAnalyzeLocalInfo(item, path, localEntry, serverEntry, dbEntry, serverQueryMode);
             return;
         }
 
