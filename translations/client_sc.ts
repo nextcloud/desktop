@@ -676,12 +676,12 @@ Custa atzione at a firmare cale si siat sincronizatzione immoe in esecutzione.</
 <context>
     <name>OCC::ActivityListModel</name>
     <message>
-        <location filename="../src/gui/tray/ActivityListModel.cpp" line="350"/>
+        <location filename="../src/gui/tray/ActivityListModel.cpp" line="335"/>
         <source>Files from the ignore list as well as symbolic links are not synced.</source>
         <translation>Is archìvios de s&apos;elencu de non tènnere in contu gasi comente is ligòngios non sunt sincronizados.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityListModel.cpp" line="527"/>
+        <location filename="../src/gui/tray/ActivityListModel.cpp" line="512"/>
         <source>For more activities please open the Activity app.</source>
         <translation>Pro àteras atividades, pro praghere, aberi s&apos;aplicatzione Activity. </translation>
     </message>
@@ -3808,7 +3808,7 @@ Custa est una modalidade noa, isperimentale. Si detzides de dda impreare, sinnal
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="164"/>
         <source>Read only</source>
-        <translation>Isceti letura</translation>
+        <translation>Letura sola</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="164"/>

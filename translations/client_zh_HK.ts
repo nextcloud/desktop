@@ -677,12 +677,12 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::ActivityListModel</name>
     <message>
-        <location filename="../src/gui/tray/ActivityListModel.cpp" line="350"/>
+        <location filename="../src/gui/tray/ActivityListModel.cpp" line="335"/>
         <source>Files from the ignore list as well as symbolic links are not synced.</source>
         <translation>略過清單中的檔案以及符號連結不會同步。</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityListModel.cpp" line="527"/>
+        <location filename="../src/gui/tray/ActivityListModel.cpp" line="512"/>
         <source>For more activities please open the Activity app.</source>
         <translation>請開啟活動以檢視更多活動app</translation>
     </message>

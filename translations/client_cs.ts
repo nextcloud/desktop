@@ -676,12 +676,12 @@ Současně tato akce zruší jakoukoli právě probíhající synchronizaci.</tr
 <context>
     <name>OCC::ActivityListModel</name>
     <message>
-        <location filename="../src/gui/tray/ActivityListModel.cpp" line="350"/>
+        <location filename="../src/gui/tray/ActivityListModel.cpp" line="335"/>
         <source>Files from the ignore list as well as symbolic links are not synced.</source>
         <translation>Soubory ze seznamu ignorovaných a symbolické odkazy nejsou synchronizovány.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityListModel.cpp" line="527"/>
+        <location filename="../src/gui/tray/ActivityListModel.cpp" line="512"/>
         <source>For more activities please open the Activity app.</source>
         <translation>Více z aktivit si zobrazíte otevřením aplikace Aktivity</translation>
     </message>
