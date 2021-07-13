@@ -57,10 +57,7 @@ Window {
         onShowWindow: {
             accountMenu.close();
             appsMenu.close();
-
-            if (!Systray.useNormalWindow) {
-                Systray.positionWindow(trayWindow);
-            }
+            Systray.positionWindow(trayWindow);
 
             trayWindow.show();
             trayWindow.raise();

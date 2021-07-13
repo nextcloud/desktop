@@ -272,9 +272,8 @@ void Systray::pauseResumeSync()
 
 void Systray::positionWindow(QQuickWindow *window) const
 {
-    window->setScreen(currentScreen());
-
-    if (useNormalWindow()) {
+    if (!useNormalWindow()) {
+        window->setScreen(currentScreen());
         const auto position = computeWindowPosition(window->width(), window->height());
         window->setPosition(position);
     }
