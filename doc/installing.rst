@@ -31,12 +31,16 @@ download page.
 System Requirements
 ----------------------------------
 
-- Windows 10+
+- Windows 10 minimum Version 1709 [SAC]
 - macOS 10.12+ (64-bit only)
 - Linux
 - FreeBSD
 
-.. note::
+.. NOTE::
+   For Windows 10 we support Semi-Anual Channel, no LTSB/LTSC or IoT Versions.
+   
+   For Windows we support Client Operating Systems only, no Windows Server Versions.
+   
    For Linux distributions, we support, if technically feasible, the latest 2 versions per platform and the previous LTS.
 
 Customizing the Windows Installation
