@@ -9,6 +9,8 @@
 #include <QTemporaryFile>
 #include <QRandomGenerator>
 
+#include <common/constants.h>
+
 #include "clientsideencryption.h"
 
 using namespace OCC;
@@ -136,13 +138,26 @@ private slots:
         QCOMPARE(data, originalData);
     }
 
+    void testStreamingDecryptor_data()
+    {
+        QTest::addColumn<int>("totalBytes");
+        QTest::addColumn<int>("bytesToRead");
+
+        QTest::newRow("data1") << 64  << 2;
+        QTest::newRow("data2") << 32  << 8;
+        QTest::newRow("data3") << 76  << 64;
+        QTest::newRow("data4") << 272 << 256;
+    }
+
     void testStreamingDecryptor()
     {
+        QFETCH(int, totalBytes);
+
         QTemporaryFile dummyInputFile;
 
         QVERIFY(dummyInputFile.open());
 
-        const auto dummyFileRandomContents = EncryptionHelper::generateRandom(272);
+        const auto dummyFileRandomContents = EncryptionHelper::generateRandom(totalBytes);
 
         QCOMPARE(dummyInputFile.write(dummyFileRandomContents), dummyFileRandomContents.size());
 
@@ -190,18 +205,42 @@ private slots:
 
         QVERIFY(dummyEncryptionOutputFile.open());
 
-        const auto readBytesAvailable = dummyEncryptionOutputFile.bytesAvailable();
-        while (dummyEncryptionOutputFile.pos() < readBytesAvailable) {
-            // auto toRead = QRandomGenerator::global()->bounded(8, 128);
-            // decryption is going to fail if last chunk does not include or does not equal to 16-bytes tag (accumulation required? - but where? in the caller's code?)
-            auto toRead = 64;
-            if (dummyEncryptionOutputFile.pos() + toRead > readBytesAvailable) {
-                toRead = readBytesAvailable - dummyEncryptionOutputFile.pos();
+        QByteArray pendingBytes;
+
+        QFETCH(int, bytesToRead);
+
+        while (dummyEncryptionOutputFile.pos() < dummyEncryptionOutputFile.size()) {
+            const auto bytesRemaining = dummyEncryptionOutputFile.size() - dummyEncryptionOutputFile.pos();
+            auto toRead = bytesRemaining > bytesToRead ? bytesToRead : bytesRemaining;
+
+            if (dummyEncryptionOutputFile.pos() + toRead > dummyEncryptionOutputFile.size()) {
+                toRead = dummyEncryptionOutputFile.size() - dummyEncryptionOutputFile.pos();
             }
-            const auto decryptedBytes = streamingDecryptor.chunkDecryption(dummyEncryptionOutputFile.read(toRead).constData(), &chunkedOutputDecrypted, toRead);
-            QVERIFY(decryptedBytes != -1);
-            QVERIFY(decryptedBytes == toRead || streamingDecryptor.isFinished());
+
+            if (bytesRemaining - toRead != 0 && bytesRemaining - toRead < OCC::Constants::e2EeTagSize) {
+                // decryption is going to fail if last chunk does not include or does not equal to OCC::Constants::e2EeTagSize bytes tag
+                // since we are emulating random size of network packets, we may end up reading beyond OCC::Constants::e2EeTagSize bytes tag at the end
+                // in that case, we don't want to try and decrypt less than OCC::Constants::e2EeTagSize ending bytes of tag, we will accumulate all the incoming data till the end
+                // and then, we are going to decrypt the entire chunk containing OCC::Constants::e2EeTagSize bytes at the end
+                pendingBytes += dummyEncryptionOutputFile.read(bytesRemaining);
+                continue;
+            }
+
+            const auto decryptedChunk = streamingDecryptor.chunkDecryption(dummyEncryptionOutputFile.read(toRead).constData(), toRead);
+
+            QVERIFY(decryptedChunk.size() == toRead || streamingDecryptor.isFinished() || !pendingBytes.isEmpty());
+
+            chunkedOutputDecrypted.write(decryptedChunk);
         }
+
+        if (!pendingBytes.isEmpty()) {
+            const auto decryptedChunk = streamingDecryptor.chunkDecryption(pendingBytes.constData(), pendingBytes.size());
+
+            QVERIFY(decryptedChunk.size() == pendingBytes.size() || streamingDecryptor.isFinished());
+
+            chunkedOutputDecrypted.write(decryptedChunk);
+        }
+
         chunkedOutputDecrypted.close();
 
         QVERIFY(chunkedOutputDecrypted.open(QBuffer::ReadOnly));

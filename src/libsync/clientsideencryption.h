@@ -66,11 +66,10 @@ namespace EncryptionHelper {
     OWNCLOUDSYNC_EXPORT bool fileDecryption(const QByteArray &key, const QByteArray &iv,
                                QFile *input, QFile *output);
 
-    //
-    // Simple classes for safe (RAII) handling of OpenSSL
-    // data structures
-    //
-
+//
+// Simple classes for safe (RAII) handling of OpenSSL
+// data structures
+//
 class CipherCtx {
 public:
     CipherCtx() : _ctx(EVP_CIPHER_CTX_new())
@@ -98,7 +97,7 @@ public:
     StreamingDecryptor(const QByteArray &key, const QByteArray &iv, quint64 totalSize);
     ~StreamingDecryptor() = default;
 
-    qint32 chunkDecryption(const char *input, QIODevice *output, quint32 chunkSize);
+    QByteArray chunkDecryption(const char *input, quint64 chunkSize);
 
     bool isInitialized() const;
     bool isFinished() const;
@@ -112,7 +111,7 @@ private:
     quint64 _decryptedSoFar = 0;
     quint64 _totalSize = 0;
 };
-};
+}
 
 class OWNCLOUDSYNC_EXPORT ClientSideEncryption : public QObject {
     Q_OBJECT

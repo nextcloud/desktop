@@ -31,6 +31,7 @@ class PropagateDownloadEncrypted;
 class OWNCLOUDSYNC_EXPORT GETFileJob : public AbstractNetworkJob
 {
     Q_OBJECT
+    QIODevice *_device;
     QMap<QByteArray, QByteArray> _headers;
     QString _errorString;
     QByteArray _expectedEtagForResume;
@@ -50,7 +51,6 @@ class OWNCLOUDSYNC_EXPORT GETFileJob : public AbstractNetworkJob
     bool _saveBodyToFile = false;
 
 protected:
-    QIODevice *_device;
     qint64 _contentLength;
 
 public:
@@ -113,8 +113,7 @@ public:
     void setExpectedContentLength(qint64 size) { _expectedContentLength = size; }
 
 protected:
-    virtual qint64 writeToDevice(const char *data, qint64 len);
-    virtual void processMetaData() {}
+    virtual qint64 writeToDevice(const QByteArray &data);
 
 signals:
     void finishedSignal();
@@ -143,12 +142,13 @@ public:
     virtual ~GETEncryptedFileJob() = default;
 
 protected:
-    virtual qint64 writeToDevice(const char *data, qint64 len) override;
-    virtual void processMetaData() override;
+    virtual qint64 writeToDevice(const QByteArray &data) override;
 
 private:
     QSharedPointer<EncryptionHelper::StreamingDecryptor> _decryptor;
     EncryptedFile _encryptedFileInfo = {};
+    QByteArray _pendingBytes;
+    qint64 _processedSoFar = 0;
 };
 
 /**

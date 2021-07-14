@@ -63,8 +63,8 @@ public:
     bool isEncryptedFile() const;
     void setIsEncryptedFile(bool isEncrypted);
 
-    QString encryptedFileName() const;
-    void setEncryptedFileName(const QString &encryptedName);
+    QString e2eMangledName() const;
+    void setE2eMangledName(const QString &e2eMangledName);
 
     qint64 fileTotalSize() const;
     void setFileTotalSize(qint64 totalSize);
@@ -91,6 +91,9 @@ private:
     void onCancellationServerNewConnection();
     void onGetFinished();
 
+    void handleNewConnection();
+    void handleNewConnectionForEncryptedFile();
+
     void startServerAndWaitForConnections();
 
     AccountPtr _account;
@@ -103,7 +106,7 @@ private:
     QString _folderPath;
 
     bool _isEncryptedFile = false;
-    QString _encryptedFileName;
+    QString _e2eMangledName;
 
     QLocalServer *_transferDataServer = nullptr;
     QLocalServer *_signalServer = nullptr;

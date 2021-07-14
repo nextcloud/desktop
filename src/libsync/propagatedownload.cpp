@@ -22,8 +22,9 @@
 #include "common/utility.h"
 #include "filesystem.h"
 #include "propagatorjobs.h"
-#include "common/checksums.h"
-#include "common/asserts.h"
+#include <common/checksums.h>
+#include <common/asserts.h>
+#include <common/constants.h>
 #include "clientsideencryptionjobs.h"
 #include "propagatedownloadencrypted.h"
 #include "common/vfs.h"
@@ -73,6 +74,7 @@ GETFileJob::GETFileJob(AccountPtr account, const QString &path, QIODevice *devic
     const QMap<QByteArray, QByteArray> &headers, const QByteArray &expectedEtagForResume,
     qint64 resumeStart, QObject *parent)
     : AbstractNetworkJob(account, path, parent)
+    , _device(device)
     , _headers(headers)
     , _expectedEtagForResume(expectedEtagForResume)
     , _expectedContentLength(-1)
@@ -85,7 +87,6 @@ GETFileJob::GETFileJob(AccountPtr account, const QString &path, QIODevice *devic
     , _bandwidthManager(nullptr)
     , _hasEmittedFinishedSignal(false)
     , _lastModified()
-    , _device(device)
 {
 }
 
@@ -250,8 +251,6 @@ void GETFileJob::slotMetaDataChanged()
     }
 
     _saveBodyToFile = true;
-
-    processMetaData();
 }
 
 void GETFileJob::setBandwidthManager(BandwidthManager *bwm)
@@ -286,9 +285,9 @@ qint64 GETFileJob::currentDownloadPosition()
     return _resumeStart;
 }
 
-qint64 GETFileJob::writeToDevice(const char *data, qint64 len)
+qint64 GETFileJob::writeToDevice(const QByteArray &data)
 {
-    return _device->write(data, len);
+    return _device->write(data);
 }
 
 void GETFileJob::slotReadyRead()
@@ -313,8 +312,8 @@ void GETFileJob::slotReadyRead()
             _bandwidthQuota -= toRead;
         }
 
-        const qint64 r = reply()->read(buffer.data(), toRead);
-        if (r < 0) {
+        const qint64 readBytes = reply()->read(buffer.data(), toRead);
+        if (readBytes < 0) {
             _errorString = networkReplyErrorString(*reply());
             _errorStatus = SyncFileItem::NormalError;
             qCWarning(lcGetJob) << "Error while reading from device: " << _errorString;
@@ -322,11 +321,11 @@ void GETFileJob::slotReadyRead()
             return;
         }
 
-        const qint64 w = writeToDevice(buffer.constData(), r);
-        if (w != r) {
+        const qint64 writtenBytes = writeToDevice(QByteArray::fromRawData(buffer.constData(), readBytes));
+        if (writtenBytes != readBytes) {
             _errorString = _device->errorString();
             _errorStatus = SyncFileItem::NormalError;
-            qCWarning(lcGetJob) << "Error while writing to file" << w << r << _errorString;
+            qCWarning(lcGetJob) << "Error while writing to file" << writtenBytes << readBytes << _errorString;
             reply()->abort();
             return;
         }
@@ -394,29 +393,57 @@ GETEncryptedFileJob::GETEncryptedFileJob(AccountPtr account, const QUrl &url, QI
 {
 }
 
-qint64 GETEncryptedFileJob::writeToDevice(const char *data, qint64 len)
-{
-    if (!_decryptor->isInitialized()) {
-        return -1;
-    }
-
-    const auto bytesDecrypted = _decryptor->chunkDecryption(data, _device, len);
-
-    if (bytesDecrypted == -1) {
-        qCCritical(lcPropagateDownload) << "Decryption failed!";
-        return -1;
-    }
-
-    return len;
-}
-
-void GETEncryptedFileJob::processMetaData()
+qint64 GETEncryptedFileJob::writeToDevice(const QByteArray &data)
 {
     if (!_decryptor) {
         // only initialize the decryptor once, because, according to Qt documentation, metadata might get changed during the processing of the data sometimes
         // https://doc.qt.io/qt-5/qnetworkreply.html#metaDataChanged
         _decryptor.reset(new EncryptionHelper::StreamingDecryptor(_encryptedFileInfo.encryptionKey, _encryptedFileInfo.initializationVector, _contentLength));
     }
+
+    if (!_decryptor->isInitialized()) {
+        return -1;
+    }
+
+    const auto bytesRemaining = _contentLength - _processedSoFar - data.length();
+
+    if (bytesRemaining != 0 && bytesRemaining < OCC::Constants::e2EeTagSize) {
+        // decryption is going to fail if last chunk does not include or does not equal to OCC::Constants::e2EeTagSize bytes tag
+        // we may end up receiving packets beyond OCC::Constants::e2EeTagSize bytes tag at the end
+        // in that case, we don't want to try and decrypt less than OCC::Constants::e2EeTagSize ending bytes of tag, we will accumulate all the incoming data till the end
+        // and then, we are going to decrypt the entire chunk containing OCC::Constants::e2EeTagSize bytes at the end
+        _pendingBytes += QByteArray(data.constData(), data.length());
+        _processedSoFar += data.length();
+        if (_processedSoFar != _contentLength) {
+            return data.length();
+        }
+    }
+
+    if (!_pendingBytes.isEmpty()) {
+        const auto decryptedChunk = _decryptor->chunkDecryption(_pendingBytes.constData(), _pendingBytes.size());
+
+        if (decryptedChunk.isEmpty()) {
+            qCCritical(lcPropagateDownload) << "Decryption failed!";
+            return -1;
+        }
+
+        GETFileJob::writeToDevice(decryptedChunk);
+
+        return data.length();
+    }
+
+    const auto decryptedChunk = _decryptor->chunkDecryption(data.constData(), data.length());
+
+    if (decryptedChunk.isEmpty()) {
+        qCCritical(lcPropagateDownload) << "Decryption failed!";
+        return -1;
+    }
+
+    GETFileJob::writeToDevice(decryptedChunk);
+
+    _processedSoFar += data.length();
+
+    return data.length();
 }
 
 void PropagateDownloadFile::start()

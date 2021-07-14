@@ -14,8 +14,10 @@
 
 #pragma once
 
+#include <QtGlobal>
+
 namespace OCC {
-namespace CommonConstants {
-    const qint64 e2EeTagSize = 16;
+namespace Constants {
+    constexpr qint32 e2EeTagSize = 16;
 };
 };

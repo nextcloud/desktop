@@ -101,14 +101,14 @@ void OCC::HydrationJob::setIsEncryptedFile(bool isEncrypted)
     _isEncryptedFile = isEncrypted;
 }
 
-QString OCC::HydrationJob::encryptedFileName() const
+QString OCC::HydrationJob::e2eMangledName() const
 {
-    return _encryptedFileName;
+    return _e2eMangledName;
 }
 
-void OCC::HydrationJob::setEncryptedFileName(const QString &encryptedName)
+void OCC::HydrationJob::setE2eMangledName(const QString &e2eMangledName)
 {
-    _encryptedFileName = encryptedName;
+    _e2eMangledName = e2eMangledName;
 }
 
 OCC::HydrationJob::Status OCC::HydrationJob::status() const
@@ -189,7 +189,7 @@ void OCC::HydrationJob::slotCheckFolderId(const QStringList &list)
 void OCC::HydrationJob::slotFolderEncryptedMetadataError(const QByteArray & /*fileId*/, int /*httpReturnCode*/)
 {
     // TODO: the following code is borrowed from PropagateDownloadEncrypted (see HydrationJob::onNewConnection() for explanation of next steps)
-    qCCritical(lcHydration) << "Failed to find encrypted metadata information of remote file" << encryptedFileName();
+    qCCritical(lcHydration) << "Failed to find encrypted metadata information of remote file" << e2eMangledName();
     emitFinished(Error);
     return;
 }
@@ -197,14 +197,14 @@ void OCC::HydrationJob::slotFolderEncryptedMetadataError(const QByteArray & /*fi
 void OCC::HydrationJob::slotCheckFolderEncryptedMetadata(const QJsonDocument &json)
 {
     // TODO: the following code is borrowed from PropagateDownloadEncrypted (see HydrationJob::onNewConnection() for explanation of next steps)
-    qCDebug(lcHydration) << "Metadata Received reading" << encryptedFileName();
-    const QString filename = encryptedFileName();
+    qCDebug(lcHydration) << "Metadata Received reading" << e2eMangledName();
+    const QString filename = e2eMangledName();
     auto meta = new FolderMetadata(_account, json.toJson(QJsonDocument::Compact));
     const QVector<EncryptedFile> files = meta->files();
 
     EncryptedFile encryptedInfo = {};
 
-    const QString encryptedFileExactName = encryptedFileName().section(QLatin1Char('/'), -1);
+    const QString encryptedFileExactName = e2eMangledName().section(QLatin1Char('/'), -1);
     for (const EncryptedFile &file : files) {
         if (encryptedFileExactName == file.encryptedFilename) {
             EncryptedFile encryptedInfo = file;
@@ -212,7 +212,7 @@ void OCC::HydrationJob::slotCheckFolderEncryptedMetadata(const QJsonDocument &js
 
             qCDebug(lcHydration) << "Found matching encrypted metadata for file, starting download" << _requestId << _folderPath;
             _transferDataSocket = _transferDataServer->nextPendingConnection();
-            _job = new GETEncryptedFileJob(_account, _remotePath + encryptedFileName(), _transferDataSocket, {}, {}, 0, encryptedInfo, this);
+            _job = new GETEncryptedFileJob(_account, _remotePath + e2eMangledName(), _transferDataSocket, {}, {}, 0, encryptedInfo, this);
 
             connect(qobject_cast<GETEncryptedFileJob *>(_job), &GETEncryptedFileJob::finishedSignal, this, &HydrationJob::onGetFinished);
             _job->start();
@@ -272,34 +272,9 @@ void OCC::HydrationJob::onNewConnection()
     Q_ASSERT(!_job);
 
     if (isEncryptedFile()) {
-        // TODO: the following code is borrowed from PropagateDownloadEncrypted (should we factor it out and reuse? YES! Should we do it now? Probably not, as, this would imply modifying PropagateDownloadEncrypted, so we need a separate PR)
-        qCInfo(lcHydration) << "Got new connection for encrypted file. Getting required info for decryption...";
-        const auto rootPath = [=]() {
-            const auto result = _remotePath;
-            if (result.startsWith('/')) {
-                return result.mid(1);
-            } else {
-                return result;
-            }
-        }();
-
-        const auto remoteFilename = encryptedFileName();
-        const auto remotePath = QString(rootPath + remoteFilename);
-        const auto remoteParentPath = remotePath.left(remotePath.lastIndexOf('/'));
-
-        auto job = new LsColJob(_account, remoteParentPath, this);
-        job->setProperties({ "resourcetype", "http://owncloud.org/ns:fileid" });
-        connect(job, &LsColJob::directoryListingSubfolders,
-            this, &HydrationJob::slotCheckFolderId);
-        connect(job, &LsColJob::finishedWithError,
-            this, &HydrationJob::slotFolderIdError);
-        job->start();
+        handleNewConnectionForEncryptedFile();
     } else {
-        qCInfo(lcHydration) << "Got new connection starting GETFileJob" << _requestId << _folderPath;
-        _transferDataSocket = _transferDataServer->nextPendingConnection();
-        _job = new GETFileJob(_account, _remotePath + _folderPath, _transferDataSocket, {}, {}, 0, this);
-        connect(_job, &GETFileJob::finishedSignal, this, &HydrationJob::onGetFinished);
-        _job->start();
+        handleNewConnection();
     }
 }
 
@@ -348,4 +323,39 @@ void OCC::HydrationJob::onGetFinished()
         return;
     }
     emitFinished(Success);
+}
+
+void OCC::HydrationJob::handleNewConnection()
+{
+    qCInfo(lcHydration) << "Got new connection starting GETFileJob" << _requestId << _folderPath;
+    _transferDataSocket = _transferDataServer->nextPendingConnection();
+    _job = new GETFileJob(_account, _remotePath + _folderPath, _transferDataSocket, {}, {}, 0, this);
+    connect(_job, &GETFileJob::finishedSignal, this, &HydrationJob::onGetFinished);
+    _job->start();
+}
+
+void OCC::HydrationJob::handleNewConnectionForEncryptedFile()
+{
+    // TODO: the following code is borrowed from PropagateDownloadEncrypted (should we factor it out and reuse? YES! Should we do it now? Probably not, as, this would imply modifying PropagateDownloadEncrypted, so we need a separate PR)
+    qCInfo(lcHydration) << "Got new connection for encrypted file. Getting required info for decryption...";
+    const auto rootPath = [=]() {
+        const auto result = _remotePath;
+        if (result.startsWith('/')) {
+            return result.mid(1);
+        } else {
+            return result;
+        }
+    }();
+
+    const auto remoteFilename = e2eMangledName();
+    const auto remotePath = QString(rootPath + remoteFilename);
+    const auto remoteParentPath = remotePath.left(remotePath.lastIndexOf('/'));
+
+    auto job = new LsColJob(_account, remoteParentPath, this);
+    job->setProperties({ "resourcetype", "http://owncloud.org/ns:fileid" });
+    connect(job, &LsColJob::directoryListingSubfolders,
+        this, &HydrationJob::slotCheckFolderId);
+    connect(job, &LsColJob::finishedWithError,
+        this, &HydrationJob::slotFolderIdError);
+    job->start();
 }

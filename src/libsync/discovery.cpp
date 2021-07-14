@@ -460,8 +460,10 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
 
     // The file is known in the db already
     if (dbEntry.isValid()) {
-        const bool isVirtualE2EePlaceholder = dbEntry.isVirtualFile() && !item->_encryptedFileName.isEmpty() && serverEntry.size > 0;
-        const qint64 sizeOnServer = isVirtualE2EePlaceholder ? serverEntry.size - CommonConstants::e2EeTagSize : serverEntry.size;
+        const bool isDbEntryAnE2EePlaceholder = dbEntry.isVirtualFile() && !dbEntry.e2eMangledName().isEmpty();
+        Q_ASSERT(!isDbEntryAnE2EePlaceholder || serverEntry.size >= Constants::e2EeTagSize);
+        const bool isVirtualE2EePlaceholder = isDbEntryAnE2EePlaceholder && serverEntry.size >= Constants::e2EeTagSize;
+        const qint64 sizeOnServer = isVirtualE2EePlaceholder ? serverEntry.size - Constants::e2EeTagSize : serverEntry.size;
         const bool metaDataSizeNeedsUpdateForE2EeFilePlaceholder = isVirtualE2EePlaceholder && dbEntry._fileSize == serverEntry.size;
 
         if (serverEntry.isDirectory != dbEntry.isDirectory()) {
@@ -494,6 +496,7 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
         } else if (dbEntry._remotePerm != serverEntry.remotePerm || dbEntry._fileId != serverEntry.fileId || metaDataSizeNeedsUpdateForE2EeFilePlaceholder) {
             if (metaDataSizeNeedsUpdateForE2EeFilePlaceholder) {
                 // we are updating placeholder sizes after migrating from older versions with VFS + E2EE implicit hydration not supported
+                qCDebug(lcDisco) << "Migrating the E2EE VFS placeholder " << dbEntry.path() << " from older version. The old size is " << item->_size << ". The new size is " << sizeOnServer;
                 item->_size = sizeOnServer;
             }
             item->_instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
@@ -503,19 +506,23 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
             // to update a placeholder with corrected size (-16 Bytes)
             // or, maybe, add a flag to the database - vfsE2eeSizeCorrected? if it is not set - subtract it from the placeholder's size and re-create/update a placeholder?
             const QueryMode serverQueryMode = [this, &dbEntry, &serverEntry]() {
-                if (dbEntry.isDirectory() && dbEntry._isE2eEncrypted) {
+                const bool isVfsModeOn = _discoveryData && _discoveryData->_syncOptions._vfs && _discoveryData->_syncOptions._vfs->mode() != Vfs::Off;
+                if (isVfsModeOn && dbEntry.isDirectory() && dbEntry._isE2eEncrypted) {
                     qint64 localFolderSize = 0;
                     const auto listFilesCallback = [this, &localFolderSize](const OCC::SyncJournalFileRecord &record) {
                         if (record.isFile()) {
-                            // add CommonConstants::e2EeTagSize so we will know the size of E2EE file on the server
-                            localFolderSize += record._fileSize + CommonConstants::e2EeTagSize;
+                            // add Constants::e2EeTagSize so we will know the size of E2EE file on the server
+                            localFolderSize += record._fileSize + Constants::e2EeTagSize;
                         } else if (record.isVirtualFile()) {
-                            // just a virtual file, so, the size must contain CommonConstants::e2EeTagSize if it was not corrected already
+                            // just a virtual file, so, the size must contain Constants::e2EeTagSize if it was not corrected already
                             localFolderSize += record._fileSize;
                         }
                     };
-                    if (_discoveryData->_statedb->listFilesInPath(dbEntry.path().toUtf8(), listFilesCallback)
-                        && localFolderSize != 0 && localFolderSize == serverEntry.sizeOfFolder) {
+
+                    const bool listFilesSucceeded = _discoveryData->_statedb->listFilesInPath(dbEntry.path().toUtf8(), listFilesCallback);
+
+                    if (listFilesSucceeded && localFolderSize != 0 && localFolderSize == serverEntry.sizeOfFolder) {
+                        qCInfo(lcDisco) << "Migration of E2EE folder " << dbEntry.path() << " from older version to the one, supporting the implicit VFS hydration.";
                         return NormalQuery;
                     }
                 }
@@ -563,20 +570,14 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
             if (isVfsWithSuffix())
                 addVirtualFileSuffix(tmp_path._original);
         }
-        // a virtual file is on disk but is not in the database
-        const bool fileOnDiskIsVirtual = localEntry.isValid() && localEntry.isVirtualFile;
-        // a new virtual file
-        const bool isNewVirtualFileNotOnDiskYet = !localEntry.isValid() && item->_type == ItemTypeVirtualFile;
 
-        if ((fileOnDiskIsVirtual || isNewVirtualFileNotOnDiskYet)
-            && opts._vfs->mode() != Vfs::Off
-            && !item->_encryptedFileName.isEmpty()) {
+        if (opts._vfs->mode() != Vfs::Off && !item->_encryptedFileName.isEmpty()) {
             // We are syncing a file for the first time (local entry is invalid) and it is encrypted file that will be virtual once synced
-            // to avoid having error of "file has changed during sync" when trying to hydrate it excplicitly - we must remove CommonConstants::e2EeTagSize bytes from the end
+            // to avoid having error of "file has changed during sync" when trying to hydrate it excplicitly - we must remove Constants::e2EeTagSize bytes from the end
             // as explicit hydration does not care if these bytes are present in the placeholder or not, but, the size must not change in the middle of the sync
-            // this way it works for both implicit and explicit hydration by making a placeholder size that does not includes encryption tag CommonConstants::e2EeTagSize bytes
+            // this way it works for both implicit and explicit hydration by making a placeholder size that does not includes encryption tag Constants::e2EeTagSize bytes
             // another scenario - we are syncing a file which is on disk but not in the database (database was removed or file was not written there yet)
-            item->_size = serverEntry.size - CommonConstants::e2EeTagSize;
+            item->_size = serverEntry.size - Constants::e2EeTagSize;
         }
         processFileAnalyzeLocalInfo(item, tmp_path, localEntry, serverEntry, dbEntry, _queryServer);
     };
