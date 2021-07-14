@@ -2076,7 +2076,7 @@ Zwróć uwagę, że wybiera to tylko, z której puli aktualizacje są pobierane 
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="20"/>
         <source>Global Ignore Settings</source>
-        <translation>Ustawienia ignorowanych plików</translation>
+        <translation>Globalne ustawienia ignorowania</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="26"/>
