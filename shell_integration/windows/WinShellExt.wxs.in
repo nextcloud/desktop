@@ -42,11 +42,11 @@
             There is a limit in Windows (oh wonder^^) so that only the first 15 extensions get invoked, this is why to use that dirty little trick to get ahead ;)
             See: https://docs.microsoft.com/en-us/windows/win32/shell/context-menu-handlers?redirectedfrom=MSDN#employing-the-verb-selection-model
         -->
-        <?define OverlayNameError       = "  @APPLICATION_SHORTNAME@Error" ?>
-        <?define OverlayNameOK          = "  @APPLICATION_SHORTNAME@OK" ?>
-        <?define OverlayNameOKShared    = "  @APPLICATION_SHORTNAME@OKShared" ?>
-        <?define OverlayNameSync        = "  @APPLICATION_SHORTNAME@Sync" ?>
-        <?define OverlayNameWarning     = "  @APPLICATION_SHORTNAME@Warning" ?>
+        <?define OverlayNameError       = "                @APPLICATION_SHORTNAME@Error" ?>
+        <?define OverlayNameOK          = "                @APPLICATION_SHORTNAME@OK" ?>
+        <?define OverlayNameOKShared    = "                @APPLICATION_SHORTNAME@OKShared" ?>
+        <?define OverlayNameSync        = "                @APPLICATION_SHORTNAME@Sync" ?>
+        <?define OverlayNameWarning     = "                @APPLICATION_SHORTNAME@Warning" ?>
 
         <?define OverlayDescription     = "@APPLICATION_SHORTNAME@ overlay handler" ?>
 
