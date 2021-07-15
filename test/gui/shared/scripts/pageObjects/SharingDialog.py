@@ -37,15 +37,15 @@ class SharingDialog:
         "type": "QLabel",
         "visible": 1,
     }
-    ERROR_SHOWN_ON_SHARING_DIALOG = {
+    SHARING_DIALOG = {
         "type": "QLabel",
         "unnamed": 1,
         "visible": 1,
         "window": names.sharingDialog_OCC_ShareDialog,
     }
+    SHARING_DIALOG_ERROR = {"name": "errorLabel", "type": "QLabel", "visible": 1}
 
     def getAvailablePermission(self):
-
         editChecked = squish.waitForObjectExists(self.EDIT_PERMISSIONS_CHECKBOX).checked
         shareChecked = squish.waitForObjectExists(
             self.SHARE_PERMISSIONS_CHECKBOX
@@ -53,25 +53,8 @@ class SharingDialog:
 
         return editChecked, shareChecked
 
-    def addCollaborator(self, receiver, permissions):
-        squish.mouseClick(
-            squish.waitForObject(self.SHARE_WITH_COLLABORATOR_INPUT_FIELD),
-            0,
-            0,
-            squish.Qt.NoModifier,
-            squish.Qt.LeftButton,
-        )
-        squish.type(
-            squish.waitForObject(self.SHARE_WITH_COLLABORATOR_INPUT_FIELD),
-            receiver,
-        )
-        squish.mouseClick(
-            squish.waitForObjectItem(self.SUGGESTED_COLLABORATOR, receiver),
-            0,
-            0,
-            squish.Qt.NoModifier,
-            squish.Qt.LeftButton,
-        )
+    def addCollaborator(self, receiver, permissions, isGroup=False):
+        self.selectCollaborator(receiver, isGroup)
         permissionsList = permissions.split(",")
 
         editChecked, shareChecked = self.getAvailablePermission()
@@ -87,8 +70,37 @@ class SharingDialog:
 
         squish.clickButton(squish.waitForObject(self.SHARING_DIALOG_CLOSE_BUTTON))
 
+    def getSharingDialogMessage(self):
+        return str(squish.waitForObjectExists(self.SHARING_DIALOG).text)
+
     def getErrorText(self):
-        return str(squish.waitForObjectExists(self.ERROR_SHOWN_ON_SHARING_DIALOG).text)
+        return str(squish.waitForObjectExists(self.SHARING_DIALOG_ERROR).text)
+
+    def selectCollaborator(self, receiver, isGroup=False):
+        postFixInSuggestion = ""
+        if isGroup:
+            postFixInSuggestion = " (group)"
+
+        squish.mouseClick(
+            squish.waitForObject(self.SHARE_WITH_COLLABORATOR_INPUT_FIELD),
+            0,
+            0,
+            squish.Qt.NoModifier,
+            squish.Qt.LeftButton,
+        )
+        squish.type(
+            squish.waitForObject(self.SHARE_WITH_COLLABORATOR_INPUT_FIELD),
+            receiver,
+        )
+        squish.mouseClick(
+            squish.waitForObjectItem(
+                self.SUGGESTED_COLLABORATOR, receiver + postFixInSuggestion
+            ),
+            0,
+            0,
+            squish.Qt.NoModifier,
+            squish.Qt.LeftButton,
+        )
 
     def removePermissions(self, permissions):
         removePermissionsList = permissions.split(",")

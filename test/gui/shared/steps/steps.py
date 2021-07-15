@@ -205,10 +205,31 @@ def step(context, receiver, resource, permissions):
     shareItem.addCollaborator(receiver, permissions)
 
 
+@When(
+    'the user adds group "|any|" as collaborator of resource "|any|" with permissions "|any|" using the client-UI'
+)
+def step(context, receiver, resource, permissions):
+    openSharingDialog(context, resource)
+    shareItem = SharingDialog()
+    shareItem.addCollaborator(receiver, permissions, True)
+
+
 @Then(
     'user "|any|" should be listed in the collaborators list for file "|any|" with permissions "|any|" on the client-UI'
 )
 def step(context, receiver, resource, permissions):
+    collaboratorShouldBeListed(context, receiver, resource, permissions)
+
+
+@Then(
+    'group "|any|" should be listed in the collaborators list for file "|any|" with permissions "|any|" on the client-UI'
+)
+def step(context, receiver, resource, permissions):
+    receiver += " (group)"
+    collaboratorShouldBeListed(context, receiver, resource, permissions)
+
+
+def collaboratorShouldBeListed(context, receiver, resource, permissions):
     resource = substituteInLineCodes(context, resource)
     socketConnect = syncstate.SocketConnect()
     socketConnect.sendCommand("SHARE:" + resource + "\n")
@@ -447,7 +468,7 @@ def step(context, receiver, resource):
 @Then('the error text "|any|" should be displayed in the sharing dialog')
 def step(context, fileShareContext):
     shareItem = SharingDialog()
-    errorText = shareItem.getErrorText()
+    errorText = shareItem.getSharingDialogMessage()
     test.compare(
         errorText,
         fileShareContext,
@@ -687,3 +708,19 @@ def step(context, permissions, user, resource):
 
     if 'share' in permissionsList:
         test.compare(shareChecked, False)
+
+
+@Then('the error "|any|" should be displayed')
+def step(context, errorMessage):
+    sharingDialog = SharingDialog()
+    test.compare(sharingDialog.getErrorText(), errorMessage)
+
+
+@When(
+    'the user tires to share resource "|any|" with the group "|any|" using the client-UI'
+)
+def step(context, resource, group):
+    openSharingDialog(context, resource)
+
+    sharingDialog = SharingDialog()
+    sharingDialog.selectCollaborator(group, True)

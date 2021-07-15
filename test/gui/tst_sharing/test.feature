@@ -25,6 +25,35 @@ Feature: Sharing
         And the user toggles the password protection using the client-UI
         Then the password progress indicator should not be visible in the client-UI - expected to fail
 
+
+    Scenario: Collaborator should not see to whom a file is shared.
+        Given user "Brian" has been created on the server with default attributes and without skeleton files
+        And user "Alice" has uploaded on the server file with content "ownCloud test text file 0" to "/textfile0.txt"
+        And user "Alice" has shared file "/textfile0.txt" on the server with user "Brian" with "read, share" permission
+        And user "Brian" has set up a client with default settings
+        When user "Brian" opens the sharing dialog of "%client_sync_path%/textfile0.txt" using the client-UI
+        Then the error text "The item is not shared with any users or groups" should be displayed in the sharing dialog
+
+
+    Scenario: Group sharing
+        Given group "grp1" has been created on the server
+        And user "Alice" has uploaded on the server file with content "ownCloud test text file 0" to "/textfile0.txt"
+        And user "Alice" has set up a client with default settings
+        When the user adds group "grp1" as collaborator of resource "%client_sync_path%/textfile0.txt" with permissions "edit,share" using the client-UI
+        Then group "grp1" should be listed in the collaborators list for file "%client_sync_path%/textfile0.txt" with permissions "edit,share" on the client-UI
+
+
+    Scenario: User (non-author) can not share to a group to which the file is already shared
+        Given user "Brian" has been created on the server with default attributes and without skeleton files
+        And group "grp1" has been created on the server
+        And user "Brian" on the server has been added to group "grp1"
+        And user "Alice" has uploaded on the server file with content "ownCloud test text file 0" to "/textfile0.txt"
+        And user "Alice" has shared file "/textfile0.txt" on the server with user "Brian" with "read, share, update" permission
+        And user "Alice" has shared file "/textfile0.txt" on the server with group "grp1" with "read, share, update" permission
+        And user "Brian" has set up a client with default settings
+        When the user tires to share resource "%client_sync_path%/textfile0.txt" with the group "grp1" using the client-UI
+        Then the error "Path already shared with this group" should be displayed
+
     @issue-7423
     Scenario: unshare a reshared file
         Given the setting "shareapi_auto_accept_share" on the server of app "core" has been set to "no"
@@ -169,6 +198,3 @@ Feature: Sharing
             | edit        | read, share                  | read, share              |
             | share       | read, update, create, delete | read,update              |
             | edit,share  | read                         | read                     |
-
-
-
