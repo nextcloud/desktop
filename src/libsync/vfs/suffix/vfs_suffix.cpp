@@ -68,10 +68,10 @@ bool VfsSuffix::isHydrating() const
     return false;
 }
 
-Result<void, QString> VfsSuffix::updateMetadata(const QString &filePath, time_t modtime, qint64, const QByteArray &)
+Result<Vfs::ConvertToPlaceholderResult, QString> VfsSuffix::updateMetadata(const QString &filePath, const SyncFileItem &item, const QString &)
 {
-    FileSystem::setModTime(filePath, modtime);
-    return {};
+    FileSystem::setModTime(filePath, item._modtime);
+    return Vfs::ConvertToPlaceholderResult::Ok;
 }
 
 Result<void, QString> VfsSuffix::createPlaceholder(const SyncFileItem &item)
@@ -122,12 +122,6 @@ Result<void, QString> VfsSuffix::dehydratePlaceholder(const SyncFileItem &item)
     if (pin && *pin == PinState::AlwaysLocal)
         setPinState(item._renameTarget, PinState::Unspecified);
     return {};
-}
-
-Result<Vfs::ConvertToPlaceholderResult, QString> VfsSuffix::convertToPlaceholder(const QString &, const SyncFileItem &, const QString &)
-{
-    // Nothing necessary
-    return Vfs::ConvertToPlaceholderResult::Ok;
 }
 
 bool VfsSuffix::isDehydratedPlaceholder(const QString &filePath)

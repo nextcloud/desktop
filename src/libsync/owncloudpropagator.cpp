@@ -743,16 +743,16 @@ QString OwncloudPropagator::adjustRenamedPath(const QString &original) const
     return OCC::adjustRenamedPath(_renamedDirectories, original);
 }
 
-Result<Vfs::ConvertToPlaceholderResult, QString> OwncloudPropagator::updateMetadata(const SyncFileItem &item)
+Result<Vfs::ConvertToPlaceholderResult, QString> OwncloudPropagator::updateMetadata(const SyncFileItem &item, const QString &fileName, const QString &replacesFile)
 {
-    const QString fsPath = _localDir + item.destination();
-    const auto result = syncOptions()._vfs->convertToPlaceholder(fsPath, item);
+    const QString fsPath = fileName.isEmpty() ? fullLocalPath(item.destination()) : fileName;
+    const auto result = syncOptions()._vfs->updateMetadata(fsPath, item, replacesFile);
     if (!result) {
         return result.error();
     } else if (*result == Vfs::ConvertToPlaceholderResult::Locked) {
         return Vfs::ConvertToPlaceholderResult::Locked;
     }
-    auto record = item.toSyncJournalFileRecordWithInode(fsPath);
+    const auto record = item.toSyncJournalFileRecordWithInode(fsPath);
     const auto dBresult = _journal->setFileRecord(record);
     if (!dBresult) {
         return dBresult.error();

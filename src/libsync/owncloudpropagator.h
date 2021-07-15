@@ -520,9 +520,9 @@ public:
      * Typically after a sync operation succeeded. Updates the inode from
      * the filesystem.
      *
-     * Will also trigger a Vfs::convertToPlaceholder.
+     * Will also trigger a Vfs::updateMetadata.
      */
-    Result<Vfs::ConvertToPlaceholderResult, QString> updateMetadata(const SyncFileItem &item);
+    Result<Vfs::ConvertToPlaceholderResult, QString> updateMetadata(const SyncFileItem &item, const QString &fileName = {}, const QString &replacesFile = {});
 
 private slots:
 

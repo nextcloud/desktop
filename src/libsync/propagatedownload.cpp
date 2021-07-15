@@ -923,7 +923,7 @@ void PropagateDownloadFile::downloadFinished()
         preserveGroupOwnership(_tmpFile.fileName(), existingFile);
 
         // Make the file a hydrated placeholder if possible
-        const auto result = propagator()->syncOptions()._vfs->convertToPlaceholder(_tmpFile.fileName(), *_item, fn);
+        const auto result = propagator()->updateMetadata(*_item, _tmpFile.fileName(), fn);
         if (!result) {
             done(SyncFileItem::NormalError, result.error());
             return;
@@ -1017,7 +1017,7 @@ void PropagateDownloadFile::downloadFinished()
 void PropagateDownloadFile::updateMetadata(bool isConflict)
 {
     const QString fn = propagator()->fullLocalPath(_item->_file);
-    const auto result = propagator()->updateMetadata(*_item);
+    const auto result = propagator()->updateMetadata(*_item, fn);
     if (!result) {
         done(SyncFileItem::FatalError, tr("Error updating metadata: %1").arg(result.error()));
         return;

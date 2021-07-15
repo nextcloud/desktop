@@ -157,13 +157,6 @@ public:
      */
     virtual bool isHydrating() const = 0;
 
-    /** Update placeholder metadata during discovery.
-     *
-     * If the remote metadata changes, the local placeholder's metadata should possibly
-     * change as well.
-     */
-    virtual OC_REQUIRED_RESULT Result<void, QString> updateMetadata(const QString &filePath, time_t modtime, qint64 size, const QByteArray &fileId) = 0;
-
     /// Create a new dehydrated placeholder. Called from PropagateDownload.
     virtual OC_REQUIRED_RESULT Result<void, QString> createPlaceholder(const SyncFileItem &item) = 0;
 
@@ -180,24 +173,6 @@ public:
      * become hydrated placeholder files.
      */
     virtual OC_REQUIRED_RESULT bool needsMetadataUpdate(const SyncFileItem &item) = 0;
-
-    /** Convert a new file to a hydrated placeholder.
-     *
-     * Some VFS integrations expect that every file, including those that have all
-     * the remote data, are "placeholders". This function is called by PropagateDownload
-     * to convert newly downloaded, fully hydrated files into placeholders.
-     *
-     * Implementations must make sure that calling this function on a file that already
-     * is a placeholder is acceptable.
-     *
-     * replacesFile can optionally contain a filesystem path to a placeholder that this
-     * new placeholder shall supersede, for rename-replace actions with new downloads,
-     * for example.
-     */
-    virtual OC_REQUIRED_RESULT Result<ConvertToPlaceholderResult, QString> convertToPlaceholder(
-        const QString &filename,
-        const SyncFileItem &item,
-        const QString &replacesFile = QString()) = 0;
 
     /// Determine whether the file at the given absolute path is a dehydrated placeholder.
     virtual OC_REQUIRED_RESULT bool isDehydratedPlaceholder(const QString &filePath) = 0;
@@ -258,6 +233,13 @@ signals:
     void doneHydrating();
 
 protected:
+    /** Update placeholder metadata during discovery.
+     *
+     * If the remote metadata changes, the local placeholder's metadata should possibly
+     * change as well.
+     */
+    virtual OC_REQUIRED_RESULT Result<ConvertToPlaceholderResult, QString> updateMetadata(const QString &filePath, const SyncFileItem &item, const QString &replacesFile = {}) = 0;
+
     /** Setup the plugin for the folder.
      *
      * For example, the VFS provider might monitor files to be able to start a file
@@ -276,6 +258,8 @@ protected:
 
     // the parameters passed to start()
     VfsSetupParams _setupParams;
+
+    friend class OwncloudPropagator;
 };
 
 /// Implementation of Vfs for Vfs::Off mode - does nothing
@@ -297,10 +281,8 @@ public:
     bool socketApiPinStateActionsShown() const override { return false; }
     bool isHydrating() const override { return false; }
 
-    Result<void, QString> updateMetadata(const QString &, time_t, qint64, const QByteArray &) override { return {}; }
     Result<void, QString> createPlaceholder(const SyncFileItem &) override { return {}; }
     Result<void, QString> dehydratePlaceholder(const SyncFileItem &) override { return {}; }
-    Result<ConvertToPlaceholderResult, QString> convertToPlaceholder(const QString &, const SyncFileItem &, const QString &) override { return ConvertToPlaceholderResult::Ok; }
 
     bool needsMetadataUpdate(const SyncFileItem &) override { return false; }
     bool isDehydratedPlaceholder(const QString &) override { return false; }
@@ -314,6 +296,7 @@ public slots:
     void fileStatusChanged(const QString &, SyncFileStatus) override {}
 
 protected:
+    Result<ConvertToPlaceholderResult, QString> updateMetadata(const QString &, const SyncFileItem &, const QString & = {}) override { return { ConvertToPlaceholderResult::Ok }; }
     void startImpl(const VfsSetupParams &) override {}
 };
 

@@ -331,34 +331,18 @@ void OCC::SyncEngine::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
                 const bool isReadOnly = !item->_remotePerm.isNull() && !item->_remotePerm.hasPermission(RemotePermissions::CanWrite);
                 FileSystem::setFileReadOnlyWeak(filePath, isReadOnly);
             }
-            auto rec = item->toSyncJournalFileRecordWithInode(filePath);
-            if (rec._checksumHeader.isEmpty())
-                rec._checksumHeader = prev._checksumHeader;
-            rec._serverHasIgnoredFiles |= prev._serverHasIgnoredFiles;
-
-            // Ensure it's a placeholder file on disk
-            if (item->_type == ItemTypeFile) {
-                const auto result = _syncOptions._vfs->convertToPlaceholder(filePath, *item);
-                if (!result) {
-                    item->_instruction = CSYNC_INSTRUCTION_ERROR;
-                    item->_errorString = tr("Could not update file : %1").arg(result.error());
-                    return;
-                }
+            //TODO: what side effect could it have to directly modify the item?
+            auto itemCopy = *item;
+            if (itemCopy._checksumHeader.isEmpty()) {
+                itemCopy._checksumHeader = prev._checksumHeader;
             }
-
-            // Update on-disk virtual file metadata
-            if (item->_type == ItemTypeVirtualFile) {
-                auto r = _syncOptions._vfs->updateMetadata(filePath, item->_modtime, item->_size, item->_fileId);
-                if (!r) {
-                    item->_instruction = CSYNC_INSTRUCTION_ERROR;
-                    item->_errorString = tr("Could not update virtual file metadata: %1").arg(r.error());
-                    return;
-                }
+            itemCopy._serverHasIgnoredFiles |= prev._serverHasIgnoredFiles;
+            const auto result = _propagator->updateMetadata(itemCopy);
+            if (!result) {
+                item->_instruction = CSYNC_INSTRUCTION_ERROR;
+                item->_errorString = tr("Could not update file : %1").arg(result.error());
+                return;
             }
-
-            // Updating the db happens on success
-            _journal->setFileRecord(rec);
-
             // This might have changed the shared flag, so we must notify SyncFileStatusTracker for example
             emit itemCompleted(item);
         } else {
