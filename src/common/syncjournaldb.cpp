@@ -1234,35 +1234,6 @@ bool SyncJournalDb::updateFileRecordChecksum(const QString &filename,
     return query->exec();
 }
 
-bool SyncJournalDb::updateLocalMetadata(const QString &filename,
-    qint64 modtime, qint64 size, quint64 inode)
-
-{
-    QMutexLocker locker(&_mutex);
-
-    qCInfo(lcDb) << "Updating local metadata for:" << filename << modtime << size << inode;
-
-    const qint64 phash = getPHash(filename.toUtf8());
-    if (!checkConnect()) {
-        qCWarning(lcDb) << "Failed to connect database.";
-        return false;
-    }
-
-    const auto query = _queryManager.get(PreparedSqlQueryManager::SetFileRecordLocalMetadataQuery, QByteArrayLiteral("UPDATE metadata"
-                                                                                                                     " SET inode=?2, modtime=?3, filesize=?4"
-                                                                                                                     " WHERE phash == ?1;"),
-        _db);
-    if (!query) {
-        return false;
-    }
-
-    query->bindValue(1, phash);
-    query->bindValue(2, inode);
-    query->bindValue(3, modtime);
-    query->bindValue(4, size);
-    return query->exec();
-}
-
 Optional<SyncJournalDb::HasHydratedDehydrated> SyncJournalDb::hasHydratedOrDehydratedFiles(const QByteArray &filename)
 {
     QMutexLocker locker(&_mutex);

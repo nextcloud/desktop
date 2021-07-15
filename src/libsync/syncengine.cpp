@@ -304,53 +304,7 @@ void OCC::SyncEngine::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
     if (Utility::isConflictFile(item->_file))
         _seenConflictFiles.insert(item->_file);
     if (item->_instruction == CSYNC_INSTRUCTION_UPDATE_METADATA && !item->isDirectory()) {
-        // For directories, metadata-only updates will be done after all their files are propagated.
-
-        // Update the database now already:  New remote fileid or Etag or RemotePerm
-        // Or for files that were detected as "resolved conflict".
-        // Or a local inode/mtime change
-
-        // In case of "resolved conflict": there should have been a conflict because they
-        // both were new, or both had their local mtime or remote etag modified, but the
-        // size and mtime is the same on the server.  This typically happens when the
-        // database is removed. Nothing will be done for those files, but we still need
-        // to update the database.
-
-        // This metadata update *could* be a propagation job of its own, but since it's
-        // quick to do and we don't want to create a potentially large number of
-        // mini-jobs later on, we just update metadata right now.
-
-        if (item->_direction == SyncFileItem::Down) {
-            QString filePath = _localPath + item->_file;
-
-            // If the 'W' remote permission changed, update the local filesystem
-            SyncJournalFileRecord prev;
-            if (_journal->getFileRecord(item->_file, &prev)
-                && prev.isValid()
-                && prev._remotePerm.hasPermission(RemotePermissions::CanWrite) != item->_remotePerm.hasPermission(RemotePermissions::CanWrite)) {
-                const bool isReadOnly = !item->_remotePerm.isNull() && !item->_remotePerm.hasPermission(RemotePermissions::CanWrite);
-                FileSystem::setFileReadOnlyWeak(filePath, isReadOnly);
-            }
-            //TODO: what side effect could it have to directly modify the item?
-            auto itemCopy = *item;
-            if (itemCopy._checksumHeader.isEmpty()) {
-                itemCopy._checksumHeader = prev._checksumHeader;
-            }
-            itemCopy._serverHasIgnoredFiles |= prev._serverHasIgnoredFiles;
-            const auto result = _propagator->updateMetadata(itemCopy);
-            if (!result) {
-                item->_instruction = CSYNC_INSTRUCTION_ERROR;
-                item->_errorString = tr("Could not update file : %1").arg(result.error());
-                return;
-            }
-            // This might have changed the shared flag, so we must notify SyncFileStatusTracker for example
-            emit itemCompleted(item);
-        } else {
-            // Update only outdated data from the disk.
-            _journal->updateLocalMetadata(item->_file, item->_modtime, item->_size, item->_inode);
-        }
         _hasNoneFiles = true;
-        return;
     } else if (item->_instruction == CSYNC_INSTRUCTION_NONE) {
         _hasNoneFiles = true;
         if (_account->capabilities().uploadConflictFiles() && Utility::isConflictFile(item->_file)) {
@@ -502,6 +456,8 @@ void SyncEngine::startSync()
     _progressInfo->_status = ProgressInfo::Discovery;
     emit transmissionProgress(*_progressInfo);
 
+    // TODO: add a constructor to DiscoveryPhase
+    // pass a syncEngine object rather than copying everyhting to another object
     _discoveryPhase.reset(new DiscoveryPhase);
     _discoveryPhase->_account = _account;
     _discoveryPhase->_excludes = _excludedFiles.data();

@@ -67,7 +67,6 @@ public:
         ListFilesInPathQuery,
         SetFileRecordQuery,
         SetFileRecordChecksumQuery,
-        SetFileRecordLocalMetadataQuery,
         GetDownloadInfoQuery,
         SetDownloadInfoQuery,
         DeleteDownloadInfoQuery,

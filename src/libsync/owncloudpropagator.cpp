@@ -355,13 +355,22 @@ PropagateItemJob *OwncloudPropagator::createJob(const SyncFileItemPtr &item)
         } else {
             return new PropagateLocalRename(this, item);
         }
+    case CSYNC_INSTRUCTION_UPDATE_METADATA:
+        // For directories, metadata-only updates will be done after all their files are propagated.
+        if (item->isDirectory()) {
+            return nullptr;
+        }
+        return new PropagateUpdateMetaDataJob(this, item);
     case CSYNC_INSTRUCTION_IGNORE:
     case CSYNC_INSTRUCTION_ERROR:
         return new PropagateIgnoreJob(this, item);
-    default:
+    case CSYNC_INSTRUCTION_NONE:
+    case CSYNC_INSTRUCTION_STAT_ERROR:
+    case CSYNC_INSTRUCTION_EVAL_RENAME:
+    case CSYNC_INSTRUCTION_EVAL:
         return nullptr;
     }
-    return nullptr;
+    Q_UNREACHABLE();
 }
 
 qint64 OwncloudPropagator::smallFileSize()
@@ -1111,5 +1120,44 @@ QString OwncloudPropagator::fullRemotePath(const QString &tmp_file_name) const
 QString OwncloudPropagator::remotePath() const
 {
     return _remoteFolder;
+}
+
+PropagateUpdateMetaDataJob::PropagateUpdateMetaDataJob(OwncloudPropagator *propagator, const SyncFileItemPtr &item)
+    : PropagateItemJob(propagator, item)
+{
+}
+
+void OCC::PropagateUpdateMetaDataJob::start()
+{
+    // Update the database:  New remote fileid or Etag or RemotePerm
+    // Or for files that were detected as "resolved conflict".
+    // Or a local inode/mtime change
+
+    // In case of "resolved conflict": there should have been a conflict because they
+    // both were new, or both had their local mtime or remote etag modified, but the
+    // size and mtime is the same on the server.  This typically happens when the
+    // database is removed. Nothing will be done for those files, but we still need
+    // to update the database.
+
+    const QString filePath = propagator()->fullLocalPath(_item->_file);
+    if (_item->_direction == SyncFileItem::Down) {
+        // If the 'W' remote permission changed, update the local filesystem
+        SyncJournalFileRecord prev;
+        if (propagator()->_journal->getFileRecord(_item->_file, &prev)
+            && prev.isValid()
+            && prev._remotePerm.hasPermission(RemotePermissions::CanWrite) != _item->_remotePerm.hasPermission(RemotePermissions::CanWrite)) {
+            const bool isReadOnly = !_item->_remotePerm.isNull() && !_item->_remotePerm.hasPermission(RemotePermissions::CanWrite);
+            FileSystem::setFileReadOnlyWeak(filePath, isReadOnly);
+            if (_item->_checksumHeader.isEmpty()) {
+                _item->_checksumHeader = prev._checksumHeader;
+            }
+            _item->_serverHasIgnoredFiles |= prev._serverHasIgnoredFiles;
+        }
+    }
+    const auto result = propagator()->updateMetadata(*_item, filePath);
+    if (!result) {
+        done(SyncFileItem::SoftError, tr("Could not update file : %1").arg(result.error()));
+    }
+    done(SyncFileItem::Success);
 }
 }

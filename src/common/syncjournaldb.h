@@ -70,8 +70,6 @@ public:
     bool updateFileRecordChecksum(const QString &filename,
         const QByteArray &contentChecksum,
         const QByteArray &contentChecksumType);
-    bool updateLocalMetadata(const QString &filename,
-        qint64 modtime, qint64 size, quint64 inode);
 
     /// Return value for hasHydratedOrDehydratedFiles()
     struct HasHydratedDehydrated

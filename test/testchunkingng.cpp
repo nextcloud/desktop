@@ -268,16 +268,29 @@ private slots:
 
         // Now the next sync gets a NEW/NEW conflict and since there's no checksum
         // it just becomes a UPDATE_METADATA
-        auto checkEtagUpdated = [&](SyncFileItemSet &items) {
-            QCOMPARE(items.size(), 1);
-            QCOMPARE(items.begin()->get()->_file, QLatin1String("A"));
-            SyncJournalFileRecord record;
-            QVERIFY(fakeFolder.syncJournal().getFileRecord(QByteArray("A/a0"), &record));
-            QCOMPARE(record._etag, fakeFolder.remoteModifier().find("A/a0")->etag);
+        auto checkIsUpdateMetaData = [&](SyncFileItemSet &items) {
+            QCOMPARE(items.size(), 2);
+            auto it = items.cbegin();
+            QCOMPARE(it->get()->_file, QLatin1String("A"));
+            QCOMPARE(it->get()->_instruction, CSYNC_INSTRUCTION_UPDATE_METADATA);
+            it++;
+            QCOMPARE(it->get()->_file, QLatin1String("A/a0"));
+            QCOMPARE(it->get()->_instruction, CSYNC_INSTRUCTION_UPDATE_METADATA);
+            QCOMPARE(it->get()->_etag, fakeFolder.remoteModifier().find("A/a0")->etag);
         };
-        auto connection = connect(&fakeFolder.syncEngine(), &SyncEngine::aboutToPropagate, checkEtagUpdated);
+        auto checkEtagUpdated = [&](const SyncFileItemPtr &item) {
+            if (item->_file == QLatin1String("A/a0")) {
+                SyncJournalFileRecord record;
+                QVERIFY(fakeFolder.syncJournal().getFileRecord(QByteArray("A/a0"), &record));
+                QCOMPARE(record._etag, fakeFolder.remoteModifier().find("A/a0")->etag);
+                QCOMPARE(item->_etag, fakeFolder.remoteModifier().find("A/a0")->etag);
+            }
+        };
+        auto connection1 = connect(&fakeFolder.syncEngine(), &SyncEngine::aboutToPropagate, checkIsUpdateMetaData);
+        auto connection2 = connect(&fakeFolder.syncEngine(), &SyncEngine::itemCompleted, checkEtagUpdated);
         QVERIFY(fakeFolder.syncOnce());
-        disconnect(connection);
+        disconnect(connection1);
+        disconnect(connection2);
         QCOMPARE(nGET, 0);
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
@@ -287,9 +300,11 @@ private slots:
         QVERIFY(!fakeFolder.syncOnce()); // error: abort!
 
         // An EVAL/EVAL conflict is also UPDATE_METADATA when there's no checksums
-        connection = connect(&fakeFolder.syncEngine(), &SyncEngine::aboutToPropagate, checkEtagUpdated);
+        connection1 = connect(&fakeFolder.syncEngine(), &SyncEngine::aboutToPropagate, checkIsUpdateMetaData);
+        connection2 = connect(&fakeFolder.syncEngine(), &SyncEngine::itemCompleted, checkEtagUpdated);
         QVERIFY(fakeFolder.syncOnce());
-        disconnect(connection);
+        disconnect(connection1);
+        disconnect(connection2);
         QCOMPARE(nGET, 0);
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
@@ -303,7 +318,6 @@ private slots:
         fakeFolder.remoteModifier().find("A/a0")->checksums = moveChecksumHeader;
 
         QVERIFY(fakeFolder.syncOnce());
-        disconnect(connection);
         QCOMPARE(nGET, 0); // no new download, just a metadata update!
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 

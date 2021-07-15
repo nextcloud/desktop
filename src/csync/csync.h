@@ -103,25 +103,28 @@ Q_ENUM_NS(csync_status_codes_e)
   * Instruction enum. In the file traversal structure, it describes
   * the csync state of a file.
   */
+// clang-format off
 enum SyncInstructions {
     CSYNC_INSTRUCTION_NONE            = 0,       /* Nothing to do (UPDATE|RECONCILE) */
-    CSYNC_INSTRUCTION_EVAL            = 1 << 0,  /* There was changed compared to the DB (UPDATE) */
     CSYNC_INSTRUCTION_REMOVE          = 1 << 1,  /* The file need to be removed (RECONCILE) */
     CSYNC_INSTRUCTION_RENAME          = 1 << 2,  /* The file need to be renamed (RECONCILE) */
-    CSYNC_INSTRUCTION_EVAL_RENAME     = 1 << 11, /* The file is new, it is the destination of a rename (UPDATE) */
     CSYNC_INSTRUCTION_NEW             = 1 << 3,  /* The file is new compared to the db (UPDATE) */
     CSYNC_INSTRUCTION_CONFLICT        = 1 << 4,  /* The file need to be downloaded because it is a conflict (RECONCILE) */
     CSYNC_INSTRUCTION_IGNORE          = 1 << 5,  /* The file is ignored (UPDATE|RECONCILE) */
     CSYNC_INSTRUCTION_SYNC            = 1 << 6,  /* The file need to be pushed to the other remote (RECONCILE) */
-    CSYNC_INSTRUCTION_STAT_ERROR      = 1 << 7,
     CSYNC_INSTRUCTION_ERROR           = 1 << 8,
     CSYNC_INSTRUCTION_TYPE_CHANGE     = 1 << 9,  /* Like NEW, but deletes the old entity first (RECONCILE)
                                                     Used when the type of something changes from directory to file
                                                     or back. */
     CSYNC_INSTRUCTION_UPDATE_METADATA = 1 << 10, /* If the etag has been updated and need to be writen to the db,
                                                     but without any propagation (UPDATE|RECONCILE) */
-};
 
+    // TODO:
+    CSYNC_INSTRUCTION_EVAL_RENAME     = 1 << 11, // DEPRECATED REMOVED
+    CSYNC_INSTRUCTION_STAT_ERROR      = 1 << 7, // DEPRECATED REMOVED
+    CSYNC_INSTRUCTION_EVAL            = 1 << 0, // DEPRECATED REMOVED
+};
+// clang-format on
 Q_ENUM_NS(SyncInstructions)
 
 // This enum is used with BITFIELD(3) and BITFIELD(4) in several places.

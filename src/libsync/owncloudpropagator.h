@@ -573,6 +573,16 @@ private:
     const QString _remoteFolder; // remote folder, ends with '/'
 };
 
+/**
+ * @brief Update MetaData (Permissions and etag) of files
+ */
+class PropagateUpdateMetaDataJob : public PropagateItemJob
+{
+    Q_OBJECT
+public:
+    PropagateUpdateMetaDataJob(OwncloudPropagator *propagator, const SyncFileItemPtr &item);
+    void start() override;
+};
 }
 
 #endif
