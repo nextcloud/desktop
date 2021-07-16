@@ -194,12 +194,7 @@ QWebEnginePage * WebEnginePage::createWindow(QWebEnginePage::WebWindowType type)
 void WebEnginePage::setUrl(const QUrl &url)
 {
     QWebEnginePage::setUrl(url);
-
-    if (url.scheme() == "https") {
-        _enforceHttps = true;
-    } else {
-        _enforceHttps = false;
-    }
+    _enforceHttps = url.scheme() == "https";
 }
 
 bool WebEnginePage::certificateError(const QWebEngineCertificateError &certificateError)
