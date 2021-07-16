@@ -754,7 +754,7 @@ Táto akcia zruší všetky prebiehajúce synchronizácie.</translation>
     <message>
         <location filename="../src/gui/application.cpp" line="139"/>
         <source>Some settings were configured in newer versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Niektoré nastavenia boli nakonfigurované v novších verziách tohto klienta a používajú funkcie, ktoré v tejto verzii nie sú k dispozícii.&lt;br&gt;&lt;br&gt;% 1&lt;br&gt;&lt;br&gt;Aktuálny konfiguračný súbor bol už zálohovaný do &lt;i&gt;% 2&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="146"/>
@@ -1981,7 +1981,9 @@ Ak to bol omyl a rozhodnete sa tieto súbory ponechať, budú opäť synchronizo
         <source>The update channel determines which client updates will be offered for installation. The &quot;stable&quot; channel contains only upgrades that are considered reliable, while the versions in the &quot;beta&quot; channel may contain newer features and bugfixes, but have not yet been tested thoroughly.
 
 Note that this selects only what pool upgrades are taken from, and that there are no downgrades: So going back from the beta channel to the stable channel usually cannot be done immediately and means waiting for a stable version that is newer than the currently installed beta version.</source>
-        <translation type="unfinished"/>
+        <translation>Aktualizačný kanál určuje, ktoré aktualizácie klienta budú ponúkané na inštaláciu. „Stabilný“ kanál obsahuje iba upgrady, ktoré sa považujú za spoľahlivé, zatiaľ čo verzie v „beta“ kanáli môžu obsahovať novšie funkcie a opravy chýb, avšak ešte neboli dôkladne otestované.
+
+Upozorňujeme, že sa tým vyberie iba to, odkiaľ sa aktualizácie budú sťahovať, a že nedôjde k nijakému downgrade. Takže návrat z beta kanála do stabilného kanála sa zvyčajne nedá vykonať okamžite a znamená čakať na stabilnú verziu, ktorá je novšia ako aktuálne nainštalovaná beta verzia.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="324"/>
@@ -2190,7 +2192,9 @@ Položky u ktorých je povolené mazanie sa vymažú ak by bránili odstráneniu
         <source>The client can write debug logs to a temporary folder. These logs are very helpful for diagnosing problems.
 Since log files can get large, the client will start a new one for each sync run and compress older ones. It will also delete log files after a couple of hours to avoid consuming too much disk space.
 If enabled, logs will be written to %1</source>
-        <translation type="unfinished"/>
+        <translation>Klient môže zapisovať protokoly ladenia do dočasného priečinka. Tieto protokoly sú veľmi užitočné na diagnostiku problémov.
+Pretože sa súbory protokolu môžu zväčšiť, klient vytvorí nový pre každé spustenie synchronizácie a komprimuje staršie. Po niekoľkých hodinách vymaže aj logovacie súbory, aby nedošlo k nadmernej spotrebe miesta na disku.
+Ak je povolené, protokoly sa zapíšu na% 1</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="64"/>
@@ -2201,7 +2205,8 @@ If enabled, logs will be written to %1</source>
         <location filename="../src/gui/logbrowser.cpp" line="70"/>
         <source>This setting persists across client restarts.
 Note that using any logging command line options will override this setting.</source>
-        <translation type="unfinished"/>
+        <translation>Toto nastavenie pretrváva pri reštartovaní klienta.
+Upozorňujeme, že použitie akýchkoľvek príkazov pre logovanie z príkazového riadku prepíše toto nastavenie.</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="70"/>
@@ -2993,7 +2998,13 @@ The virtual files mode is mutually exclusive with selective sync. Currently unse
 Switching to this mode will abort any currently running synchronization.
 
 This is a new, experimental mode. If you decide to use it, please report any issues that come up.</source>
-        <translation type="unfinished"/>
+        <translation>Keď je povolený režim „virtuálne súbory“, nebudú sa spočiatku sťahovať žiadne súbory. Namiesto toho sa vytvorí malý súbor „% 1“ pre každý súbor, ktorý existuje na serveri. Obsah je možné stiahnuť spustením týchto súborov alebo pomocou ich kontextového menu.
+
+Režim virtuálnych súborov sa vzájomne vylučuje so selektívnou synchronizáciou. Aktuálne nevybraté priečinky sa preložia do priečinkov iba online a nastavenia selektívnej synchronizácie sa obnovia.
+
+Prepnutím do tohto režimu sa preruší akákoľvek aktuálne prebiehajúca synchronizácia.
+
+Toto je nový experimentálny režim. Ak sa ho rozhodnete použiť, nahláste všetky problémy, ktoré sa objavia.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="419"/>
@@ -4752,7 +4763,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/vfs/cfapi/vfs_cfapi.cpp" line="334"/>
         <source>It seems that you are trying to download a virtual file that is end-to-end encrypted. Implicitly downloading such files is not supported at the moment. To workaround this issue, go to the settings and mark the encrypted folder with &quot;Make always available locally&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Zdá sa, že sa pokúšate stiahnuť virtuálny súbor, ktorý je end-to-end šifrovaný. Implicitné sťahovanie takýchto súborov nie je momentálne podporované. Ak chcete tento problém obísť, prejdite do nastavení a označte zašifrovaný priečinok ako „Sprístupniť vždy lokálne“.</translation>
     </message>
 </context>
 <context>
@@ -5642,7 +5653,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/main.cpp" line="45"/>
         <source>%1 requires on a working system tray. If you are running XFCE, please follow &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;these instructions&lt;/a&gt;. Otherwise, please install a system tray application such as &quot;trayer&quot; and try again.</source>
-        <translation type="unfinished"/>
+        <translation>%1 vyžaduje funkčnú systémovú lištu &quot;tray&quot;. Pokiaľ používate prostredie XFCE, prosím pokračujte &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;podľa týchto inštrukcií&lt;/a&gt;. Inak si prosím nainštalujte aplikáciu systémovej lišty &quot;tray&quot; ako napr. &apos;trayer&apos; a skúste to znova.</translation>
     </message>
 </context>
 <context>
