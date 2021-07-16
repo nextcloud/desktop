@@ -83,7 +83,7 @@
         <ScheduleReboot After="InstallFinalize">(SCHEDULE_REBOOT=1) OR NOT (UILevel=2)</ScheduleReboot>
     </InstallExecuteSequence>
 	
-	<util:CloseApplication Id="CloseRunningOldApp" CloseMessage="yes" Description="Please, exit an old $(var.AppExe)!" TerminateProcess="1" RebootPrompt="no" Target="$(var.AppExe)" />
+	<util:CloseApplication Id="CloseRunningOldApp" CloseMessage="yes" Description="Please, exit an old $(var.AppExe)!" TerminateProcess="yes" RebootPrompt="no" Target="$(var.AppExe)" />
 
     <!-- "Add or Remove" Programs Entries -->
     <Property Id="ARPPRODUCTICON">$(var.AppIcon)</Property>
