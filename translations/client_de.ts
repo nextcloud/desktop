@@ -2749,7 +2749,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="369"/>
         <source>Failed to dehydrate %1, the file is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Dehydrated Prozess fehlgeschlagen, Datei %1 wird gerade benutzt.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="1016"/>
