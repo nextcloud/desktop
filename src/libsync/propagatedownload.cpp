@@ -366,7 +366,7 @@ void PropagateDownloadFile::start()
         }
         if (FileSystem::isFileLocked(fsPath, FileSystem::LockMode::Exclusive)) {
             Q_EMIT propagator()->seenLockedFile(fsPath, FileSystem::LockMode::Exclusive);
-            done(SyncFileItem::SoftError, tr("Failed to dehydrate %1, the file is currently in use").arg(fsPath));
+            done(SyncFileItem::SoftError, tr("Failed to free up space, the file %1 is currently in use").arg(fsPath));
             return;
         }
         qCDebug(lcPropagateDownload) << "dehydrating file" << _item->_file;
