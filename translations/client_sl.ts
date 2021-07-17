@@ -5382,16 +5382,6 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
         <translation>Preklopi v drug račun</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="94"/>
-        <source>Account connected</source>
-        <translation>Račun je povezan</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="94"/>
-        <source>Account not connected</source>
-        <translation>Račun ni povezan</translation>
-    </message>
-    <message>
         <location filename="../src/gui/tray/UserLine.qml" line="92"/>
         <source>Current user status is online</source>
         <translation>Trenutno je uporabnik povezan</translation>
@@ -5400,6 +5390,16 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
         <location filename="../src/gui/tray/UserLine.qml" line="92"/>
         <source>Current user status is do not disturb</source>
         <translation>Trenutno uporabnik ne želi motenj</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/UserLine.qml" line="94"/>
+        <source>Account connected</source>
+        <translation>Račun je povezan</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/UserLine.qml" line="94"/>
+        <source>Account not connected</source>
+        <translation>Račun ni povezan</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="140"/>

@@ -5366,16 +5366,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>切换到账号</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="94"/>
-        <source>Account connected</source>
-        <translation>账号已连接</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="94"/>
-        <source>Account not connected</source>
-        <translation>账号未连接</translation>
-    </message>
-    <message>
         <location filename="../src/gui/tray/UserLine.qml" line="92"/>
         <source>Current user status is online</source>
         <translation>当前用户状态为“在线”</translation>
@@ -5384,6 +5374,16 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/tray/UserLine.qml" line="92"/>
         <source>Current user status is do not disturb</source>
         <translation>当前用户状态为“请勿打扰”</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/UserLine.qml" line="94"/>
+        <source>Account connected</source>
+        <translation>账号已连接</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/UserLine.qml" line="94"/>
+        <source>Account not connected</source>
+        <translation>账号未连接</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="140"/>

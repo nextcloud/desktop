@@ -5390,16 +5390,6 @@ Fout bij instellen pin status
         <translation>Omschakelen naar account</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="94"/>
-        <source>Account connected</source>
-        <translation>Account verbonden</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="94"/>
-        <source>Account not connected</source>
-        <translation>Account niet verbonden</translation>
-    </message>
-    <message>
         <location filename="../src/gui/tray/UserLine.qml" line="92"/>
         <source>Current user status is online</source>
         <translation>Huidige gebruikersstatus is online</translation>
@@ -5408,6 +5398,16 @@ Fout bij instellen pin status
         <location filename="../src/gui/tray/UserLine.qml" line="92"/>
         <source>Current user status is do not disturb</source>
         <translation>Huidige gebruikersstatus is niet storen</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/UserLine.qml" line="94"/>
+        <source>Account connected</source>
+        <translation>Account verbonden</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/UserLine.qml" line="94"/>
+        <source>Account not connected</source>
+        <translation>Account niet verbonden</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="140"/>

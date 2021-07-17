@@ -3202,12 +3202,12 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1025"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Error al actualizar los metadatos: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1029"/>
         <source>File is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>El archivo se encuentra en uso</translation>
     </message>
 </context>
 <context>
@@ -3281,12 +3281,12 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="1141"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Error al actualizar los metadatos: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="1144"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>El archivo %1 se encuentra en uso</translation>
     </message>
 </context>
 <context>
@@ -3327,12 +3327,12 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="194"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Error al actualizar los metadatos: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="197"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>El archivo %1 se encuentra en uso</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="193"/>
@@ -3373,17 +3373,17 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="262"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Error al actualizar los metadatos: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="265"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>El archivo %1 se encuentra en uso</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="271"/>
         <source>Failed to rename file</source>
-        <translation type="unfinished"/>
+        <translation>Fallo al renombrar el archivo</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="257"/>
@@ -3428,12 +3428,12 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="264"/>
         <source>Error writing metadata to the database: %1</source>
-        <translation type="unfinished"/>
+        <translation>Error al escribir los metadatos en la base de datos: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="267"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>El archivo %1 se encuentra en uso</translation>
     </message>
 </context>
 <context>
@@ -3451,12 +3451,12 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="257"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Error al actualizar los metadatos: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="260"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>El archivo %1 se encuentra en uso</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="261"/>
@@ -3516,12 +3516,12 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="770"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Error al actualizar los metadatos: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="773"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>El archivo %1 se encuentra en uso</translation>
     </message>
 </context>
 <context>
@@ -5368,7 +5368,7 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
     <message>
         <location filename="../src/common/syncjournaldb.cpp" line="975"/>
         <source>Failed to connect database.</source>
-        <translation type="unfinished"/>
+        <translation>Fallo en la conexión a la base de datos.</translation>
     </message>
 </context>
 <context>
@@ -5384,16 +5384,6 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
         <translation>Cambiar a la cuenta</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="94"/>
-        <source>Account connected</source>
-        <translation>Cuenta conectada</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="94"/>
-        <source>Account not connected</source>
-        <translation>Cuenta no conectada</translation>
-    </message>
-    <message>
         <location filename="../src/gui/tray/UserLine.qml" line="92"/>
         <source>Current user status is online</source>
         <translation>El estado actual del usuario es en línea</translation>
@@ -5402,6 +5392,16 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
         <location filename="../src/gui/tray/UserLine.qml" line="92"/>
         <source>Current user status is do not disturb</source>
         <translation>El estado actual del usuario es no molestar</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/UserLine.qml" line="94"/>
+        <source>Account connected</source>
+        <translation>Cuenta conectada</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/UserLine.qml" line="94"/>
+        <source>Account not connected</source>
+        <translation>Cuenta no conectada</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="140"/>

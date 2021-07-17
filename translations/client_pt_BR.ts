@@ -5384,16 +5384,6 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <translation>Mudar para a conta</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="94"/>
-        <source>Account connected</source>
-        <translation>Conta conectada</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="94"/>
-        <source>Account not connected</source>
-        <translation>Conta não conectada</translation>
-    </message>
-    <message>
         <location filename="../src/gui/tray/UserLine.qml" line="92"/>
         <source>Current user status is online</source>
         <translation>Online é o status atual do usuário</translation>
@@ -5402,6 +5392,16 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <location filename="../src/gui/tray/UserLine.qml" line="92"/>
         <source>Current user status is do not disturb</source>
         <translation>Não Perturbe é o status atual do usuário</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/UserLine.qml" line="94"/>
+        <source>Account connected</source>
+        <translation>Conta conectada</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/UserLine.qml" line="94"/>
+        <source>Account not connected</source>
+        <translation>Conta não conectada</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="140"/>

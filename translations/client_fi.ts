@@ -209,7 +209,7 @@
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="430"/>
         <source>Server replied &quot;%1 %2&quot; to &quot;%3 %4&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Palvelin vastasi &quot;%1 %2&quot; pyyntöön &quot;%3 %4&quot;</translation>
     </message>
 </context>
 <context>
@@ -217,12 +217,12 @@
     <message>
         <location filename="../src/libsync/abstractpropagateremotedeleteencrypted.cpp" line="139"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Palvelin vastasi vääräll HTTP-koodilla: Odotettiin koodia 204, mutta vastaanotettiin &quot;%1 %2&quot;.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractpropagateremotedeleteencrypted.cpp" line="181"/>
         <source>&quot;%1 Failed to unlock encrypted folder %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>&quot;%1 Salatun hakemiston avaaminen epäonnistui %2&quot;.</translation>
     </message>
 </context>
 <context>
@@ -230,12 +230,12 @@
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="402"/>
         <source>End to end encryption mnemonic</source>
-        <translation type="unfinished"/>
+        <translation>Päästä päähän-salauksen avain</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="403"/>
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
-        <translation type="unfinished"/>
+        <translation>Kryptografisen identiteettisi suojaamiseksi salaamme sen 12-sanaisella avainkoodilla. Kirjaa se ylös ja pidä turvassa. Avainkoodia tarvitaan muiden laitteiden (kuten puhelimen tai kannettavan tietokoneen) yhdistämiseksi tiliisi.</translation>
     </message>
 </context>
 <context>
@@ -286,7 +286,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="88"/>
         <source>End-to-End Encryption with Virtual Files</source>
-        <translation type="unfinished"/>
+        <translation>Päästä päähän-salaus ja  virtuaalitiedostot</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="89"/>
@@ -296,12 +296,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="97"/>
         <source>Don&apos;t encrypt folder</source>
-        <translation type="unfinished"/>
+        <translation>Älä salaa kansiota</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="100"/>
         <source>Encrypt folder</source>
-        <translation type="unfinished"/>
+        <translation>Salaa kansio</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="208"/>
@@ -312,7 +312,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="210"/>
         <source>Display mnemonic</source>
-        <translation type="unfinished"/>
+        <translation>Näytä avainkoodi</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="216"/>
@@ -348,7 +348,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="261"/>
         <source>Show E2E mnemonic</source>
-        <translation type="unfinished"/>
+        <translation>Näytä E2E-avainkoodi</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="245"/>
@@ -364,12 +364,12 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="354"/>
         <source>Encryption failed</source>
-        <translation type="unfinished"/>
+        <translation>Salaus epäonnistui</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="354"/>
         <source>Could not encrypt folder because the folder does not exist anymore</source>
-        <translation type="unfinished"/>
+        <translation>Kansiota ei voida salata, koska sitä ei ole enää olemassa</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="418"/>
@@ -433,12 +433,12 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="565"/>
         <source>Disable virtual file support …</source>
-        <translation type="unfinished"/>
+        <translation>Poista virtuaalitiedostojen tuki käytöstä …</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="573"/>
         <source>Enable virtual file support %1 …</source>
-        <translation type="unfinished"/>
+        <translation>Ota käyttöön virtuaalitiedostojen tuki %1 …</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="573"/>
@@ -473,7 +473,7 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="831"/>
         <source>Disable virtual file support?</source>
-        <translation type="unfinished"/>
+        <translation>Poistetaanko virtuaalitiedostojen tuki käytöstä?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="832"/>
@@ -482,7 +482,11 @@ Wait for the new sync, then encrypt it.</source>
 The only advantage of disabling virtual file support is that the selective sync feature will become available again.
 
 This action will abort any currently running synchronization.</source>
-        <translation type="unfinished"/>
+        <translation>Tämä toiminto ottaa pois käytöstä virtuaalitiedostojen tuen. Siitä johtuen vain niiden kansioiden tiedostot ladataan, jotka ovat merkattuna &quot;Käytettävissä vain online-tilassa&quot;.
+
+Ainoa etu virtuaalitiedostojen tuen poistamisesta käytöstä on se, että valikoiva synkronointi otetaan käyttöön.
+
+Tämä toiminto peruu kaikki tämänhetkiset synkronoinnit.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="839"/>
@@ -542,7 +546,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1086"/>
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
-        <translation type="unfinished"/>
+        <translation>Palvelimen versiota %1 ei tueta! Jatka omalla vastuulla.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1088"/>
@@ -597,12 +601,12 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1307"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
-        <translation type="unfinished"/>
+        <translation>Seuraavia kansioita ei synkronoitu, koska ne sijaitsevat ulkoisella tallennustilalla:</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1308"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
-        <translation type="unfinished"/>
+        <translation>Seuraavia kansioita ei synkronoitu, koska ne ovat liian suuria tai ulkoisia tallennustiloja:</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1320"/>
@@ -673,17 +677,17 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/tray/ActivityListModel.cpp" line="335"/>
         <source>Files from the ignore list as well as symbolic links are not synced.</source>
-        <translation type="unfinished"/>
+        <translation>Symbolisia linkkejä ja tiedostoja, jotka ovat ohitettavien tiedostojen listalla, ei synkronoida.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityListModel.cpp" line="512"/>
         <source>For more activities please open the Activity app.</source>
-        <translation type="unfinished"/>
+        <translation>Lisää tapahtumia löydät Tapahtumat-sovelluksesta.</translation>
     </message>
     <message>
         <location filename="../src/gui/activitylistmodel.cpp" line="241"/>
         <source>Files from the ignore list as well as symbolic links are not synced. This includes:</source>
-        <translation type="unfinished"/>
+        <translation>Symbolisia linkkejä ja tiedostoja, jotka ovat ohitettavien tiedostojen listalla, ei synkronoida. Tämä sisältää:</translation>
     </message>
 </context>
 <context>
@@ -958,7 +962,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="159"/>
         <source>Timeout</source>
-        <translation type="unfinished"/>
+        <translation>Aikakatkaisu</translation>
     </message>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="159"/>
@@ -992,7 +996,7 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/libsync/discoveryphase.cpp" line="497"/>
         <location filename="../src/libsync/discoveryphase.cpp" line="522"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
-        <translation type="unfinished"/>
+        <translation>Palvelinvirhe: PROPFIND-vastaus ei ole XML-formaatissa!</translation>
     </message>
 </context>
 <context>
@@ -1090,12 +1094,12 @@ OpenSSL-kirjastosi kanssa saattaa olla ongelma.</translation>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="215"/>
         <source>Reopen Browser</source>
-        <translation type="unfinished"/>
+        <translation>Avaa selain uudelleen</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="218"/>
         <source>Copy Link</source>
-        <translation type="unfinished"/>
+        <translation>Kopioi linkki</translation>
     </message>
 </context>
 <context>
@@ -1237,7 +1241,7 @@ OpenSSL-kirjastosi kanssa saattaa olla ongelma.</translation>
     <message>
         <location filename="../src/gui/folder.cpp" line="1097"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
-        <translation type="unfinished"/>
+        <translation>Jos haluat ladata sen, valitse kansio asetuksista.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1157"/>
@@ -2003,7 +2007,7 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/socketapi.cpp" line="668"/>
         <source>Please enter a password for your link share:</source>
-        <translation type="unfinished"/>
+        <translation>Syötä salasana linkkijaolle:</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="687"/>
@@ -2015,7 +2019,9 @@ Note that this selects only what pool upgrades are taken from, and that there ar
         <source>Could not retrieve or create the public link share. Error:
 
 %1</source>
-        <translation type="unfinished"/>
+        <translation>Julkisen linkkijaon nouto tai luonti epäonnistui. Virhe:
+
+%1</translation>
     </message>
 </context>
 <context>
@@ -2028,7 +2034,7 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="111"/>
         <source>Reading from keychain failed with error: &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Avainnipusta lukeminen epäonnistui, virhe: &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="118"/>
@@ -2113,17 +2119,17 @@ Kohteet, joissa poisto on sallittu, poistetaan, jos ne estävät kansion poistam
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="94"/>
         <source>Cannot write changes to &apos;%1&apos;.</source>
-        <translation type="unfinished"/>
+        <translation>Muutoksia ei voitu kirjoittaa kohteeseen &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="112"/>
         <source>Add Ignore Pattern</source>
-        <translation type="unfinished"/>
+        <translation>Lisää kaava</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="113"/>
         <source>Add a new ignore pattern:</source>
-        <translation type="unfinished"/>
+        <translation>Lisää uusi ohituskaava:</translation>
     </message>
 </context>
 <context>
@@ -2142,7 +2148,7 @@ Kohteet, joissa poisto on sallittu, poistetaan, jos ne estävät kansion poistam
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="55"/>
         <source>&lt;p&gt;Copyright 2017-2021 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2021 ownCloud GmbH&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Copyright 2017-2021 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2021 ownCloud GmbH&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="55"/>
@@ -2307,7 +2313,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="464"/>
         <source>Restart and update</source>
-        <translation type="unfinished"/>
+        <translation>Käynnistä uudelleen ja päivitä</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="465"/>
@@ -2492,12 +2498,12 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="148"/>
         <source>Downloading %1. Please wait …</source>
-        <translation type="unfinished"/>
+        <translation>Ladataan %1. Odota …</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="150"/>
         <source>%1 available. Restart application to start the update.</source>
-        <translation type="unfinished"/>
+        <translation>%1 on saatavilla. Käynnistä sovellus uudelleen aloittaaksesi päivityksen.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="151"/>
@@ -2507,7 +2513,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="152"/>
         <source>Could not download update. Please open %1 to download the update manually.</source>
-        <translation type="unfinished"/>
+        <translation>Päivityksen lataus epäonnistui. Avaa %1 ladataksesi päivityksen manuaalisesti.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="154"/>
@@ -2517,7 +2523,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="156"/>
         <source>New %1 is available. Please open %2 to download the update.</source>
-        <translation type="unfinished"/>
+        <translation>Uusi %1 on saatavilla. Avaa %2 ladataksesi päivityksen.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="158"/>
@@ -2532,7 +2538,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="156"/>
         <source>New %1 is available. Please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt; to download the update.</source>
-        <translation type="unfinished"/>
+        <translation>Uusi %1 on saatavilla. Klikkaa &lt;a href=&apos;%2&apos;&gt;tästä&lt;/a&gt; ladataksesi päivityksen.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="164"/>
@@ -2560,7 +2566,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="60"/>
         <source>Connect</source>
-        <translation type="unfinished"/>
+        <translation>Yhdistä</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="54"/>
@@ -2571,18 +2577,18 @@ for additional privileges during the process.</source>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="88"/>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="236"/>
         <source>Use &amp;virtual files instead of downloading content immediately %1</source>
-        <translation type="unfinished"/>
+        <translation>Käytä &amp;virtuaalitiedostoja sen sijaan, että sisältö ladataan välittömästi %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="88"/>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="236"/>
         <source>(experimental)</source>
-        <translation type="unfinished"/>
+        <translation>(kokeellinen)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="232"/>
         <source>Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter.</source>
-        <translation type="unfinished"/>
+        <translation>Windows ei tue virtuaalitiedostoja levyosioiden juurihakemistoissa. Valitse alikansio.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="270"/>
@@ -2613,12 +2619,12 @@ for additional privileges during the process.</source>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="286"/>
         <source>%1 free space</source>
         <comment>%1 gets replaced with the size and a matching unit. Example: 3 MB or 5 GB</comment>
-        <translation type="unfinished"/>
+        <translation>%1 vapaata tilaa</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="370"/>
         <source>Virtual files are not available for the selected folder</source>
-        <translation type="unfinished"/>
+        <translation>Virtuaalitiedostot eivät ole käytettävissä valitulle kansiolle</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="430"/>
@@ -2732,7 +2738,7 @@ for additional privileges during the process.</source>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="86"/>
         <source>The link to your %1 web interface when you open it in the browser.</source>
         <comment>%1 will be replaced with the application name</comment>
-        <translation type="unfinished"/>
+        <translation>Linkki %1 verkkokäyttöliittymään, kun se avataan selaimessa.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="80"/>
@@ -2742,12 +2748,12 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="95"/>
         <source>Log in to your %1</source>
-        <translation type="unfinished"/>
+        <translation>Kirjautuminen %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="96"/>
         <source>This is the link to your %1 web interface when you open it in the browser.&lt;br/&gt;It looks like https://cloud.example.com or https://example.com/cloud</source>
-        <translation type="unfinished"/>
+        <translation>Linkki %1$s selainkäyttöliittymääsi.&lt;br/&gt;Se näyttää tältä: https://cloud.example.com tai https://example.com/cloud</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="185"/>
@@ -2769,7 +2775,7 @@ Sen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="250"/>
         <source>Server address does not seem to be valid</source>
-        <translation type="unfinished"/>
+        <translation>Palvelimen osoite ei vaikuta kelvolliselta</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="293"/>
@@ -2842,7 +2848,7 @@ Sen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="453"/>
         <source>OK</source>
-        <translation type="unfinished"/>
+        <translation>OK</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="455"/>
@@ -2957,7 +2963,7 @@ Sen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="404"/>
         <source>Enable experimental feature?</source>
-        <translation type="unfinished"/>
+        <translation>Otetaanko kokeellinen toiminto käyttöön?</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="405"/>
@@ -5347,16 +5353,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Vaihda käyttäjään</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="94"/>
-        <source>Account connected</source>
-        <translation>Tili yhdistetty</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="94"/>
-        <source>Account not connected</source>
-        <translation>Tiliä ei yhdistetty</translation>
-    </message>
-    <message>
         <location filename="../src/gui/tray/UserLine.qml" line="92"/>
         <source>Current user status is online</source>
         <translation>Nykyinen käyttäjän tila on Online</translation>
@@ -5365,6 +5361,16 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/tray/UserLine.qml" line="92"/>
         <source>Current user status is do not disturb</source>
         <translation>Nykyinen käyttäjän tila on &apos;Älä häiritse&apos;</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/UserLine.qml" line="94"/>
+        <source>Account connected</source>
+        <translation>Tili yhdistetty</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/UserLine.qml" line="94"/>
+        <source>Account not connected</source>
+        <translation>Tiliä ei yhdistetty</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="140"/>
