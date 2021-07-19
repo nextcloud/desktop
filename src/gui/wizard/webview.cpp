@@ -194,7 +194,7 @@ QWebEnginePage * WebEnginePage::createWindow(QWebEnginePage::WebWindowType type)
 void WebEnginePage::setUrl(const QUrl &url)
 {
     QWebEnginePage::setUrl(url);
-    _enforceHttps = url.scheme() == "https";
+    _enforceHttps = url.scheme() == QStringLiteral("https");
 }
 
 bool WebEnginePage::certificateError(const QWebEngineCertificateError &certificateError)
@@ -220,7 +220,7 @@ bool WebEnginePage::certificateError(const QWebEngineCertificateError &certifica
 
 bool WebEnginePage::acceptNavigationRequest(const QUrl &url, QWebEnginePage::NavigationType /*type*/, bool /*isMainFrame*/)
 {
-    if (_enforceHttps && url.scheme() != "https") {
+    if (_enforceHttps && url.scheme() != QStringLiteral("https")) {
         QMessageBox::warning(nullptr, "Security warning", "Can not follow non https link on a https website. This might be a security issue. Please contact your administrator");
         return false;
     }

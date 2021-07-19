@@ -79,7 +79,7 @@ void Flow2Auth::fetchNewToken(const TokenAction action)
 
     // Step 1: Initiate a login, do an anonymous POST request
     QUrl url = Utility::concatUrlPath(_account->url().toString(), QLatin1String("/index.php/login/v2"));
-    _enforceHttps = url.scheme() == "https";
+    _enforceHttps = url.scheme() == QStringLiteral("https");
 
     // add 'Content-Length: 0' header (see https://github.com/nextcloud/desktop/issues/1473)
     QNetworkRequest req;
@@ -99,7 +99,7 @@ void Flow2Auth::fetchNewToken(const TokenAction action)
             && !json.isEmpty()) {
             pollToken = json.value("poll").toObject().value("token").toString();
             pollEndpoint = json.value("poll").toObject().value("endpoint").toString();
-            if (_enforceHttps && QUrl(pollEndpoint).scheme() != "https") {
+            if (_enforceHttps && QUrl(pollEndpoint).scheme() != QStringLiteral("https")) {
                 qCWarning(lcFlow2auth) << "Can not poll endpoint because the returned url" << _pollEndpoint << "does not start with https";
                 emit result(Error, tr("The polling URL does not start with https despite the login URL started with https. Login will not be possible because this might be a security issue. Please contact your administrator."));
                 return;
@@ -206,7 +206,7 @@ void Flow2Auth::slotPollTimerTimeout()
         if (reply->error() == QNetworkReply::NoError && jsonParseError.error == QJsonParseError::NoError
             && !json.isEmpty()) {
             serverUrl = json["server"].toString();
-            if (_enforceHttps && serverUrl.scheme() != "https") {
+            if (_enforceHttps && serverUrl.scheme() != QStringLiteral("https")) {
                 qCWarning(lcFlow2auth) << "Returned server url" << serverUrl << "does not start with https";
                 emit result(Error, tr("The returned server URL does not start with https despite the login URL started with https. Login will not be possible because this might be a security issue. Please contact your administrator."));
                 return;
