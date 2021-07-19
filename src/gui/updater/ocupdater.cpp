@@ -104,15 +104,20 @@ bool OCUpdater::performUpdate()
     QString updateFile = settings.value(updateAvailableC).toString();
     if (!updateFile.isEmpty() && QFile(updateFile).exists()
         && !updateSucceeded() /* Someone might have run the updater manually between restarts */) {
-        const QString name = Theme::instance()->appNameGUI();
-        if (QMessageBox::information(nullptr, tr("New %1 Update Ready").arg(name),
-                tr("A new update for %1 is about to be installed. The updater may ask\n"
-                   "for additional privileges during the process.")
-                    .arg(name),
-                QMessageBox::Ok)) {
+        const auto messageBoxStartInstaller = new QMessageBox(QMessageBox::Information,
+            tr("New %1 update ready").arg(Theme::instance()->appNameGUI()),
+            tr("A new update for %1 is about to be installed. The updater may ask\n"
+               "for additional privileges during the process.")
+                .arg(Theme::instance()->appNameGUI()),
+            QMessageBox::Ok,
+            nullptr);
+
+        messageBoxStartInstaller->setAttribute(Qt::WA_DeleteOnClose);
+
+        connect(messageBoxStartInstaller, &QMessageBox::finished, this, [this] {
             slotStartInstaller();
-            return true;
-        }
+        });
+        messageBoxStartInstaller->open();
     }
     return false;
 }
@@ -216,6 +221,7 @@ void OCUpdater::slotStartInstaller()
 
         QProcess::startDetached("powershell.exe", QStringList{"-Command", command});
     }
+    qApp->quit();
 }
 
 void OCUpdater::checkForUpdate()
@@ -476,7 +482,6 @@ void NSISUpdater::showUpdateErrorDialog(const QString &targetVersion)
     // askagain: do nothing
     connect(retry, &QAbstractButton::clicked, this, [this]() {
         slotStartInstaller();
-        qApp->quit();
     });
     connect(getupdate, &QAbstractButton::clicked, this, [this]() {
         slotOpenUpdateUrl();
