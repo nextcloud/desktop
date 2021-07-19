@@ -34,12 +34,13 @@
 #include <winbase.h>
 #endif
 
-#include <QStack>
-#include <QFileInfo>
+#include <QApplication>
 #include <QDir>
+#include <QFileInfo>
 #include <QLoggingCategory>
-#include <QTimer>
 #include <QObject>
+#include <QStack>
+#include <QTimer>
 #include <QTimerEvent>
 #include <qmath.h>
 
@@ -106,6 +107,22 @@ PropagateItemJob::~PropagateItemJob()
         // we might risk end up with dangling pointer in the list which may cause crashes.
         p->_activeJobList.removeAll(this);
     }
+}
+
+bool PropagateItemJob::scheduleSelfOrChild()
+{
+    if (_state != NotYetStarted) {
+        return false;
+    }
+    qCInfo(lcPropagator) << "Starting" << _item->_instruction << "propagation of" << _item->destination() << "by" << this;
+
+    _state = Running;
+    if (thread() != QApplication::instance()->thread()) {
+        QMetaObject::invokeMethod(this, &PropagateItemJob::start); // We could be in a different thread (neon jobs)
+    } else {
+        start();
+    }
+    return true;
 }
 
 static qint64 getMinBlacklistTime()
@@ -283,22 +300,6 @@ void PropagateItemJob::done(SyncFileItem::Status statusArg, const QString &error
     if (_item->_status == SyncFileItem::FatalError) {
         // Abort all remaining jobs.
         propagator()->abort();
-    }
-}
-
-void PropagateItemJob::slotRestoreJobFinished(SyncFileItem::Status status)
-{
-    QString msg;
-    if (_restoreJob) {
-        msg = _restoreJob->restoreJobMsg();
-        _restoreJob->setRestoreJobMsg();
-    }
-
-    if (status == SyncFileItem::Success || status == SyncFileItem::Conflict
-        || status == SyncFileItem::Restoration) {
-        done(SyncFileItem::SoftError, msg);
-    } else {
-        done(status, tr("A file or folder was removed from a read only share, but restoring failed: %1").arg(msg));
     }
 }
 

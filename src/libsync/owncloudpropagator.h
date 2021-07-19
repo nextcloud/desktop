@@ -157,25 +157,8 @@ class PropagateItemJob : public PropagatorJob
 protected:
     virtual void done(SyncFileItem::Status status, const QString &errorString = QString());
 
-    /*
-     * set a custom restore job message that is used if the restore job succeeded.
-     * It is displayed in the activity view.
-     */
-    QString restoreJobMsg() const
-    {
-        return _item->_isRestoration ? _item->_errorString : QString();
-    }
-    void setRestoreJobMsg(const QString &msg = QString())
-    {
-        _item->_isRestoration = true;
-        _item->_errorString = msg;
-    }
-
-protected slots:
-    void slotRestoreJobFinished(SyncFileItem::Status status);
-
-private:
-    QScopedPointer<PropagateItemJob> _restoreJob;
+    SyncFileItemPtr _item;
+    friend class PropagateDirectory;
 
 public:
     PropagateItemJob(OwncloudPropagator *propagator, const SyncFileItemPtr &item)
@@ -184,21 +167,7 @@ public:
     {
     }
     ~PropagateItemJob() override;
-
-    bool scheduleSelfOrChild() override
-    {
-        if (_state != NotYetStarted) {
-            return false;
-        }
-        qCInfo(lcPropagator) << "Starting" << _item->_instruction << "propagation of" << _item->destination() << "by" << this;
-
-        _state = Running;
-        QMetaObject::invokeMethod(this, "start"); // We could be in a different thread (neon jobs)
-        return true;
-    }
-
-    SyncFileItemPtr _item;
-
+    bool scheduleSelfOrChild() override;
 public slots:
     virtual void start() = 0;
 };
