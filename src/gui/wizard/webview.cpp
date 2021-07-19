@@ -218,8 +218,11 @@ bool WebEnginePage::certificateError(const QWebEngineCertificateError &certifica
     return ret == QMessageBox::Yes;
 }
 
-bool WebEnginePage::acceptNavigationRequest(const QUrl &url, QWebEnginePage::NavigationType /*type*/, bool /*isMainFrame*/)
+bool WebEnginePage::acceptNavigationRequest(const QUrl &url, QWebEnginePage::NavigationType type, bool isMainFrame)
 {
+    Q_UNUSED(type);
+    Q_UNUSED(isMainFrame);
+
     if (_enforceHttps && url.scheme() != QStringLiteral("https")) {
         QMessageBox::warning(nullptr, "Security warning", "Can not follow non https link on a https website. This might be a security issue. Please contact your administrator");
         return false;
