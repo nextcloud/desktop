@@ -61,6 +61,8 @@ private slots:
 
             if (!result) {
                 fakeFolder.syncJournal().autotestFailCounter = -1;
+                // esnure we actually sync and are not blocked by ignored files...
+                fakeFolder.syncJournal().wipeErrorBlacklist();
                 // Try again
                 QVERIFY(fakeFolder.syncOnce());
             }
