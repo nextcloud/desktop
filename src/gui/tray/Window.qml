@@ -30,7 +30,7 @@ Window {
     onActiveChanged: {
         if (!Systray.useNormalWindow && !active) {
             hide();
-            setClosed();
+            Systray.setClosed();
         }
    }
 
