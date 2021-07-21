@@ -3,8 +3,8 @@ version: '{build}-{branch}'
 image: Visual Studio 2019
 
 branches:
-  except:
-    - playground
+  only:
+    - master
 
 clone_depth: 1
 
