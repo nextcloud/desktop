@@ -511,20 +511,10 @@ void AccountSettings::slotSubfolderContextMenuRequested(const QModelIndex& index
 
         const auto path = rec.isValid() ? rec._path : remotePath;
 
-        auto availability = folder->vfs().availability(path);
-        if (availability) {
-            ac = availabilityMenu->addAction(Utility::vfsCurrentAvailabilityText(*availability));
-            ac->setEnabled(false);
-        }
-
         ac = availabilityMenu->addAction(Utility::vfsPinActionText());
-        ac->setEnabled(!availability || *availability != VfsItemAvailability::AlwaysLocal);
         connect(ac, &QAction::triggered, this, [this, folder, path] { slotSetSubFolderAvailability(folder, path, PinState::AlwaysLocal); });
 
         ac = availabilityMenu->addAction(Utility::vfsFreeSpaceActionText());
-        ac->setEnabled(!availability
-                || !(*availability == VfsItemAvailability::OnlineOnly
-                    || *availability == VfsItemAvailability::AllDehydrated));
         connect(ac, &QAction::triggered, this, [this, folder, path] { slotSetSubFolderAvailability(folder, path, PinState::OnlineOnly); });
     }
 
@@ -594,20 +584,11 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
 
     if (folder->virtualFilesEnabled()) {
         auto availabilityMenu = menu->addMenu(tr("Availability"));
-        auto availability = folder->vfs().availability(QString());
-        if (availability) {
-            ac = availabilityMenu->addAction(Utility::vfsCurrentAvailabilityText(*availability));
-            ac->setEnabled(false);
-        }
 
         ac = availabilityMenu->addAction(Utility::vfsPinActionText());
-        ac->setEnabled(!availability || *availability != VfsItemAvailability::AlwaysLocal);
         connect(ac, &QAction::triggered, this, [this]() { slotSetCurrentFolderAvailability(PinState::AlwaysLocal); });
 
         ac = availabilityMenu->addAction(Utility::vfsFreeSpaceActionText());
-        ac->setEnabled(!availability
-                || !(*availability == VfsItemAvailability::OnlineOnly
-                    || *availability == VfsItemAvailability::AllDehydrated));
         connect(ac, &QAction::triggered, this, [this]() { slotSetCurrentFolderAvailability(PinState::OnlineOnly); });
 
         ac = menu->addAction(tr("Disable virtual file support …"));
