@@ -154,7 +154,18 @@ def isFileSynced(fileName):
 
 def waitForFileToBeSynced(context, fileName):
     waitFor(
-        lambda: isFileSynced(context.userData['clientSyncPath'] + fileName),
+        lambda: isFileSynced(
+            sanitizePath(context.userData['clientSyncPath'] + fileName)
+        ),
+        context.userData['clientSyncTimeout'] * 1000,
+    )
+
+
+def waitForFolderToBeSynced(context, folderName):
+    waitFor(
+        lambda: isFolderSynced(
+            sanitizePath(context.userData['clientSyncPath'] + folderName)
+        ),
         context.userData['clientSyncTimeout'] * 1000,
     )
 
@@ -724,3 +735,24 @@ def step(context, resource, group):
 
     sharingDialog = SharingDialog()
     sharingDialog.selectCollaborator(group, True)
+
+
+@When('the user overwrites the file "|any|" with content "|any|"')
+def step(context, resource, content):
+    print("starting file overwrite")
+    waitForFileToBeSynced(context, resource)
+    waitForFolderToBeSynced(context, '/')
+
+    # overwriting the file immediately after it has been synced from the server seems to have some problem.
+    # The client does not see the change although the changes have already been made thus we are having a race condition
+    # So for now we add 3sec static wait
+    # an issue https://github.com/owncloud/client/issues/8832 has been created for it
+
+    snooze(3)
+
+    f = open(context.userData['clientSyncPath'] + resource, "w")
+    f.write(content)
+    f.close()
+
+    print("file has been overwritten")
+    waitForFileToBeSynced(context, resource)
