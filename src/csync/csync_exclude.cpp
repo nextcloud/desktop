@@ -18,6 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
+#include "config.h"
 #include "config_csync.h"
 
 #ifndef _GNU_SOURCE
@@ -152,6 +153,10 @@ static CSYNC_EXCLUDE_TYPE _csync_excluded_common(const QStringRef &path, bool ex
         if (bname.startsWith(QLatin1String(".owncloudsync.log"), Qt::CaseInsensitive)) { // ".owncloudsync.log*"
             return CSYNC_FILE_SILENTLY_EXCLUDED;
         }
+    }
+
+    if (bname.endsWith(QLatin1String(APPLICATION_DOTVIRTUALFILE_SUFFIX), Qt::CaseInsensitive)) { // ".owncloud" placeholder
+        return CSYNC_FILE_SILENTLY_EXCLUDED;
     }
 
     // check the strlen and ignore the file if its name is longer than 254 chars.

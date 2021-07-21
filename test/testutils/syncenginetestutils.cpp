@@ -1086,7 +1086,7 @@ OCC::SyncFileItemPtr ItemCompletedSpy::findItem(const QString &path) const
         if (item->destination() == path)
             return item;
     }
-    return OCC::SyncFileItemPtr::create();
+    return nullptr;
 }
 
 FakeReply::FakeReply(QObject *parent)

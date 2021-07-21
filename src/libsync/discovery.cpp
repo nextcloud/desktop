@@ -326,18 +326,6 @@ void ProcessDirectoryJob::processFile(PathTuple path,
     if (item->_type == ItemTypeVirtualFileDehydration)
         item->_type = ItemTypeFile;
 
-    // VFS suffixed files on the server are ignored
-    if (isVfsWithSuffix()) {
-        if (hasVirtualFileSuffix(serverEntry.name)
-            || (localEntry.isVirtualFile && !dbEntry.isVirtualFile() && hasVirtualFileSuffix(QString::fromUtf8(dbEntry._path)))) {
-            item->_instruction = CSYNC_INSTRUCTION_IGNORE;
-            item->_errorString = tr("File has extension reserved for virtual files.");
-            _childIgnored = true;
-            emit _discoveryData->itemDiscovered(item);
-            return;
-        }
-    }
-
     if (serverEntry.isValid()) {
         processFileAnalyzeRemoteInfo(item, path, localEntry, serverEntry, dbEntry);
         return;
