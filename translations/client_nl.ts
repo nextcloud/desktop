@@ -19,12 +19,12 @@
     <message>
         <location filename="../src/3rdparty/libcrashreporter-qt/src/libcrashreporter-gui/CrashReporter.ui" line="257"/>
         <source>Send this report</source>
-        <translation type="unfinished"/>
+        <translation>Rapport versturen</translation>
     </message>
     <message>
         <location filename="../src/3rdparty/libcrashreporter-qt/src/libcrashreporter-gui/CrashReporter.ui" line="264"/>
         <source>Don&apos;t send</source>
-        <translation type="unfinished"/>
+        <translation>Niet versturen</translation>
     </message>
     <message>
         <location filename="../src/3rdparty/libcrashreporter-qt/src/libcrashreporter-gui/CrashReporter.ui" line="284"/>
@@ -60,7 +60,7 @@
     <message>
         <location filename="../src/3rdparty/libcrashreporter-qt/src/libcrashreporter-gui/CrashReporter.cpp" line="273"/>
         <source>Uploaded %L1 of %L2 KB.</source>
-        <translation type="unfinished"/>
+        <translation>%L1 van %L2 KB geupload.</translation>
     </message>
     <message>
         <location filename="../src/3rdparty/libcrashreporter-qt/src/libcrashreporter-gui/CrashReporter.cpp" line="300"/>
@@ -81,7 +81,7 @@
         <location filename="../src/common/filesystembase.cpp" line="205"/>
         <location filename="../src/common/filesystembase.cpp" line="210"/>
         <source>Can&apos;t rename %1, the file is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Kan %1 niet verplaatsen, het bestand is in gebruik</translation>
     </message>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="393"/>
@@ -1395,7 +1395,7 @@ Als dit een ongelukje was en u de bestanden wilt behouden, worden ze opnieuw ges
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="579"/>
         <source>Add Sync Connection</source>
-        <translation>Toevoegen Sync verbinding</translation>
+        <translation>Sync verbinding toevoegen</translation>
     </message>
 </context>
 <context>
@@ -1551,7 +1551,7 @@ Als dit een ongelukje was en u de bestanden wilt behouden, worden ze opnieuw ges
     <message>
         <location filename="../src/gui/generalsettings.ui" line="109"/>
         <source>Log Settings</source>
-        <translation>Log Instellingen</translation>
+        <translation>Loginstellingen</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="136"/>
@@ -1627,7 +1627,7 @@ Als dit een ongelukje was en u de bestanden wilt behouden, worden ze opnieuw ges
     <message>
         <location filename="../src/gui/generalsettings.ui" line="102"/>
         <source>Edit &amp;Ignored Files</source>
-        <translation>Bewerken &amp;genegeerde bestanden</translation>
+        <translation>&amp;Genegeerde bestanden bewerken</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="73"/>
@@ -1755,7 +1755,7 @@ Items waar verwijderen is toegestaan zullen gewist worden als ze voorkomen dat e
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="132"/>
         <source>Add Ignore Pattern</source>
-        <translation>Toevoegen negeerpatroon</translation>
+        <translation>Negeerpatroon toevoegen</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="133"/>
@@ -1805,7 +1805,7 @@ Items waar verwijderen is toegestaan zullen gewist worden als ze voorkomen dat e
     <message>
         <location filename="../src/gui/issueswidget.ui" line="83"/>
         <source>Show ignored files</source>
-        <translation>Tonen genegeerde bestanden</translation>
+        <translation>Toon genegeerde bestanden</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="137"/>
@@ -1861,7 +1861,7 @@ Items waar verwijderen is toegestaan zullen gewist worden als ze voorkomen dat e
     <message>
         <location filename="../src/gui/logbrowser.ui" line="14"/>
         <source>Log Output</source>
-        <translation>Log Output</translation>
+        <translation>Log output</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.ui" line="116"/>
@@ -2377,7 +2377,7 @@ vragen om extra autorisaties tijdens installatie.</translation>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="696"/>
         <source>File %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Bestand %1 is in gebruik</translation>
     </message>
 </context>
 <context>
@@ -2717,7 +2717,7 @@ Dit is een nieuwe, experimentele modus. Als je besluit deze te gebruiken, meld d
         <location filename="../src/libsync/propagatedownload.cpp" line="470"/>
         <location filename="../src/libsync/propagatedownload.cpp" line="958"/>
         <source>%1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>%1 is in gebruik</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="520"/>
@@ -2820,7 +2820,7 @@ Dit is een nieuwe, experimentele modus. Als je besluit deze te gebruiken, meld d
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="224"/>
         <source>Could not rename %1 to %2, the file is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Kan %1 niet naar %2 verplaatsen, het bestand is in gebruik</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="252"/>
@@ -2918,7 +2918,7 @@ Dit is een nieuwe, experimentele modus. Als je besluit deze te gebruiken, meld d
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="378"/>
         <source>%1 the file is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>%1 is in gebruik</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="473"/>
@@ -2956,7 +2956,7 @@ Dit is een nieuwe, experimentele modus. Als je besluit deze te gebruiken, meld d
     <message>
         <location filename="../src/libsync/propagateuploadtus.cpp" line="67"/>
         <source>%1 the file is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>%1 is in gebruik</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadtus.cpp" line="207"/>
@@ -2974,7 +2974,7 @@ Dit is een nieuwe, experimentele modus. Als je besluit deze te gebruiken, meld d
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="137"/>
         <source>%1 the file is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>%1 is in gebruik</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="225"/>
@@ -3153,7 +3153,7 @@ Dit is een nieuwe, experimentele modus. Als je besluit deze te gebruiken, meld d
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="176"/>
         <source>Add account</source>
-        <translation>Toevoegen account</translation>
+        <translation>Account toevoegen</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="209"/>
