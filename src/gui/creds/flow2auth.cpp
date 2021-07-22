@@ -208,7 +208,7 @@ void Flow2Auth::slotPollTimerTimeout()
             serverUrl = json["server"].toString();
             if (_enforceHttps && serverUrl.scheme() != QStringLiteral("https")) {
                 qCWarning(lcFlow2auth) << "Returned server url" << serverUrl << "does not start with https";
-                emit result(Error, tr("The returned server URL does not start with https despite the login URL started with https. Login will not be possible because this might be a security issue. Please contact your administrator."));
+                emit result(Error, tr("The returned server URL does not start with HTTPS despite the login URL started with HTTPS. Login will not be possible because this might be a security issue. Please contact your administrator."));
                 return;
             }
             loginName = json["loginName"].toString();
