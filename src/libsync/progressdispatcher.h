@@ -25,8 +25,10 @@
 
 #include "syncfileitem.h"
 
-namespace OCC {
+#include "csync/csync_exclude.h"
 
+namespace OCC {
+class Folder;
 /**
  * @brief The ProgressInfo class
  * @ingroup libsync
@@ -310,6 +312,9 @@ signals:
      * @brief A new folder-wide sync error was seen.
      */
     void syncError(const QString &folder, const QString &message, ErrorCategory category);
+
+    void excluded(Folder *folder, const QString &path, CSYNC_EXCLUDE_TYPE reason);
+
 
     /**
      * @brief Emitted for a folder when a sync is done, listing all pending conflicts

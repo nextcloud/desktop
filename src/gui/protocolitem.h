@@ -27,6 +27,7 @@ class ProtocolItem
     Q_GADGET
 public:
     ProtocolItem() = default;
+    explicit ProtocolItem(Folder *folder, const SyncFileItemPtr &item);
     explicit ProtocolItem(const QString &folder, const SyncFileItemPtr &item);
 
     QString path() const;

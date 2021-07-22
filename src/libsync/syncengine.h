@@ -26,6 +26,8 @@
 #include <QSharedPointer>
 #include <set>
 
+#include "csync/csync_exclude.h"
+
 #include "syncfileitem.h"
 #include "progressdispatcher.h"
 #include "common/utility.h"
@@ -150,6 +152,7 @@ signals:
 
     /// We've produced a new sync error of a type.
     void syncError(const QString &message, ErrorCategory category = ErrorCategory::Normal);
+    void excluded(const QString &path, CSYNC_EXCLUDE_TYPE reason);
 
     void finished(bool success);
     void started();

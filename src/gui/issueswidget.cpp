@@ -69,9 +69,22 @@ IssuesWidget::IssuesWidget(QWidget *parent)
             auto item = SyncFileItemPtr::create();
             item->_status = SyncFileItem::NormalError;
             item->_errorString = message;
-            item->_responseTimeStamp = QDateTime::currentDateTime().toString(Qt::RFC2822Date).toUtf8();
             _model->addProtocolItem(ProtocolItem { folderAlias, item });
         });
+
+    connect(ProgressDispatcher::instance(), &ProgressDispatcher::excluded, this, [this](Folder *f, const QString &file, CSYNC_EXCLUDE_TYPE reason) {
+        auto item = SyncFileItemPtr::create();
+        item->_status = SyncFileItem::FileIgnored;
+        item->_file = file;
+        switch (reason) {
+        case CSYNC_FILE_EXCLUDE_RESERVED:
+            item->_errorString = tr("The file %1 was ignored as its name is reserved by %2").arg(file, Theme::instance()->appNameGUI());
+            break;
+        default:
+            Q_UNREACHABLE();
+        }
+        _model->addProtocolItem(ProtocolItem { f, item });
+    });
 
     _model = new ProtocolItemModel(this);
     _sortModel = new QSortFilterProxyModel(this);
@@ -126,7 +139,12 @@ void IssuesWidget::slotProgressInfo(const QString &folder, const ProgressInfo &p
         const auto &engine = f->syncEngine();
         const auto style = engine.lastLocalDiscoveryStyle();
         _model->remove_if([&](const ProtocolItem &item) {
-            if (item.folder()->path() != folder) {
+            if (item.folder() != f) {
+                return false;
+            }
+            if (item.direction() == SyncFileItem::None) {
+                // TODO: don't clear syncErrors and excludes for now.
+                // make them either unique or remove them on the next sync?
                 return false;
             }
             if (style == LocalDiscoveryStyle::FilesystemOnly) {

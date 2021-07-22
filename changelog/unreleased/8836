@@ -1,0 +1,8 @@
+Bugfix: Always exclude .owncloud files
+
+Our Linux virtual files implementation is using the file name extension .owncloud
+those files where only ignored if the Linux VFS was enabled.
+Under some circumstances it could lead to undefined client states.
+We now always ignore those files as system reserved.
+
+https://github.com/owncloud/client/pull/8836

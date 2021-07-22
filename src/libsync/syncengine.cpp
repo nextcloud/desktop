@@ -564,6 +564,10 @@ void SyncEngine::startSync()
     connect(_discoveryPhase.data(), &DiscoveryPhase::finished, this, &SyncEngine::slotDiscoveryFinished);
     connect(_discoveryPhase.data(), &DiscoveryPhase::silentlyExcluded,
         _syncFileStatusTracker.data(), &SyncFileStatusTracker::slotAddSilentlyExcluded);
+    connect(_discoveryPhase.data(), &DiscoveryPhase::excluded,
+        _syncFileStatusTracker.data(), &SyncFileStatusTracker::slotAddSilentlyExcluded);
+    connect(_discoveryPhase.data(), &DiscoveryPhase::excluded,
+        this, &SyncEngine::excluded);
 
     auto discoveryJob = new ProcessDirectoryJob(
         _discoveryPhase.data(), PinState::AlwaysLocal, _discoveryPhase.data());

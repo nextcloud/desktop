@@ -113,6 +113,9 @@ Folder::Folder(const FolderDefinition &definition,
 
     connect(ProgressDispatcher::instance(), &ProgressDispatcher::folderConflicts,
         this, &Folder::slotFolderConflicts);
+    connect(_engine.data(), &SyncEngine::excluded, this, [this](const QString &path, CSYNC_EXCLUDE_TYPE reason) {
+        Q_EMIT ProgressDispatcher::instance()->excluded(this, path, reason);
+    });
 
     _localDiscoveryTracker.reset(new LocalDiscoveryTracker);
     connect(_engine.data(), &SyncEngine::finished,

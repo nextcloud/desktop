@@ -156,7 +156,7 @@ static CSYNC_EXCLUDE_TYPE _csync_excluded_common(const QStringRef &path, bool ex
     }
 
     if (bname.endsWith(QLatin1String(APPLICATION_DOTVIRTUALFILE_SUFFIX), Qt::CaseInsensitive)) { // ".owncloud" placeholder
-        return CSYNC_FILE_SILENTLY_EXCLUDED;
+        return CSYNC_FILE_EXCLUDE_RESERVED;
     }
 
     // check the strlen and ignore the file if its name is longer than 254 chars.

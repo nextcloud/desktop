@@ -24,9 +24,10 @@
 
 using namespace OCC;
 
-ProtocolItem::ProtocolItem(const QString &folder, const SyncFileItemPtr &item)
+
+ProtocolItem::ProtocolItem(Folder *folder, const SyncFileItemPtr &item)
     : _path(item->destination())
-    , _folder(FolderMan::instance()->folder(folder))
+    , _folder(folder)
     , _size(item->_size)
     , _status(item->_status)
     , _direction(item->_direction)
@@ -41,6 +42,11 @@ ProtocolItem::ProtocolItem(const QString &folder, const SyncFileItemPtr &item)
     if (_message.isEmpty()) {
         _message = Progress::asResultString(*item);
     }
+}
+
+ProtocolItem::ProtocolItem(const QString &folder, const SyncFileItemPtr &item)
+    : ProtocolItem(FolderMan::instance()->folder(folder), item)
+{
 }
 
 QString ProtocolItem::path() const
