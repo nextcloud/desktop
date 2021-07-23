@@ -47,7 +47,7 @@ signals:
     void fileStatusChanged(const QString &systemFileName, SyncFileStatus fileStatus);
 
 private slots:
-    void slotAboutToPropagate(SyncFileItemVector &items);
+    void slotAboutToPropagate(SyncFileItemSet &items);
     void slotItemCompleted(const SyncFileItemPtr &item);
     void slotSyncFinished();
     void slotSyncEngineRunningChanged();

@@ -141,7 +141,7 @@ signals:
     void rootEtag(const QByteArray &, const QDateTime &);
 
     // after the above signals. with the items that actually need propagating
-    void aboutToPropagate(SyncFileItemVector &);
+    void aboutToPropagate(SyncFileItemSet &);
 
     // after each item completed by a job (successful or not)
     void itemCompleted(const SyncFileItemPtr &);
@@ -208,13 +208,13 @@ private:
 
     // Cleans up unnecessary downloadinfo entries in the journal as well
     // as their temporary files.
-    void deleteStaleDownloadInfos(const SyncFileItemVector &syncItems);
+    void deleteStaleDownloadInfos(const SyncFileItemSet &syncItems);
 
     // Removes stale uploadinfos from the journal.
-    void deleteStaleUploadInfos(const SyncFileItemVector &syncItems);
+    void deleteStaleUploadInfos(const SyncFileItemSet &syncItems);
 
     // Removes stale error blacklist entries from the journal.
-    void deleteStaleErrorBlacklistEntries(const SyncFileItemVector &syncItems);
+    void deleteStaleErrorBlacklistEntries(const SyncFileItemSet &syncItems);
 
     // Removes stale and adds missing conflict records after sync
     void conflictRecordMaintenance();
@@ -223,7 +223,7 @@ private:
     void finalize(bool success);
 
     // Must only be acessed during update and reconcile
-    QVector<SyncFileItemPtr> _syncItems;
+    SyncFileItemSet _syncItems;
 
     AccountPtr _account;
     bool _needsUpdate;
@@ -248,13 +248,13 @@ private:
      * check if we are allowed to propagate everything, and if we are not, adjust the instructions
      * to recover
      */
-    void checkForPermission(SyncFileItemVector &syncItems);
+    void checkForPermission(SyncFileItemSet &syncItems);
     RemotePermissions getPermissions(const QString &file) const;
 
     /**
      * Instead of downloading files from the server, upload the files to the server
      */
-    void restoreOldFiles(SyncFileItemVector &syncItems);
+    void restoreOldFiles(SyncFileItemSet &syncItems);
 
     // true if there is at least one file which was not changed on the server
     bool _hasNoneFiles;

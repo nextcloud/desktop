@@ -95,7 +95,7 @@ SyncEngine::SyncEngine(AccountPtr account, const QString &localPath,
     qRegisterMetaType<SyncFileItemPtr>("SyncFileItemPtr");
     qRegisterMetaType<SyncFileItem::Status>("SyncFileItem::Status");
     qRegisterMetaType<SyncFileStatus>("SyncFileStatus");
-    qRegisterMetaType<SyncFileItemVector>("SyncFileItemVector");
+    qRegisterMetaType<SyncFileItemSet>("SyncFileItemSet");
     qRegisterMetaType<SyncFileItem::Direction>("SyncFileItem::Direction");
 
     // Everything in the SyncEngine expects a trailing slash for the localPath.
@@ -198,7 +198,7 @@ static bool isFileTransferInstruction(SyncInstructions instruction)
         || instruction == CSYNC_INSTRUCTION_TYPE_CHANGE;
 }
 
-void SyncEngine::deleteStaleDownloadInfos(const SyncFileItemVector &syncItems)
+void SyncEngine::deleteStaleDownloadInfos(const SyncFileItemSet &syncItems)
 {
     // Find all downloadinfo paths that we want to preserve.
     QSet<QString> download_file_paths;
@@ -220,7 +220,7 @@ void SyncEngine::deleteStaleDownloadInfos(const SyncFileItemVector &syncItems)
     }
 }
 
-void SyncEngine::deleteStaleUploadInfos(const SyncFileItemVector &syncItems)
+void SyncEngine::deleteStaleUploadInfos(const SyncFileItemSet &syncItems)
 {
     // Find all blacklisted paths that we want to preserve.
     QSet<QString> upload_file_paths;
@@ -246,7 +246,7 @@ void SyncEngine::deleteStaleUploadInfos(const SyncFileItemVector &syncItems)
     }
 }
 
-void SyncEngine::deleteStaleErrorBlacklistEntries(const SyncFileItemVector &syncItems)
+void SyncEngine::deleteStaleErrorBlacklistEntries(const SyncFileItemSet &syncItems)
 {
     // Find all blacklisted paths that we want to preserve.
     QSet<QString> blacklist_file_paths;
@@ -396,9 +396,16 @@ void OCC::SyncEngine::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
     checkErrorBlacklisting(*item);
     _needsUpdate = true;
 
-    // Insert sorted
-    auto it = std::lower_bound( _syncItems.begin(), _syncItems.end(), item ); // the _syncItems is sorted
-    _syncItems.insert( it, item );
+    Q_ASSERT([&] {
+        const auto it = _syncItems.find(item);
+        if (it != _syncItems.cend()) {
+            const auto &item2 = it->get();
+            qCWarning(lcEngine) << "We already have an item for " << item2->_file << ":" << item2->_instruction << item2->_direction << "|" << item->_instruction << item->_direction;
+            return false;
+        }
+        return true;
+    }());
+    _syncItems.insert(item);
 
     slotNewItem(item);
 
@@ -657,10 +664,22 @@ void SyncEngine::slotDiscoveryFinished()
                     } while (index > 0);
                 }
             }
-            _syncItems.erase(std::remove_if(_syncItems.begin(), _syncItems.end(), [&names](auto i) {
+            //std::erase_if c++20
+            // https://en.cppreference.com/w/cpp/container/set/erase_if
+            const auto erase_if = [](auto &c, const auto &pred) {
+                auto old_size = c.size();
+                for (auto i = c.begin(), last = c.end(); i != last;) {
+                    if (pred(*i)) {
+                        i = c.erase(i);
+                    } else {
+                        ++i;
+                    }
+                }
+                return old_size - c.size();
+            };
+            erase_if(_syncItems, [&names](const SyncFileItemPtr &i) {
                 return !names.contains(QStringRef { &i->_file });
-            }),
-                _syncItems.end());
+            });
         }
 
         qCInfo(lcEngine) << "#### Reconcile (aboutToPropagate) #################################################### " << _stopWatch.addLapTime(QStringLiteral("Reconcile (aboutToPropagate)")) << "ms";
@@ -838,7 +857,7 @@ void SyncEngine::updateFileTotal(const SyncFileItem &item, qint64 newSize)
     _progressInfo->updateTotalsForFile(item, newSize);
     emit transmissionProgress(*_progressInfo);
 }
-void SyncEngine::restoreOldFiles(SyncFileItemVector &syncItems)
+void SyncEngine::restoreOldFiles(SyncFileItemSet &syncItems)
 {
     /* When the server is trying to send us lots of file in the past, this means that a backup
        was restored in the server.  In that case, we should not simply overwrite the newer file

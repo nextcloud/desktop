@@ -400,7 +400,7 @@ private slots:
         fakeFolder.remoteModifier().appendByte("C/c1");
         fakeFolder.remoteModifier().setModTime("C/c1", changedMtime2);
 
-        connect(&fakeFolder.syncEngine(), &SyncEngine::aboutToPropagate, [&](SyncFileItemVector &items) {
+        connect(&fakeFolder.syncEngine(), &SyncEngine::aboutToPropagate, [&](SyncFileItemSet &items) {
             SyncFileItemPtr a1, b1, c1;
             for (auto &item : items) {
                 if (item->_file == "A/a1")

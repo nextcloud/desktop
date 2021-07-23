@@ -981,7 +981,7 @@ void FakeFolder::scheduleSync()
 
 void FakeFolder::execUntilBeforePropagation()
 {
-    QSignalSpy spy(_syncEngine.get(), SIGNAL(aboutToPropagate(SyncFileItemVector &)));
+    QSignalSpy spy(_syncEngine.get(), &OCC::SyncEngine::aboutToPropagate);
     QVERIFY(spy.wait());
 }
 

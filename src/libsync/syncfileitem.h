@@ -21,6 +21,8 @@
 #include <QMetaType>
 #include <QSharedPointer>
 
+#include <set>
+
 #include <csync.h>
 
 #include <owncloudlib.h>
@@ -281,7 +283,7 @@ inline bool operator<(const SyncFileItemPtr &item1, const SyncFileItemPtr &item2
     return *item1 < *item2;
 }
 
-typedef QVector<SyncFileItemPtr> SyncFileItemVector;
+using SyncFileItemSet = std::set<SyncFileItemPtr>;
 }
 
 Q_DECLARE_METATYPE(OCC::SyncFileItem)

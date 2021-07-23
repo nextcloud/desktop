@@ -38,8 +38,6 @@ Q_LOGGING_CATEGORY(lcDiscovery, "sync.discovery", QtInfoMsg)
 /* Given a sorted list of paths ending with '/', return whether or not the given path is within one of the paths of the list*/
 static bool findPathInList(const QStringList &list, const QString &path)
 {
-    Q_ASSERT(std::is_sorted(list.begin(), list.end()));
-
     if (list.size() == 1 && list.first() == QLatin1String("/")) {
         // Special case for the case "/" is there, it matches everything
         return true;

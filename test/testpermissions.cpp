@@ -41,7 +41,7 @@ static void assertCsyncJournalOk(SyncJournalDb &journal)
 #endif
 }
 
-SyncFileItemPtr findDiscoveryItem(const SyncFileItemVector &spy, const QString &path)
+SyncFileItemPtr findDiscoveryItem(const SyncFileItemSet &spy, const QString &path)
 {
     for (const auto &item : spy) {
         if (item->destination() == path)
@@ -56,7 +56,7 @@ bool itemInstruction(const ItemCompletedSpy &spy, const QString &path, const Syn
     return item->_instruction == instr;
 }
 
-bool discoveryInstruction(const SyncFileItemVector &spy, const QString &path, const SyncInstructions instr)
+bool discoveryInstruction(const SyncFileItemSet &spy, const QString &path, const SyncInstructions instr)
 {
     auto item = findDiscoveryItem(spy, path);
     return item->_instruction == instr;
@@ -406,7 +406,7 @@ private slots:
         lm.rename("zallowed/sub2", "nocreatedir/zsub2");
 
         // also hook into discovery!!
-        SyncFileItemVector discovery;
+        SyncFileItemSet discovery;
         connect(&fakeFolder.syncEngine(), &SyncEngine::aboutToPropagate, this, [&discovery](auto v) { discovery = v; });
         ItemCompletedSpy completeSpy(fakeFolder);
         QVERIFY(!fakeFolder.syncOnce());

@@ -268,9 +268,9 @@ private slots:
 
         // Now the next sync gets a NEW/NEW conflict and since there's no checksum
         // it just becomes a UPDATE_METADATA
-        auto checkEtagUpdated = [&](SyncFileItemVector &items) {
+        auto checkEtagUpdated = [&](SyncFileItemSet &items) {
             QCOMPARE(items.size(), 1);
-            QCOMPARE(items[0]->_file, QLatin1String("A"));
+            QCOMPARE(items.begin()->get()->_file, QLatin1String("A"));
             SyncJournalFileRecord record;
             QVERIFY(fakeFolder.syncJournal().getFileRecord(QByteArray("A/a0"), &record));
             QCOMPARE(record._etag, fakeFolder.remoteModifier().find("A/a0")->etag);

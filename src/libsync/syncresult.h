@@ -85,7 +85,7 @@ public:
 
 private:
     Status _status;
-    SyncFileItemVector _syncItems;
+    SyncFileItemSet _syncItems;
     QDateTime _syncTime;
     QString _folder;
     /**

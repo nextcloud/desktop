@@ -212,7 +212,7 @@ class PropagatorCompositeJob : public PropagatorJob
     Q_OBJECT
 public:
     QVector<PropagatorJob *> _jobsToDo;
-    SyncFileItemVector _tasksToDo;
+    SyncFileItemSet _tasksToDo;
     QVector<PropagatorJob *> _runningJobs;
     SyncFileItem::Status _hasError; // NoStatus,  or NormalError / SoftError if there was an error
     quint64 _abortsCount;
@@ -233,7 +233,7 @@ public:
     void appendJob(PropagatorJob *job);
     void appendTask(const SyncFileItemPtr &item)
     {
-        _tasksToDo.append(item);
+        _tasksToDo.insert(item);
     }
 
     bool scheduleSelfOrChild() override;
@@ -412,7 +412,7 @@ public:
 
     ~OwncloudPropagator() override;
 
-    void start(SyncFileItemVector &&_syncedItems);
+    void start(SyncFileItemSet &&_syncedItems);
 
     const SyncOptions &syncOptions() const;
     void setSyncOptions(const SyncOptions &syncOptions);

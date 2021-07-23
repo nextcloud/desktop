@@ -369,10 +369,8 @@ qint64 OwncloudPropagator::smallFileSize()
     return smallFileSize;
 }
 
-void OwncloudPropagator::start(SyncFileItemVector &&items)
+void OwncloudPropagator::start(SyncFileItemSet &&items)
 {
-    Q_ASSERT(std::is_sorted(items.begin(), items.end()));
-
     /* This builds all the jobs needed for the propagation.
      * Each directory is a PropagateDirectory job, which contains the files in it.
      * In order to do that we loop over the items. (which are sorted by destination)
@@ -833,9 +831,9 @@ bool PropagatorCompositeJob::scheduleSelfOrChild()
 
     // Now it's our turn, check if we have something left to do.
     // First, convert a task to a job if necessary
-    while (_jobsToDo.isEmpty() && !_tasksToDo.isEmpty()) {
-        SyncFileItemPtr nextTask = _tasksToDo.first();
-        _tasksToDo.remove(0);
+    while (_jobsToDo.empty() && !_tasksToDo.empty()) {
+        const SyncFileItemPtr nextTask = *_tasksToDo.begin();
+        _tasksToDo.erase(_tasksToDo.begin());
         PropagatorJob *job = propagator()->createJob(nextTask);
         if (!job) {
             qCWarning(lcDirectory) << "Useless task found for file" << nextTask->destination() << "instruction" << nextTask->_instruction;
@@ -854,7 +852,7 @@ bool PropagatorCompositeJob::scheduleSelfOrChild()
 
     // If neither us or our children had stuff left to do we could hang. Make sure
     // we mark this job as finished so that the propagator can schedule a new one.
-    if (_jobsToDo.isEmpty() && _tasksToDo.isEmpty() && _runningJobs.isEmpty()) {
+    if (_jobsToDo.isEmpty() && _tasksToDo.empty() && _runningJobs.isEmpty()) {
         // Our parent jobs are already iterating over their running jobs, post to the event loop
         // to avoid removing ourself from that list while they iterate.
         QMetaObject::invokeMethod(this, "finalize", Qt::QueuedConnection);
@@ -883,7 +881,7 @@ void PropagatorCompositeJob::slotSubJobFinished(SyncFileItem::Status status)
         _hasError = status;
     }
 
-    if (_jobsToDo.isEmpty() && _tasksToDo.isEmpty() && _runningJobs.isEmpty()) {
+    if (_jobsToDo.isEmpty() && _tasksToDo.empty() && _runningJobs.isEmpty()) {
         finalize();
     } else {
         propagator()->scheduleNextJob();
