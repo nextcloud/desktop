@@ -1347,7 +1347,7 @@ int ProcessDirectoryJob::processSubJobs(int nbJobs)
 
 void ProcessDirectoryJob::dbError()
 {
-    _discoveryData->fatalError(tr("Error while reading the database"));
+    Q_EMIT _discoveryData->fatalError(tr("Error while reading the database"));
 }
 
 void ProcessDirectoryJob::addVirtualFileSuffix(QString &str) const
