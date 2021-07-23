@@ -665,11 +665,8 @@ QString substLang(const QString &lang)
 
 void Application::setupTranslations()
 {
-    const QString trPath = Translations::applicationTrPath();
-    if (trPath.isEmpty()) {
-        qCWarning(lcApplication) << "Failed to find translations";
-        return;
-    }
+    const auto trPath = Translations::translationsDirectoryPath();
+
     QStringList uiLanguages = QLocale::system().uiLanguages();
 
     // the user can also set a locale in the settings, so we need to load the config file

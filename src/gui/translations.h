@@ -35,7 +35,7 @@ namespace Translations {
     /**
      * @return path to translation files
      */
-    QString applicationTrPath();
+    QString translationsDirectoryPath();
 
     /**
      * @return list of locales for which translations are available

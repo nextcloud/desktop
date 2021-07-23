@@ -42,20 +42,9 @@ namespace Translations {
         return QStringLiteral(".qm");
     }
 
-    QString applicationTrPath()
+    QString translationsDirectoryPath()
     {
-        const auto devTrPath = QDir(qApp->applicationDirPath() + QStringLiteral("/../src/gui/"));
-        if (devTrPath.exists()) {
-            // might miss Qt, QtKeyChain, etc.
-            qCWarning(lcTranslations) << "Running from build location! Translations may be incomplete!";
-            return devTrPath.absolutePath();
-        }
-#ifdef Q_OS_MAC
-        const auto translationDir = QStringLiteral("Translations");
-#else
-        const auto translationDir = QStringLiteral("i18n");
-#endif
-        return QStandardPaths::locate(QStandardPaths::AppDataLocation, translationDir, QStandardPaths::LocateDirectory);
+        return QStringLiteral(":/client/translations/");
     }
 
     QSet<QString> listAvailableTranslations()
@@ -65,7 +54,7 @@ namespace Translations {
         // calculate a glob pattern which can be used in the iterator below to match only translations files
         QString pattern = translationsFilePrefix() + "*" + translationsFileSuffix();
 
-        QDirIterator it(Translations::applicationTrPath(), QStringList() << pattern);
+        QDirIterator it(Translations::translationsDirectoryPath(), QStringList() << pattern);
 
         while (it.hasNext()) {
             // extract locale part from filename
