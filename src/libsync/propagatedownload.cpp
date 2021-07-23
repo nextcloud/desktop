@@ -991,7 +991,9 @@ void PropagateDownloadFile::transmissionChecksumValidated(const QByteArray &chec
 
     startContentChecksumCompute(theContentChecksumType, _tmpFile.fileName());
 
-    propagator()->_journal->keyValueStoreDelete(QString(checksumFailureDbRecordPrefix + _item->_fileId));
+    if (ConfigFile().allowChecksumValidationFail()) {
+        propagator()->_journal->keyValueStoreDelete(QString(checksumFailureDbRecordPrefix + _item->_fileId));
+    }
 }
 
 void PropagateDownloadFile::contentChecksumComputed(const QByteArray &checksumType, const QByteArray &checksum)
