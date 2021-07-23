@@ -511,14 +511,16 @@ Window {
                     Menu {
                         id: appsMenu
                         y: (trayWindowAppsButton.y + trayWindowAppsButton.height + 2)
-                        readonly property Item listContentItem: contentItem.contentItem
-                        width: Math.min(listContentItem.childrenRect.width + 4, Style.trayWindowWidth / 2)
-                        height: Math.min(implicitHeight, maxMenuHeight)
                         closePolicy: Menu.CloseOnPressOutsideParent | Menu.CloseOnEscape
-
-                        background: Rectangle {
-                            border.color: Style.menuBorder
-                            radius: 2
+                        width: {
+                            var result = 0;
+                            var padding = 0
+                            for (var i = 0; i < count; ++i) {
+                                var item = itemAt(i);
+                                result = Math.min(Math.max(item.contentItem.implicitWidth, result), Style.trayWindowWidth / 2);
+                                padding = Math.max(item.padding, padding);
+                            }
+                            return result + padding * 2;
                         }
 
                         Instantiator {
@@ -531,27 +533,8 @@ Window {
                                 text: appName
                                 font.pixelSize: Style.topLinePixelSize
                                 icon.source: appIconUrl
-                                width: contentItem.implicitWidth + leftPadding + rightPadding
                                 onTriggered: UserAppsModel.openAppUrl(appUrl)
                                 hoverEnabled: true
-
-                                background: Item {
-                                    width: appsMenu.width
-                                    height: parent.height
-
-                                    Rectangle {
-                                        anchors.fill: parent
-                                        anchors.margins: 1
-                                        color: appEntry.hovered ? Style.lightHover : "transparent"
-                                    }
-                                    
-                                    Accessible.role: Accessible.PopupMenu
-                                    Accessible.name: qsTr("Apps menu")
-                                }
-
-                                Accessible.role: Accessible.MenuItem
-                                Accessible.name: qsTr("Open %1 in browser").arg(appName)
-                                Accessible.onPressAction: appEntry.triggered()
                             }
                         }
                     }
