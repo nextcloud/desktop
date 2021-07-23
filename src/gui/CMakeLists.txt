@@ -204,8 +204,15 @@ target_link_libraries(owncloud owncloudCore)
 
 find_package(Qt5LinguistTools)
 if(Qt5LinguistTools_FOUND)
-    qt5_add_translation(client_I18N ${TRANSLATIONS})
-    target_sources(owncloud PRIVATE ${client_I18N})
+    # Handle Translations, pick all client_* files from trans directory.
+    file(GLOB client_translations ${CMAKE_SOURCE_DIR}/translations/client_*.ts)
+    qt5_add_translation(client_compiled_translations ${client_translations})
+    target_sources(owncloud PRIVATE ${client_compiled_translations})
+    add_resources_to_target(
+        TARGET owncloud
+        PREFIX translations
+        FILES "${client_compiled_translations}"
+    )
 endif()
 
 #TODO Move resources files
@@ -238,17 +245,9 @@ if(NOT APPLE)
         endforeach(_file)
     endif()
 
-    install(FILES ${client_I18N} DESTINATION ${DATA_INSTALL_DIR}/${APPLICATION_NAME}/i18n)
-
     # we may not add MACOSX_BUNDLE here, if not building one
 else()
     target_sources(owncloud PRIVATE ${OWNCLOUD_BUNDLED_RESOURCES})
-
-    set_source_files_properties(
-      ${client_I18N}
-      PROPERTIES
-      MACOSX_PACKAGE_LOCATION Resources/Translations
-      )
 
     set_source_files_properties(
       ${OWNCLOUD_BUNDLED_RESOURCES}

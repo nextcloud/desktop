@@ -31,7 +31,7 @@ include(CTest)
 
 
 include(OCConfigPluginDir)
-include(OCGenerateTheme)
+include(OCBundleResources)
 
 if (EXISTS "${PROJECT_SOURCE_DIR}/branding")
     set(OEM_THEME_DIR "${PROJECT_SOURCE_DIR}/branding" CACHE STRING "The directory containing a custom theme")
@@ -167,11 +167,6 @@ if( WIN32 )
     add_definitions(-DWINVER=0x0600)
     add_definitions(-DNTDDI_VERSION=0x0A000003)
 endif()
-
-# Handle Translations, pick all client_* files from trans directory.
-file( GLOB TRANS_FILES ${CMAKE_SOURCE_DIR}/translations/client_*.ts)
-set(TRANSLATIONS ${TRANS_FILES})
-
 
 file(GLOB_RECURSE OWNCLOUD_ICONS "${OEM_THEME_DIR}/theme/colored/*-${APPLICATION_ICON_NAME}-icon.png")
 if (NOT OWNCLOUD_ICONS)
