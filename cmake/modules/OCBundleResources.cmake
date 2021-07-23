@@ -1,4 +1,26 @@
-function(__addIcon THEME ICON_NAME)
+function(__add_file_to_qrc_file)
+    set(options "")
+    set(oneValueArgs QRC_PATH FILE_PATH ALIAS)
+    set(multiValueArgs)
+    cmake_parse_arguments(__ADD_FILE_TO_QRC_FILE "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
+
+    foreach(param QRC_PATH FILE_PATH)
+        if(NOT __ADD_FILE_TO_QRC_FILE_${param})
+            message(FATAL_ERROR "${CMAKE_CURRENT_FUNCTION}: Argument missing: ${param}")
+        endif()
+    endforeach()
+
+    set(line "<file ")
+    if(__ADD_FILE_TO_QRC_FILE_ALIAS)
+        set(line "${line} alias=\"${__ADD_FILE_TO_QRC_FILE_ALIAS}\"")
+    endif()
+    set(line "${line}>${__ADD_FILE_TO_QRC_FILE_FILE_PATH}</file>")
+
+    file(APPEND ${__ADD_FILE_TO_QRC_FILE_QRC_PATH} "        ${line}\n")
+endfunction()
+
+
+function(__addIcon QRC_PATH THEME ICON_NAME)
     set(options)
     set(oneValueArgs SRC_PATH)
     set(multiValueArgs)
@@ -11,19 +33,27 @@ function(__addIcon THEME ICON_NAME)
     set(icon "theme/${_ICON_SRC_PATH}/${ICON_NAME}.svg")
     set(iconAlias "${APPLICATION_SHORTNAME}/theme/${THEME}/${ICON_NAME}.svg")
     if (EXISTS ${OEM_THEME_DIR}/${icon})
-        file(APPEND "${QRC}" "<file alias=\"${iconAlias}\">${OEM_THEME_DIR}/${icon}</file>\n")
+        file(APPEND "${QRC_PATH}" "<file alias=\"${iconAlias}\">${OEM_THEME_DIR}/${icon}</file>\n")
     else()
         set(icon "theme/${_ICON_SRC_PATH}/${ICON_NAME}.png")
         set(iconAlias "${APPLICATION_SHORTNAME}/theme/${THEME}/${ICON_NAME}.png")
         if (EXISTS ${OEM_THEME_DIR}/${icon})
-            file(APPEND "${QRC}" "<file alias=\"${iconAlias}\">${OEM_THEME_DIR}/${icon}</file>\n")
+            __add_file_to_qrc_file(
+                QRC_PATH ${QRC_PATH}
+                FILE_PATH ${OEM_THEME_DIR}/${icon}
+                FILE_ALIAS ${iconAlias}
+            )
         else()
             set(SIZES "16;22;32;48;64;128;256;512;1024")
             foreach(size ${SIZES})
                 set(icon "theme/${_ICON_SRC_PATH}/${ICON_NAME}-${size}.png")
                 set(iconAlias "${APPLICATION_SHORTNAME}/theme/${THEME}/${ICON_NAME}-${size}.png")
                 if (EXISTS ${OEM_THEME_DIR}/${icon})
-                    file(APPEND "${QRC}" "<file alias=\"${iconAlias}\">${OEM_THEME_DIR}/${icon}</file>\n")
+                    __add_file_to_qrc_file(
+                        QRC_PATH ${QRC_PATH}
+                        FILE_PATH ${OEM_THEME_DIR}/${icon}
+                        FILE_ALIAS ${iconAlias}
+                    )
                 endif()
             endforeach()
         endif()
@@ -35,27 +65,31 @@ function(__write_qrc_file_header QRC_PATH FILES_PREFIX)
     file(APPEND ${QRC_PATH} "    <qresource prefix=\"/client/\">\n")
 endfunction()
 
-function(__write_qrc_file_footer QRC)
-    file(APPEND ${QRC} "    </qresource>\n")
-    file(APPEND ${QRC} "</RCC>\n")
+function(__write_qrc_file_footer QRC_PATH)
+    file(APPEND ${QRC_PATH} "    </qresource>\n")
+    file(APPEND ${QRC_PATH} "</RCC>\n")
 endfunction()
 
 function(generate_theme TARGET OWNCLOUD_SIDEBAR_ICONS_OUT)
     if(NOT "${OEM_THEME_DIR}" STREQUAL "${PROJECT_SOURCE_DIR}")
-        set(QRC ${CMAKE_BINARY_DIR}/theme.qrc)
-        __write_qrc_file_header(${QRC} theme)
-        __addIcon("universal" "${APPLICATION_ICON_NAME}-icon" SRC_PATH "colored")
-        __addIcon("universal" "wizard_logo" SRC_PATH "colored")
+        set(QRC_PATH ${CMAKE_CURRENT_BINARY_DIR}/theme.qrc)
+        __write_qrc_file_header(${QRC_PATH} theme)
+
+        __addIcon(${QRC_PATH} "universal" "${APPLICATION_ICON_NAME}-icon" SRC_PATH "colored")
+        __addIcon(${QRC_PATH} "universal" "wizard_logo" SRC_PATH "colored")
 
         set(STATES "ok;error;information;offline;pause;sync")
         set(THEMES "colored;dark;black;white")
         foreach(theme ${THEMES})
             foreach(state ${STATES})
-                __addIcon(${theme} "state-${state}")
+                __addIcon(${QRC_PATH} ${theme} "state-${state}")
             endforeach()
         endforeach()
-        __write_qrc_file_footer(${QRC})
-        target_sources(${TARGET} PRIVATE ${QRC})
+
+        __write_qrc_file_footer(${QRC_PATH})
+
+        target_sources(${TARGET} PRIVATE ${QRC_PATH})
+
         # add executable icon on windows and osx
         file(GLOB_RECURSE OWNCLOUD_SIDEBAR_ICONS "${OEM_THEME_DIR}/theme/colored/*-${APPLICATION_ICON_NAME}-sidebar.png")
     else()
@@ -92,14 +126,14 @@ function(generate_qrc_file)
 
     __write_qrc_file_header(${GENERATE_QRC_FILE_QRC_PATH} ${GENERATE_QRC_FILE_PREFIX})
 
-    foreach(file ${FILES})
+    foreach(file ${GENERATE_QRC_FILE_FILES})
         get_filename_component(file_name ${file} NAME)
-        if(PREFIX)
-            set(file_alias ${PREFIX}/${file_name})
-        elseif()
-            set(file_alias ${file_name})
-        endif()
-        file(APPEND ${GENERATE_QRC_FILE_QRC_PATH} "        <file alias=\"${file_alias}\">${file}</file>\n")
+        set(file_alias ${GENERATE_QRC_FILE_PREFIX}/${file_name})
+        __add_file_to_qrc_file(
+            QRC_PATH ${GENERATE_QRC_FILE_QRC_PATH}
+            FILE_PATH ${file}
+            ALIAS ${file_alias}
+        )
     endforeach()
 
     __write_qrc_file_footer(${GENERATE_QRC_FILE_QRC_PATH})
