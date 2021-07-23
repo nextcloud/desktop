@@ -79,7 +79,7 @@ void User::showDesktopNotification(const QString &title, const QString &message)
     }
 
     // after one hour, clear the gui log notification store
-    constexpr quint64 clearGuiLogInterval = 60 * 60 * 1000;
+    constexpr qint64 clearGuiLogInterval = 60 * 60 * 1000;
     if (_guiLogTimer.elapsed() > clearGuiLogInterval) {
         _notificationCache.clear();
     }

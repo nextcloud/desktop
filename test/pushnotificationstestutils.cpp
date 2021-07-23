@@ -1,6 +1,7 @@
 #include <QLoggingCategory>
 #include <QSignalSpy>
 #include <QTest>
+#include <cstdint>
 #include <functional>
 
 #include "pushnotificationstestutils.h"
@@ -116,15 +117,15 @@ uint32_t FakeWebSocketServer::textMessagesCount() const
     return _processTextMessageSpy->count();
 }
 
-QString FakeWebSocketServer::textMessage(uint32_t messageNumber) const
+QString FakeWebSocketServer::textMessage(int messageNumber) const
 {
-    Q_ASSERT(messageNumber < _processTextMessageSpy->count());
+    Q_ASSERT(0 <= messageNumber && messageNumber < _processTextMessageSpy->count());
     return _processTextMessageSpy->at(messageNumber).at(1).toString();
 }
 
-QWebSocket *FakeWebSocketServer::socketForTextMessage(uint32_t messageNumber) const
+QWebSocket *FakeWebSocketServer::socketForTextMessage(int messageNumber) const
 {
-    Q_ASSERT(messageNumber < _processTextMessageSpy->count());
+    Q_ASSERT(0 <= messageNumber && messageNumber < _processTextMessageSpy->count());
     return _processTextMessageSpy->at(messageNumber).at(0).value<QWebSocket *>();
 }
 

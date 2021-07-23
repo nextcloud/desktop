@@ -125,7 +125,7 @@ std::unique_ptr<csync_file_stat_t> csync_vio_local_readdir(csync_vio_handle_t *h
       // Directly modifies file_stat->type.
       // We can ignore the return value since we're done here anyway.
       const auto result = vfs->statTypeVirtualFile(file_stat.get(), &handle->path);
-      Q_UNUSED(result);
+      Q_UNUSED(result)
   }
 
   return file_stat;
