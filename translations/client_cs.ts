@@ -12,23 +12,23 @@
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="33"/>
         <source>Open %1 locally</source>
-        <translation type="unfinished"/>
+        <translation>Otevřít %1 lokálně</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="163"/>
         <location filename="../src/gui/tray/ActivityItem.qml" line="166"/>
         <source>Show more actions</source>
-        <translation type="unfinished"/>
+        <translation>Zobrazit další akce</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="253"/>
         <source>Open share dialog</source>
-        <translation type="unfinished"/>
+        <translation>Otevřít dialog sdílení</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="257"/>
         <source>Share %1</source>
-        <translation type="unfinished"/>
+        <translation>Sdílet %1</translation>
     </message>
 </context>
 <context>
@@ -1067,7 +1067,7 @@ Toto může být způsobeno problémem s OpenSSL knihovnami.</translation>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="104"/>
         <source>The polling URL does not start with https despite the login URL started with https. Login will not be possible because this might be a security issue. Please contact your administrator.</source>
-        <translation type="unfinished"/>
+        <translation>URL adresa, na kterou se pravidelně dotazovat, nezačíná na https, ačkoli přihlašovací adresa na https začíná. Přihlášení nebude umožněno, protože by se jednalo a bezpečnostní problém. Obraťte se na svého správce.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="109"/>
@@ -1096,7 +1096,7 @@ Toto může být způsobeno problémem s OpenSSL knihovnami.</translation>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="211"/>
         <source>The returned server URL does not start with https despite the login URL started with https. Login will not be possible because this might be a security issue. Please contact your administrator.</source>
-        <translation type="unfinished"/>
+        <translation>URL adresa serveru, která byla vrácena, nezačíná na https, ačkoli přihlašovací adresa na https začíná. Přihlášení nebude umožněno, protože by se jednalo a bezpečnostní problém. Obraťte se na svého správce.</translation>
     </message>
 </context>
 <context>
@@ -2534,7 +2534,7 @@ Záznamy událostí budou zapisovány do %1</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="108"/>
         <source>New %1 update ready</source>
-        <translation type="unfinished"/>
+        <translation>Je připravena nová aktualizace %1</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="109"/>

@@ -19,7 +19,7 @@ Window {
     width:      Systray.useNormalWindow ? Style.trayWindowHeight : Style.trayWindowWidth
     height:     Style.trayWindowHeight
     color:      "transparent"
-    flags:      Qt.WindowTitleHint | Qt.CustomizeWindowHint | Qt.WindowCloseButtonHint | (Systray.useNormalWindow ? Qt.Dialog : Qt.Dialog | Qt.FramelessWindowHint)
+    flags:      Systray.useNormalWindow ? Qt.Window : Qt.Dialog | Qt.FramelessWindowHint
 
 
     readonly property int maxMenuHeight: Style.trayWindowHeight - Style.trayWindowHeaderHeight - 2 * Style.trayWindowBorderWidth
