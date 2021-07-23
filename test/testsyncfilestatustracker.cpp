@@ -16,16 +16,16 @@ class StatusPushSpy : public QSignalSpy
     SyncEngine &_syncEngine;
 public:
     StatusPushSpy(SyncEngine &syncEngine)
-        : QSignalSpy(&syncEngine.syncFileStatusTracker(), SIGNAL(fileStatusChanged(const QString&, SyncFileStatus)))
+        : QSignalSpy(&syncEngine.syncFileStatusTracker(), &SyncFileStatusTracker::fileStatusChanged)
         , _syncEngine(syncEngine)
     { }
 
     SyncFileStatus statusOf(const QString &relativePath) const {
         QFileInfo file(_syncEngine.localPath(), relativePath);
         // Start from the end to get the latest status
-        for (int i = size() - 1; i >= 0; --i) {
-            if (QFileInfo(at(i)[0].toString()) == file)
-                return at(i)[1].value<SyncFileStatus>();
+        for (auto it = crbegin(); it != crend(); ++it) {
+            if (QFileInfo(it->at(0).toString()) == file)
+                return it->at(1).value<SyncFileStatus>();
         }
         return SyncFileStatus();
     }
@@ -59,8 +59,9 @@ class TestSyncFileStatusTracker : public QObject
         while (it.hasNext()) {
             QString filePath = it.next().mid(root.size());
             SyncFileStatus pushedStatus = statusSpy.statusOf(filePath);
-            if (pushedStatus != SyncFileStatus())
+            if (pushedStatus != SyncFileStatus()) {
                 QCOMPARE(fakeFolder.syncEngine().syncFileStatusTracker().fileStatus(filePath), pushedStatus);
+            }
         }
     }
 
@@ -444,7 +445,6 @@ private slots:
 
         fakeFolder.scheduleSync();
         fakeFolder.execUntilBeforePropagation();
-        verifyThatPushMatchesPull(fakeFolder, statusSpy);
         QCOMPARE(statusSpy.statusOf(""), SyncFileStatus(SyncFileStatus::StatusSync));
         // We don't care about the shared flag for the sync status,
         // Mac and Windows won't show it and we can't know it for new files.
