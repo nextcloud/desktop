@@ -1211,8 +1211,8 @@ private slots:
         QCOMPARE(*vfs->availability("local"), VfsItemAvailability::Mixed);
         QCOMPARE(*vfs->availability("online"), VfsItemAvailability::Mixed);
 
-        vfs->setPinState("local", PinState::AlwaysLocal);
-        vfs->setPinState("online", PinState::OnlineOnly);
+        QVERIFY(vfs->setPinState("local", PinState::AlwaysLocal));
+        QVERIFY(vfs->setPinState("online", PinState::OnlineOnly));
         QVERIFY(fakeFolder.syncOnce());
 
         QCOMPARE(*vfs->availability("online"), VfsItemAvailability::OnlineOnly);
@@ -1293,13 +1293,13 @@ private slots:
         QCOMPARE(*vfs->pinState("onlinerenamed2/file1rename" DVSUFFIX), PinState::OnlineOnly);
 
         // When a file is hydrated or dehydrated due to pin state it retains its pin state
-        vfs->setPinState("onlinerenamed2/file1rename" DVSUFFIX, PinState::AlwaysLocal);
+        QVERIFY(vfs->setPinState("onlinerenamed2/file1rename" DVSUFFIX, PinState::AlwaysLocal));
         QVERIFY(fakeFolder.syncOnce());
         QVERIFY(fakeFolder.currentLocalState().find("onlinerenamed2/file1rename"));
         QCOMPARE(*vfs->pinState("onlinerenamed2/file1rename"), PinState::AlwaysLocal);
 
-        vfs->setPinState("onlinerenamed2", PinState::Unspecified);
-        vfs->setPinState("onlinerenamed2/file1rename", PinState::OnlineOnly);
+        QVERIFY(vfs->setPinState("onlinerenamed2", PinState::Unspecified));
+        QVERIFY(vfs->setPinState("onlinerenamed2/file1rename", PinState::OnlineOnly));
         QVERIFY(fakeFolder.syncOnce());
         QVERIFY(fakeFolder.currentLocalState().find("onlinerenamed2/file1rename" DVSUFFIX));
         QCOMPARE(*vfs->pinState("onlinerenamed2/file1rename" DVSUFFIX), PinState::OnlineOnly);
@@ -1376,7 +1376,7 @@ private slots:
 
         cleanup();
         // Dehydrate
-        vfs->setPinState(QString(), PinState::OnlineOnly);
+        QVERIFY(vfs->setPinState(QString(), PinState::OnlineOnly));
         QVERIFY(!fakeFolder.syncOnce());
 
         QVERIFY(itemInstruction(completeSpy, "A/igno" DVSUFFIX, CSYNC_INSTRUCTION_IGNORE));

@@ -239,7 +239,9 @@ void PropagateRemoteMove::finalize()
 
     // Delete old db data.
     propagator()->_journal->deleteFileRecord(_item->_originalFile);
-    vfs->setPinState(_item->_originalFile, PinState::Inherited);
+    if (!vfs->setPinState(_item->_originalFile, PinState::Inherited)) {
+        qCWarning(lcPropagateRemoteMove) << "Could not set pin state of" << _item->_originalFile << "to inherited";
+    }
 
     SyncFileItem newItem(*_item);
     newItem._type = _item->_type;

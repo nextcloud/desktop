@@ -1079,15 +1079,21 @@ void PropagateDownloadFile::downloadFinished()
             // Move the pin state to the new location
             auto pin = propagator()->_journal->internalPinStates().rawForPath(virtualFile.toUtf8());
             if (pin && *pin != PinState::Inherited) {
-                vfs->setPinState(_item->_file, *pin);
-                vfs->setPinState(virtualFile, PinState::Inherited);
+                if (!vfs->setPinState(_item->_file, *pin)) {
+                    qCWarning(lcPropagateDownload) << "Could not set pin state of" << _item->_file;
+                }
+                if (!vfs->setPinState(virtualFile, PinState::Inherited)) {
+                    qCWarning(lcPropagateDownload) << "Could not set pin state of" << virtualFile << " to inherited";
+                }
             }
         }
 
         // Ensure the pin state isn't contradictory
         auto pin = vfs->pinState(_item->_file);
         if (pin && *pin == PinState::OnlineOnly)
-            vfs->setPinState(_item->_file, PinState::Unspecified);
+            if (!vfs->setPinState(_item->_file, PinState::Unspecified)) {
+                qCWarning(lcPropagateDownload) << "Could not set pin state of" << _item->_file << "to unspecified";
+            }
     }
 
     updateMetadata(isConflict);
