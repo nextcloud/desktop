@@ -478,7 +478,6 @@ void Application::slotCrash()
 
 void Application::slotownCloudWizardDone(int res)
 {
-    AccountManager *accountMan = AccountManager::instance();
     FolderMan *folderMan = FolderMan::instance();
 
     // During the wizard, scheduling of new syncs is disabled
@@ -491,7 +490,7 @@ void Application::slotownCloudWizardDone(int res)
 
         // If one account is configured: enable autostart
 #ifndef QT_DEBUG
-        bool shouldSetAutoStart = (accountMan->accounts().size() == 1);
+        bool shouldSetAutoStart = AccountManager::instance()->accounts().size() == 1;
 #else
         bool shouldSetAutoStart = false;
 #endif
