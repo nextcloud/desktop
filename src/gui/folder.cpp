@@ -252,7 +252,7 @@ bool Folder::isBusy() const
 
 bool Folder::isSyncRunning() const
 {
-    return _engine->isSyncRunning() || _vfs->isHydrating();
+    return _engine->isSyncRunning() || (_vfs && _vfs->isHydrating());
 }
 
 QString Folder::remotePath() const
