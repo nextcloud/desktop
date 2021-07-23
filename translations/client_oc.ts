@@ -12,13 +12,13 @@
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="33"/>
         <source>Open %1 locally</source>
-        <translation type="unfinished"/>
+        <translation>Dobrir %1 localement</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="163"/>
         <location filename="../src/gui/tray/ActivityItem.qml" line="166"/>
         <source>Show more actions</source>
-        <translation type="unfinished"/>
+        <translation>Mostrar mai d’accions</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="253"/>
@@ -28,7 +28,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="257"/>
         <source>Share %1</source>
-        <translation type="unfinished"/>
+        <translation>Partejar %1</translation>
     </message>
 </context>
 <context>

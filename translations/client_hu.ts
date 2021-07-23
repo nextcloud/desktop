@@ -12,23 +12,23 @@
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="33"/>
         <source>Open %1 locally</source>
-        <translation type="unfinished"/>
+        <translation>%1 megnyitása helyben</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="163"/>
         <location filename="../src/gui/tray/ActivityItem.qml" line="166"/>
         <source>Show more actions</source>
-        <translation type="unfinished"/>
+        <translation>További műveletek megjelenítése</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="253"/>
         <source>Open share dialog</source>
-        <translation type="unfinished"/>
+        <translation>Megosztási párbeszédpanel megnyitása</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="257"/>
         <source>Share %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 megosztása</translation>
     </message>
 </context>
 <context>
