@@ -22,5 +22,6 @@ Icon=@APPLICATION_EXECUTABLE@
 
 # Translations
 Icon[mk]=@APPLICATION_ICON_NAME@
+Name[mk]=@APPLICATION_NAME@ Десктоп
 Comment[mk]=@APPLICATION_NAME@ клиент за синхронизација на компјутер
 GenericName[mk]=Папка за синхронизација

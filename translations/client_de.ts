@@ -1066,8 +1066,8 @@ Dies kann ein Problem mit Ihren OpenSSL-Bibliotheken sein.</translation>
     <name>OCC::Flow2Auth</name>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="104"/>
-        <source>The polling URL does not start with https despite the login URL started with https. Login will not be possible because this might be a security issue. Please contact your administrator.</source>
-        <translation>Die Polling-URL beginnt nicht mit HTTPS, obwohl die Login-URL mit HTTPS beginnt. Die Anmeldung ist nicht möglich, da dies ein Sicherheitsproblem darstellen könnte. Bitte wenden Sie sich an Ihren Administrator.</translation>
+        <source>The polling URL does not start with HTTPS despite the login URL started with HTTPS. Login will not be possible because this might be a security issue. Please contact your administrator.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="109"/>
@@ -1095,8 +1095,8 @@ Dies kann ein Problem mit Ihren OpenSSL-Bibliotheken sein.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="211"/>
-        <source>The returned server URL does not start with https despite the login URL started with https. Login will not be possible because this might be a security issue. Please contact your administrator.</source>
-        <translation>Die zurückgegebene Server-URL beginnt nicht mit HTTPS, obwohl die Anmelde-URL mit HTTPS beginnt. Die Anmeldung ist nicht möglich, da dies ein Sicherheitsproblem darstellen könnte. Bitte wenden Sie sich an Ihren Administrator.</translation>
+        <source>The returned server URL does not start with HTTPS despite the login URL started with HTTPS. Login will not be possible because this might be a security issue. Please contact your administrator.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
