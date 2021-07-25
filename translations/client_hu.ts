@@ -4,7 +4,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityActionButton.qml" line="39"/>
         <source>Activity action button</source>
-        <translation>Tevékenység művelet gomb</translation>
+        <translation>Tevékenység műveletgomb</translation>
     </message>
 </context>
 <context>
@@ -310,12 +310,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="88"/>
         <source>End-to-End Encryption with Virtual Files</source>
-        <translation type="unfinished"/>
+        <translation>Végpontok közti titkosítás virtuális fájlokkal</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="89"/>
         <source>You seem to have the Virtual Files feature enabled on this folder. At  the moment, it is not possible to implicitly download virtual files that are End-to-End encrypted. To get the best experience with Virtual Files and End-to-End Encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Úgy néz ki, hogy engedélyezte a Virtuális fájlok funkciót ezen a mappán. Pillanatnyilag nem lehet implicit módon olyan virtuális fájlokat letölteni, melyek végpontok közti titkosítással vannak ellátva. A legjobb élmény érdekében győződjön meg róla, hogy a titkosított mappa meg legyen jelölve, hogy mindig elérhető legyen helyben is.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="97"/>
@@ -4801,7 +4801,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
     <message>
         <location filename="../src/libsync/vfs/cfapi/vfs_cfapi.cpp" line="334"/>
         <source>It seems that you are trying to download a virtual file that is end-to-end encrypted. Implicitly downloading such files is not supported at the moment. To workaround this issue, go to the settings and mark the encrypted folder with &quot;Make always available locally&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Úgy néz ki, hogy egy végpontok közti titkosítással ellátott virtuális fájlt akar letölteni. Az ilyen fájlok implicit letöltése jelenleg nem támogatott. Kerülőmegoldásként menjen a beállításokba, és kapcsolja be hogy mindig elérhető legyen helyben is.</translation>
     </message>
 </context>
 <context>
