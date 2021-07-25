@@ -1067,7 +1067,7 @@ Toto může být způsobeno problémem s OpenSSL knihovnami.</translation>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="104"/>
         <source>The polling URL does not start with HTTPS despite the login URL started with HTTPS. Login will not be possible because this might be a security issue. Please contact your administrator.</source>
-        <translation type="unfinished"/>
+        <translation>URL adresa, na kterou se pravidelně dotazovat, nezačíná na HTTPS, ačkoli přihlašovací adresa na HTTPS začíná. Přihlášení nebude umožněno, protože by se jednalo a bezpečnostní problém. Obraťte se na svého správce.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="109"/>
@@ -1096,7 +1096,7 @@ Toto může být způsobeno problémem s OpenSSL knihovnami.</translation>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="211"/>
         <source>The returned server URL does not start with HTTPS despite the login URL started with HTTPS. Login will not be possible because this might be a security issue. Please contact your administrator.</source>
-        <translation type="unfinished"/>
+        <translation>URL adresa serveru, která byla vrácena, nezačíná na HTTPS, ačkoli přihlašovací adresa na HTTPS začíná. Přihlášení nebude umožněno, protože by se jednalo a bezpečnostní problém. Obraťte se na svého správce.</translation>
     </message>
 </context>
 <context>
