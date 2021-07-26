@@ -752,14 +752,23 @@ QString OwncloudPropagator::adjustRenamedPath(const QString &original) const
     return OCC::adjustRenamedPath(_renamedDirectories, original);
 }
 
-Result<Vfs::ConvertToPlaceholderResult, QString> OwncloudPropagator::updateMetadata(const SyncFileItem &item, const QString &fileName, const QString &replacesFile)
+Result<Vfs::ConvertToPlaceholderResult, QString> OwncloudPropagator::updatePlaceholder(const SyncFileItem &item, const QString &fileName, const QString &replacesFile)
 {
-    const QString fsPath = fileName.isEmpty() ? fullLocalPath(item.destination()) : fileName;
-    const auto result = syncOptions()._vfs->updateMetadata(fsPath, item, replacesFile);
+    const auto result = syncOptions()._vfs->updateMetadata(fileName, item, replacesFile);
     if (!result) {
         return result.error();
     } else if (*result == Vfs::ConvertToPlaceholderResult::Locked) {
         return Vfs::ConvertToPlaceholderResult::Locked;
+    }
+    return Vfs::ConvertToPlaceholderResult::Ok;
+}
+
+Result<Vfs::ConvertToPlaceholderResult, QString> OwncloudPropagator::updateMetadata(const SyncFileItem &item, const QString &fileName)
+{
+    const QString fsPath = fileName.isEmpty() ? fullLocalPath(item.destination()) : fileName;
+    const auto result = updatePlaceholder(item, fsPath, {});
+    if (!result) {
+        return result;
     }
     const auto record = item.toSyncJournalFileRecordWithInode(fsPath);
     const auto dBresult = _journal->setFileRecord(record);

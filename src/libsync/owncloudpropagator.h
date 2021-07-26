@@ -520,10 +520,16 @@ public:
      * Typically after a sync operation succeeded. Updates the inode from
      * the filesystem.
      *
+     * Will also trigger updatePlaceholder.
+     */
+    Result<Vfs::ConvertToPlaceholderResult, QString> updateMetadata(const SyncFileItem &item, const QString &fileName = {});
+
+
+    /** Update the the placeholder and takes over some metadata from replacesFile
+     *
      * Will also trigger a Vfs::updateMetadata.
      */
-    Result<Vfs::ConvertToPlaceholderResult, QString> updateMetadata(const SyncFileItem &item, const QString &fileName = {}, const QString &replacesFile = {});
-
+    Result<Vfs::ConvertToPlaceholderResult, QString> updatePlaceholder(const SyncFileItem &item, const QString &fileName, const QString &replacesFile);
 private slots:
 
     void abortTimeout()

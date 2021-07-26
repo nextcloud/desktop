@@ -899,7 +899,7 @@ void PropagateDownloadFile::contentChecksumComputed(const QByteArray &checksumTy
 void PropagateDownloadFile::downloadFinished()
 {
     OC_ASSERT(!_tmpFile.isOpen());
-    QString fn = propagator()->fullLocalPath(_item->_file);
+    QString fn = propagator()->fullLocalPath(_item->destination());
 
     // In case of file name clash, report an error
     // This can happen if another parallel download saved a clashing file.
@@ -923,7 +923,7 @@ void PropagateDownloadFile::downloadFinished()
         preserveGroupOwnership(_tmpFile.fileName(), existingFile);
 
         // Make the file a hydrated placeholder if possible
-        const auto result = propagator()->updateMetadata(*_item, _tmpFile.fileName(), fn);
+        const auto result = propagator()->updatePlaceholder(*_item, _tmpFile.fileName(), fn);
         if (!result) {
             done(SyncFileItem::NormalError, result.error());
             return;
