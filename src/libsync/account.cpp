@@ -85,18 +85,7 @@ Account::~Account() = default;
 
 QString Account::davPath() const
 {
-    if (capabilities().chunkingNg()) {
-        // The chunking-ng means the server prefer to use the new webdav URL
-        return QLatin1String("/remote.php/dav/files/") + davUser() + QLatin1Char('/');
-    }
-
-    // make sure to have a trailing slash
-    if (!_davPath.endsWith('/')) {
-        QString dp(_davPath);
-        dp.append('/');
-        return dp;
-    }
-    return _davPath;
+    return QLatin1String("/remote.php/dav/files/") + davUser() + QLatin1Char('/');
 }
 
 void Account::setSharedThis(AccountPtr sharedThis)
