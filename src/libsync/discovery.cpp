@@ -1085,8 +1085,7 @@ void ProcessDirectoryJob::processFileFinalize(
                 addVirtualFileSuffix(item->_renameTarget);
             else
                 addVirtualFileSuffix(item->_file);
-        }
-        if (item->_type == ItemTypeVirtualFileDehydration
+        } else if (item->_type == ItemTypeVirtualFileDehydration
             && item->_instruction == CSYNC_INSTRUCTION_SYNC) {
             if (item->_renameTarget.isEmpty()) {
                 item->_renameTarget = item->_file;
