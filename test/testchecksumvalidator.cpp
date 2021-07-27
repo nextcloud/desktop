@@ -42,7 +42,8 @@ using namespace OCC::Utility;
          _successDown = true;
     }
 
-    void slotDownError(const QString &errMsg, const QByteArray&, const QByteArray&, const QString&) {
+    void slotDownError(const QString &errMsg)
+    {
          QCOMPARE(_expectedError, errMsg);
          _errorSeen = true;
     }
