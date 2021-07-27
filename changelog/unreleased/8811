@@ -1,0 +1,5 @@
+Enhancement: Retry sync on `502 Bad Gateway`
+
+We now treat a `502 Bad Gateway` as an less severer error and directly initialise a retry.
+
+https://github.com/owncloud/client/issues/8811

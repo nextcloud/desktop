@@ -56,7 +56,23 @@ inline SyncFileItem::Status classifyError(QNetworkReply::NetworkError nerror,
         return SyncFileItem::FatalError;
     }
 
-    if (httpCode == 503) {
+    switch (httpCode) {
+    case 423:
+        // "Locked"
+        // Should be temporary.
+        Q_FALLTHROUGH();
+    case 502:
+        // "Bad Gateway"
+        // Should be temporary.
+        if (anotherSyncNeeded != nullptr) {
+            *anotherSyncNeeded = true;
+        }
+        Q_FALLTHROUGH();
+    case 412:
+        // "Precondition Failed"
+        // Happens when the e-tag has changed
+        return SyncFileItem::SoftError;
+    case 503: {
         // When the server is in maintenance mode, we want to exit the sync immediatly
         // so that we do not flood the server with many requests
         // BUG: This relies on a translated string and is thus unreliable.
@@ -67,22 +83,7 @@ inline SyncFileItem::Status classifyError(QNetworkReply::NetworkError nerror,
                 && !errorBody.contains("Storage is temporarily not available");
         return probablyMaintenance ? SyncFileItem::FatalError : SyncFileItem::NormalError;
     }
-
-    if (httpCode == 412) {
-        // "Precondition Failed"
-        // Happens when the e-tag has changed
-        return SyncFileItem::SoftError;
     }
-
-    if (httpCode == 423) {
-        // "Locked"
-        // Should be temporary.
-        if (anotherSyncNeeded) {
-            *anotherSyncNeeded = true;
-        }
-        return SyncFileItem::SoftError;
-    }
-
     return SyncFileItem::NormalError;
 }
 }
