@@ -1017,7 +1017,7 @@ void PropagateDownloadFile::downloadFinished()
 void PropagateDownloadFile::updateMetadata(bool isConflict)
 {
     const QString fn = propagator()->fullLocalPath(_item->destination());
-    const auto result = propagator()->updateMetadata(*_item, fn);
+    const auto result = propagator()->updateMetadata(*_item);
     if (!result) {
         done(SyncFileItem::FatalError, tr("Error updating metadata: %1").arg(result.error()));
         return;

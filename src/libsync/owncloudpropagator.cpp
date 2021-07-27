@@ -754,7 +754,7 @@ QString OwncloudPropagator::adjustRenamedPath(const QString &original) const
 
 Result<Vfs::ConvertToPlaceholderResult, QString> OwncloudPropagator::updatePlaceholder(const SyncFileItem &item, const QString &fileName, const QString &replacesFile)
 {
-    const auto result = syncOptions()._vfs->updateMetadata(fileName, item, replacesFile);
+    const auto result = syncOptions()._vfs->updateMetadata(item, fileName, replacesFile);
     if (!result) {
         return result.error();
     } else if (*result == Vfs::ConvertToPlaceholderResult::Locked) {
@@ -763,9 +763,9 @@ Result<Vfs::ConvertToPlaceholderResult, QString> OwncloudPropagator::updatePlace
     return Vfs::ConvertToPlaceholderResult::Ok;
 }
 
-Result<Vfs::ConvertToPlaceholderResult, QString> OwncloudPropagator::updateMetadata(const SyncFileItem &item, const QString &fileName)
+Result<Vfs::ConvertToPlaceholderResult, QString> OwncloudPropagator::updateMetadata(const SyncFileItem &item)
 {
-    const QString fsPath = fileName.isEmpty() ? fullLocalPath(item.destination()) : fileName;
+    const QString fsPath = fullLocalPath(item.destination());
     const auto result = updatePlaceholder(item, fsPath, {});
     if (!result) {
         return result;
@@ -1148,7 +1148,7 @@ void OCC::PropagateUpdateMetaDataJob::start()
     // database is removed. Nothing will be done for those files, but we still need
     // to update the database.
 
-    const QString filePath = propagator()->fullLocalPath(_item->_file);
+    const QString filePath = propagator()->fullLocalPath(_item->destination());
     if (_item->_direction == SyncFileItem::Down) {
         // If the 'W' remote permission changed, update the local filesystem
         SyncJournalFileRecord prev;
@@ -1163,7 +1163,7 @@ void OCC::PropagateUpdateMetaDataJob::start()
             _item->_serverHasIgnoredFiles |= prev._serverHasIgnoredFiles;
         }
     }
-    const auto result = propagator()->updateMetadata(*_item, filePath);
+    const auto result = propagator()->updateMetadata(*_item);
     if (!result) {
         done(SyncFileItem::SoftError, tr("Could not update file : %1").arg(result.error()));
     }

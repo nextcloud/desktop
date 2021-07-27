@@ -68,7 +68,7 @@ bool VfsSuffix::isHydrating() const
     return false;
 }
 
-Result<Vfs::ConvertToPlaceholderResult, QString> VfsSuffix::updateMetadata(const QString &filePath, const SyncFileItem &item, const QString &)
+Result<Vfs::ConvertToPlaceholderResult, QString> VfsSuffix::updateMetadata(const SyncFileItem &item, const QString &filePath, const QString &)
 {
     FileSystem::setModTime(filePath, item._modtime);
     return Vfs::ConvertToPlaceholderResult::Ok;

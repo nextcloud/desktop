@@ -238,7 +238,7 @@ protected:
      * If the remote metadata changes, the local placeholder's metadata should possibly
      * change as well.
      */
-    virtual OC_REQUIRED_RESULT Result<ConvertToPlaceholderResult, QString> updateMetadata(const QString &filePath, const SyncFileItem &item, const QString &replacesFile = {}) = 0;
+    virtual OC_REQUIRED_RESULT Result<ConvertToPlaceholderResult, QString> updateMetadata(const SyncFileItem &item, const QString &filePath, const QString &replacesFile) = 0;
 
     /** Setup the plugin for the folder.
      *
@@ -296,7 +296,7 @@ public slots:
     void fileStatusChanged(const QString &, SyncFileStatus) override {}
 
 protected:
-    Result<ConvertToPlaceholderResult, QString> updateMetadata(const QString &, const SyncFileItem &, const QString & = {}) override { return { ConvertToPlaceholderResult::Ok }; }
+    Result<ConvertToPlaceholderResult, QString> updateMetadata(const SyncFileItem &, const QString &, const QString &) override { return { ConvertToPlaceholderResult::Ok }; }
     void startImpl(const VfsSetupParams &) override {}
 };
 

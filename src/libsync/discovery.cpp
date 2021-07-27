@@ -1048,7 +1048,7 @@ void ProcessDirectoryJob::processFileConflict(const SyncFileItemPtr &item, Proce
     // we recieved the etag (Issue #5106)
     auto up = _discoveryData->_statedb->getUploadInfo(path._original);
     if (up._valid && up._contentChecksum == serverEntry.checksumHeader) {
-        // Solve the conflict into an upload, or nothing
+        // Solve the conflict into an upload, or update meta data
         item->_instruction = up._modtime == localEntry.modtime && up._size == localEntry.size
             ? CSYNC_INSTRUCTION_UPDATE_METADATA
             : CSYNC_INSTRUCTION_SYNC;

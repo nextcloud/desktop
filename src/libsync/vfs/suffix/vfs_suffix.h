@@ -56,7 +56,7 @@ public slots:
     void fileStatusChanged(const QString &, SyncFileStatus) override {}
 
 protected:
-    Result<ConvertToPlaceholderResult, QString> updateMetadata(const QString &filePath, const SyncFileItem &item, const QString &replacesFile = {}) override;
+    Result<ConvertToPlaceholderResult, QString> updateMetadata(const SyncFileItem &item, const QString &filePath, const QString &replacesFile) override;
     void startImpl(const VfsSetupParams &params) override;
 };
 

@@ -522,7 +522,7 @@ public:
      *
      * Will also trigger updatePlaceholder.
      */
-    Result<Vfs::ConvertToPlaceholderResult, QString> updateMetadata(const SyncFileItem &item, const QString &fileName = {});
+    Result<Vfs::ConvertToPlaceholderResult, QString> updateMetadata(const SyncFileItem &item);
 
 
     /** Update the the placeholder and takes over some metadata from replacesFile
