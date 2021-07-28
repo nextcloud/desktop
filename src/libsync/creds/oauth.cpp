@@ -12,22 +12,23 @@
  * for more details.
  */
 
-#include <QDesktopServices>
-#include <QNetworkReply>
-#include <QTimer>
-#include <QBuffer>
-#include <networkjobs.h>
+#include "creds/oauth.h"
+
 #include "account.h"
 #include "credentialmanager.h"
-#include "creds/oauth.h"
-#include <QJsonObject>
-#include <QJsonDocument>
-#include <QJsonArray>
-#include <QRandomGenerator>
-
-#include "theme.h"
-#include "networkjobs.h"
 #include "creds/httpcredentials.h"
+#include "networkjobs.h"
+#include "theme.h"
+
+#include <QApplication>
+#include <QBuffer>
+#include <QDesktopServices>
+#include <QJsonArray>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QNetworkReply>
+#include <QRandomGenerator>
+#include <QTimer>
 
 using namespace OCC;
 Q_LOGGING_CATEGORY(lcOauth, "sync.credentials.oauth", QtInfoMsg)
@@ -523,7 +524,9 @@ void OAuth::openBrowser()
     authorisationLinkAsync([this](const QUrl &link) {
         if (!isUrlValid(link)) {
             qCWarning(lcOauth) << "URL validation failed";
-            // TODO: show dialog to inform user about what went wrong
+            QMetaObject::invokeMethod(qApp, "slotShowGuiMessage", Qt::QueuedConnection,
+                Q_ARG(QString, tr("Oauth2 Error")),
+                Q_ARG(QString, tr("Oauth2 authentication requires a secured connection.")));
             emit result(Error, QString());
             return;
         }
