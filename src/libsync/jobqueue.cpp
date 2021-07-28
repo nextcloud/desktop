@@ -45,7 +45,7 @@ void JobQueue::unblock()
         auto tmp = std::move(_jobs);
         for (auto job : tmp) {
             if (job) {
-                qCDebug(lcJobQUeue) << "Retry" << job << job->path();
+                qCDebug(lcJobQUeue) << "Retry" << job;
                 job->retry();
             }
         }
@@ -63,10 +63,10 @@ bool JobQueue::retry(AbstractNetworkJob *job)
         return false;
     }
     if (_blocked) {
-        qCDebug(lcJobQUeue) << "Retry queued" << job << job->url();
+        qCDebug(lcJobQUeue) << "Retry queued" << job;
         _jobs.push_back(job);
     } else {
-        qCDebug(lcJobQUeue) << "Direct retry" << job << job->url();
+        qCDebug(lcJobQUeue) << "Direct retry" << job;
         job->retry();
     }
     return true;
@@ -77,7 +77,7 @@ bool JobQueue::enqueue(AbstractNetworkJob *job)
     if (!_blocked) {
         return false;
     }
-    qCDebug(lcJobQUeue) << "Queue" << job << job->url();
+    qCDebug(lcJobQUeue) << "Queue" << job;
     _jobs.push_back(job);
     return true;
 }
@@ -88,7 +88,7 @@ void JobQueue::clear()
     auto tmp = std::move(_jobs);
     for (auto job : tmp) {
         if (job) {
-            qCDebug(lcJobQUeue) << "Abort" << job << job->path();
+            qCDebug(lcJobQUeue) << "Abort" << job;
             job->abort();
         }
     }

@@ -273,6 +273,12 @@ void HttpCredentials::fetchFromKeychainHelper()
 
 bool HttpCredentials::stillValid(QNetworkReply *reply)
 {
+    // The function is called in order to determine whether we need to ask the user for a password
+    // if we are using oaut we already started a refresh in slotAuthentication.
+    // If the refresh fails we will emit authenticationFailed ourself.
+    if (isUsingOAuth()) {
+        return true;
+    }
     return ((reply->error() != QNetworkReply::AuthenticationRequiredError)
         // returned if user or password is incorrect
         && (reply->error() != QNetworkReply::OperationCanceledError
@@ -283,6 +289,7 @@ bool HttpCredentials::refreshAccessToken()
 {
     if (_refreshToken.isEmpty())
         return false;
+    _ready = false;
 
     OAuth *oauth = new OAuth(_account, this);
     connect(oauth, &OAuth::refreshFinished, this, [this, oauth](const QString &accessToken, const QString &refreshToken){
@@ -386,7 +393,7 @@ void HttpCredentials::slotAuthentication(QNetworkReply *reply, QAuthenticator *a
     Q_UNUSED(authenticator)
     // Because of issue #4326, we need to set the login and password manually at every requests
     // Thus, if we reach this signal, those credentials were invalid and we terminate.
-    qCWarning(lcHttpCredentials) << "Stop request: Authentication failed for " << reply->url().toString();
+    qCWarning(lcHttpCredentials) << "Stop request: Authentication failed for " << reply->url().toString() << reply->request().rawHeader("Original-Request-ID");
     reply->setProperty(authenticationFailedC, true);
 
     if (!_isRenewingOAuthToken && isUsingOAuth()) {
