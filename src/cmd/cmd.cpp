@@ -445,11 +445,6 @@ int main(int argc, char **argv)
     account->setUrl(url);
     account->setSslErrorHandler(sslErrorHandler);
 
-    // Do not do it if '--nonshib' was passed. This mean we should only connect to the 'nonshib'
-    // dav endpoint. Since we do not get the capabilities, in that case, this has the additional
-    // side effect that chunking-ng will be disabled. (because otherwise it would use the new
-    // 'dav' endpoint instead of the nonshib one (which still use the old chunking)
-
     QEventLoop loop;
     auto *job = new JsonApiJob(account, QLatin1String("ocs/v1.php/cloud/capabilities"));
     QObject::connect(job, &JsonApiJob::jsonReceived, [&](const QJsonDocument &json) {
