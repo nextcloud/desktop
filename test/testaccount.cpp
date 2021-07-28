@@ -23,7 +23,7 @@ class TestAccount: public QObject
     Q_OBJECT
 
 private slots:
-    void testDavPathCrash()
+    void testAccountDavPath_unitialized_noCrash()
     {
         AccountPtr account = Account::create();
         account->davPath();
