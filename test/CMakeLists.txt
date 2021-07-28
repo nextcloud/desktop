@@ -75,6 +75,7 @@ endif()
 
 nextcloud_add_benchmark(LargeSync)
 
+nextcloud_add_test(Account)
 nextcloud_add_test(FolderMan)
 nextcloud_add_test(RemoteWipe)
 

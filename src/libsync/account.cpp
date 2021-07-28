@@ -99,7 +99,7 @@ AccountPtr Account::sharedFromThis()
 
 QString Account::davUser() const
 {
-    return _davUser.isEmpty() ? _credentials->user() : _davUser;
+    return _davUser.isEmpty() && _credentials ? _credentials->user() : _davUser;
 }
 
 void Account::setDavUser(const QString &newDavUser)
