@@ -57,6 +57,12 @@ private slots:
         QVERIFY(folderman->addFolder(newAccountState.data(), folderDefinition(dirPath + "/sub/ownCloud1")));
         QVERIFY(folderman->addFolder(newAccountState.data(), folderDefinition(dirPath + "/ownCloud2")));
 
+        const auto folderList = folderman->map();
+
+        for (const auto &folder : folderList) {
+            QVERIFY(!folder->isSyncRunning());
+        }
+
 
         // those should be allowed
         // QString FolderMan::checkPathValidityForNewFolder(const QString& path, const QUrl &serverUrl, bool forNewDirectory)
