@@ -75,7 +75,6 @@ struct CmdOptions
     bool useNetrc;
     bool interactive;
     bool ignoreHiddenFiles;
-    bool nonShib;
     QString exclude;
     QString unsyncedfolders;
     QString davPath;
@@ -188,8 +187,6 @@ void help()
     std::cout << "  --password, -p [pass]  Use [pass] as password" << std::endl;
     std::cout << "  -n                     Use netrc (5) for login" << std::endl;
     std::cout << "  --non-interactive      Do not block execution with interaction" << std::endl;
-    std::cout << "  --nonshib              Use Non Shibboleth WebDAV authentication" << std::endl;
-    std::cout << "  --davpath [path]       Custom themed dav path, overrides --nonshib" << std::endl;
     std::cout << "  --max-sync-retries [n] Retries maximum n times (default to 3)" << std::endl;
     std::cout << "  --uplimit [n]          Limit the upload speed of files to n KB/s" << std::endl;
     std::cout << "  --downlimit [n]        Limit the download speed of files to n KB/s" << std::endl;
@@ -263,10 +260,6 @@ void parseOptions(const QStringList &app_args, CmdOptions *options)
             options->exclude = it.next();
         } else if (option == "--unsyncedfolders" && !it.peekNext().startsWith("-")) {
             options->unsyncedfolders = it.next();
-        } else if (option == "--nonshib") {
-            options->nonShib = true;
-        } else if (option == "--davpath" && !it.peekNext().startsWith("-")) {
-            options->davPath = it.next();
         } else if (option == "--max-sync-retries" && !it.peekNext().startsWith("-")) {
             options->restartTimes = it.next().toInt();
         } else if (option == "--uplimit" && !it.peekNext().startsWith("-")) {
@@ -328,7 +321,6 @@ int main(int argc, char **argv)
     options.useNetrc = false;
     options.interactive = true;
     options.ignoreHiddenFiles = false; // Default is to sync hidden files
-    options.nonShib = false;
     options.restartTimes = 3;
     options.uplimit = 0;
     options.downlimit = 0;
@@ -350,14 +342,6 @@ int main(int argc, char **argv)
     // check if the webDAV path was added to the url and append if not.
     if (!options.target_url.endsWith("/")) {
         options.target_url.append("/");
-    }
-
-    if (options.nonShib) {
-        account->setNonShib(true);
-    }
-
-    if (!options.davPath.isEmpty()) {
-        account->setDavPath(options.davPath);
     }
 
     if (!options.target_url.contains(account->davPath())) {
@@ -461,40 +445,32 @@ int main(int argc, char **argv)
     account->setUrl(url);
     account->setSslErrorHandler(sslErrorHandler);
 
-    // Perform a call to get the capabilities.
-    if (!options.nonShib) {
-        // Do not do it if '--nonshib' was passed. This mean we should only connect to the 'nonshib'
-        // dav endpoint. Since we do not get the capabilities, in that case, this has the additional
-        // side effect that chunking-ng will be disabled. (because otherwise it would use the new
-        // 'dav' endpoint instead of the nonshib one (which still use the old chunking)
+    QEventLoop loop;
+    auto *job = new JsonApiJob(account, QLatin1String("ocs/v1.php/cloud/capabilities"));
+    QObject::connect(job, &JsonApiJob::jsonReceived, [&](const QJsonDocument &json) {
+        auto caps = json.object().value("ocs").toObject().value("data").toObject().value("capabilities").toObject();
+        qDebug() << "Server capabilities" << caps;
+        account->setCapabilities(caps.toVariantMap());
+        account->setServerVersion(caps["core"].toObject()["status"].toObject()["version"].toString());
+        loop.quit();
+    });
+    job->start();
+    loop.exec();
 
-        QEventLoop loop;
-        auto *job = new JsonApiJob(account, QLatin1String("ocs/v1.php/cloud/capabilities"));
-        QObject::connect(job, &JsonApiJob::jsonReceived, [&](const QJsonDocument &json) {
-            auto caps = json.object().value("ocs").toObject().value("data").toObject().value("capabilities").toObject();
-            qDebug() << "Server capabilities" << caps;
-            account->setCapabilities(caps.toVariantMap());
-            account->setServerVersion(caps["core"].toObject()["status"].toObject()["version"].toString());
-            loop.quit();
-        });
-        job->start();
-        loop.exec();
-
-        if (job->reply()->error() != QNetworkReply::NoError){
-            std::cout<<"Error connecting to server\n";
-            return EXIT_FAILURE;
-        }
-
-        job = new JsonApiJob(account, QLatin1String("ocs/v1.php/cloud/user"));
-        QObject::connect(job, &JsonApiJob::jsonReceived, [&](const QJsonDocument &json) {
-            const QJsonObject data = json.object().value("ocs").toObject().value("data").toObject();
-            account->setDavUser(data.value("id").toString());
-            account->setDavDisplayName(data.value("display-name").toString());
-            loop.quit();
-        });
-        job->start();
-        loop.exec();
+    if (job->reply()->error() != QNetworkReply::NoError){
+        std::cout<<"Error connecting to server\n";
+        return EXIT_FAILURE;
     }
+
+    job = new JsonApiJob(account, QLatin1String("ocs/v1.php/cloud/user"));
+    QObject::connect(job, &JsonApiJob::jsonReceived, [&](const QJsonDocument &json) {
+        const QJsonObject data = json.object().value("ocs").toObject().value("data").toObject();
+        account->setDavUser(data.value("id").toString());
+        account->setDavDisplayName(data.value("display-name").toString());
+        loop.quit();
+    });
+    job->start();
+    loop.exec();
 
     // much lower age than the default since this utility is usually made to be run right after a change in the tests
     SyncEngine::minimumFileAgeForUpload = std::chrono::milliseconds(0);

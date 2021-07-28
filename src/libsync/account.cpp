@@ -59,7 +59,6 @@ const char app_password[] = "_app-password";
 Account::Account(QObject *parent)
     : QObject(parent)
     , _capabilities(QVariantMap())
-    , _davPath(Theme::instance()->webDavPath())
 {
     qRegisterMetaType<AccountPtr>("AccountPtr");
     qRegisterMetaType<Account *>("Account*");
@@ -85,18 +84,7 @@ Account::~Account() = default;
 
 QString Account::davPath() const
 {
-    if (capabilities().chunkingNg()) {
-        // The chunking-ng means the server prefer to use the new webdav URL
-        return QLatin1String("/remote.php/dav/files/") + davUser() + QLatin1Char('/');
-    }
-
-    // make sure to have a trailing slash
-    if (!_davPath.endsWith('/')) {
-        QString dp(_davPath);
-        dp.append('/');
-        return dp;
-    }
-    return _davPath;
+    return QLatin1String("/remote.php/dav/files/") + davUser() + QLatin1Char('/');
 }
 
 void Account::setSharedThis(AccountPtr sharedThis)
@@ -569,15 +557,6 @@ void Account::setServerVersion(const QString &version)
     auto oldServerVersion = _serverVersion;
     _serverVersion = version;
     emit serverVersionChanged(this, oldServerVersion, version);
-}
-
-void Account::setNonShib(bool nonShib)
-{
-    if (nonShib) {
-        _davPath = Theme::instance()->webDavPathNonShib();
-    } else {
-        _davPath = Theme::instance()->webDavPath();
-    }
 }
 
 void Account::writeAppPasswordOnce(QString appPassword){
