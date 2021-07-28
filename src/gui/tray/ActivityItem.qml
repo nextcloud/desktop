@@ -11,10 +11,8 @@ MouseArea {
     hoverEnabled: true
     
     Rectangle {
-        anchors.left: activityMouseArea.left
+        anchors.fill: parent
         anchors.margins: 2
-        width: Style.trayWindowMouseAreaWidth
-        height: Style.trayWindowHeaderHeight
         color: (parent.containsMouse ? Style.lightHover : "transparent")
     }
         
