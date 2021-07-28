@@ -12,23 +12,23 @@
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="33"/>
         <source>Open %1 locally</source>
-        <translation type="unfinished"/>
+        <translation>%1 lokaal openen</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="163"/>
         <location filename="../src/gui/tray/ActivityItem.qml" line="166"/>
         <source>Show more actions</source>
-        <translation type="unfinished"/>
+        <translation>Toon meer acties</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="253"/>
         <source>Open share dialog</source>
-        <translation type="unfinished"/>
+        <translation>Open het dialoogvenster voor delen</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="257"/>
         <source>Share %1</source>
-        <translation type="unfinished"/>
+        <translation>Deel %1</translation>
     </message>
 </context>
 <context>
@@ -1066,7 +1066,7 @@ Dit kan een probleem zijn met je OpenSSL-bibliotheken.</translation>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="104"/>
         <source>The polling URL does not start with HTTPS despite the login URL started with HTTPS. Login will not be possible because this might be a security issue. Please contact your administrator.</source>
-        <translation type="unfinished"/>
+        <translation>De polling-URL begint niet met HTTPS, ondanks dat de login-URL met HTTPS is begonnen. Inloggen is niet mogelijk omdat dit een beveiligingsprobleem kan zijn. Neem contact op met je beheerder.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="109"/>
@@ -1095,7 +1095,7 @@ Dit kan een probleem zijn met je OpenSSL-bibliotheken.</translation>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="211"/>
         <source>The returned server URL does not start with HTTPS despite the login URL started with HTTPS. Login will not be possible because this might be a security issue. Please contact your administrator.</source>
-        <translation type="unfinished"/>
+        <translation>De geretourneerde server-URL begint niet met HTTPS, ondanks dat de inlog-URL is begonnen met HTTPS. Inloggen is niet mogelijk omdat dit een beveiligingsprobleem kan zijn. Neem contact op met je beheerder.</translation>
     </message>
 </context>
 <context>
@@ -2538,7 +2538,7 @@ Logs worden geschreven naar %1</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="108"/>
         <source>New %1 update ready</source>
-        <translation type="unfinished"/>
+        <translation>Nieuwe %1 update is klaar</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="109"/>

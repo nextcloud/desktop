@@ -1067,7 +1067,7 @@ Może to być problem z bibliotekami OpenSSL.</translation>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="104"/>
         <source>The polling URL does not start with HTTPS despite the login URL started with HTTPS. Login will not be possible because this might be a security issue. Please contact your administrator.</source>
-        <translation type="unfinished"/>
+        <translation>Adres URL odpytywania nie zaczyna się od HTTPS pomimo adresu URL logowania zaczynającego się od HTTPS. Logowanie nie będzie możliwe, ponieważ może to stanowić problem z bezpieczeństwem. Skontaktuj się z administratorem.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="109"/>
@@ -1096,7 +1096,7 @@ Może to być problem z bibliotekami OpenSSL.</translation>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="211"/>
         <source>The returned server URL does not start with HTTPS despite the login URL started with HTTPS. Login will not be possible because this might be a security issue. Please contact your administrator.</source>
-        <translation type="unfinished"/>
+        <translation>Zwrócony adres URL serwera nie zaczyna się od HTTPS pomimo adresu URL logowania zaczynającego się od HTTPS. Logowanie nie będzie możliwe, ponieważ może to stanowić problem z bezpieczeństwem. Skontaktuj się z administratorem.</translation>
     </message>
 </context>
 <context>
@@ -4243,7 +4243,7 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="117"/>
         <source>&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This certificate was manually approved&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;b&gt;Uwaga:&lt;/b&gt; Ten certyfikat został ręcznie zatwierdzony&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;&lt;b&gt;Uwaga:&lt;/b&gt; Ten certyfikat został zatwierdzony ręcznie&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="137"/>
