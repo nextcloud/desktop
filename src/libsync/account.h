@@ -245,6 +245,8 @@ public:
     void writeAppPasswordOnce(QString appPassword);
     void deleteAppPassword();
 
+    void deleteAppToken();
+
     /// Direct Editing
     // Check for the directEditing capability
     void fetchDirectEditors(const QUrl &directEditingURL, const QString &directEditingETag);
