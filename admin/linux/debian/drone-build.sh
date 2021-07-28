@@ -15,10 +15,10 @@ OBS_PROJECT_BETA=home:ivaradi:beta
 OBS_PACKAGE=nextcloud-desktop
 
 if test "${DRONE_TARGET_BRANCH}" = "stable-2.6"; then
-    UBUNTU_DISTRIBUTIONS="bionic focal groovy hirsute impish"
+    UBUNTU_DISTRIBUTIONS="bionic focal hirsute impish"
     DEBIAN_DISTRIBUTIONS="buster stretch testing"
 else
-    UBUNTU_DISTRIBUTIONS="focal groovy hirsute impish"
+    UBUNTU_DISTRIBUTIONS="focal hirsute impish"
     DEBIAN_DISTRIBUTIONS="testing"
 fi
 
