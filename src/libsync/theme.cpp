@@ -643,16 +643,6 @@ bool Theme::wizardSelectiveSyncDefaultNothing() const
     return false;
 }
 
-QString Theme::webDavPath() const
-{
-    return QLatin1String("remote.php/dav/");
-}
-
-QString Theme::webDavPathNonShib() const
-{
-    return QLatin1String("remote.php/nonshib-webdav/");
-}
-
 bool Theme::linkSharing() const
 {
     return true;

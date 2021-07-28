@@ -59,7 +59,6 @@ const char app_password[] = "_app-password";
 Account::Account(QObject *parent)
     : QObject(parent)
     , _capabilities(QVariantMap())
-    , _davPath(Theme::instance()->webDavPath())
 {
     qRegisterMetaType<AccountPtr>("AccountPtr");
     qRegisterMetaType<Account *>("Account*");
@@ -558,15 +557,6 @@ void Account::setServerVersion(const QString &version)
     auto oldServerVersion = _serverVersion;
     _serverVersion = version;
     emit serverVersionChanged(this, oldServerVersion, version);
-}
-
-void Account::setNonShib(bool nonShib)
-{
-    if (nonShib) {
-        _davPath = Theme::instance()->webDavPathNonShib();
-    } else {
-        _davPath = Theme::instance()->webDavPath();
-    }
 }
 
 void Account::writeAppPasswordOnce(QString appPassword){
