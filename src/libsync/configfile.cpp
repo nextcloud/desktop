@@ -50,7 +50,6 @@
 #define DEFAULT_MAX_LOG_LINES 20000
 
 namespace {
-static constexpr char allowChecksumValidationFailC[] = "allowChecksumValidationFail";
 static constexpr char showMainDialogAsNormalWindowC[] = "showMainDialogAsNormalWindow";
 }
 
@@ -890,11 +889,6 @@ bool ConfigFile::moveToTrash() const
 void ConfigFile::setMoveToTrash(bool isChecked)
 {
     setValue(moveToTrashC, isChecked);
-}
-
-bool ConfigFile::allowChecksumValidationFail() const
-{
-    return getValue(allowChecksumValidationFailC, {}, false).toBool();
 }
 
 bool ConfigFile::showMainDialogAsNormalWindow() const {
