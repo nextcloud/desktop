@@ -6,6 +6,10 @@ if (WIN32)
         hydrationjob.cpp
         vfs_cfapi.cpp
     )
+    set_target_properties(nextcloudsync_vfs_cfapi
+        PROPERTIES
+        LIBRARY_OUTPUT_NAME ${APPLICATION_EXECUTABLE}sync_vfs_cfapi
+    )
 
     target_link_libraries(nextcloudsync_vfs_cfapi PRIVATE
         nextcloudsync

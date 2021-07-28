@@ -7,6 +7,10 @@ if (LINUX)
     add_library(nextcloudsync_vfs_xattr SHARED
         ${vfs_xattr_SRCS}
     )
+    set_target_properties(nextcloudsync_vfs_xattr
+        PROPERTIES
+        LIBRARY_OUTPUT_NAME ${APPLICATION_EXECUTABLE}sync_vfs_xattr
+    )
 
     target_link_libraries(nextcloudsync_vfs_xattr PRIVATE nextcloudsync)
 

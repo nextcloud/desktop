@@ -1,6 +1,10 @@
 add_library(nextcloudsync_vfs_suffix SHARED
     vfs_suffix.cpp
 )
+set_target_properties(nextcloudsync_vfs_suffix
+    PROPERTIES
+    LIBRARY_OUTPUT_NAME ${APPLICATION_EXECUTABLE}sync_vfs_suffix
+)
 
 target_link_libraries(nextcloudsync_vfs_suffix PRIVATE nextcloudsync)
 
