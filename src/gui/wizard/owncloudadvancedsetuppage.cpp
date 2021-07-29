@@ -267,7 +267,7 @@ void OwncloudAdvancedSetupPage::updateStatus()
         if (_remoteFolder.isEmpty() || _remoteFolder == QLatin1String("/")) {
             t = "";
         } else {
-            t = Utility::escape(tr("%1 folder \"%2\" is synced to local folder \"%3\"")
+            t = Utility::escape(tr(R"(%1 folder "%2" is synced to local folder "%3")")
                                     .arg(Theme::instance()->appName(), _remoteFolder,
                                         QDir::toNativeSeparators(locFolder)));
             _ui.rSyncEverything->setText(tr("Sync the folder \"%1\"").arg(_remoteFolder));
