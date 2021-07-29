@@ -10,23 +10,23 @@
 <context>
     <name>ActivityItem</name>
     <message>
-        <location filename="../src/gui/tray/ActivityItem.qml" line="33"/>
+        <location filename="../src/gui/tray/ActivityItem.qml" line="31"/>
         <source>Open %1 locally</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityItem.qml" line="163"/>
-        <location filename="../src/gui/tray/ActivityItem.qml" line="166"/>
+        <location filename="../src/gui/tray/ActivityItem.qml" line="161"/>
+        <location filename="../src/gui/tray/ActivityItem.qml" line="164"/>
         <source>Show more actions</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityItem.qml" line="253"/>
+        <location filename="../src/gui/tray/ActivityItem.qml" line="251"/>
         <source>Open share dialog</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityItem.qml" line="257"/>
+        <location filename="../src/gui/tray/ActivityItem.qml" line="255"/>
         <source>Share %1</source>
         <translation type="unfinished"/>
     </message>
@@ -3257,7 +3257,7 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
         <translation>El archivo %1 no se ha podido descargar porque falta la información de cifrado.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="409"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="402"/>
         <source>File %1 cannot be downloaded because encryption information is missing.</source>
         <translation>El archivo %1 no puede ser descargado porque falta la información de cifrado,</translation>
     </message>
@@ -3303,7 +3303,7 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
         <translation>El archivo descargado está vacío a pesar de que el servidor comunicó que debería haber sido %1.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="792"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="785"/>
         <source>The downloaded file is empty, but the server said it should have been %1.</source>
         <translation>El archivo descargado está vacío, aunque el servidor dijo que debía ocupar %1.</translation>
     </message>
@@ -3318,12 +3318,12 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
         <translation>Error al escribir los metadatos en la base de datos</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1141"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1096"/>
         <source>Error updating metadata: %1</source>
         <translation>Error al actualizar los metadatos: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1144"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1099"/>
         <source>The file %1 is currently in use</source>
         <translation>El archivo %1 se encuentra en uso</translation>
     </message>

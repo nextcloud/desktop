@@ -10,23 +10,23 @@
 <context>
     <name>ActivityItem</name>
     <message>
-        <location filename="../src/gui/tray/ActivityItem.qml" line="33"/>
+        <location filename="../src/gui/tray/ActivityItem.qml" line="31"/>
         <source>Open %1 locally</source>
         <translation>%1 lokal öffnen</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityItem.qml" line="163"/>
-        <location filename="../src/gui/tray/ActivityItem.qml" line="166"/>
+        <location filename="../src/gui/tray/ActivityItem.qml" line="161"/>
+        <location filename="../src/gui/tray/ActivityItem.qml" line="164"/>
         <source>Show more actions</source>
         <translation>Weitere Aktionen anzeigen</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityItem.qml" line="253"/>
+        <location filename="../src/gui/tray/ActivityItem.qml" line="251"/>
         <source>Open share dialog</source>
         <translation>Teilen-Dialog öffnen</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityItem.qml" line="257"/>
+        <location filename="../src/gui/tray/ActivityItem.qml" line="255"/>
         <source>Share %1</source>
         <translation>%1 teilen</translation>
     </message>
@@ -3256,7 +3256,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
         <translation>Datei %1 kann nicht heruntergeladen werden, da keine Verschlüsselungsinformationen vorhanden sind.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="409"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="402"/>
         <source>File %1 cannot be downloaded because encryption information is missing.</source>
         <translation>Die Datei %1 kann nicht heruntergeladen werden, da die Verschlüsselungsinformationen fehlen.</translation>
     </message>
@@ -3302,7 +3302,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
         <translation>Die heruntergeladene Datei ist leer, obwohl der Server %1  als Größe übermittelt hat.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="792"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="785"/>
         <source>The downloaded file is empty, but the server said it should have been %1.</source>
         <translation>Die heruntergeladene Datei ist leer, obwohl der Server %1  als Größe übermittelt hat.</translation>
     </message>
@@ -3317,12 +3317,12 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
         <translation>Fehler beim Schreiben der Metadaten in die Datenbank</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1141"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1096"/>
         <source>Error updating metadata: %1</source>
         <translation>Fehler beim Aktualisieren der Metadaten: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1144"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1099"/>
         <source>The file %1 is currently in use</source>
         <translation>Die Datei %1 ist aktuell in Benutzung</translation>
     </message>

@@ -10,23 +10,23 @@
 <context>
     <name>ActivityItem</name>
     <message>
-        <location filename="../src/gui/tray/ActivityItem.qml" line="33"/>
+        <location filename="../src/gui/tray/ActivityItem.qml" line="31"/>
         <source>Open %1 locally</source>
         <translation>Abrir %1 localmente</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityItem.qml" line="163"/>
-        <location filename="../src/gui/tray/ActivityItem.qml" line="166"/>
+        <location filename="../src/gui/tray/ActivityItem.qml" line="161"/>
+        <location filename="../src/gui/tray/ActivityItem.qml" line="164"/>
         <source>Show more actions</source>
         <translation>Mais ações</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityItem.qml" line="253"/>
+        <location filename="../src/gui/tray/ActivityItem.qml" line="251"/>
         <source>Open share dialog</source>
         <translation>Abrir diálogo de compartilhamento</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityItem.qml" line="257"/>
+        <location filename="../src/gui/tray/ActivityItem.qml" line="255"/>
         <source>Share %1</source>
         <translation>Compartilhar %1</translation>
     </message>
@@ -3257,7 +3257,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <translation>O arquivo %1 não pode ser baixado porque a informação de criptografia está faltando.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="409"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="402"/>
         <source>File %1 cannot be downloaded because encryption information is missing.</source>
         <translation>O arquivo %1 não pode ser baixado porque está faltando informações de criptografia.</translation>
     </message>
@@ -3303,7 +3303,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <translation>O arquivo baixado está vazio apesar do servidor ter anunciado que ele deveria ter %1.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="792"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="785"/>
         <source>The downloaded file is empty, but the server said it should have been %1.</source>
         <translation>O arquivo baixado está vazio, mas o servidor disse que deveria ser %1.</translation>
     </message>
@@ -3318,12 +3318,12 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <translation>Ocorreu um erro ao escrever metadados no banco de dados</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1141"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1096"/>
         <source>Error updating metadata: %1</source>
         <translation>Erro ao atualizar metadados: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1144"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1099"/>
         <source>The file %1 is currently in use</source>
         <translation>O arquivo %1 está correntemente em uso</translation>
     </message>

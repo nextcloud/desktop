@@ -10,23 +10,23 @@
 <context>
     <name>ActivityItem</name>
     <message>
-        <location filename="../src/gui/tray/ActivityItem.qml" line="33"/>
+        <location filename="../src/gui/tray/ActivityItem.qml" line="31"/>
         <source>Open %1 locally</source>
         <translation>Otevřít %1 lokálně</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityItem.qml" line="163"/>
-        <location filename="../src/gui/tray/ActivityItem.qml" line="166"/>
+        <location filename="../src/gui/tray/ActivityItem.qml" line="161"/>
+        <location filename="../src/gui/tray/ActivityItem.qml" line="164"/>
         <source>Show more actions</source>
         <translation>Zobrazit další akce</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityItem.qml" line="253"/>
+        <location filename="../src/gui/tray/ActivityItem.qml" line="251"/>
         <source>Open share dialog</source>
         <translation>Otevřít dialog sdílení</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityItem.qml" line="257"/>
+        <location filename="../src/gui/tray/ActivityItem.qml" line="255"/>
         <source>Share %1</source>
         <translation>Sdílet %1</translation>
     </message>
@@ -3256,7 +3256,7 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
         <translation>Soubor %1 není možné stáhnout z důvodu chybějících informací o šifrování</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="409"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="402"/>
         <source>File %1 cannot be downloaded because encryption information is missing.</source>
         <translation>Soubor %1 není možné stáhnout z důvodu chybějících informací o šifrování</translation>
     </message>
@@ -3302,7 +3302,7 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
         <translation>Stažený soubor je prázdný, přestože server oznámil, že by měl mít velikost %1.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="792"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="785"/>
         <source>The downloaded file is empty, but the server said it should have been %1.</source>
         <translation>Stažený soubor je prázdný, ale server sdělil, že měl mít %1.</translation>
     </message>
@@ -3317,12 +3317,12 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
         <translation>Chyba zápisu metadat do databáze</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1141"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1096"/>
         <source>Error updating metadata: %1</source>
         <translation>Chyba při aktualizování metadat: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1144"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1099"/>
         <source>The file %1 is currently in use</source>
         <translation>Soubor %1 je v tuto chvíli používán jinou aplikací</translation>
     </message>
