@@ -66,7 +66,6 @@ private:
     void updateStatus();
     void startSpinner();
     void stopSpinner();
-    QUrl serverUrl() const;
 
     Ui_OwncloudAdvancedSetupPage _ui;
     bool _checking;

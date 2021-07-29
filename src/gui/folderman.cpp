@@ -1394,7 +1394,7 @@ static QString canonicalPath(const QString &path)
     return selFile.canonicalFilePath();
 }
 
-QString FolderMan::checkPathValidityForNewFolder(const QString &path, const QUrl &serverUrl) const
+QString FolderMan::checkPathValidityForNewFolder(const QString &path) const
 {
     QString recursiveValidity = checkPathValidityRecursive(path);
     if (!recursiveValidity.isEmpty()) {
@@ -1410,38 +1410,27 @@ QString FolderMan::checkPathValidityForNewFolder(const QString &path, const QUrl
         Folder *f = static_cast<Folder *>(i.value());
         const QString folderDir = QDir::cleanPath(canonicalPath(f->path())) + '/';
 
-        const bool differentPaths = QString::compare(folderDir, userDir, cs) != 0;
-        if (differentPaths && FileSystem::isChildPathOf(folderDir, userDir)) {
+        if (QString::compare(folderDir, userDir, cs) == 0) {
+            return tr("There is already a sync from the server to this local folder. "
+                      "Please pick another local folder!");
+        }
+        if (FileSystem::isChildPathOf(folderDir, userDir)) {
             return tr("The local folder %1 already contains a folder used in a folder sync connection. "
                       "Please pick another one!")
                 .arg(QDir::toNativeSeparators(path));
         }
 
-        if (differentPaths && FileSystem::isChildPathOf(userDir, folderDir)) {
+        if (FileSystem::isChildPathOf(userDir, folderDir)) {
             return tr("The local folder %1 is already contained in a folder used in a folder sync connection. "
                       "Please pick another one!")
                 .arg(QDir::toNativeSeparators(path));
-        }
-
-        // if both pathes are equal, the server url needs to be different
-        // otherwise it would mean that a new connection from the same local folder
-        // to the same account is added which is not wanted. The account must differ.
-        if (serverUrl.isValid() && !differentPaths) {
-            QUrl folderUrl = f->accountState()->account()->url();
-            QString user = f->accountState()->account()->credentials()->user();
-            folderUrl.setUserName(user);
-
-            if (serverUrl == folderUrl) {
-                return tr("There is already a sync from the server to this local folder. "
-                          "Please pick another local folder!");
-            }
         }
     }
 
     return QString();
 }
 
-QString FolderMan::findGoodPathForNewSyncFolder(const QString &basePath, const QUrl &serverUrl) const
+QString FolderMan::findGoodPathForNewSyncFolder(const QString &basePath) const
 {
     QString folder = basePath;
 
@@ -1460,7 +1449,7 @@ QString FolderMan::findGoodPathForNewSyncFolder(const QString &basePath, const Q
     forever {
         const bool isGood =
             !QFileInfo::exists(folder)
-            && FolderMan::instance()->checkPathValidityForNewFolder(folder, serverUrl).isEmpty();
+            && FolderMan::instance()->checkPathValidityForNewFolder(folder).isEmpty();
         if (isGood) {
             break;
         }

@@ -130,7 +130,7 @@ void OwncloudAdvancedSetupPage::initializePage()
     _ui.lSyncEverythingSizeLabel->setText(QString());
 
     // Update the local folder - this is not guaranteed to find a good one
-    QString goodLocalFolder = FolderMan::instance()->findGoodPathForNewSyncFolder(localFolder(), serverUrl());
+    QString goodLocalFolder = FolderMan::instance()->findGoodPathForNewSyncFolder(localFolder());
     wizard()->setProperty("localFolder", goodLocalFolder);
 
     // call to init label
@@ -160,7 +160,7 @@ void OwncloudAdvancedSetupPage::updateStatus()
     const QString locFolder = localFolder();
 
     // check if the local folder exists. If so, and if its not empty, show a warning.
-    QString errorStr = FolderMan::instance()->checkPathValidityForNewFolder(locFolder, serverUrl());
+    QString errorStr = FolderMan::instance()->checkPathValidityForNewFolder(locFolder);
     _localFolderValid = errorStr.isEmpty();
 
     _ui.pbSelectLocalFolder->setText(QDir::toNativeSeparators(locFolder));
@@ -190,16 +190,6 @@ void OwncloudAdvancedSetupPage::stopSpinner()
 {
     _progressIndi->setVisible(false);
     _progressIndi->stopAnimation();
-}
-
-QUrl OwncloudAdvancedSetupPage::serverUrl() const
-{
-    const QString urlString = static_cast<OwncloudWizard *>(wizard())->ocUrl();
-    const QString user = static_cast<OwncloudWizard *>(wizard())->getCredentials()->user();
-
-    QUrl url(urlString);
-    url.setUserName(user);
-    return url;
 }
 
 int OwncloudAdvancedSetupPage::nextId() const
