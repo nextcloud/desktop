@@ -5,7 +5,7 @@ set( MIRALL_VERSION_YEAR  2021 )
 set( MIRALL_SOVERSION 0 )
 
 # Minimum supported server version according to https://docs.nextcloud.com/server/latest/admin_manual/release_schedule.html
-set(NEXTCLOUD_SERVER_VERSION_MIN_SUPPORTED_MAJOR 19)
+set(NEXTCLOUD_SERVER_VERSION_MIN_SUPPORTED_MAJOR 20)
 set(NEXTCLOUD_SERVER_VERSION_MIN_SUPPORTED_MINOR 0)
 set(NEXTCLOUD_SERVER_VERSION_MIN_SUPPORTED_PATCH 0)
 
