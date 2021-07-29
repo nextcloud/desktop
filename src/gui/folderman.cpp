@@ -1403,24 +1403,21 @@ QString FolderMan::checkPathValidityForNewFolder(const QString &path, const QUrl
     }
 
     // check if the local directory isn't used yet in another ownCloud sync
-    Qt::CaseSensitivity cs = Qt::CaseSensitive;
-    if (Utility::fsCasePreserving()) {
-        cs = Qt::CaseInsensitive;
-    }
+    const auto cs = Utility::fsCaseSensitivity();
 
     const QString userDir = QDir::cleanPath(canonicalPath(path)) + '/';
     for (auto i = _folderMap.constBegin(); i != _folderMap.constEnd(); ++i) {
         Folder *f = static_cast<Folder *>(i.value());
-        QString folderDir = QDir::cleanPath(canonicalPath(f->path())) + '/';
+        const QString folderDir = QDir::cleanPath(canonicalPath(f->path())) + '/';
 
-        bool differentPaths = QString::compare(folderDir, userDir, cs) != 0;
-        if (differentPaths && folderDir.startsWith(userDir, cs)) {
+        const bool differentPaths = QString::compare(folderDir, userDir, cs) != 0;
+        if (differentPaths && FileSystem::isChildPathOf(folderDir, userDir)) {
             return tr("The local folder %1 already contains a folder used in a folder sync connection. "
                       "Please pick another one!")
                 .arg(QDir::toNativeSeparators(path));
         }
 
-        if (differentPaths && userDir.startsWith(folderDir, cs)) {
+        if (differentPaths && FileSystem::isChildPathOf(userDir, folderDir)) {
             return tr("The local folder %1 is already contained in a folder used in a folder sync connection. "
                       "Please pick another one!")
                 .arg(QDir::toNativeSeparators(path));
