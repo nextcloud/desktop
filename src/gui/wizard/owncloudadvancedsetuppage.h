@@ -63,8 +63,6 @@ private slots:
 
 private:
     void setRadioChecked(QRadioButton *radio);
-
-    void setupCustomization();
     void updateStatus();
     bool dataChanged();
     void startSpinner();

@@ -53,9 +53,7 @@ OwncloudAdvancedSetupPage::OwncloudAdvancedSetupPage()
 
     registerField(QLatin1String("OCSyncFromScratch"), _ui.cbSyncFromScratch);
 
-    _ui.errorScrollContents->layout()->addWidget(_progressIndi);
     stopSpinner();
-    setupCustomization();
 
     connect(_ui.pbSelectLocalFolder, &QAbstractButton::clicked, this, &OwncloudAdvancedSetupPage::slotSelectFolder);
     setButtonText(QWizard::NextButton, tr("Connect..."));
@@ -100,13 +98,6 @@ OwncloudAdvancedSetupPage::OwncloudAdvancedSetupPage()
     });
 }
 
-void OwncloudAdvancedSetupPage::setupCustomization()
-{
-    // set defaults for the customize labels.
-    _ui.topLabel->hide();
-    _ui.bottomLabel->hide();
-}
-
 bool OwncloudAdvancedSetupPage::isComplete() const
 {
     return manualFolderConfig() || (!_checking && _localFolderValid);
@@ -114,13 +105,6 @@ bool OwncloudAdvancedSetupPage::isComplete() const
 
 void OwncloudAdvancedSetupPage::initializePage()
 {
-    WizardCommon::initErrorLabel(_ui.errorLabel);
-
-    auto labelSizeHint = _ui.errorLabel->minimumSizeHint();
-    _ui.errorScroll->setMinimumSize(
-        labelSizeHint.width(),
-        qMax<int>(1.3 * labelSizeHint.height(), _progressIndi->height()));
-
     const auto vfsMode = bestAvailableVfsMode();
     if (Theme::instance()->forceVirtualFilesOption() && vfsMode == Vfs::WindowsCfApi) {
         setRadioChecked(_ui.rVirtualFileSync);
@@ -196,9 +180,9 @@ void OwncloudAdvancedSetupPage::updateStatus()
         if (dirNotEmpty) {
             t += tr("<p><small><strong>Warning:</strong> The local folder is not empty. "
                     "Pick a resolution!</small></p>");
-            _ui.resolutionWidget->setVisible(dirNotEmpty);
+            _ui.resolutionStackedWidget->setCurrentIndex(1);
         } else {
-            _ui.resolutionWidget->setVisible(false);
+            _ui.resolutionStackedWidget->setCurrentIndex(0);
         }
     }
 
@@ -308,11 +292,10 @@ bool OwncloudAdvancedSetupPage::validatePage()
 
 void OwncloudAdvancedSetupPage::setErrorString(const QString &err)
 {
-    if (err.isEmpty()) {
-        _ui.errorLabel->setVisible(false);
-    } else {
-        _ui.errorLabel->setVisible(true);
-        _ui.errorLabel->setText(err);
+    if (!err.isEmpty()) {
+        auto msg = new QMessageBox(QMessageBox::Warning, tr("Error"), err, QMessageBox::Ok, this);
+        msg->setAttribute(Qt::WA_DeleteOnClose);
+        msg->open();
     }
     _checking = false;
     emit completeChanged();
