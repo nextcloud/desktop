@@ -7,6 +7,7 @@
 #include <QtTest>
 #include <QTemporaryDir>
 
+#include "common/filesystembase.h"
 #include "common/utility.h"
 #include "config.h"
 
@@ -187,6 +188,49 @@ private slots:
         QVERIFY(!fileNamesEqual(a+"/test", b+"/test/TESTI")); // both are different
 
         dir.remove();
+    }
+
+    void testIsChildOf_data()
+    {
+        QTest::addColumn<QString>("child");
+        QTest::addColumn<QString>("parent");
+        QTest::addColumn<bool>("output");
+        QTest::addColumn<bool>("casePreserving");
+
+        const auto add = [](const QString &child, const QString &parent, bool result, bool casePreserving = true) {
+            const auto title = QStringLiteral("CasePreserving %1: %2 is %3 child of %4").arg(casePreserving ? QStringLiteral("yes") : QStringLiteral("no"), child, result ? QString() : QStringLiteral("not"), parent);
+            QTest::addRow(qUtf8Printable(title)) << child << parent << result << casePreserving;
+        };
+        add(QStringLiteral("/A/a"), QStringLiteral("/A"), true);
+        add(QStringLiteral("/A/a"), QStringLiteral("/A/a"), true);
+        add(QStringLiteral("/A/a"), QStringLiteral("/A/a/"), true);
+        add(QStringLiteral("C:/A/a"), QStringLiteral("C:/A"), true);
+        add(QStringLiteral("C:/Aa"), QStringLiteral("C:/A"), false);
+        add(QStringLiteral("C:/Aa"), QStringLiteral("C:/A"), false);
+        add(QStringLiteral("A/a"), QStringLiteral("A"), true);
+        add(QStringLiteral("a/a"), QStringLiteral("A"), true, true);
+        add(QStringLiteral("a/a"), QStringLiteral("A"), false, false);
+        add(QStringLiteral("Aa"), QStringLiteral("A"), false);
+        add(QStringLiteral("A/a"), QStringLiteral("A"), true);
+        add(QStringLiteral("A/a"), QStringLiteral("A/"), true);
+        add(QStringLiteral("ä/a"), QStringLiteral("ä/"), true);
+        add(QStringLiteral("Ä/è/a"), QStringLiteral("Ä/è/"), true);
+        add(QStringLiteral("Ä/a"), QStringLiteral("Ä/"), true);
+        add(QStringLiteral("Aa"), QStringLiteral("A"), false);
+        add(QStringLiteral("https://foo/bar"), QStringLiteral("https://foo"), true);
+        add(QStringLiteral("https://foo/bar"), QStringLiteral("http://foo"), false);
+        add(QStringLiteral("https://foo/bar"), QStringLiteral("http://foo/foo"), false);
+    }
+
+    void testIsChildOf()
+    {
+        const QScopedValueRollback<bool> rollback(OCC::fsCasePreserving_override);
+        QFETCH(QString, child);
+        QFETCH(QString, parent);
+        QFETCH(bool, output);
+        QFETCH(bool, casePreserving);
+        OCC::fsCasePreserving_override = casePreserving;
+        QCOMPARE(OCC::FileSystem::isChildPathOf(child, parent), output);
     }
 
     void testSanitizeForFileName_data()

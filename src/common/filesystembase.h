@@ -164,7 +164,10 @@ namespace FileSystem {
      */
     bool OCSYNC_EXPORT isJunction(const QString &filename);
 
-    bool OCSYNC_EXPORT isChildPathOf(QStringView child, QStringView parent);
+    /**
+     * Returns whether a Path is a child of another
+     */
+    bool OCSYNC_EXPORT isChildPathOf(const QString &child, const QString &parent);
 }
 
 /** @} */
