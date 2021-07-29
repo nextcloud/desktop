@@ -10,23 +10,23 @@
 <context>
     <name>ActivityItem</name>
     <message>
-        <location filename="../src/gui/tray/ActivityItem.qml" line="33"/>
+        <location filename="../src/gui/tray/ActivityItem.qml" line="31"/>
         <source>Open %1 locally</source>
         <translation>在本地打开 %1 </translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityItem.qml" line="163"/>
-        <location filename="../src/gui/tray/ActivityItem.qml" line="166"/>
+        <location filename="../src/gui/tray/ActivityItem.qml" line="161"/>
+        <location filename="../src/gui/tray/ActivityItem.qml" line="164"/>
         <source>Show more actions</source>
         <translation>显示更多操作</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityItem.qml" line="253"/>
+        <location filename="../src/gui/tray/ActivityItem.qml" line="251"/>
         <source>Open share dialog</source>
         <translation>打开分享对话框</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityItem.qml" line="257"/>
+        <location filename="../src/gui/tray/ActivityItem.qml" line="255"/>
         <source>Share %1</source>
         <translation>共享 %1</translation>
     </message>
@@ -3239,7 +3239,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>由于加密信息丢失，文件 %1 无法下载。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="409"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="402"/>
         <source>File %1 cannot be downloaded because encryption information is missing.</source>
         <translation>文件 %1 无法被下载，因为加密信息丢失。</translation>
     </message>
@@ -3285,7 +3285,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>虽然服务器宣称已完成 %1，但实际下载文件为空。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="792"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="785"/>
         <source>The downloaded file is empty, but the server said it should have been %1.</source>
         <translation>已下载的文件为空，但是服务器说它应该是 %1</translation>
     </message>
@@ -3300,12 +3300,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>向数据库写入元数据错误</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1141"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1096"/>
         <source>Error updating metadata: %1</source>
         <translation>更新元数据出错：%1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1144"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1099"/>
         <source>The file %1 is currently in use</source>
         <translation>文件 %1 在使用中</translation>
     </message>
