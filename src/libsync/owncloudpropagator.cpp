@@ -193,13 +193,11 @@ static void blacklistUpdate(SyncJournalDb *journal, SyncFileItem &item)
 {
     SyncJournalErrorBlacklistRecord oldEntry = journal->errorBlacklistEntry(item._file);
 
-    bool mayBlacklist =
-        item._errorMayBeBlacklisted // explicitly flagged for blacklisting
-        || ((item._status == SyncFileItem::NormalError
-                || item._status == SyncFileItem::SoftError
-                || item._status == SyncFileItem::DetailError)
-               && item._httpErrorCode != 0 // or non-local error
-               );
+    const bool mayBlacklist = ((item._status == SyncFileItem::NormalError
+                                   || item._status == SyncFileItem::SoftError
+                                   || item._status == SyncFileItem::DetailError)
+        && item._httpErrorCode != 0 // or non-local error
+    );
 
     // No new entry? Possibly remove the old one, then done.
     if (!mayBlacklist) {

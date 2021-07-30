@@ -104,7 +104,6 @@ public:
         , _direction(None)
         , _serverHasIgnoredFiles(false)
         , _hasBlacklistEntry(false)
-        , _errorMayBeBlacklisted(false)
         , _status(NoStatus)
         , _isRestoration(false)
         , _isSelectiveSync(false)
@@ -233,13 +232,6 @@ public:
     /// Note: that entry may have retries left, so this can be true
     /// without the status being FileIgnored.
     bool _hasBlacklistEntry BITFIELD(1);
-
-    /** If true and NormalError, this error may be blacklisted
-     *
-     * Note that non-local errors (httpErrorCode!=0) may also be
-     * blacklisted independently of this flag.
-     */
-    bool _errorMayBeBlacklisted BITFIELD(1);
 
     // Variables useful to report to the user
     Status _status BITFIELD(4);
