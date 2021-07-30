@@ -19,6 +19,7 @@ Summary
 * Bugfix - Correctly handle file path comparison on Windows: [#8732](https://github.com/owncloud/client/issues/8732)
 * Bugfix - Locked files are not correctly synced: [#8761](https://github.com/owncloud/client/issues/8761)
 * Bugfix - Prompt the user of the cmd client what to do if all files where removed: [#8804](https://github.com/owncloud/client/issues/8804)
+* Bugfix - Relaunching the client on macOS will show the settings dialog: [#8377](https://github.com/owncloud/client/issues/8377)
 * Bugfix - Always exclude .owncloud files: [#8836](https://github.com/owncloud/client/pull/8836)
 * Change - Don't ask the user to switch to http: [#8231](https://github.com/owncloud/client/issues/8231)
 * Change - Remove support for http redirects: [#8293](https://github.com/owncloud/client/pull/8293)
@@ -119,6 +120,15 @@ Details
    We now prompt the user, previously the cmd client got stuck.
 
    https://github.com/owncloud/client/issues/8804
+
+* Bugfix - Relaunching the client on macOS will show the settings dialog: [#8377](https://github.com/owncloud/client/issues/8377)
+
+   Relaunching the ownCloud client when it is already running, would seemingly do nothing at all.
+   To make this more consistent with other macOS applications, relaunching will now open the
+   settings dialog.
+
+   https://github.com/owncloud/client/issues/8377
+   https://github.com/owncloud/client/pull/8812
 
 * Bugfix - Always exclude .owncloud files: [#8836](https://github.com/owncloud/client/pull/8836)
 
