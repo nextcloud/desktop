@@ -12,10 +12,29 @@
  * for more details.
  */
 
+#include "application.h"
 #include "cocoainitializer.h"
 
 #import <Foundation/NSAutoreleasePool.h>
 #import <AppKit/NSApplication.h>
+
+#include <QMessageBox>
+
+@interface OwnAppDelegate : NSObject <NSApplicationDelegate>
+- (BOOL)applicationShouldHandleReopen:(NSApplication *)sender hasVisibleWindows:(BOOL)flag;
+@end
+
+@implementation OwnAppDelegate {
+}
+
+- (BOOL)applicationShouldHandleReopen:(NSApplication *)sender hasVisibleWindows:(BOOL)flag
+{
+    if (auto app = qobject_cast<OCC::Application *>(QApplication::instance()))
+        app->showSettingsDialog();
+    return YES;
+}
+
+@end
 
 namespace OCC {
 namespace Mac {
@@ -23,17 +42,21 @@ namespace Mac {
 class CocoaInitializer::Private {
   public:
     NSAutoreleasePool* autoReleasePool;
+    OwnAppDelegate *appDelegate;
 };
 
 CocoaInitializer::CocoaInitializer() {
   d = new CocoaInitializer::Private();
   NSApplicationLoad();
   d->autoReleasePool = [[NSAutoreleasePool alloc] init];
+  d->appDelegate = [[OwnAppDelegate alloc] init];
+  [[NSApplication sharedApplication] setDelegate:d->appDelegate];
 }
 
 CocoaInitializer::~CocoaInitializer() {
-  [d->autoReleasePool release];
-  delete d;
+    [d->appDelegate release];
+    [d->autoReleasePool release];
+    delete d;
 }
 
 } // namespace Mac

@@ -1,0 +1,8 @@
+Bugfix: Relaunching the client on macOS will show the settings dialog
+
+Relaunching the ownCloud client when it is already running, would
+seemingly do nothing at all. To make this more consistent with other
+macOS applications, relaunching will now open the settings dialog.
+
+https://github.com/owncloud/client/issues/8377
+https://github.com/owncloud/client/pull/8812
