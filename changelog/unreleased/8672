@@ -1,0 +1,5 @@
+Bugfix: Ignore consecutive errors for a pereiode of time
+
+We fixed a bug where certain errors caused a sync run every 30 seconds
+
+https://github.com/owncloud/client/issues/8672
