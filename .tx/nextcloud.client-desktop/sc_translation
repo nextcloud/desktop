@@ -22,5 +22,6 @@ Icon=@APPLICATION_EXECUTABLE@
 
 # Translations
 Icon[sc]=@NÙMENE_ICONA_APLICATZIONE@
+Name[sc]=@NÙMENE_APLICATZIONE@ Iscrivania
 Comment[sc]=@NÙMENE_APLICATZIONE@ cliente de sincronizatzione iscrivania
 GenericName[sc]=Sincronizadore de cartellas
