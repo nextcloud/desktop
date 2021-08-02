@@ -40,6 +40,11 @@
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="122"/>
+        <source>Checking for changes in &quot;%1&quot;</source>
+        <translation>&quot;%1&quot; üzerindeki değişiklikler denetleniyor</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="122"/>
         <source>Checking for changes in &apos;%1&apos;</source>
         <translation>&apos;%1&apos; üzerindeki değişiklikler denetleniyor</translation>
     </message>
@@ -125,8 +130,8 @@
     <message>
         <location filename="../src/common/filesystembase.cpp" line="398"/>
         <location filename="../src/common/filesystembase.cpp" line="404"/>
-        <source>Could not move &apos;%1&apos; to &apos;%2&apos;</source>
-        <translation>&apos;%1&apos;, &apos;%2&apos; üzerine taşınamadı</translation>
+        <source>Could not move &quot;%1&quot; to &quot;%1&quot;</source>
+        <translation>&quot;%1&quot;, &quot;%2&quot; üzerine taşınamadı</translation>
     </message>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="438"/>
@@ -134,9 +139,25 @@
         <translation>Bu platform üzerinde çöpe taşıma özelliği yok</translation>
     </message>
     <message>
+        <location filename="../src/common/filesystembase.cpp" line="398"/>
+        <location filename="../src/common/filesystembase.cpp" line="404"/>
+        <source>Could not move &apos;%1&apos; to &apos;%2&apos;</source>
+        <translation>&apos;%1&apos;, &apos;%2&apos; üzerine taşınamadı</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/filesystem.cpp" line="158"/>
+        <source>Error removing &quot;%1&quot;: %2</source>
+        <translation>&quot;%1&quot; silinirken sorun çıktı: %2</translation>
+    </message>
+    <message>
         <location filename="../src/libsync/filesystem.cpp" line="158"/>
         <source>Error removing &apos;%1&apos;: %2</source>
         <translation>&apos;%1&apos; silinirken sorun çıktı: %2</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/filesystem.cpp" line="174"/>
+        <source>Could not remove folder &quot;%1&quot;</source>
+        <translation>&quot;%1&quot; klasörü silinemedi</translation>
     </message>
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="174"/>
@@ -815,6 +836,11 @@ Bu işlem şu anda yürütülmekte olan eşitleme işlemlerini durdurur.</transl
     </message>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="32"/>
+        <source>Enter username and password for &quot;%1&quot; at %2.</source>
+        <translation>Lütfen %2 üzerindeki &quot;%1&quot;  için kullanıcı adı ve parolayı yazın.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/authenticationdialog.cpp" line="32"/>
         <source>Enter username and password for &apos;%1&apos; at %2.</source>
         <translation>Lütfen %2 üzerindeki &apos;%1&apos;  için kullanıcı adı ve parolayı yazın.</translation>
     </message>
@@ -1080,6 +1106,12 @@ Bu durum OpenSLL kitaplıkları ile ilgili bir sorun olabilir.</translation>
         <location filename="../src/gui/creds/flow2auth.cpp" line="226"/>
         <source>There was an error accessing the &apos;token&apos; endpoint: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
         <translation>&apos;token&apos; uç noktasına erişilirken bir sorun çıktı: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/creds/flow2auth.cpp" line="118"/>
+        <location filename="../src/gui/creds/flow2auth.cpp" line="226"/>
+        <source>There was an error accessing the &quot;token&quot; endpoint: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
+        <translation>&quot;kod&quot; uç noktasına erişilirken bir sorun çıktı: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="121"/>
@@ -1380,6 +1412,27 @@ Sunucuda bu eşitleme işlemlerinin yapılmasını istediğinizden emin misiniz?
 Bu işlemi yanlışlıkla yaptıysanız ve dosyalarınızı korumak istiyorsanız dosyalar sunucudan yeniden eşitlenecek.</translation>
     </message>
     <message>
+        <location filename="../src/gui/folder.cpp" line="1255"/>
+        <source>All files in the sync folder &quot;%1&quot; folder were deleted on the server.
+These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
+If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
+If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
+        <translation>&quot;%1&quot; eşitleme klasöründeki tüm dosyalar silinecek.
+Silinen bu dosyalar yerel eşitleme klasörünüzden de silineceğinden, geri yükleme yetkiniz yoksa bu dosyaları kullanamayacaksınız. 
+Geri yükleme yetkiniz varsa ve geri yüklemeyi seçerseniz, dosyalar sunucu ile yeniden eşitlenir.
+Silmeyi seçerseniz, sahibi değilseniz bu dosyaları artık kullanamazsınız.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1260"/>
+        <source>All the files in your local sync folder &quot;%1&quot; were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
+Are you sure you want to sync those actions with the server?
+If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
+        <translation>&quot;%1&quot; eşitleme klasöründeki tüm dosyalar sunucudan silindi.
+Silinen dosyalar eşitleme sırasında yerel eşitleme klasörünüzden de silinecek ve bu dosyaları geri yüklemedikçe göremeyeceksiniz.
+Sunucuda bu eşitleme işlemlerinin yapılmasını istediğinizden emin misiniz?
+Bu işlemi yanlışlıkla yaptıysanız ve dosyalarınızı korumak istiyorsanız dosyalar sunucudan yeniden eşitlenecek.</translation>
+    </message>
+    <message>
         <location filename="../src/gui/folder.cpp" line="1264"/>
         <source>Remove All Files?</source>
         <translation>Tüm dosyalar silinsin mi?</translation>
@@ -1434,6 +1487,11 @@ Bu işlemi yanlışlıkla yaptıysanız ve dosyalarınızı korumak istiyorsanı
         <location filename="../src/gui/folderman.cpp" line="390"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
         <translation>Eski bir &apos;%1&apos; eşitleme günlüğü bulundu ancak kaldırılamadı. Günlüğün Başka bir uygulama tarafından kullanılmadığından emin olun.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="390"/>
+        <source>An old sync journal &quot;%1&quot; was found, but could not be removed. Please make sure that no application is currently using it.</source>
+        <translation>Eski bir &quot;%1&quot; eşitleme günlüğü bulundu ancak kaldırılamadı. Günlüğün Başka bir uygulama tarafından kullanılmadığından emin olun.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1225"/>
@@ -1619,6 +1677,16 @@ Bu işlemi yanlışlıkla yaptıysanız ve dosyalarınızı korumak istiyorsanı
         <translation>Yerel &apos;%1&apos; üzerindeki değişiklikler denetleniyor</translation>
     </message>
     <message>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="973"/>
+        <source>Checking for changes in remote &quot;%1&quot;</source>
+        <translation>Uzak &quot;%1&quot; üzerindeki değişiklikler denetleniyor</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="977"/>
+        <source>Checking for changes in local &quot;%1&quot;</source>
+        <translation>Yerel &quot;%1&quot; üzerindeki değişiklikler denetleniyor</translation>
+    </message>
+    <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="984"/>
         <source>Reconciling changes</source>
         <translation>Değişiklikler denkleştiriliyor</translation>
@@ -1772,6 +1840,11 @@ Bu işlemi yanlışlıkla yaptıysanız ve dosyalarınızı korumak istiyorsanı
         <location filename="../src/gui/folderwizard.cpp" line="184"/>
         <source>Enter the name of the new folder to be created below &apos;%1&apos;:</source>
         <translation>&apos;%1&apos; altına eklenecek yeni klasörün adını yazın:</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderwizard.cpp" line="184"/>
+        <source>Enter the name of the new folder to be created below &quot;%1&quot;:</source>
+        <translation>&quot;%1&quot; altına eklenecek yeni klasörün adını yazın:</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="214"/>
@@ -2085,6 +2158,11 @@ Bu seçenek yalnız güncellemelerin hangi havuzdan alınacağını belirler. G�
     </message>
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="111"/>
+        <source>Reading from keychain failed with error: &quot;%1&quot;</source>
+        <translation>Anahtar zinciri okunurken sorun çıktı: &quot;%1&quot;</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="111"/>
         <source>Reading from keychain failed with error: &apos;%1&apos;</source>
         <translation>Anahtar zinciri okunurken sorun çıktı: &apos;%1&apos;</translation>
     </message>
@@ -2120,6 +2198,11 @@ Bu seçenek yalnız güncellemelerin hangi havuzdan alınacağını belirler. G�
         <location filename="../src/gui/ignorelisteditor.ui" line="36"/>
         <source>Files Ignored by Patterns</source>
         <translation>Modele göre yok sayılacak dosyalar</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/ignorelisteditor.cpp" line="40"/>
+        <source>This entry is provided by the system at &quot;%1&quot; and cannot be modified in this view.</source>
+        <translation>&quot;%1&quot; üzerindeki bu kayıt sistem tarafından sağlanıyor ve bu görünümde düzenlenemez.</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="40"/>
@@ -2167,6 +2250,11 @@ Silme izni verildiğinde bir klasörün silinmesini engelleyen ögeler silinir. 
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="93"/>
         <source>Could not open file</source>
         <translation>Dosya açılamadı</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/ignorelisttablewidget.cpp" line="94"/>
+        <source>Cannot write changes to &quot;%1&quot;.</source>
+        <translation>Değişiklikler &quot;%1&quot; üzerine yazılamadı.</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="94"/>
@@ -2322,6 +2410,11 @@ Günlükler %1 üzerine yazılacak</translation>
         <location filename="../src/libsync/logger.cpp" line="195"/>
         <source>&lt;nobr&gt;File &apos;%1&apos;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output can &lt;b&gt;not&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
         <translation>&lt;nobr&gt;&apos;%1&apos; dosyası&lt;br/&gt;yazılmak üzere açılamadı.&lt;br/&gt;&lt;br/&gt;Günlük çıktısı &lt;b&gt;kaydedilemez&lt;/b&gt;!&lt;/nobr&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/logger.cpp" line="195"/>
+        <source>&lt;nobr&gt;File &quot;%1&quot;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output can &lt;b&gt;not&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
+        <translation>&lt;nobr&gt;&quot;%1&quot; dosyası&lt;br/&gt;yazılmak üzere açılamadı.&lt;br/&gt;&lt;br/&gt;Günlük çıktısı &lt;b&gt;kaydedilemez&lt;/b&gt;!&lt;/nobr&gt;</translation>
     </message>
 </context>
 <context>
@@ -2649,11 +2742,6 @@ güncelleyici başka izinler isteyebilir.</translation>
         <translation>(deneysel)</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="232"/>
-        <source>Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter.</source>
-        <translation>Sanal dosyalar, yerel klasör olarak Windows bölümü kök klasörlerini desteklemez. Lütfen sürücü harfinin altında bulunan bir klasör seçin.</translation>
-    </message>
-    <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="270"/>
         <source>%1 folder &apos;%2&apos; is synced to local folder &apos;%3&apos;</source>
         <translation>%1 klasörü &apos;%2&apos;, yerel &apos;%3&apos; klasörü ile eşitlendi</translation>
@@ -2672,6 +2760,21 @@ güncelleyici başka izinler isteyebilir.</translation>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="171"/>
         <source>Free space: %1</source>
         <translation>Boş alan: %1</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="232"/>
+        <source>Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter.</source>
+        <translation>Sanal dosyalar, yerel klasör olarak Windows bölümü kök klasörlerini desteklemez. Lütfen sürücü harfinin altında bulunan bir klasör seçin.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="270"/>
+        <source>%1 folder &quot;%2&quot; is synced to local folder &quot;%3&quot;</source>
+        <translation>%1 klasörü &quot;%2&quot;, yerel &quot;%3&quot; klasörü ile eşitlendi</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="273"/>
+        <source>Sync the folder &quot;%1&quot;</source>
+        <translation>&quot;%1&quot; klasörünü eşitle</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="278"/>
@@ -2882,6 +2985,11 @@ Kullanmanız önerilmez.</translation>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="378"/>
         <source>The authenticated request to the server was redirected to &apos;%1&apos;. The URL is bad, the server is misconfigured.</source>
         <translation>Sunucuya yapılan kimlik doğrulama isteği &apos;%1&apos; adresine yönlendirildi. Adres ya da sunucu yapılandırması hatalı.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="378"/>
+        <source>The authenticated request to the server was redirected to &quot;%1&quot;. The URL is bad, the server is misconfigured.</source>
+        <translation>Sunucuya yapılan kimlik doğrulama isteği &quot;%1&quot; adresine yönlendirildi. Adres ya da sunucu yapılandırması hatalı.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="391"/>
@@ -3101,6 +3209,11 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="272"/>
+        <source>File names containing the character &quot;%1&quot; are not supported on this file system.</source>
+        <translation>&quot;%1&quot; karakterini içeren dosya adları bu sistemde desteklenmiyor.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="272"/>
         <source>File names containing the character &apos;%1&apos; are not supported on this file system.</source>
         <translation>&apos;%1&apos; karakterini içeren dosya adları bu sistemde desteklenmiyor.</translation>
     </message>
@@ -3228,6 +3341,11 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
         <location filename="../src/libsync/discovery.cpp" line="1548"/>
         <source>Server replied with an error while reading directory &apos;%1&apos; : %2</source>
         <translation>!%1&apos; klasörü okunurken sunucu bir hata yanıtı verdi: %2</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="1548"/>
+        <source>Server replied with an error while reading directory &quot;%1&quot; : %2</source>
+        <translation>&quot;%1&quot; klasörü okunurken sunucu bir hata yanıtı verdi: %2</translation>
     </message>
 </context>
 <context>
@@ -3957,6 +4075,11 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
         <location filename="../src/gui/shareusergroupwidget.cpp" line="337"/>
         <source>No results for &apos;%1&apos;</source>
         <translation>&apos;%1&apos; için bir sonuç bulunamadı</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="337"/>
+        <source>No results for &quot;%1&quot;</source>
+        <translation>&quot;%1&quot; için bir sonuç bulunamadı</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="391"/>
@@ -5010,8 +5133,8 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="418"/>
-        <source>Checking for changes in remote &apos;%1&apos;</source>
-        <translation>Uzak &apos;%1&apos; üzerindeki değişiklikler denetleniyor</translation>
+        <source>Checking for changes in remote &quot;%1&quot;</source>
+        <translation>Uzak &quot;%1&quot; üzerindeki değişiklikler denetleniyor</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="419"/>
@@ -5020,8 +5143,8 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="421"/>
-        <source>Checking for changes in local &apos;%1&apos;</source>
-        <translation>Yerel &apos;%1&apos; üzerindeki değişiklikler denetleniyor</translation>
+        <source>Checking for changes in local &quot;%1&quot;</source>
+        <translation>Yerel &quot;%1&quot; üzerindeki değişiklikler denetleniyor</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="437"/>
@@ -5118,6 +5241,16 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
         <location filename="../src/gui/owncloudgui.cpp" line="897"/>
         <source>No items synced recently</source>
         <translation>Yakın zamanda eşitlenmiş bir öge yok</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="418"/>
+        <source>Checking for changes in remote &apos;%1&apos;</source>
+        <translation>Uzak &apos;%1&apos; üzerindeki değişiklikler denetleniyor</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="421"/>
+        <source>Checking for changes in local &apos;%1&apos;</source>
+        <translation>Yerel &apos;%1&apos; üzerindeki değişiklikler denetleniyor</translation>
     </message>
 </context>
 <context>
