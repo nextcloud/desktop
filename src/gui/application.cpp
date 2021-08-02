@@ -150,10 +150,6 @@ Application::Application(int &argc, char **argv)
     , _userTriggeredConnect(false)
     , _debugMode(false)
 {
-#ifdef Q_OS_LINUX
-    _startedAt.start();
-#endif
-
     qsrand(std::random_device()());
 
 #ifdef Q_OS_WIN
@@ -513,17 +509,6 @@ void Application::slotParseMessage(const QString &msg, QObject *)
         if (_quitInstance) {
             qApp->quit();
         }
-
-    } else if (msg.startsWith(QLatin1String("MSG_SHOWSETTINGS"))) {
-#ifdef Q_OS_LINUX
-        qCInfo(lcApplication) << "Running for" << _startedAt.elapsed() / 1000.0 << "sec";
-        if (_startedAt.elapsed() < 10 * 1000) {
-            // This call is mirrored with the one in int main()
-            qCWarning(lcApplication) << "Ignoring MSG_SHOWSETTINGS, possibly double-invocation of client via session restore and auto start";
-            return;
-        }
-#endif
-        showSettingsDialog();
     }
 }
 

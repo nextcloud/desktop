@@ -1,0 +1,6 @@
+Bugfix: Only show the settings if they are explicitly requested on start
+
+We now only display the settings when the user requested it on start
+and not every time the application is started a second time.
+
+https://github.com/owncloud/client/issues/8590
