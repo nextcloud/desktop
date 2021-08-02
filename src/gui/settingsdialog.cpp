@@ -206,11 +206,13 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     spacer->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Minimum);
     _ui->toolBar->addWidget(spacer);
 
-    QAction *quitAction = createActionWithIcon(QStringLiteral("quit"), tr("Quit %1").arg(qApp->applicationName()));
+    const auto appNameGui = Theme::instance()->appNameGUI();
+
+    QAction *quitAction = createActionWithIcon(QStringLiteral("quit"), tr("Quit %1").arg(appNameGui));
     quitAction->setCheckable(false);
-    connect(quitAction, &QAction::triggered, this, [this] {
-        const auto reply = QMessageBox::question(this, tr("Quit %1").arg(qApp->applicationName()),
-            tr("Are you sure you want to quit %1?").arg(qApp->applicationName()),
+    connect(quitAction, &QAction::triggered, this, [this, appNameGui] {
+        const auto reply = QMessageBox::question(this, tr("Quit %1").arg(appNameGui),
+            tr("Are you sure you want to quit %1?").arg(appNameGui),
             QMessageBox::Yes | QMessageBox::No);
         if (reply == QMessageBox::Yes) {
             qApp->quit();

@@ -87,10 +87,6 @@ public:
      */
     virtual void forgetSensitiveData() = 0;
 
-    // TODO: keys shared for a server could cause a clash when multiple accounts are used
-    static QString keychainServerWideKey(Account *acc, const QString &key);
-    static QString keychainKey(const QString &url, const QString &user, const QString &accountId);
-
 Q_SIGNALS:
     /** Emitted when fetchFromKeychain() is done.
      *
