@@ -46,6 +46,7 @@ void TrayOverallStatusResult::addResult(const SyncResult &result)
 {
     _overallStatus._numNewConflictItems += result._numNewConflictItems;
     _overallStatus._numErrorItems += result._numErrorItems;
+    _overallStatus._numBlacklistErrors += result._numBlacklistErrors;
 
     switch (result.status()) {
     case SyncResult::Success:

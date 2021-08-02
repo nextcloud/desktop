@@ -178,9 +178,17 @@ void SyncResult::processCompletedItem(const SyncFileItemPtr &item)
                 break;
             }
         } else if (item->_instruction == CSYNC_INSTRUCTION_IGNORE) {
+            if (item->_hasBlacklistEntry) {
+                _numBlacklistErrors++;
+            }
             _foundFilesNotSynced = true;
         }
     }
+}
+
+int SyncResult::numBlacklistErrors() const
+{
+    return _numBlacklistErrors;
 }
 
 } // ns mirall

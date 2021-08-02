@@ -84,6 +84,8 @@ public:
 
     void processCompletedItem(const SyncFileItemPtr &item);
 
+    int numBlacklistErrors() const;
+
 private:
     Status _status = Undefined;
     SyncFileItemSet _syncItems;
@@ -101,6 +103,7 @@ private:
     int _numRemovedItems = 0;
     int _numUpdatedItems = 0;
     int _numRenamedItems = 0;
+    int _numBlacklistErrors = 0;
     int _numNewConflictItems = 0;
     int _numOldConflictItems = 0;
     int _numErrorItems = 0;

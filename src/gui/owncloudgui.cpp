@@ -288,8 +288,8 @@ void ownCloudGui::slotComputeOverallSyncStatus()
         if (trayOverallStatusResult.overallStatus().status() == SyncResult::Success || trayOverallStatusResult.overallStatus().status() == SyncResult::Problem) {
             if (trayOverallStatusResult.overallStatus().hasUnresolvedConflicts()) {
                 setStatusText(tr("Unresolved %1 conflicts").arg(QString::number(trayOverallStatusResult.overallStatus().numNewConflictItems())));
-            } else if (trayOverallStatusResult.overallStatus().numErrorItems() != 0) {
-                setStatusText(tr("Errors %1").arg(QString::number(trayOverallStatusResult.overallStatus().numErrorItems())));
+            } else if (trayOverallStatusResult.overallStatus().numBlacklistErrors() != 0) {
+                setStatusText(tr("Ignored errors %1").arg(QString::number(trayOverallStatusResult.overallStatus().numBlacklistErrors())));
             } else {
                 QString lastSyncDoneString;
 
