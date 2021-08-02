@@ -2215,7 +2215,7 @@ Upozorňujeme, že sa tým vyberie iba to, odkiaľ sa aktualizácie budú sťaho
     <message>
         <location filename="../src/gui/ignorelisttablewidget.ui" line="38"/>
         <source>Allow Deletion</source>
-        <translation>Povoliť vymazávanie</translation>
+        <translation>Povoliť odstraňovanie</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.ui" line="49"/>
@@ -2237,9 +2237,9 @@ Upozorňujeme, že sa tým vyberie iba to, odkiaľ sa aktualizácie budú sťaho
         <source>Files or folders matching a pattern will not be synchronized.
 
 Items where deletion is allowed will be deleted if they prevent a directory from being removed. This is useful for meta data.</source>
-        <translation>Súbory alebo priečinky vyhovujúce maske nebudu synchronizované.
+        <translation>Súbory alebo priečinky vyhovujúce maske nebudú synchronizované.
 
-Položky u ktorých je povolené mazanie sa vymažú ak by bránili odstráneniu priečinka. Toto je užitočne napr. pre matadáta.</translation>
+Položky, pri ktorých je povolené odstraňovanie sa vymažú, ak bránia odstráneniu priečinka. Toto je užitočné napr. pre matadáta.</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="93"/>
