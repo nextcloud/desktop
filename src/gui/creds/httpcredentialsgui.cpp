@@ -47,27 +47,33 @@ void HttpCredentialsGui::askFromUser()
 
 void HttpCredentialsGui::askFromUserAsync()
 {
-    // First, we will check what kind of auth we need.
-    auto job = new DetermineAuthTypeJob(_account->sharedFromThis(), this);
-    QObject::connect(job, &DetermineAuthTypeJob::authType, this, [this](DetermineAuthTypeJob::AuthType type) {
-        _authType = type;
-        if (type == DetermineAuthTypeJob::AuthType::OAuth) {
-            _asyncAuth.reset(new OAuth(_account, this));
-            connect(_asyncAuth.data(), &OAuth::result,
-                this, &HttpCredentialsGui::asyncAuthResult);
-            connect(_asyncAuth.data(), &OAuth::destroyed,
-                this, &HttpCredentialsGui::authorisationLinkChanged);
-            _asyncAuth->startAuthentication();
-            emit authorisationLinkChanged();
-        } else if (type == DetermineAuthTypeJob::AuthType::Basic) {
-            showDialog();
-        } else {
-            // Shibboleth?
-            qCWarning(lcHttpCredentialsGui) << "Bad http auth type:" << type;
-            emit asked();
-        }
-    });
-    job->start();
+    const auto updateOAuth = [this] {
+        _asyncAuth.reset(new OAuth(_account, this));
+        connect(_asyncAuth.data(), &OAuth::result,
+            this, &HttpCredentialsGui::asyncAuthResult);
+        connect(_asyncAuth.data(), &OAuth::destroyed,
+            this, &HttpCredentialsGui::authorisationLinkChanged);
+        _asyncAuth->startAuthentication();
+        emit authorisationLinkChanged();
+    };
+    if (isUsingOAuth()) {
+        updateOAuth();
+    } else {
+        // First, we will check what kind of auth we need.
+        auto job = new DetermineAuthTypeJob(_account->sharedFromThis(), this);
+        QObject::connect(job, &DetermineAuthTypeJob::authType, this, [updateOAuth, this](DetermineAuthTypeJob::AuthType type) {
+            _authType = type;
+            if (type == DetermineAuthTypeJob::AuthType::OAuth) {
+                updateOAuth();
+            } else if (type == DetermineAuthTypeJob::AuthType::Basic) {
+                showDialog();
+            } else {
+                qCWarning(lcHttpCredentialsGui) << "Bad http auth type:" << type;
+                emit asked();
+            }
+        });
+        job->start();
+    }
 }
 
 void HttpCredentialsGui::asyncAuthResult(OAuth::Result r, const QString &user,
