@@ -163,38 +163,21 @@ void OwncloudAdvancedSetupPage::updateStatus()
     QString errorStr = FolderMan::instance()->checkPathValidityForNewFolder(locFolder, serverUrl());
     _localFolderValid = errorStr.isEmpty();
 
-    QString t;
-
     _ui.pbSelectLocalFolder->setText(QDir::toNativeSeparators(locFolder));
-    if (dataChanged()) {
-        if (_remoteFolder.isEmpty() || _remoteFolder == QLatin1String("/")) {
-            t = "";
-        } else {
-            t = Utility::escape(tr("%1 folder '%2' is synced to local folder '%3'")
-                                    .arg(Theme::instance()->appName(), _remoteFolder,
-                                        QDir::toNativeSeparators(locFolder)));
-            _ui.rSyncEverything->setText(tr("Sync the folder '%1'").arg(_remoteFolder));
-        }
-
-        const bool dirNotEmpty(QDir(locFolder).entryList(QDir::AllEntries | QDir::NoDotAndDotDot).count() > 0);
-        if (dirNotEmpty) {
-            t += tr("<p><small><strong>Warning:</strong> The local folder is not empty. "
-                    "Pick a resolution!</small></p>");
-            _ui.resolutionStackedWidget->setCurrentIndex(1);
-        } else {
-            _ui.resolutionStackedWidget->setCurrentIndex(0);
-        }
+    if (!_remoteFolder.isEmpty() && _remoteFolder != QLatin1String("/")) {
+        _ui.rSyncEverything->setText(tr("Sync the folder '%1'").arg(_remoteFolder));
     }
 
-    _ui.syncModeLabel->setText(t);
+    if (!QDir(locFolder).entryList(QDir::AllEntries | QDir::NoDotAndDotDot).isEmpty()) {
+        _ui.syncModeLabel->setText(tr("<p><strong>Warning:</strong> The local folder is not empty. "
+                                      "Pick a resolution!</p>"));
+        _ui.resolutionStackedWidget->setCurrentIndex(1);
+    } else {
+        _ui.resolutionStackedWidget->setCurrentIndex(0);
+    }
+
     setErrorString(errorStr);
     emit completeChanged();
-}
-
-/* obsolete */
-bool OwncloudAdvancedSetupPage::dataChanged()
-{
-    return true;
 }
 
 void OwncloudAdvancedSetupPage::startSpinner()
