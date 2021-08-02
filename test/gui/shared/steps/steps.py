@@ -261,10 +261,7 @@ def collaboratorShouldBeListed(context, receiver, resource, permissions):
 
 @When('the user waits for the files to sync')
 def step(context):
-    waitFor(
-        lambda: isFolderSynced(context.userData['clientSyncPath']),
-        context.userData['clientSyncTimeout'] * 1000,
-    )
+    waitForFolderToBeSynced(context, '/')
 
 
 @When('the user waits for file "|any|" to be synced')
@@ -326,10 +323,7 @@ def step(context, filePath):
 
 @Given('the user has paused the file sync')
 def step(context):
-    waitFor(
-        lambda: isFolderSynced(context.userData['clientSyncPath']),
-        context.userData['clientSyncTimeout'] * 1000,
-    )
+    waitForFolderToBeSynced(context, '/')
     syncWizard = SyncWizard()
     syncWizard.performAction("Pause sync")
 
@@ -606,10 +600,7 @@ def step(context, username):
 
 @Given('user "|any|" has logged out of the client-UI')
 def step(context, username):
-    waitFor(
-        lambda: isFolderSynced(context.userData['clientSyncPath']),
-        context.userData['clientSyncTimeout'] * 1000,
-    )
+    waitForFolderToBeSynced(context, '/')
     # TODO: find some way to dynamically to check if files are synced
     # It might take some time for all files to sync
     snooze(5)
@@ -651,10 +642,7 @@ def step(context, username, host):
         )
     )
 
-    waitFor(
-        lambda: isFolderSynced(context.userData['clientSyncPath']),
-        context.userData['clientSyncTimeout'] * 1000,
-    )
+    waitForFolderToBeSynced(context, '/')
     accountStatus = AccountStatus()
     accountStatus.removeConnection()
 
