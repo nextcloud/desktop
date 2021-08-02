@@ -448,6 +448,7 @@ private slots:
 
         // A follow-up sync will restore allowed/file and allowed/sub2 and maintain the nocreatedir/file errors
         completeSpy.clear();
+        QCOMPARE(fakeFolder.syncJournal().wipeErrorBlacklist(), 4);
         QVERIFY(!fakeFolder.syncOnce());
 
         QVERIFY(itemInstruction(completeSpy, "nocreatefile/file", CSYNC_INSTRUCTION_ERROR));
