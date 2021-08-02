@@ -5,23 +5,11 @@
  *
  */
 
-#include "testutils/syncenginetestutils.h"
+#include "syncenginetestutils.h"
+
 #include "httplogger.h"
 #include "accessmanager.h"
 #include "libsync/configfile.h"
-
-
-namespace {
-void setupLogger()
-{
-    static QTemporaryDir dir;
-    OCC::ConfigFile::setConfDir(dir.path()); // we don't want to pollute the user's config file
-
-    OCC::Logger::instance()->setLogFile(QStringLiteral("-"));
-    OCC::Logger::instance()->addLogRule({ QStringLiteral("sync.httplogger=true") });
-}
-Q_COREAPP_STARTUP_FUNCTION(setupLogger);
-}
 
 PathComponents::PathComponents(const char *path)
     : PathComponents { QString::fromUtf8(path) }
