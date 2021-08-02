@@ -239,28 +239,10 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
     case FolderStatusDelegate::FolderStatusIconRole:
         if (accountConnected) {
             auto theme = Theme::instance();
-            auto status = f->syncResult().status();
             if (f->syncPaused()) {
                 return theme->folderDisabledIcon();
             } else {
-                if (status == SyncResult::SyncPrepare) {
-                    return theme->syncStateIcon(SyncResult::SyncRunning);
-                } else if (status == SyncResult::Undefined) {
-                    return theme->syncStateIcon(SyncResult::SyncRunning);
-                } else {
-                    // The "Problem" *result* just means some files weren't
-                    // synced, so we show "Success" in these cases. But we
-                    // do use the "Problem" *icon* for unresolved conflicts.
-                    if (status == SyncResult::Success || status == SyncResult::Problem) {
-                        if (f->syncResult().hasUnresolvedConflicts()) {
-                            return theme->syncStateIcon(SyncResult::Problem);
-                        } else {
-                            return theme->syncStateIcon(SyncResult::Success);
-                        }
-                    } else {
-                        return theme->syncStateIcon(status);
-                    }
-                }
+                return theme->syncStateIcon(f->syncResult().status());
             }
         } else {
             return Theme::instance()->folderOfflineIcon();

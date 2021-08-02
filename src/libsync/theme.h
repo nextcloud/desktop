@@ -101,7 +101,9 @@ public:
     /**
       * get an sync state icon
       */
-    virtual QIcon syncStateIcon(SyncResult::Status, bool sysTray = false, bool sysTrayMenuVisible = false) const;
+    QIcon syncStateIcon(const SyncResult &status, bool sysTray = false, bool sysTrayMenuVisible = false) const;
+    QIcon syncStateIcon(SyncResult::Status result, bool sysTray = false, bool sysTrayMenuVisible = false) const;
+
 
     virtual QIcon folderDisabledIcon() const;
     virtual QIcon folderOfflineIcon(bool sysTray = false, bool sysTrayMenuVisible = false) const;

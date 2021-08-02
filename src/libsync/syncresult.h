@@ -46,7 +46,8 @@ public:
     };
     Q_ENUM(Status);
 
-    SyncResult();
+    SyncResult() = default;
+    explicit SyncResult(Status status);
     void reset();
 
     void appendErrorString(const QString &);
@@ -84,7 +85,7 @@ public:
     void processCompletedItem(const SyncFileItemPtr &item);
 
 private:
-    Status _status;
+    Status _status = Undefined;
     SyncFileItemSet _syncItems;
     QDateTime _syncTime;
     QString _folder;
@@ -92,17 +93,17 @@ private:
      * when the sync tool support this...
      */
     QStringList _errors;
-    bool _foundFilesNotSynced;
-    bool _folderStructureWasChanged;
+    bool _foundFilesNotSynced = false;
+    bool _folderStructureWasChanged = false;
 
     // count new, removed and updated items
-    int _numNewItems;
-    int _numRemovedItems;
-    int _numUpdatedItems;
-    int _numRenamedItems;
-    int _numNewConflictItems;
-    int _numOldConflictItems;
-    int _numErrorItems;
+    int _numNewItems = 0;
+    int _numRemovedItems = 0;
+    int _numUpdatedItems = 0;
+    int _numRenamedItems = 0;
+    int _numNewConflictItems = 0;
+    int _numOldConflictItems = 0;
+    int _numErrorItems = 0;
 
     SyncFileItemPtr _firstItemNew;
     SyncFileItemPtr _firstItemDeleted;
@@ -110,6 +111,8 @@ private:
     SyncFileItemPtr _firstItemRenamed;
     SyncFileItemPtr _firstNewConflictItem;
     SyncFileItemPtr _firstItemError;
+
+    friend class TrayOverallStatusResult;
 };
 }
 

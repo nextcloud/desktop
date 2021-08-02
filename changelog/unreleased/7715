@@ -1,0 +1,13 @@
+Enhancement: Display the information state in case we encountered ignored errors
+
+If syncing a file fails multiple times we mark it as ignored to skip it for a certain amount of time.
+If we have ignored files we are not in sync, we now don't display the green icon.
+
+Additionally this change aligns the icon displayed in the system tray with the icon displayed in the app.
+
+https://github.com/owncloud/client/issues/7715
+https://github.com/owncloud/client/issues/7365
+https://github.com/owncloud/client/issues/7200
+https://github.com/owncloud/client/issues/5860
+
+https://github.com/owncloud/client/pull/8858

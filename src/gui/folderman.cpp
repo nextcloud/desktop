@@ -40,8 +40,59 @@ static const char versionC[] = "version";
 static const int maxFoldersVersion = 1;
 
 namespace OCC {
-
 Q_LOGGING_CATEGORY(lcFolderMan, "gui.folder.manager", QtInfoMsg)
+
+void TrayOverallStatusResult::addResult(const SyncResult &result)
+{
+    _overallStatus._numNewConflictItems += result._numNewConflictItems;
+    _overallStatus._numErrorItems += result._numErrorItems;
+
+    switch (result.status()) {
+    case SyncResult::Success:
+        // only if every result is success
+        if (_overallStatus.status() == SyncResult::Undefined) {
+            _overallStatus.setStatus(SyncResult::Success);
+        }
+        break;
+    case SyncResult::Paused:
+        Q_FALLTHROUGH();
+    case SyncResult::SyncAbortRequested:
+        // Problem has a high enum value but real problems and errors
+        // take precedence
+        if (_overallStatus.status() < SyncResult::Problem) {
+            _overallStatus.setStatus(SyncResult::Paused);
+        }
+        break;
+    case SyncResult::NotYetStarted:
+        Q_FALLTHROUGH();
+    case SyncResult::SyncPrepare:
+        Q_FALLTHROUGH();
+    case SyncResult::SyncRunning:
+        if (_overallStatus.status() < SyncResult::Problem) {
+            _overallStatus.setStatus(SyncResult::SyncRunning);
+        }
+        break;
+    case SyncResult::Undefined:
+        if (_overallStatus.status() < SyncResult::Problem) {
+            _overallStatus.setStatus(SyncResult::Problem);
+        }
+        break;
+    case SyncResult::Problem:
+        Q_FALLTHROUGH();
+    case SyncResult::Error:
+        Q_FALLTHROUGH();
+    case SyncResult::SetupError:
+        if (_overallStatus.status() < result.status()) {
+            _overallStatus.setStatus(result.status());
+        }
+        break;
+    }
+}
+
+const SyncResult &TrayOverallStatusResult::overallStatus() const
+{
+    return _overallStatus;
+}
 
 FolderMan *FolderMan::_instance = nullptr;
 
@@ -1220,107 +1271,39 @@ TrayOverallStatusResult FolderMan::trayOverallStatus(const QList<Folder *> &fold
 {
     TrayOverallStatusResult result;
 
-    int cnt = folders.count();
-
     // if one folder: show the state of the one folder.
     // if more folders:
     // if one of them has an error -> show error
     // if one is paused, but others ok, show ok
     // do not show "problem" in the tray
     //
-    if (cnt == 1) {
-        Folder *folder = folders.at(0);
-        if (folder) {
-            auto syncResult = folder->syncResult();
-            if (folder->syncPaused()) {
-                result.overallStatus = SyncResult::Paused;
-            } else {
-                SyncResult::Status syncStatus = syncResult.status();
-                switch (syncStatus) {
-                case SyncResult::Undefined:
-                    result.overallStatus = SyncResult::Error;
-                    break;
-                case SyncResult::Problem: // don't show the problem icon in tray.
-                    result.overallStatus = SyncResult::Success;
-                    break;
-                default:
-                    result.overallStatus = syncStatus;
-                    break;
-                }
-            }
+    if (folders.count() == 1) {
+        const auto currentFolderLastSyncDone = QDateTime::currentDateTime().addMSecs(-1 * folders.first()->msecSinceLastSync().count());
 
-            result.hasUnresolvedConflicts = syncResult.hasUnresolvedConflicts();
-
-            auto currentFolderLastSyncDone = QDateTime::currentDateTime().addMSecs(-1 * folder->msecSinceLastSync().count());
-
-            if (result.lastSyncDone.isNull()) {
+        if (result.lastSyncDone.isNull()) {
+            result.lastSyncDone = currentFolderLastSyncDone;
+        } else {
+            if (currentFolderLastSyncDone > result.lastSyncDone) {
                 result.lastSyncDone = currentFolderLastSyncDone;
-            } else {
-                if (currentFolderLastSyncDone > result.lastSyncDone) {
-                    result.lastSyncDone = currentFolderLastSyncDone;
-                }
             }
-        }
-    } else {
-        int errorsSeen = 0;
-        int goodSeen = 0;
-        int abortOrPausedSeen = 0;
-        int runSeen = 0;
-        int various = 0;
-
-        for (auto *folder : folders) {
-            SyncResult folderResult = folder->syncResult();
-            if (folder->syncPaused()) {
-                abortOrPausedSeen++;
-            } else {
-                SyncResult::Status syncStatus = folderResult.status();
-
-                switch (syncStatus) {
-                case SyncResult::Undefined:
-                case SyncResult::NotYetStarted:
-                    various++;
-                    break;
-                case SyncResult::SyncPrepare:
-                case SyncResult::SyncRunning:
-                    runSeen++;
-                    break;
-                case SyncResult::Problem: // don't show the problem icon in tray.
-                case SyncResult::Success:
-                    goodSeen++;
-                    break;
-                case SyncResult::Error:
-                case SyncResult::SetupError:
-                    errorsSeen++;
-                    break;
-                case SyncResult::SyncAbortRequested:
-                case SyncResult::Paused:
-                    abortOrPausedSeen++;
-                    // no default case on purpose, check compiler warnings
-                }
-            }
-            if (folderResult.hasUnresolvedConflicts())
-                result.hasUnresolvedConflicts = true;
-        }
-        if (errorsSeen > 0) {
-            result.overallStatus = SyncResult::Error;
-        } else if (abortOrPausedSeen > 0 && abortOrPausedSeen == cnt) {
-            // only if all folders are paused
-            result.overallStatus = SyncResult::Paused;
-        } else if (runSeen > 0) {
-            result.overallStatus = SyncResult::SyncRunning;
-        } else if (goodSeen > 0) {
-            result.overallStatus = SyncResult::Success;
         }
     }
-
+    for (auto *folder : folders) {
+        const SyncResult folderResult = folder->syncResult();
+        if (folder->syncPaused()) {
+            result.addResult(SyncResult { SyncResult::Paused });
+        } else {
+            result.addResult(folderResult);
+        }
+    }
     return result;
 }
 
 QString FolderMan::trayTooltipStatusString(
-    SyncResult::Status syncStatus, bool hasUnresolvedConflicts, bool paused)
+    const SyncResult &result, bool paused)
 {
     QString folderMessage;
-    switch (syncStatus) {
+    switch (result.status()) {
     case SyncResult::Undefined:
         folderMessage = tr("Undefined State.");
         break;
@@ -1335,7 +1318,7 @@ QString FolderMan::trayTooltipStatusString(
         break;
     case SyncResult::Success:
     case SyncResult::Problem:
-        if (hasUnresolvedConflicts) {
+        if (result.hasUnresolvedConflicts()) {
             folderMessage = tr("Sync was successful, unresolved conflicts.");
         } else {
             folderMessage = tr("Last Sync was successful.");
@@ -1538,5 +1521,6 @@ void FolderMan::restartApplication()
         qCDebug(lcFolderMan) << "On this platform we do not restart.";
     }
 }
+
 
 } // namespace OCC

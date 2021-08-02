@@ -477,33 +477,41 @@ bool Theme::aboutShowCopyright() const
 #ifndef TOKEN_AUTH_ONLY
 QIcon Theme::syncStateIcon(SyncResult::Status status, bool sysTray, bool sysTrayMenuVisible) const
 {
-    // FIXME: Mind the size!
+    return syncStateIcon(SyncResult { status }, sysTray, sysTrayMenuVisible);
+}
+QIcon Theme::syncStateIcon(const SyncResult &result, bool sysTray, bool sysTrayMenuVisible) const
+{
     QString statusIcon;
 
-    switch (status) {
-    case SyncResult::Undefined:
-        // this can happen if no sync connections are configured.
-        statusIcon = QStringLiteral("state-information");
-        break;
+    switch (result.status()) {
     case SyncResult::NotYetStarted:
+        Q_FALLTHROUGH();
     case SyncResult::SyncRunning:
         statusIcon = QStringLiteral("state-sync");
         break;
     case SyncResult::SyncAbortRequested:
+        Q_FALLTHROUGH();
     case SyncResult::Paused:
         statusIcon = QStringLiteral("state-pause");
         break;
     case SyncResult::SyncPrepare:
+        Q_FALLTHROUGH();
     case SyncResult::Success:
+        if (result.hasUnresolvedConflicts()) {
+            return syncStateIcon(SyncResult { SyncResult::Problem }, sysTray, sysTrayMenuVisible);
+        }
         statusIcon = QStringLiteral("state-ok");
         break;
     case SyncResult::Problem:
+        Q_FALLTHROUGH();
+    case SyncResult::Undefined:
+        // this can happen if no sync connections are configured.
         statusIcon = QStringLiteral("state-information");
         break;
     case SyncResult::Error:
+        Q_FALLTHROUGH();
     case SyncResult::SetupError:
     // FIXME: Use state-problem once we have an icon.
-    default:
         statusIcon = QStringLiteral("state-error");
     }
     if (sysTray) {
