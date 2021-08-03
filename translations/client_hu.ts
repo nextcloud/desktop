@@ -41,7 +41,7 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="122"/>
         <source>Checking for changes in &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Változások keresése itt: „%1”</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="122"/>
@@ -147,17 +147,17 @@
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="158"/>
         <source>Error removing &quot;%1&quot;: %2</source>
-        <translation type="unfinished"/>
+        <translation>Hiba a(z) „%1” eltávolításakor: %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="158"/>
         <source>Error removing &apos;%1&apos;: %2</source>
-        <translation>Hiba a(z) &apos;%1&apos; eltávolításakor: %2</translation>
+        <translation>Hiba a(z) „%1” eltávolításakor: %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="174"/>
         <source>Could not remove folder &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>A(z) „%1” mappa nem távolítható el</translation>
     </message>
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="174"/>
@@ -185,7 +185,7 @@
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="56"/>
         <source>Logo</source>
-        <translation>Logo</translation>
+        <translation>Logó</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="65"/>
@@ -262,12 +262,12 @@
     <message>
         <location filename="../src/libsync/abstractpropagateremotedeleteencrypted.cpp" line="139"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
-        <translation>A kiszolgáló helytelen HTTP-kódot adott vissza. 204-re várt, de  az érték &quot;%1 %2&quot; volt.</translation>
+        <translation>A kiszolgáló helytelen HTTP-kódot adott vissza. 204-re várt, de a következőt kapta: „%1 %2”.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractpropagateremotedeleteencrypted.cpp" line="181"/>
         <source>&quot;%1 Failed to unlock encrypted folder %2&quot;.</source>
-        <translation>&quot;%1 nem sikerült feloldani a(z) %2 titkosított mappát&quot;.</translation>
+        <translation>„%1 nem sikerült feloldani a(z) %2 titkosított mappát”.</translation>
     </message>
 </context>
 <context>
@@ -357,7 +357,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="235"/>
         <source>Display mnemonic</source>
-        <translation>Mnemonik megjelenítése</translation>
+        <translation>Mnemonikus kód megjelenítése</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="241"/>
@@ -404,12 +404,13 @@
         <location filename="../src/gui/accountsettings.cpp" line="330"/>
         <source>You cannot encrypt a folder with contents, please remove the files.
 Wait for the new sync, then encrypt it.</source>
-        <translation>Nem titkosíthat egy fájlokat tartalmazó mappát. Kérjük, távolítsa el a fájlokat. Várja meg az új szinkronizálást, majd titkosítsa.</translation>
+        <translation>Nem titkosíthat egy fájlokat tartalmazó mappát. Távolítsa el a fájlokat.
+Várja meg az új szinkronizálást, majd titkosítsa.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="354"/>
         <source>Encryption failed</source>
-        <translation>A titkosítás meghiúsult</translation>
+        <translation>Titkosítás sikertelen</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="354"/>
@@ -437,7 +438,7 @@ Wait for the new sync, then encrypt it.</source>
         <location filename="../src/gui/accountsettings.cpp" line="494"/>
         <location filename="../src/gui/accountsettings.cpp" line="560"/>
         <source>Create new folder</source>
-        <translation>Új mappát létrehozása</translation>
+        <translation>Új mappa létrehozása</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="500"/>
@@ -478,12 +479,12 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="594"/>
         <source>Disable virtual file support …</source>
-        <translation>A virtuális fájl támogatásának letiltása ...</translation>
+        <translation>A virtuális fájl támogatásának letiltása…</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="602"/>
         <source>Enable virtual file support %1 …</source>
-        <translation>A(z) %1 virtuális fájl támogatás engedélyezése ...</translation>
+        <translation>A(z) %1 virtuális fájl támogatás engedélyezése…</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="602"/>
@@ -527,7 +528,7 @@ Wait for the new sync, then encrypt it.</source>
 The only advantage of disabling virtual file support is that the selective sync feature will become available again.
 
 This action will abort any currently running synchronization.</source>
-        <translation>Ez a művelet letiltja a virtuális fájlok támogatását. Ennek eredményeként a jelenleg &quot;csak online elérhetőként&quot; megjelölt mappák tartalma letöltésre kerül.
+        <translation>Ez a művelet letiltja a virtuális fájlok támogatását. Ennek eredményeként a jelenleg „csak online elérhetőként” megjelölt mappák tartalma letöltésre kerül.
 
 A virtuális fájltámogatás letiltásának egyetlen előnye, hogy a szelektív szinkronizálási funkció újra elérhetővé válik.
 
@@ -591,7 +592,7 @@ Ez a művelet megszakítja a jelenleg futó szinkronizálást.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1115"/>
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
-        <translation>A(z) %1 szerver verzió nem támogatott! Folyatás csak saját felelősségre.</translation>
+        <translation>A(z) %1 kiszolgálóverzió nem támogatott. Folyatás csak saját felelősségre.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1117"/>
@@ -631,7 +632,7 @@ Ez a művelet megszakítja a jelenleg futó szinkronizálást.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1151"/>
         <source>Server configuration error: %1 at %2.</source>
-        <translation>Szerver konfigurációs hiba: %1 itt: %2.</translation>
+        <translation>Kiszolgáló konfigurációs hiba: %1, itt: %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1162"/>
@@ -722,7 +723,7 @@ Ez a művelet megszakítja a jelenleg futó szinkronizálást.</translation>
     <message>
         <location filename="../src/gui/tray/ActivityListModel.cpp" line="336"/>
         <source>Files from the ignore list as well as symbolic links are not synced.</source>
-        <translation>Az ignorálási listából származó fájlok, valamint a szimbolikus hivatkozások nincsenek szinkronizálva.</translation>
+        <translation>A mellőzési listából származó fájlok, valamint a szimbolikus linkek nincsenek szinkronizálva.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityListModel.cpp" line="513"/>
@@ -770,7 +771,7 @@ Ez a művelet megszakítja a jelenleg futó szinkronizálást.</translation>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="79"/>
         <source>An encrypted pkcs12 bundle is strongly recommended as a copy will be stored in the configuration file.</source>
-        <translation>A titkosított pkcs12 csomag erősen ajánlott, mivel egy példányt a konfigurációs fájl tárol.</translation>
+        <translation>A titkosított pkcs12 csomag erősen ajánlott, mivel egy példányt a konfigurációs fájlban lesz tárolva.</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.cpp" line="38"/>
@@ -2407,7 +2408,7 @@ A naplók ide lesznek írva: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/logger.cpp" line="195"/>
-        <source>&lt;nobr&gt;File &quot;%1&quot;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output can &lt;b&gt;not&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
+        <source>&lt;nobr&gt;File &quot;%1&quot;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output &lt;b&gt;cannot&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
         <translation type="unfinished"/>
     </message>
 </context>
