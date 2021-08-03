@@ -2401,8 +2401,8 @@ Logs will be written to %1</source>
     </message>
     <message>
         <location filename="../src/libsync/logger.cpp" line="195"/>
-        <source>&lt;nobr&gt;File &quot;%1&quot;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output can &lt;b&gt;not&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
-        <translation>无法打开&lt;nobr&gt;文件 &quot;%1&quot;&lt;br/&gt;进行写入。&lt;br/&gt;&lt;br/&gt;日志输出&lt;b&gt;无法&lt;/b&gt;被保存！</translation>
+        <source>&lt;nobr&gt;File &quot;%1&quot;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output &lt;b&gt;cannot&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
