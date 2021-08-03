@@ -1355,9 +1355,12 @@ static QString checkPathValidityRecursive(const QString &path)
     Utility::NtfsPermissionLookupRAII ntfs_perm;
 #endif
     const QFileInfo selFile(path);
+    if (!selFile.dir().entryList({ QStringLiteral(".sync_*.db") }, QDir::Hidden | QDir::Files).isEmpty()) {
+        return FolderMan::tr("The folder %1 is used in a folder sync connection!").arg(QDir::toNativeSeparators(selFile.filePath()));
+    }
 
     if (!selFile.exists()) {
-        QString parentPath = selFile.dir().path();
+        const QString parentPath = selFile.path();
         if (parentPath != path)
             return checkPathValidityRecursive(parentPath);
         return FolderMan::tr("The selected path does not exist!");
@@ -1396,12 +1399,6 @@ static QString canonicalPath(const QString &path)
 
 QString FolderMan::checkPathValidityForNewFolder(const QString &path) const
 {
-    QString recursiveValidity = checkPathValidityRecursive(path);
-    if (!recursiveValidity.isEmpty()) {
-        qCDebug(lcFolderMan) << path << recursiveValidity;
-        return recursiveValidity;
-    }
-
     // check if the local directory isn't used yet in another ownCloud sync
     const auto cs = Utility::fsCaseSensitivity();
 
@@ -1426,8 +1423,11 @@ QString FolderMan::checkPathValidityForNewFolder(const QString &path) const
                 .arg(QDir::toNativeSeparators(path));
         }
     }
-
-    return QString();
+    const auto result = checkPathValidityRecursive(path);
+    if (!result.isEmpty()) {
+        return tr("%1 Please pick another one!").arg(result);
+    }
+    return {};
 }
 
 QString FolderMan::findGoodPathForNewSyncFolder(const QString &basePath) const
@@ -1438,32 +1438,21 @@ QString FolderMan::findGoodPathForNewSyncFolder(const QString &basePath) const
     // possibly find a valid sync folder inside it.
     // Example: Someone syncs their home directory. Then ~/foobar is not
     // going to be an acceptable sync folder path for any value of foobar.
-    QString parentFolder = QFileInfo(folder).dir().canonicalPath();
+    const QString parentFolder = QFileInfo(folder).canonicalPath();
     if (FolderMan::instance()->folderForPath(parentFolder)) {
         // Any path with that parent is going to be unacceptable,
         // so just keep it as-is.
         return basePath;
     }
-
-    int attempt = 1;
-    forever {
-        const bool isGood =
-            !QFileInfo::exists(folder)
-            && FolderMan::instance()->checkPathValidityForNewFolder(folder).isEmpty();
-        if (isGood) {
-            break;
+    // Count attempts and give up eventually
+    for (int attempt = 2; attempt < 100; ++attempt) {
+        if (!QFileInfo::exists(folder)
+            && FolderMan::instance()->checkPathValidityForNewFolder(folder).isEmpty()) {
+            return folder;
         }
-
-        // Count attempts and give up eventually
-        attempt++;
-        if (attempt > 100) {
-            return basePath;
-        }
-
         folder = basePath + QString::number(attempt);
     }
-
-    return folder;
+    return basePath;
 }
 
 bool FolderMan::ignoreHiddenFiles() const
