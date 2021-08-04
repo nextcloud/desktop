@@ -104,7 +104,7 @@ Q_ENUM_NS(csync_status_codes_e)
   * the csync state of a file.
   */
 // clang-format off
-enum SyncInstructions {
+enum SyncInstruction {
     CSYNC_INSTRUCTION_NONE            = 0,       /* Nothing to do (UPDATE|RECONCILE) */
     CSYNC_INSTRUCTION_REMOVE          = 1 << 1,  /* The file need to be removed (RECONCILE) */
     CSYNC_INSTRUCTION_RENAME          = 1 << 2,  /* The file need to be renamed (RECONCILE) */
@@ -125,7 +125,9 @@ enum SyncInstructions {
     CSYNC_INSTRUCTION_EVAL            = 1 << 0, // DEPRECATED REMOVED
 };
 // clang-format on
-Q_ENUM_NS(SyncInstructions)
+Q_ENUM_NS(SyncInstruction)
+Q_DECLARE_FLAGS(SyncInstructions, SyncInstruction)
+Q_DECLARE_OPERATORS_FOR_FLAGS(SyncInstructions)
 
 // This enum is used with BITFIELD(3) and BITFIELD(4) in several places.
 // Also, this value is stored in the database, so beware of value changes.
@@ -211,6 +213,8 @@ struct OCSYNC_EXPORT csync_file_stat_s {
     , instruction(CSYNC_INSTRUCTION_NONE)
   { }
 };
+
+OCSYNC_EXPORT QDebug operator<<(QDebug debug, const SyncInstructions &job);
 
 /**
  * }@

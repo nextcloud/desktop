@@ -20,3 +20,15 @@
 
 #include "csync.h"
 #include "moc_csync.cpp"
+
+#include <QMetaEnum>
+
+QDebug operator<<(QDebug debug, const SyncInstructions &enumValue)
+{
+    static const QMetaObject *mo = qt_getEnumMetaObject(SyncInstruction());
+    static const int enumIdx = mo->indexOfEnumerator(qt_getEnumName(SyncInstruction()));
+    static const QMetaEnum me = mo->enumerator(enumIdx);
+    QDebugStateSaver saver(debug);
+    debug.nospace().noquote() << me.enumName() << "(" << me.valueToKeys(enumValue) << ")";
+    return debug;
+}
