@@ -335,8 +335,8 @@
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="89"/>
-        <source>You seem to have the Virtual Files feature enabled on this folder. At  the moment, it is not possible to implicitly download virtual files that are End-to-End encrypted. To get the best experience with Virtual Files and End-to-End Encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
-        <translation>Görünüşe göre bu klasör için sanal dosyalar özelliğini etkinleştirmişsiniz. Şu anda uçtan uca şifrelenmiş sanal dosyaların örtülü olarak indirilmesi desteklenmiyor. Sanal dosyalar ve uçtan uca şifreleme ile en iyi deneyimi elde etmek için, şifrelenmiş klasörün &quot;Her zaman yerel olarak kullanılabilsin&quot; olarak işaretlendiğinden emin olun.</translation>
+        <source>You seem to have the Virtual Files feature enabled on this folder. At the moment, it is not possible to implicitly download virtual files that are End-to-End encrypted. To get the best experience with Virtual Files and End-to-End Encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="97"/>
@@ -399,6 +399,11 @@
         <location filename="../src/gui/accountsettings.cpp" line="270"/>
         <source>Warning</source>
         <translation>Uyarı</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="89"/>
+        <source>You seem to have the Virtual Files feature enabled on this folder. At  the moment, it is not possible to implicitly download virtual files that are End-to-End encrypted. To get the best experience with Virtual Files and End-to-End Encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
+        <translation>Görünüşe göre bu klasör için sanal dosyalar özelliğini etkinleştirmişsiniz. Şu anda uçtan uca şifrelenmiş sanal dosyaların örtülü olarak indirilmesi desteklenmiyor. Sanal dosyalar ve uçtan uca şifreleme ile en iyi deneyimi elde etmek için, şifrelenmiş klasörün &quot;Her zaman yerel olarak kullanılabilsin&quot; olarak işaretlendiğinden emin olun.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="330"/>
@@ -2414,7 +2419,7 @@ Günlükler %1 üzerine yazılacak</translation>
     <message>
         <location filename="../src/libsync/logger.cpp" line="195"/>
         <source>&lt;nobr&gt;File &quot;%1&quot;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output &lt;b&gt;cannot&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;nobr&gt;&quot;%1&quot; dosyası&lt;br/&gt;yazılmak üzere açılamadı.&lt;br/&gt;&lt;br/&gt;Günlük çıktısı &lt;b&gt;kaydedilemez&lt;/b&gt;!&lt;/nobr&gt;</translation>
     </message>
 </context>
 <context>
@@ -5676,6 +5681,16 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
         <location filename="../src/common/checksums.cpp" line="252"/>
         <source>The downloaded file does not match the checksum, it will be resumed.</source>
         <translation>İndirilen dosya sağlama değerine uygun değil, yeniden indirilecek.</translation>
+    </message>
+    <message>
+        <location filename="../src/common/checksums.cpp" line="358"/>
+        <source>The checksum header contained an unknown checksum type &quot;%1&quot;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/common/checksums.cpp" line="362"/>
+        <source>The downloaded file does not match the checksum, it will be resumed. &quot;%1&quot; != &quot;%2&quot;</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/common/checksums.cpp" line="362"/>

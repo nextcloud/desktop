@@ -335,8 +335,8 @@
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="89"/>
-        <source>You seem to have the Virtual Files feature enabled on this folder. At  the moment, it is not possible to implicitly download virtual files that are End-to-End encrypted. To get the best experience with Virtual Files and End-to-End Encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
-        <translation>Parece que usted tiene habilitada la característica de archivos virtuales en esta carpeta. Por el momento, no es posible descargar implícitamente archivos virtuales  que están cifrados de extremo a extremo. Para tener la mejor experiencia con archivos virtuales y el cifrado de extremo a extremo, asegúrese de que la carpeta cifrada está marcada con &quot;Hacer que esté siempre localmente disponible&quot;.</translation>
+        <source>You seem to have the Virtual Files feature enabled on this folder. At the moment, it is not possible to implicitly download virtual files that are End-to-End encrypted. To get the best experience with Virtual Files and End-to-End Encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="97"/>
@@ -399,6 +399,11 @@
         <location filename="../src/gui/accountsettings.cpp" line="270"/>
         <source>Warning</source>
         <translation>Aviso</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="89"/>
+        <source>You seem to have the Virtual Files feature enabled on this folder. At  the moment, it is not possible to implicitly download virtual files that are End-to-End encrypted. To get the best experience with Virtual Files and End-to-End Encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
+        <translation>Parece que usted tiene habilitada la característica de archivos virtuales en esta carpeta. Por el momento, no es posible descargar implícitamente archivos virtuales  que están cifrados de extremo a extremo. Para tener la mejor experiencia con archivos virtuales y el cifrado de extremo a extremo, asegúrese de que la carpeta cifrada está marcada con &quot;Hacer que esté siempre localmente disponible&quot;.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="330"/>
@@ -5671,6 +5676,16 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
         <location filename="../src/common/checksums.cpp" line="252"/>
         <source>The downloaded file does not match the checksum, it will be resumed.</source>
         <translation>Al archivo descargado no le coincide el checksum, se volverá a bajar.</translation>
+    </message>
+    <message>
+        <location filename="../src/common/checksums.cpp" line="358"/>
+        <source>The checksum header contained an unknown checksum type &quot;%1&quot;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/common/checksums.cpp" line="362"/>
+        <source>The downloaded file does not match the checksum, it will be resumed. &quot;%1&quot; != &quot;%2&quot;</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/common/checksums.cpp" line="362"/>

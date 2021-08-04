@@ -335,8 +335,8 @@
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="89"/>
-        <source>You seem to have the Virtual Files feature enabled on this folder. At  the moment, it is not possible to implicitly download virtual files that are End-to-End encrypted. To get the best experience with Virtual Files and End-to-End Encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
-        <translation>Du lader til at have funktionen &quot;virtuelle filer&quot; slået til på denne mappe. I øjeblikket kan det ikke lade sig gøre implicit at hente virtuelle filer, der er end-to-end krypterede. For den bedste oplevelse med virtuelle filer og end-to-end kryptering, sørg for at den krypterede mappe er markeret med &quot;gør altid tilgængelig offline&quot;.</translation>
+        <source>You seem to have the Virtual Files feature enabled on this folder. At the moment, it is not possible to implicitly download virtual files that are End-to-End encrypted. To get the best experience with Virtual Files and End-to-End Encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="97"/>
@@ -399,6 +399,11 @@
         <location filename="../src/gui/accountsettings.cpp" line="270"/>
         <source>Warning</source>
         <translation>Advarsel</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="89"/>
+        <source>You seem to have the Virtual Files feature enabled on this folder. At  the moment, it is not possible to implicitly download virtual files that are End-to-End encrypted. To get the best experience with Virtual Files and End-to-End Encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
+        <translation>Du lader til at have funktionen &quot;virtuelle filer&quot; slået til på denne mappe. I øjeblikket kan det ikke lade sig gøre implicit at hente virtuelle filer, der er end-to-end krypterede. For den bedste oplevelse med virtuelle filer og end-to-end kryptering, sørg for at den krypterede mappe er markeret med &quot;gør altid tilgængelig offline&quot;.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="330"/>
@@ -5652,6 +5657,16 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/common/checksums.cpp" line="252"/>
         <source>The downloaded file does not match the checksum, it will be resumed.</source>
         <translation>Den hentede fil svarer ikke til kontrolsummen, den bliver genoptaget.</translation>
+    </message>
+    <message>
+        <location filename="../src/common/checksums.cpp" line="358"/>
+        <source>The checksum header contained an unknown checksum type &quot;%1&quot;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/common/checksums.cpp" line="362"/>
+        <source>The downloaded file does not match the checksum, it will be resumed. &quot;%1&quot; != &quot;%2&quot;</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/common/checksums.cpp" line="362"/>
