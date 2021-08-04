@@ -597,7 +597,7 @@ private slots:
     void testVeryBigFiles() {
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
         fakeFolder.syncEngine().account()->setCapabilities({ { "dav", QVariantMap{ {"chunking", "1.0"} } } });
-        const qint64 size = 3 * 1024 * 1024 * 1024; // 2.5 GiB
+        const qint64 size = 1000000000; // 1 GiB
 
         // Partial upload of big files
         partialUpload(fakeFolder, "A/a0", size);
