@@ -46,14 +46,12 @@ void setPinState(const QString &path, PinState state, cfapi::SetPinRecurseMode m
     Q_ASSERT(mode == cfapi::Recurse || mode == cfapi::NoRecurse);
 
     const auto p = QDir::toNativeSeparators(path);
-    const auto handle = cfapi::handleForPath(p);
-    Q_ASSERT(handle);
 
-    const auto result = cfapi::setPinState(handle, state, mode);
+    const auto result = cfapi::setPinState(p, state, mode);
     Q_ASSERT(result);
 
     if (mode == cfapi::NoRecurse) {
-        const auto result = cfapi::setPinState(handle, PinState::Inherited, cfapi::ChildrenOnly);
+        const auto result = cfapi::setPinState(p, PinState::Inherited, cfapi::ChildrenOnly);
         Q_ASSERT(result);
     }
 }
@@ -1184,6 +1182,7 @@ private slots:
         bool openResult = false;
         bool readResult = false;
         std::thread t([&] {
+            const auto locPath = fakeFolder.localPath();
             QFile file(fakeFolder.localPath() + "online/sub/file1");
             openResult = file.open(QFile::ReadOnly);
             readResult = !file.readAll().isEmpty();
