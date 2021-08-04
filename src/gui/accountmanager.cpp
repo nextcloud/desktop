@@ -380,6 +380,8 @@ void AccountManager::deleteAccount(AccountState *account)
     // Forget E2E keys
     account->account()->e2e()->forgetSensitiveData(account->account());
 
+    account->account()->deleteAppToken();
+
     emit accountSyncConnectionRemoved(account);
     emit accountRemoved(account);
 }

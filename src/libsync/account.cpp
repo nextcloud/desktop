@@ -23,6 +23,8 @@
 #include "pushnotifications.h"
 #include "version.h"
 
+#include <deletejob.h>
+
 #include "common/asserts.h"
 #include "clientsideencryption.h"
 
@@ -618,7 +620,8 @@ void Account::retrieveAppPassword(){
     job->start();
 }
 
-void Account::deleteAppPassword(){
+void Account::deleteAppPassword()
+{
     const QString kck = AbstractCredentials::keychainKey(
                 url().toString(),
                 credentials()->user() + app_password,
@@ -644,6 +647,25 @@ void Account::deleteAppPassword(){
         _wroteAppPassword = false;
     });
     job->start();
+}
+
+void Account::deleteAppToken()
+{
+    const auto deleteAppTokenJob = new DeleteJob(sharedFromThis(), QStringLiteral("/ocs/v2.php/core/apppassword"));
+    connect(deleteAppTokenJob, &DeleteJob::finishedSignal, this, [this]() {
+        if (const auto deleteJob = qobject_cast<DeleteJob *>(QObject::sender())) {
+            const auto httpCode = deleteJob->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+            if (httpCode != 200) {
+                qCWarning(lcAccount) << "AppToken remove failed for user: " << displayName() << " with code: " << httpCode;
+            } else {
+                qCInfo(lcAccount) << "AppToken for user: " << displayName() << " has been removed.";
+            }
+        } else {
+            Q_ASSERT(false);
+            qCWarning(lcAccount) << "The sender is not a DeleteJob instance.";
+        }
+    });
+    deleteAppTokenJob->start();
 }
 
 void Account::fetchDirectEditors(const QUrl &directEditingURL, const QString &directEditingETag)
