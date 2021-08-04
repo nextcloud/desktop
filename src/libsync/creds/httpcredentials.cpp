@@ -108,15 +108,6 @@ protected:
                 req.setRawHeader("Authorization", "Basic " + credHash);
             }
         }
-
-        if (_cred && !_cred->_clientSslKey.isNull() && !_cred->_clientSslCertificate.isNull()) {
-            // SSL configuration
-            QSslConfiguration sslConfiguration = req.sslConfiguration();
-            sslConfiguration.setLocalCertificate(_cred->_clientSslCertificate);
-            sslConfiguration.setPrivateKey(_cred->_clientSslKey);
-            req.setSslConfiguration(sslConfiguration);
-        }
-
         return AccessManager::createRequest(op, req, outgoingData);
     }
 
@@ -126,18 +117,13 @@ private:
     QPointer<const HttpCredentials> _cred;
 };
 
-HttpCredentials::HttpCredentials(DetermineAuthTypeJob::AuthType authType, const QString &user, const QString &password, const QByteArray &clientCertBundle, const QByteArray &clientCertPassword)
+HttpCredentials::HttpCredentials(DetermineAuthTypeJob::AuthType authType, const QString &user, const QString &password)
     : _user(user)
     , _password(password)
     , _ready(true)
-    , _clientCertBundle(clientCertBundle)
-    , _clientCertPassword(clientCertPassword)
     , _retryOnKeyChainError(false)
     , _authType(authType)
 {
-    if (!unpackClientCertBundle(clientCertPassword)) {
-        OC_ASSERT_X(false, "pkcs12 client cert bundle passed to HttpCredentials must be valid");
-    }
 }
 
 QString HttpCredentials::authType() const
@@ -249,25 +235,6 @@ void HttpCredentials::fetchFromKeychainHelper()
             }
         });
     };
-    _clientCertBundle = _account->credentialSetting(clientCertBundleKeyC()).toByteArray();
-    if (!_clientCertBundle.isEmpty()) {
-        // New case (>=2.6): We have a bundle in the settings and read the password from
-        // the keychain
-        auto job = _account->credentialManager()->get(clientCertPasswordKeyC());
-        connect(job, &CredentialJob::finished, this, [job, readPassword, this] {
-            const auto clientCertPassword = job->data().toByteArray();
-            if (job->error() != QKeychain::NoError) {
-                qCWarning(lcHttpLegacyCredentials) << "Could not retrieve client cert password from keychain" << job->errorString();
-            }
-            // might be an empty passowrd
-            if (!unpackClientCertBundle(clientCertPassword)) {
-                qCWarning(lcHttpCredentials) << "Could not unpack client cert bundle";
-            }
-            _clientCertBundle.clear();
-            readPassword();
-        });
-        return;
-    }
     readPassword();
 }
 
@@ -364,22 +331,10 @@ void HttpCredentials::persist()
     _account->setCredentialSetting(CredentialVersionKey(), CredentialVersion);
     _account->setCredentialSetting(userC(), _user);
     _account->setCredentialSetting(isOAuthC(), isUsingOAuth());
-    if (!_clientCertBundle.isEmpty()) {
-        // Note that the _clientCertBundle will often be cleared after usage,
-        // it's just written if it gets passed into the constructor.
-        _account->setCredentialSetting(clientCertBundleKeyC(), _clientCertBundle);
-    }
     Q_EMIT _account->wantsAccountSaved(_account);
 
     // write secrets to the keychain
-    if (!_clientCertBundle.isEmpty()) {
-        // If we have a pkcs12 bundle, that'll be written to the config file
-        // and we'll just store the bundle password in the keychain. That's prefered
-        // since the keychain on older Windows platforms can only store a limited number
-        // of bytes per entry and key/cert may exceed that.
-        _account->credentialManager()->set(clientCertPasswordKeyC(), _clientCertPassword);
-        _clientCertBundle.clear();
-    } else if (isUsingOAuth()) {
+    if (isUsingOAuth()) {
         _account->credentialManager()->set(refreshTokenKeyC(), _refreshToken);
     } else {
         _account->credentialManager()->set(passwordKeyC(), _password);
@@ -400,18 +355,6 @@ void HttpCredentials::slotAuthentication(QNetworkReply *reply, QAuthenticator *a
         qCInfo(lcHttpCredentials) << "Refreshing token";
         refreshAccessToken();
     }
-}
-
-bool HttpCredentials::unpackClientCertBundle(const QByteArray &clientCertPassword)
-{
-    if (_clientCertBundle.isEmpty())
-        return true;
-
-    QBuffer certBuffer(&_clientCertBundle);
-    certBuffer.open(QIODevice::ReadOnly);
-    QList<QSslCertificate> clientCaCertificates;
-    return QSslCertificate::importPkcs12(
-        &certBuffer, &_clientSslKey, &_clientSslCertificate, &clientCaCertificates, clientCertPassword);
 }
 
 } // namespace OCC

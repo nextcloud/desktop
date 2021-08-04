@@ -22,8 +22,6 @@
 #include "wizard/owncloudwizardcommon.h"
 #include "wizard/owncloudwizard.h"
 
-#include "../addcertificatedialog.h"
-
 class QLabel;
 class QVariant;
 class QProgressIndicator;
@@ -59,13 +57,10 @@ public slots:
     void setErrorString(const QString &);
     void startSpinner();
     void stopSpinner();
-    void slotCertificateAccepted();
 
 protected slots:
     void slotUrlChanged(const QString &);
     void slotUrlEditFinished();
-
-    void setupCustomization();
 
 signals:
     void determineAuthType(const QString &);
@@ -82,7 +77,6 @@ private:
     QProgressIndicator *_progressIndi;
     QButtonGroup *_selectiveSyncButtons;
     QString _remoteFolder;
-    AddCertificateDialog *addCertDial;
     OwncloudWizard *_ocWizard;
 };
 
