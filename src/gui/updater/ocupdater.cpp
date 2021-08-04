@@ -106,7 +106,7 @@ bool OCUpdater::performUpdate()
         && !updateSucceeded() /* Someone might have run the updater manually between restarts */) {
         const auto messageBoxStartInstaller = new QMessageBox(QMessageBox::Information,
             tr("New %1 update ready").arg(Theme::instance()->appNameGUI()),
-            tr("A new update for %1 is about to be installed. The updater may ask\n"
+            tr("A new update for %1 is about to be installed. The updater may ask "
                "for additional privileges during the process.")
                 .arg(Theme::instance()->appNameGUI()),
             QMessageBox::Ok,
