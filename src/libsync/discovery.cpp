@@ -269,10 +269,8 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const QString &loc
                     }
                 }
                 if (invalid) {
-                    item->_errorString = tr("File names containing the character \"%1\" are not supported on this file system.")
-                                             .arg(QLatin1Char(invalid));
-                }
-                if (isInvalidPattern) {
+                    item->_errorString = tr("File names containing the character \"%1\" are not supported on this file system.").arg(QLatin1Char(invalid));
+                } else if (isInvalidPattern) {
                     item->_errorString = tr("File name contains at least one invalid character");
                 } else {
                     item->_errorString = tr("The file name is a reserved name on this file system.");
