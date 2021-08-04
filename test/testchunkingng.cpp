@@ -31,6 +31,7 @@ static void partialUpload(FakeFolder &fakeFolder, const QString &name, qint64 si
 
     QVERIFY(!fakeFolder.syncOnce()); // there should have been an error
     QObject::disconnect(con);
+
     QVERIFY(sizeWhenAbort > 0);
     QVERIFY(sizeWhenAbort < size);
 
@@ -596,7 +597,7 @@ private slots:
     void testVeryBigFiles() {
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
         fakeFolder.syncEngine().account()->setCapabilities({ { "dav", QVariantMap{ {"chunking", "1.0"} } } });
-        const qint64 size = 2.5 * 1024 * 1024 * 1024; // 2.5 GiB
+        const qint64 size = 3 * 1024 * 1024 * 1024; // 2.5 GiB
 
         // Partial upload of big files
         partialUpload(fakeFolder, "A/a0", size);

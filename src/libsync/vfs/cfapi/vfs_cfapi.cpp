@@ -109,6 +109,7 @@ bool VfsCfApi::isHydrating() const
 Result<void, QString> VfsCfApi::updateMetadata(const QString &filePath, time_t modtime, qint64 size, const QByteArray &fileId)
 {
     const auto localPath = QDir::toNativeSeparators(filePath);
+    qCInfo(lcCfApi) << "Going to updateMetadata for filePath " << filePath << " with localPath" << localPath;
     const auto handle = cfapi::handleForPath(localPath);
     if (handle) {
         auto result = cfapi::updatePlaceholderInfo(handle, modtime, size, fileId);

@@ -359,6 +359,7 @@ void OCC::SyncEngine::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
 
             // Update on-disk virtual file metadata
             if (item->_type == ItemTypeVirtualFile) {
+                qCInfo(lcEngine) << "Updating vfs metadata from syncEngine for filePath " << filePath << " of item " << item;
                 auto r = _syncOptions._vfs->updateMetadata(filePath, item->_modtime, item->_size, item->_fileId);
                 if (!r) {
                     item->_instruction = CSYNC_INSTRUCTION_ERROR;
