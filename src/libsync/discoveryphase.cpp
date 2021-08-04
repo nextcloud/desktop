@@ -158,34 +158,36 @@ QPair<bool, QByteArray> DiscoveryPhase::findAndCancelDeletedJob(const QString &o
     QByteArray oldEtag;
     auto it = _deletedItem.find(originalPath);
     if (it != _deletedItem.end()) {
-        const SyncInstructions instruction = (*it)->_instruction;
-        if (instruction == CSYNC_INSTRUCTION_IGNORE && (*it)->_type == ItemTypeVirtualFile) {
+        const auto &item = *it;
+        const SyncInstructions instruction = item->_instruction;
+        if (instruction == CSYNC_INSTRUCTION_IGNORE && item->_type == ItemTypeVirtualFile) {
             // re-creation of virtual files count as a delete
+            // restoration after a prohibited move
             // a file might be in an error state and thus gets marked as CSYNC_INSTRUCTION_IGNORE
             // after it was initially marked as CSYNC_INSTRUCTION_REMOVE
             // return true, to not trigger any additional actions on that file that could elad to dataloss
             result = true;
-            oldEtag = (*it)->_etag;
+            oldEtag = item->_etag;
         } else {
             if (!(instruction == CSYNC_INSTRUCTION_REMOVE
                     // re-creation of virtual files count as a delete
-                    || ((*it)->_type == ItemTypeVirtualFile && instruction == CSYNC_INSTRUCTION_NEW)
-                    || ((*it)->_isRestoration && instruction == CSYNC_INSTRUCTION_NEW)))
-            {
+                    || (item->_type == ItemTypeVirtualFile && instruction == CSYNC_INSTRUCTION_NEW)
+                    || (item->_isRestoration && instruction & (CSYNC_INSTRUCTION_NEW | CSYNC_INSTRUCTION_IGNORE)))) {
                 qCWarning(lcDiscovery) << "OC_ENFORCE(FAILING)" << originalPath;
                 qCWarning(lcDiscovery) << "instruction == CSYNC_INSTRUCTION_REMOVE" << (instruction == CSYNC_INSTRUCTION_REMOVE);
-                qCWarning(lcDiscovery) << "((*it)->_type == ItemTypeVirtualFile && instruction == CSYNC_INSTRUCTION_NEW)"
-                                       << ((*it)->_type == ItemTypeVirtualFile && instruction == CSYNC_INSTRUCTION_NEW);
-                qCWarning(lcDiscovery) << "((*it)->_isRestoration && instruction == CSYNC_INSTRUCTION_NEW))"
-                                       << ((*it)->_isRestoration && instruction == CSYNC_INSTRUCTION_NEW);
+                qCWarning(lcDiscovery) << "(item->_type == ItemTypeVirtualFile && instruction == CSYNC_INSTRUCTION_NEW)"
+                                       << (item->_type == ItemTypeVirtualFile && instruction == CSYNC_INSTRUCTION_NEW);
+                qCWarning(lcDiscovery) << "(item->_isRestoration && instruction & (CSYNC_INSTRUCTION_NEW | CSYNC_INSTRUCTION_IGNORE)"
+                                       << (item->_isRestoration && instruction & (CSYNC_INSTRUCTION_NEW | CSYNC_INSTRUCTION_IGNORE);
                 qCWarning(lcDiscovery) << "instruction" << instruction;
-                qCWarning(lcDiscovery) << "(*it)->_type" << (*it)->_type;
-                qCWarning(lcDiscovery) << "(*it)->_isRestoration " << (*it)->_isRestoration;
+                qCWarning(lcDiscovery) << "item->_type" << item->_type;
+                qCWarning(lcDiscovery) << "item->_isRestoration " << item->_isRestoration;
+                qCWarning(lcDiscovery) << "item->_remotePerm" << item->_remotePerm;
                 OC_ENFORCE(false);
             }
-            (*it)->_instruction = CSYNC_INSTRUCTION_NONE;
+            item->_instruction = CSYNC_INSTRUCTION_NONE;
             result = true;
-            oldEtag = (*it)->_etag;
+            oldEtag = item->_etag;
         }
         _deletedItem.erase(it);
     }

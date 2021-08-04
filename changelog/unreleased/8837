@@ -1,0 +1,3 @@
+Bugfix: Don't crash if a certain move is undone
+
+https://github.com/owncloud/client/issues/8837
