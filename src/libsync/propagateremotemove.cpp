@@ -235,7 +235,6 @@ void PropagateRemoteMove::finalize()
     SyncJournalFileRecord oldRecord;
     propagator()->_journal->getFileRecord(_item->_originalFile, &oldRecord);
     auto &vfs = propagator()->syncOptions()._vfs;
-    auto pinState = vfs->pinState(_item->_originalFile);
 
     // Delete old db data.
     propagator()->_journal->deleteFileRecord(_item->_originalFile);
@@ -258,11 +257,6 @@ void PropagateRemoteMove::finalize()
         return;
     } else if (*result == Vfs::ConvertToPlaceholderResult::Locked) {
         done(SyncFileItem::SoftError, tr("The file %1 is currently in use").arg(newItem._file));
-        return;
-    }
-    if (pinState && *pinState != PinState::Inherited
-        && !vfs->setPinState(newItem._renameTarget, *pinState)) {
-        done(SyncFileItem::NormalError, tr("Error setting pin state"));
         return;
     }
 
