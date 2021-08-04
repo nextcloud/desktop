@@ -100,7 +100,7 @@ public:
 
     friend QDebug operator<<(QDebug &dbg, RemotePermissions p)
     {
-        return dbg << p.toString().constData();
+        return dbg << p.toString();
     }
 };
 
