@@ -12,7 +12,12 @@ owncloud_add_test(ConcatUrl)
 owncloud_add_test(Cookies)
 owncloud_add_test(XmlParse)
 owncloud_add_test(ChecksumValidator)
-owncloud_add_test(CredentialManager)
+
+
+# TODO: we need keychain access for this test
+if (NOT APPLE OR NOT DEFINED ENV{GITHUB_ACTION})
+    owncloud_add_test(CredentialManager)
+endif()
 
 owncloud_add_test(ExcludedFiles)
 
