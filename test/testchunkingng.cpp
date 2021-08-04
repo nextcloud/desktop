@@ -599,6 +599,8 @@ private slots:
         fakeFolder.syncEngine().account()->setCapabilities({ { "dav", QVariantMap{ {"chunking", "1.0"} } } });
         const qint64 size = 1000000000; // 1 GiB
 
+        setChunkSize(fakeFolder.syncEngine(), size / 10);
+
         // Partial upload of big files
         partialUpload(fakeFolder, "A/a0", size);
         QCOMPARE(fakeFolder.uploadState().children.count(), 1);
