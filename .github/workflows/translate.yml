@@ -40,7 +40,7 @@ jobs:
           git status
           git stash
           git pull --ff-only origin
-          [[ "$(git stash list)" != "" ]] && git stash pop
+          if [[ "$(git stash list)" != "" ]]; then git stash pop; else echo "no stash to restore"; fi
 
       - name: commit and push
         if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
