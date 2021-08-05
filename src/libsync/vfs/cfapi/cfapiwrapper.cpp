@@ -612,7 +612,7 @@ OCC::CfApiWrapper::FileHandle OCC::CfApiWrapper::handleForPath(const QString &pa
     }
 
     if (isDirectory) {
-        qCCritical(lcCfApiWrapper) << "Could not open a handle for a path: " << path;
+        qCCritical(lcCfApiWrapper) << "Could not open a handle for a directory: " << path;
     }
 
     return {};
