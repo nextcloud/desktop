@@ -337,7 +337,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="89"/>
         <source>You seem to have the Virtual Files feature enabled on this folder. At the moment, it is not possible to implicitly download virtual files that are End-to-End encrypted. To get the best experience with Virtual Files and End-to-End Encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>您似乎在此資料夾上啟用了「虛擬文件」功能。目前，無法隱式下載經過端到端加密的虛擬檔案。為了獲得最佳的虛擬檔案和端到端加密體驗，請確保已加密的資料夾標記有“在近端始終可用”。</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="97"/>
@@ -2418,7 +2418,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/libsync/logger.cpp" line="195"/>
         <source>&lt;nobr&gt;File &quot;%1&quot;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output &lt;b&gt;cannot&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;nobr&gt;檔案 &quot;%1&quot; &lt;br/&gt;無法開啟供寫入。&lt;br/&gt;&lt;br/&gt;記錄&lt;b&gt;無法&lt;/b&gt;保存！&lt;/nobr&gt;</translation>
     </message>
 </context>
 <context>
@@ -3347,7 +3347,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>伺服器讀取目錄 &apos;%1&apos; 時發生錯誤：%2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1548"/>
+        <location filename="../src/libsync/discovery.cpp" line="1546"/>
         <source>Server replied with an error while reading directory &quot;%1&quot; : %2</source>
         <translation>伺服器在讀取目錄「%1」回覆錯誤：%2</translation>
     </message>
@@ -5684,12 +5684,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/common/checksums.cpp" line="358"/>
         <source>The checksum header contained an unknown checksum type &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>檢查碼含有未知的型態 &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../src/common/checksums.cpp" line="362"/>
         <source>The downloaded file does not match the checksum, it will be resumed. &quot;%1&quot; != &quot;%2&quot;</source>
-        <translation type="unfinished"/>
+        <translation>下載的檔案與校驗和不匹配，將會被還原。&quot;%1&quot; != &quot;%2&quot;</translation>
     </message>
     <message>
         <location filename="../src/common/checksums.cpp" line="362"/>
