@@ -717,9 +717,23 @@ OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> OCC::CfApiWrapper::up
     OCC::Utility::UnixTimeToLargeIntegerFiletime(modtime, &metadata.BasicInfo.LastAccessTime);
     OCC::Utility::UnixTimeToLargeIntegerFiletime(modtime, &metadata.BasicInfo.ChangeTime);
 
-    const qint64 result = CfUpdatePlaceholder(handle.get(), &metadata,
+    qint64 result = CfUpdatePlaceholder(handle.get(), &metadata,
                                               fileIdentity.data(), sizeToDWORD(fileIdentitySize),
                                               nullptr, 0, CF_UPDATE_FLAG_MARK_IN_SYNC, nullptr, nullptr);
+
+    if (result != S_OK) {
+        qCWarning(lcCfApiWrapper) << "TRY AGAIN 10 times: Couldn't update placeholder info for" << pathForHandle(handle) << ":" << QString::fromWCharArray(_com_error(result).ErrorMessage());
+
+        int i = 0;
+
+        while (result != S_OK && i < 10) {
+            Sleep(3000);
+            result = CfUpdatePlaceholder(handle.get(), &metadata,
+                fileIdentity.data(), sizeToDWORD(fileIdentitySize),
+                nullptr, 0, CF_UPDATE_FLAG_MARK_IN_SYNC, nullptr, nullptr);
+            ++i;
+        }
+    }
 
     if (result != S_OK) {
         qCWarning(lcCfApiWrapper) << "Couldn't update placeholder info for" << pathForHandle(handle) << ":" << QString::fromWCharArray(_com_error(result).ErrorMessage());
