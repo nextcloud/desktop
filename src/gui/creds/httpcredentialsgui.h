@@ -44,13 +44,7 @@ public:
         _refreshToken = refreshToken;
     }
 
-    void openBrowser()
-    {
-        if (isUsingOAuth() && _asyncAuth)
-        {
-            _asyncAuth->openBrowser();
-        }
-    }
+    void openBrowser();
     /**
      * This will query the server and either uses OAuth via _asyncAuth->start()
      * or call showDialog to ask the password

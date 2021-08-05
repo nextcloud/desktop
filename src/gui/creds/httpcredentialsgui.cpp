@@ -36,6 +36,19 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcHttpCredentialsGui, "sync.credentials.http.gui", QtInfoMsg)
 
+void HttpCredentialsGui::openBrowser()
+{
+    OC_ASSERT(isUsingOAuth());
+    if (isUsingOAuth()) {
+        if (_asyncAuth) {
+            _asyncAuth->openBrowser();
+        } else {
+            qCWarning(lcHttpCredentialsGui) << "There is no running auth run, did the previous attempt fail?";
+            askFromUserAsync();
+        }
+    }
+}
+
 void HttpCredentialsGui::askFromUser()
 {
     // This function can be called from AccountState::slotInvalidCredentials,
