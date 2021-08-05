@@ -586,10 +586,18 @@ OCC::CfApiWrapper::FileHandle OCC::CfApiWrapper::handleForPath(const QString &pa
         return {};
     }
 
+    bool isDirectory = false;
+
+    qCInfo(lcCfApiWrapper) << "Trying to get a handle for a path: " << path;
+
     if (QFileInfo(path).isDir()) {
+        isDirectory = true;
         HANDLE handle = nullptr;
+        qCInfo(lcCfApiWrapper) << "Trying to open a handle for path: " << path;
         const qint64 openResult = CfOpenFileWithOplock(path.toStdWString().data(), CF_OPEN_FILE_FLAG_NONE, &handle);
+        qCInfo(lcCfApiWrapper) << "Open result is: " << openResult;
         if (openResult == S_OK) {
+            qCInfo(lcCfApiWrapper) << "Succeccfuly opened a handle for a path: " << path;
             return {handle, [](HANDLE h) { CfCloseHandle(h); }};
         }
     } else {
@@ -601,6 +609,10 @@ OCC::CfApiWrapper::FileHandle OCC::CfApiWrapper::handleForPath(const QString &pa
         } else {
             qCCritical(lcCfApiWrapper) << "Could not CreateFile for longpath:" << longpath << "with error:" << GetLastError();
         }
+    }
+
+    if (isDirectory) {
+        qCCritical(lcCfApiWrapper) << "Could not open a handle for a path: " << path;
     }
 
     return {};
