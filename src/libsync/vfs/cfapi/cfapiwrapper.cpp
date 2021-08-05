@@ -706,6 +706,8 @@ OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> OCC::CfApiWrapper::up
         return { "Can't update non existing placeholder info" };
     }
 
+    const auto path = QString::fromWCharArray(pathForHandle(handle).data());
+
     const auto previousPinState = cfPinStateToPinState(info->PinState);
     const auto fileIdentity = QString::fromUtf8(fileId).toStdWString();
     const auto fileIdentitySize = (fileIdentity.length() + 1) * sizeof(wchar_t);
@@ -722,13 +724,15 @@ OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> OCC::CfApiWrapper::up
                                               nullptr, 0, CF_UPDATE_FLAG_MARK_IN_SYNC, nullptr, nullptr);
 
     if (result != S_OK) {
-        qCWarning(lcCfApiWrapper) << "TRY AGAIN 10 times: Couldn't update placeholder info for" << pathForHandle(handle) << ":" << QString::fromWCharArray(_com_error(result).ErrorMessage());
+        qCWarning(lcCfApiWrapper) << "TRY AGAIN 10 times: Couldn't update placeholder info for" << path << ":" << QString::fromWCharArray(_com_error(result).ErrorMessage());
 
         int i = 0;
 
         while (result != S_OK && i < 10) {
             Sleep(3000);
-            result = CfUpdatePlaceholder(handle.get(), &metadata,
+            const auto newHandle = handleForPath(path, "OCC::CfApiWrapper::updatePlaceholderInfo");
+            qCWarning(lcCfApiWrapper) << "Re-trying with another handle: " << newHandle.get();
+            result = CfUpdatePlaceholder(newHandle.get(), &metadata,
                 fileIdentity.data(), sizeToDWORD(fileIdentitySize),
                 nullptr, 0, CF_UPDATE_FLAG_MARK_IN_SYNC, nullptr, nullptr);
             ++i;
