@@ -349,6 +349,7 @@ void OCC::SyncEngine::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
 
             // Ensure it's a placeholder file on disk
             if (item->_type == ItemTypeFile) {
+                qCInfo(lcEngine) << "slotItemDiscovered item->_originalFile: " << item->_originalFile << " item: " << item;
                 const auto result = _syncOptions._vfs->convertToPlaceholder(filePath, *item);
                 if (!result) {
                     item->_instruction = CSYNC_INSTRUCTION_ERROR;

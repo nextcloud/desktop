@@ -992,6 +992,7 @@ void PropagateDownloadFile::downloadFinished()
         preserveGroupOwnership(_tmpFile.fileName(), existingFile);
 
         // Make the file a hydrated placeholder if possible
+        qCInfo(lcPropagateDownload) << "downloadFinished _tmpFile.fileName(): " << _tmpFile.fileName();
         const auto result = propagator()->syncOptions()._vfs->convertToPlaceholder(_tmpFile.fileName(), *_item, fn);
         if (!result) {
             done(SyncFileItem::NormalError, result.error());

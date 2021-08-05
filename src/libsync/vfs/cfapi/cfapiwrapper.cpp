@@ -686,6 +686,8 @@ OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> OCC::CfApiWrapper::up
 {
     Q_ASSERT(handle);
 
+    qCInfo(lcCfApiWrapper) << "updatePlaceholderInfo for fileId: " << fileId << " and replacesPath: " << replacesPath;
+
     const auto info = replacesPath.isEmpty() ? findPlaceholderInfo(handle)
                                              : findPlaceholderInfo(handleForPath(replacesPath));
     if (!info) {

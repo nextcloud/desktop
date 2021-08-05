@@ -161,6 +161,8 @@ Result<Vfs::ConvertToPlaceholderResult, QString> VfsCfApi::convertToPlaceholder(
     const auto localPath = QDir::toNativeSeparators(filename);
     const auto replacesPath = QDir::toNativeSeparators(replacesFile);
 
+    qCInfo(lcCfApi) << "convertToPlaceholder for filename: " << filename << " and localPath: " << localPath << " and replacesPath: " << replacesPath << " and item._originalFile: " << item._originalFile << " and item._renameTarget: " << item._renameTarget << " and item._type: " << item._type;
+
     const auto handle = cfapi::handleForPath(localPath);
     if (cfapi::findPlaceholderInfo(handle)) {
         return cfapi::updatePlaceholderInfo(handle, item._modtime, item._size, item._fileId, replacesPath);
