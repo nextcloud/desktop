@@ -210,9 +210,19 @@ void PropagateLocalRename::start()
     if (propagator()->_abortRequested)
         return;
 
+
     QString existingFile = propagator()->fullLocalPath(propagator()->adjustRenamedPath(_item->_file));
     QString targetFile = propagator()->fullLocalPath(_item->_renameTarget);
 
+    OCC::Optional<PinState> pinState;
+
+    auto &vfs = propagator()->syncOptions()._vfs;
+    if (vfs && vfs->mode() != Vfs::Off) {
+        pinState = vfs->pinState(_item->_originalFile, "PropagateLocalRename::start");
+        if (pinState) {
+            qCWarning(lcPropagateLocalRename) << "Stored PinState: " << *pinState << " from original file: " << _item->_originalFile;
+        }
+    }
     // if the file is a file underneath a moved dir, the _item->file is equal
     // to _item->renameTarget and the file is not moved as a result.
     if (_item->_file != _item->_renameTarget) {
@@ -246,9 +256,12 @@ void PropagateLocalRename::start()
     propagator()->_journal->getFileRecord(_item->_originalFile, &oldRecord);
     propagator()->_journal->deleteFileRecord(_item->_originalFile);
 
-    auto &vfs = propagator()->syncOptions()._vfs;
-    auto pinState = vfs->pinState(_item->_originalFile, "PropagateLocalRename::start");
-    vfs->setPinState(_item->_originalFile, PinState::Inherited, "PropagateLocalRename::start");
+    if (QFile(existingFile).exists()) {
+        pinState = vfs->pinState(_item->_originalFile, "PropagateLocalRename::start");
+        vfs->setPinState(_item->_originalFile, PinState::Inherited, "PropagateLocalRename::start");
+    } else {
+        qCWarning(lcPropagateLocalRename) << "Not going to get and set PinState for non-existing original file: " << _item->_originalFile;
+    }
 
     const auto oldFile = _item->_file;
 
