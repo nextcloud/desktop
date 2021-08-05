@@ -1,3 +1,11 @@
+## Reason
+
+* Needed for branded client X.x.x release (link to branded release ticket)
+* ...
+
+### Template
+[Patch Release Template](https://github.com/owncloud/client/blob/master/.github/patch_release_template.md)
+
 ### Create Changelog
 
 * [ ] DEV: Update [ChangeLog](https://confluence.owncloud.com/display/OG/ChangeLog)
@@ -8,15 +16,18 @@
 * [ ] QA: Update [documentation](https://confluence.owncloud.com/display/OG/Documentation)
 * [ ] QA: Check the translations coming from [Transifex](https://confluence.owncloud.com/display/OG/Online+Updater%2C+Crash+reporter%2C+Transifex#OnlineUpdater,Crashreporter,Transifex-Transifex)
 * [ ] DEV: Check [dependencies](https://confluence.owncloud.com/display/OG/Dependencies) for updates
-* [ ] DEV: Branch off a release branch called e.g. `release-2.x.y`  (or do the release in a `2.x` version branch? DECISION NEEDED)
+* [ ] DEV: Prepare the release in a `X.x` version branch
 * [ ] DEV: bump VERSION.cmake in master to say 2.(x+1).0 unless already done.
 
 ### Build
 
 * [ ] QA: Create [builds](https://confluence.owncloud.com/display/OG/Build+and+Tags#BuildandTags-Sprintbuild) for theme 'ownCloud' and 'testpilotcloud'
 * [ ] QA: Check the new subfolder of [testing download](https://download.owncloud.com/desktop/ownCloud/testing/) if `*tar.xz.asc` files are there. If not follow the [instructions](https://github.com/owncloud/enterprise/wiki/Desktop-Signing-Knowledge)
-* [ ] QA: Add a link to RC1 to https://owncloud.com/beta-testing/#desktop-beta @Marketing
-* [ ] QA: Inform [stakeholders](https://confluence.owncloud.com/display/OG/Marketing+and+Communication#MarketingandCommunication-InformStakeholdersAfterSuccessfulSprintBuild)
+* [ ] Beta/RC Communication (https://confluence.owncloud.com/display/OG/Marketing+and+Communication)
+   * [ ] Website links for beta (needed for the following posts)
+   * [ ] Central post https://central.owncloud.org/tags/c/news/desktop
+   * [ ] All other stakeholders
+
 
 ### QA
 
@@ -24,7 +35,6 @@
 * [ ] DEV: [Smoke test](https://confluence.owncloud.com/display/OG/Manual+Tests#ManualTests-DEVSmokeTest)
 * [ ] DEV: Run [automated tests](https://confluence.owncloud.com/display/OG/Automated+Tests)
 #### BTR QA
-* [ ] QA: Inform subscribers of the beta program about a new version for testing
 * [ ] QA: [Antivirus scan](https://confluence.owncloud.com/display/OG/Virus+Scanning)
 * [ ] QA: Changelog testing [Add link to 'Test Results 2.x.x' issue here]
 * [ ] QA: [Regression test](https://confluence.owncloud.com/display/OG/Manual+Tests#ManualTests-RegressionTest)
@@ -58,9 +68,12 @@
 
 ### Communicate the Availability
 
-* [ ] QA: Announce on [central](https://confluence.owncloud.com/display/OG/Marketing+and+Communication#MarketingandCommunication-Central) listed in [Category News, desktop tag](https://central.owncloud.org/tags/c/news/desktop)
-* [ ] QA: Inform [stakeholders](https://confluence.owncloud.com/display/OG/Marketing+and+Communication#MarketingandCommunication-InformStakeholdersaboutFinal)
-* [ ] QA: Inform [packagers](https://confluence.owncloud.com/display/OG/Marketing+and+Communication#MarketingandCommunication-Packagers) - ping @dragotin (openSUSE)
+* [ ] Final Communication https://confluence.owncloud.com/display/OG/Marketing+and+Communication#MarketingandCommunication-Central
+   * [ ] Website links for beta (needed for the following posts)
+   * [ ] Central post https://central.owncloud.org/tags/c/news/desktop
+   * [ ] Inform other [stakeholders](https://confluence.owncloud.com/display/OG/Marketing+and+Communication#MarketingandCommunication-InformStakeholdersaboutFinal)
+   * [ ] QA: Inform [packagers](https://confluence.owncloud.com/display/OG/Marketing+and+Communication#MarketingandCommunication-Packagers) - ping @dragotin (openSUSE)
+
 
 ### Final Infrastructure Check
 
