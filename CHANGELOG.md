@@ -22,6 +22,7 @@ Summary
 * Bugfix - Prompt the user of the cmd client what to do if all files where removed: [#8804](https://github.com/owncloud/client/issues/8804)
 * Bugfix - Relaunching the client on macOS will show the settings dialog: [#8377](https://github.com/owncloud/client/issues/8377)
 * Bugfix - Always exclude .owncloud files: [#8836](https://github.com/owncloud/client/pull/8836)
+* Bugfix - Don't crash if a certain move is undone: [#8837](https://github.com/owncloud/client/issues/8837)
 * Change - Don't ask the user to switch to http: [#8231](https://github.com/owncloud/client/issues/8231)
 * Change - Remove support for http redirects: [#8293](https://github.com/owncloud/client/pull/8293)
 * Change - We no longer try to locate an ownCloud install at /owncloud: [#8273](https://github.com/owncloud/client/issues/8273)
@@ -144,6 +145,10 @@ Details
    undefined client states. We now always ignore those files as system reserved.
 
    https://github.com/owncloud/client/pull/8836
+
+* Bugfix - Don't crash if a certain move is undone: [#8837](https://github.com/owncloud/client/issues/8837)
+
+   https://github.com/owncloud/client/issues/8837
 
 * Change - Don't ask the user to switch to http: [#8231](https://github.com/owncloud/client/issues/8231)
 
