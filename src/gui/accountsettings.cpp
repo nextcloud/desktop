@@ -826,7 +826,7 @@ void AccountSettings::slotEnableVfsCurrentFolder()
             folder->setRootPinState(PinState::Unspecified);
             for (const auto &entry : oldBlacklist) {
                 folder->journalDb()->schedulePathForRemoteDiscovery(entry);
-                folder->vfs().setPinState(entry, PinState::OnlineOnly);
+                folder->vfs().setPinState(entry, PinState::OnlineOnly, "AccountSettings::slotEnableVfsCurrentFolder");
             }
             folder->slotNextSyncFullLocalDiscovery();
 
@@ -932,7 +932,7 @@ void AccountSettings::slotSetSubFolderAvailability(Folder *folder, const QString
     Q_ASSERT(!path.endsWith('/'));
 
     // Update the pin state on all items
-    folder->vfs().setPinState(path, state);
+    folder->vfs().setPinState(path, state, "AccountSettings::slotSetSubFolderAvailability");
 
     // Trigger sync
     folder->schedulePathForLocalDiscovery(path);

@@ -110,7 +110,7 @@ Result<void, QString> VfsCfApi::updateMetadata(const QString &filePath, time_t m
 {
     const auto localPath = QDir::toNativeSeparators(filePath);
     qCInfo(lcCfApi) << "Going to updateMetadata for filePath " << filePath << " with localPath" << localPath;
-    const auto handle = cfapi::handleForPath(localPath);
+    const auto handle = cfapi::handleForPath(localPath, "VfsCfApi::updateMetadata");
     if (handle) {
         auto result = cfapi::updatePlaceholderInfo(handle, modtime, size, fileId);
         if (result) {
@@ -134,7 +134,7 @@ Result<void, QString> VfsCfApi::createPlaceholder(const SyncFileItem &item)
 
 Result<void, QString> VfsCfApi::dehydratePlaceholder(const SyncFileItem &item)
 {
-    const auto previousPin = pinState(item._file);
+    const auto previousPin = pinState(item._file, "VfsCfApi::dehydratePlaceholder");
 
     if (!FileSystem::remove(_setupParams.filesystemPath + item._file)) {
         return QStringLiteral("Couldn't remove %1 to fulfill dehydration").arg(item._file);
@@ -147,9 +147,9 @@ Result<void, QString> VfsCfApi::dehydratePlaceholder(const SyncFileItem &item)
 
     if (previousPin) {
         if (*previousPin == PinState::AlwaysLocal) {
-            setPinState(item._file, PinState::Unspecified);
+            setPinState(item._file, PinState::Unspecified, "VfsCfApi::dehydratePlaceholder 1");
         } else {
-            setPinState(item._file, *previousPin);
+            setPinState(item._file, *previousPin, "VfsCfApi::dehydratePlaceholder 2");
         }
     }
 
@@ -163,7 +163,7 @@ Result<Vfs::ConvertToPlaceholderResult, QString> VfsCfApi::convertToPlaceholder(
 
     qCInfo(lcCfApi) << "convertToPlaceholder for filename: " << filename << " and localPath: " << localPath << " and replacesPath: " << replacesPath << " and item._originalFile: " << item._originalFile << " and item._renameTarget: " << item._renameTarget << " and item._type: " << item._type;
 
-    const auto handle = cfapi::handleForPath(localPath);
+    const auto handle = cfapi::handleForPath(localPath, "VfsCfApi::convertToPlaceholder");
     if (cfapi::findPlaceholderInfo(handle)) {
         return cfapi::updatePlaceholderInfo(handle, item._modtime, item._size, item._fileId, replacesPath);
     } else {
@@ -219,10 +219,11 @@ bool VfsCfApi::statTypeVirtualFile(csync_file_stat_t *stat, void *statData)
     return false;
 }
 
-bool VfsCfApi::setPinState(const QString &folderPath, PinState state)
+bool VfsCfApi::setPinState(const QString &folderPath, PinState state, const QString invoker)
 {
+    qCInfo(lcCfApi) << "Invoker: " << invoker << " is trying to setPinState: " << state << " for folderPath: " << folderPath;
     const auto localPath = QDir::toNativeSeparators(params().filesystemPath + folderPath);
-    const auto handle = cfapi::handleForPath(localPath);
+    const auto handle = cfapi::handleForPath(localPath, "VfsCfApi::setPinState");
     if (handle) {
         if (cfapi::setPinState(handle, state, cfapi::Recurse)) {
             return true;
@@ -235,10 +236,11 @@ bool VfsCfApi::setPinState(const QString &folderPath, PinState state)
     }
 }
 
-Optional<PinState> VfsCfApi::pinState(const QString &folderPath)
+Optional<PinState> VfsCfApi::pinState(const QString &folderPath, const QString invoker)
 {
+    qCInfo(lcCfApi) << "Invoker: " << invoker << " is trying to get PinState " << " for folderPath: " << folderPath;
     const auto localPath = QDir::toNativeSeparators(params().filesystemPath + folderPath);
-    const auto handle = cfapi::handleForPath(localPath);
+    const auto handle = cfapi::handleForPath(localPath, "VfsCfApi::pinState");
     if (!handle) {
         qCWarning(lcCfApi) << "Couldn't find pin state for non existing file" << localPath;
         return {};
@@ -255,7 +257,7 @@ Optional<PinState> VfsCfApi::pinState(const QString &folderPath)
 
 Vfs::AvailabilityResult VfsCfApi::availability(const QString &folderPath)
 {
-    const auto basePinState = pinState(folderPath);
+    const auto basePinState = pinState(folderPath, "VfsCfApi::availability");
     const auto hydrationAndPinStates = computeRecursiveHydrationAndPinStates(folderPath, basePinState);
 
     const auto pin = hydrationAndPinStates.pinState;
@@ -420,7 +422,7 @@ VfsCfApi::HydratationAndPinStates VfsCfApi::computeRecursiveHydrationAndPinState
     if (!info.exists()) {
         return {};
     }
-    const auto effectivePin = pinState(folderPath);
+    const auto effectivePin = pinState(folderPath, "VfsCfApi::computeRecursiveHydrationAndPinStates");
     const auto pinResult = (!effectivePin && !basePinState) ? Optional<PinState>()
                          : (!effectivePin || !basePinState) ? PinState::Inherited
                          : (*effectivePin == *basePinState) ? *effectivePin

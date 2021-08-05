@@ -779,9 +779,9 @@ void PropagateUploadFileCommon::finalize()
     if (_item->_instruction == CSYNC_INSTRUCTION_NEW
         || _item->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE) {
         auto &vfs = propagator()->syncOptions()._vfs;
-        const auto pin = vfs->pinState(_item->_file);
+        const auto pin = vfs->pinState(_item->_file, "PropagateUploadFileCommon::finalize");
         if (pin && *pin == PinState::OnlineOnly) {
-            vfs->setPinState(_item->_file, PinState::Unspecified);
+            vfs->setPinState(_item->_file, PinState::Unspecified, "PropagateUploadFileCommon::finalize");
         }
     }
 

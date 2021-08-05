@@ -105,9 +105,9 @@ Result<void, QString> VfsXAttr::dehydratePlaceholder(const SyncFileItem &item)
     }
 
     // Ensure the pin state isn't contradictory
-    const auto pin = pinState(item._file);
+    const auto pin = pinState(item._file, QString());
     if (pin && *pin == PinState::AlwaysLocal) {
-        setPinState(item._renameTarget, PinState::Unspecified);
+        setPinState(item._renameTarget, PinState::Unspecified, QString());
     }
     return {};
 }
@@ -145,7 +145,7 @@ bool VfsXAttr::statTypeVirtualFile(csync_file_stat_t *stat, void *statData)
         const auto absolutePath = QString::fromUtf8(path);
         Q_ASSERT(absolutePath.startsWith(params().filesystemPath.toUtf8()));
         const auto folderPath = absolutePath.mid(params().filesystemPath.length());
-        return pinState(folderPath);
+        return pinState(folderPath,  QString());
     }();
 
     if (xattr::hasNextcloudPlaceholderAttributes(path)) {
@@ -162,13 +162,15 @@ bool VfsXAttr::statTypeVirtualFile(csync_file_stat_t *stat, void *statData)
     return false;
 }
 
-bool VfsXAttr::setPinState(const QString &folderPath, PinState state)
+bool VfsXAttr::setPinState(const QString &folderPath, PinState state, const QString invoker)
 {
+    Q_UNUSED(invoker);
     return setPinStateInDb(folderPath, state);
 }
 
-Optional<PinState> VfsXAttr::pinState(const QString &folderPath)
+Optional<PinState> VfsXAttr::pinState(const QString &folderPath, const QString invoker)
 {
+    Q_UNUSED(invoker);
     return pinStateInDb(folderPath);
 }
 

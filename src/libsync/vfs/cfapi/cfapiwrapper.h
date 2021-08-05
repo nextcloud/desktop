@@ -80,7 +80,7 @@ NEXTCLOUD_CFAPI_EXPORT Result<void, QString> disconnectSyncRoot(ConnectionKey &&
 
 NEXTCLOUD_CFAPI_EXPORT bool isSparseFile(const QString &path);
 
-NEXTCLOUD_CFAPI_EXPORT FileHandle handleForPath(const QString &path);
+NEXTCLOUD_CFAPI_EXPORT FileHandle handleForPath(const QString &path, const QString invoker);
 
 PlaceHolderInfo findPlaceholderInfo(const FileHandle &handle);
 

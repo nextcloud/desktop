@@ -580,7 +580,7 @@ bool OCC::CfApiWrapper::isSparseFile(const QString &path)
     return (attributes & FILE_ATTRIBUTE_SPARSE_FILE) != 0;
 }
 
-OCC::CfApiWrapper::FileHandle OCC::CfApiWrapper::handleForPath(const QString &path)
+OCC::CfApiWrapper::FileHandle OCC::CfApiWrapper::handleForPath(const QString &path, const QString invoker)
 {
     if (path.isEmpty()) {
         return {};
@@ -588,7 +588,7 @@ OCC::CfApiWrapper::FileHandle OCC::CfApiWrapper::handleForPath(const QString &pa
 
     bool isDirectory = false;
 
-    qCInfo(lcCfApiWrapper) << "Trying to get a handle for a path: " << path;
+    qCInfo(lcCfApiWrapper) << "Invoker: " << invoker << "Is trying to get a handle for a path: " << path;
 
     if (QFileInfo(path).isDir()) {
         isDirectory = true;
@@ -682,11 +682,11 @@ OCC::Result<void, QString> OCC::CfApiWrapper::createPlaceholderInfo(const QStrin
         return { "Couldn't create placeholder info" };
     }
 
-    const auto parentHandle = handleForPath(QDir::toNativeSeparators(QFileInfo(path).absolutePath()));
+    const auto parentHandle = handleForPath(QDir::toNativeSeparators(QFileInfo(path).absolutePath()), "OCC::CfApiWrapper::createPlaceholderInfo");
     const auto parentInfo = findPlaceholderInfo(parentHandle);
     const auto state = parentInfo && parentInfo->PinState == CF_PIN_STATE_UNPINNED ? CF_PIN_STATE_UNPINNED : CF_PIN_STATE_INHERIT;
 
-    const auto handle = handleForPath(path);
+    const auto handle = handleForPath(path, "OCC::CfApiWrapper::createPlaceholderInfo");
     if (!setPinState(handle, cfPinStateToPinState(state), NoRecurse)) {
         return { "Couldn't set the default inherit pin state" };
     }
@@ -701,7 +701,7 @@ OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> OCC::CfApiWrapper::up
     qCInfo(lcCfApiWrapper) << "updatePlaceholderInfo for fileId: " << fileId << " and replacesPath: " << replacesPath;
 
     const auto info = replacesPath.isEmpty() ? findPlaceholderInfo(handle)
-                                             : findPlaceholderInfo(handleForPath(replacesPath));
+                                             : findPlaceholderInfo(handleForPath(replacesPath, "OCC::CfApiWrapper::updatePlaceholderInfo"));
     if (!info) {
         return { "Can't update non existing placeholder info" };
     }
@@ -750,7 +750,7 @@ OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> OCC::CfApiWrapper::co
         return { "Couldn't convert to placeholder" };
     }
 
-    const auto originalHandle = handleForPath(replacesPath);
+    const auto originalHandle = handleForPath(replacesPath, "OCC::CfApiWrapper::convertToPlaceholder");
     const auto originalInfo = originalHandle ? findPlaceholderInfo(originalHandle) : PlaceHolderInfo(nullptr, deletePlaceholderInfo);
     if (!originalInfo) {
         const auto stateResult = setPinState(handle, PinState::Inherited, NoRecurse);

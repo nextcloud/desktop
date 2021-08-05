@@ -226,7 +226,7 @@ public:
      *
      * folderPath is relative to the sync folder. Can be "" for root folder.
      */
-    virtual Q_REQUIRED_RESULT bool setPinState(const QString &folderPath, PinState state) = 0;
+    virtual Q_REQUIRED_RESULT bool setPinState(const QString &folderPath, PinState state, const QString invoker) = 0;
 
     /** Returns the pin state of an item at a path.
      *
@@ -237,7 +237,7 @@ public:
      *
      * Returns none on retrieval error.
      */
-    virtual Q_REQUIRED_RESULT Optional<PinState> pinState(const QString &folderPath) = 0;
+    virtual Q_REQUIRED_RESULT Optional<PinState> pinState(const QString &folderPath, const QString invoker) = 0;
 
     /** Returns availability status of an item at a path.
      *
@@ -312,8 +312,8 @@ public:
     bool isDehydratedPlaceholder(const QString &) override { return false; }
     bool statTypeVirtualFile(csync_file_stat_t *, void *) override { return false; }
 
-    bool setPinState(const QString &, PinState) override { return true; }
-    Optional<PinState> pinState(const QString &) override { return PinState::AlwaysLocal; }
+    bool setPinState(const QString &, PinState, const QString invoker) override { Q_UNUSED(invoker); return true; }
+    Optional<PinState> pinState(const QString &, const QString invoker) override { Q_UNUSED(invoker); return PinState::AlwaysLocal; }
     AvailabilityResult availability(const QString &) override { return VfsItemAvailability::AlwaysLocal; }
 
 public slots:

@@ -593,7 +593,7 @@ void Folder::slotWatchedPathChanged(const QString &path, ChangeReason reason)
             && !FileSystem::fileChanged(path, record._fileSize, record._modtime)) {
             spurious = true;
 
-            if (auto pinState = _vfs->pinState(relativePath.toString())) {
+            if (auto pinState = _vfs->pinState(relativePath.toString(), "Folder::slotWatchedPathChanged")) {
                 if (*pinState == PinState::AlwaysLocal && record.isVirtualFile())
                     spurious = false;
                 if (*pinState == PinState::OnlineOnly && record.isFile())
@@ -634,9 +634,9 @@ void Folder::implicitlyHydrateFile(const QString &relativepath)
 
     // Change the file's pin state if it's contradictory to being hydrated
     // (suffix-virtual file's pin state is stored at the hydrated path)
-    const auto pin = _vfs->pinState(relativepath);
+    const auto pin = _vfs->pinState(relativepath, "Folder::implicitlyHydrateFile");
     if (pin && *pin == PinState::OnlineOnly) {
-        _vfs->setPinState(relativepath, PinState::Unspecified);
+        _vfs->setPinState(relativepath, PinState::Unspecified, "Folder::implicitlyHydrateFile");
     }
 
     // Add to local discovery
@@ -675,7 +675,7 @@ void Folder::setVirtualFilesEnabled(bool enabled)
 
 void Folder::setRootPinState(PinState state)
 {
-    _vfs->setPinState(QString(), state);
+    _vfs->setPinState(QString(), state, "Folder::setRootPinState");
 
     // We don't actually need discovery, but it's important to recurse
     // into all folders, so the changes can be applied.

@@ -235,11 +235,11 @@ void PropagateRemoteMove::finalize()
     SyncJournalFileRecord oldRecord;
     propagator()->_journal->getFileRecord(_item->_originalFile, &oldRecord);
     auto &vfs = propagator()->syncOptions()._vfs;
-    auto pinState = vfs->pinState(_item->_originalFile);
+    auto pinState = vfs->pinState(_item->_originalFile, "PropagateRemoteMove::finalize");
 
     // Delete old db data.
     propagator()->_journal->deleteFileRecord(_item->_originalFile);
-    vfs->setPinState(_item->_originalFile, PinState::Inherited);
+    vfs->setPinState(_item->_originalFile, PinState::Inherited, "PropagateRemoteMove::finalize 1");
 
     SyncFileItem newItem(*_item);
     newItem._type = _item->_type;
@@ -261,7 +261,7 @@ void PropagateRemoteMove::finalize()
         return;
     }
     if (pinState && *pinState != PinState::Inherited
-        && !vfs->setPinState(newItem._renameTarget, *pinState)) {
+        && !vfs->setPinState(newItem._renameTarget, *pinState, "PropagateRemoteMove::finalize 2")) {
         done(SyncFileItem::NormalError, tr("Error setting pin state"));
         return;
     }

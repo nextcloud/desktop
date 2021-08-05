@@ -247,8 +247,8 @@ void PropagateLocalRename::start()
     propagator()->_journal->deleteFileRecord(_item->_originalFile);
 
     auto &vfs = propagator()->syncOptions()._vfs;
-    auto pinState = vfs->pinState(_item->_originalFile);
-    vfs->setPinState(_item->_originalFile, PinState::Inherited);
+    auto pinState = vfs->pinState(_item->_originalFile, "PropagateLocalRename::start");
+    vfs->setPinState(_item->_originalFile, PinState::Inherited, "PropagateLocalRename::start");
 
     const auto oldFile = _item->_file;
 
@@ -273,7 +273,7 @@ void PropagateLocalRename::start()
         }
     }
     if (pinState && *pinState != PinState::Inherited
-        && !vfs->setPinState(_item->_renameTarget, *pinState)) {
+        && !vfs->setPinState(_item->_renameTarget, *pinState, "PropagateLocalRename::start")) {
         done(SyncFileItem::NormalError, tr("Error setting pin state"));
         return;
     }

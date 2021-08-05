@@ -923,7 +923,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         // either correct availability, or a result with error if the folder is new or otherwise has no availability set yet
         const auto folderPlaceHolderAvailability = localEntry.isDirectory ? _discoveryData->_syncOptions._vfs->availability(path._local) : Vfs::AvailabilityResult(Vfs::AvailabilityError::NoSuchItem);
 
-        const auto folderPinState = localEntry.isDirectory ? _discoveryData->_syncOptions._vfs->pinState(path._local) : Optional<PinStateEnums::PinState>(PinState::Unspecified);
+        const auto folderPinState = localEntry.isDirectory ? _discoveryData->_syncOptions._vfs->pinState(path._local, "ProcessDirectoryJob::::processFileAnalyzeLocalInfo") : Optional<PinStateEnums::PinState>(PinState::Unspecified);
 
         if (!isFilePlaceHolder && !folderPlaceHolderAvailability.isValid() && !folderPinState.isValid()) {
             // not a file placeholder and not a synced folder placeholder (new local folder)
@@ -1616,7 +1616,7 @@ void ProcessDirectoryJob::computePinState(PinState parentState)
 {
     _pinState = parentState;
     if (_queryLocal != ParentDontExist) {
-        if (auto state = _discoveryData->_syncOptions._vfs->pinState(_currentFolder._local)) // ouch! pin local or original?
+        if (auto state = _discoveryData->_syncOptions._vfs->pinState(_currentFolder._local, "ProcessDirectoryJob::::computePinState")) // ouch! pin local or original?
             _pinState = *state;
     }
 }
