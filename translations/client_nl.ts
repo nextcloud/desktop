@@ -19,12 +19,12 @@
     <message>
         <location filename="../src/3rdparty/libcrashreporter-qt/src/libcrashreporter-gui/CrashReporter.ui" line="257"/>
         <source>Send this report</source>
-        <translation type="unfinished"/>
+        <translation>Rapport versturen</translation>
     </message>
     <message>
         <location filename="../src/3rdparty/libcrashreporter-qt/src/libcrashreporter-gui/CrashReporter.ui" line="264"/>
         <source>Don&apos;t send</source>
-        <translation type="unfinished"/>
+        <translation>Niet versturen</translation>
     </message>
     <message>
         <location filename="../src/3rdparty/libcrashreporter-qt/src/libcrashreporter-gui/CrashReporter.ui" line="284"/>
@@ -60,7 +60,7 @@
     <message>
         <location filename="../src/3rdparty/libcrashreporter-qt/src/libcrashreporter-gui/CrashReporter.cpp" line="273"/>
         <source>Uploaded %L1 of %L2 KB.</source>
-        <translation type="unfinished"/>
+        <translation>%L1 van %L2 KB geupload.</translation>
     </message>
     <message>
         <location filename="../src/3rdparty/libcrashreporter-qt/src/libcrashreporter-gui/CrashReporter.cpp" line="300"/>
@@ -76,18 +76,26 @@
 <context>
     <name>FileSystem</name>
     <message>
-        <location filename="../src/common/filesystembase.cpp" line="382"/>
+        <location filename="../src/common/filesystembase.cpp" line="139"/>
+        <location filename="../src/common/filesystembase.cpp" line="141"/>
+        <location filename="../src/common/filesystembase.cpp" line="205"/>
+        <location filename="../src/common/filesystembase.cpp" line="210"/>
+        <source>Can&apos;t rename %1, the file is currently in use</source>
+        <translation>Kan %1 niet verplaatsen, het bestand is in gebruik</translation>
+    </message>
+    <message>
+        <location filename="../src/common/filesystembase.cpp" line="393"/>
         <source>Could not make directories in trash</source>
         <translation>Kon geen mappen aanmaken in de prullenbak</translation>
     </message>
     <message>
-        <location filename="../src/common/filesystembase.cpp" line="396"/>
-        <location filename="../src/common/filesystembase.cpp" line="402"/>
+        <location filename="../src/common/filesystembase.cpp" line="407"/>
+        <location filename="../src/common/filesystembase.cpp" line="413"/>
         <source>Could not move &apos;%1&apos; to &apos;%2&apos;</source>
         <translation>Kon &apos;%1&apos; niet naar &apos;%2&apos; verplaatsen</translation>
     </message>
     <message>
-        <location filename="../src/common/filesystembase.cpp" line="436"/>
+        <location filename="../src/common/filesystembase.cpp" line="447"/>
         <source>Moving to the trash is not implemented on this platform</source>
         <translation>Naar de prullenbak verplaatsen is niet geïmplementeerd op dit platform</translation>
     </message>
@@ -826,7 +834,7 @@ Deze actie annuleert alle huidig lopende synchronisatie.</translation>
 <context>
     <name>OCC::CleanupPollsJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1143"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1144"/>
         <source>Error writing metadata to the database</source>
         <translation>Fout bij schrijven van Metadata naar de database</translation>
     </message>
@@ -1387,7 +1395,7 @@ Als dit een ongelukje was en u de bestanden wilt behouden, worden ze opnieuw ges
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="579"/>
         <source>Add Sync Connection</source>
-        <translation>Toevoegen Sync verbinding</translation>
+        <translation>Sync verbinding toevoegen</translation>
     </message>
 </context>
 <context>
@@ -1543,7 +1551,7 @@ Als dit een ongelukje was en u de bestanden wilt behouden, worden ze opnieuw ges
     <message>
         <location filename="../src/gui/generalsettings.ui" line="109"/>
         <source>Log Settings</source>
-        <translation>Log Instellingen</translation>
+        <translation>Loginstellingen</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="136"/>
@@ -1619,7 +1627,7 @@ Als dit een ongelukje was en u de bestanden wilt behouden, worden ze opnieuw ges
     <message>
         <location filename="../src/gui/generalsettings.ui" line="102"/>
         <source>Edit &amp;Ignored Files</source>
-        <translation>Bewerken &amp;genegeerde bestanden</translation>
+        <translation>&amp;Genegeerde bestanden bewerken</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="73"/>
@@ -1747,7 +1755,7 @@ Items waar verwijderen is toegestaan zullen gewist worden als ze voorkomen dat e
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="132"/>
         <source>Add Ignore Pattern</source>
-        <translation>Toevoegen negeerpatroon</translation>
+        <translation>Negeerpatroon toevoegen</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="133"/>
@@ -1797,7 +1805,7 @@ Items waar verwijderen is toegestaan zullen gewist worden als ze voorkomen dat e
     <message>
         <location filename="../src/gui/issueswidget.ui" line="83"/>
         <source>Show ignored files</source>
-        <translation>Tonen genegeerde bestanden</translation>
+        <translation>Toon genegeerde bestanden</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="137"/>
@@ -1853,7 +1861,7 @@ Items waar verwijderen is toegestaan zullen gewist worden als ze voorkomen dat e
     <message>
         <location filename="../src/gui/logbrowser.ui" line="14"/>
         <source>Log Output</source>
-        <translation>Log Output</translation>
+        <translation>Log output</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.ui" line="116"/>
@@ -2365,6 +2373,14 @@ vragen om extra autorisaties tijdens installatie.</translation>
     </message>
 </context>
 <context>
+    <name>OCC::OwncloudPropagator</name>
+    <message>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="696"/>
+        <source>File %1 is currently in use</source>
+        <translation>Bestand %1 is in gebruik</translation>
+    </message>
+</context>
+<context>
     <name>OCC::OwncloudSetupPage</name>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="51"/>
@@ -2684,7 +2700,7 @@ Dit is een nieuwe, experimentele modus. Als je besluit deze te gebruiken, meld d
 <context>
     <name>OCC::PropagateDirectory</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1009"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1010"/>
         <source>Error writing metadata to the database</source>
         <translation>Fout bij schrijven van Metadata naar de database</translation>
     </message>
@@ -2692,49 +2708,60 @@ Dit is een nieuwe, experimentele modus. Als je besluit deze te gebruiken, meld d
 <context>
     <name>OCC::PropagateDownloadFile</name>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="386"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="458"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="390"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="462"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
         <translation>Bestand %1 kan niet worden gedownload, omdat de naam conflicteert met een lokaal bestand</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="509"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="470"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="958"/>
+        <source>%1 is currently in use</source>
+        <translation>%1 is in gebruik</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagatedownload.cpp" line="520"/>
         <source>The download would reduce free local disk space below the limit</source>
         <translation>De download zal de vrije lokale schijfruimte reduceren tot onder het limiet</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="513"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="524"/>
         <source>Free space on disk is less than %1</source>
         <translation>Vrije schijfruimte is minder dan %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="636"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="647"/>
         <source>File was deleted from server</source>
         <translation>Bestand was verwijderd van de server</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="703"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="714"/>
         <source>The file could not be downloaded completely.</source>
         <translation>Het bestand kon niet volledig worden gedownload.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="710"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="721"/>
         <source>The downloaded file is empty despite the server announced it should have been %1.</source>
         <translation>Het gedownloade bestand is leeg, hoewel de server meldde dat het %1 zou moeten zijn.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="890"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="901"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
         <translation>Bestand %1 kan niet worden opgeslagen wegens een lokaal bestandsnaam conflict!</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="364"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="939"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="950"/>
         <source>File has changed since discovery</source>
         <translation>Het bestand is gewijzigd sinds het is gevonden</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1005"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="369"/>
+        <source>Failed to dehydrate %1, the file is currently in use</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1016"/>
         <source>Error writing metadata to the database</source>
         <translation>Fout bij schrijven van Metadata naar de database</translation>
     </message>
@@ -2791,13 +2818,18 @@ Dit is een nieuwe, experimentele modus. Als je besluit deze te gebruiken, meld d
         <translation>Bestand %1 kan niet worden hernoemd naar %2, omdat de naam conflicteert met een lokaal bestand</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="248"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="254"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="224"/>
+        <source>Could not rename %1 to %2, the file is currently in use</source>
+        <translation>Kan %1 niet naar %2 verplaatsen, het bestand is in gebruik</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="252"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="258"/>
         <source>Error writing metadata to the database</source>
         <translation>Fout bij schrijven van Metadata naar de database</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="260"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="264"/>
         <source>Error setting pin state</source>
         <translation>Fout bij het instellen van pin staat</translation>
     </message>
@@ -2826,23 +2858,23 @@ Dit is een nieuwe, experimentele modus. Als je besluit deze te gebruiken, meld d
 <context>
     <name>OCC::PropagateRemoteMove</name>
     <message>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="142"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="139"/>
         <source>Could not rename %1 to %2, error: %3</source>
         <translation>Kon %1 niet hernoemen naar %2, fout: %3</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="191"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="186"/>
         <source>Wrong HTTP code returned by server. Expected 201, but received &quot;%1 %2&quot;.</source>
         <translation>Foutieve HTTP code ontvangen van de server. Verwacht werd 201, maar ontvangen &quot;%1 %2&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="228"/>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="240"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="223"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="235"/>
         <source>Error writing metadata to the database</source>
         <translation>Fout bij schrijven van Metadata naar de database</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="233"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="228"/>
         <source>Error setting pin state</source>
         <translation>Fout bij het instellen van pin staat</translation>
     </message>
@@ -2885,8 +2917,8 @@ Dit is een nieuwe, experimentele modus. Als je besluit deze te gebruiken, meld d
     <name>OCC::PropagateUploadFileNG</name>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="378"/>
-        <source>File is locked</source>
-        <translation type="unfinished"/>
+        <source>%1 the file is currently in use</source>
+        <translation>%1 is in gebruik</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="473"/>
@@ -2923,8 +2955,8 @@ Dit is een nieuwe, experimentele modus. Als je besluit deze te gebruiken, meld d
     <name>OCC::PropagateUploadFileTUS</name>
     <message>
         <location filename="../src/libsync/propagateuploadtus.cpp" line="67"/>
-        <source>File is locked</source>
-        <translation type="unfinished"/>
+        <source>%1 the file is currently in use</source>
+        <translation>%1 is in gebruik</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadtus.cpp" line="207"/>
@@ -2941,8 +2973,8 @@ Dit is een nieuwe, experimentele modus. Als je besluit deze te gebruiken, meld d
     <name>OCC::PropagateUploadFileV1</name>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="137"/>
-        <source>File is locked</source>
-        <translation type="unfinished"/>
+        <source>%1 the file is currently in use</source>
+        <translation>%1 is in gebruik</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="225"/>
@@ -3121,7 +3153,7 @@ Dit is een nieuwe, experimentele modus. Als je besluit deze te gebruiken, meld d
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="176"/>
         <source>Add account</source>
-        <translation>Toevoegen account</translation>
+        <translation>Account toevoegen</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="209"/>

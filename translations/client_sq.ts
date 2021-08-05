@@ -76,18 +76,26 @@
 <context>
     <name>FileSystem</name>
     <message>
-        <location filename="../src/common/filesystembase.cpp" line="382"/>
+        <location filename="../src/common/filesystembase.cpp" line="139"/>
+        <location filename="../src/common/filesystembase.cpp" line="141"/>
+        <location filename="../src/common/filesystembase.cpp" line="205"/>
+        <location filename="../src/common/filesystembase.cpp" line="210"/>
+        <source>Can&apos;t rename %1, the file is currently in use</source>
+        <translation>S’riemërtohet dot %1, kartela është aktualisht në përdorim</translation>
+    </message>
+    <message>
+        <location filename="../src/common/filesystembase.cpp" line="393"/>
         <source>Could not make directories in trash</source>
         <translation>S’u krijuan dot drejtori në hedhurina</translation>
     </message>
     <message>
-        <location filename="../src/common/filesystembase.cpp" line="396"/>
-        <location filename="../src/common/filesystembase.cpp" line="402"/>
+        <location filename="../src/common/filesystembase.cpp" line="407"/>
+        <location filename="../src/common/filesystembase.cpp" line="413"/>
         <source>Could not move &apos;%1&apos; to &apos;%2&apos;</source>
         <translation>S’u kalua dot &apos;%1&apos; te &apos;%2&apos;</translation>
     </message>
     <message>
-        <location filename="../src/common/filesystembase.cpp" line="436"/>
+        <location filename="../src/common/filesystembase.cpp" line="447"/>
         <source>Moving to the trash is not implemented on this platform</source>
         <translation>Shpënia te hedhurinat s’është e sendërtuar në këtë platformë</translation>
     </message>
@@ -826,7 +834,7 @@ Ky veprim do të shkaktojë ndërprerjen e çfarëdo njëkohësimi në kryerje e
 <context>
     <name>OCC::CleanupPollsJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1143"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1144"/>
         <source>Error writing metadata to the database</source>
         <translation>Gabim në shkrim tejtëdhënash te baza e të dhënave</translation>
     </message>
@@ -2360,6 +2368,14 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
     </message>
 </context>
 <context>
+    <name>OCC::OwncloudPropagator</name>
+    <message>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="696"/>
+        <source>File %1 is currently in use</source>
+        <translation>Kartela %1 është aktualisht në përdorim</translation>
+    </message>
+</context>
+<context>
     <name>OCC::OwncloudSetupPage</name>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="51"/>
@@ -2679,7 +2695,7 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
 <context>
     <name>OCC::PropagateDirectory</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1009"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1010"/>
         <source>Error writing metadata to the database</source>
         <translation>Gabim në shkrim tejtëdhënash te baza e të dhënave</translation>
     </message>
@@ -2687,49 +2703,60 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
 <context>
     <name>OCC::PropagateDownloadFile</name>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="386"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="458"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="390"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="462"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
         <translation>Kartela %1 s’mund shkarkohet, për shkak të një përplasjeje emrash kartele vendore!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="509"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="470"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="958"/>
+        <source>%1 is currently in use</source>
+        <translation>%1 është aktualisht në përdorim</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagatedownload.cpp" line="520"/>
         <source>The download would reduce free local disk space below the limit</source>
         <translation>Shkarkimi mund të ulë nën kufi sasinë e hapësirës së lirë në disk</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="513"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="524"/>
         <source>Free space on disk is less than %1</source>
         <translation>Hapësira e lirë në disk është nën %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="636"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="647"/>
         <source>File was deleted from server</source>
         <translation>Kartela është fshirë te shërbyesi</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="703"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="714"/>
         <source>The file could not be downloaded completely.</source>
         <translation>Kartela s’u shkarkua plotësisht.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="710"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="721"/>
         <source>The downloaded file is empty despite the server announced it should have been %1.</source>
         <translation>Kartela e shkarkuar është e zbrazët, edhe pse shërbyesi njoftoi se duhej të ishte %1.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="890"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="901"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
         <translation>Kartela %1 s’mund të ruhet, për shkak të një përplasjeje emrash kartele vendore!</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="364"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="939"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="950"/>
         <source>File has changed since discovery</source>
         <translation>Kartela ka ndryshuar, qëkurse u zbulua</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1005"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="369"/>
+        <source>Failed to dehydrate %1, the file is currently in use</source>
+        <translation>S’u arrit të dehidratohet %1, kartela është aktualisht në përdorim</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1016"/>
         <source>Error writing metadata to the database</source>
         <translation>Gabim në shkrim tejtëdhënash te baza e të dhënave</translation>
     </message>
@@ -2786,13 +2813,18 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
         <translation>Kartela %1 s’mund të riemërtohet si %2, për shkak të një përplasje emrash kartele vendore</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="248"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="254"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="224"/>
+        <source>Could not rename %1 to %2, the file is currently in use</source>
+        <translation>S’u riemërtua dot %1 si %2, kartela është aktualisht në përdorim</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="252"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="258"/>
         <source>Error writing metadata to the database</source>
         <translation>Gabim në shkrim tejtëdhënash te baza e të dhënave</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="260"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="264"/>
         <source>Error setting pin state</source>
         <translation>Gabim në caktim gjendjeje pini</translation>
     </message>
@@ -2821,23 +2853,23 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
 <context>
     <name>OCC::PropagateRemoteMove</name>
     <message>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="142"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="139"/>
         <source>Could not rename %1 to %2, error: %3</source>
         <translation>S’u emërtua dot %1 si %2, gabim: %3</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="191"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="186"/>
         <source>Wrong HTTP code returned by server. Expected 201, but received &quot;%1 %2&quot;.</source>
         <translation>Shërbyesi u përgjigj me kod HTTP të gabuar. Pritej 201, por u mor &quot;%1 %2&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="228"/>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="240"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="223"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="235"/>
         <source>Error writing metadata to the database</source>
         <translation>Gabim në shkrim tejtëdhënash te baza e të dhënave</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="233"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="228"/>
         <source>Error setting pin state</source>
         <translation>Gabim në caktim gjendjeje pini</translation>
     </message>
@@ -2880,7 +2912,7 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
     <name>OCC::PropagateUploadFileNG</name>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="378"/>
-        <source>File is locked</source>
+        <source>%1 the file is currently in use</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -2918,7 +2950,7 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
     <name>OCC::PropagateUploadFileTUS</name>
     <message>
         <location filename="../src/libsync/propagateuploadtus.cpp" line="67"/>
-        <source>File is locked</source>
+        <source>%1 the file is currently in use</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -2936,7 +2968,7 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
     <name>OCC::PropagateUploadFileV1</name>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="137"/>
-        <source>File is locked</source>
+        <source>%1 the file is currently in use</source>
         <translation type="unfinished"/>
     </message>
     <message>
