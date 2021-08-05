@@ -43,7 +43,7 @@ void HttpCredentialsGui::openBrowser()
         if (_asyncAuth) {
             _asyncAuth->openBrowser();
         } else {
-            qCWarning(lcHttpCredentialsGui) << "There is no running auth run, did the previous attempt fail?";
+            qCWarning(lcHttpCredentialsGui) << "There is no authentication job running, did the previous attempt fail?";
             askFromUserAsync();
         }
     }
