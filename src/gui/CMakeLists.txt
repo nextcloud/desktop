@@ -21,7 +21,6 @@ set(client_UI_SRCS
     shareusergroupwidget.ui
     shareuserline.ui
     sslerrordialog.ui
-    addcertificatedialog.ui
     proxyauthdialog.ui
     notificationwidget.ui
     logbrowser.ui
@@ -75,7 +74,6 @@ set(client_SRCS
     thumbnailjob.cpp
     quotainfo.cpp
     accountstate.cpp
-    addcertificatedialog.cpp
     authenticationdialog.cpp
     proxyauthhandler.cpp
     proxyauthdialog.cpp

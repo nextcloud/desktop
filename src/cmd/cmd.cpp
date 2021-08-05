@@ -274,9 +274,8 @@ class HttpCredentialsText : public HttpCredentials
 {
 public:
     HttpCredentialsText(const QString &user, const QString &password)
-        : HttpCredentials(DetermineAuthTypeJob::AuthType::Basic ,user, password)
-        , // FIXME: not working with client certs yet (qknight)
-        _sslTrusted(false)
+        : HttpCredentials(DetermineAuthTypeJob::AuthType::Basic, user, password)
+        , _sslTrusted(false)
     {
     }
 

@@ -257,7 +257,7 @@ void AccountState::checkConnectivity(bool blockJobs)
     }
 
     // If we never fetched credentials, do that now - otherwise connection attempts
-    // make little sense, we might be missing client certs.
+    // make little sense.
     if (!account()->credentials()->wasFetched()) {
         _waitingForNewCredentials = true;
         account()->credentials()->fetchFromKeychain();

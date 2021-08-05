@@ -1,0 +1,6 @@
+Bugfix: The `Re-open Browser` now always does what it says
+
+Under certain conditions the previous authentication run might have failed and the button
+became unresponsive, we now start a new authentication in that case.
+
+https://github.com/owncloud/client/pull/8866

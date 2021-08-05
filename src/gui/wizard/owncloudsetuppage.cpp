@@ -66,24 +66,9 @@ OwncloudSetupPage::OwncloudSetupPage(QWidget *parent)
     _ui->resultLayout->addWidget(_progressIndi);
     stopSpinner();
 
-    setupCustomization();
-
-    slotUrlChanged(QLatin1String("")); // don't jitter UI
+    slotUrlChanged(QString()); // don't jitter UI
     connect(_ui->leUrl, &QLineEdit::textChanged, this, &OwncloudSetupPage::slotUrlChanged);
     connect(_ui->leUrl, &QLineEdit::editingFinished, this, &OwncloudSetupPage::slotUrlEditFinished);
-
-    addCertDial = new AddCertificateDialog(this);
-    connect(addCertDial, &QDialog::accepted, this, &OwncloudSetupPage::slotCertificateAccepted);
-
-    _ui->more_toolButton->setIcon(Utility::getCoreIcon(QStringLiteral("more")));
-    connect(_ui->more_toolButton, &QToolButton::clicked, this, [this] {
-        auto menu = new QMenu(this);
-        menu->setAttribute(Qt::WA_DeleteOnClose);
-        menu->addAction(tr("Configure client-side cerificate"), [this] {
-            addCertDial->open();
-        });
-        menu->popup(QCursor::pos());
-    });
 }
 
 void OwncloudSetupPage::setServerUrl(const QString &newUrl)
@@ -95,13 +80,6 @@ void OwncloudSetupPage::setServerUrl(const QString &newUrl)
     }
 
     _ui->leUrl->setText(_oCUrl);
-}
-
-void OwncloudSetupPage::setupCustomization()
-{
-    // set defaults for the customize labels.
-    _ui->topLabel->hide();
-    _ui->bottomLabel->hide();
 }
 
 // slot hit from textChanged of the url entry field.
@@ -256,38 +234,6 @@ void OwncloudSetupPage::stopSpinner()
     _ui->resultLayout->setEnabled(false);
     _progressIndi->setVisible(false);
     _progressIndi->stopAnimation();
-}
-
-QString subjectInfoHelper(const QSslCertificate &cert, const QByteArray &qa)
-{
-    return cert.subjectInfo(qa).join(QLatin1Char('/'));
-}
-
-//called during the validation of the client certificate.
-void OwncloudSetupPage::slotCertificateAccepted()
-{
-    QList<QSslCertificate> clientCaCertificates;
-    QFile certFile(addCertDial->getCertificatePath());
-    certFile.open(QFile::ReadOnly);
-    QByteArray certData = certFile.readAll();
-    QByteArray certPassword = addCertDial->getCertificatePasswd().toLocal8Bit();
-
-    QBuffer certDataBuffer(&certData);
-    certDataBuffer.open(QIODevice::ReadOnly);
-    if (QSslCertificate::importPkcs12(&certDataBuffer,
-            &_ocWizard->_clientSslKey, &_ocWizard->_clientSslCertificate,
-            &clientCaCertificates, certPassword)) {
-        _ocWizard->_clientCertBundle = certData;
-        _ocWizard->_clientCertPassword = certPassword;
-
-        addCertDial->reinit(); // FIXME: Why not just have this only created on use?
-
-        // The extracted SSL key and cert gets added to the QSslConfiguration in checkServer()
-        validatePage();
-    } else {
-        addCertDial->showErrorMessage(tr("Could not load certificate. Maybe wrong password?"));
-        addCertDial->show();
-    }
 }
 
 OwncloudSetupPage::~OwncloudSetupPage()

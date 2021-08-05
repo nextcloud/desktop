@@ -61,10 +61,6 @@ public:
 
     QString defaultConnection() const;
 
-    // the certs do not depend on a connection.
-    QByteArray caCerts();
-    void setCaCerts(const QByteArray &);
-
     bool passwordStorageAllowed(const QString &connection = QString());
 
     /* Server poll interval in milliseconds */
@@ -178,11 +174,6 @@ public:
     void saveGeometryHeader(QHeaderView *header);
     void restoreGeometryHeader(QHeaderView *header);
 
-    QString certificatePath() const;
-    void setCertificatePath(const QString &cPath);
-    QString certificatePasswd() const;
-    void setCertificatePasswd(const QString &cPasswd);
-
     /** The client version that last used this settings file.
         Updated by configVersionMigration() at client startup. */
     QString clientVersionString() const;
@@ -198,7 +189,6 @@ public:
 protected:
     QVariant getPolicySetting(const QString &policy, const QVariant &defaultValue = QVariant()) const;
     void storeData(const QString &group, const QString &key, const QVariant &value);
-    QVariant retrieveData(const QString &group, const QString &key) const;
     void removeData(const QString &group, const QString &key);
     bool dataExists(const QString &group, const QString &key) const;
 
@@ -210,7 +200,6 @@ private:
 private:
     typedef QSharedPointer<AbstractCredentials> SharedCreds;
 
-    static bool _askedUser;
     static QString _oCVersion;
     static QString _confDir;
 };

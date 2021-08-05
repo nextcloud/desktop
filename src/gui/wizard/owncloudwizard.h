@@ -70,13 +70,6 @@ public:
      */
     static void askExperimentalVirtualFilesFeature(QWidget *receiver, const std::function<void(bool enable)> &callback);
 
-    // FIXME: Can those be local variables?
-    // Set from the OwncloudSetupPage, later used from OwncloudHttpCredsPage
-    QByteArray _clientCertBundle; // raw, potentially encrypted pkcs12 bundle provided by the user
-    QByteArray _clientCertPassword; // password for the pkcs12
-    QSslKey _clientSslKey; // key extracted from pkcs12
-    QSslCertificate _clientSslCertificate; // cert extracted from pkcs12
-
     DetermineAuthTypeJob::AuthType authType() const;
 
 public slots:

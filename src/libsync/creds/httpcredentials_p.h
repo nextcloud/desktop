@@ -30,23 +30,6 @@ class HttpLegacyCredentials : public QObject
 {
     Q_OBJECT
 
-    const QString clientCertBundleC()
-    {
-        return QStringLiteral("clientCertPkcs12");
-    }
-    const QString clientCertPasswordC()
-    {
-        return QStringLiteral("_clientCertPassword");
-    }
-    const QString clientCertificatePEMC()
-    {
-        return QStringLiteral("_clientCertificatePEM");
-    }
-    const QString clientKeyPEMC()
-    {
-        return QStringLiteral("_clientKeyPEM");
-    }
-
     auto isOAuthC()
     {
         return QStringLiteral("oauth");
@@ -61,37 +44,6 @@ public:
 
     void fetchFromKeychainHelper()
     {
-        _parent->_clientCertBundle = _parent->_account->credentialSetting(clientCertBundleC()).toByteArray();
-
-        if (!_parent->_clientCertBundle.isEmpty()) {
-            // New case (>=2.6): We have a bundle in the settings and read the password from
-            // the keychain
-            QKeychain::ReadPasswordJob *job = new QKeychain::ReadPasswordJob(Theme::instance()->appName());
-            job->setKey(_parent->keychainKey(_parent->_account->url().toString(), _parent->_user + clientCertPasswordC(), _parent->_account->id()));
-            job->setInsecureFallback(false);
-            connect(job, &QKeychain::ReadPasswordJob::finished, this, &HttpLegacyCredentials::slotReadClientCertPasswordJobDone);
-            job->start();
-            return;
-        }
-        // Old case (pre 2.6): Read client cert and then key from keychain
-        const QString kck = _parent->keychainKey(
-            _parent->_account->url().toString(),
-            _parent->_user + clientCertificatePEMC(),
-            _keychainMigration ? QString() : _parent->_account->id());
-
-        QKeychain::ReadPasswordJob *job = new QKeychain::ReadPasswordJob(Theme::instance()->appName());
-        addSettingsToJob(job);
-        job->setInsecureFallback(false);
-        job->setKey(kck);
-        connect(job, &QKeychain::ReadPasswordJob::finished, this, [job] {
-            if (job->error() == QKeychain::NoError && !job->binaryData().isEmpty()) {
-                const auto msg = tr("The support of client side certificate saved in the keychain was removed, please start the setup wizard again and follow the instructions.");
-                QMetaObject::invokeMethod(qApp, "slotShowGuiMessage", Qt::QueuedConnection, Q_ARG(QString, tr("Credentials")), Q_ARG(QString, msg));
-                qCWarning(lcHttpLegacyCredentials) << msg;
-            }
-        });
-        job->start();
-
         slotReadPasswordFromKeychain();
     }
 
@@ -119,29 +71,6 @@ private:
 #endif
         _retryOnKeyChainError = false;
         return false;
-    }
-
-    void slotReadClientCertPasswordJobDone(QKeychain::Job *job)
-    {
-        auto readJob = qobject_cast<QKeychain::ReadPasswordJob *>(job);
-        if (keychainUnavailableRetryLater(readJob))
-            return;
-
-        if (readJob->error() == QKeychain::NoError) {
-            _parent->_clientCertPassword = readJob->binaryData();
-        } else {
-            qCWarning(lcHttpLegacyCredentials) << "Could not retrieve client cert password from keychain" << readJob->errorString();
-        }
-
-        if (!_parent->unpackClientCertBundle(_parent->_clientCertPassword)) {
-            qCWarning(lcHttpLegacyCredentials) << "Could not unpack client cert bundle";
-        }
-
-        // don't clear the password, we are migrating the old settings
-        // _parent->_clientCertPassword.clear();
-        // _parent->_clientCertBundle.clear();
-
-        slotReadPasswordFromKeychain();
     }
 
     void slotReadPasswordFromKeychain()
@@ -222,14 +151,6 @@ private:
         }
     }
 
-    void slotWriteClientCertPasswordJobDone(QKeychain::Job *finishedJob)
-    {
-        if (finishedJob && finishedJob->error() != QKeychain::NoError) {
-            qCWarning(lcHttpLegacyCredentials) << "Could not write client cert password to credentials"
-                                               << finishedJob->error() << finishedJob->errorString();
-        }
-    }
-
     void deleteOldKeychainEntries()
     {
         // oooold
@@ -248,12 +169,7 @@ private:
 
         // old
         startDeleteJob(_parent->_user, true);
-        startDeleteJob(_parent->_user + clientKeyPEMC(), true);
-        startDeleteJob(_parent->_user + clientCertificatePEMC(), true);
-
         // pre 2.8
-        startDeleteJob(_parent->_user + clientCertPasswordC());
-        startDeleteJob(_parent->_user + clientKeyPEMC());
         startDeleteJob(_parent->_user);
     }
 };

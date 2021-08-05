@@ -76,18 +76,26 @@
 <context>
     <name>FileSystem</name>
     <message>
-        <location filename="../src/common/filesystembase.cpp" line="382"/>
+        <location filename="../src/common/filesystembase.cpp" line="139"/>
+        <location filename="../src/common/filesystembase.cpp" line="141"/>
+        <location filename="../src/common/filesystembase.cpp" line="205"/>
+        <location filename="../src/common/filesystembase.cpp" line="210"/>
+        <source>Can&apos;t rename %1, the file is currently in use</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/common/filesystembase.cpp" line="393"/>
         <source>Could not make directories in trash</source>
         <translation>휴지통에 디렉토리를 만들수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../src/common/filesystembase.cpp" line="396"/>
-        <location filename="../src/common/filesystembase.cpp" line="402"/>
+        <location filename="../src/common/filesystembase.cpp" line="407"/>
+        <location filename="../src/common/filesystembase.cpp" line="413"/>
         <source>Could not move &apos;%1&apos; to &apos;%2&apos;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/common/filesystembase.cpp" line="436"/>
+        <location filename="../src/common/filesystembase.cpp" line="447"/>
         <source>Moving to the trash is not implemented on this platform</source>
         <translation>이 플랫폼에서는 휴지통으로 이동하지 않습니다.</translation>
     </message>
@@ -822,7 +830,7 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::CleanupPollsJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1143"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1144"/>
         <source>Error writing metadata to the database</source>
         <translation>데이터베이스에 메타데이터 기록 중 오류</translation>
     </message>
@@ -2342,6 +2350,14 @@ for additional privileges during the process.</source>
     </message>
 </context>
 <context>
+    <name>OCC::OwncloudPropagator</name>
+    <message>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="696"/>
+        <source>File %1 is currently in use</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>OCC::OwncloudSetupPage</name>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="51"/>
@@ -2655,7 +2671,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateDirectory</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1009"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1010"/>
         <source>Error writing metadata to the database</source>
         <translation>데이터베이스에 메타데이터 기록 중 오류</translation>
     </message>
@@ -2663,49 +2679,60 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateDownloadFile</name>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="386"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="458"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="390"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="462"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
         <translation>로컬 파일 이름이 충돌하여 %1 파일을 다운로드할 수 없습니다!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="509"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="470"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="958"/>
+        <source>%1 is currently in use</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagatedownload.cpp" line="520"/>
         <source>The download would reduce free local disk space below the limit</source>
         <translation>이 파일을 다운로드하면 로컬 디스크 공간이 제한 이하로 남게 됨</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="513"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="524"/>
         <source>Free space on disk is less than %1</source>
         <translation>디스크에 남은 공간이 %1보다 적음</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="636"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="647"/>
         <source>File was deleted from server</source>
         <translation>서버에서 파일이 삭제됨</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="703"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="714"/>
         <source>The file could not be downloaded completely.</source>
         <translation>파일을 완전히 다운로드할 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="710"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="721"/>
         <source>The downloaded file is empty despite the server announced it should have been %1.</source>
         <translation>서버에서 알려 온 파일 크기가 %1이지만 다운로드한 파일이 비어 있습니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="890"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="901"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
         <translation>로컬 파일 이름이 충돌하여 %1 파일을 저장할 수 없습니다!</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="364"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="939"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="950"/>
         <source>File has changed since discovery</source>
         <translation>발견 이후 파일이 변경됨</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1005"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="369"/>
+        <source>Failed to dehydrate %1, the file is currently in use</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1016"/>
         <source>Error writing metadata to the database</source>
         <translation>데이터베이스에 메타데이터 기록 중 오류</translation>
     </message>
@@ -2762,13 +2789,18 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>로컬 파일 이름이 충돌하여 파일 %1의 이름을 %2(으)로 변경할 수 없음</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="248"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="254"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="224"/>
+        <source>Could not rename %1 to %2, the file is currently in use</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="252"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="258"/>
         <source>Error writing metadata to the database</source>
         <translation>데이터베이스에 메타데이터 기록 중 오류</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="260"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="264"/>
         <source>Error setting pin state</source>
         <translation type="unfinished"/>
     </message>
@@ -2797,23 +2829,23 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateRemoteMove</name>
     <message>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="142"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="139"/>
         <source>Could not rename %1 to %2, error: %3</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="191"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="186"/>
         <source>Wrong HTTP code returned by server. Expected 201, but received &quot;%1 %2&quot;.</source>
         <translation>서버에서 잘못된 HTTP 코드를 반환했습니다. 201을 예상했지만 &quot;%1 %2&quot;을(를) 받았습니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="228"/>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="240"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="223"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="235"/>
         <source>Error writing metadata to the database</source>
         <translation>데이터베이스에 메타데이터 기록 중 오류</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="233"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="228"/>
         <source>Error setting pin state</source>
         <translation type="unfinished"/>
     </message>
@@ -2856,7 +2888,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <name>OCC::PropagateUploadFileNG</name>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="378"/>
-        <source>File is locked</source>
+        <source>%1 the file is currently in use</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -2894,7 +2926,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <name>OCC::PropagateUploadFileTUS</name>
     <message>
         <location filename="../src/libsync/propagateuploadtus.cpp" line="67"/>
-        <source>File is locked</source>
+        <source>%1 the file is currently in use</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -2912,7 +2944,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <name>OCC::PropagateUploadFileV1</name>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="137"/>
-        <source>File is locked</source>
+        <source>%1 the file is currently in use</source>
         <translation type="unfinished"/>
     </message>
     <message>

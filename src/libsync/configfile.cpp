@@ -91,13 +91,9 @@ const QString newBigFolderSizeLimitC() { return QStringLiteral("newBigFolderSize
 const QString useNewBigFolderSizeLimitC() { return QStringLiteral("useNewBigFolderSizeLimit"); }
 const QString confirmExternalStorageC() { return QStringLiteral("confirmExternalStorage"); }
 const QString moveToTrashC() { return QStringLiteral("moveToTrash"); }
-
-const QString certPath() { return QStringLiteral("http_certificatePath"); }
-const QString certPasswd() { return QStringLiteral("http_certificatePasswd"); }
 }
 
 QString ConfigFile::_confDir = QString();
-bool ConfigFile::_askedUser = false;
 
 static chrono::milliseconds millisecondsValue(const QSettings &setting, const QString &key,
     chrono::milliseconds defaultValue)
@@ -393,15 +389,6 @@ void ConfigFile::storeData(const QString &group, const QString &key, const QVari
     settings.beginGroup(con);
     settings.setValue(key, value);
     settings.sync();
-}
-
-QVariant ConfigFile::retrieveData(const QString &group, const QString &key) const
-{
-    const QString con(group.isEmpty() ? defaultConnection() : group);
-    QSettings settings(configFile(), QSettings::IniFormat);
-
-    settings.beginGroup(con);
-    return settings.value(key);
 }
 
 void ConfigFile::removeData(const QString &group, const QString &key)
@@ -843,30 +830,6 @@ bool ConfigFile::showExperimentalOptions() const
 {
     QSettings settings(configFile(), QSettings::IniFormat);
     return settings.value(showExperimentalOptionsC(), false).toBool();
-}
-
-QString ConfigFile::certificatePath() const
-{
-    return retrieveData(QString(), certPath()).toString();
-}
-
-void ConfigFile::setCertificatePath(const QString &cPath)
-{
-    QSettings settings(configFile(), QSettings::IniFormat);
-    settings.setValue(certPath(), cPath);
-    settings.sync();
-}
-
-QString ConfigFile::certificatePasswd() const
-{
-    return retrieveData(QString(), certPasswd()).toString();
-}
-
-void ConfigFile::setCertificatePasswd(const QString &cPasswd)
-{
-    QSettings settings(configFile(), QSettings::IniFormat);
-    settings.setValue(certPasswd(), cPasswd);
-    settings.sync();
 }
 
 QString ConfigFile::clientVersionString() const

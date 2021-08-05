@@ -121,10 +121,6 @@ void OwncloudSetupWizard::slotCheckServer(const QString &urlString)
     // Here the client certificate is added, if any. Later it'll be in HttpCredentials
     account->setSslConfiguration(QSslConfiguration());
     auto sslConfiguration = account->getOrCreateSslConfig(); // let Account set defaults
-    if (!_ocWizard->_clientSslCertificate.isNull()) {
-        sslConfiguration.setLocalCertificate(_ocWizard->_clientSslCertificate);
-        sslConfiguration.setPrivateKey(_ocWizard->_clientSslKey);
-    }
     account->setSslConfiguration(sslConfiguration);
 
     // Make sure TCP connections get re-established

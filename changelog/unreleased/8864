@@ -1,0 +1,5 @@
+Bugfix: Removed support for client side certificates
+
+Client side certificates where never officially supported and where untested in many scenarios.
+
+https://github.com/owncloud/client/pull/8864

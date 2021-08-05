@@ -33,26 +33,18 @@ public:
         : HttpCredentials()
     {
     }
-    HttpCredentialsGui(const QString &user, const QString &password,
-            const QByteArray &clientCertBundle, const QByteArray &clientCertPassword)
-        : HttpCredentials(DetermineAuthTypeJob::AuthType::Basic, user, password, clientCertBundle, clientCertPassword)
+    HttpCredentialsGui(const QString &user, const QString &password)
+        : HttpCredentials(DetermineAuthTypeJob::AuthType::Basic, user, password)
     {
     }
 
-    HttpCredentialsGui(const QString &user, const QString &password, const QString &refreshToken,
-            const QByteArray &clientCertBundle, const QByteArray &clientCertPassword)
-        : HttpCredentials(DetermineAuthTypeJob::AuthType::OAuth, user, password, clientCertBundle, clientCertPassword)
+    HttpCredentialsGui(const QString &user, const QString &password, const QString &refreshToken)
+        : HttpCredentials(DetermineAuthTypeJob::AuthType::OAuth, user, password)
     {
         _refreshToken = refreshToken;
     }
 
-    void openBrowser()
-    {
-        if (isUsingOAuth() && _asyncAuth)
-        {
-            _asyncAuth->openBrowser();
-        }
-    }
+    void openBrowser();
     /**
      * This will query the server and either uses OAuth via _asyncAuth->start()
      * or call showDialog to ask the password

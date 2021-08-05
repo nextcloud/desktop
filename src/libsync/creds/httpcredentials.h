@@ -56,8 +56,7 @@ public:
     /// Don't add credentials if this is set on a QNetworkRequest
     static constexpr QNetworkRequest::Attribute DontAddCredentialsAttribute = QNetworkRequest::User;
 
-    explicit HttpCredentials(DetermineAuthTypeJob::AuthType authType, const QString &user, const QString &password,
-            const QByteArray &clientCertBundle = QByteArray(), const QByteArray &clientCertPassword = QByteArray());
+    explicit HttpCredentials(DetermineAuthTypeJob::AuthType authType, const QString &user, const QString &password);
 
     QString authType() const override;
     QNetworkAccessManager *createQNAM() const override;
@@ -88,13 +87,6 @@ protected:
     void deleteOldKeychainEntries();
 
     void slotAuthentication(QNetworkReply *reply, QAuthenticator *authenticator);
-
-    /** Takes client cert pkcs12 and unwraps the key/cert.
-     *
-     * Returns false on failure.
-     */
-    bool unpackClientCertBundle(const QByteArray &clientCertPassword);
-
     void fetchFromKeychainHelper();
 
     QString _user;
@@ -105,11 +97,6 @@ protected:
     QString _fetchErrorString;
     bool _ready = false;
     bool _isRenewingOAuthToken = false;
-    QByteArray _clientCertBundle;
-    // used when called from the wizard
-    QByteArray _clientCertPassword;
-    QSslKey _clientSslKey;
-    QSslCertificate _clientSslCertificate;
     bool _retryOnKeyChainError = true; // true if we haven't done yet any reading from keychain
 
     DetermineAuthTypeJob::AuthType _authType = DetermineAuthTypeJob::AuthType::Unknown;

@@ -165,9 +165,6 @@ public:
     QVariant credentialSetting(const QString &key) const;
     void setCredentialSetting(const QString &key, const QVariant &value);
 
-    /** Assign a client certificate */
-    void setCertificate(const QByteArray certficate = QByteArray(), const QString privateKey = QString());
-
     /** Access the server capabilities */
     const Capabilities &capabilities() const;
     void setCapabilities(const QVariantMap &caps);
