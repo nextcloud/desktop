@@ -23,6 +23,8 @@ Summary
 * Bugfix - Relaunching the client on macOS will show the settings dialog: [#8377](https://github.com/owncloud/client/issues/8377)
 * Bugfix - Always exclude .owncloud files: [#8836](https://github.com/owncloud/client/pull/8836)
 * Bugfix - Don't crash if a certain move is undone: [#8837](https://github.com/owncloud/client/issues/8837)
+* Bugfix - Removed support for client side certificates: [#8864](https://github.com/owncloud/client/pull/8864)
+* Bugfix - The `Re-open Browser` now always does what it says: [#8866](https://github.com/owncloud/client/pull/8866)
 * Change - Don't ask the user to switch to http: [#8231](https://github.com/owncloud/client/issues/8231)
 * Change - Remove support for http redirects: [#8293](https://github.com/owncloud/client/pull/8293)
 * Change - We no longer try to locate an ownCloud install at /owncloud: [#8273](https://github.com/owncloud/client/issues/8273)
@@ -149,6 +151,20 @@ Details
 * Bugfix - Don't crash if a certain move is undone: [#8837](https://github.com/owncloud/client/issues/8837)
 
    https://github.com/owncloud/client/issues/8837
+
+* Bugfix - Removed support for client side certificates: [#8864](https://github.com/owncloud/client/pull/8864)
+
+   Client side certificates where never officially supported and where untested in many
+   scenarios.
+
+   https://github.com/owncloud/client/pull/8864
+
+* Bugfix - The `Re-open Browser` now always does what it says: [#8866](https://github.com/owncloud/client/pull/8866)
+
+   Under certain conditions the previous authentication run might have failed and the button
+   became unresponsive, we now start a new authentication in that case.
+
+   https://github.com/owncloud/client/pull/8866
 
 * Change - Don't ask the user to switch to http: [#8231](https://github.com/owncloud/client/issues/8231)
 
