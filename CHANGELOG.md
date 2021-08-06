@@ -35,6 +35,7 @@ Summary
 * Enhancement - Prefer 127.0.0.1 as oauth redirect url: [#4542](https://github.com/owncloud/enterprise/issues/4542)
 * Enhancement - Display an icon in the Windows explorer context menu: [#4627](https://github.com/owncloud/client/issues/4627)
 * Enhancement - Show last sync date in tray menu: [#5644](https://github.com/owncloud/client/issues/5644)
+* Enhancement - Display the information state in case we encountered ignored errors: [#8858](https://github.com/owncloud/client/pull/8858)
 * Enhancement - Make crash report IDs easy to copy: [#25](https://github.com/dschmidt/libcrashreporter-qt/pull/25)
 * Enhancement - We reworked the tables: [#8158](https://github.com/owncloud/client/issues/8158)
 * Enhancement - Provide a socket api call to get the client icon and: [#8464](https://github.com/owncloud/client/issues/8464)
@@ -235,6 +236,21 @@ Details
 
    https://github.com/owncloud/client/issues/5644
    https://github.com/owncloud/client/pull/8547
+
+* Enhancement - Display the information state in case we encountered ignored errors: [#8858](https://github.com/owncloud/client/pull/8858)
+
+   If syncing a file fails multiple times we mark it as ignored to skip it for a certain amount of
+   time. If we have ignored files we are not in sync, we now don't display the green icon.
+
+   Additionally this change aligns the icon displayed in the system tray with the icon displayed
+   in the app.
+
+   Https://github.com/owncloud/client/issues/7715
+   https://github.com/owncloud/client/issues/7365
+   https://github.com/owncloud/client/issues/7200
+   https://github.com/owncloud/client/issues/5860
+
+   https://github.com/owncloud/client/pull/8858
 
 * Enhancement - Make crash report IDs easy to copy: [#25](https://github.com/dschmidt/libcrashreporter-qt/pull/25)
 
