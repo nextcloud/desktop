@@ -598,14 +598,14 @@ OCC::CfApiWrapper::FileHandle OCC::CfApiWrapper::handleForPath(const QString &pa
         qCInfo(lcCfApiWrapper) << "Open result is: " << openResult;
         if (openResult == S_OK) {
             qCInfo(lcCfApiWrapper) << "Succeccfuly opened a handle for a path: " << path;
-            return {handle, [](HANDLE h) { CfCloseHandle(h); }};
+            return { handle, [](HANDLE h) { qCInfo(lcCfApiWrapper) << "Closing a folder handle: " << h; CfCloseHandle(h); } };
         }
     } else {
         const auto longpath = OCC::FileSystem::longWinPath(path);
         const auto handle = CreateFile(longpath.toStdWString().data(), 0, 0, nullptr,
                                        OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
         if (handle != INVALID_HANDLE_VALUE) {
-            return {handle, [](HANDLE h) { CloseHandle(h); }};
+            return { handle, [](HANDLE h) { qCInfo(lcCfApiWrapper) << "Closing a file handle: " << h; CloseHandle(h); } };
         } else {
             qCCritical(lcCfApiWrapper) << "Could not CreateFile for longpath:" << longpath << "with error:" << GetLastError();
         }
@@ -682,8 +682,11 @@ OCC::Result<void, QString> OCC::CfApiWrapper::createPlaceholderInfo(const QStrin
         return { "Couldn't create placeholder info" };
     }
 
-    const auto parentHandle = handleForPath(QDir::toNativeSeparators(QFileInfo(path).absolutePath()), "OCC::CfApiWrapper::createPlaceholderInfo");
-    const auto parentInfo = findPlaceholderInfo(parentHandle);
+    const auto parentInfo = [path]() {
+        const auto parentHandle = handleForPath(QDir::toNativeSeparators(QFileInfo(path).absolutePath()), "OCC::CfApiWrapper::createPlaceholderInfo");
+        return findPlaceholderInfo(parentHandle);
+    }();
+
     const auto state = parentInfo && parentInfo->PinState == CF_PIN_STATE_UNPINNED ? CF_PIN_STATE_UNPINNED : CF_PIN_STATE_INHERIT;
 
     const auto handle = handleForPath(path, "OCC::CfApiWrapper::createPlaceholderInfo");
