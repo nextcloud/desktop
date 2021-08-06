@@ -21,6 +21,7 @@ Summary
 * Bugfix - Locked files are not correctly synced: [#8761](https://github.com/owncloud/client/issues/8761)
 * Bugfix - Prompt the user of the cmd client what to do if all files where removed: [#8804](https://github.com/owncloud/client/issues/8804)
 * Bugfix - Relaunching the client on macOS will show the settings dialog: [#8377](https://github.com/owncloud/client/issues/8377)
+* Bugfix - Fix config migrations from versions 2.8 to 2.9: [#8824](https://github.com/owncloud/client/issues/8824)
 * Bugfix - Always exclude .owncloud files: [#8836](https://github.com/owncloud/client/pull/8836)
 * Bugfix - Don't crash if a certain move is undone: [#8837](https://github.com/owncloud/client/issues/8837)
 * Bugfix - Removed support for client side certificates: [#8864](https://github.com/owncloud/client/pull/8864)
@@ -140,6 +141,17 @@ Details
 
    https://github.com/owncloud/client/issues/8377
    https://github.com/owncloud/client/pull/8812
+
+* Bugfix - Fix config migrations from versions 2.8 to 2.9: [#8824](https://github.com/owncloud/client/issues/8824)
+
+   Due to a value change of an internal Qt configuration variable, the configuration data could
+   not be migrated on many systems. We fixed this by implementing an additional migration path.
+
+   Furthermore, we removed the dependency on said value within the GUI, and use the values
+   explicitly from the theme to display the correct values on UI elements such as buttons.
+
+   https://github.com/owncloud/client/issues/8824
+   https://github.com/owncloud/client/pull/8860
 
 * Bugfix - Always exclude .owncloud files: [#8836](https://github.com/owncloud/client/pull/8836)
 
