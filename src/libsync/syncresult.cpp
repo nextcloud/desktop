@@ -14,23 +14,15 @@
 
 #include "syncresult.h"
 #include "progressdispatcher.h"
+#include "theme.h"
 
 namespace OCC {
 
-SyncResult::SyncResult()
-    : _status(Undefined)
-    , _foundFilesNotSynced(false)
-    , _folderStructureWasChanged(false)
-    , _numNewItems(0)
-    , _numRemovedItems(0)
-    , _numUpdatedItems(0)
-    , _numRenamedItems(0)
-    , _numNewConflictItems(0)
-    , _numOldConflictItems(0)
-    , _numErrorItems(0)
-
+SyncResult::SyncResult(Status status)
+    : _status(status)
 {
 }
+
 
 SyncResult::Status SyncResult::status() const
 {
@@ -186,9 +178,17 @@ void SyncResult::processCompletedItem(const SyncFileItemPtr &item)
                 break;
             }
         } else if (item->_instruction == CSYNC_INSTRUCTION_IGNORE) {
+            if (item->_hasBlacklistEntry) {
+                _numBlacklistErrors++;
+            }
             _foundFilesNotSynced = true;
         }
     }
+}
+
+int SyncResult::numBlacklistErrors() const
+{
+    return _numBlacklistErrors;
 }
 
 } // ns mirall

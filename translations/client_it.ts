@@ -242,8 +242,8 @@
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="58"/>
-        <source>Re-open Browser </source>
-        <translation>Riapri Browser</translation>
+        <source>Re-open Browser</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="65"/>
@@ -732,49 +732,6 @@ Questa azione interromperà qualsiasi sincronizzazione in corso.</translation>
         <location filename="../src/gui/activitywidget.cpp" line="155"/>
         <source>&lt;br/&gt;Account %1 does not have activities enabled.</source>
         <translation>&lt;br/&gt;L&apos;account %1 non ha attività abilitate.</translation>
-    </message>
-</context>
-<context>
-    <name>OCC::AddCertificateDialog</name>
-    <message>
-        <location filename="../src/gui/addcertificatedialog.ui" line="17"/>
-        <source>SSL client certificate authentication</source>
-        <translation>Autenticazione con certificato client SSL</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/addcertificatedialog.ui" line="23"/>
-        <source>This server probably requires a SSL client certificate.</source>
-        <translation>Questo server richiede probabilmente un certificato client SSL.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/addcertificatedialog.ui" line="53"/>
-        <source>Certificate &amp; Key (pkcs12) :</source>
-        <translation>Certificato e chiave (pkcs12):</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/addcertificatedialog.ui" line="44"/>
-        <source>Browse...</source>
-        <translation>Sfoglia...</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/addcertificatedialog.ui" line="60"/>
-        <source>Certificate password :</source>
-        <translation>Password del certificato:</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/addcertificatedialog.ui" line="79"/>
-        <source>An encrypted pkcs12 bundle is strongly recommended as a copy will be stored in the configuration file.</source>
-        <translation>Si raccomanda vivamente un bundle pkcs12 cifrato, poiché una copia sarà memorizzata nel file di configurazione.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/addcertificatedialog.cpp" line="38"/>
-        <source>Select a certificate</source>
-        <translation>Seleziona un certificato</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/addcertificatedialog.cpp" line="38"/>
-        <source>Certificate files (*.p12 *.pfx)</source>
-        <translation>File di certificato (*.p12 *.pfx)</translation>
     </message>
 </context>
 <context>
@@ -1802,37 +1759,24 @@ Nota che ciò seleziona solo da dove vengono presi gli aggiornamenti e che non c
 <context>
     <name>OCC::HttpCredentialsGui</name>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="107"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="120"/>
         <source>Please enter %1 password:&lt;br&gt;&lt;br&gt;User: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
         <translation>Digita la password di %1:&lt;br&gt;&lt;br&gt;Utente: &apos;%2&lt;br&gt;Account: %3&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="121"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="134"/>
         <source>Reading from keychain failed with error: &apos;%1&apos;</source>
         <translation>Lettura dal portachiavi non riuscita con errore: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="128"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="141"/>
         <source>Enter Password</source>
         <translation>Digita password</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="168"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="181"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Click here&lt;/a&gt; to request an app password from the web interface.</source>
         <translation>&lt;a href=&quot;%1&quot;&gt;Fai clic qui&lt;/a&gt; per richiedere una password dell&apos;applicazione dall&apos;interfaccia web.</translation>
-    </message>
-</context>
-<context>
-    <name>OCC::HttpLegacyCredentials</name>
-    <message>
-        <location filename="../src/libsync/creds/httpcredentials_p.h" line="88"/>
-        <source>The support of client side certificate saved in the keychain was removed, please start the setup wizard again and follow the instructions.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/libsync/creds/httpcredentials_p.h" line="89"/>
-        <source>Credentials</source>
-        <translation>Credenziali</translation>
     </message>
 </context>
 <context>
@@ -2451,92 +2395,82 @@ for additional privileges during the process.</source>
         <translation>Configura il server %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="82"/>
-        <source>Configure client-side cerificate</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="134"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="112"/>
         <source>This url is NOT secure as it is not encrypted.
 It is not advisable to use it.</source>
         <translation>Questo URL NON è sicuro poiché non è cifrato.
 Non è consigliabile utilizzarlo.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="138"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="116"/>
         <source>This url is secure. You can use it.</source>
         <translation>Questo URL è sicuro. Puoi utilizzarlo.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="177"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="155"/>
         <source>&amp;Next &gt;</source>
         <translation>Ava&amp;nti &gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="208"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="186"/>
         <source>Invalid URL</source>
         <translation>URL non valido</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="288"/>
-        <source>Could not load certificate. Maybe wrong password?</source>
-        <translation>Impossibile caricare il certificato. Potrebbe essere la passwor errata ?</translation>
     </message>
 </context>
 <context>
     <name>OCC::OwncloudSetupWizard</name>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="218"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="214"/>
         <source>Failed to connect to %1 at %2:&lt;br/&gt;%3</source>
         <translation>Connessione a %1 su %2:&lt;br/&gt;%3</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="235"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="231"/>
         <source>Timeout while trying to connect to %1 at %2.</source>
         <translation>Tempo scaduto durante il tentativo di connessione a %1 su %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="216"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="212"/>
         <source>Invalid URL</source>
         <translation>URL non valido</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="296"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="292"/>
         <source>Could not create local folder %1</source>
         <translation>Impossibile creare la cartella locale %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="322"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="318"/>
         <source>No remote folder specified!</source>
         <translation>Nessuna cartella remota specificata!</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="328"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="324"/>
         <source>Error: %1</source>
         <translation>Errore: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="363"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="359"/>
         <source>The folder creation resulted in HTTP error code %1</source>
         <translation>La creazione della cartella ha restituito un codice di errore HTTP %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="367"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="363"/>
         <source>The remote folder creation failed because the provided credentials are wrong!&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation>La creazione della cartella remota non è riuscita poiché le credenziali fornite sono errate!&lt;br/&gt;Torna indietro e verifica le credenziali.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="375"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="371"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
         <translation>Creazione della cartella remota %1 non riuscita con errore &lt;tt&gt;%2&lt;/tt&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="409"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="405"/>
         <source>Folder rename failed</source>
         <translation>Rinomina della cartella non riuscita</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="410"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="406"/>
         <source>Can&apos;t remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
         <translation>Impossibile rimuovere o creare una copia di sicurezza della cartella poiché la cartella o un file in essa contenuto è aperta in un altro programma. Chiudi la cartella o il file e premi Riprova o annulla la configurazione.</translation>
     </message>
@@ -4520,28 +4454,17 @@ Si tratta di una nuova modalità sperimentale. Se decidi di usarla, ti preghiamo
         <translation>Modulo</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.ui" line="32"/>
-        <location filename="../src/gui/wizard/owncloudsetuppage.ui" line="231"/>
-        <source>TextLabel</source>
-        <translation>EtichettaTesto</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.ui" line="86"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.ui" line="64"/>
         <source>Ser&amp;ver Address</source>
         <translation>Indirizzo ser&amp;ver</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.ui" line="102"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.ui" line="80"/>
         <source>https://...</source>
         <translation>https://...</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.ui" line="109"/>
-        <source>...</source>
-        <translation>...</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.ui" line="195"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.ui" line="162"/>
         <source>Error Label</source>
         <translation>Etichetta di errore</translation>
     </message>

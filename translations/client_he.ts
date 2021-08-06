@@ -242,8 +242,8 @@
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="58"/>
-        <source>Re-open Browser </source>
-        <translation>פתיחה מחודשת של הדפדפן</translation>
+        <source>Re-open Browser</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="65"/>
@@ -732,49 +732,6 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/gui/activitywidget.cpp" line="155"/>
         <source>&lt;br/&gt;Account %1 does not have activities enabled.</source>
         <translation>&lt;br/&gt;בחשבון %1 אין פעילויות מאופשרות.</translation>
-    </message>
-</context>
-<context>
-    <name>OCC::AddCertificateDialog</name>
-    <message>
-        <location filename="../src/gui/addcertificatedialog.ui" line="17"/>
-        <source>SSL client certificate authentication</source>
-        <translation>אימות לקוח בפרוטוקול SSL</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/addcertificatedialog.ui" line="23"/>
-        <source>This server probably requires a SSL client certificate.</source>
-        <translation>שרת זה כנראה דורש אימות בפרוטוקול SSL.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/addcertificatedialog.ui" line="53"/>
-        <source>Certificate &amp; Key (pkcs12) :</source>
-        <translation>תעודת אימות ומפתח קידוד (pkcs12) :</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/addcertificatedialog.ui" line="44"/>
-        <source>Browse...</source>
-        <translation>עיון...</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/addcertificatedialog.ui" line="60"/>
-        <source>Certificate password :</source>
-        <translation>סימת אישור:</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/addcertificatedialog.ui" line="79"/>
-        <source>An encrypted pkcs12 bundle is strongly recommended as a copy will be stored in the configuration file.</source>
-        <translation>צרור pkcs12 מוצפן מומלץ מאוד ועותק יישמר בקובץ ההגדרות.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/addcertificatedialog.cpp" line="38"/>
-        <source>Select a certificate</source>
-        <translation>בחירת אישור</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/addcertificatedialog.cpp" line="38"/>
-        <source>Certificate files (*.p12 *.pfx)</source>
-        <translation>קובצי אישור (*.p12 *.pfx)</translation>
     </message>
 </context>
 <context>
@@ -1801,37 +1758,24 @@ Note that this selects only what pool upgrades are taken from, and that there ar
 <context>
     <name>OCC::HttpCredentialsGui</name>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="107"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="120"/>
         <source>Please enter %1 password:&lt;br&gt;&lt;br&gt;User: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
         <translation>יש להכניס %1 סימסא:&lt;br&gt;&lt;br&gt;משתמש: %2&lt;br&gt;חשבון: %3&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="121"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="134"/>
         <source>Reading from keychain failed with error: &apos;%1&apos;</source>
         <translation>קריאה מתוך מחזיק המפתחות נכשל עם שגיאה: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="128"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="141"/>
         <source>Enter Password</source>
         <translation>הכנסת סיסמא</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="168"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="181"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Click here&lt;/a&gt; to request an app password from the web interface.</source>
         <translation>&lt;a href=&quot;%1&quot;&gt;לחיצה כאן&lt;/a&gt; לבקשת סיסמת יישום ממשק האינטרנט.</translation>
-    </message>
-</context>
-<context>
-    <name>OCC::HttpLegacyCredentials</name>
-    <message>
-        <location filename="../src/libsync/creds/httpcredentials_p.h" line="88"/>
-        <source>The support of client side certificate saved in the keychain was removed, please start the setup wizard again and follow the instructions.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/libsync/creds/httpcredentials_p.h" line="89"/>
-        <source>Credentials</source>
-        <translation>פרטי גישה</translation>
     </message>
 </context>
 <context>
@@ -2456,92 +2400,82 @@ for additional privileges during the process.</source>
         <translation>הגדרת שרת %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="82"/>
-        <source>Configure client-side cerificate</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="134"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="112"/>
         <source>This url is NOT secure as it is not encrypted.
 It is not advisable to use it.</source>
         <translation>נתיב אינטרנט זה אינו מאובטח כיוון שאינו מקודד.
 לא מומלץ להשתמש בו.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="138"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="116"/>
         <source>This url is secure. You can use it.</source>
         <translation>נתיב אינטרנט זה מאובטח. ניתן להשתמש בו.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="177"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="155"/>
         <source>&amp;Next &gt;</source>
         <translation>&amp;Next &gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="208"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="186"/>
         <source>Invalid URL</source>
         <translation>נתיב אינטרנט לא חוקי</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="288"/>
-        <source>Could not load certificate. Maybe wrong password?</source>
-        <translation>לא ניתן היה לטעון תעודת אימות. יתכן והסיסמא שגויה?</translation>
     </message>
 </context>
 <context>
     <name>OCC::OwncloudSetupWizard</name>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="218"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="214"/>
         <source>Failed to connect to %1 at %2:&lt;br/&gt;%3</source>
         <translation>נכשל להתחבר ל- %1 ב- %2:&lt;br/&gt;%3</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="235"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="231"/>
         <source>Timeout while trying to connect to %1 at %2.</source>
         <translation>פסק זמן בעת ניסיון לחיבור ל- %1 ב- %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="216"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="212"/>
         <source>Invalid URL</source>
         <translation>נתיב אינטרנט לא חוקי</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="296"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="292"/>
         <source>Could not create local folder %1</source>
         <translation>לא ניתן היה ליצור תיקיית מקומית %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="322"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="318"/>
         <source>No remote folder specified!</source>
         <translation>לא הוגדרה תיקייה מרוחקת!</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="328"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="324"/>
         <source>Error: %1</source>
         <translation>שגיאה: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="363"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="359"/>
         <source>The folder creation resulted in HTTP error code %1</source>
         <translation>יצירת התיקייה יצרה שגיאת קוד HTTP %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="367"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="363"/>
         <source>The remote folder creation failed because the provided credentials are wrong!&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation>יצירת תיקייה מרוחקת נכשלה כיוון שהאימות שניתן שגוי!&lt;br/&gt;יש לחזור אחרוה ולבדוק את פרטי האימות שלך.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="375"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="371"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
         <translation>יצירת תיקייה מרוחקת %1 נכשלה עם שגיאה &lt;tt&gt;%2&lt;/tt&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="409"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="405"/>
         <source>Folder rename failed</source>
         <translation>שינוי שם התיקייה נכשל</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="410"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="406"/>
         <source>Can&apos;t remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
         <translation>לא יכול להסיר ולגבות את התיקייה כיוון שהתיקייה או קובץ בתוכה פתוחים בתוכנה אחרת. יש לסגור את התיקייה או הקובץ וללחוץ על ניסיון חוזר או לבטל את ההגדרה.</translation>
     </message>
@@ -4525,28 +4459,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>טופס</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.ui" line="32"/>
-        <location filename="../src/gui/wizard/owncloudsetuppage.ui" line="231"/>
-        <source>TextLabel</source>
-        <translation>טקסט תווית</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.ui" line="86"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.ui" line="64"/>
         <source>Ser&amp;ver Address</source>
         <translation>כתובת שרת</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.ui" line="102"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.ui" line="80"/>
         <source>https://...</source>
         <translation>https://...</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.ui" line="109"/>
-        <source>...</source>
-        <translation>...</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.ui" line="195"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.ui" line="162"/>
         <source>Error Label</source>
         <translation>תווית שגיאה</translation>
     </message>

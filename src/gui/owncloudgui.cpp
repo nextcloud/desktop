@@ -265,32 +265,19 @@ void ownCloudGui::slotComputeOverallSyncStatus()
 
     auto trayOverallStatusResult = FolderMan::trayOverallStatus(map.values());
 
-    // If the sync succeeded but there are unresolved conflicts,
-    // show the problem icon!
-    auto iconStatus = trayOverallStatusResult.overallStatus;
-    if (iconStatus == SyncResult::Success && trayOverallStatusResult.hasUnresolvedConflicts) {
-        iconStatus = SyncResult::Problem;
-    }
-
-    // If we don't get a status for whatever reason, that's a Problem
-    if (iconStatus == SyncResult::Undefined) {
-        iconStatus = SyncResult::Problem;
-    }
-
-    QIcon statusIcon = Theme::instance()->syncStateIcon(iconStatus, true, contextMenuVisible());
+    const QIcon statusIcon = Theme::instance()->syncStateIcon(trayOverallStatusResult.overallStatus(), true, contextMenuVisible());
     _tray->setIcon(statusIcon);
 
     // create the tray blob message, check if we have an defined state
     if (map.count() > 0) {
 #ifdef Q_OS_WIN
         // Windows has a 128-char tray tooltip length limit.
-        trayMessage = FolderMan::instance()->trayTooltipStatusString(trayOverallStatusResult.overallStatus, trayOverallStatusResult.hasUnresolvedConflicts, false);
+        trayMessage = FolderMan::instance()->trayTooltipStatusString(trayOverallStatusResult.overallStatus(), false);
 #else
         QStringList allStatusStrings;
         for (auto *folder : map) {
             QString folderMessage = FolderMan::trayTooltipStatusString(
-                folder->syncResult().status(),
-                folder->syncResult().hasUnresolvedConflicts(),
+                folder->syncResult(),
                 folder->syncPaused());
             allStatusStrings += tr("Folder %1: %2").arg(folder->shortGuiLocalPath(), folderMessage);
         }
@@ -298,9 +285,11 @@ void ownCloudGui::slotComputeOverallSyncStatus()
 #endif
         _tray->setToolTip(trayMessage);
 
-        if (trayOverallStatusResult.overallStatus == SyncResult::Success || trayOverallStatusResult.overallStatus == SyncResult::Problem) {
-            if (trayOverallStatusResult.hasUnresolvedConflicts) {
-                setStatusText(tr("Unresolved conflicts"));
+        if (trayOverallStatusResult.overallStatus().status() == SyncResult::Success || trayOverallStatusResult.overallStatus().status() == SyncResult::Problem) {
+            if (trayOverallStatusResult.overallStatus().hasUnresolvedConflicts()) {
+                setStatusText(tr("Unresolved %1 conflicts").arg(QString::number(trayOverallStatusResult.overallStatus().numNewConflictItems())));
+            } else if (trayOverallStatusResult.overallStatus().numBlacklistErrors() != 0) {
+                setStatusText(tr("Ignored errors %1").arg(QString::number(trayOverallStatusResult.overallStatus().numBlacklistErrors())));
             } else {
                 QString lastSyncDoneString;
 
@@ -313,7 +302,7 @@ void ownCloudGui::slotComputeOverallSyncStatus()
 
                 setStatusText(tr("Up to date (%1)").arg(lastSyncDoneString));
             }
-        } else if (trayOverallStatusResult.overallStatus == SyncResult::Paused) {
+        } else if (trayOverallStatusResult.overallStatus().status() == SyncResult::Paused) {
             setStatusText(tr("Synchronization is paused"));
         } else {
             setStatusText(tr("Error during synchronization"));

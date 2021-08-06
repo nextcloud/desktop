@@ -43,9 +43,13 @@ class LockWatcher;
 class TrayOverallStatusResult
 {
 public:
-    SyncResult::Status overallStatus;
-    bool hasUnresolvedConflicts;
     QDateTime lastSyncDone;
+
+    void addResult(const SyncResult &result);
+    const SyncResult &overallStatus() const;
+
+private:
+    SyncResult _overallStatus;
 };
 
 /**
@@ -145,7 +149,7 @@ public:
     bool startFromScratch(const QString &);
 
     /// Produce text for use in the tray tooltip
-    static QString trayTooltipStatusString(SyncResult::Status syncStatus, bool hasUnresolvedConflicts, bool paused);
+    static QString trayTooltipStatusString(const SyncResult &result, bool paused);
 
     /**
      * Compute status summarizing multiple folders

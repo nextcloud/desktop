@@ -213,8 +213,7 @@ void LibCloudProvidersPrivate::updateFolderExport()
             status = CLOUD_PROVIDERS_ACCOUNT_STATUS_ERROR;
 
         auto message = FolderMan::trayTooltipStatusString(
-            syncResult.status(),
-            syncResult.hasUnresolvedConflicts(),
+            syncResult,
             folder->syncPaused());
 
         cloud_providers_account_exporter_set_status(folderExport._exporter, status);
