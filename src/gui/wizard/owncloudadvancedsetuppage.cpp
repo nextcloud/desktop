@@ -168,7 +168,7 @@ void OwncloudAdvancedSetupPage::initializePage()
     _ui.confCheckBoxExternal->setChecked(cfgFile.confirmExternalStorage());
 
     fetchUserAvatar();
-    fetchUserData();
+    setUserInformation();
 
     customizeStyle();
 
@@ -201,20 +201,9 @@ void OwncloudAdvancedSetupPage::fetchUserAvatar()
     avatarJob->start();
 }
 
-void OwncloudAdvancedSetupPage::fetchUserData()
+void OwncloudAdvancedSetupPage::setUserInformation()
 {
     const auto account = _ocWizard->account();
-
-    // Fetch user data
-    const auto userJob = new JsonApiJob(account, QLatin1String("ocs/v1.php/cloud/user"), this);
-    userJob->setTimeout(20 * 1000);
-    connect(userJob, &JsonApiJob::jsonReceived, this, [this](const QJsonDocument &json) {
-        const auto objData = json.object().value("ocs").toObject().value("data").toObject();
-        const auto displayName = objData.value("display-name").toString();
-        _ui.userNameLabel->setText(displayName);
-    });
-    userJob->start();
-
     const auto serverUrl = account->url().toString();
     setServerAddressLabelUrl(serverUrl);
     const auto userName = account->davDisplayName();
