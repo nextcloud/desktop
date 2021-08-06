@@ -4,10 +4,8 @@ on:
   push:
     branches:
       - master
-      - v*
+      - '[0-9]+.*'
   pull_request:
-    branches:
-      - '*'
 
 defaults:
   run:

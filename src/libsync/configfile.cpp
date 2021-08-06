@@ -103,14 +103,9 @@ static chrono::milliseconds millisecondsValue(const QSettings &setting, const QS
 
 ConfigFile::ConfigFile()
 {
-    // QDesktopServices uses the application name to create a config path
-    // TODO: we use multiple calls to setApplicationName with different arguments...
-    qApp->setApplicationName(Theme::instance()->appNameGUI());
-
     QSettings::setDefaultFormat(QSettings::IniFormat);
 
     const QString config = configFile();
-
 
     QSettings settings(config, QSettings::IniFormat);
     settings.beginGroup(defaultConnection());

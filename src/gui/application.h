@@ -19,7 +19,6 @@
 #include <QPointer>
 #include <QQueue>
 #include <QTimer>
-#include <QElapsedTimer>
 #include <QNetworkConfigurationManager>
 
 #include "3rdparty/qtsingleapplication/qtsingleapplication.h"
@@ -112,10 +111,6 @@ private:
     QPointer<ownCloudGui> _gui;
 
     Theme *_theme;
-
-#ifdef Q_OS_LINUX
-    QElapsedTimer _startedAt;
-#endif
 
     // options from command line:
     bool _showSettings = false;

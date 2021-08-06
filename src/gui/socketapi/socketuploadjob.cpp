@@ -206,7 +206,7 @@ void SocketUploadJob::logMessage(const QString &localPath, const QString &messag
         item->_status = SyncFileItem::FatalError;
         item->_errorString = message;
     }
-    ocApp()->gui()->slotShowTrayMessage(tr("%1 backup").arg(ocApp()->applicationName()), message, icon);
+    ocApp()->gui()->slotShowTrayMessage(tr("%1 backup").arg(Theme::instance()->appNameGUI()), message, icon);
     item->_responseTimeStamp = QDateTime::currentDateTime().toString(Qt::RFC2822Date).toUtf8();
     Q_EMIT ProgressDispatcher::instance()->itemCompleted(QDir::toNativeSeparators(localPath), item);
 }

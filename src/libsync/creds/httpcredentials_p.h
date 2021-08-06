@@ -14,6 +14,8 @@
 
 OC_DISABLE_DEPRECATED_WARNING
 
+Q_DECLARE_LOGGING_CATEGORY(lcHttpLegacyCredentials)
+
 namespace {
 void addSettingsToJob(QKeychain::Job *job)
 {
@@ -21,9 +23,41 @@ void addSettingsToJob(QKeychain::Job *job)
     settings->setParent(job); // make the job parent to make setting deleted properly
     job->setSettings(settings.release());
 }
+
+
+QString keychainKey(const QString &url, const QString &user, const QString &accountId)
+{
+    QString u(url);
+    if (u.isEmpty()) {
+        qCWarning(lcHttpLegacyCredentials) << "Empty url in keyChain, error!";
+        return {};
+    }
+    if (user.isEmpty()) {
+        qCWarning(lcHttpLegacyCredentials) << "Error: User is empty!";
+        return {};
+    }
+
+    if (!u.endsWith(QLatin1Char('/'))) {
+        u.append(QLatin1Char('/'));
+    }
+
+    QString key = user + QLatin1Char(':') + u;
+    if (!accountId.isEmpty()) {
+        key += QLatin1Char(':') + accountId;
+    }
+#ifdef Q_OS_WIN
+    // On Windows the credential keys aren't namespaced properly
+    // by qtkeychain. To work around that we manually add namespacing
+    // to the generated keys. See #6125.
+    // It's safe to do that since the key format is changing for 2.4
+    // anyway to include the account ids. That means old keys can be
+    // migrated to new namespaced keys on windows for 2.4.
+    key.prepend(OCC::Theme::instance()->appNameGUI() + QLatin1Char('_'));
+#endif
+    return key;
+}
 } // ns
 
-Q_DECLARE_LOGGING_CATEGORY(lcHttpLegacyCredentials)
 namespace OCC {
 
 class HttpLegacyCredentials : public QObject
@@ -75,7 +109,7 @@ private:
 
     void slotReadPasswordFromKeychain()
     {
-        const QString kck = _parent->keychainKey(
+        const QString kck = keychainKey(
             _parent->_account->url().toString(),
             _parent->_user,
             _keychainMigration ? QString() : _parent->_account->id());
@@ -158,7 +192,7 @@ private:
             QKeychain::DeletePasswordJob *job = new QKeychain::DeletePasswordJob(Theme::instance()->appName());
             addSettingsToJob(job);
             job->setInsecureFallback(true);
-            job->setKey(_parent->keychainKey(_parent->_account->url().toString(), key, migratePreId ? QString() : _parent->_account->id()));
+            job->setKey(keychainKey(_parent->_account->url().toString(), key, migratePreId ? QString() : _parent->_account->id()));
             job->start();
             connect(job, &QKeychain::DeletePasswordJob::finished, this, [job] {
                 if (job->error() != QKeychain::NoError) {

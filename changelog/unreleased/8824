@@ -1,0 +1,10 @@
+Bugfix: Fix config migrations from versions 2.8 to 2.9
+
+Due to a value change of an internal Qt configuration variable, the configuration data could not be migrated on many
+systems. We fixed this by implementing an additional migration path.
+
+Furthermore, we removed the dependency on said value within the GUI, and use the values explicitly from the theme to
+display the correct values on UI elements such as buttons.
+
+https://github.com/owncloud/client/issues/8824
+https://github.com/owncloud/client/pull/8860

@@ -107,8 +107,6 @@ int main(int argc, char **argv)
             QString msg = args.join(QLatin1String("|"));
             if (!app.sendMessage(QLatin1String("MSG_PARSEOPTIONS:") + msg))
                 return -1;
-        } else if (!app.sendMessage(QLatin1String("MSG_SHOWSETTINGS"))) {
-            return -1;
         }
         return 0;
     }
@@ -145,7 +143,6 @@ int main(int argc, char **argv)
                 app.tryTrayAgain();
             } else if (desktopSession != "ubuntu") {
                 qCInfo(lcApplication) << "System tray still not available, showing window and trying again later";
-                app.showSettingsDialog();
                 QTimer::singleShot(10000, &app, &Application::tryTrayAgain);
             } else {
                 qCInfo(lcApplication) << "System tray still not available, but assuming it's fine on 'ubuntu' desktop";
