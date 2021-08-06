@@ -303,7 +303,7 @@ private slots:
             << 1;
 
         QTest::newRow("Same mtime, matching strong checksum -> skipped")
-            << true << QByteArray("SHA1:56900fb1d337cf7237ff766276b9c1e8ce507427")
+            << true << QByteArray("Adler32:bad SHA1:56900fb1d337cf7237ff766276b9c1e8ce507427")
             << 0;
 
 
@@ -316,7 +316,7 @@ private slots:
             << 1;
 
         QTest::newRow("mtime changed, strong checksum match -> skip")
-            << false << QByteArray("SHA1:56900fb1d337cf7237ff766276b9c1e8ce507427")
+            << false << QByteArray("Adler32:1d21202 SHA1:56900fb1d337cf7237ff766276b9c1e8ce507427")
             << 0;
     }
 

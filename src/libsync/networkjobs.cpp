@@ -211,6 +211,19 @@ static QString readContentsAsString(QXmlStreamReader &reader)
     return result;
 }
 
+static QStringList readContentsAsStringList(QXmlStreamReader &reader)
+{
+    QStringList result;
+    if (reader.readNextStartElement()) {
+        do {
+            const auto elementText = reader.readElementText();
+            if (!elementText.isEmpty()) {
+                result.push_back(elementText);
+            }
+        } while (!reader.atEnd() && reader.readNextStartElement());
+    }
+    return result;
+}
 
 LsColXMLParser::LsColXMLParser() = default;
 
@@ -266,7 +279,9 @@ bool LsColXMLParser::parse(const QByteArray &xml, QHash<QString, ExtraFolderInfo
 
         if (type == QXmlStreamReader::StartElement && insidePropstat && insideProp) {
             // All those elements are properties
-            QString propertyContent = readContentsAsString(reader);
+            const QString propertyContent = (name == QLatin1String("checksums")) ? readContentsAsStringList(reader).join(" ")
+                                                                                 : readContentsAsString(reader);
+            
             if (name == QLatin1String("resourcetype") && propertyContent.contains("collection")) {
                 folders.append(currentHref);
             } else if (name == QLatin1String("size")) {
