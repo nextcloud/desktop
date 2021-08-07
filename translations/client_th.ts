@@ -5039,7 +5039,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="355"/>
         <source>Up to date</source>
-        <translation>ถึงวันที่</translation>
+        <translation>ล่าสุดแล้ว</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="360"/>
