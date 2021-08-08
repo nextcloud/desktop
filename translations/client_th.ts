@@ -453,12 +453,12 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="565"/>
         <source>Choose what to sync</source>
-        <translation>เลือกข้อมูลที่ต้องการประสาน</translation>
+        <translation>เลือกสิ่งที่จะซิงค์</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="571"/>
         <source>Force sync now</source>
-        <translation>บังคับประสานข้อมูลเดี๋ยวนี้</translation>
+        <translation>บังคับซิงค์ตอนนี้</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="573"/>
@@ -847,12 +847,12 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="37"/>
         <source>&amp;User:</source>
-        <translation>และผู้ใช้งาน:</translation>
+        <translation>&amp;ผู้ใช้งาน:</translation>
     </message>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="38"/>
         <source>&amp;Password:</source>
-        <translation>และรหัสผ่าน:</translation>
+        <translation>&amp;รหัสผ่าน:</translation>
     </message>
 </context>
 <context>
@@ -1959,12 +1959,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.ui" line="75"/>
         <source>Use &amp;Monochrome Icons</source>
-        <translation>ใช้ไอคอนขาวดำ</translation>
+        <translation>ใช้&amp;ไอคอนขาวดำ</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="82"/>
         <source>&amp;Launch on System Startup</source>
-        <translation>และเปิดใช้งานเมื่อเริ่มต้นระบบ</translation>
+        <translation>&amp;เปิดใช้งานเมื่อเริ่มต้นระบบ</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="89"/>
@@ -1999,7 +1999,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.ui" line="176"/>
         <source>&amp;Restart &amp;&amp; Update</source>
-        <translation>และเริ่มต้นใหม่ &amp;&amp; อัพเดท</translation>
+        <translation>&amp;เริ่มต้นใหม่ &amp;&amp; อัพเดท</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="191"/>
@@ -2035,12 +2035,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.ui" line="294"/>
         <source>S&amp;how crash reporter</source>
-        <translation>แสดงรายงานความผิดพลาด</translation>
+        <translation>แ&amp;สดงรายงานความผิดพลาด</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="305"/>
         <source>Edit &amp;Ignored Files</source>
-        <translation>แก้ไขและละเว้นการแก้ไขไฟล์</translation>
+        <translation>แก้ไข&amp;ไฟล์ที่ถูกเพิกเฉย</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="312"/>
@@ -2318,7 +2318,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="89"/>
         <source>&amp;Capture debug messages</source>
-        <translation>และจับภาพข้อความการแก้ปัญหา</translation>
+        <translation>&amp;จับภาพข้อความการแก้ปัญหา</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="101"/>
@@ -2345,7 +2345,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="122"/>
         <source>S&amp;ave</source>
-        <translation>&amp;บันทึก</translation>
+        <translation>บั&amp;นทึก</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="123"/>
@@ -2498,7 +2498,7 @@ Logs will be written to %1</source>
         <location filename="../src/gui/networksettings.ui" line="248"/>
         <location filename="../src/gui/networksettings.ui" line="327"/>
         <source>KBytes/s</source>
-        <translation>กิโลไบต์/วินาที</translation>
+        <translation>กิโลไบต์/วิ</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="257"/>
@@ -2602,7 +2602,7 @@ Logs will be written to %1</source>
         <location filename="../src/gui/updater/ocupdater.cpp" line="109"/>
         <source>A new update for %1 is about to be installed. The updater may ask
 for additional privileges during the process.</source>
-        <translation>มีการอัพเดทใหม่สำหรับ %1 มันเกี่ยวกับการติดตั้ง การอัพเดทอาจจะถามสิทธิประโยชน์เพิ่มเติมในระหว่างกระบวนการ</translation>
+        <translation>อัปเดตใหม่สำหรับ %1 กำลังจะถูกติดตั้ง ตัวอัปเดตอาจขอเข้าถึงสิทธิประโยชน์เพิ่มเติมในระหว่างกระบวนการ</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="143"/>
@@ -2612,12 +2612,12 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="145"/>
         <source>%1 version %2 available. Restart application to start the update.</source>
-        <translation>มี %1 รุ่น %2 พร้อมใช้งานแล้ว เริ่มต้นแอพพลิเคชันใหม่เพื่อเริ่มต้นการอัพเดท</translation>
+        <translation>%1 รุ่น %2 พร้อมใช้งานแล้ว เริ่มต้นแอปพลิเคชันใหม่เพื่อเริ่มต้นการอัปเดต</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="152"/>
         <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; to download the update manually.</source>
-        <translation>ไม่สามารถดาวน์โหลดการอัพเดท กรุณาคลิก&lt;a href=&apos;%1&apos;&gt;ที่นี่&lt;/a&gt; เพื่อดาวน์โหลดการอัพเดทด้วยตนเอง</translation>
+        <translation>ไม่สามารถดาวน์โหลดการอัปเดต กรุณาคลิก&lt;a href=&apos;%1&apos;&gt;ที่นี่&lt;/a&gt; เพื่อดาวน์โหลดการอัปเดตด้วยตนเอง</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="151"/>
@@ -2647,7 +2647,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="159"/>
         <source>Could not check for new updates.</source>
-        <translation>ไม่สามารถตรวจสอบการอัพเดทใหม่</translation>
+        <translation>ไม่สามารถตรวจสอบการอัปเดตใหม่</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="161"/>
@@ -2672,7 +2672,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="188"/>
         <source>Update Check</source>
-        <translation>ตรวจสอบการอัพเดท</translation>
+        <translation>ตรวจสอบการอัปเดต</translation>
     </message>
 </context>
 <context>
@@ -2722,7 +2722,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="162"/>
         <source>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Warning:&lt;/strong&gt; The local folder is not empty. Pick a resolution!&lt;/small&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;คำเตือน:&lt;/strong&gt; โฟลเดอร์ต้นทางจะต้องไม่ว่างเปล่า เลือกความละเอียด!&lt;/small&gt;&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;คำเตือน:&lt;/strong&gt; โฟลเดอร์ต้นทางไม่ว่างเปล่า เลือกการแก้ปัญหา!&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="171"/>
@@ -2792,12 +2792,12 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="55"/>
         <source>Select a different URL</source>
-        <translation>เลือก URL ที่แตกต่างกัน</translation>
+        <translation>เลือก URL อื่น</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="62"/>
         <source>Retry unencrypted over HTTP (insecure)</source>
-        <translation>ลองใหม่อีกครั้ง ไม่ได้เข้ารหัสบน HTTP (ไม่ปลอดภัย)</translation>
+        <translation>ลองใหม่อีกครั้งแบบไม่ได้เข้ารหัสบน HTTP (ไม่ปลอดภัย)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="69"/>
@@ -2815,7 +2815,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="49"/>
         <source>&amp;Email</source>
-        <translation>และอีเมล</translation>
+        <translation>&amp;อีเมล</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="59"/>
@@ -2903,7 +2903,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="201"/>
         <source>&amp;Next &gt;</source>
-        <translation>และถัดไป &gt;</translation>
+        <translation>&amp;ถัดไป &gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="237"/>
@@ -3730,7 +3730,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="489"/>
         <source>Choose What to Sync</source>
-        <translation>เลือกสิ่งที่ต้องการประสานข้อมูล</translation>
+        <translation>เลือกสิ่งที่จะซิงค์</translation>
     </message>
 </context>
 <context>
@@ -5039,7 +5039,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="355"/>
         <source>Up to date</source>
-        <translation>ถึงวันที่</translation>
+        <translation>ล่าสุดแล้ว</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="360"/>
@@ -5218,7 +5218,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="90"/>
         <source>S&amp;ync everything from server</source>
-        <translation>ผสานข้อมูลทุกอย่างจากเซิร์ฟเวอร์</translation>
+        <translation>ผ&amp;สานข้อมูลทุกอย่างจากเซิร์ฟเวอร์</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="121"/>
@@ -5233,12 +5233,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="148"/>
         <source>Ask for confirmation before synchroni&amp;zing folders larger than</source>
-        <translation>ถามก่อนที่จะประสานข้อมูลกับโฟลเดอร์ที่มีขนาดใหญ่กว่า</translation>
+        <translation>ถามก่อนที่จะประสานข้อมูลกั&amp;บโฟลเดอร์ที่มีขนาดใหญ่กว่า</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="174"/>
         <source>Ask for confirmation before synchronizing e&amp;xternal storages</source>
-        <translation>ถามก่อนที่จะประสานข้อมูลกับพื้นที่จัดเก็บข้อมูลภายนอก</translation>
+        <translation>ถามก่อนที่จะประสานข้อมูลกับพื้นที่จัดเก็บข้อมูล&amp;ภายนอก</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="175"/>
@@ -5248,7 +5248,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="225"/>
         <source>&amp;Local Folder</source>
-        <translation>และโฟลเดอร์ต้นทาง</translation>
+        <translation>&amp;โฟลเดอร์ต้นทาง</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="244"/>
@@ -5289,7 +5289,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="344"/>
         <source>&amp;Keep local data</source>
-        <translation>และเก็บข้อมูลต้นทาง</translation>
+        <translation>&amp;เก็บข้อมูลต้นทาง</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="357"/>
@@ -5317,12 +5317,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.ui" line="73"/>
         <source>&amp;Username</source>
-        <translation>และชื่อผู้ใช้</translation>
+        <translation>&amp;ชื่อผู้ใช้</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.ui" line="83"/>
         <source>&amp;Password</source>
-        <translation>และหรัสผ่าน</translation>
+        <translation>&amp;รหัสผ่าน</translation>
     </message>
 </context>
 <context>
