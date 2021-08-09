@@ -70,6 +70,8 @@ public:
 
     DetermineAuthTypeJob::AuthType authType() const;
 
+    QSize minimumSizeHint() const override;
+
 public slots:
     void setAuthType(DetermineAuthTypeJob::AuthType type);
     void setRemoteFolder(const QString &);

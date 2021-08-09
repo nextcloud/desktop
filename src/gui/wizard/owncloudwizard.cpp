@@ -52,8 +52,6 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
     , _credentialsPage(nullptr)
 {
     setObjectName("owncloudWizard");
-    auto size = ocApp()->gui()->settingsDialog()->minimumSizeHint();
-    resize(size.width() - 50, size.height() - 50);
 
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setPage(WizardCommon::Page_ServerSetup, _setupPage);
@@ -86,6 +84,8 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
     setOption(QWizard::CancelButtonOnLeft);
     setTitleFormat(Qt::RichText);
     setSubTitleFormat(Qt::RichText);
+
+    setMinimumSize(minimumSizeHint());
 }
 
 void OwncloudWizard::setAccount(AccountPtr account)
@@ -262,6 +262,11 @@ void OwncloudWizard::askExperimentalVirtualFilesFeature(QWidget *receiver, const
         msgBox->deleteLater();
     });
     msgBox->open();
+}
+
+QSize OCC::OwncloudWizard::minimumSizeHint() const
+{
+    return ocApp()->gui()->settingsDialog()->sizeHintForChild();
 }
 
 } // end namespace

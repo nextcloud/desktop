@@ -137,8 +137,7 @@ ShareDialog::ShareDialog(QPointer<AccountState> accountState,
     connect(job, &PropfindJob::finishedWithError, this, &ShareDialog::slotPropfindError);
     job->start();
 
-    auto size = ocApp()->gui()->settingsDialog()->minimumSizeHint();
-    resize(size.width() - 50, size.height() - 50);
+    setMinimumSize(minimumSizeHint());
 }
 
 ShareDialog::~ShareDialog()
@@ -217,6 +216,11 @@ void ShareDialog::showSharingUi()
         if (_startPage == ShareDialogStartPage::PublicLinks)
             _ui->shareWidgets->setCurrentWidget(_linkWidget);
     }
+}
+
+QSize ShareDialog::minimumSizeHint() const
+{
+    return ocApp()->gui()->settingsDialog()->sizeHintForChild();
 }
 
 void ShareDialog::slotThumbnailFetched(const int &statusCode, const QByteArray &reply)
