@@ -351,7 +351,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="605"/>
         <source>Disable virtual file support?</source>
-        <translation>Të çaktivizohet mbulimi për kartela virtuale? </translation>
+        <translation>Të çaktivizohet mbulimi për kartela virtuale?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="606"/>
@@ -434,7 +434,7 @@ Ky veprim do të shkaktojë ndërprerjen e çfarëdo njëkohësimi në kryerje e
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1010"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
-        <translation>Ka dosje që s’u njëkohësuan, ngaqë janë depozita të jashtme:</translation>
+        <translation>Ka dosje që s’u njëkohësuan, ngaqë janë depozita të jashtme: </translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1011"/>
@@ -553,22 +553,22 @@ Ky veprim do të shkaktojë ndërprerjen e çfarëdo njëkohësimi në kryerje e
     <message>
         <location filename="../src/gui/accountstate.cpp" line="64"/>
         <source>Url update requested for %1</source>
-        <translation type="unfinished"/>
+        <translation>U kërkua përditësim URL-je për %1</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="65"/>
         <source>The url for %1 changed from %2 to %3, do you want to accept the changed url?</source>
-        <translation type="unfinished"/>
+        <translation>URL-ja për %1 ndryshoi nga %2 në %3, doni të pranohet URL-ja e ndryshuar?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="68"/>
         <source>Change url permanently to %1</source>
-        <translation type="unfinished"/>
+        <translation>Ndryshoje përgjithmonë URL-në në %1</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="69"/>
         <source>Reject</source>
-        <translation type="unfinished"/>
+        <translation>Hidheni tej</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="186"/>
@@ -641,7 +641,7 @@ Ky veprim do të shkaktojë ndërprerjen e çfarëdo njëkohësimi në kryerje e
     <message>
         <location filename="../src/gui/models/activitylistmodel.cpp" line="120"/>
         <source>Local path</source>
-        <translation type="unfinished"/>
+        <translation>Shteg vendor</translation>
     </message>
 </context>
 <context>
@@ -691,7 +691,7 @@ Ky veprim do të shkaktojë ndërprerjen e çfarëdo njëkohësimi në kryerje e
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="107"/>
         <source>Reset column sizes</source>
-        <translation type="unfinished"/>
+        <translation>Ricaktoni madhësi shtyllash</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="150"/>
@@ -726,7 +726,7 @@ Ky veprim do të shkaktojë ndërprerjen e çfarëdo njëkohësimi në kryerje e
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="459"/>
         <source>Show in file browser</source>
-        <translation type="unfinished"/>
+        <translation>Shfaqe në shfletues kartelash</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="155"/>
@@ -780,88 +780,89 @@ Ky veprim do të shkaktojë ndërprerjen e çfarëdo njëkohësimi në kryerje e
         <location filename="../src/gui/application.cpp" line="574"/>
         <source>%1 version %2<byte value="xd"/>
 File synchronization desktop utility.</source>
-        <translation type="unfinished"/>
+        <translation>%1 version %2&lt;byte value=&quot;xd&quot;/&gt;
+Mjet njëkohësimi kartelash për desktop.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="579"/>
         <source>For more information, see http://www.owncloud.org</source>
-        <translation type="unfinished"/>
+        <translation>Për më tepër hollësi, shihni te http://www.owncloud.org</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="593"/>
         <source>Show the settings dialog while starting.</source>
-        <translation type="unfinished"/>
+        <translation>Shfaq dialogun e rregullimeve teksa niset.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="594"/>
         <source>Quit the running instance.</source>
-        <translation type="unfinished"/>
+        <translation>Dil nga instanca që është duke xhiruar.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="595"/>
         <source>Write log to file (use - to write to stdout).</source>
-        <translation type="unfinished"/>
+        <translation>Shkruaje regjistrimin te kartelë (përdorni - që të shkruhet në stdout).</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="596"/>
         <source>Write each sync log output in a new file in folder.</source>
-        <translation type="unfinished"/>
+        <translation>Shkruaje çdo përfundim regjistrimi njëkohësimesh në një kartelë të re në dosje.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="597"/>
         <source>Remove logs older than &lt;hours&gt; hours (to be used with --logdir).</source>
-        <translation type="unfinished"/>
+        <translation>Hiqi regjistrat më të vjetër se &lt;hours&gt; orë (për t’u përdorur me --logdir).</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="598"/>
         <source>Flush the log file after every write.</source>
-        <translation type="unfinished"/>
+        <translation>Zbraze kartelën regjistër pas çdo shkrimi.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="599"/>
         <source>Output debug-level messages in the log.</source>
-        <translation type="unfinished"/>
+        <translation>Kaloji te regjistri mesazhet debug-level.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="600"/>
         <location filename="../src/gui/application.cpp" line="601"/>
         <source>Override UI language.</source>
-        <translation type="unfinished"/>
+        <translation>Anashkalo gjuhë UI.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="602"/>
         <source>Use the given configuration folder.</source>
-        <translation type="unfinished"/>
+        <translation>Përdor dosjen e dhënë të formësimit.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="603"/>
         <source>Enable debug mode.</source>
-        <translation type="unfinished"/>
+        <translation>Aktivizo mënyrën diagnostikim.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="606"/>
         <source>Virtual file system file to be opened (optional).</source>
-        <translation type="unfinished"/>
+        <translation>Kartelë sistemi virtual kartelash për t’u hapur (opsionale).</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="606"/>
         <source>[&lt;vfs file&gt;]</source>
-        <translation type="unfinished"/>
+        <translation>[&lt;kartelë vfs&gt;]</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="635"/>
         <source>Invalid path passed to --confdir</source>
-        <translation type="unfinished"/>
+        <translation>U dha shteg i pavlefshëm te --confdir</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="648"/>
         <source>Error: unknown language &quot;%1&quot; (use --list-languages to get a complete list of supported translations)</source>
-        <translation type="unfinished"/>
+        <translation>Gabim: gjuhë &quot;%1&quot; e panjohur (përdorni --list-languages që të merrni një listë të plotë të përkthimeve që mbulohen)</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="657"/>
         <source>Available translations: %1</source>
-        <translation type="unfinished"/>
+        <translation>Përkthime të gatshme: %1</translation>
     </message>
 </context>
 <context>
@@ -925,7 +926,7 @@ File synchronization desktop utility.</source>
     <message>
         <location filename="../src/libsync/creds/credentialmanager.cpp" line="206"/>
         <source>Failed to parse credentials</source>
-        <translation type="unfinished"/>
+        <translation>S’u arrit të përtypen kredencialet</translation>
     </message>
 </context>
 <context>
@@ -1723,7 +1724,7 @@ Nëse ky qe aksident dhe vendosni t’i mbani kartelat tuaja, ato do të rinjëk
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="74"/>
         <source>Language changes require a restart of this application to take effect.</source>
-        <translation type="unfinished"/>
+        <translation>Ndryshimet e gjuhës lypin rinisje të këtij aplikacioni, që të hyjnë në fuqi.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="228"/>
@@ -1747,12 +1748,12 @@ Kini parasysh që kjo përzgjedh vetëm se nga cili thes merren përmirësimet, 
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="355"/>
         <source>unknown (%1)</source>
-        <translation type="unfinished"/>
+        <translation>e panjohur (%1)</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="365"/>
         <source>(use default)</source>
-        <translation type="unfinished"/>
+        <translation>(përdor parazgjedhjen)</translation>
     </message>
 </context>
 <context>
@@ -1870,7 +1871,7 @@ Objektet mbi të cilët lejohet fshirja do të fshihen, nëse pengojnë heqjen e
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="81"/>
         <source>The file %1 was ignored as its name is reserved by %2</source>
-        <translation type="unfinished"/>
+        <translation>Kartela %1 u shpërfill, ngaqë emri i saj është i rezervuar nga2</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="116"/>
@@ -1928,7 +1929,7 @@ Ngaqë kartelat regjistër mund të bëhen të mëdha, klienti do të fillojë n
     <message>
         <location filename="../src/gui/logbrowser.ui" line="123"/>
         <source>Log Http traffic </source>
-        <translation>Regjistro trafik Http</translation>
+        <translation>Regjistro trafik Http </translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.ui" line="143"/>
@@ -1948,12 +1949,12 @@ Kini parasysh se përdorimi i çfarëdo mundësie regjistrimi që nga rresht urd
     <message>
         <location filename="../src/gui/models/models.cpp" line="84"/>
         <source>Filter by</source>
-        <translation type="unfinished"/>
+        <translation>Filtroji sipas</translation>
     </message>
     <message>
         <location filename="../src/gui/models/models.cpp" line="101"/>
         <source>No filter</source>
-        <translation type="unfinished"/>
+        <translation>Pa filtrim</translation>
     </message>
 </context>
 <context>
@@ -2190,12 +2191,12 @@ Kini parasysh se përdorimi i çfarëdo mundësie regjistrimi që nga rresht urd
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="528"/>
         <source>Oauth2 Error</source>
-        <translation type="unfinished"/>
+        <translation>Gabim OAuth2</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="529"/>
         <source>Oauth2 authentication requires a secured connection.</source>
-        <translation type="unfinished"/>
+        <translation>Mirëfilltësimi Oauth2 lyp një lidhje të siguruar.</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="270"/>
@@ -2573,7 +2574,7 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
     <message>
         <location filename="../src/libsync/discovery.cpp" line="269"/>
         <source>Filename contains trailing spaces.</source>
-        <translation>Emri i kartelës përmban shenja të zbrazëta në fund</translation>
+        <translation>Emri i kartelës përmban shenja të zbrazëta në fund.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="272"/>
@@ -2676,12 +2677,12 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1022"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Gabim në përditësim tejtëdhënash: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1026"/>
         <source>File is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Kartela është aktualisht në përdorim</translation>
     </message>
 </context>
 <context>
@@ -2689,13 +2690,13 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="369"/>
         <source>Failed to free up space, the file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>S’u arrit të lirohet hapësirë, kartela %1 është aktualisht në përdorim</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="390"/>
         <location filename="../src/libsync/propagatedownload.cpp" line="468"/>
         <source>File %1 can not be downloaded because of a local file name clash with %2!</source>
-        <translation type="unfinished"/>
+        <translation>Kartela %1 s’mund shkarkohet, për shkak të një përplasjeje emrash kartele vendore me %2!</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="476"/>
@@ -2731,17 +2732,17 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="907"/>
         <source>File %1 cannot be saved because of a local file name clash with %2!</source>
-        <translation type="unfinished"/>
+        <translation>Kartela %1 s’mund të ruhet, për shkak të një përplasjeje emrash kartele vendore me %2!</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="1022"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Gabim në përditësim tejtëdhënash: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="1025"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Kartela %1 është aktualisht në përdorim</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="364"/>
@@ -2755,7 +2756,7 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="249"/>
         <source>; Restoration Failed: %1</source>
-        <translation>; Rikthimi Dështoi: %1 </translation>
+        <translation>; Rikthimi Dështoi: %1</translation>
     </message>
 </context>
 <context>
@@ -2763,22 +2764,22 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="146"/>
         <source>could not delete file %1, error: %2</source>
-        <translation>s’u fshi dot kartela %1, gabim: %2 </translation>
+        <translation>s’u fshi dot kartela %1, gabim: %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="161"/>
         <source>Can not create local folder %1 because of a local file name clash with %2</source>
-        <translation type="unfinished"/>
+        <translation>S’krijohet dot dosje vendore %1, për shkak të një përplasje emrash kartele vendore me %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="180"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Gabim në përditësim tejtëdhënash: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="183"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Kartela %1 është aktualisht në përdorim</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="167"/>
@@ -2791,7 +2792,7 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="99"/>
         <source>Could not remove %1 because of a local file name clash with %2!</source>
-        <translation type="unfinished"/>
+        <translation>S’u hoq dot %1, për shkak të një përplasjeje emrash kartele vendore me %2!</translation>
     </message>
 </context>
 <context>
@@ -2809,17 +2810,17 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="257"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Gabim në përditësim tejtëdhënash: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="260"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Kartela %1 është aktualisht në përdorim</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="266"/>
         <source>Failed to rename file</source>
-        <translation type="unfinished"/>
+        <translation>S’u arrit të riemërtohej kartela</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="272"/>
@@ -2845,12 +2846,12 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="141"/>
         <source>Error writing metadata to the database: %1</source>
-        <translation type="unfinished"/>
+        <translation>Gabim në shkrim tejtëdhënash te baza e të dhënave: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="166"/>
         <source>Setting file status failed due to file lock</source>
-        <translation type="unfinished"/>
+        <translation>Caktimi i gjendjes së kartelës dështoi për shkak të një kyçjeje kartele</translation>
     </message>
 </context>
 <context>
@@ -2868,12 +2869,12 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="220"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Gabim në përditësim tejtëdhënash: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="223"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Kartela %1 është aktualisht në përdorim</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="235"/>
@@ -2919,12 +2920,12 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="567"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Gabim në përditësim tejtëdhënash: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="570"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Kartela %1 është aktualisht në përdorim</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="129"/>
@@ -2938,7 +2939,7 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="383"/>
         <source>%1 the file is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>%1 kartela është aktualisht në përdorim</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="478"/>
@@ -2953,7 +2954,7 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="526"/>
         <source>The server did ask for a removed legacy feature(polling)</source>
-        <translation type="unfinished"/>
+        <translation>Shërbyesi kërkoi një veçori të dikurshme që është hequr (vjelje)</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="531"/>
@@ -2976,7 +2977,7 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
     <message>
         <location filename="../src/libsync/propagateuploadtus.cpp" line="67"/>
         <source>%1 the file is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>%1 kartela është aktualisht në përdorim</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadtus.cpp" line="211"/>
@@ -2994,12 +2995,12 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="137"/>
         <source>%1 the file is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>%1 kartela është aktualisht në përdorim</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="222"/>
         <source>The server did ask for a removed legacy feature(polling)</source>
-        <translation type="unfinished"/>
+        <translation>Shërbyesi kërkoi një veçori të dikurshme që është hequr (vjelje)</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="242"/>
@@ -3070,7 +3071,7 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="83"/>
         <source>Reset column sizes</source>
-        <translation type="unfinished"/>
+        <translation>Ricaktoni madhësi shtyllash</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="92"/>
@@ -3080,17 +3081,17 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="102"/>
         <source>Show in file browser</source>
-        <translation type="unfinished"/>
+        <translation>Me këtë hedhje në qarkullim Clementine-a përfiton një dialog fringo të ri përpunimi etiketash, me vetëplotësim dhe me aftësinë të identifikojë automatikisht muzikë dhe të sjellë etiketa që mungojnë që nga MusicBrainz.  Tani mbulohen “CUE sheets” - këto pikasen automatikisht kur skanohet mediateka juaj dhe çdo pjesë do të shfaqet veçmas. Kemi bërë edhe shumë përmirësime të vogla, të tilla si shfaqja e kopertinës së albumit te skeda Mediatekë, duke ngjyrosur gri këngët e fshira, shtimi i një mundësie “Shfaqe në shfletues kartelash”, mbulim për ndërmjetës rrjeti, shtimi i një mundësie “Riskanim i plotë i mediatekës”, dhe një ndihmëz të re për rrëshqitësin e pjesë</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="113"/>
         <source>Show in web browser</source>
-        <translation type="unfinished"/>
+        <translation>Shfaqe në shfletues</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="126"/>
         <source>Retry sync</source>
-        <translation type="unfinished"/>
+        <translation>Riprovo njëkohësim</translation>
     </message>
 </context>
 <context>
@@ -3643,7 +3644,7 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="949"/>
         <source>Create and copy public link to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Krijoni dhe kopjojeni lidhjen publike në të papastër</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="951"/>
@@ -4010,7 +4011,7 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="565"/>
         <source>Cannot open the sync journal</source>
-        <translation>S’hap dot regjistrin e njëkohësimeve.</translation>
+        <translation>S’hapet dot regjistri i njëkohësimeve.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="984"/>
@@ -4023,7 +4024,7 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
     <message>
         <location filename="../src/common/syncjournaldb.cpp" line="938"/>
         <source>Failed to connect database.</source>
-        <translation type="unfinished"/>
+        <translation>S’u arrit të lidhej baza e të dhënave.</translation>
     </message>
 </context>
 <context>
@@ -4093,12 +4094,12 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="290"/>
         <source>Unresolved %1 conflicts</source>
-        <translation type="unfinished"/>
+        <translation>%1 përplasje të pazgjidhura</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="292"/>
         <source>Ignored errors %1</source>
-        <translation type="unfinished"/>
+        <translation>Gabime të shpërfillur %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="311"/>
@@ -4223,7 +4224,7 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="303"/>
         <source>Up to date (%1)</source>
-        <translation type="unfinished"/>
+        <translation>Të përditësuar (%1)</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="308"/>
@@ -4392,7 +4393,7 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="279"/>
         <source>Manually create folder sync connections </source>
-        <translation>Krijoni lidhje njëkohësimesh dosjesh dorazi</translation>
+        <translation>Krijoni lidhje njëkohësimesh dosjesh dorazi </translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="400"/>
@@ -4623,7 +4624,7 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
     <message>
         <location filename="../src/libsync/theme.cpp" line="432"/>
         <source>%1 %2 %3%8%9Libraries Qt %4, %5%8Using virtual files plugin: %6%8%7</source>
-        <translation type="unfinished"/>
+        <translation>%1 %2 %3%8%9Biblioteka Qt %4, %5%8Me përdorim shtojce kartelash virtuale: %6%8%7</translation>
     </message>
 </context>
 <context>
