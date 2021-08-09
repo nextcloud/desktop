@@ -104,16 +104,9 @@ SyncJournalDb::SyncJournalDb(const QString &dbFilePath, QObject *parent)
 }
 
 QString SyncJournalDb::makeDbName(const QString &localPath,
-    const QUrl &remoteUrl,
-    const QString &remotePath,
-    const QString &user)
+    const QString &infix)
 {
-    QString journalPath = QStringLiteral(".sync_");
-
-    QString key = QStringLiteral("%1@%2:%3").arg(user, remoteUrl.toString(), remotePath);
-
-    QByteArray ba = QCryptographicHash::hash(key.toUtf8(), QCryptographicHash::Md5);
-    journalPath += QString::fromLatin1(ba.left(6).toHex()) + QStringLiteral(".db");
+    const QString journalPath = QStringLiteral(".sync_") + infix + QStringLiteral(".db");
 
     // If it exists already, the path is clearly usable
     QFile file(QDir(localPath).filePath(journalPath));
@@ -132,6 +125,13 @@ QString SyncJournalDb::makeDbName(const QString &localPath,
     // Error during creation, just keep the original and throw errors later
     qCWarning(lcDb) << "Could not find a writable database path" << file.fileName() << file.errorString();
     return journalPath;
+}
+
+QString SyncJournalDb::makeDbName(const QString &localPath, const QUrl &remoteUrl, const QString &remotePath, const QString &user)
+{
+    // legacy name only used by the cmd client
+    const QString key = QStringLiteral("%1@%2:%3").arg(user, remoteUrl.toString(), remotePath);
+    return makeDbName(localPath, QString::fromUtf8(QCryptographicHash::hash(key.toUtf8(), QCryptographicHash::Md5).left(6).toHex()));
 }
 
 bool SyncJournalDb::maybeMigrateDb(const QString &localPath, const QString &absoluteJournalPath)

@@ -1317,7 +1317,7 @@ QString FolderDefinition::absoluteJournalPath() const
 
 QString FolderDefinition::defaultJournalPath(AccountPtr account)
 {
-    return SyncJournalDb::makeDbName(localPath, account->url(), targetPath, account->credentials()->user());
+    return SyncJournalDb::makeDbName(localPath, QStringLiteral("journal"));
 }
 
 } // namespace OCC
