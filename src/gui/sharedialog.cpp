@@ -84,9 +84,6 @@ ShareDialog::ShareDialog(QPointer<AccountState> accountState,
     // Set filename
     QString fileName = QFileInfo(_sharePath).fileName();
     _ui->label_name->setText(tr("%1").arg(fileName));
-    QFont f(_ui->label_name->font());
-    f.setPointSize(f.pointSize() * 1.4);
-    _ui->label_name->setFont(f);
 
     _ui->label_sharePath->setWordWrap(true);
     QString ocDir(_sharePath);
