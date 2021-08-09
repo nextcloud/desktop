@@ -99,3 +99,6 @@ o_tableView_0_1_QModelIndex = {"column": 1, "container": oCC_IssuesWidget_tableV
 settings_settingsdialog_toolbutton_Add_account_QToolButton = {"name": "settingsdialog_toolbutton_Add account", "type": "QToolButton", "visible": 1, "window": settings_OCC_SettingsDialog}
 settings_settingsdialog_toolbutton_Activity_QToolButton = {"name": "settingsdialog_toolbutton_Activity", "type": "QToolButton", "visible": 1, "window": settings_OCC_SettingsDialog}
 sharingDialog_Close_QPushButton = {"text": "Close", "type": "QPushButton", "unnamed": 1, "visible": 1, "window": sharingDialog_OCC_ShareDialog}
+stack_Enable_experimental_placeholder_mode_QPushButton = {"container": settings_stack_QStackedWidget, "text": "Enable experimental placeholder mode", "type": "QPushButton", "unnamed": 1, "visible": 1}
+disable_virtual_file_support_QMessageBox = {"type": "QMessageBox", "unnamed": 1, "visible": 1, "windowTitle": "Disable virtual file support?"}
+disable_virtual_file_support_Disable_support_QPushButton = {"text": "Disable support", "type": "QPushButton", "unnamed": 1, "visible": 1, "window": disable_virtual_file_support_QMessageBox}
