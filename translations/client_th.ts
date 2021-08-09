@@ -557,22 +557,22 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1069"/>
         <source>%1 of %2 in use</source>
-        <translation>มีการใช้งาน %1 จาก %2</translation>
+        <translation>ใช้งานอยู่ %1 จาก %2</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1078"/>
         <source>Currently there is no storage usage information available.</source>
-        <translation>ขณะนี้ไม่มีพื้นที่จัดเก็บข้อมูลที่ใช้งานได้</translation>
+        <translation>ขณะนี้ไม่มีข้อมูลการใช้พื้นที่จัดเก็บ</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1081"/>
         <source>%1 in use</source>
-        <translation>%1 กำลังถูกใช้งาน</translation>
+        <translation>ใช้งานอยู่ %1</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1079"/>
         <source>%1 as &lt;i&gt;%2&lt;/i&gt;</source>
-        <translation>%1 เช่น &lt;i&gt;%2&lt;/i&gt;</translation>
+        <translation>%1 ด้วยบัญชี &lt;i&gt;%2&lt;/i&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="772"/>
@@ -587,7 +587,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1108"/>
         <source>%1 as %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 ด้วยบัญชี %2</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1115"/>
@@ -612,7 +612,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1127"/>
         <source>Signed out from %1.</source>
-        <translation>ลงชื่อออกจาก %1</translation>
+        <translation>ลงชื่อออกจาก %1 แล้ว</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1137"/>
@@ -632,7 +632,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1151"/>
         <source>Server configuration error: %1 at %2.</source>
-        <translation>ตั้งค่าเซิร์ฟเวอร์ผิดพลาด: %1 ที่ %2.</translation>
+        <translation>ตั้งค่าเซิร์ฟเวอร์ผิดพลาด: %1 ที่ %2</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1162"/>
@@ -662,7 +662,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1350"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;คุณต้องการลบการเชื่อมต่อกับบัญชี&lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;หมายเหตุ:&lt;/b&gt; นี้จะ &lt;b&gt;ไม่&lt;/b&gt; ลบไฟล์ใดๆ&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;คุณต้องการลบการเชื่อมต่อกับบัญชี &lt;i&gt;%1&lt;/i&gt; หรือไม่?&lt;/p&gt;&lt;p&gt;&lt;b&gt;หมายเหตุ:&lt;/b&gt; การกระทำนี้จะ&lt;b&gt;ไม่&lt;/b&gt;ลบไฟล์ใด ๆ&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1355"/>
@@ -680,12 +680,12 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="156"/>
         <source>Disconnected</source>
-        <translation>ยกเลิกการเชื่อมต่อ</translation>
+        <translation>ไม่ได้เชื่อมต่อ</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="158"/>
         <source>Connected</source>
-        <translation>เชื่อมต่อ</translation>
+        <translation>เชื่อมต่อแล้ว</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="160"/>
@@ -695,7 +695,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="162"/>
         <source>Maintenance mode</source>
-        <translation>โหมดบำรุงรักษา</translation>
+        <translation>โหมดการบำรุงรักษา</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="164"/>
@@ -1597,7 +1597,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="149"/>
         <source>You need to be connected to add a folder</source>
-        <translation>คุณจะต้องเชื่อมต่อก่อนที่จะเพิ่มโฟลเดอร์</translation>
+        <translation>คุณต้องเชื่อมต่อก่อนที่จะเพิ่มโฟลเดอร์</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="151"/>
@@ -1614,12 +1614,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="200"/>
         <source>Error while loading the list of folders from the server.</source>
-        <translation>ข้อผิดพลาดในขณะที่โหลดรายชื่อโฟลเดอร์จากเซิร์ฟเวอร์</translation>
+        <translation>ข้อผิดพลาดขณะโหลดรายชื่อโฟลเดอร์จากเซิร์ฟเวอร์</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="203"/>
         <source>Fetching folder list from server …</source>
-        <translation type="unfinished"/>
+        <translation>กำลังดึงรายการโฟลเดอร์จากเซิร์ฟเวอร์ …</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="229"/>
@@ -1634,7 +1634,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="257"/>
         <source>Signed out</source>
-        <translation>ออกจากระบบ</translation>
+        <translation>ออกจากระบบแล้ว</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="299"/>
@@ -1669,7 +1669,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="984"/>
         <source>Reconciling changes</source>
-        <translation>คืนค่าการเปลี่ยนแปลง</translation>
+        <translation>กำลังคืนค่าการเปลี่ยนแปลง</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1019"/>
@@ -1699,7 +1699,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <location filename="../src/gui/folderstatusmodel.cpp" line="1052"/>
         <source>download %1/s</source>
         <extracomment>Example text: &quot;download 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
-        <translation>ดาวน์โหลด %1/วินาที</translation>
+        <translation>ดาวน์โหลด %1/วิ</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1054"/>
@@ -1710,18 +1710,18 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <location filename="../src/gui/folderstatusmodel.cpp" line="1062"/>
         <source>upload %1/s</source>
         <extracomment>Example text: &quot;upload 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
-        <translation>อัพโหลด</translation>
+        <translation>อัปโหลด %1/วิ</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1064"/>
         <source>↑ %1/s</source>
-        <translation type="unfinished"/>
+        <translation>↑ %1/วิ</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1070"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (2MB of 2MB)&quot;</extracomment>
-        <translation>%1 %2 (%3 ของ %4)</translation>
+        <translation>%1 %2 (%3 จาก %4)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1074"/>
@@ -1733,28 +1733,28 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <location filename="../src/gui/folderstatusmodel.cpp" line="1091"/>
         <source>%5 left, %1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;5 minutes left, 12 MB of 345 MB, file 6 of 7&quot;</extracomment>
-        <translation>เหลืออีก %5 ไฟล์, %1 ไฟล์จาก %2, %3 ไฟล์จาก %4</translation>
+        <translation>เหลืออีก %5, %1 จาก %2, ไฟล์ที่ %3 จาก %4</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1099"/>
         <source>%1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;12 MB of 345 MB, file 6 of 7&quot;</extracomment>
-        <translation>%1 จาก %2, %3 จาก %4 ไฟล์</translation>
+        <translation>%1 จาก %2, ไฟล์ที่ %3 จาก %4</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1106"/>
         <source>file %1 of %2</source>
-        <translation>ไฟล์ %1 จาก %2</translation>
+        <translation>ไฟล์ที่ %1 จาก %2</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1152"/>
         <source>Waiting …</source>
-        <translation type="unfinished"/>
+        <translation>กำลังรอ …</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folderstatusmodel.cpp" line="1154"/>
         <source>Waiting for %n other folder(s) …</source>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>กำลังรออีก %n โฟลเดอร์อื่น …</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1160"/>
@@ -1801,7 +1801,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="76"/>
         <source>Enter the path to the local folder.</source>
-        <translation>ป้อนพาธไปยังโฟลเดอร์ต้นทาง</translation>
+        <translation>ป้อนเส้นทางไปยังโฟลเดอร์ต้นทาง</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="135"/>
@@ -1819,22 +1819,22 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="184"/>
         <source>Enter the name of the new folder to be created below &apos;%1&apos;:</source>
-        <translation>ใส่ชื่อของโฟลเดอร์ใหม่ที่จะถูกสร้างขึ้นดังต่อไปนี้ &apos;%1&apos;:</translation>
+        <translation>ใส่ชื่อของโฟลเดอร์ใหม่ที่จะถูกสร้างขึ้นภายใต้ &apos;%1&apos;:</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="184"/>
         <source>Enter the name of the new folder to be created below &quot;%1&quot;:</source>
-        <translation type="unfinished"/>
+        <translation>ใส่ชื่อของโฟลเดอร์ใหม่ที่จะถูกสร้างขึ้นภายใต้ &apos;%1&apos;:</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="214"/>
         <source>Folder was successfully created on %1.</source>
-        <translation>โฟลเดอร์ถูกสร้างขึ้นเรียบร้อยแล้วเมื่อ %1...</translation>
+        <translation>โฟลเดอร์ถูกสร้างขึ้นเรียบร้อยเมื่อ %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="225"/>
         <source>Authentication failed accessing %1</source>
-        <translation>รับรองความถูกต้องล้มเหลวขณะกำลังเข้าถึง %1</translation>
+        <translation>การรับรองความถูกต้องล้มเหลวขณะกำลังเข้าถึง %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="227"/>
@@ -1844,7 +1844,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="245"/>
         <source>Failed to list a folder. Error: %1</source>
-        <translation>รายการโฟลเดอร์ล้มเหลว ข้อผิดพลาด: %1</translation>
+        <translation>แสดงรายการโฟลเดอร์ล้มเหลว ข้อผิดพลาด: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="326"/>
@@ -1859,7 +1859,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="471"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a parent folder of &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation>คุณประสานข้อมูล &lt;i&gt;%1&lt;/i&gt; อยู่แล้ว ซึ่งมีโฟลเดอร์หลักเป็น &lt;i&gt;%2&lt;/i&gt;</translation>
+        <translation>คุณประสานข้อมูล &lt;i&gt;%1&lt;/i&gt; อยู่แล้ว ซึ่งเป็นโฟลเดอร์หลักของ &lt;i&gt;%2&lt;/i&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="473"/>
@@ -1910,12 +1910,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="195"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
-        <translation>ไม่มี E-Tag ที่ได้รับจากเซิร์ฟเวอร์ กรุณาตรวจสอบ พร็อกซี่หรือเกตเวย์</translation>
+        <translation>ไม่มี E-Tag ที่ได้รับจากเซิร์ฟเวอร์ กรุณาตรวจสอบพร็อกซี่หรือเกตเวย์</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="202"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
-        <translation>เราได้รับ E-Tag ที่แตกต่างกันสำหรับการทำงาน กรุณาลองอีกครั้งในเวลาถัดไป</translation>
+        <translation>เราได้รับ E-Tag ที่แตกต่างกันสำหรับการทำงานต่อ กำลังลองใหม่ในครั้งถัดไป</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="213"/>
@@ -1939,7 +1939,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <location filename="../src/gui/generalsettings.ui" line="20"/>
         <location filename="../src/gui/generalsettings.ui" line="32"/>
         <source>About</source>
-        <translation>เกี่ยวกับเรา</translation>
+        <translation>เกี่ยวกับ</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="41"/>
@@ -1974,7 +1974,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.ui" line="99"/>
         <source>Updates</source>
-        <translation>อัพเดท</translation>
+        <translation>อัปเดต</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="107"/>
@@ -2077,7 +2077,7 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="325"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>ยกเลิก</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="418"/>
@@ -2110,19 +2110,21 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/socketapi.cpp" line="668"/>
         <source>Please enter a password for your link share:</source>
-        <translation type="unfinished"/>
+        <translation>กรุณาใส่รหัสผ่านสำหรับลิงก์แชร์ของคุณ:</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="687"/>
         <source>Sharing error</source>
-        <translation type="unfinished"/>
+        <translation>ข้อผิดพลาดการแชร์</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="688"/>
         <source>Could not retrieve or create the public link share. Error:
 
 %1</source>
-        <translation type="unfinished"/>
+        <translation>ไม่สามารถรับหรือสร้างลิงก์แชร์สาธารณะ ข้อผิดพลาด:
+
+%1</translation>
     </message>
 </context>
 <context>
@@ -2158,7 +2160,7 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="14"/>
         <source>Ignored Files Editor</source>
-        <translation>ละเว้นการแก้ไขไฟล์</translation>
+        <translation>ตัวแก้ไขไฟล์ที่ละเว้น</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="20"/>
@@ -2196,22 +2198,22 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/ignorelisttablewidget.ui" line="38"/>
         <source>Allow Deletion</source>
-        <translation type="unfinished"/>
+        <translation>อนุญาตให้ลบ</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.ui" line="49"/>
         <source>Add</source>
-        <translation type="unfinished"/>
+        <translation>เพิ่ม</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.ui" line="59"/>
         <source>Remove</source>
-        <translation type="unfinished"/>
+        <translation>ลบออก</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.ui" line="66"/>
         <source>Remove all</source>
-        <translation type="unfinished"/>
+        <translation>ลบออกทั้งหมด</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="24"/>
@@ -2303,7 +2305,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="70"/>
         <source>&amp;Search:</source>
-        <translation>&amp;ค้นหา:</translation>
+        <translation>ค้&amp;นหา:</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="77"/>
@@ -2318,7 +2320,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="89"/>
         <source>&amp;Capture debug messages</source>
-        <translation>&amp;จับภาพข้อความการแก้ปัญหา</translation>
+        <translation>จั&amp;บภาพข้อความการแก้ปัญหา</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="101"/>
@@ -2355,7 +2357,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="210"/>
         <source>Save log file</source>
-        <translation>บันทึกข้อมูลไฟล์ log</translation>
+        <translation>บันทึกไฟล์ log</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="220"/>
@@ -2407,17 +2409,17 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="419"/>
         <source>Skip this time</source>
-        <translation>ข้ามเวลานี้</translation>
+        <translation>ข้ามครั้งนี้</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="420"/>
         <source>Get update</source>
-        <translation>ได้รับการอัพเดท</translation>
+        <translation>รับอัปเดต</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="449"/>
         <source>Update Failed</source>
-        <translation type="unfinished"/>
+        <translation>อัปเดตล้มเหลว</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="455"/>
