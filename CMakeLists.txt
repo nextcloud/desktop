@@ -4,7 +4,9 @@ set(CMAKE_CXX_STANDARD 14)
 include(VERSION.cmake)
 project(client LANGUAGES CXX C VERSION ${MIRALL_VERSION_MAJOR}.${MIRALL_VERSION_MINOR}.${MIRALL_VERSION_PATCH})
 include(FeatureSummary)
-find_package(ECM 5.50.0  NO_MODULE)
+
+find_package(ECM 5.50.0 REQUIRED NO_MODULE)
+
 set_package_properties(ECM PROPERTIES TYPE REQUIRED DESCRIPTION "Extra CMake Modules." URL "https://projects.kde.org/projects/kdesupport/extra-cmake-modules")
 feature_summary(WHAT REQUIRED_PACKAGES_NOT_FOUND FATAL_ON_MISSING_REQUIRED_PACKAGES)
 
@@ -211,3 +213,11 @@ configure_file(config.h.in ${CMAKE_CURRENT_BINARY_DIR}/config.h)
 configure_file(version.h.in ${CMAKE_CURRENT_BINARY_DIR}/version.h)
 
 feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)
+
+if(ECM_VERSION VERSION_GREATER_EQUAL 5.79)
+    message(STATUS "Suitable ECM ${ECM_VERSION} found, installing clang-format git hook")
+    include(KDEGitCommitHooks)
+    kde_configure_git_pre_commit_hook(CHECKS CLANG_FORMAT)
+else()
+    message(WARNING "ECM ${ECM_VERSION} too old, cannot install clang-format git hook")
+endif()
