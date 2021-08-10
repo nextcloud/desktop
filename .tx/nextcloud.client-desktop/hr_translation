@@ -22,5 +22,6 @@ Icon=@APPLICATION_EXECUTABLE@
 
 # Translations
 Icon[hr]=@APPLICATION_ICON_NAME@
+Name[hr]=@APPLICATION_NAME@ Desktop
 Comment[hr]=@APPLICATION_NAME@ klijent za sinkronizaciju računala
 GenericName[hr]=Sinkronizacija mapa
