@@ -58,8 +58,6 @@ public:
     bool manualFolderConfig() const;
     bool isConfirmBigFolderChecked() const;
 
-    void enableFinishOnResultWidget(bool enable);
-
     void displayError(const QString &);
     AbstractCredentials *getCredentials() const;
 
