@@ -85,9 +85,7 @@ QVariant ProtocolItemModel::data(const QModelIndex &index, int role) const
             } else if (Progress::isWarningKind(status)) {
                 return Theme::instance()->syncStateIcon(SyncResult::Problem);
             } else {
-                return {};
-                // TODO: display icon on success?
-                //                return Theme::instance()->syncStateIcon(SyncResult::Success);
+                return Theme::instance()->syncStateIcon(SyncResult::Success);
             }
         }
         break;
