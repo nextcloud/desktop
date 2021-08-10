@@ -244,6 +244,7 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const QString &loc
             qFatal("These were handled earlier");
         case CSYNC_FILE_EXCLUDE_LIST:
             item->_errorString = tr("File is listed on the ignore list.");
+            item->_status = SyncFileItem::Excluded;
             break;
         case CSYNC_FILE_EXCLUDE_INVALID_CHAR:
             if (item->_file.endsWith(QLatin1Char('.'))) {
@@ -273,6 +274,7 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const QString &loc
             break;
         case CSYNC_FILE_EXCLUDE_HIDDEN:
             item->_errorString = tr("File/Folder is ignored because it's hidden.");
+            item->_status = SyncFileItem::Excluded;
             break;
         case CSYNC_FILE_EXCLUDE_STAT_FAILED:
             item->_errorString = tr("Stat failed.");

@@ -43,7 +43,8 @@ namespace {
 bool persistsUntilLocalDiscovery(const OCC::ProtocolItem &data)
 {
     return data.status() == OCC::SyncFileItem::Conflict
-        || (data.status() == OCC::SyncFileItem::FileIgnored && data.direction() == OCC::SyncFileItem::Up);
+        || (data.status() == OCC::SyncFileItem::FileIgnored && data.direction() == OCC::SyncFileItem::Up)
+        || data.status() == OCC::SyncFileItem::Excluded;
 }
 
 }
@@ -142,7 +143,7 @@ void IssuesWidget::slotProgressInfo(const QString &folder, const ProgressInfo &p
             if (item.folder() != f) {
                 return false;
             }
-            if (item.direction() == SyncFileItem::None) {
+            if (item.direction() == SyncFileItem::None && item.status() != SyncFileItem::Excluded) {
                 // TODO: don't clear syncErrors and excludes for now.
                 // make them either unique or remove them on the next sync?
                 return false;
