@@ -24,6 +24,7 @@ Summary
 * Bugfix - Fix config migrations from versions 2.8 to 2.9: [#8824](https://github.com/owncloud/client/issues/8824)
 * Bugfix - Always exclude .owncloud files: [#8836](https://github.com/owncloud/client/pull/8836)
 * Bugfix - Don't crash if a certain move is undone: [#8837](https://github.com/owncloud/client/issues/8837)
+* Bugfix - Prevent sync root sharing: [#8849](https://github.com/owncloud/client/issues/8849)
 * Bugfix - Removed support for client side certificates: [#8864](https://github.com/owncloud/client/pull/8864)
 * Bugfix - The `Re-open Browser` now always does what it says: [#8866](https://github.com/owncloud/client/pull/8866)
 * Change - Don't ask the user to switch to http: [#8231](https://github.com/owncloud/client/issues/8231)
@@ -164,6 +165,14 @@ Details
 * Bugfix - Don't crash if a certain move is undone: [#8837](https://github.com/owncloud/client/issues/8837)
 
    https://github.com/owncloud/client/issues/8837
+
+* Bugfix - Prevent sync root sharing: [#8849](https://github.com/owncloud/client/issues/8849)
+
+   Due to legacy reasons it is possible to let two sync connections use the same directory. In
+   combination with virtual files this was leading to dataloss however.
+
+   https://github.com/owncloud/client/issues/8849
+   https://github.com/owncloud/client/issues/8512
 
 * Bugfix - Removed support for client side certificates: [#8864](https://github.com/owncloud/client/pull/8864)
 
