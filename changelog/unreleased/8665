@@ -1,0 +1,5 @@
+Change: Add a branding option to skip the advanced setup page
+
+If the option is enabled we will create a sync with the default values.
+
+https://github.com/owncloud/client/issues/8665

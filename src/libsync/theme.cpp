@@ -375,6 +375,11 @@ bool Theme::wizardHideExternalStorageConfirmationCheckbox() const
     return false;
 }
 
+bool Theme::wizardSkipAdvancedPage() const
+{
+    return false;
+}
+
 bool Theme::wizardHideFolderSizeLimitCheckbox() const
 {
     return false;

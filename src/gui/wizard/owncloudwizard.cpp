@@ -38,12 +38,27 @@
 
 #include <stdlib.h>
 
+namespace {
+auto initLocalFolder()
+{
+    auto localFolder = OCC::Theme::instance()->defaultClientFolder();
+    // Update the local folder - this is not guaranteed to find a good one
+    // if its a relative path, prepend with users home dir, otherwise use as absolute path
+
+    if (!QDir(localFolder).isAbsolute()) {
+        localFolder = QDir::homePath() + QDir::separator() + localFolder;
+    }
+    return OCC::FolderMan::instance()->findGoodPathForNewSyncFolder(localFolder);
+}
+}
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcWizard, "gui.wizard", QtInfoMsg)
 
 OwncloudWizard::OwncloudWizard(QWidget *parent)
     : QWizard(parent)
+    , _remoteFolder(Theme::instance()->defaultServerFolder())
+    , _localFolder(initLocalFolder())
     , _account(nullptr)
     , _setupPage(new OwncloudSetupPage(this))
     , _httpCredsPage(new OwncloudHttpCredsPage(this))
@@ -69,9 +84,6 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
     connect(_setupPage, &OwncloudSetupPage::determineAuthType, this, &OwncloudWizard::determineAuthType);
     connect(_httpCredsPage, &OwncloudHttpCredsPage::connectToOCUrl, this, &OwncloudWizard::connectToOCUrl);
     connect(_oauthCredsPage, &OwncloudOAuthCredsPage::connectToOCUrl, this, &OwncloudWizard::connectToOCUrl);
-    connect(_advancedSetupPage, &OwncloudAdvancedSetupPage::createLocalAndRemoteFolders,
-        this, &OwncloudWizard::createLocalAndRemoteFolders);
-
 
     Theme *theme = Theme::instance();
     setWindowTitle(tr("%1 Connection Wizard").arg(theme->appNameGUI()));
@@ -98,9 +110,14 @@ AccountPtr OwncloudWizard::account() const
     return _account;
 }
 
-QString OwncloudWizard::localFolder() const
+const QString &OwncloudWizard::localFolder() const
 {
-    return (_advancedSetupPage->localFolder());
+    return _localFolder;
+}
+
+void OwncloudWizard::setLocalFolder(const QString &newLocalFolder)
+{
+    _localFolder = newLocalFolder;
 }
 
 QStringList OwncloudWizard::selectiveSyncBlacklist() const
@@ -131,7 +148,7 @@ QString OwncloudWizard::ocUrl() const
 
 void OwncloudWizard::setRemoteFolder(const QString &remoteFolder)
 {
-    _advancedSetupPage->setRemoteFolder(remoteFolder);
+    _remoteFolder = remoteFolder;
 }
 
 void OwncloudWizard::successfulStep()
@@ -163,6 +180,16 @@ void OwncloudWizard::successfulStep()
     } else {
         next();
     }
+}
+
+const QString &OwncloudWizard::remoteFolder() const
+{
+    return _remoteFolder;
+}
+
+void OwncloudWizard::resetRemoteFolder()
+{
+    _remoteFolder = Theme::instance()->defaultServerFolder();
 }
 
 DetermineAuthTypeJob::AuthType OwncloudWizard::authType() const

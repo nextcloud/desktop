@@ -33,7 +33,6 @@ class OwncloudSetupPage;
 class OwncloudHttpCredsPage;
 class OwncloudOAuthCredsPage;
 class OwncloudAdvancedSetupPage;
-class OwncloudWizardResultPage;
 class AbstractCredentials;
 class AbstractCredentialsWizardPage;
 
@@ -52,7 +51,6 @@ public:
     void setOCUrl(const QString &);
 
     QString ocUrl() const;
-    QString localFolder() const;
     QStringList selectiveSyncBlacklist() const;
     bool useVirtualFileSync() const;
     bool manualFolderConfig() const;
@@ -72,28 +70,35 @@ public:
 
     QSize minimumSizeHint() const override;
 
+    void setLocalFolder(const QString &newLocalFolder);
+    const QString &localFolder() const;
+
+    void setRemoteFolder(const QString &);
+    const QString &remoteFolder() const;
+    void resetRemoteFolder();
+
 public slots:
     void setAuthType(DetermineAuthTypeJob::AuthType type);
-    void setRemoteFolder(const QString &);
     void slotCurrentPageChanged(int);
     void successfulStep();
 
 signals:
+    void createLocalAndRemoteFolders();
     void clearPendingRequests();
     void determineAuthType(const QString &);
     void connectToOCUrl(const QString &);
-    void createLocalAndRemoteFolders(const QString &, const QString &);
     // make sure to connect to this, rather than finished(int)!!
     void basicSetupFinished(int);
     void needCertificate();
 
 private:
+    QString _remoteFolder;
+    QString _localFolder;
     AccountPtr _account;
     OwncloudSetupPage *_setupPage;
     OwncloudHttpCredsPage *_httpCredsPage;
     OwncloudOAuthCredsPage *_oauthCredsPage;
     OwncloudAdvancedSetupPage *_advancedSetupPage;
-    OwncloudWizardResultPage *_resultPage;
     AbstractCredentialsWizardPage *_credentialsPage;
     DetermineAuthTypeJob::AuthType _authType;
 

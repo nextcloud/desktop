@@ -18,14 +18,21 @@
 #include <QWizardPage>
 
 namespace OCC {
-
+class OwncloudWizard;
 class AbstractCredentials;
 
 /**
  * @brief The AbstractCredentialsWizardPage class
  * @ingroup gui
  */
-class AbstractCredentialsWizardPage : public QWizardPage
+
+class AbstractWizardPage : public QWizardPage
+{
+public:
+    OwncloudWizard *owncloudWizard() const;
+};
+
+class AbstractCredentialsWizardPage : public AbstractWizardPage
 {
 public:
     void cleanupPage() override;

@@ -273,6 +273,11 @@ public:
     virtual bool wizardHideExternalStorageConfirmationCheckbox() const;
 
     /**
+     * Skip the advanced page and create a sync with the default settings
+     */
+    virtual bool wizardSkipAdvancedPage() const;
+
+    /**
      * Alternative path on the server that provides access to the webdav capabilities
      *
      * Attention: Make sure that this string does NOT have a leading slash and that
