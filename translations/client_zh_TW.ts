@@ -2297,48 +2297,48 @@ for additional privileges during the process.</source>
         <translation>設定本地資料夾選項</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="61"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="59"/>
         <source>Connect...</source>
         <translation>連線中...</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="89"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="87"/>
         <source> (experimental)</source>
         <translation>(實驗性的)</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="89"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="87"/>
         <source>Use &amp;virtual files instead of downloading content immediately%1</source>
         <translation>使用＆虛擬文件，而不是立即下載內容%1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="189"/>
-        <source>%1 folder &apos;%2&apos; is synced to local folder &apos;%3&apos;</source>
-        <translation>%1 資料夾 &apos;%2&apos; 與本地資料夾 &apos;%3&apos; 同步</translation>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="172"/>
+        <source>&lt;p&gt;&lt;strong&gt;Warning:&lt;/strong&gt; The local folder is not empty. Pick a resolution!&lt;/p&gt;</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="192"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="168"/>
         <source>Sync the folder &apos;%1&apos;</source>
         <translation>同步資料夾 &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="197"/>
-        <source>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Warning:&lt;/strong&gt; The local folder is not empty. Pick a resolution!&lt;/small&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;警告:&lt;/strong&gt; 本地端的資料夾不是空的. 請選擇解決方案!&lt;/small&gt;&lt;/p&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="278"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="245"/>
         <source>Virtual files are not available for the selected folder</source>
         <translation>虛擬文件不可用的於所選目錄</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="338"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="279"/>
+        <source>Error</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="304"/>
         <source>Local Sync Folder</source>
         <translation>本地同步資料夾</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="372"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="407"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="338"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="373"/>
         <source>(%1)</source>
         <translation>(%1)</translation>
     </message>
@@ -4334,85 +4334,77 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>表單</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="32"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="136"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="235"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="558"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="569"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="114"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="213"/>
         <source>TextLabel</source>
         <translation>文字標籤</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="87"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="65"/>
         <source>Server</source>
         <translation>伺服器</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="482"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="478"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If this box is checked, existing content in the local folder will be erased to start a clean sync from the server.&lt;/p&gt;&lt;p&gt;Do not check this if the local content should be uploaded to the servers folder.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;如果選中此框，則將刪除本地端目錄中的現有內容，以從伺服器啟動干淨同步。&lt;/p&gt;&lt;p&gt;如果應將本地端內容上載到服務器目錄，請不要檢查。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="485"/>
-        <source>Start a &amp;clean sync (Erases the local folder!)</source>
-        <translation>開始清除同步(將資料從本地端刪除)</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="193"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="171"/>
         <source>Ask for confirmation before synchroni&amp;zing folders larger than</source>
         <translation>同步大於的目錄之前要求確認</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="126"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="104"/>
         <source>S&amp;ynchronize everything from server</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="210"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="188"/>
         <source>MB</source>
         <extracomment>Trailing part of &quot;Ask confirmation before syncing folder larger than&quot; </extracomment>
         <translation>MB</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="219"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="197"/>
         <source>Ask for confirmation before synchronizing e&amp;xternal storages</source>
         <translation>在同步e＆xternal存儲之前要求確認</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="228"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="206"/>
         <source>Choose what to sync</source>
         <translation>選擇要同步的項目</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="273"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="276"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="251"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="254"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When this option is selected, the wizard will close without synchronizing anything. You can use the &amp;quot;Add Folder Sync Connection&amp;quot; button from the account settings to choose which pair of local and remote folder you wish to synchronize&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;選擇此選項後，嚮導將關閉而不同步任何內容。 您可以使用&amp;quot;添加目錄同步連接&amp;quot;您從帳號設定中選擇按鈕，以選擇要同步的本地端和遠端目錄對&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="279"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="257"/>
         <source>Manually create folder sync connections </source>
         <translation>手動建立目錄同步連接</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="400"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="378"/>
         <source>&amp;Local Folder</source>
         <translation>本地資料夾 (&amp;L)</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="441"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="419"/>
         <source>pbSelectLocalFolder</source>
         <translation>pb選擇本地文件夾</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="472"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="468"/>
         <source>&amp;Keep local data</source>
         <translation>保留本地資料 (&amp;K)</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="503"/>
-        <source>Status message</source>
-        <translation>狀態訊息</translation>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="481"/>
+        <source>Start a &amp;clean sync (Crreate a backup and rrases the local folder!)</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -4423,12 +4415,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>表單</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudhttpcredspage.ui" line="54"/>
+        <location filename="../src/gui/wizard/owncloudhttpcredspage.ui" line="38"/>
         <source>&amp;Username</source>
         <translation>使用者名稱 (&amp;U)</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudhttpcredspage.ui" line="64"/>
+        <location filename="../src/gui/wizard/owncloudhttpcredspage.ui" line="48"/>
         <source>&amp;Password</source>
         <translation>密碼 (&amp;P)</translation>
     </message>

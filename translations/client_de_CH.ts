@@ -2291,48 +2291,48 @@ for additional privileges during the process.</source>
         <translation>Einstellungen der Optionen für lokale Verzeichnisse</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="61"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="59"/>
         <source>Connect...</source>
         <translation>Verbinden…</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="89"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="87"/>
         <source> (experimental)</source>
         <translation>(experimentell)</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="89"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="87"/>
         <source>Use &amp;virtual files instead of downloading content immediately%1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="189"/>
-        <source>%1 folder &apos;%2&apos; is synced to local folder &apos;%3&apos;</source>
-        <translation>%1 Ordner &apos;%2&apos; wird mit dem lokalen Order &apos;%3&apos; synchronisiert.</translation>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="172"/>
+        <source>&lt;p&gt;&lt;strong&gt;Warning:&lt;/strong&gt; The local folder is not empty. Pick a resolution!&lt;/p&gt;</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="192"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="168"/>
         <source>Sync the folder &apos;%1&apos;</source>
         <translation>Synchronisiere Verzeichnis &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="197"/>
-        <source>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Warning:&lt;/strong&gt; The local folder is not empty. Pick a resolution!&lt;/small&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Warnung:&lt;/strong&gt;Das lokale Verzeichnis ist nicht leer. Wähle eine Lösung!!&lt;/small&gt;&lt;/p&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="278"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="245"/>
         <source>Virtual files are not available for the selected folder</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="338"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="279"/>
+        <source>Error</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="304"/>
         <source>Local Sync Folder</source>
         <translation>Lokaler Ordner für die Synchronisation</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="372"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="407"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="338"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="373"/>
         <source>(%1)</source>
         <translation>(%1)</translation>
     </message>
@@ -4326,85 +4326,77 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
         <translation>Formular</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="32"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="136"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="235"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="558"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="569"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="114"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="213"/>
         <source>TextLabel</source>
         <translation>TextLabel</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="87"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="65"/>
         <source>Server</source>
         <translation>Server</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="482"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="478"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If this box is checked, existing content in the local folder will be erased to start a clean sync from the server.&lt;/p&gt;&lt;p&gt;Do not check this if the local content should be uploaded to the servers folder.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Wenn diese Auswahlbox angeklickt wird, wird vorhandener Inhalt des lokalen Verzeichnisses gelöscht, um eine saubere Synchronisation des Servers zu ermöglichen.&lt;/p&gt;&lt;p&gt;Sie darf nicht angewählt werden, wenn die vorhandenen Dateien in dem Verzeichnis auf den Server hochgeladen werden sollen.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="485"/>
-        <source>Start a &amp;clean sync (Erases the local folder!)</source>
-        <translation>Eine Neu-Syn&amp;chronisation starten (löscht den lokalen Ordner!)</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="193"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="171"/>
         <source>Ask for confirmation before synchroni&amp;zing folders larger than</source>
         <translation>Nachfragen, bei Synchronisation von Ordnern grösser als</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="126"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="104"/>
         <source>S&amp;ynchronize everything from server</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="210"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="188"/>
         <source>MB</source>
         <extracomment>Trailing part of &quot;Ask confirmation before syncing folder larger than&quot; </extracomment>
         <translation>MB</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="219"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="197"/>
         <source>Ask for confirmation before synchronizing e&amp;xternal storages</source>
         <translation>Nachfragen, bei Synchronisation von externen Speichern</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="228"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="206"/>
         <source>Choose what to sync</source>
         <translation>Zu synchronisierende Elemente auswählen</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="273"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="276"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="251"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="254"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When this option is selected, the wizard will close without synchronizing anything. You can use the &amp;quot;Add Folder Sync Connection&amp;quot; button from the account settings to choose which pair of local and remote folder you wish to synchronize&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Wenn diese Option angewählt ist, wird der Installationsassistent, ohne irgendetwas zu synchronisieren, beendet. Du kannst den &amp;quot;Synchronisationsverzeichnis&amp;quot; Button in den Kontoeinstellungen nutzen, um das Ordnerpaar zwischen lokal und entfernt festzulegen, die du synchronisieren möchtest&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="279"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="257"/>
         <source>Manually create folder sync connections </source>
         <translation>Manuell Synchronisationsverzeichnis erstellen</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="400"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="378"/>
         <source>&amp;Local Folder</source>
         <translation>&amp;Lokaler Ordner</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="441"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="419"/>
         <source>pbSelectLocalFolder</source>
         <translation>pbSelectLocalFolder</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="472"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="468"/>
         <source>&amp;Keep local data</source>
         <translation>Lokale Daten &amp;behalten</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="503"/>
-        <source>Status message</source>
-        <translation>Statusmeldung</translation>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="481"/>
+        <source>Start a &amp;clean sync (Crreate a backup and rrases the local folder!)</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -4415,12 +4407,12 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
         <translation>Formular</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudhttpcredspage.ui" line="54"/>
+        <location filename="../src/gui/wizard/owncloudhttpcredspage.ui" line="38"/>
         <source>&amp;Username</source>
         <translation>&amp;Benutzername</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudhttpcredspage.ui" line="64"/>
+        <location filename="../src/gui/wizard/owncloudhttpcredspage.ui" line="48"/>
         <source>&amp;Password</source>
         <translation>&amp;Passwort</translation>
     </message>

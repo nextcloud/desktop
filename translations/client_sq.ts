@@ -2298,48 +2298,48 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
         <translation>Mundësi rregullimesh për dosjet vendore</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="61"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="59"/>
         <source>Connect...</source>
         <translation>Lidhuni…</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="89"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="87"/>
         <source> (experimental)</source>
         <translation> (eksperimentale)</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="89"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="87"/>
         <source>Use &amp;virtual files instead of downloading content immediately%1</source>
         <translation>Përdor kartela &amp;virtuale, në vend të shkarkimit të menjëhershëm të lëndës%1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="189"/>
-        <source>%1 folder &apos;%2&apos; is synced to local folder &apos;%3&apos;</source>
-        <translation>Dosja %1 &apos;%2&apos; po njëkohësohet me dosjen vendore &apos;%3&apos;</translation>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="172"/>
+        <source>&lt;p&gt;&lt;strong&gt;Warning:&lt;/strong&gt; The local folder is not empty. Pick a resolution!&lt;/p&gt;</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="192"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="168"/>
         <source>Sync the folder &apos;%1&apos;</source>
         <translation>Njëkohëso dosjen &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="197"/>
-        <source>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Warning:&lt;/strong&gt; The local folder is not empty. Pick a resolution!&lt;/small&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Kujdes:&lt;/strong&gt; Dosja vendore s’është e zbrazët. Vendosni një zgjidhje!&lt;/small&gt;&lt;/p&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="278"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="245"/>
         <source>Virtual files are not available for the selected folder</source>
         <translation>S’ka kartela virtuale për dosjen e përzgjedhur</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="338"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="279"/>
+        <source>Error</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="304"/>
         <source>Local Sync Folder</source>
         <translation>Dosje Vendore Njëkohësimi</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="372"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="407"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="338"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="373"/>
         <source>(%1)</source>
         <translation>(%1)</translation>
     </message>
@@ -4335,85 +4335,77 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
         <translation>Formular</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="32"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="136"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="235"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="558"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="569"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="114"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="213"/>
         <source>TextLabel</source>
         <translation>EtiketëTeksti</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="87"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="65"/>
         <source>Server</source>
         <translation>Shërbyes</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="482"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="478"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If this box is checked, existing content in the local folder will be erased to start a clean sync from the server.&lt;/p&gt;&lt;p&gt;Do not check this if the local content should be uploaded to the servers folder.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Nëse i vihet shenja kësaj kutize, lënda ekzistuese në dosjen vendore do të fshihet për të nisur një njëkohësim të pastër nga shërbyesi.&lt;/p&gt;&lt;p&gt;Mos i vini shenjë, nëse lënda vendore duhet të ngarkohet te dosja e shërbyesit.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="485"/>
-        <source>Start a &amp;clean sync (Erases the local folder!)</source>
-        <translation>Nis një njëkohësim të &amp;pastër (Fshin dosjen vendore!)</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="193"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="171"/>
         <source>Ask for confirmation before synchroni&amp;zing folders larger than</source>
         <translation>Kërko ripohim përpara njëkohës&amp;imi dosjesh më të mëdha se</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="126"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="104"/>
         <source>S&amp;ynchronize everything from server</source>
         <translation>&amp;Njëkohëso gjithçka prej shërbyesi</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="210"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="188"/>
         <source>MB</source>
         <extracomment>Trailing part of &quot;Ask confirmation before syncing folder larger than&quot; </extracomment>
         <translation>MB</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="219"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="197"/>
         <source>Ask for confirmation before synchronizing e&amp;xternal storages</source>
         <translation>Kërko ripohim përpara njëkohësimi depozitash të jash&amp;tme</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="228"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="206"/>
         <source>Choose what to sync</source>
         <translation>Zgjidhni çfarë të njëkohësohet</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="273"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="276"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="251"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="254"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When this option is selected, the wizard will close without synchronizing anything. You can use the &amp;quot;Add Folder Sync Connection&amp;quot; button from the account settings to choose which pair of local and remote folder you wish to synchronize&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Kur përzgjidhet kjo mundësi, ndihmësi do të mbyllet pa njëkohësuar gjë. Për të zgjedhur cila dyshe dosjesh vendore dhe të largët dëshironi të njëkohësohet, mund të përdorni butonin &amp;quot;Shtoni Lidhje Njëkohësimesh Dosjeje&amp;quot; që nga rregullimet mbi llogarinë&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="279"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="257"/>
         <source>Manually create folder sync connections </source>
         <translation>Krijoni lidhje njëkohësimesh dosjesh dorazi </translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="400"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="378"/>
         <source>&amp;Local Folder</source>
         <translation>Dosje &amp;Vendore</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="441"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="419"/>
         <source>pbSelectLocalFolder</source>
         <translation>pbSelectLocalFolder</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="472"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="468"/>
         <source>&amp;Keep local data</source>
         <translation>&amp;Mbaj të dhëna vendore</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="503"/>
-        <source>Status message</source>
-        <translation>Mesazh gjendjeje</translation>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="481"/>
+        <source>Start a &amp;clean sync (Crreate a backup and rrases the local folder!)</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -4424,12 +4416,12 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
         <translation>Formular</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudhttpcredspage.ui" line="54"/>
+        <location filename="../src/gui/wizard/owncloudhttpcredspage.ui" line="38"/>
         <source>&amp;Username</source>
         <translation>&amp;Emër përdoruesi</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudhttpcredspage.ui" line="64"/>
+        <location filename="../src/gui/wizard/owncloudhttpcredspage.ui" line="48"/>
         <source>&amp;Password</source>
         <translation>&amp;Fjalëkalim</translation>
     </message>
