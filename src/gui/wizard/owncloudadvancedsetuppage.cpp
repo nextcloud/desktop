@@ -53,9 +53,7 @@ OwncloudAdvancedSetupPage::OwncloudAdvancedSetupPage()
 
     registerField(QLatin1String("OCSyncFromScratch"), _ui.cbSyncFromScratch);
 
-    _ui.errorScrollContents->layout()->addWidget(_progressIndi);
     stopSpinner();
-    setupCustomization();
 
     connect(_ui.pbSelectLocalFolder, &QAbstractButton::clicked, this, &OwncloudAdvancedSetupPage::slotSelectFolder);
     setButtonText(QWizard::NextButton, tr("Connect..."));
@@ -100,13 +98,6 @@ OwncloudAdvancedSetupPage::OwncloudAdvancedSetupPage()
     });
 }
 
-void OwncloudAdvancedSetupPage::setupCustomization()
-{
-    // set defaults for the customize labels.
-    _ui.topLabel->hide();
-    _ui.bottomLabel->hide();
-}
-
 bool OwncloudAdvancedSetupPage::isComplete() const
 {
     return manualFolderConfig() || (!_checking && _localFolderValid);
@@ -114,13 +105,6 @@ bool OwncloudAdvancedSetupPage::isComplete() const
 
 void OwncloudAdvancedSetupPage::initializePage()
 {
-    WizardCommon::initErrorLabel(_ui.errorLabel);
-
-    auto labelSizeHint = _ui.errorLabel->minimumSizeHint();
-    _ui.errorScroll->setMinimumSize(
-        labelSizeHint.width(),
-        qMax<int>(1.3 * labelSizeHint.height(), _progressIndi->height()));
-
     const auto vfsMode = bestAvailableVfsMode();
     if (Theme::instance()->forceVirtualFilesOption() && vfsMode == Vfs::WindowsCfApi) {
         setRadioChecked(_ui.rVirtualFileSync);
@@ -146,7 +130,7 @@ void OwncloudAdvancedSetupPage::initializePage()
     _ui.lSyncEverythingSizeLabel->setText(QString());
 
     // Update the local folder - this is not guaranteed to find a good one
-    QString goodLocalFolder = FolderMan::instance()->findGoodPathForNewSyncFolder(localFolder(), serverUrl());
+    QString goodLocalFolder = FolderMan::instance()->findGoodPathForNewSyncFolder(localFolder());
     wizard()->setProperty("localFolder", goodLocalFolder);
 
     // call to init label
@@ -176,41 +160,24 @@ void OwncloudAdvancedSetupPage::updateStatus()
     const QString locFolder = localFolder();
 
     // check if the local folder exists. If so, and if its not empty, show a warning.
-    QString errorStr = FolderMan::instance()->checkPathValidityForNewFolder(locFolder, serverUrl());
+    QString errorStr = FolderMan::instance()->checkPathValidityForNewFolder(locFolder);
     _localFolderValid = errorStr.isEmpty();
 
-    QString t;
-
     _ui.pbSelectLocalFolder->setText(QDir::toNativeSeparators(locFolder));
-    if (dataChanged()) {
-        if (_remoteFolder.isEmpty() || _remoteFolder == QLatin1String("/")) {
-            t = "";
-        } else {
-            t = Utility::escape(tr("%1 folder '%2' is synced to local folder '%3'")
-                                    .arg(Theme::instance()->appName(), _remoteFolder,
-                                        QDir::toNativeSeparators(locFolder)));
-            _ui.rSyncEverything->setText(tr("Sync the folder '%1'").arg(_remoteFolder));
-        }
-
-        const bool dirNotEmpty(QDir(locFolder).entryList(QDir::AllEntries | QDir::NoDotAndDotDot).count() > 0);
-        if (dirNotEmpty) {
-            t += tr("<p><small><strong>Warning:</strong> The local folder is not empty. "
-                    "Pick a resolution!</small></p>");
-            _ui.resolutionWidget->setVisible(dirNotEmpty);
-        } else {
-            _ui.resolutionWidget->setVisible(false);
-        }
+    if (!_remoteFolder.isEmpty() && _remoteFolder != QLatin1String("/")) {
+        _ui.rSyncEverything->setText(tr("Sync the folder '%1'").arg(_remoteFolder));
     }
 
-    _ui.syncModeLabel->setText(t);
+    if (!QDir(locFolder).entryList(QDir::AllEntries | QDir::NoDotAndDotDot).isEmpty()) {
+        _ui.syncModeLabel->setText(tr("<p><strong>Warning:</strong> The local folder is not empty. "
+                                      "Pick a resolution!</p>"));
+        _ui.resolutionStackedWidget->setCurrentIndex(1);
+    } else {
+        _ui.resolutionStackedWidget->setCurrentIndex(0);
+    }
+
     setErrorString(errorStr);
     emit completeChanged();
-}
-
-/* obsolete */
-bool OwncloudAdvancedSetupPage::dataChanged()
-{
-    return true;
 }
 
 void OwncloudAdvancedSetupPage::startSpinner()
@@ -223,16 +190,6 @@ void OwncloudAdvancedSetupPage::stopSpinner()
 {
     _progressIndi->setVisible(false);
     _progressIndi->stopAnimation();
-}
-
-QUrl OwncloudAdvancedSetupPage::serverUrl() const
-{
-    const QString urlString = static_cast<OwncloudWizard *>(wizard())->ocUrl();
-    const QString user = static_cast<OwncloudWizard *>(wizard())->getCredentials()->user();
-
-    QUrl url(urlString);
-    url.setUserName(user);
-    return url;
 }
 
 int OwncloudAdvancedSetupPage::nextId() const
@@ -308,11 +265,10 @@ bool OwncloudAdvancedSetupPage::validatePage()
 
 void OwncloudAdvancedSetupPage::setErrorString(const QString &err)
 {
-    if (err.isEmpty()) {
-        _ui.errorLabel->setVisible(false);
-    } else {
-        _ui.errorLabel->setVisible(true);
-        _ui.errorLabel->setText(err);
+    if (!err.isEmpty()) {
+        auto msg = new QMessageBox(QMessageBox::Warning, tr("Error"), err, QMessageBox::Ok, this);
+        msg->setAttribute(Qt::WA_DeleteOnClose);
+        msg->open();
     }
     _checking = false;
     emit completeChanged();

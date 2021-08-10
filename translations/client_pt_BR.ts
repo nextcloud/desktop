@@ -243,7 +243,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="58"/>
         <source>Re-open Browser</source>
-        <translation type="unfinished"/>
+        <translation>Reabrir o navegador</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="65"/>
@@ -737,130 +737,130 @@ Esta ação irá anular qualquer sincronização atualmente em execução.</tran
 <context>
     <name>OCC::Application</name>
     <message>
-        <location filename="../src/gui/application.cpp" line="97"/>
+        <location filename="../src/gui/application.cpp" line="167"/>
         <source>Continuing will mean &lt;b&gt;deleting these settings&lt;/b&gt;.</source>
         <translation>Continuar significa &lt;b&gt;excluir essas configurações&lt;/b&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="99"/>
+        <location filename="../src/gui/application.cpp" line="169"/>
         <source>Continuing will mean &lt;b&gt;ignoring these settings&lt;/b&gt;.</source>
         <translation>Continuar significa &lt;b&gt;ignorar essas configurações&lt;/b&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="105"/>
+        <location filename="../src/gui/application.cpp" line="175"/>
         <source>Some settings were configured in newer versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%2&lt;/i&gt;.</source>
         <translation>Algumas configurações foram realizadas em versões mais recentes deste cliente e usam recursos que não estão disponíveis nesta versão.&lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;O arquivo de configuração atual já foi feito backup em &lt;i&gt;%2&lt;/i&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="112"/>
+        <location filename="../src/gui/application.cpp" line="182"/>
         <source>Quit</source>
         <translation>Sair</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="113"/>
+        <location filename="../src/gui/application.cpp" line="183"/>
         <source>Continue</source>
         <translation>Continuar</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="271"/>
+        <location filename="../src/gui/application.cpp" line="305"/>
         <source>Error accessing the configuration file</source>
         <translation>Erro acessando o arquivo de configuração</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="272"/>
+        <location filename="../src/gui/application.cpp" line="306"/>
         <source>There was an error while accessing the configuration file at %1.</source>
         <translation>Ocorreu um erro ao acessar o arquivo de configuração em %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="275"/>
+        <location filename="../src/gui/application.cpp" line="309"/>
         <source>Quit %1</source>
         <translation>Sair %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="551"/>
+        <location filename="../src/gui/application.cpp" line="574"/>
         <source>%1 version %2<byte value="xd"/>
 File synchronization desktop utility.</source>
         <translation>%1 versão %2&lt;byte value=&quot;xd&quot;/&gt;
 Utilitário de sincronização de arquivos na área de trabalho. </translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="556"/>
+        <location filename="../src/gui/application.cpp" line="579"/>
         <source>For more information, see http://www.owncloud.org</source>
         <translation>Para obter mais informações, consulte http://www.owncloud.org </translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="570"/>
+        <location filename="../src/gui/application.cpp" line="593"/>
         <source>Show the settings dialog while starting.</source>
         <translation>Mostrar a caixa de diálogo de configurações ao iniciar. </translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="571"/>
+        <location filename="../src/gui/application.cpp" line="594"/>
         <source>Quit the running instance.</source>
         <translation>Saia da instância em execução. </translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="572"/>
+        <location filename="../src/gui/application.cpp" line="595"/>
         <source>Write log to file (use - to write to stdout).</source>
         <translation>Grave o log no arquivo (use - para gravar no stdout). </translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="573"/>
+        <location filename="../src/gui/application.cpp" line="596"/>
         <source>Write each sync log output in a new file in folder.</source>
         <translation>Grave cada saída do log de sincronização em um novo arquivo na pasta. </translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="574"/>
+        <location filename="../src/gui/application.cpp" line="597"/>
         <source>Remove logs older than &lt;hours&gt; hours (to be used with --logdir).</source>
         <translation>Remova os registros com mais de  &lt;hours&gt; horas (para ser usado com --logdir). </translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="575"/>
+        <location filename="../src/gui/application.cpp" line="598"/>
         <source>Flush the log file after every write.</source>
         <translation>Libere o arquivo de log após cada gravação. </translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="576"/>
+        <location filename="../src/gui/application.cpp" line="599"/>
         <source>Output debug-level messages in the log.</source>
         <translation>Envie mensagens de nível de depuração no log. </translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="577"/>
-        <location filename="../src/gui/application.cpp" line="578"/>
+        <location filename="../src/gui/application.cpp" line="600"/>
+        <location filename="../src/gui/application.cpp" line="601"/>
         <source>Override UI language.</source>
         <translation>Substitua o idioma da IU. </translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="579"/>
+        <location filename="../src/gui/application.cpp" line="602"/>
         <source>Use the given configuration folder.</source>
         <translation>Use a pasta de configuração fornecida. </translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="580"/>
+        <location filename="../src/gui/application.cpp" line="603"/>
         <source>Enable debug mode.</source>
         <translation>Ative o modo de depuração. </translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="583"/>
+        <location filename="../src/gui/application.cpp" line="606"/>
         <source>Virtual file system file to be opened (optional).</source>
         <translation>Arquivo do sistema de arquivos virtual a ser aberto (opcional). </translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="583"/>
+        <location filename="../src/gui/application.cpp" line="606"/>
         <source>[&lt;vfs file&gt;]</source>
         <translation>[&lt;vfs file&gt;]</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="612"/>
+        <location filename="../src/gui/application.cpp" line="635"/>
         <source>Invalid path passed to --confdir</source>
         <translation>Caminho inválido passado para --confdir </translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="625"/>
+        <location filename="../src/gui/application.cpp" line="648"/>
         <source>Error: unknown language &quot;%1&quot; (use --list-languages to get a complete list of supported translations)</source>
         <translation>Erro: idioma desconhecido &quot;%1&quot; (use --list-languages para obter uma lista completa das traduções suportadas) </translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="634"/>
+        <location filename="../src/gui/application.cpp" line="657"/>
         <source>Available translations: %1</source>
         <translation>Traduções disponíveis: %1 </translation>
     </message>
@@ -1146,107 +1146,107 @@ If this was an accident and you decide to keep your files, they will be re-synce
 <context>
     <name>OCC::FolderMan</name>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="341"/>
+        <location filename="../src/gui/folderman.cpp" line="393"/>
         <source>Could not reset folder state</source>
         <translation>Não foi possível redefinir o estado da pasta</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="342"/>
+        <location filename="../src/gui/folderman.cpp" line="394"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
         <translation>Uma velha revista de sincronização &apos;%1&apos; foi encontrada, mas não pôde ser removida. Por favor, certifique-se de que nenhuma aplicação está a usá-la.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1131"/>
+        <location filename="../src/gui/folderman.cpp" line="1183"/>
         <source> (backup)</source>
         <translation> (backup)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1136"/>
+        <location filename="../src/gui/folderman.cpp" line="1188"/>
         <source> (backup %1)</source>
         <translation> (backup %1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1325"/>
+        <location filename="../src/gui/folderman.cpp" line="1309"/>
         <source>Undefined State.</source>
         <translation>Estado indefinido.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1328"/>
+        <location filename="../src/gui/folderman.cpp" line="1312"/>
         <source>Waiting to start syncing.</source>
         <translation>À espera do início da sincronização.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1331"/>
+        <location filename="../src/gui/folderman.cpp" line="1315"/>
         <source>Preparing for sync.</source>
         <translation>Preparando para sincronização.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1334"/>
+        <location filename="../src/gui/folderman.cpp" line="1318"/>
         <source>Sync is running.</source>
         <translation>A sincronização está ocorrendo.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1339"/>
+        <location filename="../src/gui/folderman.cpp" line="1323"/>
         <source>Sync was successful, unresolved conflicts.</source>
         <translation>A sincronização foi bem-sucedida, conflitos não resolvidos.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1341"/>
+        <location filename="../src/gui/folderman.cpp" line="1325"/>
         <source>Last Sync was successful.</source>
         <translation>A última sincronização foi feita com sucesso.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1347"/>
+        <location filename="../src/gui/folderman.cpp" line="1331"/>
         <source>Setup Error.</source>
         <translation>Erro de Configuração.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1350"/>
+        <location filename="../src/gui/folderman.cpp" line="1334"/>
         <source>User Abort.</source>
         <translation>Usuário Abortou.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1353"/>
+        <location filename="../src/gui/folderman.cpp" line="1337"/>
         <source>Sync is paused.</source>
         <translation>Sincronização pausada.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1359"/>
+        <location filename="../src/gui/folderman.cpp" line="1343"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (Pausa na Sincronização) </translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1367"/>
+        <location filename="../src/gui/folderman.cpp" line="1351"/>
         <source>No valid folder selected!</source>
         <translation>Nenhuma pasta válida selecionada!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1379"/>
+        <location filename="../src/gui/folderman.cpp" line="1363"/>
         <source>The selected path does not exist!</source>
         <translation>O caminho selecionado não existe!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1383"/>
+        <location filename="../src/gui/folderman.cpp" line="1367"/>
         <source>The selected path is not a folder!</source>
         <translation>O caminho selecionado não é uma pasta!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1387"/>
+        <location filename="../src/gui/folderman.cpp" line="1371"/>
         <source>You have no permission to write to the selected folder!</source>
         <translation>Voce não tem permissão para escrita na pasta selecionada!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1454"/>
+        <location filename="../src/gui/folderman.cpp" line="1438"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
         <translation>Já existe uma sincronização do servidor para esta pasta local. Por favor, escolha uma outra pasta local!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1434"/>
+        <location filename="../src/gui/folderman.cpp" line="1418"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
         <translation>A pasta local %1 já contém uma pasta utilizada numa ligação de sincronização de pasta. Por favor, escolha outra!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1440"/>
+        <location filename="../src/gui/folderman.cpp" line="1424"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation>A pasta local %1 já está contida em uma pasta usada em uma conexão de sincronização de pastas. Por favor, escolha outra!</translation>
     </message>
@@ -1309,117 +1309,117 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>Existem conflitos não resolvidos. Clique para detalhes.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="278"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="260"/>
         <source>Synchronizing VirtualFiles with local folder</source>
         <translation>Sincronizando arquivos virtuais com a pasta local</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="280"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="262"/>
         <source>Synchronizing with local folder</source>
         <translation>Sincronizando com a pasta local</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="902"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="884"/>
         <source>Checking for changes in remote &apos;%1&apos;</source>
         <translation>Verificando alterações remotamente &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="906"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="888"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
         <translation>Verificação de alterações no local &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="913"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="895"/>
         <source>Reconciling changes</source>
         <translation>Reconciliando mudanças</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="948"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="930"/>
         <source>, &apos;%1&apos;</source>
         <extracomment>Build a list of file names</extracomment>
         <translation>, &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="951"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="933"/>
         <source>&apos;%1&apos;</source>
         <extracomment>Argument is a file name</extracomment>
         <translation>&apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="975"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="957"/>
         <source>Syncing %1</source>
         <extracomment>Example text: &quot;Syncing 'foo.txt', 'bar.txt'&quot;</extracomment>
         <translation>Sincronizando %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="977"/>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="988"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="959"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="970"/>
         <source>, </source>
         <translation>,</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="981"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="963"/>
         <source>download %1/s</source>
         <extracomment>Example text: &quot;download 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
         <translation>baixar %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="983"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="965"/>
         <source>↓ %1/s</source>
         <translation>↓ %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="993"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="975"/>
         <source>↑ %1/s</source>
         <translation>↑ %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="991"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="973"/>
         <source>upload %1/s</source>
         <extracomment>Example text: &quot;upload 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
         <translation>enviar %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="999"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="981"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (2MB of 2MB)&quot;</extracomment>
         <translation>%1 %2 (%3 de %4)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1003"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="985"/>
         <source>%1 %2</source>
         <extracomment>Example text: &quot;uploading foobar.png&quot;</extracomment>
         <translation>%1 %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1020"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1002"/>
         <source>%5 left, %1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;5 minutes left, 12 MB of 345 MB, file 6 of 7&quot;</extracomment>
         <translation>%5 restando, %1 de %2, arquivo %3 de %4</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1028"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1010"/>
         <source>%1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;12 MB of 345 MB, file 6 of 7&quot;</extracomment>
         <translation>%1 de%2, arquivo %3 de %4</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1035"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1017"/>
         <source>file %1 of %2</source>
         <translation>arquivo %1 de %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1081"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1063"/>
         <source>Waiting...</source>
         <translation>Esperando...</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1083"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1065"/>
         <source>Waiting for %n other folder(s)...</source>
         <translation><numerusform>Esperando por %n outra pasta...</numerusform><numerusform>Esperando por %n outras pastas...</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1089"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1071"/>
         <source>Preparing to sync...</source>
         <translation>Preparando para sincronizar...</translation>
     </message>
@@ -2296,48 +2296,48 @@ for additional privileges during the process.</source>
         <translation>Configurar opções de pastas locais</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="61"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="59"/>
         <source>Connect...</source>
         <translation>Conectar...</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="89"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="87"/>
         <source> (experimental)</source>
         <translation> (experimental)</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="89"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="87"/>
         <source>Use &amp;virtual files instead of downloading content immediately%1</source>
         <translation>Use arquivo &amp;virtual no lugar de baixar conteúdo imediatamente%1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="189"/>
-        <source>%1 folder &apos;%2&apos; is synced to local folder &apos;%3&apos;</source>
-        <translation>%1 Pasta &apos;%2&apos; está sincronizada com pasta local &apos;%3&apos;</translation>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="172"/>
+        <source>&lt;p&gt;&lt;strong&gt;Warning:&lt;/strong&gt; The local folder is not empty. Pick a resolution!&lt;/p&gt;</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="192"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="168"/>
         <source>Sync the folder &apos;%1&apos;</source>
         <translation>Sincronizar a pasta &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="197"/>
-        <source>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Warning:&lt;/strong&gt; The local folder is not empty. Pick a resolution!&lt;/small&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Aviso:&lt;/strong&gt; A pasta local não está vazia. Escolha uma resolução!&lt;/small&gt;&lt;/p&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="278"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="245"/>
         <source>Virtual files are not available for the selected folder</source>
         <translation>Arquivos virtuais não estão disponíveis para a pasta selecionada</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="338"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="279"/>
+        <source>Error</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="304"/>
         <source>Local Sync Folder</source>
         <translation>Sincronizar Pasta Local</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="372"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="407"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="338"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="373"/>
         <source>(%1)</source>
         <translation>(%1)</translation>
     </message>
@@ -3192,18 +3192,18 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <translation>Adicionar uma conta</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="209"/>
-        <location filename="../src/gui/settingsdialog.cpp" line="212"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="211"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="214"/>
         <source>Quit %1</source>
         <translation>Sair %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="213"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="215"/>
         <source>Are you sure you want to quit %1?</source>
         <translation>Você tem certeza que deseja sair %1?</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="344"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="346"/>
         <source>Account</source>
         <translation>Conta</translation>
     </message>
@@ -4084,51 +4084,61 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <translation>Favor conectar</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="295"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="282"/>
         <source>Folder %1: %2</source>
         <translation>Pasta %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="322"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="290"/>
+        <source>Unresolved %1 conflicts</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="292"/>
+        <source>Ignored errors %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="311"/>
         <source>There are no sync folders configured.</source>
         <translation>Não há pastas de sincronização configuradas.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="331"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="320"/>
         <source>Open in browser</source>
         <translation>Abrir no navegador</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="381"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="705"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="800"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="370"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="694"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="789"/>
         <source>Log in...</source>
         <translation>Entrar...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="385"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="697"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="802"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="374"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="686"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="791"/>
         <source>Log out</source>
         <translation>Sair</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="491"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="480"/>
         <source>Recent Changes</source>
         <translation>Alterações Recentes</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="359"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="348"/>
         <source>Managed Folders:</source>
         <translation>Pastas Gerenciadas:</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="362"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="351"/>
         <source>Open folder &apos;%1&apos;</source>
         <translation>Abrir pasta &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="333"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="322"/>
         <source>Open %1 in browser</source>
         <translation>Abrir %1 no navegador</translation>
     </message>
@@ -4138,27 +4148,27 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <translation>O servidor na conta %1 executa uma versão não suportada %2. A utilização deste cliente com versões de servidor não suportadas não foi testada e é potencialmente perigosa. Prossiga por sua conta e risco.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="783"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="772"/>
         <source>Unknown status</source>
         <translation>Status desconhecido</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="785"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="774"/>
         <source>Settings...</source>
         <translation>Configurações...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="787"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="776"/>
         <source>Details...</source>
         <translation>Detalhes...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="793"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="782"/>
         <source>Help</source>
         <translation>Ajuda</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="797"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="786"/>
         <source>Quit %1</source>
         <translation>Sair %1</translation>
     </message>
@@ -4204,117 +4214,112 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="259"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="317"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="306"/>
         <source>Synchronization is paused</source>
         <translation>A sincronização está pausada</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="303"/>
-        <source>Unresolved conflicts</source>
-        <translation>Conflitos não resolvidos</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="314"/>
         <source>Up to date (%1)</source>
         <translation>Atualizado (%1) </translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="319"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="308"/>
         <source>Error during synchronization</source>
         <translation>Erro durante a sincronização</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="323"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="312"/>
         <source>No sync folders configured</source>
         <translation>Nenhuma pasta de sincronização configurada</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="370"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="359"/>
         <source>Unpause all folders</source>
         <translation>Retomar todas as pastas</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="375"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="364"/>
         <source>Pause all folders</source>
         <translation>Pausar todas as pastas</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="676"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="665"/>
         <source>Unpause all synchronization</source>
         <translation>Retomar toda a sincronização</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="678"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="667"/>
         <source>Unpause synchronization</source>
         <translation>Retomar sincronização</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="686"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="675"/>
         <source>Pause all synchronization</source>
         <translation>Dar uma pausa em toda a sincronização</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="688"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="677"/>
         <source>Pause synchronization</source>
         <translation>Dar uma pausa na sincronização</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="695"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="684"/>
         <source>Log out of all accounts</source>
         <translation>Desconectar todas as contas</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="703"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="692"/>
         <source>Log in to all accounts...</source>
         <translation>Conectar todas as contas...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="786"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="775"/>
         <source>New account...</source>
         <translation>Nova conta...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="795"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="784"/>
         <source>About %1</source>
         <translation>Sobre %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="828"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="817"/>
         <source>No items synced recently</source>
         <translation>Não há itens sincronizados recentemente</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="850"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="839"/>
         <source>Checking for changes in remote &apos;%1&apos;</source>
         <translation>Verificando alterações remotamente &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="853"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="842"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
         <translation>Verificação de alterações local &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="868"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="857"/>
         <source>Syncing %1 of %2  (%3 left)</source>
         <translation>Sincronizar %1 de %2 (%3 faltando)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="873"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="862"/>
         <source>Syncing %1 of %2</source>
         <translation>Sincronizando %1 de %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="882"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="871"/>
         <source>Syncing %1 (%2 left)</source>
         <translation>Sincronizando %1 (%2 faltando)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="885"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="874"/>
         <source>Syncing %1</source>
         <translation>Sincronizando %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="902"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="891"/>
         <source>%1 (%2, %3)</source>
         <translation>%1 (%2, %3)</translation>
     </message>
@@ -4327,85 +4332,77 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <translation>Formulário</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="32"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="136"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="235"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="558"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="569"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="114"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="213"/>
         <source>TextLabel</source>
         <translation>TextLabel</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="87"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="65"/>
         <source>Server</source>
         <translation>Servidor</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="482"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="478"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If this box is checked, existing content in the local folder will be erased to start a clean sync from the server.&lt;/p&gt;&lt;p&gt;Do not check this if the local content should be uploaded to the servers folder.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Se esta opção estiver marcada, os conteúdos existentes na pasta local serão apagados para iniciar uma sincronização limpa a partir do servidor.&lt;/p&gt;&lt;p&gt;Não marque esta opção se os conteúdos locais devem ser enviados para a pasta de servidores.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="485"/>
-        <source>Start a &amp;clean sync (Erases the local folder!)</source>
-        <translation>Iniciar uma sincronização &amp;limpa (Elimina a pasta local!)</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="193"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="171"/>
         <source>Ask for confirmation before synchroni&amp;zing folders larger than</source>
         <translation>Solicite confirmação antes de sincroni&amp;zar pastas maiores que</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="126"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="104"/>
         <source>S&amp;ynchronize everything from server</source>
         <translation>S&amp;incronizar tudo com o servidor</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="210"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="188"/>
         <source>MB</source>
         <extracomment>Trailing part of &quot;Ask confirmation before syncing folder larger than&quot; </extracomment>
         <translation>MB</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="219"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="197"/>
         <source>Ask for confirmation before synchronizing e&amp;xternal storages</source>
         <translation>Solicitar confirmação antes de sincronizar os armazenamentos e&amp;xternos</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="228"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="206"/>
         <source>Choose what to sync</source>
         <translation>Escolha o que quer sincronizar</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="273"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="276"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="251"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="254"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When this option is selected, the wizard will close without synchronizing anything. You can use the &amp;quot;Add Folder Sync Connection&amp;quot; button from the account settings to choose which pair of local and remote folder you wish to synchronize&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Quando esta opção é selecionada, o assistente será fechado sem sincronizar nada. Você pode usar a &amp;quot; Adicionar conexão de sincronização de pastas &amp;quot; botão das configurações da conta para escolher qual par de pasta local e remota você deseja sincronizar&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="279"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="257"/>
         <source>Manually create folder sync connections </source>
         <translation>Criar manualmente conexões de sincronização de pasta</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="400"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="378"/>
         <source>&amp;Local Folder</source>
         <translation>&amp;Pasta Local</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="441"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="419"/>
         <source>pbSelectLocalFolder</source>
         <translation>pbSelectLocalFolder</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="472"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="468"/>
         <source>&amp;Keep local data</source>
         <translation>&amp;Manter dados locais</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="503"/>
-        <source>Status message</source>
-        <translation>Mensagem de status</translation>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="481"/>
+        <source>Start a &amp;clean sync (Crreate a backup and rrases the local folder!)</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -4416,12 +4413,12 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <translation>Formulário</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudhttpcredspage.ui" line="54"/>
+        <location filename="../src/gui/wizard/owncloudhttpcredspage.ui" line="38"/>
         <source>&amp;Username</source>
         <translation>&amp;Nome do Usuário</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudhttpcredspage.ui" line="64"/>
+        <location filename="../src/gui/wizard/owncloudhttpcredspage.ui" line="48"/>
         <source>&amp;Password</source>
         <translation>&amp;Senha</translation>
     </message>
@@ -4499,42 +4496,42 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/common/utility.cpp" line="454"/>
+        <location filename="../src/common/utility.cpp" line="456"/>
         <source>in the future</source>
         <translation>no futuro</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/common/utility.cpp" line="450"/>
+        <location filename="../src/common/utility.cpp" line="452"/>
         <source>%n day(s) ago</source>
         <translation><numerusform>%n dia(s) atrás</numerusform><numerusform>%n dia(s) atrás</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/common/utility.cpp" line="458"/>
+        <location filename="../src/common/utility.cpp" line="460"/>
         <source>%n hour(s) ago</source>
         <translation><numerusform>%n hora(s) atrás</numerusform><numerusform>%n hora(s) atrás</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/common/utility.cpp" line="463"/>
+        <location filename="../src/common/utility.cpp" line="465"/>
         <source>now</source>
         <translation>agora</translation>
     </message>
     <message>
-        <location filename="../src/common/utility.cpp" line="465"/>
+        <location filename="../src/common/utility.cpp" line="467"/>
         <source>Less than a minute ago</source>
         <translation>A menos de um minuto atrás</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/common/utility.cpp" line="468"/>
+        <location filename="../src/common/utility.cpp" line="470"/>
         <source>%n minute(s) ago</source>
         <translation><numerusform>%n minuto(s) atrás</numerusform><numerusform>%n minuto(s) atrás</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/common/utility.cpp" line="471"/>
+        <location filename="../src/common/utility.cpp" line="473"/>
         <source>Some time ago</source>
         <translation>Algum tempo atrás</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncresult.cpp" line="145"/>
+        <location filename="../src/libsync/syncresult.cpp" line="137"/>
         <source>%1: %2</source>
         <extracomment>this displays an error string (%2) for a file %1</extracomment>
         <translation>%1: %2</translation>
@@ -4563,37 +4560,37 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <translation>%L1 B</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/common/utility.cpp" line="320"/>
+        <location filename="../src/common/utility.cpp" line="322"/>
         <source>%n year(s)</source>
         <translation><numerusform>%n ano</numerusform><numerusform>%n ano(s)</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/common/utility.cpp" line="321"/>
+        <location filename="../src/common/utility.cpp" line="323"/>
         <source>%n month(s)</source>
         <translation><numerusform>%n mês</numerusform><numerusform>%n mês(es)</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/common/utility.cpp" line="322"/>
+        <location filename="../src/common/utility.cpp" line="324"/>
         <source>%n day(s)</source>
         <translation><numerusform>%n day</numerusform><numerusform>%n dia(s)</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/common/utility.cpp" line="323"/>
+        <location filename="../src/common/utility.cpp" line="325"/>
         <source>%n hour(s)</source>
         <translation><numerusform>%n hora</numerusform><numerusform>%n hora(s)</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/common/utility.cpp" line="324"/>
+        <location filename="../src/common/utility.cpp" line="326"/>
         <source>%n minute(s)</source>
         <translation><numerusform>%n minuto</numerusform><numerusform>%n minuto(s)</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/common/utility.cpp" line="325"/>
+        <location filename="../src/common/utility.cpp" line="327"/>
         <source>%n second(s)</source>
         <translation><numerusform>%n segundo</numerusform><numerusform>%n segundo(s)</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/common/utility.cpp" line="349"/>
+        <location filename="../src/common/utility.cpp" line="351"/>
         <source>%1 %2</source>
         <translation>%1 %2</translation>
     </message>

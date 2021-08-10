@@ -49,8 +49,6 @@ Q_SIGNALS:
 private:
     void startSpinner();
     void stopSpinner();
-    void setupCustomization();
-
     Ui_OwncloudHttpCredsPage _ui;
     bool _connected;
     QProgressIndicator *_progressIndi;

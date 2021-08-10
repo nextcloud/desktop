@@ -61,14 +61,6 @@ OwncloudHttpCredsPage::OwncloudHttpCredsPage(QWidget *parent)
 
     _ui.resultLayout->addWidget(_progressIndi);
     stopSpinner();
-    setupCustomization();
-}
-
-void OwncloudHttpCredsPage::setupCustomization()
-{
-    // set defaults for the customize labels.
-    _ui.topLabel->hide();
-    _ui.bottomLabel->hide();
 }
 
 void OwncloudHttpCredsPage::initializePage()

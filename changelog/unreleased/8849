@@ -1,0 +1,8 @@
+Bugfix: Prevent sync root sharing
+
+Due to legacy reasons it is possible to let two sync connections
+use the same directory.
+In combination with virtual files this was leading to dataloss however.
+
+https://github.com/owncloud/client/issues/8849
+https://github.com/owncloud/client/issues/8512

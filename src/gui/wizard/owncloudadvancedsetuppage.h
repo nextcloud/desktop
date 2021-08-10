@@ -63,13 +63,9 @@ private slots:
 
 private:
     void setRadioChecked(QRadioButton *radio);
-
-    void setupCustomization();
     void updateStatus();
-    bool dataChanged();
     void startSpinner();
     void stopSpinner();
-    QUrl serverUrl() const;
 
     Ui_OwncloudAdvancedSetupPage _ui;
     bool _checking;

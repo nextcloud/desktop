@@ -64,20 +64,9 @@ private slots:
         // A file -> Error
         QVERIFY(!folderman->checkPathValidityForNewFolder(dirPath + "/sub/file.txt").isNull());
 
-        // There are folders configured in those folders, url needs to be taken into account: -> ERROR
-        QUrl url2(account->url());
-        const QString user = account->credentials()->user();
-        url2.setUserName(user);
-
-        // The following both fail because they refer to the same account (user and url)
-        QVERIFY(!folderman->checkPathValidityForNewFolder(dirPath + "/sub/ownCloud1", url2).isNull());
-        QVERIFY(!folderman->checkPathValidityForNewFolder(dirPath + "/ownCloud2/", url2).isNull());
-
-        // Now it will work because the account is different
-        QUrl url3("http://anotherexample.org");
-        url3.setUserName("dummy");
-        QCOMPARE(folderman->checkPathValidityForNewFolder(dirPath + "/sub/ownCloud1", url3), QString());
-        QCOMPARE(folderman->checkPathValidityForNewFolder(dirPath + "/ownCloud2/", url3), QString());
+        // The following both fail because they refer to the same account
+        QVERIFY(!folderman->checkPathValidityForNewFolder(dirPath + "/sub/ownCloud1").isNull());
+        QVERIFY(!folderman->checkPathValidityForNewFolder(dirPath + "/ownCloud2/").isNull());
 
         QVERIFY(!folderman->checkPathValidityForNewFolder(dirPath).isNull());
         QVERIFY(!folderman->checkPathValidityForNewFolder(dirPath + "/sub/ownCloud1/folder").isNull());
@@ -98,9 +87,7 @@ private slots:
         QVERIFY(!folderman->checkPathValidityForNewFolder(dirPath + "/link2").isNull());
 
         // link 3 points to an existing sync folder. To make it fail, the account must be the same
-        QVERIFY(!folderman->checkPathValidityForNewFolder(dirPath + "/link3", url2).isNull());
-        // while with a different account, this is fine
-        QCOMPARE(folderman->checkPathValidityForNewFolder(dirPath + "/link3", url3), QString());
+        QVERIFY(!folderman->checkPathValidityForNewFolder(dirPath + "/link3").isNull());
 
         QVERIFY(!folderman->checkPathValidityForNewFolder(dirPath + "/link4").isNull());
         QVERIFY(!folderman->checkPathValidityForNewFolder(dirPath + "/link3/folder").isNull());
@@ -159,8 +146,6 @@ private slots:
         QString dirPath = dir2.canonicalPath();
 
         AccountPtr account = TestUtils::createDummyAccount();
-        QUrl url(account->url());
-        url.setUserName(account->credentials()->user());
 
         AccountStatePtr newAccountState(new AccountState(account));
         FolderMan *folderman = TestUtils::folderMan();
@@ -169,25 +154,25 @@ private slots:
 
         // TEST
 
-        QCOMPARE(folderman->findGoodPathForNewSyncFolder(dirPath + "/oc", url),
-                 QString(dirPath + "/oc"));
-        QCOMPARE(folderman->findGoodPathForNewSyncFolder(dirPath + "/ownCloud", url),
-                 QString(dirPath + "/ownCloud3"));
-        QCOMPARE(folderman->findGoodPathForNewSyncFolder(dirPath + "/ownCloud2", url),
-                 QString(dirPath + "/ownCloud22"));
-        QCOMPARE(folderman->findGoodPathForNewSyncFolder(dirPath + "/ownCloud2/foo", url),
-                 QString(dirPath + "/ownCloud2/foo"));
-        QCOMPARE(folderman->findGoodPathForNewSyncFolder(dirPath + "/ownCloud2/bar", url),
-                 QString(dirPath + "/ownCloud2/bar"));
-        QCOMPARE(folderman->findGoodPathForNewSyncFolder(dirPath + "/sub", url),
-                 QString(dirPath + "/sub2"));
+        QCOMPARE(folderman->findGoodPathForNewSyncFolder(dirPath + "/oc"),
+            QString(dirPath + "/oc"));
+        QCOMPARE(folderman->findGoodPathForNewSyncFolder(dirPath + "/ownCloud"),
+            QString(dirPath + "/ownCloud3"));
+        QCOMPARE(folderman->findGoodPathForNewSyncFolder(dirPath + "/ownCloud2"),
+            QString(dirPath + "/ownCloud22"));
+        QCOMPARE(folderman->findGoodPathForNewSyncFolder(dirPath + "/ownCloud2/foo"),
+            QString(dirPath + "/ownCloud2/foo"));
+        QCOMPARE(folderman->findGoodPathForNewSyncFolder(dirPath + "/ownCloud2/bar"),
+            QString(dirPath + "/ownCloud2/bar"));
+        QCOMPARE(folderman->findGoodPathForNewSyncFolder(dirPath + "/sub"),
+            QString(dirPath + "/sub2"));
 
         // REMOVE ownCloud2 from the filesystem, but keep a folder sync'ed to it.
         // We should still not suggest this folder as a new folder.
         QDir(dirPath + "/ownCloud2/").removeRecursively();
-        QCOMPARE(folderman->findGoodPathForNewSyncFolder(dirPath + "/ownCloud", url),
+        QCOMPARE(folderman->findGoodPathForNewSyncFolder(dirPath + "/ownCloud"),
             QString(dirPath + "/ownCloud3"));
-        QCOMPARE(folderman->findGoodPathForNewSyncFolder(dirPath + "/ownCloud2", url),
+        QCOMPARE(folderman->findGoodPathForNewSyncFolder(dirPath + "/ownCloud2"),
             QString(dirPath + "/ownCloud22"));
     }
 };
