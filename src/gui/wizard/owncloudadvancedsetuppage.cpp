@@ -60,6 +60,7 @@ OwncloudAdvancedSetupPage::OwncloudAdvancedSetupPage()
     connect(_ui.rSyncEverything, &QAbstractButton::clicked, this, &OwncloudAdvancedSetupPage::slotSyncEverythingClicked);
     connect(_ui.rVirtualFileSync, &QAbstractButton::clicked, this, &OwncloudAdvancedSetupPage::slotVirtualFileSyncClicked);
     connect(_ui.rVirtualFileSync, &QRadioButton::toggled, this, [this](bool checked) {
+        owncloudWizard()->setUseVirtualFileSync(checked);
         if (checked) {
             _ui.lSelectiveSyncSizeLabel->clear();
             _selectiveSyncBlacklist.clear();
@@ -104,9 +105,11 @@ bool OwncloudAdvancedSetupPage::isComplete() const
 
 void OwncloudAdvancedSetupPage::initializePage()
 {
+    if (owncloudWizard()->useVirtualFileSync()) {
+        setRadioChecked(_ui.rVirtualFileSync);
+    }
     const auto vfsMode = bestAvailableVfsMode();
     if (Theme::instance()->forceVirtualFilesOption() && vfsMode == Vfs::WindowsCfApi) {
-        setRadioChecked(_ui.rVirtualFileSync);
         _ui.syncTypeWidget->hide();
     } else {
         if (!Theme::instance()->showVirtualFilesOption() || vfsMode == Vfs::Off || (vfsMode != Vfs::WindowsCfApi && !Theme::instance()->enableExperimentalFeatures())) {
@@ -119,7 +122,6 @@ void OwncloudAdvancedSetupPage::initializePage()
 #ifdef Q_OS_WIN
             if (vfsMode == Vfs::WindowsCfApi) {
                 qobject_cast<QVBoxLayout *>(_ui.wSyncStrategy->layout())->insertItem(0, _ui.lVirtualFileSync);
-                setRadioChecked(_ui.rVirtualFileSync);
             }
 #endif
         }
@@ -198,11 +200,6 @@ QStringList OwncloudAdvancedSetupPage::selectiveSyncBlacklist() const
     return _selectiveSyncBlacklist;
 }
 
-bool OwncloudAdvancedSetupPage::useVirtualFileSync() const
-{
-    return _ui.rVirtualFileSync->isChecked();
-}
-
 bool OwncloudAdvancedSetupPage::manualFolderConfig() const
 {
     return _ui.rManualFolder->isChecked();
@@ -219,7 +216,7 @@ bool OwncloudAdvancedSetupPage::validatePage()
         return true;
     }
 
-    if (useVirtualFileSync()) {
+    if (owncloudWizard()->useVirtualFileSync()) {
         const auto availability = Vfs::checkAvailability(owncloudWizard()->localFolder());
         if (!availability) {
             auto msg = new QMessageBox(QMessageBox::Warning, tr("Virtual files are not available for the selected folder"), availability.error(), QMessageBox::Ok, this);

@@ -52,7 +52,6 @@ public:
 
     QString ocUrl() const;
     QStringList selectiveSyncBlacklist() const;
-    bool useVirtualFileSync() const;
     bool manualFolderConfig() const;
     bool isConfirmBigFolderChecked() const;
 
@@ -77,6 +76,9 @@ public:
     const QString &remoteFolder() const;
     void resetRemoteFolder();
 
+    void setUseVirtualFileSync(bool newUseVirtualFileSync);
+    bool useVirtualFileSync() const;
+
 public slots:
     void setAuthType(DetermineAuthTypeJob::AuthType type);
     void slotCurrentPageChanged(int);
@@ -94,6 +96,7 @@ signals:
 private:
     QString _remoteFolder;
     QString _localFolder;
+    bool _useVirtualFileSync;
     AccountPtr _account;
     OwncloudSetupPage *_setupPage;
     OwncloudHttpCredsPage *_httpCredsPage;

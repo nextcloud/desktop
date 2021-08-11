@@ -41,7 +41,6 @@ public:
     int nextId() const override;
     bool validatePage() override;
     QStringList selectiveSyncBlacklist() const;
-    bool useVirtualFileSync() const;
     bool manualFolderConfig() const;
     bool isConfirmBigFolderChecked() const;
     void setRemoteFolder(const QString &remoteFolder);

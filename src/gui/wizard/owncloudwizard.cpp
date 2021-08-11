@@ -59,6 +59,7 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
     : QWizard(parent)
     , _remoteFolder(Theme::instance()->defaultServerFolder())
     , _localFolder(initLocalFolder())
+    , _useVirtualFileSync(bestAvailableVfsMode() == Vfs::WindowsCfApi)
     , _account(nullptr)
     , _setupPage(new OwncloudSetupPage(this))
     , _httpCredsPage(new OwncloudHttpCredsPage(this))
@@ -127,7 +128,7 @@ QStringList OwncloudWizard::selectiveSyncBlacklist() const
 
 bool OwncloudWizard::useVirtualFileSync() const
 {
-    return _advancedSetupPage->useVirtualFileSync();
+    return _useVirtualFileSync;
 }
 
 bool OwncloudWizard::manualFolderConfig() const
@@ -180,6 +181,11 @@ void OwncloudWizard::successfulStep()
     } else {
         next();
     }
+}
+
+void OwncloudWizard::setUseVirtualFileSync(bool newUseVirtualFileSync)
+{
+    _useVirtualFileSync = newUseVirtualFileSync;
 }
 
 const QString &OwncloudWizard::remoteFolder() const
