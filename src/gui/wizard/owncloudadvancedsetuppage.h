@@ -60,14 +60,11 @@ private slots:
 private:
     void setRadioChecked(QRadioButton *radio);
     void updateStatus();
-    void startSpinner();
-    void stopSpinner();
 
     Ui_OwncloudAdvancedSetupPage _ui;
     bool _checking;
     bool _created;
     bool _localFolderValid;
-    QProgressIndicator *_progressIndi;
     QStringList _selectiveSyncBlacklist;
 };
 

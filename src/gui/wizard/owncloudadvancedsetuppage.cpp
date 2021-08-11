@@ -42,7 +42,6 @@ OwncloudAdvancedSetupPage::OwncloudAdvancedSetupPage()
     , _checking(false)
     , _created(false)
     , _localFolderValid(false)
-    , _progressIndi(new QProgressIndicator(this))
 {
     _ui.setupUi(this);
 
@@ -51,8 +50,6 @@ OwncloudAdvancedSetupPage::OwncloudAdvancedSetupPage()
     setSubTitle(WizardCommon::subTitleTemplate().arg(tr("Setup local folder options")));
 
     registerField(QLatin1String("OCSyncFromScratch"), _ui.cbSyncFromScratch);
-
-    stopSpinner();
 
     connect(_ui.pbSelectLocalFolder, &QAbstractButton::clicked, this, &OwncloudAdvancedSetupPage::slotSelectFolder);
     setButtonText(QWizard::FinishButton, tr("Connect..."));
@@ -177,18 +174,6 @@ void OwncloudAdvancedSetupPage::updateStatus()
     emit completeChanged();
 }
 
-void OwncloudAdvancedSetupPage::startSpinner()
-{
-    _progressIndi->setVisible(true);
-    _progressIndi->startAnimation();
-}
-
-void OwncloudAdvancedSetupPage::stopSpinner()
-{
-    _progressIndi->setVisible(false);
-    _progressIndi->stopAnimation();
-}
-
 int OwncloudAdvancedSetupPage::nextId() const
 {
     // tells the caller that this is the last dialog page
@@ -229,7 +214,7 @@ bool OwncloudAdvancedSetupPage::validatePage()
     if (!_created) {
         setErrorString(QString());
         _checking = true;
-        startSpinner();
+        _ui.progressIndicator->startAnimation();
         emit completeChanged();
 
         if (_ui.rSyncEverything->isChecked()) {
@@ -245,7 +230,7 @@ bool OwncloudAdvancedSetupPage::validatePage()
         // connecting is running
         _checking = false;
         emit completeChanged();
-        stopSpinner();
+        _ui.progressIndicator->stopAnimation();
         return true;
     }
 }
@@ -265,7 +250,7 @@ void OwncloudAdvancedSetupPage::directoriesCreated()
 {
     _checking = false;
     _created = true;
-    stopSpinner();
+    _ui.progressIndicator->stopAnimation();
     emit completeChanged();
 }
 
