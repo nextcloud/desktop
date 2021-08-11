@@ -149,8 +149,6 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 
     const QIcon statusIcon = qvariant_cast<QIcon>(index.data(FolderStatusIconRole));
     const QString aliasText = qvariant_cast<QString>(index.data(HeaderRole));
-    const QString pathText = qvariant_cast<QString>(index.data(FolderPathRole));
-    const QString remotePath = qvariant_cast<QString>(index.data(FolderSecondPathRole));
     const QStringList conflictTexts = qvariant_cast<QStringList>(index.data(FolderConflictMsg));
     const QStringList errorTexts = qvariant_cast<QStringList>(index.data(FolderErrorMsg));
     const QStringList infoTexts = qvariant_cast<QStringList>(index.data(FolderInfoMsg));
@@ -244,15 +242,11 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     const bool showProgess = !overallString.isEmpty() || !itemString.isEmpty();
     if (!showProgess) {
         painter->setFont(subFont);
-        QString elidedRemotePathText = subFm.elidedText(
+        const QString elidedRemotePathText = subFm.elidedText(
             syncText,
             Qt::ElideRight, remotePathRect.width());
         painter->drawText(QStyle::visualRect(option.direction, option.rect, remotePathRect),
             textAlign, elidedRemotePathText);
-
-        QString elidedPathText = subFm.elidedText(pathText, Qt::ElideMiddle, localPathRect.width());
-        painter->drawText(QStyle::visualRect(option.direction, option.rect, localPathRect),
-            textAlign, elidedPathText);
     }
 
     int h = iconRect.bottom() + margin;

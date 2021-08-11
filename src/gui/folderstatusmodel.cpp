@@ -256,11 +256,7 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
     case FolderStatusDelegate::SyncProgressOverallString:
         return progress._overallSyncString;
     case FolderStatusDelegate::FolderSyncText:
-        if (f->virtualFilesEnabled()) {
-            return tr("Synchronizing VirtualFiles with local folder");
-        } else {
-            return tr("Synchronizing with local folder");
-        }
+        return tr("Local folder: %1").arg(f->shortGuiLocalPath());
     }
     return QVariant();
 }
