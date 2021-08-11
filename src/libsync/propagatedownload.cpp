@@ -473,7 +473,7 @@ void PropagateDownloadFile::startDownload()
     const auto targetFile = propagator()->fullLocalPath(_item->_file);
     if (FileSystem::isFileLocked(targetFile, FileSystem::LockMode::Exclusive)) {
         emit propagator()->seenLockedFile(targetFile, FileSystem::LockMode::Exclusive);
-        done(SyncFileItem::SoftError, tr("%1 is currently in use").arg(QDir::toNativeSeparators(_item->_file)));
+        done(SyncFileItem::SoftError, tr("The file %1 is currently in use").arg(QDir::toNativeSeparators(_item->_file)));
         return;
     }
     propagator()->reportProgress(*_item, 0);
@@ -927,6 +927,9 @@ void PropagateDownloadFile::downloadFinished()
         if (!result) {
             done(SyncFileItem::NormalError, result.error());
             return;
+        } else if (result.get() == Vfs::ConvertToPlaceholderResult::Locked) {
+            done(SyncFileItem::SoftError, tr("The file %1 is currently in use").arg(_item->_file));
+            return;
         }
     }
 
@@ -961,7 +964,7 @@ void PropagateDownloadFile::downloadFinished()
     // becomes available again
     if (FileSystem::isFileLocked(fn, FileSystem::LockMode::Exclusive)) {
         emit propagator()->seenLockedFile(fn, FileSystem::LockMode::Exclusive);
-        done(SyncFileItem::SoftError, tr("%1 is currently in use").arg(fn));
+        done(SyncFileItem::SoftError, tr("The file %1 is currently in use").arg(fn));
         return;
     }
 
