@@ -518,7 +518,7 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="759"/>
         <source>Remove Folder Sync Connection</source>
-        <translation>ลบโฟลเดอร์ที่ประสานข้อมูล</translation>
+        <translation>ลบการเชื่อมต่อโฟลเดอร์ซิงค์</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="860"/>
@@ -542,17 +542,17 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="984"/>
         <source>Sync Running</source>
-        <translation>กำลังประสานข้อมูล</translation>
+        <translation>กำลังซิงค์</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="985"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
-        <translation>กำลังดำเนินการประสานข้อมูลอยู่ &lt;br/&gt;คุณต้องการสิ้นสุดการทำงาน?</translation>
+        <translation>กำลังดำเนินการซิงค์อยู่&lt;br/&gt;คุณต้องการหยุดการทำงานหรือไม่?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1068"/>
         <source>%1 (%3%) of %2 in use. Some folders, including network mounted or shared folders, might have different limits.</source>
-        <translation>มีการใช้งาน %1 (%3%) จาก %2  บางโฟลเดอร์รวมทั้งเครือข่ายที่ติดตั้งหรือโฟลเดอร์ที่แชร์อาจมีข้อจำกัดที่แตกต่างกัน</translation>
+        <translation>ใช้งานอยู่ %1 (%3%) จาก %2 บางโฟลเดอร์ รวมถึงที่ต่อเชื่อมบนเครือข่ายหรือโฟลเดอร์ที่แชร์อาจมีข้อจำกัดที่แตกต่างกัน</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1069"/>
