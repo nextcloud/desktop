@@ -45,23 +45,6 @@ namespace {
         // it matches _preDefinedStatus, otherwise the default is online (0)
         return preDefinedStatus.value(status.toLower(), UserStatus::Status::Online);
     }
-    
-    QString enumToString(UserStatus::Status status) 
-    {
-        switch (status) {
-        case UserStatus::Status::Away:
-            return QObject::tr("Away");
-        case UserStatus::Status::DoNotDisturb:
-            return QObject::tr("Do not disturb");
-        case UserStatus::Status::Invisible:
-        case UserStatus::Status::Offline:
-            return QObject::tr("Offline");
-        case UserStatus::Status::Online:
-            return QObject::tr("Online");
-        }
-        
-        Q_UNREACHABLE();
-    }
 }
 
 UserStatus::UserStatus(QObject *parent)

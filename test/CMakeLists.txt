@@ -9,6 +9,7 @@ add_library(testutils
   syncenginetestutils.cpp
   pushnotificationstestutils.cpp
   themeutils.cpp
+  testhelper.cpp
 )
 
 target_link_libraries(testutils PUBLIC ${APPLICATION_EXECUTABLE}sync Qt5::Test)

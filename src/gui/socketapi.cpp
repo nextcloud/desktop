@@ -796,7 +796,9 @@ void SocketApi::command_MAKE_AVAILABLE_LOCALLY(const QString &filesArg, SocketLi
             continue;
 
         // Update the pin state on all items
-        data.folder->vfs().setPinState(data.folderRelativePath, PinState::AlwaysLocal);
+        if (!data.folder->vfs().setPinState(data.folderRelativePath, PinState::AlwaysLocal)) {
+            qCWarning(lcSocketApi) << "Could not set pin state of" << data.folderRelativePath << "to always local";
+        }
 
         // Trigger sync
         data.folder->schedulePathForLocalDiscovery(data.folderRelativePath);
@@ -815,7 +817,9 @@ void SocketApi::command_MAKE_ONLINE_ONLY(const QString &filesArg, SocketListener
             continue;
 
         // Update the pin state on all items
-        data.folder->vfs().setPinState(data.folderRelativePath, PinState::OnlineOnly);
+        if (!data.folder->vfs().setPinState(data.folderRelativePath, PinState::OnlineOnly)) {
+            qCWarning(lcSocketApi) << "Could not set pin state of" << data.folderRelativePath << "to online only";
+        }
 
         // Trigger sync
         data.folder->schedulePathForLocalDiscovery(data.folderRelativePath);

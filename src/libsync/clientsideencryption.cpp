@@ -1009,7 +1009,7 @@ void ClientSideEncryption::writePrivateKey(const AccountPtr &account)
     job->setInsecureFallback(false);
     job->setKey(kck);
     job->setBinaryData(_privateKey);
-    connect(job, &WritePasswordJob::finished, [this](Job *incoming) {
+    connect(job, &WritePasswordJob::finished, [](Job *incoming) {
         Q_UNUSED(incoming);
         qCInfo(lcCse()) << "Private key stored in keychain";
     });
@@ -1028,7 +1028,7 @@ void ClientSideEncryption::writeCertificate(const AccountPtr &account)
     job->setInsecureFallback(false);
     job->setKey(kck);
     job->setBinaryData(_certificate.toPem());
-    connect(job, &WritePasswordJob::finished, [this](Job *incoming) {
+    connect(job, &WritePasswordJob::finished, [](Job *incoming) {
         Q_UNUSED(incoming);
         qCInfo(lcCse()) << "Certificate stored in keychain";
     });

@@ -781,7 +781,9 @@ void PropagateUploadFileCommon::finalize()
         auto &vfs = propagator()->syncOptions()._vfs;
         const auto pin = vfs->pinState(_item->_file);
         if (pin && *pin == PinState::OnlineOnly) {
-            vfs->setPinState(_item->_file, PinState::Unspecified);
+            if (!vfs->setPinState(_item->_file, PinState::Unspecified)) {
+                qCWarning(lcPropagateUpload) << "Could not set pin state of" << _item->_file << "to unspecified";
+            }
         }
     }
 

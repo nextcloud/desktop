@@ -636,7 +636,9 @@ void Folder::implicitlyHydrateFile(const QString &relativepath)
     // (suffix-virtual file's pin state is stored at the hydrated path)
     const auto pin = _vfs->pinState(relativepath);
     if (pin && *pin == PinState::OnlineOnly) {
-        _vfs->setPinState(relativepath, PinState::Unspecified);
+        if (!_vfs->setPinState(relativepath, PinState::Unspecified)) {
+            qCWarning(lcFolder) << "Could not set pin state of" << relativepath << "to unspecified";
+        }
     }
 
     // Add to local discovery
@@ -675,7 +677,9 @@ void Folder::setVirtualFilesEnabled(bool enabled)
 
 void Folder::setRootPinState(PinState state)
 {
-    _vfs->setPinState(QString(), state);
+    if (!_vfs->setPinState(QString(), state)) {
+        qCWarning(lcFolder) << "Could not set root pin state of" << _definition.alias;
+    }
 
     // We don't actually need discovery, but it's important to recurse
     // into all folders, so the changes can be applied.
