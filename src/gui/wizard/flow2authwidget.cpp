@@ -113,7 +113,8 @@ void Flow2AuthWidget::slotAuthResult(Flow2Auth::Result r, const QString &errorSt
     connect(fetchUserNameJob, &JsonApiJob::jsonReceived, this, [this, fetchUserNameJob, r, errorString, user, appPassword](const QJsonDocument &json, int statusCode) {
         fetchUserNameJob->deleteLater();
         if (statusCode != 100) {
-            qCWarning(lcFlow2AuthWidget) << "Could not fetch username";
+            qCWarning(lcFlow2AuthWidget) << "Could not fetch username.";
+            _account->setDavUser("");
             _account->setDavDisplayName(user);
             emit authResult(r, errorString, user, appPassword);
             return;
@@ -122,9 +123,10 @@ void Flow2AuthWidget::slotAuthResult(Flow2Auth::Result r, const QString &errorSt
         const auto objData = json.object().value("ocs").toObject().value("data").toObject();
         const auto userId = objData.value("id").toString(user);
         const auto displayName = objData.value("display-name").toString();
+        _account->setDavUser(userId);
         _account->setDavDisplayName(displayName);
 
-        emit authResult(r, errorString, userId, appPassword);
+        emit authResult(r, errorString, user, appPassword);
     });
     fetchUserNameJob->start();
 }
