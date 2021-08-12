@@ -181,8 +181,8 @@ void Account::setCredentials(AbstractCredentials *cred)
     if (jar) {
         _am->setCookieJar(jar);
     }
-    connect(_am.data(), SIGNAL(sslErrors(QNetworkReply *, QList<QSslError>)),
-        SLOT(slotHandleSslErrors(QNetworkReply *, QList<QSslError>)));
+    connect(_am.data(), &QNetworkAccessManager::sslErrors,
+        this, &Account::slotHandleSslErrors);
     connect(_am.data(), &QNetworkAccessManager::proxyAuthenticationRequired,
         this, &Account::proxyAuthenticationRequired);
     connect(_credentials.data(), &AbstractCredentials::fetched,
@@ -243,8 +243,8 @@ void Account::resetNetworkAccessManager()
     _am = QSharedPointer<QNetworkAccessManager>(_credentials->createQNAM(), &QObject::deleteLater);
 
     _am->setCookieJar(jar); // takes ownership of the old cookie jar
-    connect(_am.data(), SIGNAL(sslErrors(QNetworkReply *, QList<QSslError>)),
-        SLOT(slotHandleSslErrors(QNetworkReply *, QList<QSslError>)));
+    connect(_am.data(), &QNetworkAccessManager::sslErrors, this,
+        &Account::slotHandleSslErrors);
     connect(_am.data(), &QNetworkAccessManager::proxyAuthenticationRequired,
         this, &Account::proxyAuthenticationRequired);
 }

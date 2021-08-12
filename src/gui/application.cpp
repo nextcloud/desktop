@@ -184,7 +184,7 @@ bool Application::configVersionMigration()
 
         box.exec();
         if (box.clickedButton() != continueBtn) {
-            QTimer::singleShot(0, qApp, SLOT(quit()));
+            QTimer::singleShot(0, qApp, &QApplication::quit);
             return false;
         }
 
@@ -307,7 +307,7 @@ Application::Application(int &argc, char **argv)
                    "file at %1.")
                     .arg(ConfigFile::configFile()),
                 tr("Quit %1").arg(Theme::instance()->appNameGUI()));
-            QTimer::singleShot(0, qApp, SLOT(quit()));
+            QTimer::singleShot(0, qApp, &QApplication::quit);
             return;
         }
     }

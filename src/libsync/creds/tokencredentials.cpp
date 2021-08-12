@@ -106,8 +106,8 @@ QNetworkAccessManager *TokenCredentials::createQNAM() const
 {
     AccessManager *qnam = new TokenCredentialsAccessManager(this);
 
-    connect(qnam, SIGNAL(authenticationRequired(QNetworkReply *, QAuthenticator *)),
-        this, SLOT(slotAuthentication(QNetworkReply *, QAuthenticator *)));
+    connect(qnam, &AccessManager::authenticationRequired,
+        this, &TokenCredentials::slotAuthentication);
 
     return qnam;
 }

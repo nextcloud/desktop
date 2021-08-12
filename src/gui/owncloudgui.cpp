@@ -784,7 +784,7 @@ void ownCloudGui::setupActions()
     _actionAbout = new QAction(tr("About %1").arg(Theme::instance()->appNameGUI()), this);
     QObject::connect(_actionAbout, &QAction::triggered, this, &ownCloudGui::slotAbout);
     _actionQuit = new QAction(tr("Quit %1").arg(Theme::instance()->appNameGUI()), this);
-    QObject::connect(_actionQuit, SIGNAL(triggered(bool)), _app, SLOT(quit()));
+    QObject::connect(_actionQuit, &QAction::triggered, _app, &QApplication::quit);
 
     _actionLogin = new QAction(tr("Log in..."), this);
     connect(_actionLogin, &QAction::triggered, this, &ownCloudGui::slotLogin);
