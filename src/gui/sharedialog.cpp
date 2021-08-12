@@ -84,9 +84,6 @@ ShareDialog::ShareDialog(QPointer<AccountState> accountState,
     // Set filename
     QString fileName = QFileInfo(_sharePath).fileName();
     _ui->label_name->setText(tr("%1").arg(fileName));
-    QFont f(_ui->label_name->font());
-    f.setPointSize(f.pointSize() * 1.4);
-    _ui->label_name->setFont(f);
 
     _ui->label_sharePath->setWordWrap(true);
     QString ocDir(_sharePath);
@@ -137,8 +134,7 @@ ShareDialog::ShareDialog(QPointer<AccountState> accountState,
     connect(job, &PropfindJob::finishedWithError, this, &ShareDialog::slotPropfindError);
     job->start();
 
-    auto size = ocApp()->gui()->settingsDialog()->minimumSizeHint();
-    resize(size.width() - 50, size.height() - 50);
+    setMinimumSize(minimumSizeHint());
 }
 
 ShareDialog::~ShareDialog()
@@ -217,6 +213,11 @@ void ShareDialog::showSharingUi()
         if (_startPage == ShareDialogStartPage::PublicLinks)
             _ui->shareWidgets->setCurrentWidget(_linkWidget);
     }
+}
+
+QSize ShareDialog::minimumSizeHint() const
+{
+    return ocApp()->gui()->settingsDialog()->sizeHintForChild();
 }
 
 void ShareDialog::slotThumbnailFetched(const int &statusCode, const QByteArray &reply)

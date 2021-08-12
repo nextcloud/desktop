@@ -48,6 +48,8 @@ public:
         QWidget *parent);
     ~ShareDialog() override;
 
+    QSize minimumSizeHint() const override;
+
 private slots:
     void done(int r) override;
     void slotPropfindReceived(const QMap<QString, QString> &result);

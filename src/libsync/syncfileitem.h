@@ -64,7 +64,7 @@ public:
          */
         Conflict,
 
-        FileIgnored, ///< The file is in the ignored list (or blacklisted with no retries left)
+        FileIgnored, ///< The file has an invalid name or is in the blacklisted with no retries left
         Restoration, ///< The file was restored because what should have been done was not allowed
 
         /** For errors that should only appear in the error view.
@@ -85,7 +85,12 @@ public:
          *
          * A SoftError caused by blacklisting.
          */
-        BlacklistedError
+        BlacklistedError,
+
+        /**
+         * The file is excluded by the ignore list
+         */
+        Excluded
     };
     Q_ENUM(Status)
 

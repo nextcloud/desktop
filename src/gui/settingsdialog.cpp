@@ -30,21 +30,23 @@
 #include "protocolwidget.h"
 #include "owncloudsetupwizard.h"
 
-#include <QLabel>
-#include <QStandardItemModel>
-#include <QStackedWidget>
-#include <QPushButton>
-#include <QSettings>
-#include <QToolBar>
-#include <QToolButton>
-#include <QLayout>
-#include <QVBoxLayout>
-#include <QPixmap>
 #include <QImage>
-#include <QWidgetAction>
+#include <QLabel>
+#include <QLayout>
+#include <QMessageBox>
 #include <QPainter>
 #include <QPainterPath>
-#include <QMessageBox>
+#include <QPixmap>
+#include <QPushButton>
+#include <QScreen>
+#include <QSettings>
+#include <QStackedWidget>
+#include <QStandardItemModel>
+#include <QToolBar>
+#include <QToolButton>
+#include <QVBoxLayout>
+#include <QWidgetAction>
+#include <QWindow>
 
 #ifdef Q_OS_MAC
 #include "settingsdialog_mac.h"
@@ -250,11 +252,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     customizeStyle();
 
     cfg.restoreGeometry(this);
-    if (size().width() < minimumSizeHint().width() || size().height() < minimumSizeHint().height())
-    {
-        resize(minimumSizeHint());
-    }
-
+    setMinimumSize(minimumSizeHint());
 #ifdef Q_OS_MAC
     setActivationPolicy(ActivationPolicy::Accessory);
 #endif
@@ -267,7 +265,18 @@ SettingsDialog::~SettingsDialog()
 
 QSize SettingsDialog::minimumSizeHint() const
 {
-    return {800, 500};
+    const auto screen = windowHandle() ? windowHandle()->screen() : QApplication::screenAt(QCursor::pos());
+    const auto availableSize = screen->availableSize();
+    const QSize min { 800, 600 };
+    if (!availableSize.isValid()) {
+        return min;
+    }
+    return min.boundedTo(availableSize * 0.75);
+}
+
+QSize SettingsDialog::sizeHintForChild() const
+{
+    return ocApp()->gui()->settingsDialog()->size() * 0.9;
 }
 
 QWidget* SettingsDialog::currentPage()

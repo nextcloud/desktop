@@ -56,16 +56,6 @@ auto refreshTokenKeyC()
     return QStringLiteral("http/oauthtoken");
 }
 
-auto clientCertBundleKeyC()
-{
-    return QStringLiteral("clientsideCert/bundle");
-}
-
-auto clientCertPasswordKeyC()
-{
-    return QStringLiteral("clientsideCert/password");
-}
-
 auto CredentialVersionKey()
 {
     return QStringLiteral("CredentialVersion");
@@ -259,13 +249,45 @@ bool HttpCredentials::refreshAccessToken()
     _ready = false;
 
     OAuth *oauth = new OAuth(_account, this);
+    connect(oauth, &OAuth::refreshError, this, [oauth, this](QNetworkReply::NetworkError error, const QString &errorString) {
+        oauth->deleteLater();
+        _isRenewingOAuthToken = false;
+        switch (error) {
+        case QNetworkReply::RemoteHostClosedError:
+            Q_FALLTHROUGH();
+        case QNetworkReply::ConnectionRefusedError:
+            Q_FALLTHROUGH();
+        case QNetworkReply::HostNotFoundError:
+            Q_FALLTHROUGH();
+        case QNetworkReply::TimeoutError:
+            Q_FALLTHROUGH();
+        case QNetworkReply::TemporaryNetworkFailureError:
+            Q_FALLTHROUGH();
+        case QNetworkReply::NetworkSessionFailedError:
+            Q_FALLTHROUGH();
+        case QNetworkReply::InternalServerError:
+            Q_FALLTHROUGH();
+        case QNetworkReply::ServiceUnavailableError:
+            Q_FALLTHROUGH();
+        case QNetworkReply::UnknownNetworkError:
+            break;
+        default:
+            // something is broken
+            // start fresh
+            qCWarning(lcHttpCredentials) << "Token refresh encountered an unsupported network error" << errorString << "-> log out";
+            forgetSensitiveData();
+            Q_EMIT _account->invalidCredentials();
+        }
+        Q_EMIT authenticationFailed();
+    });
+
     connect(oauth, &OAuth::refreshFinished, this, [this, oauth](const QString &accessToken, const QString &refreshToken){
         oauth->deleteLater();
         _isRenewingOAuthToken = false;
         if (refreshToken.isEmpty()) {
             // an error occured, log out
             forgetSensitiveData();
-            _account->handleInvalidCredentials();
+            Q_EMIT _account->invalidCredentials();
             Q_EMIT authenticationFailed();
             return;
         }

@@ -58,8 +58,6 @@ public:
     bool manualFolderConfig() const;
     bool isConfirmBigFolderChecked() const;
 
-    void enableFinishOnResultWidget(bool enable);
-
     void displayError(const QString &);
     AbstractCredentials *getCredentials() const;
 
@@ -71,6 +69,8 @@ public:
     static void askExperimentalVirtualFilesFeature(QWidget *receiver, const std::function<void(bool enable)> &callback);
 
     DetermineAuthTypeJob::AuthType authType() const;
+
+    QSize minimumSizeHint() const override;
 
 public slots:
     void setAuthType(DetermineAuthTypeJob::AuthType type);

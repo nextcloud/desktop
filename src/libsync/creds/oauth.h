@@ -13,11 +13,13 @@
  */
 
 #pragma once
+#include "accountfwd.h"
+#include "owncloudlib.h"
+
+#include <QNetworkReply>
 #include <QPointer>
 #include <QTcpServer>
 #include <QUrl>
-#include "accountfwd.h"
-#include "owncloudlib.h"
 
 
 namespace OCC {
@@ -81,6 +83,7 @@ signals:
      */
     void authorisationLinkChanged(const QUrl &);
 
+    void refreshError(QNetworkReply::NetworkError error, const QString &errorString);
     void refreshFinished(const QString &accessToken, const QString &refreshToken);
 
     void fetchWellKnownFinished();

@@ -2,14 +2,6 @@
 <ui version="4.0">
  <class>OCC::ShareDialog</class>
  <widget class="QDialog" name="OCC::ShareDialog">
-  <property name="geometry">
-   <rect>
-    <x>0</x>
-    <y>0</y>
-    <width>408</width>
-    <height>281</height>
-   </rect>
-  </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>

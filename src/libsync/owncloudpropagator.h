@@ -475,11 +475,14 @@ public:
             connect(_rootJob.data(), &PropagateDirectory::abortFinished, this, &OwncloudPropagator::emitFinished);
 
             // Use Queued Connection because we're possibly already in an item's finished stack
-            QMetaObject::invokeMethod(_rootJob.data(), "abort", Qt::QueuedConnection,
-                                      Q_ARG(PropagatorJob::AbortType, PropagatorJob::AbortType::Asynchronous));
+            QMetaObject::invokeMethod(
+                _rootJob.data(), [this] {
+                    _rootJob->abort(PropagatorJob::AbortType::Asynchronous);
+                },
+                Qt::QueuedConnection);
 
             // Give asynchronous abort 5000 msec to finish on its own
-            QTimer::singleShot(5000, this, SLOT(abortTimeout()));
+            QTimer::singleShot(5000, this, &OwncloudPropagator::abortTimeout);
         } else {
             // No root job, call emitFinished
             emitFinished(SyncFileItem::NormalError);

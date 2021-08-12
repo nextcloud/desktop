@@ -41,7 +41,7 @@ function(__addIcon QRC_PATH THEME ICON_NAME)
             __add_file_to_qrc_file(
                 QRC_PATH ${QRC_PATH}
                 FILE_PATH ${OEM_THEME_DIR}/${icon}
-                FILE_ALIAS ${iconAlias}
+                ALIAS ${iconAlias}
             )
         else()
             set(SIZES "16;22;32;48;64;128;256;512;1024")
@@ -52,7 +52,7 @@ function(__addIcon QRC_PATH THEME ICON_NAME)
                     __add_file_to_qrc_file(
                         QRC_PATH ${QRC_PATH}
                         FILE_PATH ${OEM_THEME_DIR}/${icon}
-                        FILE_ALIAS ${iconAlias}
+                        ALIAS ${iconAlias}
                     )
                 endif()
             endforeach()

@@ -254,7 +254,7 @@ void AbstractNetworkJob::slotFinished()
     _responseTimestamp = _reply->rawHeader("Date");
 
     if (!_account->credentials()->stillValid(_reply) && !_ignoreCredentialFailure) {
-        _account->handleInvalidCredentials();
+        Q_EMIT _account->invalidCredentials();
     }
     if (!reply()->attribute(QNetworkRequest::RedirectionTargetAttribute).isNull() && !reply()->request().hasRawHeader(QByteArrayLiteral("OC-Connection-Validator"))) {
         Q_EMIT _account->unknownConnectionState();

@@ -211,9 +211,6 @@ public:
     QNetworkAccessManager *networkAccessManager();
     QSharedPointer<QNetworkAccessManager> sharedNetworkAccessManager();
 
-    /// Called by network jobs on credential errors, emits invalidCredentials()
-    void handleInvalidCredentials();
-
     JobQueue *jobQueue();
 
     QUuid uuid() const;

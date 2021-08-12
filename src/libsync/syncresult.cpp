@@ -177,7 +177,7 @@ void SyncResult::processCompletedItem(const SyncFileItemPtr &item)
                 // nothing.
                 break;
             }
-        } else if (item->_instruction == CSYNC_INSTRUCTION_IGNORE) {
+        } else if (item->_instruction == CSYNC_INSTRUCTION_IGNORE && item->_hasBlacklistEntry) {
             if (item->_hasBlacklistEntry) {
                 _numBlacklistErrors++;
             }

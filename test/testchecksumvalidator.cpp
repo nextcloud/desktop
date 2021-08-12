@@ -119,7 +119,7 @@ using namespace OCC::Utility;
         _expectedType = "Adler32";
         vali->setChecksumType(_expectedType);
 
-        connect(vali, SIGNAL(done(QByteArray,QByteArray)), SLOT(slotUpValidated(QByteArray,QByteArray)));
+        connect(vali, &ComputeChecksum::done, this, &TestChecksumValidator::slotUpValidated);
 
         auto file = new QFile(_testfile, vali);
         file->open(QIODevice::ReadOnly);
@@ -128,7 +128,7 @@ using namespace OCC::Utility;
         vali->start(_testfile);
 
         QEventLoop loop;
-        connect(vali, SIGNAL(done(QByteArray,QByteArray)), &loop, SLOT(quit()), Qt::QueuedConnection);
+        connect(vali, &ComputeChecksum::done, &loop, &QEventLoop::quit, Qt::QueuedConnection);
         loop.exec();
 
         delete vali;
@@ -140,7 +140,7 @@ using namespace OCC::Utility;
         ComputeChecksum *vali = new ComputeChecksum(this);
         _expectedType = OCC::checkSumMD5C;
         vali->setChecksumType(_expectedType);
-        connect(vali, SIGNAL(done(QByteArray,QByteArray)), this, SLOT(slotUpValidated(QByteArray,QByteArray)));
+        connect(vali, &ComputeChecksum::done, this, &TestChecksumValidator::slotUpValidated);
 
         auto file = new QFile(_testfile, vali);
         file->open(QIODevice::ReadOnly);
@@ -148,7 +148,7 @@ using namespace OCC::Utility;
         vali->start(_testfile);
 
         QEventLoop loop;
-        connect(vali, SIGNAL(done(QByteArray,QByteArray)), &loop, SLOT(quit()), Qt::QueuedConnection);
+        connect(vali, &ComputeChecksum::done, &loop, &QEventLoop::quit, Qt::QueuedConnection);
         loop.exec();
 
         delete vali;
@@ -159,7 +159,7 @@ using namespace OCC::Utility;
         ComputeChecksum *vali = new ComputeChecksum(this);
         _expectedType = OCC::checkSumSHA1C;
         vali->setChecksumType(_expectedType);
-        connect(vali, SIGNAL(done(QByteArray,QByteArray)), this, SLOT(slotUpValidated(QByteArray,QByteArray)));
+        connect(vali, &ComputeChecksum::done, this, &TestChecksumValidator::slotUpValidated);
 
         auto file = new QFile(_testfile, vali);
         file->open(QIODevice::ReadOnly);
@@ -168,7 +168,7 @@ using namespace OCC::Utility;
         vali->start(_testfile);
 
         QEventLoop loop;
-        connect(vali, SIGNAL(done(QByteArray,QByteArray)), &loop, SLOT(quit()), Qt::QueuedConnection);
+        connect(vali, &ComputeChecksum::done, &loop, &QEventLoop::quit, Qt::QueuedConnection);
         loop.exec();
 
         delete vali;
@@ -179,8 +179,8 @@ using namespace OCC::Utility;
         QSKIP("ZLIB not found.", SkipSingle);
 #else
         ValidateChecksumHeader *vali = new ValidateChecksumHeader(this);
-        connect(vali, SIGNAL(validated(QByteArray,QByteArray)), this, SLOT(slotDownValidated()));
-        connect(vali, SIGNAL(validationFailed(QString)), this, SLOT(slotDownError(QString)));
+        connect(vali, &ValidateChecksumHeader::validated, this, &TestChecksumValidator::slotDownValidated);
+        connect(vali, &ValidateChecksumHeader::validationFailed, this, &TestChecksumValidator::slotDownError);
 
         auto file = new QFile(_testfile, vali);
         file->open(QIODevice::ReadOnly);

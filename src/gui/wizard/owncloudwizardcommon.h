@@ -36,8 +36,7 @@ namespace WizardCommon {
         Page_ServerSetup,
         Page_HttpCreds,
         Page_OAuthCreds,
-        Page_AdvancedSetup,
-        Page_Result
+        Page_AdvancedSetup
     };
 
 } // ns WizardCommon

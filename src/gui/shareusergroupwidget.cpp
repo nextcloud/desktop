@@ -92,9 +92,9 @@ ShareUserGroupWidget::ShareUserGroupWidget(AccountPtr account,
 
     // By making the next two QueuedConnections we can override
     // the strings the completer sets on the line edit.
-    connect(_completer, SIGNAL(activated(QModelIndex)), SLOT(slotCompleterActivated(QModelIndex)),
+    connect(_completer, qOverload<const QModelIndex &>(&QCompleter::activated), this, &ShareUserGroupWidget::slotCompleterActivated,
         Qt::QueuedConnection);
-    connect(_completer, SIGNAL(highlighted(QModelIndex)), SLOT(slotCompleterHighlighted(QModelIndex)),
+    connect(_completer, qOverload<const QModelIndex &>(&QCompleter::highlighted), this, &ShareUserGroupWidget::slotCompleterHighlighted,
         Qt::QueuedConnection);
 
     // Queued connection so this signal is recieved after textChanged
@@ -241,11 +241,11 @@ void ShareUserGroupWidget::slotPrivateLinkShare()
     menu->setAttribute(Qt::WA_DeleteOnClose);
 
     menu->addAction(tr("Open link in browser"),
-        this, SLOT(slotPrivateLinkOpenBrowser()));
+        this, &ShareUserGroupWidget::slotPrivateLinkOpenBrowser);
     menu->addAction(tr("Copy link to clipboard"),
-        this, SLOT(slotPrivateLinkCopy()));
+        this, &ShareUserGroupWidget::slotPrivateLinkCopy);
     menu->addAction(tr("Send link by email"),
-        this, SLOT(slotPrivateLinkEmail()));
+        this, &ShareUserGroupWidget::slotPrivateLinkEmail);
 
     menu->exec(QCursor::pos());
 }
@@ -563,7 +563,7 @@ void ShareUserLine::slotDeleteAnimationFinished()
     // There is a painting bug where a small line of this widget isn't
     // properly cleared. This explicit repaint() call makes sure any trace of
     // the share widget is removed once it's destroyed. #4189
-    connect(this, SIGNAL(destroyed(QObject *)), parentWidget(), SLOT(repaint()));
+    connect(this, &ShareUserLine::destroyed, parentWidget(), qOverload<>(&QWidget::repaint));
 }
 
 void ShareUserLine::slotShareDeleted()

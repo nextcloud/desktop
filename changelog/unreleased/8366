@@ -1,0 +1,6 @@
+Bugfix: Limit min window size to 2/3 available
+
+When scaling was used the window could become bigger than the screen.
+The size is now limited to 2/3 of the screen.
+
+https://github.com/owncloud/client/issues/8366

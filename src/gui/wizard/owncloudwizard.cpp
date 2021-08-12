@@ -26,7 +26,6 @@
 #include "wizard/owncloudhttpcredspage.h"
 #include "wizard/owncloudoauthcredspage.h"
 #include "wizard/owncloudadvancedsetuppage.h"
-#include "wizard/owncloudwizardresultpage.h"
 
 #include "common/vfs.h"
 
@@ -50,19 +49,15 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
     , _httpCredsPage(new OwncloudHttpCredsPage(this))
     , _oauthCredsPage(new OwncloudOAuthCredsPage)
     , _advancedSetupPage(new OwncloudAdvancedSetupPage)
-    , _resultPage(new OwncloudWizardResultPage)
     , _credentialsPage(nullptr)
 {
     setObjectName("owncloudWizard");
-    auto size = ocApp()->gui()->settingsDialog()->minimumSizeHint();
-    resize(size.width() - 50, size.height() - 50);
 
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setPage(WizardCommon::Page_ServerSetup, _setupPage);
     setPage(WizardCommon::Page_HttpCreds, _httpCredsPage);
     setPage(WizardCommon::Page_OAuthCreds, _oauthCredsPage);
     setPage(WizardCommon::Page_AdvancedSetup, _advancedSetupPage);
-    setPage(WizardCommon::Page_Result, _resultPage);
 
     connect(this, &QDialog::finished, this, &OwncloudWizard::basicSetupFinished);
 
@@ -89,6 +84,8 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
     setOption(QWizard::CancelButtonOnLeft);
     setTitleFormat(Qt::RichText);
     setSubTitleFormat(Qt::RichText);
+
+    setMinimumSize(minimumSizeHint());
 }
 
 void OwncloudWizard::setAccount(AccountPtr account)
@@ -132,15 +129,9 @@ QString OwncloudWizard::ocUrl() const
     return url;
 }
 
-void OwncloudWizard::enableFinishOnResultWidget(bool enable)
-{
-    _resultPage->setComplete(enable);
-}
-
 void OwncloudWizard::setRemoteFolder(const QString &remoteFolder)
 {
     _advancedSetupPage->setRemoteFolder(remoteFolder);
-    _resultPage->setRemoteFolder(remoteFolder);
 }
 
 void OwncloudWizard::successfulStep()
@@ -161,13 +152,17 @@ void OwncloudWizard::successfulStep()
         break;
 
     case WizardCommon::Page_ServerSetup:
-    case WizardCommon::Page_Result:
         qCWarning(lcWizard, "Should not happen at this stage.");
         break;
     }
 
     ownCloudGui::raiseDialog(this);
-    next();
+    if (nextId() == -1) {
+        disconnect(this, &QDialog::finished, this, &OwncloudWizard::basicSetupFinished);
+        emit basicSetupFinished(QDialog::Accepted);
+    } else {
+        next();
+    }
 }
 
 DetermineAuthTypeJob::AuthType OwncloudWizard::authType() const
@@ -194,13 +189,6 @@ void OwncloudWizard::slotCurrentPageChanged(int id)
 
     if (id == WizardCommon::Page_ServerSetup) {
         emit clearPendingRequests();
-    }
-
-    if (id == WizardCommon::Page_Result) {
-        disconnect(this, &QDialog::finished, this, &OwncloudWizard::basicSetupFinished);
-        emit basicSetupFinished(QDialog::Accepted);
-        // Immediately close on show, we currently don't want this page anymore
-        done(Accepted);
     }
 }
 
@@ -274,6 +262,11 @@ void OwncloudWizard::askExperimentalVirtualFilesFeature(QWidget *receiver, const
         msgBox->deleteLater();
     });
     msgBox->open();
+}
+
+QSize OCC::OwncloudWizard::minimumSizeHint() const
+{
+    return ocApp()->gui()->settingsDialog()->sizeHintForChild();
 }
 
 } // end namespace

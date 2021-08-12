@@ -975,7 +975,7 @@ void FakeFolder::execUntilBeforePropagation()
 
 void FakeFolder::execUntilItemCompleted(const QString &relativePath)
 {
-    QSignalSpy spy(_syncEngine.get(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
+    QSignalSpy spy(_syncEngine.get(), &OCC::SyncEngine::itemCompleted);
     QElapsedTimer t;
     t.start();
     while (t.elapsed() < 5000) {
