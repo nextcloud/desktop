@@ -1139,37 +1139,37 @@ Bu durum OpenSLL kitaplıkları ile ilgili bir sorun olabilir.</translation>
 <context>
     <name>OCC::Flow2AuthWidget</name>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="91"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="97"/>
         <source>Unable to open the Browser, please copy the link to your Browser.</source>
         <translation>Web tarayıcı açılamadı. Lütfen bağlantıyı kopyalayıp tarayıcınıza yapıştırın.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="154"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="178"/>
         <source>Waiting for authorization</source>
         <translation>İzin verilmesi bekleniyor</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="159"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="183"/>
         <source>Polling for authorization</source>
         <translation>İzin isteniyor</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="164"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="188"/>
         <source>Starting authorization</source>
         <translation>İzin vermeye başlanıyor</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="168"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="192"/>
         <source>Link copied to clipboard.</source>
         <translation>Bağlantı panoya kopyalandı.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="215"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="239"/>
         <source>Reopen Browser</source>
         <translation>Tarayıcıyı yeniden aç</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="218"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="242"/>
         <source>Copy Link</source>
         <translation>Bağlantıyı kopyala</translation>
     </message>
@@ -1417,7 +1417,7 @@ Sunucuda bu eşitleme işlemlerinin yapılmasını istediğinizden emin misiniz?
 Bu işlemi yanlışlıkla yaptıysanız ve dosyalarınızı korumak istiyorsanız dosyalar sunucudan yeniden eşitlenecek.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1255"/>
+        <location filename="../src/gui/folder.cpp" line="1259"/>
         <source>All files in the sync folder &quot;%1&quot; folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
@@ -1428,7 +1428,7 @@ Geri yükleme yetkiniz varsa ve geri yüklemeyi seçerseniz, dosyalar sunucu ile
 Silmeyi seçerseniz, sahibi değilseniz bu dosyaları artık kullanamazsınız.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1260"/>
+        <location filename="../src/gui/folder.cpp" line="1264"/>
         <source>All the files in your local sync folder &quot;%1&quot; were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
@@ -2736,23 +2736,23 @@ güncelleyici başka izinler isteyebilir.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="88"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="236"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="225"/>
         <source>Use &amp;virtual files instead of downloading content immediately %1</source>
         <translation>İçerik &amp;hemen indirilmek yerine sanal dosyalar kullanılsın %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="88"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="236"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="225"/>
         <source>(experimental)</source>
         <translation>(deneysel)</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="270"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="259"/>
         <source>%1 folder &apos;%2&apos; is synced to local folder &apos;%3&apos;</source>
         <translation>%1 klasörü &apos;%2&apos;, yerel &apos;%3&apos; klasörü ile eşitlendi</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="273"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="262"/>
         <source>Sync the folder &apos;%1&apos;</source>
         <translation>&apos;%1&apos; klasörünü eşitle</translation>
     </message>
@@ -2767,49 +2767,49 @@ güncelleyici başka izinler isteyebilir.</translation>
         <translation>Boş alan: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="232"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="221"/>
         <source>Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter.</source>
         <translation>Sanal dosyalar, yerel klasör olarak Windows bölümü kök klasörlerini desteklemez. Lütfen sürücü harfinin altında bulunan bir klasör seçin.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="270"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="259"/>
         <source>%1 folder &quot;%2&quot; is synced to local folder &quot;%3&quot;</source>
         <translation>%1 klasörü &quot;%2&quot;, yerel &quot;%3&quot; klasörü ile eşitlendi</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="273"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="262"/>
         <source>Sync the folder &quot;%1&quot;</source>
         <translation>&quot;%1&quot; klasörünü eşitle</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="278"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="267"/>
         <source>Warning: The local folder is not empty. Pick a resolution!</source>
         <translation>Uyarı: Yerel klasör boş değil. Bir çözüm seçin!</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="286"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="275"/>
         <source>%1 free space</source>
         <comment>%1 gets replaced with the size and a matching unit. Example: 3 MB or 5 GB</comment>
         <translation>%1 boş alan</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="370"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="359"/>
         <source>Virtual files are not available for the selected folder</source>
         <translation>Sanal dosyalar seçilmiş klasör için kullanılamaz</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="430"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="419"/>
         <source>Local Sync Folder</source>
         <translation>Yerel eşitleme klasörü</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="490"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="531"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="479"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="520"/>
         <source>(%1)</source>
         <translation>(%1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="548"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="537"/>
         <source>There isn&apos;t enough free space in the local folder!</source>
         <translation>Yerel klasörde yeterli boş alan yok!</translation>
     </message>
@@ -3390,14 +3390,14 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
         <translation>Dosya taramadan sonra değiştirilmiş</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="532"/>
-        <source>File %1 can not be downloaded because of a local file name clash!</source>
-        <translation>%1 dosyası, adının yerel bir dosya ile çakışması nedeniyle indirilemedi!</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="446"/>
         <location filename="../src/libsync/propagatedownload.cpp" line="532"/>
         <source>File %1 cannot be downloaded because of a local file name clash!</source>
+        <translation>%1 dosyası, adının yerel bir dosya ile çakışması nedeniyle indirilemedi!</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagatedownload.cpp" line="532"/>
+        <source>File %1 can not be downloaded because of a local file name clash!</source>
         <translation>%1 dosyası, adının yerel bir dosya ile çakışması nedeniyle indirilemedi!</translation>
     </message>
     <message>
@@ -3543,15 +3543,15 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
         <translation>%1 dosyası şu anda kullanılıyor</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="271"/>
-        <source>Failed to rename file</source>
-        <translation>Dosya yeniden adlandırılamadı</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="257"/>
         <location filename="../src/libsync/propagatorjobs.cpp" line="263"/>
         <source>Error writing metadata to the database</source>
         <translation>Üst veri veritabanına yazılırken sorun çıktı</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="271"/>
+        <source>Failed to rename file</source>
+        <translation>Dosya yeniden adlandırılamadı</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="277"/>
@@ -5462,26 +5462,6 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
         <source>New folder</source>
         <translation>Yeni klasör</translation>
     </message>
-    <message>
-        <location filename="../src/gui/userstatus.cpp" line="53"/>
-        <source>Away</source>
-        <translation>Uzakta</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/userstatus.cpp" line="55"/>
-        <source>Do not disturb</source>
-        <translation>Rahatsız etmeyin</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/userstatus.cpp" line="58"/>
-        <source>Offline</source>
-        <translation>Çevrimdışı</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/userstatus.cpp" line="60"/>
-        <source>Online</source>
-        <translation>Çevrimiçi</translation>
-    </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="472"/>
         <source>%n day ago</source>
@@ -5537,6 +5517,26 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
         <source>%1: %2</source>
         <extracomment>this displays an error string (%2) for a file %1</extracomment>
         <translation>%1: %2</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/userstatus.cpp" line="53"/>
+        <source>Away</source>
+        <translation>Uzakta</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/userstatus.cpp" line="55"/>
+        <source>Do not disturb</source>
+        <translation>Rahatsız etmeyin</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/userstatus.cpp" line="58"/>
+        <source>Offline</source>
+        <translation>Çevrimdışı</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/userstatus.cpp" line="60"/>
+        <source>Online</source>
+        <translation>Çevrimiçi</translation>
     </message>
 </context>
 <context>
@@ -5683,19 +5683,19 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
         <translation>İndirilen dosya sağlama değerine uygun değil, yeniden indirilecek.</translation>
     </message>
     <message>
-        <location filename="../src/common/checksums.cpp" line="358"/>
+        <location filename="../src/common/checksums.cpp" line="362"/>
+        <source>The downloaded file does not match the checksum, it will be resumed. &apos;%1&apos; != &apos;%2&apos;</source>
+        <translation>İndirilen dosya sağlama değerine uygun değil, yeniden indirilecek. &apos;%1&apos; != &apos;%2&apos;</translation>
+    </message>
+    <message>
+        <location filename="../src/common/checksums.cpp" line="364"/>
         <source>The checksum header contained an unknown checksum type &quot;%1&quot;</source>
         <translation>Sağlama üst bilgisinde bulunan &quot;%1&quot; sağlama türü bilinmiyor</translation>
     </message>
     <message>
-        <location filename="../src/common/checksums.cpp" line="362"/>
+        <location filename="../src/common/checksums.cpp" line="368"/>
         <source>The downloaded file does not match the checksum, it will be resumed. &quot;%1&quot; != &quot;%2&quot;</source>
         <translation>İndirilen dosya sağlama değerine uygun değil, yeniden indirilecek. &quot;%1&quot; != &quot;%2&quot;</translation>
-    </message>
-    <message>
-        <location filename="../src/common/checksums.cpp" line="362"/>
-        <source>The downloaded file does not match the checksum, it will be resumed. &apos;%1&apos; != &apos;%2&apos;</source>
-        <translation>İndirilen dosya sağlama değerine uygun değil, yeniden indirilecek. &apos;%1&apos; != &apos;%2&apos;</translation>
     </message>
 </context>
 <context>

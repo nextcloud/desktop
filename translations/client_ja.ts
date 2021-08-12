@@ -1139,37 +1139,37 @@ This can be an issue with your OpenSSL libraries.</source>
 <context>
     <name>OCC::Flow2AuthWidget</name>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="91"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="97"/>
         <source>Unable to open the Browser, please copy the link to your Browser.</source>
         <translation>ブラウザーを開くことができませんでした。リンクをブラウザーにコピーしてください。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="154"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="178"/>
         <source>Waiting for authorization</source>
         <translation>承認を待機中</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="159"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="183"/>
         <source>Polling for authorization</source>
         <translation>承認を問い合わせ中</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="164"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="188"/>
         <source>Starting authorization</source>
         <translation>承認を開始</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="168"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="192"/>
         <source>Link copied to clipboard.</source>
         <translation>リンクをクリップボードにコピーしました。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="215"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="239"/>
         <source>Reopen Browser</source>
         <translation>ブラウザーを再度開く</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="218"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="242"/>
         <source>Copy Link</source>
         <translation>リンクをコピー</translation>
     </message>
@@ -1416,7 +1416,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
 これが操作ミスであり、ファイルを維持することにした場合、ファイルはサーバーから再同期されます。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1255"/>
+        <location filename="../src/gui/folder.cpp" line="1259"/>
         <source>All files in the sync folder &quot;%1&quot; folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
@@ -1424,7 +1424,7 @@ If you decide to delete the files, they will be unavailable to you, unless you a
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1260"/>
+        <location filename="../src/gui/folder.cpp" line="1264"/>
         <source>All the files in your local sync folder &quot;%1&quot; were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
@@ -2727,23 +2727,23 @@ for additional privileges during the process.</source>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="88"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="236"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="225"/>
         <source>Use &amp;virtual files instead of downloading content immediately %1</source>
         <translation>コンテンツをすぐにダウンロードする代わりに &amp;仮想ファイルを使用する %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="88"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="236"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="225"/>
         <source>(experimental)</source>
         <translation>(試験的)</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="270"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="259"/>
         <source>%1 folder &apos;%2&apos; is synced to local folder &apos;%3&apos;</source>
         <translation>%1 フォルダー &apos;%2&apos; はローカルフォルダー &apos;%3&apos; と同期しています</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="273"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="262"/>
         <source>Sync the folder &apos;%1&apos;</source>
         <translation>&apos;%1&apos; フォルダーを同期</translation>
     </message>
@@ -2758,49 +2758,49 @@ for additional privileges during the process.</source>
         <translation>空き容量: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="232"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="221"/>
         <source>Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter.</source>
         <translation>仮想ファイルは、ローカルフォルダーのWindowsルートパーティションではサポートされていません。ドライブレターの下の有効なサブフォルダを選択してください。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="270"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="259"/>
         <source>%1 folder &quot;%2&quot; is synced to local folder &quot;%3&quot;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="273"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="262"/>
         <source>Sync the folder &quot;%1&quot;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="278"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="267"/>
         <source>Warning: The local folder is not empty. Pick a resolution!</source>
         <translation>警告: ローカルフォルダーは空ではありません。対処法を選択してください！</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="286"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="275"/>
         <source>%1 free space</source>
         <comment>%1 gets replaced with the size and a matching unit. Example: 3 MB or 5 GB</comment>
         <translation>空き容量 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="370"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="359"/>
         <source>Virtual files are not available for the selected folder</source>
         <translation>選択したフォルダーで仮想ファイルが使用できません</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="430"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="419"/>
         <source>Local Sync Folder</source>
         <translation>ローカル同期フォルダー</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="490"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="531"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="479"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="520"/>
         <source>(%1)</source>
         <translation>(%1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="548"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="537"/>
         <source>There isn&apos;t enough free space in the local folder!</source>
         <translation>ローカルフォルダーに十分な空き容量がありません。</translation>
     </message>
@@ -3381,15 +3381,15 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>ファイルは発見以降に変更されました</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="532"/>
-        <source>File %1 can not be downloaded because of a local file name clash!</source>
-        <translation>ファイル %1 はローカルファイル名が衝突しているためダウンロードできません！</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="446"/>
         <location filename="../src/libsync/propagatedownload.cpp" line="532"/>
         <source>File %1 cannot be downloaded because of a local file name clash!</source>
         <translation>ローカルファイル名が競合しているため、ファイル %1 をダウンロードできませんでした</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagatedownload.cpp" line="532"/>
+        <source>File %1 can not be downloaded because of a local file name clash!</source>
+        <translation>ファイル %1 はローカルファイル名が衝突しているためダウンロードできません！</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="584"/>
@@ -3534,15 +3534,15 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>ファイル %1 は現在使用中です</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="271"/>
-        <source>Failed to rename file</source>
-        <translation>ファイル名を変更できませんでした</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="257"/>
         <location filename="../src/libsync/propagatorjobs.cpp" line="263"/>
         <source>Error writing metadata to the database</source>
         <translation>メタデータのデータベースへの書き込みに失敗</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="271"/>
+        <source>Failed to rename file</source>
+        <translation>ファイル名を変更できませんでした</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="277"/>
@@ -5453,26 +5453,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <source>New folder</source>
         <translation>新しいフォルダー</translation>
     </message>
-    <message>
-        <location filename="../src/gui/userstatus.cpp" line="53"/>
-        <source>Away</source>
-        <translation>不在</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/userstatus.cpp" line="55"/>
-        <source>Do not disturb</source>
-        <translation>おやすみモード</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/userstatus.cpp" line="58"/>
-        <source>Offline</source>
-        <translation>オフライン</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/userstatus.cpp" line="60"/>
-        <source>Online</source>
-        <translation>オンライン</translation>
-    </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="472"/>
         <source>%n day ago</source>
@@ -5528,6 +5508,26 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <source>%1: %2</source>
         <extracomment>this displays an error string (%2) for a file %1</extracomment>
         <translation>%1: %2</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/userstatus.cpp" line="53"/>
+        <source>Away</source>
+        <translation>不在</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/userstatus.cpp" line="55"/>
+        <source>Do not disturb</source>
+        <translation>おやすみモード</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/userstatus.cpp" line="58"/>
+        <source>Offline</source>
+        <translation>オフライン</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/userstatus.cpp" line="60"/>
+        <source>Online</source>
+        <translation>オンライン</translation>
     </message>
 </context>
 <context>
@@ -5674,19 +5674,19 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>ダウンロードしたファイルがチェックサムと一致しません。再開されます。</translation>
     </message>
     <message>
-        <location filename="../src/common/checksums.cpp" line="358"/>
+        <location filename="../src/common/checksums.cpp" line="362"/>
+        <source>The downloaded file does not match the checksum, it will be resumed. &apos;%1&apos; != &apos;%2&apos;</source>
+        <translation>ダウンロードしたファイルがチェックサムと一致しないため、再度ダウンロードされます。 &apos;%1&apos;！= &apos;%2&apos;</translation>
+    </message>
+    <message>
+        <location filename="../src/common/checksums.cpp" line="364"/>
         <source>The checksum header contained an unknown checksum type &quot;%1&quot;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/common/checksums.cpp" line="362"/>
+        <location filename="../src/common/checksums.cpp" line="368"/>
         <source>The downloaded file does not match the checksum, it will be resumed. &quot;%1&quot; != &quot;%2&quot;</source>
         <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/common/checksums.cpp" line="362"/>
-        <source>The downloaded file does not match the checksum, it will be resumed. &apos;%1&apos; != &apos;%2&apos;</source>
-        <translation>ダウンロードしたファイルがチェックサムと一致しないため、再度ダウンロードされます。 &apos;%1&apos;！= &apos;%2&apos;</translation>
     </message>
 </context>
 <context>

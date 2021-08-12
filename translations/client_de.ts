@@ -1139,37 +1139,37 @@ Dies kann ein Problem mit Ihren OpenSSL-Bibliotheken sein.</translation>
 <context>
     <name>OCC::Flow2AuthWidget</name>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="91"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="97"/>
         <source>Unable to open the Browser, please copy the link to your Browser.</source>
         <translation>Der Browser kann nicht geöffnet werden. Bitte kopieren Sie den Link in Ihren Browser.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="154"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="178"/>
         <source>Waiting for authorization</source>
         <translation>Warte auf Autorisierung</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="159"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="183"/>
         <source>Polling for authorization</source>
         <translation>Abruf der Autorisierung</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="164"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="188"/>
         <source>Starting authorization</source>
         <translation>Starte Autorisierung</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="168"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="192"/>
         <source>Link copied to clipboard.</source>
         <translation>Link in die Zwischenablage kopiert.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="215"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="239"/>
         <source>Reopen Browser</source>
         <translation>Browser erneut öffnen</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="218"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="242"/>
         <source>Copy Link</source>
         <translation>Link kopieren</translation>
     </message>
@@ -1418,7 +1418,7 @@ Sind Sie sich sicher, dass Sie diese Aktion mit Ihrem Server synchronisieren mö
 Falls dies ein Missgeschick war und Sie sich zum Behalten der Dateien entscheiden, werden diese wieder vom Server synchronisiert.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1255"/>
+        <location filename="../src/gui/folder.cpp" line="1259"/>
         <source>All files in the sync folder &quot;%1&quot; folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
@@ -1429,7 +1429,7 @@ Wenn Sie sich entscheiden, die Dateien wiederherzustellen, werden sie erneut mit
 Wenn Sie sich entscheiden, die Dateien zu löschen, sind sie für Sie nicht mehr verfügbar, es sei denn, Sie sind der Eigentümer.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1260"/>
+        <location filename="../src/gui/folder.cpp" line="1264"/>
         <source>All the files in your local sync folder &quot;%1&quot; were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
@@ -2735,23 +2735,23 @@ for additional privileges during the process.</source>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="88"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="236"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="225"/>
         <source>Use &amp;virtual files instead of downloading content immediately %1</source>
         <translation>&amp;Virtuelle Dateien verwenden, anstatt den Inhalt sofort herunterzuladen %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="88"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="236"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="225"/>
         <source>(experimental)</source>
         <translation>(experimentell)</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="270"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="259"/>
         <source>%1 folder &apos;%2&apos; is synced to local folder &apos;%3&apos;</source>
         <translation>%1 Ordner &apos;%2&apos; wird mit dem lokalen Ordner &apos;%3&apos; synchronisiert</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="273"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="262"/>
         <source>Sync the folder &apos;%1&apos;</source>
         <translation>Ordner &apos;%1&apos; synchronisieren</translation>
     </message>
@@ -2766,49 +2766,49 @@ for additional privileges during the process.</source>
         <translation>Freier Platz: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="232"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="221"/>
         <source>Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter.</source>
         <translation>Virtuelle Dateien werden für die Wurzel von Windows-Partitionen als lokaler Ordner nicht unterstützt. Bitte wählen Sie einen gültigen Unterordner unter dem Laufwerksbuchstaben.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="270"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="259"/>
         <source>%1 folder &quot;%2&quot; is synced to local folder &quot;%3&quot;</source>
         <translation>%1 Ordner &quot;%2&quot; wird mit dem lokalen Ordner &quot;%3&quot; synchronisiert</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="273"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="262"/>
         <source>Sync the folder &quot;%1&quot;</source>
         <translation>Ordner &quot;%1&quot; synchronisieren</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="278"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="267"/>
         <source>Warning: The local folder is not empty. Pick a resolution!</source>
         <translation>Achtung: Der lokale Ordner ist nicht leer. Bitte wählen Sie eine entsprechende Lösung!</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="286"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="275"/>
         <source>%1 free space</source>
         <comment>%1 gets replaced with the size and a matching unit. Example: 3 MB or 5 GB</comment>
         <translation>%1 freier Platz</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="370"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="359"/>
         <source>Virtual files are not available for the selected folder</source>
         <translation>Virtuelle Dateien sind für den ausgewählten Ordner nicht verfügbar</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="430"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="419"/>
         <source>Local Sync Folder</source>
         <translation>Lokaler Ordner für die Synchronisierung</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="490"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="531"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="479"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="520"/>
         <source>(%1)</source>
         <translation>(%1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="548"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="537"/>
         <source>There isn&apos;t enough free space in the local folder!</source>
         <translation>Nicht genug freier Platz im lokalen Ordner vorhanden!</translation>
     </message>
@@ -3389,15 +3389,15 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
         <translation>Datei ist seit der Entdeckung geändert worden</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="532"/>
-        <source>File %1 can not be downloaded because of a local file name clash!</source>
-        <translation>Die Datei %1 kann aufgrund eines Konfliktes mit dem lokalen Dateinamen nicht herunter geladen werden!</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="446"/>
         <location filename="../src/libsync/propagatedownload.cpp" line="532"/>
         <source>File %1 cannot be downloaded because of a local file name clash!</source>
         <translation>Die Datei %1 kann aufgrund eines Konfliktes mit dem lokalen Dateinamen nicht heruntergeladen werden!</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagatedownload.cpp" line="532"/>
+        <source>File %1 can not be downloaded because of a local file name clash!</source>
+        <translation>Die Datei %1 kann aufgrund eines Konfliktes mit dem lokalen Dateinamen nicht herunter geladen werden!</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="584"/>
@@ -3542,15 +3542,15 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
         <translation>Die Datei %1 ist aktuell in Benutzung</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="271"/>
-        <source>Failed to rename file</source>
-        <translation>Konnte Datei nicht umbenennen</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="257"/>
         <location filename="../src/libsync/propagatorjobs.cpp" line="263"/>
         <source>Error writing metadata to the database</source>
         <translation>Fehler beim Schreiben der Metadaten in die Datenbank</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="271"/>
+        <source>Failed to rename file</source>
+        <translation>Konnte Datei nicht umbenennen</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="277"/>
@@ -5461,26 +5461,6 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
         <source>New folder</source>
         <translation>Neuer Ordner</translation>
     </message>
-    <message>
-        <location filename="../src/gui/userstatus.cpp" line="53"/>
-        <source>Away</source>
-        <translation>Abwesend</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/userstatus.cpp" line="55"/>
-        <source>Do not disturb</source>
-        <translation>Nicht stören</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/userstatus.cpp" line="58"/>
-        <source>Offline</source>
-        <translation>Offline</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/userstatus.cpp" line="60"/>
-        <source>Online</source>
-        <translation>Online</translation>
-    </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="472"/>
         <source>%n day ago</source>
@@ -5536,6 +5516,26 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
         <source>%1: %2</source>
         <extracomment>this displays an error string (%2) for a file %1</extracomment>
         <translation>%1: %2</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/userstatus.cpp" line="53"/>
+        <source>Away</source>
+        <translation>Abwesend</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/userstatus.cpp" line="55"/>
+        <source>Do not disturb</source>
+        <translation>Nicht stören</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/userstatus.cpp" line="58"/>
+        <source>Offline</source>
+        <translation>Offline</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/userstatus.cpp" line="60"/>
+        <source>Online</source>
+        <translation>Online</translation>
     </message>
 </context>
 <context>
@@ -5682,19 +5682,19 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
         <translation>Die heruntergeladene Datei entspricht nicht der Prüfsumme, das Herunterladen wird wiederaufgenommen.</translation>
     </message>
     <message>
-        <location filename="../src/common/checksums.cpp" line="358"/>
+        <location filename="../src/common/checksums.cpp" line="362"/>
+        <source>The downloaded file does not match the checksum, it will be resumed. &apos;%1&apos; != &apos;%2&apos;</source>
+        <translation>Die heruntergeladene Datei stimmt nicht mit der Prüfsumme überein, sie wird fortgesetzt. &apos;%1&apos; != &apos;%2&apos;</translation>
+    </message>
+    <message>
+        <location filename="../src/common/checksums.cpp" line="364"/>
         <source>The checksum header contained an unknown checksum type &quot;%1&quot;</source>
         <translation>Der Prüfsummen-Header enthielt einen unbekannten Prüfsummentyp &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/common/checksums.cpp" line="362"/>
+        <location filename="../src/common/checksums.cpp" line="368"/>
         <source>The downloaded file does not match the checksum, it will be resumed. &quot;%1&quot; != &quot;%2&quot;</source>
         <translation>Die heruntergeladene Datei stimmt nicht mit der Prüfsumme überein, sie wird fortgesetzt. &quot;%1&quot; != &quot;%2&quot;</translation>
-    </message>
-    <message>
-        <location filename="../src/common/checksums.cpp" line="362"/>
-        <source>The downloaded file does not match the checksum, it will be resumed. &apos;%1&apos; != &apos;%2&apos;</source>
-        <translation>Die heruntergeladene Datei stimmt nicht mit der Prüfsumme überein, sie wird fortgesetzt. &apos;%1&apos; != &apos;%2&apos;</translation>
     </message>
 </context>
 <context>

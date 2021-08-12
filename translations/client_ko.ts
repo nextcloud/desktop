@@ -1139,37 +1139,37 @@ OpenSSL 라이브러리 이슈일 수 있습니다.</translation>
 <context>
     <name>OCC::Flow2AuthWidget</name>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="91"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="97"/>
         <source>Unable to open the Browser, please copy the link to your Browser.</source>
         <translation>브라우저를 열 수 없습니다. 링크를 브라우저로 복사하십시오.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="154"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="178"/>
         <source>Waiting for authorization</source>
         <translation>인증 대기 중</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="159"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="183"/>
         <source>Polling for authorization</source>
         <translation>인증 폴링 중</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="164"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="188"/>
         <source>Starting authorization</source>
         <translation>인증 시작하는 중</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="168"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="192"/>
         <source>Link copied to clipboard.</source>
         <translation>링크가 클립보드에 복사되었습니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="215"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="239"/>
         <source>Reopen Browser</source>
         <translation>브라우저를 다시 열기</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="218"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="242"/>
         <source>Copy Link</source>
         <translation>링크 복사</translation>
     </message>
@@ -1418,7 +1418,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
 이 동작이 우연이고 파일을 유지하고자 할 경우, 서버로부터 재동기화 될 것입니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1255"/>
+        <location filename="../src/gui/folder.cpp" line="1259"/>
         <source>All files in the sync folder &quot;%1&quot; folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
@@ -1426,7 +1426,7 @@ If you decide to delete the files, they will be unavailable to you, unless you a
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1260"/>
+        <location filename="../src/gui/folder.cpp" line="1264"/>
         <source>All the files in your local sync folder &quot;%1&quot; were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
@@ -2734,23 +2734,23 @@ for additional privileges during the process.</source>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="88"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="236"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="225"/>
         <source>Use &amp;virtual files instead of downloading content immediately %1</source>
         <translation>컨텐츠를 즉시 다운로드 하는 대신 &amp;가상 파일을 사용하십시오 %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="88"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="236"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="225"/>
         <source>(experimental)</source>
         <translation>(실험적)</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="270"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="259"/>
         <source>%1 folder &apos;%2&apos; is synced to local folder &apos;%3&apos;</source>
         <translation>%1 폴더 &apos;%2&apos;가 로컬 폴더 &apos;%3&apos;으로 동기화되었습니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="273"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="262"/>
         <source>Sync the folder &apos;%1&apos;</source>
         <translation>폴더 &apos;%1&apos; 동기화</translation>
     </message>
@@ -2765,50 +2765,50 @@ for additional privileges during the process.</source>
         <translation>남은 공간: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="232"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="221"/>
         <source>Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter.</source>
         <translation>가상 파일은 윈도우 파티션 루트에 로컬 폴더로 지원되지 않습니다.
 드라이브 문자가 지정된 유효한 하위 폴더를 선택하십시오.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="270"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="259"/>
         <source>%1 folder &quot;%2&quot; is synced to local folder &quot;%3&quot;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="273"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="262"/>
         <source>Sync the folder &quot;%1&quot;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="278"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="267"/>
         <source>Warning: The local folder is not empty. Pick a resolution!</source>
         <translation>경고: 로컬 폴더가 비어있지 않습니다. 해결 방법을 선택하십시오!</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="286"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="275"/>
         <source>%1 free space</source>
         <comment>%1 gets replaced with the size and a matching unit. Example: 3 MB or 5 GB</comment>
         <translation>%1 남은 공간</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="370"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="359"/>
         <source>Virtual files are not available for the selected folder</source>
         <translation>가상 파일을 선택한 폴더에서 사용할 수 없음</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="430"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="419"/>
         <source>Local Sync Folder</source>
         <translation>로컬 동기화 폴더</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="490"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="531"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="479"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="520"/>
         <source>(%1)</source>
         <translation>(%1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="548"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="537"/>
         <source>There isn&apos;t enough free space in the local folder!</source>
         <translation>로컬 폴더에 공간이 부족합니다!</translation>
     </message>
@@ -3389,14 +3389,14 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>발견 이후 파일이 변경되었습니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="532"/>
-        <source>File %1 can not be downloaded because of a local file name clash!</source>
-        <translation>로컬 파일 이름 충돌로 인해 %1 파일을 다운로드 할 수 없습니다!</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="446"/>
         <location filename="../src/libsync/propagatedownload.cpp" line="532"/>
         <source>File %1 cannot be downloaded because of a local file name clash!</source>
+        <translation>로컬 파일 이름 충돌로 인해 %1 파일을 다운로드 할 수 없습니다!</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagatedownload.cpp" line="532"/>
+        <source>File %1 can not be downloaded because of a local file name clash!</source>
         <translation>로컬 파일 이름 충돌로 인해 %1 파일을 다운로드 할 수 없습니다!</translation>
     </message>
     <message>
@@ -3542,15 +3542,15 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="271"/>
-        <source>Failed to rename file</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="257"/>
         <location filename="../src/libsync/propagatorjobs.cpp" line="263"/>
         <source>Error writing metadata to the database</source>
         <translation>데이터베이스에 메타데이터를 쓰는 중 오류가 발생했습니다.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="271"/>
+        <source>Failed to rename file</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="277"/>
@@ -5461,26 +5461,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <source>New folder</source>
         <translation>새 폴더</translation>
     </message>
-    <message>
-        <location filename="../src/gui/userstatus.cpp" line="53"/>
-        <source>Away</source>
-        <translation>자리 비움</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/userstatus.cpp" line="55"/>
-        <source>Do not disturb</source>
-        <translation>방해 금지</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/userstatus.cpp" line="58"/>
-        <source>Offline</source>
-        <translation>오프라인</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/userstatus.cpp" line="60"/>
-        <source>Online</source>
-        <translation>접속 중</translation>
-    </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="472"/>
         <source>%n day ago</source>
@@ -5536,6 +5516,26 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <source>%1: %2</source>
         <extracomment>this displays an error string (%2) for a file %1</extracomment>
         <translation>%1: %2</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/userstatus.cpp" line="53"/>
+        <source>Away</source>
+        <translation>자리 비움</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/userstatus.cpp" line="55"/>
+        <source>Do not disturb</source>
+        <translation>방해 금지</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/userstatus.cpp" line="58"/>
+        <source>Offline</source>
+        <translation>오프라인</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/userstatus.cpp" line="60"/>
+        <source>Online</source>
+        <translation>접속 중</translation>
     </message>
 </context>
 <context>
@@ -5682,19 +5682,19 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>다운로드 한 파일이 체크섬과 일치하지 않아 다시 시작됩니다.</translation>
     </message>
     <message>
-        <location filename="../src/common/checksums.cpp" line="358"/>
+        <location filename="../src/common/checksums.cpp" line="362"/>
+        <source>The downloaded file does not match the checksum, it will be resumed. &apos;%1&apos; != &apos;%2&apos;</source>
+        <translation>다운로드 한 파일이 체크섬과 일치하지 않아 다시 시작됩니다.  &apos;%1&apos; != &apos;%2&apos;</translation>
+    </message>
+    <message>
+        <location filename="../src/common/checksums.cpp" line="364"/>
         <source>The checksum header contained an unknown checksum type &quot;%1&quot;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/common/checksums.cpp" line="362"/>
+        <location filename="../src/common/checksums.cpp" line="368"/>
         <source>The downloaded file does not match the checksum, it will be resumed. &quot;%1&quot; != &quot;%2&quot;</source>
         <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/common/checksums.cpp" line="362"/>
-        <source>The downloaded file does not match the checksum, it will be resumed. &apos;%1&apos; != &apos;%2&apos;</source>
-        <translation>다운로드 한 파일이 체크섬과 일치하지 않아 다시 시작됩니다.  &apos;%1&apos; != &apos;%2&apos;</translation>
     </message>
 </context>
 <context>

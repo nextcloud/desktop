@@ -1139,37 +1139,37 @@ Custu podet èssere un&apos;errore de is librerias tuas OpenSSL.</translation>
 <context>
     <name>OCC::Flow2AuthWidget</name>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="91"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="97"/>
         <source>Unable to open the Browser, please copy the link to your Browser.</source>
         <translation>Non faghet a abèrrere su navigadore, pro praghere, còpia su ligòngiu a su navigadore tuo.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="154"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="178"/>
         <source>Waiting for authorization</source>
         <translation>Isetende s&apos;autorizatzione</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="159"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="183"/>
         <source>Polling for authorization</source>
         <translation>Pedida autorizatzione</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="164"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="188"/>
         <source>Starting authorization</source>
         <translation>Aviamentu de s&apos;autorizatzione</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="168"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="192"/>
         <source>Link copied to clipboard.</source>
         <translation>Ligòngiu copiadu in punta de billete.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="215"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="239"/>
         <source>Reopen Browser</source>
         <translation>Torra a abèrrere su navigadore</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="218"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="242"/>
         <source>Copy Link</source>
         <translation>Còpia ligòngiu</translation>
     </message>
@@ -1418,7 +1418,7 @@ Ses seguru chi boles sincronizare custas atziones cun su serbidore?
 Si custu fiat un&apos;errore e detzides de mantènnere is archìvios tuos, custos ddos at a torrare a sincronizare su serbidore.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1255"/>
+        <location filename="../src/gui/folder.cpp" line="1259"/>
         <source>All files in the sync folder &quot;%1&quot; folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
@@ -1429,7 +1429,7 @@ Si detzides de ripristinare is archìvios, custos ant a èssere sincronizados to
 Si detzides de cantzellare is archìvios, non ant a èssere prus a disponimentu, francu chi sias tue su mere.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1260"/>
+        <location filename="../src/gui/folder.cpp" line="1264"/>
         <source>All the files in your local sync folder &quot;%1&quot; were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
@@ -2736,23 +2736,23 @@ privilègios in prus durante su protzessu.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="88"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="236"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="225"/>
         <source>Use &amp;virtual files instead of downloading content immediately %1</source>
         <translation> Imprea is archìvios &amp;virtuales imbetzes de iscarrigare deretu su cuntenutu %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="88"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="236"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="225"/>
         <source>(experimental)</source>
         <translation>(isperimentale)</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="270"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="259"/>
         <source>%1 folder &apos;%2&apos; is synced to local folder &apos;%3&apos;</source>
         <translation>Sa cartella %1 de &apos;%2&apos; est sincronizada cun sa cartella locale &apos;%3&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="273"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="262"/>
         <source>Sync the folder &apos;%1&apos;</source>
         <translation>Sincroniza sa cartella &apos;%1&apos;</translation>
     </message>
@@ -2767,49 +2767,49 @@ privilègios in prus durante su protzessu.</translation>
         <translation>Logu lìberu: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="232"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="221"/>
         <source>Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter.</source>
         <translation>Is archìvios virtuales no sunt suportados pro is sorgentes de partzidura de Windows comente cartellas locales. Sèbera una sutacartella bàlida a suta de sa lìtera de su discu.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="270"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="259"/>
         <source>%1 folder &quot;%2&quot; is synced to local folder &quot;%3&quot;</source>
         <translation>Sa cartella %1 de &quot;%2&quot; est sincronizada cun sa cartella locale &quot;%3&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="273"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="262"/>
         <source>Sync the folder &quot;%1&quot;</source>
         <translation>Sincroniza sa cartella &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="278"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="267"/>
         <source>Warning: The local folder is not empty. Pick a resolution!</source>
         <translation>Avisu: sa cartella locale no est bòida. Sèbera unu remèdiu!</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="286"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="275"/>
         <source>%1 free space</source>
         <comment>%1 gets replaced with the size and a matching unit. Example: 3 MB or 5 GB</comment>
         <translation>Logu lìberu %1 </translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="370"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="359"/>
         <source>Virtual files are not available for the selected folder</source>
         <translation>Is archìvios virtuales non sunt a disponimentu pro sa cartella seletzionada</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="430"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="419"/>
         <source>Local Sync Folder</source>
         <translation>Sincronizatzione cartella locale</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="490"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="531"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="479"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="520"/>
         <source>(%1)</source>
         <translation>(%1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="548"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="537"/>
         <source>There isn&apos;t enough free space in the local folder!</source>
         <translation>Non bastat su logu lìberu in sa cartella locale!</translation>
     </message>
@@ -3389,15 +3389,15 @@ Custa est una modalidade noa, isperimentale. Si detzides de dda impreare, sinnal
         <translation>Archìviu cambiadu in pessu rilevadu</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="532"/>
-        <source>File %1 can not be downloaded because of a local file name clash!</source>
-        <translation> S&apos;archìviu %1 non podet èssere iscarrigadu pro unu cunflitu cun un&apos;archìviu locale!</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="446"/>
         <location filename="../src/libsync/propagatedownload.cpp" line="532"/>
         <source>File %1 cannot be downloaded because of a local file name clash!</source>
         <translation>S&apos;archìviu %1 nn faghet a dd&apos;iscarrigare pro unu cunflitu cun su nùmene de s&apos;archìviu locale!</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagatedownload.cpp" line="532"/>
+        <source>File %1 can not be downloaded because of a local file name clash!</source>
+        <translation> S&apos;archìviu %1 non podet èssere iscarrigadu pro unu cunflitu cun un&apos;archìviu locale!</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="584"/>
@@ -3542,15 +3542,15 @@ Custa est una modalidade noa, isperimentale. Si detzides de dda impreare, sinnal
         <translation>S&apos;archìviu %1 est giai impreadu</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="271"/>
-        <source>Failed to rename file</source>
-        <translation>No at fatu a torrare a numenare s&apos;archìviu</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="257"/>
         <location filename="../src/libsync/propagatorjobs.cpp" line="263"/>
         <source>Error writing metadata to the database</source>
         <translation>Errore iscriende metadatos in sa base de datos</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="271"/>
+        <source>Failed to rename file</source>
+        <translation>No at fatu a torrare a numenare s&apos;archìviu</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="277"/>
@@ -5461,26 +5461,6 @@ Custa est una modalidade noa, isperimentale. Si detzides de dda impreare, sinnal
         <source>New folder</source>
         <translation>Cartella noa</translation>
     </message>
-    <message>
-        <location filename="../src/gui/userstatus.cpp" line="53"/>
-        <source>Away</source>
-        <translation>Ausente</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/userstatus.cpp" line="55"/>
-        <source>Do not disturb</source>
-        <translation>No istorbes</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/userstatus.cpp" line="58"/>
-        <source>Offline</source>
-        <translation>Foras de lìnia</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/userstatus.cpp" line="60"/>
-        <source>Online</source>
-        <translation>In lìnia</translation>
-    </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="472"/>
         <source>%n day ago</source>
@@ -5536,6 +5516,26 @@ Custa est una modalidade noa, isperimentale. Si detzides de dda impreare, sinnal
         <source>%1: %2</source>
         <extracomment>this displays an error string (%2) for a file %1</extracomment>
         <translation>%1: %2</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/userstatus.cpp" line="53"/>
+        <source>Away</source>
+        <translation>Ausente</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/userstatus.cpp" line="55"/>
+        <source>Do not disturb</source>
+        <translation>No istorbes</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/userstatus.cpp" line="58"/>
+        <source>Offline</source>
+        <translation>Foras de lìnia</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/userstatus.cpp" line="60"/>
+        <source>Online</source>
+        <translation>In lìnia</translation>
     </message>
 </context>
 <context>
@@ -5682,19 +5682,19 @@ Custa est una modalidade noa, isperimentale. Si detzides de dda impreare, sinnal
         <translation>S&apos;archìviu iscarrigadu non torrat cun su còdighe de controllu, at a èssere ripristinadu.</translation>
     </message>
     <message>
-        <location filename="../src/common/checksums.cpp" line="358"/>
+        <location filename="../src/common/checksums.cpp" line="362"/>
+        <source>The downloaded file does not match the checksum, it will be resumed. &apos;%1&apos; != &apos;%2&apos;</source>
+        <translation> S&apos;archìviu iscarrigadu non torrat cun su còdighe de controllu, at a èssere ripristinadu. &apos;%1&apos; != &apos;%2&apos;</translation>
+    </message>
+    <message>
+        <location filename="../src/common/checksums.cpp" line="364"/>
         <source>The checksum header contained an unknown checksum type &quot;%1&quot;</source>
         <translation>S&apos;intestatzione de controllu cunteniat una genia de còdighe de controllu &quot;%1&quot; disconnotu</translation>
     </message>
     <message>
-        <location filename="../src/common/checksums.cpp" line="362"/>
+        <location filename="../src/common/checksums.cpp" line="368"/>
         <source>The downloaded file does not match the checksum, it will be resumed. &quot;%1&quot; != &quot;%2&quot;</source>
         <translation> S&apos;archìviu iscarrigadu non torrat cun su còdighe de controllu, at a èssere ripristinadu. &quot;%1&quot; != &quot;%2&quot;</translation>
-    </message>
-    <message>
-        <location filename="../src/common/checksums.cpp" line="362"/>
-        <source>The downloaded file does not match the checksum, it will be resumed. &apos;%1&apos; != &apos;%2&apos;</source>
-        <translation> S&apos;archìviu iscarrigadu non torrat cun su còdighe de controllu, at a èssere ripristinadu. &apos;%1&apos; != &apos;%2&apos;</translation>
     </message>
 </context>
 <context>
