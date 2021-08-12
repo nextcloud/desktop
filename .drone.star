@@ -9,6 +9,7 @@ def main(ctx):
     build_trigger = {
         "ref": [
             "refs/heads/master",
+            "refs/heads/2.**",
             "refs/tags/**",
             "refs/pull/**",
         ],
@@ -16,12 +17,6 @@ def main(ctx):
     cron_trigger = {
         "event": [
             "cron",
-        ],
-    }
-    notification_trigger = {
-        "ref": [
-            "refs/heads/master",
-            "refs/tags/v*",
         ],
     }
     pipelines = [
