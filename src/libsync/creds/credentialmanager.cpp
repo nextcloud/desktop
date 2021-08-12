@@ -6,8 +6,7 @@
 
 #include "common/asserts.h"
 
-#include <QJsonDocument>
-#include <QJsonObject>
+#include <QCborValue>
 #include <QLoggingCategory>
 #include <QTimer>
 
@@ -72,14 +71,7 @@ QKeychain::Job *CredentialManager::set(const QString &key, const QVariant &data)
             qCWarning(lcCredentaislManager) << "Failed to set:" << scopedKey(this, key) << writeJob->errorString();
         }
     });
-    QJsonObject obj;
-    if (data.canConvert(QVariant::Map)) {
-        obj = QJsonObject::fromVariantMap(data.toMap());
-    } else {
-        obj.insert(QStringLiteral("d"), QJsonValue::fromVariant(data));
-    }
-    //    qCDebug(lcCredentaislManager) << "wrote" << QJsonDocument(obj).toJson();
-    writeJob->setBinaryData(QJsonDocument(obj).toBinaryData());
+    writeJob->setBinaryData(QCborValue::fromVariant(data).toCbor());
     // start is delayed so we can directly call it
     writeJob->start();
     return writeJob;
@@ -200,19 +192,14 @@ void CredentialJob::start()
 #endif
         OC_ASSERT(_job->error() != QKeychain::EntryNotFound);
         if (_job->error() == QKeychain::NoError) {
-            const auto doc = QJsonDocument::fromBinaryData(_job->binaryData());
-            if (doc.isNull()) {
+            QCborParserError error;
+            const auto obj = QCborValue::fromCbor(_job->binaryData(), &error);
+            if (error.error != QCborError::NoError) {
                 _error = QKeychain::OtherError;
-                _errorString = tr("Failed to parse credentials");
+                _errorString = tr("Failed to parse credentials %1").arg(error.errorString());
                 return;
             }
-            const auto obj = doc.object();
-            //            qCDebug(lcCredentaislManager) << "read" << keychainJob->key() << QJsonDocument(obj).toJson();
-            if (obj.count() == 1) {
-                _data = obj.value(QLatin1String("d"));
-            } else {
-                _data = obj.toVariantMap();
-            }
+            _data = obj.toVariant();
             OC_ASSERT(_data.isValid());
         } else {
             qCWarning(lcCredentaislManager) << "Failed to read client id" << _job->errorString();
