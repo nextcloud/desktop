@@ -33,15 +33,6 @@ def main(ctx):
             trigger = build_trigger,
             depends_on = [],
         ),
-        # Build client
-        build_and_test_client(
-            ctx,
-            "gcc",
-            "g++",
-            "Release",
-            "Unix Makefiles",
-            trigger = build_trigger,
-        ),
         build_and_test_client(
             ctx,
             "clang",
@@ -58,7 +49,6 @@ def main(ctx):
             depends_on = [
                 "check-starlark",
                 "changelog",
-                "gcc-release-make",
                 "clang-debug-ninja",
             ],
         ),
