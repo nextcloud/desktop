@@ -241,11 +241,11 @@ void ShareUserGroupWidget::slotPrivateLinkShare()
     menu->setAttribute(Qt::WA_DeleteOnClose);
 
     menu->addAction(tr("Open link in browser"),
-        this, SLOT(slotPrivateLinkOpenBrowser()));
+        this, &ShareUserGroupWidget::slotPrivateLinkOpenBrowser);
     menu->addAction(tr("Copy link to clipboard"),
-        this, SLOT(slotPrivateLinkCopy()));
+        this, &ShareUserGroupWidget::slotPrivateLinkCopy);
     menu->addAction(tr("Send link by email"),
-        this, SLOT(slotPrivateLinkEmail()));
+        this, &ShareUserGroupWidget::slotPrivateLinkEmail);
 
     menu->exec(QCursor::pos());
 }

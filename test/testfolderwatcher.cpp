@@ -121,7 +121,7 @@ public:
 
         _watcher.reset(new FolderWatcher);
         _watcher->init(_rootPath);
-        _pathChangedSpy.reset(new QSignalSpy(_watcher.data(), SIGNAL(pathChanged(QString))));
+        _pathChangedSpy.reset(new QSignalSpy(_watcher.data(), &FolderWatcher::pathChanged));
     }
 
     int countFolders(const QString &path)

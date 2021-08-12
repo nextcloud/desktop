@@ -216,7 +216,7 @@ private slots:
 
     void abortAfterFailedMkdir() {
         FakeFolder fakeFolder{FileInfo{}};
-        QSignalSpy finishedSpy(&fakeFolder.syncEngine(), SIGNAL(finished(bool)));
+        QSignalSpy finishedSpy(&fakeFolder.syncEngine(), &SyncEngine::finished);
         fakeFolder.serverErrorPaths().append("NewFolder");
         fakeFolder.localModifier().mkdir("NewFolder");
         // This should be aborted and would otherwise fail in FileInfo::create.
@@ -230,7 +230,7 @@ private slots:
      * etag stored in the database yet. */
     void testDirEtagAfterIncompleteSync() {
         FakeFolder fakeFolder{FileInfo{}};
-        QSignalSpy finishedSpy(&fakeFolder.syncEngine(), SIGNAL(finished(bool)));
+        QSignalSpy finishedSpy(&fakeFolder.syncEngine(), &SyncEngine::finished);
         fakeFolder.serverErrorPaths().append("NewFolder/foo");
         fakeFolder.remoteModifier().mkdir("NewFolder");
         fakeFolder.remoteModifier().insert("NewFolder/foo");
