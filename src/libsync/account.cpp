@@ -430,11 +430,6 @@ void Account::slotCredentialsAsked()
     emit credentialsAsked(_credentials.data());
 }
 
-void Account::handleInvalidCredentials()
-{
-    emit invalidCredentials();
-}
-
 JobQueue *Account::jobQueue()
 {
     return &_jobQueue;

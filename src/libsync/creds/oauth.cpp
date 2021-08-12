@@ -323,6 +323,8 @@ void OAuth::refreshAuthentication(const QString &refreshToken)
                 }
             } else if (reply->error() != QNetworkReply::NoError) {
                 qCWarning(lcOauth) << tr("Error while refreshing the token: %1 : %2").arg(reply->errorString(), QString::fromUtf8(jsonData));
+                Q_EMIT refreshError(reply->error(), reply->errorString());
+                return;
             } else {
                 if (jsonParseError.error != QJsonParseError::NoError || data.isEmpty()) {
                     // Invalid or empty JSON: Network error maybe?
