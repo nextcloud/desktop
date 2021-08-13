@@ -155,7 +155,7 @@ def isFileSynced(fileName):
 def waitForFileToBeSynced(context, fileName):
     waitFor(
         lambda: isFileSynced(
-            sanitizePath(context.userData['clientSyncPath'] + fileName)
+            sanitizePath(context.userData['clientSyncPathUser1'] + fileName)
         ),
         context.userData['clientSyncTimeout'] * 1000,
     )
@@ -164,7 +164,7 @@ def waitForFileToBeSynced(context, fileName):
 def waitForFolderToBeSynced(context, folderName):
     waitFor(
         lambda: isFolderSynced(
-            sanitizePath(context.userData['clientSyncPath'] + folderName)
+            sanitizePath(context.userData['clientSyncPathUser1'] + folderName)
         ),
         context.userData['clientSyncTimeout'] * 1000,
     )
@@ -277,7 +277,7 @@ def step(context, fileName):
 @When('the user creates a file "|any|" with the following content on the file system')
 def step(context, filename):
     fileContent = "\n".join(context.multiLineText)
-    f = open(context.userData['clientSyncPath'] + filename, "w")
+    f = open(context.userData['clientSyncPathUser1'] + filename, "w")
     f.write(fileContent)
     f.close()
 
@@ -309,7 +309,7 @@ def step(context, stepPart1):
 @Then('the file "|any|" should exist on the file system with the following content')
 def step(context, filePath):
     expected = "\n".join(context.multiLineText)
-    filePath = context.userData['clientSyncPath'] + filePath
+    filePath = context.userData['clientSyncPathUser1'] + filePath
     f = open(filePath, 'r')
     contents = f.read()
     test.compare(
@@ -331,7 +331,7 @@ def step(context):
 @Given('the user has changed the content of local file "|any|" to:')
 def step(context, filename):
     fileContent = "\n".join(context.multiLineText)
-    f = open(context.userData['clientSyncPath'] + filename, "w")
+    f = open(context.userData['clientSyncPathUser1'] + filename, "w")
     f.write(fileContent)
     f.close()
 
@@ -364,14 +364,14 @@ def step(context, filename):
     extpart = filename.split('.')[1]
     onlyfiles = [
         f
-        for f in listdir(context.userData['clientSyncPath'])
-        if isfile(join(context.userData['clientSyncPath'], f))
+        for f in listdir(context.userData['clientSyncPathUser1'])
+        if isfile(join(context.userData['clientSyncPathUser1'], f))
     ]
     found = False
     pattern = re.compile(buildConflictedRegex(filename))
     for file in onlyfiles:
         if pattern.match(file):
-            f = open(context.userData['clientSyncPath'] + file, 'r')
+            f = open(context.userData['clientSyncPathUser1'] + file, 'r')
             contents = f.read()
             if contents == expected:
                 found = True
@@ -738,7 +738,7 @@ def step(context, resource, content):
 
     snooze(5)
 
-    f = open(context.userData['clientSyncPath'] + resource, "w")
+    f = open(context.userData['clientSyncPathUser1'] + resource, "w")
     f.write(content)
     f.close()
 
