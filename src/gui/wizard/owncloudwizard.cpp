@@ -56,7 +56,7 @@ namespace OCC {
 Q_LOGGING_CATEGORY(lcWizard, "gui.wizard", QtInfoMsg)
 
 OwncloudWizard::OwncloudWizard(QWidget *parent)
-    : QWizard(parent)
+    : QWizard(parent, Qt::WindowFlags() & ~Qt::WindowContextHelpButtonHint)
     , _remoteFolder(Theme::instance()->defaultServerFolder())
     , _localFolder(initLocalFolder())
     , _useVirtualFileSync(bestAvailableVfsMode() == Vfs::WindowsCfApi)
@@ -69,7 +69,6 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
 {
     setObjectName("owncloudWizard");
 
-    setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setPage(WizardCommon::Page_ServerSetup, _setupPage);
     setPage(WizardCommon::Page_HttpCreds, _httpCredsPage);
     setPage(WizardCommon::Page_OAuthCreds, _oauthCredsPage);
@@ -86,6 +85,9 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
     connect(_httpCredsPage, &OwncloudHttpCredsPage::connectToOCUrl, this, &OwncloudWizard::connectToOCUrl);
     connect(_oauthCredsPage, &OwncloudOAuthCredsPage::connectToOCUrl, this, &OwncloudWizard::connectToOCUrl);
 
+    // banner size requires a fixed size
+    setFixedSize(ocApp()->gui()->settingsDialog()->sizeHintForChild());
+
     Theme *theme = Theme::instance();
     setWindowTitle(tr("%1 Connection Wizard").arg(theme->appNameGUI()));
     setWizardStyle(QWizard::ModernStyle);
@@ -97,8 +99,6 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
     setOption(QWizard::CancelButtonOnLeft);
     setTitleFormat(Qt::RichText);
     setSubTitleFormat(Qt::RichText);
-
-    setMinimumSize(minimumSizeHint());
 }
 
 void OwncloudWizard::setAccount(AccountPtr account)
@@ -295,11 +295,6 @@ void OwncloudWizard::askExperimentalVirtualFilesFeature(QWidget *receiver, const
         msgBox->deleteLater();
     });
     msgBox->open();
-}
-
-QSize OCC::OwncloudWizard::minimumSizeHint() const
-{
-    return ocApp()->gui()->settingsDialog()->sizeHintForChild();
 }
 
 } // end namespace

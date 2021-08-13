@@ -67,8 +67,6 @@ public:
 
     DetermineAuthTypeJob::AuthType authType() const;
 
-    QSize minimumSizeHint() const override;
-
     void setLocalFolder(const QString &newLocalFolder);
     const QString &localFolder() const;
 
