@@ -183,8 +183,8 @@ private:
 public:
     PropagateItemJob(OwncloudPropagator *propagator, const SyncFileItemPtr &item)
         : PropagatorJob(propagator)
-        , _item(item)
         , _parallelism(FullParallelism)
+        , _item(item)
     {
         // we should always execute jobs that process the E2EE API calls as sequential jobs
         // TODO: In fact, we must make sure Lock/Unlock are not colliding and always wait for each other to complete. So, we could refactor this "_parallelism" later
@@ -407,14 +407,14 @@ public:
 public:
     OwncloudPropagator(AccountPtr account, const QString &localDir,
         const QString &remoteFolder, SyncJournalDb *progressDb)
-        : _localDir((localDir.endsWith(QChar('/'))) ? localDir : localDir + '/')
-        , _remoteFolder((remoteFolder.endsWith(QChar('/'))) ? remoteFolder : remoteFolder + '/')
-        , _journal(progressDb)
+        : _journal(progressDb)
         , _finishedEmited(false)
         , _bandwidthManager(this)
         , _anotherSyncNeeded(false)
         , _chunkSize(10 * 1000 * 1000) // 10 MB, overridden in setSyncOptions
         , _account(account)
+        , _localDir((localDir.endsWith(QChar('/'))) ? localDir : localDir + '/')
+        , _remoteFolder((remoteFolder.endsWith(QChar('/'))) ? remoteFolder : remoteFolder + '/')
     {
         qRegisterMetaType<PropagatorJob::AbortType>("PropagatorJob::AbortType");
     }
