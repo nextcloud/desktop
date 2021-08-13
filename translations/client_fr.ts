@@ -1142,32 +1142,32 @@ Cela peut être un problème avec vos bibliothèques OpenSSL.</translation>
         <translation>Impossible d&apos;ouvrir le navigateur, veuillez copier le lien dans votre navigateur Web.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="178"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="180"/>
         <source>Waiting for authorization</source>
         <translation>En attente de l&apos;autorisation</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="183"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="185"/>
         <source>Polling for authorization</source>
         <translation>En attente de l&apos;autorisation</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="188"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="190"/>
         <source>Starting authorization</source>
         <translation>Démarrage de l&apos;autorisation</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="192"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="194"/>
         <source>Link copied to clipboard.</source>
         <translation>Lien copié dans le presse-papier</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="239"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="241"/>
         <source>Reopen Browser</source>
         <translation>Rouvrir le navigateur</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="242"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="244"/>
         <source>Copy Link</source>
         <translation>Copier le lien</translation>
     </message>

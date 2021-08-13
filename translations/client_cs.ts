@@ -1144,32 +1144,32 @@ Toto může být způsobeno problémem s OpenSSL knihovnami.</translation>
         <translation>Nepodařilo se otevřít váš prohlížeč – zkopírujte do něho odkaz sami.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="178"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="180"/>
         <source>Waiting for authorization</source>
         <translation>Čeká se na pověření</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="183"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="185"/>
         <source>Polling for authorization</source>
         <translation>Dotazování se na pověření</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="188"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="190"/>
         <source>Starting authorization</source>
         <translation>Zahajování pověřování</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="192"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="194"/>
         <source>Link copied to clipboard.</source>
         <translation>Odkaz zkopírován do schránky.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="239"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="241"/>
         <source>Reopen Browser</source>
         <translation>Znovu otevřít webový prohlížeč</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="242"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="244"/>
         <source>Copy Link</source>
         <translation>Zkopírovat odkaz</translation>
     </message>

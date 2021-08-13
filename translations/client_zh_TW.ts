@@ -185,7 +185,7 @@
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="56"/>
         <source>Logo</source>
-        <translation>圖示</translation>
+        <translation>商標</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="65"/>
@@ -213,7 +213,7 @@
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="44"/>
         <source>&amp;Choose …</source>
-        <translation>選擇……(&amp;C)</translation>
+        <translation>選擇(&amp;C)...</translation>
     </message>
 </context>
 <context>
@@ -1144,32 +1144,32 @@ This can be an issue with your OpenSSL libraries.</source>
         <translation>無法開啟瀏覽器，請將連結複製到瀏覽器中。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="178"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="180"/>
         <source>Waiting for authorization</source>
         <translation>正在等候授權</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="183"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="185"/>
         <source>Polling for authorization</source>
         <translation>正在輪詢授權</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="188"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="190"/>
         <source>Starting authorization</source>
         <translation>開始授權</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="192"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="194"/>
         <source>Link copied to clipboard.</source>
         <translation>超連結已複製到剪貼簿。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="239"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="241"/>
         <source>Reopen Browser</source>
         <translation>重新開啟瀏覽器</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="242"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="244"/>
         <source>Copy Link</source>
         <translation>複製連結</translation>
     </message>

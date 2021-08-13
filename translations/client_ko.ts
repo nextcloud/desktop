@@ -1144,32 +1144,32 @@ OpenSSL 라이브러리 이슈일 수 있습니다.</translation>
         <translation>브라우저를 열 수 없습니다. 링크를 브라우저로 복사하십시오.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="178"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="180"/>
         <source>Waiting for authorization</source>
         <translation>인증 대기 중</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="183"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="185"/>
         <source>Polling for authorization</source>
         <translation>인증 폴링 중</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="188"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="190"/>
         <source>Starting authorization</source>
         <translation>인증 시작하는 중</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="192"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="194"/>
         <source>Link copied to clipboard.</source>
         <translation>링크가 클립보드에 복사되었습니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="239"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="241"/>
         <source>Reopen Browser</source>
         <translation>브라우저를 다시 열기</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="242"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="244"/>
         <source>Copy Link</source>
         <translation>링크 복사</translation>
     </message>

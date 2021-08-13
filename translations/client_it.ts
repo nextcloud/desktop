@@ -1144,32 +1144,32 @@ Questo può essere un problema delle le tue librerie OpenSSL.</translation>
         <translation>Impossibile aprire il browser, copia il collegamento nel tuo browser.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="178"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="180"/>
         <source>Waiting for authorization</source>
         <translation>In attesa di autorizzazione</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="183"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="185"/>
         <source>Polling for authorization</source>
         <translation>Richiesta di autorizzazione</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="188"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="190"/>
         <source>Starting authorization</source>
         <translation>Avvio autorizzazione</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="192"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="194"/>
         <source>Link copied to clipboard.</source>
         <translation>Collegamento copiato negli appunti.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="239"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="241"/>
         <source>Reopen Browser</source>
         <translation>Riapri browser</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="242"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="244"/>
         <source>Copy Link</source>
         <translation>Copia collegamento</translation>
     </message>
