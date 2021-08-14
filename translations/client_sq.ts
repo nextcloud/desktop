@@ -926,7 +926,7 @@ Mjet njëkohësimi kartelash për desktop.</translation>
     <message>
         <location filename="../src/libsync/creds/credentialmanager.cpp" line="199"/>
         <source>Failed to parse credentials %1</source>
-        <translation type="unfinished"/>
+        <translation>S’u arrit të përtypen kredencialet %1</translation>
     </message>
 </context>
 <context>
@@ -1384,7 +1384,7 @@ Nëse ky qe aksident dhe vendosni t’i mbani kartelat tuaja, ato do të rinjëk
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="259"/>
         <source>Local folder: %1</source>
-        <translation type="unfinished"/>
+        <translation>Dosje vendore: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="977"/>
