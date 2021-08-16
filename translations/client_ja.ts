@@ -2450,7 +2450,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="455"/>
         <source>&lt;p&gt;A new version of the %1 Client is available but the updating process failed.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; has been downloaded. The installed version is %3.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;クライアントの新しいバージョンが利用可能ですが、更新に失敗しました。&lt;/p&gt;&lt;p&gt;&lt;b&gt;％2 &lt;/b&gt;がダウンロードされました。インストールされているバージョンは％3 です。&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;%1 クライアントの新しいバージョンが利用可能ですが、更新に失敗しました。&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2 &lt;/b&gt;がダウンロードされました。インストールされているバージョンは %3 です。&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="469"/>
