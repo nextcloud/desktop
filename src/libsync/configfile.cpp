@@ -40,7 +40,6 @@
 #include <QOperatingSystemVersion>
 #include <QStandardPaths>
 
-#define DEFAULT_REMOTE_POLL_INTERVAL 30000 // default remote poll time in milliseconds
 #define DEFAULT_MAX_LOG_LINES 20000
 
 namespace OCC {
@@ -94,6 +93,7 @@ const QString moveToTrashC() { return QStringLiteral("moveToTrash"); }
 }
 
 QString ConfigFile::_confDir = QString();
+const std::chrono::seconds DefaultRemotePollInterval { 30 }; // default remote poll time in milliseconds
 
 static chrono::milliseconds millisecondsValue(const QSettings &setting, const QString &key,
     chrono::milliseconds defaultValue)
@@ -404,7 +404,7 @@ bool ConfigFile::dataExists(const QString &group, const QString &key) const
     return settings.contains(key);
 }
 
-chrono::milliseconds ConfigFile::remotePollInterval(const QString &connection) const
+chrono::milliseconds ConfigFile::remotePollInterval(std::chrono::seconds defaultVal, const QString &connection) const
 {
     QString con(connection);
     if (connection.isEmpty())
@@ -413,11 +413,18 @@ chrono::milliseconds ConfigFile::remotePollInterval(const QString &connection) c
     QSettings settings(configFile(), QSettings::IniFormat);
     settings.beginGroup(con);
 
-    auto defaultPollInterval = chrono::milliseconds(DEFAULT_REMOTE_POLL_INTERVAL);
+    auto defaultPollInterval { DefaultRemotePollInterval };
+
+    // The server default-capabilities is set to 60, which is, if interpreted in milliseconds,
+    // pretty small. If the value is above 5 seconds, it was set intentionally.
+    // Server admins have to set the value in Milliseconds!
+    if (defaultVal > chrono::seconds(5)) {
+        defaultPollInterval = defaultVal;
+    }
     auto remoteInterval = millisecondsValue(settings, remotePollIntervalC(), defaultPollInterval);
     if (remoteInterval < chrono::seconds(5)) {
-        qCWarning(lcConfigFile) << "Remote Interval is less than 5 seconds, reverting to" << DEFAULT_REMOTE_POLL_INTERVAL;
         remoteInterval = defaultPollInterval;
+        qCWarning(lcConfigFile) << "Remote Interval is less than 5 seconds, reverting to" << remoteInterval.count();
     }
     return remoteInterval;
 }
@@ -438,9 +445,9 @@ void ConfigFile::setRemotePollInterval(chrono::milliseconds interval, const QStr
     settings.sync();
 }
 
-chrono::milliseconds ConfigFile::forceSyncInterval(const QString &connection) const
+chrono::milliseconds ConfigFile::forceSyncInterval(std::chrono::seconds remoteFromCapabilities, const QString &connection) const
 {
-    auto pollInterval = remotePollInterval(connection);
+    auto pollInterval = remotePollInterval(remoteFromCapabilities, connection);
 
     QString con(connection);
     if (connection.isEmpty())

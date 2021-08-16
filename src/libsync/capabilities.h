@@ -75,6 +75,12 @@ public:
     bool sharePublicLinkEnforceExpireDate() const;
     bool sharePublicLinkMultiple() const;
     bool shareResharing() const;
+    /** Remote Poll interval.
+     *
+     *  returns the requested poll interval in seconds to be used by the client.
+     *  @returns 0 if no capability is set.
+     */
+    std::chrono::seconds remotePollInterval() const;
 
     // TODO: return SharePermission
     int defaultPermissions() const;

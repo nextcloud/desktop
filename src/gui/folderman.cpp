@@ -112,10 +112,10 @@ FolderMan::FolderMan(QObject *parent)
 
     _socketApi.reset(new SocketApi);
 
-    ConfigFile cfg;
-    std::chrono::milliseconds polltime = cfg.remotePollInterval();
-    qCInfo(lcFolderMan) << "setting remote poll timer interval to" << polltime.count() << "msec";
-    _etagPollTimer.setInterval(polltime.count());
+    // Set the remote poll interval fixed to 10 seconds.
+    // That does not mean that it polls every 10 seconds, but it checks every 10 secs
+    // if one of the folders is due to sync.
+    _etagPollTimer.setInterval(1000);
     QObject::connect(&_etagPollTimer, &QTimer::timeout, this, &FolderMan::slotEtagPollTimerTimeout);
     _etagPollTimer.start();
 
@@ -833,14 +833,8 @@ void FolderMan::slotStartScheduledFolderSync()
 
 void FolderMan::slotEtagPollTimerTimeout()
 {
-    ConfigFile cfg;
-    auto polltime = cfg.remotePollInterval();
-
     for (auto *f : qAsConst(_folderMap)) {
         if (!f) {
-            continue;
-        }
-        if (f->isSyncRunning()) {
             continue;
         }
         if (_scheduledFolders.contains(f)) {
@@ -849,13 +843,9 @@ void FolderMan::slotEtagPollTimerTimeout()
         if (_disabledFolders.contains(f)) {
             continue;
         }
-        if (f->etagJob() || f->isBusy() || !f->canSync()) {
-            continue;
+        if (f->dueToSync()) {
+            QMetaObject::invokeMethod(f, &Folder::slotRunEtagJob, Qt::QueuedConnection);
         }
-        if (f->msecSinceLastSync() < polltime) {
-            continue;
-        }
-        QMetaObject::invokeMethod(f, "slotRunEtagJob", Qt::QueuedConnection);
     }
 }
 
@@ -916,7 +906,8 @@ void FolderMan::slotScheduleFolderByTime()
         auto msecsSinceSync = f->msecSinceLastSync();
 
         // Possibly it's just time for a new sync run
-        bool forceSyncIntervalExpired = msecsSinceSync > ConfigFile().forceSyncInterval();
+        const auto pta = f->accountState()->account()->capabilities().remotePollInterval();
+        bool forceSyncIntervalExpired = msecsSinceSync > ConfigFile().forceSyncInterval(pta);
         if (forceSyncIntervalExpired) {
             qCInfo(lcFolderMan) << "Scheduling folder" << f->alias()
                                 << "because it has been" << msecsSinceSync.count() << "ms "
