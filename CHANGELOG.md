@@ -35,6 +35,7 @@ Summary
 * Change - Add support for dynamic client registration with OIDC: [#8350](https://github.com/owncloud/client/pull/8350/)
 * Change - Include full os version in the about dialog: [#8374](https://github.com/owncloud/client/pull/8374)
 * Change - We removed the support for async jobs using OC-JobStatus-Location: [#8398](https://github.com/owncloud/client/pull/8398)
+* Change - Add a branding option to skip the advanced setup page: [#8665](https://github.com/owncloud/client/issues/8665)
 * Enhancement - Prefer 127.0.0.1 as oauth redirect url: [#4542](https://github.com/owncloud/enterprise/issues/4542)
 * Enhancement - Display an icon in the Windows explorer context menu: [#4627](https://github.com/owncloud/client/issues/4627)
 * Enhancement - Show last sync date in tray menu: [#5644](https://github.com/owncloud/client/issues/5644)
@@ -45,6 +46,7 @@ Summary
 * Enhancement - Add language picker to general settings: [#8466](https://github.com/owncloud/client/issues/8466)
 * Enhancement - Attach the last 20 log lines to a crash report: [#8467](https://github.com/owncloud/client/issues/8467)
 * Enhancement - Mention the local file name when a file name clash occurs: [#8609](https://github.com/owncloud/client/issues/8609)
+* Enhancement - Consider a remote poll interval coming with the server capabilities: [#5947](https://github.com/owncloud/client/issues/5947)
 * Enhancement - Improved handling of errors during local file updates: [#8787](https://github.com/owncloud/client/pull/8787)
 * Enhancement - Retry sync on `502 Bad Gateway`: [#8811](https://github.com/owncloud/client/issues/8811)
 
@@ -244,6 +246,12 @@ Details
 
    https://github.com/owncloud/client/pull/8398
 
+* Change - Add a branding option to skip the advanced setup page: [#8665](https://github.com/owncloud/client/issues/8665)
+
+   If the option is enabled we will create a sync with the default values.
+
+   https://github.com/owncloud/client/issues/8665
+
 * Enhancement - Prefer 127.0.0.1 as oauth redirect url: [#4542](https://github.com/owncloud/enterprise/issues/4542)
 
    When using OpenID Connect we now always use http://127.0.0.1 as redirect url instead of
@@ -334,6 +342,16 @@ Details
 
    https://github.com/owncloud/client/issues/8609
    https://github.com/owncloud/client/pull/8630
+
+* Enhancement - Consider a remote poll interval coming with the server capabilities: [#5947](https://github.com/owncloud/client/issues/5947)
+
+   This way, admins can configure the remote sync poll interval of clients through the
+   capabilities settings of the server. Note that the setting in the server capabilities needs to
+   be done in milliseconds. Default is 30 seconds.
+
+   https://github.com/owncloud/client/issues/5947
+   https://github.com/owncloud/client/issues/8780
+   https://github.com/owncloud/client/pull/8777
 
 * Enhancement - Improved handling of errors during local file updates: [#8787](https://github.com/owncloud/client/pull/8787)
 
