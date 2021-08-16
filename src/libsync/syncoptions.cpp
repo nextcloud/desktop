@@ -24,9 +24,7 @@ SyncOptions::SyncOptions()
 {
 }
 
-SyncOptions::~SyncOptions()
-{
-}
+SyncOptions::~SyncOptions() = default;
 
 void SyncOptions::fillFromEnvironmentVariables()
 {
