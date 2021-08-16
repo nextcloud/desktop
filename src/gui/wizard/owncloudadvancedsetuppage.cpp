@@ -37,13 +37,11 @@
 namespace OCC {
 
 OwncloudAdvancedSetupPage::OwncloudAdvancedSetupPage()
-    : QWizardPage()
+    : AbstractWizardPage()
     , _ui()
     , _checking(false)
     , _created(false)
     , _localFolderValid(false)
-    , _progressIndi(new QProgressIndicator(this))
-    , _remoteFolder()
 {
     _ui.setupUi(this);
 
@@ -53,14 +51,13 @@ OwncloudAdvancedSetupPage::OwncloudAdvancedSetupPage()
 
     registerField(QLatin1String("OCSyncFromScratch"), _ui.cbSyncFromScratch);
 
-    stopSpinner();
-
     connect(_ui.pbSelectLocalFolder, &QAbstractButton::clicked, this, &OwncloudAdvancedSetupPage::slotSelectFolder);
     setButtonText(QWizard::FinishButton, tr("Connect..."));
 
     connect(_ui.rSyncEverything, &QAbstractButton::clicked, this, &OwncloudAdvancedSetupPage::slotSyncEverythingClicked);
     connect(_ui.rVirtualFileSync, &QAbstractButton::clicked, this, &OwncloudAdvancedSetupPage::slotVirtualFileSyncClicked);
     connect(_ui.rVirtualFileSync, &QRadioButton::toggled, this, [this](bool checked) {
+        owncloudWizard()->setUseVirtualFileSync(checked);
         if (checked) {
             _ui.lSelectiveSyncSizeLabel->clear();
             _selectiveSyncBlacklist.clear();
@@ -86,8 +83,8 @@ OwncloudAdvancedSetupPage::OwncloudAdvancedSetupPage()
 
     _ui.rVirtualFileSync->setText(tr("Use &virtual files instead of downloading content immediately%1").arg(bestAvailableVfsMode() == Vfs::WindowsCfApi ? QString() : tr(" (experimental)")));
 
-    connect(this, &OwncloudAdvancedSetupPage::completeChanged, this, [this]{
-        if (wizard() && qobject_cast<OwncloudWizard*>(wizard())->authType() == OCC::DetermineAuthTypeJob::AuthType::OAuth) {
+    connect(this, &OwncloudAdvancedSetupPage::completeChanged, this, [this] {
+        if (wizard() && owncloudWizard()->authType() == OCC::DetermineAuthTypeJob::AuthType::OAuth) {
             // For OAuth, disable the back button in the Page_AdvancedSetup because we don't want
             // to re-open the browser.
             // HACK: the wizard will reenable the buttons on completeChanged, so delay it
@@ -105,9 +102,11 @@ bool OwncloudAdvancedSetupPage::isComplete() const
 
 void OwncloudAdvancedSetupPage::initializePage()
 {
+    if (owncloudWizard()->useVirtualFileSync()) {
+        setRadioChecked(_ui.rVirtualFileSync);
+    }
     const auto vfsMode = bestAvailableVfsMode();
     if (Theme::instance()->forceVirtualFilesOption() && vfsMode == Vfs::WindowsCfApi) {
-        setRadioChecked(_ui.rVirtualFileSync);
         _ui.syncTypeWidget->hide();
     } else {
         if (!Theme::instance()->showVirtualFilesOption() || vfsMode == Vfs::Off || (vfsMode != Vfs::WindowsCfApi && !Theme::instance()->enableExperimentalFeatures())) {
@@ -120,7 +119,6 @@ void OwncloudAdvancedSetupPage::initializePage()
 #ifdef Q_OS_WIN
             if (vfsMode == Vfs::WindowsCfApi) {
                 qobject_cast<QVBoxLayout *>(_ui.wSyncStrategy->layout())->insertItem(0, _ui.lVirtualFileSync);
-                setRadioChecked(_ui.rVirtualFileSync);
             }
 #endif
         }
@@ -129,18 +127,14 @@ void OwncloudAdvancedSetupPage::initializePage()
     _ui.lSelectiveSyncSizeLabel->clear();
     _ui.lSyncEverythingSizeLabel->clear();
 
-    // Update the local folder - this is not guaranteed to find a good one
-    QString goodLocalFolder = FolderMan::instance()->findGoodPathForNewSyncFolder(localFolder());
-    wizard()->setProperty("localFolder", goodLocalFolder);
-
     // call to init label
     updateStatus();
 
     // ensure "next" gets the focus, not obSelectLocalFolder
     QTimer::singleShot(0, wizard()->button(QWizard::FinishButton), qOverload<>(&QWidget::setFocus));
 
-    auto acc = static_cast<OwncloudWizard *>(wizard())->account();
-    auto quotaJob = new PropfindJob(acc, _remoteFolder, this);
+    auto acc = owncloudWizard()->account();
+    auto quotaJob = new PropfindJob(acc, owncloudWizard()->remoteFolder(), this);
     quotaJob->setProperties(QList<QByteArray>() << "http://owncloud.org/ns:size");
 
     connect(quotaJob, &PropfindJob::result, this, &OwncloudAdvancedSetupPage::slotQuotaRetrieved);
@@ -157,15 +151,15 @@ void OwncloudAdvancedSetupPage::initializePage()
 // evtl. warnings on the dialog.
 void OwncloudAdvancedSetupPage::updateStatus()
 {
-    const QString locFolder = localFolder();
+    const QString locFolder = owncloudWizard()->localFolder();
 
     // check if the local folder exists. If so, and if its not empty, show a warning.
     QString errorStr = FolderMan::instance()->checkPathValidityForNewFolder(locFolder);
     _localFolderValid = errorStr.isEmpty();
 
     _ui.pbSelectLocalFolder->setText(QDir::toNativeSeparators(locFolder));
-    if (!_remoteFolder.isEmpty() && _remoteFolder != QLatin1String("/")) {
-        _ui.rSyncEverything->setText(tr("Sync the folder '%1'").arg(_remoteFolder));
+    if (owncloudWizard()->remoteFolder() != QLatin1String("/")) {
+        _ui.rSyncEverything->setText(tr("Sync the folder '%1'").arg(owncloudWizard()->remoteFolder()));
     }
 
     if (!QDir(locFolder).entryList(QDir::AllEntries | QDir::NoDotAndDotDot).isEmpty()) {
@@ -180,38 +174,15 @@ void OwncloudAdvancedSetupPage::updateStatus()
     emit completeChanged();
 }
 
-void OwncloudAdvancedSetupPage::startSpinner()
-{
-    _progressIndi->setVisible(true);
-    _progressIndi->startAnimation();
-}
-
-void OwncloudAdvancedSetupPage::stopSpinner()
-{
-    _progressIndi->setVisible(false);
-    _progressIndi->stopAnimation();
-}
-
 int OwncloudAdvancedSetupPage::nextId() const
 {
     // tells the caller that this is the last dialog page
     return -1;
 }
 
-QString OwncloudAdvancedSetupPage::localFolder() const
-{
-    QString folder = wizard()->property("localFolder").toString();
-    return folder;
-}
-
 QStringList OwncloudAdvancedSetupPage::selectiveSyncBlacklist() const
 {
     return _selectiveSyncBlacklist;
-}
-
-bool OwncloudAdvancedSetupPage::useVirtualFileSync() const
-{
-    return _ui.rVirtualFileSync->isChecked();
 }
 
 bool OwncloudAdvancedSetupPage::manualFolderConfig() const
@@ -230,8 +201,8 @@ bool OwncloudAdvancedSetupPage::validatePage()
         return true;
     }
 
-    if (useVirtualFileSync()) {
-        const auto availability = Vfs::checkAvailability(localFolder());
+    if (owncloudWizard()->useVirtualFileSync()) {
+        const auto availability = Vfs::checkAvailability(owncloudWizard()->localFolder());
         if (!availability) {
             auto msg = new QMessageBox(QMessageBox::Warning, tr("Virtual files are not available for the selected folder"), availability.error(), QMessageBox::Ok, this);
             msg->setAttribute(Qt::WA_DeleteOnClose);
@@ -243,7 +214,7 @@ bool OwncloudAdvancedSetupPage::validatePage()
     if (!_created) {
         setErrorString(QString());
         _checking = true;
-        startSpinner();
+        _ui.progressIndicator->startAnimation();
         emit completeChanged();
 
         if (_ui.rSyncEverything->isChecked()) {
@@ -253,13 +224,13 @@ bool OwncloudAdvancedSetupPage::validatePage()
             cfgFile.setConfirmExternalStorage(_ui.confCheckBoxExternal->isChecked());
         }
 
-        emit createLocalAndRemoteFolders(localFolder(), _remoteFolder);
+        emit owncloudWizard()->createLocalAndRemoteFolders();
         return false;
     } else {
         // connecting is running
         _checking = false;
         emit completeChanged();
-        stopSpinner();
+        _ui.progressIndicator->stopAnimation();
         return true;
     }
 }
@@ -279,14 +250,14 @@ void OwncloudAdvancedSetupPage::directoriesCreated()
 {
     _checking = false;
     _created = true;
-    stopSpinner();
+    _ui.progressIndicator->stopAnimation();
     emit completeChanged();
 }
 
 void OwncloudAdvancedSetupPage::setRemoteFolder(const QString &remoteFolder)
 {
     if (!remoteFolder.isEmpty()) {
-        _remoteFolder = remoteFolder;
+        owncloudWizard()->setRemoteFolder(remoteFolder);
     }
 }
 
@@ -295,15 +266,15 @@ void OwncloudAdvancedSetupPage::slotSelectFolder()
     QString dir = QFileDialog::getExistingDirectory(nullptr, tr("Local Sync Folder"), QDir::homePath());
     if (!dir.isEmpty()) {
         _ui.pbSelectLocalFolder->setText(dir);
-        wizard()->setProperty("localFolder", dir);
+        owncloudWizard()->setLocalFolder(dir);
         updateStatus();
     }
 }
 
 void OwncloudAdvancedSetupPage::slotSelectiveSyncClicked()
 {
-    AccountPtr acc = static_cast<OwncloudWizard *>(wizard())->account();
-    SelectiveSyncDialog *dlg = new SelectiveSyncDialog(acc, _remoteFolder, _selectiveSyncBlacklist, this);
+    AccountPtr acc = owncloudWizard()->account();
+    SelectiveSyncDialog *dlg = new SelectiveSyncDialog(acc, owncloudWizard()->remoteFolder(), _selectiveSyncBlacklist, this);
     dlg->setAttribute(Qt::WA_DeleteOnClose);
 
     connect(dlg, &SelectiveSyncDialog::finished, this, [this, dlg]{

@@ -103,6 +103,11 @@ int Capabilities::defaultPermissions() const
     return _fileSharingCapabilities.value(QStringLiteral("default_permissions"), 1).toInt();
 }
 
+std::chrono::seconds Capabilities::remotePollInterval() const
+{
+    return std::chrono::duration_cast<std::chrono::seconds>(std::chrono::milliseconds(_capabilities.value(QStringLiteral("core")).toMap().value(QStringLiteral("pollinterval")).toInt()));
+}
+
 bool Capabilities::notificationsAvailable() const
 {
     // We require the OCS style API in 9.x, can't deal with the REST one only found in 8.2

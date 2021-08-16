@@ -85,9 +85,8 @@ void OwncloudOAuthCredsPage::asyncAuthResult(OAuth::Result r, const QString &use
     switch (r) {
     case OAuth::NotSupported: {
         /* OAuth not supported (can't open browser), fallback to HTTP credentials */
-        OwncloudWizard *ocWizard = qobject_cast<OwncloudWizard *>(wizard());
-        ocWizard->back();
-        ocWizard->setAuthType(DetermineAuthTypeJob::AuthType::Basic);
+        owncloudWizard()->back();
+        owncloudWizard()->setAuthType(DetermineAuthTypeJob::AuthType::Basic);
         break;
     }
     case OAuth::Error:
@@ -99,9 +98,10 @@ void OwncloudOAuthCredsPage::asyncAuthResult(OAuth::Result r, const QString &use
         _token = token;
         _user = user;
         _refreshToken = refreshToken;
-        OwncloudWizard *ocWizard = qobject_cast<OwncloudWizard *>(wizard());
-        Q_ASSERT(ocWizard);
-        emit connectToOCUrl(ocWizard->account()->url().toString());
+        emit connectToOCUrl(owncloudWizard()->account()->url().toString());
+        if (Theme::instance()->wizardSkipAdvancedPage()) {
+            emit owncloudWizard()->createLocalAndRemoteFolders();
+        }
         break;
     }
     }
@@ -109,6 +109,9 @@ void OwncloudOAuthCredsPage::asyncAuthResult(OAuth::Result r, const QString &use
 
 int OwncloudOAuthCredsPage::nextId() const
 {
+    if (Theme::instance()->wizardSkipAdvancedPage()) {
+        return -1;
+    }
     return WizardCommon::Page_AdvancedSetup;
 }
 
@@ -119,8 +122,6 @@ void OwncloudOAuthCredsPage::setConnected()
 
 AbstractCredentials *OwncloudOAuthCredsPage::getCredentials() const
 {
-    OwncloudWizard *ocWizard = qobject_cast<OwncloudWizard *>(wizard());
-    Q_ASSERT(ocWizard);
     return new HttpCredentialsGui(_user, _token, _refreshToken);
 }
 

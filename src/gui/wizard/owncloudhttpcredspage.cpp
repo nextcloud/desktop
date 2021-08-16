@@ -123,6 +123,10 @@ bool OwncloudHttpCredsPage::validatePage()
         emit completeChanged();
         emit connectToOCUrl(field("OCUrl").toString().simplified());
 
+        if (Theme::instance()->wizardSkipAdvancedPage()) {
+            emit owncloudWizard()->createLocalAndRemoteFolders();
+        }
+
         return false;
     } else {
         // Reset, to require another connection attempt next time
@@ -137,6 +141,9 @@ bool OwncloudHttpCredsPage::validatePage()
 
 int OwncloudHttpCredsPage::nextId() const
 {
+    if (Theme::instance()->wizardSkipAdvancedPage()) {
+        return -1;
+    }
     return WizardCommon::Page_AdvancedSetup;
 }
 

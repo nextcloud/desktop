@@ -18,8 +18,9 @@
 
 #include <QWizard>
 
-#include "wizard/owncloudwizardcommon.h"
 #include "ui_owncloudadvancedsetuppage.h"
+#include "wizard/abstractcredswizardpage.h"
+#include "wizard/owncloudwizardcommon.h"
 
 class QProgressIndicator;
 
@@ -29,7 +30,7 @@ namespace OCC {
  * @brief The OwncloudAdvancedSetupPage class
  * @ingroup gui
  */
-class OwncloudAdvancedSetupPage : public QWizardPage
+class OwncloudAdvancedSetupPage : public AbstractWizardPage
 {
     Q_OBJECT
 public:
@@ -39,17 +40,12 @@ public:
     void initializePage() override;
     int nextId() const override;
     bool validatePage() override;
-    QString localFolder() const;
     QStringList selectiveSyncBlacklist() const;
-    bool useVirtualFileSync() const;
     bool manualFolderConfig() const;
     bool isConfirmBigFolderChecked() const;
     void setRemoteFolder(const QString &remoteFolder);
     void setMultipleFoldersExist(bool exist);
     void directoriesCreated();
-
-signals:
-    void createLocalAndRemoteFolders(const QString &, const QString &);
 
 public slots:
     void setErrorString(const QString &);
@@ -64,15 +60,11 @@ private slots:
 private:
     void setRadioChecked(QRadioButton *radio);
     void updateStatus();
-    void startSpinner();
-    void stopSpinner();
 
     Ui_OwncloudAdvancedSetupPage _ui;
     bool _checking;
     bool _created;
     bool _localFolderValid;
-    QProgressIndicator *_progressIndi;
-    QString _remoteFolder;
     QStringList _selectiveSyncBlacklist;
 };
 

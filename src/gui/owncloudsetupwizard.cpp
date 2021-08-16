@@ -42,7 +42,6 @@ namespace OCC {
 OwncloudSetupWizard::OwncloudSetupWizard(QWidget *parent)
     : QObject(parent)
     , _ocWizard(new OwncloudWizard(parent))
-    , _remoteFolder()
 {
     connect(_ocWizard, &OwncloudWizard::determineAuthType,
         this, &OwncloudSetupWizard::slotCheckServer);
@@ -55,7 +54,7 @@ OwncloudSetupWizard::OwncloudSetupWizard(QWidget *parent)
        Therefore Qt::QueuedConnection is required */
     connect(_ocWizard, &OwncloudWizard::basicSetupFinished,
         this, &OwncloudSetupWizard::slotAssistantFinished, Qt::QueuedConnection);
-    connect(_ocWizard, &QDialog::finished, this, &QObject::deleteLater);
+    connect(_ocWizard, &OwncloudWizard::finished, this, &QObject::deleteLater);
 }
 
 OwncloudSetupWizard::~OwncloudSetupWizard()
@@ -70,28 +69,6 @@ void OwncloudSetupWizard::startWizard()
     account->setUrl(Theme::instance()->overrideServerUrlV2());
     _ocWizard->setAccount(account);
     _ocWizard->setOCUrl(account->url().toString());
-
-    _remoteFolder = Theme::instance()->defaultServerFolder();
-    // remoteFolder may be empty, which means /
-    QString localFolder = Theme::instance()->defaultClientFolder();
-
-    // if its a relative path, prepend with users home dir, otherwise use as absolute path
-
-    if (!QDir(localFolder).isAbsolute()) {
-        localFolder = QDir::homePath() + QDir::separator() + localFolder;
-    }
-
-    _ocWizard->setProperty("localFolder", localFolder);
-
-    // remember the local folder to compare later if it changed, but clean first
-    QString lf = QDir::fromNativeSeparators(localFolder);
-    if (!lf.endsWith(QLatin1Char('/'))) {
-        lf.append(QLatin1Char('/'));
-    }
-
-    _initLocalFolder = lf;
-
-    _ocWizard->setRemoteFolder(_remoteFolder);
 
     _ocWizard->setStartId(WizardCommon::Page_ServerSetup);
 
@@ -135,7 +112,7 @@ void OwncloudSetupWizard::slotCheckServer(const QString &urlString)
         // We want to reset the QNAM proxy so that the global proxy settings are used (via ClientProxy settings)
         account->networkAccessManager()->setProxy(QNetworkProxy(QNetworkProxy::DefaultProxy));
         // use a queued invocation so we're as asynchronous as with the other code path
-        QMetaObject::invokeMethod(this, "slotFindServer", Qt::QueuedConnection);
+        QMetaObject::invokeMethod(this, &OwncloudSetupWizard::slotFindServer, Qt::QueuedConnection);
     }
 }
 
@@ -269,33 +246,33 @@ void OwncloudSetupWizard::testOwnCloudConnect()
     job->checkServerAndUpdate();
 }
 
-void OwncloudSetupWizard::slotCreateLocalAndRemoteFolders(const QString &localFolder, const QString &remoteFolder)
+void OwncloudSetupWizard::slotCreateLocalAndRemoteFolders()
 {
-    qCInfo(lcWizard) << "Setup local sync folder for new oC connection " << localFolder;
-    const QDir fi(localFolder);
+    qCInfo(lcWizard) << "Setup local sync folder for new oC connection " << _ocWizard->localFolder();
+    const QDir fi(_ocWizard->localFolder());
 
     bool nextStep = true;
     if (fi.exists()) {
-        FileSystem::setFolderMinimumPermissions(localFolder);
-        Utility::setupFavLink(localFolder);
+        FileSystem::setFolderMinimumPermissions(_ocWizard->localFolder());
+        Utility::setupFavLink(_ocWizard->localFolder());
         // there is an existing local folder. If its non empty, it can only be synced if the
         // ownCloud is newly created.
-        qCDebug(lcWizard) << "Local sync folder" << localFolder << "already exists, setting it up for sync.";
+        qCDebug(lcWizard) << "Local sync folder" << _ocWizard->localFolder() << "already exists, setting it up for sync.";
     } else {
         bool ok = true;
-        if (fi.mkpath(localFolder)) {
-            FileSystem::setFolderMinimumPermissions(localFolder);
-            Utility::setupFavLink(localFolder);
+        if (fi.mkpath(_ocWizard->localFolder())) {
+            FileSystem::setFolderMinimumPermissions(_ocWizard->localFolder());
+            Utility::setupFavLink(_ocWizard->localFolder());
         } else {
             ok = false;
             qCWarning(lcWizard) << "Failed to create " << fi.path();
-            _ocWizard->displayError(tr("Could not create local folder %1").arg(Utility::escape(localFolder)));
+            _ocWizard->displayError(tr("Could not create local folder %1").arg(Utility::escape(_ocWizard->localFolder())));
             nextStep = false;
         }
-        qCDebug(lcWizard) << "Creating local sync folder" << localFolder << "success:" << ok;
+        qCDebug(lcWizard) << "Creating local sync folder" << _ocWizard->localFolder() << "success:" << ok;
     }
     if (nextStep) {
-        EntityExistsJob *job = new EntityExistsJob(_ocWizard->account(), Utility::concatUrlPath(_ocWizard->account()->davPath(), remoteFolder).path(), this);
+        EntityExistsJob *job = new EntityExistsJob(_ocWizard->account(), Utility::concatUrlPath(_ocWizard->account()->davPath(), _ocWizard->remoteFolder()).path(), this);
         connect(job, &EntityExistsJob::exists, this, &OwncloudSetupWizard::slotRemoteFolderExists);
         job->start();
     } else {
@@ -314,12 +291,7 @@ void OwncloudSetupWizard::slotRemoteFolderExists(QNetworkReply *reply)
     if (errId == QNetworkReply::NoError) {
         qCInfo(lcWizard) << "Remote folder found, all cool!";
     } else if (errId == QNetworkReply::ContentNotFoundError) {
-        if (_remoteFolder.isEmpty()) {
-            error = tr("No remote folder specified!");
-            ok = false;
-        } else {
-            createRemoteFolder();
-        }
+        createRemoteFolder();
     } else {
         error = tr("Error: %1").arg(job->errorString());
         ok = false;
@@ -334,12 +306,12 @@ void OwncloudSetupWizard::slotRemoteFolderExists(QNetworkReply *reply)
 
 void OwncloudSetupWizard::createRemoteFolder()
 {
-    qCDebug(lcWizard) << "creating folder on ownCloud:" << _remoteFolder;
+    qCDebug(lcWizard) << "creating folder on ownCloud:" << _ocWizard->remoteFolder();
 
-    MkColJob *job = new MkColJob(_ocWizard->account(), _remoteFolder, this);
+    MkColJob *job = new MkColJob(_ocWizard->account(), _ocWizard->remoteFolder(), this);
     connect(job, &MkColJob::finishedWithError, this, &OwncloudSetupWizard::slotCreateRemoteFolderFinished);
     connect(job, &MkColJob::finishedWithoutError, this, [this] {
-        qCDebug(lcWizard) << "Remote folder" << _remoteFolder << "created successfully.";
+        qCDebug(lcWizard) << "Remote folder" << _ocWizard->remoteFolder() << "created successfully.";
         finalizeSetup(true);
     });
     job->start();
@@ -349,12 +321,10 @@ void OwncloudSetupWizard::slotCreateRemoteFolderFinished(QNetworkReply *reply)
 {
     auto error = reply->error();
     qCDebug(lcWizard) << "** webdav mkdir request finished " << error;
-    //    disconnect(ownCloudInfo::instance(), SIGNAL(webdavColCreated(QNetworkReply::NetworkError)),
-    //               this, SLOT(slotCreateRemoteFolderFinished(QNetworkReply::NetworkError)));
 
     bool success = true;
     if (error == 202) {
-        qCDebug(lcWizard) << "The remote folder" << _remoteFolder << "already exists. Connecting it for syncing.";
+        qCDebug(lcWizard) << "The remote folder" << _ocWizard->remoteFolder() << "already exists. Connecting it for syncing.";
     } else if (error > 202 && error < 300) {
         _ocWizard->displayError(tr("The folder creation resulted in HTTP error code %1").arg((int)error));
 
@@ -364,12 +334,12 @@ void OwncloudSetupWizard::slotCreateRemoteFolderFinished(QNetworkReply *reply)
                                    "are wrong!"
                                    "<br/>Please go back and check your credentials.</p>"));
         qCDebug(lcWizard) << "Remote folder creation failed probably because the provided credentials are wrong. Please go back and check your credentials.";
-        _remoteFolder.clear();
+        _ocWizard->resetRemoteFolder();
         success = false;
     } else {
-        qCDebug(lcWizard) << "Remote folder" << _remoteFolder << "creation failed with error" << error;
-        _ocWizard->displayError(tr("Remote folder %1 creation failed with error <tt>%2</tt>.").arg(Utility::escape(_remoteFolder)).arg(error));
-        _remoteFolder.clear();
+        qCDebug(lcWizard) << "Remote folder" << _ocWizard->remoteFolder() << "creation failed with error" << error;
+        _ocWizard->displayError(tr("Remote folder %1 creation failed with error <tt>%2</tt>.").arg(Utility::escape(_ocWizard->remoteFolder())).arg(error));
+        _ocWizard->resetRemoteFolder();
         success = false;
     }
 
@@ -378,11 +348,9 @@ void OwncloudSetupWizard::slotCreateRemoteFolderFinished(QNetworkReply *reply)
 
 void OwncloudSetupWizard::finalizeSetup(bool success)
 {
-    const QString localFolder = _ocWizard->property("localFolder").toString();
+    const QString localFolder = _ocWizard->localFolder();
     if (success) {
-        if (!(localFolder.isEmpty() || _remoteFolder.isEmpty())) {
-            qCDebug(lcWizard) << "A sync connection from" << localFolder << "to remote directory" << _remoteFolder << "was set up.";
-        }
+        qCDebug(lcWizard) << "A sync connection from" << localFolder << "to remote directory" << _ocWizard->remoteFolder() << "was set up.";
         qCDebug(lcWizard) << "Successfully connected";
         _ocWizard->successfulStep();
     } else {
@@ -426,10 +394,10 @@ void OwncloudSetupWizard::slotAssistantFinished(int result)
 
         bool startFromScratch = _ocWizard->field("OCSyncFromScratch").toBool();
         if (!startFromScratch || ensureStartFromScratch(localFolder)) {
-            qCInfo(lcWizard) << "Adding folder definition for" << localFolder << _remoteFolder;
+            qCInfo(lcWizard) << "Adding folder definition for" << localFolder << _ocWizard->remoteFolder();
             FolderDefinition folderDefinition;
             folderDefinition.localPath = localFolder;
-            folderDefinition.targetPath = FolderDefinition::prepareTargetPath(_remoteFolder);
+            folderDefinition.targetPath = FolderDefinition::prepareTargetPath(_ocWizard->remoteFolder());
             folderDefinition.ignoreHiddenFiles = folderMan->ignoreHiddenFiles();
             if (_ocWizard->useVirtualFileSync()) {
                 folderDefinition.virtualFilesMode = bestAvailableVfsMode();

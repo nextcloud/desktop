@@ -923,8 +923,8 @@ File synchronization desktop utility.</source>
 <context>
     <name>OCC::CredentialJob</name>
     <message>
-        <location filename="../src/libsync/creds/credentialmanager.cpp" line="206"/>
-        <source>Failed to parse credentials</source>
+        <location filename="../src/libsync/creds/credentialmanager.cpp" line="199"/>
+        <source>Failed to parse credentials %1</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -1270,7 +1270,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>أضف اتصال مزامنة المجلد</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="299"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="293"/>
         <source>File</source>
         <translation>ملف</translation>
     </message>
@@ -1320,117 +1320,112 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>لم يتم حل التعارضات. انقر للحصول على التفاصيل.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="260"/>
-        <source>Synchronizing VirtualFiles with local folder</source>
-        <translation>مزامنة الملفات الافتراضية مع المجلد المحلي</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="262"/>
-        <source>Synchronizing with local folder</source>
-        <translation>المزامنة مع مجلد محلي</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="884"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="880"/>
         <source>Checking for changes in remote &apos;%1&apos;</source>
         <translation>البحث عن تغييرات في &apos;%1&apos; البعيد</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="888"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="884"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
         <translation>البحث عن تغييرات في &apos;%1&apos; المحلي</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="895"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="891"/>
         <source>Reconciling changes</source>
         <translation>توافق التغييرات</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="930"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="926"/>
         <source>, &apos;%1&apos;</source>
         <extracomment>Build a list of file names</extracomment>
         <translation>، &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="933"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="929"/>
         <source>&apos;%1&apos;</source>
         <extracomment>Argument is a file name</extracomment>
         <translation>&apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="957"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="953"/>
         <source>Syncing %1</source>
         <extracomment>Example text: &quot;Syncing 'foo.txt', 'bar.txt'&quot;</extracomment>
         <translation>مزامنة %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="959"/>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="970"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="955"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="966"/>
         <source>, </source>
         <translation>، </translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="963"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="959"/>
         <source>download %1/s</source>
         <extracomment>Example text: &quot;download 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
         <translation>تنزيل %1/ثانية</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="965"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="961"/>
         <source>↓ %1/s</source>
         <translation>↓ %1/ثانية</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="975"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="971"/>
         <source>↑ %1/s</source>
         <translation>↑ %1/ثانية</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="973"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="969"/>
         <source>upload %1/s</source>
         <extracomment>Example text: &quot;upload 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
         <translation>تحميل %1/ثانية</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="981"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="259"/>
+        <source>Local folder: %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="977"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (2MB of 2MB)&quot;</extracomment>
         <translation>%1 %2 (%3 من %4)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="985"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="981"/>
         <source>%1 %2</source>
         <extracomment>Example text: &quot;uploading foobar.png&quot;</extracomment>
         <translation>%1 %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1002"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="998"/>
         <source>%5 left, %1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;5 minutes left, 12 MB of 345 MB, file 6 of 7&quot;</extracomment>
         <translation>%5 متبقٍّ %1 من %2، ملف %3 من %4</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1010"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1006"/>
         <source>%1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;12 MB of 345 MB, file 6 of 7&quot;</extracomment>
         <translation>%1 من %2، ملف %3 من %4</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1017"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1013"/>
         <source>file %1 of %2</source>
         <translation>ملف %1 من %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1063"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1059"/>
         <source>Waiting...</source>
         <translation>جارٍ الانتظار...</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1065"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1061"/>
         <source>Waiting for %n other folder(s)...</source>
         <translation><numerusform>جارٍ انتظار %n مجلد آخر ...</numerusform><numerusform>جارٍ انتظار %n مجلد آخر ...</numerusform><numerusform>جارٍ انتظار %n مجلدين آخر ...</numerusform><numerusform>جارٍ انتظار %n مجلدات أخرى ...</numerusform><numerusform>جارٍ انتظار %n مجلدات أخرى ...</numerusform><numerusform>جارٍ انتظار %n مجلدات أخرى ...</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1071"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1067"/>
         <source>Preparing to sync...</source>
         <translation>جارٍ تحضير المزامنة...</translation>
     </message>
@@ -1878,12 +1873,12 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <translation>توجد تعارضات. افحص المستندات لمعرفة كيفية إصلاحها.</translation>
     </message>
     <message>
-        <location filename="../src/gui/issueswidget.cpp" line="81"/>
+        <location filename="../src/gui/issueswidget.cpp" line="82"/>
         <source>The file %1 was ignored as its name is reserved by %2</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/issueswidget.cpp" line="116"/>
+        <location filename="../src/gui/issueswidget.cpp" line="117"/>
         <source>There were conflicts. &lt;a href=&quot;%1&quot;&gt;Check the documentation on how to resolve them.&lt;/a&gt;</source>
         <translation>توجد تعارضات. &lt;a href=&quot;%1&quot;&gt;افحص المستندات لمعرفة كيفية إصلاحها.&lt;/a&gt;</translation>
     </message>
@@ -2198,12 +2193,12 @@ Note that using any logging command line options will override the settings.</so
         <translation>&lt;h1&gt;خطأ تسجيل الدخول&lt;/h1&gt;&lt;p&gt; فشل في استرداد معلومات المستخدم&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="528"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="530"/>
         <source>Oauth2 Error</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="529"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="531"/>
         <source>Oauth2 authentication requires a secured connection.</source>
         <translation type="unfinished"/>
     </message>
@@ -2215,12 +2210,12 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="322"/>
         <location filename="../src/libsync/creds/oauth.cpp" line="325"/>
-        <location filename="../src/libsync/creds/oauth.cpp" line="329"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="331"/>
         <source>Error while refreshing the token: %1 : %2</source>
         <translation>خطأ أثناء تحديث الرمز المميز: ٪ 1 : ٪ 2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="334"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="336"/>
         <source>The reply from the server did not contain all expected fields
 :%1
 Received data: %2</source>
@@ -2229,7 +2224,7 @@ Received data: %2</source>
 البيانات الواردة : ٪ 2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="373"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="375"/>
         <source>&lt;h1&gt;Wrong user&lt;/h1&gt;&lt;p&gt;You logged-in with user &lt;em&gt;%1&lt;/em&gt;, but must login with user &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please log out of %3 in another tab, then &lt;a href=&apos;%4&apos;&gt;click here&lt;/a&gt; and log in as user %2&lt;/p&gt;</source>
         <translation>&lt;h1&gt;مستخدم خطأ&lt;/h1&gt;&lt;p&gt;لقد سجّلت دخولك باستخدام المستخدم &lt;em&gt;%1&lt;/em&gt;، لكن يجب تسجيل الدخول باستخدام المستخدم &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;يُرجى تسجيل الخروج من %3 في علامة تبويب أخرى، ثم &lt;a href=&apos;%4&apos;&gt;انقر هنا&lt;/a&gt; وسجِّل الدخول باستخدام مستخدم %2&lt;/p&gt;</translation>
     </message>
@@ -2332,23 +2327,23 @@ for additional privileges during the process.</source>
         <translation>مزامنة المجلد &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="235"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="236"/>
         <source>Virtual files are not available for the selected folder</source>
         <translation>الملفات الإفتراضية غير متوفرة للمجلد المحدد</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="269"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="270"/>
         <source>Error</source>
         <translation>خطأ</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="294"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="295"/>
         <source>Local Sync Folder</source>
         <translation>مجلد المزامنة المحلي</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="328"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="363"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="329"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="364"/>
         <source>(%1)</source>
         <translation>(%1)</translation>
     </message>
@@ -2480,12 +2475,12 @@ It is not advisable to use it.</source>
         <translation>فشل إنشاء المجلد البعيد %1 مع خطأ &lt;tt&gt;%2&lt;/tt&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="405"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="402"/>
         <source>Folder rename failed</source>
         <translation>فشلت إعادة تسمية المجلد</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="406"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="403"/>
         <source>Can&apos;t remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
         <translation>تعذّرت إزالة المجلد ونسخه احتياطيًا، لأن المجلد أو الملف الموجود به مفتوح في برنامج آخر. يُرجى إغلاق المجلد أو الملف وإعادة المحاولة أو إلغاء الإعداد.</translation>
     </message>
@@ -2493,22 +2488,22 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::OwncloudWizard</name>
     <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="82"/>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="77"/>
         <source>%1 Connection Wizard</source>
         <translation>%1 معالج الاتصال</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="251"/>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="239"/>
         <source>Enable experimental feature?</source>
         <translation>هل ترغب في تمكين ميزة التجريبي؟</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="265"/>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="253"/>
         <source>Enable experimental placeholder mode</source>
         <translation>تمكين وضع العنصر النائب التجريبي</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="252"/>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="240"/>
         <source>When the &quot;virtual files&quot; mode is enabled no files will be downloaded initially. Instead, a tiny &quot;%1&quot; file will be created for each file that exists on the server. The contents can be downloaded by running these files or by using their context menu.
 
 The virtual files mode is mutually exclusive with selective sync. Currently unselected folders will be translated to online-only folders and your selective sync settings will be reset.
@@ -2525,27 +2520,9 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 هذا الوضع جديد وتجريبي. فإذا قررت استخدامه، فيُرجى الإبلاغ عن أي مشكلات تطرأ.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="266"/>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="254"/>
         <source>Stay safe</source>
         <translation>تمتع بالأمان الدائم</translation>
-    </message>
-</context>
-<context>
-    <name>OCC::OwncloudWizardResultPage</name>
-    <message>
-        <location filename="../src/gui/wizard/owncloudwizardresultpage.cpp" line="37"/>
-        <source>Everything set up!</source>
-        <translation>تم ضبط جميع الإعدادات!</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudwizardresultpage.cpp" line="41"/>
-        <source>Open Local Folder</source>
-        <translation>افتح مجلدًا محليًا</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudwizardresultpage.cpp" line="49"/>
-        <source>Open %1 in Browser</source>
-        <translation>فتح %1 في متصفح</translation>
     </message>
 </context>
 <context>
@@ -2561,122 +2538,122 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>الملف مدرج على قائمة التجاهل.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="250"/>
+        <location filename="../src/libsync/discovery.cpp" line="251"/>
         <source>File names ending with a period are not supported on this file system.</source>
         <translation>أسماء الملفات التي تنتهي بمسافة غير مدعومة على نظام الملفات هذا.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="255"/>
+        <location filename="../src/libsync/discovery.cpp" line="256"/>
         <source>File names containing the character &apos;%1&apos; are not supported on this file system.</source>
         <translation>أسماء الملفات التي تحتوي على حرف &apos;%1&apos; غير مدعومة على نظام الملفات هذا.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="262"/>
+        <location filename="../src/libsync/discovery.cpp" line="263"/>
         <source>File name contains at least one invalid character</source>
         <translation>يحتوي اسم الملف على حرف واحد غير صالح على الأقل</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="264"/>
+        <location filename="../src/libsync/discovery.cpp" line="265"/>
         <source>The file name is a reserved name on this file system.</source>
         <translation>اسم الملف هو اسم محجوز على نظام الملفات هذا.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="269"/>
+        <location filename="../src/libsync/discovery.cpp" line="270"/>
         <source>Filename contains trailing spaces.</source>
         <translation>اسم الملف يحتوي على مسافات زائدة.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="272"/>
+        <location filename="../src/libsync/discovery.cpp" line="273"/>
         <source>Filename is too long.</source>
         <translation>اسم الملف طويل للغاية.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="275"/>
+        <location filename="../src/libsync/discovery.cpp" line="276"/>
         <source>File/Folder is ignored because it&apos;s hidden.</source>
         <translation>تم تجاهل الملف/المجلد بسبب أنه مخفي.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="278"/>
+        <location filename="../src/libsync/discovery.cpp" line="280"/>
         <source>Stat failed.</source>
         <translation>فشلت الإحصاءات.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="281"/>
+        <location filename="../src/libsync/discovery.cpp" line="283"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
         <translation>تعارض: تم تنزيل إصدار الخادم وإعادة تسمية النسخة المحلية ولم يتم تحميلها.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="285"/>
+        <location filename="../src/libsync/discovery.cpp" line="287"/>
         <source>The filename cannot be encoded on your file system.</source>
         <translation>لا يمكن ترميز اسم الملف على نظام الملفات هذا.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="288"/>
+        <location filename="../src/libsync/discovery.cpp" line="290"/>
         <source>The filename is blacklisted on the server.</source>
         <translation>تم إدراج اسم الملف بالقائمة السوداء على الخادم.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="391"/>
+        <location filename="../src/libsync/discovery.cpp" line="393"/>
         <source>size</source>
         <translation>الحجم</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="393"/>
+        <location filename="../src/libsync/discovery.cpp" line="395"/>
         <source>permissions</source>
         <translation>أذونات</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="395"/>
+        <location filename="../src/libsync/discovery.cpp" line="397"/>
         <source>etag</source>
         <translation>etag</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="397"/>
+        <location filename="../src/libsync/discovery.cpp" line="399"/>
         <source>file id</source>
         <translation>معرف ملف</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="401"/>
+        <location filename="../src/libsync/discovery.cpp" line="403"/>
         <source>server reported no %1</source>
         <translation>لم يبلغ الخادم عن شيء %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1226"/>
+        <location filename="../src/libsync/discovery.cpp" line="1228"/>
         <source>Moved to invalid target, restoring</source>
         <translation>تم النقل إلى منطقة مستهدفة غير صالحة، استعادة</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1239"/>
+        <location filename="../src/libsync/discovery.cpp" line="1241"/>
         <source>Not allowed to remove, restoring</source>
         <translation>غير مسموح بالإزالة، استعادة</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1153"/>
+        <location filename="../src/libsync/discovery.cpp" line="1155"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>تم التجاهل بسبب القائمة السوداء &quot;اختيار المحتوى المطلوب مزامنته&quot;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1186"/>
+        <location filename="../src/libsync/discovery.cpp" line="1188"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>غير مسموح بسبب عدم حصولك على إذن لإضافة مجلدات فرعية إلى هذا المجلد</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1191"/>
+        <location filename="../src/libsync/discovery.cpp" line="1193"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>غير مسموح بسبب عدم حصولك على إذن لإضافة ملفات إلى هذا المجلد</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1204"/>
+        <location filename="../src/libsync/discovery.cpp" line="1206"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>غير مسموح بتحميل هذا الملف لأنه مخصص لقراءة فقط على الخادم، استعادة</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1349"/>
+        <location filename="../src/libsync/discovery.cpp" line="1351"/>
         <source>Error while reading the database</source>
         <translation>حدث خطأ أثناء قراءة قاعدة البيانات</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1410"/>
+        <location filename="../src/libsync/discovery.cpp" line="1412"/>
         <source>Server replied with an error while reading directory &apos;%1&apos; : %2</source>
         <translation>رد الخادم بخطأ في أثناء قراءة الدليل &apos;%1&apos;: %2</translation>
     </message>
@@ -2684,12 +2661,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateDirectory</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1022"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1016"/>
         <source>Error updating metadata: %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1026"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1020"/>
         <source>File is currently in use</source>
         <translation type="unfinished"/>
     </message>
@@ -2705,12 +2682,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/propagatedownload.cpp" line="390"/>
         <location filename="../src/libsync/propagatedownload.cpp" line="468"/>
         <source>File %1 can not be downloaded because of a local file name clash with %2!</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="476"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="964"/>
-        <source>%1 is currently in use</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -2744,18 +2715,21 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1022"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1025"/>
         <source>Error updating metadata: %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1025"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="476"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="931"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="967"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1028"/>
         <source>The file %1 is currently in use</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="364"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="956"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="959"/>
         <source>File has changed since discovery</source>
         <translation>تم تغيير الملف منذ الاكتشاف</translation>
     </message>
@@ -2899,7 +2873,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateUpdateMetaDataJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1166"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1160"/>
         <source>Could not update file : %1</source>
         <translation>تعذر تحديث الملف : ٪ 1</translation>
     </message>
@@ -3030,37 +3004,37 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::ProtocolItemModel</name>
     <message>
-        <location filename="../src/gui/models/protocolitemmodel.cpp" line="125"/>
+        <location filename="../src/gui/models/protocolitemmodel.cpp" line="123"/>
         <source>Time</source>
         <translation>وقت</translation>
     </message>
     <message>
-        <location filename="../src/gui/models/protocolitemmodel.cpp" line="127"/>
+        <location filename="../src/gui/models/protocolitemmodel.cpp" line="125"/>
         <source>File</source>
         <translation>ملف</translation>
     </message>
     <message>
-        <location filename="../src/gui/models/protocolitemmodel.cpp" line="129"/>
+        <location filename="../src/gui/models/protocolitemmodel.cpp" line="127"/>
         <source>Folder</source>
         <translation>مجلد</translation>
     </message>
     <message>
-        <location filename="../src/gui/models/protocolitemmodel.cpp" line="131"/>
+        <location filename="../src/gui/models/protocolitemmodel.cpp" line="129"/>
         <source>Issues</source>
         <translation>مسائل</translation>
     </message>
     <message>
-        <location filename="../src/gui/models/protocolitemmodel.cpp" line="131"/>
+        <location filename="../src/gui/models/protocolitemmodel.cpp" line="129"/>
         <source>Action</source>
         <translation>الإجراء</translation>
     </message>
     <message>
-        <location filename="../src/gui/models/protocolitemmodel.cpp" line="133"/>
+        <location filename="../src/gui/models/protocolitemmodel.cpp" line="131"/>
         <source>Size</source>
         <translation>الحجم</translation>
     </message>
     <message>
-        <location filename="../src/gui/models/protocolitemmodel.cpp" line="135"/>
+        <location filename="../src/gui/models/protocolitemmodel.cpp" line="133"/>
         <source>Account</source>
         <translation>حساب</translation>
     </message>
@@ -3189,33 +3163,33 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::SettingsDialog</name>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="198"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="200"/>
         <source>Settings</source>
         <translation>الإعدادات</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="187"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="189"/>
         <source>Activity</source>
         <translation>نشاط</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="176"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="178"/>
         <source>Add account</source>
         <translation>إضافة حساب</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="211"/>
-        <location filename="../src/gui/settingsdialog.cpp" line="214"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="213"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="216"/>
         <source>Quit %1</source>
         <translation>إنهاء %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="215"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="217"/>
         <source>Are you sure you want to quit %1?</source>
         <translation>هل أنت متأكد من رغبتك في إنهاء %1؟</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="346"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="355"/>
         <source>Account</source>
         <translation>حساب</translation>
     </message>
@@ -3233,27 +3207,27 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::ShareDialog</name>
     <message>
-        <location filename="../src/gui/sharedialog.ui" line="22"/>
+        <location filename="../src/gui/sharedialog.ui" line="14"/>
         <source>TextLabel</source>
         <translation>تسمية نصية</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.ui" line="37"/>
+        <location filename="../src/gui/sharedialog.ui" line="29"/>
         <source>share label</source>
         <translation>تصنيف المشاركة</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.ui" line="14"/>
+        <location filename="../src/gui/sharedialog.ui" line="6"/>
         <source>Dialog</source>
         <translation>الحوار</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.ui" line="59"/>
+        <location filename="../src/gui/sharedialog.ui" line="51"/>
         <source>ownCloud Path:</source>
         <translation>مسار ownCloud:</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="108"/>
+        <location filename="../src/gui/sharedialog.cpp" line="105"/>
         <source>%1 Sharing</source>
         <translation>%1 مشاركة</translation>
     </message>
@@ -3263,32 +3237,32 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>%1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="105"/>
+        <location filename="../src/gui/sharedialog.cpp" line="102"/>
         <source>Folder: %2</source>
         <translation>مجلد: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="111"/>
+        <location filename="../src/gui/sharedialog.cpp" line="108"/>
         <source>The server does not allow sharing</source>
         <translation>لا يسمح الخادم بالمشاركة</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="127"/>
+        <location filename="../src/gui/sharedialog.cpp" line="124"/>
         <source>Retrieving maximum possible sharing permissions from server...</source>
         <translation>جارٍ استرداد أقصى عدد ممكن من أذونات المشاركة من الخادم...</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="193"/>
+        <location filename="../src/gui/sharedialog.cpp" line="189"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
         <translation>لا يمكن مشاركة الملف بسبب مشاركته بدون إذن مشاركة.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="207"/>
+        <location filename="../src/gui/sharedialog.cpp" line="203"/>
         <source>Users and Groups</source>
         <translation>المستخدمون والمجموعات</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="214"/>
+        <location filename="../src/gui/sharedialog.cpp" line="210"/>
         <source>Public Links</source>
         <translation>روابط عامة</translation>
     </message>
@@ -4479,30 +4453,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/wizard/owncloudsetuppage.ui" line="162"/>
         <source>Error Label</source>
         <translation>خطأ في التصنيف</translation>
-    </message>
-</context>
-<context>
-    <name>OwncloudWizardResultPage</name>
-    <message>
-        <location filename="../src/gui/wizard/owncloudwizardresultpage.ui" line="14"/>
-        <source>Form</source>
-        <translation>نموذج</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudwizardresultpage.ui" line="20"/>
-        <source>TextLabel</source>
-        <translation>تسمية نصية</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudwizardresultpage.ui" line="163"/>
-        <source>Your entire account is synced to the local folder </source>
-        <translation>تتم مزامنة حسابك بالكامل مع المجلد المحلي </translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudwizardresultpage.ui" line="98"/>
-        <location filename="../src/gui/wizard/owncloudwizardresultpage.ui" line="120"/>
-        <source>PushButton</source>
-        <translation>PushButton</translation>
     </message>
 </context>
 <context>

@@ -64,7 +64,7 @@ public:
     bool passwordStorageAllowed(const QString &connection = QString());
 
     /* Server poll interval in milliseconds */
-    std::chrono::milliseconds remotePollInterval(const QString &connection = QString()) const;
+    std::chrono::milliseconds remotePollInterval(std::chrono::seconds defaultVal, const QString &connection = QString()) const;
     /* Set poll interval. Value in milliseconds has to be larger than 5000 */
     void setRemotePollInterval(std::chrono::milliseconds interval, const QString &connection = QString());
 
@@ -72,7 +72,7 @@ public:
     std::chrono::milliseconds notificationRefreshInterval(const QString &connection = QString()) const;
 
     /* Force sync interval, in milliseconds */
-    std::chrono::milliseconds forceSyncInterval(const QString &connection = QString()) const;
+    std::chrono::milliseconds forceSyncInterval(std::chrono::seconds remoteFromCapabilities, const QString &connection = QString()) const;
 
     /**
      * Interval in milliseconds within which full local discovery is required

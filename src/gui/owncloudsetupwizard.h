@@ -58,7 +58,7 @@ private slots:
 
     void slotConnectToOCUrl(const QString &);
 
-    void slotCreateLocalAndRemoteFolders(const QString &, const QString &);
+    void slotCreateLocalAndRemoteFolders();
     void slotRemoteFolderExists(QNetworkReply *);
     void slotCreateRemoteFolderFinished(QNetworkReply *reply);
     void slotAssistantFinished(int);
@@ -74,8 +74,6 @@ private:
     AccountState *applyAccountChanges();
 
     OwncloudWizard *_ocWizard;
-    QString _initLocalFolder;
-    QString _remoteFolder;
 
     friend class ownCloudGui;
 };

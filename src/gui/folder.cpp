@@ -68,6 +68,7 @@ Folder::Folder(const FolderDefinition &definition,
 {
     _timeSinceLastSyncStart.start();
     _timeSinceLastSyncDone.start();
+    _timeSinceLastEtagCheckDone.start();
 
     SyncResult::Status status = SyncResult::NotYetStarted;
     if (definition.paused) {
@@ -285,6 +286,27 @@ bool Folder::canSync() const
     return !syncPaused() && accountState()->isConnected();
 }
 
+bool Folder::dueToSync() const
+{
+    // conditions taken from previous folderman implementation
+    if (isSyncRunning() || etagJob() || isBusy() || !canSync()) {
+        return false;
+    }
+
+    ConfigFile cfg;
+    // the default poll time of 30 seconds as it had been in the client forever.
+    // Now with https://github.com/owncloud/client/pull/8777 also the server capabilities are considered.
+    const auto pta = accountState()->account()->capabilities().remotePollInterval();
+    const auto polltime = cfg.remotePollInterval(pta);
+
+    const auto timeSinceLastSync = std::chrono::milliseconds(_timeSinceLastEtagCheckDone.elapsed());
+    qCInfo(lcFolder) << "dueToSync:" << alias() << timeSinceLastSync.count() << " < " << polltime.count();
+    if (timeSinceLastSync >= polltime) {
+        return true;
+    }
+    return false;
+}
+
 void Folder::setSyncPaused(bool paused)
 {
     if (paused == _definition.paused) {
@@ -343,6 +365,7 @@ void Folder::slotRunEtagJob()
     _requestEtagJob->setTimeout(60 * 1000);
     // check if the etag is different when retrieved
     QObject::connect(_requestEtagJob.data(), &RequestEtagJob::etagRetreived, this, &Folder::etagRetreived);
+    QObject::connect(_requestEtagJob.data(), &RequestEtagJob::finishedWithResult, this, [=](const HttpResult<QByteArray>) { _timeSinceLastEtagCheckDone.start(); });
     FolderMan::instance()->slotScheduleETagJob(alias(), _requestEtagJob);
     // The _requestEtagJob is auto deleting itself on finish. Our guard pointer _requestEtagJob will then be null.
 }

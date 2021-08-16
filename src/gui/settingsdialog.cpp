@@ -55,6 +55,17 @@ void setActivationPolicy(ActivationPolicy policy);
 #endif
 
 namespace {
+auto minimumSizeHint(const QWidget *w)
+{
+    const auto screen = w->windowHandle() ? w->windowHandle()->screen() : QApplication::screenAt(QCursor::pos());
+    const auto availableSize = screen->availableSize();
+    const QSize min { 800, 600 };
+    if (!availableSize.isValid()) {
+        return min;
+    }
+    return min.boundedTo(availableSize * 0.75);
+}
+
 const QString TOOLBAR_CSS()
 {
     return QStringLiteral("QToolBar { background: %1; margin: 0; padding: 0; border: none; border-bottom: 1px solid %2; spacing: 0; } "
@@ -252,7 +263,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     customizeStyle();
 
     cfg.restoreGeometry(this);
-    setMinimumSize(minimumSizeHint());
+    setMinimumSize(::minimumSizeHint(this));
 #ifdef Q_OS_MAC
     setActivationPolicy(ActivationPolicy::Accessory);
 #endif
@@ -263,27 +274,15 @@ SettingsDialog::~SettingsDialog()
     delete _ui;
 }
 
-QSize SettingsDialog::minimumSizeHint() const
-{
-    const auto screen = windowHandle() ? windowHandle()->screen() : QApplication::screenAt(QCursor::pos());
-    const auto availableSize = screen->availableSize();
-    const QSize min { 800, 600 };
-    if (!availableSize.isValid()) {
-        return min;
-    }
-    return min.boundedTo(availableSize * 0.75);
-}
-
 QSize SettingsDialog::sizeHintForChild() const
 {
-    return ocApp()->gui()->settingsDialog()->size() * 0.9;
+    return ::minimumSizeHint(this) * 0.9;
 }
 
 QWidget* SettingsDialog::currentPage()
 {
     return _ui->stack->currentWidget();
 }
-
 
 void SettingsDialog::changeEvent(QEvent *e)
 {

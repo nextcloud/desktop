@@ -1,0 +1,9 @@
+Enhancement: Consider a remote poll interval coming with the server capabilities
+
+This way, admins can configure the remote sync poll interval of clients through
+the capabilities settings of the server. Note that the setting in the server
+capabilities needs to be done in milliseconds. Default is 30 seconds.
+
+https://github.com/owncloud/client/issues/5947
+https://github.com/owncloud/client/issues/8780
+https://github.com/owncloud/client/pull/8777

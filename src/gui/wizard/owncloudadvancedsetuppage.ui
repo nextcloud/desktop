@@ -10,12 +10,6 @@
     <height>600</height>
    </rect>
   </property>
-  <property name="sizePolicy">
-   <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
-    <horstretch>0</horstretch>
-    <verstretch>0</verstretch>
-   </sizepolicy>
-  </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
@@ -313,9 +307,6 @@
     </widget>
    </item>
    <item>
-    <widget class="QWidget" name="widget" native="true"/>
-   </item>
-   <item>
     <widget class="QWidget" name="whereToSyncWidget" native="true">
      <layout class="QHBoxLayout" name="horizontalLayout_6">
       <property name="leftMargin">
@@ -478,7 +469,7 @@
                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If this box is checked, existing content in the local folder will be erased to start a clean sync from the server.&lt;/p&gt;&lt;p&gt;Do not check this if the local content should be uploaded to the servers folder.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
               </property>
               <property name="text">
-               <string>Start a &amp;clean sync (Crreate a backup and rrases the local folder!)</string>
+               <string>Start a &amp;clean sync (Crreate a backup and erases the local folder!)</string>
               </property>
               <property name="checkable">
                <bool>true</bool>
@@ -507,8 +498,19 @@
      </layout>
     </widget>
    </item>
+   <item alignment="Qt::AlignHCenter|Qt::AlignVCenter">
+    <widget class="QProgressIndicator" name="progressIndicator" native="true"/>
+   </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QProgressIndicator</class>
+   <extends>QWidget</extends>
+   <header>QProgressIndicator.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <tabstops>
   <tabstop>rSyncEverything</tabstop>
   <tabstop>confCheckBoxSize</tabstop>
@@ -518,7 +520,6 @@
   <tabstop>rVirtualFileSync</tabstop>
  </tabstops>
  <resources>
-  <include location="../../../client.qrc"/>
   <include location="../../../client.qrc"/>
  </resources>
  <connections/>

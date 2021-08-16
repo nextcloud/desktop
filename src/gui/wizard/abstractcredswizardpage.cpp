@@ -32,4 +32,9 @@ void AbstractCredentialsWizardPage::cleanupPage()
         account->setCredentials(new DummyCredentials);
     }
 }
+
+OwncloudWizard *AbstractWizardPage::owncloudWizard() const
+{
+    return qobject_cast<OwncloudWizard *>(wizard());
+}
 }

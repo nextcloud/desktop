@@ -56,7 +56,7 @@ ShareDialog::ShareDialog(QPointer<AccountState> accountState,
 {
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setAttribute(Qt::WA_DeleteOnClose);
-    setObjectName("SharingDialog"); // required as group for saveGeometry call
+    setObjectName("SharingDialog");
 
     _ui->setupUi(this);
 
@@ -134,19 +134,12 @@ ShareDialog::ShareDialog(QPointer<AccountState> accountState,
     connect(job, &PropfindJob::finishedWithError, this, &ShareDialog::slotPropfindError);
     job->start();
 
-    setMinimumSize(minimumSizeHint());
+    resize(ocApp()->gui()->settingsDialog()->sizeHintForChild());
 }
 
 ShareDialog::~ShareDialog()
 {
     delete _ui;
-}
-
-void ShareDialog::done(int r)
-{
-    ConfigFile cfg;
-    cfg.saveGeometry(this);
-    QDialog::done(r);
 }
 
 void ShareDialog::slotPropfindReceived(const QMap<QString, QString> &result)
