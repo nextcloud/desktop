@@ -36,6 +36,7 @@ endif()
 
 set( CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules )
 
+include(KDEInstallDirs)
 include(ECMCoverageOption)
 
 if(NOT CRASHREPORTER_EXECUTABLE)
@@ -66,7 +67,6 @@ if(NOT WITH_CRASHREPORTER)
 endif()
 
 include(GNUInstallDirs)
-include(DefineInstallationPaths)
 include(GenerateExportHeader)
 
 include(GetGitRevisionDescription)
@@ -253,6 +253,12 @@ if(BUILD_TESTING)
     include(CTest)
     enable_testing()
     add_subdirectory(test)
+  endif()
+
+if(APPLE)
+    set(VFS_INSTALL_DIR "${LIB_INSTALL_DIR}/../PlugIns")
+else()
+    set(VFS_INSTALL_DIR "${PLUGINDIR}")
 endif()
 
 configure_file(config.h.in ${CMAKE_CURRENT_BINARY_DIR}/config.h)

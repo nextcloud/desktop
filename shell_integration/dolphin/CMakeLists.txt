@@ -14,7 +14,6 @@ set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH})
 find_package(KF5 ${KF5_MIN_VERSION} REQUIRED COMPONENTS CoreAddons KIO)
 
 set(KDE_INSTALL_DIRS_NO_DEPRECATED TRUE)
-include(KDEInstallDirs)
 # Before KF5 5.54, kcoreaddons_add_plugin uses deprecated VAR PLUGIN_INSTALL_DIR
 # when that is fixed and you want to remove this workaround,
 # you need to _require_ the new enough kcoreaddons

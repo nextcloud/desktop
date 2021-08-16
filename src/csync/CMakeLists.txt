@@ -17,8 +17,6 @@ include(DefinePlatformDefaults)
 include(DefineCompilerFlags)
 include(DefineOptions.cmake)
 
-include(DefineInstallationPaths)
-
 if (APPLE OR WIN32)
     set(USE_OUR_OWN_SQLITE3 TRUE)
 else()

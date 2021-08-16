@@ -25,6 +25,8 @@
 
 #include <QPluginLoader>
 #include <QLoggingCategory>
+#include <QCoreApplication>
+#include <qloggingcategory.h>
 
 using namespace OCC;
 
@@ -159,11 +161,14 @@ bool OCC::isVfsPluginAvailable(Vfs::Mode mode)
         return false;
     }
 
+    const auto libPaths = QCoreApplication::libraryPaths();
+    qCInfo(lcPlugin) << "Lib paths" << libPaths;
+
     QPluginLoader loader(pluginFileName(QStringLiteral("vfs"), name));
 
     const auto baseMetaData = loader.metaData();
     if (baseMetaData.isEmpty() || !baseMetaData.contains(QStringLiteral("IID"))) {
-        qCDebug(lcPlugin) << "Plugin doesn't exist" << loader.fileName();
+        qCInfo(lcPlugin) << "Plugin doesn't exist" << loader.fileName();
         return false;
     }
     if (baseMetaData[QStringLiteral("IID")].toString() != QStringLiteral("org.owncloud.PluginFactory")) {
