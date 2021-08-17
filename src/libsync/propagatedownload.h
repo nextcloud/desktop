@@ -62,7 +62,7 @@ public:
     explicit GETFileJob(AccountPtr account, const QUrl &url, QIODevice *device,
         const QMap<QByteArray, QByteArray> &headers, const QByteArray &expectedEtagForResume,
         qint64 resumeStart, QObject *parent = nullptr);
-    virtual ~GETFileJob()
+    ~GETFileJob() override
     {
         if (_bandwidthManager) {
             _bandwidthManager->unregisterDownloadJob(this);
@@ -139,10 +139,10 @@ public:
     explicit GETEncryptedFileJob(AccountPtr account, const QUrl &url, QIODevice *device,
         const QMap<QByteArray, QByteArray> &headers, const QByteArray &expectedEtagForResume,
         qint64 resumeStart, EncryptedFile encryptedInfo, QObject *parent = nullptr);
-    virtual ~GETEncryptedFileJob() = default;
+    ~GETEncryptedFileJob() override = default;
 
 protected:
-    virtual qint64 writeToDevice(const QByteArray &data) override;
+    qint64 writeToDevice(const QByteArray &data) override;
 
 private:
     QSharedPointer<EncryptionHelper::StreamingDecryptor> _decryptor;

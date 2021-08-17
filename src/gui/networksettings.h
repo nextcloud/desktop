@@ -34,7 +34,7 @@ class NetworkSettings : public QWidget
 
 public:
     explicit NetworkSettings(QWidget *parent = nullptr);
-    ~NetworkSettings();
+    ~NetworkSettings() override;
     QSize sizeHint() const override;
 
 private slots:

@@ -72,7 +72,7 @@ public:
     /* returns a singleton instance. */
     static Theme *instance();
 
-    ~Theme();
+    ~Theme() override;
 
     /**
      * @brief isBranded indicates if the current application is branded

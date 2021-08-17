@@ -69,7 +69,7 @@ public:
     using Version = std::tuple<int, int, int>;
 
     explicit ExcludedFiles(const QString &localPath = QStringLiteral("/"));
-    ~ExcludedFiles();
+    ~ExcludedFiles() override;
 
     /**
      * Adds a new path to a file containing exclude patterns.

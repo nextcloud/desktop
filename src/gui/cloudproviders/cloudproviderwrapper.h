@@ -39,7 +39,7 @@ class CloudProviderWrapper : public QObject
     Q_OBJECT
 public:
     explicit CloudProviderWrapper(QObject *parent = nullptr, Folder *folder = nullptr, int folderId = 0, CloudProvidersProviderExporter* cloudprovider = nullptr);
-    ~CloudProviderWrapper();
+    ~CloudProviderWrapper() override;
     CloudProvidersAccountExporter* accountExporter();
     Folder* folder();
     GMenuModel* getMenuModel();

@@ -53,7 +53,7 @@ class FolderWatcher : public QObject
 public:
     // Construct, connect signals, call init()
     explicit FolderWatcher(Folder *folder = nullptr);
-    virtual ~FolderWatcher();
+    ~FolderWatcher() override;
 
     /**
      * @param root Path of the root of the folder

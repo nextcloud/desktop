@@ -33,7 +33,7 @@ class PropagateUploadEncrypted : public QObject
   Q_OBJECT
 public:
     PropagateUploadEncrypted(OwncloudPropagator *propagator, const QString &remoteParentPath, SyncFileItemPtr item, QObject *parent = nullptr);
-    ~PropagateUploadEncrypted() = default;
+    ~PropagateUploadEncrypted() override = default;
 
     void start();
 

@@ -67,8 +67,8 @@ public:
       */
     const QColor & color() const { return m_color; }
 
-    virtual QSize sizeHint() const;
-    int heightForWidth(int w) const;
+    QSize sizeHint() const override;
+    int heightForWidth(int w) const override;
 public slots:
     /*! Starts the spin animation.
         \sa stopAnimation isAnimated
@@ -98,8 +98,8 @@ public slots:
      */
     void setColor(const QColor & color);
 protected:
-    virtual void timerEvent(QTimerEvent * event); 
-    virtual void paintEvent(QPaintEvent * event);
+    void timerEvent(QTimerEvent * event) override;
+    void paintEvent(QPaintEvent * event) override;
 private:
     int m_angle = 0;
     int m_timerId = -1;

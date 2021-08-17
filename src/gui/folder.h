@@ -117,7 +117,7 @@ public:
      */
     Folder(const FolderDefinition &definition, AccountState *accountState, std::unique_ptr<Vfs> vfs, QObject *parent = nullptr);
 
-    ~Folder();
+    ~Folder() override;
 
     using Map = QMap<QString, Folder *>;
     using MapIterator = QMapIterator<QString, Folder *>;

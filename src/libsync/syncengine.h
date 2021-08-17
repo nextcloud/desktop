@@ -59,7 +59,7 @@ class OWNCLOUDSYNC_EXPORT SyncEngine : public QObject
 public:
     SyncEngine(AccountPtr account, const QString &localPath,
         const QString &remotePath, SyncJournalDb *journal);
-    ~SyncEngine();
+    ~SyncEngine() override;
 
     Q_INVOKABLE void startSync();
     void setNetworkLimits(int upload, int download);

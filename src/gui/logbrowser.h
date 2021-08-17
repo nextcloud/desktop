@@ -38,7 +38,7 @@ class LogBrowser : public QDialog
     Q_OBJECT
 public:
     explicit LogBrowser(QWidget *parent = nullptr);
-    ~LogBrowser();
+    ~LogBrowser() override;
 
 protected:
     void closeEvent(QCloseEvent *) override;

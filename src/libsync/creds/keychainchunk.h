@@ -45,7 +45,7 @@ class OWNCLOUDSYNC_EXPORT Job : public QObject
 public:
     Job(QObject *parent = nullptr);
 
-    virtual ~Job();
+    ~Job() override;
 
     QKeychain::Error error() const;
     QString errorString() const;

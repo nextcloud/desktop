@@ -44,7 +44,7 @@ class QtSingleApplication : public QApplication
 
 public:
     QtSingleApplication(const QString &id, int &argc, char **argv);
-    ~QtSingleApplication();
+    ~QtSingleApplication() override;
 
     bool isRunning(qint64 pid = -1);
 

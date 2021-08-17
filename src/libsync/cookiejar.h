@@ -30,7 +30,7 @@ class OWNCLOUDSYNC_EXPORT CookieJar : public QNetworkCookieJar
     Q_OBJECT
 public:
     explicit CookieJar(QObject *parent = nullptr);
-    ~CookieJar();
+    ~CookieJar() override;
     bool setCookiesFromUrl(const QList<QNetworkCookie> &cookieList, const QUrl &url) override;
     QList<QNetworkCookie> cookiesForUrl(const QUrl &url) const override;
 

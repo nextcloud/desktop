@@ -31,7 +31,7 @@ class Flow2AuthWidget : public QWidget
     Q_OBJECT
 public:
     Flow2AuthWidget(QWidget *parent = nullptr);
-    virtual ~Flow2AuthWidget();
+    ~Flow2AuthWidget() override;
 
     void startAuth(Account *account);
     void resetAuth(Account *account = nullptr);

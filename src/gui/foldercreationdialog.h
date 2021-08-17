@@ -29,7 +29,7 @@ class FolderCreationDialog : public QDialog
 
 public:
     explicit FolderCreationDialog(const QString &destination, QWidget *parent = nullptr);
-    ~FolderCreationDialog();
+    ~FolderCreationDialog() override;
 
 private slots:
     void accept() override;

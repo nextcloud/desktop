@@ -31,7 +31,7 @@ class OwncloudWizardResultPage : public QWizardPage
     Q_OBJECT
 public:
     OwncloudWizardResultPage();
-    ~OwncloudWizardResultPage();
+    ~OwncloudWizardResultPage() override;
 
     bool isComplete() const override;
     void initializePage() override;

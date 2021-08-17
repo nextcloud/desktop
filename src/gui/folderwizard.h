@@ -53,7 +53,7 @@ class FolderWizardLocalPath : public FormatWarningsWizardPage
     Q_OBJECT
 public:
     explicit FolderWizardLocalPath(const AccountPtr &account);
-    ~FolderWizardLocalPath();
+    ~FolderWizardLocalPath() override;
 
     bool isComplete() const override;
     void initializePage() override;
@@ -80,7 +80,7 @@ class FolderWizardRemotePath : public FormatWarningsWizardPage
     Q_OBJECT
 public:
     explicit FolderWizardRemotePath(const AccountPtr &account);
-    ~FolderWizardRemotePath();
+    ~FolderWizardRemotePath() override;
 
     bool isComplete() const override;
 
@@ -124,7 +124,7 @@ class FolderWizardSelectiveSync : public QWizardPage
     Q_OBJECT
 public:
     explicit FolderWizardSelectiveSync(const AccountPtr &account);
-    ~FolderWizardSelectiveSync();
+    ~FolderWizardSelectiveSync() override;
 
     bool validatePage() override;
 
@@ -154,7 +154,7 @@ public:
     };
 
     explicit FolderWizard(AccountPtr account, QWidget *parent = nullptr);
-    ~FolderWizard();
+    ~FolderWizard() override;
 
     bool eventFilter(QObject *watched, QEvent *event) override;
     void resizeEvent(QResizeEvent *event) override;

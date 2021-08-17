@@ -27,7 +27,7 @@ class VfsXAttr : public Vfs
 
 public:
     explicit VfsXAttr(QObject *parent = nullptr);
-    ~VfsXAttr();
+    ~VfsXAttr() override;
 
     Mode mode() const override;
     QString fileSuffix() const override;

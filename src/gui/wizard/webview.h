@@ -21,7 +21,7 @@ class WebView : public QWidget
     Q_OBJECT
 public:
     WebView(QWidget *parent = nullptr);
-    virtual ~WebView();
+    ~WebView() override;
     void setUrl(const QUrl &url);
 
 signals:

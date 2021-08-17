@@ -47,7 +47,7 @@ public:
         , _account(account)
     {
     }
-    ~OAuth();
+    ~OAuth() override;
 
     enum Result { NotSupported,
         LoggedIn,

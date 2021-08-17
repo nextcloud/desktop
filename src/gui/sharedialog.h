@@ -51,7 +51,7 @@ public:
         const QByteArray &numericFileId,
         ShareDialogStartPage startPage,
         QWidget *parent = nullptr);
-    ~ShareDialog();
+    ~ShareDialog() override;
 
 private slots:
     void done(int r) override;

@@ -42,7 +42,7 @@ public:
     enum {FileIdRole = Qt::UserRole+1};
 
     FolderStatusModel(QObject *parent = nullptr);
-    ~FolderStatusModel();
+    ~FolderStatusModel() override;
     void setAccountState(const AccountState *accountState);
 
     Qt::ItemFlags flags(const QModelIndex &) const override;

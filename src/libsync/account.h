@@ -84,7 +84,7 @@ class OWNCLOUDSYNC_EXPORT Account : public QObject
 
 public:
     static AccountPtr create();
-    ~Account();
+    ~Account() override;
 
     AccountPtr sharedFromThis();
 

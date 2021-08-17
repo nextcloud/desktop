@@ -59,7 +59,7 @@ public:
         SharePermissions maxSharingPermissions,
         const QString &privateLinkUrl,
         QWidget *parent = nullptr);
-    ~ShareUserGroupWidget();
+    ~ShareUserGroupWidget() override;
 
 signals:
     void togglePublicLinkShare(bool);
@@ -128,7 +128,7 @@ public:
         SharePermissions maxSharingPermissions,
         bool isFile,
         QWidget *parent = nullptr);
-    ~ShareUserLine();
+    ~ShareUserLine() override;
 
     QSharedPointer<Share> share() const;
 

@@ -16,7 +16,7 @@ class IgnoreListTableWidget : public QWidget
 
 public:
     IgnoreListTableWidget(QWidget *parent = nullptr);
-    ~IgnoreListTableWidget();
+    ~IgnoreListTableWidget() override;
 
     void readIgnoreFile(const QString &file, bool readOnly = false);
     int addPattern(const QString &pattern, bool deletable, bool readOnly);

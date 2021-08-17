@@ -27,7 +27,7 @@ class VfsSuffix : public Vfs
 
 public:
     explicit VfsSuffix(QObject *parent = nullptr);
-    ~VfsSuffix();
+    ~VfsSuffix() override;
 
     Mode mode() const override;
     QString fileSuffix() const override;
