@@ -5629,12 +5629,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>ValidateChecksumHeader</name>
     <message>
-        <location filename="../src/common/checksums.cpp" line="331"/>
+        <location filename="../src/common/checksums.cpp" line="337"/>
         <source>The checksum header is malformed.</source>
         <translation>La capçalera de la suma de verificació està mal formada.</translation>
     </message>
     <message>
-        <location filename="../src/common/checksums.cpp" line="358"/>
+        <location filename="../src/common/checksums.cpp" line="364"/>
         <source>The checksum header contained an unknown checksum type &apos;%1&apos;</source>
         <translation>La capçalera de la suma de verificació contenia un tipus de suma de verificació desconegut «%1»</translation>
     </message>
@@ -5644,7 +5644,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>El fitxer baixat no coincideix amb la suma de verificació, es reprendrà.</translation>
     </message>
     <message>
-        <location filename="../src/common/checksums.cpp" line="362"/>
+        <location filename="../src/common/checksums.cpp" line="368"/>
         <source>The downloaded file does not match the checksum, it will be resumed. &apos;%1&apos; != &apos;%2&apos;</source>
         <translation>El fitxer baixat no coincideix amb la suma de verificació, es reprendrà. «%1» != «%2»</translation>
     </message>

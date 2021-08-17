@@ -5659,12 +5659,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>ValidateChecksumHeader</name>
     <message>
-        <location filename="../src/common/checksums.cpp" line="331"/>
+        <location filename="../src/common/checksums.cpp" line="337"/>
         <source>The checksum header is malformed.</source>
         <translation>チェックサムヘッダーの形式が正しくありません。</translation>
     </message>
     <message>
-        <location filename="../src/common/checksums.cpp" line="358"/>
+        <location filename="../src/common/checksums.cpp" line="364"/>
         <source>The checksum header contained an unknown checksum type &apos;%1&apos;</source>
         <translation>チェックサムヘッダーには未知のチェックサムタイプ &apos;%1&apos;が含まれていました</translation>
     </message>
@@ -5674,7 +5674,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>ダウンロードしたファイルがチェックサムと一致しません。再開されます。</translation>
     </message>
     <message>
-        <location filename="../src/common/checksums.cpp" line="362"/>
+        <location filename="../src/common/checksums.cpp" line="368"/>
         <source>The downloaded file does not match the checksum, it will be resumed. &apos;%1&apos; != &apos;%2&apos;</source>
         <translation>ダウンロードしたファイルがチェックサムと一致しないため、再度ダウンロードされます。 &apos;%1&apos;！= &apos;%2&apos;</translation>
     </message>
