@@ -49,6 +49,9 @@ make DESTDIR=/app install
 cd /app
 
 mv ./usr/lib/x86_64-linux-gnu/* ./usr/lib/
+mkdir ./usr/plugins
+mv ./usr/lib/nextcloudsync_vfs_suffix.so ./usr/plugins
+mv ./usr/lib/nextcloudsync_vfs_xattr.so ./usr/plugins
 rm -rf ./usr/lib/cmake
 rm -rf ./usr/include
 rm -rf ./usr/mkspecs
