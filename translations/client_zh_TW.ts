@@ -5668,12 +5668,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>ValidateChecksumHeader</name>
     <message>
-        <location filename="../src/common/checksums.cpp" line="331"/>
+        <location filename="../src/common/checksums.cpp" line="337"/>
         <source>The checksum header is malformed.</source>
         <translation>檢查碼標頭異常。</translation>
     </message>
     <message>
-        <location filename="../src/common/checksums.cpp" line="358"/>
+        <location filename="../src/common/checksums.cpp" line="364"/>
         <source>The checksum header contained an unknown checksum type &apos;%1&apos;</source>
         <translation>檢查碼標頭包含了未知的檢查碼類型「%1」</translation>
     </message>
@@ -5683,7 +5683,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>已下載的檔案與檢查碼不相符，其將會被還原。</translation>
     </message>
     <message>
-        <location filename="../src/common/checksums.cpp" line="362"/>
+        <location filename="../src/common/checksums.cpp" line="368"/>
         <source>The downloaded file does not match the checksum, it will be resumed. &apos;%1&apos; != &apos;%2&apos;</source>
         <translation>已下載的檔案與檢查碼不相符，其將會被還原。「%1」!=「%2」</translation>
     </message>

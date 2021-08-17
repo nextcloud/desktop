@@ -5624,12 +5624,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>ValidateChecksumHeader</name>
     <message>
-        <location filename="../src/common/checksums.cpp" line="331"/>
+        <location filename="../src/common/checksums.cpp" line="337"/>
         <source>The checksum header is malformed.</source>
         <translation>Контрольна сума заголовку неправильно сформовано.</translation>
     </message>
     <message>
-        <location filename="../src/common/checksums.cpp" line="358"/>
+        <location filename="../src/common/checksums.cpp" line="364"/>
         <source>The checksum header contained an unknown checksum type &apos;%1&apos;</source>
         <translation>Контрольна сума заголовку містила невідомий вид контрольної суми &apos;%1&apos;</translation>
     </message>
@@ -5639,7 +5639,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Контрольна сума звантаженого файлу неправильна, буде продовжено.</translation>
     </message>
     <message>
-        <location filename="../src/common/checksums.cpp" line="362"/>
+        <location filename="../src/common/checksums.cpp" line="368"/>
         <source>The downloaded file does not match the checksum, it will be resumed. &apos;%1&apos; != &apos;%2&apos;</source>
         <translation type="unfinished"/>
     </message>

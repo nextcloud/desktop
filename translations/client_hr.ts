@@ -5663,12 +5663,12 @@ Ovo je novi, eksperimentalni način rada. Ako se odlučite aktivirati ga, prijav
 <context>
     <name>ValidateChecksumHeader</name>
     <message>
-        <location filename="../src/common/checksums.cpp" line="331"/>
+        <location filename="../src/common/checksums.cpp" line="337"/>
         <source>The checksum header is malformed.</source>
         <translation>Zaglavlje kontrolnog zbroja pogrešno je oblikovano.</translation>
     </message>
     <message>
-        <location filename="../src/common/checksums.cpp" line="358"/>
+        <location filename="../src/common/checksums.cpp" line="364"/>
         <source>The checksum header contained an unknown checksum type &apos;%1&apos;</source>
         <translation>Zaglavlje kontrolnog zbroja sadrži nepoznatu vrstu kontrolnog zbroja ‘%1’</translation>
     </message>
@@ -5678,7 +5678,7 @@ Ovo je novi, eksperimentalni način rada. Ako se odlučite aktivirati ga, prijav
         <translation>Preuzeta se datoteka ne podudara s kontrolnim zbrojem, nastavit će se.</translation>
     </message>
     <message>
-        <location filename="../src/common/checksums.cpp" line="362"/>
+        <location filename="../src/common/checksums.cpp" line="368"/>
         <source>The downloaded file does not match the checksum, it will be resumed. &apos;%1&apos; != &apos;%2&apos;</source>
         <translation>Preuzeta se datoteka ne podudara s kontrolnim zbrojem, nastavit će se. &apos;%1&apos; != &apos;%2&apos;</translation>
     </message>

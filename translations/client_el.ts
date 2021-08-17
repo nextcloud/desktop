@@ -5643,12 +5643,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>ValidateChecksumHeader</name>
     <message>
-        <location filename="../src/common/checksums.cpp" line="331"/>
+        <location filename="../src/common/checksums.cpp" line="337"/>
         <source>The checksum header is malformed.</source>
         <translation>Η κεφαλίδα του αθροίσματος ελέγχου δεν είναι σωστά διαμορφωμένη.</translation>
     </message>
     <message>
-        <location filename="../src/common/checksums.cpp" line="358"/>
+        <location filename="../src/common/checksums.cpp" line="364"/>
         <source>The checksum header contained an unknown checksum type &apos;%1&apos;</source>
         <translation>Το checksum header περιέχει άγνωστο τύπο checksum &apos;%1&apos;</translation>
     </message>
@@ -5658,7 +5658,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Το αρχείο που λήφθηκε δεν επαληθεύεται από τον έλεγχο, θα συγχρονιστεί ξανά.</translation>
     </message>
     <message>
-        <location filename="../src/common/checksums.cpp" line="362"/>
+        <location filename="../src/common/checksums.cpp" line="368"/>
         <source>The downloaded file does not match the checksum, it will be resumed. &apos;%1&apos; != &apos;%2&apos;</source>
         <translation>Το ληφθέν αρχείο δεν ταιριάζει με το άθροισμα ελέγχου, θα επαναληφθεί. &apos;% 1&apos;! = &apos;% 2&apos;</translation>
     </message>

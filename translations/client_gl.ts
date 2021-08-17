@@ -5663,12 +5663,12 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
 <context>
     <name>ValidateChecksumHeader</name>
     <message>
-        <location filename="../src/common/checksums.cpp" line="331"/>
+        <location filename="../src/common/checksums.cpp" line="337"/>
         <source>The checksum header is malformed.</source>
         <translation>A cabeceira da suma de comprobación é incorrecta.</translation>
     </message>
     <message>
-        <location filename="../src/common/checksums.cpp" line="358"/>
+        <location filename="../src/common/checksums.cpp" line="364"/>
         <source>The checksum header contained an unknown checksum type &apos;%1&apos;</source>
         <translation>A cabeceira da suma de comprobación contén un tipo de suma de comprobación descoñecido «%1»</translation>
     </message>
@@ -5678,7 +5678,7 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
         <translation>O ficheiro descargado non coincide coa suma de comprobación. Retomase.</translation>
     </message>
     <message>
-        <location filename="../src/common/checksums.cpp" line="362"/>
+        <location filename="../src/common/checksums.cpp" line="368"/>
         <source>The downloaded file does not match the checksum, it will be resumed. &apos;%1&apos; != &apos;%2&apos;</source>
         <translation>O ficheiro descargado non coincide coa suma de comprobación. Retomase. «%1&apos; != &apos;%2»</translation>
     </message>
