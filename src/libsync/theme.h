@@ -535,6 +535,8 @@ public:
      */
     virtual bool showVirtualFilesOption() const;
 
+    static constexpr const char *themePrefix = ":/client/theme/";
+
 protected:
 #ifndef TOKEN_AUTH_ONLY
     QIcon themeIcon(const QString &name, bool sysTray = false) const;

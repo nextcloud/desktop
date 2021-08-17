@@ -27,6 +27,7 @@
 #include "thumbnailjob.h"
 #include "sharemanager.h"
 #include "theme.h"
+#include "iconutils.h"
 
 #include "QProgressIndicator.h"
 #include <QBuffer>
@@ -46,6 +47,7 @@
 #include <QColor>
 #include <QPainter>
 #include <QListWidget>
+#include <QSvgRenderer>
 
 #include <cstring>
 
@@ -247,7 +249,7 @@ void ShareUserGroupWidget::slotSharesFetched(const QList<QSharedPointer<Share>> 
         }
 
 
-        Q_ASSERT(share->getShareType() == Share::TypeUser || share->getShareType() == Share::TypeGroup || share->getShareType() == Share::TypeEmail);
+        Q_ASSERT(share->getShareType() == Share::TypeUser || share->getShareType() == Share::TypeGroup || share->getShareType() == Share::TypeEmail || share->getShareType() == Share::TypeRoom);
         auto userGroupShare = qSharedPointerDynamicCast<UserGroupShare>(share);
         auto *s = new ShareUserLine(_account, userGroupShare, _maxSharingPermissions, _isFile, _parentScrollArea);
         connect(s, &ShareUserLine::resizeRequested, this, &ShareUserGroupWidget::slotAdjustScrollWidgetSize);
@@ -501,7 +503,6 @@ ShareUserLine::ShareUserLine(AccountPtr account,
     _ui->permissionsEdit->setEnabled(enabled);
     connect(_ui->permissionsEdit, &QAbstractButton::clicked, this, &ShareUserLine::slotEditPermissionsChanged);
     connect(_ui->noteConfirmButton, &QAbstractButton::clicked, this, &ShareUserLine::onNoteConfirmButtonClicked);
-    connect(_ui->confirmExpirationDate, &QAbstractButton::clicked, this, &ShareUserLine::setExpireDate);
     connect(_ui->calendar, &QDateTimeEdit::dateChanged, this, &ShareUserLine::setExpireDate);
 
     connect(_share.data(), &UserGroupShare::noteSet, this, &ShareUserLine::disableProgessIndicatorAnimation);
@@ -521,10 +522,9 @@ ShareUserLine::ShareUserLine(AccountPtr account,
 
     showNoteOptions(false);
 
-    // email shares do not support notes and expiration dates
-    const bool isNoteAndExpirationDateSupported = _share->getShareType() != Share::ShareType::TypeEmail;
+    const bool isNoteSupported = _share->getShareType() != Share::ShareType::TypeEmail && _share->getShareType() != Share::ShareType::TypeRoom;
 
-    if (isNoteAndExpirationDateSupported) {
+    if (isNoteSupported) {
         _noteLinkAction = new QAction(tr("Note to recipient"));
         _noteLinkAction->setCheckable(true);
         menu->addAction(_noteLinkAction);
@@ -537,7 +537,9 @@ ShareUserLine::ShareUserLine(AccountPtr account,
 
     showExpireDateOptions(false);
 
-    if (isNoteAndExpirationDateSupported) {
+    const bool isExpirationDateSupported = _share->getShareType() != Share::ShareType::TypeEmail;
+
+    if (isExpirationDateSupported) {
         // email shares do not support expiration dates
         _expirationDateLinkAction = new QAction(tr("Set expiration date"));
         _expirationDateLinkAction->setCheckable(true);
@@ -545,9 +547,8 @@ ShareUserLine::ShareUserLine(AccountPtr account,
         connect(_expirationDateLinkAction, &QAction::triggered, this, &ShareUserLine::toggleExpireDateOptions);
         const auto expireDate = _share->getExpireDate().isValid() ? share.data()->getExpireDate() : QDate();
         if (!expireDate.isNull()) {
-            _ui->calendar->setDate(expireDate);
             _expirationDateLinkAction->setChecked(true);
-            showExpireDateOptions(true);
+            showExpireDateOptions(true, expireDate);
         }
     }
 
@@ -646,28 +647,7 @@ void ShareUserLine::loadAvatar()
     _ui->avatar->setMaximumWidth(avatarSize);
     _ui->avatar->setAlignment(Qt::AlignCenter);
 
-    /* Create the fallback avatar.
-     *
-     * This will be shown until the avatar image data arrives.
-     */
-    const QByteArray hash = QCryptographicHash::hash(_ui->sharedWith->text().toUtf8(), QCryptographicHash::Md5);
-    double hue = static_cast<quint8>(hash[0]) / 255.;
-
-    // See core/js/placeholder.js for details on colors and styling
-    const QColor bg = QColor::fromHslF(hue, 0.7, 0.68);
-    const QString style = QString(R"(* {
-        color: #fff;
-        background-color: %1;
-        border-radius: %2px;
-        text-align: center;
-        line-height: %2px;
-        font-size: %2px;
-    })").arg(bg.name(), QString::number(avatarSize / 2));
-    _ui->avatar->setStyleSheet(style);
-
-    // The avatar label is the first character of the user name.
-    const QString text = _share->getShareWith()->displayName();
-    _ui->avatar->setText(text.at(0).toUpper());
+    setDefaultAvatar(avatarSize);
 
     /* Start the network job to fetch the avatar data.
      *
@@ -677,6 +657,38 @@ void ShareUserLine::loadAvatar()
         auto *job = new AvatarJob(_share->account(), _share->getShareWith()->shareWith(), avatarSize, this);
         connect(job, &AvatarJob::avatarPixmap, this, &ShareUserLine::slotAvatarLoaded);
         job->start();
+    }
+}
+
+void ShareUserLine::setDefaultAvatar(int avatarSize)
+{
+    /* Create the fallback avatar.
+     *
+     * This will be shown until the avatar image data arrives.
+     */
+
+    // See core/js/placeholder.js for details on colors and styling
+    const auto backgroundColor = backgroundColorForShareeType(_share->getShareWith()->type());
+    const QString style = QString(R"(* {
+        color: #fff;
+        background-color: %1;
+        border-radius: %2px;
+        text-align: center;
+        line-height: %2px;
+        font-size: %2px;
+    })").arg(backgroundColor.name(), QString::number(avatarSize / 2));
+    _ui->avatar->setStyleSheet(style);
+
+    const auto pixmap = pixmapForShareeType(_share->getShareWith()->type(), backgroundColor);
+
+    if (!pixmap.isNull()) {
+        _ui->avatar->setPixmap(pixmap);
+    } else {
+        qCDebug(lcSharing) << "pixmap is null for share type: " << _share->getShareWith()->type();
+
+        // The avatar label is the first character of the user name.
+        const auto text = _share->getShareWith()->displayName();
+        _ui->avatar->setText(text.at(0).toUpper());
     }
 }
 
@@ -926,11 +938,55 @@ void ShareUserLine::customizeStyle()
     _deleteShareButton->setIcon(deleteicon);
 
     _ui->noteConfirmButton->setIcon(Theme::createColorAwareIcon(":/client/theme/confirm.svg"));
-    _ui->confirmExpirationDate->setIcon(Theme::createColorAwareIcon(":/client/theme/confirm.svg"));
     _ui->progressIndicator->setColor(QGuiApplication::palette().color(QPalette::WindowText));
 
     // make sure to force BackgroundRole to QPalette::WindowText for a lable, because it's parent always has a different role set that applies to children unless customized
     _ui->errorLabel->setBackgroundRole(QPalette::WindowText);
+}
+
+QPixmap ShareUserLine::pixmapForShareeType(Sharee::Type type, const QColor &backgroundColor) const
+{
+    switch (type) {
+    case Sharee::Room:
+        return Ui::IconUtils::pixmapForBackground(QStringLiteral("talk-app.svg"), backgroundColor);
+    case Sharee::Email:
+        return Ui::IconUtils::pixmapForBackground(QStringLiteral("email.svg"), backgroundColor);
+    case Sharee::Group:
+    case Sharee::Federated:
+    case Sharee::Circle:
+    case Sharee::User:
+        break;
+    }
+
+    return {};
+}
+
+QColor ShareUserLine::backgroundColorForShareeType(Sharee::Type type) const
+{
+    switch (type) {
+    case Sharee::Room:
+        return Theme::instance()->wizardHeaderBackgroundColor();
+    case Sharee::Email:
+        return Theme::instance()->wizardHeaderTitleColor();
+    case Sharee::Group:
+    case Sharee::Federated:
+    case Sharee::Circle:
+    case Sharee::User:
+        break;
+    }
+
+    const auto calculateBackgroundBasedOnText = [this]() {
+        const auto hash = QCryptographicHash::hash(_ui->sharedWith->text().toUtf8(), QCryptographicHash::Md5);
+        Q_ASSERT(hash.size() > 0);
+        if (hash.size() == 0) {
+            qCWarning(lcSharing) << "Failed to calculate hash color for share:" << _share->path();
+            return QColor{};
+        }
+        const double hue = static_cast<quint8>(hash[0]) / 255.;
+        return QColor::fromHslF(hue, 0.7, 0.68);
+    };
+
+    return calculateBackgroundBasedOnText();
 }
 
 void ShareUserLine::showNoteOptions(bool show)
@@ -979,16 +1035,14 @@ void ShareUserLine::toggleExpireDateOptions(bool enable)
     }
 }
 
-void ShareUserLine::showExpireDateOptions(bool show)
+void ShareUserLine::showExpireDateOptions(bool show, const QDate &initialDate)
 {
     _ui->expirationLabel->setVisible(show);
     _ui->calendar->setVisible(show);
-    _ui->confirmExpirationDate->setVisible(show);
 
     if (show) {
-        const QDate date = QDate::currentDate().addDays(1);
-        _ui->calendar->setDate(date);
-        _ui->calendar->setMinimumDate(date);
+        _ui->calendar->setMinimumDate(QDate::currentDate().addDays(1));
+        _ui->calendar->setDate(initialDate.isValid() ? initialDate : _ui->calendar->minimumDate());
         _ui->calendar->setFocus();
     }
 

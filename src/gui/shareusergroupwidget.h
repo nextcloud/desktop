@@ -169,7 +169,11 @@ private slots:
 private:
     void displayPermissions();
     void loadAvatar();
+    void setDefaultAvatar(int avatarSize);
     void customizeStyle();
+
+    QPixmap pixmapForShareeType(Sharee::Type type, const QColor &backgroundColor = QColor()) const;
+    QColor backgroundColorForShareeType(Sharee::Type type) const;
 
   void showNoteOptions(bool show);
   void toggleNoteOptions(bool enable);
@@ -177,7 +181,7 @@ private:
   void setNote(const QString &note);
 
   void toggleExpireDateOptions(bool enable);
-  void showExpireDateOptions(bool show);
+  void showExpireDateOptions(bool show, const QDate &initialDate = QDate());
   void setExpireDate();
 
   void togglePasswordSetProgressAnimation(bool show);

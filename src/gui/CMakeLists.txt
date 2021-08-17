@@ -106,6 +106,7 @@ set(client_SRCS
     elidedlabel.cpp
     headerbanner.cpp
     iconjob.cpp
+    iconutils.cpp
     remotewipe.cpp
     tray/ActivityData.cpp
     tray/ActivityListModel.cpp
