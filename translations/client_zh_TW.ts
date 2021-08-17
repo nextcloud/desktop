@@ -968,135 +968,135 @@ File synchronization desktop utility.</source>
 <context>
     <name>OCC::Folder</name>
     <message>
-        <location filename="../src/gui/folder.cpp" line="177"/>
+        <location filename="../src/gui/folder.cpp" line="178"/>
         <source>Local folder %1 does not exist.</source>
         <translation>本地資料夾 %1 不存在</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="180"/>
+        <location filename="../src/gui/folder.cpp" line="181"/>
         <source>%1 should be a folder but is not.</source>
         <translation>資料夾不存在, %1 必須是資料夾</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="183"/>
+        <location filename="../src/gui/folder.cpp" line="184"/>
         <source>%1 is not readable.</source>
         <translation>%1 是不可讀的</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="418"/>
+        <location filename="../src/gui/folder.cpp" line="441"/>
         <source>%1 has been removed.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 已被移除。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="432"/>
+        <location filename="../src/gui/folder.cpp" line="455"/>
         <source>%1 has been updated.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 已被更新。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="439"/>
+        <location filename="../src/gui/folder.cpp" line="462"/>
         <source>%1 has been renamed to %2.</source>
         <comment>%1 and %2 name files.</comment>
         <translation>%1 已被重新命名為 %2。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="446"/>
+        <location filename="../src/gui/folder.cpp" line="469"/>
         <source>%1 has been moved to %2.</source>
         <translation>%1 已被搬移至 %2。</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="416"/>
+        <location filename="../src/gui/folder.cpp" line="439"/>
         <source>%1 and %n other file(s) have been removed.</source>
         <translation><numerusform>%1 跟 %n 其他檔案已經被刪除</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="423"/>
+        <location filename="../src/gui/folder.cpp" line="446"/>
         <source>%1 and %n other file(s) have been added.</source>
         <translation><numerusform>已添加％1和％n其他檔案(s)。</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="425"/>
+        <location filename="../src/gui/folder.cpp" line="448"/>
         <source>%1 has been added.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 已添加。</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="430"/>
+        <location filename="../src/gui/folder.cpp" line="453"/>
         <source>%1 and %n other file(s) have been updated.</source>
         <translation><numerusform>%1 跟 %n 其他檔案已經被修改</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="437"/>
+        <location filename="../src/gui/folder.cpp" line="460"/>
         <source>%1 has been renamed to %2 and %n other file(s) have been renamed.</source>
         <translation><numerusform>％1已重命名為％2，％n其他檔案(s)已重命名。</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="444"/>
+        <location filename="../src/gui/folder.cpp" line="467"/>
         <source>%1 has been moved to %2 and %n other file(s) have been moved.</source>
         <translation><numerusform>％1已移至％2，％n其他檔案(s)已移。</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="451"/>
+        <location filename="../src/gui/folder.cpp" line="474"/>
         <source>%1 has and %n other file(s) have sync conflicts.</source>
         <translation><numerusform>%1和其他％n個檔案(s) 存在同步衝突。</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="453"/>
+        <location filename="../src/gui/folder.cpp" line="476"/>
         <source>%1 has a sync conflict. Please check the conflict file!</source>
         <translation>%1 有同步衝突。 請檢查衝突檔案！</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="458"/>
+        <location filename="../src/gui/folder.cpp" line="481"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
         <translation><numerusform>由於發生錯誤，無法同步％1和％n其他檔案(s)。 有關詳細信息，請參見記錄。</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="460"/>
+        <location filename="../src/gui/folder.cpp" line="483"/>
         <source>%1 could not be synced due to an error. See the log for details.</source>
         <translation>%1 因為錯誤無法被同步。請從紀錄檔觀看細節。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="466"/>
+        <location filename="../src/gui/folder.cpp" line="489"/>
         <source>Sync Activity</source>
         <translation>同步活動</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="802"/>
+        <location filename="../src/gui/folder.cpp" line="825"/>
         <source>Could not read system exclude file</source>
         <translation>無法讀取系統的排除檔案</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1044"/>
+        <location filename="../src/gui/folder.cpp" line="1067"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>添加了大於％1 MB的新目錄：%2.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1047"/>
+        <location filename="../src/gui/folder.cpp" line="1070"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>已添加來自外部儲存空間的目錄。
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1048"/>
+        <location filename="../src/gui/folder.cpp" line="1071"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>如果您要下載它，請進入設定以選擇它。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1107"/>
+        <location filename="../src/gui/folder.cpp" line="1130"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation>目錄％1已創建，但先前已從同步中排除。其中的數據將不會同步。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1110"/>
+        <location filename="../src/gui/folder.cpp" line="1133"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
         <translation>已創建檔案％1但先前已將其排除在同步之外。它不會同步。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1121"/>
+        <location filename="../src/gui/folder.cpp" line="1144"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
@@ -1109,7 +1109,7 @@ This means that the synchronization client might not upload local changes immedi
 ％1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1197"/>
+        <location filename="../src/gui/folder.cpp" line="1220"/>
         <source>All files in the sync folder '%1' folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
@@ -1120,7 +1120,7 @@ If you decide to delete the files, they will be unavailable to you, unless you a
 如果您決定刪除文件，除非您是所有者，否則您將無法使用它們。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1202"/>
+        <location filename="../src/gui/folder.cpp" line="1225"/>
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
@@ -1129,17 +1129,17 @@ If this was an accident and you decide to keep your files, they will be re-synce
 如果這是偶然事件，並且您決定保留文件，則將從伺服器重新同步它們。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1206"/>
+        <location filename="../src/gui/folder.cpp" line="1229"/>
         <source>Remove All Files?</source>
         <translation>移除所有檔案?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1210"/>
+        <location filename="../src/gui/folder.cpp" line="1233"/>
         <source>Remove all files</source>
         <translation>移除所有檔案</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1211"/>
+        <location filename="../src/gui/folder.cpp" line="1234"/>
         <source>Keep files</source>
         <translation>保留檔案</translation>
     </message>
@@ -1157,107 +1157,107 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>發現較舊的同步處理日誌&apos;%1&apos;，但無法移除。請確認沒有應用程式正在使用它。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1183"/>
+        <location filename="../src/gui/folderman.cpp" line="1174"/>
         <source> (backup)</source>
         <translation>（備份）</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1188"/>
+        <location filename="../src/gui/folderman.cpp" line="1179"/>
         <source> (backup %1)</source>
         <translation>(備份 %1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1309"/>
+        <location filename="../src/gui/folderman.cpp" line="1300"/>
         <source>Undefined State.</source>
         <translation>未知狀態</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1312"/>
+        <location filename="../src/gui/folderman.cpp" line="1303"/>
         <source>Waiting to start syncing.</source>
         <translation>正在等待同步開始</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1315"/>
+        <location filename="../src/gui/folderman.cpp" line="1306"/>
         <source>Preparing for sync.</source>
         <translation>正在準備同步。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1318"/>
+        <location filename="../src/gui/folderman.cpp" line="1309"/>
         <source>Sync is running.</source>
         <translation>同步執行中</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1323"/>
+        <location filename="../src/gui/folderman.cpp" line="1314"/>
         <source>Sync was successful, unresolved conflicts.</source>
         <translation>同步成功，未解決衝突。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1325"/>
+        <location filename="../src/gui/folderman.cpp" line="1316"/>
         <source>Last Sync was successful.</source>
         <translation>最後一次同步成功</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1331"/>
+        <location filename="../src/gui/folderman.cpp" line="1322"/>
         <source>Setup Error.</source>
         <translation>安裝失敗</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1334"/>
+        <location filename="../src/gui/folderman.cpp" line="1325"/>
         <source>User Abort.</source>
         <translation>使用者中斷。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1337"/>
+        <location filename="../src/gui/folderman.cpp" line="1328"/>
         <source>Sync is paused.</source>
         <translation>同步已暫停</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1343"/>
+        <location filename="../src/gui/folderman.cpp" line="1334"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (同步暫停)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1351"/>
+        <location filename="../src/gui/folderman.cpp" line="1342"/>
         <source>No valid folder selected!</source>
         <translation>沒有選擇有效的資料夾</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1359"/>
+        <location filename="../src/gui/folderman.cpp" line="1350"/>
         <source>The folder %1 is used in a folder sync connection!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1366"/>
+        <location filename="../src/gui/folderman.cpp" line="1357"/>
         <source>The selected path does not exist!</source>
         <translation>所選路徑不存在！</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1370"/>
+        <location filename="../src/gui/folderman.cpp" line="1361"/>
         <source>The selected path is not a folder!</source>
         <translation>所選的路徑並非資料夾!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1374"/>
+        <location filename="../src/gui/folderman.cpp" line="1365"/>
         <source>You have no permission to write to the selected folder!</source>
         <translation>您沒有權限來寫入被選取的資料夾!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1411"/>
+        <location filename="../src/gui/folderman.cpp" line="1402"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
         <translation>從伺服器到此本地端目錄已經存在同步。 請選擇另一個本地端目錄！</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1415"/>
+        <location filename="../src/gui/folderman.cpp" line="1406"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
         <translation>本地資料夾 %1 裡已經有被資料夾同步功能使用的資料夾，請選擇其他資料夾！</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1421"/>
+        <location filename="../src/gui/folderman.cpp" line="1412"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation>本地資料夾 %1 是被包含在一個已經被資料夾同步功能使用的資料夾，請選擇其他資料夾！</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1428"/>
+        <location filename="../src/gui/folderman.cpp" line="1419"/>
         <source>%1 Please pick another one!</source>
         <translation type="unfinished"/>
     </message>
@@ -2292,58 +2292,58 @@ for additional privileges during the process.</source>
 <context>
     <name>OCC::OwncloudAdvancedSetupPage</name>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="51"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="49"/>
         <source>Connect to %1</source>
         <translation>連線到 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="52"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="50"/>
         <source>Setup local folder options</source>
         <translation>設定本地資料夾選項</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="59"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="55"/>
         <source>Connect...</source>
         <translation>連線中...</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="87"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="84"/>
         <source> (experimental)</source>
         <translation>(實驗性的)</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="87"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="84"/>
         <source>Use &amp;virtual files instead of downloading content immediately%1</source>
         <translation>使用＆虛擬文件，而不是立即下載內容%1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="172"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="166"/>
         <source>&lt;p&gt;&lt;strong&gt;Warning:&lt;/strong&gt; The local folder is not empty. Pick a resolution!&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="168"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="162"/>
         <source>Sync the folder &apos;%1&apos;</source>
         <translation>同步資料夾 &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="236"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="207"/>
         <source>Virtual files are not available for the selected folder</source>
         <translation>虛擬文件不可用的於所選目錄</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="270"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="241"/>
         <source>Error</source>
         <translation>錯誤</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="295"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="266"/>
         <source>Local Sync Folder</source>
         <translation>本地同步資料夾</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="329"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="364"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="300"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="335"/>
         <source>(%1)</source>
         <translation>(%1)</translation>
     </message>
@@ -2430,57 +2430,52 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::OwncloudSetupWizard</name>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="214"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="191"/>
         <source>Failed to connect to %1 at %2:&lt;br/&gt;%3</source>
         <translation>從 %2 連線到 %1 失敗:&lt;br/&gt;%3</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="231"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="208"/>
         <source>Timeout while trying to connect to %1 at %2.</source>
         <translation>從 %2 嘗試連線到 %1 逾時。</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="212"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="189"/>
         <source>Invalid URL</source>
         <translation>無效的超連結</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="292"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="269"/>
         <source>Could not create local folder %1</source>
         <translation>無法建立本地資料夾 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="318"/>
-        <source>No remote folder specified!</source>
-        <translation>沒有指定遠端資料夾!</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="324"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="296"/>
         <source>Error: %1</source>
         <translation>錯誤： %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="359"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="329"/>
         <source>The folder creation resulted in HTTP error code %1</source>
         <translation>在HTTP建立資料夾失敗, error code %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="363"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="333"/>
         <source>The remote folder creation failed because the provided credentials are wrong!&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation>由於帳號或密碼錯誤，遠端資料夾建立失敗&lt;br/&gt;請檢查您的帳號密碼。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="371"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="341"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
         <translation>建立遠端資料夾%1發生錯誤&lt;tt&gt;%2&lt;/tt&gt;失敗</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="402"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="370"/>
         <source>Folder rename failed</source>
         <translation>重新命名資料夾失敗</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="403"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="371"/>
         <source>Can&apos;t remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
         <translation>無法移除與備份此資料夾，因為有其他的程式正在使用其中的資料夾或者檔案。請關閉使用中的資料夾或檔案並重試或者取消設定。</translation>
     </message>
@@ -2488,22 +2483,22 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::OwncloudWizard</name>
     <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="77"/>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="92"/>
         <source>%1 Connection Wizard</source>
         <translation>%1連線精靈</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="239"/>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="272"/>
         <source>Enable experimental feature?</source>
         <translation>啟用實驗功能？</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="253"/>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="286"/>
         <source>Enable experimental placeholder mode</source>
         <translation>啟用實驗佔位符模式</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="240"/>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="273"/>
         <source>When the &quot;virtual files&quot; mode is enabled no files will be downloaded initially. Instead, a tiny &quot;%1&quot; file will be created for each file that exists on the server. The contents can be downloaded by running these files or by using their context menu.
 
 The virtual files mode is mutually exclusive with selective sync. Currently unselected folders will be translated to online-only folders and your selective sync settings will be reset.
@@ -2520,7 +2515,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 這是一種新的實驗模式。 如果您決定使用它，請報告出現的任何問題。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="254"/>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="287"/>
         <source>Stay safe</source>
         <translation>注意安全</translation>
     </message>
@@ -3163,33 +3158,33 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::SettingsDialog</name>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="200"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="211"/>
         <source>Settings</source>
         <translation>設定</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="189"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="200"/>
         <source>Activity</source>
         <translation>活動</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="178"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="189"/>
         <source>Add account</source>
         <translation>增加帳號</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="213"/>
-        <location filename="../src/gui/settingsdialog.cpp" line="216"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="224"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="227"/>
         <source>Quit %1</source>
         <translation>離開 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="217"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="228"/>
         <source>Are you sure you want to quit %1?</source>
         <translation>您確定您要退出嗎 %1?</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="355"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="354"/>
         <source>Account</source>
         <translation>帳號</translation>
     </message>
@@ -3207,22 +3202,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::ShareDialog</name>
     <message>
-        <location filename="../src/gui/sharedialog.ui" line="14"/>
+        <location filename="../src/gui/sharedialog.ui" line="28"/>
         <source>TextLabel</source>
         <translation>文字標籤</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.ui" line="29"/>
+        <location filename="../src/gui/sharedialog.ui" line="43"/>
         <source>share label</source>
         <translation>分享標籤</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.ui" line="6"/>
+        <location filename="../src/gui/sharedialog.ui" line="20"/>
         <source>Dialog</source>
         <translation>對白</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.ui" line="51"/>
+        <location filename="../src/gui/sharedialog.ui" line="65"/>
         <source>ownCloud Path:</source>
         <translation>ownCloud 路徑:</translation>
     </message>
@@ -3252,17 +3247,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>正在從伺服器檢索最大可能的共享權限...</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="189"/>
+        <location filename="../src/gui/sharedialog.cpp" line="182"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
         <translation>這個檔案無法被分享，並沒有分享此檔案的權限。</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="203"/>
+        <location filename="../src/gui/sharedialog.cpp" line="196"/>
         <source>Users and Groups</source>
         <translation>使用者及群組</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="210"/>
+        <location filename="../src/gui/sharedialog.cpp" line="203"/>
         <source>Public Links</source>
         <translation>公共連結</translation>
     </message>
@@ -4021,7 +4016,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::Theme</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="455"/>
+        <location filename="../src/libsync/theme.cpp" line="460"/>
         <source>&lt;p&gt;Version %1. For more information visit &lt;a href=&quot;%2&quot;&gt;https://%3&lt;/a&gt;&lt;/p&gt;&lt;p&gt;For known issues and help, please visit: &lt;a href=&quot;https://central.owncloud.org/c/desktop-client&quot;&gt;https://central.owncloud.org&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz,  Jan-Christoph Borchardt, Thomas Müller, Dominik Schmidt, Michael Stingl, Hannah von Reth, and others.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;&lt;p&gt;Distributed by %4 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br/&gt;%5 and the %5 logo are registered trademarks of %4 in the United States, other countries, or both.&lt;/p&gt;&lt;p&gt;&lt;small&gt;%6&lt;/small&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;版本％1。 欲了解更多信息，請訪問&lt;a href=&quot;%2&quot;&gt;https://%3&lt;/a&gt;&lt;/p&gt;&lt;p&gt;有關已知問題和幫助，請訪問：&lt;a href=&quot;https://central.owncloud.org/c/desktop-client&quot;&gt;https://central.owncloud.org&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;由Klaas Freitag，Daniel Molkentin，Olivier Goffart，MarkusGötz，Jan-Christoph Borchardt，ThomasMüller，Dominik Schmidt，Michael Stingl，Hannah von Reth等人撰寫。&lt;/small&gt;&lt;/p&gt;&lt;p&gt;版權所有ownCloud GmbH&lt;/p&gt;&lt;p&gt;由％4分發，並根據GNU通用公開的許可證（GPL）2.0版獲得許可。&lt;br/&gt;%5和％5徽標是％4在美國和/或其他國家或地區的註冊商標。&lt;/p&gt;&lt;p&gt;&lt;small&gt;%6&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
@@ -4313,81 +4308,81 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OwncloudAdvancedSetupPage</name>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="20"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="14"/>
         <source>Form</source>
         <translation>表單</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="114"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="213"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="108"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="207"/>
         <source>TextLabel</source>
         <translation>文字標籤</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="65"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="59"/>
         <source>Server</source>
         <translation>伺服器</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="478"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="469"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If this box is checked, existing content in the local folder will be erased to start a clean sync from the server.&lt;/p&gt;&lt;p&gt;Do not check this if the local content should be uploaded to the servers folder.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;如果選中此框，則將刪除本地端目錄中的現有內容，以從伺服器啟動干淨同步。&lt;/p&gt;&lt;p&gt;如果應將本地端內容上載到服務器目錄，請不要檢查。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="171"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="165"/>
         <source>Ask for confirmation before synchroni&amp;zing folders larger than</source>
         <translation>同步大於的目錄之前要求確認</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="104"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="98"/>
         <source>S&amp;ynchronize everything from server</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="188"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="182"/>
         <source>MB</source>
         <extracomment>Trailing part of &quot;Ask confirmation before syncing folder larger than&quot; </extracomment>
         <translation>MB</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="197"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="191"/>
         <source>Ask for confirmation before synchronizing e&amp;xternal storages</source>
         <translation>在同步e＆xternal存儲之前要求確認</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="206"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="200"/>
         <source>Choose what to sync</source>
         <translation>選擇要同步的項目</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="251"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="254"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="245"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="248"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When this option is selected, the wizard will close without synchronizing anything. You can use the &amp;quot;Add Folder Sync Connection&amp;quot; button from the account settings to choose which pair of local and remote folder you wish to synchronize&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;選擇此選項後，嚮導將關閉而不同步任何內容。 您可以使用&amp;quot;添加目錄同步連接&amp;quot;您從帳號設定中選擇按鈕，以選擇要同步的本地端和遠端目錄對&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="257"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="251"/>
         <source>Manually create folder sync connections </source>
         <translation>手動建立目錄同步連接</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="378"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="369"/>
         <source>&amp;Local Folder</source>
         <translation>本地資料夾 (&amp;L)</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="419"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="410"/>
         <source>pbSelectLocalFolder</source>
         <translation>pb選擇本地文件夾</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="468"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="459"/>
         <source>&amp;Keep local data</source>
         <translation>保留本地資料 (&amp;K)</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="481"/>
-        <source>Start a &amp;clean sync (Crreate a backup and rrases the local folder!)</source>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="472"/>
+        <source>Start a &amp;clean sync (Crreate a backup and erases the local folder!)</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -4435,22 +4430,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OwncloudSetupPage</name>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.ui" line="20"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.ui" line="14"/>
         <source>Form</source>
         <translation>表單</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.ui" line="64"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.ui" line="58"/>
         <source>Ser&amp;ver Address</source>
         <translation>服務器地址</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.ui" line="80"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.ui" line="74"/>
         <source>https://...</source>
         <translation>https://...</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.ui" line="162"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.ui" line="156"/>
         <source>Error Label</source>
         <translation>錯誤標籤</translation>
     </message>
@@ -4573,7 +4568,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>ownCloudTheme::aboutVersions()</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="432"/>
+        <location filename="../src/libsync/theme.cpp" line="437"/>
         <source>%1 %2 %3%8%9Libraries Qt %4, %5%8Using virtual files plugin: %6%8%7</source>
         <translation type="unfinished"/>
     </message>
@@ -4581,7 +4576,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>ownCloudTheme::qtVer</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="422"/>
+        <location filename="../src/libsync/theme.cpp" line="427"/>
         <source>%1 (Built against Qt %1)</source>
         <translation>%1 (針對Qt構建%1)</translation>
     </message>
@@ -4589,7 +4584,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>ownCloudTheme::versionWithSha</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="427"/>
+        <location filename="../src/libsync/theme.cpp" line="432"/>
         <source>%1 %2</source>
         <translation>%1 %2</translation>
     </message>

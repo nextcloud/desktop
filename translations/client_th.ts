@@ -969,135 +969,135 @@ File synchronization desktop utility.</source>
 <context>
     <name>OCC::Folder</name>
     <message>
-        <location filename="../src/gui/folder.cpp" line="177"/>
+        <location filename="../src/gui/folder.cpp" line="178"/>
         <source>Local folder %1 does not exist.</source>
         <translation>โฟลเดอร์ %1 ไม่มีอยู่ในเครื่อง</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="180"/>
+        <location filename="../src/gui/folder.cpp" line="181"/>
         <source>%1 should be a folder but is not.</source>
         <translation>%1 ควรจะเป็นโฟลเดอร์ แต่ทำไม่ได้</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="183"/>
+        <location filename="../src/gui/folder.cpp" line="184"/>
         <source>%1 is not readable.</source>
         <translation>ไม่สามารถอ่านข้อมูล %1 ได้</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="418"/>
+        <location filename="../src/gui/folder.cpp" line="441"/>
         <source>%1 has been removed.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 ได้ถูกลบออก</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="432"/>
+        <location filename="../src/gui/folder.cpp" line="455"/>
         <source>%1 has been updated.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 ได้ถูกอัปเดตเรียบร้อยแล้ว</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="439"/>
+        <location filename="../src/gui/folder.cpp" line="462"/>
         <source>%1 has been renamed to %2.</source>
         <comment>%1 and %2 name files.</comment>
         <translation>%1 ได้ถูกเปลี่ยนชื่อเป็น %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="446"/>
+        <location filename="../src/gui/folder.cpp" line="469"/>
         <source>%1 has been moved to %2.</source>
         <translation>%1 ได้ถูกย้ายไปยัง %2</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="416"/>
+        <location filename="../src/gui/folder.cpp" line="439"/>
         <source>%1 and %n other file(s) have been removed.</source>
         <translation><numerusform>%1 และ %n ไฟล์อื่น ๆ ได้ถูกลบออก</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="423"/>
+        <location filename="../src/gui/folder.cpp" line="446"/>
         <source>%1 and %n other file(s) have been added.</source>
         <translation><numerusform>%1 และ %n </numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="425"/>
+        <location filename="../src/gui/folder.cpp" line="448"/>
         <source>%1 has been added.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 ได้ถูกเพิ่มแล้ว</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="430"/>
+        <location filename="../src/gui/folder.cpp" line="453"/>
         <source>%1 and %n other file(s) have been updated.</source>
         <translation><numerusform>%1 และ %n ไฟล์อื่น ๆ ได้รับการอัปเดต</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="437"/>
+        <location filename="../src/gui/folder.cpp" line="460"/>
         <source>%1 has been renamed to %2 and %n other file(s) have been renamed.</source>
         <translation><numerusform>%1 และไฟล์อื่น ๆ อีก %n ไฟล์ได้ถูกเปลี่ยนชื่อเป็น %2</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="444"/>
+        <location filename="../src/gui/folder.cpp" line="467"/>
         <source>%1 has been moved to %2 and %n other file(s) have been moved.</source>
         <translation><numerusform>%1 และไฟล์อื่น ๆ อีก %n ไฟล์ได้ถูกย้ายไปยัง %2</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="451"/>
+        <location filename="../src/gui/folder.cpp" line="474"/>
         <source>%1 has and %n other file(s) have sync conflicts.</source>
         <translation><numerusform>%1 และ %n ไฟล์อื่น ๆ เกิดปัญหาขณะประสานข้อมูล</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="453"/>
+        <location filename="../src/gui/folder.cpp" line="476"/>
         <source>%1 has a sync conflict. Please check the conflict file!</source>
         <translation>%1 มีปัญหาขณะประสานข้อมูล กรุณาตรวจสอบไฟล์ที่มีปัญหานั้น</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="458"/>
+        <location filename="../src/gui/folder.cpp" line="481"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
         <translation><numerusform>%1 และไฟล์อื่น ๆ อีก %n ไฟล์ไม่สามารถประสานข้อมูลเนื่องจากเกิดข้อผิดพลาด กรุณาดูไฟล์ log สำหรับรายละเอียดเพิ่มเติม</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="460"/>
+        <location filename="../src/gui/folder.cpp" line="483"/>
         <source>%1 could not be synced due to an error. See the log for details.</source>
         <translation>%1 ไม่สามารถประสานข้อมูลเนื่องจากมีข้อผิดพลาด สามารถดูไฟล์ log สำหรับรายละเอียดเพิ่มเติม</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="466"/>
+        <location filename="../src/gui/folder.cpp" line="489"/>
         <source>Sync Activity</source>
         <translation>ความเคลื่อนไหวของการประสานข้อมูล</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="802"/>
+        <location filename="../src/gui/folder.cpp" line="825"/>
         <source>Could not read system exclude file</source>
         <translation>ไม่สามารถอ่าน ยกเว้นไฟล์ระบบ</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1044"/>
+        <location filename="../src/gui/folder.cpp" line="1067"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>โฟลเดอร์ใหม่มีขนาดใหญ่กว่า %1 เมกะไบต์ ได้ถูกเพิ่ม: %2
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1047"/>
+        <location filename="../src/gui/folder.cpp" line="1070"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>โฟลเดอร์ที่มีพื้นที่จัดเก็บข้อมูลภายนอกได้ถูกเพิ่ม
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1048"/>
+        <location filename="../src/gui/folder.cpp" line="1071"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>กรุณาไปในส่วนของการตั้งค่าเพื่อเลือก ถ้าคุณต้องการจะดาวน์โหลด</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1107"/>
+        <location filename="../src/gui/folder.cpp" line="1130"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation>โฟลเดอร์ %1 ได้ถูกสร้างขึ้นแล้วแต่ยังไม่ได้ประสานข้อมูล</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1110"/>
+        <location filename="../src/gui/folder.cpp" line="1133"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
         <translation>ไฟล์ %1 ได้ถูกสร้างขึ้นแล้วแต่ยังไม่ได้ประสานข้อมูล</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1121"/>
+        <location filename="../src/gui/folder.cpp" line="1144"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
@@ -1108,7 +1108,7 @@ This means that the synchronization client might not upload local changes immedi
 หมายความว่าการประสานข้อมูลของไคลเอ็นต์อาจยังไม่ได้อัปโหลดการเปลี่ยนแปลงในระบบทันทีและจะสแกนเฉพาะการเปลี่ยนแปลงในเครื่องและอัปโหลดไฟล์เหล่านั้นเป็นครั้งคราว (ทุกสองชั่วโมงตามค่าเริ่มต้น)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1197"/>
+        <location filename="../src/gui/folder.cpp" line="1220"/>
         <source>All files in the sync folder '%1' folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
@@ -1119,7 +1119,7 @@ If you decide to delete the files, they will be unavailable to you, unless you a
 หากคุณตัดสินใจลบไฟล์ก็จะทำให้ไม่มีใครสามารถใช้งานโฟลเดอร์นี้ได้เพราะคุณเป็นเจ้าของ</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1202"/>
+        <location filename="../src/gui/folder.cpp" line="1225"/>
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
@@ -1129,17 +1129,17 @@ If this was an accident and you decide to keep your files, they will be re-synce
 ถ้าเรื่องนี้เป็นอุบัติเหตุและคุณตัดสินใจเก็บไฟล์ของคุณ ไฟล์ของคุณก็จะถูกประสานข้อมูลใหม่อีกครั้ง</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1206"/>
+        <location filename="../src/gui/folder.cpp" line="1229"/>
         <source>Remove All Files?</source>
         <translation>ลบไฟล์ทั้งหมด?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1210"/>
+        <location filename="../src/gui/folder.cpp" line="1233"/>
         <source>Remove all files</source>
         <translation>ลบไฟล์ทั้งหมด</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1211"/>
+        <location filename="../src/gui/folder.cpp" line="1234"/>
         <source>Keep files</source>
         <translation>เก็บไฟล์เอาไว้</translation>
     </message>
@@ -1157,107 +1157,107 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>บนบันทึกการประสานข้อมูลเก่า &apos;%1&apos; แต่ไม่สามารถลบออกได้ กรุณาตรวจสอบให้แน่ใจว่าไม่มีแอปฯ หรือการทำงานใดๆที่ใช้มันอยู่</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1183"/>
+        <location filename="../src/gui/folderman.cpp" line="1174"/>
         <source> (backup)</source>
         <translation>(สำรองข้อมูล)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1188"/>
+        <location filename="../src/gui/folderman.cpp" line="1179"/>
         <source> (backup %1)</source>
         <translation>(สำรองข้อมูล %1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1309"/>
+        <location filename="../src/gui/folderman.cpp" line="1300"/>
         <source>Undefined State.</source>
         <translation>สถานะที่ยังไม่ได้ถูกกำหนด</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1312"/>
+        <location filename="../src/gui/folderman.cpp" line="1303"/>
         <source>Waiting to start syncing.</source>
         <translation>กำลังรอเริ่มต้นการประสานข้อมูล</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1315"/>
+        <location filename="../src/gui/folderman.cpp" line="1306"/>
         <source>Preparing for sync.</source>
         <translation>กำลังเตรียมการประสานข้อมูล</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1318"/>
+        <location filename="../src/gui/folderman.cpp" line="1309"/>
         <source>Sync is running.</source>
         <translation>การประสานข้อมูลกำลังทำงาน</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1323"/>
+        <location filename="../src/gui/folderman.cpp" line="1314"/>
         <source>Sync was successful, unresolved conflicts.</source>
         <translation>ประสานข้อมูลสำเร็จแต่ยังมีข้อขัดแย้งที่ยังไม่ได้รับการแก้ไข</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1325"/>
+        <location filename="../src/gui/folderman.cpp" line="1316"/>
         <source>Last Sync was successful.</source>
         <translation>ประสานข้อมูลครั้งล่าสุดเสร็จเรียบร้อยแล้ว</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1331"/>
+        <location filename="../src/gui/folderman.cpp" line="1322"/>
         <source>Setup Error.</source>
         <translation>เกิดข้อผิดพลาดในการติดตั้ง</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1334"/>
+        <location filename="../src/gui/folderman.cpp" line="1325"/>
         <source>User Abort.</source>
         <translation>ยกเลิกผู้ใช้</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1337"/>
+        <location filename="../src/gui/folderman.cpp" line="1328"/>
         <source>Sync is paused.</source>
         <translation>การประสานข้อมูลถูกหยุดไว้ชั่วคราว</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1343"/>
+        <location filename="../src/gui/folderman.cpp" line="1334"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (การประสานข้อมูลถูกหยุดชั่วคราว)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1351"/>
+        <location filename="../src/gui/folderman.cpp" line="1342"/>
         <source>No valid folder selected!</source>
         <translation>เลือกโฟลเดอร์ไม่ถูกต้อง!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1359"/>
+        <location filename="../src/gui/folderman.cpp" line="1350"/>
         <source>The folder %1 is used in a folder sync connection!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1366"/>
+        <location filename="../src/gui/folderman.cpp" line="1357"/>
         <source>The selected path does not exist!</source>
         <translation>เส้นทางที่เลือกไม่มีอยู่!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1370"/>
+        <location filename="../src/gui/folderman.cpp" line="1361"/>
         <source>The selected path is not a folder!</source>
         <translation>เส้นทางที่เลือกไม่ใช่โฟลเดอร์!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1374"/>
+        <location filename="../src/gui/folderman.cpp" line="1365"/>
         <source>You have no permission to write to the selected folder!</source>
         <translation>คุณมีสิทธิ์เขียนโฟลเดอร์ที่เลือกนี้!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1411"/>
+        <location filename="../src/gui/folderman.cpp" line="1402"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
         <translation>โฟลเดอร์นี้ได้ถูกประสานข้อมูลกับเซิร์ฟเวอร์แล้ว โปรดเลือกโฟลเดอร์อื่น ๆ</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1415"/>
+        <location filename="../src/gui/folderman.cpp" line="1406"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
         <translation>เนื้อหาโฟลเดอร์ในเครื่อง %1 ได้ถูกใช้ไปแล้วในโฟลเดอร์ที่ประสานข้อมูล กรุณาเลือกอีกอันหนึ่ง!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1421"/>
+        <location filename="../src/gui/folderman.cpp" line="1412"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation>เนื้อหาของโฟลเดอร์ในเครื่อง %1 ไดถูกใช้ไปแล้วในโฟลเดอร์ที่ประสานข้อมูล กรุณาเลือกอีกอันหนึ่ง!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1428"/>
+        <location filename="../src/gui/folderman.cpp" line="1419"/>
         <source>%1 Please pick another one!</source>
         <translation type="unfinished"/>
     </message>
@@ -2289,58 +2289,58 @@ for additional privileges during the process.</source>
 <context>
     <name>OCC::OwncloudAdvancedSetupPage</name>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="51"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="49"/>
         <source>Connect to %1</source>
         <translation>เชื่อมต่อไปยัง %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="52"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="50"/>
         <source>Setup local folder options</source>
         <translation>ตั้งค่าตัวเลือกโฟลเดอร์ในเครื่อง</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="59"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="55"/>
         <source>Connect...</source>
         <translation>เชื่อมต่อ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="87"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="84"/>
         <source> (experimental)</source>
         <translation>(โหมดเบต้า)</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="87"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="84"/>
         <source>Use &amp;virtual files instead of downloading content immediately%1</source>
         <translation>ใช้ไฟล์เสมือนแทนการดาวน์โหลดเนื้อหาแบบทันที %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="172"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="166"/>
         <source>&lt;p&gt;&lt;strong&gt;Warning:&lt;/strong&gt; The local folder is not empty. Pick a resolution!&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="168"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="162"/>
         <source>Sync the folder &apos;%1&apos;</source>
         <translation>ประสานข้อมูลโฟลเดอร์ &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="236"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="207"/>
         <source>Virtual files are not available for the selected folder</source>
         <translation>ไฟล์เสมือนไม่พร้อมใช้งานสำหรับโฟลเดอร์ที่เลือก</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="270"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="241"/>
         <source>Error</source>
         <translation>ข้อผิดพลาด</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="295"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="266"/>
         <source>Local Sync Folder</source>
         <translation>ประสานโฟลเดอร์ในเครื่อง</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="329"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="364"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="300"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="335"/>
         <source>(%1)</source>
         <translation>(%1)</translation>
     </message>
@@ -2427,57 +2427,52 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::OwncloudSetupWizard</name>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="214"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="191"/>
         <source>Failed to connect to %1 at %2:&lt;br/&gt;%3</source>
         <translation>ล้มเหลวในการเชื่อมต่อไปยัง %1 ที่ %2:&lt;br/&gt;%3</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="231"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="208"/>
         <source>Timeout while trying to connect to %1 at %2.</source>
         <translation>หมดเวลาขณะที่พยายามเชื่อมต่อไปยัง %1 ที่ %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="212"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="189"/>
         <source>Invalid URL</source>
         <translation>URL ไม่ถูกต้อง</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="292"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="269"/>
         <source>Could not create local folder %1</source>
         <translation>ไม่สามารถสร้างผสานข้อมูลโฟลเดอร์ในเครื่อง %1...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="318"/>
-        <source>No remote folder specified!</source>
-        <translation>ไม่มีโฟลเดอร์รีโมทที่ระบุ!</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="324"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="296"/>
         <source>Error: %1</source>
         <translation>ข้อผิดพลาด: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="359"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="329"/>
         <source>The folder creation resulted in HTTP error code %1</source>
         <translation>การสร้างโฟลเดอร์ดังกล่าวส่งผลให้เกิดรหัสข้อผิดพลาด HTTP error code %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="363"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="333"/>
         <source>The remote folder creation failed because the provided credentials are wrong!&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation>สร้างโฟลเดอร์รีโมทล้มเหลวเนื่องจากมีข้อมูลผิดพลาด!</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="371"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="341"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
         <translation>การสร้างโฟลเดอร์รีโมท %1 ล้มเหลวเนื่องข้อผิดพลาด &lt;tt&gt;%2&lt;/tt&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="402"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="370"/>
         <source>Folder rename failed</source>
         <translation>เปลี่ยนชื่อโฟลเดอร์ล้มเหลว</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="403"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="371"/>
         <source>Can&apos;t remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
         <translation>ไม่สามารถลบและสำรองข้อมูลโฟลเดอร์เพราะโฟลเดอร์หรือไฟล์ในนั้นจะเปิดในโปรแกรมอื่นอยู่ กรุณาปิดโฟลเดอร์หรือไฟล์และกดลองใหม่อีกครั้งหรือยกเลิกการติดตั้ง</translation>
     </message>
@@ -2485,22 +2480,22 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::OwncloudWizard</name>
     <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="77"/>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="92"/>
         <source>%1 Connection Wizard</source>
         <translation>%1 ตัวช่วยสร้างการเชื่อมต่อ</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="239"/>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="272"/>
         <source>Enable experimental feature?</source>
         <translation>เปิดใช้งานโหมดเบต้า?</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="253"/>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="286"/>
         <source>Enable experimental placeholder mode</source>
         <translation>เปิดใช้งานโหมดเบต้า</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="240"/>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="273"/>
         <source>When the &quot;virtual files&quot; mode is enabled no files will be downloaded initially. Instead, a tiny &quot;%1&quot; file will be created for each file that exists on the server. The contents can be downloaded by running these files or by using their context menu.
 
 The virtual files mode is mutually exclusive with selective sync. Currently unselected folders will be translated to online-only folders and your selective sync settings will be reset.
@@ -2515,7 +2510,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 การสลับไปที่โหมดนี้จะยกเลิกการซิงค์ที่กำลังทำงานอยู่ และตอนนี้ยังอยู่ในช่วงทดลองใช้หากพบเจอปัญหาโปรดรายงานปัญหาด้วย</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="254"/>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="287"/>
         <source>Stay safe</source>
         <translation>ไว้คราวหน้า</translation>
     </message>
@@ -3158,33 +3153,33 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::SettingsDialog</name>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="200"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="211"/>
         <source>Settings</source>
         <translation>ตั้งค่า</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="189"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="200"/>
         <source>Activity</source>
         <translation>กิจกรรม</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="178"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="189"/>
         <source>Add account</source>
         <translation>เพิ่มบัญชี</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="213"/>
-        <location filename="../src/gui/settingsdialog.cpp" line="216"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="224"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="227"/>
         <source>Quit %1</source>
         <translation>ออก %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="217"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="228"/>
         <source>Are you sure you want to quit %1?</source>
         <translation>แน่ใจหรือไม่ว่าคุณต้องการออกจาก %1?</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="355"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="354"/>
         <source>Account</source>
         <translation>บัญชี</translation>
     </message>
@@ -3202,22 +3197,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::ShareDialog</name>
     <message>
-        <location filename="../src/gui/sharedialog.ui" line="14"/>
+        <location filename="../src/gui/sharedialog.ui" line="28"/>
         <source>TextLabel</source>
         <translation>ป้ายข้อความ</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.ui" line="29"/>
+        <location filename="../src/gui/sharedialog.ui" line="43"/>
         <source>share label</source>
         <translation>แชร์ป้ายกำกับ</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.ui" line="6"/>
+        <location filename="../src/gui/sharedialog.ui" line="20"/>
         <source>Dialog</source>
         <translation>กล่องโต้ตอบ</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.ui" line="51"/>
+        <location filename="../src/gui/sharedialog.ui" line="65"/>
         <source>ownCloud Path:</source>
         <translation>พาธ ownCloud:</translation>
     </message>
@@ -3247,17 +3242,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>คุณใช้สิทธิ์การเรียกข้อมูลจากเซิฟเวอร์สูงสุดแล้ว</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="189"/>
+        <location filename="../src/gui/sharedialog.cpp" line="182"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
         <translation>ไม่สามารถแชร์ไฟล์เพราะไม่ได้รับอนุญาต</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="203"/>
+        <location filename="../src/gui/sharedialog.cpp" line="196"/>
         <source>Users and Groups</source>
         <translation>ผู้ใช้และกลุ่ม</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="210"/>
+        <location filename="../src/gui/sharedialog.cpp" line="203"/>
         <source>Public Links</source>
         <translation>ลิงก์สาธารณะ</translation>
     </message>
@@ -4014,7 +4009,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::Theme</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="455"/>
+        <location filename="../src/libsync/theme.cpp" line="460"/>
         <source>&lt;p&gt;Version %1. For more information visit &lt;a href=&quot;%2&quot;&gt;https://%3&lt;/a&gt;&lt;/p&gt;&lt;p&gt;For known issues and help, please visit: &lt;a href=&quot;https://central.owncloud.org/c/desktop-client&quot;&gt;https://central.owncloud.org&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz,  Jan-Christoph Borchardt, Thomas Müller, Dominik Schmidt, Michael Stingl, Hannah von Reth, and others.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;&lt;p&gt;Distributed by %4 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br/&gt;%5 and the %5 logo are registered trademarks of %4 in the United States, other countries, or both.&lt;/p&gt;&lt;p&gt;&lt;small&gt;%6&lt;/small&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;เวอร์ชัน %1 สามารถดูข้อมูลเพิ่มเติมได้ที่ &lt;a href=&quot;%2&quot;&gt;https://%3&lt;/a&gt;&lt;/p&gt;&lt;p&gt;สำหรับแจ้งปัญหาที่พบและขอความช่วยเหลือโปรดไปที่:&lt;a href=&quot;https://central.owncloud.org/c/desktop-client&quot;&gt;https://central.owncloud.org&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz, Jan-Christoph Borchardt, Thomas Müller, Dominik Schmidt, Michael Stingl, Hannah von Reth, Sunchai Paejaroenchai และคนอื่น ๆ ที่ไม่ได้กล่าวถึง&lt;/small&gt;&lt;/p&gt;&lt;p&gt;ลิขสิทธิ์ ownCloud GmbH&lt;/p&gt;&lt;p&gt;จัดจำหน่ายโดย %4 และได้รับอนุญาตภายใต้ GNU General Public License (GPL) เวอร์ชัน 2.0&lt;br/&gt;%5 และโลโก้ %5 เป็นเครื่องหมายการค้าจดทะเบียนของ %4 ในสหรัฐอเมริกาประเทศอื่น ๆ หรือทั้งสองอย่าง&lt;/p&gt;&lt;p&gt;&lt;small&gt;%6&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
@@ -4306,81 +4301,81 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OwncloudAdvancedSetupPage</name>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="20"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="14"/>
         <source>Form</source>
         <translation>แบบฟอร์ม</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="114"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="213"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="108"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="207"/>
         <source>TextLabel</source>
         <translation>ป้ายข้อความ</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="65"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="59"/>
         <source>Server</source>
         <translation>เซิร์ฟเวอร์</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="478"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="469"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If this box is checked, existing content in the local folder will be erased to start a clean sync from the server.&lt;/p&gt;&lt;p&gt;Do not check this if the local content should be uploaded to the servers folder.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;ถ้ากล่องนี้ถูกตรวจสอบ โฟลเดอร์ในเครื่องจะถูกลบเพื่อเริ่มต้นล้างการประสานข้อมูลจากเซิร์ฟเวอร์&lt;/p&gt;&lt;p&gt;ไม่ต้องตรวจสอบนี้หากเนื้อหาต้นทางได้รับการอัปโหลดไปยังโฟลเดอร์เซิร์ฟเวอร์&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="171"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="165"/>
         <source>Ask for confirmation before synchroni&amp;zing folders larger than</source>
         <translation>ถามก่อนที่จะประสานข้อมูลกับโฟลเดอร์ที่มีขนาดใหญ่กว่า</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="104"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="98"/>
         <source>S&amp;ynchronize everything from server</source>
         <translation>ประสานข้อมูลทั้งหมดจากเซิร์ฟเวอร์</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="188"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="182"/>
         <source>MB</source>
         <extracomment>Trailing part of &quot;Ask confirmation before syncing folder larger than&quot; </extracomment>
         <translation>เมกะไบต์</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="197"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="191"/>
         <source>Ask for confirmation before synchronizing e&amp;xternal storages</source>
         <translation>ถามก่อนที่จะประสานข้อมูลกับพื้นที่จัดเก็บข้อมูลภายนอก</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="206"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="200"/>
         <source>Choose what to sync</source>
         <translation>เลือกข้อมูลที่ต้องการประสาน</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="251"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="254"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="245"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="248"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When this option is selected, the wizard will close without synchronizing anything. You can use the &amp;quot;Add Folder Sync Connection&amp;quot; button from the account settings to choose which pair of local and remote folder you wish to synchronize&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;เมื่อตัวเลือกนี้ถูกเลือก วิซาร์ดจะปิดโดยไม่ได้ประสานข้อมูล คุณสามารกดเพิ่มโฟลเดอร์ที่ต้องการการประสานข้อมูลในการตั้งค่าบัญชี&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="257"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="251"/>
         <source>Manually create folder sync connections </source>
         <translation>สร้างการประสานข้อมูลโฟลเดอร์ด้วยตัวเอง</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="378"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="369"/>
         <source>&amp;Local Folder</source>
         <translation>และโฟลเดอร์ในเครื่อง</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="419"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="410"/>
         <source>pbSelectLocalFolder</source>
         <translation>pbSelectLocalFolder</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="468"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="459"/>
         <source>&amp;Keep local data</source>
         <translation>และเก็บข้อมูลในเครื่อง</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="481"/>
-        <source>Start a &amp;clean sync (Crreate a backup and rrases the local folder!)</source>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="472"/>
+        <source>Start a &amp;clean sync (Crreate a backup and erases the local folder!)</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -4428,22 +4423,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OwncloudSetupPage</name>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.ui" line="20"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.ui" line="14"/>
         <source>Form</source>
         <translation>แบบฟอร์ม</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.ui" line="64"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.ui" line="58"/>
         <source>Ser&amp;ver Address</source>
         <translation>ที่อยู่เซิฟเวอร์</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.ui" line="80"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.ui" line="74"/>
         <source>https://...</source>
         <translation>https://...</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.ui" line="162"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.ui" line="156"/>
         <source>Error Label</source>
         <translation>ป้ายกำกับผิดพลาด</translation>
     </message>
@@ -4566,7 +4561,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>ownCloudTheme::aboutVersions()</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="432"/>
+        <location filename="../src/libsync/theme.cpp" line="437"/>
         <source>%1 %2 %3%8%9Libraries Qt %4, %5%8Using virtual files plugin: %6%8%7</source>
         <translation type="unfinished"/>
     </message>
@@ -4574,7 +4569,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>ownCloudTheme::qtVer</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="422"/>
+        <location filename="../src/libsync/theme.cpp" line="427"/>
         <source>%1 (Built against Qt %1)</source>
         <translation>%1 (สร้างขึ้นเพื่อต่อต้าน Qt %1)</translation>
     </message>
@@ -4582,7 +4577,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>ownCloudTheme::versionWithSha</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="427"/>
+        <location filename="../src/libsync/theme.cpp" line="432"/>
         <source>%1 %2</source>
         <translation>%1 %2</translation>
     </message>
