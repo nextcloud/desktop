@@ -2,6 +2,18 @@
 version = 2
 blueprintrepositories = https://github.com/owncloud/craft-blueprints-owncloud.git|master|;https://invent.kde.org/packaging/craft-blueprints-kde.git|master|
 
+[craft/craft-blueprints-kde]
+version = master
+revision = e885e670
+
+[craft/craft-blueprints-owncloud]
+version = master
+revision = 3c4603b
+
+[craft/craft-core]
+version = master
+revision = 9302f8444
+
 [core/cacert]
 version = 2020-12-08
 
