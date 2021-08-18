@@ -300,7 +300,6 @@ bool Folder::dueToSync() const
     const auto polltime = cfg.remotePollInterval(pta);
 
     const auto timeSinceLastSync = std::chrono::milliseconds(_timeSinceLastEtagCheckDone.elapsed());
-    qCInfo(lcFolder) << "dueToSync:" << alias() << timeSinceLastSync.count() << " < " << polltime.count();
     if (timeSinceLastSync >= polltime) {
         return true;
     }

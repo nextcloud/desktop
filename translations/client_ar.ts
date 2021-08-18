@@ -968,135 +968,135 @@ File synchronization desktop utility.</source>
 <context>
     <name>OCC::Folder</name>
     <message>
-        <location filename="../src/gui/folder.cpp" line="177"/>
+        <location filename="../src/gui/folder.cpp" line="178"/>
         <source>Local folder %1 does not exist.</source>
         <translation>المجلد المحلي %1 غير موجود.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="180"/>
+        <location filename="../src/gui/folder.cpp" line="181"/>
         <source>%1 should be a folder but is not.</source>
         <translation>%1 يجب أن يكون مجلدًا لكنه ليس كذلك.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="183"/>
+        <location filename="../src/gui/folder.cpp" line="184"/>
         <source>%1 is not readable.</source>
         <translation>%1 غير قابل للقراءة.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="418"/>
+        <location filename="../src/gui/folder.cpp" line="441"/>
         <source>%1 has been removed.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 تمت إزالته.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="432"/>
+        <location filename="../src/gui/folder.cpp" line="455"/>
         <source>%1 has been updated.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 تم تحديثه.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="439"/>
+        <location filename="../src/gui/folder.cpp" line="462"/>
         <source>%1 has been renamed to %2.</source>
         <comment>%1 and %2 name files.</comment>
         <translation>%1 تمت إعادة تسميته باسم %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="446"/>
+        <location filename="../src/gui/folder.cpp" line="469"/>
         <source>%1 has been moved to %2.</source>
         <translation>%1 تم نقله إلى %2.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="416"/>
+        <location filename="../src/gui/folder.cpp" line="439"/>
         <source>%1 and %n other file(s) have been removed.</source>
         <translation><numerusform>تمت إزالة %1 و%n ملف آخر.</numerusform><numerusform>تمت إزالة %1 و%n ملف آخر.</numerusform><numerusform>تمت إزالة %1 و%n ملفين آخرين.</numerusform><numerusform>تمت إزالة %1 و%n ملفات أخرى.</numerusform><numerusform>تمت إزالة %1 و%n ملفات أخرى.</numerusform><numerusform>تمت إزالة %1 و%n ملفات أخرى.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="423"/>
+        <location filename="../src/gui/folder.cpp" line="446"/>
         <source>%1 and %n other file(s) have been added.</source>
         <translation><numerusform>تمت إضافة %1 و%n ملف آخر.</numerusform><numerusform>تمت إضافة %1 و%n ملف آخر.</numerusform><numerusform>تمت إضافة %1 و%n ملفين آخرين.</numerusform><numerusform>تمت إضافة %1 و%n ملفات أخرى.</numerusform><numerusform>تمت إضافة %1 و%n ملفات أخرى.</numerusform><numerusform>تمت إضافة %1 و%n ملفات أخرى.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="425"/>
+        <location filename="../src/gui/folder.cpp" line="448"/>
         <source>%1 has been added.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 تمت إضافته.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="430"/>
+        <location filename="../src/gui/folder.cpp" line="453"/>
         <source>%1 and %n other file(s) have been updated.</source>
         <translation><numerusform>تم تحديث %1 و%n ملف آخر.</numerusform><numerusform>تم تحديث %1 و%n ملف آخر.</numerusform><numerusform>تم تحديث %1 و%n ملفين آخرين.</numerusform><numerusform>تم تحديث %1 و%n ملفات أخرى.</numerusform><numerusform>تم تحديث %1 و%n ملفات أخرى.</numerusform><numerusform>تم تحديث %1 و%n ملفات أخرى.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="437"/>
+        <location filename="../src/gui/folder.cpp" line="460"/>
         <source>%1 has been renamed to %2 and %n other file(s) have been renamed.</source>
         <translation><numerusform>تمت إعادة تسمية %1 باسم %2 وتمت إعادة تسمية %n ملف آخر.</numerusform><numerusform>تمت إعادة تسمية %1 باسم %2 وتمت إعادة تسمية %n ملف آخر.</numerusform><numerusform>تمت إعادة تسمية %1 باسم %2 وتمت إعادة تسمية %n ملفين آخرين.</numerusform><numerusform>تمت إعادة تسمية %1 باسم %2 وتمت إعادة تسمية %n ملفات أخرى.</numerusform><numerusform>تمت إعادة تسمية %1 باسم %2 وتمت إعادة تسمية %n ملفات أخرى.</numerusform><numerusform>تمت إعادة تسمية %1 باسم %2 وتمت إعادة تسمية %n ملفات أخرى.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="444"/>
+        <location filename="../src/gui/folder.cpp" line="467"/>
         <source>%1 has been moved to %2 and %n other file(s) have been moved.</source>
         <translation><numerusform>تم نقل %1 إلى %2 وتم نقل %n ملف آخر.</numerusform><numerusform>تم نقل %1 إلى %2 وتم نقل %n ملف آخر.</numerusform><numerusform>تم نقل %1 إلى %2 وتم نقل %n ملفين آخرين.</numerusform><numerusform>تم نقل %1 إلى %2 وتم نقل %n ملفات أخرى.</numerusform><numerusform>تم نقل %1 إلى %2 وتم نقل %n ملفات أخرى.</numerusform><numerusform>تم نقل %1 إلى %2 وتم نقل %n ملفات أخرى.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="451"/>
+        <location filename="../src/gui/folder.cpp" line="474"/>
         <source>%1 has and %n other file(s) have sync conflicts.</source>
         <translation><numerusform>حدث تعارض في مزامنة %1 ومزامنة %n ملف آخر.</numerusform><numerusform>حدث تعارض في مزامنة %1 ومزامنة %n ملف آخر.</numerusform><numerusform>حدث تعارض في مزامنة %1 ومزامنة %n ملفين آخرين.</numerusform><numerusform>حدث تعارض في مزامنة %1 ومزامنة %n ملفات أخرى.</numerusform><numerusform>حدث تعارض في مزامنة %1 ومزامنة %n ملفات أخرى.</numerusform><numerusform>حدث تعارض في مزامنة %1 ومزامنة %n ملفات أخرى.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="453"/>
+        <location filename="../src/gui/folder.cpp" line="476"/>
         <source>%1 has a sync conflict. Please check the conflict file!</source>
         <translation>%1 حدث تعارض في مزامنته. يُرجى فحص ملف التعارض!</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="458"/>
+        <location filename="../src/gui/folder.cpp" line="481"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
         <translation><numerusform>تعذّرت مزامنة %1 و%n ملف آخر بسبب الأخطاء. اطلع على السجل للحصول على التفاصيل.</numerusform><numerusform>تعذّرت مزامنة %1 و%n ملف آخر بسبب الأخطاء. اطلع على السجل للحصول على التفاصيل.</numerusform><numerusform>تعذّرت مزامنة %1 و%n ملفين آخرين بسبب الأخطاء. اطلع على السجل للحصول على التفاصيل.</numerusform><numerusform>تعذّرت مزامنة %1 و%n ملفات أخرى بسبب الأخطاء. اطلع على السجل للحصول على التفاصيل.</numerusform><numerusform>تعذّرت مزامنة %1 و%n ملفات أخرى بسبب الأخطاء. اطلع على السجل للحصول على التفاصيل.</numerusform><numerusform>تعذّرت مزامنة %1 و%n ملفات أخرى بسبب الأخطاء. اطلع على السجل للحصول على التفاصيل.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="460"/>
+        <location filename="../src/gui/folder.cpp" line="483"/>
         <source>%1 could not be synced due to an error. See the log for details.</source>
         <translation>%1 تعذّرت المزامنة بسبب حدوث خطأ. اطلع على السجل للحصول على التفاصيل.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="466"/>
+        <location filename="../src/gui/folder.cpp" line="489"/>
         <source>Sync Activity</source>
         <translation>نشاط المزامنة</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="802"/>
+        <location filename="../src/gui/folder.cpp" line="825"/>
         <source>Could not read system exclude file</source>
         <translation>تعذّرت قراءة ملف استبعاد النظام</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1044"/>
+        <location filename="../src/gui/folder.cpp" line="1067"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>تمت إضافة مجلد جديد أكبر من %1 ميجا بايت: %2.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1047"/>
+        <location filename="../src/gui/folder.cpp" line="1070"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>تمت إضافة مجلد من وحدات التخزين الخارجية.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1048"/>
+        <location filename="../src/gui/folder.cpp" line="1071"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>يُرجى الانتقال إلى الإعدادات لتحديده إذا كنت ترغب في تنزيله.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1107"/>
+        <location filename="../src/gui/folder.cpp" line="1130"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation>تم إنشاء المجلد %1 لكن تم استبعاده من المزامنة مسبقًا. لن تتم مزامنة البيانات الموجودة بداخله.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1110"/>
+        <location filename="../src/gui/folder.cpp" line="1133"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
         <translation>تم إنشاء ملف %1 لكن تم استبعاده من المزامنة مسبقًا. لن تتم مزامنته.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1121"/>
+        <location filename="../src/gui/folder.cpp" line="1144"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
@@ -1109,7 +1109,7 @@ This means that the synchronization client might not upload local changes immedi
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1197"/>
+        <location filename="../src/gui/folder.cpp" line="1220"/>
         <source>All files in the sync folder '%1' folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
@@ -1120,7 +1120,7 @@ If you decide to delete the files, they will be unavailable to you, unless you a
 إذا قررت حذف الملفات، ستكون غير متوفرة لك، ما لم تكن أنت المالك.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1202"/>
+        <location filename="../src/gui/folder.cpp" line="1225"/>
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
@@ -1129,17 +1129,17 @@ If this was an accident and you decide to keep your files, they will be re-synce
 إذا حدث ذلك صدفة، وقررت الاحتفاظ بملفاتك، ستتم إعادة مزامنتها من الخادم.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1206"/>
+        <location filename="../src/gui/folder.cpp" line="1229"/>
         <source>Remove All Files?</source>
         <translation>هل تريد إزالة كل الملفات؟</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1210"/>
+        <location filename="../src/gui/folder.cpp" line="1233"/>
         <source>Remove all files</source>
         <translation>إزالة كل الملفات</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1211"/>
+        <location filename="../src/gui/folder.cpp" line="1234"/>
         <source>Keep files</source>
         <translation>حفظ الملفات</translation>
     </message>
@@ -1157,107 +1157,107 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>تم العثور على دفتر يومية مزامنة قديم &apos;%1&apos;، لكن تعذّرت إزالته. يُرجى التأكد من عدم وجود أي تطبيق يستخدمها حاليًا.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1183"/>
+        <location filename="../src/gui/folderman.cpp" line="1174"/>
         <source> (backup)</source>
         <translation> (النسخ الاحتياطي)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1188"/>
+        <location filename="../src/gui/folderman.cpp" line="1179"/>
         <source> (backup %1)</source>
         <translation> (النسخ الاحتياطي %1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1309"/>
+        <location filename="../src/gui/folderman.cpp" line="1300"/>
         <source>Undefined State.</source>
         <translation>حالة غير معرفة.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1312"/>
+        <location filename="../src/gui/folderman.cpp" line="1303"/>
         <source>Waiting to start syncing.</source>
         <translation>الانتظار لبدء المزامنة.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1315"/>
+        <location filename="../src/gui/folderman.cpp" line="1306"/>
         <source>Preparing for sync.</source>
         <translation>التحضير للمزامنة.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1318"/>
+        <location filename="../src/gui/folderman.cpp" line="1309"/>
         <source>Sync is running.</source>
         <translation>المزامنة قيد التشغيل.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1323"/>
+        <location filename="../src/gui/folderman.cpp" line="1314"/>
         <source>Sync was successful, unresolved conflicts.</source>
         <translation>المزامنة ناجحة، ولم يتم حل التعارضات.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1325"/>
+        <location filename="../src/gui/folderman.cpp" line="1316"/>
         <source>Last Sync was successful.</source>
         <translation>المزامنة الأخيرة تمت بنجاح.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1331"/>
+        <location filename="../src/gui/folderman.cpp" line="1322"/>
         <source>Setup Error.</source>
         <translation>خطأ في الإعداد.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1334"/>
+        <location filename="../src/gui/folderman.cpp" line="1325"/>
         <source>User Abort.</source>
         <translation>إلغاء المستخدم.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1337"/>
+        <location filename="../src/gui/folderman.cpp" line="1328"/>
         <source>Sync is paused.</source>
         <translation>توقفت المزامنة مؤقتًا.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1343"/>
+        <location filename="../src/gui/folderman.cpp" line="1334"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (المزامنة متوقفة مؤقتًا)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1351"/>
+        <location filename="../src/gui/folderman.cpp" line="1342"/>
         <source>No valid folder selected!</source>
         <translation>لم يتم تحديد مجلد صالح!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1359"/>
+        <location filename="../src/gui/folderman.cpp" line="1350"/>
         <source>The folder %1 is used in a folder sync connection!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1366"/>
+        <location filename="../src/gui/folderman.cpp" line="1357"/>
         <source>The selected path does not exist!</source>
         <translation>المسار المحدد غير موجود!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1370"/>
+        <location filename="../src/gui/folderman.cpp" line="1361"/>
         <source>The selected path is not a folder!</source>
         <translation>المسار المحدد ليس مجلدًا!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1374"/>
+        <location filename="../src/gui/folderman.cpp" line="1365"/>
         <source>You have no permission to write to the selected folder!</source>
         <translation>ليس لديك الصلاحية للكتابة في المجلد المحدد!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1411"/>
+        <location filename="../src/gui/folderman.cpp" line="1402"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
         <translation>تم إجراء مزامنة من الخادم إلى المجلد المحلي هذا بالفعل. يُرجى اختيار مجلد محلي آخر!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1415"/>
+        <location filename="../src/gui/folderman.cpp" line="1406"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
         <translation>يحتوي المجلد المحلي %1 بالفعل على مجلد مستخدم في اتصال مزامنة المجلد. يُرجى اختيار مجلد آخر!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1421"/>
+        <location filename="../src/gui/folderman.cpp" line="1412"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation>المجلد المحلي %1 موجود في مجلد مستخدم في اتصال مزامنة المجلد بالفعل. يُرجى اختيار مجلد آخر!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1428"/>
+        <location filename="../src/gui/folderman.cpp" line="1419"/>
         <source>%1 Please pick another one!</source>
         <translation type="unfinished"/>
     </message>
@@ -2292,58 +2292,58 @@ for additional privileges during the process.</source>
 <context>
     <name>OCC::OwncloudAdvancedSetupPage</name>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="51"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="49"/>
         <source>Connect to %1</source>
         <translation>اتصال بـ %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="52"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="50"/>
         <source>Setup local folder options</source>
         <translation>إعداد خيارات المجلد المحلي</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="59"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="55"/>
         <source>Connect...</source>
         <translation>جارٍ الاتصال…</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="87"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="84"/>
         <source> (experimental)</source>
         <translation>(تجريبي)</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="87"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="84"/>
         <source>Use &amp;virtual files instead of downloading content immediately%1</source>
         <translation>استخدم &amp; الملفات الظاهرية بدلاً من تنزيل المحتوى فورًا٪ 1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="172"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="166"/>
         <source>&lt;p&gt;&lt;strong&gt;Warning:&lt;/strong&gt; The local folder is not empty. Pick a resolution!&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="168"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="162"/>
         <source>Sync the folder &apos;%1&apos;</source>
         <translation>مزامنة المجلد &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="236"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="207"/>
         <source>Virtual files are not available for the selected folder</source>
         <translation>الملفات الإفتراضية غير متوفرة للمجلد المحدد</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="270"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="241"/>
         <source>Error</source>
         <translation>خطأ</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="295"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="266"/>
         <source>Local Sync Folder</source>
         <translation>مجلد المزامنة المحلي</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="329"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="364"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="300"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="335"/>
         <source>(%1)</source>
         <translation>(%1)</translation>
     </message>
@@ -2430,57 +2430,52 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::OwncloudSetupWizard</name>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="214"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="191"/>
         <source>Failed to connect to %1 at %2:&lt;br/&gt;%3</source>
         <translation>فشل الاتصال بـ %1 في %2:&lt;br/&gt;%3</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="231"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="208"/>
         <source>Timeout while trying to connect to %1 at %2.</source>
         <translation>انتهاء مهلة محاولة الاتصال بـ %1 في %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="212"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="189"/>
         <source>Invalid URL</source>
         <translation>عنوان URL غير صالح</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="292"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="269"/>
         <source>Could not create local folder %1</source>
         <translation>تعذّر إنشاء مجلد محلي %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="318"/>
-        <source>No remote folder specified!</source>
-        <translation>لم يتم تحديد أي مجلد بعيد!</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="324"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="296"/>
         <source>Error: %1</source>
         <translation>خطأ: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="359"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="329"/>
         <source>The folder creation resulted in HTTP error code %1</source>
         <translation>أدت عملية إنشاء المجلد إلى رمز خطأ HTTP %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="363"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="333"/>
         <source>The remote folder creation failed because the provided credentials are wrong!&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation>فشل إنشاء المجلد البعيد؛ لأن بيانات الاعتماد المقدمة غير صحيحة!&lt;br/&gt;يُرجى الانتقال إلى الخلف وفحص بيانات الاعتماد الخاصة بك.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="371"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="341"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
         <translation>فشل إنشاء المجلد البعيد %1 مع خطأ &lt;tt&gt;%2&lt;/tt&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="402"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="370"/>
         <source>Folder rename failed</source>
         <translation>فشلت إعادة تسمية المجلد</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="403"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="371"/>
         <source>Can&apos;t remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
         <translation>تعذّرت إزالة المجلد ونسخه احتياطيًا، لأن المجلد أو الملف الموجود به مفتوح في برنامج آخر. يُرجى إغلاق المجلد أو الملف وإعادة المحاولة أو إلغاء الإعداد.</translation>
     </message>
@@ -2488,22 +2483,22 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::OwncloudWizard</name>
     <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="77"/>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="92"/>
         <source>%1 Connection Wizard</source>
         <translation>%1 معالج الاتصال</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="239"/>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="272"/>
         <source>Enable experimental feature?</source>
         <translation>هل ترغب في تمكين ميزة التجريبي؟</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="253"/>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="286"/>
         <source>Enable experimental placeholder mode</source>
         <translation>تمكين وضع العنصر النائب التجريبي</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="240"/>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="273"/>
         <source>When the &quot;virtual files&quot; mode is enabled no files will be downloaded initially. Instead, a tiny &quot;%1&quot; file will be created for each file that exists on the server. The contents can be downloaded by running these files or by using their context menu.
 
 The virtual files mode is mutually exclusive with selective sync. Currently unselected folders will be translated to online-only folders and your selective sync settings will be reset.
@@ -2520,7 +2515,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 هذا الوضع جديد وتجريبي. فإذا قررت استخدامه، فيُرجى الإبلاغ عن أي مشكلات تطرأ.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="254"/>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="287"/>
         <source>Stay safe</source>
         <translation>تمتع بالأمان الدائم</translation>
     </message>
@@ -3163,33 +3158,33 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::SettingsDialog</name>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="200"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="211"/>
         <source>Settings</source>
         <translation>الإعدادات</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="189"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="200"/>
         <source>Activity</source>
         <translation>نشاط</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="178"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="189"/>
         <source>Add account</source>
         <translation>إضافة حساب</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="213"/>
-        <location filename="../src/gui/settingsdialog.cpp" line="216"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="224"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="227"/>
         <source>Quit %1</source>
         <translation>إنهاء %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="217"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="228"/>
         <source>Are you sure you want to quit %1?</source>
         <translation>هل أنت متأكد من رغبتك في إنهاء %1؟</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="355"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="354"/>
         <source>Account</source>
         <translation>حساب</translation>
     </message>
@@ -3207,22 +3202,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::ShareDialog</name>
     <message>
-        <location filename="../src/gui/sharedialog.ui" line="14"/>
+        <location filename="../src/gui/sharedialog.ui" line="28"/>
         <source>TextLabel</source>
         <translation>تسمية نصية</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.ui" line="29"/>
+        <location filename="../src/gui/sharedialog.ui" line="43"/>
         <source>share label</source>
         <translation>تصنيف المشاركة</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.ui" line="6"/>
+        <location filename="../src/gui/sharedialog.ui" line="20"/>
         <source>Dialog</source>
         <translation>الحوار</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.ui" line="51"/>
+        <location filename="../src/gui/sharedialog.ui" line="65"/>
         <source>ownCloud Path:</source>
         <translation>مسار ownCloud:</translation>
     </message>
@@ -3252,17 +3247,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>جارٍ استرداد أقصى عدد ممكن من أذونات المشاركة من الخادم...</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="189"/>
+        <location filename="../src/gui/sharedialog.cpp" line="182"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
         <translation>لا يمكن مشاركة الملف بسبب مشاركته بدون إذن مشاركة.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="203"/>
+        <location filename="../src/gui/sharedialog.cpp" line="196"/>
         <source>Users and Groups</source>
         <translation>المستخدمون والمجموعات</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="210"/>
+        <location filename="../src/gui/sharedialog.cpp" line="203"/>
         <source>Public Links</source>
         <translation>روابط عامة</translation>
     </message>
@@ -4021,7 +4016,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::Theme</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="455"/>
+        <location filename="../src/libsync/theme.cpp" line="460"/>
         <source>&lt;p&gt;Version %1. For more information visit &lt;a href=&quot;%2&quot;&gt;https://%3&lt;/a&gt;&lt;/p&gt;&lt;p&gt;For known issues and help, please visit: &lt;a href=&quot;https://central.owncloud.org/c/desktop-client&quot;&gt;https://central.owncloud.org&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz,  Jan-Christoph Borchardt, Thomas Müller, Dominik Schmidt, Michael Stingl, Hannah von Reth, and others.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;&lt;p&gt;Distributed by %4 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br/&gt;%5 and the %5 logo are registered trademarks of %4 in the United States, other countries, or both.&lt;/p&gt;&lt;p&gt;&lt;small&gt;%6&lt;/small&gt;&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
@@ -4313,81 +4308,81 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OwncloudAdvancedSetupPage</name>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="20"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="14"/>
         <source>Form</source>
         <translation>نموذج</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="114"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="213"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="108"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="207"/>
         <source>TextLabel</source>
         <translation>تسمية نصية</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="65"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="59"/>
         <source>Server</source>
         <translation>خادم</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="478"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="469"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If this box is checked, existing content in the local folder will be erased to start a clean sync from the server.&lt;/p&gt;&lt;p&gt;Do not check this if the local content should be uploaded to the servers folder.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;إذا تم تحديد هذا المربع، فسيتم مسح المحتوى الموجود في المجلد المحلي لبدء مزامنة نظيفة من الخادم.&lt;/p&gt;&lt;p&gt;لا تحدِّد ذلك في حالة ضرورة تحميل المحتوى المحلي إلى مجلد الخوادم.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="171"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="165"/>
         <source>Ask for confirmation before synchroni&amp;zing folders larger than</source>
         <translation>طلب التأكيد قبل مزامنة المجلدات ذات الحجم الأكبر من</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="104"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="98"/>
         <source>S&amp;ynchronize everything from server</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="188"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="182"/>
         <source>MB</source>
         <extracomment>Trailing part of &quot;Ask confirmation before syncing folder larger than&quot; </extracomment>
         <translation>ميجا بايت</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="197"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="191"/>
         <source>Ask for confirmation before synchronizing e&amp;xternal storages</source>
         <translation>طلب التأكيد قبل مزامنة وحدة التخزين الخارجية</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="206"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="200"/>
         <source>Choose what to sync</source>
         <translation>اختر المحتوى المطلوب مزامنته</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="251"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="254"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="245"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="248"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When this option is selected, the wizard will close without synchronizing anything. You can use the &amp;quot;Add Folder Sync Connection&amp;quot; button from the account settings to choose which pair of local and remote folder you wish to synchronize&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;عند تحديد هذا الخيار، سيغلق المعالج دون مزامنة أي شيء. يمكنك استخدام زر &amp;quot؛ إضافة اتصال مزامنة المجلد&amp;quot من إعدادات الحساب لاختيار أي زوج من المجلدات المحلية والبعيدة التي تريد مزامنتها&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="257"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="251"/>
         <source>Manually create folder sync connections </source>
         <translation>إنشاء اتصالات مزامنة المجلد يدويًا </translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="378"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="369"/>
         <source>&amp;Local Folder</source>
         <translation>&amp;المجلد المحلي</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="419"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="410"/>
         <source>pbSelectLocalFolder</source>
         <translation>pbSelectLocalFolder</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="468"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="459"/>
         <source>&amp;Keep local data</source>
         <translation>&amp;الاحتفاظ بالبيانات المحلية</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="481"/>
-        <source>Start a &amp;clean sync (Crreate a backup and rrases the local folder!)</source>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="472"/>
+        <source>Start a &amp;clean sync (Crreate a backup and erases the local folder!)</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -4435,22 +4430,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OwncloudSetupPage</name>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.ui" line="20"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.ui" line="14"/>
         <source>Form</source>
         <translation>نموذج</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.ui" line="64"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.ui" line="58"/>
         <source>Ser&amp;ver Address</source>
         <translation>عنوان الخادم</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.ui" line="80"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.ui" line="74"/>
         <source>https://...</source>
         <translation>https://...</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.ui" line="162"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.ui" line="156"/>
         <source>Error Label</source>
         <translation>خطأ في التصنيف</translation>
     </message>
@@ -4573,7 +4568,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>ownCloudTheme::aboutVersions()</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="432"/>
+        <location filename="../src/libsync/theme.cpp" line="437"/>
         <source>%1 %2 %3%8%9Libraries Qt %4, %5%8Using virtual files plugin: %6%8%7</source>
         <translation type="unfinished"/>
     </message>
@@ -4581,7 +4576,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>ownCloudTheme::qtVer</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="422"/>
+        <location filename="../src/libsync/theme.cpp" line="427"/>
         <source>%1 (Built against Qt %1)</source>
         <translation>٪ 1 (تم البناء مقابل Qt٪ 1)</translation>
     </message>
@@ -4589,7 +4584,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>ownCloudTheme::versionWithSha</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="427"/>
+        <location filename="../src/libsync/theme.cpp" line="432"/>
         <source>%1 %2</source>
         <translation>%1 %2</translation>
     </message>

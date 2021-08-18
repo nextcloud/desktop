@@ -385,23 +385,21 @@ void AccountState::slotConnectionValidatorResult(ConnectionValidator::Status sta
 
 void AccountState::slotInvalidCredentials()
 {
-    if (isSignedOut() || _waitingForNewCredentials)
-        return;
+    if (!_waitingForNewCredentials) {
+        qCInfo(lcAccountState) << "Invalid credentials for" << _account->url().toString()
+                               << "asking user";
 
-    qCInfo(lcAccountState) << "Invalid credentials for" << _account->url().toString()
-                           << "asking user";
-
-    _waitingForNewCredentials = true;
+        _waitingForNewCredentials = true;
+        if (account()->credentials()->ready()) {
+            account()->credentials()->invalidateToken();
+        }
+        if (auto creds = qobject_cast<HttpCredentials *>(account()->credentials())) {
+            if (creds->refreshAccessToken())
+                return;
+        }
+        account()->credentials()->askFromUser();
+    }
     setState(AskingCredentials);
-
-    if (account()->credentials()->ready()) {
-        account()->credentials()->invalidateToken();
-    }
-    if (auto creds = qobject_cast<HttpCredentials *>(account()->credentials())) {
-        if (creds->refreshAccessToken())
-            return;
-    }
-    account()->credentials()->askFromUser();
 }
 
 void AccountState::slotCredentialsFetched(AbstractCredentials *)

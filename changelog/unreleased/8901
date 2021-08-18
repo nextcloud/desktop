@@ -1,0 +1,6 @@
+Bugfix: Start oauth/password prompt if password is wrong during start up
+
+If the oauth token was invalid during start up we didn't start the oauth process
+and the user needed to manually log out in order to log in again.
+
+https://github.com/owncloud/client/issues/8901
