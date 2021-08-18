@@ -78,6 +78,7 @@ public:
 
     void fetchFromKeychainHelper()
     {
+        qCInfo(lcHttpLegacyCredentials) << "Started migration of < 2.8 credentials to 2.9+";
         slotReadPasswordFromKeychain();
     }
 
