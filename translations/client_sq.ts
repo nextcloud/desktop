@@ -4384,7 +4384,7 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="472"/>
         <source>Start a &amp;clean sync (Crreate a backup and erases the local folder!)</source>
-        <translation type="unfinished"/>
+        <translation>Nis një njëkohësim të &amp;pastër (Krijon një kopjeruajtje dhe fshin dosjen vendore!)</translation>
     </message>
 </context>
 <context>
