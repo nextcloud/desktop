@@ -28,6 +28,7 @@ Summary
 * Bugfix - Prevent sync root sharing: [#8849](https://github.com/owncloud/client/issues/8849)
 * Bugfix - Removed support for client side certificates: [#8864](https://github.com/owncloud/client/pull/8864)
 * Bugfix - The `Re-open Browser` now always does what it says: [#8866](https://github.com/owncloud/client/pull/8866)
+* Bugfix - Start oauth/password prompt if password is wrong during start up: [#8901](https://github.com/owncloud/client/issues/8901)
 * Change - Don't ask the user to switch to http: [#8231](https://github.com/owncloud/client/issues/8231)
 * Change - Remove support for http redirects: [#8293](https://github.com/owncloud/client/pull/8293)
 * Change - We no longer try to locate an ownCloud install at /owncloud: [#8273](https://github.com/owncloud/client/issues/8273)
@@ -197,6 +198,13 @@ Details
    became unresponsive, we now start a new authentication in that case.
 
    https://github.com/owncloud/client/pull/8866
+
+* Bugfix - Start oauth/password prompt if password is wrong during start up: [#8901](https://github.com/owncloud/client/issues/8901)
+
+   If the oauth token was invalid during start up we didn't start the oauth process and the user
+   needed to manually log out in order to log in again.
+
+   https://github.com/owncloud/client/issues/8901
 
 * Change - Don't ask the user to switch to http: [#8231](https://github.com/owncloud/client/issues/8231)
 
