@@ -5,8 +5,8 @@ set -xe
 mkdir /app
 mkdir /build
 
-#Set Qt-5.12
-export QT_BASE_DIR=/opt/qt5.12.10
+#Set Qt-5.15
+export QT_BASE_DIR=/opt/qt5.15
 export QTDIR=$QT_BASE_DIR
 export PATH=$QT_BASE_DIR/bin:$PATH
 export LD_LIBRARY_PATH=$QT_BASE_DIR/lib/x86_64-linux-gnu:$QT_BASE_DIR/lib:$LD_LIBRARY_PATH
@@ -75,8 +75,8 @@ cp ./usr/share/icons/hicolor/512x512/apps/Nextcloud.png . # Workaround for linux
 
 
 # Because distros need to get their shit together
-cp -R /lib/x86_64-linux-gnu/libssl.so* ./usr/lib/
-cp -R /lib/x86_64-linux-gnu/libcrypto.so* ./usr/lib/
+cp -R /usr/lib/x86_64-linux-gnu/libssl.so* ./usr/lib/
+cp -R /usr/lib/x86_64-linux-gnu/libcrypto.so* ./usr/lib/
 cp -P /usr/local/lib/libssl.so* ./usr/lib/
 cp -P /usr/local/lib/libcrypto.so* ./usr/lib/
 

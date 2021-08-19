@@ -41,7 +41,7 @@ macro(libcloudproviders_add_config _sources)
 endmacro(libcloudproviders_add_config _sources)
 
 
-find_package(Qt5 5.12 COMPONENTS DBus)
+find_package(Qt5 5.15 COMPONENTS DBus)
 IF (Qt5DBus_FOUND)
     STRING(TOLOWER "${APPLICATION_VENDOR}" DBUS_VENDOR)
     STRING(REGEX REPLACE "[^A-z0-9]" "" DBUS_VENDOR "${DBUS_VENDOR}")
