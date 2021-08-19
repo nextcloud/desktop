@@ -1,14 +1,11 @@
 project(cmd)
 set(CMAKE_AUTOMOC TRUE)
 
-set(cmd_NAME ${APPLICATION_EXECUTABLE}cmd)
-
 add_library(cmdCore STATIC simplesslerrorhandler.cpp netrcparser.cpp)
 
 target_link_libraries(cmdCore
   PUBLIC
-  "${csync_NAME}"
-  "${synclib_NAME}"
+  nextcloudsync
   Qt5::Core
   Qt5::Network
   )
@@ -27,20 +24,22 @@ if(CMAKE_SYSTEM_NAME STREQUAL "FreeBSD")
 endif()
 
 if(NOT BUILD_LIBRARIES_ONLY)
-  add_executable(${cmd_NAME} cmd.cpp)
+  add_executable(nextcloudcmd cmd.cpp)
+  set_target_properties(nextcloudcmd PROPERTIES
+    RUNTIME_OUTPUT_NAME "${APPLICATION_EXECUTABLE}cmd")
+
+  target_link_libraries(nextcloudcmd cmdCore)
 
   if(BUILD_OWNCLOUD_OSX_BUNDLE)
-    set_target_properties(${cmd_NAME} PROPERTIES
+    set_target_properties(nextcloudcmd PROPERTIES
       RUNTIME_OUTPUT_DIRECTORY "${BIN_OUTPUT_DIRECTORY}/${OWNCLOUD_OSX_BUNDLE}/Contents/MacOS")
   else()
-    set_target_properties(${cmd_NAME} PROPERTIES
+    set_target_properties(nextcloudcmd PROPERTIES
       RUNTIME_OUTPUT_DIRECTORY ${BIN_OUTPUT_DIRECTORY})
 
-    install(TARGETS ${cmd_NAME}
+    install(TARGETS nextcloudcmd
 	  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 	  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
 	  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
   endif()
-
-  target_link_libraries(${cmd_NAME} cmdCore)
 endif()

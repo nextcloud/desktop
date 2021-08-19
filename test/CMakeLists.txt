@@ -12,7 +12,7 @@ add_library(testutils
   testhelper.cpp
 )
 
-target_link_libraries(testutils PUBLIC ${APPLICATION_EXECUTABLE}sync Qt5::Test)
+target_link_libraries(testutils PUBLIC nextcloudsync Qt5::Test)
 target_include_directories(testutils PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 set_target_properties(testutils PROPERTIES FOLDER Tests)
 
