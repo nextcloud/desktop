@@ -56,7 +56,8 @@ const QLatin1String win_device_names[] = {
 };
 
 const QLatin1String win_system_files[] = {
-    QLatin1String("$Recycle.Bin")
+    QLatin1String("$Recycle.Bin"),
+    QLatin1String("System Volume Information")
 };
 }
 
