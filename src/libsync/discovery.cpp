@@ -24,7 +24,8 @@
 #include <QFileInfo>
 #include <QFile>
 #include <QThreadPool>
-#include "common/checksums.h"
+#include <common/checksums.h>
+#include <common/constants.h>
 #include "csync_exclude.h"
 #include "csync.h"
 
@@ -459,13 +460,19 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
 
     // The file is known in the db already
     if (dbEntry.isValid()) {
+        const bool isDbEntryAnE2EePlaceholder = dbEntry.isVirtualFile() && !dbEntry.e2eMangledName().isEmpty();
+        Q_ASSERT(!isDbEntryAnE2EePlaceholder || serverEntry.size >= Constants::e2EeTagSize);
+        const bool isVirtualE2EePlaceholder = isDbEntryAnE2EePlaceholder && serverEntry.size >= Constants::e2EeTagSize;
+        const qint64 sizeOnServer = isVirtualE2EePlaceholder ? serverEntry.size - Constants::e2EeTagSize : serverEntry.size;
+        const bool metaDataSizeNeedsUpdateForE2EeFilePlaceholder = isVirtualE2EePlaceholder && dbEntry._fileSize == serverEntry.size;
+
         if (serverEntry.isDirectory != dbEntry.isDirectory()) {
             // If the type of the entity changed, it's like NEW, but
             // needs to delete the other entity first.
             item->_instruction = CSYNC_INSTRUCTION_TYPE_CHANGE;
             item->_direction = SyncFileItem::Down;
             item->_modtime = serverEntry.modtime;
-            item->_size = serverEntry.size;
+            item->_size = sizeOnServer;
         } else if ((dbEntry._type == ItemTypeVirtualFileDownload || localEntry.type == ItemTypeVirtualFileDownload)
             && (localEntry.isValid() || _queryLocal == ParentNotChanged)) {
             // The above check for the localEntry existing is important. Otherwise it breaks
@@ -476,7 +483,7 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
         } else if (dbEntry._etag != serverEntry.etag) {
             item->_direction = SyncFileItem::Down;
             item->_modtime = serverEntry.modtime;
-            item->_size = serverEntry.size;
+            item->_size = sizeOnServer;
             if (serverEntry.isDirectory) {
                 ENFORCE(dbEntry.isDirectory());
                 item->_instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
@@ -486,11 +493,43 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
             } else {
                 item->_instruction = CSYNC_INSTRUCTION_SYNC;
             }
-        } else if (dbEntry._remotePerm != serverEntry.remotePerm || dbEntry._fileId != serverEntry.fileId) {
+        } else if (dbEntry._remotePerm != serverEntry.remotePerm || dbEntry._fileId != serverEntry.fileId || metaDataSizeNeedsUpdateForE2EeFilePlaceholder) {
+            if (metaDataSizeNeedsUpdateForE2EeFilePlaceholder) {
+                // we are updating placeholder sizes after migrating from older versions with VFS + E2EE implicit hydration not supported
+                qCDebug(lcDisco) << "Migrating the E2EE VFS placeholder " << dbEntry.path() << " from older version. The old size is " << item->_size << ". The new size is " << sizeOnServer;
+                item->_size = sizeOnServer;
+            }
             item->_instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
             item->_direction = SyncFileItem::Down;
         } else {
-            processFileAnalyzeLocalInfo(item, path, localEntry, serverEntry, dbEntry, ParentNotChanged);
+            // if (is virtual mode enabled and folder is encrypted - check if the size is the same as on the server and then - trigger server query
+            // to update a placeholder with corrected size (-16 Bytes)
+            // or, maybe, add a flag to the database - vfsE2eeSizeCorrected? if it is not set - subtract it from the placeholder's size and re-create/update a placeholder?
+            const QueryMode serverQueryMode = [this, &dbEntry, &serverEntry]() {
+                const bool isVfsModeOn = _discoveryData && _discoveryData->_syncOptions._vfs && _discoveryData->_syncOptions._vfs->mode() != Vfs::Off;
+                if (isVfsModeOn && dbEntry.isDirectory() && dbEntry._isE2eEncrypted) {
+                    qint64 localFolderSize = 0;
+                    const auto listFilesCallback = [this, &localFolderSize](const OCC::SyncJournalFileRecord &record) {
+                        if (record.isFile()) {
+                            // add Constants::e2EeTagSize so we will know the size of E2EE file on the server
+                            localFolderSize += record._fileSize + Constants::e2EeTagSize;
+                        } else if (record.isVirtualFile()) {
+                            // just a virtual file, so, the size must contain Constants::e2EeTagSize if it was not corrected already
+                            localFolderSize += record._fileSize;
+                        }
+                    };
+
+                    const bool listFilesSucceeded = _discoveryData->_statedb->listFilesInPath(dbEntry.path().toUtf8(), listFilesCallback);
+
+                    if (listFilesSucceeded && localFolderSize != 0 && localFolderSize == serverEntry.sizeOfFolder) {
+                        qCInfo(lcDisco) << "Migration of E2EE folder " << dbEntry.path() << " from older version to the one, supporting the implicit VFS hydration.";
+                        return NormalQuery;
+                    }
+                }
+                return ParentNotChanged;
+            }();
+            
+            processFileAnalyzeLocalInfo(item, path, localEntry, serverEntry, dbEntry, serverQueryMode);
             return;
         }
 
@@ -530,6 +569,15 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
             item->_type = ItemTypeVirtualFile;
             if (isVfsWithSuffix())
                 addVirtualFileSuffix(tmp_path._original);
+        }
+
+        if (opts._vfs->mode() != Vfs::Off && !item->_encryptedFileName.isEmpty()) {
+            // We are syncing a file for the first time (local entry is invalid) and it is encrypted file that will be virtual once synced
+            // to avoid having error of "file has changed during sync" when trying to hydrate it excplicitly - we must remove Constants::e2EeTagSize bytes from the end
+            // as explicit hydration does not care if these bytes are present in the placeholder or not, but, the size must not change in the middle of the sync
+            // this way it works for both implicit and explicit hydration by making a placeholder size that does not includes encryption tag Constants::e2EeTagSize bytes
+            // another scenario - we are syncing a file which is on disk but not in the database (database was removed or file was not written there yet)
+            item->_size = serverEntry.size - Constants::e2EeTagSize;
         }
         processFileAnalyzeLocalInfo(item, tmp_path, localEntry, serverEntry, dbEntry, _queryServer);
     };

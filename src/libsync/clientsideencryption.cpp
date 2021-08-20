@@ -36,7 +36,8 @@
 #include <QRandomGenerator>
 
 #include <qt5keychain/keychain.h>
-#include "common/utility.h"
+#include <common/utility.h>
+#include <common/constants.h>
 
 #include "wordlist.h"
 
@@ -65,6 +66,8 @@ namespace {
     const char e2e_cert[] = "_e2e-certificate";
     const char e2e_private[] = "_e2e-private";
     const char e2e_mnemonic[] = "_e2e-mnemonic";
+
+    constexpr qint64 blockSize = 1024;
 
     QList<QByteArray> oldCipherFormatSplit(const QByteArray &cipher)
     {
@@ -423,17 +426,17 @@ QByteArray encryptPrivateKey(
     }
     clen += len;
 
-    /* Get the tag */
-    QByteArray tag(16, '\0');
-    if(1 != EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_GET_TAG, 16, unsignedData(tag))) {
-        qCInfo(lcCse()) << "Error getting the tag";
+    /* Get the e2EeTag */
+    QByteArray e2EeTag(OCC::Constants::e2EeTagSize, '\0');
+    if(1 != EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_GET_TAG, OCC::Constants::e2EeTagSize, unsignedData(e2EeTag))) {
+        qCInfo(lcCse()) << "Error getting the e2EeTag";
         handleErrors();
     }
 
     QByteArray cipherTXT;
-    cipherTXT.reserve(clen + 16);
+    cipherTXT.reserve(clen + OCC::Constants::e2EeTagSize);
     cipherTXT.append(ctext, clen);
-    cipherTXT.append(tag);
+    cipherTXT.append(e2EeTag);
 
     QByteArray result = cipherTXT.toBase64();
     result += '|';
@@ -463,8 +466,8 @@ QByteArray decryptPrivateKey(const QByteArray& key, const QByteArray& data) {
     QByteArray cipherTXT = QByteArray::fromBase64(cipherTXT64);
     QByteArray iv = QByteArray::fromBase64(ivB64);
 
-    QByteArray tag = cipherTXT.right(16);
-    cipherTXT.chop(16);
+    const QByteArray e2EeTag = cipherTXT.right(OCC::Constants::e2EeTagSize);
+    cipherTXT.chop(OCC::Constants::e2EeTagSize);
 
     // Init
     CipherCtx ctx;
@@ -493,7 +496,7 @@ QByteArray decryptPrivateKey(const QByteArray& key, const QByteArray& data) {
         return QByteArray();
     }
 
-    QByteArray ptext(cipherTXT.size() + 16, '\0');
+    QByteArray ptext(cipherTXT.size() + OCC::Constants::e2EeTagSize, '\0');
     int plen = 0;
 
     /* Provide the message to be decrypted, and obtain the plaintext output.
@@ -504,9 +507,9 @@ QByteArray decryptPrivateKey(const QByteArray& key, const QByteArray& data) {
         return QByteArray();
     }
 
-    /* Set expected tag value. Works in OpenSSL 1.0.1d and later */
-    if(!EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_TAG, tag.size(), (unsigned char *)tag.constData())) {
-        qCInfo(lcCse()) << "Could not set tag";
+    /* Set expected e2EeTag value. Works in OpenSSL 1.0.1d and later */
+    if(!EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_TAG, e2EeTag.size(), (unsigned char *)e2EeTag.constData())) {
+        qCInfo(lcCse()) << "Could not set e2EeTag";
         return QByteArray();
     }
 
@@ -553,8 +556,8 @@ QByteArray decryptStringSymmetric(const QByteArray& key, const QByteArray& data)
     QByteArray cipherTXT = QByteArray::fromBase64(cipherTXT64);
     QByteArray iv = QByteArray::fromBase64(ivB64);
 
-    QByteArray tag = cipherTXT.right(16);
-    cipherTXT.chop(16);
+    const QByteArray e2EeTag = cipherTXT.right(OCC::Constants::e2EeTagSize);
+    cipherTXT.chop(OCC::Constants::e2EeTagSize);
 
     // Init
     CipherCtx ctx;
@@ -583,7 +586,7 @@ QByteArray decryptStringSymmetric(const QByteArray& key, const QByteArray& data)
         return QByteArray();
     }
 
-    QByteArray ptext(cipherTXT.size() + 16, '\0');
+    QByteArray ptext(cipherTXT.size() + OCC::Constants::e2EeTagSize, '\0');
     int plen = 0;
 
     /* Provide the message to be decrypted, and obtain the plaintext output.
@@ -594,9 +597,9 @@ QByteArray decryptStringSymmetric(const QByteArray& key, const QByteArray& data)
         return QByteArray();
     }
 
-    /* Set expected tag value. Works in OpenSSL 1.0.1d and later */
-    if(!EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_TAG, tag.size(), (unsigned char *)tag.constData())) {
-        qCInfo(lcCse()) << "Could not set tag";
+    /* Set expected e2EeTag value. Works in OpenSSL 1.0.1d and later */
+    if(!EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_TAG, e2EeTag.size(), (unsigned char *)e2EeTag.constData())) {
+        qCInfo(lcCse()) << "Could not set e2EeTag";
         return QByteArray();
     }
 
@@ -686,18 +689,18 @@ QByteArray encryptStringSymmetric(const QByteArray& key, const QByteArray& data)
     }
     clen += len;
 
-    /* Get the tag */
-    QByteArray tag(16, '\0');
-    if(1 != EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_GET_TAG, 16, unsignedData(tag))) {
-        qCInfo(lcCse()) << "Error getting the tag";
+    /* Get the e2EeTag */
+    QByteArray e2EeTag(OCC::Constants::e2EeTagSize, '\0');
+    if(1 != EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_GET_TAG, OCC::Constants::e2EeTagSize, unsignedData(e2EeTag))) {
+        qCInfo(lcCse()) << "Error getting the e2EeTag";
         handleErrors();
         return {};
     }
 
     QByteArray cipherTXT;
-    cipherTXT.reserve(clen + 16);
+    cipherTXT.reserve(clen + OCC::Constants::e2EeTagSize);
     cipherTXT.append(ctext, clen);
-    cipherTXT.append(tag);
+    cipherTXT.append(e2EeTag);
 
     QByteArray result = cipherTXT.toBase64();
     result += '|';
@@ -753,7 +756,7 @@ QByteArray decryptStringAsymmetric(EVP_PKEY *privateKey, const QByteArray& data)
         qCInfo(lcCseDecryption()) << "Size of data is: " << data.size();
     }
 
-    QByteArray out(outlen, '\0');
+    QByteArray out(static_cast<int>(outlen), '\0');
 
     if (EVP_PKEY_decrypt(ctx, unsignedData(out), &outlen, (unsigned char *)data.constData(), data.size()) <= 0) {
         const auto error = handleErrors();
@@ -804,7 +807,7 @@ QByteArray encryptStringAsymmetric(EVP_PKEY *publicKey, const QByteArray& data) 
         qCInfo(lcCse()) << "Encryption Length:" << outLen;
     }
 
-    QByteArray out(outLen, '\0');
+    QByteArray out(static_cast<int>(outLen), '\0');
     if (EVP_PKEY_encrypt(ctx, unsignedData(out), &outLen, (unsigned char *)data.constData(), data.size()) != 1) {
         qCInfo(lcCse()) << "Could not encrypt key." << err;
         exit(1);
@@ -1650,13 +1653,13 @@ bool EncryptionHelper::fileEncryption(const QByteArray &key, const QByteArray &i
         return false;
     }
 
-    QByteArray out(1024 + 16 - 1, '\0');
+    QByteArray out(blockSize + OCC::Constants::e2EeTagSize - 1, '\0');
     int len = 0;
     int total_len = 0;
 
     qCDebug(lcCse) << "Starting to encrypt the file" << input->fileName() << input->atEnd();
     while(!input->atEnd()) {
-        QByteArray data = input->read(1024);
+        const auto data = input->read(blockSize);
 
         if (data.size() == 0) {
             qCInfo(lcCse()) << "Could not read data from file";
@@ -1680,15 +1683,15 @@ bool EncryptionHelper::fileEncryption(const QByteArray &key, const QByteArray &i
     output->write(out, len);
     total_len += len;
 
-    /* Get the tag */
-    QByteArray tag(16, '\0');
-    if(1 != EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_GET_TAG, 16, unsignedData(tag))) {
-        qCInfo(lcCse()) << "Could not get tag";
+    /* Get the e2EeTag */
+    QByteArray e2EeTag(OCC::Constants::e2EeTagSize, '\0');
+    if(1 != EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_GET_TAG, OCC::Constants::e2EeTagSize, unsignedData(e2EeTag))) {
+        qCInfo(lcCse()) << "Could not get e2EeTag";
         return false;
     }
 
-    returnTag = tag;
-    output->write(tag, 16);
+    returnTag = e2EeTag;
+    output->write(e2EeTag, OCC::Constants::e2EeTagSize);
 
     input->close();
     output->close();
@@ -1731,16 +1734,16 @@ bool EncryptionHelper::fileDecryption(const QByteArray &key, const QByteArray& i
         return false;
     }
 
-    qint64 size = input->size() - 16;
+    qint64 size = input->size() - OCC::Constants::e2EeTagSize;
 
-    QByteArray out(1024 + 16 - 1, '\0');
+    QByteArray out(blockSize + OCC::Constants::e2EeTagSize - 1, '\0');
     int len = 0;
 
     while(input->pos() < size) {
 
         auto toRead = size - input->pos();
-        if (toRead > 1024) {
-            toRead = 1024;
+        if (toRead > blockSize) {
+            toRead = blockSize;
         }
 
         QByteArray data = input->read(toRead);
@@ -1758,11 +1761,11 @@ bool EncryptionHelper::fileDecryption(const QByteArray &key, const QByteArray& i
         output->write(out, len);
     }
 
-    QByteArray tag = input->read(16);
+    const QByteArray e2EeTag = input->read(OCC::Constants::e2EeTagSize);
 
-    /* Set expected tag value. Works in OpenSSL 1.0.1d and later */
-    if(!EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_TAG, tag.size(), (unsigned char *)tag.constData())) {
-        qCInfo(lcCse()) << "Could not set expected tag";
+    /* Set expected e2EeTag value. Works in OpenSSL 1.0.1d and later */
+    if(!EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_TAG, e2EeTag.size(), (unsigned char *)e2EeTag.constData())) {
+        qCInfo(lcCse()) << "Could not set expected e2EeTag";
         return false;
     }
 
@@ -1777,4 +1780,181 @@ bool EncryptionHelper::fileDecryption(const QByteArray &key, const QByteArray& i
     return true;
 }
 
+EncryptionHelper::StreamingDecryptor::StreamingDecryptor(const QByteArray &key, const QByteArray &iv, quint64 totalSize) : _totalSize(totalSize)
+{
+    if (_ctx && !key.isEmpty() && !iv.isEmpty() && totalSize > 0) {
+        _isInitialized = true;
+
+        /* Initialize the decryption operation. */
+        if(!EVP_DecryptInit_ex(_ctx, EVP_aes_128_gcm(), nullptr, nullptr, nullptr)) {
+            qCritical(lcCse()) << "Could not init cipher";
+            _isInitialized = false;
+        }
+
+        EVP_CIPHER_CTX_set_padding(_ctx, 0);
+
+        /* Set IV length. */
+        if(!EVP_CIPHER_CTX_ctrl(_ctx, EVP_CTRL_GCM_SET_IVLEN, iv.size(), nullptr)) {
+            qCritical(lcCse()) << "Could not set iv length";
+            _isInitialized = false;
+        }
+
+        /* Initialize key and IV */
+        if(!EVP_DecryptInit_ex(_ctx, nullptr, nullptr, reinterpret_cast<const unsigned char*>(key.constData()), reinterpret_cast<const unsigned char*>(iv.constData()))) {
+            qCritical(lcCse()) << "Could not set key and iv";
+            _isInitialized = false;
+        }
+    }
 }
+
+QByteArray EncryptionHelper::StreamingDecryptor::chunkDecryption(const char *input, quint64 chunkSize)
+{
+    QByteArray byteArray;
+    QBuffer buffer(&byteArray);
+    buffer.open(QIODevice::WriteOnly);
+
+    Q_ASSERT(isInitialized());
+    if (!isInitialized()) {
+        qCritical(lcCse()) << "Decryption failed. Decryptor is not initialized!";
+        return QByteArray();
+    }
+
+    Q_ASSERT(buffer.isOpen() && buffer.isWritable());
+    if (!buffer.isOpen() || !buffer.isWritable()) {
+        qCritical(lcCse()) << "Decryption failed. Incorrect output device!";
+        return QByteArray();
+    }
+
+    Q_ASSERT(input);
+    if (!input) {
+        qCritical(lcCse()) << "Decryption failed. Incorrect input!";
+        return QByteArray();
+    }
+
+    Q_ASSERT(chunkSize > 0);
+    if (chunkSize <= 0) {
+        qCritical(lcCse()) << "Decryption failed. Incorrect chunkSize!";
+        return QByteArray();
+    }
+
+    if (_decryptedSoFar == 0) {
+        qCDebug(lcCse()) << "Decryption started";
+    }
+
+    Q_ASSERT(_decryptedSoFar + chunkSize <= _totalSize);
+    if (_decryptedSoFar + chunkSize > _totalSize) {
+        qCritical(lcCse()) << "Decryption failed. Chunk is out of range!";
+        return QByteArray();
+    }
+
+    Q_ASSERT(_decryptedSoFar + chunkSize < OCC::Constants::e2EeTagSize || _totalSize - OCC::Constants::e2EeTagSize >= _decryptedSoFar + chunkSize - OCC::Constants::e2EeTagSize);
+    if (_decryptedSoFar + chunkSize > OCC::Constants::e2EeTagSize && _totalSize - OCC::Constants::e2EeTagSize < _decryptedSoFar + chunkSize - OCC::Constants::e2EeTagSize) {
+        qCritical(lcCse()) << "Decryption failed. Incorrect chunk!";
+        return QByteArray();
+    }
+
+    const bool isLastChunk = _decryptedSoFar + chunkSize == _totalSize;
+
+    // last OCC::Constants::e2EeTagSize bytes is ALWAYS a e2EeTag!!!
+    const qint64 size = isLastChunk ? chunkSize - OCC::Constants::e2EeTagSize : chunkSize;
+
+    // either the size is more than 0 and an e2EeTag is at the end of chunk, or, chunk is the e2EeTag itself
+    Q_ASSERT(size > 0 || chunkSize == OCC::Constants::e2EeTagSize);
+    if (size <= 0 && chunkSize != OCC::Constants::e2EeTagSize) {
+        qCritical(lcCse()) << "Decryption failed. Invalid input size: " << size << " !";
+        return QByteArray();
+    }
+
+    qint64 bytesWritten = 0;
+    qint64 inputPos = 0;
+
+    QByteArray decryptedBlock(blockSize + OCC::Constants::e2EeTagSize - 1, '\0');
+
+    while(inputPos < size) {
+        // read blockSize or less bytes
+        const QByteArray encryptedBlock(input + inputPos, qMin(size - inputPos, blockSize));
+
+        if (encryptedBlock.size() == 0) {
+            qCritical(lcCse()) << "Could not read data from the input buffer.";
+            return QByteArray();
+        }
+
+        int outLen = 0;
+
+        if(!EVP_DecryptUpdate(_ctx, unsignedData(decryptedBlock), &outLen, reinterpret_cast<const unsigned char*>(encryptedBlock.data()), encryptedBlock.size())) {
+            qCritical(lcCse()) << "Could not decrypt";
+            return QByteArray();
+        }
+
+        const auto writtenToOutput = buffer.write(decryptedBlock, outLen);
+
+        Q_ASSERT(writtenToOutput == outLen);
+        if (writtenToOutput != outLen) {
+            qCritical(lcCse()) << "Failed to write decrypted data to device.";
+            return QByteArray();
+        }
+
+        bytesWritten += writtenToOutput;
+
+        // advance input position for further read
+        inputPos += encryptedBlock.size();
+
+        _decryptedSoFar += encryptedBlock.size();
+    }
+
+    if (isLastChunk) {
+        // if it's a last chunk, we'd need to read a e2EeTag at the end and finalize the decryption
+
+        Q_ASSERT(chunkSize - inputPos == OCC::Constants::e2EeTagSize);
+        if (chunkSize - inputPos != OCC::Constants::e2EeTagSize) {
+            qCritical(lcCse()) << "Decryption failed. e2EeTag is missing!";
+            return QByteArray();
+        }
+
+        int outLen = 0;
+
+        QByteArray e2EeTag = QByteArray(input + inputPos, OCC::Constants::e2EeTagSize);
+
+        /* Set expected e2EeTag value. Works in OpenSSL 1.0.1d and later */
+        if(!EVP_CIPHER_CTX_ctrl(_ctx, EVP_CTRL_GCM_SET_TAG, e2EeTag.size(), reinterpret_cast<unsigned char*>(e2EeTag.data()))) {
+            qCritical(lcCse()) << "Could not set expected e2EeTag";
+            return QByteArray();
+        }
+
+        if(1 != EVP_DecryptFinal_ex(_ctx, unsignedData(decryptedBlock), &outLen)) {
+            qCritical(lcCse()) << "Could finalize decryption";
+            return QByteArray();
+        }
+
+        const auto writtenToOutput = buffer.write(decryptedBlock, outLen);
+
+        Q_ASSERT(writtenToOutput == outLen);
+        if (writtenToOutput != outLen) {
+            qCritical(lcCse()) << "Failed to write decrypted data to device.";
+            return QByteArray();
+        }
+
+        bytesWritten += writtenToOutput;
+
+        _decryptedSoFar += OCC::Constants::e2EeTagSize;
+
+        _isFinished = true;
+    }
+
+    if (isFinished()) {
+        qCDebug(lcCse()) << "Decryption complete";
+    }
+
+    return byteArray;
+}
+
+bool EncryptionHelper::StreamingDecryptor::isInitialized() const
+{
+    return _isInitialized;
+}
+
+bool EncryptionHelper::StreamingDecryptor::isFinished() const
+{
+    return _isFinished;
+}
+};
