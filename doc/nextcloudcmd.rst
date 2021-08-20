@@ -46,6 +46,9 @@ the server URL.
 
 Other command line switches supported by ``nextcloudcmd`` include the following:
 
+``--path``
+       Overrides default remote root folder to a specific subfolder on the server(e.g.: /Documents would sync the Documents subfolder on the server)
+
 ``--user``, ``-u`` ``[user]``
        Use ``user`` as the login name.
 
@@ -67,12 +70,6 @@ Other command line switches supported by ``nextcloudcmd`` include the following:
 ``--httpproxy  http://[user@pass:]<server>:<port>``
       Uses ``server`` as HTTP proxy.
 
-``--nonshib``
-      Uses Non Shibboleth WebDAV Authentication
-
-``--davpath [path]``
-      Overrides the WebDAV Path with ``path``
-
 ``--exclude [file]``
       Exclude list file
 
@@ -92,15 +89,15 @@ Credential Handling
 
 ::
 
-  $ nextcloudcmd /home/user/my_sync_folder https://carla:secret@server/nextcloud/remote.php/dav/
+  $ nextcloudcmd /home/user/my_sync_folder https://carla:secret@server/nextcloud
 
 To synchronize the Nextcloud directory ``Music`` to the local directory
 ``media/music``, through a proxy listening on port ``8080``, and on a gateway
 machine using IP address ``192.168.178.1``, the command line would be::
 
-  $ nextcloudcmd --httpproxy http://192.168.178.1:8080 \
+  $ nextcloudcmd --httpproxy http://192.168.178.1:8080 --path /Music \
                 $HOME/media/music \
-                https://server/nextcloud/remote.php/dav/Music
+                https://server/nextcloud
 
 ``nextcloudcmd`` will prompt for the user name and password, unless they have
 been specified on the command line or ``-n`` has been passed.
@@ -120,5 +117,5 @@ Example
 
 ::
 
-    $ nextcloudcmd /home/user/<my_sync_folder> \
-    https://<username>:<secret>@<server_address>/remote.php/dav/<Directory_that_has_been_created>
+    $ nextcloudcmd --path /<Directory_that_has_been_created> /home/user/<my_sync_folder> \
+    https://<username>:<secret>@<server_address>

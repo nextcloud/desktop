@@ -78,7 +78,6 @@ struct CmdOptions
     bool ignoreHiddenFiles;
     QString exclude;
     QString unsyncedfolders;
-    QString davPath;
     int restartTimes;
     int downlimit;
     int uplimit;
@@ -350,11 +349,6 @@ int main(int argc, char **argv)
         std::cerr << "Error! Please specify only the base URL of your host with username and password. Example:" << std::endl
                   << "http(s)://username:password@cloud.example.com" << std::endl;
         return EXIT_FAILURE;
-    }
-
-    // check if the dav path was added to the url and append if not.
-    if (!options.target_url.endsWith("/")) {
-        options.target_url.append("/");
     }
 
     QUrl hostUrl = QUrl::fromUserInput(options.target_url);
