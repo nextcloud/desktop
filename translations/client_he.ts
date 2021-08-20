@@ -2553,102 +2553,102 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>שם הקובץ הנו שם שמור במערכת קבצים זו.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="270"/>
+        <location filename="../src/libsync/discovery.cpp" line="274"/>
         <source>Filename contains trailing spaces.</source>
         <translation>שם הקובץ כולל רווחים.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="273"/>
+        <location filename="../src/libsync/discovery.cpp" line="277"/>
         <source>Filename is too long.</source>
         <translation>שם הקובץ ארוך מדי.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="276"/>
+        <location filename="../src/libsync/discovery.cpp" line="280"/>
         <source>File/Folder is ignored because it&apos;s hidden.</source>
         <translation>המערכת התעלמה מקובץ/תיקייה כיוון שהם מוסתרים.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="280"/>
+        <location filename="../src/libsync/discovery.cpp" line="284"/>
         <source>Stat failed.</source>
         <translation>ההתחלה נכשלה.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="283"/>
+        <location filename="../src/libsync/discovery.cpp" line="287"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
         <translation>סתירה: גרסת שרת הורדה, שונה השם לגרסה המקומית אך הגרסה לא נשלחה לשרת.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="287"/>
+        <location filename="../src/libsync/discovery.cpp" line="291"/>
         <source>The filename cannot be encoded on your file system.</source>
         <translation>לא ניתן להצפין את שם הקובץ במערכת הקבצים שלך.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="290"/>
+        <location filename="../src/libsync/discovery.cpp" line="294"/>
         <source>The filename is blacklisted on the server.</source>
         <translation>שם הקובץ נמצא ברשימה השחורה של השרת.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="393"/>
+        <location filename="../src/libsync/discovery.cpp" line="397"/>
         <source>size</source>
         <translation>גודל</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="395"/>
+        <location filename="../src/libsync/discovery.cpp" line="399"/>
         <source>permissions</source>
         <translation>הרשאות</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="397"/>
+        <location filename="../src/libsync/discovery.cpp" line="401"/>
         <source>etag</source>
         <translation>etag</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="399"/>
+        <location filename="../src/libsync/discovery.cpp" line="403"/>
         <source>file id</source>
         <translation>מזהה קובץ</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="403"/>
+        <location filename="../src/libsync/discovery.cpp" line="407"/>
         <source>server reported no %1</source>
         <translation>שרת שמדווח ב- %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1228"/>
+        <location filename="../src/libsync/discovery.cpp" line="1232"/>
         <source>Moved to invalid target, restoring</source>
         <translation>הועבר ליעד לא חוקי, משחזר</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1241"/>
+        <location filename="../src/libsync/discovery.cpp" line="1245"/>
         <source>Not allowed to remove, restoring</source>
         <translation>לא מורשה להסיר, משחזר</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1155"/>
+        <location filename="../src/libsync/discovery.cpp" line="1159"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>המערכת התעלמה בשל הרשימה השחורה של &quot;בחירה מה לסנכרן&quot;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1188"/>
+        <location filename="../src/libsync/discovery.cpp" line="1192"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>אסור כיוון שאין לך הרשאות להוספת תיקיית משנה לתיקייה זו</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1193"/>
+        <location filename="../src/libsync/discovery.cpp" line="1197"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>אסור כיוון שאין לך הרשאות להוספת קבצים לתיקייה זו</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1206"/>
+        <location filename="../src/libsync/discovery.cpp" line="1210"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>אסור להעלות קובץ זה כיוון שזה לקריאה בלבד בשרת, מאחזר</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1351"/>
+        <location filename="../src/libsync/discovery.cpp" line="1355"/>
         <source>Error while reading the database</source>
         <translation>שגיאה בזמן קריאת מסד הנתונים</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1412"/>
+        <location filename="../src/libsync/discovery.cpp" line="1416"/>
         <source>Server replied with an error while reading directory &apos;%1&apos; : %2</source>
         <translation>השרת הגיב בשגיאה בזמן קריאת התיקייה &apos;%1&apos; : %2</translation>
     </message>

@@ -2549,102 +2549,102 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Името на файла е резервирано от тази файлова система.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="270"/>
+        <location filename="../src/libsync/discovery.cpp" line="274"/>
         <source>Filename contains trailing spaces.</source>
         <translation>Името на файла завършва с празни интервали.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="273"/>
+        <location filename="../src/libsync/discovery.cpp" line="277"/>
         <source>Filename is too long.</source>
         <translation>Името на файла е прекалено дълго.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="276"/>
+        <location filename="../src/libsync/discovery.cpp" line="280"/>
         <source>File/Folder is ignored because it&apos;s hidden.</source>
         <translation>Файл/Папка са игнорирани, защото са скрити.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="280"/>
+        <location filename="../src/libsync/discovery.cpp" line="284"/>
         <source>Stat failed.</source>
         <translation>Неуспешно извличане на статистика.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="283"/>
+        <location filename="../src/libsync/discovery.cpp" line="287"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
         <translation>Конфликт: Версията на сървъра изтегли локалното копие и е преименувано, но не е качено.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="287"/>
+        <location filename="../src/libsync/discovery.cpp" line="291"/>
         <source>The filename cannot be encoded on your file system.</source>
         <translation>Името на файла не може да бъде декодирано от вашата файлова система.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="290"/>
+        <location filename="../src/libsync/discovery.cpp" line="294"/>
         <source>The filename is blacklisted on the server.</source>
         <translation>Името на файла е в черния списък на сървъра.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="393"/>
+        <location filename="../src/libsync/discovery.cpp" line="397"/>
         <source>size</source>
         <translation>размер</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="395"/>
+        <location filename="../src/libsync/discovery.cpp" line="399"/>
         <source>permissions</source>
         <translation>разрешения</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="397"/>
+        <location filename="../src/libsync/discovery.cpp" line="401"/>
         <source>etag</source>
         <translation>etag</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="399"/>
+        <location filename="../src/libsync/discovery.cpp" line="403"/>
         <source>file id</source>
         <translation>файл id</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="403"/>
+        <location filename="../src/libsync/discovery.cpp" line="407"/>
         <source>server reported no %1</source>
         <translation>сървърът отчете, че няма %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1228"/>
+        <location filename="../src/libsync/discovery.cpp" line="1232"/>
         <source>Moved to invalid target, restoring</source>
         <translation>Преместено в невалидна цел, възстановяване</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1241"/>
+        <location filename="../src/libsync/discovery.cpp" line="1245"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Няма разрешение за премахване, възстановяване</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1155"/>
+        <location filename="../src/libsync/discovery.cpp" line="1159"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Пренебрегнато е заради черния списък „изберете какво да синхронизирате“</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1188"/>
+        <location filename="../src/libsync/discovery.cpp" line="1192"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Не е позволено защото нямате право да добавяте подпапки в тази папка.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1193"/>
+        <location filename="../src/libsync/discovery.cpp" line="1197"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Не е позволено защото нямате право да добавяте файлове в тази папка.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1206"/>
+        <location filename="../src/libsync/discovery.cpp" line="1210"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Нямате разрешение да качвате този файл защото е само с разрешения за четене на този сървър, възстановяване</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1351"/>
+        <location filename="../src/libsync/discovery.cpp" line="1355"/>
         <source>Error while reading the database</source>
         <translation>Грешка при четене на базата данни</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1412"/>
+        <location filename="../src/libsync/discovery.cpp" line="1416"/>
         <source>Server replied with an error while reading directory &apos;%1&apos; : %2</source>
         <translation>Сървърът отговори с грешка докато чете директорията &quot;%1&quot; : %2</translation>
     </message>
