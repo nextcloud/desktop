@@ -182,6 +182,7 @@ void HttpCredentials::fetchFromKeychain()
 
 void HttpCredentials::fetchFromKeychainHelper()
 {
+    OC_ASSERT(!_user.isEmpty());
     const int version = _account->credentialSetting(CredentialVersionKey()).toInt();
     if (version < CredentialVersion) {
         auto legacyCreds = new HttpLegacyCredentials(this);
@@ -189,43 +190,33 @@ void HttpCredentials::fetchFromKeychainHelper()
         return;
     }
 
-    auto readPassword = [this] {
-        auto job = _account->credentialManager()->get(isUsingOAuth() ? refreshTokenKeyC() : passwordKeyC());
-        connect(job, &CredentialJob::finished, this, [job, this] {
-            const auto error = job->error();
-            if (job->error() != error) {
-                qCWarning(lcHttpLegacyCredentials) << "Could not retrieve client password from keychain" << job->errorString();
-                return;
-            }
+    auto job = _account->credentialManager()->get(isUsingOAuth() ? refreshTokenKeyC() : passwordKeyC());
+    connect(job, &CredentialJob::finished, this, [job, this] {
+        if (job->error() != QKeychain::NoError) {
+            qCWarning(lcHttpCredentials) << "Could not retrieve client password from keychain" << job->errorString();
+
+            // we come here if the password is empty or any other keychain
+            // error happend.
+
+            _fetchErrorString = job->error() != QKeychain::EntryNotFound ? job->errorString() : QString();
+
+            _password.clear();
+            _ready = false;
+            emit fetched();
+            return;
+        }
+        const auto data = job->data().toString();
+        if (OC_ENSURE(!data.isEmpty())) {
             if (isUsingOAuth()) {
-                _refreshToken = job->data().toString();
-            } else {
-                _password = job->data().toString();
-            }
-            if (_user.isEmpty()) {
-                qCWarning(lcHttpCredentials) << "Strange: User is empty!";
-            }
-            if (!_refreshToken.isEmpty() && error == QKeychain::NoError) {
+                _refreshToken = data;
                 refreshAccessToken();
-            } else if (!_password.isEmpty() && error == QKeychain::NoError) {
-                // All cool, the keychain did not come back with error.
-                // Still, the password can be empty which indicates a problem and
-                // the password dialog has to be opened.
+            } else {
+                _password = data;
                 _ready = true;
                 emit fetched();
-            } else {
-                // we come here if the password is empty or any other keychain
-                // error happend.
-
-                _fetchErrorString = job->error() != QKeychain::EntryNotFound ? job->errorString() : QString();
-
-                _password = QString();
-                _ready = false;
-                emit fetched();
             }
-        });
-    };
-    readPassword();
+        }
+    });
 }
 
 bool HttpCredentials::stillValid(QNetworkReply *reply)
