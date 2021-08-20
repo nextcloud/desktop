@@ -84,6 +84,7 @@ public slots:
     void slotNewUserSelected();
 
 private slots:
+    void slotForceSyncAllFolders();
     void slotUnpauseAllFolders();
     void slotPauseAllFolders();
 

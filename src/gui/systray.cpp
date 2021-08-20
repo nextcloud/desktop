@@ -95,6 +95,7 @@ Systray::Systray()
         contextMenu->addAction(tr("Open main dialog"), this, &Systray::openMainDialog);
     }
 
+    auto forceSyncAction = contextMenu->addAction(tr("Force sync now"), this, &Systray::slotForceSyncAllFolders);
     auto pauseAction = contextMenu->addAction(tr("Pause sync"), this, &Systray::slotPauseAllFolders);
     auto resumeAction = contextMenu->addAction(tr("Resume sync"), this, &Systray::slotUnpauseAllFolders);
     contextMenu->addAction(tr("Settings"), this, &Systray::openSettings);
@@ -191,6 +192,37 @@ void Systray::setPauseOnAllFoldersHelper(bool pause)
             }
         }
     }
+}
+
+void Systray::slotForceSyncAllFolders()
+{
+    // For some reason we get the raw pointer from Folder::accountState()
+    // that's why we need a list of raw pointers for the call to contains
+    // later on...
+    const auto accounts = [=] {
+        const auto ptrList = AccountManager::instance()->accounts();
+        auto result = QList<AccountState *>();
+        result.reserve(ptrList.size());
+        std::transform(std::cbegin(ptrList), std::cend(ptrList), std::back_inserter(result), [](const AccountStatePtr &account) {
+            return account.data();
+        });
+        return result;
+    }();
+    FolderMan *folderMan = FolderMan::instance();
+    const auto folders = folderMan->map();
+    for (auto f : folders) {
+        if (accounts.contains(f->accountState())) {
+            if (f->isSyncRunning()) {
+                f->slotTerminateSync();
+                folderMan->scheduleFolder(f);
+            }
+        }
+    }
+
+        // selectedFolder->slotWipeErrorBlacklist(); // issue #6757
+
+        // // Insert the selected folder at the front of the queue
+        // folderMan->scheduleFolderNext(selectedFolder);
 }
 
 bool Systray::isOpen()
