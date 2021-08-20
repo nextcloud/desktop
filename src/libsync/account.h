@@ -296,6 +296,8 @@ private:
     Account(QObject *parent = nullptr);
     void setSharedThis(AccountPtr sharedThis);
 
+    static QString davPathBase();
+
     QWeakPointer<Account> _sharedThis;
     QString _id;
     QString _davUser;

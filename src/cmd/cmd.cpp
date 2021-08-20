@@ -66,6 +66,7 @@ struct CmdOptions
 {
     QString source_dir;
     QString target_url;
+    QString remotePath = QStringLiteral("/");
     QString config_directory;
     QString user;
     QString password;
@@ -193,6 +194,7 @@ void help()
     std::cout << "  -h                     Sync hidden files, do not ignore them" << std::endl;
     std::cout << "  --version, -v          Display version and exit" << std::endl;
     std::cout << "  --logdebug             More verbose logging" << std::endl;
+    std::cout << "  --path                 Path to a folder on a remote server" << std::endl;
     std::cout << "" << std::endl;
     exit(0);
 }
@@ -269,7 +271,10 @@ void parseOptions(const QStringList &app_args, CmdOptions *options)
         } else if (option == "--logdebug") {
             Logger::instance()->setLogFile("-");
             Logger::instance()->setLogDebug(true);
-        } else {
+        } else if (option == "--path" && !it.peekNext().startsWith("-")) {
+            options->remotePath = it.next();
+        }
+        else {
             help();
         }
     }
@@ -339,16 +344,20 @@ int main(int argc, char **argv)
         qFatal("Could not initialize account!");
         return EXIT_FAILURE;
     }
-    // check if the webDAV path was added to the url and append if not.
+
+    if (options.target_url.contains("/webdav", Qt::CaseInsensitive) || options.target_url.contains("/dav", Qt::CaseInsensitive)) {
+        qWarning("Dav or webdav in server URL.");
+        std::cerr << "Error! Please specify only the base URL of your host with username and password. Example:" << std::endl
+                  << "http(s)://username:password@cloud.example.com" << std::endl;
+        return EXIT_FAILURE;
+    }
+
+    // check if the dav path was added to the url and append if not.
     if (!options.target_url.endsWith("/")) {
         options.target_url.append("/");
     }
 
-    if (!options.target_url.contains(account->davPath())) {
-        options.target_url.append(account->davPath());
-    }
-
-    QUrl url = QUrl::fromUserInput(options.target_url);
+    QUrl hostUrl = QUrl::fromUserInput(options.target_url);
 
     // Order of retrieval attempt (later attempts override earlier ones):
     // 1. From URL
@@ -356,8 +365,8 @@ int main(int argc, char **argv)
     // 3. From netrc (if enabled)
     // 4. From prompt (if interactive)
 
-    QString user = url.userName();
-    QString password = url.password();
+    QString user = hostUrl.userName();
+    QString password = hostUrl.password();
 
     if (!options.user.isEmpty()) {
         user = options.user;
@@ -370,7 +379,7 @@ int main(int argc, char **argv)
     if (options.useNetrc) {
         NetrcParser parser;
         if (parser.parse()) {
-            NetrcParser::LoginPair pair = parser.find(url.host());
+            NetrcParser::LoginPair pair = parser.find(hostUrl.host());
             user = pair.first;
             password = pair.second;
         }
@@ -388,24 +397,15 @@ int main(int argc, char **argv)
         }
     }
 
-    // take the unmodified url to pass to csync_create()
-    QByteArray remUrl = options.target_url.toUtf8();
-
     // Find the folder and the original owncloud url
-    QStringList splitted = url.path().split("/" + account->davPath());
-    url.setPath(splitted.value(0));
 
-    url.setScheme(url.scheme().replace("owncloud", "http"));
+    hostUrl.setScheme(hostUrl.scheme().replace("owncloud", "http"));
 
-    QUrl credentialFreeUrl = url;
+    QUrl credentialFreeUrl = hostUrl;
     credentialFreeUrl.setUserName(QString());
     credentialFreeUrl.setPassword(QString());
 
-    // Remote folders typically start with a / and don't end with one
-    QString folder = "/" + splitted.value(1);
-    if (folder.endsWith("/") && folder != "/") {
-        folder.chop(1);
-    }
+    const QString folder = options.remotePath;
 
     if (!options.proxy.isNull()) {
         QString host;
@@ -442,7 +442,7 @@ int main(int argc, char **argv)
     }
 #endif
 
-    account->setUrl(url);
+    account->setUrl(hostUrl);
     account->setSslErrorHandler(sslErrorHandler);
 
     QEventLoop loop;
