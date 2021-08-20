@@ -100,6 +100,10 @@ protected:
     bool _retryOnKeyChainError = true; // true if we haven't done yet any reading from keychain
 
     DetermineAuthTypeJob::AuthType _authType = DetermineAuthTypeJob::AuthType::Unknown;
+
+private:
+    // HttpLegacyCredentials is incompelte
+    QPointer<QObject> _credentialMigration;
 };
 
 

@@ -182,11 +182,12 @@ void HttpCredentials::fetchFromKeychain()
 
 void HttpCredentials::fetchFromKeychainHelper()
 {
-    OC_ASSERT(!_user.isEmpty());
+    Q_ASSERT(!_user.isEmpty());
     const int version = _account->credentialSetting(CredentialVersionKey()).toInt();
-    if (version < CredentialVersion) {
-        auto legacyCreds = new HttpLegacyCredentials(this);
-        legacyCreds->fetchFromKeychainHelper();
+    if (version < CredentialVersion && !_credentialMigration) {
+        auto mirgration = new HttpLegacyCredentials(this);
+        _credentialMigration = mirgration;
+        mirgration->fetchFromKeychainHelper();
         return;
     }
 
