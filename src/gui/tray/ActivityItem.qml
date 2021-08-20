@@ -168,7 +168,7 @@ MouseArea {
                 
                 Connections {
                     target: trayWindow
-                    onActiveChanged: {
+                    function onActiveChanged() {
                         if (!trayWindow.active) {
                             moreActionsButtonContextMenu.close();
                         }
@@ -178,7 +178,7 @@ MouseArea {
                 Connections {
                     target: activityListView
                     
-                    onMovementStarted: {
+                    function onMovementStarted() {
                         moreActionsButtonContextMenu.close();
                     }
                 }

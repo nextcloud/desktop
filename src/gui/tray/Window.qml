@@ -47,14 +47,14 @@ Window {
 
     Connections {
         target: UserModel
-        onNewUserSelected: {
+        function onNewUserSelected() {
             accountMenu.close();
         }
     }
 
     Connections {
         target: Systray
-        onShowWindow: {
+        function onShowWindow() {
             accountMenu.close();
             appsMenu.close();
             Systray.positionWindow(trayWindow);
@@ -66,7 +66,7 @@ Window {
             Systray.setOpened();
             UserModel.fetchCurrentActivityModel();
         }
-        onHideWindow: {
+        function onHideWindow() {
             trayWindow.hide();
             Systray.setClosed();
         }
