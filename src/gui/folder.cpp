@@ -1261,6 +1261,11 @@ void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction dir, std::functio
     msgBox->open();
 }
 
+QString Folder::fileFromLocalPath(const QString &localPath) const
+{
+    return localPath.mid(cleanPath().length() + 1);
+}
+
 void FolderDefinition::save(QSettings &settings, const FolderDefinition &folder)
 {
     settings.setValue(QLatin1String("localPath"), folder.localPath);
@@ -1353,5 +1358,6 @@ QString FolderDefinition::defaultJournalPath(AccountPtr account)
 {
     return SyncJournalDb::makeDbName(localPath, account->url(), targetPath, account->credentials()->user());
 }
+
 
 } // namespace OCC
