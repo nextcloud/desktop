@@ -2442,7 +2442,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="419"/>
         <source>Skip this time</source>
-        <translation>跳過這次更新</translation>
+        <translation>跳過此次更新</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="420"/>
@@ -3213,13 +3213,13 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="272"/>
-        <source>File names containing the character &quot;%1&quot; are not supported on this file system.</source>
-        <translation>此檔案系統不支援含 &quot;%1&quot; 字元的檔案名稱。</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="272"/>
         <source>File names containing the character &apos;%1&apos; are not supported on this file system.</source>
         <translation>此檔案系統不支援含「%1」字元的檔案名稱。</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="273"/>
+        <source>File names containing the character &quot;%1&quot; are not supported on this file system.</source>
+        <translation>此檔案系統不支援含 &quot;%1&quot; 字元的檔案名稱。</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="276"/>
@@ -3347,7 +3347,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>伺服器讀取目錄 &apos;%1&apos; 時發生錯誤：%2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1546"/>
+        <location filename="../src/libsync/discovery.cpp" line="1594"/>
         <source>Server replied with an error while reading directory &quot;%1&quot; : %2</source>
         <translation>伺服器在讀取目錄「%1」回覆錯誤：%2</translation>
     </message>
@@ -4920,19 +4920,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     </message>
 </context>
 <context>
-    <name>OCC::VfsCfApi</name>
-    <message>
-        <location filename="../src/libsync/vfs/cfapi/vfs_cfapi.cpp" line="333"/>
-        <source>Download of end-to-end encrypted file failed</source>
-        <translation>端到端加密檔案下載失敗</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/vfs/cfapi/vfs_cfapi.cpp" line="334"/>
-        <source>It seems that you are trying to download a virtual file that is end-to-end encrypted. Implicitly downloading such files is not supported at the moment. To workaround this issue, go to the settings and mark the encrypted folder with &quot;Make always available locally&quot;.</source>
-        <translation>似乎您正在嘗試下載經過端到端加密的虛擬檔案。目前不支持隱式下載此類檔案。要變通解決此問題，請轉到設置並將加密的文件夾標記為“使近端始終可用”。</translation>
-    </message>
-</context>
-<context>
     <name>OCC::WebEnginePage</name>
     <message>
         <location filename="../src/gui/wizard/webview.cpp" line="210"/>
@@ -6194,6 +6181,19 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/userstatus.cpp" line="62"/>
         <source>Online</source>
         <translation>在線</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::VfsCfApi</name>
+    <message>
+        <location filename="../src/libsync/vfs/cfapi/vfs_cfapi.cpp" line="333"/>
+        <source>Download of end-to-end encrypted file failed</source>
+        <translation>端到端加密檔案下載失敗</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/vfs/cfapi/vfs_cfapi.cpp" line="334"/>
+        <source>It seems that you are trying to download a virtual file that is end-to-end encrypted. Implicitly downloading such files is not supported at the moment. To workaround this issue, go to the settings and mark the encrypted folder with &quot;Make always available locally&quot;.</source>
+        <translation>似乎您正在嘗試下載經過端到端加密的虛擬檔案。目前不支持隱式下載此類檔案。要變通解決此問題，請轉到設置並將加密的文件夾標記為“使近端始終可用”。</translation>
     </message>
 </context>
 </TS>
