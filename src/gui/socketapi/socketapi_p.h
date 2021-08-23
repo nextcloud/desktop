@@ -62,12 +62,20 @@ class SocketListener
 public:
     QPointer<QIODevice> socket;
 
-    explicit SocketListener(QIODevice *socket)
-        : socket(socket)
+    explicit SocketListener(QIODevice *_socket)
+        : socket(_socket)
     {
     }
 
     void sendMessage(const QString &message, bool doWait = false) const;
+    void sendWarning(const QString &message, bool doWait = false) const
+    {
+        sendMessage(QStringLiteral("WARNING:") + message, doWait);
+    }
+    void sendError(const QString &message, bool doWait = false) const
+    {
+        sendMessage(QStringLiteral("ERROR:") + message, doWait);
+    }
 
     void sendMessageIfDirectoryMonitored(const QString &message, uint systemDirectoryHash) const
     {
@@ -109,30 +117,48 @@ class SocketApiJob : public QObject
 {
     Q_OBJECT
 public:
-    SocketApiJob(const QString &jobId, SocketListener *socketListener, const QJsonObject &arguments)
+    explicit SocketApiJob(const QString &jobId, const QSharedPointer<SocketListener> &socketListener, const QJsonObject &arguments)
         : _jobId(jobId)
         , _socketListener(socketListener)
         , _arguments(arguments)
     {
     }
 
-    void resolve(const QString &response = QString())
-    {
-        _socketListener->sendMessage(QLatin1String("RESOLVE|") + _jobId + '|' + response);
-    }
+    void resolve(const QString &response = QString());
 
-    void resolve(const QJsonObject &response) { resolve(QJsonDocument{ response }.toJson()); }
+    void resolve(const QJsonObject &response);
 
     const QJsonObject &arguments() { return _arguments; }
 
-    void reject(const QString &response)
-    {
-        _socketListener->sendMessage(QLatin1String("REJECT|") + _jobId + '|' + response);
-    }
+    void reject(const QString &response);
+
+protected:
+    QString _jobId;
+    QSharedPointer<SocketListener> _socketListener;
+    QJsonObject _arguments;
+};
+
+class SocketApiJobV2 : public QObject
+{
+    Q_OBJECT
+public:
+    explicit SocketApiJobV2(const QSharedPointer<SocketListener> &socketListener, const QByteArray &command, const QJsonObject &arguments);
+
+    void success(const QJsonObject &response) const;
+    void failure(const QString &error) const;
+
+    const QJsonObject &arguments() const { return _arguments; }
+    QByteArray command() const { return _command; }
+
+Q_SIGNALS:
+    void finished() const;
 
 private:
+    void doFinish(const QJsonObject &obj) const;
+
+    QSharedPointer<SocketListener> _socketListener;
+    const QByteArray _command;
     QString _jobId;
-    SocketListener *_socketListener;
     QJsonObject _arguments;
 };
 }

@@ -32,35 +32,10 @@
 #include <io.h> // for stdout
 #endif
 
-namespace OCC {
-
-QtMessageHandler s_originalMessageHandler = nullptr;
-
-static void mirallLogCatcher(QtMsgType type, const QMessageLogContext &ctx, const QString &message)
-{
-    auto logger = Logger::instance();
-    if (type == QtDebugMsg && !logger->logDebug()) {
-        if (s_originalMessageHandler) {
-            s_originalMessageHandler(type, ctx, message);
-        }
-    } else if (!logger->isNoop()) {
-        logger->doLog(qFormatLogMessage(type, ctx, message));
-    }
-    if(type == QtCriticalMsg || type == QtFatalMsg) {
-        std::cerr << qPrintable(qFormatLogMessage(type, ctx, message)) << std::endl;
-    }
-
-    if(type == QtFatalMsg) {
-        if (!logger->isNoop()) {
-            logger->close();
-        }
-#if defined(Q_OS_WIN)
-    // Make application terminate in a way that can be caught by the crash reporter
-        Utility::crash();
-#endif
-    }
+namespace {
+constexpr int CrashLogSize = 20;
 }
-
+namespace OCC {
 
 Logger *Logger::instance()
 {
@@ -71,11 +46,12 @@ Logger *Logger::instance()
 Logger::Logger(QObject *parent)
     : QObject(parent)
 {
-    qSetMessagePattern("%{time yyyy-MM-dd hh:mm:ss:zzz} [ %{type} %{category} ]%{if-debug}\t[ %{function} ]%{endif}:\t%{message}");
+    qSetMessagePattern(QStringLiteral("%{time yyyy-MM-dd hh:mm:ss:zzz} [ %{type} %{category} ]%{if-debug}\t[ %{function} ]%{endif}:\t%{message}"));
+    _crashLog.resize(CrashLogSize);
 #ifndef NO_MSG_HANDLER
-   s_originalMessageHandler = qInstallMessageHandler(mirallLogCatcher);
-#else
-    Q_UNUSED(mirallLogCatcher)
+    qInstallMessageHandler([](QtMsgType type, const QMessageLogContext &ctx, const QString &message) {
+            Logger::instance()->doLog(type, ctx, message);
+        });
 #endif
 }
 
@@ -102,43 +78,30 @@ void Logger::postGuiMessage(const QString &title, const QString &message)
     emit guiMessage(title, message);
 }
 
-void Logger::log(Log log)
-{
-    QString msg;
-    if (_showTime) {
-        msg = log.timeStamp.toString(QLatin1String("MM-dd hh:mm:ss:zzz")) + QLatin1Char(' ');
-    }
-
-    msg += log.message;
-    // _logs.append(log);
-    // std::cout << qPrintable(log.message) << std::endl;
-
-    doLog(msg);
-}
-
-/**
- * Returns true if doLog does nothing and need not to be called
- */
-bool Logger::isNoop() const
-{
-    QMutexLocker lock(&_mutex);
-    return !_logstream;
-}
-
 bool Logger::isLoggingToFile() const
 {
     QMutexLocker lock(&_mutex);
     return _logstream;
 }
 
-void Logger::doLog(const QString &msg)
+void Logger::doLog(QtMsgType type, const QMessageLogContext &ctx, const QString &message)
 {
+    const QString msg = qFormatLogMessage(type, ctx, message);
     {
         QMutexLocker lock(&_mutex);
+        _crashLogIndex = (_crashLogIndex + 1) % CrashLogSize;
+        _crashLog[_crashLogIndex] = msg;
         if (_logstream) {
             (*_logstream) << msg << endl;
             if (_doFileFlush)
                 _logstream->flush();
+        }
+        if (type == QtFatalMsg) {
+            close();
+#if defined(Q_OS_WIN)
+            // Make application terminate in a way that can be caught by the crash reporter
+            Utility::crash();
+#endif
         }
     }
     emit logWindowLog(msg);
@@ -146,22 +109,13 @@ void Logger::doLog(const QString &msg)
 
 void Logger::close()
 {
-    QMutexLocker lock(&_mutex);
+    dumpCrashLog();
     if (_logstream)
     {
         _logstream->flush();
         _logFile.close();
         _logstream.reset();
     }
-}
-
-void Logger::mirallLog(const QString &message)
-{
-    Log log_;
-    log_.timeStamp = QDateTime::currentDateTimeUtc();
-    log_.message = message;
-
-    Logger::instance()->log(log_);
 }
 
 QString Logger::logFile() const
@@ -264,7 +218,24 @@ void Logger::disableTemporaryFolderLogDir()
 void Logger::setLogRules(const QSet<QString> &rules)
 {
     _logRules = rules;
-    QLoggingCategory::setFilterRules(rules.toList().join(QLatin1Char('\n')));
+    QString tmp;
+    QTextStream out(&tmp);
+    for (const auto &p : rules) {
+        out << p << QLatin1Char('\n');
+    }
+    qDebug() << tmp;
+    QLoggingCategory::setFilterRules(tmp);
+}
+
+void Logger::dumpCrashLog()
+{
+    QFile logFile(QDir::tempPath() + QStringLiteral("/" APPLICATION_NAME "-crash.log"));
+    if (logFile.open(QFile::WriteOnly)) {
+        QTextStream out(&logFile);
+        for (int i = 1; i <= CrashLogSize; ++i) {
+            out << _crashLog[(_crashLogIndex + i) % CrashLogSize] << QLatin1Char('\n');
+        }
+    }
 }
 
 static bool compressLog(const QString &originalName, const QString &targetName)

@@ -144,6 +144,9 @@ QByteArray makeChecksumHeader(const QByteArray &checksumType, const QByteArray &
 
 QByteArray findBestChecksum(const QByteArray &_checksums)
 {
+    if (_checksums.isEmpty()) {
+        return {};
+    }
     const auto checksums = QString::fromUtf8(_checksums);
     int i = 0;
     // The order of the searches here defines the preference ordering.
@@ -162,7 +165,7 @@ QByteArray findBestChecksum(const QByteArray &_checksums)
         return _checksums.mid(i, end - i);
     }
     qCWarning(lcChecksums) << "Failed to parse" << _checksums;
-    return QByteArray();
+    return {};
 }
 
 bool parseChecksumHeader(const QByteArray &header, QByteArray *type, QByteArray *checksum)

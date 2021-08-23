@@ -87,7 +87,6 @@ set(client_SRCS
     sharemanager.cpp
     shareusergroupwidget.cpp
     sharee.cpp
-    socketapi.cpp
     sslbutton.cpp
     sslerrordialog.cpp
     syncrunfilelog.cpp
@@ -337,6 +336,8 @@ target_link_libraries(nextcloudCore
   Qt5::Quick
   Qt5::QuickControls2
   )
+
+add_subdirectory(socketapi)
 
 if(Qt5WebEngine_FOUND AND Qt5WebEngineWidgets_FOUND)
   target_link_libraries(nextcloudCore PUBLIC Qt5::WebEngineWidgets)

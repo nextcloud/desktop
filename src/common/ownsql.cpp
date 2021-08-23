@@ -490,28 +490,4 @@ void SqlQuery::reset_and_clear_bindings()
     }
 }
 
-PreparedSqlQueryRAII::PreparedSqlQueryRAII(SqlQuery *query)
-    : _query(query)
-{
-    Q_ASSERT(!sqlite3_stmt_busy(_query->_stmt));
-}
-
-PreparedSqlQueryRAII::PreparedSqlQueryRAII(SqlQuery *query, const QByteArray &sql, SqlDatabase &db)
-    : _query(query)
-{
-    Q_ASSERT(!sqlite3_stmt_busy(_query->_stmt));
-    ENFORCE(!query->_sqldb || &db == query->_sqldb)
-    query->_sqldb = &db;
-    query->_db = db.sqliteDb();
-    if (!query->_stmt) {
-        _ok = query->prepare(sql) == 0;
-    }
-}
-
-PreparedSqlQueryRAII::~PreparedSqlQueryRAII()
-{
-    _query->reset_and_clear_bindings();
-}
-
-
 } // namespace OCC

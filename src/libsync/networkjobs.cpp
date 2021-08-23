@@ -113,8 +113,8 @@ bool RequestEtagJob::finished()
     if (httpCode == 207) {
         // Parse DAV response
         QXmlStreamReader reader(reply());
-        reader.addExtraNamespaceDeclaration(QXmlStreamNamespaceDeclaration("d", "DAV:"));
-        QString etag;
+        reader.addExtraNamespaceDeclaration(QXmlStreamNamespaceDeclaration(QStringLiteral("d"), QStringLiteral("DAV:")));
+        QByteArray etag;
         while (!reader.atEnd()) {
             QXmlStreamReader::TokenType type = reader.readNext();
             if (type == QXmlStreamReader::StartElement && reader.namespaceUri() == QLatin1String("DAV:")) {
@@ -123,9 +123,9 @@ bool RequestEtagJob::finished()
                     auto etagText = reader.readElementText();
                     auto parsedTag = parseEtag(etagText.toUtf8());
                     if (!parsedTag.isEmpty()) {
-                        etag += QString::fromUtf8(parsedTag);
+                        etag += parsedTag;
                     } else {
-                        etag += etagText;
+                        etag += etagText.toUtf8();
                     }
                 }
             }
@@ -182,7 +182,11 @@ bool MkColJob::finished()
     qCInfo(lcMkColJob) << "MKCOL of" << reply()->request().url() << "FINISHED WITH STATUS"
                        << replyStatusString();
 
-    emit finished(reply()->error());
+    if (reply()->error() != QNetworkReply::NoError) {
+        Q_EMIT finishedWithError(reply());
+    } else {
+        Q_EMIT finishedWithoutError();
+    }
     return true;
 }
 

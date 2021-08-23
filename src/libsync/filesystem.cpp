@@ -63,9 +63,9 @@ time_t FileSystem::getModTime(const QString &filename)
         && (stat.modtime != 0)) {
         result = stat.modtime;
     } else {
-        qCWarning(lcFileSystem) << "Could not get modification time for" << filename
-                                << "with csync, using QFileInfo";
         result = Utility::qDateTimeToTime_t(QFileInfo(filename).lastModified());
+        qCWarning(lcFileSystem) << "Could not get modification time for" << filename
+                                << "with csync, using QFileInfo:" << result;
     }
     return result;
 }
@@ -115,7 +115,7 @@ static qint64 getSizeWithCsync(const QString &filename)
     if (csync_vio_local_stat(filename, &stat) != -1) {
         result = stat.size;
     } else {
-        qCWarning(lcFileSystem) << "Could not get size for" << filename << "with csync";
+        qCWarning(lcFileSystem) << "Could not get size for" << filename << "with csync" << Utility::formatWinError(errno);
     }
     return result;
 }

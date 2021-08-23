@@ -27,7 +27,7 @@
 #include "folderman.h"
 #include "logger.h"
 #include "configfile.h"
-#include "socketapi.h"
+#include "socketapi/socketapi.h"
 #include "sslerrordialog.h"
 #include "theme.h"
 #include "clientproxy.h"
@@ -524,7 +524,12 @@ void Application::setupLogging()
 
     logger->enterNextLogFile();
 
-    qCInfo(lcApplication) << QString::fromLatin1("################## %1 locale:[%2] ui_lang:[%3] version:[%4] os:[%5]").arg(_theme->appName()).arg(QLocale::system().name()).arg(property("ui_lang").toString()).arg(_theme->version()).arg(Utility::platformName());
+    qCInfo(lcApplication) << "##################" << _theme->appName()
+                          << "locale:" << QLocale::system().name()
+                          << "ui_lang:" << property("ui_lang")
+                          << "version:" << _theme->version()
+                          << "os:" << Utility::platformName();
+    qCInfo(lcApplication) << "Arguments:" << qApp->arguments();
 }
 
 void Application::slotUseMonoIconsChanged(bool)

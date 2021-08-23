@@ -67,8 +67,6 @@ void ProcessDirectoryJob::process()
 {
     ASSERT(_localQueryDone && _serverQueryDone);
 
-    QString localDir;
-
     // Build lookup tables for local, remote and db entries.
     // For suffix-virtual files, the key will normally be the base file name
     // without the suffix.
@@ -528,7 +526,7 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
                 }
                 return ParentNotChanged;
             }();
-            
+
             processFileAnalyzeLocalInfo(item, path, localEntry, serverEntry, dbEntry, serverQueryMode);
             return;
         }
@@ -545,15 +543,14 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
     item->_modtime = serverEntry.modtime;
     item->_size = serverEntry.size;
 
-    auto postProcessServerNew = [=] () {
-        auto tmp_path = path;
+    auto postProcessServerNew = [=]() mutable {
         if (item->isDirectory()) {
             _pendingAsyncJobs++;
-            _discoveryData->checkSelectiveSyncNewFolder(tmp_path._server, serverEntry.remotePerm,
+            _discoveryData->checkSelectiveSyncNewFolder(path._server, serverEntry.remotePerm,
                 [=](bool result) {
                     --_pendingAsyncJobs;
                     if (!result) {
-                        processFileAnalyzeLocalInfo(item, tmp_path, localEntry, serverEntry, dbEntry, _queryServer);
+                        processFileAnalyzeLocalInfo(item, path, localEntry, serverEntry, dbEntry, _queryServer);
                     }
                     QTimer::singleShot(0, _discoveryData, &DiscoveryPhase::scheduleMoreJobs);
                 });
@@ -568,7 +565,7 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
             && !FileSystem::isExcludeFile(item->_file)) {
             item->_type = ItemTypeVirtualFile;
             if (isVfsWithSuffix())
-                addVirtualFileSuffix(tmp_path._original);
+                addVirtualFileSuffix(path._original);
         }
 
         if (opts._vfs->mode() != Vfs::Off && !item->_encryptedFileName.isEmpty()) {
@@ -579,7 +576,7 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
             // another scenario - we are syncing a file which is on disk but not in the database (database was removed or file was not written there yet)
             item->_size = serverEntry.size - Constants::e2EeTagSize;
         }
-        processFileAnalyzeLocalInfo(item, tmp_path, localEntry, serverEntry, dbEntry, _queryServer);
+        processFileAnalyzeLocalInfo(item, path, localEntry, serverEntry, dbEntry, _queryServer);
     };
 
     // Potential NEW/NEW conflict is handled in AnalyzeLocal
@@ -697,9 +694,8 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
         } else {
             // we need to make a request to the server to know that the original file is deleted on the server
             _pendingAsyncJobs++;
-            auto job = new RequestEtagJob(_discoveryData->_account, originalPath, this);
-            connect(job, &RequestEtagJob::finishedWithResult, this, [=](const HttpResult<QString> &etag) {
-                auto tmp_path = path;
+            auto job = new RequestEtagJob(_discoveryData->_account, _discoveryData->_remoteFolder + originalPath, this);
+            connect(job, &RequestEtagJob::finishedWithResult, this, [=](const HttpResult<QByteArray> &etag) mutable {
                 _pendingAsyncJobs--;
                 QTimer::singleShot(0, _discoveryData, &DiscoveryPhase::scheduleMoreJobs);
                 if (etag || etag.error().code != 404 ||
@@ -715,8 +711,8 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
                 // In case the deleted item was discovered in parallel
                 _discoveryData->findAndCancelDeletedJob(originalPath);
 
-                postProcessRename(tmp_path);
-                processFileFinalize(item, tmp_path, item->isDirectory(), item->_instruction == CSYNC_INSTRUCTION_RENAME ? NormalQuery : ParentDontExist, _queryServer);
+                postProcessRename(path);
+                processFileFinalize(item, path, item->isDirectory(), item->_instruction == CSYNC_INSTRUCTION_RENAME ? NormalQuery : ParentDontExist, _queryServer);
             });
             job->start();
             done = true; // Ideally, if the origin still exist on the server, we should continue searching...  but that'd be difficult
@@ -1162,8 +1158,8 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         if (base.isVirtualFile() && isVfsWithSuffix())
             chopVirtualFileSuffix(serverOriginalPath);
         auto job = new RequestEtagJob(_discoveryData->_account, serverOriginalPath, this);
-        connect(job, &RequestEtagJob::finishedWithResult, this, [=](const HttpResult<QString> &etag) mutable {
-            if (!etag || (*etag != base._etag && !item->isDirectory()) || _discoveryData->isRenamed(originalPath)) {
+        connect(job, &RequestEtagJob::finishedWithResult, this, [=](const HttpResult<QByteArray> &etag) mutable {
+            if (!etag || (etag.get() != base._etag && !item->isDirectory()) || _discoveryData->isRenamed(originalPath)) {
                 qCInfo(lcDisco) << "Can't rename because the etag has changed or the directory is gone" << originalPath;
                 // Can't be a rename, leave it as a new.
                 postProcessLocalNew();
@@ -1171,7 +1167,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
                 // In case the deleted item was discovered in parallel
                 _discoveryData->findAndCancelDeletedJob(originalPath);
                 processRename(path);
-                recurseQueryServer = *etag == base._etag ? ParentNotChanged : NormalQuery;
+                recurseQueryServer = etag.get() == base._etag ? ParentNotChanged : NormalQuery;
             }
             processFileFinalize(item, path, item->isDirectory(), NormalQuery, recurseQueryServer);
             _pendingAsyncJobs--;

@@ -51,6 +51,7 @@ set(libsync_SRCS
     syncfilestatustracker.cpp
     localdiscoverytracker.cpp
     syncresult.cpp
+    syncoptions.cpp
     theme.cpp
     clientsideencryption.cpp
     clientsideencryptionjobs.cpp

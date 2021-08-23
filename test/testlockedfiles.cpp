@@ -17,7 +17,8 @@ using namespace OCC;
 // pass combination of FILE_SHARE_READ, FILE_SHARE_WRITE, FILE_SHARE_DELETE
 HANDLE makeHandle(const QString &file, int shareMode)
 {
-    const wchar_t *wuri = reinterpret_cast<const wchar_t *>(file.utf16());
+    const auto fName = FileSystem::longWinPath(file);
+    const wchar_t *wuri = reinterpret_cast<const wchar_t *>(fName.utf16());
     auto handle = CreateFileW(
         wuri,
         GENERIC_READ | GENERIC_WRITE,
@@ -39,6 +40,7 @@ class TestLockedFiles : public QObject
 private slots:
     void testBasicLockFileWatcher()
     {
+        QTemporaryDir tmp;
         int count = 0;
         QString file;
 
@@ -46,12 +48,16 @@ private slots:
         watcher.setCheckInterval(std::chrono::milliseconds(50));
         connect(&watcher, &LockWatcher::fileUnlocked, &watcher, [&](const QString &f) { ++count; file = f; });
 
-        QString tmpFile;
+        const QString tmpFile = tmp.path() + QString::fromUtf8("/alonglonglonglong/blonglonglonglong/clonglonglonglong/dlonglonglonglong/"
+                                                               "elonglonglonglong/flonglonglonglong/glonglonglonglong/hlonglonglonglong/ilonglonglonglong/"
+                                                               "jlonglonglonglong/klonglonglonglong/llonglonglonglong/mlonglonglonglong/nlonglonglonglong/"
+                                                               "olonglonglonglong/file🐷.txt");
         {
-            QTemporaryFile tmp;
-            tmp.setAutoRemove(false);
-            tmp.open();
-            tmpFile = tmp.fileName();
+            // use a long file path to ensure we handle that correctly
+            QVERIFY(QFileInfo(tmpFile).dir().mkpath("."));
+            QFile tmp(tmpFile);
+            QVERIFY(tmp.open(QFile::WriteOnly));
+            QVERIFY(tmp.write("ownCLoud"));
         }
         QVERIFY(QFile::exists(tmpFile));
 
@@ -91,7 +97,7 @@ private slots:
         QCOMPARE(file, tmpFile);
         QVERIFY(!watcher.contains(tmpFile));
 #endif
-        QFile::remove(tmpFile);
+        QVERIFY(tmp.remove());
     }
 
 #ifdef Q_OS_WIN
