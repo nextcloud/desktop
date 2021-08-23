@@ -269,47 +269,44 @@ void ownCloudGui::slotComputeOverallSyncStatus()
     _tray->setIcon(statusIcon);
 
     // create the tray blob message, check if we have an defined state
-    if (map.count() > 0) {
 #ifdef Q_OS_WIN
-        // Windows has a 128-char tray tooltip length limit.
-        trayMessage = FolderMan::instance()->trayTooltipStatusString(trayOverallStatusResult.overallStatus(), false);
+    // Windows has a 128-char tray tooltip length limit.
+    trayMessage = FolderMan::instance()->trayTooltipStatusString(trayOverallStatusResult.overallStatus(), false);
 #else
-        QStringList allStatusStrings;
-        for (auto *folder : map) {
-            QString folderMessage = FolderMan::trayTooltipStatusString(
-                folder->syncResult(),
-                folder->syncPaused());
-            allStatusStrings += tr("Folder %1: %2").arg(folder->shortGuiLocalPath(), folderMessage);
-        }
-        trayMessage = allStatusStrings.join(QLatin1String("\n"));
+    QStringList allStatusStrings;
+    for (auto *folder : map) {
+        QString folderMessage = FolderMan::trayTooltipStatusString(
+            folder->syncResult(),
+            folder->syncPaused());
+        allStatusStrings += tr("Folder %1: %2").arg(folder->shortGuiLocalPath(), folderMessage);
+    }
+    trayMessage = allStatusStrings.join(QLatin1String("\n"));
 #endif
-        _tray->setToolTip(trayMessage);
+    _tray->setToolTip(trayMessage);
 
-        if (trayOverallStatusResult.overallStatus().status() == SyncResult::Success || trayOverallStatusResult.overallStatus().status() == SyncResult::Problem) {
-            if (trayOverallStatusResult.overallStatus().hasUnresolvedConflicts()) {
-                setStatusText(tr("Unresolved %1 conflicts").arg(QString::number(trayOverallStatusResult.overallStatus().numNewConflictItems())));
-            } else if (trayOverallStatusResult.overallStatus().numBlacklistErrors() != 0) {
-                setStatusText(tr("Ignored errors %1").arg(QString::number(trayOverallStatusResult.overallStatus().numBlacklistErrors())));
-            } else {
-                QString lastSyncDoneString;
-
-                // display only the time in case the last sync was today
-                if (QDateTime::currentDateTime().date() == trayOverallStatusResult.lastSyncDone.date()) {
-                    lastSyncDoneString = QLocale().toString(trayOverallStatusResult.lastSyncDone.time());
-                } else {
-                    lastSyncDoneString = QLocale().toString(trayOverallStatusResult.lastSyncDone);
-                }
-
-                setStatusText(tr("Up to date (%1)").arg(lastSyncDoneString));
-            }
-        } else if (trayOverallStatusResult.overallStatus().status() == SyncResult::Paused) {
-            setStatusText(tr("Synchronization is paused"));
-        } else {
-            setStatusText(tr("Error during synchronization"));
+    switch (trayOverallStatusResult.overallStatus().status()) {
+    case SyncResult::Problem:
+        if (trayOverallStatusResult.overallStatus().hasUnresolvedConflicts()) {
+            setStatusText(tr("Unresolved %1 conflicts").arg(QString::number(trayOverallStatusResult.overallStatus().numNewConflictItems())));
+        } else if (trayOverallStatusResult.overallStatus().numBlacklistErrors() != 0) {
+            setStatusText(tr("Ignored errors %1").arg(QString::number(trayOverallStatusResult.overallStatus().numBlacklistErrors())));
         }
-    } else {
+        break;
+    case SyncResult::Success: {
+        QString lastSyncDoneString;
+        // display only the time in case the last sync was today
+        if (QDateTime::currentDateTime().date() == trayOverallStatusResult.lastSyncDone.date()) {
+            lastSyncDoneString = QLocale().toString(trayOverallStatusResult.lastSyncDone.time());
+        } else {
+            lastSyncDoneString = QLocale().toString(trayOverallStatusResult.lastSyncDone);
+        }
+        setStatusText(tr("Up to date (%1)").arg(lastSyncDoneString));
+    } break;
+    case SyncResult::Undefined:
         _tray->setToolTip(tr("There are no sync folders configured."));
         setStatusText(tr("No sync folders configured"));
+    default:
+        setStatusText(FolderMan::instance()->trayTooltipStatusString(trayOverallStatusResult.overallStatus(), false));
     }
 }
 

@@ -23,12 +23,14 @@
 #include "networkjobs.h"
 #include "syncoptions.h"
 
+#include <QDateTime>
 #include <QObject>
 #include <QStringList>
 #include <QUuid>
-#include <set>
+
 #include <chrono>
 #include <memory>
+#include <set>
 
 class QThread;
 class QSettings;
@@ -231,6 +233,7 @@ public:
     Vfs &vfs() { return *_vfs; }
 
     RequestEtagJob *etagJob() const { return _requestEtagJob; }
+    auto lastSyncTime() const { return QDateTime::currentDateTime().addMSecs(-msecSinceLastSync().count()); }
     std::chrono::milliseconds msecSinceLastSync() const { return std::chrono::milliseconds(_timeSinceLastSyncDone.elapsed()); }
     std::chrono::milliseconds msecLastSyncDuration() const { return _lastSyncDuration; }
     int consecutiveFollowUpSyncs() const { return _consecutiveFollowUpSyncs; }
