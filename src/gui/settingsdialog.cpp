@@ -57,13 +57,15 @@ void setActivationPolicy(ActivationPolicy policy);
 namespace {
 auto minimumSizeHint(const QWidget *w)
 {
-    const auto screen = w->windowHandle() ? w->windowHandle()->screen() : QApplication::screenAt(QCursor::pos());
-    const auto availableSize = screen->availableSize();
     const QSize min { 800, 600 };
-    if (!availableSize.isValid()) {
-        return min;
+    const auto screen = w->windowHandle() ? w->windowHandle()->screen() : QApplication::screenAt(QCursor::pos());
+    if (screen) {
+        const auto availableSize = screen->availableSize();
+        if (availableSize.isValid()) {
+            return min.boundedTo(availableSize * 0.75);
+        }
     }
-    return min.boundedTo(availableSize * 0.75);
+    return min;
 }
 
 const QString TOOLBAR_CSS()
