@@ -224,8 +224,12 @@ Application::Application(int &argc, char **argv)
 
 #ifdef Q_OS_WIN
     // Ensure OpenSSL config file is only loaded from app directory
-    QString opensslConf = QCoreApplication::applicationDirPath() + QString("/openssl.cnf");
+    const QString opensslConf = QCoreApplication::applicationDirPath() + QString("/openssl.cnf");
     qputenv("OPENSSL_CONF", opensslConf.toLocal8Bit());
+#elif defined(Q_OS_LINUX)
+#if defined(OC_PLUGIN_DIR)
+    addLibraryPath(QDir(QApplication::applicationDirPath()).filePath(QStringLiteral(OC_PLUGIN_DIR)));
+#endif
 #endif
 
     // TODO: Can't set this without breaking current config paths
@@ -268,12 +272,6 @@ Application::Application(int &argc, char **argv)
     // The timeout is initialized with an environment variable, if not, override with the value from the config
     if (!AbstractNetworkJob::httpTimeout)
         AbstractNetworkJob::httpTimeout = cfg.timeout();
-
-#if defined(OC_PLUGIN_DIR) && defined(Q_OS_LINUX)
-    const QString extraPluginDir = QDir(QApplication::applicationDirPath()).filePath(QStringLiteral(OC_PLUGIN_DIR));
-    qCInfo(lcApplication) << "Adding extra plugin search path:" << extraPluginDir;
-    this->addLibraryPath(extraPluginDir);
-#endif
 
     // Check vfs plugins
     if (Theme::instance()->showVirtualFilesOption() && bestAvailableVfsMode() == Vfs::Off) {
