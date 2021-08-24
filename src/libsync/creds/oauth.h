@@ -111,6 +111,8 @@ private:
     QString _redirectUrl;
     QByteArray _pkceCodeVerifier;
     QByteArray _state;
+
+    bool _isRefreshingToken = false;
 };
 
 } // namespace OCC

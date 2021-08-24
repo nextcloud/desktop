@@ -1,0 +1,5 @@
+Bugfix: Handle timeouts occurring during oauth
+
+We now handle timeouts occurring during oauth.
+
+https://github.com/owncloud/client/pull/8940

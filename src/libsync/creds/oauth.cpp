@@ -303,6 +303,7 @@ void OAuth::startAuthentication()
 
 void OAuth::refreshAuthentication(const QString &refreshToken)
 {
+    _isRefreshingToken = true;
     auto refresh = [this, &refreshToken] {
         auto job = postTokenRequest({ { QStringLiteral("grant_type"), QStringLiteral("refresh_token") },
             { QStringLiteral("refresh_token"), refreshToken } });
@@ -460,9 +461,19 @@ void OAuth::authorisationLinkAsync(std::function<void (const QUrl &)> callback) 
 void OAuth::fetchWellKnown()
 {
     auto checkServer = new CheckServerJob(_account->sharedFromThis(), this);
-    connect(checkServer, &CheckServerJob::instanceNotFound, this, [this] {
-        // TODO: implement proper error signal
-        Q_EMIT refreshFinished(QString(), QString());
+    connect(checkServer, &CheckServerJob::instanceNotFound, this, [this](QNetworkReply *reply) {
+        if (_isRefreshingToken) {
+            Q_EMIT refreshError(reply->error(), reply->errorString());
+        } else {
+            Q_EMIT result(Error);
+        }
+    });
+    connect(checkServer, &CheckServerJob::timeout, this, [this] {
+        if (_isRefreshingToken) {
+            Q_EMIT refreshError(QNetworkReply::TimeoutError, QStringLiteral("Job Timed out"));
+        } else {
+            Q_EMIT result(Error);
+        }
     });
     connect(checkServer, &CheckServerJob::instanceFound, this, [this] {
         const QPair<QString, QString> urls = Theme::instance()->oauthOverrideAuthUrl();
@@ -513,6 +524,12 @@ void OAuth::fetchWellKnown()
 bool isUrlValid(const QUrl &url)
 {
     qCDebug(lcOauth()) << "Checking URL for validity:" << url;
+
+    // we have hardcoded the oauthOverrideAuth
+    const auto overrideUrl = Theme::instance()->oauthOverrideAuthUrl();
+    if (!overrideUrl.first.isEmpty()) {
+        return QUrl::fromUserInput(overrideUrl.first).matches(url, QUrl::RemoveQuery);
+    }
 
     // the following allowlist contains URL schemes accepted as valid
     // OAuth 2.0 URLs must be HTTPS to be in compliance with the specification
