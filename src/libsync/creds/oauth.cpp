@@ -514,6 +514,12 @@ bool isUrlValid(const QUrl &url)
 {
     qCDebug(lcOauth()) << "Checking URL for validity:" << url;
 
+    // we have hardcoded the oauthOverrideAuth
+    const auto overrideUrl = Theme::instance()->oauthOverrideAuthUrl();
+    if (!overrideUrl.first.isEmpty()) {
+        return QUrl::fromUserInput(overrideUrl.first).matches(url, QUrl::RemoveQuery);
+    }
+
     // the following allowlist contains URL schemes accepted as valid
     // OAuth 2.0 URLs must be HTTPS to be in compliance with the specification
     // for unit tests, we also permit the nonexisting oauthtest scheme
