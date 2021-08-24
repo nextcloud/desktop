@@ -32,12 +32,15 @@ class OWNCLOUDSYNC_EXPORT SyncResult
 {
     Q_GADGET
 public:
+    // the order of the values markes their importance
+    // higher values take prcedence when computing the
+    // overall status
     enum Status {
         Undefined,
         NotYetStarted,
+        Success,
         SyncPrepare,
         SyncRunning,
-        Success,
         SyncAbortRequested,
         Paused,
         Problem,
