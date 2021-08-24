@@ -402,11 +402,8 @@ void ShareUserGroupWidget::slotCompleterActivated(const QModelIndex &index)
             }
         }
 
-        // Default permissions on creation
-        int permissions = SharePermissionCreate | SharePermissionUpdate
-                | SharePermissionDelete | SharePermissionShare;
         _manager->createShare(_sharePath, Share::ShareType(sharee->type()),
-            sharee->shareWith(), SharePermission(permissions), password);
+            sharee->shareWith(), _maxSharingPermissions, password);
     }
 
     _ui->shareeLineEdit->setEnabled(false);
