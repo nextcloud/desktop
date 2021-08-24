@@ -329,12 +329,12 @@ void GETFileJob::slotReadyRead()
 
 void GETJob::onTimedOut()
 {
-    qCWarning(lcGetJob) << "Timeout" << (reply() ? reply()->request().url().path() : path());
-    if (!reply())
-        return;
-    _errorString = tr("Connection Timeout");
-    _errorStatus = SyncFileItem::FatalError;
-    reply()->abort();
+    qCWarning(lcGetJob) << this << "timeout";
+    if (reply()) {
+        _errorString = tr("Connection Timeout");
+        _errorStatus = SyncFileItem::FatalError;
+    }
+    AbstractNetworkJob::onTimedOut();
 }
 
 QString GETJob::errorString() const

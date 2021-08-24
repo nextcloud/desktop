@@ -450,7 +450,7 @@ void CheckServerJob::onTimedOut()
     } else if (!reply()) {
         qCWarning(lcCheckServerJob) << "Timeout even there was no reply?";
     }
-    deleteLater();
+    AbstractNetworkJob::onTimedOut();
 }
 
 QString CheckServerJob::version(const QJsonObject &info)
