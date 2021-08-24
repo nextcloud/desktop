@@ -44,8 +44,7 @@
     } else {                                                                                                                \
     }
 
-// Q_RELAXED_CONSTEXPR to support centos 7
-OC_REQUIRED_RESULT Q_RELAXED_CONSTEXPR bool __OC_ENSURE(bool condition, const char *cond, const char *file, int line, const char *info)
+inline OC_REQUIRED_RESULT bool __OC_ENSURE(bool condition, const char *cond, const char *file, int line, const char *info)
 {
     if (Q_UNLIKELY(!condition)) {
         OC_ASSERT_MSG("ENSURE: \"%s\" in file %s, line %d %s", cond, file, line, info);
