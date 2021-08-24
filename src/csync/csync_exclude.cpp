@@ -39,6 +39,27 @@
 #include <QFile>
 #include <QDir>
 
+namespace {
+
+// See http://support.microsoft.com/kb/74496 and
+// https://msdn.microsoft.com/en-us/library/windows/desktop/aa365247(v=vs.85).aspx
+// Additionally, we ignore '$Recycle.Bin', see https://github.com/owncloud/client/issues/2955
+const QLatin1String win_device_names[] = {
+    QLatin1String("CON"), QLatin1String("PRN"), QLatin1String("AUX"), QLatin1String("NUL"),
+    QLatin1String("COM1"), QLatin1String("COM2"), QLatin1String("COM3"),
+    QLatin1String("COM4"), QLatin1String("COM5"), QLatin1String("COM6"),
+    QLatin1String("COM7"), QLatin1String("COM8"), QLatin1String("COM9"),
+    QLatin1String("LPT1"), QLatin1String("LPT2"), QLatin1String("LPT3"),
+    QLatin1String("LPT4"), QLatin1String("LPT5"), QLatin1String("LPT6"),
+    QLatin1String("LPT7"), QLatin1String("LPT8"), QLatin1String("LPT9"),
+    QLatin1String("CLOCK$")
+};
+
+const QLatin1String win_system_files[] = {
+    QLatin1String("$Recycle.Bin"),
+    QLatin1String("System Volume Information")
+};
+}
 
 /** Expands C-like escape sequences (in place)
  */
@@ -78,16 +99,6 @@ OCSYNC_EXPORT void csync_exclude_expand_escapes(QByteArray &input)
     input.resize(o);
 }
 
-// See http://support.microsoft.com/kb/74496 and
-// https://msdn.microsoft.com/en-us/library/windows/desktop/aa365247(v=vs.85).aspx
-// Additionally, we ignore '$Recycle.Bin', see https://github.com/owncloud/client/issues/2955
-static const char *win_reserved_words_3[] = { "CON", "PRN", "AUX", "NUL" };
-static const char *win_reserved_words_4[] = {
-    "COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9",
-    "LPT1", "LPT2", "LPT3", "LPT4", "LPT5", "LPT6", "LPT7", "LPT8", "LPT9"
-};
-static const char *win_reserved_words_n[] = { "CLOCK$", "$Recycle.Bin" };
-
 /**
  * @brief Checks if filename is considered reserved by Windows
  * @param file_name filename
@@ -107,28 +118,32 @@ OCSYNC_EXPORT bool csync_is_windows_reserved_word(const QStringRef &filename)
         }
     }
 
-    if (len_filename == 3 || (len_filename > 3 && filename.at(3) == QLatin1Char('.'))) {
-        for (const char *word : win_reserved_words_3) {
-            if (filename.left(3).compare(QLatin1String(word), Qt::CaseInsensitive) == 0) {
-                return true;
-            }
+    // win_reserved_words is ordered so we can stop once we encounter a longer word
+    Q_ASSERT(std::is_sorted(std::begin(win_device_names), std::end(win_device_names), [](const QLatin1String &a, const QLatin1String &b) {
+        return a.size() < b.size();
+    }));
+    for (const auto &word : win_device_names) {
+        if (word.size() > len_filename) {
+            break;
         }
-    }
-
-    if (len_filename == 4 || (len_filename > 4 && filename.at(4) == QLatin1Char('.'))) {
-        for (const char *word : win_reserved_words_4) {
-            if (filename.left(4).compare(QLatin1String(word), Qt::CaseInsensitive) == 0) {
-                return true;
-            }
-        }
-    }
-
-    for (const char *word : win_reserved_words_n) {
-        if (filename.compare(QLatin1String(word), Qt::CaseInsensitive) == 0) {
+        // until windows 11, not only the device names where illegal file names
+        // also COM9.png was illegal
+        if ((word.size() == len_filename || filename.at(word.size()) == QLatin1Char('.')) && filename.startsWith(word, Qt::CaseInsensitive)) {
             return true;
         }
     }
-
+    // win_reserved_words is ordered so we can stop once we encounter a longer word
+    Q_ASSERT(std::is_sorted(std::begin(win_system_files), std::end(win_system_files), [](const QLatin1String &a, const QLatin1String &b) {
+        return a.size() < b.size();
+    }));
+    for (const auto &word : win_system_files) {
+        if (word.size() > len_filename) {
+            break;
+        }
+        if (word.size() == len_filename && filename.compare(word, Qt::CaseInsensitive) == 0) {
+            return true;
+        }
+    }
     return false;
 }
 

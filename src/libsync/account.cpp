@@ -352,16 +352,27 @@ void Account::setCredentialSetting(const QString &key, const QVariant &value)
 void Account::slotHandleSslErrors(QNetworkReply *reply, QList<QSslError> errors)
 {
     NetworkJobTimeoutPauser pauser(reply);
-    QString out;
-    QDebug(&out) << "SSL-Errors happened for url " << reply->url().toString();
+    qCDebug(lcAccount) << "SSL diagnostics for url " << reply->url().toString();
+    QList<QSslError> filteredErrors;
     for (const auto &error : qAsConst(errors)) {
-        QDebug(&out) << "\tError in " << error.certificate() << ":"
-                     << error.errorString() << "(" << error.error() << ")"
-                     << "\n";
+        if (error.error() == QSslError::UnableToGetLocalIssuerCertificate) {
+            // filter out this "error"
+            qCDebug(lcAccount) << "- Info for " << error.certificate() << ": " << error.errorString()
+                               << ". Local SSL certificates are known and always accepted.";
+        } else {
+            qCDebug(lcAccount) << "- Error for " << error.certificate() << ": "
+                               << error.errorString() << "(" << int(error.error()) << ")"
+                               << "\n";
+            filteredErrors += error;
+        }
+    }
+
+    if (filteredErrors.isEmpty()) {
+        return;
     }
 
     bool allPreviouslyRejected = true;
-    for (const auto &error : qAsConst(errors)) {
+    for (const auto &error : qAsConst(filteredErrors)) {
         if (!_rejectedCertificates.contains(error.certificate())) {
             allPreviouslyRejected = false;
         }
@@ -369,13 +380,15 @@ void Account::slotHandleSslErrors(QNetworkReply *reply, QList<QSslError> errors)
 
     // If all certs have previously been rejected by the user, don't ask again.
     if (allPreviouslyRejected) {
-        qCInfo(lcAccount) << out << "Certs not trusted by user decision, returning.";
+        qCInfo(lcAccount) << "SSL diagnostics for url " << reply->url().toString()
+                          << ": certificates not trusted by user decision, returning.";
         return;
     }
 
     QList<QSslCertificate> approvedCerts;
     if (_sslErrorHandler.isNull()) {
-        qCWarning(lcAccount) << out << "called without valid SSL error handler for account" << url();
+        qCWarning(lcAccount) << Q_FUNC_INFO << " called without a valid SSL error handler for account" << url()
+                             << "(" << reply->url().toString() << ")";
         return;
     }
 
@@ -386,7 +399,7 @@ void Account::slotHandleSslErrors(QNetworkReply *reply, QList<QSslError> errors)
     QSharedPointer<QNetworkAccessManager> qnamLock = _am;
     QPointer<QObject> guard = reply;
 
-    if (_sslErrorHandler->handleErrors(errors, reply->sslConfiguration(), &approvedCerts, sharedFromThis())) {
+    if (_sslErrorHandler->handleErrors(filteredErrors, reply->sslConfiguration(), &approvedCerts, sharedFromThis())) {
         if (!guard)
             return;
 
@@ -396,19 +409,19 @@ void Account::slotHandleSslErrors(QNetworkReply *reply, QList<QSslError> errors)
             emit wantsAccountSaved(this);
 
             // all ssl certs are known and accepted. We can ignore the problems right away.
-            qCInfo(lcAccount) << out << "Certs are known and trusted! This is not an actual error.";
+            qCDebug(lcAccount) << "Certs are known and trusted! This is not an actual error.";
         }
 
         // Warning: Do *not* use ignoreSslErrors() (without args) here:
         // it permanently ignores all SSL errors for this host, even
         // certificate changes.
-        reply->ignoreSslErrors(errors);
+        reply->ignoreSslErrors(filteredErrors);
     } else {
         if (!guard)
             return;
 
         // Mark all involved certificates as rejected, so we don't ask the user again.
-        for (const auto &error : qAsConst(errors)) {
+        for (const auto &error : qAsConst(filteredErrors)) {
             if (!_rejectedCertificates.contains(error.certificate())) {
                 _rejectedCertificates.append(error.certificate());
             }

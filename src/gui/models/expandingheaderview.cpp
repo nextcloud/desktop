@@ -29,45 +29,6 @@ ExpandingHeaderView::ExpandingHeaderView(const QString &objectName, QWidget *par
     setHighlightSections(true);
 
     connect(this, &QHeaderView::sectionCountChanged, this, &ExpandingHeaderView::resizeColumns);
-    connect(this, &QHeaderView::sectionResized, this, [this](int index, int oldSize, int newSize) {
-        if (_isResizing) {
-            return;
-        }
-        QScopedValueRollback<bool> guard(_isResizing, true);
-        if (index != _expandingColumn) {
-            // give/take space from _expandingColumn column
-            resizeSection(_expandingColumn, sectionSize(_expandingColumn) - (newSize - oldSize));
-        } else {
-            // distribute space across all columns
-            // use actual width as oldSize/newSize isn't reliable here
-            auto visibleSections = Models::range(count());
-            visibleSections.erase(std::remove_if(visibleSections.begin(), visibleSections.end(), [this](int i) {
-                return isSectionHidden(i);
-            }),
-                visibleSections.end());
-            if (visibleSections.empty()) {
-                return;
-            }
-            int availableWidth = width();
-            for (auto &i : visibleSections) {
-                availableWidth -= sectionSize(i);
-            }
-
-            const int diffPerSection = availableWidth / static_cast<int>(visibleSections.size());
-            const int extraDiff = availableWidth % visibleSections.size();
-            const auto secondLast = visibleSections.cend()[-2];
-            for (auto &i : visibleSections) {
-                if (_expandingColumn == i) {
-                    continue;
-                }
-                auto newSize = sectionSize(i) + diffPerSection;
-                if (i == secondLast) {
-                    newSize += extraDiff;
-                }
-                resizeSection(i, newSize);
-            }
-        }
-    });
 
     setObjectName(objectName);
     ConfigFile cfg;
@@ -97,7 +58,6 @@ void ExpandingHeaderView::resizeEvent(QResizeEvent *event)
 
 void ExpandingHeaderView::resizeColumns(bool reset)
 {
-    QScopedValueRollback<bool> guard(_isResizing, true);
     int availableWidth = width();
     const auto defaultSize = defaultSectionSize();
     for (int i = 0; i < count(); ++i) {

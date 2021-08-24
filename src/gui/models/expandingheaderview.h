@@ -17,9 +17,6 @@
 
 namespace OCC {
 
-// Based on https://github.com/KDAB/hotspot/blob/master/src/costheaderview.cpp
-// thanks to Milian Wolff <milian.wolff@kdab.com>
-
 class ExpandingHeaderView : public QHeaderView
 {
     Q_OBJECT
@@ -37,7 +34,6 @@ protected:
 
 private:
     int _expandingColumn = 0;
-    bool _isResizing = false;
 };
 
 }

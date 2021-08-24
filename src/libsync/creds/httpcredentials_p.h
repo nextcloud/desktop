@@ -126,6 +126,7 @@ private:
 
     void slotReadJobDone(QKeychain::Job *incoming)
     {
+        Q_ASSERT(!_parent->_user.isEmpty());
         auto job = qobject_cast<QKeychain::ReadPasswordJob *>(incoming);
         QKeychain::Error error = job->error();
 
@@ -139,36 +140,30 @@ private:
             return;
         }
 
-        bool isOauth = _parent->_account->credentialSetting(isOAuthC()).toBool();
-        if (isOauth) {
-            _parent->_refreshToken = job->textData();
-        } else {
-            _parent->_password = job->textData();
-        }
-
-        if (_parent->_user.isEmpty()) {
-            qCWarning(lcHttpLegacyCredentials) << "Strange: User is empty!";
-        }
-
-        if (!_parent->_refreshToken.isEmpty() && error == QKeychain::NoError) {
-            _parent->refreshAccessToken();
-        } else if (!_parent->_password.isEmpty() && error == QKeychain::NoError) {
-            // All cool, the keychain did not come back with error.
-            // Still, the password can be empty which indicates a problem and
-            // the password dialog has to be opened.
-            _parent->_ready = true;
-            emit _parent->fetched();
-        } else {
+        const auto data = job->textData();
+        if (error != QKeychain::NoError || data.isEmpty()) {
             // we come here if the password is empty or any other keychain
             // error happend.
-
+            qCWarning(lcHttpLegacyCredentials) << "Migrating old keychain entries failed" << job->errorString();
             _parent->_fetchErrorString = job->error() != QKeychain::EntryNotFound ? job->errorString() : QString();
 
-            _parent->_password = QString();
+            _parent->_password.clear();
             _parent->_ready = false;
             emit _parent->fetched();
+        } else {
+            qCWarning(lcHttpLegacyCredentials) << "Migrated old keychain entries";
+            if (_parent->_account->credentialSetting(isOAuthC()).toBool()) {
+                _parent->_refreshToken = data;
+                _parent->refreshAccessToken();
+            } else {
+                // All cool, the keychain did not come back with error.
+                // Still, the password can be empty which indicates a problem and
+                // the password dialog has to be opened.
+                _parent->_password = data;
+                _parent->_ready = true;
+                emit _parent->fetched();
+            }
         }
-
         // If keychain data was read from legacy location, wipe these entries and store new ones
         deleteOldKeychainEntries();
         if (_parent->_ready) {

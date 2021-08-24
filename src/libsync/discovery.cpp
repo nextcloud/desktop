@@ -263,6 +263,10 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const QString &loc
                     item->_errorString = tr("File name contains at least one invalid character");
                 } else {
                     item->_errorString = tr("The file name is a reserved name on this file system.");
+                    if (!localName.isEmpty()) {
+                        // The file is indeed a system file and that we don't upload it is no problem
+                        item->_status = SyncFileItem::Excluded;
+                    }
                 }
             }
             break;

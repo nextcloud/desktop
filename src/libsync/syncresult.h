@@ -37,12 +37,12 @@ public:
         NotYetStarted,
         SyncPrepare,
         SyncRunning,
-        SyncAbortRequested,
         Success,
+        SyncAbortRequested,
+        Paused,
         Problem,
         Error,
-        SetupError,
-        Paused
+        SetupError
     };
     Q_ENUM(Status);
 

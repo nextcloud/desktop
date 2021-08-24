@@ -45,7 +45,7 @@ class TrayOverallStatusResult
 public:
     QDateTime lastSyncDone;
 
-    void addResult(const SyncResult &result);
+    void addResult(Folder *f);
     const SyncResult &overallStatus() const;
 
 private:
