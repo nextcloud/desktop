@@ -53,7 +53,7 @@ public:
 private slots:
     void slotPropfindReceived(const QMap<QString, QString> &result);
     void slotPropfindError();
-    void slotThumbnailFetched(const int &statusCode, const QByteArray &reply);
+    void slotThumbnailFetched(const int &statusCode, const QPixmap &reply);
     void slotAccountStateChanged(int state);
 
 private:

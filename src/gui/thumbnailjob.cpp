@@ -32,7 +32,15 @@ void ThumbnailJob::start()
 
 bool ThumbnailJob::finished()
 {
-    emit jobFinished(reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt(), reply()->readAll());
+    const auto result = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    QPixmap p;
+    if (result == 200) {
+        p.loadFromData(reply()->readAll());
+        if (p.isNull()) {
+            qWarning() << Q_FUNC_INFO << "Invalid thumbnail";
+        }
+    }
+    emit jobFinished(result, p);
     return true;
 }
 }

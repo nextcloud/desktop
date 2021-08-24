@@ -73,9 +73,9 @@ ShareDialog::ShareDialog(QPointer<AccountState> accountState,
     // Set icon
     QFileInfo f_info(_localPath);
     QFileIconProvider icon_provider;
-    QIcon icon = icon_provider.icon(f_info);
-    auto pixmap = icon.pixmap(thumbnailSize, thumbnailSize);
-    if (pixmap.width() > 0) {
+    const QIcon icon = icon_provider.icon(f_info);
+    if (!icon.isNull()) {
+        auto pixmap = icon.pixmap(thumbnailSize, thumbnailSize);
         _ui->label_icon->setPixmap(pixmap);
     } else {
         _ui->label_icon->hide();
@@ -213,16 +213,17 @@ QSize ShareDialog::minimumSizeHint() const
     return ocApp()->gui()->settingsDialog()->sizeHintForChild();
 }
 
-void ShareDialog::slotThumbnailFetched(const int &statusCode, const QByteArray &reply)
+void ShareDialog::slotThumbnailFetched(const int &statusCode, const QPixmap &reply)
 {
     if (statusCode != 200) {
         qCWarning(lcSharing) << "Thumbnail status code: " << statusCode;
         return;
     }
-
-    QPixmap p;
-    p.loadFromData(reply, "PNG");
-    p = p.scaledToHeight(thumbnailSize, Qt::SmoothTransformation);
+    if (reply.isNull()) {
+        qCWarning(lcSharing) << "Invalid pixmap";
+        return;
+    }
+    const auto p = reply.scaledToHeight(thumbnailSize, Qt::SmoothTransformation);
     _ui->label_icon->setPixmap(p);
     _ui->label_icon->show();
 }

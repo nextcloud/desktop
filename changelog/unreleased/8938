@@ -1,0 +1,7 @@
+Change: Make sharedialog preview be more resilient
+
+We no longer enforce png thumbnails.
+We no longer replace the file icon if the thumbnail is invalid.
+
+https://github.com/owncloud/client/issues/8938
+https://github.com/owncloud/client/pull/8939
