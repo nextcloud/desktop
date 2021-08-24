@@ -392,6 +392,36 @@ private slots:
         } test;
         test.test();
     }
+
+
+    void testTimeout()
+    {
+        struct Test : OAuthTestCase
+        {
+            QScopedValueRollback<int> rollback;
+
+            Test()
+                : rollback(AbstractNetworkJob::httpTimeout, 1)
+            {
+                localHost = QLatin1String("127.0.0.1");
+            }
+
+            QNetworkReply *statusPhpReply(QNetworkAccessManager::Operation op, const QNetworkRequest &req) override
+            {
+                OC_ASSERT(op == QNetworkAccessManager::GetOperation);
+                return new FakeHangingReply(op, req, fakeQnam);
+            }
+
+            void oauthResult(OAuth::Result result, const QString &user, const QString &token, const QString &refreshToken) override
+            {
+                QCOMPARE(state, StartState);
+                QCOMPARE(result, OAuth::Error);
+                gotAuthOk = true;
+                replyToBrowserOk = true;
+            }
+        } test;
+        test.test();
+    }
 };
 
 
