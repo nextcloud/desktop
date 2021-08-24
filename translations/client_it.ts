@@ -1340,6 +1340,15 @@ Questo significa che il client di sincronizzazione potrebbe non caricare le modi
 %1</translation>
     </message>
     <message>
+        <location filename="../src/gui/folder.cpp" line="1260"/>
+        <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
+Are you sure you want to sync those actions with the server?
+If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
+        <translation>Tutti i file nella cartella locale di sincronizzazione &apos;%1&apos; sono stati eliminati. Queste eliminazioni saranno sincronizzate con il tuo server, rendendo tali file indisponibili, a meno di un ripristino.
+Sei sicuro di voler sincronizzare queste azioni con il server?
+Se è stato un errore e decidi di tenere i file, saranno sincronizzati nuovamente dal server.</translation>
+    </message>
+    <message>
         <location filename="../src/gui/folder.cpp" line="1052"/>
         <source>All files in the sync folder '%1' were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
@@ -1399,27 +1408,7 @@ Se continui normalmente la sincronizzazione provocherai la sovrascrittura di tut
         <translation>Mantieni i file locali come conflitto</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1255"/>
-        <source>All files in the sync folder '%1' folder were deleted on the server.
-These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
-If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
-If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation>Tutti i file nella cartella di sincronizzazione &apos;%1&apos; sono stati eliminati sul server.
-Queste eliminazioni saranno sincronizzate con la tua cartella locale, rendendo tali file indisponibili, a meno che tu abbia il permesso per ripristinarli.
-Se decidi di ripristinare i file, essi saranno sincronizzati nuovamente con il server, se hai i diritti per farlo.
-Se decidi di eliminare i file, non saranno più disponibili, a meno che tu sia il proprietario.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folder.cpp" line="1260"/>
-        <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
-Are you sure you want to sync those actions with the server?
-If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
-        <translation>Tutti i file nella cartella locale di sincronizzazione &apos;%1&apos; sono stati eliminati. Queste eliminazioni saranno sincronizzate con il tuo server, rendendo tali file indisponibili, a meno di un ripristino.
-Sei sicuro di voler sincronizzare queste azioni con il server?
-Se è stato un errore e decidi di tenere i file, saranno sincronizzati nuovamente dal server.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folder.cpp" line="1259"/>
+        <location filename="../src/gui/folder.cpp" line="1232"/>
         <source>All files in the sync folder &quot;%1&quot; folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
@@ -1430,7 +1419,7 @@ Se decidi di ripristinare i file, essi saranno sincronizzati nuovamente con il s
 Se decidi di eliminare i file, non saranno più disponibili, a meno che tu sia il proprietario.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1264"/>
+        <location filename="../src/gui/folder.cpp" line="1237"/>
         <source>All the files in your local sync folder &quot;%1&quot; were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
@@ -1447,6 +1436,17 @@ Se è stato un errore e decidi di tenere i file, saranno sincronizzati nuovament
         <location filename="../src/gui/folder.cpp" line="1268"/>
         <source>Remove all files</source>
         <translation>Rimuovi tutti i file</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1255"/>
+        <source>All files in the sync folder '%1' folder were deleted on the server.
+These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
+If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
+If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
+        <translation>Tutti i file nella cartella di sincronizzazione &apos;%1&apos; sono stati eliminati sul server.
+Queste eliminazioni saranno sincronizzate con la tua cartella locale, rendendo tali file indisponibili, a meno che tu abbia il permesso per ripristinarli.
+Se decidi di ripristinare i file, essi saranno sincronizzati nuovamente con il server, se hai i diritti per farlo.
+Se decidi di eliminare i file, non saranno più disponibili, a meno che tu sia il proprietario.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1269"/>
@@ -2414,7 +2414,7 @@ I log saranno scritti in %1</translation>
         <translation>&lt;nobr&gt;Il file &apos;%1&apos;&lt;br/&gt;non può essere aperto in scrittura.&lt;br/&gt;&lt;br/&gt;Il risultato del log &lt;b&gt;non&lt;/b&gt; può essere salvato!&lt;/nobr&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="195"/>
+        <location filename="../src/libsync/logger.cpp" line="149"/>
         <source>&lt;nobr&gt;File &quot;%1&quot;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output &lt;b&gt;cannot&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
         <translation>&lt;nobr&gt;Il file &quot;%1&quot;&lt;br/&gt;non può essere aperto in scrittura.&lt;br/&gt;&lt;br/&gt;Il risultato del log &lt;b&gt;non&lt;/b&gt; può essere salvato!&lt;/nobr&gt;</translation>
     </message>
@@ -3203,14 +3203,14 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>I nomi del file che terminano con un punto non sono supportati su questo file system.</translation>
     </message>
     <message>
+        <location filename="../src/libsync/discovery.cpp" line="271"/>
+        <source>File names containing the character &quot;%1&quot; are not supported on this file system.</source>
+        <translation>I nomi del file che contengono il carattere &quot;%1&quot; non sono supportati su questo file system.</translation>
+    </message>
+    <message>
         <location filename="../src/libsync/discovery.cpp" line="272"/>
         <source>File names containing the character &apos;%1&apos; are not supported on this file system.</source>
         <translation>I nomi del file che contengono il carattere &apos;%1&apos; non sono supportati su questo file system.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="273"/>
-        <source>File names containing the character &quot;%1&quot; are not supported on this file system.</source>
-        <translation>I nomi del file che contengono il carattere &quot;%1&quot; non sono supportati su questo file system.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="276"/>
@@ -3338,7 +3338,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Il server ha risposto con un errore durante la lettura della cartella &apos;% 1&apos; : %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1594"/>
+        <location filename="../src/libsync/discovery.cpp" line="1590"/>
         <source>Server replied with an error while reading directory &quot;%1&quot; : %2</source>
         <translation>Il server ha risposto con un errore durante la lettura della cartella &quot;%1&quot; : %2</translation>
     </message>
@@ -4177,12 +4177,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::SocketApi</name>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="465"/>
-        <source>Share with %1</source>
-        <comment>parameter is Nextcloud</comment>
-        <translation>Condividi con %1</translation>
-    </message>
-    <message>
         <location filename="../src/gui/socketapi.cpp" line="640"/>
         <source>Context menu share</source>
         <translation>Condivisione da menu contestuale</translation>
@@ -4278,6 +4272,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/socketapi.cpp" line="1105"/>
         <source>Delete</source>
         <translation>Elimina</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi.cpp" line="465"/>
+        <source>Share with %1</source>
+        <comment>parameter is Nextcloud</comment>
+        <translation>Condividi con %1</translation>
     </message>
 </context>
 <context>
@@ -4839,6 +4839,11 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/theme.cpp" line="469"/>
         <source>&lt;p&gt;&lt;small&gt;Using virtual files plugin: %1&lt;/small&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;small&gt;Usato il plugin dei file virtuali: %1&lt;/small&gt;&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/theme.cpp" line="471"/>
+        <source>&lt;br&gt;%1</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="482"/>
@@ -5665,12 +5670,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Il file scaricato non verifica il codice di controllo, sarà ripristinato. &apos;%1&apos; != &apos;%2&apos;</translation>
     </message>
     <message>
-        <location filename="../src/common/checksums.cpp" line="364"/>
+        <location filename="../src/common/checksums.cpp" line="367"/>
         <source>The checksum header contained an unknown checksum type &quot;%1&quot;</source>
         <translation>L&apos;intestazione di controllo conteneva un tipo di codice di controllo &quot;%1&quot; sconosciuto</translation>
     </message>
     <message>
-        <location filename="../src/common/checksums.cpp" line="368"/>
+        <location filename="../src/common/checksums.cpp" line="371"/>
         <source>The downloaded file does not match the checksum, it will be resumed. &quot;%1&quot; != &quot;%2&quot;</source>
         <translation>Il file scaricato non verifica il codice di controllo, sarà ripristinato. &quot;%1&quot; != &quot;%2&quot;</translation>
     </message>

@@ -1338,6 +1338,15 @@ To znamená, že se může stávat, že synchronizační klient nebude místní 
 %1</translation>
     </message>
     <message>
+        <location filename="../src/gui/folder.cpp" line="1260"/>
+        <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
+Are you sure you want to sync those actions with the server?
+If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
+        <translation>Všechny soubory v místní synchronizované složce „%1“ byly smazány. Tyto soubory budou smazány i v synchronizované složce na serveru a nebudou tedy dostupné, dokud nebudou obnovené.
+Opravdu chcete tyto změny provést i na serveru?
+Pokud to byla pouze chyba a chcete si tyto soubory ponechat, budou ze serveru znovu synchronizovány.</translation>
+    </message>
+    <message>
         <location filename="../src/gui/folder.cpp" line="1052"/>
         <source>All files in the sync folder '%1' were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
@@ -1397,27 +1406,7 @@ Pokračováním v synchronizaci způsobí přepsání všech vašich souborů st
         <translation>Ponechat místní soubory jako konflikt</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1255"/>
-        <source>All files in the sync folder '%1' folder were deleted on the server.
-These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
-If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
-If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation>Všechny soubory v synchronizované složce „%1“ byly na serveru smazány.
-Tyto soubory budou smazány i ve vaší místní synchronizované složce a nebudou tedy dostupné, pokud nemáte právo obnovovat.
-Pokud se rozhodnete soubory ponechat, budou opět synchronizovány se serverem, pokud k tomu máte práva.
-Pokud se rozhodnete soubory smazat, budou vám nedostupné, pokud nejste jejich vlastníkem.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folder.cpp" line="1260"/>
-        <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
-Are you sure you want to sync those actions with the server?
-If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
-        <translation>Všechny soubory v místní synchronizované složce „%1“ byly smazány. Tyto soubory budou smazány i v synchronizované složce na serveru a nebudou tedy dostupné, dokud nebudou obnovené.
-Opravdu chcete tyto změny provést i na serveru?
-Pokud to byla pouze chyba a chcete si tyto soubory ponechat, budou ze serveru znovu synchronizovány.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folder.cpp" line="1259"/>
+        <location filename="../src/gui/folder.cpp" line="1232"/>
         <source>All files in the sync folder &quot;%1&quot; folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
@@ -1428,7 +1417,7 @@ Pokud se rozhodnete soubory ponechat, budou opět synchronizovány se serverem, 
 Pokud se rozhodnete soubory smazat, budou vám nedostupné, pokud nejste jejich vlastníkem.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1264"/>
+        <location filename="../src/gui/folder.cpp" line="1237"/>
         <source>All the files in your local sync folder &quot;%1&quot; were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
@@ -1445,6 +1434,17 @@ Pokud to byla pouze chyba a chcete si tyto soubory ponechat, budou ze serveru zn
         <location filename="../src/gui/folder.cpp" line="1268"/>
         <source>Remove all files</source>
         <translation>Odebrat veškeré soubory</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1255"/>
+        <source>All files in the sync folder '%1' folder were deleted on the server.
+These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
+If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
+If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
+        <translation>Všechny soubory v synchronizované složce „%1“ byly na serveru smazány.
+Tyto soubory budou smazány i ve vaší místní synchronizované složce a nebudou tedy dostupné, pokud nemáte právo obnovovat.
+Pokud se rozhodnete soubory ponechat, budou opět synchronizovány se serverem, pokud k tomu máte práva.
+Pokud se rozhodnete soubory smazat, budou vám nedostupné, pokud nejste jejich vlastníkem.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1269"/>
@@ -2416,7 +2416,7 @@ Záznamy událostí budou zapisovány do %1</translation>
         <translation>&lt;nobr&gt;Soubor „%1“&lt;br/&gt;se nedaří otevřít pro zápis.&lt;br/&gt;&lt;br/&gt;Výstup záznamu proto &lt;b&gt;nelze&lt;/b&gt; uložit!&lt;/nobr&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="195"/>
+        <location filename="../src/libsync/logger.cpp" line="149"/>
         <source>&lt;nobr&gt;File &quot;%1&quot;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output &lt;b&gt;cannot&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
         <translation>Soubor „%1“&lt;br/&gt; se nepodařilo otevřít pro zápis.&lt;br/&gt;&lt;br/&gt;Výstup záznamu událostí &lt;b&gt;není&lt;/b&gt; možné uložit!&lt;nobr&gt;</translation>
     </message>
@@ -3212,13 +3212,13 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
         <translation>Na tomto souborovém systému nejsou podporovány názvy souborů končící na tečku.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="272"/>
-        <source>File names containing the character &apos;%1&apos; are not supported on this file system.</source>
+        <location filename="../src/libsync/discovery.cpp" line="271"/>
+        <source>File names containing the character &quot;%1&quot; are not supported on this file system.</source>
         <translation>Názvy souborů obsahující znak „%1“ nejsou na tomto souborovém systému podporovány.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="273"/>
-        <source>File names containing the character &quot;%1&quot; are not supported on this file system.</source>
+        <location filename="../src/libsync/discovery.cpp" line="272"/>
+        <source>File names containing the character &apos;%1&apos; are not supported on this file system.</source>
         <translation>Názvy souborů obsahující znak „%1“ nejsou na tomto souborovém systému podporovány.</translation>
     </message>
     <message>
@@ -3347,7 +3347,7 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
         <translation>Server vrátil chybu při čtení adresáře „%1“: %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1594"/>
+        <location filename="../src/libsync/discovery.cpp" line="1590"/>
         <source>Server replied with an error while reading directory &quot;%1&quot; : %2</source>
         <translation>Server vrátil chybu při čtení adresáře „%1“: %2</translation>
     </message>
@@ -4186,12 +4186,6 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
 <context>
     <name>OCC::SocketApi</name>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="465"/>
-        <source>Share with %1</source>
-        <comment>parameter is Nextcloud</comment>
-        <translation>Sdílet s %1</translation>
-    </message>
-    <message>
         <location filename="../src/gui/socketapi.cpp" line="640"/>
         <source>Context menu share</source>
         <translation>Sdílení kontextové nabídky</translation>
@@ -4287,6 +4281,12 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
         <location filename="../src/gui/socketapi.cpp" line="1105"/>
         <source>Delete</source>
         <translation>Smazat</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi.cpp" line="465"/>
+        <source>Share with %1</source>
+        <comment>parameter is Nextcloud</comment>
+        <translation>Sdílet s %1</translation>
     </message>
 </context>
 <context>
@@ -4848,6 +4848,11 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
         <location filename="../src/libsync/theme.cpp" line="469"/>
         <source>&lt;p&gt;&lt;small&gt;Using virtual files plugin: %1&lt;/small&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;small&gt;pomocí zásuvného modulu pro virtuální soubory: %1&lt;/small&gt;&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/theme.cpp" line="471"/>
+        <source>&lt;br&gt;%1</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="482"/>
@@ -5674,12 +5679,12 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
         <translation>Stažený soubor neodpovídá kontrolnímu součtu, bude stažen znovu. „%1“ != „%2“</translation>
     </message>
     <message>
-        <location filename="../src/common/checksums.cpp" line="364"/>
+        <location filename="../src/common/checksums.cpp" line="367"/>
         <source>The checksum header contained an unknown checksum type &quot;%1&quot;</source>
         <translation>Hlavička kontrolního součtu obsahovala neznámý typ součtu „%1“</translation>
     </message>
     <message>
-        <location filename="../src/common/checksums.cpp" line="368"/>
+        <location filename="../src/common/checksums.cpp" line="371"/>
         <source>The downloaded file does not match the checksum, it will be resumed. &quot;%1&quot; != &quot;%2&quot;</source>
         <translation>Stažený soubor neodpovídá kontrolnímu součtu, bude stažen znovu. „%1“ != „%2“</translation>
     </message>

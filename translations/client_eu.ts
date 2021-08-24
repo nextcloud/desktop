@@ -1339,6 +1339,15 @@ Honek esan nahi du sinkronizazio bezeroak agian ez duela berehalakoan kargatuko 
 %1</translation>
     </message>
     <message>
+        <location filename="../src/gui/folder.cpp" line="1260"/>
+        <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
+Are you sure you want to sync those actions with the server?
+If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
+        <translation>Zure tokiko &apos;%1&apos; sinkronizazio karpetako fitxategi guztiak ezabatu dira. Ezabaketa hauek zerbitzarian sinkronizatuko dira, beraz ezingo dituzu fitxategiok erabili leheneratu ezean.
+Ziur zaude ekintza hauek zerbitzarian sinkronizatu nahi dituzula?
+Ezabaketa nahigabea izan bada eta erabakitzen baduzu fitxategiok mantentzea, hauek zerbitzarian ber-sinkronizatuko dira.</translation>
+    </message>
+    <message>
         <location filename="../src/gui/folder.cpp" line="1052"/>
         <source>All files in the sync folder '%1' were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
@@ -1399,27 +1408,7 @@ Nahi al duzu zure tokiko fitxategi berrienak gatazkako fitxategi gisa mantentzea
         <translation>Mantendu fitxategi lokalak gatazka gisa</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1255"/>
-        <source>All files in the sync folder '%1' folder were deleted on the server.
-These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
-If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
-If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation>&apos;% 1&apos; sinkronizazio-karpetaren fitxategi guztiak ezabatuko dira zerbitzaritik.
-Ezabaketa horiek zure sinkronizazio-karpetan sinkronizatuko dira, eta horren ondorioz fitxategiak ezingo dituzu berriro erabili leheneratzeko eskubiderik ez baduzu.
-Fitxategiak leheneratzea erabakitzen baduzu, zerbitzariarekin berriro sinkronizatuko dira horretarako eskubiderik baduzu.
-Fitxategiak ezabatzea erabakitzen baduzu, ez dira erabilgarri egongo, jabea izan ezean.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folder.cpp" line="1260"/>
-        <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
-Are you sure you want to sync those actions with the server?
-If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
-        <translation>Zure tokiko &apos;%1&apos; sinkronizazio karpetako fitxategi guztiak ezabatu dira. Ezabaketa hauek zerbitzarian sinkronizatuko dira, beraz ezingo dituzu fitxategiok erabili leheneratu ezean.
-Ziur zaude ekintza hauek zerbitzarian sinkronizatu nahi dituzula?
-Ezabaketa nahigabea izan bada eta erabakitzen baduzu fitxategiok mantentzea, hauek zerbitzarian ber-sinkronizatuko dira.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folder.cpp" line="1259"/>
+        <location filename="../src/gui/folder.cpp" line="1232"/>
         <source>All files in the sync folder &quot;%1&quot; folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
@@ -1430,7 +1419,7 @@ Fitxategiak leheneratzea erabakitzen baduzu, berriro sinkronizatuko dira zerbitz
 Fitxategiak ezabatzea erabakitzen baduzu, ezingo dituzu erabilgarri izan, jabea ez bazara behintzat.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1264"/>
+        <location filename="../src/gui/folder.cpp" line="1237"/>
         <source>All the files in your local sync folder &quot;%1&quot; were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
@@ -1447,6 +1436,17 @@ Istripua izan bada eta zure fitxategiak mantentzea erabakitzen baduzu, zerbitzar
         <location filename="../src/gui/folder.cpp" line="1268"/>
         <source>Remove all files</source>
         <translation>Ezabatu fitxategi guztiak</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1255"/>
+        <source>All files in the sync folder '%1' folder were deleted on the server.
+These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
+If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
+If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
+        <translation>&apos;% 1&apos; sinkronizazio-karpetaren fitxategi guztiak ezabatuko dira zerbitzaritik.
+Ezabaketa horiek zure sinkronizazio-karpetan sinkronizatuko dira, eta horren ondorioz fitxategiak ezingo dituzu berriro erabili leheneratzeko eskubiderik ez baduzu.
+Fitxategiak leheneratzea erabakitzen baduzu, zerbitzariarekin berriro sinkronizatuko dira horretarako eskubiderik baduzu.
+Fitxategiak ezabatzea erabakitzen baduzu, ez dira erabilgarri egongo, jabea izan ezean.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1269"/>
@@ -2417,7 +2417,7 @@ Erregistroak %1(e)an idatziko dira.</translation>
         <translation>&lt;nobr&gt;&apos;%1&apos; Fitxategia&lt;br/&gt; ezin da idazteko ireki.&lt;br/&gt;&lt;br/&gt;Egunkariaren irteera &lt;b&gt;ezin&lt;/b&gt; da gorde!&lt;/nobr&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="195"/>
+        <location filename="../src/libsync/logger.cpp" line="149"/>
         <source>&lt;nobr&gt;File &quot;%1&quot;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output &lt;b&gt;cannot&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
         <translation>&lt;nobr&gt;&quot;%1&quot; fitxategia&lt;br/&gt;  ezin da ireki idazteko.&lt;br/&gt;&lt;br/&gt; Erregistroaren irteera &lt;b&gt;ezin da &lt;/b&gt; gorde!&lt;/nobr&gt;</translation>
     </message>
@@ -3213,14 +3213,14 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
         <translation>Puntu batekin amaitzen diren fitxategi-izenak ez dira onartzen fitxategi-sistema honetan.</translation>
     </message>
     <message>
+        <location filename="../src/libsync/discovery.cpp" line="271"/>
+        <source>File names containing the character &quot;%1&quot; are not supported on this file system.</source>
+        <translation>&quot;%1&quot; karakterea daukaten fitxategi-izenak ez dira onartzen fitxategi-sistema honetan.</translation>
+    </message>
+    <message>
         <location filename="../src/libsync/discovery.cpp" line="272"/>
         <source>File names containing the character &apos;%1&apos; are not supported on this file system.</source>
         <translation>&apos;%1&apos; karakterea daukaten fitxategi-izenak ez dira onartzen fitxategi-sistema honetan.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="273"/>
-        <source>File names containing the character &quot;%1&quot; are not supported on this file system.</source>
-        <translation>&quot;%1&quot; karakterea daukaten fitxategi-izenak ez dira onartzen fitxategi-sistema honetan.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="276"/>
@@ -3348,7 +3348,7 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
         <translation>Zerbitzariak errore batekin erantzun du irakurtzean &apos;%1&apos; : %2 direktorioa </translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1594"/>
+        <location filename="../src/libsync/discovery.cpp" line="1590"/>
         <source>Server replied with an error while reading directory &quot;%1&quot; : %2</source>
         <translation>Zerbitzariak errore batekin erantzun du &quot;% 1&quot; direktorioa irakurtzean:% 2</translation>
     </message>
@@ -4187,12 +4187,6 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
 <context>
     <name>OCC::SocketApi</name>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="465"/>
-        <source>Share with %1</source>
-        <comment>parameter is Nextcloud</comment>
-        <translation>%1(r)ekin partekatu</translation>
-    </message>
-    <message>
         <location filename="../src/gui/socketapi.cpp" line="640"/>
         <source>Context menu share</source>
         <translation>Testuinguruaren partekatze menua</translation>
@@ -4288,6 +4282,12 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
         <location filename="../src/gui/socketapi.cpp" line="1105"/>
         <source>Delete</source>
         <translation>Ezabatu</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi.cpp" line="465"/>
+        <source>Share with %1</source>
+        <comment>parameter is Nextcloud</comment>
+        <translation>%1(r)ekin partekatu</translation>
     </message>
 </context>
 <context>
@@ -4849,6 +4849,11 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
         <location filename="../src/libsync/theme.cpp" line="469"/>
         <source>&lt;p&gt;&lt;small&gt;Using virtual files plugin: %1&lt;/small&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;small&gt;Fitxategi birtualen plugina erabiltzen:% 1&lt;/small&gt;&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/theme.cpp" line="471"/>
+        <source>&lt;br&gt;%1</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="482"/>
@@ -5675,12 +5680,12 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
         <translation>Deskargatu den fitxategia ez dator bat  kontroleko baturarekin, berrekin egingo da. &apos;%1&apos; != &apos;%2&apos;</translation>
     </message>
     <message>
-        <location filename="../src/common/checksums.cpp" line="364"/>
+        <location filename="../src/common/checksums.cpp" line="367"/>
         <source>The checksum header contained an unknown checksum type &quot;%1&quot;</source>
         <translation>Kontroleko baturaren goiburuak &quot;%1&quot; motako kontroleko batura ezezagun bat dauka</translation>
     </message>
     <message>
-        <location filename="../src/common/checksums.cpp" line="368"/>
+        <location filename="../src/common/checksums.cpp" line="371"/>
         <source>The downloaded file does not match the checksum, it will be resumed. &quot;%1&quot; != &quot;%2&quot;</source>
         <translation>Deskargatu den fitxategia ez dator bat kontroleko baturarekin, berrekin egingo da. &quot;%1&quot; != &quot;%2&quot;</translation>
     </message>
