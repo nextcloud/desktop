@@ -461,16 +461,10 @@ void OAuth::authorisationLinkAsync(std::function<void (const QUrl &)> callback) 
 void OAuth::fetchWellKnown()
 {
     auto checkServer = new CheckServerJob(_account->sharedFromThis(), this);
+    checkServer->setTimeout(qMin(30 * 1000ll, checkServer->timeoutMsec()));
     connect(checkServer, &CheckServerJob::instanceNotFound, this, [this](QNetworkReply *reply) {
         if (_isRefreshingToken) {
             Q_EMIT refreshError(reply->error(), reply->errorString());
-        } else {
-            Q_EMIT result(Error);
-        }
-    });
-    connect(checkServer, &CheckServerJob::timeout, this, [this] {
-        if (_isRefreshingToken) {
-            Q_EMIT refreshError(QNetworkReply::TimeoutError, QStringLiteral("Job Timed out"));
         } else {
             Q_EMIT result(Error);
         }

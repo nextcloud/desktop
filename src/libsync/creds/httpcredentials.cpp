@@ -15,15 +15,6 @@
 #include "creds/httpcredentials.h"
 #include "creds/httpcredentials_p.h"
 
-#include <QLoggingCategory>
-#include <QMutex>
-#include <QNetworkReply>
-#include <QSettings>
-#include <QSslKey>
-#include <QJsonObject>
-#include <QJsonDocument>
-#include <QBuffer>
-
 #include "account.h"
 #include "accessmanager.h"
 #include "configfile.h"
@@ -32,7 +23,16 @@
 #include "oauth.h"
 #include "creds/credentialscommon.h"
 #include "creds/credentialmanager.h"
+
 #include <QAuthenticator>
+#include <QBuffer>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QLoggingCategory>
+#include <QMutex>
+#include <QNetworkReply>
+#include <QSettings>
+#include <QSslKey>
 
 Q_LOGGING_CATEGORY(lcHttpCredentials, "sync.credentials.http", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcHttpLegacyCredentials, "sync.credentials.http.legacy", QtInfoMsg)
@@ -245,6 +245,9 @@ bool HttpCredentials::refreshAccessToken()
         oauth->deleteLater();
         _isRenewingOAuthToken = false;
         switch (error) {
+        // most probably a timeout
+        case QNetworkReply::OperationCanceledError:
+            Q_FALLTHROUGH();
         case QNetworkReply::RemoteHostClosedError:
             Q_FALLTHROUGH();
         case QNetworkReply::ConnectionRefusedError:
@@ -262,6 +265,7 @@ bool HttpCredentials::refreshAccessToken()
         case QNetworkReply::ServiceUnavailableError:
             Q_FALLTHROUGH();
         case QNetworkReply::UnknownNetworkError:
+            QTimer::singleShot(30000, this, &HttpCredentials::refreshAccessToken);
             break;
         default:
             // something is broken
