@@ -530,15 +530,15 @@ bool CheckServerJob::finished()
 
     mergeSslConfigurationForSslButton(reply()->sslConfiguration(), account());
 
-    const QByteArray body = reply()->peek(4 * 1024);
     const int httpStatus = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
     if (reply()->error() == QNetworkReply::TooManyRedirectsError) {
         qCWarning(lcCheckServerJob) << "error:" << reply()->errorString();
         emit instanceNotFound(reply());
-    } else if (body.isEmpty() || httpStatus != 200) {
-        qCWarning(lcCheckServerJob) << "error: status.php replied " << httpStatus << body;
+    } else if (httpStatus != 200 || reply()->bytesAvailable() == 0) {
+        qCWarning(lcCheckServerJob) << "error: status.php replied " << httpStatus;
         emit instanceNotFound(reply());
     } else {
+        const QByteArray body = reply()->peek(4 * 1024);
         QJsonParseError error;
         auto status = QJsonDocument::fromJson(body, &error);
         // empty or invalid response

@@ -220,7 +220,7 @@
         <translation>خطأ غير معروف: تم حذف رد الشبكة</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="421"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="416"/>
         <source>Server replied &quot;%1 %2&quot; to &quot;%3 %4&quot;</source>
         <translation>رد الخادم &quot;%1 %2&quot; على &quot;%3 %4&quot;</translation>
     </message>
@@ -1587,7 +1587,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
 <context>
     <name>OCC::GETJob</name>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="335"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="334"/>
         <source>Connection Timeout</source>
         <translation>انتهاء مهلة الاتصال</translation>
     </message>
@@ -2193,12 +2193,12 @@ Note that using any logging command line options will override the settings.</so
         <translation>&lt;h1&gt;خطأ تسجيل الدخول&lt;/h1&gt;&lt;p&gt; فشل في استرداد معلومات المستخدم&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="530"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="547"/>
         <source>Oauth2 Error</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="531"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="548"/>
         <source>Oauth2 authentication requires a secured connection.</source>
         <translation type="unfinished"/>
     </message>
@@ -2208,14 +2208,14 @@ Note that using any logging command line options will override the settings.</so
         <translation>&lt;h1&gt;خطأ في تسجيل الدخول&lt;/h1&gt;&lt;p&gt;%1&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="322"/>
-        <location filename="../src/libsync/creds/oauth.cpp" line="325"/>
-        <location filename="../src/libsync/creds/oauth.cpp" line="331"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="323"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="326"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="332"/>
         <source>Error while refreshing the token: %1 : %2</source>
         <translation>خطأ أثناء تحديث الرمز المميز: ٪ 1 : ٪ 2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="336"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="337"/>
         <source>The reply from the server did not contain all expected fields
 :%1
 Received data: %2</source>
@@ -2224,7 +2224,7 @@ Received data: %2</source>
 البيانات الواردة : ٪ 2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="375"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="376"/>
         <source>&lt;h1&gt;Wrong user&lt;/h1&gt;&lt;p&gt;You logged-in with user &lt;em&gt;%1&lt;/em&gt;, but must login with user &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please log out of %3 in another tab, then &lt;a href=&apos;%4&apos;&gt;click here&lt;/a&gt; and log in as user %2&lt;/p&gt;</source>
         <translation>&lt;h1&gt;مستخدم خطأ&lt;/h1&gt;&lt;p&gt;لقد سجّلت دخولك باستخدام المستخدم &lt;em&gt;%1&lt;/em&gt;، لكن يجب تسجيل الدخول باستخدام المستخدم &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;يُرجى تسجيل الخروج من %3 في علامة تبويب أخرى، ثم &lt;a href=&apos;%4&apos;&gt;انقر هنا&lt;/a&gt; وسجِّل الدخول باستخدام مستخدم %2&lt;/p&gt;</translation>
     </message>

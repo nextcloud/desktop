@@ -220,7 +220,7 @@
         <translation>Neznámá chyba: odpověď sítě byla smazána</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="421"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="416"/>
         <source>Server replied &quot;%1 %2&quot; to &quot;%3 %4&quot;</source>
         <translation>Odpověď serveru &quot;%1 %2&quot; do &quot;%3 %4&quot;</translation>
     </message>
@@ -1577,7 +1577,7 @@ Pokud to byl omyl a chcete si soubory ponechat, budou opět synchronizovány ze 
 <context>
     <name>OCC::GETJob</name>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="335"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="334"/>
         <source>Connection Timeout</source>
         <translation>Čas spojení vypršel</translation>
     </message>
@@ -2179,12 +2179,12 @@ Poznámka: Spouštění aplikace s parametrem přepíše toto nastavení.</trans
         <translation>&lt;h1&gt;Chyba přihlášení&lt;/h1&gt;&lt;p&gt;Nepovedlo se stáhnout informace o uživateli&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="530"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="547"/>
         <source>Oauth2 Error</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="531"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="548"/>
         <source>Oauth2 authentication requires a secured connection.</source>
         <translation type="unfinished"/>
     </message>
@@ -2194,14 +2194,14 @@ Poznámka: Spouštění aplikace s parametrem přepíše toto nastavení.</trans
         <translation>&lt;h1&gt;Chyba přihlášení&lt;/h1&gt;&lt;p&gt;%1&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="322"/>
-        <location filename="../src/libsync/creds/oauth.cpp" line="325"/>
-        <location filename="../src/libsync/creds/oauth.cpp" line="331"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="323"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="326"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="332"/>
         <source>Error while refreshing the token: %1 : %2</source>
         <translation>Chyba při obnově tokenu: %1 : %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="336"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="337"/>
         <source>The reply from the server did not contain all expected fields
 :%1
 Received data: %2</source>
@@ -2210,7 +2210,7 @@ Received data: %2</source>
 Přijatá data: %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="375"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="376"/>
         <source>&lt;h1&gt;Wrong user&lt;/h1&gt;&lt;p&gt;You logged-in with user &lt;em&gt;%1&lt;/em&gt;, but must login with user &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please log out of %3 in another tab, then &lt;a href=&apos;%4&apos;&gt;click here&lt;/a&gt; and log in as user %2&lt;/p&gt;</source>
         <translation>&lt;h1&gt;Chybný uživatel&lt;/h1&gt;&lt;p&gt;Přihlásil jste se jako uživatel &lt;em&gt;%1&lt;/em&gt;, ale musíte se přihlásit jako &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Prosím odhlaste se z %3 v jiném okně, a poté &lt;a href=&apos;%4&apos;&gt;klikněte sem&lt;/a&gt; a přihlaste se jako %2&lt;/p&gt;</translation>
     </message>

@@ -61,7 +61,7 @@ class AbstractSslErrorHandler
 {
 public:
     virtual ~AbstractSslErrorHandler() {}
-    virtual bool handleErrors(QList<QSslError>, const QSslConfiguration &conf, QList<QSslCertificate> *, AccountPtr) = 0;
+    virtual bool handleErrors(const QList<QSslError> &, const QSslConfiguration &conf, QList<QSslCertificate> *, AccountPtr) = 0;
 };
 
 /**
@@ -220,7 +220,7 @@ public:
 public slots:
     /// Used when forgetting credentials
     void clearQNAMCache();
-    void slotHandleSslErrors(QNetworkReply *, QList<QSslError>);
+    void slotHandleSslErrors(QPointer<QNetworkReply>, const QList<QSslError> &);
 
 signals:
     /// Emitted whenever there's network activity
