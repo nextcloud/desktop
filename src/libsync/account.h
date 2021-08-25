@@ -61,7 +61,7 @@ class AbstractSslErrorHandler
 {
 public:
     virtual ~AbstractSslErrorHandler() {}
-    virtual bool handleErrors(QList<QSslError>, const QSslConfiguration &conf, QList<QSslCertificate> *, AccountPtr) = 0;
+    virtual bool handleErrors(const QList<QSslError> &, const QSslConfiguration &conf, QList<QSslCertificate> *, AccountPtr) = 0;
 };
 
 /**

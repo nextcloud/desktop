@@ -30,13 +30,9 @@ namespace Utility {
     QString escape(const QStringList &l) { return escape(l.join(';')); }
 }
 
-bool SslDialogErrorHandler::handleErrors(QList<QSslError> errors, const QSslConfiguration &conf, QList<QSslCertificate> *certs, AccountPtr account)
+bool SslDialogErrorHandler::handleErrors(const QList<QSslError> &errors, const QSslConfiguration &, QList<QSslCertificate> *certs, AccountPtr account)
 {
-    (void)conf;
-    if (!certs) {
-        qCCritical(lcSslErrorDialog) << "Certs parameter required but is NULL!";
-        return false;
-    }
+    Q_ASSERT(certs);
 
     SslErrorDialog dlg(account);
     // whether the failing certs have previously been accepted

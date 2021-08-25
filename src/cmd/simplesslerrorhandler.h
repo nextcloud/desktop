@@ -28,7 +28,7 @@ namespace OCC {
 class SimpleSslErrorHandler : public OCC::AbstractSslErrorHandler
 {
 public:
-    bool handleErrors(QList<QSslError> errors, const QSslConfiguration &conf, QList<QSslCertificate> *certs, OCC::AccountPtr) override;
+    bool handleErrors(const QList<QSslError> &errors, const QSslConfiguration &conf, QList<QSslCertificate> *certs, OCC::AccountPtr) override;
 };
 }
 
