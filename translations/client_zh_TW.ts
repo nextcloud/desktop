@@ -4853,7 +4853,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/theme.cpp" line="471"/>
         <source>&lt;br&gt;%1</source>
-        <translation type="unfinished"/>
+        <translation>&lt;br&gt;%1</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="482"/>

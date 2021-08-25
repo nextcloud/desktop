@@ -4852,7 +4852,7 @@ Toto je nový experimentálny režim. Ak sa ho rozhodnete použiť, nahláste v�
     <message>
         <location filename="../src/libsync/theme.cpp" line="471"/>
         <source>&lt;br&gt;%1</source>
-        <translation type="unfinished"/>
+        <translation>&lt;br&gt;%1</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="482"/>
