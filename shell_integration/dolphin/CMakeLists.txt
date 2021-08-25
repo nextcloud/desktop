@@ -1,6 +1,6 @@
 project(dolphin-owncloud)
 
-cmake_minimum_required(VERSION 2.8.12)
+cmake_minimum_required(VERSION 3.16)
 
 set(QT_MIN_VERSION "5.15.0")
 set(KF5_MIN_VERSION "5.16.0")
