@@ -349,86 +349,84 @@ void Account::setCredentialSetting(const QString &key, const QVariant &value)
     }
 }
 
-void Account::slotHandleSslErrors(QNetworkReply *reply, QList<QSslError> errors)
+void Account::slotHandleSslErrors(QPointer<QNetworkReply> reply, const QList<QSslError> &errors)
 {
-    NetworkJobTimeoutPauser pauser(reply);
+    const NetworkJobTimeoutPauser pauser(reply);
     qCDebug(lcAccount) << "SSL diagnostics for url " << reply->url().toString();
     QList<QSslError> filteredErrors;
+    QList<QSslError> ignoredErrors;
     for (const auto &error : qAsConst(errors)) {
         if (error.error() == QSslError::UnableToGetLocalIssuerCertificate) {
             // filter out this "error"
             qCDebug(lcAccount) << "- Info for " << error.certificate() << ": " << error.errorString()
                                << ". Local SSL certificates are known and always accepted.";
+            ignoredErrors << error;
         } else {
             qCDebug(lcAccount) << "- Error for " << error.certificate() << ": "
                                << error.errorString() << "(" << int(error.error()) << ")"
                                << "\n";
-            filteredErrors += error;
+            filteredErrors << error;
         }
     }
 
-    if (filteredErrors.isEmpty()) {
-        return;
-    }
-
-    bool allPreviouslyRejected = true;
-    for (const auto &error : qAsConst(filteredErrors)) {
-        if (!_rejectedCertificates.contains(error.certificate())) {
-            allPreviouslyRejected = false;
+    // ask the _sslErrorHandler what to do with filteredErrors
+    const auto handleErrors = [reply, this](const QList<QSslError> &filteredErrors) -> QList<QSslError> {
+        if (filteredErrors.isEmpty()) {
+            return {};
         }
-    }
-
-    // If all certs have previously been rejected by the user, don't ask again.
-    if (allPreviouslyRejected) {
-        qCInfo(lcAccount) << "SSL diagnostics for url " << reply->url().toString()
-                          << ": certificates not trusted by user decision, returning.";
-        return;
-    }
-
-    QList<QSslCertificate> approvedCerts;
-    if (_sslErrorHandler.isNull()) {
-        qCWarning(lcAccount) << Q_FUNC_INFO << " called without a valid SSL error handler for account" << url()
-                             << "(" << reply->url().toString() << ")";
-        return;
-    }
-
-    // SslDialogErrorHandler::handleErrors will run an event loop that might execute
-    // the deleteLater() of the QNAM before we have the chance of unwinding our stack.
-    // Keep a ref here on our stackframe to make sure that it doesn't get deleted before
-    // handleErrors returns.
-    QSharedPointer<QNetworkAccessManager> qnamLock = _am;
-    QPointer<QObject> guard = reply;
-
-    if (_sslErrorHandler->handleErrors(filteredErrors, reply->sslConfiguration(), &approvedCerts, sharedFromThis())) {
-        if (!guard)
-            return;
-
-        if (!approvedCerts.isEmpty()) {
-            QSslSocket::addDefaultCaCertificates(approvedCerts);
-            addApprovedCerts(approvedCerts);
-            emit wantsAccountSaved(this);
-
-            // all ssl certs are known and accepted. We can ignore the problems right away.
-            qCDebug(lcAccount) << "Certs are known and trusted! This is not an actual error.";
-        }
-
-        // Warning: Do *not* use ignoreSslErrors() (without args) here:
-        // it permanently ignores all SSL errors for this host, even
-        // certificate changes.
-        reply->ignoreSslErrors(filteredErrors);
-    } else {
-        if (!guard)
-            return;
-
-        // Mark all involved certificates as rejected, so we don't ask the user again.
+        bool allPreviouslyRejected = true;
         for (const auto &error : qAsConst(filteredErrors)) {
             if (!_rejectedCertificates.contains(error.certificate())) {
-                _rejectedCertificates.append(error.certificate());
+                allPreviouslyRejected = false;
+                break;
             }
         }
 
-        // Not calling ignoreSslErrors will make the SSL handshake fail.
-        return;
+        // If all certs have previously been rejected by the user, don't ask again.
+        if (allPreviouslyRejected) {
+            qCInfo(lcAccount) << "SSL diagnostics for url " << reply->url().toString()
+                              << ": certificates not trusted by user decision, returning.";
+            return {};
+        }
+
+        if (_sslErrorHandler.isNull()) {
+            qCWarning(lcAccount) << Q_FUNC_INFO << " called without a valid SSL error handler for account" << url()
+                                 << "(" << reply->url().toString() << ")";
+            return {};
+        }
+
+        // SslDialogErrorHandler::handleErrors will run an event loop that might execute
+        // the deleteLater() of the QNAM before we have the chance of unwinding our stack.
+        // Keep a ref here on our stackframe to make sure that it doesn't get deleted before
+        // handleErrors returns.
+        QSharedPointer<QNetworkAccessManager> qnamLock = _am;
+        QList<QSslCertificate> approvedCerts;
+        if (_sslErrorHandler->handleErrors(filteredErrors, reply->sslConfiguration(), &approvedCerts, sharedFromThis())) {
+            if (!approvedCerts.isEmpty()) {
+                QSslSocket::addDefaultCaCertificates(approvedCerts);
+                addApprovedCerts(approvedCerts);
+                emit wantsAccountSaved(this);
+
+                // all ssl certs are known and accepted. We can ignore the problems right away.
+                qCDebug(lcAccount) << "Certs are known and trusted! This is not an actual error.";
+            }
+            return filteredErrors;
+        } else {
+            // Mark all involved certificates as rejected, so we don't ask the user again.
+            for (const auto &error : qAsConst(filteredErrors)) {
+                if (!_rejectedCertificates.contains(error.certificate())) {
+                    _rejectedCertificates.append(error.certificate());
+                }
+            }
+        }
+        return {};
+    };
+    // always apply the filter when we leave the scope
+    if (reply) {
+        // Warning: Do *not* use ignoreSslErrors() (without args) here:
+        // it permanently ignores all SSL errors for this host, even
+        // certificate changes.
+        reply->ignoreSslErrors(ignoredErrors + handleErrors(filteredErrors));
     }
 }
 

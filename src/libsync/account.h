@@ -220,7 +220,7 @@ public:
 public slots:
     /// Used when forgetting credentials
     void clearQNAMCache();
-    void slotHandleSslErrors(QNetworkReply *, QList<QSslError>);
+    void slotHandleSslErrors(QPointer<QNetworkReply>, const QList<QSslError> &);
 
 signals:
     /// Emitted whenever there's network activity
