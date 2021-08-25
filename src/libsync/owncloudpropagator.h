@@ -468,28 +468,7 @@ public:
     void reportProgress(const SyncFileItem &, qint64 bytes);
     void reportFileTotal(const SyncFileItem &item, qint64 newSize);
 
-    void abort()
-    {
-        if (_abortRequested)
-            return;
-        if (_rootJob) {
-            // Connect to abortFinished  which signals that abort has been asynchronously finished
-            connect(_rootJob.data(), &PropagateDirectory::abortFinished, this, &OwncloudPropagator::emitFinished);
-
-            // Use Queued Connection because we're possibly already in an item's finished stack
-            QMetaObject::invokeMethod(
-                _rootJob.data(), [this] {
-                    _rootJob->abort(PropagatorJob::AbortType::Asynchronous);
-                },
-                Qt::QueuedConnection);
-
-            // Give asynchronous abort 5000 msec to finish on its own
-            QTimer::singleShot(5000, this, &OwncloudPropagator::abortTimeout);
-        } else {
-            // No root job, call emitFinished
-            emitFinished(SyncFileItem::NormalError);
-        }
-    }
+    void abort();
 
     AccountPtr account() const;
 

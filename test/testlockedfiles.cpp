@@ -66,7 +66,7 @@ private slots:
         QVERIFY(watcher.contains(tmpFile));
 
         QEventLoop loop;
-        QTimer::singleShot(120, &loop, [&] { loop.exit(); });
+        QTimer::singleShot(120ms, &loop, [&] { loop.exit(); });
         loop.exec();
 
         QCOMPARE(count, 1);

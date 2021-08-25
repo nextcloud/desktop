@@ -52,7 +52,7 @@ UpdaterScheduler::UpdaterScheduler(QObject *parent)
     }
 
     // at startup, do a check in any case.
-    QTimer::singleShot(3000, this, &UpdaterScheduler::slotTimerFired);
+    QTimer::singleShot(3s, this, &UpdaterScheduler::slotTimerFired);
 
     ConfigFile cfg;
     auto checkInterval = cfg.updateCheckInterval();

@@ -1028,7 +1028,7 @@ void Folder::slotSyncFinished(bool success)
     // file system change notifications are ignored for that folder. And it takes
     // some time under certain conditions to make the file system notifications
     // all come in.
-    QTimer::singleShot(200, this, &Folder::slotEmitFinishedDelayed);
+    QTimer::singleShot(200ms, this, &Folder::slotEmitFinishedDelayed);
 
     _lastSyncDuration = std::chrono::milliseconds(_timeSinceLastSyncStart.elapsed());
     _timeSinceLastSyncDone.start();

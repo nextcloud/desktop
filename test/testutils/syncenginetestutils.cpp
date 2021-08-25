@@ -744,7 +744,7 @@ FakePayloadReply::FakePayloadReply(QNetworkAccessManager::Operation op, const QN
     setUrl(request.url());
     setOperation(op);
     open(QIODevice::ReadOnly);
-    QTimer::singleShot(10, this, &FakePayloadReply::respond);
+    QTimer::singleShot(10ms, this, &FakePayloadReply::respond);
 }
 
 void FakePayloadReply::respond()
@@ -788,7 +788,7 @@ void FakeErrorReply::respond()
     emit metaDataChanged();
     emit readyRead();
     // finishing can come strictly after readyRead was called
-    QTimer::singleShot(5, this, &FakeErrorReply::slotSetFinished);
+    QTimer::singleShot(5ms, this, &FakeErrorReply::slotSetFinished);
 }
 
 void FakeErrorReply::slotSetFinished()
@@ -905,7 +905,7 @@ FakeFolder::FakeFolder(const FileInfo &fileTemplate)
 
     // handle aboutToRemoveAllFiles with a timeout in case our test does not handle it
     QObject::connect(_syncEngine.get(), &OCC::SyncEngine::aboutToRemoveAllFiles, _syncEngine.get(), [this](OCC::SyncFileItem::Direction, std::function<void(bool)> callback) {
-        QTimer::singleShot(1 * 1000, _syncEngine.get(), [callback] {
+        QTimer::singleShot(1s, _syncEngine.get(), [callback] {
             callback(false);
         });
     });

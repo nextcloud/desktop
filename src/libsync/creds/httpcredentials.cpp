@@ -271,7 +271,7 @@ bool HttpCredentials::refreshAccessToken()
         case QNetworkReply::ServiceUnavailableError:
             Q_FALLTHROUGH();
         case QNetworkReply::UnknownNetworkError:
-            QTimer::singleShot(30000, this, &HttpCredentials::refreshAccessToken);
+            QTimer::singleShot(30s, this, &HttpCredentials::refreshAccessToken);
             break;
         default:
             // something is broken

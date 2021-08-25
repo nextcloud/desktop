@@ -82,7 +82,7 @@ public:
     using FakePostReply::FakePostReply;
     void respond() override {
         // override of FakePostReply::respond, will call the real one with a delay.
-        QTimer::singleShot(100, this, [this] { this->FakePostReply::respond(); });
+        QTimer::singleShot(100ms, this, [this] { this->FakePostReply::respond(); });
     }
 };
 
@@ -330,7 +330,7 @@ private slots:
                     }
 
                     // Do the actual request a bit later
-                    QTimer::singleShot(100, this, [this, request] {
+                    QTimer::singleShot(100ms, this, [this, request] {
                         QCOMPARE(state, CustomState);
                         state = BrowserOpened;
                         this->OAuthTestCase::createBrowserReply(request);

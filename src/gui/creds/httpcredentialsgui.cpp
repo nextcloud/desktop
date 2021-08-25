@@ -55,7 +55,7 @@ void HttpCredentialsGui::askFromUser()
     // which (indirectly, through HttpCredentials::invalidateToken) schedules
     // a cache wipe of the qnam. We can only execute a network job again once
     // the cache has been cleared, otherwise we'd interfere with the job.
-    QTimer::singleShot(100, this, &HttpCredentialsGui::askFromUserAsync);
+    QTimer::singleShot(0, this, &HttpCredentialsGui::askFromUserAsync);
 }
 
 void HttpCredentialsGui::askFromUserAsync()

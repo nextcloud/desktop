@@ -582,7 +582,7 @@ void FolderStatusModel::fetchMore(const QModelIndex &parent)
 
     // Show 'fetching data...' hint after a while.
     _fetchingItems[persistentIndex].start();
-    QTimer::singleShot(1000, this, &FolderStatusModel::slotShowFetchProgress);
+    QTimer::singleShot(1s, this, &FolderStatusModel::slotShowFetchProgress);
 }
 
 void FolderStatusModel::resetAndFetch(const QModelIndex &parent)

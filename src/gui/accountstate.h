@@ -175,7 +175,7 @@ private:
     /**
      * Milliseconds for which to delay reconnection after 503/maintenance.
      */
-    int _maintenanceToConnectedDelay;
+    std::chrono::milliseconds _maintenanceToConnectedDelay;
 };
 }
 

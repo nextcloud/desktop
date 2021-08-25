@@ -697,7 +697,7 @@ private slots:
         });
 
         fakeFolder.localModifier().insert("file", 100, 'W');
-        QTimer::singleShot(100, &fakeFolder.syncEngine(), [&]() { fakeFolder.syncEngine().abort(); });
+        QTimer::singleShot(100ms, &fakeFolder.syncEngine(), [&]() { fakeFolder.syncEngine().abort(); });
         QVERIFY(!fakeFolder.syncOnce());
 
         QCOMPARE(nPUT, 3);

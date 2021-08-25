@@ -110,7 +110,7 @@ int main(int argc, char **argv)
                 app.tryTrayAgain();
             } else if (desktopSession != "ubuntu") {
                 qCInfo(lcApplication) << "System tray still not available, showing window and trying again later";
-                QTimer::singleShot(10000, &app, &Application::tryTrayAgain);
+                QTimer::singleShot(10s, &app, &Application::tryTrayAgain);
             } else {
                 qCInfo(lcApplication) << "System tray still not available, but assuming it's fine on 'ubuntu' desktop";
             }

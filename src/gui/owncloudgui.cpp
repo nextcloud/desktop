@@ -840,7 +840,7 @@ void ownCloudGui::slotUpdateProgress(const QString &folder, const ProgressInfo &
                                        .arg(progress._currentDiscoveredLocalFolder));
         }
     } else if (progress.status() == ProgressInfo::Done) {
-        QTimer::singleShot(2000, this, &ownCloudGui::slotComputeOverallSyncStatus);
+        QTimer::singleShot(2s, this, &ownCloudGui::slotComputeOverallSyncStatus);
     }
     if (progress.status() != ProgressInfo::Propagation) {
         return;

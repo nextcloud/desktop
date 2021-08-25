@@ -94,7 +94,7 @@ void FolderWatcher::startNotificatonTest(const QString &path)
 void FolderWatcher::startNotificationTestWhenReady()
 {
     if (!_d->isReady()) {
-        QTimer::singleShot(1000, this, &FolderWatcher::startNotificationTestWhenReady);
+        QTimer::singleShot(1s, this, &FolderWatcher::startNotificationTestWhenReady);
         return;
     }
 
@@ -107,7 +107,7 @@ void FolderWatcher::startNotificationTestWhenReady()
         f.open(QIODevice::WriteOnly | QIODevice::Append);
     }
 
-    QTimer::singleShot(5000, this, [this]() {
+    QTimer::singleShot(5s, this, [this]() {
         if (!_testNotificationPath.isEmpty())
             emit becameUnreliable(tr("The watcher did not receive a test notification."));
         _testNotificationPath.clear();

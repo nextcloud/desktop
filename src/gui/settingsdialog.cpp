@@ -255,7 +255,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
         accountAdded(ai.data());
     }
 
-    QTimer::singleShot(1, this, &SettingsDialog::showFirstPage);
+    QTimer::singleShot(0, this, &SettingsDialog::showFirstPage);
 
     connect(_ui->hideButton, &QPushButton::clicked, this, &SettingsDialog::hide);
 
