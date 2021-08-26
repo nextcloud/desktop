@@ -2618,16 +2618,21 @@ Logs will be written to %1</source>
         <translation>新的 %1 更新就绪</translation>
     </message>
     <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="109"/>
+        <source>A new update for %1 is about to be installed. The updater may ask
+for additional privileges during the process.</source>
+        <translation>新版本 %1 已经可以更新。
+更新过程可能会请求额外的权限。</translation>
+    </message>
+    <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="108"/>
         <source>New %1 update ready</source>
         <translation>新的 %1 更新已就绪</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="109"/>
-        <source>A new update for %1 is about to be installed. The updater may ask
-for additional privileges during the process.</source>
-        <translation>新版本 %1 已经可以更新。
-更新过程可能会请求额外的权限。</translation>
+        <source>A new update for %1 is about to be installed. The updater may ask for additional privileges during the process.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="143"/>

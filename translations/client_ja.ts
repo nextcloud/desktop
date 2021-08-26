@@ -2627,15 +2627,20 @@ Logs will be written to %1</source>
         <translation>新しい %1 アップデートの準備完了</translation>
     </message>
     <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="109"/>
+        <source>A new update for %1 is about to be installed. The updater may ask
+for additional privileges during the process.</source>
+        <translation>%1 の新しいアップデートのインストール準備ができました。アップデートのインストール中、追加の権限が必要な場合があります。</translation>
+    </message>
+    <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="108"/>
         <source>New %1 update ready</source>
         <translation>新しいアップデート %1 の準備ができました</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="109"/>
-        <source>A new update for %1 is about to be installed. The updater may ask
-for additional privileges during the process.</source>
-        <translation>%1 の新しいアップデートのインストール準備ができました。アップデートのインストール中、追加の権限が必要な場合があります。</translation>
+        <source>A new update for %1 is about to be installed. The updater may ask for additional privileges during the process.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="143"/>

@@ -2597,16 +2597,21 @@ Logs will be written to %1</source>
         <translation>Ново %1 ажурирање</translation>
     </message>
     <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="109"/>
+        <source>A new update for %1 is about to be installed. The updater may ask
+for additional privileges during the process.</source>
+        <translation>Достапно е ажурирање за %1. При процесот за ажурирање моеж
+ќе бидете прашани за да дозволите додатни привилегии.</translation>
+    </message>
+    <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="108"/>
         <source>New %1 update ready</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="109"/>
-        <source>A new update for %1 is about to be installed. The updater may ask
-for additional privileges during the process.</source>
-        <translation>Достапно е ажурирање за %1. При процесот за ажурирање моеж
-ќе бидете прашани за да дозволите додатни привилегии.</translation>
+        <source>A new update for %1 is about to be installed. The updater may ask for additional privileges during the process.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="143"/>

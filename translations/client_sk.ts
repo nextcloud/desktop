@@ -2630,16 +2630,21 @@ Záznamy udalostí sa budú zapisovať do %1</translation>
         <translation>Pripravená je nová aktualizácia %1</translation>
     </message>
     <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="109"/>
+        <source>A new update for %1 is about to be installed. The updater may ask
+for additional privileges during the process.</source>
+        <translation>Nainštaluje sa nová aktualizácia pre %1. V priebehu aktualizácie
+môžu byť vyžadované dodatočné oprávnenia.</translation>
+    </message>
+    <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="108"/>
         <source>New %1 update ready</source>
         <translation>Pripravená je nová aktualizácia %1</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="109"/>
-        <source>A new update for %1 is about to be installed. The updater may ask
-for additional privileges during the process.</source>
-        <translation>Nainštaluje sa nová aktualizácia pre %1. V priebehu aktualizácie
-môžu byť vyžadované dodatočné oprávnenia.</translation>
+        <source>A new update for %1 is about to be installed. The updater may ask for additional privileges during the process.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="143"/>
