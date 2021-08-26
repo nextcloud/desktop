@@ -1329,7 +1329,7 @@ static QString checkPathValidityRecursive(const QString &path)
     Utility::NtfsPermissionLookupRAII ntfs_perm;
 #endif
     const QFileInfo selFile(path);
-    if (!selFile.dir().entryList({ QStringLiteral(".sync_*.db") }, QDir::Hidden | QDir::Files).isEmpty()) {
+    if (!QDir(path).entryList({ QStringLiteral(".sync_*.db"), QStringLiteral("._sync_*.db") }, QDir::Hidden | QDir::Files).isEmpty()) {
         return FolderMan::tr("The folder %1 is used in a folder sync connection!").arg(QDir::toNativeSeparators(selFile.filePath()));
     }
 
