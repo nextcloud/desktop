@@ -236,13 +236,13 @@ if (NOT DEFINED APPLICATION_ICON_NAME)
 endif()
 
 # Generate png icons from svg
-find_program(INKSCAPE
-  NAMES inkscape inkscape.exe
+find_program(SVG_CONVERTER
+  NAMES inkscape inkscape.exe rsvg-convert
   REQUIRED
-  HINTS "C:\\Program Files\\Inkscape\\bin" "/usr/bin" ENV INKSCAPE_DIR)
+  HINTS "C:\\Program Files\\Inkscape\\bin" "/usr/bin" ENV SVG_CONVERTER_DIR)
 # REQUIRED keyword is only supported on CMake 3.18 and above
-if (NOT INKSCAPE)
-  message(FATAL_ERROR "Could not find inkscape. Set INKSCAPE_DIR to the path of executable.")
+if (NOT SVG_CONVERTER)
+  message(FATAL_ERROR "Could not find a suitable svg converter. Set SVG_CONVERTER_DIR to the path of either the inkscape or rsvg-convert executable.")
 endif()
 
 function(generate_sized_png_from_svg icon_path size)
@@ -256,16 +256,16 @@ function(generate_sized_png_from_svg icon_path size)
   set(icon_output_name "${size}-${icon_name_wle}.png")
   message(STATUS "Generate ${icon_output_name}")
   execute_process(COMMAND
-    "${INKSCAPE}" -w ${size} -h ${size} "${icon_path}" -o "${icon_output_name}"
+    "${SVG_CONVERTER}" -w ${size} -h ${size} "${icon_path}" -o "${icon_output_name}"
     WORKING_DIRECTORY "${icon_name_dir}"
     RESULT_VARIABLE
-    INKSCAPE_SIDEBAR_ERROR
+    SVG_CONVERTER_SIDEBAR_ERROR
     OUTPUT_QUIET
     ERROR_QUIET)
 
-  if (INKSCAPE_SIDEBAR_ERROR)
+  if (SVG_CONVERTER_SIDEBAR_ERROR)
     message(FATAL_ERROR
-      "inkscape could not generate icon: ${INKSCAPE_SIDEBAR_ERROR}")
+      "${SVG_CONVERTER} could not generate icon: ${SVG_CONVERTER_SIDEBAR_ERROR}")
   else()
   endif()
 endfunction()
