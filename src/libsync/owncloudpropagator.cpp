@@ -284,6 +284,7 @@ void PropagateItemJob::done(SyncFileItem::Status statusArg, const QString &error
     case SyncFileItem::FileIgnored:
     case SyncFileItem::NoStatus:
     case SyncFileItem::BlacklistedError:
+    case SyncFileItem::Excluded:
         // nothing
         break;
     }
@@ -866,7 +867,7 @@ bool PropagatorCompositeJob::scheduleSelfOrChild()
     if (_jobsToDo.isEmpty() && _tasksToDo.empty() && _runningJobs.isEmpty()) {
         // Our parent jobs are already iterating over their running jobs, post to the event loop
         // to avoid removing ourself from that list while they iterate.
-        QMetaObject::invokeMethod(this, "finalize", Qt::QueuedConnection);
+        QMetaObject::invokeMethod(this, &PropagatorCompositeJob::finalize, Qt::QueuedConnection);
     }
     return false;
 }
