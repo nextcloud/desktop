@@ -24,11 +24,14 @@ The first parameter is the local directory. The second parameter is
 the server URL.
 
 .. note:: Prior to the 1.6 release of nextcloudcmd, the tool only accepted
-   ``nextcloud://`` or ``nextclouds://`` in place of ``http://`` and ``https://`` as
+   ``owncloud://`` or ``ownclouds://`` in place of ``http://`` and ``https://`` as
    a scheme. See ``Examples`` for details.
 
 OPTIONS
 =======
+``--path``
+       Overrides default remote root folder to a specific subfolder on the server(e.g.: /Documents would sync the Documents subfolder on the server)
+
 ``—user``, ``-u`` ``[user]``
        Use ``user`` as the login name.
 
@@ -50,12 +53,6 @@ OPTIONS
 ``—httpproxy  http://[user@pass:]<server>:<port>``
       Uses ``server`` as HTTP proxy.
 
-``—nonshib``
-      Uses Non Shibboleth WebDAV Authentication
-
-``—davpath [path]``
-      Overrides the WebDAV Path with ``path``
-
 ``—exclude [file]``
       Exclude list file
 
@@ -74,18 +71,18 @@ To synchronize the nextCloud directory ``Music`` to the local directory ``media/
 through a proxy listening on port ``8080`` on the gateway machine ``192.168.178.1``,
 the command line would be::
 
-  $ nextcloudcmd —httpproxy http://192.168.178.1:8080 \
+  $ nextcloudcmd —httpproxy http://192.168.178.1:8080 --path /Music \
                 $HOME/media/music \
-                https://server/nextcloud/remote.php/dav/Music
+                https://server/nextcloud
 
 ``nextcloudcmd`` will enquire user name and password, unless they have
 been specified on the command line or ``-n`` (see `netrc(5)`) has been passed.
 
 Using the legacy scheme, it would be::
 
-  $ nextcloudcmd —httpproxy http://192.168.178.1:8080 \
+  $ nextcloudcmd —httpproxy http://192.168.178.1:8080 --path /Music \
                 $HOME/media/music \
-                nextclouds://server/nextcloud/remote.php/dav/Music
+                ownclouds://server/nextcloud
 
 
 BUGS
