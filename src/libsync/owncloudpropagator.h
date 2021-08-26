@@ -249,11 +249,10 @@ private slots:
  * @brief Propagate a directory, and all its sub entries.
  * @ingroup libsync
  */
-class OWNCLOUDSYNC_EXPORT PropagateDirectory : public PropagatorJob
+class OWNCLOUDSYNC_EXPORT PropagateDirectory : public PropagateItemJob
 {
     Q_OBJECT
 public:
-    SyncFileItemPtr _item;
     // e.g: create the directory
     QScopedPointer<PropagateItemJob> _firstJob;
 
@@ -291,17 +290,20 @@ public:
         _firstJob->_item->_affectedItems++;
     }
 
-
     qint64 committedDiskSpace() const override
     {
         return _subJobs.committedDiskSpace();
     }
 
+    SyncFileItemPtr &item()
+    {
+        return _item;
+    }
+
 private slots:
-
+    void start() override {};
     void slotFirstJobFinished(SyncFileItem::Status status);
-    virtual void slotSubJobsFinished(SyncFileItem::Status status);
-
+    virtual void slotSubJobsFinished(const SyncFileItem::Status status);
 };
 
 /**
