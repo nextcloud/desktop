@@ -2628,16 +2628,21 @@ Logs worden geschreven naar %1</translation>
         <translation>Nieuwe %1 update is klaar</translation>
     </message>
     <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="109"/>
+        <source>A new update for %1 is about to be installed. The updater may ask
+for additional privileges during the process.</source>
+        <translation>Er wordt een nieuwe update voor %1 geïnstalleerd. De updater kan
+vragen om extra autorisaties tijdens installatie.</translation>
+    </message>
+    <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="108"/>
         <source>New %1 update ready</source>
         <translation>Nieuwe %1 update is klaar</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="109"/>
-        <source>A new update for %1 is about to be installed. The updater may ask
-for additional privileges during the process.</source>
-        <translation>Er wordt een nieuwe update voor %1 geïnstalleerd. De updater kan
-vragen om extra autorisaties tijdens installatie.</translation>
+        <source>A new update for %1 is about to be installed. The updater may ask for additional privileges during the process.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="143"/>

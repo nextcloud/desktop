@@ -2630,16 +2630,21 @@ Erregistroak %1(e)an idatziko dira.</translation>
         <translation>%1 eguneraketa berria prest dago</translation>
     </message>
     <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="109"/>
+        <source>A new update for %1 is about to be installed. The updater may ask
+for additional privileges during the process.</source>
+        <translation>%1-etarako eguneraketa bat instalatzeko prest dago. Instalatzaileak
+pribilegio gehigarriak eskatzen ahal dizu prozesuan.</translation>
+    </message>
+    <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="108"/>
         <source>New %1 update ready</source>
         <translation>%1 eguneraketa berria prest dago</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="109"/>
-        <source>A new update for %1 is about to be installed. The updater may ask
-for additional privileges during the process.</source>
-        <translation>%1-etarako eguneraketa bat instalatzeko prest dago. Instalatzaileak
-pribilegio gehigarriak eskatzen ahal dizu prozesuan.</translation>
+        <source>A new update for %1 is about to be installed. The updater may ask for additional privileges during the process.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="143"/>

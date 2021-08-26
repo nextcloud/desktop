@@ -2630,16 +2630,21 @@ Günlükler %1 üzerine yazılacak</translation>
         <translation>Yeni %1 güncellemesi yayınlanmış</translation>
     </message>
     <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="109"/>
+        <source>A new update for %1 is about to be installed. The updater may ask
+for additional privileges during the process.</source>
+        <translation>%1 için yeni bir güncelleme yüklenmek üzere. İşlem sırasında
+güncelleyici başka izinler isteyebilir.</translation>
+    </message>
+    <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="108"/>
         <source>New %1 update ready</source>
         <translation>Yeni %1 güncellemesi yayınlanmış</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="109"/>
-        <source>A new update for %1 is about to be installed. The updater may ask
-for additional privileges during the process.</source>
-        <translation>%1 için yeni bir güncelleme yüklenmek üzere. İşlem sırasında
-güncelleyici başka izinler isteyebilir.</translation>
+        <source>A new update for %1 is about to be installed. The updater may ask for additional privileges during the process.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="143"/>
@@ -4853,7 +4858,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
     <message>
         <location filename="../src/libsync/theme.cpp" line="471"/>
         <source>&lt;br&gt;%1</source>
-        <translation type="unfinished"/>
+        <translation>&lt;br&gt;%1</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="482"/>

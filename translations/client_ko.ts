@@ -2628,16 +2628,21 @@ Logs will be written to %1</source>
         <translation>새 %1 업데이트 준비됨</translation>
     </message>
     <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="109"/>
+        <source>A new update for %1 is about to be installed. The updater may ask
+for additional privileges during the process.</source>
+        <translation>%1에 대한 새로운 업데이트가 설치 될 예정입니다. 업데이터가
+프로세스 중에 추가 권한을 요청할 수 있습니다.</translation>
+    </message>
+    <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="108"/>
         <source>New %1 update ready</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="109"/>
-        <source>A new update for %1 is about to be installed. The updater may ask
-for additional privileges during the process.</source>
-        <translation>%1에 대한 새로운 업데이트가 설치 될 예정입니다. 업데이터가
-프로세스 중에 추가 권한을 요청할 수 있습니다.</translation>
+        <source>A new update for %1 is about to be installed. The updater may ask for additional privileges during the process.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="143"/>

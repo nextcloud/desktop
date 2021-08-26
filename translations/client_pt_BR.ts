@@ -2627,16 +2627,21 @@ Logs serão gravados em %1</translation>
         <translation>Nova Atualização %1 Pronta</translation>
     </message>
     <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="109"/>
+        <source>A new update for %1 is about to be installed. The updater may ask
+for additional privileges during the process.</source>
+        <translation>Uma nova atualização para %1 está para ser instalada. O atualizador
+pode solicitar por privilégios adicionais durante o processo.</translation>
+    </message>
+    <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="108"/>
         <source>New %1 update ready</source>
         <translation>Nova atualização %1 pronta </translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="109"/>
-        <source>A new update for %1 is about to be installed. The updater may ask
-for additional privileges during the process.</source>
-        <translation>Uma nova atualização para %1 está para ser instalada. O atualizador
-pode solicitar por privilégios adicionais durante o processo.</translation>
+        <source>A new update for %1 is about to be installed. The updater may ask for additional privileges during the process.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="143"/>
@@ -4851,7 +4856,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/libsync/theme.cpp" line="471"/>
         <source>&lt;br&gt;%1</source>
-        <translation type="unfinished"/>
+        <translation>&lt;br&gt;%1</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="482"/>

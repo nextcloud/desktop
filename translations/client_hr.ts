@@ -2625,16 +2625,21 @@ Zapisi se zapisuju u %1</translation>
         <translation>Novo %1 ažuriranje je spremno</translation>
     </message>
     <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="109"/>
+        <source>A new update for %1 is about to be installed. The updater may ask
+for additional privileges during the process.</source>
+        <translation>Sada će se instalirati novo ažuriranje za %1. Alat za ažuriranje može tražiti
+dodatne ovlasti tijekom postupka.</translation>
+    </message>
+    <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="108"/>
         <source>New %1 update ready</source>
         <translation>Novo %1 ažuriranje je spremno</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="109"/>
-        <source>A new update for %1 is about to be installed. The updater may ask
-for additional privileges during the process.</source>
-        <translation>Sada će se instalirati novo ažuriranje za %1. Alat za ažuriranje može tražiti
-dodatne ovlasti tijekom postupka.</translation>
+        <source>A new update for %1 is about to be installed. The updater may ask for additional privileges during the process.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="143"/>
