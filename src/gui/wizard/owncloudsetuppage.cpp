@@ -217,8 +217,10 @@ int OwncloudSetupPage::nextId() const
     case DetermineAuthTypeJob::WebViewFlow:
         return WizardCommon::Page_WebView;
 #endif // WITH_WEBENGINE
+    case DetermineAuthTypeJob::NoAuthType:
+        return WizardCommon::Page_HttpCreds;
     }
-    return WizardCommon::Page_HttpCreds;
+    Q_UNREACHABLE();
 }
 
 QString OwncloudSetupPage::url() const
