@@ -343,6 +343,9 @@ void FolderWizardRemotePath::slotRefreshFolders()
 void FolderWizardRemotePath::slotItemExpanded(QTreeWidgetItem *item)
 {
     QString dir = item->data(0, Qt::UserRole).toString();
+    if (!dir.startsWith(QLatin1Char('/'))) {
+        dir.prepend(QLatin1Char('/'));
+    }
     runLsColJob(dir);
 }
 
