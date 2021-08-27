@@ -28,6 +28,7 @@
 #include <QJsonObject>
 #include <QNetworkReply>
 #include <QRandomGenerator>
+#include <QScopeGuard>
 #include <QTimer>
 
 using namespace OCC;
@@ -230,6 +231,10 @@ void OAuth::startAuthentication()
                     { QStringLiteral("code_verifier"), QString::fromUtf8(_pkceCodeVerifier) },
                 });
                 QObject::connect(job, &SimpleNetworkJob::finishedSignal, this, [this, socket](QNetworkReply *reply) {
+                    qScopeGuard([this] {
+                        // close the server once we are done here
+                        _server.close();
+                    });
                     const auto jsonData = reply->readAll();
                     QJsonParseError jsonParseError;
                     const auto data = QJsonDocument::fromJson(jsonData, &jsonParseError).object().toVariantMap();
