@@ -178,6 +178,8 @@ Details
 * Bugfix - Don't crash if a certain move is undone: [#8837](https://github.com/owncloud/client/issues/8837)
 
    https://github.com/owncloud/client/issues/8837
+   https://github.com/owncloud/client/pull/8863
+   https://github.com/owncloud/client/pull/8958
 
 * Bugfix - Prevent sync root sharing: [#8849](https://github.com/owncloud/client/issues/8849)
 
