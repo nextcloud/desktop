@@ -932,8 +932,8 @@ File synchronization desktop utility.</source>
 <context>
     <name>OCC::DiscoverySingleDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="477"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="498"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="481"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="502"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
         <translation>ข้อผิดพลาดเซิร์ฟเวอร์: การตอบกลับ PROPFIND ไม่ใช่รูปแบบ XML!</translation>
     </message>
@@ -941,27 +941,27 @@ File synchronization desktop utility.</source>
 <context>
     <name>OCC::DiscoverySingleLocalDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="260"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="264"/>
         <source>Error while opening directory %1</source>
         <translation>เกิดข้อผิดพลาดขณะเปิดไดเรกทอรี %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="262"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="266"/>
         <source>Directory not accessible on client, permission denied</source>
         <translation>การเข้าถึงถูกปฏิเสธไม่สามารถเข้าถึงไดเรกทอรีบนไคลเอนต์</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="266"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="270"/>
         <source>Directory not found: %1</source>
         <translation>ไม่พบไดเรกทอรี: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="297"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="301"/>
         <source>Filename encoding is not valid</source>
         <translation>การเข้ารหัสชื่อไฟล์ไม่ถูกต้อง</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="316"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="320"/>
         <source>Error while reading directory %1</source>
         <translation>เกิดข้อผิดพลาดขณะอ่านไดเรกทอรี %1</translation>
     </message>
@@ -2384,7 +2384,7 @@ for additional privileges during the process.</source>
 <context>
     <name>OCC::OwncloudPropagator</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="696"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="697"/>
         <source>File %1 is currently in use</source>
         <translation type="unfinished"/>
     </message>
@@ -2651,12 +2651,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateDirectory</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1016"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1017"/>
         <source>Error updating metadata: %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1020"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1021"/>
         <source>File is currently in use</source>
         <translation type="unfinished"/>
     </message>
@@ -2863,9 +2863,14 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateUpdateMetaDataJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1160"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1161"/>
         <source>Could not update file : %1</source>
         <translation>ไม่สามารถอัปเดตไฟล์: %1</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1164"/>
+        <source>The file %1 is currently in use</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
