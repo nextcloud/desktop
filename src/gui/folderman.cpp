@@ -174,6 +174,8 @@ void FolderMan::unloadFolder(Folder *f)
         _socketApi.data(), &SocketApi::broadcastStatusPushMessage);
     disconnect(f, &Folder::watchedFileChangedExternally,
         &f->syncEngine().syncFileStatusTracker(), &SyncFileStatusTracker::slotPathTouched);
+
+    f->syncEngine().disconnect(f);
 }
 
 void FolderMan::unloadAndDeleteAllFolders()
