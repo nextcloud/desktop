@@ -57,12 +57,19 @@ void setActivationPolicy(ActivationPolicy policy);
 namespace {
 auto minimumSizeHint(const QWidget *w)
 {
-    const QSize min { 800, 600 };
+    const QSize min { 800, 700 }; // When changing this, please check macOS: widgets there have larger insets, so they take up more space.
     const auto screen = w->windowHandle() ? w->windowHandle()->screen() : QApplication::screenAt(QCursor::pos());
     if (screen) {
         const auto availableSize = screen->availableSize();
         if (availableSize.isValid()) {
-            return min.boundedTo(availableSize * 0.75);
+            // Assume we can use at least 90% of the screen, if the screen is smaller than 800x700 pixels.
+            //
+            // Note: this means that the wizards have even less space: with the style we use, the
+            // wizard tries to fit inside the window. So, if this is a common case that users have
+            // such small screens, and the contents of the wizard screen are squashed together (or
+            // not shown due to lack of space), we should consider putting that content in a
+            // scroll-view.
+            return min.boundedTo(availableSize * 0.9);
         }
     }
     return min;
