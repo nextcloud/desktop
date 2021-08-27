@@ -172,13 +172,17 @@ QPair<bool, QByteArray> DiscoveryPhase::findAndCancelDeletedJob(const QString &o
             if (!(instruction == CSYNC_INSTRUCTION_REMOVE
                     // re-creation of virtual files count as a delete
                     || (item->_type == ItemTypeVirtualFile && instruction == CSYNC_INSTRUCTION_NEW)
-                    || (item->_isRestoration && instruction & (CSYNC_INSTRUCTION_NEW | CSYNC_INSTRUCTION_IGNORE)))) {
+                    || (item->_isRestoration && instruction == CSYNC_INSTRUCTION_NEW)
+                    // we encountered an ignored error
+                    || (item->_hasBlacklistEntry && instruction == CSYNC_INSTRUCTION_IGNORE))) {
                 qCWarning(lcDiscovery) << "OC_ENFORCE(FAILING)" << originalPath;
                 qCWarning(lcDiscovery) << "instruction == CSYNC_INSTRUCTION_REMOVE" << (instruction == CSYNC_INSTRUCTION_REMOVE);
                 qCWarning(lcDiscovery) << "(item->_type == ItemTypeVirtualFile && instruction == CSYNC_INSTRUCTION_NEW)"
                                        << (item->_type == ItemTypeVirtualFile && instruction == CSYNC_INSTRUCTION_NEW);
-                qCWarning(lcDiscovery) << "(item->_isRestoration && instruction & (CSYNC_INSTRUCTION_NEW | CSYNC_INSTRUCTION_IGNORE)"
-                                       << (item->_isRestoration && instruction & (CSYNC_INSTRUCTION_NEW | CSYNC_INSTRUCTION_IGNORE));
+                qCWarning(lcDiscovery) << "(item->_isRestoration && instruction == CSYNC_INSTRUCTION_NEW)"
+                                       << (item->_isRestoration && instruction == CSYNC_INSTRUCTION_NEW);
+                qCWarning(lcDiscovery) << "(item->_hasBlacklistEntry && instruction == CSYNC_INSTRUCTION_IGNORE)"
+                                       << (item->_hasBlacklistEntry && instruction == CSYNC_INSTRUCTION_IGNORE);
                 qCWarning(lcDiscovery) << "instruction" << instruction;
                 qCWarning(lcDiscovery) << "item->_type" << item->_type;
                 qCWarning(lcDiscovery) << "item->_isRestoration " << item->_isRestoration;

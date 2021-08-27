@@ -192,8 +192,7 @@ QUrl AbstractNetworkJob::makeAccountUrl(const QString &relativePath) const
 QUrl AbstractNetworkJob::makeDavUrl(const QString &relativePath) const
 {
     // ensure we always used the remote folder
-    OC_ASSERT(relativePath.startsWith(QLatin1Char('/')));
-    return Utility::concatUrlPath(_account->davUrl(), relativePath);
+    return Utility::concatUrlPath(_account->davUrl(), OC_ENSURE(relativePath.startsWith(QLatin1Char('/'))) ? relativePath : QLatin1Char('/') + relativePath);
 }
 
 void AbstractNetworkJob::slotFinished()

@@ -284,6 +284,7 @@ void PropagateItemJob::done(SyncFileItem::Status statusArg, const QString &error
     case SyncFileItem::FileIgnored:
     case SyncFileItem::NoStatus:
     case SyncFileItem::BlacklistedError:
+    case SyncFileItem::Excluded:
         // nothing
         break;
     }
@@ -356,6 +357,7 @@ PropagateItemJob *OwncloudPropagator::createJob(const SyncFileItemPtr &item)
     case CSYNC_INSTRUCTION_UPDATE_METADATA:
         // For directories, metadata-only updates will be done after all their files are propagated.
         if (item->isDirectory()) {
+            // Will be handled in PropagateDirectory::slotSubJobsFinished at the end
             return nullptr;
         }
         return new PropagateUpdateMetaDataJob(this, item);
@@ -470,8 +472,8 @@ void OwncloudPropagator::start(SyncFileItemSet &&items)
                 // NOTE: Currently this means that we don't update those etag at all in this sync,
                 //       but it should not be a problem, they will be updated in the next sync.
                 for (int i = 0; i < directories.size(); ++i) {
-                    if (directories[i].second->_item->_instruction == CSYNC_INSTRUCTION_UPDATE_METADATA)
-                        directories[i].second->_item->_instruction = CSYNC_INSTRUCTION_NONE;
+                    if (directories[i].second->item()->_instruction == CSYNC_INSTRUCTION_UPDATE_METADATA)
+                        directories[i].second->item()->_instruction = CSYNC_INSTRUCTION_NONE;
                 }
             } else {
                 PropagateDirectory *currentDirJob = directories.top().second;
@@ -866,7 +868,7 @@ bool PropagatorCompositeJob::scheduleSelfOrChild()
     if (_jobsToDo.isEmpty() && _tasksToDo.empty() && _runningJobs.isEmpty()) {
         // Our parent jobs are already iterating over their running jobs, post to the event loop
         // to avoid removing ourself from that list while they iterate.
-        QMetaObject::invokeMethod(this, "finalize", Qt::QueuedConnection);
+        QMetaObject::invokeMethod(this, &PropagatorCompositeJob::finalize, Qt::QueuedConnection);
     }
     return false;
 }
@@ -922,8 +924,7 @@ qint64 PropagatorCompositeJob::committedDiskSpace() const
 // ================================================================================
 
 PropagateDirectory::PropagateDirectory(OwncloudPropagator *propagator, const SyncFileItemPtr &item)
-    : PropagatorJob(propagator)
-    , _item(item)
+    : PropagateItemJob(propagator, item)
     , _firstJob(propagator->createJob(item))
     , _subJobs(propagator)
 {
@@ -979,8 +980,7 @@ void PropagateDirectory::slotFirstJobFinished(SyncFileItem::Status status)
         if (_state != Finished) {
             // Synchronously abort
             abort(AbortType::Synchronous);
-            _state = Finished;
-            emit finished(status);
+            done(status);
         }
         return;
     }
@@ -988,7 +988,7 @@ void PropagateDirectory::slotFirstJobFinished(SyncFileItem::Status status)
     propagator()->scheduleNextJob();
 }
 
-void PropagateDirectory::slotSubJobsFinished(SyncFileItem::Status status)
+void PropagateDirectory::slotSubJobsFinished(const SyncFileItem::Status status)
 {
     if (!_item->isEmpty() && status == SyncFileItem::Success) {
         // If a directory is renamed, recursively delete any stale items
@@ -1007,20 +1007,20 @@ void PropagateDirectory::slotSubJobsFinished(SyncFileItem::Status status)
         // For new directories we always want to update the etag once
         // the directory has been propagated. Otherwise the directory
         // could appear locally without being added to the database.
-        if (_item->_instruction == CSYNC_INSTRUCTION_RENAME
-            || _item->_instruction == CSYNC_INSTRUCTION_NEW
-            || _item->_instruction == CSYNC_INSTRUCTION_UPDATE_METADATA) {
+        if (_item->_instruction & (CSYNC_INSTRUCTION_RENAME | CSYNC_INSTRUCTION_NEW | CSYNC_INSTRUCTION_UPDATE_METADATA)) {
             const auto result = propagator()->updateMetadata(*_item);
             if (!result) {
-                status = _item->_status = SyncFileItem::FatalError;
-                _item->_errorString = tr("Error updating metadata: %1").arg(result.error());
                 qCWarning(lcDirectory) << "Error writing to the database for file" << _item->_file << "with" << result.error();
+                done(SyncFileItem::FatalError, tr("Error updating metadata: %1").arg(result.error()));
+                return;
             } else if (result.get() == Vfs::ConvertToPlaceholderResult::Locked) {
-                _item->_status = SyncFileItem::SoftError;
-                _item->_errorString = tr("File is currently in use");
+                done(SyncFileItem::SoftError, tr("%1 the folder is currently in use").arg(_item->destination()));
+                return;
             }
         }
     }
+    // don't call done, we only propagate the state of the child items
+    Q_ASSERT(_state != Finished);
     _state = Finished;
     emit finished(status);
 }
@@ -1157,7 +1157,11 @@ void OCC::PropagateUpdateMetaDataJob::start()
     }
     const auto result = propagator()->updateMetadata(*_item);
     if (!result) {
-        done(SyncFileItem::SoftError, tr("Could not update file : %1").arg(result.error()));
+        done(SyncFileItem::FatalError, tr("Could not update file : %1").arg(result.error()));
+        return;
+    } else if (result.get() == Vfs::ConvertToPlaceholderResult::Locked) {
+        done(SyncFileItem::SoftError, tr("The file %1 is currently in use").arg(_item->_file));
+        return;
     }
     done(SyncFileItem::Success);
 }

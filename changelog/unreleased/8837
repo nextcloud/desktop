@@ -1,3 +1,5 @@
 Bugfix: Don't crash if a certain move is undone
 
 https://github.com/owncloud/client/issues/8837
+https://github.com/owncloud/client/pull/8863
+https://github.com/owncloud/client/pull/8958

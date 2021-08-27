@@ -128,6 +128,26 @@ private slots:
         QDir(dirPath + "/ownCloud2/").removeRecursively();
         QVERIFY(!folderman->checkPathValidityForNewFolder(dirPath + "/ownCloud2/blublu").isNull());
         QVERIFY(!folderman->checkPathValidityForNewFolder(dirPath + "/ownCloud2/sub/subsub/sub").isNull());
+
+        { // check for rejection of a directory with `.sync_*.db`
+            QVERIFY(dir2.mkpath("db-check1"));
+            QVERIFY(folderman->checkPathValidityForNewFolder(dirPath + "/db-check1").isNull());
+            QFile f(dirPath + "/db-check1/.sync_something.db");
+            QVERIFY(f.open(QFile::Truncate | QFile::WriteOnly));
+            f.close();
+            QVERIFY(QFileInfo::exists(dirPath + "/db-check1/.sync_something.db"));
+            QVERIFY(!folderman->checkPathValidityForNewFolder(dirPath + "/db-check1").isNull());
+        }
+
+        { // check for rejection of a directory with `._sync_*.db`
+            QVERIFY(dir2.mkpath("db-check2"));
+            QVERIFY(folderman->checkPathValidityForNewFolder(dirPath + "/db-check2").isNull());
+            QFile f(dirPath + "/db-check2/._sync_something.db");
+            QVERIFY(f.open(QFile::Truncate | QFile::WriteOnly));
+            f.close();
+            QVERIFY(QFileInfo::exists(dirPath + "/db-check2/._sync_something.db"));
+            QVERIFY(!folderman->checkPathValidityForNewFolder(dirPath + "/db-check2").isNull());
+        }
     }
 
     void testFindGoodPathForNewSyncFolder()

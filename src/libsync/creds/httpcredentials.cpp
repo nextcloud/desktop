@@ -238,7 +238,13 @@ bool HttpCredentials::refreshAccessToken()
 {
     if (_refreshToken.isEmpty())
         return false;
-    _ready = false;
+    if (_isRenewingOAuthToken) {
+        return true;
+    }
+    _isRenewingOAuthToken = true;
+
+    // don't touch _ready or the account state will start a new authentication
+    // _ready = false;
 
     OAuth *oauth = new OAuth(_account, this);
     connect(oauth, &OAuth::refreshError, this, [oauth, this](QNetworkReply::NetworkError error, const QString &errorString) {
@@ -297,7 +303,6 @@ bool HttpCredentials::refreshAccessToken()
         emit fetched();
     });
     oauth->refreshAuthentication(_refreshToken);
-    _isRenewingOAuthToken = true;
     Q_EMIT authenticationStarted();
     return true;
 }

@@ -931,8 +931,8 @@ File synchronization desktop utility.</source>
 <context>
     <name>OCC::DiscoverySingleDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="477"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="498"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="481"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="502"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
         <translation>Server error: PROPFIND reply is not XML formatted!</translation>
     </message>
@@ -940,27 +940,27 @@ File synchronization desktop utility.</source>
 <context>
     <name>OCC::DiscoverySingleLocalDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="260"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="264"/>
         <source>Error while opening directory %1</source>
         <translation>Error while opening directory %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="262"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="266"/>
         <source>Directory not accessible on client, permission denied</source>
         <translation>Directory not accessible on client, permission denied</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="266"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="270"/>
         <source>Directory not found: %1</source>
         <translation>Directory not found: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="297"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="301"/>
         <source>Filename encoding is not valid</source>
         <translation>Filename encoding is not valid</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="316"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="320"/>
         <source>Error while reading directory %1</source>
         <translation>Error while reading directory %1</translation>
     </message>
@@ -2188,12 +2188,12 @@ Note that using any logging command line options will override the settings.</so
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="547"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="541"/>
         <source>Oauth2 Error</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="548"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="542"/>
         <source>Oauth2 authentication requires a secured connection.</source>
         <translation type="unfinished"/>
     </message>
@@ -2380,7 +2380,7 @@ for additional privileges during the process.</translation>
 <context>
     <name>OCC::OwncloudPropagator</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="696"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="697"/>
         <source>File %1 is currently in use</source>
         <translation type="unfinished"/>
     </message>
@@ -2643,12 +2643,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateDirectory</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1016"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1017"/>
         <source>Error updating metadata: %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1020"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1021"/>
         <source>File is currently in use</source>
         <translation type="unfinished"/>
     </message>
@@ -2855,8 +2855,13 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateUpdateMetaDataJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1160"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1161"/>
         <source>Could not update file : %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1164"/>
+        <source>The file %1 is currently in use</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -3858,67 +3863,67 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Trust this certificate anyway</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="65"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="61"/>
         <source>Untrusted Certificate</source>
         <translation>Untrusted Certificate</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="132"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="128"/>
         <source>Cannot connect securely to &lt;i&gt;%1&lt;/i&gt;:</source>
         <translation>Cannot connect securely to &lt;i&gt;%1&lt;/i&gt;:</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="166"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="162"/>
         <source>with Certificate %1</source>
         <translation>with certificate %1</translation>
     </message>
     <message>
+        <location filename="../src/gui/sslerrordialog.cpp" line="171"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="173"/>
         <location filename="../src/gui/sslerrordialog.cpp" line="175"/>
-        <location filename="../src/gui/sslerrordialog.cpp" line="177"/>
-        <location filename="../src/gui/sslerrordialog.cpp" line="179"/>
         <source>&amp;lt;not specified&amp;gt;</source>
         <translation>&amp;lt;not specified&amp;gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="180"/>
-        <location filename="../src/gui/sslerrordialog.cpp" line="200"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="176"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="196"/>
         <source>Organization: %1</source>
         <translation>Organisation: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="181"/>
-        <location filename="../src/gui/sslerrordialog.cpp" line="201"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="177"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="197"/>
         <source>Unit: %1</source>
         <translation>Unit: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="182"/>
-        <location filename="../src/gui/sslerrordialog.cpp" line="202"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="178"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="198"/>
         <source>Country: %1</source>
         <translation>Country: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="189"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="185"/>
         <source>Fingerprint (MD5): &lt;tt&gt;%1&lt;/tt&gt;</source>
         <translation>Fingerprint (MD5): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="190"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="186"/>
         <source>Fingerprint (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</source>
         <translation>Fingerprint (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="192"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="188"/>
         <source>Effective Date: %1</source>
         <translation>Effective Date: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="193"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="189"/>
         <source>Expiration Date: %1</source>
         <translation>Expiry Date: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="197"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="193"/>
         <source>Issuer: %1</source>
         <translation>Issuer: %1</translation>
     </message>
