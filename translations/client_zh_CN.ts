@@ -2632,7 +2632,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="109"/>
         <source>A new update for %1 is about to be installed. The updater may ask for additional privileges during the process.</source>
-        <translation>将要安装 %1 的新上传。更新程序可能会在此过程中要求额外的特权。</translation>
+        <translation>将要安装 %1 的新更新。更新程序可能会在此过程中要求额外的特权。</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="143"/>
