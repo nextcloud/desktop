@@ -2644,7 +2644,7 @@ môžu byť vyžadované dodatočné oprávnenia.</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="109"/>
         <source>A new update for %1 is about to be installed. The updater may ask for additional privileges during the process.</source>
-        <translation type="unfinished"/>
+        <translation>Nainštaluje sa nová aktualizácia pre %1. V priebehu aktualizácie môžu byť vyžadované dodatočné oprávnenia.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="143"/>
