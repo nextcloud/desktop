@@ -2641,7 +2641,7 @@ pode solicitar por privilégios adicionais durante o processo.</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="109"/>
         <source>A new update for %1 is about to be installed. The updater may ask for additional privileges during the process.</source>
-        <translation type="unfinished"/>
+        <translation>Uma nova atualização para %1 está prestes a ser instalada. O atualizador pode solicitar privilégios adicionais durante o processo. </translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="143"/>
