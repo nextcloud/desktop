@@ -2661,7 +2661,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1017"/>
         <source>%1 the folder is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>A pasta %1  está atualmente em uso</translation>
     </message>
 </context>
 <context>

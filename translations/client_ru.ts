@@ -553,22 +553,22 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="64"/>
         <source>Url update requested for %1</source>
-        <translation type="unfinished"/>
+        <translation>Для %1 запрошена смена адреса</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="65"/>
         <source>The url for %1 changed from %2 to %3, do you want to accept the changed url?</source>
-        <translation type="unfinished"/>
+        <translation>Адрес для %1 изменён с %2 на %3, вы хотите принять изменённый адрес?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="68"/>
         <source>Change url permanently to %1</source>
-        <translation type="unfinished"/>
+        <translation>Изменить адрес окончательно на %1</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="69"/>
         <source>Reject</source>
-        <translation type="unfinished"/>
+        <translation>Отклонить</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="186"/>
@@ -641,7 +641,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/models/activitylistmodel.cpp" line="120"/>
         <source>Local path</source>
-        <translation type="unfinished"/>
+        <translation>Локальный путь</translation>
     </message>
 </context>
 <context>
@@ -691,7 +691,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="107"/>
         <source>Reset column sizes</source>
-        <translation type="unfinished"/>
+        <translation>Сбросить размеры колонок</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="150"/>
@@ -726,7 +726,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="459"/>
         <source>Show in file browser</source>
-        <translation type="unfinished"/>
+        <translation>Показать в файловом браузере</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="155"/>
@@ -780,88 +780,89 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/gui/application.cpp" line="574"/>
         <source>%1 version %2<byte value="xd"/>
 File synchronization desktop utility.</source>
-        <translation type="unfinished"/>
+        <translation>%1 версии %2&lt;byte value=&quot;xd&quot;/&gt;
+Средство синхронизации файлов для настольных систем.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="579"/>
         <source>For more information, see http://www.owncloud.org</source>
-        <translation type="unfinished"/>
+        <translation>Для дальнейшей информации посетите http://www.owncloud.org</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="593"/>
         <source>Show the settings dialog while starting.</source>
-        <translation type="unfinished"/>
+        <translation>Показать диалог настроек во время запуска.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="594"/>
         <source>Quit the running instance.</source>
-        <translation type="unfinished"/>
+        <translation>Завершить запущенный экземпляр.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="595"/>
         <source>Write log to file (use - to write to stdout).</source>
-        <translation type="unfinished"/>
+        <translation>Писать журнал в файл (используйте «-» для записи на стандартный выход).</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="596"/>
         <source>Write each sync log output in a new file in folder.</source>
-        <translation type="unfinished"/>
+        <translation>Писать вывод журнала каждой синхронизации в новый файл в каталоге.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="597"/>
         <source>Remove logs older than &lt;hours&gt; hours (to be used with --logdir).</source>
-        <translation type="unfinished"/>
+        <translation>Удалять журналы старше &lt;hours&gt; часов (для использования с --logdir).</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="598"/>
         <source>Flush the log file after every write.</source>
-        <translation type="unfinished"/>
+        <translation>Сбрасывать журнал на диск после каждой записи.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="599"/>
         <source>Output debug-level messages in the log.</source>
-        <translation type="unfinished"/>
+        <translation>Выводить в журнал сообщения отладочного уровня.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="600"/>
         <location filename="../src/gui/application.cpp" line="601"/>
         <source>Override UI language.</source>
-        <translation type="unfinished"/>
+        <translation>Заменить язык интерфейса.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="602"/>
         <source>Use the given configuration folder.</source>
-        <translation type="unfinished"/>
+        <translation>Использовать заданный каталог конфигурации.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="603"/>
         <source>Enable debug mode.</source>
-        <translation type="unfinished"/>
+        <translation>Разрешить отладочный режим.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="606"/>
         <source>Virtual file system file to be opened (optional).</source>
-        <translation type="unfinished"/>
+        <translation>Виртуальная файловая система для открытия (не обязательно).</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="606"/>
         <source>[&lt;vfs file&gt;]</source>
-        <translation type="unfinished"/>
+        <translation>[&lt;vfs file&gt;]</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="635"/>
         <source>Invalid path passed to --confdir</source>
-        <translation type="unfinished"/>
+        <translation>В --confdir передан недопустимый путь</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="648"/>
         <source>Error: unknown language &quot;%1&quot; (use --list-languages to get a complete list of supported translations)</source>
-        <translation type="unfinished"/>
+        <translation>Ошибка: неизвестный язык «%1» (чтобы получить полный список поддерживаемых языков, используйте --list-languages)</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="657"/>
         <source>Available translations: %1</source>
-        <translation type="unfinished"/>
+        <translation>Доступные переводы: %1</translation>
     </message>
 </context>
 <context>
@@ -925,7 +926,7 @@ File synchronization desktop utility.</source>
     <message>
         <location filename="../src/libsync/creds/credentialmanager.cpp" line="199"/>
         <source>Failed to parse credentials %1</source>
-        <translation type="unfinished"/>
+        <translation>Не удалось разобрать учётные данные %1</translation>
     </message>
 </context>
 <context>
@@ -1224,7 +1225,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="1335"/>
         <source>The folder %1 is used in a folder sync connection!</source>
-        <translation type="unfinished"/>
+        <translation>Каталог %1 используется в соединении синхронизации каталогов!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1342"/>
@@ -1259,7 +1260,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="1404"/>
         <source>%1 Please pick another one!</source>
-        <translation type="unfinished"/>
+        <translation>%1 Пожалуйста, сделайте другой выбор!</translation>
     </message>
 </context>
 <context>
@@ -1383,7 +1384,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="259"/>
         <source>Local folder: %1</source>
-        <translation type="unfinished"/>
+        <translation>Локальный каталог: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="977"/>
@@ -1728,7 +1729,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="74"/>
         <source>Language changes require a restart of this application to take effect.</source>
-        <translation type="unfinished"/>
+        <translation>Чтобы изменение языка применилось, данное приложение нужно перезапустить.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="228"/>
@@ -1752,12 +1753,12 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="355"/>
         <source>unknown (%1)</source>
-        <translation type="unfinished"/>
+        <translation>неизвестно (%1)</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="365"/>
         <source>(use default)</source>
-        <translation type="unfinished"/>
+        <translation>(использовать умолчание)</translation>
     </message>
 </context>
 <context>
@@ -1875,7 +1876,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="82"/>
         <source>The file %1 was ignored as its name is reserved by %2</source>
-        <translation type="unfinished"/>
+        <translation>Файл %1 был проигнорирован, так как его имя зарезервировано %2</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="117"/>
@@ -1953,12 +1954,12 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/gui/models/models.cpp" line="84"/>
         <source>Filter by</source>
-        <translation type="unfinished"/>
+        <translation>Фильтр по</translation>
     </message>
     <message>
         <location filename="../src/gui/models/models.cpp" line="101"/>
         <source>No filter</source>
-        <translation type="unfinished"/>
+        <translation>Без фильтра</translation>
     </message>
 </context>
 <context>
@@ -2195,12 +2196,12 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="546"/>
         <source>Oauth2 Error</source>
-        <translation type="unfinished"/>
+        <translation>Ошибка Oauth2</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="547"/>
         <source>Oauth2 authentication requires a secured connection.</source>
-        <translation type="unfinished"/>
+        <translation>Для аутентификации по Oauth2 требуется безопасное соединение.</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="275"/>
@@ -2319,7 +2320,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="166"/>
         <source>&lt;p&gt;&lt;strong&gt;Warning:&lt;/strong&gt; The local folder is not empty. Pick a resolution!&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;strong&gt;Предупреждение:&lt;/strong&gt; Локальный каталог не пуст. Выберите решение!&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="162"/>
@@ -2658,12 +2659,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1014"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Ошибка обновления метаданных: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1017"/>
         <source>%1 the folder is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>%1 каталог сейчас занят</translation>
     </message>
 </context>
 <context>
@@ -2671,13 +2672,13 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="369"/>
         <source>Failed to free up space, the file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Не удалось освободить место, файл %1 сейчас занят</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="390"/>
         <location filename="../src/libsync/propagatedownload.cpp" line="468"/>
         <source>File %1 can not be downloaded because of a local file name clash with %2!</source>
-        <translation type="unfinished"/>
+        <translation>Нельзя скачать файл %1 из-за пересечения локального имени с %2!</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="526"/>
@@ -2707,12 +2708,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="907"/>
         <source>File %1 cannot be saved because of a local file name clash with %2!</source>
-        <translation type="unfinished"/>
+        <translation>Нельзя сохранить файл %1 из-за пересечения локального имени файла с %2!</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="1025"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Ошибка обновления метаданных: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="476"/>
@@ -2720,7 +2721,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/propagatedownload.cpp" line="967"/>
         <location filename="../src/libsync/propagatedownload.cpp" line="1028"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Файл %1 сейчас занят</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="364"/>
@@ -2747,17 +2748,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="161"/>
         <source>Can not create local folder %1 because of a local file name clash with %2</source>
-        <translation type="unfinished"/>
+        <translation>Не могу создать локальный каталог %1 из-за совпадения локального имени файла с %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="180"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Ошибка обновления метаданных: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="183"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Файл %1 сейчас занят</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="167"/>
@@ -2770,7 +2771,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="99"/>
         <source>Could not remove %1 because of a local file name clash with %2!</source>
-        <translation type="unfinished"/>
+        <translation>Не удалось удалить %1 из-за пересечения локального имени файла с %2!</translation>
     </message>
 </context>
 <context>
@@ -2788,17 +2789,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="257"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Ошибка обновления метаданных: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="260"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Файл %1 сейчас занят</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="266"/>
         <source>Failed to rename file</source>
-        <translation type="unfinished"/>
+        <translation>Не удалось переименовать файл</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="272"/>
@@ -2824,12 +2825,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="141"/>
         <source>Error writing metadata to the database: %1</source>
-        <translation type="unfinished"/>
+        <translation>Не удалось записать метаданные в базу данных: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="166"/>
         <source>Setting file status failed due to file lock</source>
-        <translation type="unfinished"/>
+        <translation>Установка состояния файла не прошла из-за блокировки файла</translation>
     </message>
 </context>
 <context>
@@ -2847,12 +2848,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="220"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Ошибка обновления метаданных: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="223"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Файл %1 сейчас занят</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="235"/>
@@ -2875,7 +2876,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1163"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Файл %1 сейчас занят</translation>
     </message>
 </context>
 <context>
@@ -2903,12 +2904,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="567"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Ошибка обновления метаданных: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="570"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Файл %1 сейчас занят</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="129"/>
@@ -2937,7 +2938,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="526"/>
         <source>The server did ask for a removed legacy feature(polling)</source>
-        <translation type="unfinished"/>
+        <translation>Сервер запросил удалённую устаревшую возможность (опрос)</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="531"/>
@@ -2983,7 +2984,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="222"/>
         <source>The server did ask for a removed legacy feature(polling)</source>
-        <translation type="unfinished"/>
+        <translation>Сервер запросил удалённую устаревшую возможность (опрос)</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="242"/>
@@ -3054,7 +3055,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="83"/>
         <source>Reset column sizes</source>
-        <translation type="unfinished"/>
+        <translation>Сбросить размеры колонок</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="92"/>
@@ -3064,17 +3065,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="102"/>
         <source>Show in file browser</source>
-        <translation type="unfinished"/>
+        <translation>Показать в файловом браузере</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="113"/>
         <source>Show in web browser</source>
-        <translation type="unfinished"/>
+        <translation>Показать в веб-барузере</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="126"/>
         <source>Retry sync</source>
-        <translation type="unfinished"/>
+        <translation>Повторить попытку синхронизации</translation>
     </message>
 </context>
 <context>
@@ -3627,7 +3628,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="949"/>
         <source>Create and copy public link to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Создать общедоступную ссылку и скопировать её в буфер обмена</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="951"/>
@@ -4007,7 +4008,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/common/syncjournaldb.cpp" line="938"/>
         <source>Failed to connect database.</source>
-        <translation type="unfinished"/>
+        <translation>Не удалось подключиться к базе данных.</translation>
     </message>
 </context>
 <context>
@@ -4077,12 +4078,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="290"/>
         <source>Unresolved %1 conflicts</source>
-        <translation type="unfinished"/>
+        <translation>Неразрешённые конфликты %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="292"/>
         <source>Ignored errors %1</source>
-        <translation type="unfinished"/>
+        <translation>Проигнорировано ошибок %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="306"/>
@@ -4206,7 +4207,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="303"/>
         <source>Up to date (%1)</source>
-        <translation type="unfinished"/>
+        <translation>Синхронизировано (%1)</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="307"/>
