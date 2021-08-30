@@ -336,17 +336,17 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="89"/>
         <source>You seem to have the Virtual Files feature enabled on this folder. At the moment, it is not possible to implicitly download virtual files that are End-to-End encrypted. To get the best experience with Virtual Files and End-to-End Encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Se pare că ai activată opțiunea de Fișiere Virtuale pentru acest dosar. În acest moment nu este posibil să descarci în mod implicit astfel de fișiere. Pentru cea mai bună experiență folosind opțiunea de Fișiere Virtuale și criptare end-to-end asigurăte că ai marcat dosarul cu &quot;Disponibil mereu local&quot;.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="97"/>
         <source>Don&apos;t encrypt folder</source>
-        <translation type="unfinished"/>
+        <translation>Nu cripta dosarul</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="100"/>
         <source>Encrypt folder</source>
-        <translation type="unfinished"/>
+        <translation>Criptează dosarul</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="233"/>
@@ -357,7 +357,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="235"/>
         <source>Display mnemonic</source>
-        <translation type="unfinished"/>
+        <translation>Afișează fraza menmonică</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="241"/>
@@ -393,7 +393,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="261"/>
         <source>Show E2E mnemonic</source>
-        <translation type="unfinished"/>
+        <translation>Afișează fraza mnemonică</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="270"/>
@@ -409,17 +409,18 @@
         <location filename="../src/gui/accountsettings.cpp" line="330"/>
         <source>You cannot encrypt a folder with contents, please remove the files.
 Wait for the new sync, then encrypt it.</source>
-        <translation type="unfinished"/>
+        <translation>Nu se poate cripta un dosar cu conținut, vă rugăm să ștergeți fișierele.
+Așteaptă pentru sincronizare, apoi criptează dosarul.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="354"/>
         <source>Encryption failed</source>
-        <translation type="unfinished"/>
+        <translation>Criptarea a eșuat</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="354"/>
         <source>Could not encrypt folder because the folder does not exist anymore</source>
-        <translation type="unfinished"/>
+        <translation>Nu se poate cripta acest dosar deoarece nu există</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="466"/>
@@ -478,22 +479,22 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="582"/>
         <source>Remove folder sync connection</source>
-        <translation type="unfinished"/>
+        <translation>Elimină conexiunea de sincronizare pentru acest dosar</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="594"/>
         <source>Disable virtual file support …</source>
-        <translation type="unfinished"/>
+        <translation>Dezactivează suportul pentru fișiere virtuale ...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="602"/>
         <source>Enable virtual file support %1 …</source>
-        <translation type="unfinished"/>
+        <translation>Activează suportul pentru fișiere virtuale %1 ...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="602"/>
         <source>(experimental)</source>
-        <translation type="unfinished"/>
+        <translation>(experimental)</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="695"/>
@@ -503,27 +504,27 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="696"/>
         <source>&lt;p&gt;Could not create local folder &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Nu s-a putut creea un dosar local &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="751"/>
         <source>Confirm Folder Sync Connection Removal</source>
-        <translation type="unfinished"/>
+        <translation>Confirmă eliminarea conexiunii de sincronizare </translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="752"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Dorești să oprești sincronizarea dosarului &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Notă:&lt;/b&gt; Această funcție &lt;b&gt;nu&lt;/b&gt;va șterge nici-un fișier.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="759"/>
         <source>Remove Folder Sync Connection</source>
-        <translation type="unfinished"/>
+        <translation>Elimină conexiunea de sincronizare</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="860"/>
         <source>Disable virtual file support?</source>
-        <translation type="unfinished"/>
+        <translation>Dezactivează suportul pentru fișiere virtuale?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="861"/>
@@ -537,7 +538,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="868"/>
         <source>Disable support</source>
-        <translation type="unfinished"/>
+        <translation>Dezactivează suportul</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="984"/>
@@ -547,12 +548,12 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="985"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
-        <translation type="unfinished"/>
+        <translation>Operațiunea de sincronizare este în derulare. &lt;br/&gt;Dorești să o oprești ?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1068"/>
         <source>%1 (%3%) of %2 in use. Some folders, including network mounted or shared folders, might have different limits.</source>
-        <translation type="unfinished"/>
+        <translation>%1 (%3%) din %2 în folosire. Unele fișiere, inclusiv dosarele partajate prin rețea, ar putea avea limite diferite.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1069"/>
@@ -562,7 +563,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1078"/>
         <source>Currently there is no storage usage information available.</source>
-        <translation type="unfinished"/>
+        <translation>În acest moment nu există informații legate de folosirea spațiului de stocare.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1081"/>
@@ -572,12 +573,12 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1079"/>
         <source>%1 as &lt;i&gt;%2&lt;/i&gt;</source>
-        <translation type="unfinished"/>
+        <translation>%1 ca &lt;i&gt;%2&lt;/i&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="772"/>
         <source>The server version %1 is old and unsupported! Proceed at your own risk.</source>
-        <translation type="unfinished"/>
+        <translation>Versiunea serverului %1 este veche și nu mai este menținut! Continuă pe propriul tău risc.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1066"/>
@@ -587,12 +588,12 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1108"/>
         <source>%1 as %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 ca %2</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1115"/>
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
-        <translation type="unfinished"/>
+        <translation>Versiunea serverului %1 este veche și nu mai este menținut!ă Continuă pe propriul tău risc.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1117"/>
@@ -617,7 +618,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1137"/>
         <source>Obtaining authorization from the browser. &lt;a href=&apos;%1&apos;&gt;Click here&lt;/a&gt; to re-open the browser.</source>
-        <translation type="unfinished"/>
+        <translation>Se obține autorizarea de la browser. &lt;a href=&apos;%1&apos;&gt;Click aici&lt;/a&gt; pentru a redeschide browser-ul.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1141"/>
