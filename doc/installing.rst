@@ -31,7 +31,8 @@ download page.
 System Requirements
 ----------------------------------
 
-- Windows 10 minimum version 1709 [SAC] 
+- Windows 8.1
+- Windows 10 minimum version 1709 [SAC]
 - macOS 10.12+ (64-bit only)
 - Linux
 - FreeBSD
