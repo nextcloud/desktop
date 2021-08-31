@@ -25,7 +25,7 @@ class User : public QObject
     Q_PROPERTY(QUrl statusIcon READ statusIcon NOTIFY statusChanged)
     Q_PROPERTY(QString statusEmoji READ statusEmoji NOTIFY statusChanged)
     Q_PROPERTY(QString statusMessage READ statusMessage NOTIFY statusChanged)
-    Q_PROPERTY(QString desktopNotificationsAllowed READ isDesktopNotificationsAllowed NOTIFY desktopNotificationsAllowedChanged)
+    Q_PROPERTY(bool desktopNotificationsAllowed READ isDesktopNotificationsAllowed NOTIFY desktopNotificationsAllowedChanged)
     Q_PROPERTY(bool hasLocalFolder READ hasLocalFolder NOTIFY hasLocalFolderChanged)
     Q_PROPERTY(bool serverHasTalk READ serverHasTalk NOTIFY serverHasTalkChanged)
     Q_PROPERTY(QString avatar READ avatarUrl NOTIFY avatarChanged)
@@ -67,7 +67,7 @@ signals:
     void hasLocalFolderChanged();
     void serverHasTalkChanged();
     void avatarChanged();
-    void accountStateChanged(int state);
+    void accountStateChanged();
     void statusChanged();
     void desktopNotificationsAllowedChanged();
 
@@ -75,6 +75,7 @@ public slots:
     void slotItemCompleted(const QString &folder, const SyncFileItemPtr &item);
     void slotProgressInfo(const QString &folder, const ProgressInfo &progress);
     void slotAddError(const QString &folderAlias, const QString &message, ErrorCategory category);
+    void slotAddErrorToGui(const QString &folderAlias, SyncFileItem::Status status, const QString &errorMessage, const QString &subject = {});
     void slotNotificationRequestFinished(int statusCode);
     void slotNotifyNetworkError(QNetworkReply *reply);
     void slotEndNotificationRequest(int replyCode);
@@ -94,6 +95,7 @@ private:
     void slotDisconnectPushNotifications();
     void slotReceivedPushNotification(Account *account);
     void slotReceivedPushActivity(Account *account);
+    void slotCheckExpiredActivities();
 
     void connectPushNotifications() const;
     bool checkPushNotificationsAreReady() const;
@@ -109,6 +111,7 @@ private:
     ActivityListModel *_activityModel;
     ActivityList _blacklistedNotifications;
 
+    QTimer _expiredActivitiesCheckTimer;
     QTimer _notificationCheckTimer;
     QHash<AccountState *, QElapsedTimer> _timeSinceLastCheck;
 

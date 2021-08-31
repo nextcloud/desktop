@@ -8,7 +8,7 @@ There are clients for Linux, macOs, and Microsoft Windows.
 
 The currently supported server releases are the latest three stable versions
 at time of publication. It means that the |version| release series is supporting
-server major version 19, 20 and 21.
+server major version 20, 21 and 22.
 
 Installation on Mac OS X and Windows is the same as for any software
 application: download the program and then double-click it to launch the
@@ -32,13 +32,8 @@ System Requirements
 ----------------------------------
 
 - Windows 10+
-- macOS 10.12+ (**64-bit only**)
-- macOS 10.10 & 10.11 (**64-bit and up to client legacy version 2.6.5 only**)
-- CentOS 6 & 7 (64-bit only)
-- Debian 8.0 & 9.0
-- Fedora 25 & 26 & 27
-- Ubuntu 16.04 & 17.04 & 17.10
-- openSUSE Leap 42.2 & 42.3
+- macOS 10.12+ (64-bit only)
+- Linux
 - FreeBSD
 
 .. note::

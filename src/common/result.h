@@ -104,6 +104,7 @@ public:
         ASSERT(!_isError);
         return _result;
     }
+
     T operator*() &&
     {
         ASSERT(!_isError);
@@ -116,6 +117,12 @@ public:
         return &_result;
     }
 
+    const T &get() const
+    {
+        ASSERT(!_isError)
+        return _result;
+    }
+
     const Error &error() const &
     {
         ASSERT(_isError);
@@ -126,6 +133,8 @@ public:
         ASSERT(_isError);
         return std::move(_error);
     }
+
+    bool isValid() const { return !_isError; }
 };
 
 namespace detail {

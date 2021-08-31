@@ -18,6 +18,7 @@
 #include "config.h"
 #include "common/utility.h"
 #include "tray/UserModel.h"
+#include "configfile.h"
 
 #include <QCursor>
 #include <QGuiApplication>
@@ -197,6 +198,21 @@ bool Systray::isOpen()
     return _isOpen;
 }
 
+QString Systray::windowTitle() const
+{
+    return Theme::instance()->appNameGUI();
+}
+
+bool Systray::useNormalWindow() const
+{
+    if (!isSystemTrayAvailable()) {
+        return true;
+    }
+
+    ConfigFile cfg;
+    return cfg.showMainDialogAsNormalWindow();
+}
+
 Q_INVOKABLE void Systray::setOpened()
 {
     _isOpen = true;
@@ -256,10 +272,11 @@ void Systray::pauseResumeSync()
 
 void Systray::positionWindow(QQuickWindow *window) const
 {
-    window->setScreen(currentScreen());
-
-    const auto position = computeWindowPosition(window->width(), window->height());
-    window->setPosition(position);
+    if (!useNormalWindow()) {
+        window->setScreen(currentScreen());
+        const auto position = computeWindowPosition(window->width(), window->height());
+        window->setPosition(position);
+    }
 }
 
 void Systray::forceWindowInit(QQuickWindow *window) const

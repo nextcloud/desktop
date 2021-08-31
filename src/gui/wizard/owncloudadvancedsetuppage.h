@@ -82,7 +82,7 @@ private:
     void setResolutionGuiVisible(bool value);
     void setupResoultionWidget();
     void fetchUserAvatar();
-    void fetchUserData();
+    void setUserInformation();
 
     // TODO: remove when UX decision is made
     void refreshVirtualFilesAvailibility(const QString &path);

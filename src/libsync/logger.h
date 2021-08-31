@@ -27,12 +27,6 @@
 
 namespace OCC {
 
-struct Log
-{
-    QDateTime timeStamp;
-    QString message;
-};
-
 /**
  * @brief The Logger class
  * @ingroup libsync
@@ -41,16 +35,9 @@ class OWNCLOUDSYNC_EXPORT Logger : public QObject
 {
     Q_OBJECT
 public:
-    bool isNoop() const;
     bool isLoggingToFile() const;
 
-    void log(Log log);
-    void doLog(const QString &log);
-    void close();
-
-    static void mirallLog(const QString &message);
-
-    const QList<Log> &logs() const { return _logs; }
+    void doLog(QtMsgType type, const QMessageLogContext &ctx, const QString &message);
 
     static Logger *instance();
 
@@ -87,6 +74,14 @@ public:
     /** For switching off via logwindow */
     void disableTemporaryFolderLogDir();
 
+    void addLogRule(const QSet<QString> &rules) {
+        setLogRules(_logRules + rules);
+    }
+    void removeLogRule(const QSet<QString> &rules) {
+        setLogRules(_logRules - rules);
+    }
+    void setLogRules(const QSet<QString> &rules);
+
 signals:
     void logWindowLog(const QString &);
 
@@ -99,9 +94,11 @@ public slots:
 
 private:
     Logger(QObject *parent = nullptr);
-    ~Logger();
-    QList<Log> _logs;
-    bool _showTime = true;
+    ~Logger() override;
+
+    void close();
+    void dumpCrashLog();
+
     QFile _logFile;
     bool _doFileFlush = false;
     int _logExpire = 0;
@@ -110,6 +107,9 @@ private:
     mutable QMutex _mutex;
     QString _logDirectory;
     bool _temporaryFolderLogDir = false;
+    QSet<QString> _logRules;
+    QVector<QString> _crashLog;
+    int _crashLogIndex = 0;
 };
 
 } // namespace OCC

@@ -28,7 +28,7 @@
 #include "clientproxy.h"
 #include "syncengine.h"
 #include "syncrunfilelog.h"
-#include "socketapi.h"
+#include "socketapi/socketapi.h"
 #include "theme.h"
 #include "filesystem.h"
 #include "localdiscoverytracker.h"
@@ -104,6 +104,8 @@ Folder::Folder(const FolderDefinition &definition,
     connect(_engine.data(), &SyncEngine::aboutToPropagate,
         this, &Folder::slotLogPropagationStart);
     connect(_engine.data(), &SyncEngine::syncError, this, &Folder::slotSyncError);
+
+    connect(_engine.data(), &SyncEngine::addErrorToGui, this, &Folder::slotAddErrorToGui);
 
     _scheduleSelfTimer.setSingleShot(true);
     _scheduleSelfTimer.setInterval(SyncEngine::minimumFileAgeForUpload);
@@ -250,7 +252,7 @@ bool Folder::isBusy() const
 
 bool Folder::isSyncRunning() const
 {
-    return _engine->isSyncRunning() || _vfs->isHydrating();
+    return _engine->isSyncRunning() || (_vfs && _vfs->isHydrating());
 }
 
 QString Folder::remotePath() const
@@ -351,7 +353,7 @@ void Folder::slotRunEtagJob()
     // The _requestEtagJob is auto deleting itself on finish. Our guard pointer _requestEtagJob will then be null.
 }
 
-void Folder::etagRetrieved(const QString &etag, const QDateTime &tp)
+void Folder::etagRetrieved(const QByteArray &etag, const QDateTime &tp)
 {
     // re-enable sync if it was disabled because network was down
     FolderMan::instance()->setSyncEnabled(true);
@@ -365,7 +367,7 @@ void Folder::etagRetrieved(const QString &etag, const QDateTime &tp)
     _accountState->tagLastSuccessfullETagRequest(tp);
 }
 
-void Folder::etagRetrievedFromSyncEngine(const QString &etag, const QDateTime &time)
+void Folder::etagRetrievedFromSyncEngine(const QByteArray &etag, const QDateTime &time)
 {
     qCInfo(lcFolder) << "Root etag from during sync:" << etag;
     accountState()->tagLastSuccessfullETagRequest(time);
@@ -634,7 +636,9 @@ void Folder::implicitlyHydrateFile(const QString &relativepath)
     // (suffix-virtual file's pin state is stored at the hydrated path)
     const auto pin = _vfs->pinState(relativepath);
     if (pin && *pin == PinState::OnlineOnly) {
-        _vfs->setPinState(relativepath, PinState::Unspecified);
+        if (!_vfs->setPinState(relativepath, PinState::Unspecified)) {
+            qCWarning(lcFolder) << "Could not set pin state of" << relativepath << "to unspecified";
+        }
     }
 
     // Add to local discovery
@@ -673,7 +677,9 @@ void Folder::setVirtualFilesEnabled(bool enabled)
 
 void Folder::setRootPinState(PinState state)
 {
-    _vfs->setPinState(QString(), state);
+    if (!_vfs->setPinState(QString(), state)) {
+        qCWarning(lcFolder) << "Could not set root pin state of" << _definition.alias;
+    }
 
     // We don't actually need discovery, but it's important to recurse
     // into all folders, so the changes can be applied.
@@ -868,42 +874,15 @@ void Folder::setSyncOptions()
     opt._confirmExternalStorage = cfgFile.confirmExternalStorage();
     opt._moveFilesToTrash = cfgFile.moveToTrash();
     opt._vfs = _vfs;
+    opt._parallelNetworkJobs = _accountState->account()->isHttp2Supported() ? 20 : 6;
 
-    QByteArray chunkSizeEnv = qgetenv("OWNCLOUD_CHUNK_SIZE");
-    if (!chunkSizeEnv.isEmpty()) {
-        opt._initialChunkSize = chunkSizeEnv.toUInt();
-    } else {
-        opt._initialChunkSize = cfgFile.chunkSize();
-    }
-    QByteArray minChunkSizeEnv = qgetenv("OWNCLOUD_MIN_CHUNK_SIZE");
-    if (!minChunkSizeEnv.isEmpty()) {
-        opt._minChunkSize = minChunkSizeEnv.toUInt();
-    } else {
-        opt._minChunkSize = cfgFile.minChunkSize();
-    }
-    QByteArray maxChunkSizeEnv = qgetenv("OWNCLOUD_MAX_CHUNK_SIZE");
-    if (!maxChunkSizeEnv.isEmpty()) {
-        opt._maxChunkSize = maxChunkSizeEnv.toUInt();
-    } else {
-        opt._maxChunkSize = cfgFile.maxChunkSize();
-    }
+    opt._initialChunkSize = cfgFile.chunkSize();
+    opt._minChunkSize = cfgFile.minChunkSize();
+    opt._maxChunkSize = cfgFile.maxChunkSize();
+    opt._targetChunkUploadDuration = cfgFile.targetChunkUploadDuration();
 
-    int maxParallel = qgetenv("OWNCLOUD_MAX_PARALLEL").toUInt();
-    opt._parallelNetworkJobs = maxParallel ? maxParallel : _accountState->account()->isHttp2Supported() ? 20 : 6;
-
-    // Previously min/max chunk size values didn't exist, so users might
-    // have setups where the chunk size exceeds the new min/max default
-    // values. To cope with this, adjust min/max to always include the
-    // initial chunk size value.
-    opt._minChunkSize = qMin(opt._minChunkSize, opt._initialChunkSize);
-    opt._maxChunkSize = qMax(opt._maxChunkSize, opt._initialChunkSize);
-
-    QByteArray targetChunkUploadDurationEnv = qgetenv("OWNCLOUD_TARGET_CHUNK_UPLOAD_DURATION");
-    if (!targetChunkUploadDurationEnv.isEmpty()) {
-        opt._targetChunkUploadDuration = std::chrono::milliseconds(targetChunkUploadDurationEnv.toUInt());
-    } else {
-        opt._targetChunkUploadDuration = cfgFile.targetChunkUploadDuration();
-    }
+    opt.fillFromEnvironmentVariables();
+    opt.verifyChunkSizes();
 
     _engine->setSyncOptions(opt);
 }
@@ -934,6 +913,11 @@ void Folder::slotSyncError(const QString &message, ErrorCategory category)
 {
     _syncResult.appendErrorString(message);
     emit ProgressDispatcher::instance()->syncError(alias(), message, category);
+}
+
+void Folder::slotAddErrorToGui(SyncFileItem::Status status, const QString &errorMessage, const QString &subject)
+{
+    emit ProgressDispatcher::instance()->addErrorToGui(alias(), status, errorMessage, subject);
 }
 
 void Folder::slotSyncStarted()
@@ -1245,12 +1229,12 @@ void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction dir, std::functio
         return;
     }
 
-    const QString msg = dir == SyncFileItem::Down ? tr("All files in the sync folder '%1' folder were deleted on the server.\n"
+    const QString msg = dir == SyncFileItem::Down ? tr("All files in the sync folder \"%1\" folder were deleted on the server.\n"
                                                  "These deletes will be synchronized to your local sync folder, making such files "
                                                  "unavailable unless you have a right to restore. \n"
                                                  "If you decide to restore the files, they will be re-synced with the server if you have rights to do so.\n"
                                                  "If you decide to delete the files, they will be unavailable to you, unless you are the owner.")
-                                            : tr("All the files in your local sync folder '%1' were deleted. These deletes will be "
+                                            : tr("All the files in your local sync folder \"%1\" were deleted. These deletes will be "
                                                  "synchronized with your server, making such files unavailable unless restored.\n"
                                                  "Are you sure you want to sync those actions with the server?\n"
                                                  "If this was an accident and you decide to keep your files, they will be re-synced from the server.");

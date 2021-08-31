@@ -490,18 +490,4 @@ void SqlQuery::reset_and_clear_bindings()
     }
 }
 
-bool SqlQuery::initOrReset(const QByteArray &sql, OCC::SqlDatabase &db)
-{
-    ENFORCE(!_sqldb || &db == _sqldb);
-    _sqldb = &db;
-    _db = db.sqliteDb();
-    if (_stmt) {
-        reset_and_clear_bindings();
-        return true;
-    } else {
-        return prepare(sql) == 0;
-    }
-}
-
-
 } // namespace OCC

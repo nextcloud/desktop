@@ -30,6 +30,7 @@
 #include <QCoreApplication>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <qloggingcategory.h>
 #ifndef TOKEN_AUTH_ONLY
 #include <QPainter>
 #include <QPainterPath>
@@ -112,8 +113,8 @@ bool RequestEtagJob::finished()
     if (httpCode == 207) {
         // Parse DAV response
         QXmlStreamReader reader(reply());
-        reader.addExtraNamespaceDeclaration(QXmlStreamNamespaceDeclaration("d", "DAV:"));
-        QString etag;
+        reader.addExtraNamespaceDeclaration(QXmlStreamNamespaceDeclaration(QStringLiteral("d"), QStringLiteral("DAV:")));
+        QByteArray etag;
         while (!reader.atEnd()) {
             QXmlStreamReader::TokenType type = reader.readNext();
             if (type == QXmlStreamReader::StartElement && reader.namespaceUri() == QLatin1String("DAV:")) {
@@ -122,9 +123,9 @@ bool RequestEtagJob::finished()
                     auto etagText = reader.readElementText();
                     auto parsedTag = parseEtag(etagText.toUtf8());
                     if (!parsedTag.isEmpty()) {
-                        etag += QString::fromUtf8(parsedTag);
+                        etag += parsedTag;
                     } else {
-                        etag += etagText;
+                        etag += etagText.toUtf8();
                     }
                 }
             }
@@ -181,7 +182,11 @@ bool MkColJob::finished()
     qCInfo(lcMkColJob) << "MKCOL of" << reply()->request().url() << "FINISHED WITH STATUS"
                        << replyStatusString();
 
-    emit finished(reply()->error());
+    if (reply()->error() != QNetworkReply::NoError) {
+        Q_EMIT finishedWithError(reply());
+    } else {
+        Q_EMIT finishedWithoutError();
+    }
     return true;
 }
 
@@ -402,7 +407,7 @@ bool LsColJob::finished()
         connect(&parser, &LsColXMLParser::finishedWithoutError,
             this, &LsColJob::finishedWithoutError);
 
-        QString expectedPath = reply()->request().url().path(); // something like "/owncloud/remote.php/webdav/folder"
+        QString expectedPath = reply()->request().url().path(); // something like "/owncloud/remote.php/dav/folder"
         if (!parser.parse(reply()->readAll(), &_folderInfos, expectedPath)) {
             // XML parse error
             emit finishedWithError(reply());
@@ -958,7 +963,11 @@ void DetermineAuthTypeJob::start()
                 auto flow = gs.toObject().value("desktoplogin");
                 if (flow != QJsonValue::Undefined) {
                     if (flow.toInt() == 1) {
+#ifdef WITH_WEBENGINE
                         _resultOldFlow = WebViewFlow;
+#else // WITH_WEBENGINE
+                        qCWarning(lcDetermineAuthTypeJob) << "Server does only support flow1, but this client was compiled without support for flow1";
+#endif // WITH_WEBENGINE
                     }
                 }
             }
@@ -985,20 +994,24 @@ void DetermineAuthTypeJob::checkAllDone()
 
     auto result = _resultPropfind;
 
+#ifdef WITH_WEBENGINE
     // WebViewFlow > OAuth > Basic
     if (_account->serverVersionInt() >= Account::makeServerVersion(12, 0, 0)) {
         result = WebViewFlow;
     }
+#endif // WITH_WEBENGINE
 
     // LoginFlowV2 > WebViewFlow > OAuth > Basic
     if (_account->serverVersionInt() >= Account::makeServerVersion(16, 0, 0)) {
         result = LoginFlowV2;
     }
 
+#ifdef WITH_WEBENGINE
     // If we determined that we need the webview flow (GS for example) then we switch to that
     if (_resultOldFlow == WebViewFlow) {
         result = WebViewFlow;
     }
+#endif // WITH_WEBENGINE
 
     // If we determined that a simple get gave us an authentication required error
     // then the server enforces basic auth and we got no choice but to use this

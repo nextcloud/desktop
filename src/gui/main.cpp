@@ -176,7 +176,7 @@ int main(int argc, char **argv)
 
             if (QSystemTrayIcon::isSystemTrayAvailable()) {
                 app.tryTrayAgain();
-            } else if (!app.backgroundMode()) {
+            } else if (!app.backgroundMode() && !AccountManager::instance()->accounts().isEmpty()) {
                 if (desktopSession != "ubuntu") {
                     qCInfo(lcApplication) << "System tray still not available, showing window and trying again later";
                     app.showMainDialog();

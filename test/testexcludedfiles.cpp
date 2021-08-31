@@ -322,7 +322,7 @@ private slots:
         QCOMPARE(check_file_traversal("subdir/.sync_5bdd60bdfcfa.db"), CSYNC_FILE_SILENTLY_EXCLUDED);
 
         /* Other builtin excludes */
-        QCOMPARE(check_file_traversal("foo/Desktop.ini"), CSYNC_NOT_EXCLUDED);
+        QCOMPARE(check_file_traversal("foo/Desktop.ini"), CSYNC_FILE_SILENTLY_EXCLUDED);
         QCOMPARE(check_file_traversal("Desktop.ini"), CSYNC_FILE_SILENTLY_EXCLUDED);
 
         /* pattern ]*.directory - ignore and remove */

@@ -40,9 +40,9 @@ public:
 
     uint32_t textMessagesCount() const;
 
-    QString textMessage(uint32_t messageNumber) const;
+    QString textMessage(int messageNumber) const;
 
-    QWebSocket *socketForTextMessage(uint32_t messageNumber) const;
+    QWebSocket *socketForTextMessage(int messageNumber) const;
 
     void clearTextMessages();
 

@@ -273,9 +273,10 @@ public:
     void start() override;
 
 signals:
-    void finished(QNetworkReply::NetworkError);
+    void finishedWithError(QNetworkReply *reply);
+    void finishedWithoutError();
 
-private slots:
+private:
     bool finished() override;
 };
 
@@ -348,8 +349,8 @@ public:
     void start() override;
 
 signals:
-    void etagRetrieved(const QString &etag, const QDateTime &time);
-    void finishedWithResult(const HttpResult<QString> &etag);
+    void etagRetrieved(const QByteArray &etag, const QDateTime &time);
+    void finishedWithResult(const HttpResult<QByteArray> &etag);
 
 private slots:
     bool finished() override;
@@ -420,10 +421,10 @@ signals:
      * @param statusCode - the OCS status code: 100 (!) for success
      */
     void etagResponseHeaderReceived(const QByteArray &value, int statusCode);
-    
+
     /**
      * @brief desktopNotificationStatusReceived - signal to report if notifications are allowed
-     * @param status - set desktop notifications allowed status 
+     * @param status - set desktop notifications allowed status
      */
     void allowDesktopNotificationsChanged(bool isAllowed);
 
@@ -444,9 +445,11 @@ class OWNCLOUDSYNC_EXPORT DetermineAuthTypeJob : public QObject
 public:
     enum AuthType {
         NoAuthType, // used only before we got a chance to probe the server
+#ifdef WITH_WEBENGINE
+        WebViewFlow,
+#endif // WITH_WEBENGINE
         Basic, // also the catch-all fallback for backwards compatibility reasons
         OAuth,
-        WebViewFlow,
         LoginFlowV2
     };
     Q_ENUM(AuthType)

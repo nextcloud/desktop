@@ -54,8 +54,6 @@ private slots:
     void slotStartEncryptedMkcolJob(const QString &path, const QString &filename, quint64 size);
     void slotMkcolJobFinished();
     void slotEncryptFolderFinished();
-    void propfindResult(const QVariantMap &);
-    void propfindError();
     void success();
 
 private:

@@ -142,21 +142,30 @@ QByteArray makeChecksumHeader(const QByteArray &checksumType, const QByteArray &
     return header;
 }
 
-QByteArray findBestChecksum(const QByteArray &checksums)
+QByteArray findBestChecksum(const QByteArray &_checksums)
 {
+    if (_checksums.isEmpty()) {
+        return {};
+    }
+    const auto checksums = QString::fromUtf8(_checksums);
     int i = 0;
     // The order of the searches here defines the preference ordering.
-    if (-1 != (i = checksums.indexOf("SHA3-256:"))
-        || -1 != (i = checksums.indexOf("SHA256:"))
-        || -1 != (i = checksums.indexOf("SHA1:"))
-        || -1 != (i = checksums.indexOf("MD5:"))
-        || -1 != (i = checksums.indexOf("Adler32:"))) {
+    if (-1 != (i = checksums.indexOf(QLatin1String("SHA3-256:"), 0, Qt::CaseInsensitive))
+        || -1 != (i = checksums.indexOf(QLatin1String("SHA256:"), 0, Qt::CaseInsensitive))
+        || -1 != (i = checksums.indexOf(QLatin1String("SHA1:"), 0, Qt::CaseInsensitive))
+        || -1 != (i = checksums.indexOf(QLatin1String("MD5:"), 0, Qt::CaseInsensitive))
+        || -1 != (i = checksums.indexOf(QLatin1String("ADLER32:"), 0, Qt::CaseInsensitive))) {
         // Now i is the start of the best checksum
-        // Grab it until the next space or end of string.
-        auto checksum = checksums.mid(i);
-        return checksum.mid(0, checksum.indexOf(" "));
+        // Grab it until the next space or end of xml or end of string.
+        int end = _checksums.indexOf(' ', i);
+        // workaround for https://github.com/owncloud/core/pull/38304
+        if (end == -1) {
+            end = _checksums.indexOf('<', i);
+        }
+        return _checksums.mid(i, end - i);
     }
-    return QByteArray();
+    qCWarning(lcChecksums) << "Failed to parse" << _checksums;
+    return {};
 }
 
 bool parseChecksumHeader(const QByteArray &header, QByteArray *type, QByteArray *checksum)
@@ -355,11 +364,11 @@ void ValidateChecksumHeader::slotChecksumCalculated(const QByteArray &checksumTy
     const QByteArray &checksum)
 {
     if (checksumType != _expectedChecksumType) {
-        emit validationFailed(tr("The checksum header contained an unknown checksum type '%1'").arg(QString::fromLatin1(_expectedChecksumType)));
+        emit validationFailed(tr("The checksum header contained an unknown checksum type \"%1\"").arg(QString::fromLatin1(_expectedChecksumType)));
         return;
     }
     if (checksum != _expectedChecksum) {
-        emit validationFailed(tr("The downloaded file does not match the checksum, it will be resumed. '%1' != '%2'").arg(QString::fromUtf8(_expectedChecksum), QString::fromUtf8(checksum)));
+        emit validationFailed(tr(R"(The downloaded file does not match the checksum, it will be resumed. "%1" != "%2")").arg(QString::fromUtf8(_expectedChecksum), QString::fromUtf8(checksum)));
         return;
     }
     emit validated(checksumType, checksum);

@@ -23,14 +23,20 @@ class QLocalSocket;
 namespace OCC {
 class GETFileJob;
 class SyncJournalDb;
+class VfsCfApi;
 
-class OWNCLOUDSYNC_EXPORT HydrationJob : public QObject
+namespace EncryptionHelper {
+    class StreamingDecryptor;
+};
+
+class HydrationJob : public QObject
 {
     Q_OBJECT
 public:
     enum Status {
         Success = 0,
         Error,
+        Cancelled,
     };
     Q_ENUM(Status)
 
@@ -54,33 +60,58 @@ public:
     QString folderPath() const;
     void setFolderPath(const QString &folderPath);
 
+    bool isEncryptedFile() const;
+    void setIsEncryptedFile(bool isEncrypted);
+
+    QString e2eMangledName() const;
+    void setE2eMangledName(const QString &e2eMangledName);
+
+    qint64 fileTotalSize() const;
+    void setFileTotalSize(qint64 totalSize);
+
     Status status() const;
 
     void start();
     void cancel();
+    void finalize(OCC::VfsCfApi *vfs);
+
+public slots:
+    void slotCheckFolderId(const QStringList &list);
+    void slotFolderIdError();
+    void slotCheckFolderEncryptedMetadata(const QJsonDocument &json);
+    void slotFolderEncryptedMetadataError(const QByteArray &fileId, int httpReturnCode);
 
 signals:
     void finished(HydrationJob *job);
-    void canceled(HydrationJob *job);
 
 private:
     void emitFinished(Status status);
-    void emitCanceled();
 
     void onNewConnection();
+    void onCancellationServerNewConnection();
     void onGetFinished();
-    void onGetCanceled();
+
+    void handleNewConnection();
+    void handleNewConnectionForEncryptedFile();
+
+    void startServerAndWaitForConnections();
 
     AccountPtr _account;
     QString _remotePath;
     QString _localPath;
     SyncJournalDb *_journal = nullptr;
+    bool _isCancelled = false;
 
     QString _requestId;
     QString _folderPath;
 
-    QLocalServer *_server = nullptr;
-    QLocalSocket *_socket = nullptr;
+    bool _isEncryptedFile = false;
+    QString _e2eMangledName;
+
+    QLocalServer *_transferDataServer = nullptr;
+    QLocalServer *_signalServer = nullptr;
+    QLocalSocket *_transferDataSocket = nullptr;
+    QLocalSocket *_signalSocket = nullptr;
     GETFileJob *_job = nullptr;
     Status _status = Success;
 };

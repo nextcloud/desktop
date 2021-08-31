@@ -243,6 +243,15 @@ QString FileInfo::path() const
     return (parentPath.isEmpty() ? QString() : (parentPath + QLatin1Char('/'))) + name;
 }
 
+QString FileInfo::absolutePath() const
+{
+    if (parentPath.endsWith(QLatin1Char('/'))) {
+        return parentPath + name;
+    } else {
+        return parentPath + QLatin1Char('/') + name;
+    }
+}
+
 void FileInfo::fixupParentPathRecursively()
 {
     auto p = path();
@@ -273,7 +282,7 @@ FakePropfindReply::FakePropfindReply(FileInfo &remoteRootFileInfo, QNetworkAcces
         QMetaObject::invokeMethod(this, "respond404", Qt::QueuedConnection);
         return;
     }
-    QString prefix = request.url().path().left(request.url().path().size() - fileName.size());
+    const QString prefix = request.url().path().left(request.url().path().size() - fileName.size());
 
     // Don't care about the request and just return a full propfind
     const QString davUri { QStringLiteral("DAV:") };
@@ -288,7 +297,12 @@ FakePropfindReply::FakePropfindReply(FileInfo &remoteRootFileInfo, QNetworkAcces
     auto writeFileResponse = [&](const FileInfo &fileInfo) {
         xml.writeStartElement(davUri, QStringLiteral("response"));
 
-        xml.writeTextElement(davUri, QStringLiteral("href"), prefix + QString::fromUtf8(QUrl::toPercentEncoding(fileInfo.path(), "/")));
+        auto url = QString::fromUtf8(QUrl::toPercentEncoding(fileInfo.absolutePath(), "/"));
+        if (!url.endsWith(QChar('/'))) {
+            url.append(QChar('/'));
+        }
+        const auto href = OCC::Utility::concatUrlPath(prefix, url).path();
+        xml.writeTextElement(davUri, QStringLiteral("href"), href);
         xml.writeStartElement(davUri, QStringLiteral("propstat"));
         xml.writeStartElement(davUri, QStringLiteral("prop"));
 
@@ -484,9 +498,11 @@ FakeGetReply::FakeGetReply(FileInfo &remoteRootFileInfo, QNetworkAccessManager::
     QString fileName = getFilePathFromUrl(request.url());
     Q_ASSERT(!fileName.isEmpty());
     fileInfo = remoteRootFileInfo.find(fileName);
-    if (!fileInfo)
-        qWarning() << "Could not find file" << fileName << "on the remote";
-    QMetaObject::invokeMethod(this, "respond", Qt::QueuedConnection);
+    if (!fileInfo) {
+        qDebug() << "meh;";
+    }
+    Q_ASSERT_X(fileInfo, Q_FUNC_INFO, "Could not find file on the remote");
+    QMetaObject::invokeMethod(this, &FakeGetReply::respond, Qt::QueuedConnection);
 }
 
 void FakeGetReply::respond()
@@ -736,7 +752,7 @@ FakeErrorReply::FakeErrorReply(QNetworkAccessManager::Operation op, const QNetwo
     open(QIODevice::ReadOnly);
     setAttribute(QNetworkRequest::HttpStatusCodeAttribute, httpErrorCode);
     setError(InternalServerError, QStringLiteral("Internal Server Fake Error"));
-    QMetaObject::invokeMethod(this, "respond", Qt::QueuedConnection);
+    QMetaObject::invokeMethod(this, &FakeErrorReply::respond, Qt::QueuedConnection);
 }
 
 void FakeErrorReply::respond()
@@ -793,55 +809,64 @@ FakeQNAM::FakeQNAM(FileInfo initialRoot)
 
 QNetworkReply *FakeQNAM::createRequest(QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *outgoingData)
 {
-    if (_override) {
-        if (auto reply = _override(op, request, outgoingData))
-            return reply;
-    }
-    const QString fileName = getFilePathFromUrl(request.url());
-    Q_ASSERT(!fileName.isNull());
-    if (_errorPaths.contains(fileName))
-        return new FakeErrorReply { op, request, this, _errorPaths[fileName] };
-
-    bool isUpload = request.url().path().startsWith(sUploadUrl.path());
-    FileInfo &info = isUpload ? _uploadFileInfo : _remoteRootFileInfo;
-
+    QNetworkReply *reply = nullptr;
     auto newRequest = request;
     newRequest.setRawHeader("X-Request-ID", OCC::AccessManager::generateRequestId());
-    auto verb = request.attribute(QNetworkRequest::CustomVerbAttribute);
-    FakeReply *reply = nullptr;
-    if (verb == QLatin1String("PROPFIND"))
-        // Ignore outgoingData always returning somethign good enough, works for now.
-        reply = new FakePropfindReply { info, op, newRequest, this };
-    else if (verb == QLatin1String("GET") || op == QNetworkAccessManager::GetOperation)
-        reply = new FakeGetReply { info, op, newRequest, this };
-    else if (verb == QLatin1String("PUT") || op == QNetworkAccessManager::PutOperation)
-        reply = new FakePutReply { info, op, newRequest, outgoingData->readAll(), this };
-    else if (verb == QLatin1String("MKCOL"))
-        reply = new FakeMkcolReply { info, op, newRequest, this };
-    else if (verb == QLatin1String("DELETE") || op == QNetworkAccessManager::DeleteOperation)
-        reply = new FakeDeleteReply { info, op, newRequest, this };
-    else if (verb == QLatin1String("MOVE") && !isUpload)
-        reply = new FakeMoveReply { info, op, newRequest, this };
-    else if (verb == QLatin1String("MOVE") && isUpload)
-        reply = new FakeChunkMoveReply { info, _remoteRootFileInfo, op, newRequest, this };
-    else {
-        qDebug() << verb << outgoingData;
-        Q_UNREACHABLE();
+    if (_override) {
+        if (auto _reply = _override(op, newRequest, outgoingData)) {
+            reply = _reply;
+        }
+    }
+    if (!reply) {
+        const QString fileName = getFilePathFromUrl(newRequest.url());
+        Q_ASSERT(!fileName.isNull());
+        if (_errorPaths.contains(fileName)) {
+            reply = new FakeErrorReply { op, newRequest, this, _errorPaths[fileName] };
+        }
+    }
+    if (!reply) {        const bool isUpload = newRequest.url().path().startsWith(sUploadUrl.path());
+        FileInfo &info = isUpload ? _uploadFileInfo : _remoteRootFileInfo;
+
+        auto verb = newRequest.attribute(QNetworkRequest::CustomVerbAttribute);
+        if (verb == QLatin1String("PROPFIND"))
+            // Ignore outgoingData always returning somethign good enough, works for now.
+            reply = new FakePropfindReply { info, op, newRequest, this };
+        else if (verb == QLatin1String("GET") || op == QNetworkAccessManager::GetOperation)
+            reply = new FakeGetReply { info, op, newRequest, this };
+        else if (verb == QLatin1String("PUT") || op == QNetworkAccessManager::PutOperation)
+            reply = new FakePutReply { info, op, newRequest, outgoingData->readAll(), this };
+        else if (verb == QLatin1String("MKCOL"))
+            reply = new FakeMkcolReply { info, op, newRequest, this };
+        else if (verb == QLatin1String("DELETE") || op == QNetworkAccessManager::DeleteOperation)
+            reply = new FakeDeleteReply { info, op, newRequest, this };
+        else if (verb == QLatin1String("MOVE") && !isUpload)
+            reply = new FakeMoveReply { info, op, newRequest, this };
+        else if (verb == QLatin1String("MOVE") && isUpload)
+            reply = new FakeChunkMoveReply { info, _remoteRootFileInfo, op, newRequest, this };
+        else {
+            qDebug() << verb << outgoingData;
+            Q_UNREACHABLE();
+        }
     }
     OCC::HttpLogger::logRequest(reply, op, outgoingData);
     return reply;
 }
 
-FakeFolder::FakeFolder(const FileInfo &fileTemplate)
+FakeFolder::FakeFolder(const FileInfo &fileTemplate, const OCC::Optional<FileInfo> &localFileInfo, const QString &remotePath)
     : _localModifier(_tempDir.path())
 {
     // Needs to be done once
     OCC::SyncEngine::minimumFileAgeForUpload = std::chrono::milliseconds(0);
     OCC::Logger::instance()->setLogFile(QStringLiteral("-"));
+    OCC::Logger::instance()->addLogRule({ QStringLiteral("sync.httplogger=true") });
 
     QDir rootDir { _tempDir.path() };
     qDebug() << "FakeFolder operating on" << rootDir;
-    toDisk(rootDir, fileTemplate);
+    if (localFileInfo) {
+        toDisk(rootDir, *localFileInfo);
+    } else {
+        toDisk(rootDir, fileTemplate);
+    }
 
     _fakeQnam = new FakeQNAM(fileTemplate);
     _account = OCC::Account::create();
@@ -851,7 +876,7 @@ FakeFolder::FakeFolder(const FileInfo &fileTemplate)
     _account->setServerVersion(QStringLiteral("10.0.0"));
 
     _journalDb = std::make_unique<OCC::SyncJournalDb>(localPath() + QStringLiteral(".sync_test.db"));
-    _syncEngine = std::make_unique<OCC::SyncEngine>(_account, localPath(), QString(), _journalDb.get());
+    _syncEngine = std::make_unique<OCC::SyncEngine>(_account, localPath(), remotePath, _journalDb.get());
     // Ignore temporary files from the download. (This is in the default exclude list, but we don't load it)
     _syncEngine->excludedFiles().addManualExclude(QStringLiteral("]*.~*"));
 
@@ -982,7 +1007,7 @@ void FakeFolder::fromDisk(QDir &dir, FileInfo &templateFi)
     }
 }
 
-FileInfo &findOrCreateDirs(FileInfo &base, PathComponents components)
+static FileInfo &findOrCreateDirs(FileInfo &base, PathComponents components)
 {
     if (components.isEmpty())
         return base;
@@ -1034,5 +1059,4 @@ FakeReply::FakeReply(QObject *parent)
     setRawHeader(QByteArrayLiteral("Date"), QDateTime::currentDateTimeUtc().toString(Qt::RFC2822Date).toUtf8());
 }
 
-FakeReply::~FakeReply()
-= default;
+FakeReply::~FakeReply() = default;

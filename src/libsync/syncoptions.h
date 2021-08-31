@@ -15,21 +15,25 @@
 #pragma once
 
 #include "owncloudlib.h"
-#include <QString>
-#include <QSharedPointer>
-#include <chrono>
 #include "common/vfs.h"
+
+#include <QRegularExpression>
+#include <QSharedPointer>
+#include <QString>
+
+#include <chrono>
+
 
 namespace OCC {
 
 /**
  * Value class containing the options given to the sync engine
  */
-struct OWNCLOUDSYNC_EXPORT SyncOptions
+class OWNCLOUDSYNC_EXPORT SyncOptions
 {
-    SyncOptions()
-        : _vfs(new VfsOff)
-    {}
+public:
+    SyncOptions();
+    ~SyncOptions();
 
     /** Maximum size (in Bytes) a folder can have without asking for confirmation.
      * -1 means infinite */
@@ -57,7 +61,7 @@ struct OWNCLOUDSYNC_EXPORT SyncOptions
     qint64 _minChunkSize = 1 * 1000 * 1000; // 1MB
 
     /** The maximum chunk size in bytes for chunked uploads */
-    qint64 _maxChunkSize = 100 * 1000 * 1000; // 100MB
+    qint64 _maxChunkSize = 1000 * 1000 * 1000; // 1000MB
 
     /** The target duration of chunk uploads for dynamic chunk sizing.
      *
@@ -67,7 +71,45 @@ struct OWNCLOUDSYNC_EXPORT SyncOptions
 
     /** The maximum number of active jobs in parallel  */
     int _parallelNetworkJobs = 6;
-};
 
+    /** Reads settings from env vars where available.
+     *
+     * Currently reads _initialChunkSize, _minChunkSize, _maxChunkSize,
+     * _targetChunkUploadDuration, _parallelNetworkJobs.
+     */
+    void fillFromEnvironmentVariables();
+
+    /** Ensure min <= initial <= max
+     *
+     * Previously min/max chunk size values didn't exist, so users might
+     * have setups where the chunk size exceeds the new min/max default
+     * values. To cope with this, adjust min/max to always include the
+     * initial chunk size value.
+     */
+    void verifyChunkSizes();
+
+
+    /** A regular expression to match file names
+     * If no pattern is provided the default is an invalid regular expression.
+     */
+    QRegularExpression fileRegex() const;
+
+    /**
+     * A pattern like *.txt, matching only file names
+     */
+    void setFilePattern(const QString &pattern);
+
+    /**
+     * A pattern like /own.*\/.*txt matching the full path
+     */
+    void setPathPattern(const QString &pattern);
+
+private:
+    /**
+     * Only sync files that mathc the expression
+     * Invalid pattern by default.
+     */
+    QRegularExpression _fileRegex = QRegularExpression(QStringLiteral("("));
+};
 
 }

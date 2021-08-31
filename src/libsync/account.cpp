@@ -23,6 +23,8 @@
 #include "pushnotifications.h"
 #include "version.h"
 
+#include <deletejob.h>
+
 #include "common/asserts.h"
 #include "clientsideencryption.h"
 
@@ -59,7 +61,6 @@ const char app_password[] = "_app-password";
 Account::Account(QObject *parent)
     : QObject(parent)
     , _capabilities(QVariantMap())
-    , _davPath(Theme::instance()->webDavPath())
 {
     qRegisterMetaType<AccountPtr>("AccountPtr");
     qRegisterMetaType<Account *>("Account*");
@@ -85,23 +86,17 @@ Account::~Account() = default;
 
 QString Account::davPath() const
 {
-    if (capabilities().chunkingNg()) {
-        // The chunking-ng means the server prefer to use the new webdav URL
-        return QLatin1String("/remote.php/dav/files/") + davUser() + QLatin1Char('/');
-    }
-
-    // make sure to have a trailing slash
-    if (!_davPath.endsWith('/')) {
-        QString dp(_davPath);
-        dp.append('/');
-        return dp;
-    }
-    return _davPath;
+    return davPathBase() + QLatin1Char('/') + davUser() + QLatin1Char('/');
 }
 
 void Account::setSharedThis(AccountPtr sharedThis)
 {
     _sharedThis = sharedThis.toWeakRef();
+}
+
+QString Account::davPathBase()
+{
+    return QStringLiteral("/remote.php/dav/files");
 }
 
 AccountPtr Account::sharedFromThis()
@@ -111,7 +106,7 @@ AccountPtr Account::sharedFromThis()
 
 QString Account::davUser() const
 {
-    return _davUser.isEmpty() ? _credentials->user() : _davUser;
+    return _davUser.isEmpty() && _credentials ? _credentials->user() : _davUser;
 }
 
 void Account::setDavUser(const QString &newDavUser)
@@ -498,7 +493,27 @@ void Account::slotHandleSslErrors(QNetworkReply *reply, QList<QSslError> errors)
 
 void Account::slotCredentialsFetched()
 {
-    emit credentialsFetched(_credentials.data());
+    if (_davUser.isEmpty()) {
+        qCDebug(lcAccount) << "User id not set. Fetch it.";
+        const auto fetchUserNameJob = new JsonApiJob(sharedFromThis(), QStringLiteral("/ocs/v1.php/cloud/user"));
+        connect(fetchUserNameJob, &JsonApiJob::jsonReceived, this, [this, fetchUserNameJob](const QJsonDocument &json, int statusCode) {
+            fetchUserNameJob->deleteLater();
+            if (statusCode != 100) {
+                qCWarning(lcAccount) << "Could not fetch user id. Login will probably not work.";
+                emit credentialsFetched(_credentials.data());
+                return;
+            }
+
+            const auto objData = json.object().value("ocs").toObject().value("data").toObject();
+            const auto userId = objData.value("id").toString("");
+            setDavUser(userId);
+            emit credentialsFetched(_credentials.data());
+        });
+        fetchUserNameJob->start();
+    } else {
+        qCDebug(lcAccount) << "User id already fetched.";
+        emit credentialsFetched(_credentials.data());
+    }
 }
 
 void Account::slotCredentialsAsked()
@@ -571,15 +586,6 @@ void Account::setServerVersion(const QString &version)
     emit serverVersionChanged(this, oldServerVersion, version);
 }
 
-void Account::setNonShib(bool nonShib)
-{
-    if (nonShib) {
-        _davPath = Theme::instance()->webDavPathNonShib();
-    } else {
-        _davPath = Theme::instance()->webDavPath();
-    }
-}
-
 void Account::writeAppPasswordOnce(QString appPassword){
     if(_wroteAppPassword)
         return;
@@ -639,7 +645,8 @@ void Account::retrieveAppPassword(){
     job->start();
 }
 
-void Account::deleteAppPassword(){
+void Account::deleteAppPassword()
+{
     const QString kck = AbstractCredentials::keychainKey(
                 url().toString(),
                 credentials()->user() + app_password,
@@ -665,6 +672,25 @@ void Account::deleteAppPassword(){
         _wroteAppPassword = false;
     });
     job->start();
+}
+
+void Account::deleteAppToken()
+{
+    const auto deleteAppTokenJob = new DeleteJob(sharedFromThis(), QStringLiteral("/ocs/v2.php/core/apppassword"));
+    connect(deleteAppTokenJob, &DeleteJob::finishedSignal, this, [this]() {
+        if (const auto deleteJob = qobject_cast<DeleteJob *>(QObject::sender())) {
+            const auto httpCode = deleteJob->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+            if (httpCode != 200) {
+                qCWarning(lcAccount) << "AppToken remove failed for user: " << displayName() << " with code: " << httpCode;
+            } else {
+                qCInfo(lcAccount) << "AppToken for user: " << displayName() << " has been removed.";
+            }
+        } else {
+            Q_ASSERT(false);
+            qCWarning(lcAccount) << "The sender is not a DeleteJob instance.";
+        }
+    });
+    deleteAppTokenJob->start();
 }
 
 void Account::fetchDirectEditors(const QUrl &directEditingURL, const QString &directEditingETag)

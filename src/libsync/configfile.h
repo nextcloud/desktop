@@ -145,6 +145,8 @@ public:
     bool moveToTrash() const;
     void setMoveToTrash(bool);
 
+    bool showMainDialogAsNormalWindow() const;
+
     static bool setConfDir(const QString &value);
 
     bool optionalServerNotifications() const;

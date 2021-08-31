@@ -349,6 +349,7 @@ void DiscoverySingleDirectoryJob::start()
           << "getlastmodified"
           << "getcontentlength"
           << "getetag"
+          << "http://owncloud.org/ns:size"
           << "http://owncloud.org/ns:id"
           << "http://owncloud.org/ns:downloadURL"
           << "http://owncloud.org/ns:dDC"
@@ -429,6 +430,10 @@ static void propertyMapToRemoteInfo(const QMap<QString, QString> &map, RemoteInf
             result.isE2eEncrypted = true;
         }
     }
+
+    if (result.isDirectory && map.contains("size")) {
+        result.sizeOfFolder = map.value("size").toInt();
+    }
 }
 
 void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(const QString &file, const QMap<QString, QString> &map)
@@ -455,6 +460,9 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(const QString &fi
             _isE2eEncrypted = true;
             Q_ASSERT(!_fileId.isEmpty());
         }
+        if (map.contains("size")) {
+            _size = map.value("size").toInt();
+        }
     } else {
 
         RemoteInfo result;
@@ -472,19 +480,13 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(const QString &fi
             result.remotePerm.unsetPermission(RemotePermissions::IsMounted);
             result.remotePerm.setPermission(RemotePermissions::IsMountedSub);
         }
-
-        QStringRef fileRef(&file);
-        int slashPos = file.lastIndexOf(QLatin1Char('/'));
-        if (slashPos > -1) {
-            fileRef = file.midRef(slashPos + 1);
-        }
         _results.push_back(std::move(result));
     }
 
     //This works in concerto with the RequestEtagJob and the Folder object to check if the remote folder changed.
     if (map.contains("getetag")) {
         if (_firstEtag.isEmpty()) {
-            _firstEtag = parseEtag(map.value("getetag").toUtf8()); // for directory itself
+            _firstEtag = parseEtag(map.value(QStringLiteral("getetag")).toUtf8()); // for directory itself
         }
     }
 }

@@ -52,51 +52,53 @@ Systray Icon
 A right-click on the systray icon opens a menu for quick access to multiple
 operations.
 
-.. figure:: images/menu.png
+.. figure:: images/traymenu.png
    :alt: the right-click sync client menu
 
 This menu provides the following options:
 
-* Quick access to your accounts
-* Sync status
-* Recent Changes, showing latest activities
+* Open main dialog
+* Paus sync/Resume sync
 * Settings
-* Help menu
-* Pause synchronizations
-* An option to log in or log out of all of your accounts at once
-* Quit Nextcloud, logging out and closing the client
+* Exit Nextcloud, logging out and closing the client
 
-A left-click on your systray icon opens the desktop client to the account
-settings window.
+A left-click on your systray icon opens the main dialog of the desktop client.
 
-.. figure:: images/client-6.png
-   :alt: Account settings window
+.. figure:: images/main_dialog.png
+   :alt: Main dialog
+
+The main dialogs show recent activities, errors and server notifications.
+
+When clicking on the main dialog and then clicking on the avatar of the user, the Settings can be opened.
 
 Configuring Nextcloud Account Settings
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. index:: account settings, user, password, Server URL
 
-At the top of the window are tabs for each configured sync account, and three
-others for Activity, General and Network settings. On your account tabs you
+.. figure:: images/settingsdialog.png
+   :alt: Main dialog
+
+At the top of the window are tabs for each configured sync account, and two
+others for General and Network settings. On your account tabs you
 have the following features:
 
 * Connection status, showing which Nextcloud server you are connected to, and
   your Nextcloud username.
-* An **Account** button, which contains a dropdown menu with **Add New**,
-  **Log Out**, and **Remove**.
 * Used and available space on the server.
 * Current synchronization status.
 * **Add Folder Sync Connection** button.
 
 The little button with three dots (the overflow menu) that sits to the right of
-the sync status bar offers four additional options:
+the sync status bar offers additional options:
 
 * Open Folder
 * Choose What to Sync (This appears only when your file tree is collapsed, and
   expands the file tree)
 * Pause Sync / Resume Sync
 * Remove folder sync connection
+* Availability (Only available if virtual files support is enabled)
+* Enable virtual file support/Disable virtual file support
 
 **Open Folder** opens your local Nextcloud sync folder.
 
@@ -105,7 +107,7 @@ account. It will continue to update file and folder lists, without
 downloading or updating files. To stop all sync activity use **Remove
 Folder Sync Connection**.
 
-.. figure:: images/client-7.png
+.. figure:: images/general_settings_folder_context_menu.png
    :alt: Extra options for sync operations
 
 .. note:: Nextcloud does not preserve the mtime (modification time) of
@@ -168,54 +170,18 @@ Nextcloud users the same way as in your Nextcloud Web interface.
 .. figure:: images/mac-share.png
    :alt: Sync client integration in Windows Explorer.
 
-Right-click your systray icon, hover over the account you want to use, and
-left-click "Open folder [folder name] to quickly enter your local Nextcloud
-folder. Right-click the file or folder you want to share to expose the share
-dialog, and click **Share with Nextcloud**.
+In you file explorer, click on a file and in the context menu go to
+**Nextcloud** and then lick on **Share options** to bring up the Share
+dialog.
 
-.. figure:: images/share-1.png
+.. figure:: images/share_context_menu.png
    :alt: Sharing from Windows Explorer.
 
-The share dialog has all the same options as your Nextcloud Web interface.
+From this dialog you can share a file.
 
-.. figure:: images/share-2.png
-   :alt: Share dialog in Windows Explorer.
+.. figure:: images/share_dialog.png
+   :alt: Share dialog
 
-Use **Share with Nextcloud** to see who you have shared with, and to modify
-their permissions, or to delete the share.
-
-Activity Window
----------------
-
-The Activity window contains the log of your recent activities, organized over
-three tabs: **Server Activities**, which includes new shares and files
-downloaded and deleted, **Sync Protocol**, which displays local activities such
-as which local folders your files went into, and **Not Synced** shows errors
-such as files not synced. Double clicking an entry pointing to an existing
-file in **Server Activities** or **Sync Protocol** will open the folder containing
-the file and highlight it.
-
-.. figure:: images/client-8.png
-   :alt: Activity windows logs all server and client activities.
-
-Server Notifications
---------------------
-
-Starting with version 2.2.0, the client will display notifications from your
-Nextcloud server that require manual interaction by you. For example, when a
-user on a remote Nextcloud creates a new Federated share for you, you can accept
-it from your desktop client.
-
-The desktop client automatically checks for available notifications
-automatically on a regular basis. Notifications are displayed in the Server
-Activity tab, and if you have **Show Desktop Notifications** enabled (General
-tab) you'll also see a systray notification.
-
-.. figure:: images/client-12.png
-   :alt: Activity window with notification.
-
-This also displays notifications sent to users by the Nextcloud admin via the
-Announcements app.
 
 General Window
 --------------
@@ -226,7 +192,7 @@ is where you will find the **Edit Ignored Files** button, to launch the ignored
 files editor, and **Ask confirmation before downloading
 folders larger than [folder size]**.
 
-.. figure:: images/client-9.png
+.. figure:: images/settings_general.png
    :alt: General window contains configuration options.
 
 Using the Network Window

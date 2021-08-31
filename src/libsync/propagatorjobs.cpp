@@ -189,8 +189,12 @@ void PropagateLocalMkdir::startLocalMkdir()
     // before the correct etag is stored.
     SyncFileItem newItem(*_item);
     newItem._etag = "_invalid_";
-    if (!propagator()->updateMetadata(newItem)) {
-        done(SyncFileItem::FatalError, tr("Error writing metadata to the database"));
+    const auto result = propagator()->updateMetadata(newItem);
+    if (!result) {
+        done(SyncFileItem::FatalError, tr("Error updating metadata: %1").arg(result.error()));
+        return;
+    } else if (*result == Vfs::ConvertToPlaceholderResult::Locked) {
+        done(SyncFileItem::SoftError, tr("The file %1 is currently in use").arg(newItem._file));
         return;
     }
     propagator()->_journal->commit("localMkdir");
@@ -244,7 +248,9 @@ void PropagateLocalRename::start()
 
     auto &vfs = propagator()->syncOptions()._vfs;
     auto pinState = vfs->pinState(_item->_originalFile);
-    vfs->setPinState(_item->_originalFile, PinState::Inherited);
+    if (!vfs->setPinState(_item->_originalFile, PinState::Inherited)) {
+        qCWarning(lcPropagateLocalRename) << "Could not set pin state of" << _item->_originalFile << "to inherited";
+    }
 
     const auto oldFile = _item->_file;
 
@@ -253,14 +259,18 @@ void PropagateLocalRename::start()
         if (oldRecord.isValid()) {
             newItem._checksumHeader = oldRecord._checksumHeader;
         }
-        if (!propagator()->updateMetadata(newItem)) {
-            done(SyncFileItem::FatalError, tr("Error writing metadata to the database"));
+        const auto result = propagator()->updateMetadata(newItem);
+        if (!result) {
+            done(SyncFileItem::FatalError, tr("Error updating metadata: %1").arg(result.error()));
+            return;
+        } else if (*result == Vfs::ConvertToPlaceholderResult::Locked) {
+            done(SyncFileItem::SoftError, tr("The file %1 is currently in use").arg(newItem._file));
             return;
         }
     } else {
         propagator()->_renamedDirectories.insert(oldFile, _item->_renameTarget);
         if (!PropagateRemoteMove::adjustSelectiveSync(propagator()->_journal, oldFile, _item->_renameTarget)) {
-            done(SyncFileItem::FatalError, tr("Error writing metadata to the database"));
+            done(SyncFileItem::FatalError, tr("Failed to rename file"));
             return;
         }
     }

@@ -4,7 +4,7 @@ The :computer: Nextcloud Desktop Client is a tool to synchronize files from Next
 with your computer.
 
 <p align="center">
-    <img src="https://nextcloud.com/wp-content/themes/next/assets/img/clients/desktop/macsettings.png?x16328" alt="Desktop Client on Mac OS]">
+    <img src="doc/images/main_dialog_christine.png" alt="Desktop Client on Windows" width="450">
 </p>
 
 ## :blue_heart: :tada: Contributing

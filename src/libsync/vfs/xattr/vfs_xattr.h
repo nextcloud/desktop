@@ -17,6 +17,7 @@
 #include <QScopedPointer>
 
 #include "common/vfs.h"
+#include "common/plugin.h"
 
 namespace OCC {
 
@@ -41,7 +42,7 @@ public:
 
     Result<void, QString> createPlaceholder(const SyncFileItem &item) override;
     Result<void, QString> dehydratePlaceholder(const SyncFileItem &item) override;
-    Result<void, QString> convertToPlaceholder(const QString &filename, const SyncFileItem &item, const QString &replacesFile) override;
+    Result<ConvertToPlaceholderResult, QString> convertToPlaceholder(const QString &filename, const SyncFileItem &item, const QString &replacesFile) override;
 
     bool needsMetadataUpdate(const SyncFileItem &item) override;
     bool isDehydratedPlaceholder(const QString &filePath) override;
@@ -56,6 +57,13 @@ public slots:
 
 protected:
     void startImpl(const VfsSetupParams &params) override;
+};
+
+class XattrVfsPluginFactory : public QObject, public DefaultPluginFactory<VfsXAttr>
+{
+    Q_OBJECT
+    Q_PLUGIN_METADATA(IID "org.owncloud.PluginFactory" FILE "vfspluginmetadata.json")
+    Q_INTERFACES(OCC::PluginFactory)
 };
 
 } // namespace OCC

@@ -1,9 +1,9 @@
 kind: pipeline
-name: qt-5.12
+name: qt-5.15
 
 steps:
 - name: cmake
-  image: nextcloudci/client-5.12:client-5.12-12
+  image: ghcr.io/nextcloud/continuous-integration-client:client-5.15-1
   volumes:
     - name: build
       path: /drone/build
@@ -11,7 +11,7 @@ steps:
     - cd /drone/build
     - cmake -DCMAKE_C_COMPILER=gcc-10 -DCMAKE_CXX_COMPILER=g++-10 -DCMAKE_BUILD_TYPE=Debug -DBUILD_UPDATER=ON -DBUILD_TESTING=1 -DECM_ENABLE_SANITIZERS=address ../src
 - name: compile
-  image: nextcloudci/client-5.12:client-5.12-12
+  image: ghcr.io/nextcloud/continuous-integration-client:client-5.15-1
   volumes:
     - name: build
       path: /drone/build
@@ -19,7 +19,7 @@ steps:
     - cd /drone/build
     - make -j$(nproc)
 - name: test
-  image: nextcloudci/client-5.12:client-5.12-12
+  image: ghcr.io/nextcloud/continuous-integration-client:client-5.15-1
   volumes:
     - name: build
       path: /drone/build
@@ -43,27 +43,27 @@ trigger:
 
 ---
 kind: pipeline
-name: qt-5.12-clang
+name: qt-5.15-clang
 
 steps:
 - name: cmake
-  image: nextcloudci/client-5.12:client-5.12-12
+  image: ghcr.io/nextcloud/continuous-integration-client:client-5.15-1
   volumes:
     - name: build
       path: /drone/build
   commands:
     - cd /drone/build
-    - cmake -GNinja -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_C_COMPILER=clang-10 -DCMAKE_CXX_COMPILER=clang++-10 -DCMAKE_BUILD_TYPE=Debug -DBUILD_UPDATER=ON -DBUILD_TESTING=1 -DECM_ENABLE_SANITIZERS=address ../src
+    - cmake -GNinja -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_C_COMPILER=clang-10 -DCMAKE_CXX_COMPILER=clazy -DCMAKE_BUILD_TYPE=Debug -DBUILD_UPDATER=ON -DBUILD_TESTING=1 -DECM_ENABLE_SANITIZERS=address ../src
 - name: compile
-  image: nextcloudci/client-5.12:client-5.12-12
+  image: ghcr.io/nextcloud/continuous-integration-client:client-5.15-1
   volumes:
     - name: build
       path: /drone/build
   commands:
     - cd /drone/build
-    - ninja
+    - ninja 2>1 | /drone/src/admin/linux/count_compiler_warnings.py /drone/src
 - name: test
-  image: nextcloudci/client-5.12:client-5.12-12
+  image: ghcr.io/nextcloud/continuous-integration-client:client-5.15-1
   volumes:
     - name: build
       path: /drone/build
@@ -73,7 +73,7 @@ steps:
     - chown -R test:test .
     - su -c 'ASAN_OPTIONS=detect_leaks=0 ctest --output-on-failure' test
 - name: clang-tidy
-  image: nextcloudci/client-5.12:client-5.12-12
+  image: ghcr.io/nextcloud/continuous-integration-client:client-5.15-1
   volumes:
     - name: build
       path: /drone/build
@@ -98,7 +98,7 @@ name: AppImage
 
 steps:
 - name: build
-  image: nextcloudci/client-5.12:client-5.12-9
+  image: ghcr.io/nextcloud/continuous-integration-client-appimage:client-appimage-2
   environment:
     CI_UPLOAD_GIT_TOKEN:
       from_secret: CI_UPLOAD_GIT_TOKEN
@@ -120,7 +120,7 @@ name: Debian
 
 steps:
 - name: build
-  image: nextcloudci/client-debian-ci:client-debian-ci-2
+  image: ghcr.io/nextcloud/continuous-integration-client-debian:client-debian-3
   commands:
     - /bin/bash -c "./admin/linux/debian/drone-build.sh" || echo "[WARNING] Debian build failed but this is a non-blocking CI event"
   environment:

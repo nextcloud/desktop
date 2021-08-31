@@ -24,6 +24,7 @@ class QScreen;
 class QQmlApplicationEngine;
 class QQuickWindow;
 class QWindow;
+class QQuickWindow;
 
 namespace OCC {
 
@@ -41,6 +42,10 @@ class Systray
     : public QSystemTrayIcon
 {
     Q_OBJECT
+
+    Q_PROPERTY(QString windowTitle READ windowTitle CONSTANT)
+    Q_PROPERTY(bool useNormalWindow READ useNormalWindow CONSTANT)
+
 public:
     static Systray *instance();
     virtual ~Systray() = default;
@@ -53,6 +58,8 @@ public:
     void showMessage(const QString &title, const QString &message, MessageIcon icon = Information);
     void setToolTip(const QString &tip);
     bool isOpen();
+    QString windowTitle() const;
+    bool useNormalWindow() const;
 
     Q_INVOKABLE void pauseResumeSync();
     Q_INVOKABLE bool syncIsPaused();
@@ -69,9 +76,9 @@ signals:
     void openHelp();
     void shutdown();
 
-    Q_INVOKABLE void hideWindow();
-    Q_INVOKABLE void showWindow();
-    Q_INVOKABLE void openShareDialog(const QString &sharePath, const QString &localPath);
+    void hideWindow();
+    void showWindow();
+    void openShareDialog(const QString &sharePath, const QString &localPath);
 
 public slots:
     void slotNewUserSelected();

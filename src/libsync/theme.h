@@ -42,7 +42,6 @@ class OWNCLOUDSYNC_EXPORT Theme : public QObject
     Q_PROPERTY(QString appName READ appName CONSTANT)
     Q_PROPERTY(QUrl stateOnlineImageSource READ stateOnlineImageSource CONSTANT)
     Q_PROPERTY(QUrl stateOfflineImageSource READ stateOfflineImageSource CONSTANT)
-    Q_PROPERTY(QUrl stateOnlineImageSource READ stateOnlineImageSource CONSTANT)
     Q_PROPERTY(QUrl statusOnlineImageSource READ statusOnlineImageSource CONSTANT)
     Q_PROPERTY(QUrl statusDoNotDisturbImageSource READ statusDoNotDisturbImageSource CONSTANT)
     Q_PROPERTY(QUrl statusAwayImageSource READ statusAwayImageSource CONSTANT)
@@ -337,15 +336,6 @@ public:
      * in the account wizard
      */
     virtual bool wizardHideExternalStorageConfirmationCheckbox() const;
-
-    /**
-     * Alternative path on the server that provides access to the webdav capabilities
-     *
-     * Attention: Make sure that this string does NOT have a leading slash and that
-     * it has a trailing slash, for example "remote.php/webdav/".
-     */
-    virtual QString webDavPath() const;
-    virtual QString webDavPathNonShib() const;
 
     /**
      * @brief Sharing options

@@ -2,7 +2,7 @@ project(dolphin-owncloud)
 
 cmake_minimum_required(VERSION 2.8.12)
 
-set(QT_MIN_VERSION "5.12.0")
+set(QT_MIN_VERSION "5.15.0")
 set(KF5_MIN_VERSION "5.16.0")
 set(KDE_INSTALL_USE_QT_SYS_PATHS ON CACHE BOOL "Install the plugin in the right directory")
 

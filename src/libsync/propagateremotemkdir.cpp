@@ -61,8 +61,7 @@ void PropagateRemoteMkdir::start()
     _job = new DeleteJob(propagator()->account(),
         propagator()->fullRemotePath(_item->_file),
         this);
-    connect(static_cast<DeleteJob*>(_job.data()), &DeleteJob::finishedSignal,
-            this, &PropagateRemoteMkdir::slotMkdir);
+    connect(qobject_cast<DeleteJob *>(_job), &DeleteJob::finishedSignal, this, &PropagateRemoteMkdir::slotMkdir);
     _job->start();
 }
 
@@ -76,7 +75,8 @@ void PropagateRemoteMkdir::slotStartMkcolJob()
     _job = new MkColJob(propagator()->account(),
         propagator()->fullRemotePath(_item->_file),
         this);
-    connect(_job, SIGNAL(finished(QNetworkReply::NetworkError)), this, SLOT(slotMkcolJobFinished()));
+    connect(qobject_cast<MkColJob *>(_job), &MkColJob::finishedWithError, this, &PropagateRemoteMkdir::slotMkcolJobFinished);
+    connect(qobject_cast<MkColJob *>(_job), &MkColJob::finishedWithoutError, this, &PropagateRemoteMkdir::slotMkcolJobFinished);
     _job->start();
 }
 
@@ -95,8 +95,8 @@ void PropagateRemoteMkdir::slotStartEncryptedMkcolJob(const QString &path, const
                             propagator()->fullRemotePath(filename),
                             {{"e2e-token", _uploadEncryptedHelper->folderToken() }},
                             this);
-    connect(job, qOverload<QNetworkReply::NetworkError>(&MkColJob::finished),
-            this, &PropagateRemoteMkdir::slotMkcolJobFinished);
+    connect(job, &MkColJob::finishedWithError, this, &PropagateRemoteMkdir::slotMkcolJobFinished);
+    connect(job, &MkColJob::finishedWithoutError, this, &PropagateRemoteMkdir::slotMkcolJobFinished);
     _job = job;
     _job->start();
 }
@@ -137,36 +137,34 @@ void PropagateRemoteMkdir::finalizeMkColJob(QNetworkReply::NetworkError err, con
         return;
     }
 
-    if (_item->_fileId.isEmpty()) {
-        // Owncloud 7.0.0 and before did not have a header with the file id.
-        // (https://github.com/owncloud/core/issues/9000)
-        // So we must get the file id using a PROPFIND
-        // This is required so that we can detect moves even if the folder is renamed on the server
-        // while files are still uploading
-        propagator()->_activeJobList.append(this);
-        auto propfindJob = new PropfindJob(propagator()->account(), jobPath, this);
-        propfindJob->setProperties(QList<QByteArray>() << "http://owncloud.org/ns:id");
-        QObject::connect(propfindJob, &PropfindJob::result, this, &PropagateRemoteMkdir::propfindResult);
-        QObject::connect(propfindJob, &PropfindJob::finishedWithError, this, &PropagateRemoteMkdir::propfindError);
-        propfindJob->start();
-        _job = propfindJob;
-        return;
-    }
+    propagator()->_activeJobList.append(this);
+    auto propfindJob = new PropfindJob(_job->account(), _job->path(), this);
+    propfindJob->setProperties({"http://owncloud.org/ns:permissions"});
+    connect(propfindJob, &PropfindJob::result, this, [this, jobPath](const QVariantMap &result){
+        propagator()->_activeJobList.removeOne(this);
+        _item->_remotePerm = RemotePermissions::fromServerString(result.value(QStringLiteral("permissions")).toString());
 
-    if (!_uploadEncryptedHelper && !_item->_isEncrypted) {
-        success();
-    } else {
-        // We still need to mark that folder encrypted in case we were uploading it as encrypted one
-        // Another scenario, is we are creating a new folder because of move operation on an encrypted folder that works via remove + re-upload
-        propagator()->_activeJobList.append(this);
+        if (!_uploadEncryptedHelper && !_item->_isEncrypted) {
+            success();
+        } else {
+            // We still need to mark that folder encrypted in case we were uploading it as encrypted one
+            // Another scenario, is we are creating a new folder because of move operation on an encrypted folder that works via remove + re-upload
+            propagator()->_activeJobList.append(this);
 
-        // We're expecting directory path in /Foo/Bar convention...
-        Q_ASSERT(jobPath.startsWith('/') && !jobPath.endsWith('/'));
-        // But encryption job expect it in Foo/Bar/ convention
-        auto job = new OCC::EncryptFolderJob(propagator()->account(), propagator()->_journal, jobPath.mid(1), _item->_fileId, this);
-        connect(job, &OCC::EncryptFolderJob::finished, this, &PropagateRemoteMkdir::slotEncryptFolderFinished);
-        job->start();
-    }
+            // We're expecting directory path in /Foo/Bar convention...
+            Q_ASSERT(jobPath.startsWith('/') && !jobPath.endsWith('/'));
+            // But encryption job expect it in Foo/Bar/ convention
+            auto job = new OCC::EncryptFolderJob(propagator()->account(), propagator()->_journal, jobPath.mid(1), _item->_fileId, this);
+            connect(job, &OCC::EncryptFolderJob::finished, this, &PropagateRemoteMkdir::slotEncryptFolderFinished);
+            job->start();
+        }
+    });
+    connect(propfindJob, &PropfindJob::finishedWithError, this, [this]{
+        // ignore the PROPFIND error
+        propagator()->_activeJobList.removeOne(this);
+        done(SyncFileItem::NormalError);
+    });
+    propfindJob->start();
 }
 
 void PropagateRemoteMkdir::slotMkdir()
@@ -235,22 +233,6 @@ void PropagateRemoteMkdir::slotEncryptFolderFinished()
     success();
 }
 
-void PropagateRemoteMkdir::propfindResult(const QVariantMap &result)
-{
-    propagator()->_activeJobList.removeOne(this);
-    if (result.contains("id")) {
-        _item->_fileId = result["id"].toByteArray();
-    }
-    success();
-}
-
-void PropagateRemoteMkdir::propfindError()
-{
-    // ignore the PROPFIND error
-    propagator()->_activeJobList.removeOne(this);
-    done(SyncFileItem::Success);
-}
-
 void PropagateRemoteMkdir::success()
 {
     // Never save the etag on first mkdir.
@@ -259,8 +241,12 @@ void PropagateRemoteMkdir::success()
     itemCopy._etag.clear();
 
     // save the file id already so we can detect rename or remove
-    if (!propagator()->updateMetadata(itemCopy)) {
-        done(SyncFileItem::FatalError, tr("Error writing metadata to the database"));
+    const auto result = propagator()->updateMetadata(itemCopy);
+    if (!result) {
+        done(SyncFileItem::FatalError, tr("Error writing metadata to the database: %1").arg(result.error()));
+        return;
+    } else if (*result == Vfs::ConvertToPlaceholderResult::Locked) {
+        done(SyncFileItem::FatalError, tr("The file %1 is currently in use").arg(_item->_file));
         return;
     }
 

@@ -78,11 +78,11 @@ public:
         ProcessDirectoryJob *parent)
         : QObject(parent)
         , _dirItem(dirItem)
+        , _lastSyncTimestamp(lastSyncTimestamp)
         , _queryServer(queryServer)
         , _queryLocal(queryLocal)
         , _discoveryData(parent->_discoveryData)
         , _currentFolder(path)
-        , _lastSyncTimestamp(lastSyncTimestamp)
     {
         computePinState(parent->_pinState);
     }
@@ -293,6 +293,6 @@ private:
 signals:
     void finished();
     // The root etag of this directory was fetched
-    void etag(const QString &, const QDateTime &time);
+    void etag(const QByteArray &, const QDateTime &time);
 };
 }

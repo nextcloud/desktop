@@ -1,4 +1,4 @@
-import QtQml 2.1
+import QtQml 2.12
 import QtQml.Models 2.1
 import QtQuick 2.9
 import QtQuick.Window 2.3
@@ -14,24 +14,28 @@ import com.nextcloud.desktopclient 1.0
 Window {
     id:         trayWindow
 
-    width:      Style.trayWindowWidth
+    title:      Systray.windowTitle
+    // If the main dialog is displayed as a regular window we want it to be quadratic
+    width:      Systray.useNormalWindow ? Style.trayWindowHeight : Style.trayWindowWidth
     height:     Style.trayWindowHeight
     color:      "transparent"
-    flags:      Qt.Dialog | Qt.FramelessWindowHint
+    flags:      Systray.useNormalWindow ? Qt.Window : Qt.Dialog | Qt.FramelessWindowHint
+
 
     readonly property int maxMenuHeight: Style.trayWindowHeight - Style.trayWindowHeaderHeight - 2 * Style.trayWindowBorderWidth
-
-    Accessible.role: Accessible.Application
-    Accessible.name: qsTr("Nextcloud desktop main dialog")
 
     Component.onCompleted: Systray.forceWindowInit(trayWindow)
 
     // Close tray window when focus is lost (e.g. click somewhere else on the screen)
     onActiveChanged: {
-        if(!active) {
-            trayWindow.hide();
+        if (!Systray.useNormalWindow && !active) {
+            hide();
             Systray.setClosed();
         }
+   }
+
+    onClosing: {
+        Systray.setClosed()
     }
 
     onVisibleChanged: {
@@ -53,7 +57,6 @@ Window {
         onShowWindow: {
             accountMenu.close();
             appsMenu.close();
-
             Systray.positionWindow(trayWindow);
 
             trayWindow.show();
@@ -78,7 +81,7 @@ Window {
         maskSource: Rectangle {
             width: trayWindowBackground.width
             height: trayWindowBackground.height
-            radius: trayWindowBackground.radius
+            radius: Systray.useNormalWindow ? 0.0 : Style.trayWindowRadius
         }
     }
 
@@ -86,7 +89,7 @@ Window {
         id: trayWindowBackground
 
         anchors.fill:   parent
-        radius:         Style.trayWindowRadius
+        radius: Systray.useNormalWindow ? 0.0 : Style.trayWindowRadius
         border.width:   Style.trayWindowBorderWidth
         border.color:   Style.menuBorder
 
@@ -153,9 +156,6 @@ Window {
                                 border.color: Style.menuBorder
                                 radius: Style.currentAccountButtonRadius
                             }
-
-                            Accessible.role: PopupMenu
-                            Accessible.name: qsTr("Account switcher and settings menu")
 
                             onClosed: {
                                 // HACK: reload account Instantiator immediately by restting it - could be done better I guess
@@ -359,13 +359,15 @@ Window {
 
                         Column {
                             id: accountLabels
-                            spacing: Style.userStatusSpacing
-                            Layout.alignment: Qt.AlignLeft
+                            spacing: 0
+                            Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
                             Layout.leftMargin: Style.userStatusSpacing
-                            anchors.top: currentAccountAvatar.top
-                            anchors.topMargin: Style.userStatusSpacing
+                            Layout.fillWidth: true
+                            Layout.maximumWidth: parent.width
+
                             Label {
                                 id: currentAccountUser
+                                Layout.alignment: Qt.AlignLeft | Qt.AlignBottom
                                 width: Style.currentAccountLabelWidth
                                 text: UserModel.currentUser.name
                                 elide: Text.ElideRight
@@ -373,11 +375,14 @@ Window {
                                 font.pixelSize: Style.topLinePixelSize
                                 font.bold: true
                             }
-                            Row {
+
+                            RowLayout {
                                 id: currentUserStatus
                                 visible: UserModel.currentUser.isConnected &&
                                          UserModel.currentUser.serverHasUserStatus
-                                anchors.top: currentAccountUser.bottom
+                                spacing: Style.accountLabelsSpacing
+                                width: parent.width
+
                                 Label {
                                     id: emoji
                                     visible: UserModel.currentUser.statusEmoji !== ""
@@ -386,9 +391,8 @@ Window {
                                 }
                                 Label {
                                     id: message
-                                    anchors.bottom: emoji.bottom
-                                    anchors.left: emoji.right
-                                    anchors.leftMargin: emoji.width + Style.userStatusSpacing
+                                    Layout.alignment: Qt.AlignLeft | Qt.AlignBottom
+                                    Layout.fillWidth: true
                                     visible: UserModel.currentUser.statusMessage !== ""
                                     width: Style.currentAccountLabelWidth
                                     text: UserModel.currentUser.statusMessage !== ""
@@ -413,16 +417,24 @@ Window {
                                 source: "qrc:///client/theme/white/caret-down.svg"
                                 sourceSize.width: Style.accountDropDownCaretSize
                                 sourceSize.height: Style.accountDropDownCaretSize
+                                Accessible.role: Accessible.PopupMenu
+                                Accessible.name: qsTr("Account switcher and settings menu")
                             }
                         }
                     }
                 }
 
+                // Add space between items
+                Item {
+                    Layout.fillWidth: true
+                }
+                
                 RowLayout {
                     id: openLocalFolderRowLayout
                     spacing: 0
                     Layout.preferredWidth:  Style.trayWindowHeaderHeight
                     Layout.preferredHeight: Style.trayWindowHeaderHeight
+                    Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                     
                     HeaderButton {
                         id: openLocalFolderButton
@@ -440,24 +452,27 @@ Window {
                             radius: width*0.5
                             z: 1
                         }
-                   }
-
-                   Image {
-                        id: folderStateIndicator
-                        visible: UserModel.currentUser.hasLocalFolder
-                        source: UserModel.currentUser.isConnected
-                                ? Style.stateOnlineImageSource
-                                : Style.stateOfflineImageSource
-                        cache: false
-                        anchors.top: openLocalFolderButton.verticalCenter
-                        anchors.left: openLocalFolderButton.horizontalCenter
-                        
-                        sourceSize.width: Style.folderStateIndicatorSize
-                        sourceSize.height: Style.folderStateIndicatorSize
     
-                        Accessible.role: Accessible.Indicator
-                        Accessible.name: UserModel.currentUser.isConnected ? qsTr("Connected") : qsTr("Disconnected")
+                        Image {
+                            id: folderStateIndicator
+                            visible: UserModel.currentUser.hasLocalFolder
+                            source: UserModel.currentUser.isConnected
+                                    ? Style.stateOnlineImageSource
+                                    : Style.stateOfflineImageSource
+                            cache: false
+                            
+                            anchors.top: openLocalFolderButton.verticalCenter
+                            anchors.left: openLocalFolderButton.horizontalCenter  
+                            sourceSize.width: Style.folderStateIndicatorSize
+                            sourceSize.height: Style.folderStateIndicatorSize
+        
+                            Accessible.role: Accessible.Indicator
+                            Accessible.name: UserModel.currentUser.isConnected ? qsTr("Connected") : qsTr("Disconnected")
+                            z: 2
+                        }
                     }
+                    
+ 
 
                     Accessible.role: Accessible.Button
                     Accessible.name: qsTr("Open local folder of current account")
@@ -506,9 +521,6 @@ Window {
                             radius: 2
                         }
 
-                        Accessible.role: Accessible.PopupMenu
-                        Accessible.name: qsTr("Apps menu")
-
                         Instantiator {
                             id: appsMenuInstantiator
                             model: UserAppsModel
@@ -532,6 +544,9 @@ Window {
                                         anchors.margins: 1
                                         color: appEntry.hovered ? Style.lightHover : "transparent"
                                     }
+                                    
+                                    Accessible.role: Accessible.PopupMenu
+                                    Accessible.name: qsTr("Apps menu")
                                 }
 
                                 Accessible.role: Accessible.MenuItem
@@ -564,296 +579,11 @@ Window {
 
             model: activityModel
 
-            delegate: RowLayout {
-                id: activityItem
-
-                readonly property variant links: model.links
-
-                readonly property int itemIndex: model.index
-
-                width: parent.width
+            delegate: ActivityItem {  
+                width: activityListView.width
                 height: Style.trayWindowHeaderHeight
-                spacing: 0
-
-                Accessible.role: Accessible.ListItem
-                Accessible.name: path !== "" ? qsTr("Open %1 locally").arg(displayPath)
-                                             : message
-                Accessible.onPressAction: activityMouseArea.clicked()
-
-                MouseArea {
-                    id: activityMouseArea
-                    enabled: (path !== "" || link !== "")
-                    anchors.left: activityItem.left
-                    anchors.right: activityActionsLayout.right
-                    height: parent.height
-                    anchors.margins: 2
-                    hoverEnabled: true
-                    onClicked: activityModel.triggerDefaultAction(model.index)
-
-                    Rectangle {
-                        anchors.fill: parent
-                        color: (parent.containsMouse ? Style.lightHover : "transparent")
-                    }
-                }
-
-                Image {
-                    id: activityIcon
-                    anchors.left: activityItem.left
-                    anchors.leftMargin: 8
-                    anchors.rightMargin: 8
-                    Layout.preferredWidth: shareButton.icon.width
-                    Layout.preferredHeight: shareButton.icon.height
-                    verticalAlignment: Qt.AlignCenter
-                    cache: true
-                    source: icon
-                    sourceSize.height: 64
-                    sourceSize.width: 64
-                }
-
-                Column {
-                    id: activityTextColumn
-                    anchors.left: activityIcon.right
-                    anchors.right: activityActionsLayout.left
-                    anchors.leftMargin: 8
-                    spacing: 4
-                    Layout.alignment: Qt.AlignLeft
-                    Text {
-                        id: activityTextTitle
-                        text: (type === "Activity" || type === "Notification") ? subject : message
-                        width: parent.width
-                        elide: Text.ElideRight
-                        font.pixelSize: Style.topLinePixelSize
-                        color: activityTextTitleColor
-                    }
-
-                    Text {
-                        id: activityTextInfo
-                        text: (type === "Sync") ? displayPath
-                            : (type === "File") ? subject
-                            : (type === "Notification") ? message
-                            : ""
-                        height: (text === "") ? 0 : activityTextTitle.height
-                        width: parent.width
-                        elide: Text.ElideRight
-                        font.pixelSize: Style.subLinePixelSize
-                    }
-
-                    Text {
-                        id: activityTextDateTime
-                        text: dateTime
-                        height: (text === "") ? 0 : activityTextTitle.height
-                        width: parent.width
-                        elide: Text.ElideRight
-                        font.pixelSize: Style.subLinePixelSize
-                        color: "#808080"
-                    }
-
-                    ToolTip {
-                        id: toolTip
-                        visible: activityMouseArea.containsMouse
-                        text: activityTextTitle.text + ((activityTextInfo.text !== "") ? "\n\n" + activityTextInfo.text : "")
-                        delay: 250
-                        timeout: 10000
-                        // Can be dropped on more recent Qt, but on 5.12 it doesn't wrap...
-                        contentItem: Text {
-                            text: toolTip.text
-                            font: toolTip.font
-                            wrapMode: Text.Wrap
-                            color: toolTip.palette.toolTipText
-                        }
-                    }
-                }
-                RowLayout {
-                    id: activityActionsLayout
-                    anchors.right: activityItem.right
-                    spacing: 0
-                    Layout.alignment: Qt.AlignRight
-
-                    function actionButtonIcon(actionIndex) {
-                        const verb = String(model.links[actionIndex].verb);
-                        if (verb === "WEB" && (model.objectType === "chat" || model.objectType === "call")) {
-                            return "qrc:///client/theme/reply.svg";
-                        } else if (verb === "DELETE") {
-                            return "qrc:///client/theme/close.svg";
-                        }
-
-                        return "qrc:///client/theme/confirm.svg";
-                    }
-
-                    Repeater {
-                        model: activityItem.links.length > activityListView.maxActionButtons ? 1 : activityItem.links.length
-
-                        ActivityActionButton {
-                            id: activityActionButton
-
-                            readonly property int actionIndex: model.index
-                            readonly property bool primary: model.index === 0 && String(activityItem.links[actionIndex].verb) !== "DELETE"
-
-                            height: activityItem.height
-
-                            text: !primary ? "" : activityItem.links[actionIndex].label
-
-                            imageSource: !primary ? activityActionsLayout.actionButtonIcon(actionIndex) : ""
-
-                            textColor: primary ? Style.ncBlue : "black"
-                            textColorHovered: Style.lightHover
-
-                            textBorderColor: Style.ncBlue
-
-                            textBgColor: "transparent"
-                            textBgColorHovered: Style.ncBlue
-
-                            tooltipText: activityItem.links[actionIndex].label
-
-                            Layout.minimumWidth: primary ? 80 : -1
-                            Layout.minimumHeight: parent.height
-
-                            Layout.preferredWidth: primary ? -1 : parent.height
-
-                            onClicked: activityModel.triggerAction(activityItem.itemIndex, actionIndex)
-                        }
-
-                    }
-
-                    Button {
-                        id: moreActionsButton
-
-                        Layout.preferredWidth: parent.height
-                        Layout.preferredHeight: parent.height
-                        Layout.alignment: Qt.AlignRight
-
-                        flat: true
-                        hoverEnabled: true
-                        visible: activityItem.links.length > activityListView.maxActionButtons
-                        display: AbstractButton.IconOnly
-                        icon.source: "qrc:///client/theme/more.svg"
-                        icon.color: "transparent"
-                        background: Rectangle {
-                            color: parent.hovered ? Style.lightHover : "transparent"
-                        }
-                        ToolTip.visible: hovered
-                        ToolTip.delay: 1000
-                        ToolTip.text: qsTr("Show more actions")
-
-                        Accessible.role: Accessible.Button
-                        Accessible.name: qsTr("Show more actions")
-                        Accessible.onPressAction: moreActionsButton.clicked()
-
-                        onClicked:  moreActionsButtonContextMenu.popup();
-
-                        Connections {
-                            target: trayWindow
-                            onActiveChanged: {
-                                if (!trayWindow.active) {
-                                    moreActionsButtonContextMenu.close();
-                                }
-                            }
-                        }
-
-                        Connections {
-                            target: activityListView
-
-                            onMovementStarted: {
-                                moreActionsButtonContextMenu.close();
-                            }
-                        }
-
-                        Container {
-                            id: moreActionsButtonContextMenuContainer
-                            visible: moreActionsButtonContextMenu.opened
-
-                            width: moreActionsButtonContextMenu.width
-                            height: moreActionsButtonContextMenu.height
-                            anchors.right: moreActionsButton.right
-                            anchors.top: moreActionsButton.top
-
-                            Menu {
-                                id: moreActionsButtonContextMenu
-                                anchors.centerIn: parent
-
-                                // transform model to contain indexed actions with primary action filtered out
-                                function actionListToContextMenuList(actionList) {
-                                    // early out with non-altered data
-                                    if (activityItem.links.length <= activityListView.maxActionButtons) {
-                                        return actionList;
-                                    }
-
-                                    // add index to every action and filter 'primary' action out
-                                    var reducedActionList = actionList.reduce(function(reduced, action, index) {
-                                        if (!action.primary) {
-                                           var actionWithIndex = { actionIndex: index, label: action.label };
-                                           reduced.push(actionWithIndex);
-                                        }
-                                        return reduced;
-                                    }, []);
-
-
-                                    return reducedActionList;
-                                }
-
-                                Repeater {
-                                    id: moreActionsButtonContextMenuRepeater
-
-                                    model: moreActionsButtonContextMenu.actionListToContextMenuList(activityItem.links)
-
-                                    delegate: MenuItem {
-                                        id: moreActionsButtonContextMenuEntry
-                                        readonly property int actionIndex: model.modelData.actionIndex
-                                        readonly property string label: model.modelData.label
-                                        text: label
-                                        onTriggered: activityModel.triggerAction(activityItem.itemIndex, actionIndex)
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    Button {
-                        id: shareButton
-
-                        Layout.preferredWidth: (path === "") ? 0 : parent.height
-                        Layout.preferredHeight: parent.height
-                        Layout.alignment: Qt.AlignRight
-                        flat: true
-                        hoverEnabled: true
-                        visible: (path === "") ? false : true
-                        display: AbstractButton.IconOnly
-                        icon.source: "qrc:///client/theme/share.svg"
-                        icon.color: "transparent"
-                        background: Rectangle {
-                            color: parent.hovered ? Style.lightHover : "transparent"
-                        }
-                        ToolTip.visible: hovered
-                        ToolTip.delay: 1000
-                        ToolTip.text: qsTr("Open share dialog")
-                        onClicked: Systray.openShareDialog(displayPath,absolutePath)
-
-                        Accessible.role: Accessible.Button
-                        Accessible.name: qsTr("Share %1").arg(displayPath)
-                        Accessible.onPressAction: shareButton.clicked()
-                    }
-                }
+                onClicked: activityModel.triggerDefaultAction(model.index)
             }
-
-            /*add: Transition {
-                NumberAnimation { properties: "y"; from: -60; duration: 100; easing.type: Easing.Linear }
-            }
-
-            remove: Transition {
-                NumberAnimation { property: "opacity"; from: 1.0; to: 0; duration: 100 }
-            }
-
-            removeDisplaced: Transition {
-                SequentialAnimation {
-                    PauseAnimation { duration: 100}
-                    NumberAnimation { properties: "y"; duration: 100; easing.type: Easing.Linear }
-                }
-            }
-
-            displaced: Transition {
-                NumberAnimation { properties: "y"; duration: 100; easing.type: Easing.Linear }
-            }*/
         }
-
     }       // Rectangle trayWindowBackground
 }

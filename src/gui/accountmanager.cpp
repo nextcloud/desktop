@@ -317,7 +317,7 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
     qCInfo(lcAccountManager) << "Account for" << acc->url() << "using auth type" << authType;
 
     acc->_serverVersion = settings.value(QLatin1String(serverVersionC)).toString();
-    acc->_davUser = settings.value(QLatin1String(davUserC)).toString();
+    acc->_davUser = settings.value(QLatin1String(davUserC), "").toString();
 
     // We want to only restore settings for that auth type and the user value
     acc->_settingsMap.insert(QLatin1String(userC), settings.value(userC));
@@ -379,6 +379,8 @@ void AccountManager::deleteAccount(AccountState *account)
 
     // Forget E2E keys
     account->account()->e2e()->forgetSensitiveData(account->account());
+
+    account->account()->deleteAppToken();
 
     emit accountSyncConnectionRemoved(account);
     emit accountRemoved(account);

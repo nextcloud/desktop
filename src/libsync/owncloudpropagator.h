@@ -183,8 +183,8 @@ private:
 public:
     PropagateItemJob(OwncloudPropagator *propagator, const SyncFileItemPtr &item)
         : PropagatorJob(propagator)
-        , _item(item)
         , _parallelism(FullParallelism)
+        , _item(item)
     {
         // we should always execute jobs that process the E2EE API calls as sequential jobs
         // TODO: In fact, we must make sure Lock/Unlock are not colliding and always wait for each other to complete. So, we could refactor this "_parallelism" later
@@ -407,21 +407,21 @@ public:
 public:
     OwncloudPropagator(AccountPtr account, const QString &localDir,
         const QString &remoteFolder, SyncJournalDb *progressDb)
-        : _localDir((localDir.endsWith(QChar('/'))) ? localDir : localDir + '/')
-        , _remoteFolder((remoteFolder.endsWith(QChar('/'))) ? remoteFolder : remoteFolder + '/')
-        , _journal(progressDb)
+        : _journal(progressDb)
         , _finishedEmited(false)
         , _bandwidthManager(this)
         , _anotherSyncNeeded(false)
         , _chunkSize(10 * 1000 * 1000) // 10 MB, overridden in setSyncOptions
         , _account(account)
+        , _localDir((localDir.endsWith(QChar('/'))) ? localDir : localDir + '/')
+        , _remoteFolder((remoteFolder.endsWith(QChar('/'))) ? remoteFolder : remoteFolder + '/')
     {
         qRegisterMetaType<PropagatorJob::AbortType>("PropagatorJob::AbortType");
     }
 
     ~OwncloudPropagator();
 
-    void start(const SyncFileItemVector &_syncedItems);
+    void start(SyncFileItemVector &&_syncedItems);
 
     const SyncOptions &syncOptions() const;
     void setSyncOptions(const SyncOptions &syncOptions);
@@ -560,8 +560,17 @@ public:
      *
      * Will also trigger a Vfs::convertToPlaceholder.
      */
-    static bool updateMetadata(const SyncFileItem &item, const QString &localFolderPath, SyncJournalDb &journal, Vfs &vfs);
-    bool updateMetadata(const SyncFileItem &item); // convenience for the above
+    Result<Vfs::ConvertToPlaceholderResult, QString> updateMetadata(const SyncFileItem &item);
+
+    /** Update the database for an item.
+     *
+     * Typically after a sync operation succeeded. Updates the inode from
+     * the filesystem.
+     *
+     * Will also trigger a Vfs::convertToPlaceholder.
+     */
+    static Result<Vfs::ConvertToPlaceholderResult, QString> staticUpdateMetadata(const SyncFileItem &item, const QString localDir,
+                                                                                 Vfs *vfs, SyncJournalDb * const journal);
 
 private slots:
 
@@ -626,8 +635,8 @@ class CleanupPollsJob : public QObject
     QSharedPointer<Vfs> _vfs;
 
 public:
-    explicit CleanupPollsJob(const QVector<SyncJournalDb::PollInfo> &pollInfos, AccountPtr account,
-        SyncJournalDb *journal, const QString &localPath, const QSharedPointer<Vfs> &vfs, QObject *parent = nullptr)
+    explicit CleanupPollsJob(const QVector<SyncJournalDb::PollInfo> &pollInfos, AccountPtr account, SyncJournalDb *journal, const QString &localPath,
+                             const QSharedPointer<Vfs> &vfs, QObject *parent = nullptr)
         : QObject(parent)
         , _pollInfos(pollInfos)
         , _account(account)

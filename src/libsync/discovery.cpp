@@ -24,7 +24,8 @@
 #include <QFileInfo>
 #include <QFile>
 #include <QThreadPool>
-#include "common/checksums.h"
+#include <common/checksums.h>
+#include <common/constants.h>
 #include "csync_exclude.h"
 #include "csync.h"
 
@@ -65,8 +66,6 @@ void ProcessDirectoryJob::start()
 void ProcessDirectoryJob::process()
 {
     ASSERT(_localQueryDone && _serverQueryDone);
-
-    QString localDir;
 
     // Build lookup tables for local, remote and db entries.
     // For suffix-virtual files, the key will normally be the base file name
@@ -177,7 +176,7 @@ void ProcessDirectoryJob::process()
         // For windows, the hidden state is also discovered within the vio
         // local stat function.
         // Recall file shall not be ignored (#4420)
-        bool isHidden = e.localEntry.isHidden || (f.first[0] == '.' && f.first != QLatin1String(".sys.admin#recall#"));
+        bool isHidden = e.localEntry.isHidden || (!f.first.isEmpty() && f.first[0] == '.' && f.first != QLatin1String(".sys.admin#recall#"));
 #ifdef Q_OS_WIN
         // exclude ".lnk" files as they are not essential, but, causing troubles when enabling the VFS due to QFileInfo::isDir() and other methods are freezing, which causes the ".lnk" files to start hydrating and freezing the app eventually.
         const bool isServerEntryWindowsShortcut = !e.localEntry.isValid() && e.serverEntry.isValid() && !e.serverEntry.isDirectory && FileSystem::isLnkFile(e.serverEntry.name);
@@ -269,10 +268,8 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const QString &loc
                     }
                 }
                 if (invalid) {
-                    item->_errorString = tr("File names containing the character '%1' are not supported on this file system.")
-                                             .arg(QLatin1Char(invalid));
-                }
-                if (isInvalidPattern) {
+                    item->_errorString = tr("File names containing the character \"%1\" are not supported on this file system.").arg(QLatin1Char(invalid));
+                } else if (isInvalidPattern) {
                     item->_errorString = tr("File name contains at least one invalid character");
                 } else {
                     item->_errorString = tr("The file name is a reserved name on this file system.");
@@ -282,9 +279,11 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const QString &loc
             break;
         case CSYNC_FILE_EXCLUDE_TRAILING_SPACE:
             item->_errorString = tr("Filename contains trailing spaces.");
+            item->_status = SyncFileItem::FileNameInvalid;
             break;
         case CSYNC_FILE_EXCLUDE_LONG_FILENAME:
             item->_errorString = tr("Filename is too long.");
+            item->_status = SyncFileItem::FileNameInvalid;
             break;
         case CSYNC_FILE_EXCLUDE_HIDDEN:
             item->_errorString = tr("File/Folder is ignored because it's hidden.");
@@ -346,6 +345,10 @@ void ProcessDirectoryJob::processFile(PathTuple path,
     item->_originalFile = path._original;
     item->_previousSize = dbEntry._fileSize;
     item->_previousModtime = dbEntry._modtime;
+
+    if (dbEntry._modtime == localEntry.modtime && dbEntry._type == ItemTypeVirtualFile && localEntry.type == ItemTypeFile) {
+        item->_type = ItemTypeFile;
+    }
 
     // The item shall only have this type if the db request for the virtual download
     // was successful (like: no conflicting remote remove etc). This decision is done
@@ -455,13 +458,19 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
 
     // The file is known in the db already
     if (dbEntry.isValid()) {
+        const bool isDbEntryAnE2EePlaceholder = dbEntry.isVirtualFile() && !dbEntry.e2eMangledName().isEmpty();
+        Q_ASSERT(!isDbEntryAnE2EePlaceholder || serverEntry.size >= Constants::e2EeTagSize);
+        const bool isVirtualE2EePlaceholder = isDbEntryAnE2EePlaceholder && serverEntry.size >= Constants::e2EeTagSize;
+        const qint64 sizeOnServer = isVirtualE2EePlaceholder ? serverEntry.size - Constants::e2EeTagSize : serverEntry.size;
+        const bool metaDataSizeNeedsUpdateForE2EeFilePlaceholder = isVirtualE2EePlaceholder && dbEntry._fileSize == serverEntry.size;
+
         if (serverEntry.isDirectory != dbEntry.isDirectory()) {
             // If the type of the entity changed, it's like NEW, but
             // needs to delete the other entity first.
             item->_instruction = CSYNC_INSTRUCTION_TYPE_CHANGE;
             item->_direction = SyncFileItem::Down;
             item->_modtime = serverEntry.modtime;
-            item->_size = serverEntry.size;
+            item->_size = sizeOnServer;
         } else if ((dbEntry._type == ItemTypeVirtualFileDownload || localEntry.type == ItemTypeVirtualFileDownload)
             && (localEntry.isValid() || _queryLocal == ParentNotChanged)) {
             // The above check for the localEntry existing is important. Otherwise it breaks
@@ -472,7 +481,7 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
         } else if (dbEntry._etag != serverEntry.etag) {
             item->_direction = SyncFileItem::Down;
             item->_modtime = serverEntry.modtime;
-            item->_size = serverEntry.size;
+            item->_size = sizeOnServer;
             if (serverEntry.isDirectory) {
                 ENFORCE(dbEntry.isDirectory());
                 item->_instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
@@ -482,11 +491,43 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
             } else {
                 item->_instruction = CSYNC_INSTRUCTION_SYNC;
             }
-        } else if (dbEntry._remotePerm != serverEntry.remotePerm || dbEntry._fileId != serverEntry.fileId) {
+        } else if (dbEntry._remotePerm != serverEntry.remotePerm || dbEntry._fileId != serverEntry.fileId || metaDataSizeNeedsUpdateForE2EeFilePlaceholder) {
+            if (metaDataSizeNeedsUpdateForE2EeFilePlaceholder) {
+                // we are updating placeholder sizes after migrating from older versions with VFS + E2EE implicit hydration not supported
+                qCDebug(lcDisco) << "Migrating the E2EE VFS placeholder " << dbEntry.path() << " from older version. The old size is " << item->_size << ". The new size is " << sizeOnServer;
+                item->_size = sizeOnServer;
+            }
             item->_instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
             item->_direction = SyncFileItem::Down;
         } else {
-            processFileAnalyzeLocalInfo(item, path, localEntry, serverEntry, dbEntry, ParentNotChanged);
+            // if (is virtual mode enabled and folder is encrypted - check if the size is the same as on the server and then - trigger server query
+            // to update a placeholder with corrected size (-16 Bytes)
+            // or, maybe, add a flag to the database - vfsE2eeSizeCorrected? if it is not set - subtract it from the placeholder's size and re-create/update a placeholder?
+            const QueryMode serverQueryMode = [this, &dbEntry, &serverEntry]() {
+                const bool isVfsModeOn = _discoveryData && _discoveryData->_syncOptions._vfs && _discoveryData->_syncOptions._vfs->mode() != Vfs::Off;
+                if (isVfsModeOn && dbEntry.isDirectory() && dbEntry._isE2eEncrypted) {
+                    qint64 localFolderSize = 0;
+                    const auto listFilesCallback = [this, &localFolderSize](const OCC::SyncJournalFileRecord &record) {
+                        if (record.isFile()) {
+                            // add Constants::e2EeTagSize so we will know the size of E2EE file on the server
+                            localFolderSize += record._fileSize + Constants::e2EeTagSize;
+                        } else if (record.isVirtualFile()) {
+                            // just a virtual file, so, the size must contain Constants::e2EeTagSize if it was not corrected already
+                            localFolderSize += record._fileSize;
+                        }
+                    };
+
+                    const bool listFilesSucceeded = _discoveryData->_statedb->listFilesInPath(dbEntry.path().toUtf8(), listFilesCallback);
+
+                    if (listFilesSucceeded && localFolderSize != 0 && localFolderSize == serverEntry.sizeOfFolder) {
+                        qCInfo(lcDisco) << "Migration of E2EE folder " << dbEntry.path() << " from older version to the one, supporting the implicit VFS hydration.";
+                        return NormalQuery;
+                    }
+                }
+                return ParentNotChanged;
+            }();
+
+            processFileAnalyzeLocalInfo(item, path, localEntry, serverEntry, dbEntry, serverQueryMode);
             return;
         }
 
@@ -502,15 +543,14 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
     item->_modtime = serverEntry.modtime;
     item->_size = serverEntry.size;
 
-    auto postProcessServerNew = [=] () {
-        auto tmp_path = path;
+    auto postProcessServerNew = [=]() mutable {
         if (item->isDirectory()) {
             _pendingAsyncJobs++;
-            _discoveryData->checkSelectiveSyncNewFolder(tmp_path._server, serverEntry.remotePerm,
+            _discoveryData->checkSelectiveSyncNewFolder(path._server, serverEntry.remotePerm,
                 [=](bool result) {
                     --_pendingAsyncJobs;
                     if (!result) {
-                        processFileAnalyzeLocalInfo(item, tmp_path, localEntry, serverEntry, dbEntry, _queryServer);
+                        processFileAnalyzeLocalInfo(item, path, localEntry, serverEntry, dbEntry, _queryServer);
                     }
                     QTimer::singleShot(0, _discoveryData, &DiscoveryPhase::scheduleMoreJobs);
                 });
@@ -525,9 +565,18 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
             && !FileSystem::isExcludeFile(item->_file)) {
             item->_type = ItemTypeVirtualFile;
             if (isVfsWithSuffix())
-                addVirtualFileSuffix(tmp_path._original);
+                addVirtualFileSuffix(path._original);
         }
-        processFileAnalyzeLocalInfo(item, tmp_path, localEntry, serverEntry, dbEntry, _queryServer);
+
+        if (opts._vfs->mode() != Vfs::Off && !item->_encryptedFileName.isEmpty()) {
+            // We are syncing a file for the first time (local entry is invalid) and it is encrypted file that will be virtual once synced
+            // to avoid having error of "file has changed during sync" when trying to hydrate it excplicitly - we must remove Constants::e2EeTagSize bytes from the end
+            // as explicit hydration does not care if these bytes are present in the placeholder or not, but, the size must not change in the middle of the sync
+            // this way it works for both implicit and explicit hydration by making a placeholder size that does not includes encryption tag Constants::e2EeTagSize bytes
+            // another scenario - we are syncing a file which is on disk but not in the database (database was removed or file was not written there yet)
+            item->_size = serverEntry.size - Constants::e2EeTagSize;
+        }
+        processFileAnalyzeLocalInfo(item, path, localEntry, serverEntry, dbEntry, _queryServer);
     };
 
     // Potential NEW/NEW conflict is handled in AnalyzeLocal
@@ -645,9 +694,8 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
         } else {
             // we need to make a request to the server to know that the original file is deleted on the server
             _pendingAsyncJobs++;
-            auto job = new RequestEtagJob(_discoveryData->_account, originalPath, this);
-            connect(job, &RequestEtagJob::finishedWithResult, this, [=](const HttpResult<QString> &etag) {
-                auto tmp_path = path;
+            auto job = new RequestEtagJob(_discoveryData->_account, _discoveryData->_remoteFolder + originalPath, this);
+            connect(job, &RequestEtagJob::finishedWithResult, this, [=](const HttpResult<QByteArray> &etag) mutable {
                 _pendingAsyncJobs--;
                 QTimer::singleShot(0, _discoveryData, &DiscoveryPhase::scheduleMoreJobs);
                 if (etag || etag.error().code != 404 ||
@@ -663,8 +711,8 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
                 // In case the deleted item was discovered in parallel
                 _discoveryData->findAndCancelDeletedJob(originalPath);
 
-                postProcessRename(tmp_path);
-                processFileFinalize(item, tmp_path, item->isDirectory(), item->_instruction == CSYNC_INSTRUCTION_RENAME ? NormalQuery : ParentDontExist, _queryServer);
+                postProcessRename(path);
+                processFileFinalize(item, path, item->isDirectory(), item->_instruction == CSYNC_INSTRUCTION_RENAME ? NormalQuery : ParentDontExist, _queryServer);
             });
             job->start();
             done = true; // Ideally, if the origin still exist on the server, we should continue searching...  but that'd be difficult
@@ -708,8 +756,9 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         item->_type = ItemTypeVirtualFile;
     }
 
-    if (dbEntry.isVirtualFile() && !virtualFileDownload)
+    if (dbEntry.isVirtualFile() && (!localEntry.isValid() || localEntry.isVirtualFile) && !virtualFileDownload) {
         item->_type = ItemTypeVirtualFile;
+    }
 
     _childModified |= serverModified;
 
@@ -894,18 +943,70 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
     _childModified = true;
 
     auto postProcessLocalNew = [item, localEntry, path, this]() {
-        if (localEntry.isVirtualFile) {
-            const bool isPlaceHolder = _discoveryData->_syncOptions._vfs->isDehydratedPlaceholder(_discoveryData->_localDir + path._local);
-            if (isPlaceHolder) {
-                qCWarning(lcDisco) << "Wiping virtual file without db entry for" << path._local;
-                item->_instruction = CSYNC_INSTRUCTION_REMOVE;
-                item->_direction = SyncFileItem::Down;
-            } else {
-                qCWarning(lcDisco) << "Virtual file without db entry for" << path._local
-                                   << "but looks odd, keeping";
-                item->_instruction = CSYNC_INSTRUCTION_IGNORE;
-            }
+        // TODO: We may want to execute the same logic for non-VFS mode, as, moving/renaming the same folder by 2 or more clients at the same time is not possible in Web UI.
+        // Keeping it like this (for VFS files and folders only) just to fix a user issue.
+
+        if (!(_discoveryData && _discoveryData->_syncOptions._vfs && _discoveryData->_syncOptions._vfs->mode() != Vfs::Off)) {
+            // for VFS files and folders only
+            return;
         }
+
+        if (!localEntry.isVirtualFile && !localEntry.isDirectory) {
+            return;
+        }
+
+        Q_ASSERT(item->_instruction == CSYNC_INSTRUCTION_NEW);
+        if (item->_instruction != CSYNC_INSTRUCTION_NEW) {
+            qCWarning(lcDisco) << "Trying to wipe a virtual item" << path._local << " with item->_instruction" << item->_instruction;
+            return;
+        }
+
+        // must be a dehydrated placeholder
+        const bool isFilePlaceHolder = !localEntry.isDirectory && _discoveryData->_syncOptions._vfs->isDehydratedPlaceholder(_discoveryData->_localDir + path._local);
+
+        // either correct availability, or a result with error if the folder is new or otherwise has no availability set yet
+        const auto folderPlaceHolderAvailability = localEntry.isDirectory ? _discoveryData->_syncOptions._vfs->availability(path._local) : Vfs::AvailabilityResult(Vfs::AvailabilityError::NoSuchItem);
+
+        const auto folderPinState = localEntry.isDirectory ? _discoveryData->_syncOptions._vfs->pinState(path._local) : Optional<PinStateEnums::PinState>(PinState::Unspecified);
+
+        if (!isFilePlaceHolder && !folderPlaceHolderAvailability.isValid() && !folderPinState.isValid()) {
+            // not a file placeholder and not a synced folder placeholder (new local folder)
+            return;
+        }
+
+        const auto isFolderPinStateOnlineOnly = (folderPinState.isValid() && *folderPinState == PinState::OnlineOnly);
+
+        const auto isfolderPlaceHolderAvailabilityOnlineOnly = (folderPlaceHolderAvailability.isValid() && *folderPlaceHolderAvailability == VfsItemAvailability::OnlineOnly);
+
+        // a folder is considered online-only if: no files are hydrated, or, if it's an empty folder
+        const auto isOnlineOnlyFolder = isfolderPlaceHolderAvailabilityOnlineOnly || (!folderPlaceHolderAvailability && isFolderPinStateOnlineOnly);
+
+        if (!isFilePlaceHolder && !isOnlineOnlyFolder) {
+            if (localEntry.isDirectory && folderPlaceHolderAvailability.isValid() && !isOnlineOnlyFolder) {
+                // a VFS folder but is not online0only (has some files hydrated)
+                qCInfo(lcDisco) << "Virtual directory without db entry for" << path._local << "but it contains hydrated file(s), so let's keep it and reupload.";
+                emit _discoveryData->addErrorToGui(SyncFileItem::SoftError, tr("Conflict when uploading some files to a folder. Those, conflicted, are going to get cleared!"), path._local);
+                return;
+            }
+            qCWarning(lcDisco) << "Virtual file without db entry for" << path._local
+                               << "but looks odd, keeping";
+            item->_instruction = CSYNC_INSTRUCTION_IGNORE;
+
+            return;
+        }
+
+        if (isOnlineOnlyFolder) {
+            // if we're wiping a folder, we will only get this function called once and will wipe a folder along with it's files and also display one error in GUI
+            qCInfo(lcDisco) << "Wiping virtual folder without db entry for" << path._local;
+            emit _discoveryData->addErrorToGui(SyncFileItem::SoftError, tr("Conflict when uploading a folder. It's going to get cleared!"), path._local);
+        } else {
+            qCInfo(lcDisco) << "Wiping virtual file without db entry for" << path._local;
+            emit _discoveryData->addErrorToGui(SyncFileItem::SoftError, tr("Conflict when uploading a file. It's going to get removed!"), path._local);
+        }
+        item->_instruction = CSYNC_INSTRUCTION_REMOVE;
+        item->_direction = SyncFileItem::Down;
+        // this flag needs to be unset, otherwise a folder would get marked as new in the processSubJobs
+        _childModified = false;
     };
 
     // Check if it is a move
@@ -1053,12 +1154,12 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
     } else {
         // We must query the server to know if the etag has not changed
         _pendingAsyncJobs++;
-        QString serverOriginalPath = _discoveryData->_remoteFolder +_discoveryData->adjustRenamedPath(originalPath, SyncFileItem::Down);
+        QString serverOriginalPath = _discoveryData->_remoteFolder + _discoveryData->adjustRenamedPath(originalPath, SyncFileItem::Down);
         if (base.isVirtualFile() && isVfsWithSuffix())
             chopVirtualFileSuffix(serverOriginalPath);
         auto job = new RequestEtagJob(_discoveryData->_account, serverOriginalPath, this);
-        connect(job, &RequestEtagJob::finishedWithResult, this, [=](const HttpResult<QString> &etag) mutable {
-            if (!etag || (*etag != base._etag && !item->isDirectory()) || _discoveryData->isRenamed(originalPath)) {
+        connect(job, &RequestEtagJob::finishedWithResult, this, [=](const HttpResult<QByteArray> &etag) mutable {
+            if (!etag || (etag.get() != base._etag && !item->isDirectory()) || _discoveryData->isRenamed(originalPath)) {
                 qCInfo(lcDisco) << "Can't rename because the etag has changed or the directory is gone" << originalPath;
                 // Can't be a rename, leave it as a new.
                 postProcessLocalNew();
@@ -1066,7 +1167,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
                 // In case the deleted item was discovered in parallel
                 _discoveryData->findAndCancelDeletedJob(originalPath);
                 processRename(path);
-                recurseQueryServer = *etag == base._etag ? ParentNotChanged : NormalQuery;
+                recurseQueryServer = etag.get() == base._etag ? ParentNotChanged : NormalQuery;
             }
             processFileFinalize(item, path, item->isDirectory(), NormalQuery, recurseQueryServer);
             _pendingAsyncJobs--;
@@ -1486,7 +1587,7 @@ DiscoverySingleDirectoryJob *ProcessDirectoryJob::startAsyncServerQuery()
                 emit this->finished();
             } else {
                 // Fatal for the root job since it has no SyncFileItem, or for the network errors
-                emit _discoveryData->fatalError(tr("Server replied with an error while reading directory '%1' : %2")
+                emit _discoveryData->fatalError(tr("Server replied with an error while reading directory \"%1\" : %2")
                     .arg(_currentFolder._server, results.error().message));
             }
         }

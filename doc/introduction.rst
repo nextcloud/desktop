@@ -18,8 +18,8 @@ Improvements and New Features
 The |version| release of the Nextcloud desktop sync client has many new features and
 improvements.
 
-  * Virtual Files on Windows
-  * Support for the user status from the server
-  * Many improvements to the sync engine
-  * Make the end-to-end encryption work more reliable
-  * Improve sync performance
+  * Main dialog will be a regular window if tray icons are not available on the system.
+  * Virtual files wil be optional. That enables the desktop client to run on older Windows versions.
+  * Improvements for the virtual files on Windows
+  * Network traffic performance improvements
+  * Improvements to the sync engine

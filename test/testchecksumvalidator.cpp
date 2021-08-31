@@ -42,7 +42,8 @@ using namespace OCC::Utility;
          _successDown = true;
     }
 
-    void slotDownError( const QString& errMsg ) {
+    void slotDownError(const QString &errMsg)
+    {
          QCOMPARE(_expectedError, errMsg);
          _errorSeen = true;
     }
@@ -179,8 +180,8 @@ using namespace OCC::Utility;
         QSKIP("ZLIB not found.", SkipSingle);
 #else
         auto *vali = new ValidateChecksumHeader(this);
-        connect(vali, SIGNAL(validated(QByteArray,QByteArray)), this, SLOT(slotDownValidated()));
-        connect(vali, SIGNAL(validationFailed(QString)), this, SLOT(slotDownError(QString)));
+        connect(vali, &ValidateChecksumHeader::validated, this, &TestChecksumValidator::slotDownValidated);
+        connect(vali, &ValidateChecksumHeader::validationFailed, this, &TestChecksumValidator::slotDownError);
 
         auto file = new QFile(_testfile, vali);
         file->open(QIODevice::ReadOnly);
@@ -196,13 +197,13 @@ using namespace OCC::Utility;
 
         QTRY_VERIFY(_successDown);
 
-        _expectedError = QStringLiteral("The downloaded file does not match the checksum, it will be resumed. '543345' != '%1'").arg(QString::fromUtf8(_expected));
+        _expectedError = QStringLiteral("The downloaded file does not match the checksum, it will be resumed. \"543345\" != \"%1\"").arg(QString::fromUtf8(_expected));
         _errorSeen = false;
         file->seek(0);
         vali->start(_testfile, "Adler32:543345");
         QTRY_VERIFY(_errorSeen);
 
-        _expectedError = QLatin1String("The checksum header contained an unknown checksum type 'Klaas32'");
+        _expectedError = QLatin1String("The checksum header contained an unknown checksum type \"Klaas32\"");
         _errorSeen = false;
         file->seek(0);
         vali->start(_testfile, "Klaas32:543345");

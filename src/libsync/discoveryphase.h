@@ -55,6 +55,7 @@ struct RemoteInfo
     OCC::RemotePermissions remotePerm;
     time_t modtime = 0;
     int64_t size = 0;
+    int64_t sizeOfFolder = 0;
     bool isDirectory = false;
     bool isE2eEncrypted = false;
     QString e2eMangledName;
@@ -126,7 +127,7 @@ public:
     // This is not actually a network job, it is just a job
 signals:
     void firstDirectoryPermissions(RemotePermissions);
-    void etag(const QString &, const QDateTime &time);
+    void etag(const QByteArray &, const QDateTime &time);
     void finished(const HttpResult<QVector<RemoteInfo>> &result);
 
 private slots:
@@ -140,7 +141,7 @@ private slots:
 private:
     QVector<RemoteInfo> _results;
     QString _subPath;
-    QString _firstEtag;
+    QByteArray _firstEtag;
     QByteArray _fileId;
     AccountPtr _account;
     // The first result is for the directory itself and need to be ignored.
@@ -153,6 +154,7 @@ private:
     // If this directory is e2ee
     bool _isE2eEncrypted;
     // If set, the discovery will finish with an error
+    int64_t _size = 0;
     QString _error;
     QPointer<LsColJob> _lsColJob;
 
@@ -279,6 +281,8 @@ signals:
       * The path is relative to the sync folder, similar to item->_file
       */
     void silentlyExcluded(const QString &folderPath);
+
+    void addErrorToGui(SyncFileItem::Status status, const QString &errorMessage, const QString &subject);
 };
 
 /// Implementation of DiscoveryPhase::adjustRenamedPath

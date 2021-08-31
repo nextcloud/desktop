@@ -51,9 +51,7 @@ AccessManager::AccessManager(QObject *parent)
 
 QByteArray AccessManager::generateRequestId()
 {
-    // Use a UUID with the starting and ending curly brace removed.
-    auto uuid = QUuid::createUuid().toByteArray();
-    return uuid.mid(1, uuid.size() - 2);
+    return QUuid::createUuid().toByteArray(QUuid::WithoutBraces);
 }
 
 QNetworkReply *AccessManager::createRequest(QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *outgoingData)

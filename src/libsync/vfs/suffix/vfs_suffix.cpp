@@ -122,10 +122,10 @@ Result<void, QString> VfsSuffix::dehydratePlaceholder(const SyncFileItem &item)
     return {};
 }
 
-Result<void, QString> VfsSuffix::convertToPlaceholder(const QString &, const SyncFileItem &, const QString &)
+Result<Vfs::ConvertToPlaceholderResult, QString> VfsSuffix::convertToPlaceholder(const QString &, const SyncFileItem &, const QString &)
 {
     // Nothing necessary
-    return {};
+    return Vfs::ConvertToPlaceholderResult::Ok;
 }
 
 bool VfsSuffix::isDehydratedPlaceholder(const QString &filePath)
@@ -151,5 +151,3 @@ Vfs::AvailabilityResult VfsSuffix::availability(const QString &folderPath)
 }
 
 } // namespace OCC
-
-OCC_DEFINE_VFS_FACTORY("suffix", OCC::VfsSuffix)

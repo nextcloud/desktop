@@ -9,16 +9,11 @@ IF(BUILD_UPDATER)
     add_subdirectory(updater)
 endif()
 
-set(MIRALL_RC_SRC ../../resources.qrc)
-if (EXISTS "${OEM_THEME_DIR}/theme.qrc")
-    list(APPEND MIRALL_RC_SRC ${OEM_THEME_DIR}/theme.qrc)
-    set(theme_dir ${OEM_THEME_DIR}/theme)
-else()
-    list(APPEND MIRALL_RC_SRC ../../theme.qrc)
-    set(theme_dir ${CMAKE_SOURCE_DIR}/theme)
-endif()
+configure_file(${CMAKE_SOURCE_DIR}/theme.qrc.in ${CMAKE_SOURCE_DIR}/theme.qrc)
 
-#set (QML_IMPORT_PATH "${CMAKE_SOURCE_DIR}/src/gui/tray" CACHE STRING "Extra qml module import paths" FORCE)
+set(MIRALL_RC_SRC ../../resources.qrc)
+list(APPEND MIRALL_RC_SRC ${CMAKE_SOURCE_DIR}/theme.qrc)
+set(theme_dir ${CMAKE_SOURCE_DIR}/theme)
 
 set(client_UI_SRCS
     accountsettings.ui
@@ -41,6 +36,7 @@ set(client_UI_SRCS
     proxyauthdialog.ui
     mnemonicdialog.ui
     tray/ActivityActionButton.qml
+    tray/ActivityItem.qml
     tray/Window.qml
     tray/UserLine.qml
     wizard/flow2authwidget.ui
@@ -91,7 +87,6 @@ set(client_SRCS
     sharemanager.cpp
     shareusergroupwidget.cpp
     sharee.cpp
-    socketapi.cpp
     sslbutton.cpp
     sslerrordialog.cpp
     syncrunfilelog.cpp
@@ -134,12 +129,17 @@ set(client_SRCS
     wizard/owncloudwizardcommon.cpp
     wizard/owncloudwizard.cpp
     wizard/owncloudwizardresultpage.cpp
-    wizard/webviewpage.cpp
-    wizard/webview.cpp
     wizard/slideshow.cpp
     wizard/welcomepage.cpp
     wizard/linklabel.cpp
-)
+    )
+
+if (Qt5WebEngine_FOUND AND Qt5WebEngineWidgets_FOUND)
+  list(APPEND client_SRCS
+    wizard/webviewpage.cpp
+    wizard/webview.cpp
+  )
+endif()
 
 IF(BUILD_UPDATER)
     set(updater_SRCS
@@ -151,7 +151,6 @@ endif()
 
 IF( APPLE )
     list(APPEND client_SRCS cocoainitializer_mac.mm)
-    list(APPEND client_SRCS socketapisocket_mac.mm)
     list(APPEND client_SRCS systray.mm)
 
     if(SPARKLE_FOUND AND BUILD_UPDATER)
@@ -236,6 +235,75 @@ if (NOT DEFINED APPLICATION_ICON_NAME)
     set(APPLICATION_ICON_NAME ${APPLICATION_SHORTNAME})
 endif()
 
+# Generate png icons from svg
+find_program(INKSCAPE
+  NAMES inkscape inkscape.exe
+  REQUIRED
+  HINTS "C:\\Program Files\\Inkscape\\bin" "/usr/bin" ENV INKSCAPE_DIR)
+# REQUIRED keyword is only supported on CMake 3.18 and above
+if (NOT INKSCAPE)
+  message(FATAL_ERROR "Could not find inkscape. Set INKSCAPE_DIR to the path of executable.")
+endif()
+
+function(generate_sized_png_from_svg icon_path size)
+  get_filename_component(icon_name_dir ${icon_path} DIRECTORY)
+  get_filename_component(icon_name_wle ${icon_path} NAME_WLE)
+
+  if (EXISTS "${icon_name_dir}/${size}-${icon_name_wle}.png")
+    return()
+  endif()
+
+  set(icon_output_name "${size}-${icon_name_wle}.png")
+  message(STATUS "Generate ${icon_output_name}")
+  execute_process(COMMAND
+    "${INKSCAPE}" -w ${size} -h ${size} "${icon_path}" -o "${icon_output_name}"
+    WORKING_DIRECTORY "${icon_name_dir}"
+    RESULT_VARIABLE
+    INKSCAPE_SIDEBAR_ERROR
+    OUTPUT_QUIET
+    ERROR_QUIET)
+
+  if (INKSCAPE_SIDEBAR_ERROR)
+    message(FATAL_ERROR
+      "inkscape could not generate icon: ${INKSCAPE_SIDEBAR_ERROR}")
+  else()
+  endif()
+endfunction()
+
+if ((APPLICATION_ICON_SET MATCHES "PNG")
+    AND
+    (NOT EXISTS "${theme_dir}/colored/${APPLICATION_ICON_NAME}-icon.svg"))
+  # We may have no svg application icon in when customers use PNG
+  # icons in brander, but theme.qrc expects a svg icon.
+  file(TOUCH "${theme_dir}/colored/${APPLICATION_ICON_NAME}-icon.svg")
+endif()
+
+if(APPLE)
+  set(MACOS_SIDEBAR_ICON_SVG "${theme_dir}/colored/${APPLICATION_ICON_NAME}-sidebar.svg")
+  generate_sized_png_from_svg(${MACOS_SIDEBAR_ICON_SVG} 16)
+  generate_sized_png_from_svg(${MACOS_SIDEBAR_ICON_SVG} 32)
+  generate_sized_png_from_svg(${MACOS_SIDEBAR_ICON_SVG} 64)
+  generate_sized_png_from_svg(${MACOS_SIDEBAR_ICON_SVG} 128)
+  generate_sized_png_from_svg(${MACOS_SIDEBAR_ICON_SVG} 256)
+endif()
+
+if(WIN32)
+  set(STARTMENU_ICON_SVG "${theme_dir}/colored/${APPLICATION_ICON_NAME}-w10startmenu.svg")
+  generate_sized_png_from_svg(${STARTMENU_ICON_SVG} 70)
+  generate_sized_png_from_svg(${STARTMENU_ICON_SVG} 150)
+endif()
+
+set(APP_ICON_SVG "${theme_dir}/colored/${APPLICATION_ICON_NAME}-icon.svg")
+generate_sized_png_from_svg(${APP_ICON_SVG} 16)
+generate_sized_png_from_svg(${APP_ICON_SVG} 24)
+generate_sized_png_from_svg(${APP_ICON_SVG} 32)
+generate_sized_png_from_svg(${APP_ICON_SVG} 48)
+generate_sized_png_from_svg(${APP_ICON_SVG} 64)
+generate_sized_png_from_svg(${APP_ICON_SVG} 128)
+generate_sized_png_from_svg(${APP_ICON_SVG} 256)
+generate_sized_png_from_svg(${APP_ICON_SVG} 512)
+generate_sized_png_from_svg(${APP_ICON_SVG} 1024)
+
 file(GLOB_RECURSE OWNCLOUD_ICONS "${theme_dir}/colored/*-${APPLICATION_ICON_NAME}-icon*")
 if(APPLE)
     file(GLOB_RECURSE OWNCLOUD_SIDEBAR_ICONS "${theme_dir}/colored/*-${APPLICATION_ICON_NAME}-sidebar*")
@@ -257,6 +325,7 @@ add_library(nextcloudCore STATIC ${final_src})
 
 target_link_libraries(nextcloudCore
   PUBLIC
+  nextcloudsync
   Qt5::Widgets
   Qt5::GuiPrivate
   Qt5::Svg
@@ -265,9 +334,13 @@ target_link_libraries(nextcloudCore
   Qt5::Qml
   Qt5::Quick
   Qt5::QuickControls2
-  Qt5::WebEngineWidgets
-  ${synclib_NAME}
-)
+  )
+
+add_subdirectory(socketapi)
+
+if(Qt5WebEngine_FOUND AND Qt5WebEngineWidgets_FOUND)
+  target_link_libraries(nextcloudCore PUBLIC Qt5::WebEngineWidgets)
+endif()
 
 set_target_properties(nextcloudCore
   PROPERTIES
@@ -303,13 +376,24 @@ if(NOT BUILD_OWNCLOUD_OSX_BUNDLE)
     endif()
 
     # we may not add MACOSX_BUNDLE here, if not building one
-    add_executable(${APPLICATION_EXECUTABLE} WIN32 main.cpp ${client_version} ${client_manifest} ${APP_ICON})
+    add_executable(nextcloud WIN32 main.cpp ${client_version} ${client_manifest} ${APP_ICON})
+    set_target_properties(nextcloud PROPERTIES
+      OUTPUT_NAME "${APPLICATION_EXECUTABLE}"
+    )
 else()
     # set(CMAKE_INSTALL_PREFIX ".") # Examples use /Applications. hurmpf.
     set(MACOSX_BUNDLE_ICON_FILE "${APPLICATION_ICON_NAME}.icns")
 
     # we must add MACOSX_BUNDLE only if building a bundle
-    add_executable(${APPLICATION_EXECUTABLE} WIN32 MACOSX_BUNDLE main.cpp ${APP_ICON})
+    add_executable(nextcloud WIN32 MACOSX_BUNDLE main.cpp ${APP_ICON})
+
+    if (BUILD_OWNCLOUD_OSX_BUNDLE)
+      set_target_properties(nextcloud PROPERTIES
+        OUTPUT_NAME "${APPLICATION_NAME}")
+    else()
+      set_target_properties(nextcloud PROPERTIES
+        OUTPUT_NAME "${APPLICATION_EXECUTABLE}")
+    endif()
 
     set (QM_DIR ${OWNCLOUD_OSX_BUNDLE}/Contents/Resources/Translations)
     install(FILES ${client_I18N} DESTINATION ${QM_DIR})
@@ -328,20 +412,17 @@ endif()
 
 IF(BUILD_UPDATER)
     add_library(updater STATIC ${updater_SRCS})
-    target_link_libraries(updater ${synclib_NAME} ${updater_DEPS} Qt5::Widgets Qt5::Svg Qt5::Network Qt5::Xml)
+    target_link_libraries(updater nextcloudsync ${updater_DEPS} Qt5::Widgets Qt5::Svg Qt5::Network Qt5::Xml)
     target_include_directories(updater PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
     set_target_properties(updater PROPERTIES AUTOMOC ON)
+    target_link_libraries(nextcloudCore PUBLIC updater)
 endif()
 
-set_target_properties( ${APPLICATION_EXECUTABLE} PROPERTIES
-        RUNTIME_OUTPUT_DIRECTORY  ${BIN_OUTPUT_DIRECTORY}
+set_target_properties(nextcloud PROPERTIES
+        RUNTIME_OUTPUT_DIRECTORY ${BIN_OUTPUT_DIRECTORY}
 )
 
-target_link_libraries(${APPLICATION_EXECUTABLE} nextcloudCore)
-
-IF(BUILD_UPDATER)
-  target_link_libraries(nextcloudCore PUBLIC updater)
-endif()
+target_link_libraries(nextcloud PRIVATE nextcloudCore)
 
 target_link_libraries(nextcloudCore PUBLIC ${OS_SPECIFIC_LINK_LIBRARIES})
 
@@ -393,7 +474,7 @@ endif()
 target_compile_definitions(nextcloudCore PRIVATE "QT_DISABLE_DEPRECATED_BEFORE=0")
 
 
-install(TARGETS ${APPLICATION_EXECUTABLE}
+install(TARGETS nextcloud
         RUNTIME DESTINATION bin
         LIBRARY DESTINATION lib
         ARCHIVE DESTINATION lib

@@ -52,15 +52,12 @@
     <Property Id="INSTALLDIR">
         <RegistrySearch Id="RegistryInstallDir" Type="raw" Root="HKLM" Key="Software\$(var.AppVendor)\$(var.AppName)" Win64="no" />
     </Property>
-	<Property Id="WINDOWSRELEASEID">
-        <RegistrySearch Id="RegistryWindowsReleaseId" Type="raw" Root="HKLM" Key="Software\Microsoft\Windows NT\CurrentVersion" Name="ReleaseId"/>
-    </Property>
 
     <!-- Detect legacy NSIS installation -->
     <Property Id="NSIS_UNINSTALLEXE">
-        <DirectorySearch Id="LegacyUninstallVersion" Path="[INSTALLDIR]">
-            <FileSearch Name="Uninstall.exe" />
-        </DirectorySearch>
+        <RegistrySearch Id="RegistryLegacyUninstallString" Type="file" Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Uninstall\$(var.AppName)" Name="UninstallString" Win64="no">
+		    <FileSearch Id="LegacyUninstallFileName" Name="Uninstall.exe"/>
+	    </RegistrySearch>
     </Property>
 
     <!-- Property to disable update checks -->
@@ -217,6 +214,5 @@
             <Condition Level="0">(NO_DESKTOP_SHORTCUT=1)</Condition>
         </Feature>
     </Feature>
-	<Condition Message="This application only runs on Windows 10, version 1709 or higher!">(VersionNT>=603 AND WINDOWSRELEASEID>=1709)</Condition>
     </Product>
 </Wix>

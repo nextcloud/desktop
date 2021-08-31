@@ -9,7 +9,7 @@
 	<key>CFBundleDevelopmentRegion</key>
         <string>English</string>
         <key>CFBundleExecutable</key>
-        <string>@APPLICATION_EXECUTABLE@</string>
+        <string>@APPLICATION_NAME@</string>
         <key>CFBundleIconFile</key>
         <string>@APPLICATION_ICON_NAME@.icns</string>
         <key>CFBundleIdentifier</key>

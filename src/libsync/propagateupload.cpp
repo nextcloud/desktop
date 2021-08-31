@@ -765,8 +765,12 @@ void PropagateUploadFileCommon::finalize()
         quotaIt.value() -= _fileToUpload._size;
 
     // Update the database entry
-    if (!propagator()->updateMetadata(*_item)) {
-        done(SyncFileItem::FatalError, tr("Error writing metadata to the database"));
+    const auto result = propagator()->updateMetadata(*_item);
+    if (!result) {
+        done(SyncFileItem::FatalError, tr("Error updating metadata: %1").arg(result.error()));
+        return;
+    } else if (*result == Vfs::ConvertToPlaceholderResult::Locked) {
+        done(SyncFileItem::SoftError, tr("The file %1 is currently in use").arg(_item->_file));
         return;
     }
 
@@ -777,7 +781,9 @@ void PropagateUploadFileCommon::finalize()
         auto &vfs = propagator()->syncOptions()._vfs;
         const auto pin = vfs->pinState(_item->_file);
         if (pin && *pin == PinState::OnlineOnly) {
-            vfs->setPinState(_item->_file, PinState::Unspecified);
+            if (!vfs->setPinState(_item->_file, PinState::Unspecified)) {
+                qCWarning(lcPropagateUpload) << "Could not set pin state of" << _item->_file << "to unspecified";
+            }
         }
     }
 

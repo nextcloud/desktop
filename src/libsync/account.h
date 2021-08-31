@@ -124,8 +124,6 @@ public:
      * @returns the (themeable) dav path for the account.
      */
     QString davPath() const;
-    void setDavPath(const QString &s) { _davPath = s; }
-    void setNonShib(bool nonShib);
 
     /** Returns webdav entry URL, based on url() */
     QUrl davUrl() const;
@@ -247,6 +245,8 @@ public:
     void writeAppPasswordOnce(QString appPassword);
     void deleteAppPassword();
 
+    void deleteAppToken();
+
     /// Direct Editing
     // Check for the directEditing capability
     void fetchDirectEditors(const QUrl &directEditingURL, const QString &directEditingETag);
@@ -296,6 +296,8 @@ private:
     Account(QObject *parent = nullptr);
     void setSharedThis(AccountPtr sharedThis);
 
+    static QString davPathBase();
+
     QWeakPointer<Account> _sharedThis;
     QString _id;
     QString _davUser;
@@ -329,7 +331,6 @@ private:
 
     static QString _configFileName;
 
-    QString _davPath; // defaults to value from theme, might be overwritten in brandings
     ClientSideEncryption _e2e;
 
     /// Used in RemoteWipe

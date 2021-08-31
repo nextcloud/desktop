@@ -15,9 +15,10 @@
 
 #include <memory>
 
-#include "owncloudlib.h"
+#include "cfapiexport.h"
 #include "common/pinstate.h"
 #include "common/result.h"
+#include "common/vfs.h"
 
 struct CF_PLACEHOLDER_BASIC_INFO;
 
@@ -28,7 +29,7 @@ class VfsCfApi;
 namespace CfApiWrapper
 {
 
-class OWNCLOUDSYNC_EXPORT ConnectionKey
+class NEXTCLOUD_CFAPI_EXPORT ConnectionKey
 {
 public:
     ConnectionKey();
@@ -38,7 +39,7 @@ private:
     std::unique_ptr<void, void(*)(void *)> _data;
 };
 
-class OWNCLOUDSYNC_EXPORT FileHandle
+class NEXTCLOUD_CFAPI_EXPORT FileHandle
 {
 public:
     using Deleter = void (*)(void *);
@@ -53,7 +54,7 @@ private:
     std::unique_ptr<void, void(*)(void *)> _data;
 };
 
-class OWNCLOUDSYNC_EXPORT PlaceHolderInfo
+class NEXTCLOUD_CFAPI_EXPORT PlaceHolderInfo
 {
 public:
     using Deleter = void (*)(CF_PLACEHOLDER_BASIC_INFO *);
@@ -71,17 +72,17 @@ private:
     std::unique_ptr<CF_PLACEHOLDER_BASIC_INFO, Deleter> _data;
 };
 
-OWNCLOUDSYNC_EXPORT Result<void, QString> registerSyncRoot(const QString &path, const QString &providerName, const QString &providerVersion, const QString &folderAlias, const QString &displayName, const QString &accountDisplayName);
-OWNCLOUDSYNC_EXPORT Result<void, QString> unregisterSyncRoot(const QString &path, const QString &providerName, const QString &accountDisplayName);
+NEXTCLOUD_CFAPI_EXPORT Result<void, QString> registerSyncRoot(const QString &path, const QString &providerName, const QString &providerVersion, const QString &folderAlias, const QString &displayName, const QString &accountDisplayName);
+NEXTCLOUD_CFAPI_EXPORT Result<void, QString> unregisterSyncRoot(const QString &path, const QString &providerName, const QString &accountDisplayName);
 
-OWNCLOUDSYNC_EXPORT Result<ConnectionKey, QString> connectSyncRoot(const QString &path, VfsCfApi *context);
-OWNCLOUDSYNC_EXPORT Result<void, QString> disconnectSyncRoot(ConnectionKey &&key);
+NEXTCLOUD_CFAPI_EXPORT Result<ConnectionKey, QString> connectSyncRoot(const QString &path, VfsCfApi *context);
+NEXTCLOUD_CFAPI_EXPORT Result<void, QString> disconnectSyncRoot(ConnectionKey &&key);
 
-OWNCLOUDSYNC_EXPORT bool isSparseFile(const QString &path);
+NEXTCLOUD_CFAPI_EXPORT bool isSparseFile(const QString &path);
 
-OWNCLOUDSYNC_EXPORT FileHandle handleForPath(const QString &path);
+NEXTCLOUD_CFAPI_EXPORT FileHandle handleForPath(const QString &path);
 
-OWNCLOUDSYNC_EXPORT PlaceHolderInfo findPlaceholderInfo(const FileHandle &handle);
+PlaceHolderInfo findPlaceholderInfo(const FileHandle &handle);
 
 enum SetPinRecurseMode {
     NoRecurse = 0,
@@ -89,10 +90,10 @@ enum SetPinRecurseMode {
     ChildrenOnly
 };
 
-OWNCLOUDSYNC_EXPORT Result<void, QString> setPinState(const FileHandle &handle, PinState state, SetPinRecurseMode mode);
-OWNCLOUDSYNC_EXPORT Result<void, QString> createPlaceholderInfo(const QString &path, time_t modtime, qint64 size, const QByteArray &fileId);
-OWNCLOUDSYNC_EXPORT Result<void, QString> updatePlaceholderInfo(const FileHandle &handle, time_t modtime, qint64 size, const QByteArray &fileId, const QString &replacesPath = QString());
-OWNCLOUDSYNC_EXPORT Result<void, QString> convertToPlaceholder(const FileHandle &handle, time_t modtime, qint64 size, const QByteArray &fileId, const QString &replacesPath);
+NEXTCLOUD_CFAPI_EXPORT Result<OCC::Vfs::ConvertToPlaceholderResult, QString> setPinState(const FileHandle &handle, PinState state, SetPinRecurseMode mode);
+NEXTCLOUD_CFAPI_EXPORT Result<void, QString> createPlaceholderInfo(const QString &path, time_t modtime, qint64 size, const QByteArray &fileId);
+NEXTCLOUD_CFAPI_EXPORT Result<OCC::Vfs::ConvertToPlaceholderResult, QString> updatePlaceholderInfo(const FileHandle &handle, time_t modtime, qint64 size, const QByteArray &fileId, const QString &replacesPath = QString());
+NEXTCLOUD_CFAPI_EXPORT Result<OCC::Vfs::ConvertToPlaceholderResult, QString> convertToPlaceholder(const FileHandle &handle, time_t modtime, qint64 size, const QByteArray &fileId, const QString &replacesPath);
 
 }
 

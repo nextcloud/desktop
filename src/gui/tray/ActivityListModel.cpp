@@ -178,11 +178,11 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
             }
         } else {
             // We have an activity
-            if (!a._iconData.isEmpty()) {
-                const QString svgData = "data:image/svg+xml;utf8," + a._iconData;
-                return svgData;
+            if (a._icon.isEmpty()) {
+                return "qrc:///client/theme/black/activity.svg";
             }
-            return "qrc:///client/theme/black/activity.svg";
+
+            return a._icon;
         }
     }
     case ObjectTypeRole:
@@ -299,12 +299,6 @@ void ActivityListModel::slotActivitiesReceived(const QJsonDocument &json, int st
         a._dateTime = QDateTime::fromString(json.value("datetime").toString(), Qt::ISODate);
         a._icon = json.value("icon").toString();
 
-        if (!a._icon.isEmpty()) {
-            auto *iconJob = new IconJob(QUrl(a._icon));
-            iconJob->setProperty("activityId", a._id);
-            connect(iconJob, &IconJob::jobFinished, this, &ActivityListModel::slotIconDownloaded);
-        }
-
         list.append(a);
         _currentItem = list.last()._id;
 
@@ -323,15 +317,6 @@ void ActivityListModel::slotActivitiesReceived(const QJsonDocument &json, int st
     emit activityJobStatusCode(statusCode);
 
     combineActivityLists();
-}
-
-void ActivityListModel::slotIconDownloaded(QByteArray iconData)
-{
-    for (auto i = 0; i < _activityLists.count(); i++) {
-        if (_activityLists[i]._id == sender()->property("activityId").toLongLong()) {
-            _activityLists[i]._iconData = iconData;
-        }
-    }
 }
 
 void ActivityListModel::addErrorToActivityList(Activity activity)
