@@ -24,7 +24,7 @@ class PropagateRemoteDeleteEncrypted : public AbstractPropagateRemoteDeleteEncry
 public:
     PropagateRemoteDeleteEncrypted(OwncloudPropagator *propagator, SyncFileItemPtr item, QObject *parent);
 
-    virtual void start() Q_DECL_OVERRIDE;
+    void start() override;
 
 private:
     void slotFolderUnLockedSuccessfully(const QByteArray &folderId) override;

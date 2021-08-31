@@ -39,7 +39,7 @@ class UploadDevice : public QIODevice
     Q_OBJECT
 public:
     UploadDevice(const QString &fileName, qint64 start, qint64 size, BandwidthManager *bwm);
-    ~UploadDevice();
+    ~UploadDevice() override;
 
     bool open(QIODevice::OpenMode mode) override;
     void close() override;
@@ -118,7 +118,7 @@ public:
     {
         _device->setParent(this);
     }
-    ~PUTFileJob();
+    ~PUTFileJob() override;
 
     int _chunk;
 

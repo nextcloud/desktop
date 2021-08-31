@@ -192,7 +192,7 @@ public:
         // As an alternative, we could optimize Lock/Unlock calls, so we do a batch-write on one folder and only lock and unlock a folder once per batch.
         _parallelism = (_item->_isEncrypted || hasEncryptedAncestor()) ? WaitForFinished : FullParallelism;
     }
-    ~PropagateItemJob();
+    ~PropagateItemJob() override;
 
     bool scheduleSelfOrChild() override
     {
@@ -206,7 +206,7 @@ public:
         return true;
     }
 
-    virtual JobParallelism parallelism() override { return _parallelism; }
+    JobParallelism parallelism() override { return _parallelism; }
 
     SyncFileItemPtr _item;
 
@@ -237,7 +237,7 @@ public:
     // Don't delete jobs in _jobsToDo and _runningJobs: they have parents
     // that will be responsible for cleanup. Deleting them here would risk
     // deleting something that has already been deleted by a shared parent.
-    virtual ~PropagatorCompositeJob() = default;
+    ~PropagatorCompositeJob() override = default;
 
     void appendJob(PropagatorJob *job);
     void appendTask(const SyncFileItemPtr &item)
@@ -419,7 +419,7 @@ public:
         qRegisterMetaType<PropagatorJob::AbortType>("PropagatorJob::AbortType");
     }
 
-    ~OwncloudPropagator();
+    ~OwncloudPropagator() override;
 
     void start(SyncFileItemVector &&_syncedItems);
 
@@ -646,7 +646,7 @@ public:
     {
     }
 
-    ~CleanupPollsJob();
+    ~CleanupPollsJob() override;
 
     /**
      * Start the job.  After the job is completed, it will emit either finished or aborted, and it

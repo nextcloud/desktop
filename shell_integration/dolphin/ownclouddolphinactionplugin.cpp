@@ -37,7 +37,7 @@ public:
     explicit OwncloudDolphinPluginAction(QObject* parent, const QList<QVariant>&)
         : KAbstractFileItemActionPlugin(parent) { }
 
-    QList<QAction*> actions(const KFileItemListProperties& fileItemInfos, QWidget* parentWidget) Q_DECL_OVERRIDE
+    QList<QAction*> actions(const KFileItemListProperties& fileItemInfos, QWidget* parentWidget) override
     {
         auto helper = OwncloudDolphinPluginHelper::instance();
         if (!helper->isConnected() || !fileItemInfos.isLocal())

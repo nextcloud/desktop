@@ -48,7 +48,7 @@ class Systray
 
 public:
     static Systray *instance();
-    virtual ~Systray() = default;
+    ~Systray() override = default;
 
     enum class TaskBarPosition { Bottom, Left, Top, Right };
     Q_ENUM(TaskBarPosition);

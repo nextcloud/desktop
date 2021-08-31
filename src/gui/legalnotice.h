@@ -35,7 +35,7 @@ class LegalNotice : public QDialog
 
 public:
     explicit LegalNotice(QDialog *parent = nullptr);
-    ~LegalNotice();
+    ~LegalNotice() override;
 
 protected:
     void changeEvent(QEvent *) override;

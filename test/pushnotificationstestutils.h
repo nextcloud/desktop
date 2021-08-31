@@ -29,7 +29,7 @@ class FakeWebSocketServer : public QObject
 public:
     explicit FakeWebSocketServer(quint16 port = 12345, QObject *parent = nullptr);
 
-    ~FakeWebSocketServer();
+    ~FakeWebSocketServer() override;
 
     QWebSocket *authenticateAccount(
         const OCC::AccountPtr account, std::function<void(OCC::PushNotifications *pushNotifications)> beforeAuthentication = [](OCC::PushNotifications *) {}, std::function<void(void)> afterAuthentication = [] {});
@@ -70,18 +70,18 @@ class CredentialsStub : public OCC::AbstractCredentials
 
 public:
     CredentialsStub(const QString &user, const QString &password);
-    virtual QString authType() const;
-    virtual QString user() const;
-    virtual QString password() const;
-    virtual QNetworkAccessManager *createQNAM() const;
-    virtual bool ready() const;
-    virtual void fetchFromKeychain();
-    virtual void askFromUser();
+    QString authType() const override;
+    QString user() const override;
+    QString password() const override;
+    QNetworkAccessManager *createQNAM() const override;
+    bool ready() const override;
+    void fetchFromKeychain() override;
+    void askFromUser() override;
 
-    virtual bool stillValid(QNetworkReply *reply);
-    virtual void persist();
-    virtual void invalidateToken();
-    virtual void forgetSensitiveData();
+    bool stillValid(QNetworkReply *reply) override;
+    void persist() override;
+    void invalidateToken() override;
+    void forgetSensitiveData() override;
 
 private:
     QString _user;

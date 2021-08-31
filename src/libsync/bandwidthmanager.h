@@ -35,7 +35,7 @@ class BandwidthManager : public QObject
     Q_OBJECT
 public:
     BandwidthManager(OwncloudPropagator *p);
-    ~BandwidthManager();
+    ~BandwidthManager() override;
 
     bool usingAbsoluteUploadLimit() { return _currentUploadLimit > 0; }
     bool usingRelativeUploadLimit() { return _currentUploadLimit < 0; }

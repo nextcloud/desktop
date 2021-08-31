@@ -71,7 +71,7 @@ private slots:
 
 private:
     explicit OwncloudSetupWizard(QObject *parent = nullptr);
-    ~OwncloudSetupWizard();
+    ~OwncloudSetupWizard() override;
     void startWizard();
     void testOwnCloudConnect();
     void createRemoteFolder();

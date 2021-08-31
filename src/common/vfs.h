@@ -126,7 +126,7 @@ public:
 
 public:
     explicit Vfs(QObject* parent = nullptr);
-    virtual ~Vfs();
+    ~Vfs() override;
 
     virtual Mode mode() const = 0;
 
@@ -291,7 +291,7 @@ class OCSYNC_EXPORT VfsOff : public Vfs
 
 public:
     VfsOff(QObject* parent = nullptr);
-    virtual ~VfsOff();
+    ~VfsOff() override;
 
     Mode mode() const override { return Vfs::Off; }
 

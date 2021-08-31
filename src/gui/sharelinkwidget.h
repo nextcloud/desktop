@@ -52,7 +52,7 @@ public:
         const QString &localPath,
         SharePermissions maxSharingPermissions,
         QWidget *parent = nullptr);
-    ~ShareLinkWidget();
+    ~ShareLinkWidget() override;
 
     void toggleButton(bool show);
     void setupUiOptions();

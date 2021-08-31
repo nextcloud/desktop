@@ -62,7 +62,7 @@ class FolderMan : public QObject
 {
     Q_OBJECT
 public:
-    ~FolderMan();
+    ~FolderMan() override;
     static FolderMan *instance();
 
     int setupFolders();

@@ -26,7 +26,7 @@ class SparkleUpdater : public Updater
     Q_OBJECT
 public:
     SparkleUpdater(const QUrl &appCastUrl);
-    ~SparkleUpdater();
+    ~SparkleUpdater() override;
 
     void setUpdateUrl(const QUrl &url);
 

@@ -49,7 +49,7 @@ class SettingsDialog : public QDialog
 
 public:
     explicit SettingsDialog(ownCloudGui *gui, QWidget *parent = nullptr);
-    ~SettingsDialog();
+    ~SettingsDialog() override;
 
     QWidget* currentPage();
 

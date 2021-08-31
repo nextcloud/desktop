@@ -175,7 +175,7 @@ class FakeReply : public QNetworkReply
     Q_OBJECT
 public:
     FakeReply(QObject *parent);
-    virtual ~FakeReply();
+    ~FakeReply() override;
 
     // useful to be public for testing
     using QNetworkReply::setRawHeader;
@@ -414,17 +414,17 @@ class FakeCredentials : public OCC::AbstractCredentials
     QNetworkAccessManager *_qnam;
 public:
     FakeCredentials(QNetworkAccessManager *qnam) : _qnam{qnam} { }
-    virtual QString authType() const { return "test"; }
-    virtual QString user() const { return "admin"; }
-    virtual QString password() const { return "password"; }
-    virtual QNetworkAccessManager *createQNAM() const { return _qnam; }
-    virtual bool ready() const { return true; }
-    virtual void fetchFromKeychain() { }
-    virtual void askFromUser() { }
-    virtual bool stillValid(QNetworkReply *) { return true; }
-    virtual void persist() { }
-    virtual void invalidateToken() { }
-    virtual void forgetSensitiveData() { }
+    QString authType() const override { return "test"; }
+    QString user() const override { return "admin"; }
+    QString password() const override { return "password"; }
+    QNetworkAccessManager *createQNAM() const override { return _qnam; }
+    bool ready() const override { return true; }
+    void fetchFromKeychain() override { }
+    void askFromUser() override { }
+    bool stillValid(QNetworkReply *) override { return true; }
+    void persist() override { }
+    void invalidateToken() override { }
+    void forgetSensitiveData() override { }
 };
 
 class FakeFolder

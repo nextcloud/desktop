@@ -31,7 +31,7 @@ class OWNCLOUDSYNC_EXPORT PushNotifications : public QObject
 public:
     explicit PushNotifications(Account *account, QObject *parent = nullptr);
 
-    ~PushNotifications();
+    ~PushNotifications() override;
 
     /**
      * Setup push notifications

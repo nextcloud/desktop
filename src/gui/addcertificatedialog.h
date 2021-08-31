@@ -35,7 +35,7 @@ class AddCertificateDialog : public QDialog
 
 public:
     explicit AddCertificateDialog(QWidget *parent = nullptr);
-    ~AddCertificateDialog();
+    ~AddCertificateDialog() override;
     QString getCertificatePath();
     QString getCertificatePasswd();
     void showErrorMessage(const QString message);

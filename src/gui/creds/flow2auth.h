@@ -42,7 +42,7 @@ public:
     };
 
     Flow2Auth(Account *account, QObject *parent);
-    ~Flow2Auth();
+    ~Flow2Auth() override;
 
     enum Result { NotSupported,
         LoggedIn,
