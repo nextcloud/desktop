@@ -403,7 +403,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="89"/>
         <source>You seem to have the Virtual Files feature enabled on this folder. At  the moment, it is not possible to implicitly download virtual files that are End-to-End encrypted. To get the best experience with Virtual Files and End-to-End Encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Se pare că ai activată opțiunea de Fișiere Virtuale pentru acest dosar. În acest moment nu este posibil să descarci în mod implicit astfel de fișiere. Pentru cea mai bună experiență folosind opțiunea de Fișiere Virtuale și criptare end-to-end asigurăte că ai marcat dosarul cu &quot;Disponibil mereu local&quot;.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="330"/>
@@ -533,7 +533,11 @@ Așteaptă pentru sincronizare, apoi criptează dosarul.</translation>
 The only advantage of disabling virtual file support is that the selective sync feature will become available again.
 
 This action will abort any currently running synchronization.</source>
-        <translation type="unfinished"/>
+        <translation>Această acțiune va dezactiva suportul pentru fișiere virtuale. Drept consecință conținutul dosarelor ce sunt marcate cu &quot;disponibile numai online&quot; va fi descărcat.
+
+Singurul avantaj al dezactivării acestei funcții este că funcția de sincronizare selectivă devine disponibilă.
+
+Această acțiune va opri toate sincronizările în derulare din acest moment.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="868"/>
@@ -623,52 +627,52 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1141"/>
         <source>Connecting to %1 …</source>
-        <translation type="unfinished"/>
+        <translation>Se conectează la %1 ...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1146"/>
         <source>No connection to %1 at %2.</source>
-        <translation type="unfinished"/>
+        <translation>Nu există nici-o conexiune către %1 la %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1151"/>
         <source>Server configuration error: %1 at %2.</source>
-        <translation type="unfinished"/>
+        <translation>Eroare de configurare a serverulu: %1 la %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1162"/>
         <source>No %1 connection configured.</source>
-        <translation type="unfinished"/>
+        <translation>Nu există nici-o conexiune configurată la %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1334"/>
         <source>There are folders that were not synchronized because they are too big: </source>
-        <translation type="unfinished"/>
+        <translation>Există dosare ce nu au fost sincronizate deoarece au o dimenziune prea mare:</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1336"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
-        <translation type="unfinished"/>
+        <translation>Există dosare ce nu sunt sincronizate deoarece se află pe stocarea externă:</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1337"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
-        <translation type="unfinished"/>
+        <translation>Există dosare ce nu au fost sinscronizate deoarece acestea sunt prea mari sau se află pe stocarea externă:</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1349"/>
         <source>Confirm Account Removal</source>
-        <translation type="unfinished"/>
+        <translation>Confirmați ștergerea contului</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1350"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Doriți să ștergeți conexiunea la acest cont &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Notă:&lt;/b&gt;Această acțiune &lt;b&gt;nu&lt;/b&gt;va șterge nici-un fișier.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1355"/>
         <source>Remove connection</source>
-        <translation type="unfinished"/>
+        <translation>Șterge conexiunea</translation>
     </message>
 </context>
 <context>
@@ -676,7 +680,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="154"/>
         <source>Signed out</source>
-        <translation type="unfinished"/>
+        <translation>Deconectat</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="156"/>
@@ -711,12 +715,12 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="168"/>
         <source>Asking Credentials</source>
-        <translation type="unfinished"/>
+        <translation>Întrebare despre acreditări</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="170"/>
         <source>Unknown account state</source>
-        <translation type="unfinished"/>
+        <translation>Nu se cunoaște starea contului</translation>
     </message>
 </context>
 <context>
@@ -724,17 +728,17 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/tray/ActivityListModel.cpp" line="336"/>
         <source>Files from the ignore list as well as symbolic links are not synced.</source>
-        <translation type="unfinished"/>
+        <translation>Fișierele din lista de ignorare precum și legăturile simbolice nu sunt sincronizate.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityListModel.cpp" line="513"/>
         <source>For more activities please open the Activity app.</source>
-        <translation type="unfinished"/>
+        <translation>Pentru mai multe activități vă rugăm deschideți aplicația de activități.</translation>
     </message>
     <message>
         <location filename="../src/gui/activitylistmodel.cpp" line="241"/>
         <source>Files from the ignore list as well as symbolic links are not synced. This includes:</source>
-        <translation type="unfinished"/>
+        <translation>Fișierele din lista de ignorare precum și legăturile simbolice nu sunt sincronizate. Acestea includ:</translation>
     </message>
 </context>
 <context>
@@ -742,37 +746,37 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="17"/>
         <source>SSL client certificate authentication</source>
-        <translation type="unfinished"/>
+        <translation>Certificatul SSL de autentificare a clientului</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="23"/>
         <source>This server probably requires a SSL client certificate.</source>
-        <translation type="unfinished"/>
+        <translation>Acest server cel mai probabil necesită un certificat SSL.</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="35"/>
         <source>Certificate &amp; Key (pkcs12):</source>
-        <translation type="unfinished"/>
+        <translation>Certificat &amp; cheie (pkcs12):</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="35"/>
         <source>Certificate &amp; Key (pkcs12) :</source>
-        <translation type="unfinished"/>
+        <translation>Certificate &amp; Key (pkcs12):</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="51"/>
         <source>Browse …</source>
-        <translation type="unfinished"/>
+        <translation>Navighează ...</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="60"/>
         <source>Certificate password:</source>
-        <translation type="unfinished"/>
+        <translation>Parola certificatului:</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="79"/>
         <source>An encrypted pkcs12 bundle is strongly recommended as a copy will be stored in the configuration file.</source>
-        <translation type="unfinished"/>
+        <translation>Este recomandată folosirea unei chei pkcs12 deoarece o copie va fii păstrată în fișierul de configurare.</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.cpp" line="38"/>
