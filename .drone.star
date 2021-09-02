@@ -490,8 +490,10 @@ def testMiddleware():
             "BACKEND_HOST": "http://owncloud",
         },
         "commands": [
+            ". ./.drone.env",
             "git clone https://github.com/owncloud/owncloud-test-middleware.git /drone/src/middleware",
             "cd /drone/src/middleware",
+            "git checkout $MIDDLEWARE_COMMITID",
             "yarn install",
             "yarn start",
         ],
