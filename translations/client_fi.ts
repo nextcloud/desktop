@@ -12,13 +12,13 @@
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="31"/>
         <source>Open %1 locally</source>
-        <translation type="unfinished"/>
+        <translation>Avaa %1 paikallisesti</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="161"/>
         <location filename="../src/gui/tray/ActivityItem.qml" line="164"/>
         <source>Show more actions</source>
-        <translation type="unfinished"/>
+        <translation>Näytä enemmän toimintoja</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="251"/>
@@ -28,7 +28,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="255"/>
         <source>Share %1</source>
-        <translation type="unfinished"/>
+        <translation>Jaa %1</translation>
     </message>
 </context>
 <context>
@@ -2754,7 +2754,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="262"/>
         <source>Sync the folder &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Synkronoi kansio &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="267"/>
@@ -3337,7 +3337,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1029"/>
         <source>File is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Tiedosto on tällä hetkellä käytössä</translation>
     </message>
 </context>
 <context>
@@ -3412,12 +3412,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="1096"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Virhe päivittäessä metatietoja: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="1099"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Tiedosto %1 on tällä hetkellä käytössä</translation>
     </message>
 </context>
 <context>
@@ -3463,7 +3463,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="197"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Tiedosto %1 on tällä hetkellä käytössä</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="193"/>
@@ -3509,7 +3509,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="265"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Tiedosto %1 on tällä hetkellä käytössä</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="257"/>
@@ -3520,7 +3520,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="271"/>
         <source>Failed to rename file</source>
-        <translation type="unfinished"/>
+        <translation>Tiedoston uudelleennimeäminen epäonnistui</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="277"/>
@@ -3564,7 +3564,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="267"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Tiedosto %1 on tällä hetkellä käytössä</translation>
     </message>
 </context>
 <context>
@@ -3587,7 +3587,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="260"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Tiedosto %1 on tällä hetkellä käytössä</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="265"/>
@@ -3651,7 +3651,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="773"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Tiedosto %1 on tällä hetkellä käytössä</translation>
     </message>
 </context>
 <context>
@@ -3910,7 +3910,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="223"/>
         <source>Set password</source>
-        <translation type="unfinished"/>
+        <translation>Aseta salasana</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="239"/>
@@ -4096,7 +4096,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/shareuserline.ui" line="187"/>
         <source>Password:</source>
-        <translation type="unfinished"/>
+        <translation>Salasana:</translation>
     </message>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="259"/>
@@ -4141,7 +4141,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="588"/>
         <source>Password protect</source>
-        <translation type="unfinished"/>
+        <translation>Suojaa salasanalla</translation>
     </message>
 </context>
 <context>
@@ -4256,7 +4256,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/socketapi.cpp" line="465"/>
         <source>Share with %1</source>
         <comment>parameter is Nextcloud</comment>
-        <translation type="unfinished"/>
+        <translation>Jaa %1 kanssa</translation>
     </message>
 </context>
 <context>
