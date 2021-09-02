@@ -1098,42 +1098,42 @@ Aceasta poate fi o problemă cu librariile OpenSSL.</translation>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="104"/>
         <source>The polling URL does not start with HTTPS despite the login URL started with HTTPS. Login will not be possible because this might be a security issue. Please contact your administrator.</source>
-        <translation type="unfinished"/>
+        <translation>Deși URL-ul începe cu HTTPS, adresa URL-ului de pooling nu începe cu HTTPS. Autentificarea nu va fii posibilă deoarece ar putea exista o problemă de securitate. Vă rugăm contactați administartorul dumneavoastră.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="115"/>
         <location filename="../src/gui/creds/flow2auth.cpp" line="223"/>
         <source>Error returned from the server: &lt;em&gt;%1&lt;/em&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Răspunsul serverului conține o eroare: &lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="118"/>
         <location filename="../src/gui/creds/flow2auth.cpp" line="226"/>
         <source>There was an error accessing the &apos;token&apos; endpoint: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
-        <translation type="unfinished"/>
+        <translation>A apărut o eroare in accesarea punctului final &apos;token&apos;: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="118"/>
         <location filename="../src/gui/creds/flow2auth.cpp" line="226"/>
         <source>There was an error accessing the &quot;token&quot; endpoint: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
-        <translation type="unfinished"/>
+        <translation>A apărut o eroare in accesarea punctului final &apos;token&apos;: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="121"/>
         <location filename="../src/gui/creds/flow2auth.cpp" line="229"/>
         <source>Could not parse the JSON returned from the server: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Nu sa putut analiza fișierul JSON provenit de la server: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="124"/>
         <location filename="../src/gui/creds/flow2auth.cpp" line="232"/>
         <source>The reply from the server did not contain all expected fields</source>
-        <translation type="unfinished"/>
+        <translation>Răspunsul de la server nu conține toate informațiile așteptate</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="211"/>
         <source>The returned server URL does not start with HTTPS despite the login URL started with HTTPS. Login will not be possible because this might be a security issue. Please contact your administrator.</source>
-        <translation type="unfinished"/>
+        <translation>Deși URL-ul începe cu HTTPS, adresa URL-ului de pooling nu începe cu HTTPS. Autentificarea nu va fii posibilă deoarece ar putea exista o problemă de securitate. Vă rugăm contactați administartorul dumneavoastră.</translation>
     </message>
 </context>
 <context>
@@ -1141,22 +1141,22 @@ Aceasta poate fi o problemă cu librariile OpenSSL.</translation>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="97"/>
         <source>Unable to open the Browser, please copy the link to your Browser.</source>
-        <translation type="unfinished"/>
+        <translation>Nu se poate deschide Browserul Web. Vă rugăm să copiați linkul în Browserul dumneavoastră.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="180"/>
         <source>Waiting for authorization</source>
-        <translation type="unfinished"/>
+        <translation>Se așteaptă autorizarea</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="185"/>
         <source>Polling for authorization</source>
-        <translation type="unfinished"/>
+        <translation>Se votează pentru autorizare</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="190"/>
         <source>Starting authorization</source>
-        <translation type="unfinished"/>
+        <translation>Se pornește autorizarea</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="194"/>
@@ -1166,12 +1166,12 @@ Aceasta poate fi o problemă cu librariile OpenSSL.</translation>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="241"/>
         <source>Reopen Browser</source>
-        <translation type="unfinished"/>
+        <translation>Re-deschide Browser-ul</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="244"/>
         <source>Copy Link</source>
-        <translation type="unfinished"/>
+        <translation>Copiază link</translation>
     </message>
 </context>
 <context>
@@ -1179,17 +1179,17 @@ Aceasta poate fi o problemă cu librariile OpenSSL.</translation>
     <message>
         <location filename="../src/gui/folder.cpp" line="175"/>
         <source>Local folder %1 does not exist.</source>
-        <translation type="unfinished"/>
+        <translation>Dosarul local %1 nu există.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="178"/>
         <source>%1 should be a folder but is not.</source>
-        <translation type="unfinished"/>
+        <translation>%1 ar trebui să fie un dosar dar nu este.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="181"/>
         <source>%1 is not readable.</source>
-        <translation type="unfinished"/>
+        <translation>%1 nu poate fi citit.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="428"/>
@@ -1205,7 +1205,7 @@ Aceasta poate fi o problemă cu librariile OpenSSL.</translation>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="380"/>
         <source>%1 and %n other file(s) have been downloaded.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 și %n alt fișier a fost descărcat. </numerusform><numerusform>%1 și %n alte fișiere au fost descărcate. </numerusform><numerusform>%1 și %n de alte fișiere au fost descărcate. </numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="382"/>
@@ -1216,18 +1216,18 @@ Aceasta poate fi o problemă cu librariile OpenSSL.</translation>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="435"/>
         <source>%1 and %n other file(s) have been added.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 și un alt fișier a fost adăugat. </numerusform><numerusform>%1 și %n alte fișiere au fost adăugate. </numerusform><numerusform>%1 și %n de alte fișiere au fost adăugate. </numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="437"/>
         <source>%1 has been added.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 a fost adăugat.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="442"/>
         <source>%1 and %n other file(s) have been updated.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 și %n alt fișier a fost actualizat. </numerusform><numerusform>%1 și %n alte fișiere au fost actualizate. </numerusform><numerusform>%1 și %n de alte fișiere au fost actualizate. </numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="444"/>
@@ -1238,7 +1238,7 @@ Aceasta poate fi o problemă cu librariile OpenSSL.</translation>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="449"/>
         <source>%1 has been renamed to %2 and %n other file(s) have been renamed.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 a fost redenumit în %2 și un alt fișier a fost redenumit.</numerusform><numerusform>%1 a fost redenumit în %2 și %n alte fișiere au fost redenumite.</numerusform><numerusform>%1 a fost redenumit în %2 și %n de alte fișiere au fost redenumite.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="451"/>
@@ -1249,7 +1249,7 @@ Aceasta poate fi o problemă cu librariile OpenSSL.</translation>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="456"/>
         <source>%1 has been moved to %2 and %n other file(s) have been moved.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 a fost mostat în %2 și %n ale fișiee a fost mutat.</numerusform><numerusform>%1 a fost mostat în %2 și %n alte fișiere au fost mutate.</numerusform><numerusform>%1 a fost mostat în %2 și %n de alte fișiere au fost mutate.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="458"/>
@@ -1259,59 +1259,60 @@ Aceasta poate fi o problemă cu librariile OpenSSL.</translation>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="463"/>
         <source>%1 has and %n other file(s) have sync conflicts.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 are și %n alt fișier are conflicte de sincronizare.</numerusform><numerusform>%1 are și %n alte fișiere au conflicte de sincronizare.</numerusform><numerusform>%1 are și %n de alte fișiere au conflicte de sincronizare.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="465"/>
         <source>%1 has a sync conflict. Please check the conflict file!</source>
-        <translation type="unfinished"/>
+        <translation>%1 are un conflict. Vă rugăm să verificați fișierul cu conflicte!</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="470"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 și %n alt fișier nu au putut fi sincronizat datorită unor erori. Vă rugăm verificați fisierele log pentru mai multe detalii.</numerusform><numerusform>%1 și %n alte fișiere nu au putut fi sincronizate datorită unor erori. Vă rugăm verificați fisierele log pentru mai multe detalii.</numerusform><numerusform>%1 și %n de alte fișiere nu au putut fi sincronizate datorită unor erori. Vă rugăm verificați fisierele log pentru mai multe detalii.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="472"/>
         <source>%1 could not be synced due to an error. See the log for details.</source>
-        <translation type="unfinished"/>
+        <translation>%1 nu a putut fi sincronizat datorită unei erori. Vă rugăm să verificați fișierele log pentru mai multe detalii.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="477"/>
         <source>%1 and %n other file(s) are currently locked.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 și %n alt fișier este în acest moment blocat.</numerusform><numerusform>%1 și %n alte fișiere sunt în acest moment blocate.</numerusform><numerusform>%1 și %n de alte fișiere sunt în acest moment blocate.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="479"/>
         <source>%1 is currently locked.</source>
-        <translation type="unfinished"/>
+        <translation>%1 este în acest moment blocat.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="487"/>
         <source>Sync Activity</source>
-        <translation type="unfinished"/>
+        <translation>Activitate de sincronizare</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="822"/>
         <source>Could not read system exclude file</source>
-        <translation type="unfinished"/>
+        <translation>Nu sa putut citi fișierul de excludere</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1100"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
-        <translation type="unfinished"/>
+        <translation>Un nou fisier mai mare de %1 MB a fost adăugat: %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1103"/>
         <source>A folder from an external storage has been added.
 </source>
-        <translation type="unfinished"/>
+        <translation>Un dosar dintr-o locație externă de stocare a fost adăugat.
+</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1104"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
-        <translation type="unfinished"/>
+        <translation>Vă rugăm să selectați în setări dacă doriți să descărcați acest fișier.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1164"/>
