@@ -44,6 +44,7 @@
 #include <QJsonObject>
 #include <QJsonArray>
 
+#include <qsslconfiguration.h>
 #include <qt5keychain/keychain.h>
 #include "creds/abstractcredentials.h"
 
@@ -371,7 +372,7 @@ QSslConfiguration Account::getOrCreateSslConfig()
 void Account::setApprovedCerts(const QList<QSslCertificate> certs)
 {
     _approvedCerts = certs;
-    QSslSocket::addDefaultCaCertificates(certs);
+    QSslConfiguration::defaultConfiguration().addCaCertificates(certs);
 }
 
 void Account::addApprovedCerts(const QList<QSslCertificate> certs)
@@ -463,7 +464,7 @@ void Account::slotHandleSslErrors(QNetworkReply *reply, QList<QSslError> errors)
             return;
 
         if (!approvedCerts.isEmpty()) {
-            QSslSocket::addDefaultCaCertificates(approvedCerts);
+            QSslConfiguration::defaultConfiguration().addCaCertificates(approvedCerts);
             addApprovedCerts(approvedCerts);
             emit wantsAccountSaved(this);
 

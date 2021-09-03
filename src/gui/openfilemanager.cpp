@@ -103,20 +103,20 @@ void showInFileManager(const QString &localPath)
                 return;
 #endif
 
-            const QString explorer = "explorer.exe "; // FIXME: we trust it's in PATH
-            QFileInfo fi(localPath);
+        const QString explorer = "explorer.exe "; // FIXME: we trust it's in PATH
+        QFileInfo fi(localPath);
 
-            // canonicalFilePath returns empty if the file does not exist
-            if (!fi.canonicalFilePath().isEmpty()) {
-                QString nativeArgs;
-                if (!fi.isDir()) {
-                    nativeArgs += QLatin1String("/select,");
-                }
-                nativeArgs += QLatin1Char('"');
-                nativeArgs += QDir::toNativeSeparators(fi.canonicalFilePath());
-                nativeArgs += QLatin1Char('"');
+        // canonicalFilePath returns empty if the file does not exist
+        if (!fi.canonicalFilePath().isEmpty()) {
+            QString nativeArgs;
+            if (!fi.isDir()) {
+                nativeArgs += QLatin1String("/select,");
+            }
+            nativeArgs += QLatin1Char('"');
+            nativeArgs += QDir::toNativeSeparators(fi.canonicalFilePath());
+            nativeArgs += QLatin1Char('"');
 
-                QProcess p;
+            QProcess p;
 #ifdef Q_OS_WIN
             // QProcess on Windows tries to wrap the whole argument/program string
             // with quotes if it detects a space in it, but explorer wants the quotes
