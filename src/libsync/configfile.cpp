@@ -645,7 +645,7 @@ int ConfigFile::updateSegment() const
     // Invalid? (Unset at the very first launch)
     if(segment < 0 || segment > 99) {
         // Save valid segment value, normally has to be done only once.
-        segment = qrand() % 99;
+        segment = Utility::rand() % 99;
         settings.setValue(QLatin1String(updateSegmentC), segment);
     }
 

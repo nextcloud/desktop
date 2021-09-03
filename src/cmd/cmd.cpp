@@ -317,8 +317,6 @@ int main(int argc, char **argv)
     qputenv("OPENSSL_CONF", opensslConf.toLocal8Bit());
 #endif
 
-    qsrand(std::random_device()());
-
     CmdOptions options;
     options.silent = false;
     options.trustSSL = false;
