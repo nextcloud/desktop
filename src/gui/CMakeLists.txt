@@ -45,7 +45,6 @@ set(client_UI_SRCS
     wizard/owncloudhttpcredspage.ui
     wizard/owncloudoauthcredspage.ui
     wizard/owncloudsetupnocredspage.ui
-    wizard/owncloudwizardresultpage.ui
     wizard/webview.ui
     wizard/welcomepage.ui
 )
@@ -128,7 +127,6 @@ set(client_SRCS
     wizard/owncloudsetuppage.cpp
     wizard/owncloudwizardcommon.cpp
     wizard/owncloudwizard.cpp
-    wizard/owncloudwizardresultpage.cpp
     wizard/slideshow.cpp
     wizard/welcomepage.cpp
     wizard/linklabel.cpp

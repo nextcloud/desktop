@@ -68,8 +68,6 @@ public:
     bool useVirtualFileSync() const;
     bool isConfirmBigFolderChecked() const;
 
-    void enableFinishOnResultWidget(bool enable);
-
     void displayError(const QString &, bool retryHTTPonly);
     AbstractCredentials *getCredentials() const;
 
