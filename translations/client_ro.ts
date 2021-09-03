@@ -12,7 +12,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="31"/>
         <source>Open %1 locally</source>
-        <translation>Deschis local</translation>
+        <translation>Deschis %1 local</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="161"/>
@@ -1317,12 +1317,12 @@ Aceasta poate fi o problemă cu librariile OpenSSL.</translation>
     <message>
         <location filename="../src/gui/folder.cpp" line="1164"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
-        <translation type="unfinished"/>
+        <translation>Dosarul %1 a fost creeat dar a fost exclus, în trecut de la sincronizare. Conținutul nu va fii sincronizat.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1167"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
-        <translation type="unfinished"/>
+        <translation>Fisierul %1 a fost creeat dar a fost exclus, în trecut de la sincronizare. Acest nu va fii sincronizat.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1178"/>
@@ -1331,14 +1331,20 @@ Aceasta poate fi o problemă cu librariile OpenSSL.</translation>
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
 
 %1</source>
-        <translation type="unfinished"/>
+        <translation>Schimbările in dosarele sincronizate nu pot fi urmărite în mod fiabil. 
+
+Acest lucru înseamnă că aplicația de sincronizare  ar putea să nu încarce schimbările locale imediat dar va scana doar schimbările locale și va încărca aceste schimbări în anumte ocazii (timpul predefinit este o data la 2 ore).
+
+%1</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1260"/>
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
-        <translation type="unfinished"/>
+        <translation>Toate fisierele din dosarul local de sincronizare &apos;%1&apos; au fost șterse. Aceste acțiuni vor fi sincronizate cu serverul tău, drept urmare aceste fisiere vor deveni indisponibile.
+Ești sigur că dorești să sincronizezi toate aceste acțiuni cu serverul ?
+Dacă această acțiune a fost un accident și dorești să pastrezi fișierele, acestea pot fi resincronizate de pe server.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1052"/>
@@ -1385,12 +1391,12 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folder.cpp" line="1090"/>
         <source>Normal Synchronisation</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizare normală</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1091"/>
         <source>Keep Local Files as Conflict</source>
-        <translation type="unfinished"/>
+        <translation>Păstrează fișierele locale ca și conflicte</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1232"/>
@@ -1410,12 +1416,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folder.cpp" line="1264"/>
         <source>Remove All Files?</source>
-        <translation type="unfinished"/>
+        <translation>Ștergeți toate fișierele ?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1268"/>
         <source>Remove all files</source>
-        <translation type="unfinished"/>
+        <translation>Șterge toate fișierele</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1255"/>
@@ -1436,7 +1442,7 @@ If you decide to delete the files, they will be unavailable to you, unless you a
     <message>
         <location filename="../src/gui/foldercreationdialog.ui" line="14"/>
         <source>Create new folder</source>
-        <translation type="unfinished"/>
+        <translation>Creează un dosar nou</translation>
     </message>
     <message>
         <location filename="../src/gui/foldercreationdialog.ui" line="42"/>
@@ -1456,7 +1462,7 @@ If you decide to delete the files, they will be unavailable to you, unless you a
     <message>
         <location filename="../src/gui/foldercreationdialog.cpp" line="76"/>
         <source>Could not create a folder! Check your write permissions.</source>
-        <translation type="unfinished"/>
+        <translation>Nu s-a putut creea un dosar nou! Vă rugăm să verificați permisiunile de scriere.</translation>
     </message>
 </context>
 <context>
@@ -1464,7 +1470,7 @@ If you decide to delete the files, they will be unavailable to you, unless you a
     <message>
         <location filename="../src/gui/folderman.cpp" line="389"/>
         <source>Could not reset folder state</source>
-        <translation type="unfinished"/>
+        <translation>Nu s-a putut reseta starea dosarului</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="390"/>
@@ -1479,27 +1485,27 @@ If you decide to delete the files, they will be unavailable to you, unless you a
     <message>
         <location filename="../src/gui/folderman.cpp" line="1225"/>
         <source> (backup)</source>
-        <translation type="unfinished"/>
+        <translation>copie de siguranță (backup)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1230"/>
         <source> (backup %1)</source>
-        <translation type="unfinished"/>
+        <translation>copia de siguranță %1 (backup)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1475"/>
         <source>Undefined State.</source>
-        <translation type="unfinished"/>
+        <translation>Stare nedefinită</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1478"/>
         <source>Waiting to start syncing.</source>
-        <translation type="unfinished"/>
+        <translation>Se așteaptă pentru a începe sincronizarea.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1481"/>
         <source>Preparing for sync.</source>
-        <translation type="unfinished"/>
+        <translation>Se pregătește sincronizarea.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1484"/>
@@ -1509,57 +1515,57 @@ If you decide to delete the files, they will be unavailable to you, unless you a
     <message>
         <location filename="../src/gui/folderman.cpp" line="1371"/>
         <source>Sync was successful, unresolved conflicts.</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizarea a reușit, conflicte nerezolvate.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1489"/>
         <source>Sync finished with unresolved conflicts.</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizarea a reușit cu conflicte nenrezolvate.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1491"/>
         <source>Last Sync was successful.</source>
-        <translation type="unfinished"/>
+        <translation>Ultima sincronizare a fost un succes.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1497"/>
         <source>Setup Error.</source>
-        <translation type="unfinished"/>
+        <translation>Eroare de configurare,</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1500"/>
         <source>User Abort.</source>
-        <translation type="unfinished"/>
+        <translation>Anulați utilizatorul.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1503"/>
         <source>Sync is paused.</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizarea este oprită.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1509"/>
         <source>%1 (Sync is paused)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (Sincronizarea este oprită)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1517"/>
         <source>No valid folder selected!</source>
-        <translation type="unfinished"/>
+        <translation>Nu este selectat un dosar valid!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1529"/>
         <source>The selected path does not exist!</source>
-        <translation type="unfinished"/>
+        <translation>Calea selectaă nu există!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1533"/>
         <source>The selected path is not a folder!</source>
-        <translation type="unfinished"/>
+        <translation>Calea selectaă nu este un dosar!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1537"/>
         <source>You have no permission to write to the selected folder!</source>
-        <translation type="unfinished"/>
+        <translation>Nu ai permisiunea de a scrie în dosarul selectat!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1584"/>
