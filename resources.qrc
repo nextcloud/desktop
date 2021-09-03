@@ -7,5 +7,6 @@
         <file>theme/Style/qmldir</file>
         <file>src/gui/tray/ActivityActionButton.qml</file>
         <file>src/gui/tray/ActivityItem.qml</file>
+        <file>src/gui/tray/AutoSizingMenu.qml</file>
     </qresource>
 </RCC>
