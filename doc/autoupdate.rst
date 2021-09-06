@@ -32,10 +32,9 @@ itself. Should the silent update fail, the client offers a manual download.
 macOS
 ^^^^^
 
-If a new update is available, the Nextcloud client initializes a pop-up dialog
-to alert you of the update and requesting that you update to the latest
-version. Due to their use of the Sparkle frameworks, this is the default
-process for macOS applications.
+There is no automatic updater on macOS. If a new update is available,
+the Nextcloud client initializes a pop-up dialog to alert you of the
+update and requesting that you update to the latest version manually.
 
 Linux
 ^^^^^
@@ -95,14 +94,6 @@ To prevent automatic updates and disallow manual overrides:
 
 .. note:: branded clients have different key names
 
-
-Preventing Automatic Updates in macOS Environments
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-You can disable the automatic update mechanism, in the macOS operating system,
-by copying the file
-``nextcloud.app/Contents/Resources/deny_autoupdate_com.nextcloud.desktopclient.plist``
-to ``/Library/Preferences/com.nextcloud.desktopclient.plist``.
 
 Preventing Automatic Updates in Linux Environments
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
