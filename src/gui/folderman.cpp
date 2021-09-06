@@ -1493,4 +1493,9 @@ Result<void, QString> FolderMan::unsupportedConfiguration(const QString &path) c
     return {};
 }
 
+bool FolderMan::checkVfsAvailability(const QString &path) const
+{
+    return unsupportedConfiguration(path) && Vfs::checkAvailability(path);
+}
+
 } // namespace OCC
