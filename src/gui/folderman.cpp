@@ -44,6 +44,13 @@ constexpr auto settingsAccountsC = "Accounts";
 constexpr auto settingsFoldersC = "Folders";
 constexpr auto settingsVersionC = "version";
 constexpr auto maxFoldersVersion = 1;
+const char versionC[] = "version";
+
+int numberOfSyncJournals(const QString &path)
+{
+    return QDir(path).entryList({ QStringLiteral(".sync_*.db"), QStringLiteral("._sync_*.db") }, QDir::Hidden | QDir::Files).size();
+}
+
 }
 
 namespace OCC {
@@ -1800,6 +1807,9 @@ static QString checkPathValidityRecursive(const QString &path)
     Utility::NtfsPermissionLookupRAII ntfs_perm;
 #endif
     const QFileInfo selFile(path);
+    if (numberOfSyncJournals(selFile.filePath()) != 0) {
+        return FolderMan::tr("The folder %1 is used in a folder sync connection!").arg(QDir::toNativeSeparators(selFile.filePath()));
+    }
 
     if (!FileSystem::fileExists(path)) {
         QString parentPath = selFile.dir().path();
@@ -2030,6 +2040,17 @@ void FolderMan::slotConnectToPushNotifications(Account *account)
 bool FolderMan::checkVfsAvailability(const QString &path, Vfs::Mode mode) const
 {
     return unsupportedConfiguration(path) && Vfs::checkAvailability(path, mode);
+}
+
+Result<void, QString> FolderMan::unsupportedConfiguration(const QString &path) const
+{
+    if (numberOfSyncJournals(path) > 1) {
+        return tr("Multiple accounts are sharing the folder %1.\n"
+                  "This configuration is know to lead to dataloss and is no longer supported.\n"
+                  "Please consider removing this folder from the account and adding it again.")
+            .arg(path);
+    }
+    return {};
 }
 
 } // namespace OCC
