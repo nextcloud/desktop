@@ -1352,7 +1352,10 @@ Dacă această acțiune a fost un accident și dorești să pastrezi fișierele,
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation type="unfinished"/>
+        <translation>Toate fișierele din dosarul de sincronizare &apos;%1&apos; au fost șterse de pe acest server.
+Această acțiune va fi sincronizată cu dosarul dumneavoastră local, drept urmare aceste fisiere vor deveni neaccesibile dacă nu ai dreptul de restaurare.
+Dacă decizi să restaurezi aceste fișiere, acestea vor fi resincronizate cu serverul, dacă ai permisiunea pentru a face acest lucru.
+Dacă decizi să ștergi aceste fișiere, acestea vor deveni indisponibile pentru tine, doar dacă tu ești  proprietarul.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1057"/>
@@ -1477,12 +1480,12 @@ If you decide to delete the files, they will be unavailable to you, unless you a
     <message>
         <location filename="../src/gui/folderman.cpp" line="390"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
-        <translation type="unfinished"/>
+        <translation>Un jurnal de sicronizare vechi &apos;%1&apos; a fost găsit, dar acesta nu a putut fi șters. Vă rugăm să vă asigurați că acest jurnal nu este folosit de o aplicație.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="390"/>
         <source>An old sync journal &quot;%1&quot; was found, but could not be removed. Please make sure that no application is currently using it.</source>
-        <translation type="unfinished"/>
+        <translation>Un jurnal de sicronizare vechi &apos;%1&apos; a fost găsit, dar acesta nu a putut fi șters. Vă rugăm să vă asigurați că acest jurnal nu este folosit de o aplicație.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1225"/>
@@ -1572,12 +1575,12 @@ If you decide to delete the files, they will be unavailable to you, unless you a
     <message>
         <location filename="../src/gui/folderman.cpp" line="1584"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
-        <translation type="unfinished"/>
+        <translation>Dosarul local %1 conține deja un dosar folosit pentru sincronizare. Vă rugăm să alegeți un dosar diferit!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1590"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
-        <translation type="unfinished"/>
+        <translation>Dosarul local %1 conține deja un dosar folosit pentru sincronizare. Vă rugăm să alegeți un dosar diferit!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1604"/>
@@ -1630,17 +1633,17 @@ If you decide to delete the files, they will be unavailable to you, unless you a
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="203"/>
         <source>Fetching folder list from server …</source>
-        <translation type="unfinished"/>
+        <translation>Se descarcă lista de dosare de pe server ...</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="229"/>
         <source>There are unresolved conflicts. Click for details.</source>
-        <translation type="unfinished"/>
+        <translation>Există conflicte nerezolvate. Click pentru mai multe detalii.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="235"/>
         <source>Virtual file support is enabled.</source>
-        <translation type="unfinished"/>
+        <translation>Suportul pentru fișiere virtuale este pornit.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="257"/>
@@ -1650,37 +1653,37 @@ If you decide to delete the files, they will be unavailable to you, unless you a
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="299"/>
         <source>Synchronizing VirtualFiles with local folder</source>
-        <translation type="unfinished"/>
+        <translation>Se sincronizează fișiere virtuale cu dosarul local</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="301"/>
         <source>Synchronizing with local folder</source>
-        <translation type="unfinished"/>
+        <translation>Se sincronizează cu dosarul local</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="973"/>
         <source>Checking for changes in remote &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Se verifică schimbările pe dosarul &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="977"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Se verifică schimbările pe dosarul local &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="973"/>
         <source>Checking for changes in remote &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Se verifică schimbările pe dosarul &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="977"/>
         <source>Checking for changes in local &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Se verifică schimbările în dosarul local &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="984"/>
         <source>Reconciling changes</source>
-        <translation type="unfinished"/>
+        <translation>Se reconciliază schimbările</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1019"/>
@@ -1698,7 +1701,7 @@ If you decide to delete the files, they will be unavailable to you, unless you a
         <location filename="../src/gui/folderstatusmodel.cpp" line="1046"/>
         <source>Syncing %1</source>
         <extracomment>Example text: &quot;Syncing 'foo.txt', 'bar.txt'&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>Se sincronizează %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1048"/>
@@ -1715,7 +1718,7 @@ If you decide to delete the files, they will be unavailable to you, unless you a
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1054"/>
         <source>↓ %1/s</source>
-        <translation type="unfinished"/>
+        <translation>↓ %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1062"/>
@@ -1744,18 +1747,18 @@ If you decide to delete the files, they will be unavailable to you, unless you a
         <location filename="../src/gui/folderstatusmodel.cpp" line="1091"/>
         <source>%5 left, %1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;5 minutes left, 12 MB of 345 MB, file 6 of 7&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>%5 dreapta, %1 sau %2, fișier %3 sau %4</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1099"/>
         <source>%1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;12 MB of 345 MB, file 6 of 7&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 din %2, dișier %3 sau %4</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1106"/>
         <source>file %1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>fișier %1 sau %2</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1152"/>
@@ -1765,12 +1768,12 @@ If you decide to delete the files, they will be unavailable to you, unless you a
     <message numerus="yes">
         <location filename="../src/gui/folderstatusmodel.cpp" line="1154"/>
         <source>Waiting for %n other folder(s) …</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Se așteaptă pentru %n alt dosar ...</numerusform><numerusform>Se așteaptă pentru %n alte dosare ...</numerusform><numerusform>Se așteaptă pentru %n de alte dosare ...</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1160"/>
         <source>Preparing to sync …</source>
-        <translation type="unfinished"/>
+        <translation>Se pregăteste sincronizarea ...</translation>
     </message>
 </context>
 <context>
@@ -1778,7 +1781,7 @@ If you decide to delete the files, they will be unavailable to you, unless you a
     <message>
         <location filename="../src/gui/folderwatcher.cpp" line="126"/>
         <source>The watcher did not receive a test notification.</source>
-        <translation type="unfinished"/>
+        <translation>Observatorul nu a primit o notificare de testare.</translation>
     </message>
 </context>
 <context>
@@ -1794,12 +1797,12 @@ If you decide to delete the files, they will be unavailable to you, unless you a
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="620"/>
         <source>Add Folder Sync Connection</source>
-        <translation type="unfinished"/>
+        <translation>Adaugă conexiunea de sincronizare pentru dosar</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="622"/>
         <source>Add Sync Connection</source>
-        <translation type="unfinished"/>
+        <translation>Aadaugă conexiune de sincronizare</translation>
     </message>
 </context>
 <context>
@@ -1807,12 +1810,12 @@ If you decide to delete the files, they will be unavailable to you, unless you a
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="69"/>
         <source>Click to select a local folder to sync.</source>
-        <translation type="unfinished"/>
+        <translation>Click pentru a selecta un dosar local pentru a-l sincroniza.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="76"/>
         <source>Enter the path to the local folder.</source>
-        <translation type="unfinished"/>
+        <translation>Introduceți calea către dosarul local.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="135"/>
@@ -1830,52 +1833,52 @@ If you decide to delete the files, they will be unavailable to you, unless you a
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="184"/>
         <source>Enter the name of the new folder to be created below &apos;%1&apos;:</source>
-        <translation type="unfinished"/>
+        <translation>Introduceți numele noului dosar ce va fii creat mai joi &apos;%1&apos;.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="184"/>
         <source>Enter the name of the new folder to be created below &quot;%1&quot;:</source>
-        <translation type="unfinished"/>
+        <translation>Introduceți numele noului dosar ce va fii creat mai joi &apos;%1&apos;.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="214"/>
         <source>Folder was successfully created on %1.</source>
-        <translation type="unfinished"/>
+        <translation>Dosarul a fost creeat cu succes pe %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="225"/>
         <source>Authentication failed accessing %1</source>
-        <translation type="unfinished"/>
+        <translation>Autentificarea a eșuat în momentul accesării %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="227"/>
         <source>Failed to create the folder on %1. Please check manually.</source>
-        <translation type="unfinished"/>
+        <translation>Nu se poate creea un dosar pe %1. Vă rugăm să verificați manual.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="245"/>
         <source>Failed to list a folder. Error: %1</source>
-        <translation type="unfinished"/>
+        <translation>A apărut o eroare in timpul listării dosarului. Eroare: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="326"/>
         <source>Choose this to sync the entire account</source>
-        <translation type="unfinished"/>
+        <translation>Apasă aici pentru a sincroniza tot contul</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="469"/>
         <source>This folder is already being synced.</source>
-        <translation type="unfinished"/>
+        <translation>Acest dosar este deja sincronizat</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="471"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a parent folder of &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Deja sincronizezi &lt;i&gt;%1&lt;/i&gt;, care este un dosar păritnte pentru &lt;i&gt;%2&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="473"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a subfolder of &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Deja sincronizezi &lt;i&gt;%1&lt;/i&gt;,. care este un subdosar al &lt;i&gt;%2&lt;/i&gt;.</translation>
     </message>
 </context>
 <context>
@@ -1884,18 +1887,18 @@ If you decide to delete the files, they will be unavailable to you, unless you a
         <location filename="../src/gui/folderwizard.cpp" line="512"/>
         <location filename="../src/gui/folderwizard.cpp" line="549"/>
         <source>Use virtual files instead of downloading content immediately %1</source>
-        <translation type="unfinished"/>
+        <translation>Folosește fișiere virtuale în loc să descarci continutul imediat %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="512"/>
         <location filename="../src/gui/folderwizard.cpp" line="549"/>
         <source>(experimental)</source>
-        <translation type="unfinished"/>
+        <translation>(experimental)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="545"/>
         <source>Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter.</source>
-        <translation type="unfinished"/>
+        <translation>Fișierele virtuale nu sunt suportate pentru partițiile Wwindows ca dosar local. Vă rugăm să alegeți un subdosar valid. </translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="563"/>
