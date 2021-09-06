@@ -198,5 +198,6 @@
         <file>theme/colored/user-status-invisible.svg</file>
         <file>theme/colored/user-status-away.svg</file>
         <file>theme/colored/user-status-dnd.svg</file>
+        <file>theme/black/email.svg</file>
     </qresource>
 </RCC>

@@ -273,20 +273,6 @@
        </property>
       </widget>
      </item>
-     <item>
-      <widget class="QToolButton" name="confirmExpirationDate">
-       <property name="text">
-        <string notr="true">…</string>
-       </property>
-       <property name="icon">
-        <iconset resource="../../theme.qrc">
-         <normaloff>:/client/theme/confirm.svg</normaloff>:/client/theme/confirm.svg</iconset>
-       </property>
-       <property name="autoRaise">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
     </layout>
    </item>
    <item>
