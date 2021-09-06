@@ -27,6 +27,7 @@ Q_DECLARE_LOGGING_CATEGORY(lcActivity)
 
 class AccountState;
 class ConflictDialog;
+class InvalidFilenameDialog;
 
 /**
  * @brief The ActivityListModel
@@ -115,6 +116,7 @@ private:
     bool _showMoreActivitiesAvailableEntry = false;
 
     QPointer<ConflictDialog> _currentConflictDialog;
+    QPointer<InvalidFilenameDialog> _currentInvalidFilenameDialog;
 };
 }
 

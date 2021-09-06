@@ -28,6 +28,7 @@
 #include "accessmanager.h"
 #include "owncloudgui.h"
 #include "guiutility.h"
+#include "invalidfilenamedialog.h"
 
 #include "ActivityData.h"
 #include "ActivityListModel.h"
@@ -445,6 +446,21 @@ void ActivityListModel::triggerDefaultAction(int activityIndex)
         });
         _currentConflictDialog->open();
         ownCloudGui::raiseDialog(_currentConflictDialog);
+        return;
+    } else if (activity._status == SyncFileItem::FileNameInvalid) {
+        if (!_currentInvalidFilenameDialog.isNull()) {
+            _currentInvalidFilenameDialog->close();
+        }
+
+        auto folder = FolderMan::instance()->folder(activity._folder);
+        const auto folderDir = QDir(folder->path());
+        _currentInvalidFilenameDialog = new InvalidFilenameDialog(_accountState->account(), folder,
+            folderDir.filePath(activity._file));
+        connect(_currentInvalidFilenameDialog, &InvalidFilenameDialog::accepted, folder, [folder]() {
+            folder->scheduleThisFolderSoon();
+        });
+        _currentInvalidFilenameDialog->open();
+        ownCloudGui::raiseDialog(_currentInvalidFilenameDialog);
         return;
     }
 

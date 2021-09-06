@@ -18,6 +18,7 @@ set(theme_dir ${CMAKE_SOURCE_DIR}/theme)
 set(client_UI_SRCS
     accountsettings.ui
     conflictdialog.ui
+    invalidfilenamedialog.ui
     foldercreationdialog.ui
     folderwizardsourcepage.ui
     folderwizardtargetpage.ui
@@ -55,6 +56,7 @@ set(client_SRCS
     accountmanager.cpp
     accountsettings.cpp
     application.cpp
+    invalidfilenamedialog.cpp
     conflictdialog.cpp
     conflictsolver.cpp
     connectionvalidator.cpp
