@@ -3,7 +3,7 @@ name: qt-5.15
 
 steps:
 - name: cmake
-  image: ghcr.io/nextcloud/continuous-integration-client:client-5.15-1
+  image: ghcr.io/nextcloud/continuous-integration-client:client-5.15-2
   volumes:
     - name: build
       path: /drone/build
@@ -11,7 +11,7 @@ steps:
     - cd /drone/build
     - cmake -DCMAKE_C_COMPILER=gcc-10 -DCMAKE_CXX_COMPILER=g++-10 -DCMAKE_BUILD_TYPE=Debug -DBUILD_UPDATER=ON -DBUILD_TESTING=1 -DECM_ENABLE_SANITIZERS=address ../src
 - name: compile
-  image: ghcr.io/nextcloud/continuous-integration-client:client-5.15-1
+  image: ghcr.io/nextcloud/continuous-integration-client:client-5.15-2
   volumes:
     - name: build
       path: /drone/build
@@ -19,7 +19,7 @@ steps:
     - cd /drone/build
     - make -j$(nproc)
 - name: test
-  image: ghcr.io/nextcloud/continuous-integration-client:client-5.15-1
+  image: ghcr.io/nextcloud/continuous-integration-client:client-5.15-2
   volumes:
     - name: build
       path: /drone/build
@@ -27,7 +27,7 @@ steps:
     - cd /drone/build
     - useradd -m -s /bin/bash test
     - chown -R test:test .
-    - su -c 'ASAN_OPTIONS=detect_leaks=0 ctest --output-on-failure' test
+    - su -c 'ASAN_OPTIONS=detect_leaks=0 xvfb-run ctest --output-on-failure' test
 
 volumes:
 - name: build
@@ -47,7 +47,7 @@ name: qt-5.15-clang
 
 steps:
 - name: cmake
-  image: ghcr.io/nextcloud/continuous-integration-client:client-5.15-1
+  image: ghcr.io/nextcloud/continuous-integration-client:client-5.15-2
   volumes:
     - name: build
       path: /drone/build
@@ -55,7 +55,7 @@ steps:
     - cd /drone/build
     - cmake -GNinja -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_C_COMPILER=clang-10 -DCMAKE_CXX_COMPILER=clazy -DCMAKE_BUILD_TYPE=Debug -DBUILD_UPDATER=ON -DBUILD_TESTING=1 -DECM_ENABLE_SANITIZERS=address ../src
 - name: compile
-  image: ghcr.io/nextcloud/continuous-integration-client:client-5.15-1
+  image: ghcr.io/nextcloud/continuous-integration-client:client-5.15-2
   volumes:
     - name: build
       path: /drone/build
@@ -63,7 +63,7 @@ steps:
     - cd /drone/build
     - ninja 2>1 | /drone/src/admin/linux/count_compiler_warnings.py /drone/src
 - name: test
-  image: ghcr.io/nextcloud/continuous-integration-client:client-5.15-1
+  image: ghcr.io/nextcloud/continuous-integration-client:client-5.15-2
   volumes:
     - name: build
       path: /drone/build
@@ -71,9 +71,9 @@ steps:
     - cd /drone/build
     - useradd -m -s /bin/bash test
     - chown -R test:test .
-    - su -c 'ASAN_OPTIONS=detect_leaks=0 ctest --output-on-failure' test
+    - su -c 'ASAN_OPTIONS=detect_leaks=0 xvfb-run ctest --output-on-failure' test
 - name: clang-tidy
-  image: ghcr.io/nextcloud/continuous-integration-client:client-5.15-1
+  image: ghcr.io/nextcloud/continuous-integration-client:client-5.15-2
   volumes:
     - name: build
       path: /drone/build
