@@ -4067,7 +4067,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <translation>Sem resultados para &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="337"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="339"/>
         <source>No results for &quot;%1&quot;</source>
         <translation>Nenhum resultado para &quot;%1&quot;</translation>
     </message>

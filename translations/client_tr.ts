@@ -4069,7 +4069,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
         <translation>&apos;%1&apos; için bir sonuç bulunamadı</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="337"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="339"/>
         <source>No results for &quot;%1&quot;</source>
         <translation>&quot;%1&quot; için bir sonuç bulunamadı</translation>
     </message>

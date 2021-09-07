@@ -4059,7 +4059,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Nessun risultato per &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="337"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="339"/>
         <source>No results for &quot;%1&quot;</source>
         <translation>Nessun risultato per &quot;%1&quot;</translation>
     </message>

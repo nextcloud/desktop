@@ -4028,7 +4028,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>אין תוצאות לחיפוש אחר ‚%1’</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="337"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="339"/>
         <source>No results for &quot;%1&quot;</source>
         <translation type="unfinished"/>
     </message>

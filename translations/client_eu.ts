@@ -4069,7 +4069,7 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
         <translation>Ez dago emaitzarik &apos;%1&apos;(r)entzako</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="337"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="339"/>
         <source>No results for &quot;%1&quot;</source>
         <translation>Ez dago &quot;% 1&quot; (r)entzako emaitzarik</translation>
     </message>
