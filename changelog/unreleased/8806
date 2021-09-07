@@ -1,0 +1,7 @@
+Bugfix: Enforce rtl layout with rtl languages
+
+We fixed a bug where setting the language to a right to left language on mac
+did not change the layout of the application.
+
+https://github.com/owncloud/client/issues/8806
+https://github.com/owncloud/client/pull/8981
