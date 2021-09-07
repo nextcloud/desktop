@@ -1789,7 +1789,7 @@ If you decide to delete the files, they will be unavailable to you, unless you a
     <message>
         <location filename="../src/gui/folderwatcher_linux.cpp" line="88"/>
         <source>This problem usually happens when the inotify watches are exhausted. Check the FAQ for details.</source>
-        <translation type="unfinished"/>
+        <translation>Această problemă apare atunci când API-ul inotify nu mai funcționează corespunzător. Verifică secțiunea FAQ pentru mai multe detalii.</translation>
     </message>
 </context>
 <context>
@@ -1903,7 +1903,7 @@ If you decide to delete the files, they will be unavailable to you, unless you a
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="563"/>
         <source>Virtual files are not available for the selected folder</source>
-        <translation type="unfinished"/>
+        <translation>Fișierele virtuale nu sunt disponibile pentru dosarul selectat</translation>
     </message>
 </context>
 <context>
@@ -1911,12 +1911,12 @@ If you decide to delete the files, they will be unavailable to you, unless you a
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="50"/>
         <source>&lt;b&gt;Warning:&lt;/b&gt; %1</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;Atenție&lt;/b&gt; %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="52"/>
         <source>&lt;b&gt;Warning:&lt;/b&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;Atenție:&lt;/b&gt;</translation>
     </message>
 </context>
 <context>
@@ -1924,12 +1924,12 @@ If you decide to delete the files, they will be unavailable to you, unless you a
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="195"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
-        <translation type="unfinished"/>
+        <translation>Nu s-a primit nici-un E-Tag de la server, verifică setările pentru Proxy/Gateway</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="202"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
-        <translation type="unfinished"/>
+        <translation>Am primit un E-Tag diferit pentru a relua activitatea. Se reîncearcă data viitoare.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="213"/>
@@ -1958,7 +1958,7 @@ If you decide to delete the files, they will be unavailable to you, unless you a
     <message>
         <location filename="../src/gui/generalsettings.ui" line="41"/>
         <source>Legal notice</source>
-        <translation type="unfinished"/>
+        <translation>Aviz juridic</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="66"/>
@@ -1973,7 +1973,7 @@ If you decide to delete the files, they will be unavailable to you, unless you a
     <message>
         <location filename="../src/gui/generalsettings.ui" line="75"/>
         <source>Use &amp;Monochrome Icons</source>
-        <translation type="unfinished"/>
+        <translation>Folosește pictograme &amp;Monochrome </translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="82"/>
@@ -1983,12 +1983,12 @@ If you decide to delete the files, they will be unavailable to you, unless you a
     <message>
         <location filename="../src/gui/generalsettings.ui" line="89"/>
         <source>Show Server &amp;Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Arată notificările serverului</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="99"/>
         <source>Updates</source>
-        <translation type="unfinished"/>
+        <translation>Actualizări</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="107"/>
@@ -4039,7 +4039,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Niciun rezultat pentru &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="337"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="339"/>
         <source>No results for &quot;%1&quot;</source>
         <translation type="unfinished"/>
     </message>
