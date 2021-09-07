@@ -684,6 +684,7 @@ void OwncloudSetupWizard::slotAssistantFinished(int result)
     }
 
     // notify others.
+    _ocWizard->done(QWizard::Accepted);
     emit ownCloudWizardDone(result);
 }
 
