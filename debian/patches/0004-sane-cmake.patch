@@ -5,7 +5,7 @@ Last-Update: 2019-11-17
 
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -61,29 +109,12 @@ include(GNUInstallDirs)
+@@ -72,29 +72,12 @@
  include(DefineInstallationPaths)
  include(GenerateExportHeader)
  
@@ -33,9 +33,9 @@ Last-Update: 2019-11-17
 -message(STATUS "GIT_SHA1 ${GIT_SHA1}")
 -
  set(SYSCONFDIR ${SYSCONF_INSTALL_DIR})
- set(DATADIR ${DATA_INSTALL_DIR})
- if(WIN32)
-@@ -195,7 +226,47 @@ if (NOT DEFINED APPLICATION_ICON_NAME)
+ set(SHAREDIR ${CMAKE_INSTALL_DATADIR})
+ 
+@@ -203,7 +186,47 @@
      set(APPLICATION_ICON_NAME ${APPLICATION_SHORTNAME})
  endif()
  
