@@ -36,8 +36,16 @@
 #include <QSet>
 #include <QNetworkProxy>
 
-static const char versionC[] = "version";
-static const int maxFoldersVersion = 1;
+namespace {
+const char versionC[] = "version";
+const int maxFoldersVersion = 1;
+
+int numberOfSyncJournals(const QString &path)
+{
+    return QDir(path).entryList({ QStringLiteral(".sync_*.db"), QStringLiteral("._sync_*.db") }, QDir::Hidden | QDir::Files).size();
+}
+
+}
 
 namespace OCC {
 Q_LOGGING_CATEGORY(lcFolderMan, "gui.folder.manager", QtInfoMsg)
@@ -1331,7 +1339,7 @@ static QString checkPathValidityRecursive(const QString &path)
     Utility::NtfsPermissionLookupRAII ntfs_perm;
 #endif
     const QFileInfo selFile(path);
-    if (!QDir(path).entryList({ QStringLiteral(".sync_*.db"), QStringLiteral("._sync_*.db") }, QDir::Hidden | QDir::Files).isEmpty()) {
+    if (numberOfSyncJournals(selFile.filePath()) != 0) {
         return FolderMan::tr("The folder %1 is used in a folder sync connection!").arg(QDir::toNativeSeparators(selFile.filePath()));
     }
 
@@ -1474,5 +1482,20 @@ void FolderMan::restartApplication()
     }
 }
 
+Result<void, QString> FolderMan::unsupportedConfiguration(const QString &path) const
+{
+    if (numberOfSyncJournals(path) > 1) {
+        return tr("Multiple accounts are sharing the folder %1.\n"
+                  "This configuration is know to lead to dataloss and is no longer supported.\n"
+                  "Please consider removing this folder from the account and adding it again.")
+            .arg(path);
+    }
+    return {};
+}
+
+bool FolderMan::checkVfsAvailability(const QString &path) const
+{
+    return unsupportedConfiguration(path) && Vfs::checkAvailability(path);
+}
 
 } // namespace OCC

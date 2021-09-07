@@ -102,3 +102,4 @@ sharingDialog_Close_QPushButton = {"text": "Close", "type": "QPushButton", "unna
 stack_Enable_experimental_placeholder_mode_QPushButton = {"container": settings_stack_QStackedWidget, "text": "Enable experimental placeholder mode", "type": "QPushButton", "unnamed": 1, "visible": 1}
 disable_virtual_file_support_QMessageBox = {"type": "QMessageBox", "unnamed": 1, "visible": 1, "windowTitle": "Disable virtual file support?"}
 disable_virtual_file_support_Disable_support_QPushButton = {"text": "Disable support", "type": "QPushButton", "unnamed": 1, "visible": 1, "window": disable_virtual_file_support_QMessageBox}
+error_QMessageBox = {"type": "QMessageBox", "unnamed": 1, "visible": 1, "windowTitle": "Error"}

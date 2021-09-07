@@ -239,6 +239,11 @@ public:
     void setDirtyProxy();
     void setDirtyNetworkLimits();
 
+    /** Whether or not vfs is supported in the location. */
+    bool checkVfsAvailability(const QString &path) const;
+
+    /** If the folder configuration is no longer supported this will return an error string */
+    Result<void, QString> unsupportedConfiguration(const QString &path) const;
 signals:
     /**
       * signal to indicate a folder has changed its sync state.
