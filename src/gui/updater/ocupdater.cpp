@@ -107,7 +107,7 @@ bool OCUpdater::performUpdate()
         const auto messageBoxStartInstaller = new QMessageBox(QMessageBox::Information,
             tr("New %1 update ready").arg(Theme::instance()->appNameGUI()),
             tr("A new update for %1 is about to be installed. The updater may ask "
-               "for additional privileges during the process.")
+               "for additional privileges during the process. Your computer may reboot to complete the installation.")
                 .arg(Theme::instance()->appNameGUI()),
             QMessageBox::Ok,
             nullptr);
@@ -214,7 +214,7 @@ void OCUpdater::slotStartInstaller()
         };
 
         QString msiLogFile = cfg.configPath() + "msi.log";
-        QString command = QString("&{msiexec /norestart /passive /i '%1' /L*V '%2'| Out-Null ; &'%3'}")
+        QString command = QString("&{msiexec /promptrestart /passive /i '%1' /L*V '%2'| Out-Null ; &'%3'}")
              .arg(preparePathForPowershell(updateFile))
              .arg(preparePathForPowershell(msiLogFile))
              .arg(preparePathForPowershell(QCoreApplication::applicationFilePath()));
@@ -453,7 +453,7 @@ void NSISUpdater::showUpdateErrorDialog(const QString &targetVersion)
     ico->setPixmap(infoIcon.pixmap(iconSize));
     auto lbl = new QLabel;
     QString txt = tr("<p>A new version of the %1 Client is available but the updating process failed.</p>"
-                     "<p><b>%2</b> has been downloaded. The installed version is %3.</p>")
+                     "<p><b>%2</b> has been downloaded. The installed version is %3. If you confirm restart and upate, your computer may reboot to complete the installation.</p>")
                       .arg(Utility::escape(Theme::instance()->appNameGUI()),
                           Utility::escape(targetVersion), Utility::escape(clientVersion()));
 
