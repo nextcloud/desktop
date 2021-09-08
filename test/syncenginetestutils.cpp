@@ -1061,6 +1061,9 @@ OCC::SyncFileItemPtr ItemCompletedSpy::findItem(const QString &path) const
 
 OCC::SyncFileItemPtr ItemCompletedSpy::findItemWithExpectedRank(const QString &path, int rank) const
 {
+    Q_ASSERT(size() > rank);
+    Q_ASSERT(!(*this)[rank].isEmpty());
+
     auto item = (*this)[rank][0].value<OCC::SyncFileItemPtr>();
     if (item->destination() == path) {
         return item;
