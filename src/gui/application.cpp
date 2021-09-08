@@ -59,6 +59,7 @@
 #include <QMessageBox>
 #include <QDesktopServices>
 #include <QGuiApplication>
+#include <QQuickStyle>
 
 class QSocket;
 
@@ -183,6 +184,13 @@ Application::Application(int &argc, char **argv)
     , _debugMode(false)
     , _backgroundMode(false)
 {
+    // Work around a bug in KDE's qqc2-desktop-style which breaks
+    // buttons with icons not based on a name, by forcing a style name
+    // the platformtheme plugin won't try to force qqc2-desktops-style
+    // anymore.
+    // Can be removed once the bug in qqc2-desktop-style is gone.
+    QQuickStyle::setStyle("Default");
+
     _startedAt.start();
 
     qsrand(std::random_device()());
