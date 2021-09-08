@@ -92,7 +92,7 @@ void Logger::doLog(QtMsgType type, const QMessageLogContext &ctx, const QString 
         _crashLogIndex = (_crashLogIndex + 1) % CrashLogSize;
         _crashLog[_crashLogIndex] = msg;
         if (_logstream) {
-            (*_logstream) << msg << endl;
+            (*_logstream) << msg << Qt::endl;
             if (_doFileFlush)
                 _logstream->flush();
         }

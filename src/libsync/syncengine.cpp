@@ -690,8 +690,12 @@ void SyncEngine::slotDiscoveryFinished()
             const QString script = qEnvironmentVariable("OWNCLOUD_POST_UPDATE_SCRIPT");
 
             qCDebug(lcEngine) << "Post Update Script: " << script;
-            QProcess::execute(script);
-    #else
+            auto scriptArgs = script.split(QRegExp("\\s+"), Qt::SkipEmptyParts);
+            if (scriptArgs.size() > 0) {
+                const auto scriptExecutable = scriptArgs.takeFirst();
+                QProcess::execute(scriptExecutable, scriptArgs);
+            }
+#else
             qCWarning(lcEngine) << "**** Attention: POST_UPDATE_SCRIPT installed, but not executed because compiled with NDEBUG";
     #endif
         }

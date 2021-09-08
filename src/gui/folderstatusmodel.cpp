@@ -907,7 +907,7 @@ void FolderStatusModel::slotApplySelectiveSync()
 
         // The folders that were undecided or blacklisted and that are now checked should go on the white list.
         // The user confirmed them already just now.
-        QStringList toAddToWhiteList = ((oldBlackListSet + folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, &ok).toSet()) - blackListSet).toList();
+        QStringList toAddToWhiteList = ((oldBlackListSet + folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, &ok).toSet()) - blackListSet).values();
 
         if (!toAddToWhiteList.isEmpty()) {
             auto whiteList = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList, &ok);

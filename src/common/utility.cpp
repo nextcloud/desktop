@@ -37,6 +37,7 @@
 #include <QStandardPaths>
 #include <QCollator>
 #include <QSysInfo>
+#include <qrandom.h>
 
 
 #ifdef Q_OS_UNIX
@@ -64,14 +65,13 @@ Q_LOGGING_CATEGORY(lcUtility, "nextcloud.sync.utility", QtInfoMsg)
 bool Utility::writeRandomFile(const QString &fname, int size)
 {
     int maxSize = 10 * 10 * 1024;
-    qsrand(QDateTime::currentMSecsSinceEpoch());
 
     if (size == -1)
-        size = qrand() % maxSize;
+        size = rand() % maxSize;
 
     QString randString;
     for (int i = 0; i < size; i++) {
-        int r = qrand() % 128;
+        int r = rand() % 128;
         randString.append(QChar(r));
     }
 
@@ -257,6 +257,11 @@ QString Utility::compactFormatDouble(double value, int prec, const QString &unit
 QString Utility::escape(const QString &in)
 {
     return in.toHtmlEscaped();
+}
+
+int Utility::rand()
+{
+    return QRandomGenerator::global()->bounded(0, RAND_MAX);
 }
 
 void Utility::sleep(int sec)

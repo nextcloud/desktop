@@ -19,10 +19,9 @@ private:
     QString _root;
 
 private slots:
-    void initTestCase() {
-        qsrand(QTime::currentTime().msec());
-
-        _root = QDir::tempPath() + "/" + "test_" + QString::number(qrand());
+    void initTestCase()
+    {
+        _root = QDir::tempPath() + "/" + "test_" + QString::number(OCC::Utility::rand());
         qDebug() << "creating test directory tree in " << _root;
         QDir rootDir(_root);
 
@@ -31,7 +30,6 @@ private slots:
         rootDir.mkpath(_root + "/a1/b2/c1");
         rootDir.mkpath(_root + "/a1/b3/c3");
         rootDir.mkpath(_root + "/a2/b3/c3");
-
     }
 
     // Test the recursive path listing function findFoldersBelow

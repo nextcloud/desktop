@@ -103,7 +103,7 @@ void showInFileManager(const QString &localPath)
                 return;
 #endif
 
-        QString explorer = "explorer.exe "; // FIXME: we trust it's in PATH
+        const QString explorer = "explorer.exe "; // FIXME: we trust it's in PATH
         QFileInfo fi(localPath);
 
         // canonicalFilePath returns empty if the file does not exist
@@ -123,7 +123,7 @@ void showInFileManager(const QString &localPath)
             // only around the path. Use setNativeArguments to bypass this logic.
             p.setNativeArguments(nativeArgs);
 #endif
-            p.start(explorer);
+            p.start(explorer, QStringList {});
             p.waitForFinished(5000);
         }
     } else if (Utility::isMac()) {

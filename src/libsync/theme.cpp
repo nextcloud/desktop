@@ -705,17 +705,17 @@ QString Theme::versionSwitchOutput() const
     QTextStream stream(&helpText);
     stream << appName()
            << QLatin1String(" version ")
-           << version() << endl;
+           << version() << Qt::endl;
 #ifdef GIT_SHA1
-    stream << "Git revision " << GIT_SHA1 << endl;
+    stream << "Git revision " << GIT_SHA1 << Qt::endl;
 #endif
-    stream << "Using Qt " << qVersion() << ", built against Qt " << QT_VERSION_STR << endl;
+    stream << "Using Qt " << qVersion() << ", built against Qt " << QT_VERSION_STR << Qt::endl;
 
     if(!QGuiApplication::platformName().isEmpty())
-        stream << "Using Qt platform plugin '" << QGuiApplication::platformName() << "'" << endl;
+        stream << "Using Qt platform plugin '" << QGuiApplication::platformName() << "'" << Qt::endl;
 
-    stream << "Using '" << QSslSocket::sslLibraryVersionString() << "'" << endl;
-    stream << "Running on " << Utility::platformName() << ", " << QSysInfo::currentCpuArchitecture() << endl;
+    stream << "Using '" << QSslSocket::sslLibraryVersionString() << "'" << Qt::endl;
+    stream << "Running on " << Utility::platformName() << ", " << QSysInfo::currentCpuArchitecture() << Qt::endl;
     return helpText;
 }
 

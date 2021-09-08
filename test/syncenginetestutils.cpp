@@ -20,7 +20,7 @@ PathComponents::PathComponents(const char *path)
 }
 
 PathComponents::PathComponents(const QString &path)
-    : QStringList { path.split(QLatin1Char('/'), QString::SkipEmptyParts) }
+    : QStringList { path.split(QLatin1Char('/'), Qt::SkipEmptyParts) }
 {
 }
 
@@ -796,7 +796,7 @@ void FakeHangingReply::abort()
     // Follow more or less the implementation of QNetworkReplyImpl::abort
     close();
     setError(OperationCanceledError, tr("Operation canceled"));
-    emit error(OperationCanceledError);
+    emit errorOccurred(OperationCanceledError);
     setFinished(true);
     emit finished();
 }
