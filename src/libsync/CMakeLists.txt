@@ -40,6 +40,8 @@ set(libsync_SRCS
     propagateupload.cpp
     propagateuploadv1.cpp
     propagateuploadng.cpp
+    bulkpropagatorjob.cpp
+    putmultifilejob.cpp
     propagateremotedelete.cpp
     propagateremotedeleteencrypted.cpp
     propagateremotedeleteencryptedrootfolder.cpp

@@ -18,8 +18,32 @@
 #include "owncloudpropagator.h"
 #include "syncfileitem.h"
 #include "networkjobs.h"
+#include "syncengine.h"
 #include <QLoggingCategory>
 #include <QNetworkReply>
+
+namespace {
+
+/**
+ * We do not want to upload files that are currently being modified.
+ * To avoid that, we don't upload files that have a modification time
+ * that is too close to the current time.
+ *
+ * This interacts with the msBetweenRequestAndSync delay in the folder
+ * manager. If that delay between file-change notification and sync
+ * has passed, we should accept the file for upload here.
+ */
+inline bool fileIsStillChanging(const OCC::SyncFileItem &item)
+{
+    const auto modtime = OCC::Utility::qDateTimeFromTime_t(item._modtime);
+    const qint64 msSinceMod = modtime.msecsTo(QDateTime::currentDateTimeUtc());
+
+    return std::chrono::milliseconds(msSinceMod) < OCC::SyncEngine::minimumFileAgeForUpload
+        // if the mtime is too much in the future we *do* upload the file
+        && msSinceMod > -10000;
+}
+
+}
 
 namespace OCC {
 

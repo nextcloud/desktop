@@ -138,6 +138,9 @@ protected:
         QNetworkRequest req = QNetworkRequest(),
         QIODevice *requestBody = nullptr);
 
+    QNetworkReply *sendRequest(const QByteArray &verb, const QUrl &url,
+        QNetworkRequest req, QHttpMultiPart *requestBody);
+
     /** Makes this job drive a pre-made QNetworkReply
      *
      * This reply cannot have a QIODevice request body because we can't get

@@ -154,6 +154,9 @@ public:
     QNetworkReply *sendRawRequest(const QByteArray &verb,
         const QUrl &url, QNetworkRequest req, const QByteArray &data);
 
+    QNetworkReply *sendRawRequest(const QByteArray &verb,
+        const QUrl &url, QNetworkRequest req, QHttpMultiPart *data);
+
     /** Create and start network job for a simple one-off request.
      *
      * More complicated requests typically create their own job types.

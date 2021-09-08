@@ -711,7 +711,7 @@ void SyncEngine::slotDiscoveryFinished()
         _journal->commit(QStringLiteral("post treewalk"));
 
         _propagator = QSharedPointer<OwncloudPropagator>(
-            new OwncloudPropagator(_account, _localPath, _remotePath, _journal));
+            new OwncloudPropagator(_account, _localPath, _remotePath, _journal, _bulkUploadBlackList));
         _propagator->setSyncOptions(_syncOptions);
         connect(_propagator.data(), &OwncloudPropagator::itemCompleted,
             this, &SyncEngine::slotItemCompleted);

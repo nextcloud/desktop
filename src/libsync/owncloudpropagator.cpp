@@ -21,6 +21,7 @@
 #include "propagateremotedelete.h"
 #include "propagateremotemove.h"
 #include "propagateremotemkdir.h"
+#include "bulkpropagatorjob.h"
 #include "propagatorjobs.h"
 #include "filesystem.h"
 #include "common/utility.h"
@@ -173,7 +174,7 @@ static SyncJournalErrorBlacklistRecord createBlacklistEntry(
  *
  * May adjust the status or item._errorString.
  */
-static void blacklistUpdate(SyncJournalDb *journal, SyncFileItem &item)
+void blacklistUpdate(SyncJournalDb *journal, SyncFileItem &item)
 {
     SyncJournalErrorBlacklistRecord oldEntry = journal->errorBlacklistEntry(item._file);
 
@@ -395,6 +396,8 @@ std::unique_ptr<PropagateUploadFileCommon> OwncloudPropagator::createUploadJob(S
     }
 
     job->setDeleteExisting(deleteExisting);
+
+    removeFromBulkUploadBlackList(item->_file);
 
     return job;
 }
@@ -861,7 +864,7 @@ Result<Vfs::ConvertToPlaceholderResult, QString> OwncloudPropagator::staticUpdat
 
 bool OwncloudPropagator::isDelayedUploadItem(const SyncFileItemPtr &item) const
 {
-    return account()->capabilities().bulkUpload() && !_scheduleDelayedTasks && !item->_isEncrypted && _syncOptions._minChunkSize > item->_size;
+    return account()->capabilities().bulkUpload() && !_scheduleDelayedTasks && !item->_isEncrypted && _syncOptions._minChunkSize > item->_size && !isInBulkUploadBlackList(item->_file);
 }
 
 void OwncloudPropagator::setScheduleDelayedTasks(bool active)
@@ -872,6 +875,23 @@ void OwncloudPropagator::setScheduleDelayedTasks(bool active)
 void OwncloudPropagator::clearDelayedTasks()
 {
     _delayedTasks.clear();
+}
+
+void OwncloudPropagator::addToBulkUploadBlackList(const QString &file)
+{
+    qCDebug(lcPropagator) << "black list for bulk upload" << file;
+    _bulkUploadBlackList.insert(file);
+}
+
+void OwncloudPropagator::removeFromBulkUploadBlackList(const QString &file)
+{
+    qCDebug(lcPropagator) << "black list for bulk upload" << file;
+    _bulkUploadBlackList.remove(file);
+}
+
+bool OwncloudPropagator::isInBulkUploadBlackList(const QString &file) const
+{
+    return _bulkUploadBlackList.contains(file);
 }
 
 // ================================================================================
@@ -1304,13 +1324,4 @@ QString OwncloudPropagator::remotePath() const
     return _remoteFolder;
 }
 
-BulkPropagatorJob::BulkPropagatorJob(OwncloudPropagator *propagator, const QVector<SyncFileItemPtr> &items)
-    : PropagatorCompositeJob(propagator)
-    , _items(items)
-{
-    for(const auto &oneItemJob : _items) {
-        appendTask(oneItemJob);
-    }
-    _items.clear();
-}
 }

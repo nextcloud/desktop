@@ -241,6 +241,8 @@ private:
     QScopedPointer<DiscoveryPhase> _discoveryPhase;
     QSharedPointer<OwncloudPropagator> _propagator;
 
+    QSet<QString> _bulkUploadBlackList;
+
     // List of all files with conflicts
     QSet<QString> _seenConflictFiles;
 

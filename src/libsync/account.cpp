@@ -47,6 +47,7 @@
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QLoggingCategory>
+#include <QHttpMultiPart>
 
 #include <qsslconfiguration.h>
 #include <qt5keychain/keychain.h>
@@ -356,6 +357,18 @@ QNetworkReply *Account::sendRawRequest(const QByteArray &verb, const QUrl &url, 
         return _am->put(req, data);
     } else if (verb == "DELETE" && data.isEmpty()) {
         return _am->deleteResource(req);
+    }
+    return _am->sendCustomRequest(req, verb, data);
+}
+
+QNetworkReply *Account::sendRawRequest(const QByteArray &verb, const QUrl &url, QNetworkRequest req, QHttpMultiPart *data)
+{
+    req.setUrl(url);
+    req.setSslConfiguration(this->getOrCreateSslConfig());
+    if (verb == "PUT") {
+        return _am->put(req, data);
+    } else if (verb == "POST") {
+        return _am->post(req, data);
     }
     return _am->sendCustomRequest(req, verb, data);
 }
