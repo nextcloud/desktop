@@ -1267,7 +1267,9 @@ Nëse ky qe aksident dhe vendosni t’i mbani kartelat tuaja, ato do të rinjëk
         <source>Multiple accounts are sharing the folder %1.
 This configuration is know to lead to dataloss and is no longer supported.
 Please consider removing this folder from the account and adding it again.</source>
-        <translation type="unfinished"/>
+        <translation>Dosja %1 është e përbashkët për disa llogari.
+Ky formësim dihet që shpie në humbje të dhënash dhe nuk mbulohet më.
+Ju lutemi, shihni mundësinë e heqjes së kësaj dosjeje nga llogaria dhe të shtimit të saj sërish.</translation>
     </message>
 </context>
 <context>
