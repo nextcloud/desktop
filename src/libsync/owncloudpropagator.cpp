@@ -1106,15 +1106,18 @@ qint64 PropagateRootDirectory::committedDiskSpace() const
 
 bool PropagateRootDirectory::scheduleSelfOrChild()
 {
-    if (_state == Finished)
+    if (_state == Finished) {
         return false;
+    }
 
-    if (PropagateDirectory::scheduleSelfOrChild())
+    if (PropagateDirectory::scheduleSelfOrChild()) {
         return true;
+    }
 
     // Important: Finish _subJobs before scheduling any deletes.
-    if (_subJobs._state != Finished)
+    if (_subJobs._state != Finished) {
         return false;
+    }
 
     return _dirDeletionJobs.scheduleSelfOrChild();
 }
