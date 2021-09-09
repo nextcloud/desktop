@@ -23,7 +23,7 @@ class ReadPasswordJob;
 
 namespace OCC {
 
-QString baseUrl();
+QString e2eeBaseUrl();
 
 namespace EncryptionHelper {
     QByteArray generateRandomFilename();

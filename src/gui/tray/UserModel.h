@@ -12,6 +12,8 @@
 #include "accountmanager.h"
 #include "folderman.h"
 #include "NotificationCache.h"
+#include "userstatusselectormodel.h"
+#include "userstatusconnector.h"
 #include <chrono>
 
 namespace OCC {
@@ -55,7 +57,7 @@ public:
     void removeAccount() const;
     QString avatarUrl() const;
     bool isDesktopNotificationsAllowed() const;
-    UserStatus::Status status() const;
+    UserStatus::OnlineStatus status() const;
     QString statusMessage() const;
     QUrl statusIcon() const;
     QString statusEmoji() const;
@@ -157,6 +159,8 @@ public:
     Q_INVOKABLE void login(const int &id);
     Q_INVOKABLE void logout(const int &id);
     Q_INVOKABLE void removeAccount(const int &id);
+
+    Q_INVOKABLE std::shared_ptr<OCC::UserStatusConnector> userStatusConnector(int id);
 
     ActivityListModel *currentActivityModel();
 

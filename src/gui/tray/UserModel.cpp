@@ -4,6 +4,7 @@
 #include "accountmanager.h"
 #include "owncloudgui.h"
 #include <pushnotifications.h>
+#include "userstatusselectormodel.h"
 #include "syncengine.h"
 #include "ocsjob.h"
 #include "configfile.h"
@@ -11,7 +12,9 @@
 #include "logger.h"
 #include "guiutility.h"
 #include "syncfileitem.h"
+#include "tray/ActivityListModel.h"
 #include "tray/NotificationCache.h"
+#include "userstatusconnector.h"
 
 #include <QDesktopServices>
 #include <QIcon>
@@ -25,8 +28,8 @@
 #define NOTIFICATION_REQUEST_FREE_PERIOD 15000
 
 namespace {
-    constexpr qint64 expiredActivitiesCheckIntervalMsecs = 1000 * 60;
-    constexpr qint64 activityDefaultExpirationTimeMsecs = 1000 * 60 * 10;
+constexpr qint64 expiredActivitiesCheckIntervalMsecs = 1000 * 60;
+constexpr qint64 activityDefaultExpirationTimeMsecs = 1000 * 60 * 10;
 }
 
 namespace OCC {
@@ -65,7 +68,7 @@ User::User(AccountStatePtr &account, const bool &isCurrent, QObject *parent)
     connect(this, &User::guiLog, Logger::instance(), &Logger::guiLog);
 
     connect(_account->account().data(), &Account::accountChangedAvatar, this, &User::avatarChanged);
-    connect(_account.data(), &AccountState::statusChanged, this, &User::statusChanged);
+    connect(_account->account().data(), &Account::userStatusChanged, this, &User::statusChanged);
     connect(_account.data(), &AccountState::desktopNotificationsAllowedChanged, this, &User::desktopNotificationsAllowedChanged);
 
     connect(_activityModel, &ActivityListModel::sendNotificationRequest, this, &User::slotSendNotificationRequest);
@@ -236,10 +239,10 @@ void User::slotRefreshActivities()
     _activityModel->slotRefreshActivity();
 }
 
-void User::slotRefreshUserStatus() 
+void User::slotRefreshUserStatus()
 {
     if (_account.data() && _account.data()->isConnected()) {
-        _account.data()->fetchUserStatus();
+        _account->account()->userStatusConnector()->fetchUserStatus();
     }
 }
 
@@ -621,29 +624,29 @@ QString User::server(bool shortened) const
     return serverUrl;
 }
 
-UserStatus::Status User::status() const
+UserStatus::OnlineStatus User::status() const
 {
-    return _account->status();
+    return _account->account()->userStatusConnector()->userStatus().state();
 }
 
 QString User::statusMessage() const
 {
-    return _account->statusMessage();
+    return _account->account()->userStatusConnector()->userStatus().message();
 }
 
 QUrl User::statusIcon() const
 {
-    return _account->statusIcon();
+    return _account->account()->userStatusConnector()->userStatus().stateIcon();
 }
 
 QString User::statusEmoji() const
 {
-    return _account->statusEmoji();
+    return _account->account()->userStatusConnector()->userStatus().icon();
 }
 
 bool User::serverHasUserStatus() const
 {
-    return _account->account()->capabilities().userStatus();
+    return _account->account()->capabilities().userStatusNotification();
 }
 
 QImage User::avatar() const
@@ -919,6 +922,15 @@ Q_INVOKABLE void UserModel::removeAccount(const int &id)
     beginRemoveRows(QModelIndex(), id, id);
     _users.removeAt(id);
     endRemoveRows();
+}
+
+std::shared_ptr<OCC::UserStatusConnector> UserModel::userStatusConnector(int id)
+{
+    if (id < 0 || id >= _users.size()) {
+        return nullptr;
+    }
+
+    return _users[id]->account()->userStatusConnector();
 }
 
 int UserModel::rowCount(const QModelIndex &parent) const

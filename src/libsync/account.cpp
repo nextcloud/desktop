@@ -13,6 +13,8 @@
  */
 
 #include "account.h"
+#include "accountfwd.h"
+#include "clientsideencryptionjobs.h"
 #include "cookiejar.h"
 #include "networkjobs.h"
 #include "configfile.h"
@@ -27,6 +29,7 @@
 
 #include "common/asserts.h"
 #include "clientsideencryption.h"
+#include "ocsuserstatusconnector.h"
 
 #include <QLoggingCategory>
 #include <QNetworkReply>
@@ -43,6 +46,7 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonArray>
+#include <QLoggingCategory>
 
 #include <qsslconfiguration.h>
 #include <qt5keychain/keychain.h>
@@ -93,6 +97,7 @@ QString Account::davPath() const
 void Account::setSharedThis(AccountPtr sharedThis)
 {
     _sharedThis = sharedThis.toWeakRef();
+    setupUserStatusConnector();
 }
 
 QString Account::davPathBase()
@@ -337,6 +342,24 @@ QNetworkReply *Account::sendRawRequest(const QByteArray &verb, const QUrl &url, 
     return _am->sendCustomRequest(req, verb, data);
 }
 
+QNetworkReply *Account::sendRawRequest(const QByteArray &verb, const QUrl &url, QNetworkRequest req, const QByteArray &data)
+{
+    req.setUrl(url);
+    req.setSslConfiguration(this->getOrCreateSslConfig());
+    if (verb == "HEAD" && data.isEmpty()) {
+        return _am->head(req);
+    } else if (verb == "GET" && data.isEmpty()) {
+        return _am->get(req);
+    } else if (verb == "POST") {
+        return _am->post(req, data);
+    } else if (verb == "PUT") {
+        return _am->put(req, data);
+    } else if (verb == "DELETE" && data.isEmpty()) {
+        return _am->deleteResource(req);
+    }
+    return _am->sendCustomRequest(req, verb, data);
+}
+
 SimpleNetworkJob *Account::sendRequest(const QByteArray &verb, const QUrl &url, QNetworkRequest req, QIODevice *data)
 {
     auto job = new SimpleNetworkJob(sharedFromThis());
@@ -544,7 +567,16 @@ void Account::setCapabilities(const QVariantMap &caps)
 {
     _capabilities = Capabilities(caps);
 
+    setupUserStatusConnector();
     trySetupPushNotifications();
+}
+
+void Account::setupUserStatusConnector()
+{
+    _userStatusConnector = std::make_shared<OcsUserStatusConnector>(sharedFromThis());
+    connect(_userStatusConnector.get(), &UserStatusConnector::userStatusFetched, this, [this](const UserStatus &) {
+        emit userStatusChanged();
+    });
 }
 
 QString Account::serverVersion() const
@@ -742,6 +774,11 @@ void Account::slotDirectEditingRecieved(const QJsonDocument &json)
 PushNotifications *Account::pushNotifications() const
 {
     return _pushNotifications;
+}
+
+std::shared_ptr<UserStatusConnector> Account::userStatusConnector() const
+{
+    return _userStatusConnector;
 }
 
 } // namespace OCC

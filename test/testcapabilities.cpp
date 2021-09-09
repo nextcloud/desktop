@@ -138,6 +138,82 @@ private slots:
 
         QCOMPARE(capabilities.pushNotificationsWebSocketUrl(), websocketUrl);
     }
+
+    void testUserStatus_userStatusAvailable_returnTrue()
+    {
+        QVariantMap userStatusMap;
+        userStatusMap["enabled"] = true;
+
+        QVariantMap capabilitiesMap;
+        capabilitiesMap["user_status"] = userStatusMap;
+
+        const OCC::Capabilities capabilities(capabilitiesMap);
+
+        QVERIFY(capabilities.userStatus());
+    }
+
+    void testUserStatus_userStatusNotAvailable_returnFalse()
+    {
+        QVariantMap userStatusMap;
+        userStatusMap["enabled"] = false;
+
+        QVariantMap capabilitiesMap;
+        capabilitiesMap["user_status"] = userStatusMap;
+
+        const OCC::Capabilities capabilities(capabilitiesMap);
+
+        QVERIFY(!capabilities.userStatus());
+    }
+
+    void testUserStatus_userStatusNotInCapabilites_returnFalse()
+    {
+        QVariantMap capabilitiesMap;
+
+        const OCC::Capabilities capabilities(capabilitiesMap);
+
+        QVERIFY(!capabilities.userStatus());
+    }
+
+    void testUserStatusSupportsEmoji_supportsEmojiAvailable_returnTrue()
+    {
+        QVariantMap userStatusMap;
+        userStatusMap["enabled"] = true;
+        userStatusMap["supports_emoji"] = true;
+
+        QVariantMap capabilitiesMap;
+        capabilitiesMap["user_status"] = userStatusMap;
+
+        const OCC::Capabilities capabilities(capabilitiesMap);
+
+        QVERIFY(capabilities.userStatus());
+    }
+
+    void testUserStatusSupportsEmoji_supportsEmojiNotAvailable_returnFalse()
+    {
+        QVariantMap userStatusMap;
+        userStatusMap["enabled"] = true;
+        userStatusMap["supports_emoji"] = false;
+
+        QVariantMap capabilitiesMap;
+        capabilitiesMap["user_status"] = userStatusMap;
+
+        const OCC::Capabilities capabilities(capabilitiesMap);
+
+        QVERIFY(!capabilities.userStatusSupportsEmoji());
+    }
+
+    void testUserStatusSupportsEmoji_supportsEmojiNotInCapabilites_returnFalse()
+    {
+        QVariantMap userStatusMap;
+        userStatusMap["enabled"] = true;
+
+        QVariantMap capabilitiesMap;
+        capabilitiesMap["user_status"] = userStatusMap;
+
+        const OCC::Capabilities capabilities(capabilitiesMap);
+
+        QVERIFY(!capabilities.userStatusSupportsEmoji());
+    }
 };
 
 QTEST_GUILESS_MAIN(TestCapabilities)

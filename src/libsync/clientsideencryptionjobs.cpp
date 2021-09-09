@@ -27,7 +27,7 @@ namespace OCC {
 GetMetadataApiJob::GetMetadataApiJob(const AccountPtr& account,
                                     const QByteArray& fileId,
                                     QObject* parent)
-: AbstractNetworkJob(account, baseUrl() + QStringLiteral("meta-data/") + fileId, parent), _fileId(fileId)
+: AbstractNetworkJob(account, e2eeBaseUrl() + QStringLiteral("meta-data/") + fileId, parent), _fileId(fileId)
 {
 }
 
@@ -63,7 +63,7 @@ StoreMetaDataApiJob::StoreMetaDataApiJob(const AccountPtr& account,
                                                  const QByteArray& fileId,
                                                  const QByteArray& b64Metadata,
                                                  QObject* parent)
-: AbstractNetworkJob(account, baseUrl() + QStringLiteral("meta-data/") + fileId, parent), _fileId(fileId), _b64Metadata(b64Metadata)
+: AbstractNetworkJob(account, e2eeBaseUrl() + QStringLiteral("meta-data/") + fileId, parent), _fileId(fileId), _b64Metadata(b64Metadata)
 {
 }
 
@@ -104,8 +104,8 @@ UpdateMetadataApiJob::UpdateMetadataApiJob(const AccountPtr& account,
                                                  const QByteArray& b64Metadata,
                                                  const QByteArray& token,
                                                  QObject* parent)
-: AbstractNetworkJob(account, baseUrl() + QStringLiteral("meta-data/") + fileId, parent),
-_fileId(fileId),
+: AbstractNetworkJob(account, e2eeBaseUrl() + QStringLiteral("meta-data/") + fileId, parent)
+, _fileId(fileId),
 _b64Metadata(b64Metadata),
 _token(token)
 {
@@ -154,7 +154,7 @@ UnlockEncryptFolderApiJob::UnlockEncryptFolderApiJob(const AccountPtr& account,
                                                  const QByteArray& fileId,
                                                  const QByteArray& token,
                                                  QObject* parent)
-: AbstractNetworkJob(account, baseUrl() + QStringLiteral("lock/") + fileId, parent), _fileId(fileId), _token(token)
+: AbstractNetworkJob(account, e2eeBaseUrl() + QStringLiteral("lock/") + fileId, parent), _fileId(fileId), _token(token)
 {
 }
 
@@ -185,11 +185,10 @@ bool UnlockEncryptFolderApiJob::finished()
 }
 
 
-
 DeleteMetadataApiJob::DeleteMetadataApiJob(const AccountPtr& account,
                                                   const QByteArray& fileId,
                                                  QObject* parent)
-: AbstractNetworkJob(account, baseUrl() + QStringLiteral("meta-data/") + fileId, parent), _fileId(fileId)
+: AbstractNetworkJob(account, e2eeBaseUrl() + QStringLiteral("meta-data/") + fileId, parent), _fileId(fileId)
 {
 }
 
@@ -219,7 +218,7 @@ bool DeleteMetadataApiJob::finished()
 }
 
 LockEncryptFolderApiJob::LockEncryptFolderApiJob(const AccountPtr& account, const QByteArray& fileId, QObject* parent)
-: AbstractNetworkJob(account, baseUrl() + QStringLiteral("lock/") + fileId, parent), _fileId(fileId)
+: AbstractNetworkJob(account, e2eeBaseUrl() + QStringLiteral("lock/") + fileId, parent), _fileId(fileId)
 {
 }
 
@@ -258,7 +257,7 @@ bool LockEncryptFolderApiJob::finished()
 }
 
 SetEncryptionFlagApiJob::SetEncryptionFlagApiJob(const AccountPtr& account, const QByteArray& fileId, FlagAction flagAction, QObject* parent)
-: AbstractNetworkJob(account, baseUrl() + QStringLiteral("encrypted/") + fileId, parent), _fileId(fileId), _flagAction(flagAction)
+: AbstractNetworkJob(account, e2eeBaseUrl() + QStringLiteral("encrypted/") + fileId, parent), _fileId(fileId), _flagAction(flagAction)
 {
 }
 

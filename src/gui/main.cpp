@@ -16,6 +16,7 @@
 
 #include <cmath>
 #include <csignal>
+#include <qqml.h>
 
 #ifdef Q_OS_UNIX
 #include <sys/time.h>
@@ -26,6 +27,8 @@
 #include "theme.h"
 #include "common/utility.h"
 #include "cocoainitializer.h"
+#include "userstatusselectormodel.h"
+#include "emojimodel.h"
 
 #if defined(BUILD_UPDATER)
 #include "updater/updater.h"
@@ -53,6 +56,15 @@ int main(int argc, char **argv)
 {
     Q_INIT_RESOURCE(resources);
     Q_INIT_RESOURCE(theme);
+
+    qmlRegisterType<EmojiModel>("com.nextcloud.desktopclient", 1, 0, "EmojiModel");
+    qRegisterMetaTypeStreamOperators<Emoji>();
+    qmlRegisterType<UserStatusSelectorModel>("com.nextcloud.desktopclient", 1, 0,
+        "UserStatusSelectorModel");
+    qmlRegisterUncreatableType<OCC::UserStatus>("com.nextcloud.desktopclient", 1, 0, "UserStatus",
+        "Access to Status enum");
+    qRegisterMetaType<OCC::UserStatus>("UserStatus");
+
 
     // Work around a bug in KDE's qqc2-desktop-style which breaks
     // buttons with icons not based on a name, by forcing a style name

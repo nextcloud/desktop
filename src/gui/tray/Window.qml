@@ -140,6 +140,10 @@ Window {
                             }
                         }
 
+                        Loader {
+                            id: userStatusSelectorDialogLoader
+                        }
+
                         Menu {
                             id: accountMenu
 
@@ -167,7 +171,14 @@ Window {
                             Instantiator {
                                 id: userLineInstantiator
                                 model: UserModel
-                                delegate: UserLine {}
+                                delegate: UserLine {
+                                    onShowUserStatusSelectorDialog: {
+                                        userStatusSelectorDialogLoader.source = "qrc:/qml/src/gui/UserStatusSelectorDialog.qml"
+                                        userStatusSelectorDialogLoader.item.title = qsTr("Set user status")
+                                        userStatusSelectorDialogLoader.item.model.load(index)
+                                        userStatusSelectorDialogLoader.item.show()
+                                    }
+                                }
                                 onObjectAdded: accountMenu.insertItem(index, object)
                                 onObjectRemoved: accountMenu.removeItem(object)
                             }

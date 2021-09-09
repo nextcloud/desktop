@@ -21,7 +21,7 @@
 #include <QPointer>
 #include "connectionvalidator.h"
 #include "creds/abstractcredentials.h"
-#include "userstatus.h"
+
 #include <memory>
 
 class QSettings;
@@ -162,23 +162,6 @@ public:
     ///Asks for user credentials
     void handleInvalidCredentials();
 
-    /** Returns the user status (Online, Dnd, Away, Offline, Invisible)
-     *  https://gist.github.com/georgehrke/55a0412007f13be1551d1f9436a39675
-    */
-    UserStatus::Status status() const;
-
-    /** Returns the user status Message (text)
-    */
-    QString statusMessage() const;
-
-    /** Returns the user status icon url
-    */
-    QUrl statusIcon() const;
-    
-    /** Returns the user status emoji
-    */
-    QString statusEmoji() const;
-
     /** Returns the notifications status retrieved by the notificatons endpoint
      *  https://github.com/nextcloud/desktop/issues/2318#issuecomment-680698429
     */
@@ -187,10 +170,6 @@ public:
     /** Set desktop notifications status retrieved by the notificatons endpoint
     */
     void setDesktopNotificationsAllowed(bool isAllowed);
-
-    /** Fetch the user status (status, icon, message)
-    */
-    void fetchUserStatus();
 
 public slots:
     /// Triggers a ping to the server to update state and
@@ -256,7 +235,6 @@ private:
      */
     AccountAppList _apps;
 
-    UserStatus *_userStatus;
     bool _isDesktopNotificationsAllowed;
 };
 

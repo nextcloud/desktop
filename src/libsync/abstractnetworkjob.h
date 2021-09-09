@@ -128,6 +128,9 @@ protected:
         QNetworkRequest req = QNetworkRequest(),
         QIODevice *requestBody = nullptr);
 
+    QNetworkReply *sendRequest(const QByteArray &verb, const QUrl &url,
+        QNetworkRequest req, const QByteArray &requestBody);
+
     // sendRequest does not take a relative path instead of an url,
     // but the old API allowed that. We have this undefined overload
     // to help catch usage errors

@@ -139,6 +139,15 @@ QNetworkReply *AbstractNetworkJob::sendRequest(const QByteArray &verb, const QUr
     return reply;
 }
 
+QNetworkReply *AbstractNetworkJob::sendRequest(const QByteArray &verb, const QUrl &url,
+    QNetworkRequest req, const QByteArray &requestBody)
+{
+    auto reply = _account->sendRawRequest(verb, url, req, requestBody);
+    _requestBody = nullptr;
+    adoptRequest(reply);
+    return reply;
+}
+
 void AbstractNetworkJob::adoptRequest(QNetworkReply *reply)
 {
     addTimer(reply);

@@ -617,7 +617,7 @@ void SocketApi::command_EDIT(const QString &localFile, SocketListener *listener)
     params.addQueryItem("path", fileData.serverRelativePath);
     params.addQueryItem("editorId", editor->id());
     job->addQueryParams(params);
-    job->usePOST();
+    job->setVerb(JsonApiJob::Verb::Post);
 
     QObject::connect(job, &JsonApiJob::jsonReceived, [](const QJsonDocument &json){
         auto data = json.object().value("ocs").toObject().value("data").toObject();
