@@ -925,23 +925,23 @@ Ez a művelet megszakítja a jelenleg futó szinkronizálást.</translation>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="110"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Open local version&lt;/a&gt;</source>
-        <translation>&lt;a href=&quot;%1&quot;&gt; Helyi verzió megnyitása&lt;/a&gt;</translation>
+        <translation>&lt;a href=&quot;%1&quot;&gt;Helyi verzió megnyitása&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="154"/>
         <source>Server version</source>
-        <translation>Szerver verzió</translation>
+        <translation>Kiszolgáló verziója</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="218"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Open server version&lt;/a&gt;</source>
-        <translation>&lt;a href=&quot;%1&quot;&gt; A szerveren tárolt verzió megnyitása &lt;/a&gt;</translation>
+        <translation>&lt;a href=&quot;%1&quot;&gt;A kiszolgálón tárolt verzió megnyitása&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="54"/>
         <location filename="../src/gui/conflictdialog.cpp" line="177"/>
         <source>Keep selected version</source>
-        <translation>A kiválasztott verzió megtartása</translation>
+        <translation>Kiválasztott verzió megtartása</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="148"/>
@@ -951,8 +951,7 @@ Ez a művelet megszakítja a jelenleg futó szinkronizálást.</translation>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="156"/>
         <source>Open server version</source>
-        <translation>A szerveren tárolt verzió megnyitása
-</translation>
+        <translation>A kiszolgálón tárolt verzió megnyitása</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="174"/>
@@ -962,12 +961,12 @@ Ez a művelet megszakítja a jelenleg futó szinkronizálást.</translation>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="175"/>
         <source>Keep local version</source>
-        <translation>A helyi verzió megtartása</translation>
+        <translation>Helyi verzió megtartása</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="176"/>
         <source>Keep server version</source>
-        <translation>A szerveren tárolt verzió megtartása</translation>
+        <translation>Kiszolgálón tárolt verzió megtartása</translation>
     </message>
 </context>
 <context>
@@ -985,7 +984,7 @@ Ez a művelet megszakítja a jelenleg futó szinkronizálást.</translation>
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="90"/>
         <source>Confirm deletion</source>
-        <translation>A törlés megerősítésére</translation>
+        <translation>Törlés megerősítése</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="134"/>
@@ -1053,7 +1052,7 @@ Ez a művelet megszakítja a jelenleg futó szinkronizálást.</translation>
         <location filename="../src/libsync/discoveryphase.cpp" line="497"/>
         <location filename="../src/libsync/discoveryphase.cpp" line="522"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
-        <translation>Szerverhiba: A PROPFIND válasz nem XML formátumú!</translation>
+        <translation>Kiszolgálóhiba: A PROPFIND válasz nem XML formátumú!</translation>
     </message>
 </context>
 <context>
@@ -1066,7 +1065,7 @@ Ez a művelet megszakítja a jelenleg futó szinkronizálást.</translation>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="264"/>
         <source>Directory not accessible on client, permission denied</source>
-        <translation>A mappa nem érhető el a kliensen, az engedély megtagadva</translation>
+        <translation>A könyvtár nem érhető el a kliensen, az engedély megtagadva</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="268"/>
@@ -1076,12 +1075,12 @@ Ez a művelet megszakítja a jelenleg futó szinkronizálást.</translation>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="299"/>
         <source>Filename encoding is not valid</source>
-        <translation>A fájlnév kódolása nem érvényes</translation>
+        <translation>A fájlnév kódolása érvénytelen</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="318"/>
         <source>Error while reading directory %1</source>
-        <translation>Hiba történt a(z) %1 könyvtár olvasása közben</translation>
+        <translation>Hiba történt a(z) %1 könyvtár olvasása során</translation>
     </message>
 </context>
 <context>
@@ -1166,12 +1165,12 @@ This can be an issue with your OpenSSL libraries.</source>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="221"/>
         <source>Reopen Browser</source>
-        <translation>Böngésző újra nyitása</translation>
+        <translation>Böngésző újranyitása</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="224"/>
         <source>Copy Link</source>
-        <translation>Link másolása</translation>
+        <translation>Hivatkozás másolása</translation>
     </message>
 </context>
 <context>
@@ -1222,7 +1221,7 @@ This can be an issue with your OpenSSL libraries.</source>
         <location filename="../src/gui/folder.cpp" line="437"/>
         <source>%1 has been added.</source>
         <comment>%1 names a file.</comment>
-        <translation>% 1 hozzáadva.</translation>
+        <translation>%1 hozzáadva.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="442"/>
@@ -1429,7 +1428,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folder.cpp" line="1268"/>
         <source>Remove all files</source>
-        <translation>Az összes fájl eltávolítása</translation>
+        <translation>Összes fájl eltávolítása</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1255"/>
@@ -1452,12 +1451,12 @@ Ha úgy dönt, hogy törli a fájlokat, akkor azok nem lesznek elérhetők Önne
     <message>
         <location filename="../src/gui/foldercreationdialog.ui" line="14"/>
         <source>Create new folder</source>
-        <translation>Új mappát létrehozása</translation>
+        <translation>Új mappa létrehozása</translation>
     </message>
     <message>
         <location filename="../src/gui/foldercreationdialog.ui" line="42"/>
         <source>Enter folder name</source>
-        <translation>Írja be a mappa nevét</translation>
+        <translation>Adja meg a mappa nevét</translation>
     </message>
     <message>
         <location filename="../src/gui/foldercreationdialog.ui" line="61"/>
