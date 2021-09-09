@@ -867,6 +867,7 @@ void JsonApiJob::start()
     auto query = _additionalParams;
     query.addQueryItem(QLatin1String("format"), QLatin1String("json"));
     QUrl url = Utility::concatUrlPath(account()->url(), path(), query);
+    QString searchUrl = url.toString();
     const auto httpVerb = verbToString();
     if (!_body.isEmpty()) {
         sendRequest(httpVerb, url, _request, _body);

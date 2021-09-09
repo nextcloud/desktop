@@ -1,5 +1,5 @@
 /*
- * Copyright (C) by Camila Ayres <hello@camila.codes>
+ * Copyright (C) by Oleksandr Zolotov <alex@nextcloud.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -12,36 +12,27 @@
  * for more details.
  */
 
-#ifndef ICONJOB_H
-#define ICONJOB_H
+#ifndef UNIFIEDSEARCHRESULTIMAGEPROVIDER_H
+#define UNIFIEDSEARCHRESULTIMAGEPROVIDER_H
 
-#include <QObject>
-#include <QByteArray>
-#include <QNetworkAccessManager>
-#include <QNetworkRequest>
-#include <QNetworkReply>
+#include <QtCore>
+#include <QQuickImageProvider>
 
 namespace OCC {
 
 /**
- * @brief Job to fetch a icon
+ * @brief The UnifiedSearchResultImageProvider
  * @ingroup gui
  */
-class IconJob : public QObject
+
+class UnifiedSearchResultImageProvider : public QQuickAsyncImageProvider
 {
-    Q_OBJECT
 public:
-    explicit IconJob(const QUrl &url, QObject *parent = nullptr);
-
-signals:
-    void jobFinished(QByteArray iconData);
-
-private slots:
-    void finished(QNetworkReply *reply);
+    QQuickImageResponse *requestImageResponse(const QString &id, const QSize &requestedSize) override;
 
 private:
-    QNetworkAccessManager _accessManager;
+    QThreadPool pool;
 };
 }
 
-#endif // ICONJOB_H
+#endif // UNIFIEDSEARCHRESULTIMAGEPROVIDER_H

@@ -14,6 +14,7 @@
 #include "syncfileitem.h"
 #include "tray/ActivityListModel.h"
 #include "tray/NotificationCache.h"
+#include "tray/UnifiedSearchResultsListModel.h"
 #include "userstatusconnector.h"
 
 #include <QDesktopServices>
@@ -39,6 +40,7 @@ User::User(AccountStatePtr &account, const bool &isCurrent, QObject *parent)
     , _account(account)
     , _isCurrentUser(isCurrent)
     , _activityModel(new ActivityListModel(_account.data()))
+    , _unifiedSearchResultsModel(new UnifiedSearchResultsListModel(_account.data()))
     , _notificationRequestsRunning(0)
 {
     connect(ProgressDispatcher::instance(), &ProgressDispatcher::progressInfo,
@@ -546,6 +548,16 @@ void User::processCompletedSyncItem(const Folder *folder, const SyncFileItemPtr 
     }
 }
 
+QString User::searchTerm() const
+{
+    return _unifiedSearchResultsModel->searchTerm();
+}
+
+void User::setSearchTerm(const QString &term)
+{
+    _unifiedSearchResultsModel->setSearchTerm(term);
+}
+
 void User::slotItemCompleted(const QString &folder, const SyncFileItemPtr &item)
 {
     auto folderInstance = FolderMan::instance()->folder(folder);
@@ -582,6 +594,11 @@ Folder *User::getFolder() const
 ActivityListModel *User::getActivityModel()
 {
     return _activityModel;
+}
+
+UnifiedSearchResultsListModel *User::getUnifiedSearchResultsListModel()
+{
+    return _unifiedSearchResultsModel;
 }
 
 void User::openLocalFolder()
@@ -933,6 +950,11 @@ std::shared_ptr<OCC::UserStatusConnector> UserModel::userStatusConnector(int id)
     return _users[id]->account()->userStatusConnector();
 }
 
+void UserModel::onUnifiedSearchTextEdited(const QString &term)
+{
+    _users[currentUserId()]->setSearchTerm(term);
+}
+
 int UserModel::rowCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent);
@@ -996,6 +1018,14 @@ ActivityListModel *UserModel::currentActivityModel()
     return _users[currentUserIndex()]->getActivityModel();
 }
 
+UnifiedSearchResultsListModel *UserModel::currentUnifiedSearchResultsModel()
+{
+    if (currentUserIndex() < 0 || currentUserIndex() >= _users.size())
+        return nullptr;
+
+    return _users[currentUserIndex()]->getUnifiedSearchResultsListModel();
+}
+
 void UserModel::fetchCurrentActivityModel()
 {
     if (currentUserId() < 0 || currentUserId() >= _users.size())
@@ -1018,6 +1048,11 @@ User *UserModel::currentUser() const
         return nullptr;
 
     return _users[currentUserId()];
+}
+
+QString UserModel::searchTerm() const
+{
+    return _users[currentUserId()]->searchTerm();
 }
 
 int UserModel::findUserIdForAccount(AccountState *account) const
