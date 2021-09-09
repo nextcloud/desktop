@@ -70,12 +70,16 @@ public:
         Asynchronous
     };
 
+    Q_ENUM(AbortType)
+
     enum JobState {
         NotYetStarted,
         Running,
         Finished
     };
     JobState _state;
+
+    Q_ENUM(JobState)
 
     enum JobParallelism {
 
@@ -87,6 +91,8 @@ public:
             are executed. */
         WaitForFinished,
     };
+
+    Q_ENUM(JobParallelism)
 
     virtual JobParallelism parallelism() { return FullParallelism; }
 
