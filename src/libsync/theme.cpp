@@ -841,4 +841,19 @@ bool Theme::showVirtualFilesOption() const
     return ConfigFile().showExperimentalOptions() || vfsMode == Vfs::WindowsCfApi;
 }
 
+QColor Theme::errorBoxTextColor() const
+{
+    return QColor{"white"};
+}
+
+QColor Theme::errorBoxBackgroundColor() const
+{
+    return QColor{"red"};
+}
+
+QColor Theme::errorBoxBorderColor() const
+{ 
+    return QColor{"black"};
+}
+
 } // end namespace client

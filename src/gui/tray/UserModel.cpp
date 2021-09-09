@@ -14,6 +14,7 @@
 #include "syncfileitem.h"
 #include "tray/ActivityListModel.h"
 #include "tray/NotificationCache.h"
+#include "tray/unifiedsearchresultslistmodel.h"
 #include "userstatusconnector.h"
 
 #include <QDesktopServices>
@@ -38,7 +39,8 @@ User::User(AccountStatePtr &account, const bool &isCurrent, QObject *parent)
     : QObject(parent)
     , _account(account)
     , _isCurrentUser(isCurrent)
-    , _activityModel(new ActivityListModel(_account.data()))
+    , _activityModel(new ActivityListModel(_account.data(), this))
+    , _unifiedSearchResultsModel(new UnifiedSearchResultsListModel(_account.data(), this))
     , _notificationRequestsRunning(0)
 {
     connect(ProgressDispatcher::instance(), &ProgressDispatcher::progressInfo,
@@ -587,6 +589,11 @@ Folder *User::getFolder() const
 ActivityListModel *User::getActivityModel()
 {
     return _activityModel;
+}
+
+UnifiedSearchResultsListModel *User::getUnifiedSearchResultsListModel() const
+{
+    return _unifiedSearchResultsModel;
 }
 
 void User::openLocalFolder()

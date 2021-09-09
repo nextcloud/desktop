@@ -43,6 +43,14 @@ set(client_UI_SRCS
     tray/ActivityList.qml
     tray/Window.qml
     tray/UserLine.qml
+    tray/UnifiedSearchInputContainer.qml
+    tray/UnifiedSearchResultFetchMoreTrigger.qml
+    tray/UnifiedSearchResultItem.qml
+    tray/UnifiedSearchResultItemSkeleton.qml
+    tray/UnifiedSearchResultItemSkeletonContainer.qml
+    tray/UnifiedSearchResultListItem.qml
+    tray/UnifiedSearchResultNothingFound.qml
+    tray/UnifiedSearchResultSectionItem.qml
     wizard/flow2authwidget.ui
     wizard/owncloudadvancedsetuppage.ui
     wizard/owncloudconnectionmethoddialog.ui
@@ -116,6 +124,9 @@ set(client_SRCS
     tray/syncstatussummary.cpp
     tray/ActivityData.cpp
     tray/ActivityListModel.cpp
+    tray/unifiedsearchresult.cpp
+    tray/unifiedsearchresultimageprovider.cpp
+    tray/unifiedsearchresultslistmodel.cpp
     tray/UserModel.cpp
     tray/NotificationHandler.cpp
     tray/NotificationCache.cpp
