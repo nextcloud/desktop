@@ -187,11 +187,29 @@ bool Capabilities::chunkingNg() const
     return _capabilities["dav"].toMap()["chunking"].toByteArray() >= "1.0";
 }
 
-bool Capabilities::userStatus() const
+bool Capabilities::userStatusNotification() const
 {
     return _capabilities.contains("notifications") &&
         _capabilities["notifications"].toMap().contains("ocs-endpoints") &&
         _capabilities["notifications"].toMap()["ocs-endpoints"].toStringList().contains("user-status");
+}
+
+bool Capabilities::userStatus() const
+{
+    if (!_capabilities.contains("user_status")) {
+        return false;
+    }
+    const auto userStatusMap = _capabilities["user_status"].toMap();
+    return userStatusMap.value("enabled", false).toBool();
+}
+
+bool Capabilities::userStatusSupportsEmoji() const
+{
+    if (!userStatus()) {
+        return false;
+    }
+    const auto userStatusMap = _capabilities["user_status"].toMap();
+    return userStatusMap.value("supports_emoji", false).toBool();
 }
 
 PushNotificationTypes Capabilities::availablePushNotifications() const

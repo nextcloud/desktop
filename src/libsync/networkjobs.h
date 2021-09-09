@@ -22,6 +22,7 @@
 
 #include <QBuffer>
 #include <QUrlQuery>
+#include <QJsonDocument>
 #include <functional>
 
 class QUrl;
@@ -375,6 +376,13 @@ class OWNCLOUDSYNC_EXPORT JsonApiJob : public AbstractNetworkJob
 {
     Q_OBJECT
 public:
+    enum class Verb {
+        Get,
+        Post,
+        Put,
+        Delete,
+    };
+
     explicit JsonApiJob(const AccountPtr &account, const QString &path, QObject *parent = nullptr);
 
     /**
@@ -390,15 +398,9 @@ public:
     void addQueryParams(const QUrlQuery &params);
     void addRawHeader(const QByteArray &headerName, const QByteArray &value);
 
-    /**
-     * @brief usePOST - allow job to do an anonymous POST request instead of GET
-     * @param params: (optional) true for POST, false for GET (default).
-     *
-     * This function needs to be called before start() obviously.
-     */
-    void usePOST(bool usePOST = true) {
-        _usePOST = usePOST;
-    }
+    void setBody(const QJsonDocument &body);
+
+    void setVerb(Verb value);
 
 public slots:
     void start() override;
@@ -429,10 +431,13 @@ signals:
     void allowDesktopNotificationsChanged(bool isAllowed);
 
 private:
+    QByteArray _body;
     QUrlQuery _additionalParams;
     QNetworkRequest _request;
 
-    bool _usePOST = false;
+    Verb _verb = Verb::Get;
+
+    QByteArray verbToString() const;
 };
 
 /**

@@ -56,7 +56,8 @@ Q_LOGGING_CATEGORY(lcCse, "nextcloud.sync.clientsideencryption", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcCseDecryption, "nextcloud.e2e", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcCseMetadata, "nextcloud.metadata", QtInfoMsg)
 
-QString baseUrl(){
+QString e2eeBaseUrl()
+{
     return QStringLiteral("ocs/v2.php/apps/end_to_end_encryption/api/v1/");
 }
 
@@ -1180,7 +1181,7 @@ void ClientSideEncryption::generateCSR(const AccountPtr &account, EVP_PKEY *keyP
     qCInfo(lcCse()) << "Returning the certificate";
     qCInfo(lcCse()) << output;
 
-    auto job = new SignPublicKeyApiJob(account, baseUrl() + "public-key", this);
+    auto job = new SignPublicKeyApiJob(account, e2eeBaseUrl() + "public-key", this);
     job->setCsr(output);
 
     connect(job, &SignPublicKeyApiJob::jsonReceived, [this, account](const QJsonDocument& json, int retCode) {
@@ -1212,7 +1213,7 @@ void ClientSideEncryption::encryptPrivateKey(const AccountPtr &account)
     auto cryptedText = EncryptionHelper::encryptPrivateKey(secretKey, EncryptionHelper::privateKeyToPem(_privateKey), salt);
 
     // Send private key to the server
-    auto job = new StorePrivateKeyApiJob(account, baseUrl() + "private-key", this);
+    auto job = new StorePrivateKeyApiJob(account, e2eeBaseUrl() + "private-key", this);
     job->setPrivateKey(cryptedText);
     connect(job, &StorePrivateKeyApiJob::jsonReceived, [this, account](const QJsonDocument& doc, int retCode) {
         Q_UNUSED(doc);
@@ -1296,7 +1297,7 @@ void ClientSideEncryption::decryptPrivateKey(const AccountPtr &account, const QB
 void ClientSideEncryption::getPrivateKeyFromServer(const AccountPtr &account)
 {
     qCInfo(lcCse()) << "Retrieving private key from server";
-    auto job = new JsonApiJob(account, baseUrl() + "private-key", this);
+    auto job = new JsonApiJob(account, e2eeBaseUrl() + "private-key", this);
     connect(job, &JsonApiJob::jsonReceived, [this, account](const QJsonDocument& doc, int retCode) {
             if (retCode == 200) {
                 QString key = doc.object()["ocs"].toObject()["data"].toObject()["private-key"].toString();
@@ -1315,7 +1316,7 @@ void ClientSideEncryption::getPrivateKeyFromServer(const AccountPtr &account)
 void ClientSideEncryption::getPublicKeyFromServer(const AccountPtr &account)
 {
     qCInfo(lcCse()) << "Retrieving public key from server";
-    auto job = new JsonApiJob(account, baseUrl() + "public-key", this);
+    auto job = new JsonApiJob(account, e2eeBaseUrl() + "public-key", this);
     connect(job, &JsonApiJob::jsonReceived, [this, account](const QJsonDocument& doc, int retCode) {
             if (retCode == 200) {
                 QString publicKey = doc.object()["ocs"].toObject()["data"].toObject()["public-keys"].toObject()[account->davUser()].toString();
@@ -1336,7 +1337,7 @@ void ClientSideEncryption::getPublicKeyFromServer(const AccountPtr &account)
 void ClientSideEncryption::fetchAndValidatePublicKeyFromServer(const AccountPtr &account)
 {
     qCInfo(lcCse()) << "Retrieving public key from server";
-    auto job = new JsonApiJob(account, baseUrl() + "server-key", this);
+    auto job = new JsonApiJob(account, e2eeBaseUrl() + "server-key", this);
     connect(job, &JsonApiJob::jsonReceived, [this, account](const QJsonDocument& doc, int retCode) {
         if (retCode == 200) {
             const auto serverPublicKey = doc.object()["ocs"].toObject()["data"].toObject()["public-key"].toString().toLatin1();

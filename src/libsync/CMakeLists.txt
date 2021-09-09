@@ -55,6 +55,9 @@ set(libsync_SRCS
     theme.cpp
     clientsideencryption.cpp
     clientsideencryptionjobs.cpp
+    datetimeprovider.cpp
+    ocsuserstatusconnector.cpp
+    userstatusconnector.cpp
     creds/dummycredentials.cpp
     creds/abstractcredentials.cpp
     creds/credentialscommon.cpp

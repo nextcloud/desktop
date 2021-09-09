@@ -35,6 +35,8 @@ set(client_UI_SRCS
     addcertificatedialog.ui
     proxyauthdialog.ui
     mnemonicdialog.ui
+    UserStatusSelector.qml
+    UserStatusSelectorDialog.qml
     tray/ActivityActionButton.qml
     tray/ActivityItem.qml
     tray/Window.qml
@@ -92,7 +94,6 @@ set(client_SRCS
     systray.cpp
     thumbnailjob.cpp
     userinfo.cpp
-    userstatus.cpp
     accountstate.cpp
     addcertificatedialog.cpp
     authenticationdialog.cpp
@@ -106,6 +107,8 @@ set(client_SRCS
     iconjob.cpp
     iconutils.cpp
     remotewipe.cpp
+    userstatusselectormodel.cpp
+    emojimodel.cpp
     tray/ActivityData.cpp
     tray/ActivityListModel.cpp
     tray/UserModel.cpp
