@@ -470,10 +470,6 @@ if(WITH_CRASHREPORTER)
     endif()
 endif()
 
-# application.cpp still uses QDesktopServices::storageLocation
-target_compile_definitions(nextcloudCore PRIVATE "QT_DISABLE_DEPRECATED_BEFORE=0")
-
-
 install(TARGETS nextcloud
         RUNTIME DESTINATION bin
         LIBRARY DESTINATION lib

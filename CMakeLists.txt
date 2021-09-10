@@ -77,9 +77,9 @@ include(GetGitRevisionDescription)
 get_git_head_revision(GIT_REFSPEC GIT_SHA1)
 
 add_definitions(
+    -DQT_DISABLE_DEPRECATED_BEFORE=0x000000
     -DQT_USE_QSTRINGBUILDER
     -DQT_MESSAGELOGCONTEXT #enable function name and line number in debug output
-    -DQT_DEPRECATED_WARNINGS
 )
 
 # if we cannot get it from git, directly try .tag (packages)
