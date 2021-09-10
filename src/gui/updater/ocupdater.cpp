@@ -453,7 +453,7 @@ void NSISUpdater::showUpdateErrorDialog(const QString &targetVersion)
     ico->setPixmap(infoIcon.pixmap(iconSize));
     auto lbl = new QLabel;
     QString txt = tr("<p>A new version of the %1 Client is available but the updating process failed.</p>"
-                     "<p><b>%2</b> has been downloaded. The installed version is %3. If you confirm restart and upate, your computer may reboot to complete the installation.</p>")
+                     "<p><b>%2</b> has been downloaded. The installed version is %3. If you confirm restart and update, your computer may reboot to complete the installation.</p>")
                       .arg(Utility::escape(Theme::instance()->appNameGUI()),
                           Utility::escape(targetVersion), Utility::escape(clientVersion()));
 

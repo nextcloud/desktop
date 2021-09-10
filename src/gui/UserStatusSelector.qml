@@ -134,7 +134,7 @@ ColumnLayout {
         TextField {
             id: userStatusMessageTextField
             Layout.fillWidth: true
-            placeholderText: qsTr("What is your Status?")
+            placeholderText: qsTr("What is your status?")
             text: userStatusSelectorModel.userStatusMessage
             onEditingFinished: userStatusSelectorModel.setUserStatusMessage(text)
         }
