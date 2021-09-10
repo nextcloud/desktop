@@ -27,6 +27,7 @@
 #include "account.h"
 #include "common/asserts.h"
 #include "discoveryphase.h"
+#include "syncfileitem.h"
 
 #ifdef Q_OS_WIN
 #include <windef.h>
@@ -269,6 +270,7 @@ void PropagateItemJob::done(SyncFileItem::Status statusArg, const QString &error
     case SyncFileItem::NoStatus:
     case SyncFileItem::BlacklistedError:
     case SyncFileItem::FileLocked:
+    case SyncFileItem::FileNameInvalid:
         // nothing
         break;
     }

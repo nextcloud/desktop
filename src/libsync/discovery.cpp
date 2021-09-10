@@ -507,7 +507,7 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
                 const bool isVfsModeOn = _discoveryData && _discoveryData->_syncOptions._vfs && _discoveryData->_syncOptions._vfs->mode() != Vfs::Off;
                 if (isVfsModeOn && dbEntry.isDirectory() && dbEntry._isE2eEncrypted) {
                     qint64 localFolderSize = 0;
-                    const auto listFilesCallback = [this, &localFolderSize](const OCC::SyncJournalFileRecord &record) {
+                    const auto listFilesCallback = [&localFolderSize](const OCC::SyncJournalFileRecord &record) {
                         if (record.isFile()) {
                             // add Constants::e2EeTagSize so we will know the size of E2EE file on the server
                             localFolderSize += record._fileSize + Constants::e2EeTagSize;
