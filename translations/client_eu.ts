@@ -2463,7 +2463,7 @@ Erregistroak %1(e)an idatziko dira.</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="455"/>
         <source>&lt;p&gt;A new version of the %1 Client is available but the updating process failed.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; has been downloaded. The installed version is %3. If you confirm restart and update, your computer may reboot to complete the installation.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;% 1 bezeroaren bertsio berria eskuragarri dago baina eguneratze prozesuak huts egin du.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; deskargatu da. Instalatutako bertsioa %3 da. Berrabiaraztea eta eguneratzea baieztatzen baduzu, baliteke ordenagailua berrabiaraztea instalazioa amaitzeko.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="469"/>
@@ -2649,7 +2649,7 @@ pribilegio gehigarriak eskatzen ahal dizu prozesuan.</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="109"/>
         <source>A new update for %1 is about to be installed. The updater may ask for additional privileges during the process. Your computer may reboot to complete the installation.</source>
-        <translation type="unfinished"/>
+        <translation>% 1-erako eguneraketa berri bat instalatzeko prest dago. Eguneratzaileak pribilegio gehigarriak eska ditzake prozesuan zehar. Baliteke ordenagailua berrabiaraztea instalazioa osatzeko. </translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="143"/>
@@ -4909,96 +4909,96 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="146"/>
         <source>Could not fetch predefined statuses. Make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Ezin izan dira aurrez definitutako egoerak eskuratu. Ziurtatu zerbitzarira konektatuta zaudela.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="150"/>
         <source>Could not fetch user status. Make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Ezin izan da erabiltzaile egoera eskuratu. Ziurtatu zerbitzarira konektatuta zaudela.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="154"/>
         <source>User status feature is not supported. You will not be able to set your user status.</source>
-        <translation type="unfinished"/>
+        <translation>Erabiltzailearen egoera ezaugarria ez da onartzen. Ezin izango duzu zure erabiltzaile egoera ezarri.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="158"/>
         <source>Emojis feature is not supported. Some user status functionality may not work.</source>
-        <translation type="unfinished"/>
+        <translation>Emotikonoak ezaugarria ez da onartzen. Baliteke zenbait erabiltzaileren egoera funtzionalitateak ez funtzionatzea.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="162"/>
         <source>Could not set user status. Make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Ezin izan da erabiltzaile egoera ezarri. Ziurtatu zerbitzarira konektatuta zaudela.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="166"/>
         <source>Could not clear user status message. Make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Ezin izan da garbitu erabiltzailearen egoera mezua. Ziurtatu zerbitzarira konektatuta zaudela.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="364"/>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="462"/>
         <source>Don&apos;t clear</source>
-        <translation type="unfinished"/>
+        <translation>Ez garbitu</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="367"/>
         <source>30 minutes</source>
-        <translation type="unfinished"/>
+        <translation>30 minutu</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="370"/>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="422"/>
         <source>1 hour</source>
-        <translation type="unfinished"/>
+        <translation>Ordu 1</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="373"/>
         <source>4 hours</source>
-        <translation type="unfinished"/>
+        <translation>4 ordu</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="376"/>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="451"/>
         <source>Today</source>
-        <translation type="unfinished"/>
+        <translation>Gaur</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="379"/>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="453"/>
         <source>This week</source>
-        <translation type="unfinished"/>
+        <translation>Aste honetan</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="411"/>
         <source>Less than a minute</source>
-        <translation type="unfinished"/>
+        <translation>Minutu bat baino gutxiago</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="415"/>
         <source>1 minute</source>
-        <translation type="unfinished"/>
+        <translation>Minutu 1</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="417"/>
         <source>%1 minutes</source>
-        <translation type="unfinished"/>
+        <translation>%1 minutu</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="424"/>
         <source>%1 hours</source>
-        <translation type="unfinished"/>
+        <translation>%1 ordu</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="429"/>
         <source>1 day</source>
-        <translation type="unfinished"/>
+        <translation>Egun 1</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="431"/>
         <source>%1 days</source>
-        <translation type="unfinished"/>
+        <translation>%1 egun</translation>
     </message>
 </context>
 <context>
@@ -5660,7 +5660,7 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="200"/>
         <source>Set status</source>
-        <translation type="unfinished"/>
+        <translation>Ezarri egoera</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="192"/>
@@ -5685,52 +5685,52 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="38"/>
         <source>Online status</source>
-        <translation type="unfinished"/>
+        <translation>Lineako egoera</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="55"/>
         <source>Online</source>
-        <translation type="unfinished"/>
+        <translation>Linean</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="65"/>
         <source>Away</source>
-        <translation type="unfinished"/>
+        <translation>Kanpoan</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="76"/>
         <source>Do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>Ez molestatu</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="86"/>
         <source>Invisible</source>
-        <translation type="unfinished"/>
+        <translation>Ikusezina</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="99"/>
         <source>Status message</source>
-        <translation type="unfinished"/>
+        <translation>Egoera mezua</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="137"/>
         <source>What is your status?</source>
-        <translation type="unfinished"/>
+        <translation>Zein da zure egoera?</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="164"/>
         <source>Clear status message after</source>
-        <translation type="unfinished"/>
+        <translation>Garbitu egoera mezua ondoren</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="181"/>
         <source>Clear status message</source>
-        <translation type="unfinished"/>
+        <translation>Garbitu egoera mezua ondoren</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="187"/>
         <source>Set status message</source>
-        <translation type="unfinished"/>
+        <translation>Ezarri egoera-mezua</translation>
     </message>
 </context>
 <context>
@@ -5851,7 +5851,7 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
     <message>
         <location filename="../src/gui/tray/Window.qml" line="177"/>
         <source>Set user status</source>
-        <translation type="unfinished"/>
+        <translation>Ezarri erabiltzaile-egoera</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="203"/>
