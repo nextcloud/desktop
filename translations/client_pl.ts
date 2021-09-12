@@ -2463,7 +2463,7 @@ Dzienniki zostaną zapisane w %1</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="455"/>
         <source>&lt;p&gt;A new version of the %1 Client is available but the updating process failed.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; has been downloaded. The installed version is %3. If you confirm restart and update, your computer may reboot to complete the installation.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Dostępna jest nowa wersja klienta %1, ale proces aktualizacji nie powiódł się.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; został pobrany. Zainstalowana wersja to %3. Jeśli potwierdzisz ponowne uruchomienie i aktualizację, komputer może się ponownie uruchomić, aby zakończyć instalację.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="469"/>
@@ -5715,7 +5715,7 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="137"/>
         <source>What is your status?</source>
-        <translation type="unfinished"/>
+        <translation>Jaki jest Twój status?</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="164"/>
