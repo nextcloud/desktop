@@ -1505,9 +1505,9 @@ Result<void, QString> FolderMan::unsupportedConfiguration(const QString &path) c
     return {};
 }
 
-bool FolderMan::checkVfsAvailability(const QString &path) const
+bool FolderMan::checkVfsAvailability(const QString &path, Vfs::Mode mode) const
 {
-    return unsupportedConfiguration(path) && Vfs::checkAvailability(path);
+    return unsupportedConfiguration(path) && Vfs::checkAvailability(path, mode);
 }
 
 } // namespace OCC

@@ -63,10 +63,9 @@ Optional<Vfs::Mode> Vfs::modeFromString(const QString &str)
     return {};
 }
 
-Result<void, QString> Vfs::checkAvailability(const QString &path)
+Result<void, QString> Vfs::checkAvailability(const QString &path, Vfs::Mode mode)
 {
 #ifdef Q_OS_WIN
-    const auto mode = bestAvailableVfsMode();
     if (mode == Mode::WindowsCfApi) {
         const auto info = QFileInfo(path);
         if (QDir(info.canonicalFilePath()).isRoot()) {
@@ -82,6 +81,7 @@ Result<void, QString> Vfs::checkAvailability(const QString &path)
         }
     }
 #else
+    Q_UNUSED(mode);
     Q_UNUSED(path);
 #endif
     return {};
