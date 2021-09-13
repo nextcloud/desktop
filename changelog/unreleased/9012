@@ -1,0 +1,6 @@
+Bugfix: We fixed a crash when using the retry action on an issue
+
+Using the context menu action on a sync issue could cause a crash.
+
+https://github.com/owncloud/client/issues/9013
+https://github.com/owncloud/client/pull/9012
