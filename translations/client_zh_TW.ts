@@ -2463,7 +2463,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="455"/>
         <source>&lt;p&gt;A new version of the %1 Client is available but the updating process failed.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; has been downloaded. The installed version is %3. If you confirm restart and update, your computer may reboot to complete the installation.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;%1  客戶端有新版本可用，但更新過程失敗。&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; 已下載。 目前安裝的版本是 %3。如果您確認重新啟動和更新，您的電腦可能會重新啟動以完成安裝。&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="469"/>
@@ -5715,7 +5715,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="137"/>
         <source>What is your status?</source>
-        <translation type="unfinished"/>
+        <translation>您目前的狀態是什麼呢？</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="164"/>
