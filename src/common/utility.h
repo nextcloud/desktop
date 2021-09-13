@@ -21,12 +21,13 @@
 #define UTILITY_H
 
 #include "ocsynclib.h"
-#include <QString>
 #include <QByteArray>
 #include <QDateTime>
 #include <QElapsedTimer>
 #include <QLoggingCategory>
 #include <QMap>
+#include <QMetaEnum>
+#include <QString>
 #include <QUrl>
 #include <QUrlQuery>
 #include <functional>
@@ -42,12 +43,13 @@ namespace OCC {
 
 class SyncJournal;
 
-Q_DECLARE_LOGGING_CATEGORY(lcUtility)
+OCSYNC_EXPORT Q_DECLARE_LOGGING_CATEGORY(lcUtility)
 
-/** \addtogroup libsync
+    /** \addtogroup libsync
  *  @{
  */
-namespace Utility {
+    namespace Utility
+{
     OCSYNC_EXPORT void sleep(int sec);
     OCSYNC_EXPORT void usleep(int usec);
     OCSYNC_EXPORT QString formatFingerprint(const QByteArray &, bool colonSeparated = true);
@@ -265,6 +267,18 @@ namespace Utility {
     };
 
 #endif
+
+    template <class E>
+    QString enumName(E value)
+    {
+        return QMetaEnum::fromType<E>().valueToKeys(value);
+    }
+    template <class E = void>
+    QString enumDisplayName(E)
+    {
+        static_assert(std::is_same<E, void>::value, "Not implemented");
+        Q_UNREACHABLE();
+    }
 }
 /** @} */ // \addtogroup
 

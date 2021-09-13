@@ -125,7 +125,7 @@ enum SyncInstruction {
     CSYNC_INSTRUCTION_EVAL            = 1 << 0, // DEPRECATED REMOVED
 };
 // clang-format on
-Q_ENUM_NS(SyncInstruction)
+Q_FLAG_NS(SyncInstruction)
 Q_DECLARE_FLAGS(SyncInstructions, SyncInstruction)
 Q_DECLARE_OPERATORS_FOR_FLAGS(SyncInstructions)
 

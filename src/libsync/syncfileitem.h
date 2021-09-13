@@ -23,6 +23,7 @@
 
 #include <set>
 
+#include <common/utility.h>
 #include <csync.h>
 
 #include <owncloudlib.h>
@@ -275,6 +276,11 @@ public:
     QString _directDownloadCookies;
 };
 
+
+template <>
+OWNCLOUDSYNC_EXPORT QString Utility::enumDisplayName(SyncFileItem::Status s);
+
+
 inline bool operator<(const SyncFileItemPtr &item1, const SyncFileItemPtr &item2)
 {
     return *item1 < *item2;
@@ -285,5 +291,6 @@ using SyncFileItemSet = std::set<SyncFileItemPtr>;
 
 Q_DECLARE_METATYPE(OCC::SyncFileItem)
 Q_DECLARE_METATYPE(OCC::SyncFileItemPtr)
+
 
 #endif // SYNCFILEITEM_H
