@@ -64,6 +64,11 @@ set(libsync_SRCS
     creds/keychainchunk.cpp
 )
 
+if (WIN32)
+    # to fix warnings from ntstatus.h
+    add_definitions(-DUMDF_USING_NTSTATUS)
+endif()
+
 if(TOKEN_AUTH_ONLY)
     set (libsync_SRCS ${libsync_SRCS} creds/tokencredentials.cpp)
 else()

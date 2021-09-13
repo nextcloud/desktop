@@ -299,7 +299,7 @@ namespace {
     };
 
     QByteArray BIO2ByteArray(Bio &b) {
-        int pending = BIO_ctrl_pending(b);
+        auto pending = static_cast<int>(BIO_ctrl_pending(b));
         QByteArray res(pending, '\0');
         BIO_read(b, unsignedData(res), pending);
         return res;
