@@ -1,0 +1,5 @@
+Bugfix: Tables now display local time
+
+We fixed a bug where the sync tables where displaying utc time for some items.
+
+https://github.com/owncloud/client/issues/9006

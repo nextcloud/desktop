@@ -58,7 +58,7 @@ QVariant ProtocolItemModel::data(const QModelIndex &index, int role) const
     case Qt::DisplayRole:
         switch (column) {
         case ProtocolItemRole::Time:
-            return item.timestamp();
+            return item.timestamp().toLocalTime();
         case ProtocolItemRole::Folder:
             return item.folder()->shortGuiLocalPath();
         case ProtocolItemRole::Action:
