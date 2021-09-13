@@ -231,6 +231,9 @@ public:
     /** removes current user from the share **/
     void leaveShare(const QString &localFile);
 
+    /** Whether or not vfs is supported in the location. */
+    bool checkVfsAvailability(const QString &path, Vfs::Mode mode = bestAvailableVfsMode()) const;
+
 signals:
     /**
       * signal to indicate a folder has changed its sync state.

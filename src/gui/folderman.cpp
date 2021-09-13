@@ -2027,4 +2027,9 @@ void FolderMan::slotConnectToPushNotifications(Account *account)
     }
 }
 
+bool FolderMan::checkVfsAvailability(const QString &path, Vfs::Mode mode) const
+{
+    return unsupportedConfiguration(path) && Vfs::checkAvailability(path, mode);
+}
+
 } // namespace OCC

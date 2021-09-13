@@ -393,7 +393,7 @@ bool OwncloudAdvancedSetupPage::isConfirmBigFolderChecked() const
 bool OwncloudAdvancedSetupPage::validatePage()
 {
     if (useVirtualFileSync()) {
-        const auto availability = Vfs::checkAvailability(localFolder());
+        const auto availability = Vfs::checkAvailability(localFolder(), bestAvailableVfsMode());
         if (!availability) {
             auto msg = new QMessageBox(QMessageBox::Warning, tr("Virtual files are not available for the selected folder"), availability.error(), QMessageBox::Ok, this);
             msg->setAttribute(Qt::WA_DeleteOnClose);

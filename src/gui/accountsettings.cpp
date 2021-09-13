@@ -710,8 +710,9 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
         ac->setDisabled(Theme::instance()->enforceVirtualFilesSyncFolder());
     }
 
-    if (Theme::instance()->showVirtualFilesOption() && !folder->virtualFilesEnabled() && Vfs::checkAvailability(folder->path())) {
-        const auto mode = bestAvailableVfsMode();
+    if (const auto mode = bestAvailableVfsMode();
+        Theme::instance()->showVirtualFilesOption()
+        && !folder->virtualFilesEnabled() && Vfs::checkAvailability(folder->path(), mode)) {
         if (mode == Vfs::WindowsCfApi || ConfigFile().showExperimentalOptions()) {
             ac = menu->addAction(tr("Enable virtual file support %1 …").arg(mode == Vfs::WindowsCfApi ? QString() : tr("(experimental)")));
             // TODO: remove when UX decision is made
