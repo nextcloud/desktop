@@ -24,6 +24,7 @@
 
 #include "common/filesystembase.h"
 
+#include <QDir>
 #include <QPluginLoader>
 #include <QLoggingCategory>
 
@@ -65,9 +66,8 @@ Optional<Vfs::Mode> Vfs::modeFromString(const QString &str)
     return {};
 }
 
-Result<bool, QString> Vfs::checkAvailability(const QString &path)
+Result<void, QString> Vfs::checkAvailability(const QString &path, Vfs::Mode mode)
 {
-    const auto mode = bestAvailableVfsMode();
 #ifdef Q_OS_WIN
     if (mode == Mode::WindowsCfApi) {
         const auto info = QFileInfo(path);
@@ -87,7 +87,7 @@ Result<bool, QString> Vfs::checkAvailability(const QString &path)
     Q_UNUSED(mode)
     Q_UNUSED(path)
 #endif
-    return true;
+    return {};
 }
 
 void Vfs::start(const VfsSetupParams &params)
