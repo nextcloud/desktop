@@ -81,7 +81,7 @@ Folder::Folder(const FolderDefinition &definition,
     _syncResult.setStatus(status);
 
     // check if the local path exists
-    checkLocalPath();
+    const auto folderOk = checkLocalPath();
 
     _syncResult.setFolder(_definition.alias);
 
@@ -155,8 +155,10 @@ Folder::Folder(const FolderDefinition &definition,
         saveToSettings();
     }
 
-    // Initialize the vfs plugin
-    startVfs();
+    if (folderOk) {
+        // Initialize the vfs plugin
+        startVfs();
+    }
 }
 
 Folder::~Folder()
@@ -169,7 +171,7 @@ Folder::~Folder()
     _engine.reset();
 }
 
-void Folder::checkLocalPath()
+bool Folder::checkLocalPath()
 {
     const QFileInfo fi(_definition.localPath);
     _canonicalLocalPath = fi.canonicalFilePath();
@@ -187,18 +189,22 @@ void Folder::checkLocalPath()
     if (FileSystem::isDir(_definition.localPath) && FileSystem::isReadable(_definition.localPath)) {
         qCDebug(lcFolder) << "Checked local path ok";
     } else {
+        QString error;
         // Check directory again
         if (!FileSystem::fileExists(_definition.localPath, fi)) {
-            _syncResult.appendErrorString(tr("Local folder %1 does not exist.").arg(_definition.localPath));
+            error = tr("Local folder %1 does not exist.").arg(_definition.localPath);
+        } else if (!fi.isDir()) {
+            error = tr("%1 should be a folder but is not.").arg(_definition.localPath);
+        } else if (!fi.isReadable()) {
+            error = tr("%1 is not readable.").arg(_definition.localPath);
+        }
+        if (!error.isEmpty()) {
+            _syncResult.appendErrorString(error);
             _syncResult.setStatus(SyncResult::SetupError);
-        } else if (!FileSystem::isDir(_definition.localPath)) {
-            _syncResult.appendErrorString(tr("%1 should be a folder but is not.").arg(_definition.localPath));
-            _syncResult.setStatus(SyncResult::SetupError);
-        } else if (!FileSystem::isReadable(_definition.localPath)) {
-            _syncResult.appendErrorString(tr("%1 is not readable.").arg(_definition.localPath));
-            _syncResult.setStatus(SyncResult::SetupError);
+            return false;
         }
     }
+    return true;
 }
 
 QString Folder::shortGuiRemotePathOrAppName() const
@@ -297,7 +303,7 @@ bool Folder::syncPaused() const
 
 bool Folder::canSync() const
 {
-    return !syncPaused() && accountState()->isConnected();
+    return !syncPaused() && accountState()->isConnected() && _syncResult.status() != SyncResult::SetupError;
 }
 
 void Folder::setSyncPaused(bool paused)
@@ -506,6 +512,13 @@ void Folder::startVfs()
 {
     ENFORCE(_vfs);
     ENFORCE(_vfs->mode() == _definition.virtualFilesMode);
+
+    const auto result = Vfs::checkAvailability(path(), _vfs->mode());
+    if (!result) {
+        _syncResult.appendErrorString(result.error());
+        _syncResult.setStatus(SyncResult::SetupError);
+        return;
+    }
 
     VfsSetupParams vfsParams;
     vfsParams.filesystemPath = path();
