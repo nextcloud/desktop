@@ -118,6 +118,17 @@ void OcsShareJob::setPermissions(const QString &shareId,
     start();
 }
 
+void OcsShareJob::setLabel(const QString &shareId, const QString &label)
+{
+    appendPath(shareId);
+    setVerb("PUT");
+    
+    addParam(QStringLiteral("label"), label);
+    _value = label;
+    
+    start();
+}
+
 void OcsShareJob::createLinkShare(const QString &path,
     const QString &name,
     const QString &password)

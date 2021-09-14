@@ -96,6 +96,11 @@ public:
      */
     void setPermissions(const QString &shareId,
         const Share::Permissions permissions);
+    
+    /**
+     * Set share link label
+     */
+    void setLabel(const QString &shareId, const QString &label);
 
     /**
      * Create a new link share

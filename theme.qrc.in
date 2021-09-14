@@ -199,5 +199,7 @@
         <file>theme/colored/user-status-away.svg</file>
         <file>theme/colored/user-status-dnd.svg</file>
         <file>theme/black/email.svg</file>
+        <file>theme/black/edit.svg</file>
+        <file>theme/delete.svg</file>
     </qresource>
 </RCC>

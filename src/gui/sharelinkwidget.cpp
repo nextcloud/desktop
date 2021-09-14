@@ -20,6 +20,7 @@
 #include "guiutility.h"
 #include "sharemanager.h"
 #include "theme.h"
+#include "elidedlabel.h"
 
 #include "QProgressIndicator.h"
 #include <QBuffer>
@@ -168,6 +169,7 @@ void ShareLinkWidget::setupUiOptions()
     connect(_linkShare.data(), &LinkShare::noteSet, this, &ShareLinkWidget::slotNoteSet);
     connect(_linkShare.data(), &LinkShare::passwordSet, this, &ShareLinkWidget::slotPasswordSet);
     connect(_linkShare.data(), &LinkShare::passwordSetError, this, &ShareLinkWidget::slotPasswordSetError);
+    connect(_linkShare.data(), &LinkShare::labelSet, this, &ShareLinkWidget::slotLabelSet);
 
     // Prepare permissions check and create group action
     const QDate expireDate = _linkShare.data()->getExpireDate().isValid() ? _linkShare.data()->getExpireDate() : QDate();
@@ -189,7 +191,7 @@ void ShareLinkWidget::setupUiOptions()
 
     } else {
         checked = (perm == SharePermissionRead);
-        _readOnlyLinkAction = permissionsGroup->addAction(tr("Read only"));
+        _readOnlyLinkAction = permissionsGroup->addAction(tr("View only"));
         _readOnlyLinkAction->setCheckable(true);
         _readOnlyLinkAction->setChecked(checked);
 
@@ -204,6 +206,40 @@ void ShareLinkWidget::setupUiOptions()
         _allowUploadLinkAction->setCheckable(true);
         _allowUploadLinkAction->setChecked(checked);
     }
+    
+    _shareLinkElidedLabel = new OCC::ElidedLabel(this);
+    _shareLinkElidedLabel->setElideMode(Qt::ElideRight);
+    displayShareLinkLabel();
+    _ui->horizontalLayout->insertWidget(2, _shareLinkElidedLabel);
+    
+    _shareLinkLayout = new QHBoxLayout(this);
+    
+    _shareLinkLabel = new QLabel(this);
+    _shareLinkLabel->setPixmap(QString(":/client/theme/black/edit.svg"));
+    _shareLinkLayout->addWidget(_shareLinkLabel);
+    
+    _shareLinkEdit = new QLineEdit(this);
+    connect(_shareLinkEdit, &QLineEdit::returnPressed, this, &ShareLinkWidget::slotCreateLabel);
+    _shareLinkEdit->setPlaceholderText(tr("Link name"));
+    _shareLinkEdit->setText(_linkShare.data()->getLabel());
+    _shareLinkLayout->addWidget(_shareLinkEdit);
+    
+    _shareLinkButton = new QToolButton(this);
+    connect(_shareLinkButton, &QToolButton::clicked, this, &ShareLinkWidget::slotCreateLabel);
+    _shareLinkButton->setIcon(QIcon(":/client/theme/confirm.svg"));
+    _shareLinkButton->setToolButtonStyle(Qt::ToolButtonIconOnly);
+    _shareLinkLayout->addWidget(_shareLinkButton);
+    
+    _shareLinkProgressIndicator = new QProgressIndicator(this);
+    _shareLinkProgressIndicator->setVisible(false);
+    _shareLinkLayout->addWidget(_shareLinkProgressIndicator);
+        
+    _shareLinkDefaultWidget = new QWidget(this);
+    _shareLinkDefaultWidget->setLayout(_shareLinkLayout);
+    
+    _shareLinkWidgetAction = new QWidgetAction(this);
+    _shareLinkWidgetAction->setDefaultWidget(_shareLinkDefaultWidget);
+    _linkContextMenu->addAction(_shareLinkWidgetAction);
 
     // Adds permissions actions (radio button style)
     if (_isFile) {
@@ -263,7 +299,7 @@ void ShareLinkWidget::setupUiOptions()
 
     // Adds action to unshare widget (check box)
     _unshareLinkAction = _linkContextMenu->addAction(QIcon(":/client/theme/delete.svg"),
-        tr("Delete share link"));
+        tr("Delete link"));
 
     _linkContextMenu->addSeparator();
 
@@ -300,7 +336,7 @@ void ShareLinkWidget::setNote(const QString &note)
     }
 }
 
-void ShareLinkWidget::slotCreateNote()
+void ShareLinkWidget::slotCreateNote()                                                                              
 {
     setNote(_ui->textEdit_note->toPlainText());
 }
@@ -433,6 +469,21 @@ void ShareLinkWidget::slotAnimationFinished()
 {
     emit resizeRequested();
     deleteLater();
+}
+
+void ShareLinkWidget::slotCreateLabel()
+{
+    if (_linkShare) {
+        slotToggleButtonAnimation(_shareLinkButton, _shareLinkProgressIndicator, true, true);
+        _ui->errorLabel->hide();
+        _linkShare->setLabel(_shareLinkEdit->text());
+    }
+}
+
+void ShareLinkWidget::slotLabelSet()
+{
+    slotToggleButtonAnimation(_shareLinkButton, _shareLinkProgressIndicator, true, false);
+    displayShareLinkLabel();
 }
 
 void ShareLinkWidget::slotDeleteAnimationFinished()
@@ -613,6 +664,14 @@ void ShareLinkWidget::customizeStyle()
     _ui->confirmExpirationDate->setIcon(Theme::createColorAwareIcon(":/client/theme/confirm.svg"));
 
     _ui->passwordProgressIndicator->setColor(QGuiApplication::palette().color(QPalette::Text));
+}
+
+void ShareLinkWidget::displayShareLinkLabel()
+{
+    _shareLinkElidedLabel->clear();
+    if(!_linkShare->getLabel().isEmpty()) {
+        _shareLinkElidedLabel->setText(QString("(%1)").arg(_linkShare->getLabel()));
+    } 
 }
 
 }
