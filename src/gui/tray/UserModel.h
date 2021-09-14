@@ -9,6 +9,7 @@
 #include <QHash>
 
 #include "ActivityListModel.h"
+#include "accountfwd.h"
 #include "accountmanager.h"
 #include "folderman.h"
 #include "NotificationCache.h"
@@ -36,6 +37,7 @@ public:
     User(AccountStatePtr &account, const bool &isCurrent = false, QObject *parent = nullptr);
 
     AccountPtr account() const;
+    AccountStatePtr accountState() const;
 
     bool isConnected() const;
     bool isCurrentUser() const;

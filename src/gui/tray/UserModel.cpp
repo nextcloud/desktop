@@ -563,6 +563,11 @@ AccountPtr User::account() const
     return _account->account();
 }
 
+AccountStatePtr User::accountState() const
+{
+    return _account;
+}
+
 void User::setCurrentUser(const bool &isCurrent)
 {
     _isCurrentUser = isCurrent;

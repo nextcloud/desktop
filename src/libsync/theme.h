@@ -151,6 +151,18 @@ public:
      */
     QUrl statusInvisibleImageSource() const;
 
+    QUrl syncStatusOk() const;
+
+    QUrl syncStatusError() const;
+
+    QUrl syncStatusRunning() const;
+
+    QUrl syncStatusPause() const;
+
+    QUrl syncStatusWarning() const;
+
+    QUrl folderOffline() const;
+
     /**
      * @brief configFileName
      * @return the name of the config file.
