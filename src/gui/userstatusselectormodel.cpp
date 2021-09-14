@@ -121,14 +121,8 @@ void UserStatusSelectorModel::init()
     _userStatusConnector->fetchPredefinedStatuses();
 }
 
-UserStatusSelectorModel::~UserStatusSelectorModel()
-{
-    qCDebug(lcUserStatusDialogModel) << "Destroyed";
-}
-
 void UserStatusSelectorModel::onUserStatusSet()
 {
-    qCDebug(lcUserStatusDialogModel) << "Emit finished";
     emit finished();
 }
 

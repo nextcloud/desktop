@@ -62,8 +62,6 @@ public:
     explicit UserStatusSelectorModel(const UserStatus &userStatus,
         QObject *parent = nullptr);
 
-    ~UserStatusSelectorModel() override;
-
     Q_INVOKABLE void load(int id);
 
     Q_REQUIRED_RESULT UserStatus::OnlineStatus onlineStatus() const;
