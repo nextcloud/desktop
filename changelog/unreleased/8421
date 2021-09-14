@@ -1,0 +1,8 @@
+Bugfix: Mac multiple dialogs block all input
+
+We back ported a fix to a Qt bug which causes multiple dialogs on Mac to block all input.
+
+
+https://github.com/owncloud/client/issues/8421
+https://bugreports.qt.io/browse/QTBUG-91059
+https://invent.kde.org/packaging/craft-blueprints-kde/-/commit/feca22a30f8d3a2122fd9b2097351fcb2da28543

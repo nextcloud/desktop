@@ -1265,7 +1265,9 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <source>Multiple accounts are sharing the folder %1.
 This configuration is know to lead to dataloss and is no longer supported.
 Please consider removing this folder from the account and adding it again.</source>
-        <translation type="unfinished"/>
+        <translation>Várias contas estão compartilhando a pasta %1.
+Esta configuração é conhecida por causar perda de dados e não é mais suportada.
+Considere remover esta pasta da conta e adicioná-la novamente.</translation>
     </message>
 </context>
 <context>

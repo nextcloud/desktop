@@ -34,6 +34,9 @@ public:
 
     Folder *folder() const;
 
+    /**
+     * UTC Time
+     */
     QDateTime timestamp() const;
 
     qint64 size() const;

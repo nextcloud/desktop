@@ -58,7 +58,7 @@ QVariant ProtocolItemModel::data(const QModelIndex &index, int role) const
     case Qt::DisplayRole:
         switch (column) {
         case ProtocolItemRole::Time:
-            return item.timestamp();
+            return item.timestamp().toLocalTime();
         case ProtocolItemRole::Folder:
             return item.folder()->shortGuiLocalPath();
         case ProtocolItemRole::Action:
@@ -69,6 +69,8 @@ QVariant ProtocolItemModel::data(const QModelIndex &index, int role) const
             return Utility::fileNameForGuiUse(item.path());
         case ProtocolItemRole::Account:
             return item.folder()->accountState()->account()->displayName();
+        case ProtocolItemRole::Status:
+            return Utility::enumDisplayName(item.status());
         case ProtocolItemRole::ColumnCount:
             Q_UNREACHABLE();
             break;
@@ -103,6 +105,8 @@ QVariant ProtocolItemModel::data(const QModelIndex &index, int role) const
             return item.path();
         case ProtocolItemRole::Account:
             return item.folder()->accountState()->account()->displayName();
+        case ProtocolItemRole::Status:
+            return Utility::enumName(item.status());
         case ProtocolItemRole::ColumnCount:
             Q_UNREACHABLE();
             break;
@@ -131,6 +135,8 @@ QVariant ProtocolItemModel::headerData(int section, Qt::Orientation orientation,
                 return tr("Size");
             case ProtocolItemRole::Account:
                 return tr("Account");
+            case ProtocolItemRole::Status:
+                return tr("Status");
             case ProtocolItemRole::ColumnCount:
                 Q_UNREACHABLE();
                 break;
@@ -149,6 +155,8 @@ QVariant ProtocolItemModel::headerData(int section, Qt::Orientation orientation,
             case ProtocolItemRole::File:
                 return 64;
             case ProtocolItemRole::Account:
+                return 20;
+            case ProtocolItemRole::Status:
                 return 20;
             case ProtocolItemRole::ColumnCount:
                 Q_UNREACHABLE();

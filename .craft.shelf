@@ -4,7 +4,7 @@ blueprintrepositories = https://github.com/owncloud/craft-blueprints-owncloud.gi
 
 [craft/craft-blueprints-kde]
 version = master
-revision = e0dcffddd723b89bcdd5ea7f123685e3bbc54d49
+revision = feca22a30f8d3a2122fd9b2097351fcb2da28543
 
 [craft/craft-blueprints-owncloud]
 version = master

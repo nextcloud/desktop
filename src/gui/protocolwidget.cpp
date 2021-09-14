@@ -59,6 +59,7 @@ ProtocolWidget::ProtocolWidget(QWidget *parent)
     header->setSectionResizeMode(QHeaderView::Interactive);
     header->setExpandingColumn(static_cast<int>(ProtocolItemModel::ProtocolItemRole::File));
     header->setSortIndicator(static_cast<int>(ProtocolItemModel::ProtocolItemRole::Time), Qt::DescendingOrder);
+    header->hideSection(static_cast<int>(ProtocolItemModel::ProtocolItemRole::Status));
     header->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(header, &QHeaderView::customContextMenuRequested, header, [header, this] {
         showHeaderContextMenu(header, _sortModel);

@@ -17,8 +17,9 @@
 #include "common/utility.h"
 #include "filesystem.h"
 
-#include <QLoggingCategory>
 #include "csync/vio/csync_vio_local.h"
+
+#include <QCoreApplication>
 
 namespace OCC {
 
@@ -74,4 +75,33 @@ SyncFileItemPtr SyncFileItem::fromSyncJournalFileRecord(const SyncJournalFileRec
     return item;
 }
 
+template <>
+QString Utility::enumDisplayName(SyncFileItem::Status s)
+{
+    switch (s) {
+    case SyncFileItem::NoStatus:
+        return QCoreApplication::translate("SyncFileItem::Status", "Undefined");
+    case OCC::SyncFileItem::FatalError:
+        return QCoreApplication::translate("SyncFileItem::Status", "Fatal Error");
+    case OCC::SyncFileItem::NormalError:
+        return QCoreApplication::translate("SyncFileItem::Status", "Error");
+    case OCC::SyncFileItem::SoftError:
+        return QCoreApplication::translate("SyncFileItem::Status", "Info");
+    case OCC::SyncFileItem::Success:
+        return QCoreApplication::translate("SyncFileItem::Status", "Success");
+    case OCC::SyncFileItem::Conflict:
+        return QCoreApplication::translate("SyncFileItem::Status", "Conflict");
+    case OCC::SyncFileItem::FileIgnored:
+        return QCoreApplication::translate("SyncFileItem::Status", "Error Ignored");
+    case OCC::SyncFileItem::Restoration:
+        return QCoreApplication::translate("SyncFileItem::Status", "Restored");
+    case OCC::SyncFileItem::DetailError:
+        return QCoreApplication::translate("SyncFileItem::Status", "Error");
+    case OCC::SyncFileItem::BlacklistedError:
+        return QCoreApplication::translate("SyncFileItem::Status", "Blacklisted");
+    case OCC::SyncFileItem::Excluded:
+        return QCoreApplication::translate("SyncFileItem::Status", "Excluded");
+    }
+    Q_UNREACHABLE();
+}
 }

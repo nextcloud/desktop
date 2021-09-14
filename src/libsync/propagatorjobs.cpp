@@ -39,11 +39,6 @@ Q_LOGGING_CATEGORY(lcPropagateLocalRemove, "sync.propagator.localremove", QtInfo
 Q_LOGGING_CATEGORY(lcPropagateLocalMkdir, "sync.propagator.localmkdir", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcPropagateLocalRename, "sync.propagator.localrename", QtInfoMsg)
 
-QByteArray localFileIdFromFullId(const QByteArray &id)
-{
-    return id.left(8);
-}
-
 /**
  * The code will update the database in case of error.
  * If everything goes well (no error, returns true), the caller is responsible for removing the entries

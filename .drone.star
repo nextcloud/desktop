@@ -21,7 +21,7 @@ def main(ctx):
     }
     pipelines = [
         # check the format of gui test code
-        gui_tests_format(),
+        gui_tests_format(build_trigger),
         # Check starlark
         check_starlark(
             ctx,
@@ -266,7 +266,7 @@ def build_client(ctx, c_compiler, cxx_compiler, build_type, generator, build_com
         },
     ]
 
-def gui_tests_format():
+def gui_tests_format(trigger):
     return {
         "kind": "pipeline",
         "type": "docker",
@@ -282,6 +282,7 @@ def gui_tests_format():
                 ],
             },
         ],
+        "trigger": trigger,
     }
 
 def changelog(ctx, trigger = {}, depends_on = []):
@@ -489,8 +490,10 @@ def testMiddleware():
             "BACKEND_HOST": "http://owncloud",
         },
         "commands": [
+            ". ./.drone.env",
             "git clone https://github.com/owncloud/owncloud-test-middleware.git /drone/src/middleware",
             "cd /drone/src/middleware",
+            "git checkout $MIDDLEWARE_COMMITID",
             "yarn install",
             "yarn start",
         ],

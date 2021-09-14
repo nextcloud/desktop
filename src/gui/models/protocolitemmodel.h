@@ -33,6 +33,7 @@ public:
         Size,
         Account,
         Time,
+        Status,
 
         ColumnCount
     };
