@@ -77,7 +77,7 @@ private slots:
     void slotPasswordSet();
     void slotPasswordSetError(int code, const QString &message);
 
-	void slotCreateNote();
+    void slotCreateNote();
     void slotNoteSet();
 
     void slotSetExpireDate();
@@ -103,7 +103,7 @@ private:
     void showPasswordOptions(bool show);
     void togglePasswordOptions(bool enable);
 
-	void showNoteOptions(bool show);
+    void showNoteOptions(bool show);
     void toggleNoteOptions(bool enable);
     void setNote(const QString &note);
 
