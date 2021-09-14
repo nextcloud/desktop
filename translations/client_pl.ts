@@ -3080,12 +3080,12 @@ Nie zaleca się korzystania z niego.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="577"/>
         <source>The remote folder creation failed because the provided credentials are wrong!&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
-        <translation>Nie udało się utworzyć zdalnego katalogu ponieważ podane poświadczenia są nieprawidłowe!&lt;br/&gt;Wróć i sprawdź poświadczenia.&lt;/p&gt;</translation>
+        <translation>Nie udało się utworzyć zdalnego katalogu ponieważ podane poświadczenia są nieprawidłowe!&lt;br/&gt;Powróć i sprawdź poświadczenia.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="581"/>
         <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Tworzenie katalogu zdalnego nie powiodło się. Prawdopodobnie dostarczone poświadczenia są nieprawidłowe.&lt;/font&gt;&lt;br/&gt;Wróć i sprawdź poświadczenia.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Tworzenie katalogu zdalnego nie powiodło się. Prawdopodobnie dostarczone poświadczenia są nieprawidłowe.&lt;/font&gt;&lt;br/&gt;Powróć i sprawdź poświadczenia.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="586"/>
@@ -5533,7 +5533,7 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="472"/>
         <source>%n day ago</source>
-        <translation><numerusform>%n dzień temu</numerusform><numerusform>%n dni temu</numerusform><numerusform>%n dni temu</numerusform><numerusform>%n dzień temu</numerusform></translation>
+        <translation><numerusform>%n dzień temu</numerusform><numerusform>%n dni temu</numerusform><numerusform>%n dni temu</numerusform><numerusform>%n dni temu</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="474"/>
@@ -5548,7 +5548,7 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="484"/>
         <source>%n hour ago</source>
-        <translation><numerusform>%n godzinę temu</numerusform><numerusform>%n godziny temu</numerusform><numerusform>%n godzin temu</numerusform><numerusform>%n godzin temu</numerusform></translation>
+        <translation><numerusform>%n godzina temu</numerusform><numerusform>%n godziny temu</numerusform><numerusform>%n godzin temu</numerusform><numerusform>%n godzin temu</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="486"/>
@@ -5568,7 +5568,7 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="499"/>
         <source>%n minute ago</source>
-        <translation><numerusform>%n minuta temu</numerusform><numerusform>%n minuty temu</numerusform><numerusform>%n minut temu</numerusform><numerusform>%n minuta temu</numerusform></translation>
+        <translation><numerusform>%n minuta temu</numerusform><numerusform>%n minuty temu</numerusform><numerusform>%n minut temu</numerusform><numerusform>%n minut temu</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="501"/>

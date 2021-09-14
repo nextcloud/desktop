@@ -4913,7 +4913,7 @@ Toto je nový experimentálny režim. Ak sa ho rozhodnete použiť, nahláste v�
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="150"/>
         <source>Could not fetch user status. Make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Nemôžem načítať stav uživateľa. Uistite sa že ste pripojený k serveru.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="154"/>
@@ -4923,81 +4923,81 @@ Toto je nový experimentálny režim. Ak sa ho rozhodnete použiť, nahláste v�
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="158"/>
         <source>Emojis feature is not supported. Some user status functionality may not work.</source>
-        <translation type="unfinished"/>
+        <translation>Funkcia emotikonov nie je podporovaná. Niektoré funkcie stavu uživateľa nemusia fungovať. </translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="162"/>
         <source>Could not set user status. Make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Nemôžem nastaviť stav uživateľa. Uistite sa že ste pripojený k serveru.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="166"/>
         <source>Could not clear user status message. Make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Nemôžem vymazať stav uživateľa. Uistite sa že ste pripojený k serveru.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="364"/>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="462"/>
         <source>Don&apos;t clear</source>
-        <translation type="unfinished"/>
+        <translation>Nemazať</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="367"/>
         <source>30 minutes</source>
-        <translation type="unfinished"/>
+        <translation>30 minút</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="370"/>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="422"/>
         <source>1 hour</source>
-        <translation type="unfinished"/>
+        <translation>1 hodina</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="373"/>
         <source>4 hours</source>
-        <translation type="unfinished"/>
+        <translation>4 hodiny</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="376"/>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="451"/>
         <source>Today</source>
-        <translation type="unfinished"/>
+        <translation>Dnes</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="379"/>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="453"/>
         <source>This week</source>
-        <translation type="unfinished"/>
+        <translation>Tento týždeň</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="411"/>
         <source>Less than a minute</source>
-        <translation type="unfinished"/>
+        <translation>Menej ako minúta</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="415"/>
         <source>1 minute</source>
-        <translation type="unfinished"/>
+        <translation>1 minúta</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="417"/>
         <source>%1 minutes</source>
-        <translation type="unfinished"/>
+        <translation>%1 minút</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="424"/>
         <source>%1 hours</source>
-        <translation type="unfinished"/>
+        <translation>%1 hodín</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="429"/>
         <source>1 day</source>
-        <translation type="unfinished"/>
+        <translation>1 deň</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="431"/>
         <source>%1 days</source>
-        <translation type="unfinished"/>
+        <translation>%1 dní</translation>
     </message>
 </context>
 <context>
@@ -5659,7 +5659,7 @@ Toto je nový experimentálny režim. Ak sa ho rozhodnete použiť, nahláste v�
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="200"/>
         <source>Set status</source>
-        <translation type="unfinished"/>
+        <translation>Nastaviť stav</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="192"/>
@@ -5684,52 +5684,52 @@ Toto je nový experimentálny režim. Ak sa ho rozhodnete použiť, nahláste v�
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="38"/>
         <source>Online status</source>
-        <translation type="unfinished"/>
+        <translation>Stav pripojenia</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="55"/>
         <source>Online</source>
-        <translation type="unfinished"/>
+        <translation>Pripojené</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="65"/>
         <source>Away</source>
-        <translation type="unfinished"/>
+        <translation>Preč</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="76"/>
         <source>Do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>Nerušiť</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="86"/>
         <source>Invisible</source>
-        <translation type="unfinished"/>
+        <translation>Neviditeľný</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="99"/>
         <source>Status message</source>
-        <translation type="unfinished"/>
+        <translation>Správa o stave</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="137"/>
         <source>What is your status?</source>
-        <translation type="unfinished"/>
+        <translation>Aký je váš stav?</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="164"/>
         <source>Clear status message after</source>
-        <translation type="unfinished"/>
+        <translation>Vyčistiť správu o stave po</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="181"/>
         <source>Clear status message</source>
-        <translation type="unfinished"/>
+        <translation>Vyčistiť správu o stave</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="187"/>
         <source>Set status message</source>
-        <translation type="unfinished"/>
+        <translation>Nastaviť správu o stave</translation>
     </message>
 </context>
 <context>
@@ -5850,7 +5850,7 @@ Toto je nový experimentálny režim. Ak sa ho rozhodnete použiť, nahláste v�
     <message>
         <location filename="../src/gui/tray/Window.qml" line="177"/>
         <source>Set user status</source>
-        <translation type="unfinished"/>
+        <translation>Nastaviť status užívateľa</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="203"/>
