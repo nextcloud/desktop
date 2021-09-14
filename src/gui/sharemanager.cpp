@@ -195,10 +195,12 @@ LinkShare::LinkShare(AccountPtr account,
     Permissions permissions,
     bool isPasswordSet,
     const QUrl &url,
-    const QDate &expireDate)
+    const QDate &expireDate,
+    const QString &note)
     : Share(account, id, uidowner, ownerDisplayName, path, Share::TypeLink, isPasswordSet, permissions)
     , _name(name)
     , _token(token)
+    , _note(note)
     , _expireDate(expireDate)
     , _url(url)
 {
@@ -529,6 +531,11 @@ QSharedPointer<LinkShare> ShareManager::parseLinkShare(const QJsonObject &data)
     if (data.value("expiration").isString()) {
         expireDate = QDate::fromString(data.value("expiration").toString(), "yyyy-MM-dd 00:00:00");
     }
+    
+    QString note;
+    if (data.value("note").isString()) {
+        note = data.value("note").toString();
+    }
 
     return QSharedPointer<LinkShare>(new LinkShare(_account,
         data.value("id").toVariant().toString(), // "id" used to be an integer, support both
@@ -540,7 +547,8 @@ QSharedPointer<LinkShare> ShareManager::parseLinkShare(const QJsonObject &data)
         (Share::Permissions)data.value("permissions").toInt(),
         data.value("share_with").isString(), // has password?
         url,
-        expireDate));
+        expireDate,
+        note));
 }
 
 QSharedPointer<Share> ShareManager::parseShare(const QJsonObject &data)
