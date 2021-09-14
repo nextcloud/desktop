@@ -2460,7 +2460,7 @@ Logs serão gravados em %1</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="455"/>
         <source>&lt;p&gt;A new version of the %1 Client is available but the updating process failed.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; has been downloaded. The installed version is %3. If you confirm restart and update, your computer may reboot to complete the installation.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Uma nova versão do cliente %1 está disponível, mas o processo de atualização falhou.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; foi baixado. A versão instalada é %3. Se você confirmar a reinicialização e atualização, seu computador pode reiniciar para completar a instalação.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="469"/>
@@ -2646,7 +2646,7 @@ pode solicitar por privilégios adicionais durante o processo.</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="109"/>
         <source>A new update for %1 is about to be installed. The updater may ask for additional privileges during the process. Your computer may reboot to complete the installation.</source>
-        <translation type="unfinished"/>
+        <translation>Uma nova atualização para %1 está prestes a ser instalada. O atualizador pode solicitar privilégios adicionais durante o processo. Seu computador pode reiniciar para completar a instalação.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="143"/>
@@ -4907,96 +4907,96 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="146"/>
         <source>Could not fetch predefined statuses. Make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Não foi possível buscar status predefinidos. Certifique-se de estar conectado ao servidor.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="150"/>
         <source>Could not fetch user status. Make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Não foi possível buscar o status do usuário. Certifique-se de estar conectado ao servidor.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="154"/>
         <source>User status feature is not supported. You will not be able to set your user status.</source>
-        <translation type="unfinished"/>
+        <translation>O recurso de status do usuário não é compatível. Você não poderá definir seu status de usuário.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="158"/>
         <source>Emojis feature is not supported. Some user status functionality may not work.</source>
-        <translation type="unfinished"/>
+        <translation>O recurso emojis não é compatível. Algumas funcionalidades de status do usuário podem não funcionar.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="162"/>
         <source>Could not set user status. Make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Não foi possível definir o status do usuário. Certifique-se de estar conectado ao servidor.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="166"/>
         <source>Could not clear user status message. Make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Não foi possível limpar a mensagem de status do usuário. Certifique-se de estar conectado ao servidor.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="364"/>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="462"/>
         <source>Don&apos;t clear</source>
-        <translation type="unfinished"/>
+        <translation>Não limpe</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="367"/>
         <source>30 minutes</source>
-        <translation type="unfinished"/>
+        <translation>30 minutos</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="370"/>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="422"/>
         <source>1 hour</source>
-        <translation type="unfinished"/>
+        <translation>1 hora</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="373"/>
         <source>4 hours</source>
-        <translation type="unfinished"/>
+        <translation>4 horas</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="376"/>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="451"/>
         <source>Today</source>
-        <translation type="unfinished"/>
+        <translation>Hoje</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="379"/>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="453"/>
         <source>This week</source>
-        <translation type="unfinished"/>
+        <translation>Est semana</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="411"/>
         <source>Less than a minute</source>
-        <translation type="unfinished"/>
+        <translation>Menos de um minuto</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="415"/>
         <source>1 minute</source>
-        <translation type="unfinished"/>
+        <translation>1 minuto</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="417"/>
         <source>%1 minutes</source>
-        <translation type="unfinished"/>
+        <translation>%1 minutos</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="424"/>
         <source>%1 hours</source>
-        <translation type="unfinished"/>
+        <translation>%1 horas</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="429"/>
         <source>1 day</source>
-        <translation type="unfinished"/>
+        <translation>1 dia</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="431"/>
         <source>%1 days</source>
-        <translation type="unfinished"/>
+        <translation>%1 dias</translation>
     </message>
 </context>
 <context>
@@ -5658,7 +5658,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="200"/>
         <source>Set status</source>
-        <translation type="unfinished"/>
+        <translation>Definir status</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="192"/>
@@ -5683,52 +5683,52 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="38"/>
         <source>Online status</source>
-        <translation type="unfinished"/>
+        <translation>Status online</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="55"/>
         <source>Online</source>
-        <translation type="unfinished"/>
+        <translation>Online</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="65"/>
         <source>Away</source>
-        <translation type="unfinished"/>
+        <translation>Longe</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="76"/>
         <source>Do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>Não perturbe</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="86"/>
         <source>Invisible</source>
-        <translation type="unfinished"/>
+        <translation>Invisível</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="99"/>
         <source>Status message</source>
-        <translation type="unfinished"/>
+        <translation>Mensagem de status</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="137"/>
         <source>What is your status?</source>
-        <translation type="unfinished"/>
+        <translation>Qual é o seu status?</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="164"/>
         <source>Clear status message after</source>
-        <translation type="unfinished"/>
+        <translation>Limpar mensagem de status após</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="181"/>
         <source>Clear status message</source>
-        <translation type="unfinished"/>
+        <translation>Limpar mensagem de status</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="187"/>
         <source>Set status message</source>
-        <translation type="unfinished"/>
+        <translation>Definir mensagem de status</translation>
     </message>
 </context>
 <context>
@@ -5849,7 +5849,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/gui/tray/Window.qml" line="177"/>
         <source>Set user status</source>
-        <translation type="unfinished"/>
+        <translation>Definir o status do usuário</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="203"/>
