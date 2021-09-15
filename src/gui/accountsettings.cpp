@@ -242,7 +242,7 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
 {
     QTreeView *tv = ui->_folderList;
     QModelIndex index = tv->indexAt(pos);
-    if (!index.isValid()) {
+    if (!index.isValid() || !(index.flags() & Qt::ItemIsEnabled)) {
         return;
     }
 
@@ -284,7 +284,7 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
     bool folderConnected = _model->data(index, FolderStatusDelegate::FolderAccountConnected).toBool();
     auto folderMan = FolderMan::instance();
     QPointer<Folder> folder = folderMan->folder(alias);
-    if (!folder)
+    if (!folder || !OC_ENSURE(folder->ok()))
         return;
 
     QMenu *menu = new QMenu(tv);

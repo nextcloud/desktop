@@ -289,7 +289,12 @@ bool Folder::syncPaused() const
 
 bool Folder::canSync() const
 {
-    return !syncPaused() && accountState()->isConnected() && _syncResult.status() != SyncResult::SetupError;
+    return !syncPaused() && accountState()->isConnected() && ok();
+}
+
+bool Folder::ok() const
+{
+    return _syncResult.status() != SyncResult::SetupError;
 }
 
 bool Folder::dueToSync() const

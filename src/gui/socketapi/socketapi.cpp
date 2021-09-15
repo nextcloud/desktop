@@ -739,7 +739,7 @@ void SocketApi::command_MAKE_AVAILABLE_LOCALLY(const QString &filesArg, SocketLi
 
     for (const auto &file : files) {
         auto data = FileData::get(file);
-        if (!data.folder)
+        if (!data.folder || !data.folder->ok())
             continue;
 
         // Update the pin state on all items
@@ -758,7 +758,7 @@ void SocketApi::command_MAKE_ONLINE_ONLY(const QString &filesArg, SocketListener
 
     for (const auto &file : files) {
         auto data = FileData::get(file);
-        if (!data.folder)
+        if (!data.folder || !data.folder->ok())
             continue;
 
         // Update the pin state on all items
@@ -1098,6 +1098,7 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
 
     // File availability actions
     if (folder
+        && folder->ok()
         && folder->virtualFilesEnabled()
         && folder->vfs().socketApiPinStateActionsShown()) {
         OC_ENFORCE(!files.isEmpty());
@@ -1116,6 +1117,9 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
             return VfsItemAvailability::Mixed;
         };
         for (const auto &file : files) {
+            if (!folder->ok()) {
+                continue;
+            }
             auto fileData = FileData::get(file);
             auto availability = folder->vfs().availability(fileData.folderRelativePath);
             if (!availability) {
