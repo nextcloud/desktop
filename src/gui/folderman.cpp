@@ -286,7 +286,16 @@ void FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account,
         FolderDefinition folderDefinition;
         settings.beginGroup(folderAlias);
         if (FolderDefinition::load(settings, folderAlias, &folderDefinition)) {
-            auto defaultJournalPath = folderDefinition.defaultJournalPath(account->account());
+            const auto defaultJournalPath = [&account, folderDefinition] {
+                // if we would have booth the 2.9.0 file name and the lagacy file
+                // with the md5 infix we prefer the 2.9.0 version
+                const auto path = SyncJournalDb::makeDbName(folderDefinition.localPath);
+                if (QFileInfo::exists(QDir(folderDefinition.localPath).filePath(path))) {
+                    return path;
+                }
+                // legacy name
+                return SyncJournalDb::makeDbName(folderDefinition.localPath, account->account()->url(), folderDefinition.targetPath, account->account()->credentials()->user());
+            }();
 
             // Migration: Old settings don't have journalPath
             if (folderDefinition.journalPath.isEmpty()) {
@@ -328,6 +337,9 @@ void FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account,
                     f->setSaveBackwardsCompatible(true);
                 if (foldersWithPlaceholders)
                     f->setSaveInFoldersWithPlaceholders();
+
+                // save possible changes from the migration
+                f->saveToSettings();
 
                 scheduleFolder(f);
                 emit folderSyncStateChange(f);
@@ -1011,7 +1023,7 @@ Folder *FolderMan::addFolder(AccountState *accountState, const FolderDefinition 
 {
     // Choose a db filename
     auto definition = folderDefinition;
-    definition.journalPath = definition.defaultJournalPath(accountState->account());
+    definition.journalPath = SyncJournalDb::makeDbName(folderDefinition.localPath);
 
     if (!ensureJournalGone(definition.absoluteJournalPath())) {
         return nullptr;
