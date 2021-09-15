@@ -4897,96 +4897,96 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::UserStatusSelectorModel</name>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="146"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="140"/>
         <source>Could not fetch predefined statuses. Make sure you are connected to the server.</source>
         <translation>Impossibile recuperare gli stati preimpostati. Assicurati di essere connesso al server.</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="150"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="144"/>
         <source>Could not fetch user status. Make sure you are connected to the server.</source>
         <translation>Impossibile recuperare gli stati dell&apos;utente. Assicurati di essere connesso al server.</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="154"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="148"/>
         <source>User status feature is not supported. You will not be able to set your user status.</source>
         <translation>La funzionalità dello stato dell&apos;utente non è supportata. Non potrai impostare il tuo stato utente.</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="158"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="152"/>
         <source>Emojis feature is not supported. Some user status functionality may not work.</source>
         <translation>La funzionalità emoji non è supportata. Alcune caratteristiche dello stato utente potrebbero non funzionare.</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="162"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="156"/>
         <source>Could not set user status. Make sure you are connected to the server.</source>
         <translation>Impossibile impostare lo stato dell&apos;utente. Assicurati di essere connesso al server.</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="166"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="160"/>
         <source>Could not clear user status message. Make sure you are connected to the server.</source>
         <translation>Impossibile cancellare il messaggio di stato dell&apos;utente. Assicurati di essere connesso al server.</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="364"/>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="462"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="358"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="456"/>
         <source>Don&apos;t clear</source>
         <translation>Non cancellare</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="367"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="361"/>
         <source>30 minutes</source>
         <translation>30 minuti</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="370"/>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="422"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="364"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="416"/>
         <source>1 hour</source>
         <translation>1 ora</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="373"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="367"/>
         <source>4 hours</source>
         <translation>4 ore</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="376"/>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="451"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="370"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="445"/>
         <source>Today</source>
         <translation>Oggi</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="379"/>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="453"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="373"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="447"/>
         <source>This week</source>
         <translation>Questa settimana</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="411"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="405"/>
         <source>Less than a minute</source>
         <translation>Meno di un minuto</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="415"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="409"/>
         <source>1 minute</source>
         <translation>1 minuto</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="417"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="411"/>
         <source>%1 minutes</source>
         <translation>%1 minuti</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="424"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="418"/>
         <source>%1 hours</source>
         <translation>%1 ore</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="429"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="423"/>
         <source>1 day</source>
         <translation>1 giorno</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="431"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="425"/>
         <source>%1 days</source>
         <translation>%1 giorni</translation>
     </message>

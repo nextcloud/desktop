@@ -1226,7 +1226,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="442"/>
         <source>%1 and %n other file(s) have been updated.</source>
-        <translation><numerusform>Обновлёны «%1» и ещё один файл.</numerusform><numerusform>Обновлёны «%1» и ещё %n файла.</numerusform><numerusform>Обновлёны «%1» и ещё %n файлов.</numerusform><numerusform>Обновлёны «%1» и ещё %n файлов.</numerusform></translation>
+        <translation><numerusform>Обновлены «%1» и ещё один файл.</numerusform><numerusform>Обновлены «%1» и ещё %n файла.</numerusform><numerusform>Обновлены «%1» и ещё %n файлов.</numerusform><numerusform>Обновлены «%1» и ещё %n файла.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="444"/>
@@ -2288,7 +2288,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="55"/>
         <source>&lt;p&gt;Copyright 2017-2021 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2021 ownCloud GmbH&lt;/p&gt;</source>
-        <translation>&lt;p&gt;© Nextcloud GmbH, 2017—2021&lt;br /&gt;© ownCloud GmbH, 2012—2018&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;© Nextcloud GmbH, 2017—2021&lt;br /&gt;© ownCloud GmbH, 2012—2021&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="55"/>
@@ -2458,7 +2458,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="455"/>
         <source>&lt;p&gt;A new version of the %1 Client is available but the updating process failed.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; has been downloaded. The installed version is %3. If you confirm restart and update, your computer may reboot to complete the installation.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Новая версия %1 клиента доступна, но произошёл сбой в процессе обновления.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; был загружен. Установлена версия %3. При подтверждении перезапуска и обновления, для завершения установки компьютер может быть перезагружен.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="469"/>
@@ -2644,7 +2644,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="109"/>
         <source>A new update for %1 is about to be installed. The updater may ask for additional privileges during the process. Your computer may reboot to complete the installation.</source>
-        <translation type="unfinished"/>
+        <translation>Обновление %1 готово к установке. Приложение установки может запросить дополнительные разрешения во время работы. Для завершения установки может потребоваться перезагрузка компьютера.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="143"/>
@@ -4903,98 +4903,98 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::UserStatusSelectorModel</name>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="146"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="140"/>
         <source>Could not fetch predefined statuses. Make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Не удалось получить шаблоны статусов с сервера, убедитесь, что подключение установлено.</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="150"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="144"/>
         <source>Could not fetch user status. Make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Не удалось получить статус пользователя с сервера, убедитесь, что подключение установлено.</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="154"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="148"/>
         <source>User status feature is not supported. You will not be able to set your user status.</source>
-        <translation type="unfinished"/>
+        <translation>Функция статусов пользователей не поддерживается сервером.</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="158"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="152"/>
         <source>Emojis feature is not supported. Some user status functionality may not work.</source>
-        <translation type="unfinished"/>
+        <translation>Поддержка эмодзи не используется на севере, некоторые возможности статусов могут не работать.</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="162"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="156"/>
         <source>Could not set user status. Make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Не удалось установить статус на сервере. Убедитесь, что подключение установлено.</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="166"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="160"/>
         <source>Could not clear user status message. Make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Не удалось удалить описание статуса на сервере. Убедитесь, что подключение установлено.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="358"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="456"/>
+        <source>Don&apos;t clear</source>
+        <translation>Не очищать</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="361"/>
+        <source>30 minutes</source>
+        <translation>30 минут</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="364"/>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="462"/>
-        <source>Don&apos;t clear</source>
-        <translation type="unfinished"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="416"/>
+        <source>1 hour</source>
+        <translation>1 час</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="367"/>
-        <source>30 minutes</source>
-        <translation type="unfinished"/>
+        <source>4 hours</source>
+        <translation>4 часа</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="370"/>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="422"/>
-        <source>1 hour</source>
-        <translation type="unfinished"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="445"/>
+        <source>Today</source>
+        <translation>Сегодня</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="373"/>
-        <source>4 hours</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="376"/>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="451"/>
-        <source>Today</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="379"/>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="453"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="447"/>
         <source>This week</source>
-        <translation type="unfinished"/>
+        <translation>На этой неделе</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="405"/>
+        <source>Less than a minute</source>
+        <translation>Меньше минуты</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="409"/>
+        <source>1 minute</source>
+        <translation>Одна минута</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="411"/>
-        <source>Less than a minute</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="415"/>
-        <source>1 minute</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="417"/>
         <source>%1 minutes</source>
-        <translation type="unfinished"/>
+        <translation>%n минут(ы)</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="424"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="418"/>
         <source>%1 hours</source>
-        <translation type="unfinished"/>
+        <translation>%n часов(а)</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="429"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="423"/>
         <source>1 day</source>
-        <translation type="unfinished"/>
+        <translation>1 день</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="431"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="425"/>
         <source>%1 days</source>
-        <translation type="unfinished"/>
+        <translation>%n дней</translation>
     </message>
 </context>
 <context>
@@ -5657,7 +5657,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="200"/>
         <source>Set status</source>
-        <translation type="unfinished"/>
+        <translation>Установить статус</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="192"/>
@@ -5682,52 +5682,52 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="38"/>
         <source>Online status</source>
-        <translation type="unfinished"/>
+        <translation>Статус работы в сети</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="55"/>
         <source>Online</source>
-        <translation type="unfinished"/>
+        <translation>В сети</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="65"/>
         <source>Away</source>
-        <translation type="unfinished"/>
+        <translation>Отошёл</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="76"/>
         <source>Do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>Не беспокоить</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="86"/>
         <source>Invisible</source>
-        <translation type="unfinished"/>
+        <translation>Невидимый</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="99"/>
         <source>Status message</source>
-        <translation type="unfinished"/>
+        <translation>Описание статуса</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="137"/>
         <source>What is your status?</source>
-        <translation type="unfinished"/>
+        <translation>Опишите свой статус</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="164"/>
         <source>Clear status message after</source>
-        <translation type="unfinished"/>
+        <translation>Убрать описание статуса через</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="181"/>
         <source>Clear status message</source>
-        <translation type="unfinished"/>
+        <translation>Убрать описание статуса</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="187"/>
         <source>Set status message</source>
-        <translation type="unfinished"/>
+        <translation>Описать статус</translation>
     </message>
 </context>
 <context>
@@ -5848,7 +5848,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/Window.qml" line="177"/>
         <source>Set user status</source>
-        <translation type="unfinished"/>
+        <translation>Задать статус</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="203"/>

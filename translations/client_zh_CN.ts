@@ -4889,96 +4889,96 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::UserStatusSelectorModel</name>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="146"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="140"/>
         <source>Could not fetch predefined statuses. Make sure you are connected to the server.</source>
         <translation>无法获取预定义状态。确保您已连接到服务器。</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="150"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="144"/>
         <source>Could not fetch user status. Make sure you are connected to the server.</source>
         <translation>无法获取用户状态。确保您已连接到服务器。</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="154"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="148"/>
         <source>User status feature is not supported. You will not be able to set your user status.</source>
         <translation>不支持用户状态特性。您将无法设置您的用户状态。</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="158"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="152"/>
         <source>Emojis feature is not supported. Some user status functionality may not work.</source>
         <translation>不支持表情符号功能。某些用户状态功能可能无法工作。</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="162"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="156"/>
         <source>Could not set user status. Make sure you are connected to the server.</source>
         <translation>无法设置用户状态。确保您已连接到服务器。</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="166"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="160"/>
         <source>Could not clear user status message. Make sure you are connected to the server.</source>
         <translation>无法清除用户状态信息。确保您已连接到服务器。</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="364"/>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="462"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="358"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="456"/>
         <source>Don&apos;t clear</source>
         <translation>不要清除</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="367"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="361"/>
         <source>30 minutes</source>
         <translation>30 分钟</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="370"/>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="422"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="364"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="416"/>
         <source>1 hour</source>
         <translation>1 小时</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="373"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="367"/>
         <source>4 hours</source>
         <translation>4 小时</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="376"/>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="451"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="370"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="445"/>
         <source>Today</source>
         <translation>今日</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="379"/>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="453"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="373"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="447"/>
         <source>This week</source>
         <translation>本周</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="411"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="405"/>
         <source>Less than a minute</source>
         <translation>不到一分钟</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="415"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="409"/>
         <source>1 minute</source>
         <translation>1 分钟</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="417"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="411"/>
         <source>%1 minutes</source>
         <translation>%1 分钟</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="424"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="418"/>
         <source>%1 hours</source>
         <translation>%1 小时</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="429"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="423"/>
         <source>1 day</source>
         <translation>1 天</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="431"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="425"/>
         <source>%1 days</source>
         <translation>%1 天</translation>
     </message>
