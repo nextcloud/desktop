@@ -291,6 +291,9 @@ private:
     LocalDiscoveryStyle _lastLocalDiscoveryStyle = LocalDiscoveryStyle::FilesystemOnly;
     LocalDiscoveryStyle _localDiscoveryStyle = LocalDiscoveryStyle::FilesystemOnly;
     std::set<QString> _localDiscoveryPaths;
+
+    // destructor called
+    bool _goingDown = false;
 };
 }
 

@@ -112,6 +112,7 @@ SyncEngine::SyncEngine(AccountPtr account, const QString &localPath,
 
 SyncEngine::~SyncEngine()
 {
+    _goingDown = true;
     abort();
     _excludedFiles.reset();
 }
@@ -981,7 +982,9 @@ void SyncEngine::abort()
         disconnect(_discoveryPhase.data(), nullptr, this, nullptr);
         _discoveryPhase.take()->deleteLater();
 
-        Q_EMIT syncError(tr("Aborted"));
+        if (!_goingDown) {
+            Q_EMIT syncError(tr("Aborted"));
+        }
         finalize(false);
     }
 }
