@@ -11,6 +11,7 @@ Summary
 * Bugfix - Mac multiple dialogs block all input: [#8421](https://github.com/owncloud/client/issues/8421)
 * Bugfix - Enforce rtl layout with rtl languages: [#8806](https://github.com/owncloud/client/issues/8806)
 * Bugfix - Tables now display local time: [#9006](https://github.com/owncloud/client/issues/9006)
+* Bugfix - We fixed a crash when using the retry action on an issue: [#9013](https://github.com/owncloud/client/issues/9013)
 * Change - Make sharedialog preview be more resilient: [#8938](https://github.com/owncloud/client/issues/8938)
 * Enhancement - Display the error type in the issue protocol and allow filtering: [#9000](https://github.com/owncloud/client/issues/9000)
 
@@ -38,6 +39,13 @@ Details
    We fixed a bug where the sync tables where displaying utc time for some items.
 
    https://github.com/owncloud/client/issues/9006
+
+* Bugfix - We fixed a crash when using the retry action on an issue: [#9013](https://github.com/owncloud/client/issues/9013)
+
+   Using the context menu action on a sync issue could cause a crash.
+
+   https://github.com/owncloud/client/issues/9013
+   https://github.com/owncloud/client/pull/9012
 
 * Change - Make sharedialog preview be more resilient: [#8938](https://github.com/owncloud/client/issues/8938)
 
