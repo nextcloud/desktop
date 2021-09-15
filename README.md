@@ -42,7 +42,7 @@ we can accept your patch.
 
 If you want to contact us, e.g. before starting a more complex feature,
 you can join us at
-[#owncloud-client-dev](irc://irc.freenode.net/#owncloud-client-dev).
+[RocketChat](https://talk.owncloud.com/channel/desktop).
 
 ## Maintainers and Contributors
 
@@ -50,15 +50,15 @@ The current maintainers of this repository are:
 
 * Hannah von Reth <hannah.vonreth@owncloud.com>
 * Dominik Schmidt <dev@dominik-schmidt.de>
-* Markus Goetz <guruz@owncloud.com>
-* Olivier Goffart <ogoffart@owncloud.com>
-* Christian Kamm <mail@ckamm.de>
 
 ownCloud Desktop Client is developed by the ownCloud community and [receives
 patches from a variety of authors](https://github.com/owncloud/client/graphs/contributors).
 
 Past maintainers:
 
+* Markus Goetz <guruz@owncloud.com>
+* Olivier Goffart <ogoffart@owncloud.com>
+* Christian Kamm <mail@ckamm.de>
 * Thomas Müller <thomas.mueller@owncloud.com>
 * Klaas Freitag <freitag@owncloud.com>
 * Daniel Molkentin <daniel@molkentin.de>
