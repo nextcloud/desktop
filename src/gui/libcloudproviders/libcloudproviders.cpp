@@ -12,12 +12,10 @@
  * for more details.
  */
 
-extern "C" {
-    #include <cloudproviders/cloudprovidersaccountexporter.h>
-    #include <cloudproviders/cloudprovidersproviderexporter.h>
-    #include <gio/gio.h>
-    #include <glib.h>
-}
+#include <cloudproviders/cloudprovidersaccountexporter.h>
+#include <cloudproviders/cloudprovidersproviderexporter.h>
+#include <gio/gio.h>
+#include <glib.h>
 
 #include "libcloudproviders.h"
 #include "libcloudproviders_p.h"
@@ -84,7 +82,7 @@ void LibCloudProvidersPrivate::start()
 
 void LibCloudProvidersPrivate::updateExportedFolderList()
 {
-    const auto newFolders = FolderMan::instance()->list();
+    const auto newFolders = FolderMan::instance()->map().values();
     const auto oldFolders = _folderExports.keys();
 
     // Remove folders that are no longer exported
