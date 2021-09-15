@@ -124,9 +124,11 @@ void ProtocolWidget::showContextMenu(QWidget *parent, ProtocolItemModel *model, 
                 case SyncFileItem::SoftError:
                     Q_FALLTHROUGH();
                 case SyncFileItem::BlacklistedError:
-                    menu->addAction(tr("Retry sync"), parent, [&data] {
-                        data.folder()->journalDb()->wipeErrorBlacklistEntry(data.path());
-                        FolderMan::instance()->scheduleFolderNext(data.folder());
+                    menu->addAction(tr("Retry sync"), parent, [data, folder = QPointer<Folder>(data.folder())] {
+                        if (folder) {
+                            folder->journalDb()->wipeErrorBlacklistEntry(data.path());
+                            FolderMan::instance()->scheduleFolderNext(folder);
+                        }
                     });
                 default:
                     break;

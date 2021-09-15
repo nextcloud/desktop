@@ -106,9 +106,11 @@ IssuesWidget::IssuesWidget(QWidget *parent)
 
     _ui->_tooManyIssuesWarning->hide();
     connect(_model, &ProtocolItemModel::rowsInserted, this, [this] {
+        Q_EMIT issueCountUpdated(_model->rowCount());
         _ui->_tooManyIssuesWarning->setVisible(_model->isModelFull());
     });
     connect(_model, &ProtocolItemModel::modelReset, this, [this] {
+        Q_EMIT issueCountUpdated(_model->rowCount());
         _ui->_tooManyIssuesWarning->setVisible(_model->isModelFull());
     });
 
