@@ -39,13 +39,27 @@ MouseArea {
                 spacing: 4
                 Image {
                     id: unifiedSearchResultThumbnail
-                    visible: parent.visible
+                    visible: parent.visible && !unifiedSearchResultThumbnailPlaceholder.visible
                     Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
                     Layout.preferredWidth: 16
                     Layout.preferredHeight: 16
                     verticalAlignment: Qt.AlignCenter
                     asynchronous: true
+                    cache: true
                     source: "image://unified-search-result-image/" + model.thumbnailUrl
+                    sourceSize.height: 16
+                    sourceSize.width: 16
+                }
+                Image {
+                    id: unifiedSearchResultThumbnailPlaceholder
+                    visible: model.thumbnailUrl && unifiedSearchResultThumbnail.status != Image.Ready
+                    Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
+                    Layout.preferredWidth: 16
+                    Layout.preferredHeight: 16
+                    verticalAlignment: Qt.AlignCenter
+                    asynchronous: true
+                    cache: true
+                    source: "qrc:///client/theme/change.svg"
                     sourceSize.height: 16
                     sourceSize.width: 16
                 }

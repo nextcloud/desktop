@@ -26,39 +26,41 @@ class AsyncImageResponse : public QQuickImageResponse
 {
 public:
     AsyncImageResponse(const QString &id, const QSize &requestedSize)
-        : _account(UserModel::instance()->currentUser()->account())
     {
         const QUrl iconUrl = QUrl(id);
 
         if (!iconUrl.isValid() || iconUrl.scheme().isEmpty()) {
-            handleDone(QImage());
+            emitDone(QImage());
             return;
         }
 
-        auto reply = _account->sendRawRequest("GET",  iconUrl);
+        auto curetAccount = UserModel::instance()->currentUser()->account();
+
+        if (!curetAccount) {
+            emitDone(QImage());
+            return;
+        }
+
+        auto reply = curetAccount->sendRawRequest("GET", iconUrl);
         connect(reply, &QNetworkReply::finished, this, [this, reply]() {
-            handleDone(QImage::fromData(reply->readAll()));
+            emitDone(QImage::fromData(reply->readAll()));
         });
     }
 
-    ~AsyncImageResponse() override
+    void emitDone(QImage image)
     {
-
-    }
-
-    void handleDone(QImage image)
-    {
-        m_image = image;
+        _image = image;
+        auto width = _image.width();
+        auto height = _image.height();
         emit finished();
     }
 
     QQuickTextureFactory *textureFactory() const override
     {
-        return QQuickTextureFactory::textureFactoryForImage(m_image);
+        return QQuickTextureFactory::textureFactoryForImage(_image);
     }
 
-    AccountPtr _account;
-    QImage m_image;
+    QImage _image;
 };
 
 QQuickImageResponse *UnifiedSearchResultImageProvider::requestImageResponse(const QString &id, const QSize &requestedSize)
