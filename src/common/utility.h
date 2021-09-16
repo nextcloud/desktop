@@ -273,12 +273,6 @@ OCSYNC_EXPORT Q_DECLARE_LOGGING_CATEGORY(lcUtility)
     {
         return QMetaEnum::fromType<E>().valueToKeys(value);
     }
-    template <class E = void>
-    QString enumDisplayName(E)
-    {
-        static_assert(std::is_same<E, void>::value, "Not implemented");
-        Q_UNREACHABLE();
-    }
 }
 /** @} */ // \addtogroup
 
