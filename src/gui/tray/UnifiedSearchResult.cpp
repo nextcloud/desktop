@@ -19,7 +19,7 @@
 namespace OCC {
 bool operator<(const UnifiedSearchResult &rhs, const UnifiedSearchResult &lhs)
 {
-    return (rhs._order > lhs._order && rhs._categoryId > lhs._categoryId && rhs._title > lhs._title && rhs._subline > lhs._subline && rhs._resourceUrl > lhs._resourceUrl && (rhs._isFetchMoreTrigger && !lhs._isFetchMoreTrigger));
+    return (rhs._order > lhs._order && rhs._categoryId > lhs._categoryId && rhs._title > lhs._title && rhs._subline > lhs._subline && rhs._resourceUrl > lhs._resourceUrl && (rhs._type == UnifiedSearchResult::Type::FetchMoreTrigger && lhs._type != UnifiedSearchResult::Type::FetchMoreTrigger));
 }
 
 bool operator==(const UnifiedSearchResult &rhs, const UnifiedSearchResult &lhs)

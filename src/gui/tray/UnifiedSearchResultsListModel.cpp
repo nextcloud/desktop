@@ -33,37 +33,41 @@ UnifiedSearchResultsListModel::UnifiedSearchResultsListModel(AccountState *accou
     UnifiedSearchResult filesCategorySeparator;
     filesCategorySeparator._categoryId = "files";
     filesCategorySeparator._categoryName = "Files";
-    filesCategorySeparator._isCategorySeparator = true;
+    filesCategorySeparator._type = UnifiedSearchResult::Type::CategorySeparator;
     _resultsCombined.push_back(filesCategorySeparator);
 
     UnifiedSearchResult fakeFileResult;
-    fakeFileResult._title = "Fake file result";
-    fakeFileResult._subline = "Subline for Fake file result";
+    fakeFileResult._title = "Long long long Fake file result Long long long Long long long Fake file result Long long long Long long long Fake file result Long long long";
+    fakeFileResult._subline = "Subline for Fake Long long long file result for Fake Long long long file result for Fake Long long long file result for Fake Long long long file result";
     fakeFileResult._categoryId = "files";
     fakeFileResult._categoryName = "Files";
 
     UnifiedSearchResult fetchMoreFileResultsTrigger;
     fetchMoreFileResultsTrigger._categoryId = "files";
-    fetchMoreFileResultsTrigger._isFetchMoreTrigger = true;
+    fetchMoreFileResultsTrigger._type = UnifiedSearchResult::Type::FetchMoreTrigger;
 
     _resultsCombined.push_back(fakeFileResult);
     _resultsCombined.push_back(fetchMoreFileResultsTrigger);
 
     UnifiedSearchResult talkMessagesCategorySeparator;
-    talkMessagesCategorySeparator._categoryId = "talk_messages";
-    talkMessagesCategorySeparator._categoryName = "Messages";
-    talkMessagesCategorySeparator._isCategorySeparator = true;
+    talkMessagesCategorySeparator._categoryId = "comments";
+    talkMessagesCategorySeparator._categoryName = "Comments";
+    talkMessagesCategorySeparator._type = UnifiedSearchResult::Type::CategorySeparator;
     _resultsCombined.push_back(talkMessagesCategorySeparator);
 
     UnifiedSearchResult fakeTalkMessagesResult;
-    fakeTalkMessagesResult._title = "Fake Talk messages result";
-    fakeTalkMessagesResult._subline = "Subline for Fake Talk messages result";
-    fakeTalkMessagesResult._categoryId = "talk_messages";
-    fakeTalkMessagesResult._categoryName = "Messages";
+    fakeTalkMessagesResult._title = "Long/path/subpath/folder/file.md";
+    fakeTalkMessagesResult._subline = R"(
+@kwfw  @khl Long long long Fake file result Long long long Long long long Fake file result Long long long Long long long Fake fil)
+
+Long long long Fake file result Long long long Long long long Fake file result Long long long Long long long Fake fil)";
+    fakeTalkMessagesResult._thumbnailUrl = "https://cloud.nextcloud.com/avatar/lukas/42";
+    fakeTalkMessagesResult._categoryId = "comments";
+    fakeTalkMessagesResult._categoryName = "Comments";
 
     UnifiedSearchResult fetchMoreTalkMessagesTrigger;
     fetchMoreTalkMessagesTrigger._categoryId = "talk_messages";
-    fetchMoreTalkMessagesTrigger._isFetchMoreTrigger = true;
+    fetchMoreTalkMessagesTrigger._type = UnifiedSearchResult::Type::FetchMoreTrigger;
 
     _resultsCombined.push_back(fakeTalkMessagesResult);
     _resultsCombined.push_back(fetchMoreTalkMessagesTrigger);
@@ -96,16 +100,20 @@ QVariant UnifiedSearchResultsListModel::data(const QModelIndex &index, int role)
         return _resultsCombined.at(index.row())._subline;
     }
     case ThumbnailUrlRole: {
-        return _resultsCombined.at(index.row())._thumbnailUrl;
+        const auto resulInfo = _resultsCombined.at(index.row());
+        if (resulInfo._categoryId.contains("mail")) {
+            return QStringLiteral(":/client/theme/black/email.svg");
+        } else if (resulInfo._categoryId.contains("calendar")) {
+            return QStringLiteral(":/client/theme/account.svg");
+        }
+
+        return resulInfo._thumbnailUrl;
     }
     case ResourceUrlRole: {
         return _resultsCombined.at(index.row())._resourceUrl;
     }
-    case IsFetchMoreTrigger: {
-        return _resultsCombined.at(index.row())._isFetchMoreTrigger;
-    }
-    case IsCategorySeparator: {
-        return _resultsCombined.at(index.row())._isCategorySeparator;
+    case TypeRole: {
+        return _resultsCombined.at(index.row())._type;
     }
     }
 
@@ -126,8 +134,7 @@ QHash<int, QByteArray> UnifiedSearchResultsListModel::roleNames() const
     roles[SublineRole] = "subline";
     roles[ResourceUrlRole] = "resourceUrl";
     roles[ThumbnailUrlRole] = "thumbnailUrl";
-    roles[IsFetchMoreTrigger] = "isFetchMoreTrigger";
-    roles[IsCategorySeparator] = "isCategorySeparator";
+    roles[TypeRole] = "type";
     return roles;
 }
 
@@ -174,14 +181,14 @@ void UnifiedSearchResultsListModel::resultClicked(int resultIndex)
     const auto categoryInfo = _resultsByCategory.value(categoryId, UnifiedSearchResultCategory());
 
     if (!categoryInfo._id.isEmpty() && categoryInfo._id == categoryId) {
-        const auto isFetchMoreTrigger = data(modelIndex, IsFetchMoreTrigger).toBool();
+        const auto type = data(modelIndex, TypeRole).toUInt();
 
-        if (isFetchMoreTrigger) {
+        if (type == UnifiedSearchResult::Type::FetchMoreTrigger) {
             if (categoryInfo._isPaginated) {
                 // Load more items
                 const auto providerFound = _providers.find(categoryInfo._name);
                 if (providerFound != _providers.end()) {
-                    startSearchForProvider(*providerFound, categoryInfo._cursor * 2);
+                    startSearchForProvider(*providerFound, categoryInfo._cursor);
                 }
             }
         } else {
@@ -242,12 +249,13 @@ void UnifiedSearchResultsListModel::startSearchForProvider(const UnifiedSearchPr
     QUrlQuery params;
     params.addQueryItem(QStringLiteral("term"), searchTerm());
     if (cursor > 0) {
-        params.addQueryItem("cursor", QString(cursor));
+        params.addQueryItem("cursor", QString::number(cursor));
     }
     job->addQueryParams(params);
     QObject::connect(job, &JsonApiJob::jsonReceived, [&, provider](const QJsonDocument &json) {
         const auto data = json.object().value("ocs").toObject().value("data").toObject();
         if (!data.isEmpty()) {
+            const auto dataMap = data.toVariantMap();
             const auto name = data.value("name").toString();
             const auto providerForResults = _providers.find(name);
             const auto isPaginated = data.value("isPaginated").toBool();
@@ -291,16 +299,18 @@ void UnifiedSearchResultsListModel::combineResults()
         UnifiedSearchResult categorySeparator;
         categorySeparator._categoryId = category._id;
         categorySeparator._categoryName = category._name;
-        categorySeparator._isCategorySeparator = true;
+        categorySeparator._type = UnifiedSearchResult::Type::CategorySeparator;
         resultsCombined.push_back(categorySeparator);
 
         resultsCombined.append(category._results);
 
-        UnifiedSearchResult fetchMoreTrigger;
-        fetchMoreTrigger._categoryId = category._id;
-        fetchMoreTrigger._categoryName = category._name;
-        fetchMoreTrigger._isFetchMoreTrigger = true;
-        resultsCombined.push_back(fetchMoreTrigger);
+        if (category._cursor > 0) {
+            UnifiedSearchResult fetchMoreTrigger;
+            fetchMoreTrigger._categoryId = category._id;
+            fetchMoreTrigger._categoryName = category._name;
+            fetchMoreTrigger._type = UnifiedSearchResult::Type::FetchMoreTrigger;
+            resultsCombined.push_back(fetchMoreTrigger);
+        }
     }
     beginResetModel();
     _resultsCombined.clear();

@@ -1,175 +1,163 @@
 import QtQml 2.12
 import QtQuick 2.9
-import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.2
 import Style 1.0
-import com.nextcloud.desktopclient 1.0
+import QtGraphicalEffects 1.0
 
 MouseArea {
     id: unifiedSearchResultMouseArea
-    hoverEnabled: !model.isCategorySeparator
-    anchors.fill: unifiedSearchResultItem
+
+    property int defaultHeight: 0
+
+    readonly property int contentLeftMargin: 8
+    readonly property int contentRightMargin: contentLeftMargin
+
+    readonly property int typeCategorySeparator: 1
+    readonly property int typeFetchMoreTrigger: 2
+
+    readonly property bool isFetchMoreTrigger: model.type === typeFetchMoreTrigger
+    readonly property bool isCategorySeparator: model.type === typeCategorySeparator
+
+    enabled: !isCategorySeparator
+    hoverEnabled: !isCategorySeparator
+
+    height: !isCategorySeparator ? defaultHeight : defaultHeight/2
     
     Rectangle {
+        id: unifiedSearchResultHoverBackground
         anchors.fill: parent
-        anchors.margins: 2
         color: (parent.containsMouse ? Style.lightHover : "transparent")
     }
 
     RowLayout {
-        id: unifiedSearchResultItem
+        id: unifiedSearchResultItemDetails
 
-        RowLayout {
-            id: unifiedSearchResultItemDetails
+        visible: !isFetchMoreTrigger && !isCategorySeparator
 
-            visible: !model.isFetchMoreTrigger && !model.isCategorySeparator
+        anchors.fill: parent
+        anchors.leftMargin: contentLeftMargin
+        anchors.rightMargin: contentRightMargin
 
-            width: !model.isFetchMoreTrigger && !model.isCategorySeparator ? unifiedSearchResultMouseArea.width : 0
-            height: !model.isFetchMoreTrigger && !model.isCategorySeparator ? Style.trayWindowHeaderHeight : 0
+        spacing: 4
 
-            Accessible.role: Accessible.ListItem
-            Accessible.name: resultTitle
-            Accessible.onPressAction: unifiedSearchResultMouseArea.clicked()
+        Accessible.role: Accessible.ListItem
+        Accessible.name: resultTitle
+        Accessible.onPressAction: unifiedSearchResultMouseArea.clicked()
 
-            Column {
-                id: unifiedSearchResultLeftColumn
-                Layout.leftMargin: 8
-                Layout.topMargin: 8
-                Layout.bottomMargin: 8
-                spacing: 4
-                Image {
-                    id: unifiedSearchResultThumbnail
-                    visible: parent.visible && !unifiedSearchResultThumbnailPlaceholder.visible
-                    Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
-                    Layout.preferredWidth: 16
-                    Layout.preferredHeight: 16
-                    verticalAlignment: Qt.AlignCenter
-                    asynchronous: true
-                    cache: true
-                    source: "image://unified-search-result-image/" + model.thumbnailUrl
-                    sourceSize.height: 16
-                    sourceSize.width: 16
-                }
-                Image {
-                    id: unifiedSearchResultThumbnailPlaceholder
-                    visible: model.thumbnailUrl && unifiedSearchResultThumbnail.status != Image.Ready
-                    Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
-                    Layout.preferredWidth: 16
-                    Layout.preferredHeight: 16
-                    verticalAlignment: Qt.AlignCenter
-                    asynchronous: true
-                    cache: true
-                    source: "qrc:///client/theme/change.svg"
-                    sourceSize.height: 16
-                    sourceSize.width: 16
-                }
-            }
-
-            Column {
-                id: unifiedSearchResultRightColumn
+        ColumnLayout {
+            id: unifiedSearchResultImageContainer
+            visible: model.thumbnailUrl
+            Layout.preferredWidth: visible ? Layout.preferredHeight : 0
+            Layout.preferredHeight: visible ? Style.trayWindowHeaderHeight : 0
+            Image {
+                id: unifiedSearchResultThumbnail
+                visible: !unifiedSearchResultThumbnailPlaceholder.visible
                 Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-                Layout.leftMargin: 8
-                Layout.topMargin: 8
-                Layout.bottomMargin: 8
-                spacing: 4
-                ColumnLayout {
-                    spacing: 2
-                    Rectangle {
-                        Layout.preferredHeight: Style.trayWindowHeaderHeight / 2
-                        Layout.fillWidth: true
-
-                        Text {
-                            id: unifiedSearchResultTitleText
-                            text: model.resultTitle
-                            visible: parent.visible
-                            width: parent.width
-                            font.pixelSize: Style.topLinePixelSize
-                            color: "black"
-                        }
-                    }
-                    Rectangle {
-                        Layout.preferredHeight: Style.trayWindowHeaderHeight / 2
-                        Layout.fillWidth: true
-                        Text {
-                            id: unifiedSearchResultTextSubline
-                            text: model.subline
-                            visible: parent.visible
-                            width: parent.width
-                            font.pixelSize: Style.subLinePixelSize
-                            color: "grey"
-                        }
-                    }
-                }
-
-
+                verticalAlignment: Qt.AlignCenter
+                asynchronous: true
+                cache: true
+                source: "image://unified-search-result-image/" + model.thumbnailUrl
+                sourceSize.width: visible ? Style.trayWindowHeaderHeight : 0
+                sourceSize.height: visible ? Style.trayWindowHeaderHeight : 0
+                Layout.preferredWidth: visible ? Layout.preferredHeight : 0
+                Layout.preferredHeight: visible ? Style.trayWindowHeaderHeight : 0
             }
-
-        }
-
-        RowLayout {
-            id: unifiedSearchResultItemFetchMore
-            visible: model.isFetchMoreTrigger
-
-            width: model.isFetchMoreTrigger ? unifiedSearchResultMouseArea.width : 0
-            height: model.isFetchMoreTrigger ? Style.trayWindowHeaderHeight : 0
-
-            Accessible.role: Accessible.ListItem
-            Accessible.name: qsTr("Load more results")
-            Accessible.onPressAction: unifiedSearchResultMouseArea.clicked()
-
-            Column {
-                id: unifiedSearchResultItemFetchMoreColumn
-                visible: model.isFetchMoreTrigger
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-
-                Text {
-                    id: unifiedSearchResultItemFetchMoreText
-                    text: qsTr("Load more results")
-                    visible: parent.visible
-                    horizontalAlignment: Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter
-                    width: parent.width
-                    height: parent.height
-                    font.pixelSize: Style.topLinePixelSize
-                    color: "grey"
-                }
+            Image {
+                id: unifiedSearchResultThumbnailPlaceholder
+                visible: model.thumbnailUrl && unifiedSearchResultThumbnail.status != Image.Ready
+                Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
+                verticalAlignment: Qt.AlignCenter
+                cache: true
+                source: "qrc:///client/theme/change.svg"
+                sourceSize.height: Style.trayWindowHeaderHeight
+                sourceSize.width: Style.trayWindowHeaderHeight
+                Layout.preferredWidth: visible ? Layout.preferredHeight : 0
+                Layout.preferredHeight: visible ? Style.trayWindowHeaderHeight : 0
             }
         }
 
-        RowLayout {
-            id: unifiedSearchResultItemCategorySeparator
-            visible: model.isCategorySeparator
+        ColumnLayout {
+            id: unifiedSearchResultTextContainer
+            Layout.fillWidth: true
 
-            width: model.isCategorySeparator ? unifiedSearchResultMouseArea.width : 0
-            height: model.isCategorySeparator ? Style.trayWindowHeaderHeight : 0
-            spacing: 2
-
-            Accessible.role: Accessible.ListItem
-            Accessible.name: qsTr("Category separator")
-            Accessible.onPressAction: unifiedSearchResultMouseArea.clicked()
-
-            Column {
-                id: unifiedSearchResultItemCategorySeparatorColumn
-                visible: model.isCategorySeparator
-                Layout.leftMargin: 8
-                Layout.topMargin: 4
-                Layout.bottomMargin: 4
+            Text {
+                id: unifiedSearchResultTitleText
+                text: model.resultTitle.replace(/[\r\n]+/g, " ")
+                visible: parent.visible
                 Layout.fillWidth: true
-                Layout.fillHeight: true
-                spacing: 4
-                Layout.alignment: Qt.AlignLeft
+                elide: Text.ElideRight
+                font.pixelSize: Style.topLinePixelSize
+                color: "black"
+            }
+            Text {
+                id: unifiedSearchResultTextSubline
+                text: model.subline.replace(/[\r\n]+/g, " ")
+                elide: Text.ElideRight
+                visible: parent.visible
+                Layout.fillWidth: true
+                color: "grey"
+            }
+        }
 
-                Text {
-                    id: unifiedSearchResultItemCategorySeparatorText
-                    text: model.categoryName
-                    visible: parent.visible
-                    width: parent.width
-                    font.pixelSize: Style.topLinePixelSize * 1.5
-                    color: Style.ncBlue
-                }
+    }
+
+    RowLayout {
+        id: unifiedSearchResultItemFetchMore
+        visible: isFetchMoreTrigger
+
+        width: visible ? unifiedSearchResultMouseArea.width : 0
+        height: visible ? Style.trayWindowHeaderHeight : 0
+
+        Accessible.role: Accessible.ListItem
+        Accessible.name: qsTr("Load more results")
+        Accessible.onPressAction: unifiedSearchResultMouseArea.clicked()
+
+        Column {
+            id: unifiedSearchResultItemFetchMoreColumn
+            visible: isFetchMoreTrigger
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+
+            Text {
+                id: unifiedSearchResultItemFetchMoreText
+                text: qsTr("Load more results")
+                visible: parent.visible
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+                width: parent.width
+                height: parent.height
+                font.pixelSize: Style.topLinePixelSize
+                color: "grey"
+            }
+        }
+    }
+
+    RowLayout {
+        id: unifiedSearchResultItemCategorySeparator
+        visible: isCategorySeparator
+
+        width: visible ? unifiedSearchResultMouseArea.width : 0
+
+        Accessible.role: Accessible.ListItem
+        Accessible.name: qsTr("Category separator")
+        Accessible.onPressAction: unifiedSearchResultMouseArea.clicked()
+
+        Column {
+            id: unifiedSearchResultItemCategorySeparatorColumn
+            visible: isCategorySeparator
+            Layout.topMargin: 8
+            Layout.leftMargin: contentLeftMargin
+            Layout.fillWidth: true
+            Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
+
+            Text {
+                id: unifiedSearchResultItemCategorySeparatorText
+                text: model.categoryName
+                visible: parent.visible
+                width: parent.width
+                height: parent.height
+                font.pixelSize: Style.topLinePixelSize
+                color: Style.ncBlue
             }
         }
     }

@@ -32,10 +32,15 @@ class UnifiedSearchResult
     Q_PROPERTY(QString subline MEMBER _subline)
     Q_PROPERTY(QString thumbnailUrl MEMBER _thumbnailUrl)
     Q_PROPERTY(QString thumbnail MEMBER _thumbnail)
-    Q_PROPERTY(bool isFetchMoreTrigger MEMBER _isFetchMoreTrigger)
-    Q_PROPERTY(bool isCategorySeparator MEMBER _isCategorySeparator)
+    Q_PROPERTY(quint8 type MEMBER _type)
 
 public:
+    enum Type : quint8 {
+        Default = 0,
+        CategorySeparator,
+        FetchMoreTrigger
+    };
+
     QString _title;
     QString _subline;
     QString _categoryId;
@@ -44,8 +49,7 @@ public:
     QString _thumbnailUrl;
     QString _thumbnail;
     QString _resourceUrl;
-    bool _isFetchMoreTrigger = false;
-    bool _isCategorySeparator = false;
+    quint8 _type = Type::Default;
 };
 
 bool operator==(const UnifiedSearchResult &rhs, const UnifiedSearchResult &lhs);
