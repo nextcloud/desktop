@@ -70,6 +70,7 @@ struct LocalInfo
 {
     /** FileName of the entry (this does not contains any directory or path, just the plain name */
     QString name;
+    QString renameName;
     time_t modtime = 0;
     int64_t size = 0;
     uint64_t inode = 0;

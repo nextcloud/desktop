@@ -217,6 +217,20 @@ void PropagateUploadFileCommon::start()
     const auto slashPosition = path.lastIndexOf('/');
     const auto parentPath = slashPosition >= 0 ? path.left(slashPosition) : QString();
 
+
+    if (!_item->_renameTarget.isEmpty() && _item->_file != _item->_renameTarget) {
+        // Try to rename the file
+        const auto originalFilePathAbsolute = propagator()->fullLocalPath(_item->_file);
+        const auto newFilePathAbsolute = propagator()->fullLocalPath(_item->_renameTarget);
+        const auto renameSuccess = QFile::rename(originalFilePathAbsolute, newFilePathAbsolute);
+        if (!renameSuccess) {
+            done(SyncFileItem::NormalError, "File contains trailing spaces and couldn't be renamed");
+            return;
+        }
+        _item->_file = _item->_renameTarget;
+        _item->_modtime = FileSystem::getModTime(newFilePathAbsolute);
+    }
+
     SyncJournalFileRecord parentRec;
     bool ok = propagator()->_journal->getFileRecord(parentPath, &parentRec);
     if (!ok) {

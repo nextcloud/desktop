@@ -15,9 +15,12 @@
 #include "discovery.h"
 #include "common/filesystembase.h"
 #include "common/syncjournaldb.h"
+#include "filesystem.h"
 #include "syncfileitem.h"
 #include <QDebug>
 #include <algorithm>
+#include <QEventLoop>
+#include <QDir>
 #include <set>
 #include <QTextCodec>
 #include "vio/csync_vio_local.h"
@@ -33,6 +36,50 @@
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcDisco, "sync.discovery", QtInfoMsg)
+
+
+bool ProcessDirectoryJob::checkForInvalidFileName(const PathTuple &path,
+    const std::map<QString, Entries> &entries, Entries &entry)
+{
+    const auto originalFileName = entry.localEntry.name;
+    const auto newFileName = originalFileName.trimmed();
+
+    if (originalFileName == newFileName) {
+        return true;
+    }
+
+    const auto entriesIter = entries.find(newFileName);
+    if (entriesIter != entries.end()) {
+        QString errorMessage;
+        const auto newFileNameEntry = entriesIter->second;
+        if (newFileNameEntry.serverEntry.isValid()) {
+            errorMessage = tr("File contains trailing spaces and coudn't be renamed, because a file with the same name already exists on the server.");
+        }
+        if (newFileNameEntry.localEntry.isValid()) {
+            errorMessage = tr("File contains trailing spaces and coudn't be renamed, because a file with the same name already exists locally.");
+        }
+
+        if (!errorMessage.isEmpty()) {
+            auto item = SyncFileItemPtr::create();
+            if (entry.localEntry.isDirectory) {
+                item->_type = CSyncEnums::ItemTypeDirectory;
+            } else {
+                item->_type = CSyncEnums::ItemTypeFile;
+            }
+            item->_file = path._target;
+            item->_originalFile = path._target;
+            item->_instruction = CSYNC_INSTRUCTION_ERROR;
+            item->_status = SyncFileItem::NormalError;
+            item->_errorString = errorMessage;
+            emit _discoveryData->itemDiscovered(item);
+            return false;
+        }
+    }
+
+    entry.localEntry.renameName = newFileName;
+
+    return true;
+}
 
 void ProcessDirectoryJob::start()
 {
@@ -73,12 +120,6 @@ void ProcessDirectoryJob::process()
     // However, if foo and foo.owncloud exists locally, there'll be "foo"
     // with local, db, server entries and "foo.owncloud" with only a local
     // entry.
-    struct Entries {
-        QString nameOverride;
-        SyncJournalFileRecord dbEntry;
-        RemoteInfo serverEntry;
-        LocalInfo localEntry;
-    };
     std::map<QString, Entries> entries;
     for (auto &e : _serverNormalQueryEntries) {
         entries[e.name].serverEntry = std::move(e);
@@ -136,8 +177,8 @@ void ProcessDirectoryJob::process()
     //
     // Iterate over entries and process them
     //
-    for (const auto &f : entries) {
-        const auto &e = f.second;
+    for (auto &f : entries) {
+        auto &e = f.second;
 
         PathTuple path;
         path = _currentFolder.addName(e.nameOverride.isEmpty() ? f.first : e.nameOverride);
@@ -190,6 +231,9 @@ void ProcessDirectoryJob::process()
 
         if (_queryServer == InBlackList || _discoveryData->isInSelectiveSyncBlackList(path._original)) {
             processBlacklisted(path, e.localEntry, e.dbEntry);
+            continue;
+        }
+        if (!checkForInvalidFileName(path, entries, e)) {
             continue;
         }
         processFile(std::move(path), e.localEntry, e.serverEntry, e.dbEntry);
@@ -345,6 +389,7 @@ void ProcessDirectoryJob::processFile(PathTuple path,
     item->_originalFile = path._original;
     item->_previousSize = dbEntry._fileSize;
     item->_previousModtime = dbEntry._modtime;
+    item->_renameTarget = localEntry.renameName;
 
     if (dbEntry._modtime == localEntry.modtime && dbEntry._type == ItemTypeVirtualFile && localEntry.type == ItemTypeFile) {
         item->_type = ItemTypeFile;

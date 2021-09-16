@@ -204,6 +204,71 @@ private slots:
         QVERIFY(!fakeFolder.currentRemoteState().find("C/.foo"));
         QVERIFY(!fakeFolder.currentRemoteState().find("C/bar"));
     }
+
+    void testCreateFileWithTrailingSpaces_localAndRemoteTrimmedDoNotExist_renameAndUploadFile()
+    {
+        FakeFolder fakeFolder { FileInfo::A12_B12_C12_S12() };
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        const QString fileWithSpaces1(" foo");
+        const QString fileWithSpaces2(" bar  ");
+        const QString fileWithSpaces3("bla ");
+
+        fakeFolder.localModifier().insert(fileWithSpaces1);
+        fakeFolder.localModifier().insert(fileWithSpaces2);
+        fakeFolder.localModifier().insert(fileWithSpaces3);
+
+        QVERIFY(fakeFolder.syncOnce());
+
+        QVERIFY(fakeFolder.currentRemoteState().find(fileWithSpaces1.trimmed()));
+        QVERIFY(!fakeFolder.currentRemoteState().find(fileWithSpaces1));
+        QVERIFY(fakeFolder.currentLocalState().find(fileWithSpaces1.trimmed()));
+        QVERIFY(!fakeFolder.currentLocalState().find(fileWithSpaces1));
+
+        QVERIFY(fakeFolder.currentRemoteState().find(fileWithSpaces2.trimmed()));
+        QVERIFY(!fakeFolder.currentRemoteState().find(fileWithSpaces2));
+        QVERIFY(fakeFolder.currentLocalState().find(fileWithSpaces2.trimmed()));
+        QVERIFY(!fakeFolder.currentLocalState().find(fileWithSpaces2));
+
+        QVERIFY(fakeFolder.currentRemoteState().find(fileWithSpaces3.trimmed()));
+        QVERIFY(!fakeFolder.currentRemoteState().find(fileWithSpaces3));
+        QVERIFY(fakeFolder.currentLocalState().find(fileWithSpaces3.trimmed()));
+        QVERIFY(!fakeFolder.currentLocalState().find(fileWithSpaces3));
+    }
+
+    void testCreateFileWithTrailingSpaces_localTrimmedDoesExist_dontRenameAndUploadFile()
+    {
+        FakeFolder fakeFolder { FileInfo::A12_B12_C12_S12() };
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        const QString fileWithSpaces(" foo");
+        const QString fileTrimmed("foo");
+
+        fakeFolder.localModifier().insert(fileTrimmed);
+        QVERIFY(fakeFolder.syncOnce());
+        fakeFolder.localModifier().insert(fileWithSpaces);
+        QVERIFY(!fakeFolder.syncOnce());
+
+        QVERIFY(fakeFolder.currentRemoteState().find(fileTrimmed));
+        QVERIFY(!fakeFolder.currentRemoteState().find(fileWithSpaces));
+        QVERIFY(fakeFolder.currentLocalState().find(fileWithSpaces));
+        QVERIFY(fakeFolder.currentLocalState().find(fileTrimmed));
+    }
+
+    void testCreateFileWithTrailingSpaces_localTrimmedAlsoCreated_dontRenameAndUploadFile()
+    {
+        FakeFolder fakeFolder { FileInfo::A12_B12_C12_S12() };
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        const QString fileWithSpaces(" foo");
+        const QString fileTrimmed("foo");
+
+        fakeFolder.localModifier().insert(fileTrimmed);
+        fakeFolder.localModifier().insert(fileWithSpaces);
+        QVERIFY(!fakeFolder.syncOnce());
+
+        QVERIFY(fakeFolder.currentRemoteState().find(fileTrimmed));
+        QVERIFY(!fakeFolder.currentRemoteState().find(fileWithSpaces));
+        QVERIFY(fakeFolder.currentLocalState().find(fileWithSpaces));
+        QVERIFY(fakeFolder.currentLocalState().find(fileTrimmed));
+    }
 };
 
 QTEST_GUILESS_MAIN(TestLocalDiscovery)
