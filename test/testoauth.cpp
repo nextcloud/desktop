@@ -414,6 +414,9 @@ private slots:
 
             void oauthResult(OAuth::Result result, const QString &user, const QString &token, const QString &refreshToken) override
             {
+                Q_UNUSED(user);
+                Q_UNUSED(token);
+
                 QCOMPARE(state, StartState);
                 QCOMPARE(result, OAuth::Error);
                 gotAuthOk = true;
