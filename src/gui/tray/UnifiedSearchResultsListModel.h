@@ -73,7 +73,7 @@ private slots:
 
 private:
     void startSearch();
-    void startSearchForProvider(const UnifiedSearchProvider &provider);
+    void startSearchForProvider(const UnifiedSearchProvider &provider, qint32 cursor = -1);
 
     void combineResults();
 

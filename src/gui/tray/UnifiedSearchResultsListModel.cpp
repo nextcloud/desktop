@@ -178,9 +178,11 @@ void UnifiedSearchResultsListModel::resultClicked(int resultIndex)
 
         if (isFetchMoreTrigger) {
             if (categoryInfo._isPaginated) {
-                // Load more items here
-                int a = 5;
-                a = 6;
+                // Load more items
+                const auto providerFound = _providers.find(categoryInfo._name);
+                if (providerFound != _providers.end()) {
+                    startSearchForProvider(*providerFound, categoryInfo._cursor * 2);
+                }
             }
         } else {
             const auto resourceUrl = QUrl(data(modelIndex, ResourceUrlRole).toString());
@@ -234,11 +236,14 @@ void UnifiedSearchResultsListModel::startSearch()
     }
 }
 
-void UnifiedSearchResultsListModel::startSearchForProvider(const UnifiedSearchProvider &provider)
+void UnifiedSearchResultsListModel::startSearchForProvider(const UnifiedSearchProvider &provider, qint32 cursor)
 {
     auto *job = new JsonApiJob(_accountState->account(), QLatin1String("ocs/v2.php/search/providers/%1/search").arg(provider._id));
     QUrlQuery params;
     params.addQueryItem(QStringLiteral("term"), searchTerm());
+    if (cursor > 0) {
+        params.addQueryItem("cursor", QString(cursor));
+    }
     job->addQueryParams(params);
     QObject::connect(job, &JsonApiJob::jsonReceived, [&, provider](const QJsonDocument &json) {
         const auto data = json.object().value("ocs").toObject().value("data").toObject();
@@ -250,7 +255,8 @@ void UnifiedSearchResultsListModel::startSearchForProvider(const UnifiedSearchPr
             const auto entries = data.value("entries").toVariant().toList();
 
             if (providerForResults != _providers.end() && !entries.isEmpty()) {
-                UnifiedSearchResultCategory category;
+                UnifiedSearchResultCategory &category = _resultsByCategory[(*providerForResults)._id];
+
                 category._id = (*providerForResults)._id;
                 category._name = (*providerForResults)._name;
                 category._order = (*providerForResults)._order;
@@ -268,8 +274,6 @@ void UnifiedSearchResultsListModel::startSearchForProvider(const UnifiedSearchPr
                     result._thumbnailUrl = entry.toMap()["thumbnailUrl"].toString();
                     category._results.push_back(result);
                 }
-
-                _resultsByCategory.insert((*providerForResults)._id, category);
 
                 combineResults();
             }
