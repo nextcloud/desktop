@@ -179,9 +179,8 @@ public:
     QString clientVersionString() const;
     void setClientVersionString(const QString &version);
 
-    /**  Returns a new settings pre-set in a specific group.  The Settings will be created
-         with the given parent. If no parent is specified, the caller must destroy the settings */
-    static std::unique_ptr<QSettings> settingsWithGroup(const QString &group, QObject *parent = nullptr);
+    /**  Returns a new settings pre-set in a specific group. */
+    static std::unique_ptr<QSettings> settingsWithGroup(const QString &group);
 
     /// Add the system and user exclude file path to the ExcludedFiles instance.
     static void setupDefaultExcludeFilePaths(ExcludedFiles &excludedFiles);

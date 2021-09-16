@@ -383,8 +383,8 @@ void PropagateUploadFileNG::startNextChunk()
         abortWithError(SyncFileItem::SoftError, tr("%1 the file is currently in use").arg(fileName));
         return;
     }
-    auto device = std::unique_ptr<UploadDevice>(new UploadDevice(
-            fileName, _currentChunkOffset, _currentChunkSize, &propagator()->_bandwidthManager));
+    auto device = std::make_unique<UploadDevice>(fileName, _currentChunkOffset, _currentChunkSize,
+        &propagator()->_bandwidthManager);
     if (!device->open(QIODevice::ReadOnly)) {
         qCWarning(lcPropagateUploadNG) << "Could not prepare upload device: " << device->errorString();
         // Soft error because this is likely caused by the user modifying his files while syncing

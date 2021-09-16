@@ -155,7 +155,7 @@ bool AccountManager::restoreFromLegacySettings()
 
         QFileInfo fi(oCCfgFile);
         if (fi.isReadable()) {
-            std::unique_ptr<QSettings> oCSettings(new QSettings(oCCfgFile, QSettings::IniFormat));
+            auto oCSettings = std::make_unique<QSettings>(oCCfgFile, QSettings::IniFormat);
             oCSettings->beginGroup(QLatin1String("ownCloud"));
 
             // Check the theme url to see if it is the same url that the oC config was for

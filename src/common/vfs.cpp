@@ -205,7 +205,7 @@ Vfs::Mode OCC::bestAvailableVfsMode()
 std::unique_ptr<Vfs> OCC::createVfsFromPlugin(Vfs::Mode mode)
 {
     if (mode == Vfs::Off)
-        return std::unique_ptr<Vfs>(new VfsOff);
+        return std::make_unique<VfsOff>();
 
     auto name = modeToPluginName(mode);
     if (name.isEmpty())

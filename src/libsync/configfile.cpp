@@ -846,9 +846,9 @@ void ConfigFile::setClientVersionString(const QString &version)
     settings.setValue(clientVersionC(), version);
 }
 
-std::unique_ptr<QSettings> ConfigFile::settingsWithGroup(const QString &group, QObject *parent)
+std::unique_ptr<QSettings> ConfigFile::settingsWithGroup(const QString &group)
 {
-    std::unique_ptr<QSettings> settings(new QSettings(ConfigFile::configFile(), QSettings::IniFormat, parent));
+    auto settings = std::make_unique<QSettings>(ConfigFile::configFile(), QSettings::IniFormat);
     settings->beginGroup(group);
     return settings;
 }
