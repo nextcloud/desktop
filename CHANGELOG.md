@@ -12,6 +12,9 @@ Summary
 * Bugfix - Enforce rtl layout with rtl languages: [#8806](https://github.com/owncloud/client/issues/8806)
 * Bugfix - Tables now display local time: [#9006](https://github.com/owncloud/client/issues/9006)
 * Bugfix - We fixed a crash when using the retry action on an issue: [#9013](https://github.com/owncloud/client/issues/9013)
+* Bugfix - Fix crash when closing the client: [#9014](https://github.com/owncloud/client/issues/9014)
+* Bugfix - Crash on missing sync root: [#9016](https://github.com/owncloud/client/issues/9016)
+* Bugfix - A upgrade to 2.9 causes the usage of a new journal file: [#9019](https://github.com/owncloud/client/issues/9019)
 * Change - Make sharedialog preview be more resilient: [#8938](https://github.com/owncloud/client/issues/8938)
 * Enhancement - Display the error type in the issue protocol and allow filtering: [#9000](https://github.com/owncloud/client/issues/9000)
 
@@ -46,6 +49,32 @@ Details
 
    https://github.com/owncloud/client/issues/9013
    https://github.com/owncloud/client/pull/9012
+
+* Bugfix - Fix crash when closing the client: [#9014](https://github.com/owncloud/client/issues/9014)
+
+   We fixed a crash where we crash when we closed the client during a sync.
+
+   https://github.com/owncloud/client/issues/9014
+
+* Bugfix - Crash on missing sync root: [#9016](https://github.com/owncloud/client/issues/9016)
+
+   We fixed an issue where the client crashed after a user deleted the sync root.
+
+   https://github.com/owncloud/client/issues/9016
+
+* Bugfix - A upgrade to 2.9 causes the usage of a new journal file: [#9019](https://github.com/owncloud/client/issues/9019)
+
+   We fixed a bug where the name of the sync journal was not properly saved to the settings. This
+   caused a bug when migration to 2.9, so a new a new sync journal was created.
+
+   This not only caused the loss of some selective sync settings, but also caused the display of the
+   following warning message:
+
+   ``` Multiple accounts are sharing the folder. This configuration is know to lead to dataloss
+   and is no longer supported. Please consider removing this folder from the account and adding it
+   again. ```
+
+   https://github.com/owncloud/client/issues/9019
 
 * Change - Make sharedialog preview be more resilient: [#8938](https://github.com/owncloud/client/issues/8938)
 
