@@ -94,6 +94,40 @@ trigger:
 
 ---
 kind: pipeline
+name: qt-5.15-clazy
+
+steps:
+- name: cmake
+  image: ghcr.io/nextcloud/continuous-integration-client:client-5.15-2
+  volumes:
+    - name: build
+      path: /drone/build
+  commands:
+    - cd /drone/build
+    - cmake -GNinja -DCMAKE_C_COMPILER=clang-10 -DCMAKE_CXX_COMPILER=clazy -DCMAKE_BUILD_TYPE=Debug -DBUILD_UPDATER=ON -DBUILD_TESTING=1 -DECM_ENABLE_SANITIZERS=address -DCMAKE_CXX_FLAGS=-Werror ../src
+- name: compile
+  image: ghcr.io/nextcloud/continuous-integration-client:client-5.15-2
+  volumes:
+    - name: build
+      path: /drone/build
+  commands:
+    - cd /drone/build
+    - CLAZY_IGNORE_DIRS=".*3rdparty.*|.*build.*" ninja
+
+volumes:
+- name: build
+  temp: {}
+
+trigger:
+  branch:
+    - master
+    - stable-*
+  event:
+    - pull_request
+    - push
+
+---
+kind: pipeline
 name: AppImage
 
 steps:
