@@ -1,0 +1,5 @@
+Bugfix: The file status of suffix placeholders was displayed incorrectly
+
+We incorrectly reported that suffix files where ignored.
+
+https://github.com/owncloud/client/issues/9026

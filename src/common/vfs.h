@@ -127,9 +127,12 @@ public:
     /// For WithSuffix modes: the suffix (including the dot)
     virtual QString fileSuffix() const = 0;
 
+    /// The fileName without fileSuffix
+    /// TODO: better naming welcome
+    virtual QString underlyingFileName(const QString &fileName) const;
+
     /// Access to the parameters the instance was start()ed with.
     const VfsSetupParams &params() const { return _setupParams; }
-
 
     /** Initializes interaction with the VFS provider.
      *

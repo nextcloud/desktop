@@ -77,11 +77,8 @@ Result<Vfs::ConvertToPlaceholderResult, QString> VfsSuffix::updateMetadata(const
 Result<void, QString> VfsSuffix::createPlaceholder(const SyncFileItem &item)
 {
     // The concrete shape of the placeholder is also used in isDehydratedPlaceholder() below
-    QString fn = _setupParams.filesystemPath + item._file;
-    if (!fn.endsWith(fileSuffix())) {
-        OC_ASSERT_X(false, "vfs file isn't ending with suffix");
-        return QStringLiteral("vfs file isn't ending with suffix");
-    }
+    const QString fn = _setupParams.filesystemPath + item._file;
+    Q_ASSERT(fn.endsWith(fileSuffix()));
 
     QFile file(fn);
     if (file.exists() && file.size() > 1
@@ -144,6 +141,16 @@ bool VfsSuffix::statTypeVirtualFile(csync_file_stat_t *stat, void *)
 Vfs::AvailabilityResult VfsSuffix::availability(const QString &folderPath)
 {
     return availabilityInDb(folderPath);
+}
+
+QString VfsSuffix::underlyingFileName(const QString &fileName) const
+{
+    {
+        if (fileName.endsWith(fileSuffix())) {
+            return fileName.chopped(fileSuffix().size());
+        }
+        return fileName;
+    }
 }
 
 } // namespace OCC

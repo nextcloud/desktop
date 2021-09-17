@@ -984,21 +984,18 @@ SocketApi::FileData SocketApi::FileData::get(const QString &localFile)
         return data;
 
     data.serverRelativePath = QDir(data.folder->remotePath()).filePath(data.folderRelativePath);
-    QString virtualFileExt = QStringLiteral(APPLICATION_DOTVIRTUALFILE_SUFFIX);
-    if (data.serverRelativePath.endsWith(virtualFileExt)) {
-        data.serverRelativePath.chop(virtualFileExt.size());
+    if (data.folder->ok()) {
+        data.serverRelativePath = data.folder->vfs().underlyingFileName(data.serverRelativePath);
     }
     return data;
 }
 
 QString SocketApi::FileData::folderRelativePathNoVfsSuffix() const
 {
-    auto result = folderRelativePath;
-    QString virtualFileExt = QStringLiteral(APPLICATION_DOTVIRTUALFILE_SUFFIX);
-    if (result.endsWith(virtualFileExt)) {
-        result.chop(virtualFileExt.size());
+    if (folder->ok()) {
+        return folder->vfs().underlyingFileName(folderRelativePath);
     }
-    return result;
+    return folderRelativePath;
 }
 
 SyncFileStatus SocketApi::FileData::syncFileStatus() const
