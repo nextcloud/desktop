@@ -27,7 +27,4 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic")
     endif()
 
-    if(DEFINED MIRALL_FATAL_WARNINGS)
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror")
-    endif(DEFINED MIRALL_FATAL_WARNINGS)
 endif()

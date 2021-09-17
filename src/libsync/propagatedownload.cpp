@@ -78,7 +78,6 @@ GETFileJob::GETFileJob(AccountPtr account, const QString &path, QIODevice *devic
     , _headers(headers)
     , _expectedEtagForResume(expectedEtagForResume)
     , _expectedContentLength(-1)
-    , _contentLength(-1)
     , _resumeStart(resumeStart)
     , _errorStatus(SyncFileItem::NoStatus)
     , _bandwidthLimited(false)
@@ -87,6 +86,7 @@ GETFileJob::GETFileJob(AccountPtr account, const QString &path, QIODevice *devic
     , _bandwidthManager(nullptr)
     , _hasEmittedFinishedSignal(false)
     , _lastModified()
+    , _contentLength(-1)
 {
 }
 
@@ -94,10 +94,10 @@ GETFileJob::GETFileJob(AccountPtr account, const QUrl &url, QIODevice *device,
     const QMap<QByteArray, QByteArray> &headers, const QByteArray &expectedEtagForResume,
     qint64 resumeStart, QObject *parent)
     : AbstractNetworkJob(account, url.toEncoded(), parent)
+    , _device(device)
     , _headers(headers)
     , _expectedEtagForResume(expectedEtagForResume)
     , _expectedContentLength(-1)
-    , _contentLength(-1)
     , _resumeStart(resumeStart)
     , _errorStatus(SyncFileItem::NoStatus)
     , _directDownloadUrl(url)
@@ -107,7 +107,7 @@ GETFileJob::GETFileJob(AccountPtr account, const QUrl &url, QIODevice *device,
     , _bandwidthManager(nullptr)
     , _hasEmittedFinishedSignal(false)
     , _lastModified()
-    , _device(device)
+    , _contentLength(-1)
 {
 }
 

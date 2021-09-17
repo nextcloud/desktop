@@ -1958,4 +1958,4 @@ bool EncryptionHelper::StreamingDecryptor::isFinished() const
 {
     return _isFinished;
 }
-};
+}
