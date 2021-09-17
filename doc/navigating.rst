@@ -157,6 +157,35 @@ icon.
 If a directory includes ignored files that are marked with warning icons
 that does not change the status of the parent directories.
 
+Set the user status
+-------------------
+
+If you have the user status app installed on your Nextcloud server,
+you can set your user status from the desktop client. To do so, open
+the main dialog. Then click on your avatar and then click on the three
+dots. In the menu that opens click on **Set status**.
+
+.. figure:: images/user_status_selector_main_dialog.png
+   :alt: Open user status dialog from main dialog.
+
+In the dialog that opens, you can set your online status if
+you click on either **Online**, **Away**, **Do not disturb** or
+**Invisible**. You can also set a custom status message with the text
+field below or choose one of the predefined status messages below. It
+is also possible to set a custom emoji if you click on the button with
+the emoji beside the text input field. The last thing you might want
+to set is when your user status should be cleared. You can choose the
+period after which the user status will be cleared by clicking on the
+button on the left hand side of the text **Clear status message after**.
+
+.. figure:: images/user_status-selector_dialog.png
+   :alt: Dialog to set user status.
+
+If you are happy with the status you have created you can enable this
+status with the button **Set status message**. If you had already a
+status set, you can clear the status by clicking the cutton **Clear
+status message**.
+
 Sharing From Your Desktop
 -------------------------
 
