@@ -289,12 +289,22 @@ void FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account,
             const auto defaultJournalPath = [&account, folderDefinition] {
                 // if we would have booth the 2.9.0 file name and the lagacy file
                 // with the md5 infix we prefer the 2.9.0 version
-                const auto path = SyncJournalDb::makeDbName(folderDefinition.localPath);
-                if (QFileInfo::exists(QDir(folderDefinition.localPath).filePath(path))) {
-                    return path;
+                const QFileInfo info(folderDefinition.localPath);
+                const QString defaultPath = SyncJournalDb::makeDbName(folderDefinition.localPath);
+                if (info.exists(defaultPath)) {
+                    return defaultPath;
                 }
-                // legacy name
-                return SyncJournalDb::makeDbName(folderDefinition.localPath, account->account()->url(), folderDefinition.targetPath, account->account()->credentials()->user());
+                // 2.6
+                QString legacyPath = SyncJournalDb::makeDbName(folderDefinition.localPath, account->account()->url(), folderDefinition.targetPath, account->account()->credentials()->user());
+                if (info.exists(legacyPath)) {
+                    return legacyPath;
+                }
+                // pre 2.6
+                legacyPath.replace(QLatin1String(".sync_"), QLatin1String("._sync_"));
+                if (info.exists(legacyPath)) {
+                    return legacyPath;
+                }
+                return defaultPath;
             }();
 
             // Migration: Old settings don't have journalPath
@@ -312,7 +322,7 @@ void FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account,
                 folderDefinition.journalPath = defaultJournalPath;
             }
 
-            // Migration: If an old db is found, move it to the new name.
+            // Migration: If an old .csync_journal.db is found, move it to the new name.
             if (backwardsCompatible) {
                 SyncJournalDb::maybeMigrateDb(folderDefinition.localPath, folderDefinition.absoluteJournalPath());
             }
