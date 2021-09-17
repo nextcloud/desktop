@@ -75,8 +75,7 @@ SyncFileItemPtr SyncFileItem::fromSyncJournalFileRecord(const SyncJournalFileRec
     return item;
 }
 
-template <>
-QString Utility::enumDisplayName(SyncFileItem::Status s)
+QString SyncFileItem::statusEnumDisplayName(Status s)
 {
     switch (s) {
     case SyncFileItem::NoStatus:

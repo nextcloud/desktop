@@ -1,0 +1,5 @@
+Bugfix: Fix crash when closing the client
+
+We fixed a crash where we crash when we closed the client during a sync.
+
+https://github.com/owncloud/client/issues/9014

@@ -501,9 +501,10 @@ void FolderWizardSelectiveSync::initializePage()
 
 bool FolderWizardSelectiveSync::validatePage()
 {
-    const bool useVirtualFiles = (Theme::instance()->forceVirtualFilesOption() && bestAvailableVfsMode() == Vfs::WindowsCfApi) || (_virtualFilesCheckBox && _virtualFilesCheckBox->isChecked());
+    const auto mode = bestAvailableVfsMode();
+    const bool useVirtualFiles = (Theme::instance()->forceVirtualFilesOption() && mode == Vfs::WindowsCfApi) || (_virtualFilesCheckBox && _virtualFilesCheckBox->isChecked());
     if (useVirtualFiles) {
-        const auto availability = Vfs::checkAvailability(wizard()->field(QStringLiteral("sourceFolder")).toString());
+        const auto availability = Vfs::checkAvailability(wizard()->field(QStringLiteral("sourceFolder")).toString(), mode);
         if (!availability) {
             auto msg = new QMessageBox(QMessageBox::Warning, tr("Virtual files are not available for the selected folder"), availability.error(), QMessageBox::Ok, this);
             msg->setAttribute(Qt::WA_DeleteOnClose);

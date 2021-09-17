@@ -101,9 +101,6 @@ public:
 
     /// journalPath relative to localPath.
     QString absoluteJournalPath() const;
-
-    /// Returns the relative journal path that's appropriate for this folder and account.
-    QString defaultJournalPath(AccountPtr account);
 };
 
 /**
@@ -186,6 +183,11 @@ public:
     bool canSync() const;
 
     /**
+     * Whether the folder is ok
+     */
+    bool ok() const;
+
+    /**
      *  Returns true if the folder needs sync poll interval wise, and can
      *  sync due to its internal state
      */
@@ -230,7 +232,11 @@ public:
     // Used by the Socket API
     SyncJournalDb *journalDb() { return &_journal; }
     SyncEngine &syncEngine() { return *_engine; }
-    Vfs &vfs() { return *_vfs; }
+    Vfs &vfs()
+    {
+        OC_ENFORCE(_vfs);
+        return *_vfs;
+    }
 
     RequestEtagJob *etagJob() const { return _requestEtagJob; }
     auto lastSyncTime() const { return QDateTime::currentDateTime().addMSecs(-msecSinceLastSync().count()); }
@@ -428,7 +434,7 @@ private:
 
     void showSyncResultPopup();
 
-    void checkLocalPath();
+    bool checkLocalPath();
 
     void setSyncOptions();
 

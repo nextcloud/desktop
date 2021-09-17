@@ -107,7 +107,7 @@ public:
     static QString modeToString(Mode mode);
     static Optional<Mode> modeFromString(const QString &str);
 
-    static Result<void, QString> checkAvailability(const QString &path);
+    static Result<void, QString> checkAvailability(const QString &path, OCC::Vfs::Mode mode);
 
     enum class AvailabilityError
     {

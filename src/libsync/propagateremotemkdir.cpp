@@ -192,6 +192,8 @@ void PropagateRemoteMkdir::success()
         }));
         return;
     }
+#else
+    Q_UNUSED(UpdateMetaDataRetyTimeOut);
 #endif
     done(SyncFileItem::Success);
 }

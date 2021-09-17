@@ -1,0 +1,14 @@
+Bugfix: A upgrade to 2.9 causes the usage of a new journal file
+
+We fixed a bug where the name of the sync journal was not properly saved to the settings.
+This caused a bug when migration to 2.9, so a new a new sync journal was created.
+
+This not only caused the loss of some selective sync settings, but also caused the display of the following warning message:
+
+```
+Multiple accounts are sharing the folder.
+This configuration is know to lead to dataloss and is no longer supported.
+Please consider removing this folder from the account and adding it again.
+```
+
+https://github.com/owncloud/client/issues/9019

@@ -106,6 +106,13 @@ Qt::ItemFlags FolderStatusModel::flags(const QModelIndex &index) const
     if (!_accountState) {
         return nullptr;
     }
+
+    auto flags = Qt::ItemIsEnabled;
+    if (_folders.size() > index.row()) {
+        const SubFolderInfo &folderInfo = _folders.at(index.row());
+        flags = folderInfo._folder->ok() ? Qt::ItemIsEnabled : Qt::NoItemFlags;
+    }
+
     switch (classify(index)) {
     case AddButton: {
         Qt::ItemFlags ret;
@@ -113,16 +120,16 @@ Qt::ItemFlags FolderStatusModel::flags(const QModelIndex &index) const
         if (!_accountState->isConnected()) {
             return ret;
         }
-        return Qt::ItemIsEnabled | ret;
+        return flags | ret;
     }
     case FetchLabel:
-        return Qt::ItemIsEnabled | Qt::ItemNeverHasChildren;
+        return flags | Qt::ItemNeverHasChildren;
     case RootFolder:
-        return Qt::ItemIsEnabled;
+        return flags;
     case SubFolder:
-        return Qt::ItemIsEnabled | Qt::ItemIsUserCheckable | Qt::ItemIsSelectable;
+        return flags | Qt::ItemIsUserCheckable | Qt::ItemIsSelectable;
     }
-    return nullptr;
+    return Qt::NoItemFlags;
 }
 
 QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
@@ -217,7 +224,7 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
         return errors;
     }
     case FolderStatusDelegate::FolderInfoMsg:
-        return f->virtualFilesEnabled() && f->vfs().mode() != Vfs::Mode::WindowsCfApi
+        return f->ok() && f->virtualFilesEnabled() && f->vfs().mode() != Vfs::Mode::WindowsCfApi
             ? QStringList(tr("Virtual file support is enabled."))
             : QStringList();
     case FolderStatusDelegate::SyncRunning:

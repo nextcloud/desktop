@@ -484,6 +484,7 @@ bool FileSystem::isFileLocked(const QString &fileName, LockMode mode)
     }
 #else
     Q_UNUSED(fileName);
+    Q_UNUSED(mode);
 #endif
     return false;
 }

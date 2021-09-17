@@ -50,7 +50,7 @@ public:
 
     /// Create a journal path for a specific configuration
     static QString makeDbName(const QString &localPath,
-        const QString &infix);
+        const QString &infix = QStringLiteral("journal"));
 
     static QString makeDbName(const QString &localPath,
         const QUrl &remoteUrl,

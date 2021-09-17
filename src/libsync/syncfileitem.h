@@ -95,6 +95,8 @@ public:
     };
     Q_ENUM(Status)
 
+    static QString statusEnumDisplayName(Status s);
+
     SyncJournalFileRecord toSyncJournalFileRecordWithInode(const QString &localFileName) const;
 
     /** Creates a basic SyncFileItem from a DB record
@@ -275,11 +277,6 @@ public:
     QString _directDownloadUrl;
     QString _directDownloadCookies;
 };
-
-
-template <>
-OWNCLOUDSYNC_EXPORT QString Utility::enumDisplayName(SyncFileItem::Status s);
-
 
 inline bool operator<(const SyncFileItemPtr &item1, const SyncFileItemPtr &item2)
 {

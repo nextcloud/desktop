@@ -123,12 +123,12 @@ OCSYNC_EXPORT bool csync_is_windows_reserved_word(const QStringRef &filename)
         return a.size() < b.size();
     }));
     for (const auto &word : win_device_names) {
-        if (word.size() > len_filename) {
+        if (static_cast<size_t>(word.size()) > len_filename) {
             break;
         }
         // until windows 11, not only the device names where illegal file names
         // also COM9.png was illegal
-        if ((word.size() == len_filename || filename.at(word.size()) == QLatin1Char('.')) && filename.startsWith(word, Qt::CaseInsensitive)) {
+        if ((static_cast<size_t>(word.size()) == len_filename || filename.at(word.size()) == QLatin1Char('.')) && filename.startsWith(word, Qt::CaseInsensitive)) {
             return true;
         }
     }
@@ -137,10 +137,10 @@ OCSYNC_EXPORT bool csync_is_windows_reserved_word(const QStringRef &filename)
         return a.size() < b.size();
     }));
     for (const auto &word : win_system_files) {
-        if (word.size() > len_filename) {
+        if (static_cast<size_t>(word.size()) > len_filename) {
             break;
         }
-        if (word.size() == len_filename && filename.compare(word, Qt::CaseInsensitive) == 0) {
+        if (static_cast<size_t>(word.size()) == len_filename && filename.compare(word, Qt::CaseInsensitive) == 0) {
             return true;
         }
     }

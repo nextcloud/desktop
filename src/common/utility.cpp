@@ -630,7 +630,7 @@ QString Utility::sanitizeForFileName(const QString &name)
     const auto invalid = QStringLiteral("/?<>\\:*|\"");
     QString result;
     result.reserve(name.size());
-    for (const auto c : name) {
+    for (const auto &c : name) {
         if (!invalid.contains(c)
             && c.category() != QChar::Other_Control
             && c.category() != QChar::Other_Format) {

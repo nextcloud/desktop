@@ -112,6 +112,7 @@ SyncEngine::SyncEngine(AccountPtr account, const QString &localPath,
 
 SyncEngine::~SyncEngine()
 {
+    _goingDown = true;
     abort();
     _excludedFiles.reset();
 }
@@ -369,7 +370,7 @@ void SyncEngine::startSync()
 
     _progressInfo->reset();
 
-    if (!QDir(_localPath).exists()) {
+    if (!QFileInfo::exists(_localPath)) {
         _anotherSyncNeeded = DelayedFollowUp;
         // No _tr, it should only occur in non-mirall
         Q_EMIT syncError(QStringLiteral("Unable to find local sync folder."));
@@ -981,7 +982,9 @@ void SyncEngine::abort()
         disconnect(_discoveryPhase.data(), nullptr, this, nullptr);
         _discoveryPhase.take()->deleteLater();
 
-        Q_EMIT syncError(tr("Aborted"));
+        if (!_goingDown) {
+            Q_EMIT syncError(tr("Aborted"));
+        }
         finalize(false);
     }
 }
