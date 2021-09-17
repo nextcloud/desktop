@@ -4933,7 +4933,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="160"/>
         <source>Could not clear user status message. Make sure you are connected to the server.</source>
-        <translation>Benutzerstatus konnte nicht gelöscht werden. Stellen Sie bitte sicher, dass Sie mit dem Server verbunden sind.</translation>
+        <translation>Statusnachricht des Benutzers konnte nicht gelöscht werden. Stellen Sie bitte sicher, dass Sie mit dem Server verbunden sind.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="358"/>
