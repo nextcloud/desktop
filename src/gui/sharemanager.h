@@ -175,7 +175,8 @@ public:
         const Permissions permissions,
         bool isPasswordSet,
         const QUrl &url,
-        const QDate &expireDate);
+        const QDate &expireDate,
+        const QString &note);
 
     /*
      * Get the share link
@@ -205,7 +206,6 @@ public:
     /*
      * Returns the note of the link share.
      */
-
     QString getNote() const;
 
     /*
@@ -214,7 +214,6 @@ public:
      * Emits either nameSet() or serverError().
      */
     void setName(const QString &name);
-
 
     /*
      * Set the note of the link share.
