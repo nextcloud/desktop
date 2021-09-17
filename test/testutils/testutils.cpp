@@ -47,11 +47,11 @@ namespace TestUtils {
 
     FolderMan *folderMan()
     {
-        static FolderMan *man = [] {
-            auto man = new FolderMan;
+        static QPointer<FolderMan> man;
+        if (!man) {
+            man = new FolderMan;
             QObject::connect(QCoreApplication::instance(), &QCoreApplication::aboutToQuit, man, &FolderMan::deleteLater);
-            return man;
-        }();
+        };
         return man;
     }
 

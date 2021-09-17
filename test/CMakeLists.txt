@@ -40,6 +40,8 @@ owncloud_add_test(SelectiveSync)
 owncloud_add_test(DatabaseError)
 owncloud_add_test(LockedFiles)
 
+owncloud_add_test(FolderMigration)
+
 owncloud_add_test(FolderWatcher)
 
 if( UNIX AND NOT APPLE )

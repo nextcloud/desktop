@@ -137,7 +137,7 @@ void sync(const SyncCTX &ctx)
         }
     }
 
-    const QString dbPath = ctx.options.source_dir + SyncJournalDb::makeDbName(ctx.options.source_dir, ctx.credentialFreeUrl, ctx.folder, ctx.user);
+    const QString dbPath = ctx.options.source_dir + SyncJournalDb::makeDbName(ctx.options.source_dir);
     auto db = new SyncJournalDb(dbPath, qApp);
     if (!selectiveSyncList.empty()) {
         selectiveSyncFixup(db, selectiveSyncList);

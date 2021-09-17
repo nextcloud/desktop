@@ -45,6 +45,17 @@ int numberOfSyncJournals(const QString &path)
     return QDir(path).entryList({ QStringLiteral(".sync_*.db"), QStringLiteral("._sync_*.db") }, QDir::Hidden | QDir::Files).size();
 }
 
+QString makeLegacyDbName(const OCC::FolderDefinition &def, const OCC::AccountPtr &account)
+{
+    // ensure https://demo.owncloud.org/ matches https://demo.owncloud.org
+    // the empty path was the legacy formating before 2.9
+    auto legacyUrl = account->url();
+    if (legacyUrl.path() == QLatin1String("/")) {
+        legacyUrl.setPath(QString());
+    }
+    const QString key = QStringLiteral("%1@%2:%3").arg(account->credentials()->user(), legacyUrl.toString(), def.targetPath);
+    return OCC::SyncJournalDb::makeDbName(def.localPath, QString::fromUtf8(QCryptographicHash::hash(key.toUtf8(), QCryptographicHash::Md5).left(6).toHex()));
+}
 }
 
 namespace OCC {
@@ -289,13 +300,13 @@ void FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account,
             const auto defaultJournalPath = [&account, folderDefinition] {
                 // if we would have booth the 2.9.0 file name and the lagacy file
                 // with the md5 infix we prefer the 2.9.0 version
-                const QFileInfo info(folderDefinition.localPath);
+                const QDir info(folderDefinition.localPath);
                 const QString defaultPath = SyncJournalDb::makeDbName(folderDefinition.localPath);
                 if (info.exists(defaultPath)) {
                     return defaultPath;
                 }
                 // 2.6
-                QString legacyPath = SyncJournalDb::makeDbName(folderDefinition.localPath, account->account()->url(), folderDefinition.targetPath, account->account()->credentials()->user());
+                QString legacyPath = makeLegacyDbName(folderDefinition, account->account());
                 if (info.exists(legacyPath)) {
                     return legacyPath;
                 }

@@ -25,6 +25,8 @@
 #include "navigationpanehelper.h"
 #include "syncfileitem.h"
 
+class TestFolderMigration;
+
 namespace OCC {
 namespace TestUtils {
     // prototype for test friend
@@ -387,6 +389,7 @@ private:
     explicit FolderMan(QObject *parent = nullptr);
     friend class OCC::Application;
     friend OCC::FolderMan *OCC::TestUtils::folderMan();
+    friend class ::TestFolderMigration;
 };
 
 } // namespace OCC
