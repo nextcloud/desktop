@@ -11,3 +11,4 @@ This configuration is know to lead to dataloss and is no longer supported.
 Please consider removing this folder from the account and adding it again.
 ```
 
+https://github.com/owncloud/client/issues/9019
