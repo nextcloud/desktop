@@ -36,6 +36,7 @@
 #include <QDebug>
 #include <QQuickStyle>
 #include <QQuickWindow>
+#include <QSurfaceFormat>
 
 using namespace OCC;
 
@@ -100,6 +101,10 @@ int main(int argc, char **argv)
         QQuickWindow::setTextRenderType(QQuickWindow::NativeTextRendering);
     }
 #endif
+
+    auto surfaceFormat = QSurfaceFormat::defaultFormat();
+    surfaceFormat.setOption(QSurfaceFormat::ResetNotification);
+    QSurfaceFormat::setDefaultFormat(surfaceFormat);
 
 // check a environment variable for core dumps
 #ifdef Q_OS_UNIX
