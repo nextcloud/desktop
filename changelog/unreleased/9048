@@ -1,0 +1,5 @@
+Bugfix: Fix copy url location for private links
+
+We fixed a bug where a placholder was copied to the clipboard instead of the url.
+
+https://github.com/owncloud/client/issues/9048
