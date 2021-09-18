@@ -81,6 +81,7 @@
         <file>theme/colored/state-warning-128.png</file>
         <file>theme/colored/state-warning-256.png</file>
         <file>theme/black/folder.png</file>
+		<file>theme/black/folder.svg</file>
         <file>theme/black/folder@2x.png</file>
         <file>theme/white/folder.png</file>
         <file>theme/white/folder@2x.png</file>
@@ -173,6 +174,8 @@
         <file>theme/black/add.svg</file>
         <file>theme/black/activity.svg</file>
         <file>theme/black/bell.svg</file>
+		<file>theme/black/calendar.svg</file>
+		<file>theme/black/deck.svg</file>
         <file>theme/black/state-info.svg</file>
         <file>theme/close.svg</file>
         <file>theme/files.svg</file>

@@ -57,10 +57,10 @@ MouseArea {
                 asynchronous: true
                 cache: true
                 source: "image://unified-search-result-image/" + model.thumbnailUrl
-                sourceSize.width: visible ? Style.trayWindowHeaderHeight : 0
-                sourceSize.height: visible ? Style.trayWindowHeaderHeight : 0
-                Layout.preferredWidth: visible ? Layout.preferredHeight : 0
-                Layout.preferredHeight: visible ? Style.trayWindowHeaderHeight : 0
+                sourceSize.width: model.thumbnailUrl ? Style.trayWindowHeaderHeight : 0
+                sourceSize.height: model.thumbnailUrl ? Style.trayWindowHeaderHeight : 0
+                Layout.preferredWidth: model.thumbnailUrl ? Style.trayWindowHeaderHeight : 0
+                Layout.preferredHeight: model.thumbnailUrl ? Style.trayWindowHeaderHeight : 0
             }
             Image {
                 id: unifiedSearchResultThumbnailPlaceholder

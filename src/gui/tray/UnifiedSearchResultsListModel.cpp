@@ -101,10 +101,23 @@ QVariant UnifiedSearchResultsListModel::data(const QModelIndex &index, int role)
     }
     case ThumbnailUrlRole: {
         const auto resulInfo = _resultsCombined.at(index.row());
-        if (resulInfo._categoryId.contains("mail")) {
+        if (resulInfo._categoryId.contains(QStringLiteral("mail"))) {
             return QStringLiteral(":/client/theme/black/email.svg");
-        } else if (resulInfo._categoryId.contains("calendar")) {
-            return QStringLiteral(":/client/theme/account.svg");
+        } else if (resulInfo._categoryId.contains(QStringLiteral("calendar"))) {
+            return QStringLiteral(":/client/theme/black/calendar.svg");
+        } else if (resulInfo._categoryId.contains(QStringLiteral("deck"))) {
+            return QStringLiteral(":/client/theme/black/deck.svg");
+        }
+        if (resulInfo._categoryId.contains(QStringLiteral("files"))) {
+            if (!resulInfo._icon.isEmpty()) {
+                if (resulInfo._icon.contains(QStringLiteral("/")) && !resulInfo._icon.startsWith("http")) {
+                    return QString("https://cloud.nextcloud.com/") + resulInfo._icon;
+                }
+                if (resulInfo._icon == QStringLiteral("icon-folder")) {
+                    return QStringLiteral(":/client/theme/black/folder.svg");
+                }
+            }
+            return QStringLiteral("");
         }
 
         return resulInfo._thumbnailUrl;
@@ -275,6 +288,7 @@ void UnifiedSearchResultsListModel::startSearchForProvider(const UnifiedSearchPr
                     UnifiedSearchResult result;
                     result._categoryId = category._id;
                     result._categoryName = category._name;
+                    result._icon = entry.toMap()["icon"].toString();
                     result._order = category._order;
                     result._title = entry.toMap()["title"].toString();
                     result._subline = entry.toMap()["subline"].toString();

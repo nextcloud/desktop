@@ -45,6 +45,7 @@ public:
     QString _subline;
     QString _categoryId;
     QString _categoryName;
+    QString _icon;
     qint32 _order = INT32_MAX;
     QString _thumbnailUrl;
     QString _thumbnail;
