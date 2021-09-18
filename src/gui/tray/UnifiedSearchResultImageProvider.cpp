@@ -14,45 +14,42 @@
 
 #include "UnifiedSearchResultImageProvider.h"
 
-#include "accountmanager.h"
-
 #include "tray/UserModel.h"
 
 #include <QImage>
 
 namespace OCC {
-
 class AsyncImageResponse : public QQuickImageResponse
 {
 public:
     AsyncImageResponse(const QString &id, const QSize &requestedSize)
     {
+        if (id.isEmpty()) {
+            emitFinished(QImage());
+            return;
+        }
+
         const QUrl iconUrl = QUrl(id);
 
         if (!iconUrl.isValid() || iconUrl.scheme().isEmpty()) {
-            if (!id.isEmpty()) {
-                emitDone(QIcon(id).pixmap(requestedSize).toImage());
-                return;
-            }
-
-            emitDone(QImage());
+            // return a local file
+            emitFinished(QIcon(id).pixmap(requestedSize).toImage());
             return;
         }
 
-        auto currentAccount = UserModel::instance()->currentUser()->account();
-
-        if (!currentAccount) {
-            emitDone(QImage());
+        if (auto currentAccount = UserModel::instance()->currentUser()->account()) {
+            // fetch remote resource
+            auto reply = currentAccount->sendRawRequest("GET", iconUrl);
+            connect(reply, &QNetworkReply::finished, this, [this, reply]() {
+                emitFinished(QImage::fromData(reply->readAll()));
+            });
             return;
         }
 
-        auto reply = currentAccount->sendRawRequest("GET", iconUrl);
-        connect(reply, &QNetworkReply::finished, this, [this, reply]() {
-            emitDone(QImage::fromData(reply->readAll()));
-        });
+        emitFinished(QImage());
     }
 
-    void emitDone(QImage image)
+    void emitFinished(QImage image)
     {
         _image = image;
         emit finished();
@@ -63,14 +60,12 @@ public:
         return QQuickTextureFactory::textureFactoryForImage(_image);
     }
 
+private:
     QImage _image;
 };
 
 QQuickImageResponse *UnifiedSearchResultImageProvider::requestImageResponse(const QString &id, const QSize &requestedSize)
 {
-    AsyncImageResponse *response = new AsyncImageResponse(id, requestedSize);
-    return response;
+    return new AsyncImageResponse(id, requestedSize);
 }
-
 }
-#include "UnifiedSearchResultImageProvider.moc"

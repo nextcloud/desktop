@@ -1052,6 +1052,10 @@ User *UserModel::currentUser() const
 
 QString UserModel::searchTerm() const
 {
+    if (currentUserId() < 0 || currentUserId() >= _users.size()) {
+        return QString();
+    }
+
     return _users[currentUserId()]->searchTerm();
 }
 

@@ -29,55 +29,6 @@ UnifiedSearchResultsListModel::UnifiedSearchResultsListModel(AccountState *accou
     : QAbstractListModel(parent)
     , _accountState(accountState)
 {
-    beginInsertRows(QModelIndex(), 0, 5);
-    UnifiedSearchResult filesCategorySeparator;
-    filesCategorySeparator._categoryId = "files";
-    filesCategorySeparator._categoryName = "Files";
-    filesCategorySeparator._type = UnifiedSearchResult::Type::CategorySeparator;
-    _resultsCombined.push_back(filesCategorySeparator);
-
-    UnifiedSearchResult fakeFileResult;
-    fakeFileResult._title = "Long long long Fake file result Long long long Long long long Fake file result Long long long Long long long Fake file result Long long long";
-    fakeFileResult._subline = "Subline for Fake Long long long file result for Fake Long long long file result for Fake Long long long file result for Fake Long long long file result";
-    fakeFileResult._categoryId = "files";
-    fakeFileResult._categoryName = "Files";
-
-    UnifiedSearchResult fetchMoreFileResultsTrigger;
-    fetchMoreFileResultsTrigger._categoryId = "files";
-    fetchMoreFileResultsTrigger._type = UnifiedSearchResult::Type::FetchMoreTrigger;
-
-    _resultsCombined.push_back(fakeFileResult);
-    _resultsCombined.push_back(fetchMoreFileResultsTrigger);
-
-    UnifiedSearchResult talkMessagesCategorySeparator;
-    talkMessagesCategorySeparator._categoryId = "comments";
-    talkMessagesCategorySeparator._categoryName = "Comments";
-    talkMessagesCategorySeparator._type = UnifiedSearchResult::Type::CategorySeparator;
-    _resultsCombined.push_back(talkMessagesCategorySeparator);
-
-    UnifiedSearchResult fakeTalkMessagesResult;
-    fakeTalkMessagesResult._title = "Long/path/subpath/folder/file.md";
-    fakeTalkMessagesResult._subline = R"(
-@kwfw  @khl Long long long Fake file result Long long long Long long long Fake file result Long long long Long long long Fake fil)
-
-Long long long Fake file result Long long long Long long long Fake file result Long long long Long long long Fake fil)";
-    fakeTalkMessagesResult._thumbnailUrl = "https://cloud.nextcloud.com/avatar/lukas/42";
-    fakeTalkMessagesResult._categoryId = "comments";
-    fakeTalkMessagesResult._categoryName = "Comments";
-
-    UnifiedSearchResult fetchMoreTalkMessagesTrigger;
-    fetchMoreTalkMessagesTrigger._categoryId = "talk_messages";
-    fetchMoreTalkMessagesTrigger._type = UnifiedSearchResult::Type::FetchMoreTrigger;
-
-    _resultsCombined.push_back(fakeTalkMessagesResult);
-    _resultsCombined.push_back(fetchMoreTalkMessagesTrigger);
-    endInsertRows();
-}
-
-UnifiedSearchResultsListModel::~UnifiedSearchResultsListModel()
-{
-    int a = 5;
-    a = 6;
 }
 
 QVariant UnifiedSearchResultsListModel::data(const QModelIndex &index, int role) const
@@ -111,7 +62,7 @@ QVariant UnifiedSearchResultsListModel::data(const QModelIndex &index, int role)
         if (resulInfo._categoryId.contains(QStringLiteral("files"))) {
             if (!resulInfo._icon.isEmpty()) {
                 if (resulInfo._icon.contains(QStringLiteral("/")) && !resulInfo._icon.startsWith("http")) {
-                    return QString("https://cloud.nextcloud.com/") + resulInfo._icon;
+                    return QString("https://cloud.nextcloud.com/" + resulInfo._icon);
                 }
                 if (resulInfo._icon == QStringLiteral("icon-folder")) {
                     return QStringLiteral(":/client/theme/black/folder.svg");
@@ -170,6 +121,14 @@ void UnifiedSearchResultsListModel::setSearchTerm(const QString &term)
         connect(&_unifiedSearchTextEditingFinishedTimer, &QTimer::timeout, this, &UnifiedSearchResultsListModel::slotSearchTermEditingFinished);
         _unifiedSearchTextEditingFinishedTimer.start();
     } else {
+        for (auto& connection : _searchJobConnections) {
+            if (connection) {
+                QObject::disconnect(connection);
+            }
+        }
+
+        _searchJobConnections.clear();
+
         beginResetModel();
         _resultsByCategory.clear();
         _resultsCombined.clear();
@@ -244,8 +203,56 @@ void UnifiedSearchResultsListModel::slotSearchTermEditingFinished()
     }
 }
 
+void UnifiedSearchResultsListModel::slotSearchForProviderFinished(const QJsonDocument &json)
+{
+    if (searchTerm().isEmpty()) {
+        return;
+    }
+
+    const auto data = json.object().value("ocs").toObject().value("data").toObject();
+    if (!data.isEmpty()) {
+        const auto dataMap = data.toVariantMap();
+        const auto name = data.value("name").toString();
+        const auto providerForResults = _providers.find(name);
+        const auto isPaginated = data.value("isPaginated").toBool();
+        const auto cursor = data.value("cursor").toInt();
+        const auto entries = data.value("entries").toVariant().toList();
+
+        if (providerForResults != _providers.end() && !entries.isEmpty()) {
+            UnifiedSearchResultCategory &category = _resultsByCategory[(*providerForResults)._id];
+
+            category._id = (*providerForResults)._id;
+            category._name = (*providerForResults)._name;
+            category._order = (*providerForResults)._order;
+            category._isPaginated = isPaginated;
+            category._cursor = cursor;
+
+            for (const auto &entry : entries) {
+                UnifiedSearchResult result;
+                result._categoryId = category._id;
+                result._categoryName = category._name;
+                result._icon = entry.toMap()["icon"].toString();
+                result._order = category._order;
+                result._title = entry.toMap()["title"].toString();
+                result._subline = entry.toMap()["subline"].toString();
+                result._resourceUrl = entry.toMap()["resourceUrl"].toString();
+                result._thumbnailUrl = entry.toMap()["thumbnailUrl"].toString();
+                category._results.push_back(result);
+            }
+
+            combineResults();
+        }
+    }
+}
+
 void UnifiedSearchResultsListModel::startSearch()
 {
+    for (auto &connection : _searchJobConnections) {
+        if (connection) {
+            QObject::disconnect(connection);
+        }
+    }
+
     beginResetModel();
     _resultsByCategory.clear();
     _resultsCombined.clear();
@@ -265,42 +272,7 @@ void UnifiedSearchResultsListModel::startSearchForProvider(const UnifiedSearchPr
         params.addQueryItem("cursor", QString::number(cursor));
     }
     job->addQueryParams(params);
-    QObject::connect(job, &JsonApiJob::jsonReceived, [&, provider](const QJsonDocument &json) {
-        const auto data = json.object().value("ocs").toObject().value("data").toObject();
-        if (!data.isEmpty()) {
-            const auto dataMap = data.toVariantMap();
-            const auto name = data.value("name").toString();
-            const auto providerForResults = _providers.find(name);
-            const auto isPaginated = data.value("isPaginated").toBool();
-            const auto cursor = data.value("cursor").toInt();
-            const auto entries = data.value("entries").toVariant().toList();
-
-            if (providerForResults != _providers.end() && !entries.isEmpty()) {
-                UnifiedSearchResultCategory &category = _resultsByCategory[(*providerForResults)._id];
-
-                category._id = (*providerForResults)._id;
-                category._name = (*providerForResults)._name;
-                category._order = (*providerForResults)._order;
-                category._isPaginated = isPaginated;
-                category._cursor = cursor;
-
-                for (const auto &entry : entries) {
-                    UnifiedSearchResult result;
-                    result._categoryId = category._id;
-                    result._categoryName = category._name;
-                    result._icon = entry.toMap()["icon"].toString();
-                    result._order = category._order;
-                    result._title = entry.toMap()["title"].toString();
-                    result._subline = entry.toMap()["subline"].toString();
-                    result._resourceUrl = entry.toMap()["resourceUrl"].toString();
-                    result._thumbnailUrl = entry.toMap()["thumbnailUrl"].toString();
-                    category._results.push_back(result);
-                }
-
-                combineResults();
-            }
-        }
-    });
+    _searchJobConnections.push_back(QObject::connect(job, &JsonApiJob::jsonReceived, this, &UnifiedSearchResultsListModel::slotSearchForProviderFinished));
     job->start();
 }
 void UnifiedSearchResultsListModel::combineResults()
