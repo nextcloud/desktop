@@ -336,7 +336,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="89"/>
         <source>You seem to have the Virtual Files feature enabled on this folder. At the moment, it is not possible to implicitly download virtual files that are End-to-End encrypted. To get the best experience with Virtual Files and End-to-End Encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Úgy néz ki, hogy engedélyezte a Virtuális fájlok funkciót ezen a mappán. Pillanatnyilag nem lehet implicit módon olyan virtuális fájlokat letölteni, melyek végpontok közti titkosítással vannak ellátva. A legjobb élmény érdekében győződjön meg róla, hogy a titkosított mappa meg legyen jelölve, hogy mindig elérhető legyen helyben is.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="97"/>
@@ -592,7 +592,7 @@ Ez a művelet megszakítja a jelenleg futó szinkronizálást.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1108"/>
         <source>%1 as %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 mint %2</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1115"/>
@@ -756,7 +756,7 @@ Ez a művelet megszakítja a jelenleg futó szinkronizálást.</translation>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="35"/>
         <source>Certificate &amp; Key (pkcs12):</source>
-        <translation type="unfinished"/>
+        <translation>Tanúsítvány és kulcs (pkcs12):</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="35"/>
@@ -804,7 +804,7 @@ Ez a művelet megszakítja a jelenleg futó szinkronizálást.</translation>
     <message>
         <location filename="../src/gui/application.cpp" line="139"/>
         <source>Some settings were configured in newer versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation>Néhány beállítást a kliens újabb verzióiban konfiguráltak, és olyan funkciókat használnak, amelyek ebben a verzióban nem érhetők el. &lt;br&gt; &lt;br&gt;%1&lt;br&gt;&lt;br&gt;Az aktuális konfigurációs fájlról már készült biztonsági másolat: &lt;i&gt;%2&lt; / i&gt;.</translation>
+        <translation>Néhány beállítást a kliens újabb verzióiban konfiguráltak, és olyan funkciókat használnak, amelyek ebben a verzióban nem érhetők el. &lt;br&gt; &lt;br&gt;%1&lt;br&gt;&lt;br&gt;Az aktuális konfigurációs fájlról már készült biztonsági másolat: &lt;i&gt;%2&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="146"/>
@@ -842,7 +842,7 @@ Ez a művelet megszakítja a jelenleg futó szinkronizálást.</translation>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="32"/>
         <source>Enter username and password for &quot;%1&quot; at %2.</source>
-        <translation type="unfinished"/>
+        <translation>Felhasználónév és jelszó beírása ehhez: „%1”, itt: %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="32"/>
@@ -1115,7 +1115,7 @@ This can be an issue with your OpenSSL libraries.</source>
         <location filename="../src/gui/creds/flow2auth.cpp" line="118"/>
         <location filename="../src/gui/creds/flow2auth.cpp" line="226"/>
         <source>There was an error accessing the &quot;token&quot; endpoint: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Hiba történt a „token” végpont elérésekor: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="121"/>
@@ -1411,14 +1411,19 @@ A szinkronizálás folytatásával az összes fájlja felül lesz írva egy rég
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation type="unfinished"/>
+        <translation>A(z) „%1” szinkronizálási mappa összes fájlja törlésre került a kiszolgálón.
+Ez töröl mindent a helyi szinkronizálási mappában, így nem lesznek elérhetőek ezek a fájlok, hacsak nincs helyreállítási joga.
+Ha úgy dönt, hogy visszaállítja a fájlokat, akkor újra fel lesznek töltve a kiszolgálóra, ha van ehhez joga.
+Ha úgy dönt, hogy törli ezeket a fájlokat, akkor többé nem fogja azokat elérni, hacsak nem Ön a tulajdonos.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1237"/>
         <source>All the files in your local sync folder &quot;%1&quot; were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
-        <translation type="unfinished"/>
+        <translation>A(z) „%1” helyi szinkronizálási mappában található összes fájl törölve lett. Ezek a törlések szinkronizálva lesznek a kiszolgálóval, így ezek nem lesznek elérhetőek, hacsak helyre nem állítja őket.
+Biztos, hogy szinkronizálni akarja ezeket a változásokat a kiszolgálóval?
+Ha ez véletlen volt, és úgy dönt, hogy megtartja ezeket a fájlokat, akkor újra letöltésre kerülnek a kiszolgálóról.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1264"/>
@@ -1489,7 +1494,7 @@ Ha úgy dönt, hogy törli a fájlokat, akkor azok nem lesznek elérhetők Önne
     <message>
         <location filename="../src/gui/folderman.cpp" line="390"/>
         <source>An old sync journal &quot;%1&quot; was found, but could not be removed. Please make sure that no application is currently using it.</source>
-        <translation type="unfinished"/>
+        <translation>Egy régi szinkronizálási naplófájl található: „%1”, de az nem törölhető. Győződjön meg róla, hogy jelenleg egy alkalmazás sem használja.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1225"/>
@@ -1677,12 +1682,12 @@ Ha úgy dönt, hogy törli a fájlokat, akkor azok nem lesznek elérhetők Önne
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="973"/>
         <source>Checking for changes in remote &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Változások keresése a(z) „%1” távoli mappában</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="977"/>
         <source>Checking for changes in local &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Változások keresése a(z) „%1” helyi mappában</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="984"/>
@@ -1842,7 +1847,7 @@ Ha úgy dönt, hogy törli a fájlokat, akkor azok nem lesznek elérhetők Önne
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="184"/>
         <source>Enter the name of the new folder to be created below &quot;%1&quot;:</source>
-        <translation type="unfinished"/>
+        <translation>Adja meg a(z) „%1” alatt létrehozandó új mappa nevét:</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="214"/>
@@ -2157,7 +2162,7 @@ Ne feledje, hogy ez csak azt választja ki, hogy a frissítések milyen készlet
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="111"/>
         <source>Reading from keychain failed with error: &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>A kulcstartóról olvasás sikertelen, a hiba a következő: „%1”</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="111"/>
@@ -2200,7 +2205,7 @@ Ne feledje, hogy ez csak azt választja ki, hogy a frissítések milyen készlet
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="40"/>
         <source>This entry is provided by the system at &quot;%1&quot; and cannot be modified in this view.</source>
-        <translation type="unfinished"/>
+        <translation>A bejegyzést az itt lévő rendszer biztosítja: „%1”, és nem lehet módosítani ebben a nézetben.</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="40"/>
@@ -2252,7 +2257,7 @@ Ahol a törlés engedélyezett, ott az elemek törölve lesznek, ha megakadályo
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="94"/>
         <source>Cannot write changes to &quot;%1&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>A változások nem írhatóak ide: „%1”.</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="94"/>
@@ -2286,7 +2291,7 @@ Ahol a törlés engedélyezett, ott az elemek törölve lesznek, ha megakadályo
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="55"/>
         <source>&lt;p&gt;Copyright 2017-2021 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2021 ownCloud GmbH&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Copyright 2017-2021 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2021 ownCloud GmbH&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="55"/>
@@ -2413,7 +2418,7 @@ A naplók ide lesznek írva: %1</translation>
     <message>
         <location filename="../src/libsync/logger.cpp" line="149"/>
         <source>&lt;nobr&gt;File &quot;%1&quot;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output &lt;b&gt;cannot&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;nobr&gt;A(z) „%1” fájlt&lt;br/&gt;nem lehet írásra megnyitni.&lt;br/&gt;&lt;br/&gt;A naplózás kimenete &lt;b&gt;nem&lt;/b&gt; menthető!&lt;/nobr&gt;</translation>
     </message>
 </context>
 <context>
@@ -2457,7 +2462,7 @@ A naplók ide lesznek írva: %1</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="455"/>
         <source>&lt;p&gt;A new version of the %1 Client is available but the updating process failed.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; has been downloaded. The installed version is %3. If you confirm restart and update, your computer may reboot to complete the installation.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt; A(z) %1 ügyfél új verziója elérhető, de a frissítési folyamat sikertelen volt.&lt;/p&gt;&lt;b&gt;%2&lt;/b&gt; letöltve. A telepített verzió: %3. Ha megerősíti az újraindítást és a frissítést, akkor a számítógép újraindul a telepítés befejezéséhez.&lt;p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="469"/>
@@ -2593,7 +2598,7 @@ A naplók ide lesznek írva: %1</translation>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="117"/>
         <source>There was an error accessing the &quot;token&quot; endpoint: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Hiba történt a „token” végpont elérésekor: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="121"/>
@@ -2637,12 +2642,12 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="108"/>
         <source>New %1 update ready</source>
-        <translation type="unfinished"/>
+        <translation>Új %1 frissítés érhető el</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="109"/>
         <source>A new update for %1 is about to be installed. The updater may ask for additional privileges during the process. Your computer may reboot to complete the installation.</source>
-        <translation type="unfinished"/>
+        <translation>Egy új %1 frissítés fog települni. A frissítő további jogosultságokat kérhet a folyamat során. A számítógép újraindulhat a telepítés befejezéséhez.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="143"/>
@@ -2777,12 +2782,12 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="259"/>
         <source>%1 folder &quot;%2&quot; is synced to local folder &quot;%3&quot;</source>
-        <translation type="unfinished"/>
+        <translation>A(z) „%2” %1 mappa szinkronizálva van a(z) „%3” helyi mappába</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="262"/>
         <source>Sync the folder &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>A(z) „%1” mappa szinkronizálása</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="267"/>
@@ -2997,7 +3002,7 @@ Használata nem ajánlott.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="395"/>
         <source>The authenticated request to the server was redirected to &quot;%1&quot;. The URL is bad, the server is misconfigured.</source>
-        <translation type="unfinished"/>
+        <translation>A hitelesített kiszolgálókérés át lett irányítva ide: „%1”. Az URL hibás, a kiszolgáló rosszul van beállítva.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="408"/>
@@ -3200,7 +3205,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
     <message>
         <location filename="../src/libsync/discovery.cpp" line="271"/>
         <source>File names containing the character &quot;%1&quot; are not supported on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>A(z) „%1” karaktert tartalmazó fájlnevek nem támogatottak ezen a fájlrendszeren.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="272"/>
@@ -3348,12 +3353,12 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1025"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Hiba a metaadatok frissítésekor: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1029"/>
         <source>File is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>A fájl jelenleg használatban van</translation>
     </message>
 </context>
 <context>
@@ -3413,7 +3418,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="785"/>
         <source>The downloaded file is empty, but the server said it should have been %1.</source>
-        <translation type="unfinished"/>
+        <translation>A letöltött fájl üres, de a kiszolgáló szerint %1 méretűnek kellene lennie.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="976"/>
@@ -3428,7 +3433,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="1096"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Hiba a metaadatok frissítésekor: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="1099"/>
@@ -3464,7 +3469,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="181"/>
         <source>Could not create folder %1</source>
-        <translation type="unfinished"/>
+        <translation>A(z) %1 mappa nem hozható létre</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="181"/>
@@ -3474,12 +3479,12 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="194"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Hiba a metaadatok frissítésekor: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="197"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>A(z) %1 fájl jelenleg használatban van</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="193"/>
@@ -3520,7 +3525,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="262"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Hiba a metaadatok frissítésekor: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="265"/>
@@ -3575,7 +3580,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="264"/>
         <source>Error writing metadata to the database: %1</source>
-        <translation type="unfinished"/>
+        <translation>Hiba a metaadatok adatbázisba írásakor: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="267"/>
@@ -3598,12 +3603,12 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="257"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Hiba a metaadatok frissítésekor: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="260"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>A(z) %1 fájl jelenleg használatban van</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="265"/>
@@ -3662,7 +3667,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="770"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Hiba a metaadatok frissítésekor: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="773"/>
@@ -3926,7 +3931,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="223"/>
         <source>Set password</source>
-        <translation type="unfinished"/>
+        <translation>Jelszó beállítása</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="239"/>
@@ -4069,17 +4074,17 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="339"/>
         <source>No results for &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Nincs találat erre: „%1”</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="391"/>
         <source>Password for share required</source>
-        <translation type="unfinished"/>
+        <translation>A megosztáshoz jelszó szükséges</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="392"/>
         <source>Please enter a password for your email share:</source>
-        <translation type="unfinished"/>
+        <translation>Adjon meg egy jelszót a levélmegosztáshoz:</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="449"/>
@@ -4102,22 +4107,22 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
     <message>
         <location filename="../src/gui/shareuserline.ui" line="97"/>
         <source>Can edit</source>
-        <translation type="unfinished"/>
+        <translation>Szerkesztheti</translation>
     </message>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="131"/>
         <source>Note:</source>
-        <translation type="unfinished"/>
+        <translation>Megjegyzés:</translation>
     </message>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="187"/>
         <source>Password:</source>
-        <translation type="unfinished"/>
+        <translation>Jelszó:</translation>
     </message>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="259"/>
         <source>Expires:</source>
-        <translation type="unfinished"/>
+        <translation>Lejárat:</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="516"/>
@@ -4127,12 +4132,12 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="528"/>
         <source>Note to recipient</source>
-        <translation type="unfinished"/>
+        <translation>Jegyzet a címzettnek</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="542"/>
         <source>Set expiration date</source>
-        <translation type="unfinished"/>
+        <translation>Lejárati idő beállítása</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="558"/>
@@ -4157,7 +4162,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="588"/>
         <source>Password protect</source>
-        <translation type="unfinished"/>
+        <translation>Jelszavas védelem</translation>
     </message>
 </context>
 <context>
@@ -4776,7 +4781,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
     <message>
         <location filename="../src/gui/systray.cpp" line="95"/>
         <source>Open main dialog</source>
-        <translation>Fő ablak megnyitása</translation>
+        <translation>Főablak megnyitása</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="98"/>
@@ -4828,12 +4833,12 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
         <location filename="../src/libsync/theme.cpp" line="465"/>
         <location filename="../src/libsync/theme.cpp" line="478"/>
         <source>&lt;p&gt;Version %1. For more information please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt;.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;%1 verzió. További információkért kattintson &lt;a href=&apos;%2&apos;&gt;ide&lt;/a&gt;.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Verzió: %1. További információkért kattintson &lt;a href=&apos;%2&apos;&gt;ide&lt;/a&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="469"/>
         <source>&lt;p&gt;&lt;small&gt;Using virtual files plugin: %1&lt;/small&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;small&gt;Virtuális fájlok bővítmény használata: %1&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="482"/>
@@ -4851,7 +4856,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="518"/>
         <source>Synced %1</source>
-        <translation>Szinkronizálva %1</translation>
+        <translation>%1 szinkronizálva</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="520"/>
@@ -4894,7 +4899,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="905"/>
         <source>Cancel</source>
-        <translation>Mégsem</translation>
+        <translation>Mégse</translation>
     </message>
 </context>
 <context>
@@ -4902,96 +4907,96 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="140"/>
         <source>Could not fetch predefined statuses. Make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Az előre meghatározott állapotok nem kérhetők le. Győződjön meg róla, hogy kapcsolódik a kiszolgálóhoz.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="144"/>
         <source>Could not fetch user status. Make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>A felhasználói állapot nem kérhető le. Győződjön meg róla, hogy kapcsolódik a kiszolgálóhoz.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="148"/>
         <source>User status feature is not supported. You will not be able to set your user status.</source>
-        <translation type="unfinished"/>
+        <translation>A felhasználói állapot funkció nem támogatott. Nem fog tudni egyéni állapotot beállítani.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="152"/>
         <source>Emojis feature is not supported. Some user status functionality may not work.</source>
-        <translation type="unfinished"/>
+        <translation>Az emodzsi funkció nem támogatott. Egyes állapotfunkciók lehet, hogy nem fognak működni.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="156"/>
         <source>Could not set user status. Make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>A felhasználói állapot nem állítható be. Győződjön meg róla, hogy kapcsolódik a kiszolgálóhoz.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="160"/>
         <source>Could not clear user status message. Make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>A felhasználói állapot nem törölhető. Győződjön meg róla, hogy kapcsolódik a kiszolgálóhoz.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="358"/>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="456"/>
         <source>Don&apos;t clear</source>
-        <translation type="unfinished"/>
+        <translation>Ne törölje</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="361"/>
         <source>30 minutes</source>
-        <translation type="unfinished"/>
+        <translation>30 perc</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="364"/>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="416"/>
         <source>1 hour</source>
-        <translation type="unfinished"/>
+        <translation>1 óra</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="367"/>
         <source>4 hours</source>
-        <translation type="unfinished"/>
+        <translation>4 óra</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="370"/>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="445"/>
         <source>Today</source>
-        <translation type="unfinished"/>
+        <translation>Ma</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="373"/>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="447"/>
         <source>This week</source>
-        <translation type="unfinished"/>
+        <translation>Ezen a héten</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="405"/>
         <source>Less than a minute</source>
-        <translation type="unfinished"/>
+        <translation>Kevesebb mint egy perc</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="409"/>
         <source>1 minute</source>
-        <translation type="unfinished"/>
+        <translation>1 perc</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="411"/>
         <source>%1 minutes</source>
-        <translation type="unfinished"/>
+        <translation>%1 perc</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="418"/>
         <source>%1 hours</source>
-        <translation type="unfinished"/>
+        <translation>%1 óra</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="423"/>
         <source>1 day</source>
-        <translation type="unfinished"/>
+        <translation>1 nap</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="425"/>
         <source>%1 days</source>
-        <translation type="unfinished"/>
+        <translation>%1 nap</translation>
     </message>
 </context>
 <context>
@@ -4999,7 +5004,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
     <message>
         <location filename="../src/common/vfs.cpp" line="74"/>
         <source>The Virtual filesystem feature requires a NTFS file system, %1 is using %2</source>
-        <translation>A virtuális fájlrendszer szolgáltatáshoz NTFS fájlrendszerre van szükség,%1 a következőt használja: %2</translation>
+        <translation>A virtuális fájlrendszer szolgáltatáshoz NTFS fájlrendszerre van szükség, a(z) %1 a következőt használja: %2</translation>
     </message>
 </context>
 <context>
@@ -5025,7 +5030,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="165"/>
         <source>You have been logged out of %1 as user %2. Please login again.</source>
-        <translation>%2 felhasználóként kijelentkezett innen: %1. Kérjük, jelentkezzen be újra.</translation>
+        <translation>%2 felhasználóként kijelentkezett innen: %1. Jelentkezzen be újra.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="189"/>
@@ -5074,7 +5079,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="114"/>
         <source>Host your own server</source>
-        <translation>Működtesse saját szerverét</translation>
+        <translation>Saját kiszolgáló üzemeltetése</translation>
     </message>
 </context>
 <context>
@@ -5092,7 +5097,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="229"/>
         <source>The server on account %1 runs an unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
-        <translation>A(z) %1 fiók kiszolgálója nem támogatott verziót (%2) futtat. Ennek a kliensnek a nem támogatott szerver verziókkal történő használata nem tesztelt és potenciálisan veszélyes. Folytatás kizárólag saját felelősségére.</translation>
+        <translation>A(z) %1 fiók kiszolgálója nem támogatott verziót (%2) futtat. Ennek a kliensnek a nem támogatott kiszolgálóverziókkal történő használata nem tesztelt és potenciálisan veszélyes. Folytatás kizárólag saját felelősségére.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="270"/>
@@ -5342,7 +5347,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="131"/>
         <source>Server address</source>
-        <translation>Szerver címe</translation>
+        <translation>Kiszolgálócím</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="148"/>
@@ -5357,7 +5362,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="175"/>
         <source>Sync Logo</source>
-        <translation>Szinkronizálása logó</translation>
+        <translation>Szinkronizálás logó</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="225"/>
@@ -5372,7 +5377,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="408"/>
         <source>Synchronize everything from server</source>
-        <translation>Szinkronizáljon a szerverről mindent</translation>
+        <translation>Minden szinkronizálása a kiszolgálóról</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="464"/>
@@ -5473,12 +5478,12 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="73"/>
         <source>Logo</source>
-        <translation>Logo</translation>
+        <translation>Logó</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="183"/>
         <source>Server address</source>
-        <translation>Szerver címe</translation>
+        <translation>Kiszolgálócím</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="194"/>
@@ -5488,12 +5493,12 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="245"/>
         <source>This is the link to your %1 web interface when you open it in the browser.&lt;br/&gt;It looks like https://cloud.example.com or https://example.com/cloud</source>
-        <translation>Ez a link a(z) %1 webes felületére, amikor a böngészőben megnyitja. &lt;br/&gt; Úgy néz ki, mint https://cloud.example.com vagy https://example.com/cloud</translation>
+        <translation>Ez egy hivatkozás a(z) %1 webes felületére, ha böngészőben nyitja meg. &lt;br/&gt;Ezekhez hasonló: https://cloud.example.com vagy https://example.com/cloud</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="259"/>
         <source>This is the link to your %1 web interface when you open it in the browser.</source>
-        <translation>Ez a(z) %1 webes felületre mutató link, amikor megnyitja a böngészőben.</translation>
+        <translation>Ez a(z) %1 webes felületre mutató hivatkozás, ha a böngészőben nyitja meg.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="343"/>
@@ -5633,12 +5638,12 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="94"/>
         <source>Current user status is online</source>
-        <translation>A jelenlegi felhasználói állapot online</translation>
+        <translation>Jelenlegi felhasználói állapot: online</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="94"/>
         <source>Current user status is do not disturb</source>
-        <translation>A jelenlegi felhasználói állapot ne zavarjanak</translation>
+        <translation>Jelenlegi felhasználói állapot: ne zavarjanak</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="158"/>
@@ -5653,7 +5658,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="200"/>
         <source>Set status</source>
-        <translation type="unfinished"/>
+        <translation>Állapot beállítása</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="192"/>
@@ -5678,52 +5683,52 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="38"/>
         <source>Online status</source>
-        <translation type="unfinished"/>
+        <translation>Online állapot</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="55"/>
         <source>Online</source>
-        <translation type="unfinished"/>
+        <translation>Online</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="65"/>
         <source>Away</source>
-        <translation type="unfinished"/>
+        <translation>Távol</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="76"/>
         <source>Do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>Ne zavarjanak</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="86"/>
         <source>Invisible</source>
-        <translation type="unfinished"/>
+        <translation>Láthatatlan</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="99"/>
         <source>Status message</source>
-        <translation type="unfinished"/>
+        <translation>Állapotüzenet</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="137"/>
         <source>What is your status?</source>
-        <translation type="unfinished"/>
+        <translation>Mi az állapota?</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="164"/>
         <source>Clear status message after</source>
-        <translation type="unfinished"/>
+        <translation>Állapotüzenet törlése ennyi idő után:</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="181"/>
         <source>Clear status message</source>
-        <translation type="unfinished"/>
+        <translation>Állapotüzenet törlése</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="187"/>
         <source>Set status message</source>
-        <translation type="unfinished"/>
+        <translation>Állapotüzenet beállítása</translation>
     </message>
 </context>
 <context>
@@ -5799,22 +5804,22 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
     <message>
         <location filename="../src/common/checksums.cpp" line="252"/>
         <source>The downloaded file does not match the checksum, it will be resumed.</source>
-        <translation>A letöltött fájl nem felel meg az ellenőrzőösszegénet, újra le lesz töltve.</translation>
+        <translation>A letöltött fájl ellenőrzőösszege nem egyezik, újra le lesz töltve.</translation>
     </message>
     <message>
         <location filename="../src/common/checksums.cpp" line="368"/>
         <source>The downloaded file does not match the checksum, it will be resumed. &apos;%1&apos; != &apos;%2&apos;</source>
-        <translation>A letöltött fájl ellenőrző összege nem helyes, folytatni fogjuk. &apos;%1&apos;!=&apos;% 2&apos;</translation>
+        <translation>A letöltött fájl ellenőrzőösszege nem egyezik, újra le lesz töltve. „%1” != „%2”</translation>
     </message>
     <message>
         <location filename="../src/common/checksums.cpp" line="367"/>
         <source>The checksum header contained an unknown checksum type &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Az ellenőrzőösszeg fejléc ismeretlen típusú értéket tartalmazott: „%1”</translation>
     </message>
     <message>
         <location filename="../src/common/checksums.cpp" line="371"/>
         <source>The downloaded file does not match the checksum, it will be resumed. &quot;%1&quot; != &quot;%2&quot;</source>
-        <translation type="unfinished"/>
+        <translation>A letöltött fájl ellenőrzőösszege nem egyezik, újra le lesz töltve. „%1” != „%2”</translation>
     </message>
 </context>
 <context>
@@ -5822,7 +5827,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
     <message>
         <location filename="../src/gui/tray/Window.qml" line="97"/>
         <source>Nextcloud desktop main dialog</source>
-        <translation>A Nextcloud asztali alkalmazás főablak</translation>
+        <translation>A Nextcloud asztali alkalmazás főablaka</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="123"/>
@@ -5844,7 +5849,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
     <message>
         <location filename="../src/gui/tray/Window.qml" line="177"/>
         <source>Set user status</source>
-        <translation type="unfinished"/>
+        <translation>Felhasználó állapotának beállítása</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="203"/>
@@ -5869,17 +5874,17 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
     <message>
         <location filename="../src/gui/tray/Window.qml" line="317"/>
         <source>Current user avatar</source>
-        <translation>Jelenlegi felhasználói avatár</translation>
+        <translation>Jelenlegi felhasználói profilkép</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="356"/>
         <source>Current user status is online</source>
-        <translation>A jelenlegi felhasználói állapot online</translation>
+        <translation>Jelenlegi felhasználói állapot: online</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="356"/>
         <source>Current user status is do not disturb</source>
-        <translation>A jelenlegi felhasználói állapot ne zavarjanak</translation>
+        <translation>Jelenlegi felhasználói állapot: ne zavarjanak</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="720"/>
@@ -5910,12 +5915,12 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
     <message>
         <location filename="../src/gui/tray/Window.qml" line="478"/>
         <source>Open local folder of current account</source>
-        <translation>Az aktuális fiók helyi mappájának megnyitása</translation>
+        <translation>A jelenlegi fiók helyi mappájának megnyitása</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="489"/>
         <source>Open Nextcloud Talk in browser</source>
-        <translation>A Nextcloud Talk alkalmazás megnyitása böngészőben</translation>
+        <translation>A Nextcloud Beszélgetés alkalmazás megnyitása böngészőben</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="508"/>
@@ -5940,7 +5945,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
     <message>
         <location filename="../src/gui/tray/Window.qml" line="563"/>
         <source>Open %1 locally</source>
-        <translation>Nyissa meg helyben ezt: %1</translation>
+        <translation>A(z) %1 megnyitása helyben</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="812"/>
@@ -5953,17 +5958,17 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
     <message>
         <location filename="../src/gui/main.cpp" line="44"/>
         <source>System Tray not available</source>
-        <translation>Rendszertálca nem érhető el</translation>
+        <translation>Nem érhető el értesítési terület</translation>
     </message>
     <message>
         <location filename="../src/gui/main.cpp" line="45"/>
         <source>%1 requires on a working system tray. If you are running XFCE, please follow &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;these instructions&lt;/a&gt;. Otherwise, please install a system tray application such as &apos;trayer&apos; and try again.</source>
-        <translation>A(z) %1 használatához szükséges egy működő rendszertálcára. Ha XFCE-t használ, akkor kövesse &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;ezt az útmutatót&lt;/a&gt;. Egyébként, telepítsen egy rendszertálca alkalmazást – mint például a „trayer” – és próbálja újra.</translation>
+        <translation>A(z) %1 használatához szükséges egy értesíési terület. Ha XFCE-t használ, akkor kövesse &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;ezt az útmutatót&lt;/a&gt;. Egyébként, telepítsen egy értesítési terület alkalmazást – mint például a „trayer” – és próbálja újra.</translation>
     </message>
     <message>
         <location filename="../src/gui/main.cpp" line="45"/>
         <source>%1 requires on a working system tray. If you are running XFCE, please follow &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;these instructions&lt;/a&gt;. Otherwise, please install a system tray application such as &quot;trayer&quot; and try again.</source>
-        <translation>A(z) %1 használatához működő rendszertálcára van szükség. Ha XFCE-t használ, akkor kövesse &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;ezt az útmutatót&lt;/a&gt;. Egyébként, telepítsen egy rendszertálca alkalmazást – mint például a „trayer” – és próbálja újra.</translation>
+        <translation>A(z) %1 használatához működő értesítési területre van szükség. Ha XFCE-t használ, akkor kövesse &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;ezt az útmutatót&lt;/a&gt;. Egyébként, telepítsen egy értesítési terület alkalmazást – mint például a „trayer” – és próbálja újra.</translation>
     </message>
 </context>
 <context>
@@ -6352,12 +6357,12 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
     <message>
         <location filename="../src/libsync/vfs/cfapi/vfs_cfapi.cpp" line="333"/>
         <source>Download of end-to-end encrypted file failed</source>
-        <translation type="unfinished"/>
+        <translation>A végpontok közötti titkosítással rendelkező fájl letöltése sikertelen</translation>
     </message>
     <message>
         <location filename="../src/libsync/vfs/cfapi/vfs_cfapi.cpp" line="334"/>
         <source>It seems that you are trying to download a virtual file that is end-to-end encrypted. Implicitly downloading such files is not supported at the moment. To workaround this issue, go to the settings and mark the encrypted folder with &quot;Make always available locally&quot;.</source>
-        <translation>Úgy néz ki, hogy egy végpontok közti titkosítással ellátott virtuális fájlt akar letölteni. Az ilyen fájlok implicit letöltése jelenleg nem támogatott. Kerülőmegoldásként menjen a beállításokba, és kapcsolja be hogy mindig elérhető legyen helyben is.</translation>
+        <translation>Úgy néz ki, hogy egy végpontok közti titkosítással ellátott virtuális fájlt akar letölteni. Az ilyen fájlok implicit letöltése jelenleg nem támogatott. Kerülőmegoldásként menjen a beállításokba, és kapcsolja be, hogy mindig elérhető legyen helyben is.</translation>
     </message>
 </context>
 </TS>
