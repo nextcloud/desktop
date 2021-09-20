@@ -31,6 +31,8 @@ class QJsonObject;
 
 namespace OCC {
 
+class OcsShareJob;
+
 class Share : public QObject
 {
     Q_OBJECT
@@ -249,6 +251,13 @@ public:
      */
     void setLabel(const QString &label);
     
+    /*
+     * Create OcsShareJob and connect to signal/slots
+     */
+    template <typename LinkShareSlot>
+    OcsShareJob *createShareJob(const LinkShareSlot slotFunction);
+    
+    
 signals:
     void expireDateSet();
     void noteSet();
@@ -306,7 +315,6 @@ signals:
 private:
     QString _note;
     QDate _expireDate;
-    QString _label;
 };
 
 /**

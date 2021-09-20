@@ -235,18 +235,12 @@ QString LinkShare::getLabel() const
 
 void LinkShare::setName(const QString &name)
 {
-    auto *job = new OcsShareJob(_account);
-    connect(job, &OcsShareJob::shareJobFinished, this, &LinkShare::slotNameSet);
-    connect(job, &OcsJob::ocsError, this, &LinkShare::slotOcsError);
-    job->setName(getId(), name);
+    createShareJob(&LinkShare::slotNameSet)->setName(getId(), name);
 }
 
 void LinkShare::setNote(const QString &note)
 {
-    auto *job = new OcsShareJob(_account);
-    connect(job, &OcsShareJob::shareJobFinished, this, &LinkShare::slotNoteSet);
-    connect(job, &OcsJob::ocsError, this, &LinkShare::slotOcsError);
-    job->setNote(getId(), note);
+    createShareJob(&LinkShare::slotNoteSet)->setNote(getId(), note);
 }
 
 void LinkShare::slotNoteSet(const QJsonDocument &, const QVariant &note)
@@ -262,18 +256,20 @@ QString LinkShare::getToken() const
 
 void LinkShare::setExpireDate(const QDate &date)
 {
-    auto *job = new OcsShareJob(_account);
-    connect(job, &OcsShareJob::shareJobFinished, this, &LinkShare::slotExpireDateSet);
-    connect(job, &OcsJob::ocsError, this, &LinkShare::slotOcsError);
-    job->setExpireDate(getId(), date);
+    createShareJob(&LinkShare::slotExpireDateSet)->setExpireDate(getId(), date);
 }
 
 void LinkShare::setLabel(const QString &label)
 {
+    createShareJob(&LinkShare::slotLabelSet)->setLabel(getId(), label);
+}
+
+template <typename LinkShareSlot>
+OcsShareJob *LinkShare::createShareJob(const LinkShareSlot slotFunction) {
     auto *job = new OcsShareJob(_account);
-    connect(job, &OcsShareJob::shareJobFinished, this, &LinkShare::slotLabelSet);
+    connect(job, &OcsShareJob::shareJobFinished, this, slotFunction);
     connect(job, &OcsJob::ocsError, this, &LinkShare::slotOcsError);
-    job->setLabel(getId(), label);
+    return job;
 }
 
 void LinkShare::slotExpireDateSet(const QJsonDocument &reply, const QVariant &value)
