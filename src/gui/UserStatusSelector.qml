@@ -136,6 +136,7 @@ ColumnLayout {
             Layout.fillWidth: true
             placeholderText: qsTr("What is your status?")
             text: userStatusSelectorModel.userStatusMessage
+            selectByMouse: true
             onEditingFinished: userStatusSelectorModel.setUserStatusMessage(text)
         }
     }
