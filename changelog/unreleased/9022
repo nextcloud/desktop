@@ -1,0 +1,7 @@
+Bugfix: Properly deployment of Qt translations Mac and Window
+
+We fixed a deployment bug which prevented the translation of
+some components to be loaded.
+
+https://github.com/owncloud/client/issues/9022
+https://invent.kde.org/packaging/craft/-/commit/77c114917826480f294d0432f147c9e9f7d19e21
