@@ -144,7 +144,7 @@ void OCUpdater::backgroundCheckForUpdate()
     }
 }
 
-QString OCUpdater::statusString() const
+QString OCUpdater::statusString(UpdateStatusStringFormat format) const
 {
     QString updateVersion = _updateInfo.versionString();
 
@@ -153,12 +153,20 @@ QString OCUpdater::statusString() const
         return tr("Downloading %1. Please wait …").arg(updateVersion);
     case DownloadComplete:
         return tr("%1 available. Restart application to start the update.").arg(updateVersion);
-    case DownloadFailed:
+    case DownloadFailed: {
+        if (format == UpdateStatusStringFormat::Html) {
+            return tr("Could not download update. Please open <a href='%1'>%1</a> to download the update manually.").arg(_updateInfo.web());
+        }
         return tr("Could not download update. Please open %1 to download the update manually.").arg(_updateInfo.web());
+    }
     case DownloadTimedOut:
         return tr("Could not check for new updates.");
-    case UpdateOnlyAvailableThroughSystem:
+    case UpdateOnlyAvailableThroughSystem: {
+        if (format == UpdateStatusStringFormat::Html) {
+            return tr("New %1 is available. Please open <a href='%2'>%2</a> to download the update.").arg(updateVersion, _updateInfo.web());
+        }
         return tr("New %1 is available. Please open %2 to download the update.").arg(updateVersion, _updateInfo.web());
+    }
     case CheckingServer:
         return tr("Checking update server …");
     case Unknown:

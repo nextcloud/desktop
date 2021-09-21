@@ -21,6 +21,7 @@
 #include "configfile.h"
 #include "owncloudsetupwizard.h"
 #include "accountmanager.h"
+#include "guiutility.h"
 
 #if defined(BUILD_UPDATER)
 #include "updater/updater.h"
@@ -275,8 +276,13 @@ void GeneralSettings::slotUpdateInfo()
         connect(_ui->updateButton, &QAbstractButton::clicked, this, &GeneralSettings::slotUpdateCheckNow, Qt::UniqueConnection);
         connect(_ui->autoCheckForUpdatesCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::slotToggleAutoUpdateCheck);
 
-        QString status = ocupdater->statusString();
+        QString status = ocupdater->statusString(OCUpdater::UpdateStatusStringFormat::Html);
         Theme::replaceLinkColorStringBackgroundAware(status);
+
+        _ui->updateStateLabel->setOpenExternalLinks(false);
+        connect(_ui->updateStateLabel, &QLabel::linkActivated, this, [](const QString &link) {
+            Utility::openBrowser(QUrl(link));
+        });
         _ui->updateStateLabel->setText(status);
 
         _ui->restartButton->setVisible(ocupdater->downloadState() == OCUpdater::DownloadComplete);
