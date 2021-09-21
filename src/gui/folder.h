@@ -509,6 +509,11 @@ private:
     bool _vfsOnOffPending = false;
 
     /**
+     * Setting up vfs is a async operation
+     */
+    bool _vfsIsReady = false;
+
+    /**
      * Watches this folder's local directory for changes.
      *
      * Created by registerFolderWatcher(), triggers slotWatchedPathChanged()

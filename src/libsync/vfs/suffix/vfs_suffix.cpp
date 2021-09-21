@@ -51,8 +51,10 @@ void VfsSuffix::startImpl(const VfsSetupParams &params)
         if (!rec.isVirtualFile() && rec._path.endsWith(APPLICATION_DOTVIRTUALFILE_SUFFIX))
             toWipe.append(rec._path);
     });
-    for (const auto &path : toWipe)
+    for (const auto &path : toWipe) {
         params.journal->deleteFileRecord(QString::fromUtf8(path));
+    }
+    Q_EMIT started();
 }
 
 void VfsSuffix::stop()

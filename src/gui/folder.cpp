@@ -299,7 +299,7 @@ bool Folder::canSync() const
 
 bool Folder::ok() const
 {
-    return _syncResult.status() != SyncResult::SetupError;
+    return _vfsIsReady;
 }
 
 bool Folder::dueToSync() const
@@ -523,7 +523,8 @@ void Folder::startVfs()
     vfsParams.remotePath = remotePathTrailingSlash();
     vfsParams.account = _accountState->account();
     vfsParams.journal = &_journal;
-    vfsParams.providerName = Theme::instance()->appNameGUI();
+    vfsParams.providerDisplayName = Theme::instance()->appNameGUI();
+    vfsParams.providerName = Theme::instance()->appName();
     vfsParams.providerVersion = Theme::instance()->version();
     vfsParams.multipleAccountsRegistered = AccountManager::instance()->accounts().size() > 1;
 
@@ -535,12 +536,20 @@ void Folder::startVfs()
 
     _vfs->start(vfsParams);
 
-    // Immediately mark the sqlite temporaries as excluded. They get recreated
-    // on db-open and need to get marked again every time.
-    QString stateDbFile = _journal.databaseFilePath();
-    _journal.open();
-    _vfs->fileStatusChanged(stateDbFile + "-wal", SyncFileStatus::StatusExcluded);
-    _vfs->fileStatusChanged(stateDbFile + "-shm", SyncFileStatus::StatusExcluded);
+    connect(_vfs.data(), &Vfs::started, this, [this] {
+        // Immediately mark the sqlite temporaries as excluded. They get recreated
+        // on db-open and need to get marked again every time.
+        QString stateDbFile = _journal.databaseFilePath();
+        _journal.open();
+        _vfs->fileStatusChanged(stateDbFile + QStringLiteral("-wal"), SyncFileStatus::StatusExcluded);
+        _vfs->fileStatusChanged(stateDbFile + QStringLiteral("-shm"), SyncFileStatus::StatusExcluded);
+        _vfsIsReady = true;
+    });
+    connect(_vfs.data(), &Vfs::error, this, [this](const QString &error) {
+        _syncResult.appendErrorString(error);
+        _syncResult.setStatus(SyncResult::SetupError);
+        _vfsIsReady = false;
+    });
 }
 
 int Folder::slotDiscardDownloadProgress()

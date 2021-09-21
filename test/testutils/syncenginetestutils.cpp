@@ -934,7 +934,7 @@ void FakeFolder::switchToVfs(QSharedPointer<OCC::Vfs> vfs)
     vfsParams.remotePath = QLatin1Char('/');
     vfsParams.account = _account;
     vfsParams.journal = _journalDb.get();
-    vfsParams.providerName = QStringLiteral("OC-TEST");
+    vfsParams.providerDisplayName = QStringLiteral("OC-TEST");
     vfsParams.providerVersion = QStringLiteral("0.1");
     QObject::connect(_syncEngine.get(), &QObject::destroyed, vfs.data(), [vfs]() {
         vfs->stop();
