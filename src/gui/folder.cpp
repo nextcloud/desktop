@@ -159,6 +159,9 @@ Folder::~Folder()
 
 bool Folder::checkLocalPath()
 {
+#ifdef Q_OS_WIN
+    Utility::NtfsPermissionLookupRAII ntfs_perm;
+#endif
     const QFileInfo fi(_definition.localPath);
     _canonicalLocalPath = fi.canonicalFilePath();
 #ifdef Q_OS_MAC

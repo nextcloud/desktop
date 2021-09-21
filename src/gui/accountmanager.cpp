@@ -153,6 +153,9 @@ bool AccountManager::restoreFromLegacySettings()
 
         qCInfo(lcAccountManager) << "Migrate: checking old config " << oCCfgFile;
 
+#ifdef Q_OS_WIN
+        Utility::NtfsPermissionLookupRAII ntfs_perm;
+#endif
         QFileInfo fi(oCCfgFile);
         if (fi.isReadable()) {
             std::unique_ptr<QSettings> oCSettings(new QSettings(oCCfgFile, QSettings::IniFormat));

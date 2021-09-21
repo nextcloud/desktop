@@ -517,6 +517,10 @@ Folder *FolderMan::setupFolderFromOldConfigFile(const QString &file, AccountStat
     // check the unescaped variant (for the case when the filename comes out
     // of the directory listing). If the file does not exist, escape the
     // file and try again.
+
+#ifdef Q_OS_WIN
+    Utility::NtfsPermissionLookupRAII ntfs_perm;
+#endif
     QFileInfo cfgFile(_folderConfigPath, file);
 
     if (!cfgFile.exists()) {
