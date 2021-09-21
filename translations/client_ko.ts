@@ -617,7 +617,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/models/activitylistmodel.cpp" line="88"/>
         <source>%1 %2 on %3</source>
-        <translation type="unfinished"/>
+        <translation>%3 에서 %1 %2</translation>
     </message>
     <message>
         <location filename="../src/gui/models/activitylistmodel.cpp" line="114"/>
@@ -1301,7 +1301,7 @@ Please consider removing this folder from the account and adding it again.</sour
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="228"/>
         <source>Virtual file support is enabled.</source>
-        <translation type="unfinished"/>
+        <translation>가상 파일 지원이 활성화되었습니다.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="248"/>
@@ -1382,7 +1382,7 @@ Please consider removing this folder from the account and adding it again.</sour
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="273"/>
         <source>Local folder: %1</source>
-        <translation type="unfinished"/>
+        <translation>로컬 폴더: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="991"/>
@@ -1526,7 +1526,7 @@ Please consider removing this folder from the account and adding it again.</sour
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="435"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a subfolder of &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>이미 &lt;i&gt;%2&lt;/i&gt;의 하위 폴더인 &lt;i&gt;%1&lt;/i&gt;을(를) 동기화하고 있습니다.</translation>
     </message>
 </context>
 <context>
@@ -1544,7 +1544,7 @@ Please consider removing this folder from the account and adding it again.</sour
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="509"/>
         <source>Virtual files are not available for the selected folder</source>
-        <translation type="unfinished"/>
+        <translation>선택 폴더에서 가상 파일을 이용할 수 없습니다</translation>
     </message>
 </context>
 <context>
@@ -1656,7 +1656,7 @@ Please consider removing this folder from the account and adding it again.</sour
     <message>
         <location filename="../src/gui/generalsettings.ui" line="41"/>
         <source>Use &amp;Monochrome Icons in the system tray</source>
-        <translation type="unfinished"/>
+        <translation>시스템 트레이에 모노크롬(&amp;M) 아이콘 이용하기</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="177"/>
@@ -1687,7 +1687,7 @@ Please consider removing this folder from the account and adding it again.</sour
     <message>
         <location filename="../src/gui/generalsettings.ui" line="253"/>
         <source>&amp;Update Channel</source>
-        <translation type="unfinished"/>
+        <translation>채널 갱신(&amp;U)</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="135"/>
@@ -1697,7 +1697,7 @@ Please consider removing this folder from the account and adding it again.</sour
     <message>
         <location filename="../src/gui/generalsettings.ui" line="106"/>
         <source>Show sync folders in &amp;Explorer&apos;s Navigation Pane</source>
-        <translation type="unfinished"/>
+        <translation>탐색기(&amp;E)의 네비게이션 창에 동기화 폴더 보이기</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="126"/>
@@ -1712,7 +1712,7 @@ Please consider removing this folder from the account and adding it again.</sour
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="334"/>
         <source>You cannot disable autostart because system-wide autostart is enabled.</source>
-        <translation type="unfinished"/>
+        <translation>시스템 차원의 자동 시작이 활성화되었으므로 자동 시작을 비활성화할 수 없습니다.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="227"/>
@@ -1727,7 +1727,7 @@ Please consider removing this folder from the account and adding it again.</sour
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="74"/>
         <source>Language changes require a restart of this application to take effect.</source>
-        <translation type="unfinished"/>
+        <translation>언어 변경은 응용프로그램을 다시 시작해야 적용됩니다.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="228"/>
@@ -1946,12 +1946,12 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/gui/models/models.cpp" line="84"/>
         <source>Filter by</source>
-        <translation type="unfinished"/>
+        <translation>필터 적용</translation>
     </message>
     <message>
         <location filename="../src/gui/models/models.cpp" line="101"/>
         <source>No filter</source>
-        <translation type="unfinished"/>
+        <translation>필터 없음</translation>
     </message>
 </context>
 <context>
@@ -2166,7 +2166,7 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="267"/>
         <source>Unsupported token type: %1</source>
-        <translation type="unfinished"/>
+        <translation>지원되지 않는 토큰 타입: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="269"/>
@@ -2177,7 +2177,7 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="271"/>
         <source>Unknown Error</source>
-        <translation type="unfinished"/>
+        <translation>알 수 없는 오류</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="295"/>
@@ -2187,12 +2187,12 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="546"/>
         <source>Oauth2 Error</source>
-        <translation type="unfinished"/>
+        <translation>Oauth2 오류</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="547"/>
         <source>Oauth2 authentication requires a secured connection.</source>
-        <translation type="unfinished"/>
+        <translation>Oauth2 인증은 보안 연결을 필요로 합니다.</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="275"/>
@@ -2204,7 +2204,7 @@ Note that using any logging command line options will override the settings.</so
         <location filename="../src/libsync/creds/oauth.cpp" line="331"/>
         <location filename="../src/libsync/creds/oauth.cpp" line="337"/>
         <source>Error while refreshing the token: %1 : %2</source>
-        <translation type="unfinished"/>
+        <translation>토큰 갱신 오류: %1 : %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="342"/>
@@ -2246,7 +2246,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="148"/>
         <source>Downloading %1. Please wait...</source>
-        <translation type="unfinished"/>
+        <translation>%1 다운로드 중. 기다리기 바람...</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="150"/>
@@ -2319,7 +2319,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="207"/>
         <source>Virtual files are not available for the selected folder</source>
-        <translation type="unfinished"/>
+        <translation>선택 폴더에서 가상 파일을 이용할 수 없습니다</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="241"/>
@@ -2379,7 +2379,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="698"/>
         <source>File %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>파일 %1 은(는) 현재 이용 중입니다</translation>
     </message>
 </context>
 <context>
@@ -2480,7 +2480,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="272"/>
         <source>Enable experimental feature?</source>
-        <translation type="unfinished"/>
+        <translation>실험 기능을 활성화하겠습니까?</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="286"/>
@@ -2579,7 +2579,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="399"/>
         <source>permissions</source>
-        <translation type="unfinished"/>
+        <translation>권한</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="401"/>
@@ -2589,7 +2589,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="403"/>
         <source>file id</source>
-        <translation type="unfinished"/>
+        <translation>파일 id</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="407"/>
@@ -2629,7 +2629,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1355"/>
         <source>Error while reading the database</source>
-        <translation type="unfinished"/>
+        <translation>데이터베이스 읽기 오류</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1416"/>
@@ -2642,12 +2642,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1014"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>메타데이터 갱신 오류: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1017"/>
         <source>%1 the folder is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>%1 폴더는 현재 이용 중입니다</translation>
     </message>
 </context>
 <context>
@@ -2655,7 +2655,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="369"/>
         <source>Failed to free up space, the file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>공간 해제 실패, 파일 %1 은(는) 현재 이용 중입니다</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="390"/>
@@ -2696,7 +2696,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="1025"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>메타데이터 갱신 에러: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="476"/>
@@ -2704,7 +2704,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/propagatedownload.cpp" line="967"/>
         <location filename="../src/libsync/propagatedownload.cpp" line="1028"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>파일 %1 은(는) 현재 이용 중입니다</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="364"/>
@@ -2731,17 +2731,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="156"/>
         <source>Can not create local folder %1 because of a local file name clash with %2</source>
-        <translation type="unfinished"/>
+        <translation>로컬 파일 명이 %2 와 충돌하기 때문에 로컬 폴더 %1 을(를) 생성할 수 없습니다</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="175"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>메타데이터 갱신 에러: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="178"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>파일 %1 은(는) 현재 이용 중입니다</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="162"/>
@@ -2754,7 +2754,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="94"/>
         <source>Could not remove %1 because of a local file name clash with %2!</source>
-        <translation type="unfinished"/>
+        <translation>로컬 파일 명이 %2 와 충돌하기 때문에 %1 을(를) 제거할 수 없습니다!</translation>
     </message>
 </context>
 <context>
@@ -2767,27 +2767,27 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="223"/>
         <source>Could not rename %1 to %2, the file is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>%1 을(를) %2 로 개명할 수 없습니다, 이 파일이 현재 사용 중입니다</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="252"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>메타데이터 갱신 에러: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="255"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>파일 %1 은(는) 현재 이용 중입니다</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="261"/>
         <source>Failed to rename file</source>
-        <translation type="unfinished"/>
+        <translation>파일 개명에 실패했습니다</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="267"/>
         <source>Error setting pin state</source>
-        <translation type="unfinished"/>
+        <translation>핀 상태 설정 에러</translation>
     </message>
 </context>
 <context>
@@ -2808,12 +2808,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="141"/>
         <source>Error writing metadata to the database: %1</source>
-        <translation type="unfinished"/>
+        <translation>데이터베이스에 메타데이터 기록 오류: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="166"/>
         <source>Setting file status failed due to file lock</source>
-        <translation type="unfinished"/>
+        <translation>파일 잠금에 의한 파일 상태 설정 실패</translation>
     </message>
 </context>
 <context>
@@ -2821,7 +2821,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="135"/>
         <source>Could not rename %1 to %2, error: %3</source>
-        <translation type="unfinished"/>
+        <translation>%1 을(를) %2 로 개명할 수 없습니다, 오류: %3</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="182"/>
@@ -2831,12 +2831,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="220"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>메타데이터 갱신 에러: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="223"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>파일 %1 은(는) 현재 이용 중입니다</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="235"/>
@@ -2846,7 +2846,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="228"/>
         <source>Error setting pin state</source>
-        <translation type="unfinished"/>
+        <translation>핀 상태 설정 에러</translation>
     </message>
 </context>
 <context>
@@ -2854,12 +2854,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1160"/>
         <source>Could not update file : %1</source>
-        <translation type="unfinished"/>
+        <translation>파일을 갱신할 수 없습니다 : %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1163"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>파일 %1 은(는) 현재 이용 중입니다</translation>
     </message>
 </context>
 <context>
@@ -2887,12 +2887,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="567"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>메타데이터 갱신 에러: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="570"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>파일 %1 은(는) 현재 이용 중입니다</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="129"/>
@@ -2906,7 +2906,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="383"/>
         <source>%1 the file is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>%1  파일은  현재 이용 중입니다</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="478"/>
@@ -2944,7 +2944,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateuploadtus.cpp" line="67"/>
         <source>%1 the file is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>%1  파일은  현재 이용 중입니다</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadtus.cpp" line="211"/>
@@ -2962,7 +2962,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="137"/>
         <source>%1 the file is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>%1  파일은  현재 이용 중입니다</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="222"/>
@@ -3005,7 +3005,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/models/protocolitemmodel.cpp" line="133"/>
         <source>Issues</source>
-        <translation type="unfinished"/>
+        <translation>문제점</translation>
     </message>
     <message>
         <location filename="../src/gui/models/protocolitemmodel.cpp" line="133"/>
@@ -3058,12 +3058,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="114"/>
         <source>Show in web browser</source>
-        <translation type="unfinished"/>
+        <translation>웹 브라우져에 보이기</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="127"/>
         <source>Retry sync</source>
-        <translation type="unfinished"/>
+        <translation>동기화 재시도</translation>
     </message>
 </context>
 <context>
@@ -3185,7 +3185,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/settingsdialog.ui" line="14"/>
         <source>MainWindow</source>
-        <translation type="unfinished"/>
+        <translation>메인 창</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.ui" line="39"/>
@@ -3276,7 +3276,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="124"/>
         <source>Download / View / Edit</source>
-        <translation type="unfinished"/>
+        <translation>다운로드 / 보기 / 편집</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="269"/>
@@ -3286,12 +3286,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="276"/>
         <source>Enter name of new share...</source>
-        <translation type="unfinished"/>
+        <translation>새 공유 이름 입력...</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="283"/>
         <source>&amp;Create</source>
-        <translation type="unfinished"/>
+        <translation>생성(&amp;C)</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="336"/>
@@ -3321,7 +3321,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="99"/>
         <source>Download / View</source>
-        <translation type="unfinished"/>
+        <translation>다운로드 / 보기</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="137"/>
@@ -3606,7 +3606,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="937"/>
         <source>Resharing this file is not allowed</source>
-        <translation type="unfinished"/>
+        <translation>이 파일의 재 공유는 허용되지 않습니다</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="937"/>
@@ -3616,12 +3616,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="949"/>
         <source>Create and copy public link to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>공공 링크를 생성하고 클립보드에 복사</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="951"/>
         <source>Copy public link to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>공공 링크를 클립보드에 복사</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1042"/>
@@ -3631,7 +3631,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1050"/>
         <source>Show file versions in browser</source>
-        <translation type="unfinished"/>
+        <translation>브라우저에 파일 버전 보이기</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1073"/>
@@ -3651,7 +3651,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1084"/>
         <source>Move, rename and upload...</source>
-        <translation type="unfinished"/>
+        <translation>이동, 개명과 업로드...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1087"/>
@@ -3661,7 +3661,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1092"/>
         <source>Move and upload...</source>
-        <translation type="unfinished"/>
+        <translation>이동과 업로드...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1093"/>
@@ -3679,7 +3679,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="95"/>
         <source>Backup of %1 started</source>
-        <translation type="unfinished"/>
+        <translation>%1 의 백업이 시작됨</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="98"/>
@@ -3689,17 +3689,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="103"/>
         <source>Local path must be a an absolute path</source>
-        <translation type="unfinished"/>
+        <translation>로컬 경로는 절대 경로여야 합니다</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="108"/>
         <source>Failed to create temporary database</source>
-        <translation type="unfinished"/>
+        <translation>임시 데이터베이스 생성에 실패했습니다</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="137"/>
         <source>Backup of %1 succeeded</source>
-        <translation type="unfinished"/>
+        <translation>%1 의 백업이 성공함</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="140"/>
@@ -3709,7 +3709,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="147"/>
         <source>Failed to create backup: %1</source>
-        <translation type="unfinished"/>
+        <translation>백업 생성이 실패함: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="177"/>
@@ -3996,7 +3996,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/common/syncjournaldb.cpp" line="938"/>
         <source>Failed to connect database.</source>
-        <translation type="unfinished"/>
+        <translation>데이터베이스 연결에 실패함</translation>
     </message>
 </context>
 <context>
@@ -4038,12 +4038,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/common/vfs.cpp" line="72"/>
         <source>The Virtual filesystem feature does not support a drive as sync root</source>
-        <translation type="unfinished"/>
+        <translation>이 가상 파일 시스템 기능은 드라이브를 동기화 루트로서 지원하지 않습니다.</translation>
     </message>
     <message>
         <location filename="../src/common/vfs.cpp" line="76"/>
         <source>The Virtual filesystem feature requires a NTFS file system, %1 is using %2</source>
-        <translation type="unfinished"/>
+        <translation>이 가상 파일 시스템 기능은 NTFS 파일 시스템을 필요로 하는데, %1 i은(는) %2 을(를) 이용하고 있습니다</translation>
     </message>
     <message>
         <location filename="../src/common/vfs.cpp" line="80"/>
@@ -4195,7 +4195,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="303"/>
         <source>Up to date (%1)</source>
-        <translation type="unfinished"/>
+        <translation>최신 상태 (%1)</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="307"/>
@@ -4351,7 +4351,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="251"/>
         <source>Manually create folder sync connections </source>
-        <translation type="unfinished"/>
+        <translation>폴더 동기화 연결 수동 생성</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="369"/>
@@ -4371,7 +4371,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="472"/>
         <source>Start a &amp;clean sync (Crreate a backup and erases the local folder!)</source>
-        <translation type="unfinished"/>
+        <translation>클린(&amp;c) 동기화 시작(백업을 생성하고 로컬 폴더 삭제)</translation>
     </message>
 </context>
 <context>
@@ -4641,7 +4641,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="35"/>
         <source>Replaced by virtual file</source>
-        <translation type="unfinished"/>
+        <translation>가상 파일에 의해 대체됨</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="37"/>
