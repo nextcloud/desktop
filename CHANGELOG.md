@@ -15,6 +15,7 @@ Summary
 * Bugfix - Fix crash when closing the client: [#9014](https://github.com/owncloud/client/issues/9014)
 * Bugfix - Crash on missing sync root: [#9016](https://github.com/owncloud/client/issues/9016)
 * Bugfix - A upgrade to 2.9 causes the usage of a new journal file: [#9019](https://github.com/owncloud/client/issues/9019)
+* Bugfix - Fix copy url location for private links: [#9048](https://github.com/owncloud/client/issues/9048)
 * Change - Make sharedialog preview be more resilient: [#8938](https://github.com/owncloud/client/issues/8938)
 * Enhancement - Display the error type in the issue protocol and allow filtering: [#9000](https://github.com/owncloud/client/issues/9000)
 
@@ -75,6 +76,12 @@ Details
    again. ```
 
    https://github.com/owncloud/client/issues/9019
+
+* Bugfix - Fix copy url location for private links: [#9048](https://github.com/owncloud/client/issues/9048)
+
+   We fixed a bug where a placholder was copied to the clipboard instead of the url.
+
+   https://github.com/owncloud/client/issues/9048
 
 * Change - Make sharedialog preview be more resilient: [#8938](https://github.com/owncloud/client/issues/8938)
 
