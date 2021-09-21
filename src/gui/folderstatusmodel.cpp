@@ -542,7 +542,7 @@ bool FolderStatusModel::canFetchMore(const QModelIndex &parent) const
         // Keep showing the error to the user, it will be hidden when the account reconnects
         return false;
     }
-    if (info->_folder && !info->_folder->supportsSelectiveSync()) {
+    if (info->_folder && info->_folder->ok() && !info->_folder->supportsSelectiveSync()) {
         // Selective sync is hidden in that case
         return false;
     }

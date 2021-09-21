@@ -175,7 +175,7 @@ bool Folder::checkLocalPath()
         _canonicalLocalPath.append('/');
     }
 
-    if (fi.isDir() && fi.isReadable()) {
+    if (fi.isDir() && fi.isReadable() && fi.isWritable()) {
         qCDebug(lcFolder) << "Checked local path ok";
     } else {
         QString error;
@@ -186,6 +186,8 @@ bool Folder::checkLocalPath()
             error = tr("%1 should be a folder but is not.").arg(_definition.localPath);
         } else if (!fi.isReadable()) {
             error = tr("%1 is not readable.").arg(_definition.localPath);
+        } else if (!fi.isWritable()) {
+            error = tr("%1 is not writable.").arg(_definition.localPath);
         }
         if (!error.isEmpty()) {
             _syncResult.appendErrorString(error);
@@ -1210,9 +1212,10 @@ void Folder::setSaveBackwardsCompatible(bool save)
 
 void Folder::registerFolderWatcher()
 {
-    if (_folderWatcher)
+    if (!ok()) {
         return;
-    if (!QDir(path()).exists())
+    }
+    if (_folderWatcher)
         return;
 
     _folderWatcher.reset(new FolderWatcher(this));
