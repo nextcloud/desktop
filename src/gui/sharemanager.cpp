@@ -196,13 +196,15 @@ LinkShare::LinkShare(AccountPtr account,
     bool isPasswordSet,
     const QUrl &url,
     const QDate &expireDate,
-    const QString &note)
+    const QString &note,
+    const QString &label)
     : Share(account, id, uidowner, ownerDisplayName, path, Share::TypeLink, isPasswordSet, permissions)
     , _name(name)
     , _token(token)
     , _note(note)
     , _expireDate(expireDate)
     , _url(url)
+    , _label(label)
 {
 }
 
@@ -226,20 +228,19 @@ QString LinkShare::getNote() const
     return _note;
 }
 
+QString LinkShare::getLabel() const
+{
+    return _label;
+}
+
 void LinkShare::setName(const QString &name)
 {
-    auto *job = new OcsShareJob(_account);
-    connect(job, &OcsShareJob::shareJobFinished, this, &LinkShare::slotNameSet);
-    connect(job, &OcsJob::ocsError, this, &LinkShare::slotOcsError);
-    job->setName(getId(), name);
+    createShareJob(&LinkShare::slotNameSet)->setName(getId(), name);
 }
 
 void LinkShare::setNote(const QString &note)
 {
-    auto *job = new OcsShareJob(_account);
-    connect(job, &OcsShareJob::shareJobFinished, this, &LinkShare::slotNoteSet);
-    connect(job, &OcsJob::ocsError, this, &LinkShare::slotOcsError);
-    job->setNote(getId(), note);
+    createShareJob(&LinkShare::slotNoteSet)->setNote(getId(), note);
 }
 
 void LinkShare::slotNoteSet(const QJsonDocument &, const QVariant &note)
@@ -255,10 +256,20 @@ QString LinkShare::getToken() const
 
 void LinkShare::setExpireDate(const QDate &date)
 {
+    createShareJob(&LinkShare::slotExpireDateSet)->setExpireDate(getId(), date);
+}
+
+void LinkShare::setLabel(const QString &label)
+{
+    createShareJob(&LinkShare::slotLabelSet)->setLabel(getId(), label);
+}
+
+template <typename LinkShareSlot>
+OcsShareJob *LinkShare::createShareJob(const LinkShareSlot slotFunction) {
     auto *job = new OcsShareJob(_account);
-    connect(job, &OcsShareJob::shareJobFinished, this, &LinkShare::slotExpireDateSet);
+    connect(job, &OcsShareJob::shareJobFinished, this, slotFunction);
     connect(job, &OcsJob::ocsError, this, &LinkShare::slotOcsError);
-    job->setExpireDate(getId(), date);
+    return job;
 }
 
 void LinkShare::slotExpireDateSet(const QJsonDocument &reply, const QVariant &value)
@@ -281,6 +292,14 @@ void LinkShare::slotNameSet(const QJsonDocument &, const QVariant &value)
 {
     _name = value.toString();
     emit nameSet();
+}
+
+void LinkShare::slotLabelSet(const QJsonDocument &, const QVariant &label)
+{
+    if (_label != label.toString()) {
+        _label = label.toString();
+        emit labelSet();
+    }
 }
 
 UserGroupShare::UserGroupShare(AccountPtr account,
@@ -548,7 +567,8 @@ QSharedPointer<LinkShare> ShareManager::parseLinkShare(const QJsonObject &data)
         data.value("share_with").isString(), // has password?
         url,
         expireDate,
-        note));
+        note,
+        data.value("label").toString()));
 }
 
 QSharedPointer<Share> ShareManager::parseShare(const QJsonObject &data)
