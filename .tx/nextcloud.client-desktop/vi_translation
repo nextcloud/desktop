@@ -21,7 +21,7 @@ Icon=@APPLICATION_EXECUTABLE@
 
 
 # Translations
-Icon[de_DE]=@APPLICATION_ICON_NAME@
-Name[de_DE]=@APPLICATION_NAME@ Client zur Desktop-Synchronisierung
-Comment[de_DE]=@APPLICATION_NAME@ Client zur Desktop-Synchronisierung
-GenericName[de_DE]=Ordnersynchronisierung
+Icon[vi]=@APPLICATION_ICON_NAME@
+Name[vi]=@APPLICATION_NAME@ Máy tính
+Comment[vi]=Ứng dụng đồng bộ @APPLICATION_NAME@ cho máy tính
+GenericName[vi]=Đồng bộ thư mục
