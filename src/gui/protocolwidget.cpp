@@ -48,7 +48,7 @@ ProtocolWidget::ProtocolWidget(QWidget *parent)
 
     connect(_ui->_tableView, &QTreeWidget::customContextMenuRequested, this, &ProtocolWidget::slotItemContextMenu);
 
-    _model = new ProtocolItemModel(this);
+    _model = new ProtocolItemModel(2000, false, this);
     _sortModel = new QSortFilterProxyModel(this);
     _sortModel->setSourceModel(_model);
     _sortModel->setSortRole(Models::UnderlyingDataRole);

@@ -935,13 +935,23 @@ void FakeFolder::switchToVfs(QSharedPointer<OCC::Vfs> vfs)
     vfsParams.account = _account;
     vfsParams.journal = _journalDb.get();
     vfsParams.providerName = QStringLiteral("OC-TEST");
+    vfsParams.providerDisplayName = QStringLiteral("OC-TEST");
     vfsParams.providerVersion = QStringLiteral("0.1");
     QObject::connect(_syncEngine.get(), &QObject::destroyed, vfs.data(), [vfs]() {
         vfs->stop();
         vfs->unregisterFolder();
     });
 
+    QObject::connect(vfs.get(), &OCC::Vfs::error, vfs.get(), [](const QString &error) {
+        QFAIL(qUtf8Printable(error));
+    });
+    QSignalSpy spy(vfs.get(), &OCC::Vfs::started);
     vfs->start(vfsParams);
+
+    // don't use QVERIFY outside of the test slot
+    if (spy.isEmpty() && !spy.wait()) {
+        QFAIL("VFS Setup failed");
+    }
 }
 
 FileInfo FakeFolder::currentLocalState()

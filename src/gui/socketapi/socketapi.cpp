@@ -450,17 +450,30 @@ void SocketApi::slotUpdateFolderView(Folder *f)
 
     if (f) {
         // do only send UPDATE_VIEW for a couple of status
-        if (f->syncResult().status() == SyncResult::SyncPrepare
-            || f->syncResult().status() == SyncResult::Success
-            || f->syncResult().status() == SyncResult::Paused
-            || f->syncResult().status() == SyncResult::Problem
-            || f->syncResult().status() == SyncResult::Error
-            || f->syncResult().status() == SyncResult::SetupError) {
-            QString rootPath = removeTrailingSlash(f->path());
+        switch (f->syncResult().status()) {
+        case SyncResult::SyncPrepare:
+            Q_FALLTHROUGH();
+        case SyncResult::Success:
+            Q_FALLTHROUGH();
+        case SyncResult::Paused:
+            Q_FALLTHROUGH();
+        case SyncResult::Problem:
+            Q_FALLTHROUGH();
+        case SyncResult::Error:
+            Q_FALLTHROUGH();
+        case SyncResult::SetupError: {
+            const QString rootPath = removeTrailingSlash(f->path());
             broadcastStatusPushMessage(rootPath, f->syncEngine().syncFileStatusTracker().fileStatus(""));
 
-            broadcastMessage(buildMessage(QLatin1String("UPDATE_VIEW"), rootPath));
-        } else {
+            broadcastMessage(buildMessage(QStringLiteral("UPDATE_VIEW"), rootPath));
+        } break;
+        case OCC::SyncResult::Undefined:
+            Q_FALLTHROUGH();
+        case OCC::SyncResult::NotYetStarted:
+            Q_FALLTHROUGH();
+        case OCC::SyncResult::SyncRunning:
+            Q_FALLTHROUGH();
+        case OCC::SyncResult::SyncAbortRequested:
             qCDebug(lcSocketApi) << "Not sending UPDATE_VIEW for" << f->alias() << "because status() is" << f->syncResult().status();
         }
     }
@@ -537,18 +550,17 @@ void SocketApi::command_RETRIEVE_FILE_STATUS(const QString &argument, SocketList
     auto fileData = FileData::get(argument);
     if (!fileData.folder) {
         // this can happen in offline mode e.g.: nothing to worry about
-        statusString = QLatin1String("NOP");
+        statusString = SyncFileStatus(SyncFileStatus::StatusNone).toSocketAPIString();
     } else {
         // The user probably visited this directory in the file shell.
         // Let the listener know that it should now send status pushes for sibblings of this file.
         QString directory = fileData.localPath.left(fileData.localPath.lastIndexOf('/'));
         listener->registerMonitoredDirectory(qHash(directory));
 
-        SyncFileStatus fileStatus = fileData.syncFileStatus();
-        statusString = fileStatus.toSocketAPIString();
+        statusString = fileData.syncFileStatus().toSocketAPIString();
     }
 
-    const QString message = QLatin1String("STATUS:") % statusString % QLatin1Char(':') % QDir::toNativeSeparators(argument);
+    const QString message = QStringLiteral("STATUS:") % statusString % QLatin1Char(':') % QDir::toNativeSeparators(argument);
     listener->sendMessage(message);
 }
 
@@ -972,21 +984,18 @@ SocketApi::FileData SocketApi::FileData::get(const QString &localFile)
         return data;
 
     data.serverRelativePath = QDir(data.folder->remotePath()).filePath(data.folderRelativePath);
-    QString virtualFileExt = QStringLiteral(APPLICATION_DOTVIRTUALFILE_SUFFIX);
-    if (data.serverRelativePath.endsWith(virtualFileExt)) {
-        data.serverRelativePath.chop(virtualFileExt.size());
+    if (data.folder->ok()) {
+        data.serverRelativePath = data.folder->vfs().underlyingFileName(data.serverRelativePath);
     }
     return data;
 }
 
 QString SocketApi::FileData::folderRelativePathNoVfsSuffix() const
 {
-    auto result = folderRelativePath;
-    QString virtualFileExt = QStringLiteral(APPLICATION_DOTVIRTUALFILE_SUFFIX);
-    if (result.endsWith(virtualFileExt)) {
-        result.chop(virtualFileExt.size());
+    if (folder->ok()) {
+        return folder->vfs().underlyingFileName(folderRelativePath);
     }
-    return result;
+    return folderRelativePath;
 }
 
 SyncFileStatus SocketApi::FileData::syncFileStatus() const

@@ -66,7 +66,7 @@ QKeychain::Job *CredentialManager::set(const QString &key, const QVariant &data)
         if (writeJob->error() == QKeychain::NoError) {
             qCInfo(lcCredentaislManager) << "added" << scopedKey(this, key);
             // just a list, the values don't matter
-            credentialsList()->setValue(key, true);
+            credentialsList().setValue(key, true);
         } else {
             qCWarning(lcCredentaislManager) << "Failed to set:" << scopedKey(this, key) << writeJob->errorString();
         }
@@ -81,7 +81,7 @@ QKeychain::Job *CredentialManager::remove(const QString &key)
 {
     OC_ASSERT(contains(key));
     // remove immediately to prevent double invocation by clear()
-    credentialsList()->remove(key);
+    credentialsList().remove(key);
     qCInfo(lcCredentaislManager) << "del" << scopedKey(this, key);
     auto keychainJob = new QKeychain::DeletePasswordJob(Theme::instance()->appName());
     keychainJob->setKey(scopedKey(this, key));
@@ -117,32 +117,37 @@ const Account *CredentialManager::account() const
 
 bool CredentialManager::contains(const QString &key) const
 {
-    return credentialsList()->contains(key);
+    return credentialsList().contains(key);
 }
 
 QStringList CredentialManager::knownKeys(const QString &group) const
 {
     if (group.isEmpty()) {
-        return credentialsList()->allKeys();
+        return credentialsList().allKeys();
     }
-    credentialsList()->beginGroup(group);
-    const auto keys = credentialsList()->allKeys();
+    credentialsList().beginGroup(group);
+    const auto keys = credentialsList().allKeys();
     QStringList out;
     out.reserve(keys.size());
     for (const auto &k : keys) {
         out.append(group + QLatin1Char('/') + k);
     }
-    credentialsList()->endGroup();
+    credentialsList().endGroup();
     return out;
 }
 
-QSettings *CredentialManager::credentialsList() const
+/**
+ * Utility function to lazily create the settings (group).
+ *
+ * IMPORTANT: the underlying storage is a std::unique_ptr, so do *NOT* store this reference anywhere!
+ */
+QSettings &CredentialManager::credentialsList() const
 {
     // delayed init as scope requires a fully inizialised acc
     if (!_credentialsList) {
         _credentialsList = ConfigFile::settingsWithGroup(QStringLiteral("Credentials/") + scope(this));
     }
-    return _credentialsList.get();
+    return *_credentialsList;
 }
 
 CredentialJob::CredentialJob(CredentialManager *parent, const QString &key)

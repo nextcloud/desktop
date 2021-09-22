@@ -394,7 +394,7 @@ void SyncEngine::startSync()
             finalize(false);
             return;
         } else {
-            qCInfo(lcEngine) << "There are" << freeBytes << "bytes available at" << _localPath;
+            qCInfo(lcEngine) << "There are" << Utility::octetsToString(freeBytes) << "available at" << _localPath;
         }
     } else {
         qCWarning(lcEngine) << "Could not determine free space available at" << _localPath;

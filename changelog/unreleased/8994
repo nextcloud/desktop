@@ -1,0 +1,6 @@
+Bugfix: Handle use of directory of another Windows VFS sync client
+
+We now better handle setup issues during the initialisation of virtual files support.
+Especially the case that a user tries to use a directory managed by a competitor which until now caused a crash.
+
+https://github.com/owncloud/client/issues/8994

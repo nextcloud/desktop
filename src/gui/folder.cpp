@@ -159,6 +159,9 @@ Folder::~Folder()
 
 bool Folder::checkLocalPath()
 {
+#ifdef Q_OS_WIN
+    Utility::NtfsPermissionLookupRAII ntfs_perm;
+#endif
     const QFileInfo fi(_definition.localPath);
     _canonicalLocalPath = fi.canonicalFilePath();
 #ifdef Q_OS_MAC
@@ -172,7 +175,7 @@ bool Folder::checkLocalPath()
         _canonicalLocalPath.append('/');
     }
 
-    if (fi.isDir() && fi.isReadable()) {
+    if (fi.isDir() && fi.isReadable() && fi.isWritable()) {
         qCDebug(lcFolder) << "Checked local path ok";
     } else {
         QString error;
@@ -183,6 +186,8 @@ bool Folder::checkLocalPath()
             error = tr("%1 should be a folder but is not.").arg(_definition.localPath);
         } else if (!fi.isReadable()) {
             error = tr("%1 is not readable.").arg(_definition.localPath);
+        } else if (!fi.isWritable()) {
+            error = tr("%1 is not writable.").arg(_definition.localPath);
         }
         if (!error.isEmpty()) {
             _syncResult.appendErrorString(error);
@@ -294,7 +299,7 @@ bool Folder::canSync() const
 
 bool Folder::ok() const
 {
-    return _syncResult.status() != SyncResult::SetupError;
+    return _vfsIsReady;
 }
 
 bool Folder::dueToSync() const
@@ -518,7 +523,8 @@ void Folder::startVfs()
     vfsParams.remotePath = remotePathTrailingSlash();
     vfsParams.account = _accountState->account();
     vfsParams.journal = &_journal;
-    vfsParams.providerName = Theme::instance()->appNameGUI();
+    vfsParams.providerDisplayName = Theme::instance()->appNameGUI();
+    vfsParams.providerName = Theme::instance()->appName();
     vfsParams.providerVersion = Theme::instance()->version();
     vfsParams.multipleAccountsRegistered = AccountManager::instance()->accounts().size() > 1;
 
@@ -530,12 +536,20 @@ void Folder::startVfs()
 
     _vfs->start(vfsParams);
 
-    // Immediately mark the sqlite temporaries as excluded. They get recreated
-    // on db-open and need to get marked again every time.
-    QString stateDbFile = _journal.databaseFilePath();
-    _journal.open();
-    _vfs->fileStatusChanged(stateDbFile + "-wal", SyncFileStatus::StatusExcluded);
-    _vfs->fileStatusChanged(stateDbFile + "-shm", SyncFileStatus::StatusExcluded);
+    connect(_vfs.data(), &Vfs::started, this, [this] {
+        // Immediately mark the sqlite temporaries as excluded. They get recreated
+        // on db-open and need to get marked again every time.
+        QString stateDbFile = _journal.databaseFilePath();
+        _journal.open();
+        _vfs->fileStatusChanged(stateDbFile + QStringLiteral("-wal"), SyncFileStatus::StatusExcluded);
+        _vfs->fileStatusChanged(stateDbFile + QStringLiteral("-shm"), SyncFileStatus::StatusExcluded);
+        _vfsIsReady = true;
+    });
+    connect(_vfs.data(), &Vfs::error, this, [this](const QString &error) {
+        _syncResult.appendErrorString(error);
+        _syncResult.setStatus(SyncResult::SetupError);
+        _vfsIsReady = false;
+    });
 }
 
 int Folder::slotDiscardDownloadProgress()
@@ -1207,9 +1221,10 @@ void Folder::setSaveBackwardsCompatible(bool save)
 
 void Folder::registerFolderWatcher()
 {
-    if (_folderWatcher)
+    if (!ok()) {
         return;
-    if (!QDir(path()).exists())
+    }
+    if (_folderWatcher)
         return;
 
     _folderWatcher.reset(new FolderWatcher(this));

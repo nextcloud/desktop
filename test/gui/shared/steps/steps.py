@@ -413,10 +413,10 @@ def step(context, filename):
     activity.checkFileExist(filename)
 
 
-@When('the user selects the unsynced files tab')
-def step(context):
+@When('the user selects "|any|" tab in the activity')
+def step(context, tabName):
     activity = Activity()
-    activity.clickTab("Not Synced")
+    activity.clickTab(tabName)
 
 
 def openSharingDialog(context, resource, itemType='file'):

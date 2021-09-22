@@ -90,8 +90,9 @@ void ProcessDirectoryJob::process()
     auto pathU8 = _currentFolder._original.toUtf8();
     if (!_discoveryData->_statedb->listFilesInPath(pathU8, [&](const SyncJournalFileRecord &rec) {
             auto name = pathU8.isEmpty() ? QString::fromUtf8(rec._path) : QString::fromUtf8(rec._path.constData() + (pathU8.size() + 1));
-            if (rec.isVirtualFile() && isVfsWithSuffix())
-                chopVirtualFileSuffix(name);
+            if (rec.isVirtualFile() && isVfsWithSuffix()) {
+                name = chopVirtualFileSuffix(name);
+            }
             auto &dbEntry = entries[name].dbEntry;
             dbEntry = rec;
             setupDbPinStateActions(dbEntry);
@@ -115,8 +116,7 @@ void ProcessDirectoryJob::process()
             auto &suffixedEntry = entries[e.name];
             bool hasOtherData = suffixedEntry.serverEntry.isValid() || suffixedEntry.dbEntry.isValid();
 
-            auto nonvirtualName = e.name;
-            chopVirtualFileSuffix(nonvirtualName);
+            auto nonvirtualName = chopVirtualFileSuffix(e.name);
             auto &nonvirtualEntry = entries[nonvirtualName];
             // If the non-suffixed entry has no data, move it
             if (!nonvirtualEntry.localEntry.isValid()) {
@@ -986,8 +986,9 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         // We must query the server to know if the etag has not changed
         _pendingAsyncJobs++;
         QString serverOriginalPath = _discoveryData->_remoteFolder + _discoveryData->adjustRenamedPath(originalPath, SyncFileItem::Down);
-        if (base.isVirtualFile() && isVfsWithSuffix())
-            chopVirtualFileSuffix(serverOriginalPath);
+        if (base.isVirtualFile() && isVfsWithSuffix()) {
+            serverOriginalPath = chopVirtualFileSuffix(serverOriginalPath);
+        }
         auto job = new RequestEtagJob(_discoveryData->_account, serverOriginalPath, this);
         connect(job, &RequestEtagJob::finishedWithResult, this, [=](const HttpResult<QByteArray> &etag) mutable {
             if (!etag || (etag.get() != base._etag && !item->isDirectory()) || _discoveryData->isRenamed(originalPath)) {
@@ -1367,14 +1368,13 @@ bool ProcessDirectoryJob::hasVirtualFileSuffix(const QString &str) const
     return str.endsWith(_discoveryData->_syncOptions._vfs->fileSuffix());
 }
 
-void ProcessDirectoryJob::chopVirtualFileSuffix(QString &str) const
+QString ProcessDirectoryJob::chopVirtualFileSuffix(const QString &str) const
 {
     if (!isVfsWithSuffix())
-        return;
-    bool hasSuffix = hasVirtualFileSuffix(str);
-    OC_ASSERT(hasSuffix);
-    if (hasSuffix)
-        str.chop(_discoveryData->_syncOptions._vfs->fileSuffix().size());
+        return str;
+    // ensure we do it only with virtual files in this class
+    Q_ASSERT(hasVirtualFileSuffix(str));
+    return _discoveryData->_syncOptions._vfs->underlyingFileName(str);
 }
 
 DiscoverySingleDirectoryJob *ProcessDirectoryJob::startAsyncServerQuery()

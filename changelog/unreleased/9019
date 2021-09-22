@@ -11,4 +11,9 @@ This configuration is know to lead to dataloss and is no longer supported.
 Please consider removing this folder from the account and adding it again.
 ```
 
+We also removed the account info infix from the sync db used with the cmd client.
+
 https://github.com/owncloud/client/issues/9019
+https://github.com/owncloud/client/pull/9028
+https://github.com/owncloud/client/pull/9046
+https://github.com/owncloud/client/pull/9054

@@ -24,20 +24,23 @@ namespace OCC {
 /**
  * A Fixed sized ring buffer optimized on continouous insertion
  */
-template <typename TYPE, size_t _Size>
+template <typename TYPE>
 class FixedSizeRingBuffer
 {
 public:
-    FixedSizeRingBuffer() = default;
+    FixedSizeRingBuffer(size_t size)
+        : _data(size, TYPE())
+    {
+    }
 
     constexpr size_t capacity() const
     {
-        return _Size;
+        return _data.size();
     }
 
     constexpr bool isFull() const
     {
-        return size() >= _Size;
+        return size() >= _data.size();
     }
 
     constexpr size_t size() const
@@ -79,7 +82,7 @@ public:
         Q_ASSERT(_start < _end);
         // adjust offset to prevent overflow
         const auto s = size();
-        _start %= _Size;
+        _start %= _data.size();
         _end = _start + s;
     }
 
@@ -102,7 +105,7 @@ public:
     void remove_if(const std::function<bool(const TYPE &)> &f)
     {
         // filter and sort the data
-        FixedSizeRingBuffer<TYPE, _Size> tmp;
+        FixedSizeRingBuffer<TYPE> tmp(_data.size());
         const auto start = convertToIndex(0);
         for (auto it = begin() + start; it != end(); ++it) {
             if (!f(*it)) {
@@ -119,14 +122,14 @@ public:
 
     void reset(std::vector<TYPE> &&data)
     {
-        Q_ASSERT(data.size() <= _Size);
+        Q_ASSERT(data.size() <= _data.size());
         _start = 0;
         _end = data.size();
         std::move(data.begin(), data.end(), _data.begin());
     }
 
 private:
-    std::array<TYPE, _Size> _data;
+    std::vector<TYPE> _data;
 
     // the sliding window of the ring buffer
     size_t _start = 0;
@@ -135,7 +138,7 @@ private:
     // converts an array index to the underlying array index
     constexpr size_t convertToIndex(size_t i) const
     {
-        return (_start + i) % _Size;
+        return (_start + i) % _data.size();
     }
 };
 

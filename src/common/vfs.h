@@ -60,6 +60,7 @@ struct OCSYNC_EXPORT VfsSetupParams
     SyncJournalDb *journal = nullptr;
 
     /// Strings potentially passed on to the platform
+    QString providerDisplayName;
     QString providerName;
     QString providerVersion;
 
@@ -127,9 +128,12 @@ public:
     /// For WithSuffix modes: the suffix (including the dot)
     virtual QString fileSuffix() const = 0;
 
+    /// The fileName without fileSuffix
+    /// TODO: better naming welcome
+    virtual QString underlyingFileName(const QString &fileName) const;
+
     /// Access to the parameters the instance was start()ed with.
     const VfsSetupParams &params() const { return _setupParams; }
-
 
     /** Initializes interaction with the VFS provider.
      *
@@ -231,6 +235,11 @@ signals:
     void beginHydrating();
     /// Emitted when the hydration ends
     void doneHydrating();
+    /// start complete
+    void started();
+
+    /// we encountered an error
+    void error(const QString &error);
 
 protected:
     /** Update placeholder metadata during discovery.
@@ -297,7 +306,7 @@ public slots:
 
 protected:
     Result<ConvertToPlaceholderResult, QString> updateMetadata(const SyncFileItem &, const QString &, const QString &) override { return { ConvertToPlaceholderResult::Ok }; }
-    void startImpl(const VfsSetupParams &) override {}
+    void startImpl(const VfsSetupParams &) override { Q_EMIT started(); }
 };
 
 /// Check whether the plugin for the mode is available.

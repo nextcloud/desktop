@@ -24,8 +24,9 @@
 
 using namespace OCC;
 
-ProtocolItemModel::ProtocolItemModel(QObject *parent, bool issueMode)
+ProtocolItemModel::ProtocolItemModel(size_t size, bool issueMode, QObject *parent)
     : QAbstractTableModel(parent)
+    , _data(size)
     , _issueMode(issueMode)
 {
 }

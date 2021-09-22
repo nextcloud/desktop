@@ -127,13 +127,6 @@ QString SyncJournalDb::makeDbName(const QString &localPath,
     return journalPath;
 }
 
-QString SyncJournalDb::makeDbName(const QString &localPath, const QUrl &remoteUrl, const QString &remotePath, const QString &user)
-{
-    // legacy name only used by the cmd client
-    const QString key = QStringLiteral("%1@%2:%3").arg(user, remoteUrl.toString(), remotePath);
-    return makeDbName(localPath, QString::fromUtf8(QCryptographicHash::hash(key.toUtf8(), QCryptographicHash::Md5).left(6).toHex()));
-}
-
 bool SyncJournalDb::maybeMigrateDb(const QString &localPath, const QString &absoluteJournalPath)
 {
     const QString oldDbName = localPath + QLatin1String(".csync_journal.db");

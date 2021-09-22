@@ -1,5 +1,8 @@
-Bugfix: Crash on missing sync root
+Bugfix: Crash on missing or unreadable sync root
 
-We fixed an issue where the client crashed after a user deleted the sync root.
+We fixed an issue where the client crashed after a user deleted the sync root
+or lost access to the directory.
 
 https://github.com/owncloud/client/issues/9016
+https://github.com/owncloud/client/pull/9017
+https://github.com/owncloud/client/pull/9065

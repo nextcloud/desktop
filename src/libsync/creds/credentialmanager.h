@@ -34,7 +34,7 @@ public:
     const Account *account() const;
 
 private:
-    QSettings *credentialsList() const;
+    QSettings &credentialsList() const;
 
     // TestCredentialManager
     QStringList knownKeys(const QString &group = {}) const;

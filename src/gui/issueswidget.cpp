@@ -87,7 +87,7 @@ IssuesWidget::IssuesWidget(QWidget *parent)
         _model->addProtocolItem(ProtocolItem { f, item });
     });
 
-    _model = new ProtocolItemModel(this);
+    _model = new ProtocolItemModel(20000, true, this);
     _sortModel = new QSortFilterProxyModel(this);
     _sortModel->setSourceModel(_model);
     _ui->_tableView->setModel(_sortModel);

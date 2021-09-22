@@ -687,14 +687,17 @@ QString substLang(const QString &lang)
 void Application::setupTranslations()
 {
     const auto trPath = Translations::translationsDirectoryPath();
+    qCDebug(lcApplication) << "Translations directory path:" << trPath;
 
     QStringList uiLanguages = QLocale::system().uiLanguages();
+    qCDebug(lcApplication) << "UI languages:" << uiLanguages;
 
     // the user can also set a locale in the settings, so we need to load the config file
     ConfigFile cfg;
 
     // allow user and theme to enforce a language via a commandline parameter
     const auto themeEnforcedLocale = Theme::instance()->enforcedLocale();
+    qCDebug(lcApplication) << "Theme-enforced locale:" << themeEnforcedLocale;
 
     // we need to track the enforced languages separately, since we need to distinguish between locale-provided
     // and user-enforced ones below
@@ -709,6 +712,8 @@ void Application::setupTranslations()
             uiLanguages.prepend(enforcedLocale);
         }
     }
+
+    qCDebug(lcApplication) << "Enforced languages:" << enforcedLanguages;
 
     QTranslator *translator = new QTranslator(this);
     QTranslator *qtTranslator = new QTranslator(this);
@@ -726,26 +731,40 @@ void Application::setupTranslations()
             // have a translation file provided.
             qCInfo(lcApplication) << "Using" << lang << "translation";
             _displayLanguage = lang;
+
             const QString qtTrPath = QLibraryInfo::location(QLibraryInfo::TranslationsPath);
+            qCDebug(lcApplication) << "qtTrPath:" << qtTrPath;
             const QString qtTrFile = QLatin1String("qt_") + lang;
+            qCDebug(lcApplication) << "qtTrFile:" << qtTrFile;
             const QString qtBaseTrFile = QLatin1String("qtbase_") + lang;
+            qCDebug(lcApplication) << "qtBaseTrFile:" << qtBaseTrFile;
+
             if (!qtTranslator->load(qtTrFile, qtTrPath)) {
                 if (!qtTranslator->load(qtTrFile, trPath)) {
                     if (!qtTranslator->load(qtBaseTrFile, qtTrPath)) {
-                        qtTranslator->load(qtBaseTrFile, trPath);
+                        if (!qtTranslator->load(qtBaseTrFile, trPath)) {
+                            qCCritical(lcApplication) << "Could not load Qt translations";
+                        }
                     }
                 }
             }
+
             const QString qtkeychainTrFile = QLatin1String("qtkeychain_") + lang;
             if (!qtkeychainTranslator->load(qtkeychainTrFile, qtTrPath)) {
-                qtkeychainTranslator->load(qtkeychainTrFile, trPath);
+                if (!qtkeychainTranslator->load(qtkeychainTrFile, trPath)) {
+                    qCCritical(lcApplication) << "Could not load qtkeychain translations";
+                }
             }
-            if (!translator->isEmpty())
-                installTranslator(translator);
-            if (!qtTranslator->isEmpty())
-                installTranslator(qtTranslator);
-            if (!qtkeychainTranslator->isEmpty())
-                installTranslator(qtkeychainTranslator);
+
+            if (!translator->isEmpty() && !installTranslator(translator)) {
+                qCCritical(lcApplication) << "Failed to install translator";
+            }
+            if (!qtTranslator->isEmpty() && !installTranslator(qtTranslator)) {
+                qCCritical(lcApplication) << "Failed to install Qt translator";
+            }
+            if (!qtkeychainTranslator->isEmpty() && !installTranslator(qtkeychainTranslator)) {
+                qCCritical(lcApplication) << "Failed to install qtkeychain translator";
+            }
 
             // makes sure widgets with locale-dependent formatting, e.g., QDateEdit, display the correct formatting
             // if the language is provided by the system locale anyway (i.e., coming from QLocale::system().uiLanguages()), we should

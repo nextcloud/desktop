@@ -962,7 +962,7 @@ void AccountSettings::refreshSelectiveSyncStatus()
     QString msg;
     int cnt = 0;
     for (Folder *folder : FolderMan::instance()->map()) {
-        if (folder->accountState() != _accountState) {
+        if (folder->accountState() != _accountState || !folder->ok()) {
             continue;
         }
 

@@ -34,6 +34,11 @@ Vfs::Vfs(QObject* parent)
 {
 }
 
+QString Vfs::underlyingFileName(const QString &fileName) const
+{
+    return fileName;
+}
+
 Vfs::~Vfs() = default;
 
 QString Vfs::modeToString(Mode mode)

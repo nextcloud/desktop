@@ -52,11 +52,6 @@ public:
     static QString makeDbName(const QString &localPath,
         const QString &infix = QStringLiteral("journal"));
 
-    static QString makeDbName(const QString &localPath,
-        const QUrl &remoteUrl,
-        const QString &remotePath,
-        const QString &user);
-
     /// Migrate a csync_journal to the new path, if necessary. Returns false on error
     static bool maybeMigrateDb(const QString &localPath, const QString &absoluteJournalPath);
 

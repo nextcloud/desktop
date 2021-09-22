@@ -26,7 +26,7 @@ class TestProtocolModel : public QObject
 private Q_SLOTS:
     void testInsertAndRemove()
     {
-        auto model = new ProtocolItemModel(this, false);
+        auto model = new ProtocolItemModel(300, false, this);
 
         new QAbstractItemModelTester(model, this);
 

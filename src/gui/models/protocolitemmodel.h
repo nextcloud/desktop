@@ -42,7 +42,7 @@ public:
      * @param parent
      * @param issueMode Whether we are tracking all synced items or issues
      */
-    ProtocolItemModel(QObject *parent = nullptr, bool issueMode = false);
+    ProtocolItemModel(size_t size, bool issueMode, QObject *parent = nullptr);
 
     int rowCount(const QModelIndex &parent = {}) const override;
     int columnCount(const QModelIndex &parent = {}) const override;
@@ -70,7 +70,7 @@ public:
     void remove_if(const std::function<bool(const ProtocolItem &)> &filter);
 
 private:
-    FixedSizeRingBuffer<ProtocolItem, 2000> _data;
+    FixedSizeRingBuffer<ProtocolItem> _data;
     bool _issueMode;
     int _maxLogSize;
 

@@ -195,7 +195,7 @@ private:
 
     void addVirtualFileSuffix(QString &str) const;
     bool hasVirtualFileSuffix(const QString &str) const;
-    void chopVirtualFileSuffix(QString &str) const;
+    Q_REQUIRED_RESULT QString chopVirtualFileSuffix(const QString &str) const;
 
     /** Convenience to detect suffix-vfs modes */
     bool isVfsWithSuffix() const;

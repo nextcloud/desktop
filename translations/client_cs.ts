@@ -919,7 +919,7 @@ File synchronization desktop utility.</source>
 <context>
     <name>OCC::CredentialJob</name>
     <message>
-        <location filename="../src/libsync/creds/credentialmanager.cpp" line="199"/>
+        <location filename="../src/libsync/creds/credentialmanager.cpp" line="204"/>
         <source>Failed to parse credentials %1</source>
         <translation type="unfinished"/>
     </message>
@@ -1137,122 +1137,122 @@ Pokud to byl omyl a chcete si soubory ponechat, budou opět synchronizovány ze 
 <context>
     <name>OCC::FolderMan</name>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="417"/>
+        <location filename="../src/gui/folderman.cpp" line="438"/>
         <source>Could not reset folder state</source>
         <translation>Nelze obnovit stav adresáře</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="418"/>
+        <location filename="../src/gui/folderman.cpp" line="439"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
         <translation>Byl nalezen starý záznam synchronizace &apos;%1&apos;, ale nebylo možné jej odebrat. Ujistěte se, že není aktuálně používán jinou aplikací.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1198"/>
+        <location filename="../src/gui/folderman.cpp" line="1219"/>
         <source> (backup)</source>
         <translation> (záloha)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1203"/>
+        <location filename="../src/gui/folderman.cpp" line="1224"/>
         <source> (backup %1)</source>
         <translation> (záloha %1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1305"/>
+        <location filename="../src/gui/folderman.cpp" line="1326"/>
         <source>Undefined State.</source>
         <translation>Nedefinovaný stav.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1308"/>
+        <location filename="../src/gui/folderman.cpp" line="1329"/>
         <source>Waiting to start syncing.</source>
         <translation>Čeká na spuštění synchronizace.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1311"/>
+        <location filename="../src/gui/folderman.cpp" line="1332"/>
         <source>Preparing for sync.</source>
         <translation>Příprava na synchronizaci.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1314"/>
+        <location filename="../src/gui/folderman.cpp" line="1335"/>
         <source>Sync is running.</source>
         <translation>Synchronizace probíhá.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1319"/>
+        <location filename="../src/gui/folderman.cpp" line="1340"/>
         <source>Sync was successful, unresolved conflicts.</source>
         <translation>Synchronizace byla úspěšně dokončena, nevyřešené konflikty</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1321"/>
+        <location filename="../src/gui/folderman.cpp" line="1342"/>
         <source>Last Sync was successful.</source>
         <translation>Poslední synchronizace byla úspěšná.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1327"/>
+        <location filename="../src/gui/folderman.cpp" line="1348"/>
         <source>Setup Error.</source>
         <translation>Chyba nastavení.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1330"/>
+        <location filename="../src/gui/folderman.cpp" line="1351"/>
         <source>User Abort.</source>
         <translation>Zrušení uživatelem.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1333"/>
+        <location filename="../src/gui/folderman.cpp" line="1354"/>
         <source>Sync is paused.</source>
         <translation>Synchronizace pozastavena.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1339"/>
+        <location filename="../src/gui/folderman.cpp" line="1360"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (Synchronizace je pozastavena)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1347"/>
+        <location filename="../src/gui/folderman.cpp" line="1368"/>
         <source>No valid folder selected!</source>
         <translation>Nebyl vybrán platný adresář!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1355"/>
+        <location filename="../src/gui/folderman.cpp" line="1376"/>
         <source>The folder %1 is used in a folder sync connection!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1362"/>
+        <location filename="../src/gui/folderman.cpp" line="1383"/>
         <source>The selected path does not exist!</source>
         <translation>Vybraná cesta ke složce neexistuje!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1366"/>
+        <location filename="../src/gui/folderman.cpp" line="1387"/>
         <source>The selected path is not a folder!</source>
         <translation>Vybraná cesta nevede do adresáře!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1370"/>
+        <location filename="../src/gui/folderman.cpp" line="1391"/>
         <source>You have no permission to write to the selected folder!</source>
         <translation>Nemáte oprávnění pro zápis do zvoleného adresáře!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1407"/>
+        <location filename="../src/gui/folderman.cpp" line="1428"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
         <translation>Ze serveru se do tohoto umístění již synchronizuje. Prosím zvolte jinou místní složku!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1411"/>
+        <location filename="../src/gui/folderman.cpp" line="1432"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
         <translation>Místní adresář %1 již obsahuje podadresář použitý pro synchronizaci odesílání. Zvolte prosím jiný!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1417"/>
+        <location filename="../src/gui/folderman.cpp" line="1438"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation>Místní adresář %1 je již obsažen ve adresáři použitém pro synchronizaci. Vyberte prosím jiný!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1424"/>
+        <location filename="../src/gui/folderman.cpp" line="1445"/>
         <source>%1 Please pick another one!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1500"/>
+        <location filename="../src/gui/folderman.cpp" line="1521"/>
         <source>Multiple accounts are sharing the folder %1.
 This configuration is know to lead to dataloss and is no longer supported.
 Please consider removing this folder from the account and adding it again.</source>
@@ -2600,37 +2600,37 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1232"/>
+        <location filename="../src/libsync/discovery.cpp" line="1233"/>
         <source>Moved to invalid target, restoring</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1245"/>
+        <location filename="../src/libsync/discovery.cpp" line="1246"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Odstranění není povoleno, obnovuji</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1159"/>
+        <location filename="../src/libsync/discovery.cpp" line="1160"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Ignorováno podle nastavení &quot;vybrat co synchronizovat&quot;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1192"/>
+        <location filename="../src/libsync/discovery.cpp" line="1193"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Není povoleno, protože nemáte oprávnění přidávat podadresáře do tohoto adresáře</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1197"/>
+        <location filename="../src/libsync/discovery.cpp" line="1198"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Není povoleno, protože nemáte oprávnění přidávat soubory do tohoto adresáře</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1210"/>
+        <location filename="../src/libsync/discovery.cpp" line="1211"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Není povoleno nahrát tento soubor, protože je na serveru uložen pouze pro čtení, obnovuji</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1355"/>
+        <location filename="../src/libsync/discovery.cpp" line="1356"/>
         <source>Error while reading the database</source>
         <translation>Chyba při čtení databáze</translation>
     </message>
@@ -2991,42 +2991,42 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::ProtocolItemModel</name>
     <message>
-        <location filename="../src/gui/models/protocolitemmodel.cpp" line="127"/>
+        <location filename="../src/gui/models/protocolitemmodel.cpp" line="128"/>
         <source>Time</source>
         <translation>Čas</translation>
     </message>
     <message>
-        <location filename="../src/gui/models/protocolitemmodel.cpp" line="129"/>
+        <location filename="../src/gui/models/protocolitemmodel.cpp" line="130"/>
         <source>File</source>
         <translation>Soubor</translation>
     </message>
     <message>
-        <location filename="../src/gui/models/protocolitemmodel.cpp" line="131"/>
+        <location filename="../src/gui/models/protocolitemmodel.cpp" line="132"/>
         <source>Folder</source>
         <translation>Adresář</translation>
     </message>
     <message>
-        <location filename="../src/gui/models/protocolitemmodel.cpp" line="133"/>
+        <location filename="../src/gui/models/protocolitemmodel.cpp" line="134"/>
         <source>Issues</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/models/protocolitemmodel.cpp" line="133"/>
+        <location filename="../src/gui/models/protocolitemmodel.cpp" line="134"/>
         <source>Action</source>
         <translation>Akce</translation>
     </message>
     <message>
-        <location filename="../src/gui/models/protocolitemmodel.cpp" line="135"/>
+        <location filename="../src/gui/models/protocolitemmodel.cpp" line="136"/>
         <source>Size</source>
         <translation>Velikost</translation>
     </message>
     <message>
-        <location filename="../src/gui/models/protocolitemmodel.cpp" line="137"/>
+        <location filename="../src/gui/models/protocolitemmodel.cpp" line="138"/>
         <source>Account</source>
         <translation>Účet</translation>
     </message>
     <message>
-        <location filename="../src/gui/models/protocolitemmodel.cpp" line="139"/>
+        <location filename="../src/gui/models/protocolitemmodel.cpp" line="140"/>
         <source>Status</source>
         <translation>Stav</translation>
     </message>
@@ -3535,48 +3535,48 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::SocketApi</name>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="572"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="584"/>
         <source>Share with %1</source>
         <comment>parameter is ownCloud</comment>
         <translation>Sdílet s %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="605"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="617"/>
         <source>Context menu share</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="610"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="622"/>
         <source>Context menu share %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="778"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="790"/>
         <source>Confirm deletion</source>
         <translation>Potvrdit smazání</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="780"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="792"/>
         <source>Do you want to delete the directory &lt;i&gt;%1&lt;/i&gt; and all its contents permanently?</source>
         <translation>Opravdu chcete trvale smazat složku &lt;i&gt;%1&lt;/i&gt; včetně jejího obsahu?</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="781"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="793"/>
         <source>Do you want to delete the file &lt;i&gt;%1&lt;/i&gt; permanently?</source>
         <translation>Opravdu si přejete trvale odstranit soubor &lt;i&gt;%1&lt;/i&gt;?</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="820"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="832"/>
         <source>Select new location...</source>
         <translation>Vybrat nové umístění...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="830"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="842"/>
         <source>Error</source>
         <translation>Chyba</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="831"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="843"/>
         <source>Moving file failed:
 
 %1</source>
@@ -3585,89 +3585,89 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="896"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="908"/>
         <source>I shared something with you</source>
         <translation>Něco s Vámi sdílím</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="909"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="939"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="921"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="951"/>
         <source>Share...</source>
         <translation>Sdílet...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="911"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="955"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="923"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="967"/>
         <source>Copy private link to clipboard</source>
         <translation>Zkopírovat soukromý odkaz do schránky</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="912"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="924"/>
         <source>Send private link by email...</source>
         <translation>Odeslat soukromý odkaz emailem...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="937"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="949"/>
         <source>Resharing this file is not allowed</source>
         <translation>Sdílení tohoto odkazu není dovoleno</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="937"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="949"/>
         <source>Resharing this folder is not allowed</source>
         <translation>Sdílení této složky není dovoleno</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="949"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="961"/>
         <source>Create and copy public link to clipboard</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="951"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="963"/>
         <source>Copy public link to clipboard</source>
         <translation>Zkopírovat veřejný odkaz do schránky</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1042"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1051"/>
         <source>Open in browser</source>
         <translation>Otevřít v prohlížeči</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1050"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1059"/>
         <source>Show file versions in browser</source>
         <translation>Zobrazit verze souboru v prohlížeči</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1073"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1082"/>
         <source>Rename...</source>
         <translation>Přejmenovat...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1076"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1085"/>
         <source>Rename and upload...</source>
         <translation>Přejmenovat a nahrát...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1081"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1090"/>
         <source>Move and rename...</source>
         <translation>Přesunout a přejmenovat...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1084"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1093"/>
         <source>Move, rename and upload...</source>
         <translation>Přesunout, přejmenovat a nahrát...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1087"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1096"/>
         <source>Delete local changes</source>
         <translation>Smazat místní změny</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1092"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1101"/>
         <source>Move and upload...</source>
         <translation>Přesunout a nahrát...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1093"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1102"/>
         <source>Delete</source>
         <translation>Smazat</translation>
     </message>
@@ -3997,7 +3997,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::SyncJournalDb</name>
     <message>
-        <location filename="../src/common/syncjournaldb.cpp" line="938"/>
+        <location filename="../src/common/syncjournaldb.cpp" line="931"/>
         <source>Failed to connect database.</source>
         <translation type="unfinished"/>
     </message>
@@ -4039,17 +4039,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::Vfs</name>
     <message>
-        <location filename="../src/common/vfs.cpp" line="72"/>
+        <location filename="../src/common/vfs.cpp" line="77"/>
         <source>The Virtual filesystem feature does not support a drive as sync root</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/common/vfs.cpp" line="76"/>
+        <location filename="../src/common/vfs.cpp" line="81"/>
         <source>The Virtual filesystem feature requires a NTFS file system, %1 is using %2</source>
         <translation>Virtuální souborový systém vyžaduje NTFS, ale %1 používá %2 </translation>
     </message>
     <message>
-        <location filename="../src/common/vfs.cpp" line="80"/>
+        <location filename="../src/common/vfs.cpp" line="85"/>
         <source>The Virtual filesystem feature is not supported on network drives</source>
         <translation type="unfinished"/>
     </message>
@@ -4488,53 +4488,53 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>SyncFileItem::Status</name>
     <message>
-        <location filename="../src/libsync/syncfileitem.cpp" line="83"/>
+        <location filename="../src/libsync/syncfileitem.cpp" line="82"/>
         <source>Undefined</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncfileitem.cpp" line="85"/>
+        <location filename="../src/libsync/syncfileitem.cpp" line="84"/>
         <source>Fatal Error</source>
         <translation>Kritická chyba</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncfileitem.cpp" line="87"/>
-        <location filename="../src/libsync/syncfileitem.cpp" line="99"/>
+        <location filename="../src/libsync/syncfileitem.cpp" line="86"/>
+        <location filename="../src/libsync/syncfileitem.cpp" line="98"/>
         <source>Error</source>
         <translation>Chyba</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncfileitem.cpp" line="89"/>
+        <location filename="../src/libsync/syncfileitem.cpp" line="88"/>
         <source>Info</source>
         <translation>Info</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncfileitem.cpp" line="91"/>
+        <location filename="../src/libsync/syncfileitem.cpp" line="90"/>
         <source>Success</source>
         <translation>Úspěch</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncfileitem.cpp" line="93"/>
+        <location filename="../src/libsync/syncfileitem.cpp" line="92"/>
         <source>Conflict</source>
         <translation>Konflikt</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncfileitem.cpp" line="95"/>
+        <location filename="../src/libsync/syncfileitem.cpp" line="94"/>
         <source>Error Ignored</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncfileitem.cpp" line="97"/>
+        <location filename="../src/libsync/syncfileitem.cpp" line="96"/>
         <source>Restored</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncfileitem.cpp" line="101"/>
+        <location filename="../src/libsync/syncfileitem.cpp" line="100"/>
         <source>Blacklisted</source>
         <translation>Na černé listině</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncfileitem.cpp" line="103"/>
+        <location filename="../src/libsync/syncfileitem.cpp" line="102"/>
         <source>Excluded</source>
         <translation type="unfinished"/>
     </message>
