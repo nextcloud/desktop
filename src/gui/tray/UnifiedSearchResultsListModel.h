@@ -46,6 +46,7 @@ public:
     enum DataRole {
         CategoryNameRole = Qt::UserRole + 1,
         CategoryIdRole,
+        IconRole,
         TitleRole,
         SublineRole,
         ResourceUrlRole,

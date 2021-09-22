@@ -14,7 +14,7 @@
 
 #include "UnifiedSearchResultImageProvider.h"
 
-#include "tray/UserModel.h"
+#include "UserModel.h"
 
 #include <QImage>
 
@@ -24,29 +24,15 @@ class AsyncImageResponse : public QQuickImageResponse
 public:
     AsyncImageResponse(const QString &id, const QSize &requestedSize)
     {
-        if (id.isEmpty()) {
+        _imagePaths = id.split(";", Qt::SkipEmptyParts);
+        _requestedImageSize = requestedSize;
+
+        if (_imagePaths.isEmpty()) {
             emitFinished(QImage());
             return;
         }
 
-        const QUrl iconUrl = QUrl(id);
-
-        if (!iconUrl.isValid() || iconUrl.scheme().isEmpty()) {
-            // return a local file
-            emitFinished(QIcon(id).pixmap(requestedSize).toImage());
-            return;
-        }
-
-        if (auto currentAccount = UserModel::instance()->currentUser()->account()) {
-            // fetch remote resource
-            auto reply = currentAccount->sendRawRequest("GET", iconUrl);
-            connect(reply, &QNetworkReply::finished, this, [this, reply]() {
-                emitFinished(QImage::fromData(reply->readAll()));
-            });
-            return;
-        }
-
-        emitFinished(QImage());
+        processNextImage();
     }
 
     void emitFinished(QImage image)
@@ -61,7 +47,46 @@ public:
     }
 
 private:
+    slots 
+    
+    void processNextImage()
+    {
+        if (_index >= _imagePaths.size()) {
+            emitFinished(QImage());
+            return;
+        }
+
+        const QUrl iconUrl = QUrl(_imagePaths.at(_index));
+
+        if (_imagePaths.at(_index).startsWith(":/client")) {
+            // return a local file
+            QImage fromLocalFile = QIcon(_imagePaths.at(_index)).pixmap(_requestedImageSize).toImage();
+            emitFinished(fromLocalFile);
+            return;
+        }
+
+        if (auto currentAccount = UserModel::instance()->currentUser()->account()) {
+            // fetch remote resource
+            ++_index;
+            auto reply = currentAccount->sendRawRequest("GET", iconUrl);
+            connect(reply, &QNetworkReply::finished, this, [this, reply]() {
+                const QByteArray data = reply->readAll();
+                if (data.isEmpty() || data == QByteArrayLiteral("[]")) {
+                    processNextImage();
+                } else {
+                    emitFinished(QImage::fromData(data));
+                }
+            });
+        } else {
+            emitFinished(QImage());
+        }
+    }
+
+private:
     QImage _image;
+    QStringList _imagePaths;
+    QSize _requestedImageSize;
+    int _index = 0;
 };
 
 QQuickImageResponse *UnifiedSearchResultImageProvider::requestImageResponse(const QString &id, const QSize &requestedSize)

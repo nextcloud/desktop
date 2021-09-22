@@ -21,6 +21,8 @@
 
 #include <algorithm>
 
+#include "UserModel.h"
+
 #include <QAbstractListModel>
 
 namespace OCC {
@@ -44,6 +46,33 @@ QVariant UnifiedSearchResultsListModel::data(const QModelIndex &index, int role)
     case CategoryIdRole: {
         return _resultsCombined.at(index.row())._categoryId;
     }
+    case IconRole: {
+        const auto resultInfo = _resultsCombined.at(index.row());
+
+        if (!resultInfo._icon.isEmpty()) {
+            if (resultInfo._icon.contains(QStringLiteral("/"))) {
+                const QUrl urlForIcon(resultInfo._icon);
+
+                if (!urlForIcon.isValid() || urlForIcon.scheme().isEmpty()) {
+                    if (const auto currentUser = UserModel::instance()->currentUser()) {
+                        return QString(currentUser->server(false) + resultInfo._icon);
+                    }
+                }
+            }
+
+            if (resultInfo._icon.contains(QStringLiteral("folder"))) {
+                return QStringLiteral(":/client/theme/black/folder.svg");
+            } else if (resultInfo._icon.contains(QStringLiteral("deck"))) {
+                return QStringLiteral(":/client/theme/black/deck.svg");
+            } else if (resultInfo._icon.contains(QStringLiteral("calendar"))) {
+                return QStringLiteral(":/client/theme/black/calendar.svg");
+            } else if (resultInfo._icon.contains(QStringLiteral("mail"))) {
+                return QStringLiteral(":/client/theme/black/email.svg");
+            }
+        }
+
+        return resultInfo._icon;
+    }
     case TitleRole: {
         return _resultsCombined.at(index.row())._title;
     }
@@ -51,27 +80,19 @@ QVariant UnifiedSearchResultsListModel::data(const QModelIndex &index, int role)
         return _resultsCombined.at(index.row())._subline;
     }
     case ThumbnailUrlRole: {
-        const auto resulInfo = _resultsCombined.at(index.row());
-        if (resulInfo._categoryId.contains(QStringLiteral("mail"))) {
-            return QStringLiteral(":/client/theme/black/email.svg");
-        } else if (resulInfo._categoryId.contains(QStringLiteral("calendar"))) {
-            return QStringLiteral(":/client/theme/black/calendar.svg");
-        } else if (resulInfo._categoryId.contains(QStringLiteral("deck"))) {
-            return QStringLiteral(":/client/theme/black/deck.svg");
-        }
-        if (resulInfo._categoryId.contains(QStringLiteral("files"))) {
-            if (!resulInfo._icon.isEmpty()) {
-                if (resulInfo._icon.contains(QStringLiteral("/")) && !resulInfo._icon.startsWith("http")) {
-                    return QString("https://cloud.nextcloud.com/" + resulInfo._icon);
-                }
-                if (resulInfo._icon == QStringLiteral("icon-folder")) {
-                    return QStringLiteral(":/client/theme/black/folder.svg");
+        const auto resultInfo = _resultsCombined.at(index.row());
+
+        if (resultInfo._thumbnailUrl.contains(QStringLiteral("/"))) {
+            const QUrl urlForIcon(resultInfo._thumbnailUrl);
+
+            if (!urlForIcon.isValid() || urlForIcon.scheme().isEmpty()) {
+                if (const auto currentUser = UserModel::instance()->currentUser()) {
+                    return QString(currentUser->server(false) + resultInfo._thumbnailUrl);
                 }
             }
-            return QStringLiteral("");
         }
 
-        return resulInfo._thumbnailUrl;
+        return resultInfo._thumbnailUrl;
     }
     case ResourceUrlRole: {
         return _resultsCombined.at(index.row())._resourceUrl;
@@ -94,6 +115,7 @@ QHash<int, QByteArray> UnifiedSearchResultsListModel::roleNames() const
     QHash<int, QByteArray> roles;
     roles[CategoryNameRole] = "categoryName";
     roles[CategoryIdRole] = "categoryId";
+    roles[IconRole] = "icon";
     roles[TitleRole] = "resultTitle";
     roles[SublineRole] = "subline";
     roles[ResourceUrlRole] = "resourceUrl";
