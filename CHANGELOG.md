@@ -10,11 +10,14 @@ Summary
 
 * Bugfix - Mac multiple dialogs block all input: [#8421](https://github.com/owncloud/client/issues/8421)
 * Bugfix - Enforce rtl layout with rtl languages: [#8806](https://github.com/owncloud/client/issues/8806)
+* Bugfix - Handle use of directory of another Windows VFS sync client: [#8994](https://github.com/owncloud/client/issues/8994)
 * Bugfix - Tables now display local time: [#9006](https://github.com/owncloud/client/issues/9006)
 * Bugfix - We fixed a crash when using the retry action on an issue: [#9013](https://github.com/owncloud/client/issues/9013)
 * Bugfix - Fix crash when closing the client: [#9014](https://github.com/owncloud/client/issues/9014)
-* Bugfix - Crash on missing sync root: [#9016](https://github.com/owncloud/client/issues/9016)
+* Bugfix - Crash on missing or unreadable sync root: [#9016](https://github.com/owncloud/client/issues/9016)
 * Bugfix - A upgrade to 2.9 causes the usage of a new journal file: [#9019](https://github.com/owncloud/client/issues/9019)
+* Bugfix - Properly deployment of Qt translations Mac and Window: [#9022](https://github.com/owncloud/client/issues/9022)
+* Bugfix - The file status of suffix placeholders was displayed incorrectly: [#9026](https://github.com/owncloud/client/issues/9026)
 * Bugfix - Fix copy url location for private links: [#9048](https://github.com/owncloud/client/issues/9048)
 * Change - Make sharedialog preview be more resilient: [#8938](https://github.com/owncloud/client/issues/8938)
 * Enhancement - Display the error type in the issue protocol and allow filtering: [#9000](https://github.com/owncloud/client/issues/9000)
@@ -38,6 +41,14 @@ Details
    https://github.com/owncloud/client/issues/8806
    https://github.com/owncloud/client/pull/8981
 
+* Bugfix - Handle use of directory of another Windows VFS sync client: [#8994](https://github.com/owncloud/client/issues/8994)
+
+   We now better handle setup issues during the initialisation of virtual files support.
+   Especially the case that a user tries to use a directory managed by a competitor which until now
+   caused a crash.
+
+   https://github.com/owncloud/client/issues/8994
+
 * Bugfix - Tables now display local time: [#9006](https://github.com/owncloud/client/issues/9006)
 
    We fixed a bug where the sync tables where displaying utc time for some items.
@@ -57,11 +68,14 @@ Details
 
    https://github.com/owncloud/client/issues/9014
 
-* Bugfix - Crash on missing sync root: [#9016](https://github.com/owncloud/client/issues/9016)
+* Bugfix - Crash on missing or unreadable sync root: [#9016](https://github.com/owncloud/client/issues/9016)
 
-   We fixed an issue where the client crashed after a user deleted the sync root.
+   We fixed an issue where the client crashed after a user deleted the sync root or lost access to the
+   directory.
 
    https://github.com/owncloud/client/issues/9016
+   https://github.com/owncloud/client/pull/9017
+   https://github.com/owncloud/client/pull/9065
 
 * Bugfix - A upgrade to 2.9 causes the usage of a new journal file: [#9019](https://github.com/owncloud/client/issues/9019)
 
@@ -75,7 +89,25 @@ Details
    and is no longer supported. Please consider removing this folder from the account and adding it
    again. ```
 
+   We also removed the account info infix from the sync db used with the cmd client.
+
    https://github.com/owncloud/client/issues/9019
+   https://github.com/owncloud/client/pull/9028
+   https://github.com/owncloud/client/pull/9046
+   https://github.com/owncloud/client/pull/9054
+
+* Bugfix - Properly deployment of Qt translations Mac and Window: [#9022](https://github.com/owncloud/client/issues/9022)
+
+   We fixed a deployment bug which prevented the translation of some components to be loaded.
+
+   https://github.com/owncloud/client/issues/9022
+   https://invent.kde.org/packaging/craft/-/commit/77c114917826480f294d0432f147c9e9f7d19e21
+
+* Bugfix - The file status of suffix placeholders was displayed incorrectly: [#9026](https://github.com/owncloud/client/issues/9026)
+
+   We incorrectly reported that suffix files where ignored.
+
+   https://github.com/owncloud/client/issues/9026
 
 * Bugfix - Fix copy url location for private links: [#9048](https://github.com/owncloud/client/issues/9048)
 
