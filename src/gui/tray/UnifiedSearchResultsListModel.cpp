@@ -97,6 +97,9 @@ QVariant UnifiedSearchResultsListModel::data(const QModelIndex &index, int role)
     case ResourceUrlRole: {
         return _resultsCombined.at(index.row())._resourceUrl;
     }
+    case RoundedRole: {
+        return _resultsCombined.at(index.row())._isRounded;
+    }
     case TypeRole: {
         return _resultsCombined.at(index.row())._type;
     }
@@ -121,6 +124,7 @@ QHash<int, QByteArray> UnifiedSearchResultsListModel::roleNames() const
     roles[ResourceUrlRole] = "resourceUrl";
     roles[ThumbnailUrlRole] = "thumbnailUrl";
     roles[TypeRole] = "type";
+    roles[RoundedRole] = "isRounded";
     return roles;
 }
 
@@ -143,7 +147,7 @@ void UnifiedSearchResultsListModel::setSearchTerm(const QString &term)
         connect(&_unifiedSearchTextEditingFinishedTimer, &QTimer::timeout, this, &UnifiedSearchResultsListModel::slotSearchTermEditingFinished);
         _unifiedSearchTextEditingFinishedTimer.start();
     } else {
-        for (auto& connection : _searchJobConnections) {
+        for (auto &connection : _searchJobConnections) {
             if (connection) {
                 QObject::disconnect(connection);
             }
@@ -204,7 +208,7 @@ void UnifiedSearchResultsListModel::slotSearchTermEditingFinished()
         QObject::connect(job, &JsonApiJob::jsonReceived, [&, this](const QJsonDocument &json) {
             const auto providerList = json.object().value("ocs").toObject().value("data").toVariant().toList();
 
-            for (const auto& provider : providerList) {
+            for (const auto &provider : providerList) {
                 const auto providerMap = provider.toMap();
                 UnifiedSearchProvider newProvider;
                 newProvider._name = providerMap["name"].toString();
@@ -249,11 +253,21 @@ void UnifiedSearchResultsListModel::slotSearchForProviderFinished(const QJsonDoc
             category._isPaginated = isPaginated;
             category._cursor = cursor;
 
+            if (category._pageSize == -1) {
+                category._pageSize = cursor;
+            }
+
+            if (category._pageSize != -1 && entries.size() < category._pageSize) {
+                // for some providers we are still getting a non-null cursor and isPaginated true even thought there are no more results to paginate
+                category._isPaginated = false;
+            }
+
             for (const auto &entry : entries) {
                 UnifiedSearchResult result;
                 result._categoryId = category._id;
                 result._categoryName = category._name;
                 result._icon = entry.toMap()["icon"].toString();
+                result._isRounded = entry.toMap()["rounded"].toBool();
                 result._order = category._order;
                 result._title = entry.toMap()["title"].toString();
                 result._subline = entry.toMap()["subline"].toString();
@@ -263,6 +277,13 @@ void UnifiedSearchResultsListModel::slotSearchForProviderFinished(const QJsonDoc
             }
 
             combineResults();
+        } else if (entries.isEmpty() && providerForResults != _providers.end()) {
+            auto resultsForProvider = _resultsByCategory.find((*providerForResults)._id);
+            if (resultsForProvider != _resultsByCategory.end()) {
+                // we may have received false pagination information from the server, such as, we expect more results available via pagination, but, there are no more left, so, we need to stop paginating for this provider
+                resultsForProvider->_isPaginated = false;
+                combineResults();
+            }
         }
     }
 }
@@ -280,7 +301,7 @@ void UnifiedSearchResultsListModel::startSearch()
     _resultsCombined.clear();
     endResetModel();
 
-    for (const auto& provider : _providers) {
+    for (const auto &provider : _providers) {
         startSearchForProvider(provider);
     }
 }
@@ -312,7 +333,7 @@ void UnifiedSearchResultsListModel::combineResults()
 
         resultsCombined.append(category._results);
 
-        if (category._cursor > 0) {
+        if (category._cursor > 0 && category._isPaginated) {
             UnifiedSearchResult fetchMoreTrigger;
             fetchMoreTrigger._categoryId = category._id;
             fetchMoreTrigger._categoryName = category._name;

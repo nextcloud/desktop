@@ -60,8 +60,7 @@ private:
 
         if (_imagePaths.at(_index).startsWith(":/client")) {
             // return a local file
-            QImage fromLocalFile = QIcon(_imagePaths.at(_index)).pixmap(_requestedImageSize).toImage();
-            emitFinished(fromLocalFile);
+            emitFinished(QIcon(_imagePaths.at(_index)).pixmap(_requestedImageSize).toImage());
             return;
         }
 

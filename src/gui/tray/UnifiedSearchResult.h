@@ -44,6 +44,7 @@ public:
     QString _title;
     QString _subline;
     QString _categoryId;
+    bool _isRounded = false;
     QString _categoryName;
     QString _icon;
     qint32 _order = INT32_MAX;

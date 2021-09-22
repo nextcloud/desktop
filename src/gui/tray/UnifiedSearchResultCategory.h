@@ -37,6 +37,7 @@ public:
     QString _name;
     qint32 _order = INT32_MAX;
     qint32 _cursor = -1;
+    qint32 _pageSize = -1;
     bool _isPaginated = false;
     QList<UnifiedSearchResult> _results;
 };
