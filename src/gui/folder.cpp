@@ -289,10 +289,10 @@ bool Folder::syncPaused() const
 
 bool Folder::canSync() const
 {
-    return !syncPaused() && accountState()->isConnected() && ok();
+    return !syncPaused() && accountState()->isConnected() && isReady();
 }
 
-bool Folder::ok() const
+bool Folder::isReady() const
 {
     return _vfsIsReady;
 }
@@ -1218,7 +1218,7 @@ void Folder::setSaveBackwardsCompatible(bool save)
 
 void Folder::registerFolderWatcher()
 {
-    if (!ok()) {
+    if (!isReady()) {
         return;
     }
     if (_folderWatcher)

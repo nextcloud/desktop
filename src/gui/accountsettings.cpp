@@ -284,7 +284,7 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
     bool folderConnected = _model->data(index, FolderStatusDelegate::FolderAccountConnected).toBool();
     auto folderMan = FolderMan::instance();
     QPointer<Folder> folder = folderMan->folder(alias);
-    if (!folder || !OC_ENSURE(folder->ok()))
+    if (!folder || !OC_ENSURE(folder->isReady()))
         return;
 
     QMenu *menu = new QMenu(tv);
@@ -962,7 +962,7 @@ void AccountSettings::refreshSelectiveSyncStatus()
     QString msg;
     int cnt = 0;
     for (Folder *folder : FolderMan::instance()->map()) {
-        if (folder->accountState() != _accountState || !folder->ok()) {
+        if (folder->accountState() != _accountState || !folder->isReady()) {
             continue;
         }
 

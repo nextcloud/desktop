@@ -183,9 +183,9 @@ public:
     bool canSync() const;
 
     /**
-     * Whether the folder is ok
+     * Whether the folder is ready
      */
-    bool ok() const;
+    bool isReady() const;
 
     /**
      *  Returns true if the folder needs sync poll interval wise, and can
