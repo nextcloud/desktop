@@ -793,6 +793,13 @@ void Folder::slotTerminateSync()
 
 void Folder::wipeForRemoval()
 {
+    // prevent interaction with the db etc
+    _vfsIsReady = false;
+
+    // stop reacting to changes
+    // especially the upcoming deletion of the db
+    _folderWatcher.reset();
+
     // Delete files that have been partially downloaded.
     slotDiscardDownloadProgress();
 
@@ -806,7 +813,7 @@ void Folder::wipeForRemoval()
     QFile file(stateDbFile);
     if (file.exists()) {
         if (!file.remove()) {
-            qCWarning(lcFolder) << "Failed to remove existing csync StateDB " << stateDbFile;
+            qCCritical(lcFolder) << "Failed to remove existing csync StateDB " << stateDbFile;
         } else {
             qCInfo(lcFolder) << "wipe: Removed csync StateDB " << stateDbFile;
         }
