@@ -91,8 +91,7 @@ QUrlQuery Updater::getQueryParams()
     query.addQueryItem(QStringLiteral("buildArch"), QSysInfo::buildCpuArchitecture());
     query.addQueryItem(QStringLiteral("currentArch"), QSysInfo::currentCpuArchitecture());
 
-    QString suffix = QStringLiteral(MIRALL_STRINGIFY(MIRALL_VERSION_SUFFIX));
-    query.addQueryItem(QStringLiteral("versionsuffix"), suffix);
+    query.addQueryItem(QStringLiteral("versionsuffix"), MIRALL_VERSION_SUFFIX());
 
     auto channel = ConfigFile().updateChannel();
     if (channel != QLatin1String("stable")) {
@@ -165,7 +164,7 @@ qint64 Updater::Helper::stringVersionToInt(const QString &version)
 
 QString Updater::clientVersion()
 {
-    return QString::fromLatin1(MIRALL_STRINGIFY(MIRALL_VERSION_FULL));
+    return MIRALL_VERSION_FULL();
 }
 
 } // namespace OCC
