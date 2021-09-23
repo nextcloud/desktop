@@ -534,7 +534,6 @@ void Folder::startVfs()
     connect(&_engine->syncFileStatusTracker(), &SyncFileStatusTracker::fileStatusChanged,
             _vfs.data(), &Vfs::fileStatusChanged);
 
-    _vfs->start(vfsParams);
 
     connect(_vfs.data(), &Vfs::started, this, [this] {
         // Immediately mark the sqlite temporaries as excluded. They get recreated
@@ -550,6 +549,8 @@ void Folder::startVfs()
         _syncResult.setStatus(SyncResult::SetupError);
         _vfsIsReady = false;
     });
+
+    _vfs->start(vfsParams);
 }
 
 int Folder::slotDiscardDownloadProgress()
