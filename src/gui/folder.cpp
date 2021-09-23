@@ -801,7 +801,7 @@ void Folder::wipeForRemoval()
     _journal.close(); // close the sync journal
 
     // Remove db and temporaries
-    QString stateDbFile = _engine->journal()->databaseFilePath();
+    const QString stateDbFile = _engine->journal()->databaseFilePath();
 
     QFile file(stateDbFile);
     if (file.exists()) {

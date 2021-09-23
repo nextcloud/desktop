@@ -33,8 +33,6 @@ namespace OCC {
 class AccountState;
 class Account;
 
-typedef QExplicitlySharedDataPointer<AccountState> AccountStatePtr;
-
 /**
  * @brief Extra info about an ownCloud server account.
  * @ingroup gui
