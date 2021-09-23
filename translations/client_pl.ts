@@ -2689,7 +2689,7 @@ o dodatkowe uprawnienia podczas procesu aktualizacji.</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="158"/>
         <source>Could not download update. Please open &lt;a href=&apos;%1&apos;&gt;%1&lt;/a&gt; to download the update manually.</source>
-        <translation type="unfinished"/>
+        <translation>Nie można pobrać aktualizacji. Kliknij &lt;a href=&apos;%1&apos;&gt;%1&lt;/a&gt;, aby ręcznie pobrać aktualizację.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="157"/>
@@ -2704,7 +2704,7 @@ o dodatkowe uprawnienia podczas procesu aktualizacji.</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="166"/>
         <source>New %1 is available. Please open &lt;a href=&apos;%2&apos;&gt;%2&lt;/a&gt; to download the update.</source>
-        <translation type="unfinished"/>
+        <translation>Dostępny jest nowy %1. Kliknij &lt;a href=&apos;%2&apos;&gt;%2&lt;/a&gt;, aby pobrać aktualizację.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="161"/>
@@ -3993,7 +3993,7 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="194"/>
         <source>View only</source>
-        <translation type="unfinished"/>
+        <translation>Tylko podgląd</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="198"/>
@@ -4018,7 +4018,7 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="223"/>
         <source>Link name</source>
-        <translation type="unfinished"/>
+        <translation>Nazwa linku</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="218"/>
@@ -4038,7 +4038,7 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="302"/>
         <source>Delete link</source>
-        <translation type="unfinished"/>
+        <translation>Usuń link</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="271"/>
