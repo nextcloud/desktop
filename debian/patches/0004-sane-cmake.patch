@@ -1,11 +1,8 @@
-Description: Put VERSION.cmake and NextcloudCPack.cmake into CMakeLists.txt
- Introduce external versionnumber
-Author: Alf Gaida <agaida@siduction.org>
-Last-Update: 2019-11-17
-
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index c73a620d1..fe8f5692e 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -72,29 +72,12 @@
+@@ -72,29 +72,12 @@ include(GNUInstallDirs)
  include(DefineInstallationPaths)
  include(GenerateExportHeader)
  
@@ -14,9 +11,9 @@ Last-Update: 2019-11-17
 -get_git_head_revision(GIT_REFSPEC GIT_SHA1)
 -
  add_definitions(
+     -DQT_DISABLE_DEPRECATED_BEFORE=0x000000
      -DQT_USE_QSTRINGBUILDER
      -DQT_MESSAGELOGCONTEXT #enable function name and line number in debug output
-     -DQT_DEPRECATED_WARNINGS
  )
  
 -# if we cannot get it from git, directly try .tag (packages)
@@ -35,7 +32,7 @@ Last-Update: 2019-11-17
  set(SYSCONFDIR ${SYSCONF_INSTALL_DIR})
  set(SHAREDIR ${CMAKE_INSTALL_DATADIR})
  
-@@ -203,7 +186,47 @@
+@@ -203,7 +186,47 @@ if (NOT DEFINED APPLICATION_ICON_NAME)
      set(APPLICATION_ICON_NAME ${APPLICATION_SHORTNAME})
  endif()
  
@@ -84,6 +81,9 @@ Last-Update: 2019-11-17
  
  add_definitions(-DUNICODE)
  add_definitions(-D_UNICODE)
+diff --git a/NextcloudCPack.cmake b/NextcloudCPack.cmake
+deleted file mode 100644
+index 0682090c0..000000000
 --- a/NextcloudCPack.cmake
 +++ /dev/null
 @@ -1,63 +0,0 @@
@@ -150,9 +150,13 @@ Last-Update: 2019-11-17
 -    "${CMAKE_BINARY_DIR}/CPackOptions.cmake" @ONLY)
 -set(CPACK_PROJECT_CONFIG_FILE "${CMAKE_BINARY_DIR}/CPackOptions.cmake") # File included at cpack time, once per generator after setting CPACK_GENERATOR to the actual generator being used; allows per-generator setting of CPACK_* variables at cpack time.  ${PROJECT_BINARY_DIR}/CPackOptions.cmake
 -include(CPack)
+diff --git a/VERSION.cmake b/VERSION.cmake
+index 4939189ea..92012cd5c 100644
 --- a/VERSION.cmake
 +++ b/VERSION.cmake
-@@ -4,20 +4,38 @@ set( MIRALL_VERSION_PATCH 50 )
+@@ -9,22 +9,40 @@ set(NEXTCLOUD_SERVER_VERSION_MIN_SUPPORTED_MAJOR 16)
+ set(NEXTCLOUD_SERVER_VERSION_MIN_SUPPORTED_MINOR 0)
+ set(NEXTCLOUD_SERVER_VERSION_MIN_SUPPORTED_PATCH 0)
  
 -if ( NOT DEFINED MIRALL_VERSION_SUFFIX )
 -    set( MIRALL_VERSION_SUFFIX "git") #e.g. beta1, beta2, rc1
