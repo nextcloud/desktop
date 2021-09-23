@@ -79,6 +79,8 @@ private:
 
     void combineResults();
 
+    void appendResultsToProvider(const UnifiedSearchProvider &provider, QList<UnifiedSearchResult> results);
+
 private:
     QTimer _unifiedSearchTextEditingFinishedTimer;
     QString _searchTerm;
