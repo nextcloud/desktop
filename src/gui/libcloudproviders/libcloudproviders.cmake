@@ -19,12 +19,12 @@ if(WITH_LIBCLOUDPROVIDERS AND NOT LIBCLOUDPROVIDERS_POSSIBLE)
 endif()
 
 if(WITH_LIBCLOUDPROVIDERS)
-    target_sources(${APPLICATION_EXECUTABLE} PRIVATE
+    target_sources(owncloudCore PRIVATE
         libcloudproviders/libcloudproviders.cpp
     )
-    target_include_directories(${APPLICATION_EXECUTABLE} SYSTEM PRIVATE ${GIO_INCLUDE_DIRS})
-    target_compile_definitions(${APPLICATION_EXECUTABLE} PRIVATE WITH_LIBCLOUDPROVIDERS)
-    target_link_libraries(${APPLICATION_EXECUTABLE}
+    target_include_directories(owncloudCore SYSTEM PRIVATE ${GIO_INCLUDE_DIRS})
+    target_compile_definitions(owncloudCore PRIVATE WITH_LIBCLOUDPROVIDERS)
+    target_link_libraries(owncloudCore PUBLIC
         cloudproviders
         ${GIO_LDFLAGS}
     )
