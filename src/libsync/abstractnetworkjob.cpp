@@ -344,7 +344,7 @@ void AbstractNetworkJob::start()
     _timer.start();
 
     const QUrl url = account()->url();
-    const QString displayUrl = QString("%1://%2%3").arg(url.scheme()).arg(url.host()).arg(url.path());
+    const QString displayUrl = QString("%1://%2%3").arg(url.scheme(), url.host(), url.path());
 
     QString parentMetaObjectName = parent() ? parent()->metaObject()->className() : "";
     qCInfo(lcNetworkJob) << metaObject()->className() << "created for" << displayUrl << "+" << path() << parentMetaObjectName;

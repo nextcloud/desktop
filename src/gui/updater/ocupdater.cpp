@@ -223,9 +223,9 @@ void OCUpdater::slotStartInstaller()
 
         QString msiLogFile = cfg.configPath() + "msi.log";
         QString command = QString("&{msiexec /promptrestart /passive /i '%1' /L*V '%2'| Out-Null ; &'%3'}")
-             .arg(preparePathForPowershell(updateFile))
-             .arg(preparePathForPowershell(msiLogFile))
-             .arg(preparePathForPowershell(QCoreApplication::applicationFilePath()));
+                              .arg(preparePathForPowershell(updateFile),
+                                  preparePathForPowershell(msiLogFile),
+                                  preparePathForPowershell(QCoreApplication::applicationFilePath()));
 
         QProcess::startDetached("powershell.exe", QStringList{"-Command", command});
     }

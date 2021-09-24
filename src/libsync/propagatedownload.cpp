@@ -1117,7 +1117,7 @@ void PropagateDownloadFile::downloadFinished()
     emit propagator()->touchedFile(fn);
     // The fileChanged() check is done above to generate better error messages.
     if (!FileSystem::uncheckedRenameReplace(_tmpFile.fileName(), fn, &error)) {
-        qCWarning(lcPropagateDownload) << QString("Rename failed: %1 => %2").arg(_tmpFile.fileName()).arg(fn);
+        qCWarning(lcPropagateDownload) << QString("Rename failed: %1 => %2").arg(_tmpFile.fileName(), fn);
         // If the file is locked, we want to retry this sync when it
         // becomes available again, otherwise try again directly
         if (FileSystem::isFileLocked(fn)) {

@@ -340,8 +340,7 @@ void OwncloudSetupWizard::slotConnectToOCUrl(const QString &url)
 
         _ocWizard->setField(QLatin1String("OCUrl"), url);
         _ocWizard->appendToConfigurationLog(tr("Trying to connect to %1 at %2 …")
-                                                .arg(Theme::instance()->appNameGUI())
-                                                .arg(url));
+                                                .arg(Theme::instance()->appNameGUI(), url));
 
         testOwnCloudConnect();
     });

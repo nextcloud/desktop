@@ -422,9 +422,9 @@ QString ConfigFile::backup() const
         versionString.prepend('_');
     QString backupFile =
         QString("%1.backup_%2%3")
-            .arg(baseFile)
-            .arg(QDateTime::currentDateTime().toString("yyyyMMdd_HHmmss"))
-            .arg(versionString);
+            .arg(baseFile,
+                QDateTime::currentDateTime().toString("yyyyMMdd_HHmmss"),
+                versionString);
 
     // If this exact file already exists it's most likely that a backup was
     // already done. (two backup calls directly after each other, potentially

@@ -227,7 +227,7 @@ QIcon Theme::themeIcon(const QString &name, bool sysTray) const
             return cached = QIcon::fromTheme(name);
         }
 
-        const QString svgName = QString(Theme::themePrefix) + QString::fromLatin1("%1/%2.svg").arg(flavor).arg(name);
+        const QString svgName = QString(Theme::themePrefix) + QString::fromLatin1("%1/%2.svg").arg(flavor, name);
         QSvgRenderer renderer(svgName);
         const auto createPixmapFromSvg = [&renderer] (int size) {
             QImage img(size, size, QImage::Format_ARGB32);
@@ -237,8 +237,8 @@ QIcon Theme::themeIcon(const QString &name, bool sysTray) const
             return QPixmap::fromImage(img);
         };
 
-        const auto loadPixmap = [flavor, name] (int size) {
-            const QString pixmapName = QString(Theme::themePrefix) + QString::fromLatin1("%1/%2-%3.png").arg(flavor).arg(name).arg(size);
+        const auto loadPixmap = [flavor, name](int size) {
+            const QString pixmapName = QString(Theme::themePrefix) + QString::fromLatin1("%1/%2-%3.png").arg(flavor, name).arg(size);
             return QPixmap(pixmapName);
         };
 
@@ -279,8 +279,8 @@ QString Theme::themeImagePath(const QString &name, int size, bool sysTray) const
 
     // branded client may have several sizes of the same icon
     const QString filePath = (useSvg || size <= 0)
-            ? QString(Theme::themePrefix) + QString::fromLatin1("%1/%2").arg(flavor).arg(name)
-            : QString(Theme::themePrefix) + QString::fromLatin1("%1/%2-%3").arg(flavor).arg(name).arg(size);
+        ? QString(Theme::themePrefix) + QString::fromLatin1("%1/%2").arg(flavor, name)
+        : QString(Theme::themePrefix) + QString::fromLatin1("%1/%2-%3").arg(flavor, name).arg(size);
 
     const QString svgPath = filePath + ".svg";
     if (useSvg) {
@@ -469,12 +469,12 @@ QString Theme::gitSHA1() const
     devString = QCoreApplication::translate("nextcloudTheme::about()",
         "<p><small>Built from Git revision <a href=\"%1\">%2</a>"
         " on %3, %4 using Qt %5, %6</small></p>")
-                    .arg(githubPrefix + gitSha1)
-                    .arg(gitSha1.left(6))
-                    .arg(__DATE__)
-                    .arg(__TIME__)
-                    .arg(qVersion())
-                    .arg(QSslSocket::sslLibraryVersionString());
+                    .arg(githubPrefix + gitSha1,
+                        gitSha1.left(6),
+                        __DATE__,
+                        __TIME__,
+                        qVersion(),
+                        QSslSocket::sslLibraryVersionString());
 #endif
     return devString;
 }
@@ -491,8 +491,8 @@ QString Theme::about() const
               .arg(APPLICATION_NAME);
 
     devString += tr("<p>Version %1. For more information please click <a href='%2'>here</a>.</p>")
-              .arg(QString::fromLatin1(MIRALL_STRINGIFY(MIRALL_VERSION)) + QString(" (%1)").arg(osName))
-              .arg(helpUrl());
+                     .arg(QString::fromLatin1(MIRALL_STRINGIFY(MIRALL_VERSION)) + QString(" (%1)").arg(osName),
+                         helpUrl());
 
     devString += tr("<p><small>Using virtual files plugin: %1</small></p>")
                      .arg(Vfs::modeToString(bestAvailableVfsMode()));
@@ -506,8 +506,8 @@ QString Theme::aboutDetails() const
 {
     QString devString;
     devString = tr("<p>Version %1. For more information please click <a href='%2'>here</a>.</p>")
-              .arg(MIRALL_VERSION_STRING)
-              .arg(helpUrl());
+                    .arg(MIRALL_VERSION_STRING,
+                        helpUrl());
 
     devString += tr("<p>This release was supplied by %1</p>")
               .arg(APPLICATION_VENDOR);
