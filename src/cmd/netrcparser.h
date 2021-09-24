@@ -38,6 +38,11 @@ private:
     QHash<QString, LoginPair> _entries;
     LoginPair _default;
     QString _netrcLocation;
+
+    QString _defaultKeyword = QLatin1String("default");
+    QString _machineKeyword = QLatin1String("machine");
+    QString _loginKeyword = QLatin1String("login");
+    QString _passwordKeyword = QLatin1String("password");
 };
 
 } // namespace OCC

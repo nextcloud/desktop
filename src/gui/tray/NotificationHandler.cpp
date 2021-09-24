@@ -8,12 +8,14 @@
 
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QGlobalStatic>
+
 
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcServerNotification, "nextcloud.gui.servernotification", QtInfoMsg)
 
-const QString notificationsPath = QLatin1String("ocs/v2.php/apps/notifications/api/v2/notifications");
+Q_GLOBAL_STATIC_WITH_ARGS(QString, notificationsPath, (QLatin1String("ocs/v2.php/apps/notifications/api/v2/notifications")))
 const char propertyAccountStateC[] = "oc_account_state";
 const int successStatusCode = 200;
 const int notModifiedStatusCode = 304;
@@ -43,7 +45,7 @@ void ServerNotificationHandler::slotFetchNotifications()
     }
 
     // if the previous notification job has finished, start next.
-    _notificationJob = new JsonApiJob(_accountState->account(), notificationsPath, this);
+    _notificationJob = new JsonApiJob(_accountState->account(), *notificationsPath, this);
     QObject::connect(_notificationJob.data(), &JsonApiJob::jsonReceived,
         this, &ServerNotificationHandler::slotNotificationsReceived);
     QObject::connect(_notificationJob.data(), &JsonApiJob::etagResponseHeaderReceived,
@@ -147,7 +149,7 @@ void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &j
         // https://github.com/owncloud/notifications/blob/master/docs/ocs-endpoint-v1.md#deleting-a-notification-for-a-user
         ActivityLink al;
         al._label = tr("Dismiss");
-        al._link = Utility::concatUrlPath(ai->account()->url(), notificationsPath + "/" + QString::number(a._id)).toString();
+        al._link = Utility::concatUrlPath(ai->account()->url(), *notificationsPath + "/" + QString::number(a._id)).toString();
         al._verb = "DELETE";
         al._primary = false;
         a._links.append(al);

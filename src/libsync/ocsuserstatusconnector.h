@@ -54,6 +54,9 @@ private:
     void setUserStatusMessagePredefined(const UserStatus &userStatus);
     void setUserStatusMessageCustom(const UserStatus &userStatus);
 
+    const QString _baseUrl = "/ocs/v2.php/apps/user_status/api/v1";
+    const QString _userStatusBaseUrl = _baseUrl + QStringLiteral("/user_status");
+
     AccountPtr _account;
 
     bool _userStatusSupported = false;

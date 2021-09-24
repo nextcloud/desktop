@@ -204,10 +204,6 @@ std::vector<OCC::UserStatus> jsonToPredefinedStatuses(QJsonArray jsonDataArray)
 
     return statuses;
 }
-
-
-const QString baseUrl("/ocs/v2.php/apps/user_status/api/v1");
-const QString userStatusBaseUrl = baseUrl + QStringLiteral("/user_status");
 }
 
 namespace OCC {
@@ -241,7 +237,7 @@ void OcsUserStatusConnector::startFetchUserStatusJob()
         return;
     }
 
-    _getUserStatusJob = new JsonApiJob(_account, userStatusBaseUrl, this);
+    _getUserStatusJob = new JsonApiJob(_account, _userStatusBaseUrl, this);
     connect(_getUserStatusJob, &JsonApiJob::jsonReceived, this, &OcsUserStatusConnector::onUserStatusFetched);
     _getUserStatusJob->start();
 }
@@ -268,7 +264,7 @@ void OcsUserStatusConnector::startFetchPredefinedStatuses()
     }
 
     _getPredefinedStausesJob = new JsonApiJob(_account,
-        baseUrl + QStringLiteral("/predefined_statuses"), this);
+        _baseUrl + QStringLiteral("/predefined_statuses"), this);
     connect(_getPredefinedStausesJob, &JsonApiJob::jsonReceived, this,
         &OcsUserStatusConnector::onPredefinedStatusesFetched);
     _getPredefinedStausesJob->start();
@@ -309,7 +305,7 @@ void OcsUserStatusConnector::logResponse(const QString &message, const QJsonDocu
 void OcsUserStatusConnector::setUserStatusOnlineStatus(UserStatus::OnlineStatus onlineStatus)
 {
     _setOnlineStatusJob = new JsonApiJob(_account,
-        userStatusBaseUrl + QStringLiteral("/status"), this);
+        _userStatusBaseUrl + QStringLiteral("/status"), this);
     _setOnlineStatusJob->setVerb(JsonApiJob::Verb::Put);
     // Set body
     QJsonObject dataObject;
@@ -328,7 +324,7 @@ void OcsUserStatusConnector::setUserStatusMessagePredefined(const UserStatus &us
         return;
     }
 
-    _setMessageJob = new JsonApiJob(_account, userStatusBaseUrl + QStringLiteral("/message/predefined"), this);
+    _setMessageJob = new JsonApiJob(_account, _userStatusBaseUrl + QStringLiteral("/message/predefined"), this);
     _setMessageJob->setVerb(JsonApiJob::Verb::Put);
     // Set body
     QJsonObject dataObject;
@@ -356,7 +352,7 @@ void OcsUserStatusConnector::setUserStatusMessageCustom(const UserStatus &userSt
         emit error(Error::EmojisNotSupported);
         return;
     }
-    _setMessageJob = new JsonApiJob(_account, userStatusBaseUrl + QStringLiteral("/message/custom"), this);
+    _setMessageJob = new JsonApiJob(_account, _userStatusBaseUrl + QStringLiteral("/message/custom"), this);
     _setMessageJob->setVerb(JsonApiJob::Verb::Put);
     // Set body
     QJsonObject dataObject;
@@ -429,7 +425,7 @@ void OcsUserStatusConnector::onUserStatusMessageSet(const QJsonDocument &json, i
 
 void OcsUserStatusConnector::clearMessage()
 {
-    _clearMessageJob = new JsonApiJob(_account, userStatusBaseUrl + QStringLiteral("/message"));
+    _clearMessageJob = new JsonApiJob(_account, _userStatusBaseUrl + QStringLiteral("/message"));
     _clearMessageJob->setVerb(JsonApiJob::Verb::Delete);
     connect(_clearMessageJob, &JsonApiJob::jsonReceived, this, &OcsUserStatusConnector::onMessageCleared);
     _clearMessageJob->start();

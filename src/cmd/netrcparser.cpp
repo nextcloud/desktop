@@ -24,13 +24,6 @@
 
 namespace OCC {
 
-namespace {
-    QString defaultKeyword = QLatin1String("default");
-    QString machineKeyword = QLatin1String("machine");
-    QString loginKeyword = QLatin1String("login");
-    QString passwordKeyword = QLatin1String("password");
-}
-
 NetrcParser::NetrcParser(const QString &file)
 {
     _netrcLocation = file;
@@ -67,7 +60,7 @@ bool NetrcParser::parse()
     bool isDefault = false;
     while (tokenizer.hasNext()) {
         QString key = tokenizer.next();
-        if (key == defaultKeyword) {
+        if (key == _defaultKeyword) {
             tryAddEntryAndClear(machine, pair, isDefault);
             isDefault = true;
             continue; // don't read a value
@@ -79,12 +72,12 @@ bool NetrcParser::parse()
         }
         QString value = tokenizer.next();
 
-        if (key == machineKeyword) {
+        if (key == _machineKeyword) {
             tryAddEntryAndClear(machine, pair, isDefault);
             machine = value;
-        } else if (key == loginKeyword) {
+        } else if (key == _loginKeyword) {
             pair.first = value;
-        } else if (key == passwordKeyword) {
+        } else if (key == _passwordKeyword) {
             pair.second = value;
         } // ignore unsupported tokens
     }

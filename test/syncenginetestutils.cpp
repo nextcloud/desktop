@@ -12,7 +12,7 @@
 
 #include <memory>
 
-
+const char *sUploadUrl { "owncloud://somehost/owncloud/remote.php/dav/uploads/admin/" };
 
 PathComponents::PathComponents(const char *path)
     : PathComponents { QString::fromUtf8(path) }
@@ -824,7 +824,9 @@ QNetworkReply *FakeQNAM::createRequest(QNetworkAccessManager::Operation op, cons
             reply = new FakeErrorReply { op, newRequest, this, _errorPaths[fileName] };
         }
     }
-    if (!reply) {        const bool isUpload = newRequest.url().path().startsWith(sUploadUrl.path());
+    QUrl uploadUrl { sUploadUrl };
+    if (!reply) {
+        const bool isUpload = newRequest.url().path().startsWith(uploadUrl.path());
         FileInfo &info = isUpload ? _uploadFileInfo : _remoteRootFileInfo;
 
         auto verb = newRequest.attribute(QNetworkRequest::CustomVerbAttribute);

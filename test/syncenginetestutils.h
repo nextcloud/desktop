@@ -33,18 +33,20 @@
  * only works when directly called from a QTest :-(
  */
 
+extern const char *sUploadUrl;
 
-static const QUrl sRootUrl("owncloud://somehost/owncloud/remote.php/dav/");
-static const QUrl sRootUrl2("owncloud://somehost/owncloud/remote.php/dav/files/admin/");
-static const QUrl sUploadUrl("owncloud://somehost/owncloud/remote.php/dav/uploads/admin/");
 
 inline QString getFilePathFromUrl(const QUrl &url)
 {
+    static const QUrl sRootUrl("owncloud://somehost/owncloud/remote.php/dav/");
+    static const QUrl sRootUrl2("owncloud://somehost/owncloud/remote.php/dav/files/admin/");
+    QUrl uploadUrl { sUploadUrl };
+
     QString path = url.path();
     if (path.startsWith(sRootUrl2.path()))
         return path.mid(sRootUrl2.path().length());
-    if (path.startsWith(sUploadUrl.path()))
-        return path.mid(sUploadUrl.path().length());
+    if (path.startsWith(uploadUrl.path()))
+        return path.mid(uploadUrl.path().length());
     if (path.startsWith(sRootUrl.path()))
         return path.mid(sRootUrl.path().length());
     return {};

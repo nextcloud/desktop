@@ -15,6 +15,10 @@
 
 using namespace OCC;
 
+namespace {
+Q_GLOBAL_STATIC_WITH_ARGS(QUrl, sOAuthTestServer, ("oauthtest://someserver/owncloud"))
+}
+
 class DesktopServiceHook : public QObject
 {
     Q_OBJECT
@@ -23,9 +27,6 @@ signals:
 public:
     DesktopServiceHook() { QDesktopServices::setUrlHandler("oauthtest", this, "hooked"); }
 };
-
-static const QUrl sOAuthTestServer("oauthtest://someserver/owncloud");
-
 
 class FakePostReply : public QNetworkReply
 {
@@ -64,7 +65,7 @@ public:
             return;
         } else if (redirectToToken) {
             // Redirect to self
-            QVariant destination = QVariant(sOAuthTestServer.toString()+QLatin1String("/index.php/apps/oauth2/api/v1/token"));
+            QVariant destination = QVariant(sOAuthTestServer->toString() + QLatin1String("/index.php/apps/oauth2/api/v1/token"));
             setHeader(QNetworkRequest::LocationHeader, destination);
             setAttribute(QNetworkRequest::RedirectionTargetAttribute, destination);
             setAttribute(QNetworkRequest::HttpStatusCodeAttribute, 307); // 307 explicitly in rfc says to not lose POST data
@@ -129,7 +130,7 @@ public:
     virtual void test() {
         fakeQnam = new FakeQNAM({});
         account = OCC::Account::create();
-        account->setUrl(sOAuthTestServer);
+        account->setUrl(*sOAuthTestServer);
         account->setCredentials(new FakeCredentials{fakeQnam});
         fakeQnam->setParent(this);
         fakeQnam->setOverride([this](QNetworkAccessManager::Operation op, const QNetworkRequest &req, QIODevice *device) {
@@ -150,8 +151,8 @@ public:
     virtual void openBrowserHook(const QUrl &url) {
         QCOMPARE(state, StartState);
         state = BrowserOpened;
-        QCOMPARE(url.path(), QString(sOAuthTestServer.path() + "/index.php/apps/oauth2/authorize"));
-        QVERIFY(url.toString().startsWith(sOAuthTestServer.toString()));
+        QCOMPARE(url.path(), QString(sOAuthTestServer->path() + "/index.php/apps/oauth2/authorize"));
+        QVERIFY(url.toString().startsWith(sOAuthTestServer->toString()));
         QUrlQuery query(url);
         QCOMPARE(query.queryItemValue(QLatin1String("response_type")), QLatin1String("code"));
         QCOMPARE(query.queryItemValue(QLatin1String("client_id")), Theme::instance()->oauthClientId());
@@ -180,8 +181,8 @@ public:
         ASSERT(state == BrowserOpened);
         state = TokenAsked;
         ASSERT(op == QNetworkAccessManager::PostOperation);
-        ASSERT(req.url().toString().startsWith(sOAuthTestServer.toString()));
-        ASSERT(req.url().path() == sOAuthTestServer.path() + "/index.php/apps/oauth2/api/v1/token");
+        ASSERT(req.url().toString().startsWith(sOAuthTestServer->toString()));
+        ASSERT(req.url().path() == sOAuthTestServer->path() + "/index.php/apps/oauth2/api/v1/token");
         std::unique_ptr<QBuffer> payload(new QBuffer());
         payload->setData(tokenReplyPayload());
         return new FakePostReply(op, req, std::move(payload), fakeQnam);
