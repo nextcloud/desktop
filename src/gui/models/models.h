@@ -33,9 +33,7 @@ namespace Models {
      */
     QString formatSelection(const QModelIndexList &items, int dataRole = Qt::DisplayRole);
 
-
-    QMenu *displayFilterDialog(const QStringList &candidates, QSortFilterProxyModel *model, int column, int role, QWidget *parent = nullptr);
-
+    std::function<void()> addFilterMenuItems(QMenu *menu, const QStringList &candidates, QSortFilterProxyModel *model, int column, const QString &columnName, int role);
 
     /**
      * Returns a vector with indices

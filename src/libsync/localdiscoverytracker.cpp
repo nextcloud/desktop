@@ -75,6 +75,8 @@ void LocalDiscoveryTracker::slotItemCompleted(const SyncFileItemPtr &item)
             qCDebug(lcLocalDiscoveryTracker) << "wiped successful item" << item->_file;
         if (!item->_renameTarget.isEmpty() && _previousLocalDiscoveryPaths.erase(item->_renameTarget))
             qCDebug(lcLocalDiscoveryTracker) << "wiped successful item" << item->_renameTarget;
+    } else if (item->_status == SyncFileItem::StatusCount) {
+        Q_UNREACHABLE();
     } else {
         _localDiscoveryPaths.insert(item->_file);
         qCDebug(lcLocalDiscoveryTracker) << "inserted error item" << item->_file;

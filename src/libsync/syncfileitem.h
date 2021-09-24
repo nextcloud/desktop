@@ -91,7 +91,11 @@ public:
         /**
          * The file is excluded by the ignore list
          */
-        Excluded
+        Excluded,
+
+        /** For use in an array or vector for the number of items in this enum.
+         */
+        StatusCount
     };
     Q_ENUM(Status)
 

@@ -69,6 +69,10 @@ ActivityWidget::ActivityWidget(QWidget *parent)
     header->setSectionResizeMode(QHeaderView::Interactive);
     header->setSortIndicator(static_cast<int>(ActivityListModel::ActivityRole::PointInTime), Qt::DescendingOrder);
 
+    connect(_ui->_filterButton, &QAbstractButton::clicked, this, [this] {
+        ProtocolWidget::showFilterMenu(_ui->_filterButton, _sortModel);
+    });
+
     _ui->_notifyLabel->hide();
     _ui->_notifyScroll->hide();
 
@@ -102,9 +106,8 @@ ActivityWidget::ActivityWidget(QWidget *parent)
     connect(_ui->_activityList, &QListView::customContextMenuRequested, this, &ActivityWidget::slotItemContextMenu);
     header->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(header, &QListView::customContextMenuRequested, header, [header, this] {
-        auto menu = Models::displayFilterDialog(AccountManager::instance()->accountNames(), _sortModel, static_cast<int>(ActivityListModel::ActivityRole::Account), Qt::DisplayRole, this);
-        menu->addSeparator();
-        menu->addAction(tr("Reset column sizes"), this, [header] { header->resizeColumns(true); });
+        auto menu = ProtocolWidget::showFilterMenu(header, _sortModel);
+        header->addResetActionToMenu(menu);
     });
 
     connect(&_removeTimer, &QTimer::timeout, this, &ActivityWidget::slotCheckToCleanWidgets);

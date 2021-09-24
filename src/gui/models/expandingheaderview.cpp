@@ -16,9 +16,10 @@
 
 #include "configfile.h"
 
-#include <QScopedValueRollback>
 #include <QApplication>
 #include <QDebug>
+#include <QMenu>
+#include <QScopedValueRollback>
 
 using namespace OCC;
 
@@ -70,4 +71,9 @@ void ExpandingHeaderView::resizeColumns(bool reset)
         availableWidth -= sectionSize(i);
     }
     resizeSection(_expandingColumn, availableWidth);
+}
+
+void ExpandingHeaderView::addResetActionToMenu(QMenu *menu)
+{
+    menu->addAction(tr("Reset column sizes"), this, [this] { resizeColumns(true); });
 }

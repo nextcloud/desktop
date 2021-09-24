@@ -91,7 +91,7 @@ QString SyncFileItem::statusEnumDisplayName(Status s)
     case OCC::SyncFileItem::Conflict:
         return QCoreApplication::translate("SyncFileItem::Status", "Conflict");
     case OCC::SyncFileItem::FileIgnored:
-        return QCoreApplication::translate("SyncFileItem::Status", "Error Ignored");
+        return QCoreApplication::translate("SyncFileItem::Status", "File Ignored");
     case OCC::SyncFileItem::Restoration:
         return QCoreApplication::translate("SyncFileItem::Status", "Restored");
     case OCC::SyncFileItem::DetailError:
@@ -100,6 +100,8 @@ QString SyncFileItem::statusEnumDisplayName(Status s)
         return QCoreApplication::translate("SyncFileItem::Status", "Blacklisted");
     case OCC::SyncFileItem::Excluded:
         return QCoreApplication::translate("SyncFileItem::Status", "Excluded");
+    case OCC::SyncFileItem::StatusCount:
+        Q_UNREACHABLE();
     }
     Q_UNREACHABLE();
 }

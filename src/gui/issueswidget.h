@@ -20,9 +20,10 @@
 #include <QLocale>
 #include <QTimer>
 
+#include "models/expandingheaderview.h"
 #include "models/protocolitemmodel.h"
-#include "progressdispatcher.h"
 #include "owncloudgui.h"
+#include "progressdispatcher.h"
 
 #include "ui_issueswidget.h"
 
@@ -30,6 +31,7 @@ class QSortFilterProxyModel;
 
 namespace OCC {
 class SyncResult;
+class SyncFileItemStatusSetSortFilterProxyModel;
 
 namespace Ui {
     class ProtocolWidget;
@@ -55,11 +57,16 @@ signals:
     void issueCountUpdated(int);
 
 private slots:
+    QMenu *showFilterMenu(QWidget *parent);
     void slotItemContextMenu();
 
 private:
+    static void addResetFiltersAction(QMenu *menu, const QList<std::function<void()>> &resetFunctions);
+    std::function<void()> addStatusFilter(QMenu *menu);
+
     ProtocolItemModel *_model;
     QSortFilterProxyModel *_sortModel;
+    SyncFileItemStatusSetSortFilterProxyModel *_statusSortModel;
 
     Ui::IssuesWidget *_ui;
 };

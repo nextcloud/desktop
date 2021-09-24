@@ -77,16 +77,16 @@ QString OCC::Models::formatSelection(const QModelIndexList &items, int dataRole)
     return out;
 }
 
-QMenu *OCC::Models::displayFilterDialog(const QStringList &candidates, QSortFilterProxyModel *model, int column, int role, QWidget *parent)
+std::function<void()> OCC::Models::addFilterMenuItems(QMenu *menu, const QStringList &candidates, QSortFilterProxyModel *model, int column, const QString &columnName, int role)
 {
-    auto menu = new QMenu(parent);
-    menu->setAttribute(Qt::WA_DeleteOnClose);
-    menu->addAction(qApp->translate("OCC::Models", "Filter by"));
-    menu->addSeparator();
+    menu->addAction(qApp->translate("OCC::Models", "%1 Filter:").arg(columnName))->setEnabled(false);
+
+    auto filterGroup = new QActionGroup(menu);
+    filterGroup->setExclusive(true);
 
     const auto currentFilter = model->filterRegExp().pattern();
     auto addAction = [=](const QString &s, const QString &filter) {
-        auto action = menu->addAction(s, parent, [=]() {
+        auto action = menu->addAction(s, menu, [=]() {
             model->setFilterRole(role);
             model->setFilterKeyColumn(column);
             model->setFilterFixedString(filter);
@@ -95,10 +95,12 @@ QMenu *OCC::Models::displayFilterDialog(const QStringList &candidates, QSortFilt
         if (currentFilter == filter) {
             action->setChecked(true);
         }
+        filterGroup->addAction(action);
+        return action;
     };
 
 
-    addAction(qApp->translate("OCC::Models", "No filter"), QString());
+    auto noFilter = addAction(QApplication::translate("OCC::Models", "No filter"), QString());
 
     for (const auto &c : candidates) {
         addAction(c, c);
@@ -106,5 +108,10 @@ QMenu *OCC::Models::displayFilterDialog(const QStringList &candidates, QSortFilt
     QTimer::singleShot(0, menu, [menu] {
         menu->popup(QCursor::pos());
     });
-    return menu;
+
+    auto resetFunction = [noFilter]() {
+        noFilter->setChecked(true);
+        noFilter->trigger();
+    };
+    return resetFunction;
 }
