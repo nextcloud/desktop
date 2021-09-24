@@ -26,7 +26,7 @@ public:
     {
         if (aborted)
             return 0;
-        return std::min(size, fakeSize) + QIODevice::bytesAvailable(); // NOLINT: This is intended to simulare the brokeness
+        return std::min(size, fakeSize) + QIODevice::bytesAvailable(); // NOLINT: This is intended to simulare the brokeness clazy:exclude=skipped-base-method
     }
 
     qint64 readData(char *data, qint64 maxlen) override
