@@ -312,7 +312,7 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
         for (const auto &key : childKeys) {
             if (!key.startsWith("http_"))
                 continue;
-            auto newkey = QString::fromLatin1("webflow_").append(key.mid(5));
+            auto newkey = QString::fromLatin1("webflow_").append(key.midRef(5));
             settings.setValue(newkey, settings.value((key)));
             settings.remove(key);
         }
