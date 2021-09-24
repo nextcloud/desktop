@@ -210,8 +210,7 @@ void CloudProviderWrapper::slotSyncFinished(const SyncResult &result)
 GMenuModel* CloudProviderWrapper::getMenuModel() {
 
     GMenu* section;
-    GMenuItem* item;
-    QString item_label;
+    GMenuItem *item;
 
     _mainMenu = g_menu_new();
 

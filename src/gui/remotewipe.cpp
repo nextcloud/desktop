@@ -75,9 +75,7 @@ void RemoteWipe::checkJobSlot()
     bool wipe = false;
 
     //check for errors
-    if (_networkReplyCheck->error() != QNetworkReply::NoError ||
-            jsonParseError.error != QJsonParseError::NoError) {
-        QString errorReason;
+    if (_networkReplyCheck->error() != QNetworkReply::NoError || jsonParseError.error != QJsonParseError::NoError) {
         QString errorFromJson = json["error"].toString();
         if (!errorFromJson.isEmpty()) {
             qCWarning(lcRemoteWipe) << QString("Error returned from the server: <em>%1<em>")
@@ -93,7 +91,7 @@ void RemoteWipe::checkJobSlot()
         }
 
     // check for wipe request
-    } else if(!json.value("wipe").isUndefined()){
+    } else if (!json.value("wipe").isUndefined()) {
         wipe = json["wipe"].toBool();
     }
 
@@ -151,9 +149,7 @@ void RemoteWipe::notifyServerSuccessJobSlot()
     auto jsonData = _networkReplySuccess->readAll();
     QJsonParseError jsonParseError;
     QJsonObject json = QJsonDocument::fromJson(jsonData, &jsonParseError).object();
-    if (_networkReplySuccess->error() != QNetworkReply::NoError ||
-            jsonParseError.error != QJsonParseError::NoError) {
-        QString errorReason;
+    if (_networkReplySuccess->error() != QNetworkReply::NoError || jsonParseError.error != QJsonParseError::NoError) {
         QString errorFromJson = json["error"].toString();
         if (!errorFromJson.isEmpty()) {
             qCWarning(lcRemoteWipe) << QString("Error returned from the server: <em>%1</em>")

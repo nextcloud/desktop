@@ -91,15 +91,11 @@ void NavigationPaneHelper::updateCloudStorageRegistry()
                 entriesToRemove.removeOne(folder->navigationPaneClsid());
 
                 QString clsidStr = folder->navigationPaneClsid().toString();
-                QString clsidPath = QString() % R"(Software\Classes\CLSID\)" % clsidStr;
-                QString clsidPathWow64 = QString() % R"(Software\Classes\Wow6432Node\CLSID\)" % clsidStr;
-                QString namespacePath = QString() % R"(Software\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace\)" % clsidStr;
 
                 QString title = folder->shortGuiRemotePathOrAppName();
                 // Write the account name in the sidebar only when using more than one account.
                 if (AccountManager::instance()->accounts().size() > 1)
                     title = title % " - " % folder->accountState()->account()->displayName();
-                QString iconPath = QDir::toNativeSeparators(qApp->applicationFilePath());
                 QString targetFolderPath = QDir::toNativeSeparators(folder->cleanPath());
 
                 qCInfo(lcNavPane) << "Explorer Cloud storage provider: saving path" << targetFolderPath << "to CLSID" << clsidStr;
@@ -158,9 +154,6 @@ void NavigationPaneHelper::updateCloudStorageRegistry()
     // Then remove anything that isn't in our folder list anymore.
     foreach (auto &clsid, entriesToRemove) {
         QString clsidStr = clsid.toString();
-        QString clsidPath = QString() % R"(Software\Classes\CLSID\)" % clsidStr;
-        QString clsidPathWow64 = QString() % R"(Software\Classes\Wow6432Node\CLSID\)" % clsidStr;
-        QString namespacePath = QString() % R"(Software\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace\)" % clsidStr;
 
         qCInfo(lcNavPane) << "Explorer Cloud storage provider: now unused, removing own CLSID" << clsidStr;
 #ifdef Q_OS_WIN
