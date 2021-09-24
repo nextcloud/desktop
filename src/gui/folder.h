@@ -195,12 +195,6 @@ public:
 
     void prepareToSync();
 
-    /**
-     * True if the folder is busy and can't initiate
-     * a synchronization
-     */
-    virtual bool isBusy() const;
-
     /** True if the folder is currently synchronizing */
     bool isSyncRunning() const;
 
@@ -337,7 +331,7 @@ public slots:
       *
       * If the list of changed files is known, it is passed.
       */
-    void startSync(const QStringList &pathList = QStringList());
+    void startSync();
 
     int slotDiscardDownloadProgress();
     int downloadInfoCount();

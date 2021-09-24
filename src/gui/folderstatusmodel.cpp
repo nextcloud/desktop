@@ -841,7 +841,7 @@ void FolderStatusModel::slotApplySelectiveSync()
         // do the sync if there were changes
         const auto changes = (oldBlackListSet - blackListSet) + (blackListSet - oldBlackListSet);
         if (!changes.isEmpty()) {
-            if (folder->isBusy()) {
+            if (folder->isSyncRunning()) {
                 folder->slotTerminateSync();
             }
             //The part that changed should not be read from the DB on next sync because there might be new folders
@@ -1154,7 +1154,7 @@ void FolderStatusModel::slotSyncAllPendingBigFolders()
         folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, QStringList());
 
         // Trigger a sync
-        if (folder->isBusy()) {
+        if (folder->isSyncRunning()) {
             folder->slotTerminateSync();
         }
         // The part that changed should not be read from the DB on next sync because there might be new folders

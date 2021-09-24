@@ -259,11 +259,6 @@ QString Folder::cleanPath() const
     return cleanedPath;
 }
 
-bool Folder::isBusy() const
-{
-    return isSyncRunning();
-}
-
 bool Folder::isSyncRunning() const
 {
     return _engine->isSyncRunning() || _vfs->isHydrating();
@@ -305,7 +300,7 @@ bool Folder::ok() const
 bool Folder::dueToSync() const
 {
     // conditions taken from previous folderman implementation
-    if (isSyncRunning() || etagJob() || isBusy() || !canSync()) {
+    if (isSyncRunning() || etagJob() || !canSync()) {
         return false;
     }
 
@@ -835,11 +830,12 @@ bool Folder::reloadExcludes()
     return _engine->excludedFiles().reloadExcludeFiles();
 }
 
-void Folder::startSync(const QStringList &pathList)
+void Folder::startSync()
 {
-    Q_UNUSED(pathList)
+    Q_ASSERT(ok());
+    Q_ASSERT(_folderWatcher);
 
-    if (isBusy()) {
+    if (!OC_ENSURE(!isSyncRunning())) {
         qCCritical(lcFolder) << "ERROR csync is still running and new sync requested.";
         return;
     }

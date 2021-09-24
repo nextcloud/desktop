@@ -653,8 +653,7 @@ void FolderMan::slotSyncOnceFileUnlocks(const QString &path, FileSystem::LockMod
   */
 void FolderMan::scheduleFolder(Folder *f)
 {
-    if (!f) {
-        qCCritical(lcFolderMan) << "slotScheduleSync called with null folder";
+    if (!OC_ENSURE(f)) {
         return;
     }
     auto alias = f->alias();
@@ -876,7 +875,7 @@ void FolderMan::slotStartScheduledFolderSync()
         registerFolderWithSocketApi(folder);
 
         _currentSyncFolder = folder;
-        folder->startSync(QStringList());
+        folder->startSync();
     }
 }
 
@@ -1302,7 +1301,7 @@ void FolderMan::setDirtyNetworkLimits()
 {
     for (auto *f : qAsConst(_folderMap)) {
         // set only in busy folders. Otherwise they read the config anyway.
-        if (f && f->isBusy()) {
+        if (f && f->isSyncRunning()) {
             f->setDirtyNetworkLimits();
         }
     }

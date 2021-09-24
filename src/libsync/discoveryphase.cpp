@@ -260,7 +260,7 @@ void DiscoverySingleLocalDirectoryJob::run() {
 
     auto dh = csync_vio_local_opendir(localPath);
     if (!dh) {
-        qCInfo(lcDiscovery) << "Error while opening directory" << (localPath) << errno;
+        qCCritical(lcDiscovery) << "Error while opening directory" << (localPath) << errno;
         QString errorString = tr("Error while opening directory %1").arg(localPath);
         if (errno == EACCES) {
             errorString = tr("Directory not accessible on client, permission denied");
