@@ -160,7 +160,8 @@ void User::slotReceivedPushActivity(Account *account)
 
 void User::slotCheckExpiredActivities()
 {
-    for (const Activity &activity : _activityModel->errorsList()) {
+    const auto &errorsList = _activityModel->errorsList();
+    for (const Activity &activity : errorsList) {
         if (activity._expireAtMsecs > 0 && QDateTime::currentDateTime().toMSecsSinceEpoch() >= activity._expireAtMsecs) {
             _activityModel->removeActivityFromActivityList(activity);
         }

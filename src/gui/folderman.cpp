@@ -180,7 +180,8 @@ int FolderMan::setupFolders()
 
     qCInfo(lcFolderMan) << "Setup folders from settings file";
 
-    for (const auto &account : AccountManager::instance()->accounts()) {
+    const auto &accounts = AccountManager::instance()->accounts();
+    for (const auto &account : accounts) {
         const auto id = account->account()->id();
         if (!accountsWithSettings.contains(id)) {
             continue;
@@ -216,7 +217,8 @@ int FolderMan::setupFolders()
 
 void FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account, const QStringList &ignoreKeys, bool backwardsCompatible, bool foldersWithPlaceholders)
 {
-    for (const auto &folderAlias : settings.childGroups()) {
+    const auto &childGroups = settings.childGroups();
+    for (const auto &folderAlias : childGroups) {
         // Skip folders with too-new version
         settings.beginGroup(folderAlias);
         if (ignoreKeys.contains(settings.group())) {
@@ -371,7 +373,8 @@ void FolderMan::backwardMigrationSettingsKeys(QStringList *deleteKeys, QStringLi
         settings->endGroup();
     };
 
-    for (const auto &accountId : settings->childGroups()) {
+    const auto &childGroups = settings->childGroups();
+    for (const auto &accountId : childGroups) {
         settings->beginGroup(accountId);
         processSubgroup("Folders");
         processSubgroup("Multifolders");
@@ -577,7 +580,8 @@ Folder *FolderMan::folder(const QString &alias)
 
 void FolderMan::scheduleAllFolders()
 {
-    for (Folder *f : _folderMap.values()) {
+    const auto &values = _folderMap.values();
+    for (const auto &f : values) {
         if (f && f->canSync()) {
             scheduleFolder(f);
         }
@@ -697,7 +701,8 @@ void FolderMan::slotAccountStateChanged()
     if (accountState->isConnected()) {
         qCInfo(lcFolderMan) << "Account" << accountName << "connected, scheduling its folders";
 
-        for (Folder *f : _folderMap.values()) {
+        const auto &values = _folderMap.values();
+        for (const auto &f : values) {
             if (f
                 && f->canSync()
                 && f->accountState() == accountState) {
@@ -787,7 +792,7 @@ void FolderMan::startScheduledSyncSoon()
 void FolderMan::slotStartScheduledFolderSync()
 {
     if (isAnySyncRunning()) {
-        for (auto f : _folderMap) {
+        for (const auto &f : qAsConst(_folderMap)) {
             if (f->isSyncRunning())
                 qCInfo(lcFolderMan) << "Currently folder " << f->remoteUrl().toString() << " is running, wait for finish!";
         }
@@ -1156,7 +1161,8 @@ QStringList FolderMan::findFileInLocalFolders(const QString &relPath, const Acco
     if (!serverPath.startsWith('/'))
         serverPath.prepend('/');
 
-    for (Folder *folder : this->map().values()) {
+    const auto &values = this->map().values();
+    for (const auto &folder : values) {
         if (acc && folder->accountState()->account() != acc) {
             continue;
         }
@@ -1354,7 +1360,8 @@ void FolderMan::slotWipeFolderForAccount(AccountState *accountState)
 
 void FolderMan::setDirtyProxy()
 {
-    for (const Folder *f : _folderMap.values()) {
+    const auto &values = _folderMap.values();
+    for (const auto &f : values) {
         if (f) {
             if (f->accountState() && f->accountState()->account()
                 && f->accountState()->account()->networkAccessManager()) {
@@ -1368,7 +1375,8 @@ void FolderMan::setDirtyProxy()
 
 void FolderMan::setDirtyNetworkLimits()
 {
-    for (Folder *f : _folderMap.values()) {
+    const auto &values = _folderMap.values();
+    for (const auto &f : values) {
         // set only in busy folders. Otherwise they read the config anyway.
         if (f && f->isBusy()) {
             f->setDirtyNetworkLimits();
@@ -1707,7 +1715,7 @@ void FolderMan::slotProcessFilesPushNotification(Account *account)
 {
     qCInfo(lcFolderMan) << "Got files push notification for account" << account;
 
-    for (auto folder : _folderMap) {
+    for (const auto &folder : qAsConst(_folderMap)) {
         // Just run on the folders that belong to this account
         if (folder->accountState()->account() != account) {
             continue;

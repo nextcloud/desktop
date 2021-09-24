@@ -448,7 +448,7 @@ bool HttpCredentials::refreshAccessToken()
             persist();
         }
         _isRenewingOAuthToken = false;
-        for (const auto &job : _retryQueue) {
+        for (const auto &job : qAsConst(_retryQueue)) {
             if (job)
                 job->retry();
         }

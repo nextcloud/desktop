@@ -70,7 +70,8 @@ private slots:
             });
 
         auto &modifier = deleteOnRemote ? fakeFolder.remoteModifier() : fakeFolder.localModifier();
-        for (const auto &s : fakeFolder.currentRemoteState().children.keys())
+        const auto &keys = fakeFolder.currentRemoteState().children.keys();
+        for (const auto &s : keys)
             modifier.remove(s);
 
         QVERIFY(!fakeFolder.syncOnce()); // Should fail because we cancel the sync
@@ -110,7 +111,8 @@ private slots:
             });
 
         auto &modifier = deleteOnRemote ? fakeFolder.remoteModifier() : fakeFolder.localModifier();
-        for (const auto &s : fakeFolder.currentRemoteState().children.keys())
+        const auto &keys = fakeFolder.currentRemoteState().children.keys();
+        for (const auto &s : keys)
             modifier.remove(s);
 
         QVERIFY(fakeFolder.syncOnce()); // Should succeed, and all files must then be deleted
@@ -139,8 +141,10 @@ private slots:
             [&] { QVERIFY(false); });
         QVERIFY(fakeFolder.syncOnce());
 
-        for (const auto &s : fakeFolder.currentRemoteState().children.keys())
+        const auto &keys = fakeFolder.currentRemoteState().children.keys();
+        for (const auto &s : keys) {
             fakeFolder.syncJournal().avoidRenamesOnNextSync(s); // clears all the fileid and inodes.
+        }
         fakeFolder.localModifier().remove("A/a1");
         auto expectedState = fakeFolder.currentLocalState();
         QVERIFY(fakeFolder.syncOnce());

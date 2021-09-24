@@ -127,8 +127,10 @@ public:
     int countFolders(const QString &path)
     {
         int n = 0;
-        for (const auto &sub : QDir(path).entryList(QDir::Dirs | QDir::NoDotAndDotDot))
+        const auto &dirs = QDir(path).entryList(QDir::Dirs | QDir::NoDotAndDotDot);
+        for (const auto &sub : dirs) {
             n += 1 + countFolders(path + '/' + sub);
+        }
         return n;
     }
 

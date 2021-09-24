@@ -45,7 +45,8 @@ bool expectAndWipeConflict(FileModifier &local, FileInfo state, const QString pa
     auto base = state.find(pathComponents.parentDirComponents());
     if (!base)
         return false;
-    for (const auto &item : base->children) {
+    const auto &children = base->children;
+    for (const auto &item : children) {
         if (item.name.startsWith(pathComponents.fileName()) && item.name.contains("(conflicted copy")) {
             local.remove(item.path());
             return true;
@@ -79,7 +80,8 @@ private slots:
         QVERIFY(fakeFolder.syncOnce());
 
         // Verify that the conflict names don't have the user name
-        for (const auto &name : findConflicts(fakeFolder.currentLocalState().children["A"])) {
+        const auto &conflicts = findConflicts(fakeFolder.currentLocalState().children["A"]);
+        for (const auto &name : conflicts) {
             QVERIFY(!name.contains(fakeFolder.syncEngine().account()->davDisplayName()));
         }
 
@@ -294,7 +296,7 @@ private slots:
         fakeFolder.remoteModifier().appendByte("A/a2");
         QVERIFY(fakeFolder.syncOnce());
 
-        auto conflicts = findConflicts(fakeFolder.currentLocalState().children["A"]);
+        const auto &conflicts = findConflicts(fakeFolder.currentLocalState().children["A"]);
         QByteArray a1conflict;
         QByteArray a2conflict;
         for (const auto & conflict : conflicts) {
@@ -552,8 +554,9 @@ private slots:
         QVERIFY(conflicts.size() == 2);
         QVERIFY(conflicts[0].contains("A (conflicted copy"));
         QVERIFY(conflicts[1].contains("B (conflicted copy"));
-        for (const auto& conflict : conflicts)
+        for (const auto &conflict : qAsConst(conflicts)) {
             QDir(fakeFolder.localPath() + conflict).removeRecursively();
+        }
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
         // Currently a1 and b1 don't get moved, but redownloaded
@@ -587,7 +590,7 @@ private slots:
 
         // A becomes a conflict because we don't delete folders with files
         // inside of them!
-        auto conflicts = findConflicts(fakeFolder.currentLocalState());
+        const auto &conflicts = findConflicts(fakeFolder.currentLocalState());
         QVERIFY(conflicts.size() == 1);
         QVERIFY(conflicts[0].contains("A (conflicted copy"));
         for (const auto& conflict : conflicts)

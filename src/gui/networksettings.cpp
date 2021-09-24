@@ -248,7 +248,8 @@ void NetworkSettings::checkAccountLocalhost()
     if (_ui->manualProxyRadioButton->isChecked()) {
         // Check if at least one account is using localhost, because Qt proxy settings have no
         // effect for localhost (#7169)
-        for (const auto &account : AccountManager::instance()->accounts()) {
+        const auto &accounts = AccountManager::instance()->accounts();
+        for (const auto &account : accounts) {
             const auto host = account->account()->url().host();
             // Some typical url for localhost
             if (host == "localhost" || host.startsWith("127.") || host == "[::1]")

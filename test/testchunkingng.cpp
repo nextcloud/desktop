@@ -130,7 +130,8 @@ private slots:
         // Remove the second chunk, so all further chunks will be deleted and resent
         auto firstChunk = chunkMap.first();
         auto secondChunk = *(chunkMap.begin() + 1);
-        for (const auto& name : chunkMap.keys().mid(2)) {
+        const auto &names = chunkMap.keys().mid(2);
+        for (const auto &name : names) {
             chunksToDelete.append(name);
         }
         fakeFolder.uploadState().children.first().remove(secondChunk.name);

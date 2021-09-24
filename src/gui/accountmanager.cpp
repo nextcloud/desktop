@@ -80,7 +80,8 @@ bool AccountManager::restore()
         return true;
     }
 
-    for (const auto &accountId : settings->childGroups()) {
+    const auto &childGroups = settings->childGroups();
+    for (const auto &accountId : childGroups) {
         settings->beginGroup(accountId);
         if (!skipSettingsKeys.contains(settings->group())) {
             if (auto acc = loadAccountHelper(*settings)) {
@@ -231,7 +232,8 @@ void AccountManager::saveAccountHelper(Account *acc, QSettings &settings, bool s
             // re-persisting them)
             acc->_credentials->persist();
         }
-        for (const auto &key : acc->_settingsMap.keys()) {
+        const auto &keys = acc->_settingsMap.keys();
+        for (const auto &key : keys) {
             settings.setValue(key, acc->_settingsMap.value(key));
         }
         settings.setValue(QLatin1String(authTypeC), acc->_credentials->authType());
@@ -245,7 +247,8 @@ void AccountManager::saveAccountHelper(Account *acc, QSettings &settings, bool s
     settings.beginGroup(QLatin1String("General"));
     qCInfo(lcAccountManager) << "Saving " << acc->approvedCerts().count() << " unknown certs.";
     QByteArray certs;
-    for (const auto &cert : acc->approvedCerts()) {
+    const auto &approvedCerts = acc->approvedCerts();
+    for (const auto &cert : approvedCerts) {
         certs += cert.toPem() + '\n';
     }
     if (!certs.isEmpty()) {
@@ -305,7 +308,8 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
         authType = "webflow";
         settings.setValue(QLatin1String(authTypeC), authType);
 
-        for (const QString &key : settings.childKeys()) {
+        const auto &childKeys = settings.childKeys();
+        for (const auto &key : childKeys) {
             if (!key.startsWith("http_"))
                 continue;
             auto newkey = QString::fromLatin1("webflow_").append(key.mid(5));
@@ -322,7 +326,8 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
     // We want to only restore settings for that auth type and the user value
     acc->_settingsMap.insert(QLatin1String(userC), settings.value(userC));
     QString authTypePrefix = authType + "_";
-    for (const auto &key : settings.childKeys()) {
+    const auto &childKeys = settings.childKeys();
+    for (const auto &key : childKeys) {
         if (!key.startsWith(authTypePrefix))
             continue;
         acc->_settingsMap.insert(key, settings.value(key));

@@ -9,6 +9,7 @@
 #include "httplogger.h"
 #include "accessmanager.h"
 
+#include <QtGlobal>
 
 #include <memory>
 
@@ -647,7 +648,8 @@ FileInfo *FakeChunkMoveReply::perform(FileInfo &uploadsFileInfo, FileInfo &remot
     Q_ASSERT(!fileName.isEmpty());
 
     // Compute the size and content from the chunks if possible
-    for (auto chunkName : sourceFolder->children.keys()) {
+    const auto &keys = sourceFolder->children.keys();
+    for (const auto &chunkName : keys) {
         auto &x = sourceFolder->children[chunkName];
         Q_ASSERT(!x.isDir);
         Q_ASSERT(x.size > 0); // There should not be empty chunks
