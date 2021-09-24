@@ -49,9 +49,9 @@ public:
 
 public slots:
     void slotSyncStarted();
-    void slotSyncFinished(const SyncResult &);
-    void slotUpdateProgress(const QString &folder, const ProgressInfo &progress);
-    void slotSyncPausedChanged(Folder*, bool);
+    void slotSyncFinished(const OCC::SyncResult &);
+    void slotUpdateProgress(const QString &folder, const OCC::ProgressInfo &progress);
+    void slotSyncPausedChanged(OCC::Folder *, bool);
 
 private:
     Folder *_folder;

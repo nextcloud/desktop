@@ -91,7 +91,7 @@ private Q_SLOTS:
 
 Q_SIGNALS:
     void quotaUpdated(qint64 total, qint64 used);
-    void fetchedLastInfo(UserInfo *userInfo);
+    void fetchedLastInfo(OCC::UserInfo *userInfo);
 
 private:
     bool canGetInfo() const;

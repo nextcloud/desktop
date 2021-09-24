@@ -247,7 +247,7 @@ void DiscoveryPhase::scheduleMoreJobs()
 DiscoverySingleLocalDirectoryJob::DiscoverySingleLocalDirectoryJob(const AccountPtr &account, const QString &localPath, OCC::Vfs *vfs, QObject *parent)
  : QObject(parent), QRunnable(), _localPath(localPath), _account(account), _vfs(vfs)
 {
-    qRegisterMetaType<QVector<LocalInfo> >("QVector<LocalInfo>");
+    qRegisterMetaType<QVector<OCC::LocalInfo>>("QVector<OCC::LocalInfo>");
 }
 
 // Use as QRunnable

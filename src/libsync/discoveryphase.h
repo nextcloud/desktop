@@ -95,11 +95,11 @@ public:
 
     void run() override;
 signals:
-    void finished(QVector<LocalInfo> result);
+    void finished(QVector<OCC::LocalInfo> result);
     void finishedFatalError(QString errorString);
     void finishedNonFatalError(QString errorString);
 
-    void itemDiscovered(SyncFileItemPtr item);
+    void itemDiscovered(OCC::SyncFileItemPtr item);
     void childIgnored(bool b);
 private slots:
 private:
@@ -127,9 +127,9 @@ public:
 
     // This is not actually a network job, it is just a job
 signals:
-    void firstDirectoryPermissions(RemotePermissions);
+    void firstDirectoryPermissions(OCC::RemotePermissions);
     void etag(const QByteArray &, const QDateTime &time);
-    void finished(const HttpResult<QVector<RemoteInfo>> &result);
+    void finished(const OCC::HttpResult<QVector<OCC::RemoteInfo>> &result);
 
 private slots:
     void directoryListingIteratedSlot(const QString &, const QMap<QString, QString> &);
@@ -271,7 +271,7 @@ public:
 
 signals:
     void fatalError(const QString &errorString);
-    void itemDiscovered(const SyncFileItemPtr &item);
+    void itemDiscovered(const OCC::SyncFileItemPtr &item);
     void finished();
 
     // A new folder was discovered and was not synced because of the confirmation feature

@@ -67,11 +67,11 @@ signals:
 
 public slots:
     void getShares();
-    void slotShareCreated(const QSharedPointer<Share> &share);
+    void slotShareCreated(const QSharedPointer<OCC::Share> &share);
     void slotStyleChanged();
 
 private slots:
-    void slotSharesFetched(const QList<QSharedPointer<Share>> &shares);
+    void slotSharesFetched(const QList<QSharedPointer<OCC::Share>> &shares);
 
     void on_shareeLineEdit_textChanged(const QString &text);
     void searchForSharees(ShareeModel::LookupMode lookupMode);

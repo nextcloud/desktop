@@ -946,13 +946,13 @@ void FakeFolder::scheduleSync()
 
 void FakeFolder::execUntilBeforePropagation()
 {
-    QSignalSpy spy(_syncEngine.get(), SIGNAL(aboutToPropagate(SyncFileItemVector &)));
+    QSignalSpy spy(_syncEngine.get(), &OCC::SyncEngine::aboutToPropagate);
     QVERIFY(spy.wait());
 }
 
 void FakeFolder::execUntilItemCompleted(const QString &relativePath)
 {
-    QSignalSpy spy(_syncEngine.get(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
+    QSignalSpy spy(_syncEngine.get(), &OCC::SyncEngine::itemCompleted);
     QElapsedTimer t;
     t.start();
     while (t.elapsed() < 5000) {

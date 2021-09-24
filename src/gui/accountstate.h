@@ -181,21 +181,21 @@ private:
     void fetchNavigationApps();
 
 signals:
-    void stateChanged(State state);
+    void stateChanged(OCC::AccountState::State state);
     void isConnectedChanged();
     void hasFetchedNavigationApps();
     void statusChanged();
     void desktopNotificationsAllowedChanged();
 
 protected Q_SLOTS:
-    void slotConnectionValidatorResult(ConnectionValidator::Status status, const QStringList &errors);
+    void slotConnectionValidatorResult(OCC::ConnectionValidator::Status status, const QStringList &errors);
 
     /// When client gets a 401 or 403 checks if server requested remote wipe
     /// before asking for user credentials again
     void slotHandleRemoteWipeCheck();
 
-    void slotCredentialsFetched(AbstractCredentials *creds);
-    void slotCredentialsAsked(AbstractCredentials *creds);
+    void slotCredentialsFetched(OCC::AbstractCredentials *creds);
+    void slotCredentialsAsked(OCC::AbstractCredentials *creds);
 
     void slotNavigationAppsFetched(const QJsonDocument &reply, int statusCode);
     void slotEtagResponseHeaderReceived(const QByteArray &value, int statusCode);

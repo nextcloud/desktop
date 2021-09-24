@@ -60,8 +60,8 @@ private slots:
     void slotThumbnailFetched(const int &statusCode, const QByteArray &reply);
     void slotAccountStateChanged(int state);
 
-    void slotSharesFetched(const QList<QSharedPointer<Share>> &shares);
-    void slotAddLinkShareWidget(const QSharedPointer<LinkShare> &linkShare);
+    void slotSharesFetched(const QList<QSharedPointer<OCC::Share>> &shares);
+    void slotAddLinkShareWidget(const QSharedPointer<OCC::LinkShare> &linkShare);
     void slotDeleteShare();
     void slotCreateLinkShare();
     void slotCreatePasswordForLinkShare(const QString &password);

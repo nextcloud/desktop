@@ -279,16 +279,16 @@ signals:
       @param[out]  progress   A struct with all progress info.
 
      */
-    void progressInfo(const QString &folder, const ProgressInfo &progress);
+    void progressInfo(const QString &folder, const OCC::ProgressInfo &progress);
     /**
      * @brief: the item was completed by a job
      */
-    void itemCompleted(const QString &folder, const SyncFileItemPtr &item);
+    void itemCompleted(const QString &folder, const OCC::SyncFileItemPtr &item);
 
     /**
      * @brief A new folder-wide sync error was seen.
      */
-    void syncError(const QString &folder, const QString &message, ErrorCategory category);
+    void syncError(const QString &folder, const QString &message, OCC::ErrorCategory category);
 
     /**
      * @brief Emitted when an error needs to be added into GUI
@@ -297,7 +297,7 @@ signals:
      * @param[out] full error message
      * @param[out] subject (optional)
      */
-    void addErrorToGui(const QString &folder, SyncFileItem::Status status, const QString &errorMessage, const QString &subject);
+    void addErrorToGui(const QString &folder, OCC::SyncFileItem::Status status, const QString &errorMessage, const QString &subject);
 
     /**
      * @brief Emitted for a folder when a sync is done, listing all pending conflicts

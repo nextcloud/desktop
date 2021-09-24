@@ -102,19 +102,19 @@ private:
 
 public slots:
     /// Saves account data, not including the credentials
-    void saveAccount(Account *a);
+    void saveAccount(OCC::Account *a);
 
     /// Saves account state data, not including the account
-    void saveAccountState(AccountState *a);
+    void saveAccountState(OCC::AccountState *a);
 
     /// Display a Box with the mnemonic so the user can copy it to a safe place.
     static void displayMnemonic(const QString& mnemonic);
 
 
 Q_SIGNALS:
-    void accountAdded(AccountState *account);
-    void accountRemoved(AccountState *account);
-    void accountSyncConnectionRemoved(AccountState *account);
-    void removeAccountFolders(AccountState *account);
+    void accountAdded(OCC::AccountState *account);
+    void accountRemoved(OCC::AccountState *account);
+    void accountSyncConnectionRemoved(OCC::AccountState *account);
+    void removeAccountFolders(OCC::AccountState *account);
 };
 }

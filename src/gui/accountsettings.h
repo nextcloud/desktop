@@ -62,9 +62,9 @@ public:
 signals:
     void folderChanged();
     void openFolderAlias(const QString &);
-    void showIssuesList(AccountState *account);
+    void showIssuesList(OCC::AccountState *account);
     void requestMnemonic();
-    void removeAccountFolders(AccountState *account);
+    void removeAccountFolders(OCC::AccountState *account);
     void styleChanged();
 
 public slots:
@@ -72,7 +72,7 @@ public slots:
     void slotUpdateQuota(qint64 total, qint64 used);
     void slotAccountStateChanged();
     void slotStyleChanged();
-    AccountState *accountsState() { return _accountState; }
+    OCC::AccountState *accountsState() { return _accountState; }
     void slotHideSelectiveSyncWidget();
 
 protected slots:
@@ -89,8 +89,8 @@ protected slots:
     void slotEditCurrentLocalIgnoredFiles();
     void slotEnableVfsCurrentFolder();
     void slotDisableVfsCurrentFolder();
-    void slotSetCurrentFolderAvailability(PinState state);
-    void slotSetSubFolderAvailability(Folder *folder, const QString &path, PinState state);
+    void slotSetCurrentFolderAvailability(OCC::PinState state);
+    void slotSetSubFolderAvailability(OCC::Folder *folder, const QString &path, OCC::PinState state);
     void slotFolderWizardAccepted();
     void slotFolderWizardRejected();
     void slotDeleteAccount();

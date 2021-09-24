@@ -17,7 +17,7 @@ public:
     static QMap<int, QByteArray> iconCache;
 
 signals:
-    void newNotificationList(ActivityList);
+    void newNotificationList(OCC::ActivityList);
 
 public slots:
     void slotFetchNotifications();

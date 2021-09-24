@@ -92,7 +92,7 @@ protected:
 
 signals:
     void folderRemoved();
-    void folderStateChanged(Folder *);
+    void folderStateChanged(OCC::Folder *);
     void isShowingSettingsDialog();
 
 protected slots:
@@ -100,8 +100,8 @@ protected slots:
     void slotCheckConnection();
     void slotUseMonoIconsChanged(bool);
     void slotCleanup();
-    void slotAccountStateAdded(AccountState *accountState);
-    void slotAccountStateRemoved(AccountState *accountState);
+    void slotAccountStateAdded(OCC::AccountState *accountState);
+    void slotAccountStateRemoved(OCC::AccountState *accountState);
     void slotSystemOnlineConfigurationChanged(QNetworkConfiguration);
     void slotGuiIsShowingSettings();
 

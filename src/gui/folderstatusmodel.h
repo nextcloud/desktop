@@ -119,19 +119,19 @@ public:
     QModelIndex indexForPath(Folder *f, const QString &path) const;
 
 public slots:
-    void slotUpdateFolderState(Folder *);
+    void slotUpdateFolderState(OCC::Folder *);
     void slotApplySelectiveSync();
     void resetFolders();
     void slotSyncAllPendingBigFolders();
     void slotSyncNoPendingBigFolders();
-    void slotSetProgress(const ProgressInfo &progress);
+    void slotSetProgress(const OCC::ProgressInfo &progress);
 
 private slots:
     void slotUpdateDirectories(const QStringList &);
     void slotGatherPermissions(const QString &name, const QMap<QString, QString> &properties);
     void slotGatherEncryptionStatus(const QString &href, const QMap<QString, QString> &properties);
     void slotLscolFinishedWithError(QNetworkReply *r);
-    void slotFolderSyncStateChange(Folder *f);
+    void slotFolderSyncStateChange(OCC::Folder *f);
     void slotFolderScheduleQueueChanged();
     void slotNewBigFolder();
 

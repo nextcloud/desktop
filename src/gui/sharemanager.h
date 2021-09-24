@@ -370,9 +370,9 @@ public:
     void fetchShares(const QString &path);
 
 signals:
-    void shareCreated(const QSharedPointer<Share> &share);
-    void linkShareCreated(const QSharedPointer<LinkShare> &share);
-    void sharesFetched(const QList<QSharedPointer<Share>> &shares);
+    void shareCreated(const QSharedPointer<OCC::Share> &share);
+    void linkShareCreated(const QSharedPointer<OCC::LinkShare> &share);
+    void sharesFetched(const QList<QSharedPointer<OCC::Share>> &shares);
     void serverError(int code, const QString &message);
 
     /** Emitted when creating a link share with password fails.

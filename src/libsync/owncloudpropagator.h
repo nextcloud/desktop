@@ -115,7 +115,8 @@ public slots:
      * Asynchronous abort requires emit of abortFinished() signal,
      * while synchronous is expected to abort immedietaly.
     */
-    virtual void abort(PropagatorJob::AbortType abortType) {
+    virtual void abort(OCC::PropagatorJob::AbortType abortType)
+    {
         if (abortType == AbortType::Asynchronous)
             emit abortFinished();
     }
@@ -128,12 +129,13 @@ signals:
     /**
      * Emitted when the job is fully finished
      */
-    void finished(SyncFileItem::Status);
+    void finished(OCC::SyncFileItem::Status);
 
     /**
      * Emitted when the abort is fully finished
      */
-    void abortFinished(SyncFileItem::Status status = SyncFileItem::NormalError);
+    void abortFinished(OCC::SyncFileItem::Status status = OCC::SyncFileItem::NormalError);
+
 protected:
     OwncloudPropagator *propagator() const;
 
@@ -273,7 +275,7 @@ public:
 
 private slots:
     void slotSubJobAbortFinished();
-    bool possiblyRunNextJob(PropagatorJob *next)
+    bool possiblyRunNextJob(OCC::PropagatorJob *next)
     {
         if (next->_state == NotYetStarted) {
             connect(next, &PropagatorJob::finished, this, &PropagatorCompositeJob::slotSubJobFinished);
@@ -281,7 +283,7 @@ private slots:
         return next->scheduleSelfOrChild();
     }
 
-    void slotSubJobFinished(SyncFileItem::Status status);
+    void slotSubJobFinished(OCC::SyncFileItem::Status status);
     void finalize();
 };
 
@@ -339,9 +341,8 @@ public:
 
 private slots:
 
-    void slotFirstJobFinished(SyncFileItem::Status status);
-    virtual void slotSubJobsFinished(SyncFileItem::Status status);
-
+    void slotFirstJobFinished(OCC::SyncFileItem::Status status);
+    virtual void slotSubJobsFinished(OCC::SyncFileItem::Status status);
 };
 
 /**
@@ -366,8 +367,8 @@ public:
     qint64 committedDiskSpace() const override;
 
 private slots:
-    void slotSubJobsFinished(SyncFileItem::Status status) override;
-    void slotDirDeletionJobsFinished(SyncFileItem::Status status);
+    void slotSubJobsFinished(OCC::SyncFileItem::Status status) override;
+    void slotDirDeletionJobsFinished(OCC::SyncFileItem::Status status);
 };
 
 /**
@@ -416,7 +417,7 @@ public:
         , _localDir((localDir.endsWith(QChar('/'))) ? localDir : localDir + '/')
         , _remoteFolder((remoteFolder.endsWith(QChar('/'))) ? remoteFolder : remoteFolder + '/')
     {
-        qRegisterMetaType<PropagatorJob::AbortType>("PropagatorJob::AbortType");
+        qRegisterMetaType<OCC::PropagatorJob::AbortType>("OCC::PropagatorJob::AbortType");
     }
 
     ~OwncloudPropagator() override;
@@ -514,7 +515,7 @@ public:
 
             // Use Queued Connection because we're possibly already in an item's finished stack
             QMetaObject::invokeMethod(_rootJob.data(), "abort", Qt::QueuedConnection,
-                                      Q_ARG(PropagatorJob::AbortType, PropagatorJob::AbortType::Asynchronous));
+                Q_ARG(OCC::PropagatorJob::AbortType, OCC::PropagatorJob::AbortType::Asynchronous));
 
             // Give asynchronous abort 5000 msec to finish on its own
             QTimer::singleShot(5000, this, SLOT(abortTimeout()));
@@ -582,7 +583,7 @@ private slots:
     }
 
     /** Emit the finished signal and make sure it is only emitted once */
-    void emitFinished(SyncFileItem::Status status)
+    void emitFinished(OCC::SyncFileItem::Status status)
     {
         if (!_finishedEmited)
             emit finished(status == SyncFileItem::Success);
@@ -592,9 +593,9 @@ private slots:
     void scheduleNextJobImpl();
 
 signals:
-    void newItem(const SyncFileItemPtr &);
-    void itemCompleted(const SyncFileItemPtr &);
-    void progress(const SyncFileItem &, qint64 bytes);
+    void newItem(const OCC::SyncFileItemPtr &);
+    void itemCompleted(const OCC::SyncFileItemPtr &);
+    void progress(const OCC::SyncFileItem &, qint64 bytes);
     void finished(bool success);
 
     /** Emitted when propagation has problems with a locked file. */

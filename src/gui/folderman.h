@@ -207,7 +207,7 @@ signals:
       *
       * Attention: The folder may be zero. Do a general update of the state then.
       */
-    void folderSyncStateChange(Folder *);
+    void folderSyncStateChange(OCC::Folder *);
 
     /**
      * Indicates when the schedule queue changes.
@@ -217,12 +217,12 @@ signals:
     /**
      * Emitted whenever the list of configured folders changes.
      */
-    void folderListChanged(const Folder::Map &);
+    void folderListChanged(const OCC::Folder::Map &);
 
     /**
      * Emitted once slotRemoveFoldersForAccount is done wiping
      */
-    void wipeDone(AccountState *account, bool success);
+    void wipeDone(OCC::AccountState *account, bool success);
 
 public slots:
 
@@ -246,16 +246,16 @@ public slots:
     void slotSyncOnceFileUnlocks(const QString &path);
 
     // slot to schedule an ETag job (from Folder only)
-    void slotScheduleETagJob(const QString &alias, RequestEtagJob *job);
+    void slotScheduleETagJob(const QString &alias, OCC::RequestEtagJob *job);
 
     /** Wipe folder */
-    void slotWipeFolderForAccount(AccountState *accountState);
+    void slotWipeFolderForAccount(OCC::AccountState *accountState);
 
 private slots:
-    void slotFolderSyncPaused(Folder *, bool paused);
+    void slotFolderSyncPaused(OCC::Folder *, bool paused);
     void slotFolderCanSyncChanged();
     void slotFolderSyncStarted();
-    void slotFolderSyncFinished(const SyncResult &);
+    void slotFolderSyncFinished(const OCC::SyncResult &);
 
     void slotRunOneEtagJob();
     void slotEtagJobDestroyed(QObject *);
@@ -264,15 +264,15 @@ private slots:
     void slotStartScheduledFolderSync();
     void slotEtagPollTimerTimeout();
 
-    void slotAccountRemoved(AccountState *accountState);
+    void slotAccountRemoved(OCC::AccountState *accountState);
 
-    void slotRemoveFoldersForAccount(AccountState *accountState);
+    void slotRemoveFoldersForAccount(OCC::AccountState *accountState);
 
     // Wraps the Folder::syncStateChange() signal into the
     // FolderMan::folderSyncStateChange(Folder*) signal.
     void slotForwardFolderSyncStateChange();
 
-    void slotServerVersionChanged(Account *account);
+    void slotServerVersionChanged(OCC::Account *account);
 
     /**
      * A file whose locks were being monitored has become unlocked.
@@ -290,9 +290,9 @@ private slots:
      */
     void slotScheduleFolderByTime();
 
-    void slotSetupPushNotifications(const Folder::Map &);
-    void slotProcessFilesPushNotification(Account *account);
-    void slotConnectToPushNotifications(Account *account);
+    void slotSetupPushNotifications(const OCC::Folder::Map &);
+    void slotProcessFilesPushNotification(OCC::Account *account);
+    void slotConnectToPushNotifications(OCC::Account *account);
 
 private:
     /** Adds a new folder, does not add it to the account settings and

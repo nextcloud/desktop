@@ -55,7 +55,7 @@ public:
 
 public slots:
     void showFirstPage();
-    void showIssuesList(AccountState *account);
+    void showIssuesList(OCC::AccountState *account);
     void slotSwitchPage(QAction *action);
     void slotAccountAvatarChanged();
     void slotAccountDisplayNameChanged();
@@ -70,8 +70,8 @@ protected:
     void changeEvent(QEvent *) override;
 
 private slots:
-    void accountAdded(AccountState *);
-    void accountRemoved(AccountState *);
+    void accountAdded(OCC::AccountState *);
+    void accountRemoved(OCC::AccountState *);
 
 private:
     void customizeStyle();

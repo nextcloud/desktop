@@ -21,7 +21,8 @@ private slots:
     void cleanupTestCase() {
     }
 
-    SyncFileItem createItem( const QString& file ) {
+    OCC::SyncFileItem createItem(const QString &file)
+    {
         SyncFileItem i;
         i._file = file;
         return i;

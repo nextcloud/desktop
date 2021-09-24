@@ -77,13 +77,13 @@ public slots:
     void slotShowTrayMessage(const QString &title, const QString &msg);
     void slotShowOptionalTrayMessage(const QString &title, const QString &msg);
     void slotFolderOpenAction(const QString &alias);
-    void slotUpdateProgress(const QString &folder, const ProgressInfo &progress);
+    void slotUpdateProgress(const QString &folder, const OCC::ProgressInfo &progress);
     void slotShowGuiMessage(const QString &title, const QString &message);
     void slotFoldersChanged();
     void slotShowSettings();
     void slotShowSyncProtocol();
     void slotShutdown();
-    void slotSyncStateChange(Folder *);
+    void slotSyncStateChange(OCC::Folder *);
     void slotTrayClicked(QSystemTrayIcon::ActivationReason reason);
     void slotToggleLogBrowser();
     void slotOpenOwnCloud();
@@ -93,7 +93,7 @@ public slots:
     void slotHelp();
     void slotOpenPath(const QString &path);
     void slotAccountStateChanged();
-    void slotTrayMessageIfServerUnsupported(Account *account);
+    void slotTrayMessageIfServerUnsupported(OCC::Account *account);
 
 
     /**
@@ -103,7 +103,7 @@ public slots:
      * localPath is the absolute local path to it (so not relative
      * to the folder).
      */
-    void slotShowShareDialog(const QString &sharePath, const QString &localPath, ShareDialogStartPage startPage);
+    void slotShowShareDialog(const QString &sharePath, const QString &localPath, OCC::ShareDialogStartPage startPage);
 
     void slotRemoveDestroyedShareDialogs();
 

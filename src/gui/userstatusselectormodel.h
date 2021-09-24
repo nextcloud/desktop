@@ -81,7 +81,7 @@ public:
     Q_INVOKABLE void clearUserStatus();
 
     Q_REQUIRED_RESULT int predefinedStatusesCount() const;
-    Q_INVOKABLE UserStatus predefinedStatus(int index) const;
+    Q_INVOKABLE OCC::UserStatus predefinedStatus(int index) const;
     Q_INVOKABLE QString predefinedStatusClearAt(int index) const;
     Q_INVOKABLE void setPredefinedStatus(int index);
 

@@ -255,7 +255,7 @@ public slots:
      * via the vfs plugin. The connection to SyncFileStatusTracker allows both to be based
      * on the same data.
      */
-    virtual void fileStatusChanged(const QString &systemFileName, SyncFileStatus fileStatus) = 0;
+    virtual void fileStatusChanged(const QString &systemFileName, OCC::SyncFileStatus fileStatus) = 0;
 
 signals:
     /// Emitted when a user-initiated hydration starts
@@ -317,7 +317,7 @@ public:
     AvailabilityResult availability(const QString &) override { return VfsItemAvailability::AlwaysLocal; }
 
 public slots:
-    void fileStatusChanged(const QString &, SyncFileStatus) override {}
+    void fileStatusChanged(const QString &, OCC::SyncFileStatus) override { }
 
 protected:
     void startImpl(const VfsSetupParams &) override {}

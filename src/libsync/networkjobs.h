@@ -462,7 +462,7 @@ public:
     explicit DetermineAuthTypeJob(AccountPtr account, QObject *parent = nullptr);
     void start();
 signals:
-    void authType(AuthType);
+    void authType(OCC::DetermineAuthTypeJob::AuthType);
 
 private:
     void checkAllDone();

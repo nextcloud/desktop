@@ -57,14 +57,14 @@ public:
     ~SocketApi() override;
 
 public slots:
-    void slotUpdateFolderView(Folder *f);
+    void slotUpdateFolderView(OCC::Folder *f);
     void slotUnregisterPath(const QString &alias);
     void slotRegisterPath(const QString &alias);
-    void broadcastStatusPushMessage(const QString &systemPath, SyncFileStatus fileStatus);
+    void broadcastStatusPushMessage(const QString &systemPath, OCC::SyncFileStatus fileStatus);
 
 signals:
-    void shareCommandReceived(const QString &sharePath, const QString &localPath, ShareDialogStartPage startPage);
     void fileActivityCommandReceived(const QString &sharePath, const QString &localPath);
+    void shareCommandReceived(const QString &sharePath, const QString &localPath, OCC::ShareDialogStartPage startPage);
 
 private slots:
     void slotNewConnection();
@@ -105,46 +105,46 @@ private:
     void processShareRequest(const QString &localFile, SocketListener *listener, ShareDialogStartPage startPage);
     void processFileActivityRequest(const QString &localFile);
 
-    Q_INVOKABLE void command_RETRIEVE_FOLDER_STATUS(const QString &argument, SocketListener *listener);
-    Q_INVOKABLE void command_RETRIEVE_FILE_STATUS(const QString &argument, SocketListener *listener);
+    Q_INVOKABLE void command_RETRIEVE_FOLDER_STATUS(const QString &argument, OCC::SocketListener *listener);
+    Q_INVOKABLE void command_RETRIEVE_FILE_STATUS(const QString &argument, OCC::SocketListener *listener);
 
-    Q_INVOKABLE void command_VERSION(const QString &argument, SocketListener *listener);
+    Q_INVOKABLE void command_VERSION(const QString &argument, OCC::SocketListener *listener);
 
-    Q_INVOKABLE void command_SHARE_MENU_TITLE(const QString &argument, SocketListener *listener);
+    Q_INVOKABLE void command_SHARE_MENU_TITLE(const QString &argument, OCC::SocketListener *listener);
 
     // The context menu actions
-    Q_INVOKABLE void command_ACTIVITY(const QString &localFile, SocketListener *listener);
-    Q_INVOKABLE void command_SHARE(const QString &localFile, SocketListener *listener);
-    Q_INVOKABLE void command_MANAGE_PUBLIC_LINKS(const QString &localFile, SocketListener *listener);
-    Q_INVOKABLE void command_COPY_PUBLIC_LINK(const QString &localFile, SocketListener *listener);
-    Q_INVOKABLE void command_COPY_PRIVATE_LINK(const QString &localFile, SocketListener *listener);
-    Q_INVOKABLE void command_EMAIL_PRIVATE_LINK(const QString &localFile, SocketListener *listener);
-    Q_INVOKABLE void command_OPEN_PRIVATE_LINK(const QString &localFile, SocketListener *listener);
-    Q_INVOKABLE void command_MAKE_AVAILABLE_LOCALLY(const QString &filesArg, SocketListener *listener);
-    Q_INVOKABLE void command_MAKE_ONLINE_ONLY(const QString &filesArg, SocketListener *listener);
-    Q_INVOKABLE void command_RESOLVE_CONFLICT(const QString &localFile, SocketListener *listener);
-    Q_INVOKABLE void command_DELETE_ITEM(const QString &localFile, SocketListener *listener);
-    Q_INVOKABLE void command_MOVE_ITEM(const QString &localFile, SocketListener *listener);
+    Q_INVOKABLE void command_ACTIVITY(const QString &localFile, OCC::SocketListener *listener);
+    Q_INVOKABLE void command_SHARE(const QString &localFile, OCC::SocketListener *listener);
+    Q_INVOKABLE void command_MANAGE_PUBLIC_LINKS(const QString &localFile, OCC::SocketListener *listener);
+    Q_INVOKABLE void command_COPY_PUBLIC_LINK(const QString &localFile, OCC::SocketListener *listener);
+    Q_INVOKABLE void command_COPY_PRIVATE_LINK(const QString &localFile, OCC::SocketListener *listener);
+    Q_INVOKABLE void command_EMAIL_PRIVATE_LINK(const QString &localFile, OCC::SocketListener *listener);
+    Q_INVOKABLE void command_OPEN_PRIVATE_LINK(const QString &localFile, OCC::SocketListener *listener);
+    Q_INVOKABLE void command_MAKE_AVAILABLE_LOCALLY(const QString &filesArg, OCC::SocketListener *listener);
+    Q_INVOKABLE void command_MAKE_ONLINE_ONLY(const QString &filesArg, OCC::SocketListener *listener);
+    Q_INVOKABLE void command_RESOLVE_CONFLICT(const QString &localFile, OCC::SocketListener *listener);
+    Q_INVOKABLE void command_DELETE_ITEM(const QString &localFile, OCC::SocketListener *listener);
+    Q_INVOKABLE void command_MOVE_ITEM(const QString &localFile, OCC::SocketListener *listener);
 
     // Windows Shell / Explorer pinning fallbacks, see issue: https://github.com/nextcloud/desktop/issues/1599
 #ifdef Q_OS_WIN
-    Q_INVOKABLE void command_COPYASPATH(const QString &localFile, SocketListener *listener);
-    Q_INVOKABLE void command_OPENNEWWINDOW(const QString &localFile, SocketListener *listener);
-    Q_INVOKABLE void command_OPEN(const QString &localFile, SocketListener *listener);
+    Q_INVOKABLE void command_COPYASPATH(const QString &localFile, OCC::SocketListener *listener);
+    Q_INVOKABLE void command_OPENNEWWINDOW(const QString &localFile, OCC::SocketListener *listener);
+    Q_INVOKABLE void command_OPEN(const QString &localFile, OCC::SocketListener *listener);
 #endif
 
     // External sync
-    Q_INVOKABLE void command_V2_LIST_ACCOUNTS(const QSharedPointer<SocketApiJobV2> &job) const;
-    Q_INVOKABLE void command_V2_UPLOAD_FILES_FROM(const QSharedPointer<SocketApiJobV2> &job) const;
+    Q_INVOKABLE void command_V2_LIST_ACCOUNTS(const QSharedPointer<OCC::SocketApiJobV2> &job) const;
+    Q_INVOKABLE void command_V2_UPLOAD_FILES_FROM(const QSharedPointer<OCC::SocketApiJobV2> &job) const;
 
     // Fetch the private link and call targetFun
     void fetchPrivateLinkUrlHelper(const QString &localFile, const std::function<void(const QString &url)> &targetFun);
 
     /** Sends translated/branded strings that may be useful to the integration */
-    Q_INVOKABLE void command_GET_STRINGS(const QString &argument, SocketListener *listener);
+    Q_INVOKABLE void command_GET_STRINGS(const QString &argument, OCC::SocketListener *listener);
 
     // Sends the context menu options relating to sharing to listener
-    void sendSharingContextMenuOptions(const FileData &fileData, SocketListener *listener, bool enabled);
+    void sendSharingContextMenuOptions(const FileData &fileData, OCC::SocketListener *listener, bool enabled);
 
     /** Send the list of menu item. (added in version 1.1)
      * argument is a list of files for which the menu should be shown, separated by '\x1e'
@@ -153,20 +153,20 @@ private:
      * If flag contains 'd', the menu should be disabled
      * and ends with GET_MENU_ITEMS:END
      */
-    Q_INVOKABLE void command_GET_MENU_ITEMS(const QString &argument, SocketListener *listener);
+    Q_INVOKABLE void command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListener *listener);
 
     /// Direct Editing
-    Q_INVOKABLE void command_EDIT(const QString &localFile, SocketListener *listener);
+    Q_INVOKABLE void command_EDIT(const QString &localFile, OCC::SocketListener *listener);
     DirectEditor* getDirectEditorForLocalFile(const QString &localFile);
 
 #if GUI_TESTING
-    Q_INVOKABLE void command_ASYNC_ASSERT_ICON_IS_EQUAL(const QSharedPointer<SocketApiJob> &job);
-    Q_INVOKABLE void command_ASYNC_LIST_WIDGETS(const QSharedPointer<SocketApiJob> &job);
-    Q_INVOKABLE void command_ASYNC_INVOKE_WIDGET_METHOD(const QSharedPointer<SocketApiJob> &job);
-    Q_INVOKABLE void command_ASYNC_GET_WIDGET_PROPERTY(const QSharedPointer<SocketApiJob> &job);
-    Q_INVOKABLE void command_ASYNC_SET_WIDGET_PROPERTY(const QSharedPointer<SocketApiJob> &job);
-    Q_INVOKABLE void command_ASYNC_WAIT_FOR_WIDGET_SIGNAL(const QSharedPointer<SocketApiJob> &job);
-    Q_INVOKABLE void command_ASYNC_TRIGGER_MENU_ACTION(const QSharedPointer<SocketApiJob> &job);
+    Q_INVOKABLE void command_ASYNC_ASSERT_ICON_IS_EQUAL(const QSharedPointer<OCC::SocketApiJob> &job);
+    Q_INVOKABLE void command_ASYNC_LIST_WIDGETS(const QSharedPointer<OCC::SocketApiJob> &job);
+    Q_INVOKABLE void command_ASYNC_INVOKE_WIDGET_METHOD(const QSharedPointer<OCC::SocketApiJob> &job);
+    Q_INVOKABLE void command_ASYNC_GET_WIDGET_PROPERTY(const QSharedPointer<OCC::SocketApiJob> &job);
+    Q_INVOKABLE void command_ASYNC_SET_WIDGET_PROPERTY(const QSharedPointer<OCC::SocketApiJob> &job);
+    Q_INVOKABLE void command_ASYNC_WAIT_FOR_WIDGET_SIGNAL(const QSharedPointer<OCC::SocketApiJob> &job);
+    Q_INVOKABLE void command_ASYNC_TRIGGER_MENU_ACTION(const QSharedPointer<OCC::SocketApiJob> &job);
 #endif
 
     QString buildRegisterPathMessage(const QString &path);

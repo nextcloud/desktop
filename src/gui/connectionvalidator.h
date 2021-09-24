@@ -108,7 +108,7 @@ public slots:
     void checkAuthentication();
 
 signals:
-    void connectionResult(ConnectionValidator::Status status, const QStringList &errors);
+    void connectionResult(OCC::ConnectionValidator::Status status, const QStringList &errors);
 
 protected slots:
     void slotCheckServerAndAuth();
@@ -121,7 +121,7 @@ protected slots:
     void slotAuthSuccess();
 
     void slotCapabilitiesRecieved(const QJsonDocument &);
-    void slotUserFetched(UserInfo *userInfo);
+    void slotUserFetched(OCC::UserInfo *userInfo);
 
 private:
 #ifndef TOKEN_AUTH_ONLY

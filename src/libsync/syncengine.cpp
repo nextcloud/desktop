@@ -94,12 +94,12 @@ SyncEngine::SyncEngine(AccountPtr account, const QString &localPath,
     , _downloadLimit(0)
     , _anotherSyncNeeded(NoFollowUpSync)
 {
-    qRegisterMetaType<SyncFileItem>("SyncFileItem");
-    qRegisterMetaType<SyncFileItemPtr>("SyncFileItemPtr");
-    qRegisterMetaType<SyncFileItem::Status>("SyncFileItem::Status");
-    qRegisterMetaType<SyncFileStatus>("SyncFileStatus");
-    qRegisterMetaType<SyncFileItemVector>("SyncFileItemVector");
-    qRegisterMetaType<SyncFileItem::Direction>("SyncFileItem::Direction");
+    qRegisterMetaType<OCC::SyncFileItem>("OCC::SyncFileItem");
+    qRegisterMetaType<OCC::SyncFileItemPtr>("OCC::SyncFileItemPtr");
+    qRegisterMetaType<OCC::SyncFileItem::Status>("OCC::SyncFileItem::Status");
+    qRegisterMetaType<OCC::SyncFileStatus>("OCC::SyncFileStatus");
+    qRegisterMetaType<OCC::SyncFileItemVector>("OCC::SyncFileItemVector");
+    qRegisterMetaType<OCC::SyncFileItem::Direction>("OCC::SyncFileItem::Direction");
 
     // Everything in the SyncEngine expects a trailing slash for the localPath.
     ASSERT(localPath.endsWith(QLatin1Char('/')));

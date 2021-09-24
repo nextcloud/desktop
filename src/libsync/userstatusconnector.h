@@ -126,11 +126,11 @@ public:
     virtual UserStatus userStatus() const = 0;
 
 signals:
-    void userStatusFetched(const UserStatus &userStatus);
-    void predefinedStatusesFetched(const std::vector<UserStatus> &statuses);
+    void userStatusFetched(const OCC::UserStatus &userStatus);
+    void predefinedStatusesFetched(const std::vector<OCC::UserStatus> &statuses);
     void userStatusSet();
     void messageCleared();
-    void error(Error error);
+    void error(OCC::UserStatusConnector::Error error);
 };
 }
 

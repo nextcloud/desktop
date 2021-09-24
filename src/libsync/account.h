@@ -274,16 +274,16 @@ signals:
     /// Triggered by handleInvalidCredentials()
     void invalidCredentials();
 
-    void credentialsFetched(AbstractCredentials *credentials);
-    void credentialsAsked(AbstractCredentials *credentials);
+    void credentialsFetched(OCC::AbstractCredentials *credentials);
+    void credentialsAsked(OCC::AbstractCredentials *credentials);
 
     /// Forwards from QNetworkAccessManager::proxyAuthenticationRequired().
     void proxyAuthenticationRequired(const QNetworkProxy &, QAuthenticator *);
 
     // e.g. when the approved SSL certificates changed
-    void wantsAccountSaved(Account *acc);
+    void wantsAccountSaved(OCC::Account *acc);
 
-    void serverVersionChanged(Account *account, const QString &newVersion, const QString &oldVersion);
+    void serverVersionChanged(OCC::Account *account, const QString &newVersion, const QString &oldVersion);
 
     void accountChangedAvatar();
     void accountChangedDisplayName();
@@ -291,8 +291,8 @@ signals:
     /// Used in RemoteWipe
     void appPasswordRetrieved(QString);
 
-    void pushNotificationsReady(Account *account);
-    void pushNotificationsDisabled(Account *account);
+    void pushNotificationsReady(OCC::Account *account);
+    void pushNotificationsDisabled(OCC::Account *account);
 
     void userStatusChanged();
 
@@ -307,7 +307,7 @@ private:
 
     static QString davPathBase();
 
-    QWeakPointer<Account> _sharedThis;
+    QWeakPointer<OCC::Account> _sharedThis;
     QString _id;
     QString _davUser;
     QString _displayName;

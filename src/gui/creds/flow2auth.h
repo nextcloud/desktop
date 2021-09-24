@@ -61,7 +61,7 @@ signals:
     void result(Flow2Auth::Result result, const QString &errorString = QString(),
                 const QString &user = QString(), const QString &appPassword = QString());
 
-    void statusChanged(const PollStatus status, int secondsLeft);
+    void statusChanged(const OCC::Flow2Auth::PollStatus status, int secondsLeft);
 
 public slots:
     void slotPollNow();

@@ -44,10 +44,10 @@ public:
 
 
 public slots:
-    void registerUploadDevice(UploadDevice *);
+    void registerUploadDevice(OCC::UploadDevice *);
     void unregisterUploadDevice(QObject *);
 
-    void registerDownloadJob(GETFileJob *);
+    void registerDownloadJob(OCC::GETFileJob *);
     void unregisterDownloadJob(QObject *);
 
     void absoluteLimitTimerExpired();
