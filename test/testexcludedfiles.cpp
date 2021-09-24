@@ -538,10 +538,9 @@ private slots:
     void check_csync_regex_translation()
     {
         setup();
-        QByteArray storage;
-        auto translate = [&storage](const char *pattern) {
-            storage = ExcludedFiles::convertToRegexpSyntax(pattern, false).toUtf8();
-            return storage.constData();
+        auto translate = [](const char *pattern) {
+            const auto storage = ExcludedFiles::convertToRegexpSyntax(pattern, false).toUtf8();
+            return storage;
         };
 
         QCOMPARE(translate(""), "");
@@ -560,10 +559,9 @@ private slots:
     {
         setup();
         bool wildcardsMatchSlash = false;
-        QByteArray storage;
-        auto translate = [&storage, &wildcardsMatchSlash](const char *pattern) {
-            storage = ExcludedFiles::extractBnameTrigger(pattern, wildcardsMatchSlash).toUtf8();
-            return storage.constData();
+        auto translate = [&wildcardsMatchSlash](const char *pattern) {
+            const auto storage = ExcludedFiles::extractBnameTrigger(pattern, wildcardsMatchSlash).toUtf8();
+            return storage;
         };
 
         QCOMPARE(translate(""), "");
