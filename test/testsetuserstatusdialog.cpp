@@ -87,7 +87,7 @@ public:
 
     OCC::UserStatus userStatusSetByCallerOfSetUserStatus() const { return _userStatusSetByCallerOfSetUserStatus; }
 
-    bool messageCleared() const { return _isMessageCleared; }
+    bool isMessageCleared() const { return _isMessageCleared; }
 
     void setErrorCouldNotFetchPredefinedUserStatuses(bool value)
     {
@@ -651,7 +651,7 @@ private slots:
 
         model.clearUserStatus();
 
-        QVERIFY(fakeUserStatusJob->messageCleared());
+        QVERIFY(fakeUserStatusJob->isMessageCleared());
     }
 
     void testError_couldNotFetchPredefinedStatuses_emitError()
