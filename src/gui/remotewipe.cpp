@@ -61,8 +61,8 @@ void RemoteWipe::startCheckJobWithAppPassword(QString pwd){
     QUrlQuery arguments(QString("token=%1").arg(_appPassword));
     requestBody->setData(arguments.query(QUrl::FullyEncoded).toLatin1());
     _networkReplyCheck = _networkManager.post(request, requestBody);
-    QObject::connect(&_networkManager, SIGNAL(sslErrors(QNetworkReply *, QList<QSslError>)),
-		_account.data(), SLOT(slotHandleSslErrors(QNetworkReply *, QList<QSslError>)));
+    QObject::connect(&_networkManager, &QNetworkAccessManager::sslErrors,
+        _account.data(), &Account::slotHandleSslErrors);
     QObject::connect(_networkReplyCheck, &QNetworkReply::finished, this,
                      &RemoteWipe::checkJobSlot);
 }

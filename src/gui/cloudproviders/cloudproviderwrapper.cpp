@@ -18,6 +18,7 @@
 #include <cloudprovidersaccountexporter.h>
 #include <cloudprovidersproviderexporter.h>
 
+#include "cloudproviders/cloudprovidermanager.h"
 #include "cloudproviderwrapper.h"
 #include <account.h>
 #include <folder.h>
@@ -50,10 +51,10 @@ CloudProviderWrapper::CloudProviderWrapper(QObject *parent, Folder *folder, int 
     action_group = getActionGroup();
     cloud_providers_account_exporter_set_action_group (_cloudProviderAccount, action_group);
 
-    connect(ProgressDispatcher::instance(), SIGNAL(progressInfo(QString, ProgressInfo)), this, SLOT(slotUpdateProgress(QString, ProgressInfo)));
-    connect(_folder, SIGNAL(syncStarted()), this, SLOT(slotSyncStarted()));
-    connect(_folder, SIGNAL(syncFinished(SyncResult)), this, SLOT(slotSyncFinished(const SyncResult)));
-    connect(_folder, SIGNAL(syncPausedChanged(Folder*,bool)), this, SLOT(slotSyncPausedChanged(Folder*, bool)));
+    connect(ProgressDispatcher::instance(), &ProgressDispatcher::progressInfo, this, &CloudProviderWrapper::slotUpdateProgress);
+    connect(_folder, &Folder::syncStarted, this, &CloudProviderWrapper::slotSyncStarted);
+    connect(_folder, &Folder::syncFinished, this, &CloudProviderWrapper::slotSyncFinished);
+    connect(_folder, &Folder::syncPausedChanged, this, &CloudProviderWrapper::slotSyncPausedChanged);
 
     _paused = _folder->syncPaused();
     updatePauseStatus();

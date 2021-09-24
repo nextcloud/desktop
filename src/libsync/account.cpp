@@ -48,6 +48,7 @@
 #include <QJsonArray>
 #include <QLoggingCategory>
 
+#include <qnetworkaccessmanager.h>
 #include <qsslconfiguration.h>
 #include <qt5keychain/keychain.h>
 #include "creds/abstractcredentials.h"
@@ -199,8 +200,8 @@ void Account::setCredentials(AbstractCredentials *cred)
     if (proxy.type() != QNetworkProxy::DefaultProxy) {
         _am->setProxy(proxy);
     }
-    connect(_am.data(), SIGNAL(sslErrors(QNetworkReply *, QList<QSslError>)),
-        SLOT(slotHandleSslErrors(QNetworkReply *, QList<QSslError>)));
+    connect(_am.data(), &QNetworkAccessManager::sslErrors,
+        this, &Account::slotHandleSslErrors);
     connect(_am.data(), &QNetworkAccessManager::proxyAuthenticationRequired,
         this, &Account::proxyAuthenticationRequired);
     connect(_credentials.data(), &AbstractCredentials::fetched,
@@ -308,8 +309,8 @@ void Account::resetNetworkAccessManager()
     _am->setCookieJar(jar); // takes ownership of the old cookie jar
     _am->setProxy(proxy);   // Remember proxy (issue #2108)
 
-    connect(_am.data(), SIGNAL(sslErrors(QNetworkReply *, QList<QSslError>)),
-        SLOT(slotHandleSslErrors(QNetworkReply *, QList<QSslError>)));
+    connect(_am.data(), &QNetworkAccessManager::sslErrors,
+        this, &Account::slotHandleSslErrors);
     connect(_am.data(), &QNetworkAccessManager::proxyAuthenticationRequired,
         this, &Account::proxyAuthenticationRequired);
 }
