@@ -443,7 +443,7 @@ int main(int argc, char **argv)
 
     QEventLoop loop;
     auto *job = new JsonApiJob(account, QLatin1String("ocs/v1.php/cloud/capabilities"));
-    QObject::connect(job, &JsonApiJob::jsonReceived, [&](const QJsonDocument &json) {
+    QObject::connect(job, &JsonApiJob::jsonReceived, &loop, [account, &loop](const QJsonDocument &json) { // clazy:exclude=lambda-in-connect
         auto caps = json.object().value("ocs").toObject().value("data").toObject().value("capabilities").toObject();
         qDebug() << "Server capabilities" << caps;
         account->setCapabilities(caps.toVariantMap());
@@ -459,7 +459,7 @@ int main(int argc, char **argv)
     }
 
     job = new JsonApiJob(account, QLatin1String("ocs/v1.php/cloud/user"));
-    QObject::connect(job, &JsonApiJob::jsonReceived, [&](const QJsonDocument &json) {
+    QObject::connect(job, &JsonApiJob::jsonReceived, &loop, [account, &loop](const QJsonDocument &json) { // clazy:exclude=lambda-in-connect
         const QJsonObject data = json.object().value("ocs").toObject().value("data").toObject();
         account->setDavUser(data.value("id").toString());
         account->setDavDisplayName(data.value("display-name").toString());
@@ -507,7 +507,7 @@ restart_sync:
     SyncEngine engine(account, options.source_dir, folder, &db);
     engine.setIgnoreHiddenFiles(options.ignoreHiddenFiles);
     engine.setNetworkLimits(options.uplimit, options.downlimit);
-    QObject::connect(&engine, &SyncEngine::finished,
+    QObject::connect(&engine, &SyncEngine::finished, &app,
         [&app](bool result) { app.exit(result ? EXIT_SUCCESS : EXIT_FAILURE); });
     QObject::connect(&engine, &SyncEngine::transmissionProgress, &cmd, &Cmd::transmissionProgressSlot);
     QObject::connect(&engine, &SyncEngine::syncError,

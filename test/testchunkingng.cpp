@@ -22,7 +22,7 @@ static void partialUpload(FakeFolder &fakeFolder, const QString &name, qint64 si
     // Abort when the upload is at 1/3
     qint64 sizeWhenAbort = -1;
     auto con = QObject::connect(&fakeFolder.syncEngine(),  &SyncEngine::transmissionProgress,
-                                    [&](const ProgressInfo &progress) {
+                                &fakeFolder.syncEngine(), [&](const ProgressInfo &progress) {
                 if (progress.completedSize() > (progress.totalSize() /3 )) {
                     sizeWhenAbort = progress.completedSize();
                     fakeFolder.syncEngine().abort();
@@ -412,7 +412,7 @@ private slots:
         fakeFolder.localModifier().appendByte("A/a0");
 
         // But in the middle of the sync, modify the file on the server
-        QMetaObject::Connection con = QObject::connect(&fakeFolder.syncEngine(), &SyncEngine::transmissionProgress,
+        QMetaObject::Connection con = QObject::connect(&fakeFolder.syncEngine(), &SyncEngine::transmissionProgress, &fakeFolder.syncEngine(),
                                     [&](const ProgressInfo &progress) {
                 if (progress.completedSize() > (progress.totalSize() / 2 )) {
                     fakeFolder.remoteModifier().setContents("A/a0", 'C');
@@ -461,7 +461,7 @@ private slots:
         fakeFolder.localModifier().insert("A/a0", size);
 
         // middle of the sync, modify the file
-        QMetaObject::Connection con = QObject::connect(&fakeFolder.syncEngine(), &SyncEngine::transmissionProgress,
+        QMetaObject::Connection con = QObject::connect(&fakeFolder.syncEngine(), &SyncEngine::transmissionProgress, &fakeFolder.syncEngine(),
                                     [&](const ProgressInfo &progress) {
                 if (progress.completedSize() > (progress.totalSize() / 2 )) {
                     fakeFolder.localModifier().setContents("A/a0", 'B');

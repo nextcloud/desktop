@@ -57,7 +57,7 @@ User::User(AccountStatePtr &account, const bool &isCurrent, QObject *parent)
         this, &User::slotCheckExpiredActivities);
 
     connect(_account.data(), &AccountState::stateChanged,
-            [=]() { if (isConnected()) {slotRefreshImmediately();} });
+        this, [this]() { if (isConnected()) {slotRefreshImmediately();} });
     connect(_account.data(), &AccountState::stateChanged, this, &User::accountStateChanged);
     connect(_account.data(), &AccountState::hasFetchedNavigationApps,
         this, &User::slotRebuildNavigationAppList);

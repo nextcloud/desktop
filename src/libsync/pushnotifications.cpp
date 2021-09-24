@@ -152,7 +152,7 @@ bool PushNotifications::tryReconnectToWebSocket()
 
     _reconnectTimer->setInterval(_reconnectTimerInterval);
     _reconnectTimer->setSingleShot(true);
-    connect(_reconnectTimer, &QTimer::timeout, [this]() {
+    connect(_reconnectTimer, &QTimer::timeout, this, [this]() {
         reconnectToWebSocket();
     });
     _reconnectTimer->start();

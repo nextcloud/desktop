@@ -468,13 +468,13 @@ void PropagateDownloadFile::start()
         startAfterIsEncryptedIsChecked();
     } else {
         _downloadEncryptedHelper = new PropagateDownloadEncrypted(propagator(), parentPath, _item, this);
-        connect(_downloadEncryptedHelper, &PropagateDownloadEncrypted::fileMetadataFound, [this] {
-          _isEncrypted = true;
-          startAfterIsEncryptedIsChecked();
+        connect(_downloadEncryptedHelper, &PropagateDownloadEncrypted::fileMetadataFound, this, [this] {
+            _isEncrypted = true;
+            startAfterIsEncryptedIsChecked();
         });
-        connect(_downloadEncryptedHelper, &PropagateDownloadEncrypted::failed, [this] {
-          done(SyncFileItem::NormalError,
-               tr("File %1 cannot be downloaded because encryption information is missing.").arg(QDir::toNativeSeparators(_item->_file)));
+        connect(_downloadEncryptedHelper, &PropagateDownloadEncrypted::failed, this, [this] {
+            done(SyncFileItem::NormalError,
+                tr("File %1 cannot be downloaded because encryption information is missing.").arg(QDir::toNativeSeparators(_item->_file)));
         });
         _downloadEncryptedHelper->start();
     }

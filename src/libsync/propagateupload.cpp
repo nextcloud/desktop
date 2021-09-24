@@ -251,7 +251,7 @@ void PropagateUploadFileCommon::start()
     _uploadEncryptedHelper = new PropagateUploadEncrypted(propagator(), remoteParentPath, _item, this);
     connect(_uploadEncryptedHelper, &PropagateUploadEncrypted::finalized,
             this, &PropagateUploadFileCommon::setupEncryptedFile);
-    connect(_uploadEncryptedHelper, &PropagateUploadEncrypted::error, [this] {
+    connect(_uploadEncryptedHelper, &PropagateUploadEncrypted::error, this, [this] {
         qCDebug(lcPropagateUpload) << "Error setting up encryption.";
         done(SyncFileItem::FatalError, tr("Failed to upload encrypted file."));
     });

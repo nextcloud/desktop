@@ -101,7 +101,7 @@ Systray::Systray()
     contextMenu->addAction(tr("Exit %1").arg(Theme::instance()->appNameGUI()), this, &Systray::shutdown);
     setContextMenu(contextMenu);
 
-    connect(contextMenu, &QMenu::aboutToShow, [=] {
+    connect(contextMenu, &QMenu::aboutToShow, contextMenu, [pauseAction, resumeAction] {
         const auto folders = FolderMan::instance()->map();
 
         const auto allPaused = std::all_of(std::cbegin(folders), std::cend(folders), [](Folder *f) { return f->syncPaused(); });

@@ -1013,7 +1013,7 @@ void ClientSideEncryption::writePrivateKey(const AccountPtr &account)
     job->setInsecureFallback(false);
     job->setKey(kck);
     job->setBinaryData(_privateKey);
-    connect(job, &WritePasswordJob::finished, [](Job *incoming) {
+    connect(job, &WritePasswordJob::finished, job, [](Job *incoming) {
         Q_UNUSED(incoming);
         qCInfo(lcCse()) << "Private key stored in keychain";
     });
@@ -1032,7 +1032,7 @@ void ClientSideEncryption::writeCertificate(const AccountPtr &account)
     job->setInsecureFallback(false);
     job->setKey(kck);
     job->setBinaryData(_certificate.toPem());
-    connect(job, &WritePasswordJob::finished, [](Job *incoming) {
+    connect(job, &WritePasswordJob::finished, job, [](Job *incoming) {
         Q_UNUSED(incoming);
         qCInfo(lcCse()) << "Certificate stored in keychain";
     });
@@ -1051,7 +1051,7 @@ void ClientSideEncryption::writeMnemonic(const AccountPtr &account)
     job->setInsecureFallback(false);
     job->setKey(kck);
     job->setTextData(_mnemonic);
-    connect(job, &WritePasswordJob::finished, [](Job *incoming) {
+    connect(job, &WritePasswordJob::finished, job, [](Job *incoming) {
         Q_UNUSED(incoming);
         qCInfo(lcCse()) << "Mnemonic stored in keychain";
     });
@@ -1184,7 +1184,7 @@ void ClientSideEncryption::generateCSR(const AccountPtr &account, EVP_PKEY *keyP
     auto job = new SignPublicKeyApiJob(account, e2eeBaseUrl() + "public-key", this);
     job->setCsr(output);
 
-    connect(job, &SignPublicKeyApiJob::jsonReceived, [this, account](const QJsonDocument& json, int retCode) {
+    connect(job, &SignPublicKeyApiJob::jsonReceived, this, [this, account](const QJsonDocument &json, int retCode) {
         if (retCode == 200) {
             QString cert = json.object().value("ocs").toObject().value("data").toObject().value("public-key").toString();
             _certificate = QSslCertificate(cert.toLocal8Bit(), QSsl::Pem);
@@ -1215,18 +1215,18 @@ void ClientSideEncryption::encryptPrivateKey(const AccountPtr &account)
     // Send private key to the server
     auto job = new StorePrivateKeyApiJob(account, e2eeBaseUrl() + "private-key", this);
     job->setPrivateKey(cryptedText);
-    connect(job, &StorePrivateKeyApiJob::jsonReceived, [this, account](const QJsonDocument& doc, int retCode) {
+    connect(job, &StorePrivateKeyApiJob::jsonReceived, this, [this, account](const QJsonDocument &doc, int retCode) {
         Q_UNUSED(doc);
         switch(retCode) {
-            case 200:
-                qCInfo(lcCse()) << "Private key stored encrypted on server.";
-                writePrivateKey(account);
-                writeCertificate(account);
-                writeMnemonic(account);
-                emit initializationFinished();
-                break;
-            default:
-                qCInfo(lcCse()) << "Store private key failed, return code:" << retCode;
+        case 200:
+            qCInfo(lcCse()) << "Private key stored encrypted on server.";
+            writePrivateKey(account);
+            writeCertificate(account);
+            writeMnemonic(account);
+            emit initializationFinished();
+            break;
+        default:
+            qCInfo(lcCse()) << "Store private key failed, return code:" << retCode;
         }
     });
     job->start();
@@ -1298,17 +1298,17 @@ void ClientSideEncryption::getPrivateKeyFromServer(const AccountPtr &account)
 {
     qCInfo(lcCse()) << "Retrieving private key from server";
     auto job = new JsonApiJob(account, e2eeBaseUrl() + "private-key", this);
-    connect(job, &JsonApiJob::jsonReceived, [this, account](const QJsonDocument& doc, int retCode) {
-            if (retCode == 200) {
-                QString key = doc.object()["ocs"].toObject()["data"].toObject()["private-key"].toString();
-                qCInfo(lcCse()) << key;
-                qCInfo(lcCse()) << "Found private key, lets decrypt it!";
-                decryptPrivateKey(account, key.toLocal8Bit());
-            } else if (retCode == 404) {
-                qCInfo(lcCse()) << "No private key on the server: setup is incomplete.";
-            } else {
-                qCInfo(lcCse()) << "Error while requesting public key: " << retCode;
-            }
+    connect(job, &JsonApiJob::jsonReceived, this, [this, account](const QJsonDocument &doc, int retCode) {
+        if (retCode == 200) {
+            QString key = doc.object()["ocs"].toObject()["data"].toObject()["private-key"].toString();
+            qCInfo(lcCse()) << key;
+            qCInfo(lcCse()) << "Found private key, lets decrypt it!";
+            decryptPrivateKey(account, key.toLocal8Bit());
+        } else if (retCode == 404) {
+            qCInfo(lcCse()) << "No private key on the server: setup is incomplete.";
+        } else {
+            qCInfo(lcCse()) << "Error while requesting public key: " << retCode;
+        }
     });
     job->start();
 }
@@ -1317,19 +1317,19 @@ void ClientSideEncryption::getPublicKeyFromServer(const AccountPtr &account)
 {
     qCInfo(lcCse()) << "Retrieving public key from server";
     auto job = new JsonApiJob(account, e2eeBaseUrl() + "public-key", this);
-    connect(job, &JsonApiJob::jsonReceived, [this, account](const QJsonDocument& doc, int retCode) {
-            if (retCode == 200) {
-                QString publicKey = doc.object()["ocs"].toObject()["data"].toObject()["public-keys"].toObject()[account->davUser()].toString();
-                _certificate = QSslCertificate(publicKey.toLocal8Bit(), QSsl::Pem);
-                _publicKey = _certificate.publicKey();
-                qCInfo(lcCse()) << "Found Public key, requesting Server Public Key. Public key:" << publicKey;
-                fetchAndValidatePublicKeyFromServer(account);
-            } else if (retCode == 404) {
-                qCInfo(lcCse()) << "No public key on the server";
-                generateKeyPair(account);
-            } else {
-                qCInfo(lcCse()) << "Error while requesting public key: " << retCode;
-            }
+    connect(job, &JsonApiJob::jsonReceived, this, [this, account](const QJsonDocument &doc, int retCode) {
+        if (retCode == 200) {
+            QString publicKey = doc.object()["ocs"].toObject()["data"].toObject()["public-keys"].toObject()[account->davUser()].toString();
+            _certificate = QSslCertificate(publicKey.toLocal8Bit(), QSsl::Pem);
+            _publicKey = _certificate.publicKey();
+            qCInfo(lcCse()) << "Found Public key, requesting Server Public Key. Public key:" << publicKey;
+            fetchAndValidatePublicKeyFromServer(account);
+        } else if (retCode == 404) {
+            qCInfo(lcCse()) << "No public key on the server";
+            generateKeyPair(account);
+        } else {
+            qCInfo(lcCse()) << "Error while requesting public key: " << retCode;
+        }
     });
     job->start();
 }
@@ -1338,7 +1338,7 @@ void ClientSideEncryption::fetchAndValidatePublicKeyFromServer(const AccountPtr 
 {
     qCInfo(lcCse()) << "Retrieving public key from server";
     auto job = new JsonApiJob(account, e2eeBaseUrl() + "server-key", this);
-    connect(job, &JsonApiJob::jsonReceived, [this, account](const QJsonDocument& doc, int retCode) {
+    connect(job, &JsonApiJob::jsonReceived, this, [this, account](const QJsonDocument &doc, int retCode) {
         if (retCode == 200) {
             const auto serverPublicKey = doc.object()["ocs"].toObject()["data"].toObject()["public-key"].toString().toLatin1();
             qCInfo(lcCse()) << "Found Server Public key, checking it. Server public key:" << serverPublicKey;

@@ -280,7 +280,7 @@ void PropagateUploadEncrypted::unlockFolder()
     auto *unlockJob = new UnlockEncryptFolderApiJob(_propagator->account(),
         _folderId, _folderToken, this);
 
-    connect(unlockJob, &UnlockEncryptFolderApiJob::success, [this](const QByteArray &folderId) {
+    connect(unlockJob, &UnlockEncryptFolderApiJob::success, this, [this](const QByteArray &folderId) {
         qDebug() << "Successfully Unlocked";
         _folderToken = "";
         _folderId = "";
@@ -289,7 +289,7 @@ void PropagateUploadEncrypted::unlockFolder()
         emit folderUnlocked(folderId, 200);
         _isUnlockRunning = false;
     });
-    connect(unlockJob, &UnlockEncryptFolderApiJob::error, [this](const QByteArray &folderId, int httpStatus) {
+    connect(unlockJob, &UnlockEncryptFolderApiJob::error, this, [this](const QByteArray &folderId, int httpStatus) {
         qDebug() << "Unlock Error";
 
         emit folderUnlocked(folderId, httpStatus);

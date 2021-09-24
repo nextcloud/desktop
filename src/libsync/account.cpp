@@ -647,7 +647,7 @@ void Account::writeAppPasswordOnce(QString appPassword){
     job->setInsecureFallback(false);
     job->setKey(kck);
     job->setBinaryData(appPassword.toLatin1());
-    connect(job, &WritePasswordJob::finished, [this](Job *incoming) {
+    connect(job, &WritePasswordJob::finished, this, [this](Job *incoming) {
         auto *writeJob = static_cast<WritePasswordJob *>(incoming);
         if (writeJob->error() == NoError)
             qCInfo(lcAccount) << "appPassword stored in keychain";
@@ -670,7 +670,7 @@ void Account::retrieveAppPassword(){
     auto *job = new ReadPasswordJob(Theme::instance()->appName());
     job->setInsecureFallback(false);
     job->setKey(kck);
-    connect(job, &ReadPasswordJob::finished, [this](Job *incoming) {
+    connect(job, &ReadPasswordJob::finished, this, [this](Job *incoming) {
         auto *readJob = static_cast<ReadPasswordJob *>(incoming);
         QString pwd("");
         // Error or no valid public key error out
@@ -700,7 +700,7 @@ void Account::deleteAppPassword()
     auto *job = new DeletePasswordJob(Theme::instance()->appName());
     job->setInsecureFallback(false);
     job->setKey(kck);
-    connect(job, &DeletePasswordJob::finished, [this](Job *incoming) {
+    connect(job, &DeletePasswordJob::finished, this, [this](Job *incoming) {
         auto *deleteJob = static_cast<DeletePasswordJob *>(incoming);
         if (deleteJob->error() == NoError)
             qCInfo(lcAccount) << "appPassword deleted from keychain";

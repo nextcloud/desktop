@@ -164,7 +164,7 @@ private slots:
 
         bool propConnected = false;
         QString conflictFile;
-        auto transProgress = connect(&fakeFolder.syncEngine(), &SyncEngine::transmissionProgress,
+        auto transProgress = connect(&fakeFolder.syncEngine(), &SyncEngine::transmissionProgress, &fakeFolder.syncEngine(),
                                      [&](const ProgressInfo &pi) {
             auto propagator = fakeFolder.syncEngine().getPropagator();
             if (pi.status() != ProgressInfo::Propagation || propConnected || !propagator)

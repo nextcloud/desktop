@@ -77,7 +77,7 @@ public:
                 if (args.value(2).contains(QLatin1Char('d')))
                     action->setDisabled(true);
                 auto call = args.value(1).toLatin1();
-                connect(action, &QAction::triggered, [helper, call, files] {
+                connect(action, &QAction::triggered, helper, [helper, call, files] {
                     helper->sendCommand(QByteArray(call + ":" + files + "\n"));
                 });
             }

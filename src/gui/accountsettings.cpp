@@ -447,7 +447,7 @@ void AccountSettings::openIgnoredFilesDialog(const QString & absFolderPath)
     auto dialog = new QDialog();
     dialog->setLayout(layout);
 
-    connect(buttonBox, &QDialogButtonBox::clicked, [=](QAbstractButton * button) {
+    connect(buttonBox, &QDialogButtonBox::clicked, buttonBox, [buttonBox, ignoreListWidget, ignoreFile, dialog](QAbstractButton *button) {
         if (buttonBox->buttonRole(button) == QDialogButtonBox::AcceptRole)
             ignoreListWidget->slotWriteIgnoreFile(ignoreFile);
         dialog->close();
@@ -481,7 +481,7 @@ void AccountSettings::slotSubfolderContextMenuRequested(const QModelIndex& index
 
         if (!isEncrypted && !isParentEncrypted) {
             ac = menu.addAction(tr("Encrypt"));
-            connect(ac, &QAction::triggered, [this, info] { slotMarkSubfolderEncrypted(info); });
+            connect(ac, &QAction::triggered, this, [this, info] { slotMarkSubfolderEncrypted(info); });
         } else {
             // Ingore decrypting for now since it only works with an empty folder
             // connect(ac, &QAction::triggered, [this, &info] { slotMarkSubfolderDecrypted(info); });
@@ -1290,7 +1290,7 @@ void AccountSettings::slotSelectiveSyncChanged(const QModelIndex &topLeft,
         const auto anim = new QPropertyAnimation(_ui->selectiveSyncStatus, "maximumHeight", _ui->selectiveSyncStatus);
         anim->setEndValue(_model->isDirty() ? hint.height() : 0);
         anim->start(QAbstractAnimation::DeleteWhenStopped);
-        connect(anim, &QPropertyAnimation::finished, [this, shouldBeVisible]() {
+        connect(anim, &QPropertyAnimation::finished, this, [this, shouldBeVisible]() {
             _ui->selectiveSyncStatus->setMaximumHeight(QWIDGETSIZE_MAX);
             if (!shouldBeVisible) {
                 _ui->selectiveSyncStatus->hide();
