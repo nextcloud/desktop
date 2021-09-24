@@ -958,7 +958,7 @@ void AccountSettings::showConnectionLabel(const QString &message, QStringList er
         errors.prepend(message);
         QString msg = errors.join(QLatin1String("\n"));
         qCDebug(lcAccountSettings) << msg;
-        Theme::replaceLinkColorString(msg, QColor("#c1c8e6"));
+        Theme::replaceLinkColorString(msg, QColor { 193, 200, 230 });
         _ui->connectLabel->setText(msg);
         _ui->connectLabel->setToolTip(QString());
         _ui->connectLabel->setStyleSheet(errStyle);

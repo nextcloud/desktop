@@ -254,7 +254,7 @@ QIcon Theme::themeIcon(const QString &name, bool sysTray) const
             if (qgetenv("DESKTOP_SESSION") == "ubuntu") {
                 QBitmap mask = px.createMaskFromColor(Qt::white, Qt::MaskOutColor);
                 QPainter p(&px);
-                p.setPen(QColor("#dfdbd2"));
+                p.setPen(QColor { 223, 219, 210 });
                 p.drawPixmap(px.rect(), mask, mask.rect());
             }
             cached.addPixmap(px);
@@ -598,12 +598,12 @@ QIcon Theme::folderOfflineIcon(bool sysTray) const
 
 QColor Theme::wizardHeaderTitleColor() const
 {
-    return {APPLICATION_WIZARD_HEADER_TITLE_COLOR};
+    return { APPLICATION_WIZARD_HEADER_TITLE_COLOR }; // clazy:exclude=qcolor-from-literal
 }
 
 QColor Theme::wizardHeaderBackgroundColor() const
 {
-    return {APPLICATION_WIZARD_HEADER_BACKGROUND_COLOR};
+    return { APPLICATION_WIZARD_HEADER_BACKGROUND_COLOR }; // clazy:exclude=qcolor-from-literal
 }
 
 QPixmap Theme::wizardApplicationLogo() const
@@ -758,7 +758,7 @@ bool Theme::isDarkColor(const QColor &color)
 
 QColor Theme::getBackgroundAwareLinkColor(const QColor &backgroundColor)
 {
-    return {(isDarkColor(backgroundColor) ? QColor("#6193dc") : QGuiApplication::palette().color(QPalette::Link))};
+    return { (isDarkColor(backgroundColor) ? QColor { 97, 147, 220 } : QGuiApplication::palette().color(QPalette::Link)) };
 }
 
 QColor Theme::getBackgroundAwareLinkColor()
