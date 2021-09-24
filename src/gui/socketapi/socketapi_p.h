@@ -144,17 +144,17 @@ class SocketApiJobV2 : public QObject
 public:
     explicit SocketApiJobV2(const QSharedPointer<SocketListener> &socketListener, const QByteArray &command, const QJsonObject &arguments);
 
-    void success(const QJsonObject &response) const;
-    void failure(const QString &error) const;
+    void success(const QJsonObject &response);
+    void failure(const QString &error);
 
     const QJsonObject &arguments() const { return _arguments; }
     QByteArray command() const { return _command; }
 
 Q_SIGNALS:
-    void finished() const;
+    void finished();
 
 private:
-    void doFinish(const QJsonObject &obj) const;
+    void doFinish(const QJsonObject &obj);
 
     QSharedPointer<SocketListener> _socketListener;
     const QByteArray _command;

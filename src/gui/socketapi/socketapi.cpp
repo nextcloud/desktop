@@ -1482,17 +1482,17 @@ SocketApiJobV2::SocketApiJobV2(const QSharedPointer<SocketListener> &socketListe
     ASSERT(!_jobId.isEmpty())
 }
 
-void SocketApiJobV2::success(const QJsonObject &response) const
+void SocketApiJobV2::success(const QJsonObject &response)
 {
     doFinish(response);
 }
 
-void SocketApiJobV2::failure(const QString &error) const
+void SocketApiJobV2::failure(const QString &error)
 {
     doFinish({ { QStringLiteral("error"), error } });
 }
 
-void SocketApiJobV2::doFinish(const QJsonObject &obj) const
+void SocketApiJobV2::doFinish(const QJsonObject &obj)
 {
     _socketListener->sendMessage(_command + QStringLiteral("_RESULT:") + QJsonDocument({ { QStringLiteral("id"), _jobId }, { QStringLiteral("arguments"), obj } }).toJson(QJsonDocument::Compact));
     Q_EMIT finished();
