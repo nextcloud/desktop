@@ -70,7 +70,7 @@ InvalidFilenameDialog::InvalidFilenameDialog(AccountPtr account, Folder *folder,
     _ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
     _ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Rename file"));
 
-    _ui->descriptionLabel->setText(tr("The file %1 could not be synced because it contains characters which are not allowed on this system.").arg(_originalFileName));
+    _ui->descriptionLabel->setText(tr("The file %1 could not be synced because the name contains characters which are not allowed on this system.").arg(_originalFileName));
     _ui->explanationLabel->setText(tr("The following characters are not allowed on the system: * \" | & ? , ; : \\ / ~ < >"));
     _ui->filenameLineEdit->setText(filePathFileInfo.fileName());
 
