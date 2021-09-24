@@ -29,7 +29,7 @@ namespace OCC {
 class SlideShow : public QWidget
 {
     Q_OBJECT
-    Q_PROPERTY(int interval READ interval WRITE setInterval)
+    Q_PROPERTY(int interval READ interval WRITE setInterval NOTIFY intervalChanged)
     Q_PROPERTY(int currentSlide READ currentSlide WRITE setCurrentSlide NOTIFY currentSlideChanged)
 
 public:
@@ -57,6 +57,7 @@ public slots:
 signals:
     void clicked();
     void currentSlideChanged(int index);
+    void intervalChanged();
 
 protected:
     void mousePressEvent(QMouseEvent *event) override;

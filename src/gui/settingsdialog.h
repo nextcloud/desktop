@@ -45,7 +45,6 @@ class ownCloudGui;
 class SettingsDialog : public QDialog
 {
     Q_OBJECT
-    Q_PROPERTY(QWidget* currentPage READ currentPage)
 
 public:
     explicit SettingsDialog(ownCloudGui *gui, QWidget *parent = nullptr);
