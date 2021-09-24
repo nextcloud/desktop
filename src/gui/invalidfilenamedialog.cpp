@@ -152,7 +152,7 @@ void InvalidFilenameDialog::onRemoteFileAlreadyExists(const QVariantMap &values)
 {
     Q_UNUSED(values);
 
-    _ui->errorLabel->setText(tr("Can not rename file because file with the same name does already exist on the server. Please pick another name."));
+    _ui->errorLabel->setText(tr("Cannot rename file because a file with the same name does already exist on the server. Please pick another name."));
     _ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
 }
 
