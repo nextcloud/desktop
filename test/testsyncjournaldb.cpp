@@ -325,7 +325,8 @@ private slots:
     void testPinState()
     {
         auto make = [&](const QByteArray &path, PinState state) {
-            _db.internalPinStates().setForPath(path, state);
+            auto internalPinStates = _db.internalPinStates();
+            internalPinStates.setForPath(path, state);
             auto pinState = _db.internalPinStates().rawForPath(path);
             QVERIFY(pinState);
             QCOMPARE(*pinState, state);

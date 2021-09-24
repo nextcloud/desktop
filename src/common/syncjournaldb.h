@@ -282,8 +282,9 @@ public:
      */
     struct OCSYNC_EXPORT PinStateInterface
     {
+        PinStateInterface(SyncJournalDb *db);
         PinStateInterface(const PinStateInterface &) = delete;
-        PinStateInterface(PinStateInterface &&) = delete;
+        PinStateInterface(PinStateInterface &&other);
 
         /**
          * Gets the PinState for the path without considering parents.
