@@ -1067,41 +1067,41 @@ File synchronization desktop utility.</source>
         <translation>Δραστηριότητα Συγχρονισμού</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="856"/>
+        <location filename="../src/gui/folder.cpp" line="857"/>
         <source>Could not read system exclude file</source>
         <translation>Αδυναμία ανάγνωσης αρχείου αποκλεισμού συστήματος</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1099"/>
+        <location filename="../src/gui/folder.cpp" line="1100"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>Προστέθηκε ένας νέος φάκελος μεγαλύτερος από %1 MB: %2
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1102"/>
+        <location filename="../src/gui/folder.cpp" line="1103"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>Προστέθηκε ένας φάκελος από εξωτερικό αποθηκευτικό χώρο.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1103"/>
+        <location filename="../src/gui/folder.cpp" line="1104"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>Μεταβείτε στις ρυθμίσεις για να το επιλέξετε εάν επιθυμείτε να το κατεβάσετε.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1162"/>
+        <location filename="../src/gui/folder.cpp" line="1163"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation>Ο φάκελος %1 δημιουργήθηκε αλλά εξαιρέθηκε προηγουμένως από συγχρονισμό. Τα δεδομένα στο εσωτερικό του δεν θα συγχρονιστούν.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1165"/>
+        <location filename="../src/gui/folder.cpp" line="1166"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
         <translation>Το αρχείο %1 δημιουργήθηκε αλλά εξαιρέθηκε προηγουμένως από συγχρονισμό. Δεν θα συγχρονιστεί.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1176"/>
+        <location filename="../src/gui/folder.cpp" line="1177"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
@@ -1114,7 +1114,7 @@ This means that the synchronization client might not upload local changes immedi
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1253"/>
+        <location filename="../src/gui/folder.cpp" line="1254"/>
         <source>All files in the sync folder '%1' folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
@@ -1125,7 +1125,7 @@ If you decide to delete the files, they will be unavailable to you, unless you a
 Εφόσον επιλέξετε να διαγράψετε τα αρχεία, δε θα είναι διαθέσιμα σε εσάς, εκτός εάν είστε ο ιδιοκτήτης τους.  </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1258"/>
+        <location filename="../src/gui/folder.cpp" line="1259"/>
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
@@ -1134,17 +1134,17 @@ If this was an accident and you decide to keep your files, they will be re-synce
 Αν αυτό ήταν ένα ατύχημα και αποφασίσατε να διατηρήσετε τα αρχεία σας, θα συγχρονιστούν εκ νέου από το διακομιστή.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1262"/>
+        <location filename="../src/gui/folder.cpp" line="1263"/>
         <source>Remove All Files?</source>
         <translation>Αφαίρεση Όλων των Αρχείων;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1266"/>
+        <location filename="../src/gui/folder.cpp" line="1267"/>
         <source>Remove all files</source>
         <translation>Αφαίρεση όλων των αρχείων</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1267"/>
+        <location filename="../src/gui/folder.cpp" line="1268"/>
         <source>Keep files</source>
         <translation>Διατήρηση αρχείων</translation>
     </message>
@@ -1975,53 +1975,53 @@ Note that using any logging command line options will override the settings.</so
 <context>
     <name>OCC::NSISUpdater</name>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="386"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="393"/>
         <source>New Version Available</source>
         <translation>Νέα Έκδοση Διαθέσιμη </translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="392"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="399"/>
         <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Μια νέα έκδοση του %1 Δέκτη είναι διαθέσιμη.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; είναι διαθέσιμη για λήψη. Η εγκατεστημένη έκδοση είναι %3.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="405"/>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="456"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="412"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="463"/>
         <source>Skip this version</source>
         <translation>Παράλειψη αυτής της έκδοσης</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="406"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="413"/>
         <source>Skip this time</source>
         <translation>Παράλειψη αυτή τη φορά</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="407"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="414"/>
         <source>Get update</source>
         <translation>Λήψη ενημέρωσης</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="437"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="444"/>
         <source>Update Failed</source>
         <translation>Απέτυχε η ενημέρωση</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="443"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="450"/>
         <source>&lt;p&gt;A new version of the %1 Client is available but the updating process failed.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; has been downloaded. The installed version is %3.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Μια νέα έκδοση του πελάτη %1 είναι διαθέσιμη αλλά η διαδικασία ενημέρωσης απέτυχε.&lt;/p&gt;&lt;p&gt;Το &lt;b&gt;%2&lt;/b&gt; έχει ληφθεί. Η εγκατεστημένη έκδοση είναι %3.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="457"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="464"/>
         <source>Ask again later</source>
         <translation>Να γίνει ερώτηση ξανά αργότερα</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="458"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="465"/>
         <source>Restart and update</source>
         <translation>Επανεκκίνηση και ενημέρωση</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="459"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="466"/>
         <source>Update manually</source>
         <translation>Χειροκίνητη ενημέρωση</translation>
     </message>
@@ -2272,27 +2272,32 @@ for additional privileges during the process.</source>
         <translation>%1 διαθέσιμη. Κάντε επανεκκίνηση της εφαρμογής για να ξεκινήσετε την ενημέρωση.</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="156"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="160"/>
+        <source>New %1 available. Please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt; to download the new AppImage manually.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="163"/>
         <source>New %1 available. Please use the system&apos;s update tool to install it.</source>
         <translation>Υπάρχει διαθέσιμο νέο %1. Χρησιμοποιήστε το εργαλείο ενημέρωσης του συστήματος για να το εγκαταστήσετε.</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="158"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="165"/>
         <source>Checking update server...</source>
         <translation>Έλεγχος διακομιστή ενημερώσεων...</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="160"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="167"/>
         <source>Update status is unknown: Did not check for new updates.</source>
         <translation>Η κατάσταση ενημέρωσης είναι άγνωστη: Δεν έγινε έλεγχος για για νέες ενημερώσεις.</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="164"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="171"/>
         <source>No updates available. Your installation is at the latest version.</source>
         <translation>Δεν υπάρχουν ενημερώσεις διαθέσιμες. Η εγκατάστασή σας βρίσκεται στην τελευταία έκδοση.</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="183"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="190"/>
         <source>Update Check</source>
         <translation>Έλεγχος για ενημερώσεις</translation>
     </message>

@@ -1067,41 +1067,41 @@ File synchronization desktop utility.</source>
         <translation>同步活動</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="856"/>
+        <location filename="../src/gui/folder.cpp" line="857"/>
         <source>Could not read system exclude file</source>
         <translation>無法讀取系統的排除檔案</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1099"/>
+        <location filename="../src/gui/folder.cpp" line="1100"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>添加了大於％1 MB的新目錄：%2.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1102"/>
+        <location filename="../src/gui/folder.cpp" line="1103"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>已添加來自外部儲存空間的目錄。
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1103"/>
+        <location filename="../src/gui/folder.cpp" line="1104"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>如果您要下載它，請進入設定以選擇它。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1162"/>
+        <location filename="../src/gui/folder.cpp" line="1163"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation>目錄％1已創建，但先前已從同步中排除。其中的數據將不會同步。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1165"/>
+        <location filename="../src/gui/folder.cpp" line="1166"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
         <translation>已創建檔案％1但先前已將其排除在同步之外。它不會同步。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1176"/>
+        <location filename="../src/gui/folder.cpp" line="1177"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
@@ -1114,7 +1114,7 @@ This means that the synchronization client might not upload local changes immedi
 ％1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1253"/>
+        <location filename="../src/gui/folder.cpp" line="1254"/>
         <source>All files in the sync folder '%1' folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
@@ -1125,7 +1125,7 @@ If you decide to delete the files, they will be unavailable to you, unless you a
 如果您決定刪除文件，除非您是所有者，否則您將無法使用它們。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1258"/>
+        <location filename="../src/gui/folder.cpp" line="1259"/>
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
@@ -1134,17 +1134,17 @@ If this was an accident and you decide to keep your files, they will be re-synce
 如果這是偶然事件，並且您決定保留文件，則將從伺服器重新同步它們。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1262"/>
+        <location filename="../src/gui/folder.cpp" line="1263"/>
         <source>Remove All Files?</source>
         <translation>移除所有檔案?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1266"/>
+        <location filename="../src/gui/folder.cpp" line="1267"/>
         <source>Remove all files</source>
         <translation>移除所有檔案</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1267"/>
+        <location filename="../src/gui/folder.cpp" line="1268"/>
         <source>Keep files</source>
         <translation>保留檔案</translation>
     </message>
@@ -1976,53 +1976,53 @@ Note that using any logging command line options will override the settings.</so
 <context>
     <name>OCC::NSISUpdater</name>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="386"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="393"/>
         <source>New Version Available</source>
         <translation>有新版本</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="392"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="399"/>
         <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;/p&gt;</source>
         <translation>&lt;p&gt;%1  客戶端有新版本了。&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; 可供下載， 目前安裝的版本是 %3.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="405"/>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="456"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="412"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="463"/>
         <source>Skip this version</source>
         <translation>跳過這個版本</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="406"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="413"/>
         <source>Skip this time</source>
         <translation>跳過這次更新</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="407"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="414"/>
         <source>Get update</source>
         <translation>取得更新</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="437"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="444"/>
         <source>Update Failed</source>
         <translation>更新失敗</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="443"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="450"/>
         <source>&lt;p&gt;A new version of the %1 Client is available but the updating process failed.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; has been downloaded. The installed version is %3.&lt;/p&gt;</source>
         <translation>&lt;p&gt;％1 客戶端的新版本可用的，但更新處理失敗。&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt;已下載。 安裝的版本為％3。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="457"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="464"/>
         <source>Ask again later</source>
         <translation>稍後再問</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="458"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="465"/>
         <source>Restart and update</source>
         <translation>重啟並更新</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="459"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="466"/>
         <source>Update manually</source>
         <translation>手動更新</translation>
     </message>
@@ -2276,27 +2276,32 @@ for additional privileges during the process.</source>
         <translation>%1 可用的重啟應用程式開始更新</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="156"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="160"/>
+        <source>New %1 available. Please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt; to download the new AppImage manually.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="163"/>
         <source>New %1 available. Please use the system&apos;s update tool to install it.</source>
         <translation>新的％1可用的。 請使用系統的更新工具進行安裝。</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="158"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="165"/>
         <source>Checking update server...</source>
         <translation>檢查更新伺服器中...</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="160"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="167"/>
         <source>Update status is unknown: Did not check for new updates.</source>
         <translation>無法取得更新狀態: 無法檢查是否有新更新檔。</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="164"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="171"/>
         <source>No updates available. Your installation is at the latest version.</source>
         <translation>目前沒有可用的更新檔，您安裝的版本是最新的了。</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="183"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="190"/>
         <source>Update Check</source>
         <translation>更新檢查</translation>
     </message>
