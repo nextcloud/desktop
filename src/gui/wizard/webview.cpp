@@ -154,7 +154,7 @@ void WebViewPageUrlSchemeHandler::requestStarted(QWebEngineUrlRequestJob *reques
     QString user;
     QString password;
 
-    for (QString part : parts) {
+    for (const auto &part : parts) {
         if (part.startsWith("server:")) {
             server = part.mid(7);
         } else if (part.startsWith("user:")) {
