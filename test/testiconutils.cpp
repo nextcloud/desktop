@@ -52,10 +52,12 @@ private slots:
 
         if (blackImagesExclusive != whiteImagesExclusive) {
             // black pixmap for dark background - should fail as we don't have this image in black
-            QVERIFY(OCC::Ui::IconUtils::pixmapForBackground(blackImagesExclusive.values().at(0), QColor("blue")).isNull());
+            const auto &blackExclusives = blackImagesExclusive.values();
+            QVERIFY(OCC::Ui::IconUtils::pixmapForBackground(blackExclusives.at(0), QColor("blue")).isNull());
 
             // white pixmap for bright background - should fail as we don't have this image in white
-            QVERIFY(OCC::Ui::IconUtils::pixmapForBackground(whiteImagesExclusive.values().at(0), QColor("yellow")).isNull());
+            const auto &whiteExclusives = whiteImagesExclusive.values();
+            QVERIFY(OCC::Ui::IconUtils::pixmapForBackground(whiteExclusives.at(0), QColor("yellow")).isNull());
         }
     }
 };

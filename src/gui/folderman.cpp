@@ -713,7 +713,8 @@ void FolderMan::slotAccountStateChanged()
         qCInfo(lcFolderMan) << "Account" << accountName << "disconnected or paused, "
                                                            "terminating or descheduling sync folders";
 
-        foreach (Folder *f, _folderMap.values()) {
+        const auto &folders = _folderMap.values();
+        for (const auto &f : folders) {
             if (f
                 && f->isSyncRunning()
                 && f->accountState() == accountState) {

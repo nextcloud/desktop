@@ -337,7 +337,8 @@ void ownCloudGui::slotComputeOverallSyncStatus()
         trayMessage = folderMan->trayTooltipStatusString(overallStatus, hasUnresolvedConflicts, false);
 #else
         QStringList allStatusStrings;
-        foreach (Folder *folder, map.values()) {
+        const auto &folders = map.values();
+        for (const auto &folder : folders) {
             QString folderMessage = FolderMan::trayTooltipStatusString(
                 folder->syncResult().status(),
                 folder->syncResult().hasUnresolvedConflicts(),
