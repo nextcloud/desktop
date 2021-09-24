@@ -50,6 +50,7 @@
 #include <QSvgRenderer>
 
 #include <cstring>
+#include <qlineedit.h>
 
 namespace {
     const char *passwordIsSetPlaceholder = "●●●●●●●●";
@@ -76,6 +77,8 @@ ShareUserGroupWidget::ShareUserGroupWidget(AccountPtr account,
     setObjectName("SharingDialogUG"); // required as group for saveGeometry call
 
     _ui->setupUi(this);
+
+    connect(_ui->shareeLineEdit, &QLineEdit::textChanged, this, &ShareUserGroupWidget::onShareeLineEditTextChanged);
 
     //Is this a file or folder?
     _isFile = QFileInfo(localPath).isFile();
@@ -143,7 +146,7 @@ ShareUserGroupWidget::~ShareUserGroupWidget()
     delete _ui;
 }
 
-void ShareUserGroupWidget::on_shareeLineEdit_textChanged(const QString &)
+void ShareUserGroupWidget::onShareeLineEditTextChanged(const QString &)
 {
     _completionTimer.stop();
     emit togglePublicLinkShare(false);
@@ -546,7 +549,7 @@ ShareUserLine::ShareUserLine(AccountPtr account,
       _deleteShareButton= new QAction(deleteicon,tr("Unshare"), this);
 
     menu->addAction(_deleteShareButton);
-    connect(_deleteShareButton, &QAction::triggered, this, &ShareUserLine::on_deleteShareButton_clicked);
+    connect(_deleteShareButton, &QAction::triggered, this, &ShareUserLine::onDeleteShareButtonClicked);
 
     /*
      * Files can't have create or delete permissions
@@ -691,7 +694,7 @@ void ShareUserLine::slotAvatarLoaded(QImage avatar)
     _ui->avatar->setStyleSheet("");
 }
 
-void ShareUserLine::on_deleteShareButton_clicked()
+void ShareUserLine::onDeleteShareButtonClicked()
 {
     setEnabled(false);
     _share->deleteShare();

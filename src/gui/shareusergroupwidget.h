@@ -73,7 +73,7 @@ public slots:
 private slots:
     void slotSharesFetched(const QList<QSharedPointer<OCC::Share>> &shares);
 
-    void on_shareeLineEdit_textChanged(const QString &text);
+    void onShareeLineEditTextChanged(const QString &text);
     void searchForSharees(ShareeModel::LookupMode lookupMode);
     void slotLineEditTextEdited(const QString &text);
 
@@ -142,7 +142,7 @@ public slots:
     void focusPasswordLineEdit();
 
 private slots:
-    void on_deleteShareButton_clicked();
+    void onDeleteShareButtonClicked();
     void slotPermissionsChanged();
     void slotEditPermissionsChanged();
     void slotPasswordCheckboxChanged();

@@ -42,7 +42,7 @@ public:
     void reinit();
 
 private slots:
-    void on_pushButtonBrowseCertificate_clicked();
+    void onPushButtonBrowseCertificateClicked();
 
 private:
     Ui::AddCertificateDialog *ui;

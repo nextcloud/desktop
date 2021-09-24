@@ -26,6 +26,7 @@ AddCertificateDialog::AddCertificateDialog(QWidget *parent)
 {
     ui->setupUi(this);
     ui->labelErrorCertif->setText("");
+    connect(ui->pushButtonBrowseCertificate, &QPushButton::clicked, this, &AddCertificateDialog::onPushButtonBrowseCertificateClicked);
 }
 
 AddCertificateDialog::~AddCertificateDialog()
@@ -33,7 +34,7 @@ AddCertificateDialog::~AddCertificateDialog()
     delete ui;
 }
 
-void AddCertificateDialog::on_pushButtonBrowseCertificate_clicked()
+void AddCertificateDialog::onPushButtonBrowseCertificateClicked()
 {
     QString fileName = QFileDialog::getOpenFileName(this, tr("Select a certificate"), "", tr("Certificate files (*.p12 *.pfx)"));
     ui->lineEditCertificatePath->setText(fileName);
