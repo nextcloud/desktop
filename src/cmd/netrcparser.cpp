@@ -99,7 +99,7 @@ bool NetrcParser::parse()
 
 NetrcParser::LoginPair NetrcParser::find(const QString &machine)
 {
-    QHash<QString, LoginPair>::const_iterator it = _entries.find(machine);
+    const auto it = _entries.find(machine);
     if (it != _entries.end()) {
         return *it;
     } else {

@@ -52,8 +52,8 @@ public:
 
         helper->sendCommand(QByteArray("RETRIEVE_FILE_STATUS:" + localFile + "\n"));
 
-        StatusMap::iterator it = m_status.find(localFile);
-        if (it != m_status.constEnd()) {
+        const auto it = m_status.find(localFile);
+        if (it != m_status.end()) {
             return  overlaysForString(*it);
         }
         return QStringList();
