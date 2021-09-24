@@ -738,7 +738,7 @@ void FolderMan::setSyncEnabled(bool enabled)
     }
     _syncEnabled = enabled;
     // force a redraw in case the network connect status changed
-    emit(folderSyncStateChange(nullptr));
+    emit folderSyncStateChange(nullptr);
 }
 
 void FolderMan::startScheduledSyncSoon()

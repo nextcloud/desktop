@@ -805,7 +805,7 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
     }
 
     for (int undecidedIndex : qAsConst(undecidedIndexes)) {
-        suggestExpand(index(undecidedIndex, 0, idx));
+        emit suggestExpand(index(undecidedIndex, 0, idx));
     }
     /* Try to remove the the undecided lists the items that are not on the server. */
     auto it = std::remove_if(selectiveSyncUndecidedList.begin(), selectiveSyncUndecidedList.end(),

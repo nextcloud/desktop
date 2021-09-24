@@ -715,7 +715,7 @@ bool AvatarJob::finished()
             }
         }
     }
-    emit(avatarPixmap(avImage));
+    emit avatarPixmap(avImage);
     return true;
 }
 #endif

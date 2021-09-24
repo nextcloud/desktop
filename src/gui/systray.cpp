@@ -135,7 +135,7 @@ void Systray::create()
         }
         _trayEngine->load(QStringLiteral("qrc:/qml/src/gui/tray/Window.qml"));
     }
-    hideWindow();
+    emit hideWindow();
     emit activated(QSystemTrayIcon::ActivationReason::Unknown);
 
     const auto folderMap = FolderMan::instance()->map();

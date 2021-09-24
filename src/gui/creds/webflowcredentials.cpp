@@ -237,7 +237,7 @@ void WebFlowCredentials::persist() {
     }
 
     _account->setCredentialSetting(userC, _user);
-    _account->wantsAccountSaved(_account);
+    emit _account->wantsAccountSaved(_account);
 
     // write cert if there is one
     if (!_clientSslCertificate.isNull()) {

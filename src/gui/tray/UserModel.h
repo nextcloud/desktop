@@ -183,8 +183,8 @@ public:
     AccountAppList appList() const;
 
 signals:
-    Q_INVOKABLE void addAccount();
-    Q_INVOKABLE void newUserSelected();
+    void addAccount();
+    void newUserSelected();
 
 protected:
     QHash<int, QByteArray> roleNames() const override;

@@ -120,7 +120,7 @@ void ShareeModel::shareesFetched(const QJsonDocument &reply)
     }
 
     setNewSharees(filteredSharees);
-    shareesReady();
+    emit shareesReady();
 }
 
 QSharedPointer<Sharee> ShareeModel::parseSharee(const QJsonObject &data)
@@ -158,7 +158,7 @@ struct FindShareeHelper
 */
 void ShareeModel::setNewSharees(const QVector<QSharedPointer<Sharee>> &newSharees)
 {
-    layoutAboutToBeChanged();
+    emit layoutAboutToBeChanged();
     const auto persistent = persistentIndexList();
     QVector<QSharedPointer<Sharee>> oldPersistantSharee;
     oldPersistantSharee.reserve(persistent.size());
@@ -181,7 +181,7 @@ void ShareeModel::setNewSharees(const QVector<QSharedPointer<Sharee>> &newSharee
     }
 
     changePersistentIndexList(persistent, newPersistant);
-    layoutChanged();
+    emit layoutChanged();
 }
 
 
