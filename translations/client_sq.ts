@@ -2281,7 +2281,7 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="160"/>
         <source>New %1 available. Please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt; to download the new AppImage manually.</source>
-        <translation type="unfinished"/>
+        <translation>Ka gati %1 të ri. Ju lutemi, klikoni &lt;a href=&apos;%2&apos;&gt;këtu&lt;/a&gt; që të shkarkoni dorazi AppImage-in e ri.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="163"/>
