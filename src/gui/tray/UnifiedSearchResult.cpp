@@ -17,6 +17,24 @@
 #include "UnifiedSearchResult.h"
 
 namespace OCC {
+
+QString UnifiedSearchResult::typeAsString(UnifiedSearchResult::Type type)
+{
+    switch (type) {
+    case Default: {
+        return QStringLiteral("Default");
+    }
+    case CategorySeparator: {
+        return QStringLiteral("CategorySeparator");
+    }
+    case FetchMoreTrigger: {
+        return QStringLiteral("FetchMoreTrigger");
+    }
+    }
+
+    return QString();
+}
+
 bool operator<(const UnifiedSearchResult &rhs, const UnifiedSearchResult &lhs)
 {
     return (rhs._order > lhs._order && rhs._categoryId > lhs._categoryId && rhs._title > lhs._title && rhs._subline > lhs._subline && rhs._resourceUrl > lhs._resourceUrl && (rhs._type == UnifiedSearchResult::Type::FetchMoreTrigger && lhs._type != UnifiedSearchResult::Type::FetchMoreTrigger));

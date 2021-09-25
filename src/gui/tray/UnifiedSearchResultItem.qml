@@ -12,17 +12,19 @@ MouseArea {
     readonly property int contentLeftMargin: 4
     readonly property int contentRightMargin: contentLeftMargin
 
-    readonly property int typeCategorySeparator: 1
-    readonly property int typeFetchMoreTrigger: 2
+    readonly property bool isFetchMoreTrigger: model.typeAsString === "FetchMoreTrigger"
+    readonly property bool isCategorySeparator: model.typeAsString === "CategorySeparator"
 
-    readonly property bool isFetchMoreTrigger: model.type === typeFetchMoreTrigger
-    readonly property bool isCategorySeparator: model.type === typeCategorySeparator
+    property string currentFetchMoreInProgressCategoryId: ""
 
-    enabled: !isCategorySeparator
-    hoverEnabled: !isCategorySeparator
+    property bool isFetchMoreInProgress: currentFetchMoreInProgressCategoryId === model.categoryId
+    property bool isSearchInProgress: false
+
+    enabled: !isCategorySeparator && !isSearchInProgress
+    hoverEnabled: !isCategorySeparator && !isSearchInProgress
 
     height: !isCategorySeparator ? defaultHeight : defaultHeight/2
-    
+
     Rectangle {
         id: unifiedSearchResultHoverBackground
         anchors.fill: parent
@@ -43,6 +45,7 @@ MouseArea {
 
         ColumnLayout {
             id: unifiedSearchResultImageContainer
+            readonly property int iconWidth: Style.trayWindowHeaderHeight / 2
             visible: true
             Layout.preferredWidth: visible ? Layout.preferredHeight : 0
             Layout.preferredHeight: visible ? Style.trayWindowHeaderHeight : 0
@@ -50,7 +53,7 @@ MouseArea {
                 id: unifiedSearchResultThumbnail
                 visible: false
                 asynchronous: true
-                source: "image://unified-search-result-image/" + model.thumbnailUrl + ";" + model.icon
+                source: "image://unified-search-result-image/" + model.images
                 cache: true
                 sourceSize.width: imageData.width
                 sourceSize.height: imageData.height
@@ -69,23 +72,23 @@ MouseArea {
                 visible: !unifiedSearchResultThumbnailPlaceholder.visible
                 Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
                 Layout.leftMargin: contentLeftMargin
-                Layout.preferredWidth: model.thumbnailUrl || model.icon ? Style.trayWindowHeaderHeight / 2 : 0
-                Layout.preferredHeight: model.thumbnailUrl || model.icon ? Style.trayWindowHeaderHeight / 2: 0
+                Layout.preferredWidth: model.images ? unifiedSearchResultImageContainer.iconWidth : 0
+                Layout.preferredHeight: model.images ? unifiedSearchResultImageContainer.iconWidth: 0
                 source: unifiedSearchResultThumbnail
                 maskSource: mask
             }
             Image {
                 id: unifiedSearchResultThumbnailPlaceholder
-                visible: model.thumbnailUrl && unifiedSearchResultThumbnail.status != Image.Ready
+                visible: model.images && unifiedSearchResultThumbnail.status != Image.Ready
                 Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
                 Layout.leftMargin: contentLeftMargin
                 verticalAlignment: Qt.AlignCenter
                 cache: true
-                source: "qrc:///client/theme/change.svg"
-                sourceSize.height: Style.trayWindowHeaderHeight
-                sourceSize.width: Style.trayWindowHeaderHeight
-                Layout.preferredWidth: visible ? Layout.preferredHeight : 0
-                Layout.preferredHeight: visible ? Style.trayWindowHeaderHeight : 0
+                source: model.imagePlaceholder ? imagePlaceholder : "qrc:///client/theme/change.svg"
+                sourceSize.height: unifiedSearchResultImageContainer.iconWidth
+                sourceSize.width: unifiedSearchResultImageContainer.iconWidth
+                Layout.preferredWidth: visible ? unifiedSearchResultImageContainer.iconWidth : 0
+                Layout.preferredHeight: visible ? unifiedSearchResultImageContainer.iconWidth : 0
             }
         }
 
@@ -138,13 +141,43 @@ MouseArea {
             Text {
                 id: unifiedSearchResultItemFetchMoreText
                 text: qsTr("Load more results")
-                visible: parent.visible
+                visible: parent.visible && !isFetchMoreInProgress
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
-                width: parent.width
-                height: parent.height
+                width: parent.visible && !isFetchMoreInProgress ? parent.width : 0
+                height: parent.visible && !isFetchMoreInProgress ? parent.height: 0
                 font.pixelSize: Style.topLinePixelSize
                 color: "grey"
+            }
+            Image {
+                id: unifiedSearchResultItemFetchMoreIconInProgress
+                visible: parent.visible && isFetchMoreInProgress
+                Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
+                anchors {
+                    horizontalCenter: parent.horizontalCenter
+                    verticalCenter: parent.verticalCenter
+                }
+                cache: true
+                source: "qrc:///client/theme/change.svg"
+                sourceSize.height: Style.trayWindowHeaderHeight / 2
+                sourceSize.width: Style.trayWindowHeaderHeight / 2
+                Layout.preferredWidth: visible ? Style.trayWindowHeaderHeight / 2 : 0
+                Layout.preferredHeight: visible ? Style.trayWindowHeaderHeight / 2 : 0
+
+                ColorOverlay {
+                    anchors.fill: parent
+                    source: parent
+                    color: Style.menuBorder
+                }
+            }
+
+            RotationAnimator {
+                target: unifiedSearchResultItemFetchMoreIconInProgress
+                running: unifiedSearchResultItemFetchMoreIconInProgress.visible
+                from: 0
+                to: 360
+                loops: Animation.Infinite
+                duration: 1250
             }
         }
     }

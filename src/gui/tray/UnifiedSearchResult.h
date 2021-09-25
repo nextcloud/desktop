@@ -16,7 +16,6 @@
 #define UNIFIEDSEARHRESULT_H
 
 #include <QtCore>
-#include <QIcon>
 
 namespace OCC {
 /**
@@ -25,21 +24,14 @@ namespace OCC {
 
 class UnifiedSearchResult
 {
-    Q_GADGET
-
-    Q_PROPERTY(QString resulttitle MEMBER _title)
-    Q_PROPERTY(QString categoryName MEMBER _categoryName)
-    Q_PROPERTY(QString subline MEMBER _subline)
-    Q_PROPERTY(QString thumbnailUrl MEMBER _thumbnailUrl)
-    Q_PROPERTY(QString thumbnail MEMBER _thumbnail)
-    Q_PROPERTY(quint8 type MEMBER _type)
-
 public:
     enum Type : quint8 {
         Default = 0,
         CategorySeparator,
         FetchMoreTrigger
     };
+
+    static QString typeAsString(UnifiedSearchResult::Type type);
 
     QString _title;
     QString _subline;
@@ -49,15 +41,14 @@ public:
     QString _icon;
     qint32 _order = INT32_MAX;
     QString _thumbnailUrl;
-    QString _thumbnail;
+    QString _imagePlaceholder;
     QString _resourceUrl;
-    quint8 _type = Type::Default;
+    QString _images;
+    Type _type = Type::Default;
 };
 
 bool operator==(const UnifiedSearchResult &rhs, const UnifiedSearchResult &lhs);
 bool operator<(const UnifiedSearchResult &rhs, const UnifiedSearchResult &lhs);
 }
-
-Q_DECLARE_METATYPE(OCC::UnifiedSearchResult)
 
 #endif // UNIFIEDSEARHRESULT_H

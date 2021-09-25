@@ -34,6 +34,10 @@ class UnifiedSearchResultsListModel : public QAbstractListModel
 {
     Q_OBJECT
 
+    Q_PROPERTY(bool isSearchInProgress READ isSearchInProgress NOTIFY isSearchInProgressChanged)
+    Q_PROPERTY(QString currentFetchMoreInProgressCategoryId MEMBER _currentFetchMoreInProgressCategoryId NOTIFY currentFetchMoreInProgressCategoryIdChanged)
+    Q_PROPERTY(QString errorString MEMBER _errorString)
+
     class UnifiedSearchProvider
     {
     public:
@@ -46,13 +50,16 @@ public:
     enum DataRole {
         CategoryNameRole = Qt::UserRole + 1,
         CategoryIdRole,
+        ImagePlaceholderRole,
+        ImagesRole,
         IconRole,
         TitleRole,
         SublineRole,
         ResourceUrlRole,
         RoundedRole,
         ThumbnailUrlRole,
-        TypeRole
+        TypeRole,
+        TypeAsStringRole,
     };
 
     explicit UnifiedSearchResultsListModel(AccountState *accountState, QObject *parent = nullptr);
@@ -63,7 +70,13 @@ public:
     void setSearchTerm(const QString &term);
     QString searchTerm() const;
 
+    bool isSearchInProgress() const;
+
     Q_INVOKABLE void resultClicked(int resultIndex);
+
+public: signals:
+    void currentFetchMoreInProgressCategoryIdChanged();
+    void isSearchInProgressChanged();
 
 protected:
     QHash<int, QByteArray> roleNames() const override;
@@ -71,7 +84,7 @@ protected:
 private slots:
     void slotSearchTermEditingFinished();
 
-    void slotSearchForProviderFinished(const QJsonDocument &json);
+    void slotSearchForProviderFinished(const QJsonDocument &json, int statusCode);
 
 private:
     void startSearch();
@@ -89,7 +102,11 @@ private:
     QMap<QString, UnifiedSearchResultCategory> _resultsByCategory;
     QList<UnifiedSearchResult> _resultsCombined;
 
-    QList<QMetaObject::Connection> _searchJobConnections;
+    QString _errorString;
+
+    QString _currentFetchMoreInProgressCategoryId;
+
+    QMap<QString, QMetaObject::Connection> _searchJobConnections;
 };
 }
 
