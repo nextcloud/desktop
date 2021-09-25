@@ -131,7 +131,7 @@
         <location filename="../src/common/filesystembase.cpp" line="398"/>
         <location filename="../src/common/filesystembase.cpp" line="404"/>
         <source>Could not move &quot;%1&quot; to &quot;%2&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Nie je možne presunúť &quot;%1&quot; do &quot;%2&quot;</translation>
     </message>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="438"/>
@@ -2282,62 +2282,62 @@ Položky, pri ktorých je povolené odstraňovanie sa vymažú, ak bránia odstr
     <message>
         <location filename="../src/gui/invalidfilenamedialog.ui" line="14"/>
         <source>Invalid filename</source>
-        <translation type="unfinished"/>
+        <translation>Neplatné meno súboru</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.ui" line="23"/>
         <source>The file could not be synced because it contains characters which are not allowed on this system.</source>
-        <translation type="unfinished"/>
+        <translation>Súbor nemôže byť synchronizovaný, pretože obsahuje znaky ktoré nie sú na tomto systéme podporované.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.ui" line="36"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>Chyba</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.ui" line="49"/>
         <source>Please enter a new name for the file:</source>
-        <translation type="unfinished"/>
+        <translation>Prosím zadajte nový názov súboru:</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.ui" line="62"/>
         <source>New filename</source>
-        <translation type="unfinished"/>
+        <translation>Nový názov súboru</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="71"/>
         <source>Rename file</source>
-        <translation type="unfinished"/>
+        <translation>Premenovať súbor</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="73"/>
         <source>The file %1 could not be synced because it contains characters which are not allowed on this system.</source>
-        <translation type="unfinished"/>
+        <translation>Súbor %1 nemôže byť synchronizovaný, pretože obsahuje znaky ktoré nie sú na tomto systéme podporované.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="74"/>
         <source>The following characters are not allowed on the system: * &quot; | &amp; ? , ; : \ / ~ &lt; &gt;</source>
-        <translation type="unfinished"/>
+        <translation>Nasledujúce znaky nie sú na systéme povolené: * &quot; | &amp; ? , ; : \ / ~ &lt; &gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="105"/>
         <source>You don&apos;t have the permission to rename this file. Please ask the author of the file to rename it.</source>
-        <translation type="unfinished"/>
+        <translation>Nemáte oprávnenie premenovať tento súbor. Prosím požiadajte vlastníka súboru o premenovanie.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="130"/>
         <source>Filename contains illegal characters: %1</source>
-        <translation type="unfinished"/>
+        <translation>Názov súboru obsahuje neplatné znaky: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="144"/>
         <source>Could not rename file. Please make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Nemôžem premenovať súbor. Prosím uistite sa že ste pripojený k serveru.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="155"/>
         <source>Can not rename file because file with the same name does already exist on the server. Please pick another name.</source>
-        <translation type="unfinished"/>
+        <translation>Nemôžem premenovať súbor pretože súbor s rovnakým menom už na serveri existuje. Prosím vyberte iné meno.</translation>
     </message>
 </context>
 <context>
@@ -2752,7 +2752,7 @@ môžu byť vyžadované dodatočné oprávnenia.</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="158"/>
         <source>Could not download update. Please open &lt;a href=&apos;%1&apos;&gt;%1&lt;/a&gt; to download the update manually.</source>
-        <translation type="unfinished"/>
+        <translation>Nemôžem stiahnuť aktualizáciu. Kliknite, prosím, na &lt;a href=&apos;%1&apos;&gt;%1&lt;/a&gt; pre ručné stiahnutie aktualizácie.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="157"/>
@@ -2767,7 +2767,7 @@ môžu byť vyžadované dodatočné oprávnenia.</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="166"/>
         <source>New %1 is available. Please open &lt;a href=&apos;%2&apos;&gt;%2&lt;/a&gt; to download the update.</source>
-        <translation type="unfinished"/>
+        <translation>Je dostupná nová %1. Pre stiahnutie kliknite &lt;a href=&apos;%2&apos;&gt;%2&lt;/a&gt; pre stiahnutie aktualizácie.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="161"/>
@@ -4055,7 +4055,7 @@ Toto je nový experimentálny režim. Ak sa ho rozhodnete použiť, nahláste v�
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="194"/>
         <source>View only</source>
-        <translation type="unfinished"/>
+        <translation>Iba pre čítanie</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="198"/>
@@ -4080,7 +4080,7 @@ Toto je nový experimentálny režim. Ak sa ho rozhodnete použiť, nahláste v�
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="223"/>
         <source>Link name</source>
-        <translation type="unfinished"/>
+        <translation>Názov odkazu</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="218"/>
@@ -4100,7 +4100,7 @@ Toto je nový experimentálny režim. Ak sa ho rozhodnete použiť, nahláste v�
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="302"/>
         <source>Delete link</source>
-        <translation type="unfinished"/>
+        <translation>Zmazať odkaz</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="271"/>
