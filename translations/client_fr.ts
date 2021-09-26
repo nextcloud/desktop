@@ -2207,7 +2207,7 @@ Notez que cela ne permet seulement de sélectionner où sont récupérées les m
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="40"/>
         <source>This entry is provided by the system at &quot;%1&quot; and cannot be modified in this view.</source>
-        <translation type="unfinished"/>
+        <translation>Cette entrée est fournie par le système dans &quot;%1&quot; et ne peut être modifiée dans cette vue.</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="40"/>
@@ -2337,7 +2337,7 @@ Les éléments ayant l&apos;option &quot;Autoriser la suppression&quot; pourront
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="155"/>
         <source>Can not rename file because file with the same name does already exist on the server. Please pick another name.</source>
-        <translation type="unfinished"/>
+        <translation>Impossible de renommer le fichier car un fichier portant le même nom existe déjà sur le serveur. Veuillez choisir un autre nom.</translation>
     </message>
 </context>
 <context>
@@ -2394,7 +2394,8 @@ Si activés, les logs seront écrits dans %1</translation>
         <location filename="../src/gui/logbrowser.cpp" line="70"/>
         <source>This setting persists across client restarts.
 Note that using any logging command line options will override this setting.</source>
-        <translation type="unfinished"/>
+        <translation>Ce paramètre persiste lors des redémarrages du client.
+Notez que l&apos;utilisation de toute option de ligne de commande de journalisation remplacera ce paramètre.</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="70"/>
@@ -2666,7 +2667,7 @@ Les journaux seront écrits dans %1.</translation>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="121"/>
         <source>Empty JSON from OAuth2 redirect</source>
-        <translation type="unfinished"/>
+        <translation>Vider le JSON de la redirection OAuth2</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="126"/>
@@ -2711,7 +2712,7 @@ L&apos;assistant de mise à jour peut vous demandez des autorisations supplémen
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="109"/>
         <source>A new update for %1 is about to be installed. The updater may ask for additional privileges during the process. Your computer may reboot to complete the installation.</source>
-        <translation type="unfinished"/>
+        <translation>Une nouvelle mise à jour pour %1 est sur le point d&apos;être installée. Le dispositif de mise à jour peut demander des autorisations supplémentaires au cours du processus. Votre ordinateur peut redémarrer pour terminer l&apos;installation.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="143"/>
@@ -2856,7 +2857,7 @@ L&apos;assistant de mise à jour peut vous demandez des autorisations supplémen
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="259"/>
         <source>%1 folder &quot;%2&quot; is synced to local folder &quot;%3&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Le dossier %1 &quot;%2&quot; est synchronisé avec le dossier local &quot;%3&quot;.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="262"/>
@@ -3273,7 +3274,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="271"/>
         <source>File names containing the character &quot;%1&quot; are not supported on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>Les noms de fichiers contenant le caractère &quot;%1&quot; ne sont pas pris en charge par ce système de fichiers.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="272"/>
@@ -3358,12 +3359,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="959"/>
         <source>Conflict when uploading a folder. It&apos;s going to get cleared!</source>
-        <translation type="unfinished"/>
+        <translation>Conflit lors de l&apos;envoi d&apos;un dossier. Il va être supprimé !</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="962"/>
         <source>Conflict when uploading a file. It&apos;s going to get removed!</source>
-        <translation type="unfinished"/>
+        <translation>Conflit lors de l&apos;envoi d&apos;un fichier. Il va être supprimé !</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1292"/>
@@ -3421,12 +3422,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1025"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Erreur lors de la mise à jour des métadonnées : %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1029"/>
         <source>File is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Le fichier est actuellement en cours d&apos;utilisation</translation>
     </message>
 </context>
 <context>
@@ -3501,12 +3502,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="1096"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Erreur lors de la mise à jour des métadonnées : %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="1099"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Le fichier %1 est en cours d&apos;utilisation</translation>
     </message>
 </context>
 <context>
@@ -3547,12 +3548,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="194"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Erreur lors de la mise à jour des métadonnées : %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="197"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Le fichier %1 est en cours d&apos;utilisation</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="193"/>
@@ -3593,12 +3594,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="262"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Erreur lors de la mise à jour des métadonnées : %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="265"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Le fichier %1 est en cours d&apos;utilisation</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="257"/>
@@ -3609,7 +3610,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="271"/>
         <source>Failed to rename file</source>
-        <translation type="unfinished"/>
+        <translation>Échec lors du changement de nom du fichier</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="277"/>
@@ -3653,7 +3654,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="267"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Le fichier %1 est en cours d&apos;utilisation</translation>
     </message>
 </context>
 <context>
@@ -3671,12 +3672,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="257"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Erreur lors de la mise à jour des métadonnées : %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="260"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Le fichier %1 est en cours d&apos;utilisation</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="265"/>
@@ -3735,12 +3736,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="770"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Erreur lors de la mise à jour des métadonnées : %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="773"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Le fichier %1 est en cours d&apos;utilisation</translation>
     </message>
 </context>
 <context>
@@ -3956,7 +3957,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="300"/>
         <source>The file cannot be shared because it does not have sharing permission.</source>
-        <translation type="unfinished"/>
+        <translation>Le fichier ne peut pas être partagé car il ne dispose pas des permissions de partage.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="366"/>
@@ -4049,7 +4050,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="194"/>
         <source>View only</source>
-        <translation type="unfinished"/>
+        <translation>Voir uniquement</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="198"/>
@@ -4074,7 +4075,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="223"/>
         <source>Link name</source>
-        <translation type="unfinished"/>
+        <translation>Nom du lien</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="218"/>
@@ -4158,7 +4159,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="339"/>
         <source>No results for &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Aucun résultat pour &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="391"/>
@@ -5006,7 +5007,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="152"/>
         <source>Emojis feature is not supported. Some user status functionality may not work.</source>
-        <translation type="unfinished"/>
+        <translation>La fonction Emojis n&apos;est pas prise en charge. Certaines fonctionnalités du statut de l&apos;utilisateur peuvent ne pas fonctionner.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="156"/>
@@ -5016,13 +5017,13 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="160"/>
         <source>Could not clear user status message. Make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Impossible d&apos;effacer le message de statut de l&apos;utilisateur. Assurez-vous que vous êtes connecté au serveur.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="358"/>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="456"/>
         <source>Don&apos;t clear</source>
-        <translation type="unfinished"/>
+        <translation>Ne pas effacer</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="361"/>
@@ -5297,7 +5298,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="418"/>
         <source>Checking for changes in remote &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Vérification des modifications dans &quot;%1&quot; distant</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="419"/>
@@ -5307,7 +5308,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="421"/>
         <source>Checking for changes in local &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Vérification des modifications dans &quot;%1&quot; local</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="437"/>
@@ -5767,7 +5768,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="38"/>
         <source>Online status</source>
-        <translation type="unfinished"/>
+        <translation>Statut en ligne</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="55"/>
@@ -5792,27 +5793,27 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="99"/>
         <source>Status message</source>
-        <translation type="unfinished"/>
+        <translation>Message de statut</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="137"/>
         <source>What is your status?</source>
-        <translation type="unfinished"/>
+        <translation>Quel est votre statut ?</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="165"/>
         <source>Clear status message after</source>
-        <translation type="unfinished"/>
+        <translation>Effacer le message de statut après</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="182"/>
         <source>Clear status message</source>
-        <translation type="unfinished"/>
+        <translation>Effacer le message de statut</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="188"/>
         <source>Set status message</source>
-        <translation type="unfinished"/>
+        <translation>Définir le message de statut</translation>
     </message>
 </context>
 <context>
@@ -5933,7 +5934,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/Window.qml" line="177"/>
         <source>Set user status</source>
-        <translation type="unfinished"/>
+        <translation>Définir le statut de l&apos;utilisateur</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="203"/>
@@ -6441,7 +6442,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/vfs/cfapi/vfs_cfapi.cpp" line="333"/>
         <source>Download of end-to-end encrypted file failed</source>
-        <translation type="unfinished"/>
+        <translation>Le téléchargement d&apos;un fichier chiffré de bout en bout a échoué</translation>
     </message>
     <message>
         <location filename="../src/libsync/vfs/cfapi/vfs_cfapi.cpp" line="334"/>
