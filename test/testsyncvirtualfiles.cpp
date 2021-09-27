@@ -127,7 +127,8 @@ private slots:
         QCOMPARE(QFileInfo(fakeFolder.localPath() + "A/a1" DVSUFFIX).lastModified(), someDate);
         QVERIFY(fakeFolder.currentRemoteState().find("A/a1"));
         QCOMPARE(dbRecord(fakeFolder, "A/a1" DVSUFFIX)._type, ItemTypeVirtualFile);
-        QVERIFY(completeSpy.isEmpty());
+        QVERIFY(completeSpy.findItem("A"));
+        QVERIFY2(completeSpy.size() == 1, "Only the meta data of A was updated");
         cleanup();
 
         // Neither does a remote change

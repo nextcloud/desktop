@@ -742,6 +742,13 @@ void SyncEngine::setNetworkLimits(int upload, int download)
 
 void SyncEngine::slotItemCompleted(const SyncFileItemPtr &item)
 {
+    Q_ASSERT([&] {
+        // ensure the item is not marked as finished twice
+        const bool finished = item->_finished;
+        item->_finished = true;
+        return !finished;
+    }());
+
     _progressInfo->setProgressComplete(*item);
 
     emit transmissionProgress(*_progressInfo);
