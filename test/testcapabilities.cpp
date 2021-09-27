@@ -214,6 +214,35 @@ private slots:
 
         QVERIFY(!capabilities.userStatusSupportsEmoji());
     }
+    
+    void testShareDefaultPermissions_defaultSharePermissionsNotInCapabilities_returnZero()
+    {
+        QVariantMap filesSharingMap;
+        filesSharingMap["api_enabled"] = false;
+        
+        QVariantMap capabilitiesMap;
+        capabilitiesMap["files_sharing"] = filesSharingMap;
+        
+        const OCC::Capabilities capabilities(capabilitiesMap);
+        const auto defaultSharePermissionsNotInCapabilities = capabilities.shareDefaultPermissions();
+
+        QCOMPARE(defaultSharePermissionsNotInCapabilities, {});
+    }
+    
+    void testShareDefaultPermissions_defaultSharePermissionsAvailable_returnPermissions()
+    {
+        QVariantMap filesSharingMap;
+        filesSharingMap["api_enabled"] = true;
+        filesSharingMap["default_permissions"] = 31;
+        
+        QVariantMap capabilitiesMap;
+        capabilitiesMap["files_sharing"] = filesSharingMap;
+        
+        const OCC::Capabilities capabilities(capabilitiesMap);
+        const auto defaultSharePermissionsAvailable = capabilities.shareDefaultPermissions();
+
+        QCOMPARE(defaultSharePermissionsAvailable, 31);
+    }
 };
 
 QTEST_GUILESS_MAIN(TestCapabilities)

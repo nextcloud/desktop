@@ -371,43 +371,30 @@ void ShareUserGroupWidget::slotCompleterActivated(const QModelIndex &index)
      */
 
     _lastCreatedShareId = QString();
-
-    if (sharee->type() == Sharee::Federated
-        && _account->serverVersionInt() < Account::makeServerVersion(9, 1, 0)) {
-        int permissions = SharePermissionRead | SharePermissionUpdate;
-        if (!_isFile) {
-            permissions |= SharePermissionCreate | SharePermissionDelete;
+    
+    QString password;
+    if (sharee->type() == Sharee::Email && _account->capabilities().shareEmailPasswordEnforced()) {
+        _ui->shareeLineEdit->clear();
+        // always show a dialog for password-enforced email shares
+        bool ok = false;
+        
+        do {
+            password = QInputDialog::getText(
+                this,
+                tr("Password for share required"),
+                tr("Please enter a password for your email share:"),
+                QLineEdit::Password,
+                QString(),
+                &ok);
+        } while (password.isEmpty() && ok);
+        
+        if (!ok) {
+            return;
         }
-        _manager->createShare(_sharePath, Share::ShareType(sharee->type()),
-            sharee->shareWith(), SharePermission(permissions));
-    } else {
-        QString password;
-        if (sharee->type() == Sharee::Email && _account->capabilities().shareEmailPasswordEnforced()) {
-            _ui->shareeLineEdit->clear();
-            // always show a dialog for password-enforced email shares
-            bool ok = false;
-
-            do {
-                password = QInputDialog::getText(
-                            this,
-                            tr("Password for share required"),
-                            tr("Please enter a password for your email share:"),
-                            QLineEdit::Password,
-                            QString(),
-                            &ok);
-            } while (password.isEmpty() && ok);
-
-            if (!ok) {
-                return;
-            }
-        }
-
-        // Default permissions on creation
-        int permissions = SharePermissionCreate | SharePermissionUpdate
-                | SharePermissionDelete | SharePermissionShare;
-        _manager->createShare(_sharePath, Share::ShareType(sharee->type()),
-            sharee->shareWith(), SharePermission(permissions), password);
     }
+    
+    _manager->createShare(_sharePath, Share::ShareType(sharee->type()),
+        sharee->shareWith(), _maxSharingPermissions, password);
 
     _ui->shareeLineEdit->setEnabled(false);
     _ui->shareeLineEdit->clear();
