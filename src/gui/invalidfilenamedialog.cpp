@@ -70,7 +70,7 @@ InvalidFilenameDialog::InvalidFilenameDialog(AccountPtr account, Folder *folder,
     _ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
     _ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Rename file"));
 
-    _ui->descriptionLabel->setText(tr("The file %1 could not be synced because it contains characters which are not allowed on this system.").arg(_originalFileName));
+    _ui->descriptionLabel->setText(tr("The file %1 could not be synced because the name contains characters which are not allowed on this system.").arg(_originalFileName));
     _ui->explanationLabel->setText(tr("The following characters are not allowed on the system: * \" | & ? , ; : \\ / ~ < >"));
     _ui->filenameLineEdit->setText(filePathFileInfo.fileName());
 
@@ -152,7 +152,7 @@ void InvalidFilenameDialog::onRemoteFileAlreadyExists(const QVariantMap &values)
 {
     Q_UNUSED(values);
 
-    _ui->errorLabel->setText(tr("Can not rename file because file with the same name does already exist on the server. Please pick another name."));
+    _ui->errorLabel->setText(tr("Cannot rename file because a file with the same name does already exist on the server. Please pick another name."));
     _ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
 }
 
