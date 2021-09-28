@@ -2311,8 +2311,8 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="73"/>
-        <source>The file %1 could not be synced because it contains characters which are not allowed on this system.</source>
-        <translation>無法同步檔案 %1，因為其包含了此系統上不允許的字元。</translation>
+        <source>The file %1 could not be synced because the name contains characters which are not allowed on this system.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="74"/>
@@ -2336,8 +2336,8 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="155"/>
-        <source>Can not rename file because file with the same name does already exist on the server. Please pick another name.</source>
-        <translation>無法重新命名檔案，因為伺服器上已有同名檔案。請換一個名字。</translation>
+        <source>Cannot rename file because a file with the same name does already exist on the server. Please pick another name.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

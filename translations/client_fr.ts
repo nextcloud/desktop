@@ -2311,8 +2311,8 @@ Les éléments ayant l&apos;option &quot;Autoriser la suppression&quot; pourront
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="73"/>
-        <source>The file %1 could not be synced because it contains characters which are not allowed on this system.</source>
-        <translation>Le fichier %1 n&apos;a pas pu être synchronisé parce qu&apos;il contiens des caractères invalides ou non-supportés par votre système.</translation>
+        <source>The file %1 could not be synced because the name contains characters which are not allowed on this system.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="74"/>
@@ -2336,8 +2336,8 @@ Les éléments ayant l&apos;option &quot;Autoriser la suppression&quot; pourront
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="155"/>
-        <source>Can not rename file because file with the same name does already exist on the server. Please pick another name.</source>
-        <translation>Impossible de renommer le fichier car un fichier portant le même nom existe déjà sur le serveur. Veuillez choisir un autre nom.</translation>
+        <source>Cannot rename file because a file with the same name does already exist on the server. Please pick another name.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
