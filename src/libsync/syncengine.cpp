@@ -958,7 +958,7 @@ void SyncEngine::wipeVirtualFiles(const QString &localPath, SyncJournalDb &journ
         QString localFile = localPath + QString::fromUtf8(rec._path);
         if (QFile::exists(localFile) && vfs.isDehydratedPlaceholder(localFile)) {
             qCDebug(lcEngine) << "Removing local dehydrated placeholder" << rec._path;
-            QFile::remove(localFile);
+            FileSystem::remove(localFile);
         }
     });
 

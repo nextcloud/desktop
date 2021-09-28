@@ -1,0 +1,6 @@
+Bugfix: Dehydrating placeholders failed if the file is read only
+
+We fixed a bug where dehydrating a read only file failed without any apparent reason.
+
+https://github.com/owncloud/client/issues/9093
+https://gitea.owncloud.services/client/client-plugin-vfs-win/pulls/33

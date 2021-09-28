@@ -374,6 +374,7 @@ bool FileSystem::remove(const QString &fileName, QString *errorString)
         if (errorString) {
             *errorString = f.errorString();
         }
+        qCWarning(lcFileSystem) << "Failed to delete:" << fileName << "Error:" << f.errorString();
         return false;
     }
     return true;
