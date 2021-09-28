@@ -983,30 +983,30 @@ File synchronization desktop utility.</source>
         <translation>%1 غير قابل للقراءة.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="456"/>
+        <location filename="../src/gui/folder.cpp" line="451"/>
         <source>%1 has been removed.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 تمت إزالته.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="470"/>
+        <location filename="../src/gui/folder.cpp" line="465"/>
         <source>%1 has been updated.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 تم تحديثه.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="477"/>
+        <location filename="../src/gui/folder.cpp" line="472"/>
         <source>%1 has been renamed to %2.</source>
         <comment>%1 and %2 name files.</comment>
         <translation>%1 تمت إعادة تسميته باسم %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="484"/>
+        <location filename="../src/gui/folder.cpp" line="479"/>
         <source>%1 has been moved to %2.</source>
         <translation>%1 تم نقله إلى %2.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="454"/>
+        <location filename="../src/gui/folder.cpp" line="449"/>
         <source>%1 and %n other file(s) have been removed.</source>
         <translation><numerusform>تمت إزالة %1 و%n ملف آخر.</numerusform><numerusform>تمت إزالة %1 و%n ملف آخر.</numerusform><numerusform>تمت إزالة %1 و%n ملفين آخرين.</numerusform><numerusform>تمت إزالة %1 و%n ملفات أخرى.</numerusform><numerusform>تمت إزالة %1 و%n ملفات أخرى.</numerusform><numerusform>تمت إزالة %1 و%n ملفات أخرى.</numerusform></translation>
     </message>
@@ -1016,92 +1016,92 @@ File synchronization desktop utility.</source>
         <translation type="unfinished"/>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="461"/>
+        <location filename="../src/gui/folder.cpp" line="456"/>
         <source>%1 and %n other file(s) have been added.</source>
         <translation><numerusform>تمت إضافة %1 و%n ملف آخر.</numerusform><numerusform>تمت إضافة %1 و%n ملف آخر.</numerusform><numerusform>تمت إضافة %1 و%n ملفين آخرين.</numerusform><numerusform>تمت إضافة %1 و%n ملفات أخرى.</numerusform><numerusform>تمت إضافة %1 و%n ملفات أخرى.</numerusform><numerusform>تمت إضافة %1 و%n ملفات أخرى.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="463"/>
+        <location filename="../src/gui/folder.cpp" line="458"/>
         <source>%1 has been added.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 تمت إضافته.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="468"/>
+        <location filename="../src/gui/folder.cpp" line="463"/>
         <source>%1 and %n other file(s) have been updated.</source>
         <translation><numerusform>تم تحديث %1 و%n ملف آخر.</numerusform><numerusform>تم تحديث %1 و%n ملف آخر.</numerusform><numerusform>تم تحديث %1 و%n ملفين آخرين.</numerusform><numerusform>تم تحديث %1 و%n ملفات أخرى.</numerusform><numerusform>تم تحديث %1 و%n ملفات أخرى.</numerusform><numerusform>تم تحديث %1 و%n ملفات أخرى.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="475"/>
+        <location filename="../src/gui/folder.cpp" line="470"/>
         <source>%1 has been renamed to %2 and %n other file(s) have been renamed.</source>
         <translation><numerusform>تمت إعادة تسمية %1 باسم %2 وتمت إعادة تسمية %n ملف آخر.</numerusform><numerusform>تمت إعادة تسمية %1 باسم %2 وتمت إعادة تسمية %n ملف آخر.</numerusform><numerusform>تمت إعادة تسمية %1 باسم %2 وتمت إعادة تسمية %n ملفين آخرين.</numerusform><numerusform>تمت إعادة تسمية %1 باسم %2 وتمت إعادة تسمية %n ملفات أخرى.</numerusform><numerusform>تمت إعادة تسمية %1 باسم %2 وتمت إعادة تسمية %n ملفات أخرى.</numerusform><numerusform>تمت إعادة تسمية %1 باسم %2 وتمت إعادة تسمية %n ملفات أخرى.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="482"/>
+        <location filename="../src/gui/folder.cpp" line="477"/>
         <source>%1 has been moved to %2 and %n other file(s) have been moved.</source>
         <translation><numerusform>تم نقل %1 إلى %2 وتم نقل %n ملف آخر.</numerusform><numerusform>تم نقل %1 إلى %2 وتم نقل %n ملف آخر.</numerusform><numerusform>تم نقل %1 إلى %2 وتم نقل %n ملفين آخرين.</numerusform><numerusform>تم نقل %1 إلى %2 وتم نقل %n ملفات أخرى.</numerusform><numerusform>تم نقل %1 إلى %2 وتم نقل %n ملفات أخرى.</numerusform><numerusform>تم نقل %1 إلى %2 وتم نقل %n ملفات أخرى.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="489"/>
+        <location filename="../src/gui/folder.cpp" line="484"/>
         <source>%1 has and %n other file(s) have sync conflicts.</source>
         <translation><numerusform>حدث تعارض في مزامنة %1 ومزامنة %n ملف آخر.</numerusform><numerusform>حدث تعارض في مزامنة %1 ومزامنة %n ملف آخر.</numerusform><numerusform>حدث تعارض في مزامنة %1 ومزامنة %n ملفين آخرين.</numerusform><numerusform>حدث تعارض في مزامنة %1 ومزامنة %n ملفات أخرى.</numerusform><numerusform>حدث تعارض في مزامنة %1 ومزامنة %n ملفات أخرى.</numerusform><numerusform>حدث تعارض في مزامنة %1 ومزامنة %n ملفات أخرى.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="491"/>
+        <location filename="../src/gui/folder.cpp" line="486"/>
         <source>%1 has a sync conflict. Please check the conflict file!</source>
         <translation>%1 حدث تعارض في مزامنته. يُرجى فحص ملف التعارض!</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="496"/>
+        <location filename="../src/gui/folder.cpp" line="491"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
         <translation><numerusform>تعذّرت مزامنة %1 و%n ملف آخر بسبب الأخطاء. اطلع على السجل للحصول على التفاصيل.</numerusform><numerusform>تعذّرت مزامنة %1 و%n ملف آخر بسبب الأخطاء. اطلع على السجل للحصول على التفاصيل.</numerusform><numerusform>تعذّرت مزامنة %1 و%n ملفين آخرين بسبب الأخطاء. اطلع على السجل للحصول على التفاصيل.</numerusform><numerusform>تعذّرت مزامنة %1 و%n ملفات أخرى بسبب الأخطاء. اطلع على السجل للحصول على التفاصيل.</numerusform><numerusform>تعذّرت مزامنة %1 و%n ملفات أخرى بسبب الأخطاء. اطلع على السجل للحصول على التفاصيل.</numerusform><numerusform>تعذّرت مزامنة %1 و%n ملفات أخرى بسبب الأخطاء. اطلع على السجل للحصول على التفاصيل.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="498"/>
+        <location filename="../src/gui/folder.cpp" line="493"/>
         <source>%1 could not be synced due to an error. See the log for details.</source>
         <translation>%1 تعذّرت المزامنة بسبب حدوث خطأ. اطلع على السجل للحصول على التفاصيل.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="504"/>
+        <location filename="../src/gui/folder.cpp" line="499"/>
         <source>Sync Activity</source>
         <translation>نشاط المزامنة</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="857"/>
+        <location filename="../src/gui/folder.cpp" line="853"/>
         <source>Could not read system exclude file</source>
         <translation>تعذّرت قراءة ملف استبعاد النظام</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1100"/>
+        <location filename="../src/gui/folder.cpp" line="1096"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>تمت إضافة مجلد جديد أكبر من %1 ميجا بايت: %2.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1103"/>
+        <location filename="../src/gui/folder.cpp" line="1099"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>تمت إضافة مجلد من وحدات التخزين الخارجية.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1104"/>
+        <location filename="../src/gui/folder.cpp" line="1100"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>يُرجى الانتقال إلى الإعدادات لتحديده إذا كنت ترغب في تنزيله.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1163"/>
+        <location filename="../src/gui/folder.cpp" line="1159"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation>تم إنشاء المجلد %1 لكن تم استبعاده من المزامنة مسبقًا. لن تتم مزامنة البيانات الموجودة بداخله.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1166"/>
+        <location filename="../src/gui/folder.cpp" line="1162"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
         <translation>تم إنشاء ملف %1 لكن تم استبعاده من المزامنة مسبقًا. لن تتم مزامنته.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1177"/>
+        <location filename="../src/gui/folder.cpp" line="1173"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
@@ -1114,7 +1114,7 @@ This means that the synchronization client might not upload local changes immedi
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1254"/>
+        <location filename="../src/gui/folder.cpp" line="1250"/>
         <source>All files in the sync folder '%1' folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
@@ -1125,7 +1125,7 @@ If you decide to delete the files, they will be unavailable to you, unless you a
 إذا قررت حذف الملفات، ستكون غير متوفرة لك، ما لم تكن أنت المالك.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1259"/>
+        <location filename="../src/gui/folder.cpp" line="1255"/>
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
@@ -1134,17 +1134,17 @@ If this was an accident and you decide to keep your files, they will be re-synce
 إذا حدث ذلك صدفة، وقررت الاحتفاظ بملفاتك، ستتم إعادة مزامنتها من الخادم.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1263"/>
+        <location filename="../src/gui/folder.cpp" line="1259"/>
         <source>Remove All Files?</source>
         <translation>هل تريد إزالة كل الملفات؟</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1267"/>
+        <location filename="../src/gui/folder.cpp" line="1263"/>
         <source>Remove all files</source>
         <translation>إزالة كل الملفات</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1268"/>
+        <location filename="../src/gui/folder.cpp" line="1264"/>
         <source>Keep files</source>
         <translation>حفظ الملفات</translation>
     </message>
@@ -1162,112 +1162,112 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>تم العثور على دفتر يومية مزامنة قديم &apos;%1&apos;، لكن تعذّرت إزالته. يُرجى التأكد من عدم وجود أي تطبيق يستخدمها حاليًا.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1223"/>
+        <location filename="../src/gui/folderman.cpp" line="1222"/>
         <source> (backup)</source>
         <translation> (النسخ الاحتياطي)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1228"/>
+        <location filename="../src/gui/folderman.cpp" line="1227"/>
         <source> (backup %1)</source>
         <translation> (النسخ الاحتياطي %1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1330"/>
+        <location filename="../src/gui/folderman.cpp" line="1329"/>
         <source>Undefined State.</source>
         <translation>حالة غير معرفة.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1333"/>
+        <location filename="../src/gui/folderman.cpp" line="1332"/>
         <source>Waiting to start syncing.</source>
         <translation>الانتظار لبدء المزامنة.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1336"/>
+        <location filename="../src/gui/folderman.cpp" line="1335"/>
         <source>Preparing for sync.</source>
         <translation>التحضير للمزامنة.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1339"/>
+        <location filename="../src/gui/folderman.cpp" line="1338"/>
         <source>Sync is running.</source>
         <translation>المزامنة قيد التشغيل.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1344"/>
+        <location filename="../src/gui/folderman.cpp" line="1343"/>
         <source>Sync was successful, unresolved conflicts.</source>
         <translation>المزامنة ناجحة، ولم يتم حل التعارضات.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1346"/>
+        <location filename="../src/gui/folderman.cpp" line="1345"/>
         <source>Last Sync was successful.</source>
         <translation>المزامنة الأخيرة تمت بنجاح.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1352"/>
+        <location filename="../src/gui/folderman.cpp" line="1351"/>
         <source>Setup Error.</source>
         <translation>خطأ في الإعداد.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1355"/>
+        <location filename="../src/gui/folderman.cpp" line="1354"/>
         <source>User Abort.</source>
         <translation>إلغاء المستخدم.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1358"/>
+        <location filename="../src/gui/folderman.cpp" line="1357"/>
         <source>Sync is paused.</source>
         <translation>توقفت المزامنة مؤقتًا.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1364"/>
+        <location filename="../src/gui/folderman.cpp" line="1363"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (المزامنة متوقفة مؤقتًا)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1372"/>
+        <location filename="../src/gui/folderman.cpp" line="1371"/>
         <source>No valid folder selected!</source>
         <translation>لم يتم تحديد مجلد صالح!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1380"/>
+        <location filename="../src/gui/folderman.cpp" line="1379"/>
         <source>The folder %1 is used in a folder sync connection!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1387"/>
+        <location filename="../src/gui/folderman.cpp" line="1386"/>
         <source>The selected path does not exist!</source>
         <translation>المسار المحدد غير موجود!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1391"/>
+        <location filename="../src/gui/folderman.cpp" line="1390"/>
         <source>The selected path is not a folder!</source>
         <translation>المسار المحدد ليس مجلدًا!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1395"/>
+        <location filename="../src/gui/folderman.cpp" line="1394"/>
         <source>You have no permission to write to the selected folder!</source>
         <translation>ليس لديك الصلاحية للكتابة في المجلد المحدد!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1432"/>
+        <location filename="../src/gui/folderman.cpp" line="1431"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
         <translation>تم إجراء مزامنة من الخادم إلى المجلد المحلي هذا بالفعل. يُرجى اختيار مجلد محلي آخر!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1436"/>
+        <location filename="../src/gui/folderman.cpp" line="1435"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
         <translation>يحتوي المجلد المحلي %1 بالفعل على مجلد مستخدم في اتصال مزامنة المجلد. يُرجى اختيار مجلد آخر!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1442"/>
+        <location filename="../src/gui/folderman.cpp" line="1441"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation>المجلد المحلي %1 موجود في مجلد مستخدم في اتصال مزامنة المجلد بالفعل. يُرجى اختيار مجلد آخر!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1449"/>
+        <location filename="../src/gui/folderman.cpp" line="1448"/>
         <source>%1 Please pick another one!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1525"/>
+        <location filename="../src/gui/folderman.cpp" line="1524"/>
         <source>Multiple accounts are sharing the folder %1.
 This configuration is know to lead to dataloss and is no longer supported.
 Please consider removing this folder from the account and adding it again.</source>
