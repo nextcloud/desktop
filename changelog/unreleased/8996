@@ -1,0 +1,5 @@
+Bugfix: Building libcloudprovider support fails
+
+We fixed the libcloudprovider integration.
+
+https://github.com/owncloud/client/issues/8996
