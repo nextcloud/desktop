@@ -63,6 +63,7 @@
                 <File Id="NCContextMenu.dll" KeyPath="yes" Source="$(var.HarvestAppDir)\shellext\NCContextMenu.dll">
                     <Class Id="$(var.ContextMenuGuid)" Context="InprocServer32" Description="$(var.ContextMenuDescription)" ThreadingModel="apartment" />
                 </File>
+                <RegistryValue Root="HKCR" Key="CLSID\$(var.ContextMenuGuid)" Name="ContextMenuOptIn" Value="" Type="string" Action="write" />
                 <RegistryValue Root="HKCR" Key="AllFileSystemObjects\shellex\ContextMenuHandlers\$(var.ContextMenuRegKeyName)" Value="$(var.ContextMenuGuid)" Type="string" Action="write" />
             </Component>
 
