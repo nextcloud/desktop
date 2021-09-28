@@ -10,7 +10,9 @@ Summary
 
 * Bugfix - Mac multiple dialogs block all input: [#8421](https://github.com/owncloud/client/issues/8421)
 * Bugfix - Enforce rtl layout with rtl languages: [#8806](https://github.com/owncloud/client/issues/8806)
+* Bugfix - Broken url in branded builds: [#8920](https://github.com/owncloud/client/issues/8920)
 * Bugfix - Handle use of directory of another Windows VFS sync client: [#8994](https://github.com/owncloud/client/issues/8994)
+* Bugfix - Building libcloudprovider support fails: [#8996](https://github.com/owncloud/client/issues/8996)
 * Bugfix - Tables now display local time: [#9006](https://github.com/owncloud/client/issues/9006)
 * Bugfix - We fixed a crash when using the retry action on an issue: [#9013](https://github.com/owncloud/client/issues/9013)
 * Bugfix - Fix crash when closing the client: [#9014](https://github.com/owncloud/client/issues/9014)
@@ -19,6 +21,8 @@ Summary
 * Bugfix - Properly deployment of Qt translations Mac and Window: [#9022](https://github.com/owncloud/client/issues/9022)
 * Bugfix - The file status of suffix placeholders was displayed incorrectly: [#9026](https://github.com/owncloud/client/issues/9026)
 * Bugfix - Fix copy url location for private links: [#9048](https://github.com/owncloud/client/issues/9048)
+* Bugfix - When a folder is removed we leave a database behind: [#9057](https://github.com/owncloud/client/issues/9057)
+* Bugfix - Dehydrating placeholders failed if the file is read only: [#9093](https://github.com/owncloud/client/issues/9093)
 * Change - Make sharedialog preview be more resilient: [#8938](https://github.com/owncloud/client/issues/8938)
 * Enhancement - Display the error type in the issue protocol and allow filtering: [#9000](https://github.com/owncloud/client/issues/9000)
 
@@ -41,6 +45,12 @@ Details
    https://github.com/owncloud/client/issues/8806
    https://github.com/owncloud/client/pull/8981
 
+* Bugfix - Broken url in branded builds: [#8920](https://github.com/owncloud/client/issues/8920)
+
+   We fixed a string issue with branded builds resulting in invalid urls.
+
+   https://github.com/owncloud/client/issues/8920
+
 * Bugfix - Handle use of directory of another Windows VFS sync client: [#8994](https://github.com/owncloud/client/issues/8994)
 
    We now better handle setup issues during the initialisation of virtual files support.
@@ -48,6 +58,12 @@ Details
    caused a crash.
 
    https://github.com/owncloud/client/issues/8994
+
+* Bugfix - Building libcloudprovider support fails: [#8996](https://github.com/owncloud/client/issues/8996)
+
+   We fixed the libcloudprovider integration.
+
+   https://github.com/owncloud/client/issues/8996
 
 * Bugfix - Tables now display local time: [#9006](https://github.com/owncloud/client/issues/9006)
 
@@ -114,6 +130,21 @@ Details
    We fixed a bug where a placholder was copied to the clipboard instead of the url.
 
    https://github.com/owncloud/client/issues/9048
+
+* Bugfix - When a folder is removed we leave a database behind: [#9057](https://github.com/owncloud/client/issues/9057)
+
+   We fixed a bug where we left an empty `sync_journal.db` behind, when we removed a
+   folder/account. As we use the presence of `sync_journal.db` to determine whether the folder
+   is used by a sync client this prevented using an old folder in a new setup.
+
+   https://github.com/owncloud/client/issues/9057
+
+* Bugfix - Dehydrating placeholders failed if the file is read only: [#9093](https://github.com/owncloud/client/issues/9093)
+
+   We fixed a bug where dehydrating a read only file failed without any apparent reason.
+
+   https://github.com/owncloud/client/issues/9093
+   https://gitea.owncloud.services/client/client-plugin-vfs-win/pulls/33
 
 * Change - Make sharedialog preview be more resilient: [#8938](https://github.com/owncloud/client/issues/8938)
 
