@@ -839,7 +839,7 @@ bool Folder::reloadExcludes()
 
 void Folder::startSync()
 {
-    Q_ASSERT(ok());
+    Q_ASSERT(isReady());
     Q_ASSERT(_folderWatcher);
 
     if (!OC_ENSURE(!isSyncRunning())) {
