@@ -199,9 +199,6 @@ bool FileSystem::uncheckedRenameReplace(const QString &originFileName,
 #else //Q_OS_WIN
     // You can not overwrite a read-only file on windows.
 
-    Utility::NtfsPermissionLookupRAII ntfs_perm;
-    // Warning: This function does not manipulate ACLs, which may limit its effectiveness.
-    // this renders this check kind of pointless
     if (!QFileInfo(destinationFileName).isWritable()) {
         setFileReadOnly(destinationFileName, false);
     }
@@ -368,9 +365,6 @@ bool FileSystem::remove(const QString &fileName, QString *errorString)
     // You cannot delete a read-only file on windows, but we want to
     // allow that.
 
-    Utility::NtfsPermissionLookupRAII ntfs_perm;
-    // Warning: This function does not manipulate ACLs, which may limit its effectiveness.
-    // this renders this check kind of pointless
     if (!QFileInfo(fileName).isWritable()) {
         setFileReadOnly(fileName, false);
     }
