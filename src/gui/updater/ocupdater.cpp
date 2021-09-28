@@ -153,6 +153,13 @@ QString OCUpdater::statusString() const
     case DownloadTimedOut:
         return tr("Could not check for new updates.");
     case UpdateOnlyAvailableThroughSystem:
+#ifdef Q_OS_LINUX
+        // https://docs.appimage.org/packaging-guide/environment-variables.html
+        // TODO: update once AppImageUpdate has been implemented
+        if (qEnvironmentVariableIsSet("APPIMAGE")) {
+            return tr("New %1 available. Please click <a href='%2'>here</a> to download the new AppImage manually.").arg(updateVersion, _updateInfo.web());
+        }
+#endif
         return tr("New %1 available. Please use the system's update tool to install it.").arg(updateVersion);
     case CheckingServer:
         return tr("Checking update server...");

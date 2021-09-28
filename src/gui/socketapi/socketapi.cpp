@@ -751,7 +751,7 @@ void SocketApi::command_MAKE_AVAILABLE_LOCALLY(const QString &filesArg, SocketLi
 
     for (const auto &file : files) {
         auto data = FileData::get(file);
-        if (!data.folder || !data.folder->ok())
+        if (!data.folder || !data.folder->isReady())
             continue;
 
         // Update the pin state on all items
@@ -770,7 +770,7 @@ void SocketApi::command_MAKE_ONLINE_ONLY(const QString &filesArg, SocketListener
 
     for (const auto &file : files) {
         auto data = FileData::get(file);
-        if (!data.folder || !data.folder->ok())
+        if (!data.folder || !data.folder->isReady())
             continue;
 
         // Update the pin state on all items
@@ -984,7 +984,7 @@ SocketApi::FileData SocketApi::FileData::get(const QString &localFile)
         return data;
 
     data.serverRelativePath = QDir(data.folder->remotePath()).filePath(data.folderRelativePath);
-    if (data.folder->ok()) {
+    if (data.folder->isReady()) {
         data.serverRelativePath = data.folder->vfs().underlyingFileName(data.serverRelativePath);
     }
     return data;
@@ -992,7 +992,7 @@ SocketApi::FileData SocketApi::FileData::get(const QString &localFile)
 
 QString SocketApi::FileData::folderRelativePathNoVfsSuffix() const
 {
-    if (folder->ok()) {
+    if (folder->isReady()) {
         return folder->vfs().underlyingFileName(folderRelativePath);
     }
     return folderRelativePath;
@@ -1107,7 +1107,7 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
 
     // File availability actions
     if (folder
-        && folder->ok()
+        && folder->isReady()
         && folder->virtualFilesEnabled()
         && folder->vfs().socketApiPinStateActionsShown()) {
         OC_ENFORCE(!files.isEmpty());
@@ -1126,7 +1126,7 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
             return VfsItemAvailability::Mixed;
         };
         for (const auto &file : files) {
-            if (!folder->ok()) {
+            if (!folder->isReady()) {
                 continue;
             }
             auto fileData = FileData::get(file);

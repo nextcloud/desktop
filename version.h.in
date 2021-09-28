@@ -19,10 +19,9 @@
 #ifndef VERSION_H
 #define VERSION_H
 
+#include <QString>
+// TODO: use namespace and functions
 #cmakedefine GIT_SHA1 "@GIT_SHA1@"
-
-#define MIRALL_STRINGIFY(...) MIRALL_TOSTRING(__VA_ARGS__)
-#define MIRALL_TOSTRING(...)  "" #__VA_ARGS__
 
 /* MIRALL version */
 #define MIRALL_VERSION_MAJOR @MIRALL_VERSION_MAJOR@
@@ -30,10 +29,13 @@
 #define MIRALL_VERSION_PATCH @MIRALL_VERSION_PATCH@
 #define MIRALL_VERSION_BUILD @MIRALL_VERSION_BUILD@
 
-#define MIRALL_VERSION_SUFFIX @MIRALL_VERSION_SUFFIX@
+inline auto MIRALL_VERSION_SUFFIX() {
+    return QStringLiteral("@MIRALL_VERSION_SUFFIX@");
+}
 
-#define MIRALL_VERSION       @MIRALL_VERSION@
-#define MIRALL_VERSION_FULL  @MIRALL_VERSION_FULL@
+inline auto MIRALL_VERSION_FULL() {
+    return QStringLiteral("@MIRALL_VERSION_FULL@");
+}
 
 #define MIRALL_VERSION_STRING "@MIRALL_VERSION_STRING@"
 

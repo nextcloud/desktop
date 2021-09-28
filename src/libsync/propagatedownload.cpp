@@ -899,7 +899,7 @@ void PropagateDownloadFile::contentChecksumComputed(const QByteArray &checksumTy
 void PropagateDownloadFile::downloadFinished()
 {
     OC_ASSERT(!_tmpFile.isOpen());
-    QString fn = propagator()->fullLocalPath(_item->destination());
+    const QString fn = propagator()->fullLocalPath(_item->destination());
 
     // In case of file name clash, report an error
     // This can happen if another parallel download saved a clashing file.
@@ -991,15 +991,20 @@ void PropagateDownloadFile::downloadFinished()
 
     auto vfs = propagator()->syncOptions()._vfs;
     if (vfs && vfs->mode() == Vfs::WithSuffix) {
+        // TODO: move to the suffix plugin
         // If the virtual file used to have a different name and db
         // entry, remove it transfer its old pin state.
         if (_item->_type == ItemTypeVirtualFileDownload) {
-            QString virtualFile = _item->_file + vfs->fileSuffix();
-            auto fn = propagator()->fullLocalPath(virtualFile);
-            qCDebug(lcPropagateDownload) << "Download of previous virtual file finished" << fn;
-            QFile::remove(fn);
-            propagator()->_journal->deleteFileRecord(virtualFile);
-
+            const QString virtualFile = _item->_file + vfs->fileSuffix();
+            const QString virtualFileAbsPath = propagator()->fullLocalPath(virtualFile);
+            qCDebug(lcPropagateDownload) << "Download of previous virtual file finished" << virtualFileAbsPath;
+            if (QFileInfo::exists(virtualFileAbsPath)) {
+                if (!FileSystem::remove(virtualFileAbsPath, &error)) {
+                    done(SyncFileItem::FatalError, error);
+                    return;
+                }
+            }
+            OC_ASSERT(propagator()->_journal->deleteFileRecord(virtualFile));
             // Move the pin state to the new location
             auto pin = propagator()->_journal->internalPinStates().rawForPath(virtualFile.toUtf8());
             if (pin && *pin != PinState::Inherited) {
@@ -1019,7 +1024,6 @@ void PropagateDownloadFile::downloadFinished()
 
 void PropagateDownloadFile::updateMetadata(bool isConflict)
 {
-    const QString fn = propagator()->fullLocalPath(_item->destination());
     const auto result = propagator()->updateMetadata(*_item);
     if (!result) {
         done(SyncFileItem::FatalError, tr("Error updating metadata: %1").arg(result.error()));
@@ -1037,6 +1041,7 @@ void PropagateDownloadFile::updateMetadata(bool isConflict)
     if (!_item->_remotePerm.hasPermission(RemotePermissions::IsShared)
         && (_item->_file == QLatin1String(".sys.admin#recall#")
                || _item->_file.endsWith(QLatin1String("/.sys.admin#recall#")))) {
+        const QString fn = propagator()->fullLocalPath(_item->destination());
         handleRecallFile(fn, propagator()->localPath(), *propagator()->_journal);
     }
 

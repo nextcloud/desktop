@@ -284,7 +284,7 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
     bool folderConnected = _model->data(index, FolderStatusDelegate::FolderAccountConnected).toBool();
     auto folderMan = FolderMan::instance();
     QPointer<Folder> folder = folderMan->folder(alias);
-    if (!folder || !OC_ENSURE(folder->ok()))
+    if (!folder || !OC_ENSURE(folder->isReady()))
         return;
 
     QMenu *menu = new QMenu(tv);
@@ -711,7 +711,7 @@ void AccountSettings::slotEnableCurrentFolder(bool terminate)
         currentlyPaused = f->syncPaused();
         if (!currentlyPaused && !terminate) {
             // check if a sync is still running and if so, ask if we should terminate.
-            if (f->isBusy()) { // its still running
+            if (f->isSyncRunning()) { // its still running
                 auto msgbox = new QMessageBox(QMessageBox::Question, tr("Sync Running"),
                     tr("The syncing operation is running.<br/>Do you want to terminate it?"),
                     QMessageBox::Yes | QMessageBox::No, this);
@@ -727,7 +727,7 @@ void AccountSettings::slotEnableCurrentFolder(bool terminate)
 
         // message box can return at any time while the thread keeps running,
         // so better check again after the user has responded.
-        if (f->isBusy() && terminate) {
+        if (f->isSyncRunning() && terminate) {
             f->slotTerminateSync();
         }
         f->setSyncPaused(!currentlyPaused);
@@ -962,7 +962,7 @@ void AccountSettings::refreshSelectiveSyncStatus()
     QString msg;
     int cnt = 0;
     for (Folder *folder : FolderMan::instance()->map()) {
-        if (folder->accountState() != _accountState || !folder->ok()) {
+        if (folder->accountState() != _accountState || !folder->isReady()) {
             continue;
         }
 

@@ -539,7 +539,7 @@ void ConfigFile::setSkipUpdateCheck(bool skip, const QString &connection)
 QString ConfigFile::updateChannel() const
 {
     QString defaultUpdateChannel = QStringLiteral("stable");
-    QString suffix = QString::fromLatin1(MIRALL_STRINGIFY(MIRALL_VERSION_SUFFIX));
+    const QString suffix = MIRALL_VERSION_SUFFIX();
     if (suffix.startsWith(QLatin1String("daily"))
         || suffix.startsWith(QLatin1String("nightly"))
         || suffix.startsWith(QLatin1String("alpha"))

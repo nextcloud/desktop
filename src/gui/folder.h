@@ -183,9 +183,9 @@ public:
     bool canSync() const;
 
     /**
-     * Whether the folder is ok
+     * Whether the folder is ready
      */
-    bool ok() const;
+    bool isReady() const;
 
     /**
      *  Returns true if the folder needs sync poll interval wise, and can
@@ -194,12 +194,6 @@ public:
     bool dueToSync() const;
 
     void prepareToSync();
-
-    /**
-     * True if the folder is busy and can't initiate
-     * a synchronization
-     */
-    virtual bool isBusy() const;
 
     /** True if the folder is currently synchronizing */
     bool isSyncRunning() const;
@@ -337,7 +331,7 @@ public slots:
       *
       * If the list of changed files is known, it is passed.
       */
-    void startSync(const QStringList &pathList = QStringList());
+    void startSync();
 
     int slotDiscardDownloadProgress();
     int downloadInfoCount();

@@ -1,0 +1,7 @@
+Bugfix: When a folder is removed we leave a database behind
+
+We fixed a bug where we left an empty `sync_journal.db` behind, when we removed a folder/account.
+As we use the presence of `sync_journal.db` to determine whether the folder is used by a sync client this
+prevented using an old folder in a new setup.
+
+https://github.com/owncloud/client/issues/9057

@@ -463,7 +463,7 @@ void SelectiveSyncDialog::accept()
         _folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, blackList);
 
         FolderMan *folderMan = FolderMan::instance();
-        if (_folder->isBusy()) {
+        if (_folder->isSyncRunning()) {
             _folder->slotTerminateSync();
         }
 

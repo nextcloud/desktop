@@ -130,14 +130,6 @@ option(BUILD_GUI "BUILD_GUI" ON)
 # specify additional vfs plugins
 set(VIRTUAL_FILE_SYSTEM_PLUGINS suffix win CACHE STRING "Name of internal plugin in src/libsync/vfs or the locations of virtual file plugins")
 
-# When this option is enabled, 5xx errors are not added to the blacklist
-# Normally you don't want to enable this option because if a particular file
-# triggers a bug on the server, you want the file to be blacklisted.
-option(OWNCLOUD_5XX_NO_BLACKLIST "OWNCLOUD_5XX_NO_BLACKLIST" OFF)
-if(OWNCLOUD_5XX_NO_BLACKLIST)
-    add_definitions(-DOWNCLOUD_5XX_NO_BLACKLIST=1)
-endif()
-
 if(APPLE)
   set( SOCKETAPI_TEAM_IDENTIFIER_PREFIX "" CACHE STRING "SocketApi prefix (including a following dot) that must match the codesign key's TeamIdentifier/Organizational Unit" )
 endif()

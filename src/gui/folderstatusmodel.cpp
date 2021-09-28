@@ -110,7 +110,7 @@ Qt::ItemFlags FolderStatusModel::flags(const QModelIndex &index) const
     auto flags = Qt::ItemIsEnabled;
     if (_folders.size() > index.row()) {
         const SubFolderInfo &folderInfo = _folders.at(index.row());
-        flags = folderInfo._folder->ok() ? Qt::ItemIsEnabled : Qt::NoItemFlags;
+        flags = folderInfo._folder->isReady() ? Qt::ItemIsEnabled : Qt::NoItemFlags;
     }
 
     switch (classify(index)) {
@@ -224,7 +224,7 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
         return errors;
     }
     case FolderStatusDelegate::FolderInfoMsg:
-        return f->ok() && f->virtualFilesEnabled() && f->vfs().mode() != Vfs::Mode::WindowsCfApi
+        return f->isReady() && f->virtualFilesEnabled() && f->vfs().mode() != Vfs::Mode::WindowsCfApi
             ? QStringList(tr("Virtual file support is enabled."))
             : QStringList();
     case FolderStatusDelegate::SyncRunning:
@@ -542,7 +542,7 @@ bool FolderStatusModel::canFetchMore(const QModelIndex &parent) const
         // Keep showing the error to the user, it will be hidden when the account reconnects
         return false;
     }
-    if (info->_folder && info->_folder->ok() && !info->_folder->supportsSelectiveSync()) {
+    if (info->_folder && info->_folder->isReady() && !info->_folder->supportsSelectiveSync()) {
         // Selective sync is hidden in that case
         return false;
     }
@@ -841,7 +841,7 @@ void FolderStatusModel::slotApplySelectiveSync()
         // do the sync if there were changes
         const auto changes = (oldBlackListSet - blackListSet) + (blackListSet - oldBlackListSet);
         if (!changes.isEmpty()) {
-            if (folder->isBusy()) {
+            if (folder->isSyncRunning()) {
                 folder->slotTerminateSync();
             }
             //The part that changed should not be read from the DB on next sync because there might be new folders
@@ -1154,7 +1154,7 @@ void FolderStatusModel::slotSyncAllPendingBigFolders()
         folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, QStringList());
 
         // Trigger a sync
-        if (folder->isBusy()) {
+        if (folder->isSyncRunning()) {
             folder->slotTerminateSync();
         }
         // The part that changed should not be read from the DB on next sync because there might be new folders

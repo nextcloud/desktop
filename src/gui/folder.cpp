@@ -259,11 +259,6 @@ QString Folder::cleanPath() const
     return cleanedPath;
 }
 
-bool Folder::isBusy() const
-{
-    return isSyncRunning();
-}
-
 bool Folder::isSyncRunning() const
 {
     return _engine->isSyncRunning() || _vfs->isHydrating();
@@ -294,10 +289,10 @@ bool Folder::syncPaused() const
 
 bool Folder::canSync() const
 {
-    return !syncPaused() && accountState()->isConnected() && ok();
+    return !syncPaused() && accountState()->isConnected() && isReady();
 }
 
-bool Folder::ok() const
+bool Folder::isReady() const
 {
     return _vfsIsReady;
 }
@@ -305,7 +300,7 @@ bool Folder::ok() const
 bool Folder::dueToSync() const
 {
     // conditions taken from previous folderman implementation
-    if (isSyncRunning() || etagJob() || isBusy() || !canSync()) {
+    if (isSyncRunning() || etagJob() || !canSync()) {
         return false;
     }
 
@@ -534,7 +529,6 @@ void Folder::startVfs()
     connect(&_engine->syncFileStatusTracker(), &SyncFileStatusTracker::fileStatusChanged,
             _vfs.data(), &Vfs::fileStatusChanged);
 
-    _vfs->start(vfsParams);
 
     connect(_vfs.data(), &Vfs::started, this, [this] {
         // Immediately mark the sqlite temporaries as excluded. They get recreated
@@ -550,6 +544,8 @@ void Folder::startVfs()
         _syncResult.setStatus(SyncResult::SetupError);
         _vfsIsReady = false;
     });
+
+    _vfs->start(vfsParams);
 }
 
 int Folder::slotDiscardDownloadProgress()
@@ -797,6 +793,13 @@ void Folder::slotTerminateSync()
 
 void Folder::wipeForRemoval()
 {
+    // prevent interaction with the db etc
+    _vfsIsReady = false;
+
+    // stop reacting to changes
+    // especially the upcoming deletion of the db
+    _folderWatcher.reset();
+
     // Delete files that have been partially downloaded.
     slotDiscardDownloadProgress();
 
@@ -805,12 +808,12 @@ void Folder::wipeForRemoval()
     _journal.close(); // close the sync journal
 
     // Remove db and temporaries
-    QString stateDbFile = _engine->journal()->databaseFilePath();
+    const QString stateDbFile = _engine->journal()->databaseFilePath();
 
     QFile file(stateDbFile);
     if (file.exists()) {
         if (!file.remove()) {
-            qCWarning(lcFolder) << "Failed to remove existing csync StateDB " << stateDbFile;
+            qCCritical(lcFolder) << "Failed to remove existing csync StateDB " << stateDbFile;
         } else {
             qCInfo(lcFolder) << "wipe: Removed csync StateDB " << stateDbFile;
         }
@@ -834,11 +837,12 @@ bool Folder::reloadExcludes()
     return _engine->excludedFiles().reloadExcludeFiles();
 }
 
-void Folder::startSync(const QStringList &pathList)
+void Folder::startSync()
 {
-    Q_UNUSED(pathList)
+    Q_ASSERT(isReady());
+    Q_ASSERT(_folderWatcher);
 
-    if (isBusy()) {
+    if (!OC_ENSURE(!isSyncRunning())) {
         qCCritical(lcFolder) << "ERROR csync is still running and new sync requested.";
         return;
     }
@@ -1221,7 +1225,7 @@ void Folder::setSaveBackwardsCompatible(bool save)
 
 void Folder::registerFolderWatcher()
 {
-    if (!ok()) {
+    if (!isReady()) {
         return;
     }
     if (_folderWatcher)

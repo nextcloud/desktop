@@ -1,0 +1,5 @@
+Bugfix: Broken url in branded builds
+
+We fixed a string issue with branded builds resulting in invalid urls.
+
+https://github.com/owncloud/client/issues/8920
