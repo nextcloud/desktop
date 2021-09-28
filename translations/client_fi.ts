@@ -2287,7 +2287,7 @@ Kohteet, joissa poisto on sallittu, poistetaan, jos ne estävät kansion poistam
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="73"/>
-        <source>The file %1 could not be synced because it contains characters which are not allowed on this system.</source>
+        <source>The file %1 could not be synced because the name contains characters which are not allowed on this system.</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -2312,7 +2312,7 @@ Kohteet, joissa poisto on sallittu, poistetaan, jos ne estävät kansion poistam
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="155"/>
-        <source>Can not rename file because file with the same name does already exist on the server. Please pick another name.</source>
+        <source>Cannot rename file because a file with the same name does already exist on the server. Please pick another name.</source>
         <translation type="unfinished"/>
     </message>
 </context>

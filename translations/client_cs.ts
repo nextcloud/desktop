@@ -2310,8 +2310,8 @@ Položky u kterých je umožněno mazání budou smazány, pokud brání tomu, a
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="73"/>
-        <source>The file %1 could not be synced because it contains characters which are not allowed on this system.</source>
-        <translation>Soubor %1 nebyl synchronizován, protože obsahuje znaky, které nejsou na tomto systému povoleny.</translation>
+        <source>The file %1 could not be synced because the name contains characters which are not allowed on this system.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="74"/>
@@ -2335,8 +2335,8 @@ Položky u kterých je umožněno mazání budou smazány, pokud brání tomu, a
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="155"/>
-        <source>Can not rename file because file with the same name does already exist on the server. Please pick another name.</source>
-        <translation>Soubor není možné přejmenovat, protože soubor se stejným názvem na serveru už existuje. Vyberte jiný název.</translation>
+        <source>Cannot rename file because a file with the same name does already exist on the server. Please pick another name.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
