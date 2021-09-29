@@ -1,0 +1,6 @@
+Enhancement: Allow to remove broken sync folders
+
+In case a folder is no longer available it was not possible to remove the folder.
+We now made the remove action available in that case.
+
+https://github.com/owncloud/client/pull/9099
