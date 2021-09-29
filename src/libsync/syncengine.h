@@ -291,9 +291,6 @@ private:
     LocalDiscoveryStyle _lastLocalDiscoveryStyle = LocalDiscoveryStyle::FilesystemOnly;
     LocalDiscoveryStyle _localDiscoveryStyle = LocalDiscoveryStyle::FilesystemOnly;
     std::set<QString> _localDiscoveryPaths;
-
-    // TODO: Remove this when the file restoration problem is fixed for a user
-    int _dataFingerprintSetFailCount = 0;
 };
 }
 

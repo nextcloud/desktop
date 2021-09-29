@@ -799,55 +799,8 @@ void SyncEngine::slotPropagationFinished(bool success)
         _anotherSyncNeeded = ImmediateFollowUp;
     }
 
-    // TODO: Remove this when the file restoration problem is fixed for a user
-    bool shouldStartSyncAgain = false;
-    const auto checkAndOverrideSetDataFingerprint = [this, &shouldStartSyncAgain] {
-        const int dataFingerprintOverrideThreshold = 9;
-        const QString dataFingerprintOverrideHostHash = QStringLiteral("63debc9ef6d217649ea70632ca573a1db7a237ba61c48cdd2bf797f7060233db");
-        const auto accountHost = account()->url().host();
-        const auto accountDisplayName = account()->displayName();
-
-        if (_dataFingerprintSetFailCount >= 0) {
-            qCWarning(lcEngine) << "setDataFingerprint has failed for account" << accountDisplayName << "on host" << accountHost << "due to sync errors. Checking the possibility for override...";
-
-            if (_dataFingerprintSetFailCount > 0) {
-                if (_dataFingerprintSetFailCount >= dataFingerprintOverrideThreshold) {
-                    qCWarning(lcEngine) << "All sync attempts failed for account" << accountDisplayName << "on host" << accountHost << "setting the dataFingerprint anyway.";
-                    _journal->setDataFingerprint(_discoveryPhase->_dataFingerprint);
-                    // this mechanism should only run once per app launch
-                    _dataFingerprintSetFailCount = -1;
-                } else {
-                    ++_dataFingerprintSetFailCount;
-                    // request to start sync again as it won't happen by itself unless the file has changed on the server or in the local folder
-                    shouldStartSyncAgain = true;
-                }
-            } else {
-                // only compare hash once
-                // if it matches - we don't need to calculate it again while _dataFingerprintSetFailCount is greater than 0
-                const auto accountHostHash = QString::fromUtf8(QCryptographicHash::hash(accountHost.toUtf8(), QCryptographicHash::Sha256).toHex());
-
-                if (accountHostHash == dataFingerprintOverrideHostHash) {
-                    qCInfo(lcEngine) << "accountHostHash" << accountHostHash << "equals to dataFingerprintOverrideHostHash" << dataFingerprintOverrideHostHash << "_dataFingerprintSetFailCount" << _dataFingerprintSetFailCount;
-                    ++_dataFingerprintSetFailCount;
-                    // request to start sync again as it won't happen by itself unless the file has changed on the server or in the local folder
-                    shouldStartSyncAgain = true;
-                } else {
-                    qCInfo(lcEngine) << "accountHostHash" << accountHostHash << "differs from dataFingerprintOverrideHostHash" << dataFingerprintOverrideHostHash;
-                    // give up on calculating the has next time, as it's not the host we are looking for
-                    _dataFingerprintSetFailCount = -1;
-                }
-            }
-        } else {
-            qCWarning(lcEngine) << "setDataFingerprint was overridden already for account" << accountDisplayName << "on host" << accountHost << "but is failing again! Or, it's not the host that we are looking for.";
-        }
-    };
-    //
-
     if (success && _discoveryPhase) {
         _journal->setDataFingerprint(_discoveryPhase->_dataFingerprint);
-    } else if (_discoveryPhase) {
-        // TODO: Remove this when the file restoration problem is fixed for a user
-        checkAndOverrideSetDataFingerprint();
     }
 
     conflictRecordMaintenance();
@@ -863,12 +816,6 @@ void SyncEngine::slotPropagationFinished(bool success)
     emit transmissionProgress(*_progressInfo);
 
     finalize(success);
-
-    if (shouldStartSyncAgain) {
-        // TODO: Remove this when the file restoration problem is fixed for a user
-        qCWarning(lcEngine) << "Starting sync again for account" << account()->displayName() << "on host" << account()->url().host() << "due to setDataFingerprint override is running.";
-        startSync();
-    }
 }
 
 void SyncEngine::finalize(bool success)
