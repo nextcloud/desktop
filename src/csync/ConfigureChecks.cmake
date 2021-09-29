@@ -24,7 +24,8 @@ if (NOT LINUX)
     set(CMAKE_REQUIRED_LIBRARIES ${CMAKE_REQUIRED_LIBRARIES} )
 
     # Systems not using glibc require linker flag for argp
-    if(HAVE_ARGP_H)
+    check_library_exists(argp argp_parse "" HAVE_LIBARGP)
+    if(HAVE_ARGP_H AND HAVE_LIBARGP)
         set(CMAKE_REQUIRED_LIBRARIES ${CMAKE_REQUIRED_LIBRARIES} argp)
     endif()
 endif (NOT LINUX)
