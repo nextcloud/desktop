@@ -2312,7 +2312,7 @@ Elementy, dla których usunięcie jest dozwolone, zostaną usunięte, o ile umo�
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="73"/>
         <source>The file %1 could not be synced because the name contains characters which are not allowed on this system.</source>
-        <translation type="unfinished"/>
+        <translation>Plik %1 nie mógł zostać zsynchronizowany, ponieważ nazwa zawiera znaki, które nie są dozwolone w tym systemie.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="74"/>
@@ -2337,7 +2337,7 @@ Elementy, dla których usunięcie jest dozwolone, zostaną usunięte, o ile umo�
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="155"/>
         <source>Cannot rename file because a file with the same name does already exist on the server. Please pick another name.</source>
-        <translation type="unfinished"/>
+        <translation>Nie można zmienić nazwy pliku, ponieważ plik o tej nazwie już istnieje na serwerze. Wybierz inną nazwę.</translation>
     </message>
 </context>
 <context>

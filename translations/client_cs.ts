@@ -2286,7 +2286,7 @@ Položky u kterých je umožněno mazání budou smazány, pokud brání tomu, a
     <message>
         <location filename="../src/gui/invalidfilenamedialog.ui" line="23"/>
         <source>The file could not be synced because it contains characters which are not allowed on this system.</source>
-        <translation>Soubor nebyl synchronizován, protože obsahuje znaky, které nejsou na tomto systému povoleny.</translation>
+        <translation>Soubor nebyl synchronizován, protože obsahuje znaky, které nejsou na tomto systému povolené.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.ui" line="36"/>
@@ -2311,7 +2311,7 @@ Položky u kterých je umožněno mazání budou smazány, pokud brání tomu, a
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="73"/>
         <source>The file %1 could not be synced because the name contains characters which are not allowed on this system.</source>
-        <translation type="unfinished"/>
+        <translation>Soubor %1 nebyl synchronizován, protože název obsahuje znaky, které nejsou na tomto systému povoleny.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="74"/>
@@ -2331,12 +2331,12 @@ Položky u kterých je umožněno mazání budou smazány, pokud brání tomu, a
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="144"/>
         <source>Could not rename file. Please make sure you are connected to the server.</source>
-        <translation>Přejmenovat soubor se nepodařilo. Ujistěte se, že jste připojeni k serveru.</translation>
+        <translation>Přejmenovat soubor se nepodařilo. Ujistěte se, že jste připojení k serveru.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="155"/>
         <source>Cannot rename file because a file with the same name does already exist on the server. Please pick another name.</source>
-        <translation type="unfinished"/>
+        <translation>Soubor není možné přejmenovat, protože soubor se stejným názvem na serveru už existuje. Vyberte jiný název.</translation>
     </message>
 </context>
 <context>
