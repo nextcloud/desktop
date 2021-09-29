@@ -102,9 +102,11 @@ private slots:
         QVERIFY(folderman->checkPathValidityForNewFolder(dirPath + "/link1/subfolder").isNull());
         QVERIFY(folderman->checkPathValidityForNewFolder(dirPath + "/link2/free/subfolder").isNull());
 
-        // Should not have the rights
-        QVERIFY(!folderman->checkPathValidityForNewFolder("/").isNull());
-        QVERIFY(!folderman->checkPathValidityForNewFolder("/usr/bin/somefolder").isNull());
+        if (getuid() != 0) {
+            // Should not have the rights
+            QVERIFY(!folderman->checkPathValidityForNewFolder("/").isNull());
+            QVERIFY(!folderman->checkPathValidityForNewFolder("/usr/bin/somefolder").isNull());
+        }
 #endif
 
 #ifdef Q_OS_WIN // drive-letter tests
