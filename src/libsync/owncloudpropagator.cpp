@@ -287,6 +287,8 @@ void PropagateItemJob::done(SyncFileItem::Status statusArg, const QString &error
     case SyncFileItem::Excluded:
         // nothing
         break;
+    case SyncFileItem::StatusCount:
+        Q_UNREACHABLE();
     }
 
     if (_item->hasErrorStatus())

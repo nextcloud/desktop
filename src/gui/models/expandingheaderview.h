@@ -27,6 +27,7 @@ public:
     void setExpandingColumn(int newExpandingColumn);
 
     void resizeColumns(bool reset = false);
+    void addResetActionToMenu(QMenu *menu);
 
 protected:
     void resizeEvent(QResizeEvent *event) override;

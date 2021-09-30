@@ -78,24 +78,24 @@
     <message>
         <location filename="../src/common/filesystembase.cpp" line="141"/>
         <location filename="../src/common/filesystembase.cpp" line="143"/>
-        <location filename="../src/common/filesystembase.cpp" line="211"/>
-        <location filename="../src/common/filesystembase.cpp" line="216"/>
+        <location filename="../src/common/filesystembase.cpp" line="208"/>
+        <location filename="../src/common/filesystembase.cpp" line="213"/>
         <source>Can&apos;t rename %1, the file is currently in use</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/common/filesystembase.cpp" line="404"/>
+        <location filename="../src/common/filesystembase.cpp" line="399"/>
         <source>Could not make directories in trash</source>
         <translation>Çöpte klasör oluşturulamaz.</translation>
     </message>
     <message>
-        <location filename="../src/common/filesystembase.cpp" line="418"/>
-        <location filename="../src/common/filesystembase.cpp" line="424"/>
+        <location filename="../src/common/filesystembase.cpp" line="413"/>
+        <location filename="../src/common/filesystembase.cpp" line="419"/>
         <source>Could not move &apos;%1&apos; to &apos;%2&apos;</source>
         <translation>%1, %2 ye taşınamadı.</translation>
     </message>
     <message>
-        <location filename="../src/common/filesystembase.cpp" line="458"/>
+        <location filename="../src/common/filesystembase.cpp" line="453"/>
         <source>Moving to the trash is not implemented on this platform</source>
         <translation>Çöp kutusuna taşıma işlemi bu platformda sağlanmıyor.</translation>
     </message>
@@ -647,23 +647,23 @@ Bu eylem, o anda çalışan herhangi senkronizasyon işlemini iptal edecektir.</
 <context>
     <name>OCC::ActivitySettings</name>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="482"/>
-        <location filename="../src/gui/activitywidget.cpp" line="526"/>
+        <location filename="../src/gui/activitywidget.cpp" line="485"/>
+        <location filename="../src/gui/activitywidget.cpp" line="529"/>
         <source>Server Activity</source>
         <translation>Sunucu Etkinliği</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="488"/>
+        <location filename="../src/gui/activitywidget.cpp" line="491"/>
         <source>Sync Protocol</source>
         <translation>Eşitleme Protokolü</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="534"/>
+        <location filename="../src/gui/activitywidget.cpp" line="537"/>
         <source>Not Synced</source>
         <translation>Eşitlenmedi</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="537"/>
+        <location filename="../src/gui/activitywidget.cpp" line="540"/>
         <source>Not Synced (%1)</source>
         <extracomment>%1 is the number of not synced files.</extracomment>
         <translation>Eşitlenmedi (%1)</translation>
@@ -678,58 +678,58 @@ Bu eylem, o anda çalışan herhangi senkronizasyon işlemini iptal edecektir.</
     </message>
     <message>
         <location filename="../src/gui/activitywidget.ui" line="26"/>
-        <location filename="../src/gui/activitywidget.ui" line="71"/>
-        <location filename="../src/gui/activitywidget.ui" line="118"/>
+        <location filename="../src/gui/activitywidget.ui" line="73"/>
+        <location filename="../src/gui/activitywidget.ui" line="142"/>
         <source>TextLabel</source>
         <translation>MetinEtiketi</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="146"/>
+        <location filename="../src/gui/activitywidget.ui" line="96"/>
+        <source>Filter</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/activitywidget.cpp" line="149"/>
         <source>Server Activities</source>
         <translation>Sunucu Etkinlikleri</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="107"/>
-        <source>Reset column sizes</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/activitywidget.cpp" line="150"/>
+        <location filename="../src/gui/activitywidget.cpp" line="153"/>
         <source>Notifications</source>
         <translation>Bildirimler</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/activitywidget.cpp" line="293"/>
+        <location filename="../src/gui/activitywidget.cpp" line="296"/>
         <source>%n notifications(s) for %1.</source>
         <translation><numerusform>%1 için %n bildirim var.</numerusform><numerusform>%1 için %n bildirim var.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/activitywidget.cpp" line="299"/>
+        <location filename="../src/gui/activitywidget.cpp" line="302"/>
         <source>%n notifications(s) for %1 and %2.</source>
         <translation><numerusform>%1 ve %2 için %n bildirim var.</numerusform><numerusform>%1 ve %2 için %n bildirim var.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="301"/>
+        <location filename="../src/gui/activitywidget.cpp" line="304"/>
         <source>New notifications for %1, %2 and other accounts.</source>
         <translation>%1, %2 ve diğer hesaplar için yeni bildirim</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="304"/>
+        <location filename="../src/gui/activitywidget.cpp" line="307"/>
         <source>Open the activity view for details.</source>
         <translation>Ayrıntılar için etkinlik görünümünü açın.</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="451"/>
+        <location filename="../src/gui/activitywidget.cpp" line="454"/>
         <source>Copy to clipboard</source>
         <translation>Panoya kopyala</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="459"/>
+        <location filename="../src/gui/activitywidget.cpp" line="462"/>
         <source>Show in file browser</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="155"/>
+        <location filename="../src/gui/activitywidget.cpp" line="158"/>
         <source>&lt;br/&gt;Account %1 does not have activities enabled.</source>
         <translation>&lt;br/&gt;%1 hesabının geçerli kılınmış etkinlikleri bulunmamakta.</translation>
     </message>
@@ -966,6 +966,14 @@ File synchronization desktop utility.</source>
     </message>
 </context>
 <context>
+    <name>OCC::ExpandingHeaderView</name>
+    <message>
+        <location filename="../src/gui/models/expandingheaderview.cpp" line="78"/>
+        <source>Reset column sizes</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>OCC::Folder</name>
     <message>
         <location filename="../src/gui/folder.cpp" line="184"/>
@@ -1067,41 +1075,41 @@ File synchronization desktop utility.</source>
         <translation>Eşitleme Etkinliği</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="853"/>
+        <location filename="../src/gui/folder.cpp" line="860"/>
         <source>Could not read system exclude file</source>
         <translation>Sistem hariç tutulma dosyası okunamadı</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1096"/>
+        <location filename="../src/gui/folder.cpp" line="1103"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>%1 MB dan büyük yeni klasör eklendi: %2
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1099"/>
+        <location filename="../src/gui/folder.cpp" line="1106"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>Harici depolama ünitesinden bir klasör eklendi.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1100"/>
+        <location filename="../src/gui/folder.cpp" line="1107"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>İndirmek isterseniz, lütfen &quot;Ayarlar&quot; bölümünden seçin.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1159"/>
+        <location filename="../src/gui/folder.cpp" line="1166"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation>%1 klasörü yaratıldı ama daha önce senkronizasyondan hariç tutuldu. İçerik eşitlenmeyecek.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1162"/>
+        <location filename="../src/gui/folder.cpp" line="1169"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
         <translation>%1 dosyası yaratıldı ama daha önce senkronizasyondan hariç tutuldu, İçerik eşitlenmeyecek.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1173"/>
+        <location filename="../src/gui/folder.cpp" line="1180"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
@@ -1114,7 +1122,7 @@ Bu yüzden senkronizasyon yerel değişiklikler anlık olarak karşı tarafa yü
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1250"/>
+        <location filename="../src/gui/folder.cpp" line="1257"/>
         <source>All files in the sync folder '%1' folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
@@ -1125,7 +1133,7 @@ Dosyalar silinmesin istiyorsanız, yetkiniz olduğu sürece sunucu ile tekrar se
 Silmeye karar verdiyseniz, sahibi olana kadar dosyalar kullanım dışıdır.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1255"/>
+        <location filename="../src/gui/folder.cpp" line="1262"/>
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
@@ -1134,17 +1142,17 @@ Bu işlemlerin sunucuda da gerçekleşmesini istiyor musunuz?
 Eğer istenmeden bu durum gerçekleştiyse ve dosyaları tutmak istiyorsanız, dosyalar sunucudan tekrar senkronize edilecektir.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1259"/>
+        <location filename="../src/gui/folder.cpp" line="1266"/>
         <source>Remove All Files?</source>
         <translation>Tüm Dosyalar Kaldırılsın mı?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1263"/>
+        <location filename="../src/gui/folder.cpp" line="1270"/>
         <source>Remove all files</source>
         <translation>Tüm dosyaları kaldır</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1264"/>
+        <location filename="../src/gui/folder.cpp" line="1271"/>
         <source>Keep files</source>
         <translation>Dosyaları koru</translation>
     </message>
@@ -1162,112 +1170,112 @@ Eğer istenmeden bu durum gerçekleştiyse ve dosyaları tutmak istiyorsanız, d
         <translation>Eski eşitleme günlüğü &apos;%1&apos; bulundu ancak kaldırılamadı. Başka bir uygulama tarafından kullanılmadığından emin olun.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1222"/>
+        <location filename="../src/gui/folderman.cpp" line="1221"/>
         <source> (backup)</source>
         <translation> (yedek)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1227"/>
+        <location filename="../src/gui/folderman.cpp" line="1226"/>
         <source> (backup %1)</source>
         <translation> (yedek %1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1329"/>
+        <location filename="../src/gui/folderman.cpp" line="1328"/>
         <source>Undefined State.</source>
         <translation>Tanımlanmamış Durum.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1332"/>
+        <location filename="../src/gui/folderman.cpp" line="1331"/>
         <source>Waiting to start syncing.</source>
         <translation>Eşitlemenin başlanması bekleniyor.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1335"/>
+        <location filename="../src/gui/folderman.cpp" line="1334"/>
         <source>Preparing for sync.</source>
         <translation>Eşitleme için hazırlanıyor.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1338"/>
+        <location filename="../src/gui/folderman.cpp" line="1337"/>
         <source>Sync is running.</source>
         <translation>Eşitleme çalışıyor.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1343"/>
+        <location filename="../src/gui/folderman.cpp" line="1342"/>
         <source>Sync was successful, unresolved conflicts.</source>
         <translation>Senkronizasyon başarılıydı, çözüm gerektiren eşleşmeler var.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1345"/>
+        <location filename="../src/gui/folderman.cpp" line="1344"/>
         <source>Last Sync was successful.</source>
         <translation>Son Eşitleme başarılı oldu.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1351"/>
+        <location filename="../src/gui/folderman.cpp" line="1350"/>
         <source>Setup Error.</source>
         <translation>Kurulum Hatası.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1354"/>
+        <location filename="../src/gui/folderman.cpp" line="1353"/>
         <source>User Abort.</source>
         <translation>Kullanıcı İptal Etti.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1357"/>
+        <location filename="../src/gui/folderman.cpp" line="1356"/>
         <source>Sync is paused.</source>
         <translation>Eşitleme duraklatıldı.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1363"/>
+        <location filename="../src/gui/folderman.cpp" line="1362"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (Eşitleme duraklatıldı)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1371"/>
+        <location filename="../src/gui/folderman.cpp" line="1370"/>
         <source>No valid folder selected!</source>
         <translation>Geçerli klasör seçilmedi!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1379"/>
+        <location filename="../src/gui/folderman.cpp" line="1378"/>
         <source>The folder %1 is used in a folder sync connection!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1386"/>
+        <location filename="../src/gui/folderman.cpp" line="1385"/>
         <source>The selected path does not exist!</source>
         <translation>Seçilen dosya yolu mevcut değil!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1390"/>
+        <location filename="../src/gui/folderman.cpp" line="1389"/>
         <source>The selected path is not a folder!</source>
         <translation>Seçilen yol bir klasör değil!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1394"/>
+        <location filename="../src/gui/folderman.cpp" line="1393"/>
         <source>You have no permission to write to the selected folder!</source>
         <translation>Seçilen klasöre yazma izniniz yok!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1431"/>
+        <location filename="../src/gui/folderman.cpp" line="1430"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
         <translation>Yerel klasörde bir sunucu senkronizasyonu zaten mevcut. Lütfen başka bir yerel klasör seçin!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1435"/>
+        <location filename="../src/gui/folderman.cpp" line="1434"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
         <translation>%1 yerel klasörü zaten bir eşitleme klasörü içermektedir. Lütfen farklı bir seçim yapın!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1441"/>
+        <location filename="../src/gui/folderman.cpp" line="1440"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation>%1 yerel klasörü zaten bir eşitleme klasörü içindedir. Lütfen farklı bir seçim yapın!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1448"/>
+        <location filename="../src/gui/folderman.cpp" line="1447"/>
         <source>%1 Please pick another one!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1524"/>
+        <location filename="../src/gui/folderman.cpp" line="1523"/>
         <source>Multiple accounts are sharing the folder %1.
 This configuration is know to lead to dataloss and is no longer supported.
 Please consider removing this folder from the account and adding it again.</source>
@@ -1870,35 +1878,50 @@ Bir dizinin kaldırılmasını engelliyorlarsa işaretli ögeler de silinecektir
         <translation>Form</translation>
     </message>
     <message>
-        <location filename="../src/gui/issueswidget.ui" line="20"/>
+        <location filename="../src/gui/issueswidget.ui" line="22"/>
         <source>List of issues</source>
         <translation>Sorunların listesi</translation>
     </message>
     <message>
-        <location filename="../src/gui/issueswidget.ui" line="59"/>
+        <location filename="../src/gui/issueswidget.ui" line="45"/>
+        <source>Filter</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/issueswidget.ui" line="83"/>
         <source>There were too many issues. Not all will be visible here.</source>
         <translation>Çok fazla sorun mevcut. Hepsi burada görünmeyecek.</translation>
     </message>
     <message>
-        <location filename="../src/gui/issueswidget.ui" line="69"/>
+        <location filename="../src/gui/issueswidget.ui" line="93"/>
         <source>There were conflicts. Check the documentation on how to resolve them.</source>
         <translation>Çakışmalar mevcut. Nasıl çözüleceğini dokümantasyondan kontrol edin.</translation>
     </message>
     <message>
-        <location filename="../src/gui/issueswidget.cpp" line="82"/>
+        <location filename="../src/gui/issueswidget.cpp" line="135"/>
         <source>The file %1 was ignored as its name is reserved by %2</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/issueswidget.cpp" line="119"/>
+        <location filename="../src/gui/issueswidget.cpp" line="163"/>
+        <source>Reset column sizes</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/issueswidget.cpp" line="182"/>
         <source>There were conflicts. &lt;a href=&quot;%1&quot;&gt;Check the documentation on how to resolve them.&lt;/a&gt;</source>
         <translation>Çakışmalar mevcut. &lt;a href=&quot;%1&quot;&gt;Nasıl çözüleceğini dokümantasyondan kontrol edin.&lt;/a&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/issueswidget.cpp" line="202"/>
+        <source>Account</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>OCC::LibCloudProvidersPrivate</name>
     <message>
-        <location filename="../src/gui/libcloudproviders/libcloudproviders.cpp" line="139"/>
+        <location filename="../src/gui/libcloudproviders/libcloudproviders.cpp" line="137"/>
         <source>Settings</source>
         <translation>Ayarlar</translation>
     </message>
@@ -1962,13 +1985,23 @@ Günlüğe kaydetme komut satırı seçeneklerinin kullanılmasının bu ayarlar
 <context>
     <name>OCC::Models</name>
     <message>
-        <location filename="../src/gui/models/models.cpp" line="84"/>
-        <source>Filter by</source>
+        <location filename="../src/gui/models/models.cpp" line="82"/>
+        <source>%1 Filter:</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/models/models.cpp" line="101"/>
+        <location filename="../src/gui/models/models.cpp" line="103"/>
         <source>No filter</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/issueswidget.cpp" line="217"/>
+        <source>Reset Filters</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/issueswidget.cpp" line="296"/>
+        <source>Status Filter:</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -2402,7 +2435,7 @@ for additional privileges during the process.</source>
 <context>
     <name>OCC::OwncloudPropagator</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="698"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="700"/>
         <source>File %1 is currently in use</source>
         <translation type="unfinished"/>
     </message>
@@ -2671,12 +2704,12 @@ Bu yeni, deneysel bir moddur. Kullanmaya karar verirseniz, lütfen ortaya çıka
 <context>
     <name>OCC::PropagateDirectory</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1014"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1016"/>
         <source>Error updating metadata: %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1017"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1019"/>
         <source>%1 the folder is currently in use</source>
         <translation type="unfinished"/>
     </message>
@@ -2725,7 +2758,7 @@ Bu yeni, deneysel bir moddur. Kullanmaya karar verirseniz, lütfen ortaya çıka
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1025"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1029"/>
         <source>Error updating metadata: %1</source>
         <translation type="unfinished"/>
     </message>
@@ -2733,7 +2766,7 @@ Bu yeni, deneysel bir moddur. Kullanmaya karar verirseniz, lütfen ortaya çıka
         <location filename="../src/libsync/propagatedownload.cpp" line="476"/>
         <location filename="../src/libsync/propagatedownload.cpp" line="931"/>
         <location filename="../src/libsync/propagatedownload.cpp" line="967"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1028"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1032"/>
         <source>The file %1 is currently in use</source>
         <translation type="unfinished"/>
     </message>
@@ -2883,12 +2916,12 @@ Bu yeni, deneysel bir moddur. Kullanmaya karar verirseniz, lütfen ortaya çıka
 <context>
     <name>OCC::PropagateUpdateMetaDataJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1160"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1162"/>
         <source>Could not update file : %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1163"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1165"/>
         <source>The file %1 is currently in use</source>
         <translation type="unfinished"/>
     </message>
@@ -3067,32 +3100,37 @@ Bu yeni, deneysel bir moddur. Kullanmaya karar verirseniz, lütfen ortaya çıka
         <translation>Form</translation>
     </message>
     <message>
-        <location filename="../src/gui/protocolwidget.ui" line="20"/>
+        <location filename="../src/gui/protocolwidget.ui" line="22"/>
         <source>Local sync protocol</source>
         <translation>Yerel eşitleme protokolü</translation>
     </message>
     <message>
-        <location filename="../src/gui/protocolwidget.cpp" line="84"/>
-        <source>Reset column sizes</source>
+        <location filename="../src/gui/protocolwidget.ui" line="45"/>
+        <source>Filter</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/protocolwidget.cpp" line="93"/>
+        <location filename="../src/gui/protocolwidget.cpp" line="91"/>
+        <source>Account</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/protocolwidget.cpp" line="105"/>
         <source>Copy to clipboard</source>
         <translation>Panoya kopyala</translation>
     </message>
     <message>
-        <location filename="../src/gui/protocolwidget.cpp" line="103"/>
+        <location filename="../src/gui/protocolwidget.cpp" line="115"/>
         <source>Show in file browser</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/protocolwidget.cpp" line="114"/>
+        <location filename="../src/gui/protocolwidget.cpp" line="126"/>
         <source>Show in web browser</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/protocolwidget.cpp" line="127"/>
+        <location filename="../src/gui/protocolwidget.cpp" line="139"/>
         <source>Retry sync</source>
         <translation type="unfinished"/>
     </message>
@@ -4548,7 +4586,7 @@ Bu yeni, deneysel bir moddur. Kullanmaya karar verirseniz, lütfen ortaya çıka
     </message>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="94"/>
-        <source>Error Ignored</source>
+        <source>File Ignored</source>
         <translation type="unfinished"/>
     </message>
     <message>

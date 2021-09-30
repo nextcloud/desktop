@@ -48,6 +48,8 @@ ProtocolWidget::ProtocolWidget(QWidget *parent)
 
     connect(_ui->_tableView, &QTreeWidget::customContextMenuRequested, this, &ProtocolWidget::slotItemContextMenu);
 
+    // Build the model-view "stack":
+    //  _model <- _sortModel <- _statusSortModel <- _tableView
     _model = new ProtocolItemModel(2000, false, this);
     _sortModel = new QSortFilterProxyModel(this);
     _sortModel->setSourceModel(_model);
@@ -62,7 +64,12 @@ ProtocolWidget::ProtocolWidget(QWidget *parent)
     header->hideSection(static_cast<int>(ProtocolItemModel::ProtocolItemRole::Status));
     header->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(header, &QHeaderView::customContextMenuRequested, header, [header, this] {
-        showHeaderContextMenu(header, _sortModel);
+        auto menu = showFilterMenu(header, _sortModel);
+        header->addResetActionToMenu(menu);
+    });
+
+    connect(_ui->_filterButton, &QAbstractButton::clicked, this, [this] {
+        showFilterMenu(_ui->_filterButton, _sortModel);
     });
 
     connect(FolderMan::instance(), &FolderMan::folderRemoved, this, [this](Folder *f) {
@@ -77,11 +84,16 @@ ProtocolWidget::~ProtocolWidget()
     delete _ui;
 }
 
-void ProtocolWidget::showHeaderContextMenu(ExpandingHeaderView *header, QSortFilterProxyModel *model)
+QMenu *ProtocolWidget::showFilterMenu(QWidget *parent, QSortFilterProxyModel *model)
 {
-    auto menu = Models::displayFilterDialog(AccountManager::instance()->accountNames(), model, static_cast<int>(ProtocolItemModel::ProtocolItemRole::Account), Qt::DisplayRole, header);
+    auto menu = new QMenu(parent);
+    menu->setAttribute(Qt::WA_DeleteOnClose);
+    Models::addFilterMenuItems(menu, AccountManager::instance()->accountNames(), model, static_cast<int>(ProtocolItemModel::ProtocolItemRole::Account), tr("Account"), Qt::DisplayRole);
     menu->addSeparator();
-    menu->addAction(tr("Reset column sizes"), header, [header] { header->resizeColumns(true); });
+    QTimer::singleShot(0, menu, [menu] {
+        menu->popup(QCursor::pos());
+    });
+    return menu;
 }
 
 void ProtocolWidget::showContextMenu(QWidget *parent, ProtocolItemModel *model, const QModelIndexList &items)

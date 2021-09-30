@@ -48,9 +48,8 @@ public:
     explicit ProtocolWidget(QWidget *parent = nullptr);
     ~ProtocolWidget() override;
 
-    static void showHeaderContextMenu(ExpandingHeaderView *header, QSortFilterProxyModel *model);
     static void showContextMenu(QWidget *parent, ProtocolItemModel *model, const QModelIndexList &items);
-
+    static QMenu *showFilterMenu(QWidget *parent, QSortFilterProxyModel *model);
 
 public slots:
     void slotItemCompleted(const QString &folder, const SyncFileItemPtr &item);

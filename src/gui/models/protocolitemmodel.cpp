@@ -107,7 +107,7 @@ QVariant ProtocolItemModel::data(const QModelIndex &index, int role) const
         case ProtocolItemRole::Account:
             return item.folder()->accountState()->account()->displayName();
         case ProtocolItemRole::Status:
-            return Utility::enumName(item.status());
+            return item.status();
         case ProtocolItemRole::ColumnCount:
             Q_UNREACHABLE();
             break;
