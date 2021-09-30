@@ -1663,7 +1663,6 @@ bool EncryptionHelper::fileEncryption(const QByteArray &key, const QByteArray &i
             return false;
         }
 
-        qCDebug(lcCse) << "Encrypting " << data;
         if(!EVP_EncryptUpdate(ctx, unsignedData(out), &len, (unsigned char *)data.constData(), data.size())) {
             qCInfo(lcCse()) << "Could not encrypt";
             return false;
