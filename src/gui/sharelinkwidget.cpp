@@ -441,7 +441,6 @@ void ShareLinkWidget::toggleNoteOptions(const bool enable)
     _ui->noteLabel->setVisible(enable);
     _ui->textEdit_note->setVisible(enable);
     _ui->confirmNote->setVisible(enable);
-    
     _ui->textEdit_note->setText(enable && _linkShare ? _linkShare->getNote() : QString());
     
     if (!enable && _linkShare && !_linkShare->getNote().isEmpty()) {
