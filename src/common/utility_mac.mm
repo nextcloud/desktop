@@ -16,13 +16,17 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
+#include "result.h"
 #include "utility.h"
 
 #include <QCoreApplication>
 #include <QDir>
+#include <QLoggingCategory>
+#include <QtMacExtras/QtMacExtras>
 
 #include <CoreFoundation/CoreFoundation.h>
 #include <CoreServices/CoreServices.h>
+#import <Foundation/NSFileManager.h>
 
 namespace OCC {
 
@@ -52,84 +56,163 @@ bool Utility::hasSystemLaunchOnStartup(const QString &appName)
     return false;
 }
 
+static Result<void, QString> writePlistToFile(NSString *plistFile, NSDictionary *plist)
+{
+    NSError *error = nil;
+    if (![plist writeToURL:[NSURL fileURLWithPath:plistFile isDirectory:NO] error:&error]) {
+        return QString::fromNSString(error.localizedDescription);
+    }
+
+    return {};
+}
+
+static Result<NSDictionary *, QString> readPlistFromFile(NSString *plistFile)
+{
+    NSError *error = nil;
+    if (NSDictionary *plist = [NSDictionary dictionaryWithContentsOfURL:[NSURL fileURLWithPath:plistFile isDirectory:NO] error:&error]) {
+        return plist;
+    } else {
+        return QString::fromNSString(error.localizedDescription);
+    }
+}
+
 bool Utility::hasLaunchOnStartup(const QString &appName)
 {
-    // this is quite some duplicate code with setLaunchOnStartup, at some point we should fix this FIXME.
-    bool returnValue = false;
-    QString filePath = QDir(QCoreApplication::applicationDirPath() + QLatin1String("/../..")).absolutePath();
-    CFStringRef folderCFStr = CFStringCreateWithCString(0, filePath.toUtf8().data(), kCFStringEncodingUTF8);
-    CFURLRef urlRef = CFURLCreateWithFileSystemPath(0, folderCFStr, kCFURLPOSIXPathStyle, true);
-    LSSharedFileListRef loginItems = LSSharedFileListCreate(0, kLSSharedFileListSessionLoginItems, 0);
-    if (loginItems) {
-        // We need to iterate over the items and check which one is "ours".
-        UInt32 seedValue;
-        CFArrayRef itemsArray = LSSharedFileListCopySnapshot(loginItems, &seedValue);
-        CFStringRef appUrlRefString = CFURLGetString(urlRef); // no need for release
-        for (int i = 0; i < CFArrayGetCount(itemsArray); i++) {
-            LSSharedFileListItemRef item = (LSSharedFileListItemRef)CFArrayGetValueAtIndex(itemsArray, i);
-            CFURLRef itemUrlRef = NULL;
+    Q_UNUSED(appName)
 
-            if (LSSharedFileListItemResolve(item, 0, &itemUrlRef, NULL) == noErr && itemUrlRef) {
-                CFStringRef itemUrlString = CFURLGetString(itemUrlRef);
-                if (CFStringCompare(itemUrlString, appUrlRefString, 0) == kCFCompareEqualTo) {
-                    returnValue = true;
+    @autoreleasepool {
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+        NSString *appIdentifier = QCoreApplication::organizationDomain().toNSString();
+        NSString *plistFile = [NSHomeDirectory() stringByAppendingFormat:@"/Library/LaunchAgents/%@.plist", appIdentifier];
+
+        if ([fileManager fileExistsAtPath:plistFile]) {
+            auto maybePlist = readPlistFromFile(plistFile);
+            if (!maybePlist) {
+                qCInfo(lcUtility()).nospace() << "Cannot read '" << QString::fromNSString(plistFile)
+                                              << "', probably not a valid plist file";
+                return false;
+            }
+
+            if (NSDictionary *plist = *maybePlist) {
+                // yes, there is a valid plist file...
+                if (id label = plist[@"Label"]) {
+                    // ... with a label...
+                    if ([appIdentifier isEqualToString:label]) {
+                        // ... and yes, it's the correct app-id...
+                        if (id program = plist[@"Program"]) {
+                            // .. and there is a program mentioned ...
+                            if ([QCoreApplication::applicationFilePath().toNSString() isEqualToString:program]) {
+                                // ... and it's our executable ..
+                                if (NSNumber *value = plist[@"RunAtLoad"]) {
+                                    // yes, there is even a RunAtLoad key, so use it!
+                                    return [value boolValue];
+                                }
+                            }
+                        }
+                    }
                 }
-                CFRelease(itemUrlRef);
             }
         }
-        CFRelease(itemsArray);
     }
-    CFRelease(loginItems);
-    CFRelease(folderCFStr);
-    CFRelease(urlRef);
-    return returnValue;
+
+    return false;
+}
+
+static Result<void, QString> writeNewPlistFile(NSString *plistFile, NSString *fullPath, bool enable)
+{
+    NSDictionary *plistTemplate = @{
+        @"Label" : QCoreApplication::organizationDomain().toNSString(),
+        @"KeepAlive" : @ {
+            @"Crashed" : @YES,
+            @"SuccessfulExit" : @NO
+        },
+        @"Program" : fullPath,
+        @"RunAtLoad" : enable ? @YES : @NO
+    };
+
+    return writePlistToFile(plistFile, plistTemplate);
+}
+
+static Result<void, QString> modifyPlist(NSString *plistFile, NSDictionary *plist, bool enable)
+{
+    if (NSNumber *value = plist[@"RunAtLoad"]) {
+        // ok, there is a key
+        if ([value boolValue] == enable) {
+            // nothing to do
+            return {};
+        }
+    }
+
+    // now either the key was missing, or it had the wrong value, so set the key and write the plist back
+    NSMutableDictionary *newPlist = [plist mutableCopy];
+    newPlist[@"RunAtLoad"] = enable ? @YES : @NO;
+    return writePlistToFile(plistFile, newPlist);
 }
 
 void Utility::setLaunchOnStartup(const QString &appName, const QString &guiName, bool enable)
 {
     Q_UNUSED(appName)
     Q_UNUSED(guiName)
-    QString filePath = QDir(QCoreApplication::applicationDirPath() + QLatin1String("/../..")).absolutePath();
-    CFStringRef folderCFStr = CFStringCreateWithCString(0, filePath.toUtf8().data(), kCFStringEncodingUTF8);
-    CFURLRef urlRef = CFURLCreateWithFileSystemPath(0, folderCFStr, kCFURLPOSIXPathStyle, true);
-    LSSharedFileListRef loginItems = LSSharedFileListCreate(0, kLSSharedFileListSessionLoginItems, 0);
-    if (!loginItems) {
-        qCWarning(lcUtility) << "Failed to retrieve loginItems";
-    } else {
-        if (enable) {
-            //Insert an item to the list.
-            LSSharedFileListItemRef item = LSSharedFileListInsertItemURL(loginItems,
-                kLSSharedFileListItemLast, 0, 0,
-                urlRef, 0, 0);
-            if (item) {
-                CFRelease(item);
+
+    @autoreleasepool {
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+        NSString *fullPath = QCoreApplication::applicationFilePath().toNSString();
+        NSString *appIdentifier = QCoreApplication::organizationDomain().toNSString();
+        NSString *plistFile = [NSHomeDirectory() stringByAppendingFormat:@"/Library/LaunchAgents/%@.plist", appIdentifier];
+
+        // An error might occur in the code below, but we cannot report anything, so we just ignore them.
+
+        if ([fileManager fileExistsAtPath:plistFile]) {
+            auto maybePlist = readPlistFromFile(plistFile);
+            if (!maybePlist) {
+                // broken plist, overwrite it
+                auto result = writeNewPlistFile(plistFile, fullPath, enable);
+                if (!result) {
+                    qCWarning(lcUtility) << Q_FUNC_INFO << result.error();
+                }
+                return;
+            }
+            NSDictionary *plist = *maybePlist;
+
+            id programValue = plist[@"Program"];
+            if (programValue == nil) {
+                // broken plist, overwrite it
+                auto result = writeNewPlistFile(plistFile, fullPath, enable);
+                if (!result) {
+                    qCWarning(lcUtility) << result.error();
+                }
+            } else if (![fileManager fileExistsAtPath:programValue]) {
+                // Ok, a plist from some removed program, overwrite it
+                auto result = writeNewPlistFile(plistFile, fullPath, enable);
+                if (!result) {
+                    qCWarning(lcUtility) << result.error();
+                }
+            } else if ([fullPath isEqualToString:programValue]) {
+                // Wohoo, it's ours! Now carefully change only the RunAtLoad entry. If any value for
+                // e.g. KeepAlive was changed, we leave it as-is.
+                auto result = modifyPlist(plistFile, plist, enable);
+                if (!result) {
+                    qCWarning(lcUtility) << result.error();
+                }
+            } else if ([fullPath hasPrefix:@"/Applications/"]) {
+                // ok, we seem to be an officially installed application, overwrite the file
+                auto result = writeNewPlistFile(plistFile, fullPath, enable);
+                if (!result) {
+                    qCWarning(lcUtility) << result.error();
+                }
             } else {
-                qCWarning(lcUtility) << "Failed to insert ourself into launch on startup list";
+                qCInfo(lcUtility) << "We're not an installed application, there is anoter executable "
+                                     "mentioned in the plist file, and that executable seems to exist, "
+                                     "so let's not touch the file.";
             }
         } else {
-            // We need to iterate over the items and check which one is "ours".
-            UInt32 seedValue;
-            CFArrayRef itemsArray = LSSharedFileListCopySnapshot(loginItems, &seedValue);
-            CFStringRef appUrlRefString = CFURLGetString(urlRef);
-            for (int i = 0; i < CFArrayGetCount(itemsArray); i++) {
-                LSSharedFileListItemRef item = (LSSharedFileListItemRef)CFArrayGetValueAtIndex(itemsArray, i);
-                CFURLRef itemUrlRef = NULL;
-
-                if (LSSharedFileListItemResolve(item, 0, &itemUrlRef, NULL) == noErr && itemUrlRef) {
-                    CFStringRef itemUrlString = CFURLGetString(itemUrlRef);
-                    if (CFStringCompare(itemUrlString, appUrlRefString, 0) == kCFCompareEqualTo) {
-                        LSSharedFileListItemRemove(loginItems, item); // remove it!
-                    }
-                    CFRelease(itemUrlRef);
-                }
+            // plist doens't exist, write a new one.
+            auto result = writeNewPlistFile(plistFile, fullPath, enable);
+            if (!result) {
+                qCWarning(lcUtility) << result.error();
             }
-            CFRelease(itemsArray);
-        };
-        CFRelease(loginItems);
+        }
     }
-
-    CFRelease(folderCFStr);
-    CFRelease(urlRef);
 }
 
 #ifndef TOKEN_AUTH_ONLY
