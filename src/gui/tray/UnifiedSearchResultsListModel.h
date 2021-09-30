@@ -15,9 +15,9 @@
 #ifndef UNIFIEDSEARCHRESULTSLISTMODEL_H
 #define UNIFIEDSEARCHRESULTSLISTMODEL_H
 
-#include "UnifiedSearchResultCategory.h"
-
 #include <QtCore>
+
+#include "UnifiedSearchResult.h"
 
 namespace OCC {
 
@@ -95,7 +95,7 @@ private:
 
     void combineResults(const QList<UnifiedSearchResult> &newEntries, const UnifiedSearchProvider &provider);
 
-    void appendResultsToProvider(const UnifiedSearchProvider &provider, QList<UnifiedSearchResult> results);
+    void appendResultsToProvider(const UnifiedSearchProvider &provider, const QList<UnifiedSearchResult> &results);
 
 private:
     QTimer _unifiedSearchTextEditingFinishedTimer;

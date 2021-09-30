@@ -117,7 +117,6 @@ set(client_SRCS
     tray/ActivityData.cpp
     tray/ActivityListModel.cpp
     tray/UnifiedSearchResult.cpp
-    tray/UnifiedSearchResultCategory.cpp
     tray/UnifiedSearchResultImageProvider.cpp
     tray/UnifiedSearchResultsListModel.cpp
     tray/UserModel.cpp

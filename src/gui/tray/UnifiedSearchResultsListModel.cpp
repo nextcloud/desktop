@@ -24,6 +24,7 @@
 #include "UserModel.h"
 
 #include <QAbstractListModel>
+#include <QDesktopServices>
 
 namespace OCC {
 
@@ -203,6 +204,23 @@ void UnifiedSearchResultsListModel::resultClicked(int resultIndex)
         } else {
             const auto resourceUrl = QUrl(data(modelIndex, ResourceUrlRole).toString());
             if (resourceUrl.isValid()) {
+                if (categoryId.contains("file")) {
+                    const auto urlQuery = QUrlQuery(resourceUrl);
+                    const auto dir = urlQuery.queryItemValue(QStringLiteral("dir"), QUrl::ComponentFormattingOption::FullyDecoded);
+                    const auto fileName = urlQuery.queryItemValue(QStringLiteral("scrollto"), QUrl::ComponentFormattingOption::FullyDecoded);
+
+                    if (!dir.isEmpty() && !fileName.isEmpty()) {
+                        const QString relativePath = dir + QLatin1Char('/') + fileName;
+                        if (!relativePath.isEmpty()) {
+                            const auto localFiles = FolderMan::instance()->findFileInLocalFolders(QFileInfo(relativePath).path(), _accountState->account());
+
+                            if (!localFiles.isEmpty()) {
+                                QDesktopServices::openUrl(localFiles.constFirst());
+                                return;
+                            }
+                        }
+                    }
+                }
                 Utility::openBrowser(resourceUrl);
             }
         }
@@ -497,8 +515,7 @@ void UnifiedSearchResultsListModel::combineResults(const QList<UnifiedSearchResu
     }
 }
 
-void UnifiedSearchResultsListModel::appendResultsToProvider(
-    const UnifiedSearchProvider &provider, QList<UnifiedSearchResult> results)
+void UnifiedSearchResultsListModel::appendResultsToProvider(const UnifiedSearchProvider &provider, const QList<UnifiedSearchResult> &results)
 {
     // Let's insert new results
     if (results.size() > 0) {
