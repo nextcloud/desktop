@@ -20,7 +20,7 @@ namespace OCC {
 
 bool operator<(const UnifiedSearchResultCategory &rhs, const UnifiedSearchResultCategory &lhs)
 {
-    return rhs._name > lhs._name;
+    return rhs._order < lhs._order;
 }
 
 bool operator==(const UnifiedSearchResultCategory &rhs, const UnifiedSearchResultCategory &lhs)

@@ -43,6 +43,9 @@ class UnifiedSearchResultsListModel : public QAbstractListModel
     public:
         QString _id;
         QString _name;
+        qint32 _cursor = -1;
+        qint32 _pageSize = -1;
+        bool _isPaginated = false;
         qint32 _order = INT32_MAX;
     };
 
@@ -90,7 +93,7 @@ private:
     void startSearch();
     void startSearchForProvider(const UnifiedSearchProvider &provider, qint32 cursor = -1);
 
-    void combineResults();
+    void combineResults(const QList<UnifiedSearchResult> &newEntries, const UnifiedSearchProvider &provider);
 
     void appendResultsToProvider(const UnifiedSearchProvider &provider, QList<UnifiedSearchResult> results);
 
@@ -99,7 +102,6 @@ private:
     QString _searchTerm;
     QMap<QString, UnifiedSearchProvider> _providers;
     AccountState *_accountState;
-    QMap<QString, UnifiedSearchResultCategory> _resultsByCategory;
     QList<UnifiedSearchResult> _resultsCombined;
 
     QString _errorString;
