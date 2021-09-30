@@ -28,8 +28,10 @@
 #include <winerror.h>
 
 #include <QCoreApplication>
+#include <QDir>
 #include <QFileInfo>
 #include <QLibrary>
+#include <QSettings>
 
 extern Q_CORE_EXPORT int qt_ntfs_permission_lookup;
 
@@ -51,7 +53,7 @@ const QString systemThemesC()
 
 namespace OCC {
 
-static void setupFavLink_private(const QString &folder)
+void Utility::setupFavLink(const QString &folder)
 {
     // First create a Desktop.ini so that the folder and favorite link show our application's icon.
     QFile desktopIni(folder + QLatin1String("/Desktop.ini"));
@@ -89,19 +91,19 @@ static void setupFavLink_private(const QString &folder)
         qCWarning(lcUtility) << "linking" << folder << "to" << linkName << "failed!";
 }
 
-bool hasSystemLaunchOnStartup_private(const QString &appName)
+bool Utility::hasSystemLaunchOnStartup(const QString &appName)
 {
     QSettings settings(systemRunPathC(), QSettings::NativeFormat);
     return settings.contains(appName);
 }
 
-bool hasLaunchOnStartup_private(const QString &appName)
+bool Utility::hasLaunchOnStartup(const QString &appName)
 {
     QSettings settings(runPathC(), QSettings::NativeFormat);
     return settings.contains(appName);
 }
 
-void setLaunchOnStartup_private(const QString &appName, const QString &guiName, bool enable)
+void Utility::setLaunchOnStartup(const QString &appName, const QString &guiName, bool enable)
 {
     Q_UNUSED(guiName);
     QSettings settings(runPathC(), QSettings::NativeFormat);
@@ -112,11 +114,13 @@ void setLaunchOnStartup_private(const QString &appName, const QString &guiName, 
     }
 }
 
-static inline bool hasDarkSystray_private()
+#ifndef TOKEN_AUTH_ONLY
+bool Utility::hasDarkSystray()
 {
     const QSettings settings(systemThemesC(), QSettings::NativeFormat);
     return !settings.value(QStringLiteral("SystemUsesLightTheme"), false).toBool();
 }
+#endif
 
 QVariant Utility::registryGetKeyValue(HKEY hRootKey, const QString &subKey, const QString &valueName)
 {

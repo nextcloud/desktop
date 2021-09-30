@@ -17,11 +17,18 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
+#include "utility.h"
+
+#include <QCoreApplication>
+#include <QDir>
+#include <QFile>
 #include <QStandardPaths>
+#include <QString>
+#include <QTextStream>
 
 namespace OCC {
 
-static void setupFavLink_private(const QString &folder)
+void Utility::setupFavLink(const QString &folder)
 {
     // Nautilus: add to ~/.gtk-bookmarks
     QFile gtkBookmarks(QDir::homePath() + QLatin1String("/.gtk-bookmarks"));
@@ -38,22 +45,28 @@ static void setupFavLink_private(const QString &folder)
 
 // returns the autostart directory the linux way
 // and respects the XDG_CONFIG_HOME env variable
-QString getUserAutostartDir_private()
+static QString getUserAutostartDir()
 {
     QString config = QStandardPaths::writableLocation(QStandardPaths::ConfigLocation);
     config += QLatin1String("/autostart/");
     return config;
 }
 
-bool hasLaunchOnStartup_private(const QString &appName)
+bool Utility::hasSystemLaunchOnStartup(const QString &appName)
 {
-    QString desktopFileLocation = getUserAutostartDir_private() + appName + QLatin1String(".desktop");
+    Q_UNUSED(appName)
+    return false;
+}
+
+bool Utility::hasLaunchOnStartup(const QString &appName)
+{
+    QString desktopFileLocation = getUserAutostartDir() + appName + QLatin1String(".desktop");
     return QFile::exists(desktopFileLocation);
 }
 
-void setLaunchOnStartup_private(const QString &appName, const QString &guiName, bool enable)
+void Utility::setLaunchOnStartup(const QString &appName, const QString &guiName, bool enable)
 {
-    QString userAutoStartPath = getUserAutostartDir_private();
+    QString userAutoStartPath = getUserAutostartDir();
     QString desktopFileLocation = userAutoStartPath + appName + QLatin1String(".desktop");
     if (enable) {
         if (!QDir().exists(userAutoStartPath) && !QDir().mkpath(userAutoStartPath)) {
@@ -85,9 +98,11 @@ void setLaunchOnStartup_private(const QString &appName, const QString &guiName, 
     }
 }
 
-static inline bool hasDarkSystray_private()
+#ifndef TOKEN_AUTH_ONLY
+bool Utility::hasDarkSystray()
 {
     return true;
 }
+#endif
 
 } // namespace OCC

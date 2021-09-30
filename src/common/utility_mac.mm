@@ -18,12 +18,15 @@
 
 #include "utility.h"
 
-#include <CoreServices/CoreServices.h>
+#include <QCoreApplication>
+#include <QDir>
+
 #include <CoreFoundation/CoreFoundation.h>
+#include <CoreServices/CoreServices.h>
 
 namespace OCC {
 
-static void setupFavLink_private(const QString &folder)
+void Utility::setupFavLink(const QString &folder)
 {
     // Finder: Place under "Places"/"Favorites" on the left sidebar
     CFStringRef folderCFStr = CFStringCreateWithCString(0, folder.toUtf8().data(), kCFStringEncodingUTF8);
@@ -43,7 +46,13 @@ static void setupFavLink_private(const QString &folder)
     CFRelease(urlRef);
 }
 
-bool hasLaunchOnStartup_private(const QString &)
+bool Utility::hasSystemLaunchOnStartup(const QString &appName)
+{
+    Q_UNUSED(appName)
+    return false;
+}
+
+bool Utility::hasLaunchOnStartup(const QString &appName)
 {
     // this is quite some duplicate code with setLaunchOnStartup, at some point we should fix this FIXME.
     bool returnValue = false;
@@ -76,7 +85,7 @@ bool hasLaunchOnStartup_private(const QString &)
     return returnValue;
 }
 
-void setLaunchOnStartup_private(const QString &appName, const QString &guiName, bool enable)
+void Utility::setLaunchOnStartup(const QString &appName, const QString &guiName, bool enable)
 {
     Q_UNUSED(appName)
     Q_UNUSED(guiName)
@@ -123,7 +132,8 @@ void setLaunchOnStartup_private(const QString &appName, const QString &guiName, 
     CFRelease(urlRef);
 }
 
-static bool hasDarkSystray_private()
+#ifndef TOKEN_AUTH_ONLY
+bool Utility::hasDarkSystray()
 {
     bool returnValue = false;
     CFStringRef interfaceStyleKey = CFSTR("AppleInterfaceStyle");
@@ -137,5 +147,6 @@ static bool hasDarkSystray_private()
     }
     return returnValue;
 }
+#endif
 
 } // namespace OCC
