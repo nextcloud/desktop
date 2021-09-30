@@ -351,7 +351,7 @@ int main(int argc, char **argv)
         return EXIT_FAILURE;
     }
 
-    QUrl hostUrl = QUrl::fromUserInput(options.target_url);
+    QUrl hostUrl = QUrl::fromUserInput((options.target_url.endsWith(QLatin1Char('/')) || options.target_url.endsWith(QLatin1Char('\\'))) ? options.target_url.chopped(1) : options.target_url);
 
     // Order of retrieval attempt (later attempts override earlier ones):
     // 1. From URL
