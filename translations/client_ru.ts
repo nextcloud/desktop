@@ -647,23 +647,23 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::ActivitySettings</name>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="482"/>
-        <location filename="../src/gui/activitywidget.cpp" line="526"/>
+        <location filename="../src/gui/activitywidget.cpp" line="485"/>
+        <location filename="../src/gui/activitywidget.cpp" line="529"/>
         <source>Server Activity</source>
         <translation>Действия Сервера</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="488"/>
+        <location filename="../src/gui/activitywidget.cpp" line="491"/>
         <source>Sync Protocol</source>
         <translation>Протокол синхронизации</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="534"/>
+        <location filename="../src/gui/activitywidget.cpp" line="537"/>
         <source>Not Synced</source>
         <translation>Не синхронизировано</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="537"/>
+        <location filename="../src/gui/activitywidget.cpp" line="540"/>
         <source>Not Synced (%1)</source>
         <extracomment>%1 is the number of not synced files.</extracomment>
         <translation>Не синхронизировано (%1)</translation>
@@ -678,58 +678,58 @@ This action will abort any currently running synchronization.</source>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.ui" line="26"/>
-        <location filename="../src/gui/activitywidget.ui" line="71"/>
-        <location filename="../src/gui/activitywidget.ui" line="118"/>
+        <location filename="../src/gui/activitywidget.ui" line="73"/>
+        <location filename="../src/gui/activitywidget.ui" line="142"/>
         <source>TextLabel</source>
         <translation>TextLabel</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="146"/>
+        <location filename="../src/gui/activitywidget.ui" line="96"/>
+        <source>Filter</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/activitywidget.cpp" line="149"/>
         <source>Server Activities</source>
         <translation>Действия Сервера</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="107"/>
-        <source>Reset column sizes</source>
-        <translation>Сбросить размеры колонок</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/activitywidget.cpp" line="150"/>
+        <location filename="../src/gui/activitywidget.cpp" line="153"/>
         <source>Notifications</source>
         <translation>Уведомления</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/activitywidget.cpp" line="293"/>
+        <location filename="../src/gui/activitywidget.cpp" line="296"/>
         <source>%n notifications(s) for %1.</source>
         <translation><numerusform>%n уведомление для %1.</numerusform><numerusform>%n уведомления для %1.</numerusform><numerusform>%n уведомлений для %1.</numerusform><numerusform>%n уведомлений для %1.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/activitywidget.cpp" line="299"/>
+        <location filename="../src/gui/activitywidget.cpp" line="302"/>
         <source>%n notifications(s) for %1 and %2.</source>
         <translation><numerusform>%n уведомление для %1 и %2.</numerusform><numerusform>%n уведомления для %1 и %2.</numerusform><numerusform>%n уведомлений для %1 и %2.</numerusform><numerusform>%n уведомлений для %1 и %2.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="301"/>
+        <location filename="../src/gui/activitywidget.cpp" line="304"/>
         <source>New notifications for %1, %2 and other accounts.</source>
         <translation>Новые уведомления для %1, %2 и других учётных записей.</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="304"/>
+        <location filename="../src/gui/activitywidget.cpp" line="307"/>
         <source>Open the activity view for details.</source>
         <translation>Чтобы посмотреть подробности, откройте просмотр событий.</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="451"/>
+        <location filename="../src/gui/activitywidget.cpp" line="454"/>
         <source>Copy to clipboard</source>
         <translation>Скопировать в буфер обмена</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="459"/>
+        <location filename="../src/gui/activitywidget.cpp" line="462"/>
         <source>Show in file browser</source>
         <translation>Показать в файловом браузере</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="155"/>
+        <location filename="../src/gui/activitywidget.cpp" line="158"/>
         <source>&lt;br/&gt;Account %1 does not have activities enabled.</source>
         <translation>&lt;br/&gt;У учетной записи %1 не включены события.</translation>
     </message>
@@ -964,6 +964,14 @@ File synchronization desktop utility.</source>
         <location filename="../src/libsync/discoveryphase.cpp" line="320"/>
         <source>Error while reading directory %1</source>
         <translation>Ошибка при чтении каталога %1</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::ExpandingHeaderView</name>
+    <message>
+        <location filename="../src/gui/models/expandingheaderview.cpp" line="78"/>
+        <source>Reset column sizes</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1871,29 +1879,44 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <translation>Форма</translation>
     </message>
     <message>
-        <location filename="../src/gui/issueswidget.ui" line="20"/>
+        <location filename="../src/gui/issueswidget.ui" line="22"/>
         <source>List of issues</source>
         <translation>Список проблем</translation>
     </message>
     <message>
-        <location filename="../src/gui/issueswidget.ui" line="59"/>
+        <location filename="../src/gui/issueswidget.ui" line="45"/>
+        <source>Filter</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/issueswidget.ui" line="83"/>
         <source>There were too many issues. Not all will be visible here.</source>
         <translation>Было слишком много проблем. Не все будут видны здесь.</translation>
     </message>
     <message>
-        <location filename="../src/gui/issueswidget.ui" line="69"/>
+        <location filename="../src/gui/issueswidget.ui" line="93"/>
         <source>There were conflicts. Check the documentation on how to resolve them.</source>
         <translation>Имеются конфликты. См. документацию по их разрешению.</translation>
     </message>
     <message>
-        <location filename="../src/gui/issueswidget.cpp" line="82"/>
+        <location filename="../src/gui/issueswidget.cpp" line="135"/>
         <source>The file %1 was ignored as its name is reserved by %2</source>
         <translation>Файл %1 был проигнорирован, так как его имя зарезервировано %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/issueswidget.cpp" line="119"/>
+        <location filename="../src/gui/issueswidget.cpp" line="163"/>
+        <source>Reset column sizes</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/issueswidget.cpp" line="182"/>
         <source>There were conflicts. &lt;a href=&quot;%1&quot;&gt;Check the documentation on how to resolve them.&lt;/a&gt;</source>
         <translation>Имеются конфликты. &lt;a href=&quot;%1&quot;&gt;См. документацию по их разрешению.&lt;/a&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/issueswidget.cpp" line="202"/>
+        <source>Account</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1964,14 +1987,24 @@ Note that using any logging command line options will override the settings.</so
 <context>
     <name>OCC::Models</name>
     <message>
-        <location filename="../src/gui/models/models.cpp" line="84"/>
-        <source>Filter by</source>
-        <translation>Фильтр по</translation>
+        <location filename="../src/gui/models/models.cpp" line="82"/>
+        <source>%1 Filter:</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/models/models.cpp" line="101"/>
+        <location filename="../src/gui/models/models.cpp" line="103"/>
         <source>No filter</source>
         <translation>Без фильтра</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/issueswidget.cpp" line="217"/>
+        <source>Reset Filters</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/issueswidget.cpp" line="296"/>
+        <source>Status Filter:</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -2405,7 +2438,7 @@ for additional privileges during the process.</source>
 <context>
     <name>OCC::OwncloudPropagator</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="698"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="700"/>
         <source>File %1 is currently in use</source>
         <translation>Файл %1 сейчас используется</translation>
     </message>
@@ -2674,12 +2707,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateDirectory</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1014"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1016"/>
         <source>Error updating metadata: %1</source>
         <translation>Ошибка обновления метаданных: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1017"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1019"/>
         <source>%1 the folder is currently in use</source>
         <translation>%1 каталог сейчас занят</translation>
     </message>
@@ -2886,12 +2919,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateUpdateMetaDataJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1160"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1162"/>
         <source>Could not update file : %1</source>
         <translation>Не удалось обновить файл : %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1163"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1165"/>
         <source>The file %1 is currently in use</source>
         <translation>Файл %1 сейчас занят</translation>
     </message>
@@ -3070,32 +3103,37 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Форма</translation>
     </message>
     <message>
-        <location filename="../src/gui/protocolwidget.ui" line="20"/>
+        <location filename="../src/gui/protocolwidget.ui" line="22"/>
         <source>Local sync protocol</source>
         <translation>Локальный протокол синхронизации</translation>
     </message>
     <message>
-        <location filename="../src/gui/protocolwidget.cpp" line="84"/>
-        <source>Reset column sizes</source>
-        <translation>Сбросить размеры колонок</translation>
+        <location filename="../src/gui/protocolwidget.ui" line="45"/>
+        <source>Filter</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/protocolwidget.cpp" line="93"/>
+        <location filename="../src/gui/protocolwidget.cpp" line="91"/>
+        <source>Account</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/protocolwidget.cpp" line="105"/>
         <source>Copy to clipboard</source>
         <translation>Скопировать в буфер обмена</translation>
     </message>
     <message>
-        <location filename="../src/gui/protocolwidget.cpp" line="103"/>
+        <location filename="../src/gui/protocolwidget.cpp" line="115"/>
         <source>Show in file browser</source>
         <translation>Показать в файловом браузере</translation>
     </message>
     <message>
-        <location filename="../src/gui/protocolwidget.cpp" line="114"/>
+        <location filename="../src/gui/protocolwidget.cpp" line="126"/>
         <source>Show in web browser</source>
         <translation>Показать в веб-барузере</translation>
     </message>
     <message>
-        <location filename="../src/gui/protocolwidget.cpp" line="127"/>
+        <location filename="../src/gui/protocolwidget.cpp" line="139"/>
         <source>Retry sync</source>
         <translation>Повторить попытку синхронизации</translation>
     </message>
@@ -4551,7 +4589,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     </message>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="94"/>
-        <source>Error Ignored</source>
+        <source>File Ignored</source>
         <translation type="unfinished"/>
     </message>
     <message>

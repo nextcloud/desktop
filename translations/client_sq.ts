@@ -647,23 +647,23 @@ Ky veprim do të shkaktojë ndërprerjen e çfarëdo njëkohësimi në kryerje e
 <context>
     <name>OCC::ActivitySettings</name>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="482"/>
-        <location filename="../src/gui/activitywidget.cpp" line="526"/>
+        <location filename="../src/gui/activitywidget.cpp" line="485"/>
+        <location filename="../src/gui/activitywidget.cpp" line="529"/>
         <source>Server Activity</source>
         <translation>Veprimtari Shërbyesi</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="488"/>
+        <location filename="../src/gui/activitywidget.cpp" line="491"/>
         <source>Sync Protocol</source>
         <translation>Protokoll Njëkohësimesh</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="534"/>
+        <location filename="../src/gui/activitywidget.cpp" line="537"/>
         <source>Not Synced</source>
         <translation>Të panjëkohësuara</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="537"/>
+        <location filename="../src/gui/activitywidget.cpp" line="540"/>
         <source>Not Synced (%1)</source>
         <extracomment>%1 is the number of not synced files.</extracomment>
         <translation>Të panjëkohësuara (%1)</translation>
@@ -678,58 +678,58 @@ Ky veprim do të shkaktojë ndërprerjen e çfarëdo njëkohësimi në kryerje e
     </message>
     <message>
         <location filename="../src/gui/activitywidget.ui" line="26"/>
-        <location filename="../src/gui/activitywidget.ui" line="71"/>
-        <location filename="../src/gui/activitywidget.ui" line="118"/>
+        <location filename="../src/gui/activitywidget.ui" line="73"/>
+        <location filename="../src/gui/activitywidget.ui" line="142"/>
         <source>TextLabel</source>
         <translation>EtiketëTeksti</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="146"/>
+        <location filename="../src/gui/activitywidget.ui" line="96"/>
+        <source>Filter</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/activitywidget.cpp" line="149"/>
         <source>Server Activities</source>
         <translation>Veprimtari Shërbyesi</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="107"/>
-        <source>Reset column sizes</source>
-        <translation>Ricaktoni madhësi shtyllash</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/activitywidget.cpp" line="150"/>
+        <location filename="../src/gui/activitywidget.cpp" line="153"/>
         <source>Notifications</source>
         <translation>Njoftime</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/activitywidget.cpp" line="293"/>
+        <location filename="../src/gui/activitywidget.cpp" line="296"/>
         <source>%n notifications(s) for %1.</source>
         <translation><numerusform>%n njoftim për %1.</numerusform><numerusform>%n njoftime për %1.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/activitywidget.cpp" line="299"/>
+        <location filename="../src/gui/activitywidget.cpp" line="302"/>
         <source>%n notifications(s) for %1 and %2.</source>
         <translation><numerusform>%n njoftim për %1 dhe %2.</numerusform><numerusform>%n njoftime për %1 dhe %2.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="301"/>
+        <location filename="../src/gui/activitywidget.cpp" line="304"/>
         <source>New notifications for %1, %2 and other accounts.</source>
         <translation>Njoftime të reja për %1, %2 dhe llogari të tjera.</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="304"/>
+        <location filename="../src/gui/activitywidget.cpp" line="307"/>
         <source>Open the activity view for details.</source>
         <translation>Për hollësi, hapni skenën e veprimtarisë.</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="451"/>
+        <location filename="../src/gui/activitywidget.cpp" line="454"/>
         <source>Copy to clipboard</source>
         <translation>Kopjoje në të papastër</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="459"/>
+        <location filename="../src/gui/activitywidget.cpp" line="462"/>
         <source>Show in file browser</source>
         <translation>Shfaqe në shfletues kartelash</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="155"/>
+        <location filename="../src/gui/activitywidget.cpp" line="158"/>
         <source>&lt;br/&gt;Account %1 does not have activities enabled.</source>
         <translation>&lt;br/&gt;Llogaria %1 s’i ka të aktivizuara veprimtaritë.</translation>
     </message>
@@ -964,6 +964,14 @@ Mjet njëkohësimi kartelash për desktop.</translation>
         <location filename="../src/libsync/discoveryphase.cpp" line="320"/>
         <source>Error while reading directory %1</source>
         <translation>Gabim gjatë leximit të drejtorisë %1</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::ExpandingHeaderView</name>
+    <message>
+        <location filename="../src/gui/models/expandingheaderview.cpp" line="78"/>
+        <source>Reset column sizes</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1873,29 +1881,44 @@ Objektet mbi të cilët lejohet fshirja do të fshihen, nëse pengojnë heqjen e
         <translation>Formular</translation>
     </message>
     <message>
-        <location filename="../src/gui/issueswidget.ui" line="20"/>
+        <location filename="../src/gui/issueswidget.ui" line="22"/>
         <source>List of issues</source>
         <translation>Listë Problemesh</translation>
     </message>
     <message>
-        <location filename="../src/gui/issueswidget.ui" line="59"/>
+        <location filename="../src/gui/issueswidget.ui" line="45"/>
+        <source>Filter</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/issueswidget.ui" line="83"/>
         <source>There were too many issues. Not all will be visible here.</source>
         <translation>Ka shumë probleme. Jo të gjithë do të jenë të dukshëm këtu.</translation>
     </message>
     <message>
-        <location filename="../src/gui/issueswidget.ui" line="69"/>
+        <location filename="../src/gui/issueswidget.ui" line="93"/>
         <source>There were conflicts. Check the documentation on how to resolve them.</source>
         <translation>Pati përplasje. Se si t’i zgjidhni, shihni dokumentimin.</translation>
     </message>
     <message>
-        <location filename="../src/gui/issueswidget.cpp" line="82"/>
+        <location filename="../src/gui/issueswidget.cpp" line="135"/>
         <source>The file %1 was ignored as its name is reserved by %2</source>
         <translation>Kartela %1 u shpërfill, ngaqë emri i saj është i rezervuar nga2</translation>
     </message>
     <message>
-        <location filename="../src/gui/issueswidget.cpp" line="119"/>
+        <location filename="../src/gui/issueswidget.cpp" line="163"/>
+        <source>Reset column sizes</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/issueswidget.cpp" line="182"/>
         <source>There were conflicts. &lt;a href=&quot;%1&quot;&gt;Check the documentation on how to resolve them.&lt;/a&gt;</source>
         <translation>Pati përplasje. &lt;a href=&quot;%1&quot;&gt;Se si t’i zgjidhni, shihni dokumentimin.&lt;/a&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/issueswidget.cpp" line="202"/>
+        <source>Account</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1966,14 +1989,24 @@ Kini parasysh se përdorimi i çfarëdo mundësie regjistrimi që nga rresht urd
 <context>
     <name>OCC::Models</name>
     <message>
-        <location filename="../src/gui/models/models.cpp" line="84"/>
-        <source>Filter by</source>
-        <translation>Filtroji sipas</translation>
+        <location filename="../src/gui/models/models.cpp" line="82"/>
+        <source>%1 Filter:</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/models/models.cpp" line="101"/>
+        <location filename="../src/gui/models/models.cpp" line="103"/>
         <source>No filter</source>
         <translation>Pa filtrim</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/issueswidget.cpp" line="217"/>
+        <source>Reset Filters</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/issueswidget.cpp" line="296"/>
+        <source>Status Filter:</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -2407,7 +2440,7 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
 <context>
     <name>OCC::OwncloudPropagator</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="698"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="700"/>
         <source>File %1 is currently in use</source>
         <translation>Kartela %1 është aktualisht në përdorim</translation>
     </message>
@@ -2676,12 +2709,12 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
 <context>
     <name>OCC::PropagateDirectory</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1014"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1016"/>
         <source>Error updating metadata: %1</source>
         <translation>Gabim në përditësim tejtëdhënash: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1017"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1019"/>
         <source>%1 the folder is currently in use</source>
         <translation type="unfinished"/>
     </message>
@@ -2888,12 +2921,12 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
 <context>
     <name>OCC::PropagateUpdateMetaDataJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1160"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1162"/>
         <source>Could not update file : %1</source>
         <translation>S’u përditësua dot kartela : %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1163"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1165"/>
         <source>The file %1 is currently in use</source>
         <translation>Kartela %1 është aktualisht në përdorim</translation>
     </message>
@@ -3072,32 +3105,37 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
         <translation>Formular</translation>
     </message>
     <message>
-        <location filename="../src/gui/protocolwidget.ui" line="20"/>
+        <location filename="../src/gui/protocolwidget.ui" line="22"/>
         <source>Local sync protocol</source>
         <translation>Protokoll vendor njëkohësimesh</translation>
     </message>
     <message>
-        <location filename="../src/gui/protocolwidget.cpp" line="84"/>
-        <source>Reset column sizes</source>
-        <translation>Ricaktoni madhësi shtyllash</translation>
+        <location filename="../src/gui/protocolwidget.ui" line="45"/>
+        <source>Filter</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/protocolwidget.cpp" line="93"/>
+        <location filename="../src/gui/protocolwidget.cpp" line="91"/>
+        <source>Account</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/protocolwidget.cpp" line="105"/>
         <source>Copy to clipboard</source>
         <translation>Kopjoje në të papastër</translation>
     </message>
     <message>
-        <location filename="../src/gui/protocolwidget.cpp" line="103"/>
+        <location filename="../src/gui/protocolwidget.cpp" line="115"/>
         <source>Show in file browser</source>
         <translation>Me këtë hedhje në qarkullim Clementine-a përfiton një dialog fringo të ri përpunimi etiketash, me vetëplotësim dhe me aftësinë të identifikojë automatikisht muzikë dhe të sjellë etiketa që mungojnë që nga MusicBrainz.  Tani mbulohen “CUE sheets” - këto pikasen automatikisht kur skanohet mediateka juaj dhe çdo pjesë do të shfaqet veçmas. Kemi bërë edhe shumë përmirësime të vogla, të tilla si shfaqja e kopertinës së albumit te skeda Mediatekë, duke ngjyrosur gri këngët e fshira, shtimi i një mundësie “Shfaqe në shfletues kartelash”, mbulim për ndërmjetës rrjeti, shtimi i një mundësie “Riskanim i plotë i mediatekës”, dhe një ndihmëz të re për rrëshqitësin e pjesë</translation>
     </message>
     <message>
-        <location filename="../src/gui/protocolwidget.cpp" line="114"/>
+        <location filename="../src/gui/protocolwidget.cpp" line="126"/>
         <source>Show in web browser</source>
         <translation>Shfaqe në shfletues</translation>
     </message>
     <message>
-        <location filename="../src/gui/protocolwidget.cpp" line="127"/>
+        <location filename="../src/gui/protocolwidget.cpp" line="139"/>
         <source>Retry sync</source>
         <translation>Riprovo njëkohësim</translation>
     </message>
@@ -4553,8 +4591,8 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
     </message>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="94"/>
-        <source>Error Ignored</source>
-        <translation>Gabimi u Shpërfill</translation>
+        <source>File Ignored</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="96"/>
