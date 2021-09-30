@@ -309,7 +309,7 @@ std::function<void(void)> IssuesWidget::addStatusFilter(QMenu *menu)
             SyncFileItem::Status::DetailError
         };
 
-        auto action = menu->addAction(SyncFileItem::statusEnumDisplayName(SyncFileItem::NormalError), [this, ErrorStatusItems](bool checked) {
+        auto action = menu->addAction(Utility::enumDisplayName(SyncFileItem::NormalError), [this, ErrorStatusItems](bool checked) {
             auto currentFilter = _statusSortModel->filter();
             for (const auto &item : ErrorStatusItems) {
                 currentFilter[item] = checked;
@@ -330,7 +330,7 @@ std::function<void(void)> IssuesWidget::addStatusFilter(QMenu *menu)
         SyncFileItem::Status::Excluded
     };
     for (const auto &item : OtherStatusItems) {
-        auto action = menu->addAction(SyncFileItem::statusEnumDisplayName(item), [this, item](bool checked) {
+        auto action = menu->addAction(Utility::enumDisplayName(item), [this, item](bool checked) {
             auto currentFilter = _statusSortModel->filter();
             currentFilter[item] = checked;
             _statusSortModel->setFilter(currentFilter);
