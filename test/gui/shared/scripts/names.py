@@ -103,3 +103,7 @@ stack_Enable_experimental_placeholder_mode_QPushButton = {"container": settings_
 disable_virtual_file_support_QMessageBox = {"type": "QMessageBox", "unnamed": 1, "visible": 1, "windowTitle": "Disable virtual file support?"}
 disable_virtual_file_support_Disable_support_QPushButton = {"text": "Disable support", "type": "QPushButton", "unnamed": 1, "visible": 1, "window": disable_virtual_file_support_QMessageBox}
 error_QMessageBox = {"type": "QMessageBox", "unnamed": 1, "visible": 1, "windowTitle": "Error"}
+oCC_SslErrorDialog_OCC_SslErrorDialog = {"name": "OCC__SslErrorDialog", "type": "OCC::SslErrorDialog", "visible": 1}
+oCC_SslErrorDialog_cbTrustConnect_QCheckBox = {"name": "_cbTrustConnect", "type": "QCheckBox", "visible": 1, "window": oCC_SslErrorDialog_OCC_SslErrorDialog}
+oCC_SslErrorDialog_OK_QPushButton = {"text": "OK", "type": "QPushButton", "unnamed": 1, "visible": 1, "window": oCC_SslErrorDialog_OCC_SslErrorDialog}
+owncloudWizard_urlLabel_QLabel = {"name": "urlLabel", "type": "QLabel", "visible": 1, "window": owncloudWizard_OCC_OwncloudWizard}

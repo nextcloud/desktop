@@ -686,7 +686,7 @@ Esta acción interromperá calquera sincronización que estea agora en proceso.<
     <message>
         <location filename="../src/gui/activitywidget.ui" line="96"/>
         <source>Filter</source>
-        <translation type="unfinished"/>
+        <translation>Filtro</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="149"/>
@@ -1886,7 +1886,7 @@ Os elementos onde se permite a eliminación eliminaranse se impiden que se elimi
     <message>
         <location filename="../src/gui/issueswidget.ui" line="45"/>
         <source>Filter</source>
-        <translation type="unfinished"/>
+        <translation>Filtro</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="83"/>
@@ -1916,7 +1916,7 @@ Os elementos onde se permite a eliminación eliminaranse se impiden que se elimi
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="202"/>
         <source>Account</source>
-        <translation type="unfinished"/>
+        <translation>Conta</translation>
     </message>
 </context>
 <context>
@@ -3110,12 +3110,12 @@ Este é un modo novo e experimental. Se decide usalo, informe de calquera proble
     <message>
         <location filename="../src/gui/protocolwidget.ui" line="45"/>
         <source>Filter</source>
-        <translation type="unfinished"/>
+        <translation>Filtro</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="91"/>
         <source>Account</source>
-        <translation type="unfinished"/>
+        <translation>Conta</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="105"/>

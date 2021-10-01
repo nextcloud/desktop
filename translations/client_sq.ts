@@ -686,7 +686,7 @@ Ky veprim do të shkaktojë ndërprerjen e çfarëdo njëkohësimi në kryerje e
     <message>
         <location filename="../src/gui/activitywidget.ui" line="96"/>
         <source>Filter</source>
-        <translation type="unfinished"/>
+        <translation>Filtër</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="149"/>
@@ -971,7 +971,7 @@ Mjet njëkohësimi kartelash për desktop.</translation>
     <message>
         <location filename="../src/gui/models/expandingheaderview.cpp" line="78"/>
         <source>Reset column sizes</source>
-        <translation type="unfinished"/>
+        <translation>Ricaktoni madhësi shtyllash</translation>
     </message>
 </context>
 <context>
@@ -1888,7 +1888,7 @@ Objektet mbi të cilët lejohet fshirja do të fshihen, nëse pengojnë heqjen e
     <message>
         <location filename="../src/gui/issueswidget.ui" line="45"/>
         <source>Filter</source>
-        <translation type="unfinished"/>
+        <translation>Filtër</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="83"/>
@@ -1908,7 +1908,7 @@ Objektet mbi të cilët lejohet fshirja do të fshihen, nëse pengojnë heqjen e
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="163"/>
         <source>Reset column sizes</source>
-        <translation type="unfinished"/>
+        <translation>Ricaktoni madhësi shtyllash</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="182"/>
@@ -1918,7 +1918,7 @@ Objektet mbi të cilët lejohet fshirja do të fshihen, nëse pengojnë heqjen e
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="202"/>
         <source>Account</source>
-        <translation type="unfinished"/>
+        <translation>Llogari</translation>
     </message>
 </context>
 <context>
@@ -1991,7 +1991,7 @@ Kini parasysh se përdorimi i çfarëdo mundësie regjistrimi që nga rresht urd
     <message>
         <location filename="../src/gui/models/models.cpp" line="82"/>
         <source>%1 Filter:</source>
-        <translation type="unfinished"/>
+        <translation>Filtër %1:</translation>
     </message>
     <message>
         <location filename="../src/gui/models/models.cpp" line="103"/>
@@ -2001,12 +2001,12 @@ Kini parasysh se përdorimi i çfarëdo mundësie regjistrimi që nga rresht urd
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="217"/>
         <source>Reset Filters</source>
-        <translation type="unfinished"/>
+        <translation>Ktheji Filtrat Te Parazgjedhjet</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="296"/>
         <source>Status Filter:</source>
-        <translation type="unfinished"/>
+        <translation>Filtër Gjendjesh:</translation>
     </message>
 </context>
 <context>
@@ -3112,12 +3112,12 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
     <message>
         <location filename="../src/gui/protocolwidget.ui" line="45"/>
         <source>Filter</source>
-        <translation type="unfinished"/>
+        <translation>Filtër</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="91"/>
         <source>Account</source>
-        <translation type="unfinished"/>
+        <translation>Llogari</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="105"/>
@@ -4592,7 +4592,7 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="94"/>
         <source>File Ignored</source>
-        <translation type="unfinished"/>
+        <translation>Kartela u Shpërfill</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="96"/>

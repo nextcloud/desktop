@@ -686,7 +686,7 @@ Esta acción abortará cualquier sincronización actualmente en ejecución.</tra
     <message>
         <location filename="../src/gui/activitywidget.ui" line="96"/>
         <source>Filter</source>
-        <translation type="unfinished"/>
+        <translation>Filtro</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="149"/>
@@ -1885,7 +1885,7 @@ Los objetos donde se permite el borrado serán borrados si impiden que un direct
     <message>
         <location filename="../src/gui/issueswidget.ui" line="45"/>
         <source>Filter</source>
-        <translation type="unfinished"/>
+        <translation>Filtro</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="83"/>
@@ -1915,7 +1915,7 @@ Los objetos donde se permite el borrado serán borrados si impiden que un direct
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="202"/>
         <source>Account</source>
-        <translation type="unfinished"/>
+        <translation>Cuenta</translation>
     </message>
 </context>
 <context>
@@ -3107,12 +3107,12 @@ Este es un nuevo modo experimental. Si decide utilizarlo, reporte cualquier prob
     <message>
         <location filename="../src/gui/protocolwidget.ui" line="45"/>
         <source>Filter</source>
-        <translation type="unfinished"/>
+        <translation>Filtro</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="91"/>
         <source>Account</source>
-        <translation type="unfinished"/>
+        <translation>Cuenta</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="105"/>

@@ -686,7 +686,7 @@ Bu eylem, o anda çalışan herhangi senkronizasyon işlemini iptal edecektir.</
     <message>
         <location filename="../src/gui/activitywidget.ui" line="96"/>
         <source>Filter</source>
-        <translation type="unfinished"/>
+        <translation>Filtre</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="149"/>
@@ -1885,7 +1885,7 @@ Bir dizinin kaldırılmasını engelliyorlarsa işaretli ögeler de silinecektir
     <message>
         <location filename="../src/gui/issueswidget.ui" line="45"/>
         <source>Filter</source>
-        <translation type="unfinished"/>
+        <translation>Filtre</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="83"/>
@@ -1915,7 +1915,7 @@ Bir dizinin kaldırılmasını engelliyorlarsa işaretli ögeler de silinecektir
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="202"/>
         <source>Account</source>
-        <translation type="unfinished"/>
+        <translation>Hesap</translation>
     </message>
 </context>
 <context>
@@ -3107,12 +3107,12 @@ Bu yeni, deneysel bir moddur. Kullanmaya karar verirseniz, lütfen ortaya çıka
     <message>
         <location filename="../src/gui/protocolwidget.ui" line="45"/>
         <source>Filter</source>
-        <translation type="unfinished"/>
+        <translation>Filtre</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="91"/>
         <source>Account</source>
-        <translation type="unfinished"/>
+        <translation>Hesap</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="105"/>

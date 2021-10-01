@@ -63,16 +63,26 @@ def hook(context):
         pass
 
 
+def addAccount(context):
+    newAccount = AccountConnectionWizard()
+    newAccount.addAccount(context)
+    newAccount.selectSyncFolder(context)
+
+
 @Given('the user has added an account with')
 def step(context):
     toolbar = Toolbar()
     toolbar.clickAddAccount()
 
-    newAccount = AccountConnectionWizard()
-    newAccount.addAccount(context)
+    addAccount(context)
 
 
 @When('the user adds the first account with')
+def step(context):
+    addAccount(context)
+
+
+@When('the user adds the account with wrong credentials')
 def step(context):
     newAccount = AccountConnectionWizard()
     newAccount.addAccount(context)
@@ -125,8 +135,18 @@ def step(context):
     toolbar = Toolbar()
     toolbar.clickAddAccount()
 
+    addAccount(context)
+
+
+@When('the user adds an account with the following secure server address')
+def step(context):
+    for row in context.table[0:]:
+        row[1] = substituteInLineCodes(context, row[1])
+        if row[0] == 'server':
+            server = row[1]
+
     newAccount = AccountConnectionWizard()
-    newAccount.addAccount(context)
+    newAccount.addServer(server)
 
 
 def isItemSynced(type, itemName):
@@ -806,3 +826,20 @@ def step(context):
     clickButton(
         waitForObject(names.disable_virtual_file_support_Disable_support_QPushButton)
     )
+
+
+@When('the user accepts the certificate')
+def step(context):
+    clickButton(waitForObject(names.oCC_SslErrorDialog_cbTrustConnect_QCheckBox))
+    clickButton(waitForObject(names.oCC_SslErrorDialog_OK_QPushButton))
+
+
+@Then('the lock shown should be closed')
+def step(context):
+    test.vp("urlLock")
+
+
+@Then('error "|any|" should be displayed')
+def step(context, errorMsg):
+    newAccount = AccountConnectionWizard()
+    test.compare(str(waitForObjectExists(newAccount.ERROR_LABEL).text), errorMsg)

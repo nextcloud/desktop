@@ -686,7 +686,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/activitywidget.ui" line="96"/>
         <source>Filter</source>
-        <translation type="unfinished"/>
+        <translation>Филтър</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="149"/>
@@ -1885,7 +1885,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/issueswidget.ui" line="45"/>
         <source>Filter</source>
-        <translation type="unfinished"/>
+        <translation>Филтър</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="83"/>
@@ -1915,7 +1915,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="202"/>
         <source>Account</source>
-        <translation type="unfinished"/>
+        <translation>Профил</translation>
     </message>
 </context>
 <context>
@@ -3105,12 +3105,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/protocolwidget.ui" line="45"/>
         <source>Filter</source>
-        <translation type="unfinished"/>
+        <translation>Филтър</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="91"/>
         <source>Account</source>
-        <translation type="unfinished"/>
+        <translation>Профил</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="105"/>
