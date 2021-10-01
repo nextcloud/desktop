@@ -4837,14 +4837,14 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Недопустимые символы, пожалуйста, переименуйте &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1110"/>
-        <source>File name contains at least one invalid character</source>
-        <translation>Имя файла содержит по крайней мере один некорректный символ</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="1081"/>
         <source>Aborted</source>
         <translation>Отменено</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="1110"/>
+        <source>File name contains at least one invalid character</source>
+        <translation>Имя файла содержит по крайней мере один некорректный символ</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1098"/>

@@ -4814,14 +4814,14 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Неисправан карактер, преименујте „%1“</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1110"/>
-        <source>File name contains at least one invalid character</source>
-        <translation>Назив садржи бар један недозвољен карактер</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="1081"/>
         <source>Aborted</source>
         <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="1110"/>
+        <source>File name contains at least one invalid character</source>
+        <translation>Назив садржи бар један недозвољен карактер</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1098"/>

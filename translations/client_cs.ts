@@ -4840,14 +4840,14 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
         <translation>Neplatné znaky, přejmenujte „%1“</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1110"/>
-        <source>File name contains at least one invalid character</source>
-        <translation>Název souboru obsahuje přinejmenším jeden neplatný znak</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="1081"/>
         <source>Aborted</source>
         <translation>Přerušeno</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="1110"/>
+        <source>File name contains at least one invalid character</source>
+        <translation>Název souboru obsahuje přinejmenším jeden neplatný znak</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1098"/>

@@ -4802,14 +4802,14 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Caràcters no vàlids; canvieu el nom de «%1».</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1110"/>
-        <source>File name contains at least one invalid character</source>
-        <translation>El nom del fitxer conté com a mínim un caràcter no vàlid</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="1081"/>
         <source>Aborted</source>
         <translation>S&apos;ha cancel·lat</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="1110"/>
+        <source>File name contains at least one invalid character</source>
+        <translation>El nom del fitxer conté com a mínim un caràcter no vàlid</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1098"/>

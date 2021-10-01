@@ -4841,14 +4841,14 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
         <translation>Nieprawidłowe znaki, zmień nazwę &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1110"/>
-        <source>File name contains at least one invalid character</source>
-        <translation>Nazwa pliku zawiera co najmniej jeden nieprawidłowy znak</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="1081"/>
         <source>Aborted</source>
         <translation>Przerwany</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="1110"/>
+        <source>File name contains at least one invalid character</source>
+        <translation>Nazwa pliku zawiera co najmniej jeden nieprawidłowy znak</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1098"/>

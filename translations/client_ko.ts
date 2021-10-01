@@ -4840,14 +4840,14 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>잘못된 문자입니다. &quot;%1&quot;의 이름을 바꾸십시오.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1110"/>
-        <source>File name contains at least one invalid character</source>
-        <translation>파일 이름에 유효하지 않은 문자가 하나 이상 있습니다.</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="1081"/>
         <source>Aborted</source>
         <translation>중단됨</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="1110"/>
+        <source>File name contains at least one invalid character</source>
+        <translation>파일 이름에 유효하지 않은 문자가 하나 이상 있습니다.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1098"/>

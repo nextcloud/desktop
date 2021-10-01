@@ -4836,14 +4836,14 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
         <translation>Caracteres incorrectos, déalle outro nome a «%1»</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1110"/>
-        <source>File name contains at least one invalid character</source>
-        <translation>O nome de ficheiro contén algún carácter incorrecto</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="1081"/>
         <source>Aborted</source>
         <translation>Interrompido</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="1110"/>
+        <source>File name contains at least one invalid character</source>
+        <translation>O nome de ficheiro contén algún carácter incorrecto</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1098"/>

@@ -4840,14 +4840,14 @@ Custa est una modalidade noa, isperimentale. Si detzides de dda impreare, sinnal
         <translation> Caràteres non bàlidos, torra a numenare &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1110"/>
-        <source>File name contains at least one invalid character</source>
-        <translation>Su nùmene de s&apos;archìviu cuntenet a su mancu unu caràtere imbàlidu</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="1081"/>
         <source>Aborted</source>
         <translation>Firmadu</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="1110"/>
+        <source>File name contains at least one invalid character</source>
+        <translation>Su nùmene de s&apos;archìviu cuntenet a su mancu unu caràtere imbàlidu</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1098"/>
