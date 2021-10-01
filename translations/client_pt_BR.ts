@@ -686,7 +686,7 @@ Esta ação irá anular qualquer sincronização atualmente em execução.</tran
     <message>
         <location filename="../src/gui/activitywidget.ui" line="96"/>
         <source>Filter</source>
-        <translation type="unfinished"/>
+        <translation>Filtro</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="149"/>
@@ -971,7 +971,7 @@ Utilitário de sincronização de arquivos na área de trabalho. </translation>
     <message>
         <location filename="../src/gui/models/expandingheaderview.cpp" line="78"/>
         <source>Reset column sizes</source>
-        <translation type="unfinished"/>
+        <translation>Redefinir tamanhos de coluna </translation>
     </message>
 </context>
 <context>
@@ -1886,7 +1886,7 @@ Os itens em que a exclusão é permitida serão excluídos se impedirem que um d
     <message>
         <location filename="../src/gui/issueswidget.ui" line="45"/>
         <source>Filter</source>
-        <translation type="unfinished"/>
+        <translation>Filtro</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="83"/>
@@ -1906,7 +1906,7 @@ Os itens em que a exclusão é permitida serão excluídos se impedirem que um d
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="163"/>
         <source>Reset column sizes</source>
-        <translation type="unfinished"/>
+        <translation>Redefinir tamanhos de coluna </translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="182"/>
@@ -1916,7 +1916,7 @@ Os itens em que a exclusão é permitida serão excluídos se impedirem que um d
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="202"/>
         <source>Account</source>
-        <translation type="unfinished"/>
+        <translation>Conta</translation>
     </message>
 </context>
 <context>
@@ -3109,12 +3109,12 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/gui/protocolwidget.ui" line="45"/>
         <source>Filter</source>
-        <translation type="unfinished"/>
+        <translation>Filtro</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="91"/>
         <source>Account</source>
-        <translation type="unfinished"/>
+        <translation>Conta</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="105"/>
