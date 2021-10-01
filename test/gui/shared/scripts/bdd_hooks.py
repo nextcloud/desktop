@@ -30,6 +30,9 @@ def hook(context):
         'localBackendUrl': os.environ.get(
             'BACKEND_HOST', cfg.get('DEFAULT', 'BACKEND_HOST')
         ),
+        'secureLocalBackendUrl': os.environ.get(
+            'SECURE_BACKEND_HOST', cfg.get('DEFAULT', 'SECURE_BACKEND_HOST')
+        ),
         'clientSyncPathUser1': os.environ.get(
             'CLIENT_SYNC_PATH_USER1', cfg.get('DEFAULT', 'CLIENT_SYNC_PATH_USER1')
         ),
@@ -49,6 +52,8 @@ def hook(context):
 
     if context.userData['localBackendUrl'] == '':
         context.userData['localBackendUrl'] = 'https://localhost:9200'
+    if context.userData['secureLocalBackendUrl'] == '':
+        context.userData['secureLocalBackendUrl'] = 'https://localhost:9200'
     if context.userData['clientSyncPathUser1'] == '':
         context.userData['clientSyncPathUser1'] = '/tmp/client-bdd-user1/'
     else:
