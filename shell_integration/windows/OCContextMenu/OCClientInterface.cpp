@@ -28,11 +28,14 @@
 #include <iterator>
 #include <unordered_set>
 
-// use std::min in gdiplus
+// gdiplus min/max
+// don't use std yet, as gdiplus will cause issues
+using std::max;
+using std::min;
+#include <gdiplus.h>
 using namespace std;
 
 #include <comdef.h>
-#include <gdiplus.h>
 #include <wincrypt.h>
 #include <shlwapi.h>
 #include <wrl/client.h>
