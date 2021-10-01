@@ -4800,14 +4800,14 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>תווים שגויים, נא לשנות את השם של „%1”</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1110"/>
-        <source>File name contains at least one invalid character</source>
-        <translation>שם הקובץ מכיל אות שגויה אחת לפחות</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="1081"/>
         <source>Aborted</source>
         <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="1110"/>
+        <source>File name contains at least one invalid character</source>
+        <translation>שם הקובץ מכיל אות שגויה אחת לפחות</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1098"/>

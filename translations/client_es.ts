@@ -4842,14 +4842,14 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
         <translation>Caracteres inválidos, por favor renombre &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1110"/>
-        <source>File name contains at least one invalid character</source>
-        <translation>Nombre de archivo contiene al menos un caracter no válido</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="1081"/>
         <source>Aborted</source>
         <translation>Cancelado</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="1110"/>
+        <source>File name contains at least one invalid character</source>
+        <translation>Nombre de archivo contiene al menos un caracter no válido</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1098"/>

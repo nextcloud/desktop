@@ -1313,7 +1313,7 @@ Isso pode ser um problema com suas bibliotecas OpenSSL.</translation>
     <message>
         <location filename="../src/gui/folder.cpp" line="1104"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
-        <translation>Por favor, vá nas configurações para selecioná-lo se desejar baixá-lo.</translation>
+        <translation>Por favor, vá às configurações para selecioná-la se desejar baixá-la.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1164"/>
@@ -1842,7 +1842,7 @@ Se você decidir excluir os arquivos, eles ficarão indisponíveis para você, a
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="184"/>
         <source>Enter the name of the new folder to be created below &apos;%1&apos;:</source>
-        <translation>Entre com o nome da nova pasta a ser criada abaixo &apos;%1&apos;:</translation>
+        <translation>Insira o nome da nova pasta a ser criada abaixo de &apos;%1&apos;:</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="184"/>
@@ -2684,7 +2684,7 @@ Logs serão gravados em %1</translation>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="139"/>
         <source>&lt;h1&gt;Wrong user&lt;/h1&gt;&lt;p&gt;You logged-in with user &lt;em&gt;%1&lt;/em&gt;, but must login with user &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please log out of %3 in another tab, then &lt;a href=&apos;%4&apos;&gt;click here&lt;/a&gt; and log in as user %2&lt;/p&gt;</source>
-        <translation>&lt;h1&gt;Usuário errado&lt;/h1&gt;&lt;p&gt;Você fez logon com o usuário &lt;em&gt;%1&lt;/em&gt;, mas deve fazer com o usuário &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Faça o logout de %3 em outra guia, então&lt;a href=&apos;%4&apos;&gt;clique aqui&lt;/a&gt; e faça o login como usuário%2&lt;/p&gt;</translation>
+        <translation>&lt;h1&gt;Usuário incorreto&lt;/h1&gt;&lt;p&gt;Você fez logon com o usuário &lt;em&gt;%1&lt;/em&gt;, mas deve fazer com o usuário &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Faça o logout de %3 em outra guia, então&lt;a href=&apos;%4&apos;&gt;clique aqui&lt;/a&gt; e faça o login como o usuário %2&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -3570,7 +3570,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="79"/>
         <source>Error removing &apos;%1&apos;: %2;</source>
-        <translation>Erro removendo &apos;%1&apos;: %2;</translation>
+        <translation>Erro ao remover &apos;%1&apos;: %2;</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="104"/>
@@ -4839,14 +4839,14 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <translation>Caracteres inválidos, favor renomear &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1110"/>
-        <source>File name contains at least one invalid character</source>
-        <translation>O nome do arquivo contém pelo menos um caractere inválido  </translation>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="1081"/>
         <source>Aborted</source>
         <translation>Cancelado</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="1110"/>
+        <source>File name contains at least one invalid character</source>
+        <translation>O nome do arquivo contém pelo menos um caractere inválido  </translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1098"/>
@@ -5455,7 +5455,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="225"/>
         <source>&amp;Local Folder</source>
-        <translation>&amp;Pasta Local</translation>
+        <translation>Pasta &amp;Local</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="244"/>
@@ -6398,7 +6398,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/gui/synclogdialog.ui" line="14"/>
         <source>Synchronisation Log</source>
-        <translation>Log de Sincronização</translation>
+        <translation>Histórico de sincronização</translation>
     </message>
 </context>
 <context>

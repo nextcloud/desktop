@@ -2312,7 +2312,7 @@ Položky, pri ktorých je povolené odstraňovanie sa vymažú, ak bránia odstr
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="73"/>
         <source>The file %1 could not be synced because the name contains characters which are not allowed on this system.</source>
-        <translation type="unfinished"/>
+        <translation>Súbor %1 nemôže byť synchronizovaný, pretože obsahuje znaky ktoré nie sú na tomto systéme podporované.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="74"/>
@@ -2337,7 +2337,7 @@ Položky, pri ktorých je povolené odstraňovanie sa vymažú, ak bránia odstr
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="155"/>
         <source>Cannot rename file because a file with the same name does already exist on the server. Please pick another name.</source>
-        <translation type="unfinished"/>
+        <translation>Nemôžem premenovať súbor pretože súbor s rovnakým menom už na serveri existuje. Prosím vyberte iné meno.</translation>
     </message>
 </context>
 <context>
@@ -4840,14 +4840,14 @@ Toto je nový experimentálny režim. Ak sa ho rozhodnete použiť, nahláste v�
         <translation>Neplatné znaky, premenujte prosím &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1110"/>
-        <source>File name contains at least one invalid character</source>
-        <translation>Názov súboru obsahuje nevhodný znak</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="1081"/>
         <source>Aborted</source>
         <translation>Prerušiť</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="1110"/>
+        <source>File name contains at least one invalid character</source>
+        <translation>Názov súboru obsahuje nevhodný znak</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1098"/>
