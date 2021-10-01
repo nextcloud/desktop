@@ -548,16 +548,6 @@ void User::processCompletedSyncItem(const Folder *folder, const SyncFileItemPtr 
     }
 }
 
-QString User::searchTerm() const
-{
-    return _unifiedSearchResultsModel->searchTerm();
-}
-
-void User::setSearchTerm(const QString &term)
-{
-    _unifiedSearchResultsModel->setSearchTerm(term);
-}
-
 void User::slotItemCompleted(const QString &folder, const SyncFileItemPtr &item)
 {
     auto folderInstance = FolderMan::instance()->folder(folder);
@@ -950,11 +940,6 @@ std::shared_ptr<OCC::UserStatusConnector> UserModel::userStatusConnector(int id)
     return _users[id]->account()->userStatusConnector();
 }
 
-void UserModel::onUnifiedSearchTextEdited(const QString &term)
-{
-    _users[currentUserId()]->setSearchTerm(term);
-}
-
 int UserModel::rowCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent);
@@ -1048,15 +1033,6 @@ User *UserModel::currentUser() const
         return nullptr;
 
     return _users[currentUserId()];
-}
-
-QString UserModel::searchTerm() const
-{
-    if (currentUserId() < 0 || currentUserId() >= _users.size()) {
-        return QString();
-    }
-
-    return _users[currentUserId()]->searchTerm();
 }
 
 int UserModel::findUserIdForAccount(AccountState *account) const

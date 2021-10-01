@@ -119,10 +119,23 @@ QHash<int, QByteArray> UnifiedSearchResultsListModel::roleNames() const
     return roles;
 }
 
+QString UnifiedSearchResultsListModel::searchTerm() const
+{
+    return _searchTerm;
+}
+
 void UnifiedSearchResultsListModel::setSearchTerm(const QString &term)
 {
     if (term == _searchTerm) {
         return;
+    }
+
+    _searchTerm = term;
+    emit searchTermChanged();
+
+    if (!_errorString.isEmpty()) {
+        _errorString.clear();
+        emit errorStringChanged();
     }
 
     disconnect(&_unifiedSearchTextEditingFinishedTimer, &QTimer::timeout, this,
@@ -132,9 +145,7 @@ void UnifiedSearchResultsListModel::setSearchTerm(const QString &term)
         _unifiedSearchTextEditingFinishedTimer.stop();
     }
 
-    _searchTerm = term;
-
-    if (!searchTerm().isEmpty()) {
+    if (!_searchTerm.isEmpty()) {
         _unifiedSearchTextEditingFinishedTimer.setInterval(800);
         connect(&_unifiedSearchTextEditingFinishedTimer, &QTimer::timeout, this,
             &UnifiedSearchResultsListModel::slotSearchTermEditingFinished);
@@ -157,11 +168,6 @@ void UnifiedSearchResultsListModel::setSearchTerm(const QString &term)
         _resultsCombined.clear();
         endResetModel();
     }
-}
-
-QString UnifiedSearchResultsListModel::searchTerm() const
-{
-    return _searchTerm;
 }
 
 bool UnifiedSearchResultsListModel::isSearchInProgress() const
@@ -236,7 +242,8 @@ void UnifiedSearchResultsListModel::slotSearchTermEditingFinished()
         auto *job = new JsonApiJob(_accountState->account(), QLatin1String("ocs/v2.php/search/providers"));
         QObject::connect(job, &JsonApiJob::jsonReceived, [&, this](const QJsonDocument &json, int statusCode) {
             if (statusCode != 200) {
-                _errorString = tr("Search has failed for '%1'. No search providers available.").arg(searchTerm());
+                _errorString += tr("Failed to fetch search providers for '%1'. Error: %2").arg(_searchTerm).arg(job->errorString()) + QLatin1Char('\n');
+                emit errorStringChanged();
                 return;
             }
             const auto providerList = json.object()
@@ -289,12 +296,13 @@ void UnifiedSearchResultsListModel::slotSearchForProviderFinished(const QJsonDoc
         }
 
         if (statusCode != 200) {
-            _errorString = tr("Search has failed for '%1'. Error: %2").arg(searchTerm()).arg(job->errorString());
+            _errorString += tr("Search has failed for '%1'. Error: %2").arg(_searchTerm).arg(job->errorString()) + QLatin1Char('\n');
+            emit errorStringChanged();
             return;
         }
     }
 
-    if (searchTerm().isEmpty()) {
+    if (_searchTerm.isEmpty()) {
         return;
     }
 
@@ -436,7 +444,7 @@ void UnifiedSearchResultsListModel::startSearchForProvider(const UnifiedSearchPr
     auto *job = new JsonApiJob(
         _accountState->account(), QLatin1String("ocs/v2.php/search/providers/%1/search").arg(provider._id));
     QUrlQuery params;
-    params.addQueryItem(QStringLiteral("term"), searchTerm());
+    params.addQueryItem(QStringLiteral("term"), _searchTerm);
     if (cursor > 0) {
         params.addQueryItem(QStringLiteral("cursor"), QString::number(cursor));
         job->setProperty("appendResults", true);

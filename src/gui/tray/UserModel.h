@@ -64,8 +64,6 @@ public:
     QUrl statusIcon() const;
     QString statusEmoji() const;
     void processCompletedSyncItem(const Folder *folder, const SyncFileItemPtr &item);
-    QString searchTerm() const;
-    void setSearchTerm(const QString &term);
 
 signals:
     void guiLog(const QString &, const QString &);
@@ -136,7 +134,6 @@ class UserModel : public QAbstractListModel
     Q_OBJECT
     Q_PROPERTY(User* currentUser READ currentUser NOTIFY newUserSelected)
     Q_PROPERTY(int currentUserId READ currentUserId NOTIFY newUserSelected)
-    Q_PROPERTY(QString searchTerm READ searchTerm)
 
 public:
     static UserModel *instance();
@@ -152,8 +149,6 @@ public:
     QImage avatarById(const int &id);
 
     User *currentUser() const;
-
-    QString searchTerm() const;
 
     int findUserIdForAccount(AccountState *account) const;
 
@@ -171,8 +166,6 @@ public:
     Q_INVOKABLE void removeAccount(const int &id);
 
     Q_INVOKABLE std::shared_ptr<OCC::UserStatusConnector> userStatusConnector(int id);
-
-    Q_INVOKABLE void onUnifiedSearchTextEdited(const QString &term);
 
     ActivityListModel *currentActivityModel();
 

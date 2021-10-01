@@ -36,7 +36,8 @@ class UnifiedSearchResultsListModel : public QAbstractListModel
 
     Q_PROPERTY(bool isSearchInProgress READ isSearchInProgress NOTIFY isSearchInProgressChanged)
     Q_PROPERTY(QString currentFetchMoreInProgressCategoryId MEMBER _currentFetchMoreInProgressCategoryId NOTIFY currentFetchMoreInProgressCategoryIdChanged)
-    Q_PROPERTY(QString errorString MEMBER _errorString)
+    Q_PROPERTY(QString errorString MEMBER _errorString NOTIFY errorStringChanged)
+    Q_PROPERTY(QString searchTerm READ searchTerm WRITE setSearchTerm NOTIFY searchTermChanged)
 
     class UnifiedSearchProvider
     {
@@ -80,6 +81,8 @@ public:
 public: signals:
     void currentFetchMoreInProgressCategoryIdChanged();
     void isSearchInProgressChanged();
+    void errorStringChanged();
+    void searchTermChanged();
 
 protected:
     QHash<int, QByteArray> roleNames() const override;
