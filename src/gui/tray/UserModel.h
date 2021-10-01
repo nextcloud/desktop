@@ -121,7 +121,6 @@ private:
     QHash<AccountState *, QElapsedTimer> _timeSinceLastCheck;
 
     QElapsedTimer _guiLogTimer;
-
     NotificationCache _notificationCache;
 
     // number of currently running notification requests. If non zero,
@@ -134,7 +133,6 @@ class UserModel : public QAbstractListModel
     Q_OBJECT
     Q_PROPERTY(User* currentUser READ currentUser NOTIFY newUserSelected)
     Q_PROPERTY(int currentUserId READ currentUserId NOTIFY newUserSelected)
-
 public:
     static UserModel *instance();
     ~UserModel() override = default;

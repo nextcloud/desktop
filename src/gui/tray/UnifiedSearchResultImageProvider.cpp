@@ -27,13 +27,19 @@ class AsyncImageResponse : public QQuickImageResponse
 public:
     AsyncImageResponse(const QString &id, const QSize &requestedSize)
     {
-        _imagePaths = id.split(QLatin1Char(';'), Qt::SkipEmptyParts);
-        _requestedImageSize = requestedSize;
+        if (id.isEmpty()) {
+            emitFinished(QImage());
+            return;
+        }
+
+        _imagePaths = id.contains(QLatin1Char(';')) ? id.split(QLatin1Char(';'), Qt::SkipEmptyParts) : QStringList{id};
 
         if (_imagePaths.isEmpty()) {
             emitFinished(QImage());
             return;
         }
+
+        _requestedImageSize = requestedSize;
 
         processNextImage();
     }
@@ -54,17 +60,17 @@ private:
     
     void processNextImage()
     {
-        if (_imagePaths.isEmpty() || _index < 0 || _index >= _imagePaths.size()) {
-            // no valid images in the list
-            emitFinished(QIcon(QStringLiteral(":/client/theme/black/state-warning.svg")).pixmap(_requestedImageSize).toImage());
-            return;
-        }
-
         if (_requestedImageSize.width() == 0 || _requestedImageSize.height() == 0) {
             // invalid size requested
             emitFinished(QImage());
             return;
         }
+
+        if (_imagePaths.isEmpty() || _index < 0 || _index >= _imagePaths.size()) {
+            // no valid images in the list
+            emitFinished(QIcon(QStringLiteral(":/client/theme/black/state-warning.svg")).pixmap(_requestedImageSize).toImage());
+            return;
+        }   
 
         if (_imagePaths.at(_index).startsWith(QStringLiteral(":/client"))) {
             // return a local file

@@ -17,10 +17,11 @@ MouseArea {
 
     readonly property bool isFetchMoreTrigger: model.typeAsString === "FetchMoreTrigger"
     readonly property bool isCategorySeparator: model.typeAsString === "CategorySeparator"
+    readonly property bool isDefaultItem: model.typeAsString === "Default"
 
     property string currentFetchMoreInProgressCategoryId: ""
 
-    property bool isFetchMoreInProgress: currentFetchMoreInProgressCategoryId === model.categoryId
+    property bool isFetchMoreInProgress: currentFetchMoreInProgressCategoryId === model.providerId
     property bool isSearchInProgress: false
 
     enabled: !isCategorySeparator && !isSearchInProgress
@@ -28,10 +29,20 @@ MouseArea {
 
     height: !isCategorySeparator ? defaultHeight : defaultHeight / 2
 
+
+    onClicked: {
+        if (isFetchMoreTrigger) {
+            unifiedSearchResultsModel.fetchMoreTriggerClicked(model.providerId)
+        } else if (isDefaultItem) {
+            unifiedSearchResultsModel.resultClicked(model.providerId, model.resourceUrlRole)
+        }
+    }
+
     ToolTip {
         parent: unifiedSearchResultMouseArea
         visible: !unifiedSearchResultMouseArea.isCategorySeparator && unifiedSearchResultMouseArea.containsMouse
         text: isFetchMoreTrigger ? qsTr("Load more results") : model.resultTitle + "\n\n" + model.subline
+        delay: 1000
     }
 
     Rectangle {
@@ -62,7 +73,7 @@ MouseArea {
                 id: unifiedSearchResultThumbnail
                 visible: false
                 asynchronous: true
-                source: "image://unified-search-result-image/" + model.images
+                source: "image://unified-search-result-icon/" + model.icons
                 cache: true
                 sourceSize.width: imageData.width
                 sourceSize.height: imageData.height
@@ -81,14 +92,14 @@ MouseArea {
                 visible: !unifiedSearchResultThumbnailPlaceholder.visible
                 Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
                 Layout.leftMargin: iconLeftMargin
-                Layout.preferredWidth: model.images ? unifiedSearchResultImageContainer.iconWidth : 0
-                Layout.preferredHeight: model.images ? unifiedSearchResultImageContainer.iconWidth: 0
+                Layout.preferredWidth: model.icons ? unifiedSearchResultImageContainer.iconWidth : 0
+                Layout.preferredHeight: model.icons ? unifiedSearchResultImageContainer.iconWidth: 0
                 source: unifiedSearchResultThumbnail
                 maskSource: mask
             }
             Image {
                 id: unifiedSearchResultThumbnailPlaceholder
-                visible: model.images && unifiedSearchResultThumbnail.status != Image.Ready
+                visible: model.icons && unifiedSearchResultThumbnail.status != Image.Ready
                 Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
                 Layout.leftMargin: iconLeftMargin
                 verticalAlignment: Qt.AlignCenter
@@ -211,7 +222,7 @@ MouseArea {
 
             Text {
                 id: unifiedSearchResultItemCategorySeparatorText
-                text: model.categoryName
+                text: model.providerName
                 visible: parent.visible
                 width: parent.width
                 height: parent.height

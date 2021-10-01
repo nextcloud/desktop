@@ -15,40 +15,35 @@
 #ifndef UNIFIEDSEARHRESULT_H
 #define UNIFIEDSEARHRESULT_H
 
+#include <limits>
+
 #include <QtCore>
 
 namespace OCC {
+
 /**
  * @brief The UnifiedSearchResult class
+ * @ingroup gui
+ * Simple data structure that represents single Unified Search result
  */
 
 class UnifiedSearchResult
 {
 public:
-    enum Type : quint8 {
-        Default = 0,
-        CategorySeparator,
-        FetchMoreTrigger
-    };
+    enum Type : quint8 { Default = 0, CategorySeparator, FetchMoreTrigger };
 
     static QString typeAsString(UnifiedSearchResult::Type type);
 
     QString _title;
     QString _subline;
-    QString _categoryId;
+    QString _providerId;
+    QString _providerName;
     bool _isRounded = false;
-    QString _categoryName;
-    QString _icon;
-    qint32 _order = INT32_MAX;
-    QString _thumbnailUrl;
-    QString _imagePlaceholder;
+    qint32 _order = std::numeric_limits<quint32>::max();
     QString _resourceUrl;
-    QString _images;
+    QString _icons;
     Type _type = Type::Default;
 };
-
-bool operator==(const UnifiedSearchResult &rhs, const UnifiedSearchResult &lhs);
-bool operator<(const UnifiedSearchResult &rhs, const UnifiedSearchResult &lhs);
 }
 
 #endif // UNIFIEDSEARHRESULT_H

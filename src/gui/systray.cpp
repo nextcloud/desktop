@@ -137,7 +137,7 @@ void Systray::create()
         }
         _trayEngine->load(QStringLiteral("qrc:/qml/src/gui/tray/Window.qml"));
 
-        _trayEngine->addImageProvider(QLatin1String("unified-search-result-image"), new UnifiedSearchResultImageProvider);
+        _trayEngine->addImageProvider(QLatin1String("unified-search-result-icon"), new UnifiedSearchResultImageProvider);
     }
     hideWindow();
     emit activated(QSystemTrayIcon::ActivationReason::Unknown);

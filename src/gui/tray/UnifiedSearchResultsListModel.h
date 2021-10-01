@@ -15,18 +15,19 @@
 #ifndef UNIFIEDSEARCHRESULTSLISTMODEL_H
 #define UNIFIEDSEARCHRESULTSLISTMODEL_H
 
-#include <QtCore>
-
 #include "UnifiedSearchResult.h"
+
+#include <limits>
+
+#include <QtCore>
 
 namespace OCC {
 
-class AccountState;
+Q_DECLARE_LOGGING_CATEGORY(lcUnifiedSearch)
 
 /**
  * @brief The UnifiedSearchResultsListModel
  * @ingroup gui
- *
  * Simple list model to provide the list view with data for the Unified Search results.
  */
 
@@ -35,7 +36,8 @@ class UnifiedSearchResultsListModel : public QAbstractListModel
     Q_OBJECT
 
     Q_PROPERTY(bool isSearchInProgress READ isSearchInProgress NOTIFY isSearchInProgressChanged)
-    Q_PROPERTY(QString currentFetchMoreInProgressCategoryId MEMBER _currentFetchMoreInProgressCategoryId NOTIFY currentFetchMoreInProgressCategoryIdChanged)
+    Q_PROPERTY(QString currentFetchMoreInProgressCategoryId MEMBER _currentFetchMoreInProgressCategoryId NOTIFY
+            currentFetchMoreInProgressCategoryIdChanged)
     Q_PROPERTY(QString errorString MEMBER _errorString NOTIFY errorStringChanged)
     Q_PROPERTY(QString searchTerm READ searchTerm WRITE setSearchTerm NOTIFY searchTermChanged)
 
@@ -44,29 +46,27 @@ class UnifiedSearchResultsListModel : public QAbstractListModel
     public:
         QString _id;
         QString _name;
-        qint32 _cursor = -1;
-        qint32 _pageSize = -1;
+        qint32 _cursor = -1; // current pagination value
+        qint32 _pageSize = -1; // how many max items per step of pagination
         bool _isPaginated = false;
-        qint32 _order = INT32_MAX;
+        qint32 _order = std::numeric_limits<quint32>::max(); // sorting order (smaller number has bigger priority)
     };
 
 public:
     enum DataRole {
-        CategoryNameRole = Qt::UserRole + 1,
-        CategoryIdRole,
+        ProviderNameRole = Qt::UserRole + 1,
+        ProviderIdRole,
         ImagePlaceholderRole,
-        ImagesRole,
-        IconRole,
+        IconsRole,
         TitleRole,
         SublineRole,
         ResourceUrlRole,
         RoundedRole,
-        ThumbnailUrlRole,
         TypeRole,
         TypeAsStringRole,
     };
 
-    explicit UnifiedSearchResultsListModel(AccountState *accountState, QObject *parent = nullptr);
+    explicit UnifiedSearchResultsListModel(QObject *parent = nullptr);
 
     QVariant data(const QModelIndex &index, int role) const override;
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
@@ -76,9 +76,11 @@ public:
 
     bool isSearchInProgress() const;
 
-    Q_INVOKABLE void resultClicked(int resultIndex);
+    Q_INVOKABLE void resultClicked(const QString &providerId, const QString &resourceUrl);
+    Q_INVOKABLE void fetchMoreTriggerClicked(const QString &providerId);
 
-public: signals:
+public:
+signals:
     void currentFetchMoreInProgressCategoryIdChanged();
     void isSearchInProgressChanged();
     void errorStringChanged();
@@ -89,29 +91,30 @@ protected:
 
 private slots:
     void slotSearchTermEditingFinished();
-
     void slotSearchForProviderFinished(const QJsonDocument &json, int statusCode);
 
 private:
     void startSearch();
-    void startSearchForProvider(const UnifiedSearchProvider &provider, qint32 cursor = -1);
+    void startSearchForProvider(const QString &providerId, qint32 cursor = -1);
 
-    void combineResults(const QList<UnifiedSearchResult> &newEntries, const UnifiedSearchProvider &provider);
+    // append initial search results to the list
+    void appendResults(QList<UnifiedSearchResult> results, const UnifiedSearchProvider &provider);
 
-    void appendResultsToProvider(const UnifiedSearchProvider &provider, const QList<UnifiedSearchResult> &results);
+    // append pagination results to existing results from the initial search
+    void appendResultsToProvider(const QList<UnifiedSearchResult> &results, const UnifiedSearchProvider &provider);
 
 private:
-    QTimer _unifiedSearchTextEditingFinishedTimer;
-    QString _searchTerm;
     QMap<QString, UnifiedSearchProvider> _providers;
-    AccountState *_accountState;
-    QList<UnifiedSearchResult> _resultsCombined;
+    QList<UnifiedSearchResult> _results;
 
+    QString _searchTerm;
     QString _errorString;
 
     QString _currentFetchMoreInProgressCategoryId;
 
     QMap<QString, QMetaObject::Connection> _searchJobConnections;
+
+    QTimer _unifiedSearchTextEditingFinishedTimer;
 };
 }
 

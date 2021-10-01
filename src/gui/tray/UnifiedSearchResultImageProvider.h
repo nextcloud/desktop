@@ -23,6 +23,7 @@ namespace OCC {
 /**
  * @brief The UnifiedSearchResultImageProvider
  * @ingroup gui
+ * Allows to fetch Unified Search result icon from the server or used a local resource
  */
 
 class UnifiedSearchResultImageProvider : public QQuickAsyncImageProvider
