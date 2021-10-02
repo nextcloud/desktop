@@ -59,6 +59,7 @@ void Systray::setTrayEngine(QQmlApplicationEngine *trayEngine)
 
     _trayEngine->addImportPath("qrc:/qml/theme");
     _trayEngine->addImageProvider("avatars", new ImageProvider);
+    _trayEngine->addImageProvider(QLatin1String("unified-search-result-icon"), new UnifiedSearchResultImageProvider);
 }
 
 Systray::Systray()
@@ -136,8 +137,6 @@ void Systray::create()
             _trayEngine->rootContext()->setContextProperty("unifiedSearchResultsModel", UserModel::instance()->currentUnifiedSearchResultsModel());
         }
         _trayEngine->load(QStringLiteral("qrc:/qml/src/gui/tray/Window.qml"));
-
-        _trayEngine->addImageProvider(QLatin1String("unified-search-result-icon"), new UnifiedSearchResultImageProvider);
     }
     hideWindow();
     emit activated(QSystemTrayIcon::ActivationReason::Unknown);
@@ -156,11 +155,9 @@ void Systray::slotNewUserSelected()
     if (_trayEngine) {
         // Change ActivityModel
         _trayEngine->rootContext()->setContextProperty("activityModel", UserModel::instance()->currentActivityModel());
-        if (auto unifiedSearchResultsModel = UserModel::instance()->currentUnifiedSearchResultsModel()) {
-            _trayEngine->rootContext()->setContextProperty("unifiedSearchResultsModel", unifiedSearchResultsModel);
-            // text must be changed in the search term text field, so, we need to emit changed signal
-            emit unifiedSearchResultsModel->searchTermChanged();
-        }
+
+        _trayEngine->rootContext()->setContextProperty(
+            "unifiedSearchResultsModel", UserModel::instance()->currentUnifiedSearchResultsModel());
     }
 
     // Rebuild App list

@@ -44,6 +44,7 @@
         <file>theme/white/state-sync-64.png</file>
         <file>theme/white/state-sync-128.png</file>
         <file>theme/white/state-sync-256.png</file>
+        <file>theme/black/comment.svg</file>
         <file>theme/black/state-error-32.png</file>
         <file>theme/black/state-error-64.png</file>
         <file>theme/black/state-error-128.png</file>
@@ -81,7 +82,7 @@
         <file>theme/colored/state-warning-128.png</file>
         <file>theme/colored/state-warning-256.png</file>
         <file>theme/black/folder.png</file>
-		<file>theme/black/folder.svg</file>
+		    <file>theme/black/folder.svg</file>
         <file>theme/black/folder@2x.png</file>
         <file>theme/white/folder.png</file>
         <file>theme/white/folder@2x.png</file>
@@ -148,6 +149,7 @@
         <file>theme/black/wizard-talk.png</file>
         <file>theme/black/wizard-talk@2x.png</file>
         <file>theme/black/wizard-files.png</file>
+        <file>theme/black/wizard-groupware.svg</file>
         <file>theme/colored/wizard-files.png</file>
         <file>theme/colored/wizard-files@2x.png</file>
         <file>theme/colored/wizard-groupware.png</file>
@@ -174,8 +176,9 @@
         <file>theme/black/add.svg</file>
         <file>theme/black/activity.svg</file>
         <file>theme/black/bell.svg</file>
-		<file>theme/black/calendar.svg</file>
-		<file>theme/black/deck.svg</file>
+        <file>theme/black/wizard-talk.svg</file>
+		    <file>theme/black/calendar.svg</file>
+		    <file>theme/black/deck.svg</file>
         <file>theme/black/state-info.svg</file>
         <file>theme/close.svg</file>
         <file>theme/files.svg</file>

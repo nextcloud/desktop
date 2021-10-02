@@ -38,10 +38,10 @@ class UnifiedSearchResultsListModel : public QAbstractListModel
     Q_OBJECT
 
     Q_PROPERTY(bool isSearchInProgress READ isSearchInProgress NOTIFY isSearchInProgressChanged)
-    Q_PROPERTY(QString currentFetchMoreInProgressCategoryId MEMBER _currentFetchMoreInProgressCategoryId NOTIFY
-            currentFetchMoreInProgressCategoryIdChanged)
+    Q_PROPERTY(QString currentFetchMoreInProgressProviderId MEMBER _currentFetchMoreInProgressProviderId NOTIFY
+            currentFetchMoreInProgressProviderIdChanged)
     Q_PROPERTY(QString errorString MEMBER _errorString NOTIFY errorStringChanged)
-    Q_PROPERTY(QString searchTerm READ searchTerm WRITE setSearchTerm NOTIFY searchTermChanged)
+    Q_PROPERTY(QString searchTerm MEMBER _searchTerm NOTIFY searchTermChanged)
 
     class UnifiedSearchProvider
     {
@@ -51,7 +51,7 @@ class UnifiedSearchResultsListModel : public QAbstractListModel
         qint32 _cursor = -1; // current pagination value
         qint32 _pageSize = -1; // how many max items per step of pagination
         bool _isPaginated = false;
-        qint32 _order = std::numeric_limits<quint32>::max(); // sorting order (smaller number has bigger priority)
+        qint32 _order = std::numeric_limits<qint32>::max(); // sorting order (smaller number has bigger priority)
     };
 
 public:
@@ -73,26 +73,23 @@ public:
     QVariant data(const QModelIndex &index, int role) const override;
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
 
-    void setSearchTerm(const QString &term);
+    Q_INVOKABLE void setSearchTerm(const QString &term);
     QString searchTerm() const;
 
     bool isSearchInProgress() const;
 
-    Q_INVOKABLE void resultClicked(const QString &providerId, const QString &resourceUrl);
+    Q_INVOKABLE void resultClicked(const QString &providerId, const QUrl &resourceUrl);
     Q_INVOKABLE void fetchMoreTriggerClicked(const QString &providerId);
-
-public:
-signals:
-    void searchTermChanged();
 
 protected:
     QHash<int, QByteArray> roleNames() const override;
 
 private:
 signals:
-    void currentFetchMoreInProgressCategoryIdChanged();
+    void currentFetchMoreInProgressProviderIdChanged();
     void isSearchInProgressChanged();
     void errorStringChanged();
+    void searchTermChanged();
 
 private slots:
     void slotSearchTermEditingFinished();
@@ -108,6 +105,8 @@ private:
     // append pagination results to existing results from the initial search
     void appendResultsToProvider(const QList<UnifiedSearchResult> &results, const UnifiedSearchProvider &provider);
 
+    void removeFetchMoreTrigger(const QString &providerId);
+
 private:
     QMap<QString, UnifiedSearchProvider> _providers;
     QList<UnifiedSearchResult> _results;
@@ -115,13 +114,11 @@ private:
     QString _searchTerm;
     QString _errorString;
 
-    QString _currentFetchMoreInProgressCategoryId;
+    QString _currentFetchMoreInProgressProviderId;
 
     QMap<QString, QMetaObject::Connection> _searchJobConnections;
 
     QTimer _unifiedSearchTextEditingFinishedTimer;
-
-    QUrl _serverUrl;
 
     AccountState *_accountState;
 };

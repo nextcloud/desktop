@@ -31,6 +31,6 @@ QString UnifiedSearchResult::typeAsString(UnifiedSearchResult::Type type)
         return QStringLiteral("FetchMoreTrigger");
     }
     }
-    return QString();
+    return QStringLiteral("");
 }
 }

@@ -19,13 +19,11 @@ MouseArea {
     readonly property bool isCategorySeparator: model.typeAsString === "CategorySeparator"
     readonly property bool isDefaultItem: model.typeAsString === "Default"
 
-    property string currentFetchMoreInProgressCategoryId: ""
-
-    property bool isFetchMoreInProgress: currentFetchMoreInProgressCategoryId === model.providerId
+    property bool isFetchMoreInProgress: unifiedSearchResultsModel.currentFetchMoreInProgressProviderId === model.providerId
     property bool isSearchInProgress: false
 
-    enabled: !isCategorySeparator && !isSearchInProgress
-    hoverEnabled: !isCategorySeparator && !isSearchInProgress
+    enabled: !isCategorySeparator && (!isFetchMoreTrigger || !isSearchInProgress)
+    hoverEnabled: !isCategorySeparator && (!isFetchMoreTrigger || !isSearchInProgress)
 
     height: !isCategorySeparator ? defaultHeight : defaultHeight / 2
 
@@ -99,12 +97,12 @@ MouseArea {
             }
             Image {
                 id: unifiedSearchResultThumbnailPlaceholder
-                visible: model.icons && unifiedSearchResultThumbnail.status != Image.Ready
+                visible: model.icons && model.imagePlaceholder && unifiedSearchResultThumbnail.status != Image.Ready
                 Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
                 Layout.leftMargin: iconLeftMargin
                 verticalAlignment: Qt.AlignCenter
                 cache: true
-                source: model.imagePlaceholder ? imagePlaceholder : "qrc:///client/theme/change.svg"
+                source: model.imagePlaceholder
                 sourceSize.height: unifiedSearchResultImageContainer.iconWidth
                 sourceSize.width: unifiedSearchResultImageContainer.iconWidth
                 Layout.preferredWidth: visible ? unifiedSearchResultImageContainer.iconWidth : 0

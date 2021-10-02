@@ -28,23 +28,19 @@ class AsyncImageResponse : public QQuickImageResponse
 public:
     AsyncImageResponse(const QString &id, const QSize &requestedSize)
     {
-        qDebug(lcUnifiedSearch) << QString("Unified Search result called with images: %1").arg(id);
-
         if (id.isEmpty()) {
             emitFinished(QImage());
             return;
         }
 
         _imagePaths = id.contains(QLatin1Char(';')) ? id.split(QLatin1Char(';'), Qt::SkipEmptyParts) : QStringList{id};
-
-        if (_imagePaths.isEmpty()) {
-            emitFinished(QImage());
-            return;
-        }
-
         _requestedImageSize = requestedSize;
 
-        processNextImage();
+        if (_requestedImageSize.width() == 0 || _requestedImageSize.height() == 0 || _imagePaths.isEmpty()) {
+            emitFinished(QImage());
+        } else {
+            processNextImage();
+        }
     }
 
     void emitFinished(QImage image)
@@ -63,15 +59,9 @@ private:
     
     void processNextImage()
     {
-        if (_requestedImageSize.width() == 0 || _requestedImageSize.height() == 0) {
-            // invalid size requested
-            emitFinished(QImage());
-            return;
-        }
-
-        if (_imagePaths.isEmpty() || _index < 0 || _index >= _imagePaths.size()) {
+        if (_index < 0 || _index >= _imagePaths.size()) {
             // no valid images in the list
-            emitFinished(QIcon(QStringLiteral(":/client/theme/black/state-warning.svg")).pixmap(_requestedImageSize).toImage());
+            emitFinished(QImage());
             return;
         }   
 
@@ -81,36 +71,43 @@ private:
             return;
         }
 
-        if (auto currentAccount = UserModel::instance()->currentUser()->account()) {
-            // fetch the remote resource
-            const QUrl iconUrl = QUrl(_imagePaths.at(_index));
-            ++_index;
-            const auto reply = currentAccount->sendRawRequest(QByteArrayLiteral("GET"), iconUrl);
-            connect(reply, &QNetworkReply::finished, this, [this, reply]() {
-                const QByteArray imageData = reply->readAll();
-                // server returns "[]" for some some file previews (have no idea why), so, we use another image from the list if available
-                if (imageData.isEmpty() || imageData == QByteArrayLiteral("[]")) {
-                    processNextImage();
-                } else {
-                    if (imageData.startsWith(QByteArrayLiteral("<svg"))) {
-                        // SVG image needs proper scaling, let's do it with QPainter and QSvgRenderer
-                        QSvgRenderer svgRenderer;
-                        if (!svgRenderer.load(imageData)) {
-                            emitFinished(QImage::fromData(imageData));
-                            return;
+        if (const auto currentUser = UserModel::instance()->currentUser()) {
+            if (auto currentAccount = currentUser->account()) {
+                const QUrl iconUrl = QUrl(_imagePaths.at(_index));
+                // fetch the remote resource
+                if (iconUrl.isValid() && !iconUrl.scheme().isEmpty()) {
+                    const auto reply = currentAccount->sendRawRequest(QByteArrayLiteral("GET"), iconUrl);
+                    connect(reply, &QNetworkReply::finished, this, [this, reply]() {
+                        const QByteArray imageData = reply->readAll();
+                        // server returns "[]" for some some file previews (have no idea why), so, we use another image
+                        // from the list if available
+                        if (imageData.isEmpty() || imageData == QByteArrayLiteral("[]")) {
+                            processNextImage();
+                        } else {
+                            if (imageData.startsWith(QByteArrayLiteral("<svg"))) {
+                                // SVG image needs proper scaling, let's do it with QPainter and QSvgRenderer
+                                QSvgRenderer svgRenderer;
+                                if (svgRenderer.load(imageData)) {
+                                    QImage scaledSvg(_requestedImageSize, QImage::Format_ARGB32);
+                                    scaledSvg.fill("transparent");
+
+                                    QPainter painterForSvg(&scaledSvg);
+                                    svgRenderer.render(&painterForSvg);
+                                    emitFinished(scaledSvg);
+                                    return;
+                                }
+                            } else {
+                                emitFinished(QImage::fromData(imageData));
+                                return;
+                            }
                         }
+                    });
+                    ++_index;
+                    return;
+                }    
+            }
 
-                        QImage scaledSvg(_requestedImageSize, QImage::Format_ARGB32);
-                        scaledSvg.fill("transparent");
-
-                        QPainter painterForSvg(&scaledSvg);
-                        svgRenderer.render(&painterForSvg);
-                        emitFinished(scaledSvg);
-                    } else {
-                        emitFinished(QImage::fromData(imageData));
-                    }
-                }
-            });
+            emitFinished(QImage());
         }
     }
 
@@ -125,4 +122,5 @@ QQuickImageResponse *UnifiedSearchResultImageProvider::requestImageResponse(cons
 {
     return new AsyncImageResponse(id, requestedSize);
 }
+
 }

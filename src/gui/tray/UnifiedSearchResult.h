@@ -30,7 +30,11 @@ namespace OCC {
 class UnifiedSearchResult
 {
 public:
-    enum Type : quint8 { Default = 0, CategorySeparator, FetchMoreTrigger };
+    enum Type : quint8 {
+        Default,
+        CategorySeparator,
+        FetchMoreTrigger
+    };
 
     static QString typeAsString(UnifiedSearchResult::Type type);
 
@@ -39,8 +43,8 @@ public:
     QString _providerId;
     QString _providerName;
     bool _isRounded = false;
-    qint32 _order = std::numeric_limits<quint32>::max();
-    QString _resourceUrl;
+    qint32 _order = std::numeric_limits<qint32>::max();
+    QUrl _resourceUrl;
     QString _icons;
     Type _type = Type::Default;
 };
