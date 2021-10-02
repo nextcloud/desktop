@@ -13,11 +13,11 @@
  */
 
 #include "UnifiedSearchResultsListModel.h"
-#include "UserModel.h"
 
 #include "account.h"
 #include "accountstate.h"
 #include "guiutility.h"
+#include "folderman.h"
 #include "networkjobs.h"
 
 #include <algorithm>
@@ -33,6 +33,8 @@ static QString imagePlaceholderUrlForProviderId(const QString &providerId)
         return QStringLiteral("qrc:///client/theme/black/wizard-talk.svg");
     } else if (providerId.contains(QStringLiteral("file"), Qt::CaseInsensitive)) {
         return QStringLiteral("qrc:///client/theme/black/edit.svg");
+    } else if (providerId.contains(QStringLiteral("deck"), Qt::CaseInsensitive)) {
+        return QStringLiteral("qrc:///client/theme/black/deck.svg");
     } else if (providerId.contains(QStringLiteral("calendar"), Qt::CaseInsensitive)) {
         return QStringLiteral("qrc:///client/theme/black/calendar.svg");
     } else if (providerId.contains(QStringLiteral("mail"), Qt::CaseInsensitive)) {
@@ -41,7 +43,7 @@ static QString imagePlaceholderUrlForProviderId(const QString &providerId)
         return QStringLiteral("qrc:///client/theme/account.svg");
     }
 
-    return QString();
+    return QStringLiteral("");
 }
 
 static QString iconUrlForDefaultIconName(const QString &defaultIconName)
@@ -49,7 +51,10 @@ static QString iconUrlForDefaultIconName(const QString &defaultIconName)
     const QUrl urlForIcon(defaultIconName);
 
     if (!urlForIcon.isValid() || urlForIcon.scheme().isEmpty()) {
-        if (defaultIconName.contains(QStringLiteral("folder"), Qt::CaseInsensitive)) {
+        if (defaultIconName.contains(QStringLiteral("message"), Qt::CaseInsensitive)
+            || defaultIconName.contains(QStringLiteral("talk"), Qt::CaseInsensitive)) {
+            return QStringLiteral(":/client/theme/black/wizard-talk.svg");
+        } else if (defaultIconName.contains(QStringLiteral("folder"), Qt::CaseInsensitive)) {
             return QStringLiteral(":/client/theme/black/folder.svg");
         } else if (defaultIconName.contains(QStringLiteral("deck"), Qt::CaseInsensitive)) {
             return QStringLiteral(":/client/theme/black/deck.svg");
@@ -63,7 +68,7 @@ static QString iconUrlForDefaultIconName(const QString &defaultIconName)
     return QStringLiteral("");
 }
 
-static QString iconsFromThumbnailAndFallbackIcon(QString thumbnailUrl, QString fallackIcon)
+static QString iconsFromThumbnailAndFallbackIcon(QString thumbnailUrl, QString fallackIcon, QUrl serverUrl)
 {
     if (thumbnailUrl.isEmpty() && fallackIcon.isEmpty()) {
         return QStringLiteral("");
@@ -73,17 +78,14 @@ static QString iconsFromThumbnailAndFallbackIcon(QString thumbnailUrl, QString f
         const QUrl urlForIcon(thumbnailUrl);
 
         if (!urlForIcon.isValid() || urlForIcon.scheme().isEmpty()) {
-            if (const auto currentUser = OCC::UserModel::instance()->currentUser()) {
-                auto serverUrl = QUrl(currentUser->server(false));
-                // some icons may contain parameters after (?)
-                const QStringList thumbnailUrlSplitted = thumbnailUrl.contains(QLatin1Char('?'))
-                    ? thumbnailUrl.split(QLatin1Char('?'))
-                    : QStringList{thumbnailUrl};
-                serverUrl.setPath(thumbnailUrlSplitted[0]);
-                thumbnailUrl = serverUrl.toString();
-                if (thumbnailUrlSplitted.size() > 1) {
-                    thumbnailUrl += QLatin1Char('?') + thumbnailUrlSplitted[1];
-                }
+            // some icons may contain parameters after (?)
+            const QStringList thumbnailUrlSplitted = thumbnailUrl.contains(QLatin1Char('?'))
+                ? thumbnailUrl.split(QLatin1Char('?'))
+                : QStringList{thumbnailUrl};
+            serverUrl.setPath(thumbnailUrlSplitted[0]);
+            thumbnailUrl = serverUrl.toString();
+            if (thumbnailUrlSplitted.size() > 1) {
+                thumbnailUrl += QLatin1Char('?') + thumbnailUrlSplitted[1];
             }
         }
     }
@@ -93,17 +95,13 @@ static QString iconsFromThumbnailAndFallbackIcon(QString thumbnailUrl, QString f
         const QUrl urlForIcon(fallackIcon);
 
         if (!urlForIcon.isValid() || urlForIcon.scheme().isEmpty()) {
-            if (const auto currentUser = OCC::UserModel::instance()->currentUser()) {
-                auto serverUrl = QUrl(currentUser->server(false));
-                // some icons may contain parameters after (?)
-                const QStringList iconPathSplitted = fallackIcon.contains(QLatin1Char('?'))
-                    ? fallackIcon.split(QLatin1Char('?'))
-                    : QStringList{fallackIcon};
-                serverUrl.setPath(iconPathSplitted[0]);
-                fallackIcon = serverUrl.toString();
-                if (iconPathSplitted.size() > 1) {
-                    fallackIcon += QLatin1Char('?') + iconPathSplitted[1];
-                }
+            // some icons may contain parameters after (?)
+            const QStringList iconPathSplitted =
+                fallackIcon.contains(QLatin1Char('?')) ? fallackIcon.split(QLatin1Char('?')) : QStringList{fallackIcon};
+            serverUrl.setPath(iconPathSplitted[0]);
+            fallackIcon = serverUrl.toString();
+            if (iconPathSplitted.size() > 1) {
+                fallackIcon += QLatin1Char('?') + iconPathSplitted[1];
             }
         }
     } else if (!fallackIcon.isEmpty()) {
@@ -132,8 +130,9 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcUnifiedSearch, "nextcloud.gui.unifiedsearch", QtInfoMsg)
 
-UnifiedSearchResultsListModel::UnifiedSearchResultsListModel(QObject *parent)
+UnifiedSearchResultsListModel::UnifiedSearchResultsListModel(AccountState *accountState, QObject *parent)
     : QAbstractListModel(parent)
+    , _accountState(accountState)
 {
 }
 
@@ -265,9 +264,7 @@ void UnifiedSearchResultsListModel::resultClicked(const QString &providerId, con
     const auto resourceUrlFromString = QUrl(resourceUrl);
     if (resourceUrlFromString.isValid()) {
         if (providerId.contains(QStringLiteral("file"), Qt::CaseInsensitive)) {
-            const auto currentUser = UserModel::instance()->currentUser();
-
-            if (!currentUser || !currentUser->account()) {
+            if (!_accountState || !_accountState->account()) {
                 return;
             }
 
@@ -281,7 +278,7 @@ void UnifiedSearchResultsListModel::resultClicked(const QString &providerId, con
                 const QString relativePath = dir + QLatin1Char('/') + fileName;
                 if (!relativePath.isEmpty()) {
                     const auto localFiles = FolderMan::instance()->findFileInLocalFolders(
-                        QFileInfo(relativePath).path(), currentUser->account());
+                        QFileInfo(relativePath).path(), _accountState->account());
 
                     if (!localFiles.isEmpty()) {
                         QDesktopServices::openUrl(localFiles.constFirst());
@@ -317,12 +314,10 @@ void UnifiedSearchResultsListModel::slotSearchTermEditingFinished()
         &UnifiedSearchResultsListModel::slotSearchTermEditingFinished);
 
     if (_providers.isEmpty()) {
-        const auto currentUser = UserModel::instance()->currentUser();
-
-        if (!currentUser || !currentUser->account()) {
+        if (!_accountState || !_accountState->account()) {
             return;
         }
-        auto *job = new JsonApiJob(currentUser->account(), QLatin1String("ocs/v2.php/search/providers"));
+        auto *job = new JsonApiJob(_accountState->account(), QLatin1String("ocs/v2.php/search/providers"));
         QObject::connect(job, &JsonApiJob::jsonReceived, [&, this](const QJsonDocument &json, int statusCode) {
             if (statusCode != 200) {
                 qCCritical(lcUnifiedSearch) << QString("%1: Failed to fetch search providers for '%2'. Error: %3")
@@ -442,7 +437,7 @@ void UnifiedSearchResultsListModel::slotSearchForProviderFinished(const QJsonDoc
                     result._resourceUrl = entryMap.value(QStringLiteral("resourceUrl")).toString();
                     result._icons =
                         iconsFromThumbnailAndFallbackIcon(entryMap.value(QStringLiteral("thumbnailUrl")).toString(),
-                            entryMap.value(QStringLiteral("icon")).toString());
+                            entryMap.value(QStringLiteral("icon")).toString(), _serverUrl);
 
                     newEntries.push_back(result);
                 }
@@ -476,27 +471,31 @@ void UnifiedSearchResultsListModel::startSearch()
         }
     }
 
-    if (!_results.isEmpty()) {
-        beginResetModel();
-        _results.clear();
-        endResetModel();
-    }
+    if (_accountState && _accountState->account()) {
+        _serverUrl = _accountState->account()->url();
 
-    for (const auto &provider : _providers) {
-        startSearchForProvider(provider._id);
+        QString serverUrl = _serverUrl.toString();
+
+        if (!_results.isEmpty()) {
+            beginResetModel();
+            _results.clear();
+            endResetModel();
+        }
+
+        for (const auto &provider : _providers) {
+            startSearchForProvider(provider._id);
+        }
     }
 }
 
 void UnifiedSearchResultsListModel::startSearchForProvider(const QString &providerId, qint32 cursor)
 {
-    const auto currentUser = UserModel::instance()->currentUser();
-
-    if (!currentUser || !currentUser->account()) {
+    if (!_accountState || !_accountState->account()) {
         return;
     }
 
-    auto *job =
-        new JsonApiJob(currentUser->account(), QLatin1String("ocs/v2.php/search/providers/%1/search").arg(providerId));
+    auto *job = new JsonApiJob(
+        _accountState->account(), QLatin1String("ocs/v2.php/search/providers/%1/search").arg(providerId));
     QUrlQuery params;
     params.addQueryItem(QStringLiteral("term"), _searchTerm);
     if (cursor > 0) {

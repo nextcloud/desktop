@@ -22,11 +22,14 @@
 #include <QSvgRenderer>
 
 namespace OCC {
+
 class AsyncImageResponse : public QQuickImageResponse
 {
 public:
     AsyncImageResponse(const QString &id, const QSize &requestedSize)
     {
+        qDebug(lcUnifiedSearch) << QString("Unified Search result called with images: %1").arg(id);
+
         if (id.isEmpty()) {
             emitFinished(QImage());
             return;

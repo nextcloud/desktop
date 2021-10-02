@@ -25,6 +25,8 @@ namespace OCC {
 
 Q_DECLARE_LOGGING_CATEGORY(lcUnifiedSearch)
 
+class AccountState;
+
 /**
  * @brief The UnifiedSearchResultsListModel
  * @ingroup gui
@@ -66,7 +68,7 @@ public:
         TypeAsStringRole,
     };
 
-    explicit UnifiedSearchResultsListModel(QObject *parent = nullptr);
+    explicit UnifiedSearchResultsListModel(AccountState *accountState, QObject *parent = nullptr);
 
     QVariant data(const QModelIndex &index, int role) const override;
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
@@ -81,13 +83,16 @@ public:
 
 public:
 signals:
-    void currentFetchMoreInProgressCategoryIdChanged();
-    void isSearchInProgressChanged();
-    void errorStringChanged();
     void searchTermChanged();
 
 protected:
     QHash<int, QByteArray> roleNames() const override;
+
+private:
+signals:
+    void currentFetchMoreInProgressCategoryIdChanged();
+    void isSearchInProgressChanged();
+    void errorStringChanged();
 
 private slots:
     void slotSearchTermEditingFinished();
@@ -115,6 +120,10 @@ private:
     QMap<QString, QMetaObject::Connection> _searchJobConnections;
 
     QTimer _unifiedSearchTextEditingFinishedTimer;
+
+    QUrl _serverUrl;
+
+    AccountState *_accountState;
 };
 }
 

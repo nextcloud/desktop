@@ -156,7 +156,11 @@ void Systray::slotNewUserSelected()
     if (_trayEngine) {
         // Change ActivityModel
         _trayEngine->rootContext()->setContextProperty("activityModel", UserModel::instance()->currentActivityModel());
-        _trayEngine->rootContext()->setContextProperty("unifiedSearchResultsModel", UserModel::instance()->currentUnifiedSearchResultsModel());
+        if (auto unifiedSearchResultsModel = UserModel::instance()->currentUnifiedSearchResultsModel()) {
+            _trayEngine->rootContext()->setContextProperty("unifiedSearchResultsModel", unifiedSearchResultsModel);
+            // text must be changed in the search term text field, so, we need to emit changed signal
+            emit unifiedSearchResultsModel->searchTermChanged();
+        }
     }
 
     // Rebuild App list
