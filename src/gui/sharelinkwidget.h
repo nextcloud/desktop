@@ -70,13 +70,13 @@ public:
 public slots:
     void slotDeleteShareFetched();
     void slotToggleShareLinkAnimation(const bool start);
-    void toggleButtonAnimation(QToolButton *button, QProgressIndicator *progressIndicator, const QAction *checkedAction, const bool start);
     void slotServerError(const int code, const QString &message);
     void slotCreateShareRequiresPassword(const QString &message);
     void slotStyleChanged();
 
 private slots:
-    void slotCreateShareLink(bool clicked);
+    void slotCreateShareLink(const bool clicked);
+    void slotCopyLinkShare(const bool clicked) const;    
 
     void slotCreatePassword();
     void slotPasswordSet();
@@ -108,11 +108,10 @@ signals:
 private:
     void displayError(const QString &errMsg);
     
-    void togglePasswordOptions(const bool enable);
-    void toggleNoteOptions(const bool enable);
-    void toggleExpireDateOptions(const bool enable);
-
-    void slotCopyLinkShare(const bool clicked);
+    void togglePasswordOptions(const bool enable = true);
+    void toggleNoteOptions(const bool enable = true);
+    void toggleExpireDateOptions(const bool enable = true);
+    void toggleButtonAnimation(QToolButton *button, QProgressIndicator *progressIndicator, const QAction *checkedAction) const;
 
     /** Confirm with the user and then delete the share */
     void confirmAndDeleteShare();
