@@ -1022,7 +1022,7 @@ Utilitário de sincronização de arquivos na área de trabalho. </translation>
     <message>
         <location filename="../src/gui/folder.cpp" line="190"/>
         <source>%1 is not writable.</source>
-        <translation type="unfinished"/>
+        <translation>%1 não pode ser escrita.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="456"/>
