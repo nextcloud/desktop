@@ -105,7 +105,7 @@ steps:
     CI_UPLOAD_GIT_USERNAME:
       from_secret: CI_UPLOAD_GIT_USERNAME
   commands:
-    - /bin/bash -c "./admin/linux/build-appimage.sh"
+    - BUILDNR=$DRONE_BUILD_NUMBER VERSION_SUFFIX=$DRONE_PULL_REQUEST BUILD_UPDATER=ON DESKTOP_CLIENT_ROOT=$DRONE_WORKSPACE /bin/bash -c "./admin/linux/build-appimage.sh"
     - /bin/bash -c "./admin/linux/upload-appimage.sh" || echo "Upload failed, however this is an optional step."
 trigger:
   branch:
