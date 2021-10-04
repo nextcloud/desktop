@@ -8,6 +8,7 @@ import re
 import urllib.request
 import json
 import requests
+import shutil
 
 from objectmaphelper import RegularExpression
 from pageObjects.AccountConnectionWizard import AccountConnectionWizard
@@ -287,6 +288,11 @@ def step(context):
 @When('the user waits for file "|any|" to be synced')
 def step(context, fileName):
     waitForFileToBeSynced(context, fileName)
+
+
+@When('the user waits for folder "|any|" to be synced')
+def step(context, folderName):
+    waitForFolderToBeSynced(context, folderName)
 
 
 @Given('the user has waited for file "|any|" to be synced')
@@ -843,3 +849,14 @@ def step(context):
 def step(context, errorMsg):
     newAccount = AccountConnectionWizard()
     test.compare(str(waitForObjectExists(newAccount.ERROR_LABEL).text), errorMsg)
+
+
+@When(r'the user deletes the (file|folder) "([^"]*)"', regexp=True)
+def step(context, itemType, resource):
+    resourcePath = sanitizePath(context.userData['clientSyncPathUser1'] + resource)
+    if itemType == 'file':
+        os.remove(resourcePath)
+    elif itemType == 'folder':
+        shutil.rmtree(resourcePath)
+    else:
+        raise Exception("No such item type for resource")
