@@ -18,11 +18,6 @@ def main(ctx):
             "refs/pull/**",
         ],
     }
-    cron_trigger = {
-        "event": [
-            "cron",
-        ],
-    }
     pipelines = [
         # check the format of gui test code
         gui_tests_format(build_trigger),
@@ -56,31 +51,7 @@ def main(ctx):
             ],
         ),
     ]
-    cron_pipelines = [
-        # Build client
-        build_and_test_client(
-            ctx,
-            "gcc",
-            "g++",
-            "Release",
-            "Unix Makefiles",
-            trigger = cron_trigger,
-        ),
-        build_and_test_client(
-            ctx,
-            "clang",
-            "clang++",
-            "Debug",
-            "Ninja",
-            trigger = cron_trigger,
-        ),
-        gui_tests(ctx, trigger = cron_trigger),
-    ]
-
-    if ctx.build.event == "cron":
-        return cron_pipelines
-    else:
-        return pipelines
+    return pipelines
 
 def whenOnline(dict):
     if not "when" in dict:
