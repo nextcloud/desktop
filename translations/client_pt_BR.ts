@@ -1989,7 +1989,7 @@ Observe que o uso de qualquer opção de linha de comando de registro substituir
     <message>
         <location filename="../src/gui/models/models.cpp" line="82"/>
         <source>%1 Filter:</source>
-        <translation type="unfinished"/>
+        <translation>%1 Filtro:</translation>
     </message>
     <message>
         <location filename="../src/gui/models/models.cpp" line="103"/>
@@ -1999,12 +1999,12 @@ Observe que o uso de qualquer opção de linha de comando de registro substituir
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="217"/>
         <source>Reset Filters</source>
-        <translation type="unfinished"/>
+        <translation>Redefinir Filtros </translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="296"/>
         <source>Status Filter:</source>
-        <translation type="unfinished"/>
+        <translation>Status do Filtro:</translation>
     </message>
 </context>
 <context>
@@ -2312,7 +2312,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="160"/>
         <source>New %1 available. Please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt; to download the new AppImage manually.</source>
-        <translation type="unfinished"/>
+        <translation>Novo %1 disponível. Por favor click &lt;a href=&apos;%2&apos;&gt;aqui&lt;/a&gt; para baixar o novo  AppImage manualmente.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="163"/>
@@ -4589,7 +4589,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="94"/>
         <source>File Ignored</source>
-        <translation type="unfinished"/>
+        <translation>Arquivo Ignorado</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="96"/>
