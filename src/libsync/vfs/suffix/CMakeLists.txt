@@ -26,7 +26,7 @@ if(APPLE)
     # For being loadable when client run from install dir (after make macdeployqt)
     set(vfs_installdir "${LIB_INSTALL_DIR}/../PlugIns")
 else()
-    set(vfs_installdir "${PLUGINDIR}")
+    set(vfs_installdir "${KDE_INSTALL_QTPLUGINDIR}")
 endif()
 
 install(TARGETS nextcloudsync_vfs_suffix
