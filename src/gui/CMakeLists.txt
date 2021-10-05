@@ -331,7 +331,7 @@ add_library(nextcloudCore STATIC ${final_src})
 
 target_link_libraries(nextcloudCore
   PUBLIC
-  nextcloudsync
+  Nextcloud::sync
   Qt5::Widgets
   Qt5::GuiPrivate
   Qt5::Svg
@@ -418,7 +418,7 @@ endif()
 
 IF(BUILD_UPDATER)
     add_library(updater STATIC ${updater_SRCS})
-    target_link_libraries(updater nextcloudsync ${updater_DEPS} Qt5::Widgets Qt5::Svg Qt5::Network Qt5::Xml)
+    target_link_libraries(updater Nextcloud::sync ${updater_DEPS} Qt5::Widgets Qt5::Svg Qt5::Network Qt5::Xml)
     target_include_directories(updater PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
     set_target_properties(updater PROPERTIES AUTOMOC ON)
     target_link_libraries(nextcloudCore PUBLIC updater)

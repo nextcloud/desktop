@@ -8,7 +8,7 @@ if (LINUX)
         ${vfs_xattr_SRCS}
     )
 
-    target_link_libraries(nextcloudsync_vfs_xattr PRIVATE nextcloudsync)
+    target_link_libraries(nextcloudsync_vfs_xattr PRIVATE Nextcloud::sync)
 
     set_target_properties(nextcloudsync_vfs_xattr
       PROPERTIES

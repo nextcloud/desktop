@@ -103,11 +103,13 @@ IF (NOT APPLE)
 ENDIF(NOT APPLE)
 
 find_package(Qt5 REQUIRED COMPONENTS WebSockets)
+
 add_library(nextcloudsync SHARED ${libsync_SRCS})
+add_library(Nextcloud::sync ALIAS nextcloudsync)
 
 target_link_libraries(nextcloudsync
   PUBLIC
-  nextcloud_csync
+  Nextcloud::csync
   OpenSSL::Crypto
   OpenSSL::SSL
   ${OS_SPECIFIC_LINK_LIBRARIES}

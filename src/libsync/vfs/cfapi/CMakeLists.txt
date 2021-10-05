@@ -8,7 +8,7 @@ if (WIN32)
     )
 
     target_link_libraries(nextcloudsync_vfs_cfapi PRIVATE
-        nextcloudsync
+        Nextcloud::sync
         cldapi
     )
 

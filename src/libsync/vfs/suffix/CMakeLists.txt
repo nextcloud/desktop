@@ -2,7 +2,7 @@ add_library(nextcloudsync_vfs_suffix SHARED
     vfs_suffix.cpp
 )
 
-target_link_libraries(nextcloudsync_vfs_suffix PRIVATE nextcloudsync)
+target_link_libraries(nextcloudsync_vfs_suffix PRIVATE Nextcloud::sync)
 
 set_target_properties(nextcloudsync_vfs_suffix
   PROPERTIES

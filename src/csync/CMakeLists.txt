@@ -59,6 +59,7 @@ endif()
 configure_file(csync_version.h.in ${CMAKE_CURRENT_BINARY_DIR}/csync_version.h)
 
 add_library(nextcloud_csync SHARED ${common_SOURCES} ${csync_SRCS})
+add_library(Nextcloud::csync ALIAS nextcloud_csync)
 
 target_include_directories(
   nextcloud_csync
