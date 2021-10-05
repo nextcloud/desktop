@@ -349,6 +349,9 @@ Application::Application(int &argc, char **argv)
     connect(FolderMan::instance()->socketApi(), &SocketApi::shareCommandReceived,
         _gui.data(), &ownCloudGui::slotShowShareDialog);
 
+    connect(FolderMan::instance()->socketApi(), &SocketApi::fileActivityCommandReceived,
+        Systray::instance(), &Systray::showFileActivityDialog);
+
     // startup procedure.
     connect(&_checkConnectionTimer, &QTimer::timeout, this, &Application::slotCheckConnection);
     _checkConnectionTimer.setInterval(ConnectionValidator::DefaultCallingIntervalMsec); // check for connection every 32 seconds.

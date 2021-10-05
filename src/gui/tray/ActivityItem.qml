@@ -7,9 +7,15 @@ import com.nextcloud.desktopclient 1.0
 
 MouseArea {
     id: activityMouseArea
+
+    readonly property int maxActionButtons: 2
+    property Flickable flickable
+
+    signal fileActivityButtonClicked(string absolutePath)
+
     enabled: (path !== "" || link !== "")
     hoverEnabled: true
-    
+
     Rectangle {
         anchors.fill: parent
         anchors.margins: 2
@@ -106,7 +112,7 @@ MouseArea {
             }
             
             Repeater {
-                model: activityItem.links.length > activityListView.maxActionButtons ? 1 : activityItem.links.length
+                model: activityItem.links.length > maxActionButtons ? 1 : activityItem.links.length
                 
                 ActivityActionButton {
                     id: activityActionButton
@@ -139,6 +145,31 @@ MouseArea {
                 }
                 
             }
+
+            Button {
+                id: shareButton
+                
+                Layout.preferredWidth:  parent.height
+                Layout.fillHeight: true
+                Layout.alignment: Qt.AlignRight
+                flat: true
+                hoverEnabled: true
+                visible: displayActions && (path !== "")
+                display: AbstractButton.IconOnly
+                icon.source: "qrc:///client/theme/share.svg"
+                icon.color: "transparent"
+                background: Rectangle {
+                    color: parent.hovered ? Style.lightHover : "transparent"
+                }
+                ToolTip.visible: hovered
+                ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
+                ToolTip.text: qsTr("Open share dialog")
+                onClicked: Systray.openShareDialog(displayPath, absolutePath)
+                
+                Accessible.role: Accessible.Button
+                Accessible.name: qsTr("Share %1").arg(displayPath)
+                Accessible.onPressAction: shareButton.clicked()
+            }
             
             Button {
                 id: moreActionsButton
@@ -149,7 +180,7 @@ MouseArea {
                 
                 flat: true
                 hoverEnabled: true
-                visible: activityItem.links.length > activityListView.maxActionButtons
+                visible: displayActions && ((path !== "") || (activityItem.links.length > maxActionButtons))
                 display: AbstractButton.IconOnly
                 icon.source: "qrc:///client/theme/more.svg"
                 icon.color: "transparent"
@@ -157,7 +188,7 @@ MouseArea {
                     color: parent.hovered ? Style.lightHover : "transparent"
                 }
                 ToolTip.visible: hovered
-                ToolTip.delay: 1000
+                ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
                 ToolTip.text: qsTr("Show more actions")
                 
                 Accessible.role: Accessible.Button
@@ -167,16 +198,7 @@ MouseArea {
                 onClicked:  moreActionsButtonContextMenu.popup();
                 
                 Connections {
-                    target: trayWindow
-                    function onActiveChanged() {
-                        if (!trayWindow.active) {
-                            moreActionsButtonContextMenu.close();
-                        }
-                    }
-                }
-                
-                Connections {
-                    target: activityListView
+                    target: flickable
                     
                     function onMovementStarted() {
                         moreActionsButtonContextMenu.close();
@@ -199,7 +221,7 @@ MouseArea {
                         // transform model to contain indexed actions with primary action filtered out
                         function actionListToContextMenuList(actionList) {
                             // early out with non-altered data
-                            if (activityItem.links.length <= activityListView.maxActionButtons) {
+                            if (activityItem.links.length <= maxActionButtons) {
                                 return actionList;
                             }
                             
@@ -215,6 +237,11 @@ MouseArea {
                             
                             return reducedActionList;
                         }
+
+                        MenuItem {
+                            text: qsTr("View activity")
+                            onClicked: fileActivityButtonClicked(absolutePath)
+                        }
                         
                         Repeater {
                             id: moreActionsButtonContextMenuRepeater
@@ -229,31 +256,6 @@ MouseArea {
                         }
                     }
                 }
-            }
-            
-            Button {
-                id: shareButton
-                
-                Layout.preferredWidth: (path === "") ? 0 : parent.height
-                Layout.preferredHeight: parent.height
-                Layout.alignment: Qt.AlignRight
-                flat: true
-                hoverEnabled: true
-                visible: (path === "") ? false : true
-                display: AbstractButton.IconOnly
-                icon.source: "qrc:///client/theme/share.svg"
-                icon.color: "transparent"
-                background: Rectangle {
-                    color: parent.hovered ? Style.lightHover : "transparent"
-                }
-                ToolTip.visible: hovered
-                ToolTip.delay: 1000
-                ToolTip.text: qsTr("Open share dialog")
-                onClicked: Systray.openShareDialog(displayPath,absolutePath)
-                
-                Accessible.role: Accessible.Button
-                Accessible.name: qsTr("Share %1").arg(displayPath)
-                Accessible.onPressAction: shareButton.clicked()
             }
         }
     }

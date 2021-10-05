@@ -18,6 +18,7 @@
 #include <QWidget>
 #include <QJsonObject>
 #include <QJsonDocument>
+#include <qloggingcategory.h>
 
 #include "account.h"
 #include "accountstate.h"
@@ -39,7 +40,13 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcActivity, "nextcloud.gui.activity", QtInfoMsg)
 
-ActivityListModel::ActivityListModel(AccountState *accountState, QObject *parent)
+ActivityListModel::ActivityListModel(QObject *parent)
+    : QAbstractListModel(parent)
+{
+}
+
+ActivityListModel::ActivityListModel(AccountState *accountState,
+    QObject *parent)
     : QAbstractListModel(parent)
     , _accountState(accountState)
 {
@@ -60,7 +67,38 @@ QHash<int, QByteArray> ActivityListModel::roleNames() const
     roles[ActionTextColorRole] = "activityTextTitleColor";
     roles[ObjectTypeRole] = "objectType";
     roles[PointInTimeRole] = "dateTime";
+    roles[DisplayActions] = "displayActions";
     return roles;
+}
+
+void ActivityListModel::setAccountState(AccountState *state)
+{
+    _accountState = state;
+}
+
+void ActivityListModel::setCurrentlyFetching(bool value)
+{
+    _currentlyFetching = value;
+}
+
+bool ActivityListModel::currentlyFetching() const
+{
+    return _currentlyFetching;
+}
+
+void ActivityListModel::setDoneFetching(bool value)
+{
+    _doneFetching = value;
+}
+
+void ActivityListModel::setHideOldActivities(bool value)
+{
+    _hideOldActivities = value;
+}
+
+void ActivityListModel::setDisplayActions(bool value)
+{
+    _displayActions = value;
 }
 
 QVariant ActivityListModel::data(const QModelIndex &index, int role) const
@@ -222,6 +260,8 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
         return a._id == -1 ? "" : Utility::timeAgoInWords(a._dateTime.toLocalTime());
     case AccountConnectedRole:
         return (ast && ast->isConnected());
+    case DisplayActions:
+        return _displayActions;
     default:
         return QVariant();
     }
@@ -253,7 +293,7 @@ void ActivityListModel::startFetchJob()
     }
     auto *job = new JsonApiJob(_accountState->account(), QLatin1String("ocs/v2.php/apps/activity/api/v2/activity"), this);
     QObject::connect(job, &JsonApiJob::jsonReceived,
-        this, &ActivityListModel::slotActivitiesReceived);
+        this, &ActivityListModel::activitiesReceived);
 
     QUrlQuery params;
     params.addQueryItem(QLatin1String("since"), QString::number(_currentItem));
@@ -265,7 +305,7 @@ void ActivityListModel::startFetchJob()
     job->start();
 }
 
-void ActivityListModel::slotActivitiesReceived(const QJsonDocument &json, int statusCode)
+void ActivityListModel::activitiesReceived(const QJsonDocument &json, int statusCode)
 {
     auto activities = json.object().value("ocs").toObject().value("data").toArray();
 
@@ -304,9 +344,8 @@ void ActivityListModel::slotActivitiesReceived(const QJsonDocument &json, int st
         _currentItem = list.last()._id;
 
         _totalActivitiesFetched++;
-        if(_totalActivitiesFetched == _maxActivities ||
-            a._dateTime < oldestDate) {
-
+        if (_totalActivitiesFetched == _maxActivities
+            || (_hideOldActivities && a._dateTime < oldestDate)) {
             _showMoreActivitiesAvailableEntry = true;
             _doneFetching = true;
             break;
@@ -494,6 +533,11 @@ void ActivityListModel::triggerAction(int activityIndex, int actionIndex)
     }
 
     emit sendNotificationRequest(activity._accName, action._link, action._verb, activityIndex);
+}
+
+AccountState *ActivityListModel::accountState() const
+{
+    return _accountState;
 }
 
 void ActivityListModel::combineActivityLists()

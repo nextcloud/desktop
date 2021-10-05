@@ -79,6 +79,7 @@ signals:
     void hideWindow();
     void showWindow();
     void openShareDialog(const QString &sharePath, const QString &localPath);
+    void showFileActivityDialog(const QString &sharePath, const QString &localPath);
 
 public slots:
     void slotNewUserSelected();

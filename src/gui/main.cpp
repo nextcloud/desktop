@@ -24,6 +24,7 @@
 #endif
 
 #include "application.h"
+#include "fileactivitylistmodel.h"
 #include "theme.h"
 #include "common/utility.h"
 #include "cocoainitializer.h"
@@ -59,11 +60,13 @@ int main(int argc, char **argv)
     Q_INIT_RESOURCE(theme);
 
     qmlRegisterType<EmojiModel>("com.nextcloud.desktopclient", 1, 0, "EmojiModel");
+    qmlRegisterType<UserStatusSelectorModel>("com.nextcloud.desktopclient", 1, 0, "UserStatusSelectorModel");
+    qmlRegisterType<OCC::ActivityListModel>("com.nextcloud.desktopclient", 1, 0, "ActivityListModel");
+    qmlRegisterType<OCC::FileActivityListModel>("com.nextcloud.desktopclient", 1, 0, "FileActivityListModel");
+
+    qmlRegisterUncreatableType<OCC::UserStatus>("com.nextcloud.desktopclient", 1, 0, "UserStatus", "Access to Status enum");
+
     qRegisterMetaTypeStreamOperators<Emoji>();
-    qmlRegisterType<UserStatusSelectorModel>("com.nextcloud.desktopclient", 1, 0,
-        "UserStatusSelectorModel");
-    qmlRegisterUncreatableType<OCC::UserStatus>("com.nextcloud.desktopclient", 1, 0, "UserStatus",
-        "Access to Status enum");
     qRegisterMetaType<OCC::UserStatus>("UserStatus");
 
 

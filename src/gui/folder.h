@@ -290,6 +290,8 @@ public:
     /** Whether this folder should show selective sync ui */
     bool supportsSelectiveSync() const;
 
+    QString fileFromLocalPath(const QString &localPath) const;
+
 signals:
     void syncStateChange();
     void syncStarted();
