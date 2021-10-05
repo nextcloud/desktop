@@ -131,7 +131,7 @@
         <location filename="../src/common/filesystembase.cpp" line="398"/>
         <location filename="../src/common/filesystembase.cpp" line="404"/>
         <source>Could not move &quot;%1&quot; to &quot;%2&quot;</source>
-        <translation type="unfinished"/>
+        <translation>A(z) „%1” nem helyezhető át ide: „%2”</translation>
     </message>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="438"/>
@@ -1098,7 +1098,7 @@ Ezt a problémát valószínűleg az OpenSSL programkönyvtárakban kell keresni
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="104"/>
         <source>The polling URL does not start with HTTPS despite the login URL started with HTTPS. Login will not be possible because this might be a security issue. Please contact your administrator.</source>
-        <translation type="unfinished"/>
+        <translation>A lekérdezési URL nem HTTPS-sel kezdődik, pedig a bejelentkezési URL HTTPS-sel kezdődött. A bejelentkezés nem lesz lehetséges, mert biztonsági problémát jelenthet. Lépjen kapcsolatba a rendszergazdával.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="115"/>
@@ -1133,7 +1133,7 @@ Ezt a problémát valószínűleg az OpenSSL programkönyvtárakban kell keresni
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="211"/>
         <source>The returned server URL does not start with HTTPS despite the login URL started with HTTPS. Login will not be possible because this might be a security issue. Please contact your administrator.</source>
-        <translation type="unfinished"/>
+        <translation>A visszaadott kiszolgáló URL nem HTTPS-sel kezdődik, pedig a bejelentkezési URL HTTPS-sel kezdődött. A bejelentkezés nem lesz lehetséges, mert biztonsági problémát jelenthet. Lépjen kapcsolatba a rendszergazdával.</translation>
     </message>
 </context>
 <context>
@@ -1343,9 +1343,9 @@ Ez azt jelenti, hogy a szinkronizációs kliens lehet, hogy nem fogja azonnal fe
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
-        <translation>A(z) &apos;%1&apos; helyi szinkronizáló mappában lévő összes fájlt törölték. Ezeket a törléseket szinkronizáljuk a szerverrel, így ezek a fájlok nem lesznek elérhetők, amíg vissza nem állítják őket.
-Biztosan szinkronizálni szeretné ezeket a műveleteket a szerverrel?
-Ha ez véletlen volt, és úgy dönt, hogy megtartja a fájljait, azokat újra szinkronizálja a szerver.</translation>
+        <translation>A(z) „%1” helyi szinkronizálási mappában található összes fájl törölve lett. Ezek a törlések szinkronizálva lesznek a kiszolgálóval, így ezek nem lesznek elérhetők, amíg vissza nem állítják őket.
+Biztos, hogy szinkronizálni akarja ezeket a változásokat a kiszolgálóval?
+Ha ez véletlen volt, és úgy dönt, hogy megtartja ezeket a fájlokat, akkor újra szinkronizálva lesznek a kiszolgálóról.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1052"/>
@@ -1908,7 +1908,7 @@ Ha úgy dönt, hogy törli a fájlokat, akkor azok nem lesznek elérhetők Önne
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="545"/>
         <source>Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter.</source>
-        <translation type="unfinished"/>
+        <translation>A virtuális fájlok nem támogatottak a windowsos partíciók gyökerében helyi mappaként. Válasszon érvényes almappát a meghajtó betűjele alatt.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="563"/>
@@ -2281,62 +2281,62 @@ Ahol a törlés engedélyezett, ott az elemek törölve lesznek, ha megakadályo
     <message>
         <location filename="../src/gui/invalidfilenamedialog.ui" line="14"/>
         <source>Invalid filename</source>
-        <translation type="unfinished"/>
+        <translation>Érvénytelen fájlnév</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.ui" line="23"/>
         <source>The file could not be synced because it contains characters which are not allowed on this system.</source>
-        <translation type="unfinished"/>
+        <translation>A fájlt nem sikerült szinkronizálni, mert a rendszeren nem megengedett karaktereket tartalmaz.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.ui" line="36"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>Hiba</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.ui" line="49"/>
         <source>Please enter a new name for the file:</source>
-        <translation type="unfinished"/>
+        <translation>Adjon meg egy új nevet a fájlnak:</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.ui" line="62"/>
         <source>New filename</source>
-        <translation type="unfinished"/>
+        <translation>Új fájlnév</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="71"/>
         <source>Rename file</source>
-        <translation type="unfinished"/>
+        <translation>Fájl átnevezése</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="73"/>
         <source>The file %1 could not be synced because the name contains characters which are not allowed on this system.</source>
-        <translation type="unfinished"/>
+        <translation>A(z) %1 fájlt nem sikerült szinkronizálni, mert a neve a rendszeren nem megengedett karaktereket tartalmaz.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="74"/>
         <source>The following characters are not allowed on the system: * &quot; | &amp; ? , ; : \ / ~ &lt; &gt;</source>
-        <translation type="unfinished"/>
+        <translation>A következő karakterek nem engedélyezettek a rendszeren: * &quot; | &amp; ? , ; : \ / ~ &lt; &gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="105"/>
         <source>You don&apos;t have the permission to rename this file. Please ask the author of the file to rename it.</source>
-        <translation type="unfinished"/>
+        <translation>Nincs engedélye átnevezni ezt a fájlt. Kérje meg a fájl szerzőjét, hogy nevezze át.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="130"/>
         <source>Filename contains illegal characters: %1</source>
-        <translation type="unfinished"/>
+        <translation>A fájlnév érvénytelen karaktereket tartalmaz: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="144"/>
         <source>Could not rename file. Please make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>A fájl nem nevezhető át. Győződjön meg róla, hogy kapcsolódik-e a kiszolgálóhoz</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="155"/>
         <source>Cannot rename file because a file with the same name does already exist on the server. Please pick another name.</source>
-        <translation type="unfinished"/>
+        <translation>A fájl nem nevezhető át, mert létezik egy ugyanilyen nevű fájl a kiszolgálón. Válasszon másik nevet.</translation>
     </message>
 </context>
 <context>
@@ -2751,7 +2751,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="158"/>
         <source>Could not download update. Please open &lt;a href=&apos;%1&apos;&gt;%1&lt;/a&gt; to download the update manually.</source>
-        <translation type="unfinished"/>
+        <translation>Nem lehetett letölteni a frissítést. Nyissa meg a &lt;a href=&apos;%1&apos;&gt;%1ot&lt;/a&gt; frissítés kézi letöltéséhez.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="157"/>
@@ -2766,7 +2766,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="166"/>
         <source>New %1 is available. Please open &lt;a href=&apos;%2&apos;&gt;%2&lt;/a&gt; to download the update.</source>
-        <translation type="unfinished"/>
+        <translation>Új %1 érhető el. A frissítés letöltéséhez nyissa meg a &lt;a href=&apos;%2&apos;&gt;%2ot&lt;/a&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="161"/>
@@ -2851,7 +2851,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="221"/>
         <source>Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter.</source>
-        <translation type="unfinished"/>
+        <translation>A virtuális fájlok nem támogatottak a windowsos partíciók gyökerében helyi mappaként. Válasszon érvényes almappát a meghajtó betűjele alatt.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="259"/>
@@ -3359,17 +3359,17 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
     <message>
         <location filename="../src/libsync/discovery.cpp" line="946"/>
         <source>Conflict when uploading some files to a folder. Those, conflicted, are going to get cleared!</source>
-        <translation type="unfinished"/>
+        <translation>Ütközés a fájlok mappába feltöltésekor. Az ütköző fájlok törölve lesznek!</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="959"/>
         <source>Conflict when uploading a folder. It&apos;s going to get cleared!</source>
-        <translation type="unfinished"/>
+        <translation>Ütközés a mappa feltöltésekor. Törölve lesz!</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="962"/>
         <source>Conflict when uploading a file. It&apos;s going to get removed!</source>
-        <translation type="unfinished"/>
+        <translation>Ütközés a fájl feltöltésekor. Törölve lesz!</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1292"/>
@@ -4055,7 +4055,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="194"/>
         <source>View only</source>
-        <translation type="unfinished"/>
+        <translation>Csak megtekintés</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="198"/>
@@ -4080,7 +4080,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="223"/>
         <source>Link name</source>
-        <translation type="unfinished"/>
+        <translation>Hivatkozás neve</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="218"/>
@@ -4100,7 +4100,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="302"/>
         <source>Delete link</source>
-        <translation type="unfinished"/>
+        <translation>Hivatkozás törlése</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="271"/>
