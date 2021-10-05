@@ -131,7 +131,7 @@
         <location filename="../src/common/filesystembase.cpp" line="398"/>
         <location filename="../src/common/filesystembase.cpp" line="404"/>
         <source>Could not move &quot;%1&quot; to &quot;%2&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Ni mogoče premakniti » %1 « v » %2 «.</translation>
     </message>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="438"/>
@@ -2282,17 +2282,17 @@ Predmeti v mapah, ki jih je dovoljeno izbrisati, bodo odstranjeni, če prepreču
     <message>
         <location filename="../src/gui/invalidfilenamedialog.ui" line="14"/>
         <source>Invalid filename</source>
-        <translation type="unfinished"/>
+        <translation>Neveljavno ime datoteke</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.ui" line="23"/>
         <source>The file could not be synced because it contains characters which are not allowed on this system.</source>
-        <translation type="unfinished"/>
+        <translation>Datoteke ni mogoče uskladiti, ker so v imenu datoteke znaki, ki jih sistem ne podpira.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.ui" line="36"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>Napaka</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.ui" line="49"/>
@@ -2302,12 +2302,12 @@ Predmeti v mapah, ki jih je dovoljeno izbrisati, bodo odstranjeni, če prepreču
     <message>
         <location filename="../src/gui/invalidfilenamedialog.ui" line="62"/>
         <source>New filename</source>
-        <translation type="unfinished"/>
+        <translation>Novo ime datoteke</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="71"/>
         <source>Rename file</source>
-        <translation type="unfinished"/>
+        <translation>Preimenuj datoteko</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="73"/>
@@ -2327,7 +2327,7 @@ Predmeti v mapah, ki jih je dovoljeno izbrisati, bodo odstranjeni, če prepreču
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="130"/>
         <source>Filename contains illegal characters: %1</source>
-        <translation type="unfinished"/>
+        <translation>V imenu datoteke so neveljavni znaki: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="144"/>
@@ -4079,7 +4079,7 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="223"/>
         <source>Link name</source>
-        <translation type="unfinished"/>
+        <translation>Ime povezave</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="218"/>
@@ -4099,7 +4099,7 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="302"/>
         <source>Delete link</source>
-        <translation type="unfinished"/>
+        <translation>Izbriši povezavo</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="271"/>
