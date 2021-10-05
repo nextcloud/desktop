@@ -6,21 +6,26 @@ if (WIN32)
         hydrationjob.cpp
         vfs_cfapi.cpp
     )
-    set_target_properties(nextcloudsync_vfs_cfapi
-        PROPERTIES
-        LIBRARY_OUTPUT_NAME ${APPLICATION_EXECUTABLE}sync_vfs_cfapi
-    )
 
     target_link_libraries(nextcloudsync_vfs_cfapi PRIVATE
         nextcloudsync
         cldapi
     )
 
-    set_target_properties("nextcloudsync_vfs_cfapi" PROPERTIES
-        LIBRARY_OUTPUT_DIRECTORY ${BIN_OUTPUT_DIRECTORY}
-        RUNTIME_OUTPUT_DIRECTORY ${BIN_OUTPUT_DIRECTORY}
-        PREFIX ""
-        AUTOMOC TRUE
+    set_target_properties(nextcloudsync_vfs_cfapi
+      PROPERTIES
+        LIBRARY_OUTPUT_DIRECTORY
+          ${BIN_OUTPUT_DIRECTORY}
+        RUNTIME_OUTPUT_DIRECTORY
+          ${BIN_OUTPUT_DIRECTORY}
+        PREFIX
+          ""
+        AUTOMOC
+          TRUE
+        LIBRARY_OUTPUT_NAME
+          ${APPLICATION_EXECUTABLE}sync_vfs_cfapi
+        RUNTIME_OUTPUT_NAME
+          ${APPLICATION_EXECUTABLE}sync_vfs_cfapi
     )
 
     target_include_directories("nextcloudsync_vfs_cfapi" BEFORE PUBLIC ${CMAKE_CURRENT_BINARY_DIR} INTERFACE ${CMAKE_BINARY_DIR})

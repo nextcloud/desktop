@@ -104,7 +104,7 @@ ENDIF(NOT APPLE)
 
 find_package(Qt5 REQUIRED COMPONENTS WebSockets)
 add_library(nextcloudsync SHARED ${libsync_SRCS})
-set_target_properties(nextcloudsync PROPERTIES LIBRARY_OUTPUT_NAME ${APPLICATION_EXECUTABLE}sync)
+
 target_link_libraries(nextcloudsync
   PUBLIC
   nextcloud_csync
@@ -135,11 +135,19 @@ GENERATE_EXPORT_HEADER( nextcloudsync
 
 target_include_directories(nextcloudsync PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
 
-
-set_target_properties( nextcloudsync  PROPERTIES
-	VERSION ${MIRALL_VERSION}
-	SOVERSION ${MIRALL_SOVERSION}
-	RUNTIME_OUTPUT_DIRECTORY ${BIN_OUTPUT_DIRECTORY}
+set_target_properties(
+  nextcloudsync
+    PROPERTIES
+      VERSION
+        ${MIRALL_VERSION}
+      SOVERSION
+        ${MIRALL_SOVERSION}
+      RUNTIME_OUTPUT_DIRECTORY
+        ${BIN_OUTPUT_DIRECTORY}
+      LIBRARY_OUTPUT_NAME
+        ${APPLICATION_EXECUTABLE}sync
+      RUNTIME_OUTPUT_NAME
+        ${APPLICATION_EXECUTABLE}sync
 )
 
 if(NOT BUILD_OWNCLOUD_OSX_BUNDLE)
