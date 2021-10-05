@@ -90,8 +90,9 @@ public:
      * Version 2: introduction of metadata_parent hash in 2.6.0
      *            (version remains readable by 2.5.1)
      * Version 3: introduction of new windows vfs mode in 2.6.0
+     * Version 4: until 2.9.1 windows vfs tried to unregister folders with a different id from windows.
      */
-    static int maxSettingsVersion() { return 3; }
+    static int maxSettingsVersion() { return 4; }
 
     /// Ensure / as separator and trailing /.
     static QString prepareLocalPath(const QString &path);
