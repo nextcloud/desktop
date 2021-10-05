@@ -37,8 +37,20 @@
 #include <QNetworkProxy>
 
 namespace {
-const char versionC[] = "version";
-const int maxFoldersVersion = 1;
+/*
+ * [Accounts]
+ * 0\version=1
+ */
+auto versionC()
+{
+    return QStringLiteral("version");
+}
+
+/*
+ * Folders with a version > maxFoldersVersion will be removed
+ * After the user was prompted for consent.
+ */
+constexpr int maxFoldersVersion = 1;
 
 int numberOfSyncJournals(const QString &path)
 {
@@ -347,7 +359,7 @@ void FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account,
             Folder *f = addFolderInternal(std::move(folderDefinition), account.data(), std::move(vfs));
             if (f) {
                 // Migrate the old "usePlaceholders" setting to the root folder pin state
-                if (settings.value(QLatin1String(versionC), 1).toInt() == 1
+                if (settings.value(versionC(), 1).toInt() == 1
                     && settings.value(QLatin1String("usePlaceholders"), false).toBool()) {
                     qCInfo(lcFolderMan) << "Migrate: From usePlaceholders to PinState::OnlineOnly";
                     f->setRootPinState(PinState::OnlineOnly);
@@ -403,12 +415,12 @@ void FolderMan::backwardMigrationSettingsKeys(QStringList *deleteKeys, QStringLi
 
     auto processSubgroup = [&](const QString &name) {
         settings->beginGroup(name);
-        const int foldersVersion = settings->value(QLatin1String(versionC), 1).toInt();
+        const int foldersVersion = settings->value(versionC(), 1).toInt();
         if (foldersVersion <= maxFoldersVersion) {
             const auto &childGroups = settings->childGroups();
             for (const auto &folderAlias : childGroups) {
                 settings->beginGroup(folderAlias);
-                const int folderVersion = settings->value(QLatin1String(versionC), 1).toInt();
+                const int folderVersion = settings->value(versionC(), 1).toInt();
                 if (folderVersion > FolderDefinition::maxSettingsVersion()) {
                     ignoreKeys->append(settings->group());
                 }
