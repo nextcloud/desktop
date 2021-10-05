@@ -14,5 +14,9 @@
         <file>src/gui/tray/AutoSizingMenu.qml</file>
         <file>src/gui/tray/ActivityList.qml</file>
         <file>src/gui/tray/FileActivityDialog.qml</file>
+		<file>src/gui/tray/UnifiedSearchResultFetchMoreTrigger.qml</file>
+        <file>src/gui/tray/UnifiedSearchResultItem.qml</file>
+		<file>src/gui/tray/UnifiedSearchResultListItem.qml</file>
+		<file>src/gui/tray/UnifiedSearchResultSectionItem.qml</file>
     </qresource>
 </RCC>

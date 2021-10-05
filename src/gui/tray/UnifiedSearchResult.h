@@ -32,8 +32,7 @@ class UnifiedSearchResult
 public:
     enum Type : quint8 {
         Default,
-        CategorySeparator,
-        FetchMoreTrigger
+        FetchMoreTrigger,
     };
 
     static QString typeAsString(UnifiedSearchResult::Type type);

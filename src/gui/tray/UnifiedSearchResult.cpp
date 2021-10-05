@@ -24,9 +24,6 @@ QString UnifiedSearchResult::typeAsString(UnifiedSearchResult::Type type)
     case Default: {
         return QStringLiteral("Default");
     }
-    case CategorySeparator: {
-        return QStringLiteral("CategorySeparator");
-    }
     case FetchMoreTrigger: {
         return QStringLiteral("FetchMoreTrigger");
     }

@@ -43,7 +43,10 @@ set(client_UI_SRCS
     tray/ActivityList.qml
     tray/Window.qml
     tray/UserLine.qml
+	tray/UnifiedSearchResultFetchMoreTrigger.qml
     tray/UnifiedSearchResultItem.qml
+	tray/UnifiedSearchResultListItem.qml
+	tray/UnifiedSearchResultSectionItem.qml
     wizard/flow2authwidget.ui
     wizard/owncloudadvancedsetuppage.ui
     wizard/owncloudconnectionmethoddialog.ui

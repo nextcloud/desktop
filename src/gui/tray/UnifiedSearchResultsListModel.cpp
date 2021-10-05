@@ -552,15 +552,6 @@ void UnifiedSearchResultsListModel::startSearchForProvider(const QString &provid
 void UnifiedSearchResultsListModel::appendResults(
     QList<UnifiedSearchResult> results, const UnifiedSearchProvider &provider)
 {
-    UnifiedSearchResult categorySeparator;
-    categorySeparator._providerId = results.first()._providerId;
-    categorySeparator._providerName = provider._name;
-    categorySeparator._order = provider._order;
-    categorySeparator._type = UnifiedSearchResult::Type::CategorySeparator;
-
-    results.push_front(categorySeparator);
-
-
     if (provider._cursor > 0 && provider._isPaginated) {
         UnifiedSearchResult fetchMoreTrigger;
         fetchMoreTrigger._providerId = provider._id;
