@@ -59,6 +59,7 @@ endif()
 configure_file(csync_version.h.in ${CMAKE_CURRENT_BINARY_DIR}/csync_version.h)
 
 add_library(nextcloud_csync SHARED ${common_SOURCES} ${csync_SRCS})
+add_library(Nextcloud::csync ALIAS nextcloud_csync)
 
 target_include_directories(
   nextcloud_csync
@@ -109,7 +110,9 @@ set_target_properties(
       RUNTIME_OUTPUT_DIRECTORY
         ${BIN_OUTPUT_DIRECTORY}
       LIBRARY_OUTPUT_NAME
-        "${APPLICATION_EXECUTABLE}_csync"
+        ${APPLICATION_EXECUTABLE}_csync
+      RUNTIME_OUTPUT_NAME
+        ${APPLICATION_EXECUTABLE}_csync
 )
 if(BUILD_OWNCLOUD_OSX_BUNDLE)
   INSTALL(

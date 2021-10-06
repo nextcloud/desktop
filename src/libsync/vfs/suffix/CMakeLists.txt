@@ -1,18 +1,23 @@
 add_library(nextcloudsync_vfs_suffix SHARED
     vfs_suffix.cpp
 )
+
+target_link_libraries(nextcloudsync_vfs_suffix PRIVATE Nextcloud::sync)
+
 set_target_properties(nextcloudsync_vfs_suffix
-    PROPERTIES
-    LIBRARY_OUTPUT_NAME ${APPLICATION_EXECUTABLE}sync_vfs_suffix
-)
-
-target_link_libraries(nextcloudsync_vfs_suffix PRIVATE nextcloudsync)
-
-set_target_properties(nextcloudsync_vfs_suffix PROPERTIES
-    LIBRARY_OUTPUT_DIRECTORY ${BIN_OUTPUT_DIRECTORY}
-    RUNTIME_OUTPUT_DIRECTORY ${BIN_OUTPUT_DIRECTORY}
-    PREFIX ""
-    AUTOMOC TRUE
+  PROPERTIES
+    LIBRARY_OUTPUT_DIRECTORY
+      ${BIN_OUTPUT_DIRECTORY}
+    RUNTIME_OUTPUT_DIRECTORY
+      ${BIN_OUTPUT_DIRECTORY}
+    PREFIX
+      ""
+    AUTOMOC
+      TRUE
+    LIBRARY_OUTPUT_NAME
+      ${APPLICATION_EXECUTABLE}sync_vfs_suffix
+    RUNTIME_OUTPUT_NAME
+      ${APPLICATION_EXECUTABLE}sync_vfs_suffix
 )
 
 if(APPLE)

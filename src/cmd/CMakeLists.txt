@@ -5,7 +5,7 @@ add_library(cmdCore STATIC simplesslerrorhandler.cpp netrcparser.cpp)
 
 target_link_libraries(cmdCore
   PUBLIC
-  nextcloudsync
+  Nextcloud::sync
   Qt5::Core
   Qt5::Network
   )
