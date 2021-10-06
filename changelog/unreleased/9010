@@ -1,4 +1,4 @@
-Enhancement: Display the error type in the issue protocol to allow sorting by type
+Enhancement: Display the error type in the issue protocol to allow sorting
 
 We now display the error type in the not synced protocol and allow to sort by the
 error type.
