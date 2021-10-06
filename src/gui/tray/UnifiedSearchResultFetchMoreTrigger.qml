@@ -10,6 +10,8 @@ RowLayout {
 
     property bool isFetchMoreInProgress: false
 
+    property bool isWihinViewPort: false
+
     Accessible.role: Accessible.ListItem
     Accessible.name: qsTr("Load more results")
     Accessible.onPressAction: unifiedSearchResultMouseArea.clicked()
@@ -54,7 +56,7 @@ RowLayout {
 
         RotationAnimator {
             target: unifiedSearchResultItemFetchMoreIconInProgress
-            running: unifiedSearchResultItemFetchMoreIconInProgress.visible
+            running:  unifiedSearchResultItemFetchMoreIconInProgress.visible && isWihinViewPort
             from: 0
             to: 360
             loops: Animation.Infinite

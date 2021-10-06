@@ -1,6 +1,6 @@
 import QtQml 2.12
 import QtQml.Models 2.1
-import QtQuick 2.9
+import QtQuick 2.15
 import QtQuick.Window 2.3
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.2
@@ -773,6 +773,8 @@ Window {
             }
 
             keyNavigationEnabled: true
+
+            reuseItems: true
 
             Accessible.role: Accessible.List
             Accessible.name: qsTr("Unified search results list")

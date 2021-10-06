@@ -1,5 +1,5 @@
 import QtQml 2.12
-import QtQuick 2.9
+import QtQuick 2.15
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.2
 import Style 1.0
@@ -18,8 +18,13 @@ MouseArea {
     property bool isFetchMoreInProgress: unifiedSearchResultsModel.currentFetchMoreInProgressProviderId === model.providerId
     property bool isSearchInProgress: false
 
+    property bool isPooled: false
+
     enabled: !isFetchMoreTrigger || !isSearchInProgress
     hoverEnabled: enabled
+
+    ListView.onPooled: isPooled = true
+    ListView.onReused: isPooled = false
 
     ToolTip {
         parent: unifiedSearchResultMouseArea
@@ -52,6 +57,7 @@ MouseArea {
             isFetchMoreInProgress: unifiedSearchResultMouseArea.isFetchMoreInProgress
             width: unifiedSearchResultMouseArea.width
             height: Style.trayWindowHeaderHeight
+            isWihinViewPort: !unifiedSearchResultMouseArea.isPooled
         }
     }
 
