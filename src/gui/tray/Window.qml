@@ -39,7 +39,7 @@ Window {
             hide();
             Systray.setClosed();
         }
-   }
+    }
 
     onClosing: {
         Systray.setClosed()
@@ -418,7 +418,7 @@ Window {
                                     visible: UserModel.currentUser.statusMessage !== ""
                                     width: Style.currentAccountLabelWidth
                                     text: UserModel.currentUser.statusMessage !== ""
-                                          ? UserModel.currentUser.statusMessage 
+                                          ? UserModel.currentUser.statusMessage
                                           : UserModel.currentUser.server
                                     elide: Text.ElideRight
                                     color: Style.ncTextColor
@@ -474,7 +474,7 @@ Window {
                             radius: width*0.5
                             z: 1
                         }
-    
+
                         Image {
                             id: folderStateIndicator
                             visible: UserModel.currentUser.hasLocalFolder
@@ -484,17 +484,17 @@ Window {
                             cache: false
                             
                             anchors.top: openLocalFolderButton.verticalCenter
-                            anchors.left: openLocalFolderButton.horizontalCenter  
+                            anchors.left: openLocalFolderButton.horizontalCenter
                             sourceSize.width: Style.folderStateIndicatorSize
                             sourceSize.height: Style.folderStateIndicatorSize
-        
+
                             Accessible.role: Accessible.Indicator
                             Accessible.name: UserModel.currentUser.isConnected ? qsTr("Connected") : qsTr("Disconnected")
                             z: 2
                         }
                     }
                     
- 
+
 
                     Accessible.role: Accessible.Button
                     Accessible.name: qsTr("Open local folder of current account")
@@ -515,7 +515,7 @@ Window {
                 HeaderButton {
                     id: trayWindowAppsButton
                     icon.source: "qrc:///client/theme/white/more-apps.svg"
-  
+
                     onClicked: {
                         if(appsMenu.count <= 0) {
                             UserModel.openCurrentAccountServer()
@@ -564,20 +564,167 @@ Window {
             }
         }   // Rectangle trayWindowHeaderBackground
 
-       ActivityList {
-           anchors.top: trayWindowHeaderBackground.bottom
-           anchors.left: trayWindowBackground.left
-           anchors.right: trayWindowBackground.right
-           anchors.bottom: trayWindowBackground.bottom
-           
-           model: activityModel
-           onShowFileActivity: {
-               openFileActivityDialog(displayPath, absolutePath)
-           }
-           onActivityItemClicked: {
-               model.triggerDefaultAction(index)
-           }
-       }
+        Rectangle {
+            id: trayWindowUnifiedSearchContainer
+
+            anchors {
+                top: trayWindowHeaderBackground.bottom
+                left: trayWindowBackground.left
+                right: trayWindowBackground.right
+            }
+
+            height: Style.trayWindowHeaderHeight
+            color: "transparent"
+
+            RowLayout {
+                id: trayWindowUnifiedSearchContainerLayout
+
+                spacing: 0
+                anchors.fill: parent
+
+                TextField {
+                    id: trayWindowUnifiedSearchTextField
+
+                    text: unifiedSearchResultsModel.searchTerm
+
+                    readOnly: !UserModel.currentUser.isConnected || unifiedSearchResultsModel.currentFetchMoreInProgressProviderId
+
+                    readonly property color textFieldIconsColor: Style.menuBorder
+
+                    readonly property int textFieldIconsOffset: 10
+
+                    readonly property double textFieldIconsScaleFactor: 0.6
+
+                    readonly property int textFieldHorizontalPaddingOffset: 10
+
+                    anchors.fill: parent
+                    anchors.margins: 10
+
+                    leftPadding: trayWindowUnifiedSearchTextFieldSearchIcon.width + trayWindowUnifiedSearchTextFieldSearchIcon.anchors.leftMargin + textFieldHorizontalPaddingOffset
+                    rightPadding: trayWindowUnifiedSearchTextFieldClearTextButton.width + trayWindowUnifiedSearchTextFieldClearTextButton.anchors.rightMargin + textFieldHorizontalPaddingOffset
+
+                    placeholderText: qsTr("Search files, messages, events...")
+
+                    selectByMouse: true
+
+                    background: Rectangle {
+                        radius: 5
+                        border.color: parent.activeFocus ? Style.ncBlue : Style.menuBorder
+                        border.width: 1
+                    }
+
+                    Image {
+                        id: trayWindowUnifiedSearchTextFieldSearchIcon
+
+                        anchors {
+                            left: parent.left
+                            leftMargin: parent.textFieldIconsOffset
+                            verticalCenter: parent.verticalCenter
+                        }
+
+                        smooth: true;
+                        antialiasing: true
+                        mipmap: true
+
+                        source: "qrc:///client/theme/magnifying-glass.svg"
+                        sourceSize: Qt.size(parent.height * parent.textFieldIconsScaleFactor, parent.height * parent.textFieldIconsScaleFactor)
+
+                        ColorOverlay {
+                            anchors.fill: parent
+                            source: parent
+                            color: parent.parent.textFieldIconsColor
+                        }
+                    }
+
+                    Image {
+                        id: trayWindowUnifiedSearchTextFieldClearTextButton
+
+                        anchors {
+                            right: parent.right
+                            rightMargin: parent.textFieldIconsOffset
+                            verticalCenter: parent.verticalCenter
+                        }
+
+                        smooth: true;
+                        antialiasing: true
+                        mipmap: true
+
+                        visible: !unifiedSearchResultsModel.isSearchInProgress && parent.text
+
+                        source: "qrc:///client/theme/close.svg"
+                        sourceSize: Qt.size(parent.height * parent.textFieldIconsScaleFactor, parent.height * parent.textFieldIconsScaleFactor)
+
+                        ColorOverlay {
+                            anchors.fill: parent
+                            source: parent
+                            color: parent.parent.textFieldIconsColor
+                        }
+
+                        MouseArea {
+                            id: trayWindowUnifiedSearchTextFieldClearTextButtonMouseArea
+
+                            anchors.fill: parent
+
+                            onClicked: {
+                                unifiedSearchResultsModel.setSearchTerm("")
+                            }
+                        }
+                    }
+
+                    Image {
+                        id: trayWindowUnifiedSearchTextFieldIconInProgress
+
+                        anchors {
+                            right: parent.right
+                            rightMargin: parent.textFieldIconsOffset
+                            verticalCenter: parent.verticalCenter
+                        }
+
+                        smooth: true;
+                        antialiasing: true
+                        mipmap: true
+
+                        visible: unifiedSearchResultsModel.isSearchInProgress
+
+                        source: "qrc:///client/theme/change.svg"
+                        sourceSize: Qt.size(parent.height * parent.textFieldIconsScaleFactor, parent.height * parent.textFieldIconsScaleFactor)
+
+                        ColorOverlay {
+                            anchors.fill: parent
+                            source: parent
+                            color: parent.parent.textFieldIconsColor
+                        }
+                    }
+                    RotationAnimator {
+                        target: trayWindowUnifiedSearchTextFieldIconInProgress
+                        running: trayWindowUnifiedSearchTextFieldIconInProgress.visible
+                        from: 0
+                        to: 360
+                        loops: Animation.Infinite
+                        duration: 1250
+                    }
+                    onTextEdited: {
+                        unifiedSearchResultsModel.setSearchTerm(text)
+                    }
+                }
+            }
+        }
+
+        ActivityList {
+            visible: !unifiedSearchResultsErrorLabel.visible && !unifiedSearchResultsListView.visible && unifiedSearchResultsModel.searchTerm === ""
+            anchors.top: trayWindowUnifiedSearchContainer.bottom
+            anchors.left: trayWindowBackground.left
+            anchors.right: trayWindowBackground.right
+            anchors.bottom: trayWindowBackground.bottom
+
+            model: activityModel
+            onShowFileActivity: {
+                openFileActivityDialog(displayPath, absolutePath)
+            }
+            onActivityItemClicked: {
+                model.triggerDefaultAction(index)
+            }
+        }
 
         Loader {
             id: fileActivityDialogLoader
@@ -588,7 +735,7 @@ Window {
             function refresh() {
                 active = true
                 item.model.load(activityModel.accountState, absolutePath)
-                item.show()            
+                item.show()
             }
 
             active: false
@@ -598,6 +745,51 @@ Window {
             }
 
             onLoaded: refresh()
+        }
+        Label {
+            id: unifiedSearchResultsErrorLabel
+            visible: unifiedSearchResultsModel.errorString && !unifiedSearchResultsListView.visible && !unifiedSearchResultsModel.isSearchInProgress && !unifiedSearchResultsModel.currentFetchMoreInProgressProviderId
+            text: unifiedSearchResultsModel.errorString
+            color: "red"
+            anchors.top: trayWindowUnifiedSearchContainer.bottom
+            anchors.left: trayWindowBackground.left
+            anchors.right: trayWindowBackground.right
+            anchors.bottom: trayWindowBackground.bottom
+            anchors.margins: 10
+            wrapMode: Text.Wrap
+        }
+
+        ListView {
+            id: unifiedSearchResultsListView
+            anchors.top: trayWindowUnifiedSearchContainer.bottom
+            anchors.left: trayWindowBackground.left
+            anchors.right: trayWindowBackground.right
+            anchors.bottom: trayWindowBackground.bottom
+            spacing: 4
+            visible: count > 0 || unifiedSearchResultsModel.isSearchInProgress
+            clip: true
+            ScrollBar.vertical: ScrollBar {
+                id: unifiedSearchResultsListViewScrollbar
+            }
+
+            keyNavigationEnabled: true
+
+            Accessible.role: Accessible.List
+            Accessible.name: qsTr("Unified search results list")
+
+            model: unifiedSearchResultsModel
+
+            delegate: UnifiedSearchResultListItem {
+                width: unifiedSearchResultsListView.width
+                height: Style.trayWindowHeaderHeight
+                isSearchInProgress: unifiedSearchResultsModel.isSearchInProgress
+            }
+
+            section.property: "providerName"
+            section.criteria: ViewSection.FullString
+            section.delegate: UnifiedSearchResultSectionItem {
+                width: unifiedSearchResultsListView.width
+            }
         }
     } // Rectangle trayWindowBackground
 }
