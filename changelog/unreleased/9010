@@ -1,0 +1,7 @@
+Enhancement: Display the error type in the issue protocol to allow sorting by type
+
+We now display the error type in the not synced protocol and allow to sort by the
+error type.
+
+https://github.com/owncloud/client/issues/9000
+https://github.com/owncloud/client/pull/9010
