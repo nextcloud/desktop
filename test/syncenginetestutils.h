@@ -316,12 +316,17 @@ public:
     FakePayloadReply(QNetworkAccessManager::Operation op, const QNetworkRequest &request,
         const QByteArray &body, QObject *parent);
 
+    FakePayloadReply(QNetworkAccessManager::Operation op, const QNetworkRequest &request,
+        const QByteArray &body, int delay, QObject *parent);
+
     void respond();
 
     void abort() override {}
     qint64 readData(char *buf, qint64 max) override;
     qint64 bytesAvailable() const override;
     QByteArray _body;
+
+    static const int defaultDelay = 10;
 };
 
 

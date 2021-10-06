@@ -225,6 +225,16 @@ QString UnifiedSearchResultsListModel::searchTerm() const
     return _searchTerm;
 }
 
+QString UnifiedSearchResultsListModel::errorString() const
+{
+    return _errorString;
+}
+
+QString UnifiedSearchResultsListModel::currentFetchMoreInProgressProviderId() const
+{
+    return _currentFetchMoreInProgressProviderId;
+}
+
 void UnifiedSearchResultsListModel::setSearchTerm(const QString &term)
 {
     if (term == _searchTerm) {
@@ -247,7 +257,7 @@ void UnifiedSearchResultsListModel::setSearchTerm(const QString &term)
     }
 
     if (!_searchTerm.isEmpty()) {
-        _unifiedSearchTextEditingFinishedTimer.setInterval(searchTermEditingFinishedSearchStartDelay);
+        _unifiedSearchTextEditingFinishedTimer.setInterval(searchStartDelay());
         connect(&_unifiedSearchTextEditingFinishedTimer, &QTimer::timeout, this,
             &UnifiedSearchResultsListModel::slotSearchTermEditingFinished);
         _unifiedSearchTextEditingFinishedTimer.start();
@@ -661,6 +671,11 @@ void UnifiedSearchResultsListModel::removeFetchMoreTrigger(const QString &provid
             endRemoveRows();
         }
     }
+}
+
+int UnifiedSearchResultsListModel::searchStartDelay()
+{
+    return searchTermEditingFinishedSearchStartDelay;
 }
 
 }

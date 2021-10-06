@@ -74,12 +74,17 @@ public:
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
 
     Q_INVOKABLE void setSearchTerm(const QString &term);
-    QString searchTerm() const;
 
     bool isSearchInProgress() const;
 
     Q_INVOKABLE void resultClicked(const QString &providerId, const QUrl &resourceUrl);
     Q_INVOKABLE void fetchMoreTriggerClicked(const QString &providerId);
+
+    QString searchTerm() const;
+    QString errorString() const;
+    QString currentFetchMoreInProgressProviderId() const;
+
+    static int searchStartDelay();
 
 protected:
     QHash<int, QByteArray> roleNames() const override;
