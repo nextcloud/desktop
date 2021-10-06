@@ -180,6 +180,9 @@ public:
     /** Is versioning available? */
     bool versioningEnabled() const;
 
+    /** Are avatars (profile pictures) available? */
+    bool avatarsAvailable() const;
+
 private:
     QVariantMap _capabilities;
     QVariantMap _fileSharingCapabilities;

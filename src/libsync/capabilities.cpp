@@ -222,6 +222,13 @@ bool Capabilities::versioningEnabled() const
     return _capabilities.value(QStringLiteral("files")).toMap().value(QStringLiteral("versioning")).toBool();
 }
 
+bool Capabilities::avatarsAvailable() const
+{
+    auto userCaps = _fileSharingCapabilities.value(QStringLiteral("user")).toMap();
+    // true by default for older servers, because turning off profile pictures was introduced in later versions
+    return userCaps.value(QStringLiteral("profile_picture"), true).toBool();
+}
+
 QStringList Capabilities::blacklistedFiles() const
 {
     return _capabilities.value(QStringLiteral("files")).toMap().value(QStringLiteral("blacklisted_files")).toStringList();
@@ -243,4 +250,5 @@ bool TusSupport::isValid() const
 {
     return !version.isNull();
 }
-}
+
+} // namespace OCC
