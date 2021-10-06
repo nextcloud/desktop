@@ -15,12 +15,6 @@
         <translation>Abrir %1 localmente</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityItem.qml" line="161"/>
-        <location filename="../src/gui/tray/ActivityItem.qml" line="164"/>
-        <source>Show more actions</source>
-        <translation>Mostrar más acciones</translation>
-    </message>
-    <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="251"/>
         <source>Open share dialog</source>
         <translation>Abrir diálogo de compartir</translation>
@@ -29,6 +23,25 @@
         <location filename="../src/gui/tray/ActivityItem.qml" line="255"/>
         <source>Share %1</source>
         <translation>Compartir %1</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/ActivityItem.qml" line="161"/>
+        <location filename="../src/gui/tray/ActivityItem.qml" line="164"/>
+        <source>Show more actions</source>
+        <translation>Mostrar más acciones</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/ActivityItem.qml" line="242"/>
+        <source>View activity</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>ActivityList</name>
+    <message>
+        <location filename="../src/gui/tray/ActivityList.qml" line="24"/>
+        <source>Activity list</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -4294,6 +4307,12 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
         <translation>Compartir vía %1</translation>
     </message>
     <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="994"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1137"/>
+        <source>Activity</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/socketapi.cpp" line="920"/>
         <source>Copy private link to clipboard</source>
         <translation>Copiar enlace privado al portapapeles</translation>
@@ -5938,7 +5957,7 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
         <translation>Pausar sincronización para todos</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="177"/>
+        <location filename="../src/gui/tray/Window.qml" line="188"/>
         <source>Set user status</source>
         <translation>Cambiar el estado del usuario</translation>
     </message>
@@ -6042,6 +6061,11 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
         <location filename="../src/gui/tray/Window.qml" line="812"/>
         <source>Open share dialog</source>
         <translation>Abrir diálogo de compartir</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="596"/>
+        <source>%1 - File activity</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

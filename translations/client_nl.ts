@@ -15,12 +15,6 @@
         <translation>%1 lokaal openen</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityItem.qml" line="161"/>
-        <location filename="../src/gui/tray/ActivityItem.qml" line="164"/>
-        <source>Show more actions</source>
-        <translation>Toon meer acties</translation>
-    </message>
-    <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="251"/>
         <source>Open share dialog</source>
         <translation>Open het dialoogvenster voor delen</translation>
@@ -29,6 +23,25 @@
         <location filename="../src/gui/tray/ActivityItem.qml" line="255"/>
         <source>Share %1</source>
         <translation>Deel %1</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/ActivityItem.qml" line="161"/>
+        <location filename="../src/gui/tray/ActivityItem.qml" line="164"/>
+        <source>Show more actions</source>
+        <translation>Toon meer acties</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/ActivityItem.qml" line="242"/>
+        <source>View activity</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>ActivityList</name>
+    <message>
+        <location filename="../src/gui/tray/ActivityList.qml" line="24"/>
+        <source>Activity list</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -2305,22 +2318,22 @@ Onderdelen die gewist mogen worden, worden verwijderd als ze verhinderen dat een
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="71"/>
         <source>Rename file</source>
-        <translation type="unfinished"/>
+        <translation>Bestand hernoemen</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="73"/>
         <source>The file %1 could not be synced because the name contains characters which are not allowed on this system.</source>
-        <translation type="unfinished"/>
+        <translation>Het bestand %1 kan niet worden gesynchroniseerd omdat de naam tekens bevat die niet zijn toegestaan op dit systeem.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="74"/>
         <source>The following characters are not allowed on the system: * &quot; | &amp; ? , ; : \ / ~ &lt; &gt;</source>
-        <translation type="unfinished"/>
+        <translation>De volgende tekens zijn niet toegestaan op het systeem: * &quot; | &amp; ? , ; : \ / ~ &lt; &gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="105"/>
         <source>You don&apos;t have the permission to rename this file. Please ask the author of the file to rename it.</source>
-        <translation type="unfinished"/>
+        <translation>Je bent niet gemachtigd om de naam van dit bestand te hernoemen. Vraag de auteur van het bestand om het te hernoemen.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="130"/>
@@ -2330,12 +2343,12 @@ Onderdelen die gewist mogen worden, worden verwijderd als ze verhinderen dat een
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="144"/>
         <source>Could not rename file. Please make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Kan de naam van het bestand niet hernoemen. Zorg ervoor dat je verbonden bent met de server.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="155"/>
         <source>Cannot rename file because a file with the same name does already exist on the server. Please pick another name.</source>
-        <translation type="unfinished"/>
+        <translation>Kan de naam van het bestand niet hernoemen omdat er al een bestand met dezelfde naam op de server bestaat. Kies een andere naam.</translation>
     </message>
 </context>
 <context>
@@ -4294,6 +4307,12 @@ Fout bij instellen pin status
         <translation>Delen via %1</translation>
     </message>
     <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="994"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1137"/>
+        <source>Activity</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/socketapi.cpp" line="920"/>
         <source>Copy private link to clipboard</source>
         <translation>Kopiëren privé-link naar klembord</translation>
@@ -5938,7 +5957,7 @@ Fout bij instellen pin status
         <translation>Synchronisatie voor iedereen onderbreken</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="177"/>
+        <location filename="../src/gui/tray/Window.qml" line="188"/>
         <source>Set user status</source>
         <translation>Gebruikersstatus instellen</translation>
     </message>
@@ -6042,6 +6061,11 @@ Fout bij instellen pin status
         <location filename="../src/gui/tray/Window.qml" line="812"/>
         <source>Open share dialog</source>
         <translation>Open het dialoogvenster voor delen</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="596"/>
+        <source>%1 - File activity</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

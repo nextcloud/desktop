@@ -15,12 +15,6 @@
         <translation>Avaa %1 paikallisesti</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityItem.qml" line="161"/>
-        <location filename="../src/gui/tray/ActivityItem.qml" line="164"/>
-        <source>Show more actions</source>
-        <translation>Näytä enemmän toimintoja</translation>
-    </message>
-    <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="251"/>
         <source>Open share dialog</source>
         <translation type="unfinished"/>
@@ -29,6 +23,25 @@
         <location filename="../src/gui/tray/ActivityItem.qml" line="255"/>
         <source>Share %1</source>
         <translation>Jaa %1</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/ActivityItem.qml" line="161"/>
+        <location filename="../src/gui/tray/ActivityItem.qml" line="164"/>
+        <source>Show more actions</source>
+        <translation>Näytä enemmän toimintoja</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/ActivityItem.qml" line="242"/>
+        <source>View activity</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>ActivityList</name>
+    <message>
+        <location filename="../src/gui/tray/ActivityList.qml" line="24"/>
+        <source>Activity list</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -4257,6 +4270,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Jaa käyttäen %1</translation>
     </message>
     <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="994"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1137"/>
+        <source>Activity</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/socketapi.cpp" line="920"/>
         <source>Copy private link to clipboard</source>
         <translation>Kopioi yksityinen linkki leikepöydälle</translation>
@@ -5901,7 +5920,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Tauota synkronointi</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="177"/>
+        <location filename="../src/gui/tray/Window.qml" line="188"/>
         <source>Set user status</source>
         <translation type="unfinished"/>
     </message>
@@ -6005,6 +6024,11 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/tray/Window.qml" line="812"/>
         <source>Open share dialog</source>
         <translation>Avaa jakoikkuna</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="596"/>
+        <source>%1 - File activity</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
