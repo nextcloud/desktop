@@ -45,8 +45,11 @@ FolderWatcherPrivate::FolderWatcherPrivate(FolderWatcher *p, const QString &path
 // attention: result list passed by reference!
 bool FolderWatcherPrivate::findFoldersBelow(const QDir &dir, QStringList &fullList)
 {
-    if (!(dir.exists() && dir.isReadable())) {
-        qCDebug(lcFolderWatcher) << "Non existing path coming in: " << dir.absolutePath();
+    if (!dir.exists()) {
+        qCDebug(lcFolderWatcher) << "      - non existing path coming in: " << dir.absolutePath();
+        return false;
+    } else if (!dir.isReadable()) {
+        qCDebug(lcFolderWatcher) << "      - path without read permissions coming in: " << dir.absolutePath();
         return false;
     }
 
@@ -97,7 +100,8 @@ void FolderWatcherPrivate::slotAddFolderRecursive(const QString &path)
 
     QStringList allSubfolders;
     if (!findFoldersBelow(QDir(path), allSubfolders)) {
-        qCWarning(lcFolderWatcher) << "Could not traverse all sub folders";
+        qCWarning(lcFolderWatcher).nospace() << "Could not traverse all sub folders of '"
+                                             << path << "'";
     }
 
     for (const auto &subfolder : allSubfolders) {
@@ -117,6 +121,8 @@ void FolderWatcherPrivate::slotAddFolderRecursive(const QString &path)
     if (subdirCount > 0) {
         qCDebug(lcFolderWatcher) << "    `-> and" << subdirCount << "subdirectories";
     }
+
+    qCDebug(lcFolderWatcher) << "    --- Finished scanning" << path;
 }
 
 void FolderWatcherPrivate::slotReceivedNotification(int fd)
