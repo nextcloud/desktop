@@ -1,0 +1,5 @@
+Bugfix: Downgrades could trigger deletion of virtual files
+
+We now prevent the downgrade of Windows VFS folders.
+
+https://github.com/owncloud/client/issues/9114

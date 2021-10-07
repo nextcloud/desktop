@@ -4,7 +4,7 @@
 set(LIBCLOUDPROVIDERS_POSSIBLE "")
 find_package(Libcloudproviders QUIET)
 find_package(PkgConfig)
-if(LIBCLOUDPROVIDERS_FOUND AND PKG_CONFIG_FOUND)
+if(Libcloudproviders_FOUND AND PKG_CONFIG_FOUND)
     pkg_search_module(GIO gio-2.0)
     if(GIO_FOUND)
         set(LIBCLOUDPROVIDERS_POSSIBLE "1")
