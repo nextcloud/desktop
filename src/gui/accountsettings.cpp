@@ -240,9 +240,18 @@ void AccountSettings::doExpand()
 
 void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
 {
+    const auto removeFolderAction = [this](QMenu *menu) {
+        return menu->addAction(tr("Remove folder sync connection"), this, &AccountSettings::slotRemoveCurrentFolder);
+    };
     QTreeView *tv = ui->_folderList;
     QModelIndex index = tv->indexAt(pos);
-    if (!index.isValid() || !(index.flags() & Qt::ItemIsEnabled)) {
+    if (!index.isValid()) {
+        return;
+    } else if (!(index.flags() & Qt::ItemIsEnabled)) {
+        QMenu *menu = new QMenu(tv);
+        menu->setAttribute(Qt::WA_DeleteOnClose);
+        removeFolderAction(menu);
+        menu->popup(QCursor::pos());
         return;
     }
 
@@ -270,7 +279,7 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
         });
 
 
-        menu->popup(tv->mapToGlobal(pos));
+        menu->popup(QCursor::pos());
         return;
     }
 
@@ -312,8 +321,7 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
     ac = menu->addAction(folderPaused ? tr("Resume sync") : tr("Pause sync"));
     connect(ac, &QAction::triggered, this, &AccountSettings::slotEnableCurrentFolder);
 
-    ac = menu->addAction(tr("Remove folder sync connection"));
-    connect(ac, &QAction::triggered, this, &AccountSettings::slotRemoveCurrentFolder);
+    removeFolderAction(menu);
 
     if (folder->virtualFilesEnabled()) {
         auto availabilityMenu = menu->addMenu(tr("Availability"));
@@ -348,7 +356,7 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
     }
 
 
-    menu->popup(tv->mapToGlobal(pos));
+    menu->popup(QCursor::pos());
 }
 
 void AccountSettings::slotFolderListClicked(const QModelIndex &indx)

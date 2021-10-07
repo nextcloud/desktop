@@ -173,5 +173,5 @@ FakesAssemblies/
 !building.adoc
 
 # squish test
-test/suite_oc-desktop/config.ini
+test/gui/config.ini
 */**/__pycache__/

@@ -282,9 +282,9 @@
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="269"/>
-        <location filename="../src/gui/accountsettings.cpp" line="502"/>
-        <location filename="../src/gui/accountsettings.cpp" line="614"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1051"/>
+        <location filename="../src/gui/accountsettings.cpp" line="510"/>
+        <location filename="../src/gui/accountsettings.cpp" line="622"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1059"/>
         <source>Cancel</source>
         <translation>İptal</translation>
     </message>
@@ -309,52 +309,52 @@
         <translation>Hesap</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="298"/>
+        <location filename="../src/gui/accountsettings.cpp" line="307"/>
         <source>Choose what to sync</source>
         <translation>Ne eşitleneceğini seçin</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="304"/>
+        <location filename="../src/gui/accountsettings.cpp" line="313"/>
         <source>Force sync now</source>
         <translation>Şimdi eşitlemeye zorla</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="306"/>
+        <location filename="../src/gui/accountsettings.cpp" line="315"/>
         <source>Restart sync</source>
         <translation>Eşitlemeyi yeniden başlat</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="315"/>
+        <location filename="../src/gui/accountsettings.cpp" line="244"/>
         <source>Remove folder sync connection</source>
         <translation>Klasör eşitleme bağlantısını sil</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="435"/>
+        <location filename="../src/gui/accountsettings.cpp" line="443"/>
         <source>Folder creation failed</source>
         <translation>Klasör oluşturma başarısız oldu</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="436"/>
+        <location filename="../src/gui/accountsettings.cpp" line="444"/>
         <source>&lt;p&gt;Could not create local folder &lt;i&gt;%1&lt;/i&gt;.</source>
         <translation>&lt;p&gt;&lt;i&gt;%1&lt;/i&gt; yerel klasörü oluşturulamadı.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="493"/>
+        <location filename="../src/gui/accountsettings.cpp" line="501"/>
         <source>Confirm Folder Sync Connection Removal</source>
         <translation>Klasör Eşitleme Bağlantısının Silinmesini Onaylayın</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="501"/>
+        <location filename="../src/gui/accountsettings.cpp" line="509"/>
         <source>Remove Folder Sync Connection</source>
         <translation>Klasör Eşitleme Bağlantısını Sil</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="605"/>
+        <location filename="../src/gui/accountsettings.cpp" line="613"/>
         <source>Disable virtual file support?</source>
         <translation>Sanal dosya desteği devre dışı bırakılsın mı?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="606"/>
+        <location filename="../src/gui/accountsettings.cpp" line="614"/>
         <source>This action will disable virtual file support. As a consequence contents of folders that are currently marked as 'available online only' will be downloaded.
 
 The only advantage of disabling virtual file support is that the selective sync feature will become available again.
@@ -367,183 +367,183 @@ Sanal dosya sistemi desteğini devre dışı bırakmanın tek avantajı, seçmel
 Bu eylem, o anda çalışan herhangi senkronizasyon işlemini iptal edecektir.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="613"/>
+        <location filename="../src/gui/accountsettings.cpp" line="621"/>
         <source>Disable support</source>
         <translation>Desteği devre dışı bırak</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="715"/>
+        <location filename="../src/gui/accountsettings.cpp" line="723"/>
         <source>Sync Running</source>
         <translation>Eşitleme Çalışıyor</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="716"/>
+        <location filename="../src/gui/accountsettings.cpp" line="724"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>Eşitleme işlemi devam ediyor.&lt;br/&gt;Durdurmak istiyor musunuz?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="812"/>
+        <location filename="../src/gui/accountsettings.cpp" line="820"/>
         <source>%1 in use</source>
         <translation>%1 kullanımda</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="839"/>
+        <location filename="../src/gui/accountsettings.cpp" line="847"/>
         <source>%1 as &lt;i&gt;%2&lt;/i&gt;</source>
         <translation>%1 &lt;i&gt;%2&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="848"/>
+        <location filename="../src/gui/accountsettings.cpp" line="856"/>
         <source>Connected to %1.</source>
         <translation>%1 ile bağlı.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="853"/>
+        <location filename="../src/gui/accountsettings.cpp" line="861"/>
         <source>Server %1 is temporarily unavailable.</source>
         <translation>%1 sunucusu geçici olarak ulaşılamaz durumda.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="856"/>
+        <location filename="../src/gui/accountsettings.cpp" line="864"/>
         <source>Server %1 is currently in maintenance mode.</source>
         <translation>Sunucu %1 bakım modunda.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="859"/>
+        <location filename="../src/gui/accountsettings.cpp" line="867"/>
         <source>Signed out from %1.</source>
         <translation>%1 oturumu sonlandırıldı.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="869"/>
+        <location filename="../src/gui/accountsettings.cpp" line="877"/>
         <source>Connecting to %1...</source>
         <translation>%1 e bağlanılıyor...</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="874"/>
+        <location filename="../src/gui/accountsettings.cpp" line="882"/>
         <source>No connection to %1 at %2.</source>
         <translation>%1 ile %2 bağlantısı yok.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="913"/>
+        <location filename="../src/gui/accountsettings.cpp" line="921"/>
         <source>Log in</source>
         <translation>Giriş yap</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1008"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1016"/>
         <source>There are folders that were not synchronized because they are too big: </source>
         <translation>Çok büyük oldukları için eşitlenmeyen klasörler var:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1010"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1018"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
         <translation>Harici depolama diskinde oldukları için eşitlenmeyen klasörler var:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1011"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1019"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
         <translation>Çok büyük oldukları ya da harici depolama alanında oldukları için eşitlenmeyen klasörler var:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1044"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1052"/>
         <source>Confirm Account Removal</source>
         <translation>Hesap Silinmesini Onaylayın</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1045"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1053"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;i&gt;%1&lt;/i&gt; hesabının bağlantısını kaldırmayı gerçekten istiyor musunuz?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Not:&lt;/b&gt; Bu işlem herhangi bir dosyayı &lt;b&gt;silmeyecektir&lt;/b&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1050"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1058"/>
         <source>Remove connection</source>
         <translation>Bağlantıyı kaldır</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="294"/>
+        <location filename="../src/gui/accountsettings.cpp" line="303"/>
         <source>Open folder</source>
         <translation>Klasörü aç</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="200"/>
-        <location filename="../src/gui/accountsettings.cpp" line="915"/>
+        <location filename="../src/gui/accountsettings.cpp" line="923"/>
         <source>Log out</source>
         <translation>Çıkış yap</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="253"/>
+        <location filename="../src/gui/accountsettings.cpp" line="262"/>
         <source>Open local folder</source>
         <translation>Yerel klasörü aç</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="261"/>
+        <location filename="../src/gui/accountsettings.cpp" line="270"/>
         <source>Open folder in browser</source>
         <translation>Klasörü tarayıcıda aç</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="312"/>
+        <location filename="../src/gui/accountsettings.cpp" line="321"/>
         <source>Resume sync</source>
         <translation>Eşitlemeye devam et</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="312"/>
+        <location filename="../src/gui/accountsettings.cpp" line="321"/>
         <source>Pause sync</source>
         <translation>Eşitlemeyi duraklat</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="319"/>
+        <location filename="../src/gui/accountsettings.cpp" line="327"/>
         <source>Availability</source>
         <translation>Uygunluk</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="336"/>
+        <location filename="../src/gui/accountsettings.cpp" line="344"/>
         <source>Disable virtual file support...</source>
         <translation>Sanal dosya desteğini devre dışı bırak...</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="345"/>
+        <location filename="../src/gui/accountsettings.cpp" line="353"/>
         <source>Enable virtual file support%1...</source>
         <translation>Enable virtual file support%1...</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="345"/>
+        <location filename="../src/gui/accountsettings.cpp" line="353"/>
         <source> (experimental)</source>
         <translation> (experimental)</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="494"/>
+        <location filename="../src/gui/accountsettings.cpp" line="502"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;i&gt;%1&lt;/i&gt; klasörünün eşitlemesini durdurmayı gerçekten istiyor musunuz?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Not:&lt;/b&gt; Bu işlem herhangi bir dosyayı &lt;b&gt;silmeyecektir&lt;/b&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="799"/>
+        <location filename="../src/gui/accountsettings.cpp" line="807"/>
         <source>%1 (%3%) of %2 in use. Some folders, including network mounted or shared folders, might have different limits.</source>
         <translation>%1 (%3%) / %2 kullanımda. Ağdan bağlanmış veya paylaşılan dizinlerin farklı sınırları olabilir.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="800"/>
+        <location filename="../src/gui/accountsettings.cpp" line="808"/>
         <source>%1 of %2 in use</source>
         <translation>%1 / %2 kullanımda</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="809"/>
+        <location filename="../src/gui/accountsettings.cpp" line="817"/>
         <source>Currently there is no storage usage information available.</source>
         <translation>Şu anda depolama kullanım bilgisi mevcut değil.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="846"/>
+        <location filename="../src/gui/accountsettings.cpp" line="854"/>
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
         <translation>Sunucu versiyonu %1 desteklenmiyor! Sorumluluk size ait.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="866"/>
+        <location filename="../src/gui/accountsettings.cpp" line="874"/>
         <source>Obtaining authorization from the browser.</source>
         <translation>Obtaining authorization from the browser.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="879"/>
+        <location filename="../src/gui/accountsettings.cpp" line="887"/>
         <source>Server configuration error: %1 at %2.</source>
         <translation>Server configuration error: %1 at %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="890"/>
+        <location filename="../src/gui/accountsettings.cpp" line="898"/>
         <source>No %1 connection configured.</source>
         <translation>Hiç %1 bağlantısı yapılandırılmamış.</translation>
     </message>

@@ -282,9 +282,9 @@
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="269"/>
-        <location filename="../src/gui/accountsettings.cpp" line="502"/>
-        <location filename="../src/gui/accountsettings.cpp" line="614"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1051"/>
+        <location filename="../src/gui/accountsettings.cpp" line="510"/>
+        <location filename="../src/gui/accountsettings.cpp" line="622"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1059"/>
         <source>Cancel</source>
         <translation>Zrušit</translation>
     </message>
@@ -309,52 +309,52 @@
         <translation>Účet</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="298"/>
+        <location filename="../src/gui/accountsettings.cpp" line="307"/>
         <source>Choose what to sync</source>
         <translation>Vybrat co sesynchronizovat</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="304"/>
+        <location filename="../src/gui/accountsettings.cpp" line="313"/>
         <source>Force sync now</source>
         <translation>Vynutit synchronizaci nyní</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="306"/>
+        <location filename="../src/gui/accountsettings.cpp" line="315"/>
         <source>Restart sync</source>
         <translation>Restartovat synchronizaci</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="315"/>
+        <location filename="../src/gui/accountsettings.cpp" line="244"/>
         <source>Remove folder sync connection</source>
         <translation>Odstranit připojení synchronizace adresáře</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="435"/>
+        <location filename="../src/gui/accountsettings.cpp" line="443"/>
         <source>Folder creation failed</source>
         <translation>Vytvoření adresáře selhalo</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="436"/>
+        <location filename="../src/gui/accountsettings.cpp" line="444"/>
         <source>&lt;p&gt;Could not create local folder &lt;i&gt;%1&lt;/i&gt;.</source>
         <translation>&lt;p&gt;Nelze vytvořit místní adresář &lt;i&gt;%1&lt;/i&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="493"/>
+        <location filename="../src/gui/accountsettings.cpp" line="501"/>
         <source>Confirm Folder Sync Connection Removal</source>
         <translation>Potvrdit odstranění připojení synchronizace adresáře</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="501"/>
+        <location filename="../src/gui/accountsettings.cpp" line="509"/>
         <source>Remove Folder Sync Connection</source>
         <translation>Odstranit připojení synchronizace adresáře</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="605"/>
+        <location filename="../src/gui/accountsettings.cpp" line="613"/>
         <source>Disable virtual file support?</source>
         <translation>Zakázat virtuální soubory?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="606"/>
+        <location filename="../src/gui/accountsettings.cpp" line="614"/>
         <source>This action will disable virtual file support. As a consequence contents of folders that are currently marked as 'available online only' will be downloaded.
 
 The only advantage of disabling virtual file support is that the selective sync feature will become available again.
@@ -363,183 +363,183 @@ This action will abort any currently running synchronization.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="613"/>
+        <location filename="../src/gui/accountsettings.cpp" line="621"/>
         <source>Disable support</source>
         <translation>Zakázat podporu</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="715"/>
+        <location filename="../src/gui/accountsettings.cpp" line="723"/>
         <source>Sync Running</source>
         <translation>Synchronizace probíhá</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="716"/>
+        <location filename="../src/gui/accountsettings.cpp" line="724"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>Operace synchronizace právě probíhá.&lt;br/&gt;Přejete si ji ukončit?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="812"/>
+        <location filename="../src/gui/accountsettings.cpp" line="820"/>
         <source>%1 in use</source>
         <translation>%1 používaný</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="839"/>
+        <location filename="../src/gui/accountsettings.cpp" line="847"/>
         <source>%1 as &lt;i&gt;%2&lt;/i&gt;</source>
         <translation>%1 jako &lt;i&gt;%2&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="848"/>
+        <location filename="../src/gui/accountsettings.cpp" line="856"/>
         <source>Connected to %1.</source>
         <translation>Připojeno k %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="853"/>
+        <location filename="../src/gui/accountsettings.cpp" line="861"/>
         <source>Server %1 is temporarily unavailable.</source>
         <translation>Server %1 je dočasně nedostupný.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="856"/>
+        <location filename="../src/gui/accountsettings.cpp" line="864"/>
         <source>Server %1 is currently in maintenance mode.</source>
         <translation>server %1 je v režimu údržby.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="859"/>
+        <location filename="../src/gui/accountsettings.cpp" line="867"/>
         <source>Signed out from %1.</source>
         <translation>Odhlášeno z %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="869"/>
+        <location filename="../src/gui/accountsettings.cpp" line="877"/>
         <source>Connecting to %1...</source>
         <translation>Připojeno k %1...</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="874"/>
+        <location filename="../src/gui/accountsettings.cpp" line="882"/>
         <source>No connection to %1 at %2.</source>
         <translation>Bez připojení k %1 na %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="913"/>
+        <location filename="../src/gui/accountsettings.cpp" line="921"/>
         <source>Log in</source>
         <translation>Přihlásit</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1008"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1016"/>
         <source>There are folders that were not synchronized because they are too big: </source>
         <translation>Tyto složky nebyly synchronizovány, protože jsou příšliš velké:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1010"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1018"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
         <translation>Tyto složky nebyly synchronizovány, protože se nachází na externím úložišti:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1011"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1019"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
         <translation>Tyto složky nebyly synchronizovány, protože jsou příliš velké, nebo se nachází na externím úložišti:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1044"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1052"/>
         <source>Confirm Account Removal</source>
         <translation>Potvrdit odstranění účtu</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1045"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1053"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Opravdu chcete odstranit připojení k účtu &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Poznámka:&lt;/b&gt; Toto &lt;b&gt;neodstraní&lt;/b&gt; žádné soubory.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1050"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1058"/>
         <source>Remove connection</source>
         <translation>Odstranit připojení</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="294"/>
+        <location filename="../src/gui/accountsettings.cpp" line="303"/>
         <source>Open folder</source>
         <translation>Otevřít adresář</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="200"/>
-        <location filename="../src/gui/accountsettings.cpp" line="915"/>
+        <location filename="../src/gui/accountsettings.cpp" line="923"/>
         <source>Log out</source>
         <translation>Odhlásit se</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="253"/>
+        <location filename="../src/gui/accountsettings.cpp" line="262"/>
         <source>Open local folder</source>
         <translation>Otevřít místní složku</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="261"/>
+        <location filename="../src/gui/accountsettings.cpp" line="270"/>
         <source>Open folder in browser</source>
         <translation>Otevřít složku v prohlížeči</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="312"/>
+        <location filename="../src/gui/accountsettings.cpp" line="321"/>
         <source>Resume sync</source>
         <translation>Pokračovat v synchronizaci</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="312"/>
+        <location filename="../src/gui/accountsettings.cpp" line="321"/>
         <source>Pause sync</source>
         <translation>Pozastavit synchronizaci</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="319"/>
+        <location filename="../src/gui/accountsettings.cpp" line="327"/>
         <source>Availability</source>
         <translation>Dostupnost</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="336"/>
+        <location filename="../src/gui/accountsettings.cpp" line="344"/>
         <source>Disable virtual file support...</source>
         <translation>Zakázat virtuální soubory...</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="345"/>
+        <location filename="../src/gui/accountsettings.cpp" line="353"/>
         <source>Enable virtual file support%1...</source>
         <translation>Povolit virtuální soubory %1...</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="345"/>
+        <location filename="../src/gui/accountsettings.cpp" line="353"/>
         <source> (experimental)</source>
         <translation>(experimentální)</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="494"/>
+        <location filename="../src/gui/accountsettings.cpp" line="502"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Opravdu chcete zastavit synchronizaci adresáře &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Poznámka:&lt;/b&gt; Toto &lt;b&gt;neodstraní&lt;/b&gt; žádné soubory.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="799"/>
+        <location filename="../src/gui/accountsettings.cpp" line="807"/>
         <source>%1 (%3%) of %2 in use. Some folders, including network mounted or shared folders, might have different limits.</source>
         <translation>Používaných %1 (%3%) z %2. Některé adresáře včetně připojených síťových  nebo sdílených adresářů mohou mít odlišné limity.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="800"/>
+        <location filename="../src/gui/accountsettings.cpp" line="808"/>
         <source>%1 of %2 in use</source>
         <translation>Používaných %1 z %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="809"/>
+        <location filename="../src/gui/accountsettings.cpp" line="817"/>
         <source>Currently there is no storage usage information available.</source>
         <translation>Momentálně nejsou k dispozici žádné informace o využití úložiště.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="846"/>
+        <location filename="../src/gui/accountsettings.cpp" line="854"/>
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
         <translation>Verze serveru %1 není podporována! Pokračujete na vlastní riziko.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="866"/>
+        <location filename="../src/gui/accountsettings.cpp" line="874"/>
         <source>Obtaining authorization from the browser.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="879"/>
+        <location filename="../src/gui/accountsettings.cpp" line="887"/>
         <source>Server configuration error: %1 at %2.</source>
         <translation>Chyba konfigurace serveru: %1 v %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="890"/>
+        <location filename="../src/gui/accountsettings.cpp" line="898"/>
         <source>No %1 connection configured.</source>
         <translation>Žádné spojení s %1 nenastaveno.</translation>
     </message>

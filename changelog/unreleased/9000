@@ -1,6 +1,0 @@
-Enhancement: Display the error type in the issue protocol and allow filtering
-
-We now display the error type in the not synced protocol and allow to filter by the
-error type.
-
-https://github.com/owncloud/client/issues/9000

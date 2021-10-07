@@ -47,7 +47,21 @@
 #include <QPushButton>
 #include <QApplication>
 
-static const char versionC[] = "version";
+namespace {
+
+/*
+ * [Accounts]
+ * 1\Folders\4\version=2
+ * 1\FoldersWithPlaceholders\3\version=3
+ */
+auto versionC()
+{
+    return QStringLiteral("version");
+}
+
+constexpr int WinVfsSettingsVersion = 4;
+constexpr int SettingsVersion = 2;
+}
 
 namespace OCC {
 
@@ -1298,11 +1312,9 @@ void FolderDefinition::save(QSettings &settings, const FolderDefinition &folder)
     settings.setValue(QStringLiteral("virtualFilesMode"), Vfs::modeToString(folder.virtualFilesMode));
 
     // Ensure new vfs modes won't be attempted by older clients
-    if (folder.virtualFilesMode == Vfs::WindowsCfApi) {
-        settings.setValue(QLatin1String(versionC), 3);
-    } else {
-        settings.setValue(QLatin1String(versionC), 2);
-    }
+    const int version = folder.virtualFilesMode == Vfs::WindowsCfApi ? WinVfsSettingsVersion : SettingsVersion;
+    Q_ASSERT(version <= maxSettingsVersion());
+    settings.setValue(versionC(), version);
 
     // Happens only on Windows when the explorer integration is enabled.
     if (!folder.navigationPaneClsid.isNull())

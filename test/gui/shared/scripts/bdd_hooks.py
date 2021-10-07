@@ -18,72 +18,63 @@
 import shutil
 import urllib.request
 import os
+import builtins
 
 
 @OnScenarioStart
 def hook(context):
     from configparser import ConfigParser
 
-    cfg = ConfigParser()
-    cfg.read('../config.ini')
-    context.userData = {
-        'localBackendUrl': os.environ.get(
-            'BACKEND_HOST', cfg.get('DEFAULT', 'BACKEND_HOST')
-        ),
-        'secureLocalBackendUrl': os.environ.get(
-            'SECURE_BACKEND_HOST', cfg.get('DEFAULT', 'SECURE_BACKEND_HOST')
-        ),
-        'clientSyncPathUser1': os.environ.get(
-            'CLIENT_SYNC_PATH_USER1', cfg.get('DEFAULT', 'CLIENT_SYNC_PATH_USER1')
-        ),
-        'clientSyncPathUser2': os.environ.get(
-            'CLIENT_SYNC_PATH_USER2', cfg.get('DEFAULT', 'CLIENT_SYNC_PATH_USER2')
-        ),
-        'clientSyncTimeout': os.environ.get(
-            'CLIENT_SYNC_TIMEOUT', cfg.get('DEFAULT', 'CLIENT_SYNC_TIMEOUT')
-        ),
-        'middlewareUrl': os.environ.get(
-            'MIDDLEWARE_URL', cfg.get('DEFAULT', 'MIDDLEWARE_URL')
-        ),
-        'clientConfigFile': os.environ.get(
-            'CLIENT_LOG_FILE', cfg.get('DEFAULT', 'CLIENT_LOG_FILE')
-        ),
+    CONFIG_ENV_MAP = {
+        'localBackendUrl': 'BACKEND_HOST',
+        'secureLocalBackendUrl': 'SECURE_BACKEND_HOST',
+        'clientSyncTimeout': 'CLIENT_SYNC_TIMEOUT',
+        'middlewareUrl': 'MIDDLEWARE_URL',
+        'clientConfigFile': 'CLIENT_LOG_FILE',
+        'clientSyncPathUser1': 'CLIENT_SYNC_PATH_USER1',
+        'clientSyncPathUser2': 'CLIENT_SYNC_PATH_USER2',
     }
 
-    if context.userData['localBackendUrl'] == '':
-        context.userData['localBackendUrl'] = 'https://localhost:9200'
-    if context.userData['secureLocalBackendUrl'] == '':
-        context.userData['secureLocalBackendUrl'] = 'https://localhost:9200'
-    if context.userData['clientSyncPathUser1'] == '':
-        context.userData['clientSyncPathUser1'] = '/tmp/client-bdd-user1/'
-    else:
-        context.userData['clientSyncPathUser1'] = (
-            context.userData['clientSyncPathUser1'].rstrip("/") + "/"
-        )  # make sure there is always one trailing slash
-    if context.userData['clientSyncPathUser2'] == '':
-        context.userData['clientSyncPathUser2'] = '/tmp/client-bdd-user2/'
-    else:
-        context.userData['clientSyncPathUser2'] = (
-            context.userData['clientSyncPathUser2'].rstrip("/") + "/"
-        )  # make sure there is always one trailing slash
-    if context.userData['clientSyncTimeout'] == '':
-        context.userData['clientSyncTimeout'] = 60
-    else:
-        context.userData['clientSyncTimeout'] = int(
-            context.userData['clientSyncTimeout']
-        )
+    DEFAULT_CONFIG = {
+        'localBackendUrl': 'https://localhost:9200/',
+        'secureLocalBackendUrl': 'https://localhost:9200/',
+        'clientSyncTimeout': 60,
+        'middlewareUrl': 'http://localhost:3000/',
+        'clientConfigFile': '-',
+        'clientSyncPathUser1': '/tmp/client-bdd-user1/',
+        'clientSyncPathUser2': '/tmp/client-bdd-user2/',
+    }
+
+    # read configs from environment variables
+    context.userData = {}
+    for key, value in CONFIG_ENV_MAP.items():
+        context.userData[key] = os.environ.get(value, '')
+
+    # try reading configs from config.ini
+    cfg = ConfigParser()
+    try:
+        cfg.read('../config.ini')
+        for key, value in context.userData.items():
+            if value == '':
+                context.userData[key] = cfg.get('DEFAULT', CONFIG_ENV_MAP[key])
+    except:
+        print("Error reading config.ini file!")
+
+    # Set the default values if empty
+    for key, value in context.userData.items():
+        if value == '':
+            context.userData[key] = DEFAULT_CONFIG[key]
+        elif key == 'clientSyncTimeout':
+            context.userData[key] = builtins.int(value)
+        elif key == 'clientSyncPathUser1' or key == 'clientSyncPathUser2':
+            # make sure there is always one trailing slash
+            context.userData[key] = value.rstrip('/') + '/'
 
     if not os.path.exists(context.userData['clientSyncPathUser1']):
         os.makedirs(context.userData['clientSyncPathUser1'])
 
     if not os.path.exists(context.userData['clientSyncPathUser2']):
         os.makedirs(context.userData['clientSyncPathUser2'])
-
-    if context.userData['middlewareUrl'] == '':
-        context.userData['middlewareUrl'] = 'http://localhost:3000/'
-
-    if context.userData['clientConfigFile'] == '':
-        context.userData['clientConfigFile'] = '-'
 
     req = urllib.request.Request(
         os.path.join(context.userData['middlewareUrl'], 'init'),
