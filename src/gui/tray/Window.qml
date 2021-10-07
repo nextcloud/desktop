@@ -711,7 +711,7 @@ Window {
         }
 
         ActivityList {
-            visible: !unifiedSearchResultsErrorLabel.visible && !unifiedSearchResultsListView.visible && unifiedSearchResultsModel.searchTerm === ""
+            visible: !unifiedSearchResultsNoResultsContainer.visible && !unifiedSearchResultsErrorLabel.visible && !unifiedSearchResultsListView.visible && unifiedSearchResultsModel.searchTerm === ""
             anchors.top: trayWindowUnifiedSearchContainer.bottom
             anchors.left: trayWindowBackground.left
             anchors.right: trayWindowBackground.right
@@ -758,7 +758,14 @@ Window {
             anchors.margins: 10
             wrapMode: Text.Wrap
         }
-
+        UnifiedSearchResultNothingFound {
+            id: unifiedSearchResultsNoResultsContainer
+            visible: !unifiedSearchResultsListView.visible && !unifiedSearchResultsModel.errorString && unifiedSearchResultsModel.searchTerm
+            anchors.top: trayWindowUnifiedSearchContainer.bottom
+            anchors.left: trayWindowBackground.left
+            anchors.right: trayWindowBackground.right
+            searchTerm: unifiedSearchResultsModel.searchTerm
+        }
         ListView {
             id: unifiedSearchResultsListView
             anchors.top: trayWindowUnifiedSearchContainer.bottom
@@ -766,7 +773,7 @@ Window {
             anchors.right: trayWindowBackground.right
             anchors.bottom: trayWindowBackground.bottom
             spacing: 4
-            visible: count > 0 || unifiedSearchResultsModel.isSearchInProgress
+            visible: count > 0
             clip: true
             ScrollBar.vertical: ScrollBar {
                 id: unifiedSearchResultsListViewScrollbar

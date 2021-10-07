@@ -46,6 +46,7 @@ set(client_UI_SRCS
 	tray/UnifiedSearchResultFetchMoreTrigger.qml
     tray/UnifiedSearchResultItem.qml
 	tray/UnifiedSearchResultListItem.qml
+    tray/UnifiedSearchResultNothingFound.qml
 	tray/UnifiedSearchResultSectionItem.qml
     wizard/flow2authwidget.ui
     wizard/owncloudadvancedsetuppage.ui
