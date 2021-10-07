@@ -23,6 +23,8 @@
 
 namespace OCC {
 
+class FolderWatcher;
+
 /**
  * @brief Mac OS X API implementation of FolderWatcher
  * @ingroup gui
@@ -37,7 +39,7 @@ public:
     void doNotifyParent(const QStringList &);
 
     /// On OSX the watcher is ready when the ctor finished.
-    bool _ready = 1;
+    constexpr bool isReady() const { return true; }
 
 private:
     FolderWatcher *_parent;

@@ -76,11 +76,15 @@ public:
     ~FolderWatcherPrivate();
 
     /// Set to non-zero once the WatcherThread is capturing events.
-    QAtomicInt _ready;
+    bool isReady() const
+    {
+        return _ready;
+    }
 
 private:
     FolderWatcher *_parent;
     WatcherThread *_thread;
+    QAtomicInt _ready;
 };
 }
 

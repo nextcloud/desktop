@@ -93,7 +93,7 @@ void FolderWatcher::startNotificatonTest(const QString &path)
 
 void FolderWatcher::startNotificationTestWhenReady()
 {
-    if (!_d->_ready) {
+    if (!_d->isReady()) {
         QTimer::singleShot(1000, this, &FolderWatcher::startNotificationTestWhenReady);
         return;
     }
