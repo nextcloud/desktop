@@ -1,44 +1,53 @@
 #include <QString>
-#import <Cocoa/Cocoa.h>
 
-@interface NotificationCenterDelegate : NSObject
+#import <Foundation/NSString.h>
+#import <Foundation/NSUserNotification.h>
+#import <dispatch/dispatch.h>
+
+@interface OurDelegate : NSObject <NSUserNotificationCenterDelegate>
+
+- (BOOL)userNotificationCenter:(NSUserNotificationCenter *)center
+     shouldPresentNotification:(NSUserNotification *)notification;
+
 @end
-@implementation NotificationCenterDelegate
+
+@implementation OurDelegate
+
 // Always show, even if app is active at the moment.
 - (BOOL)userNotificationCenter:(NSUserNotificationCenter *)center
      shouldPresentNotification:(NSUserNotification *)notification
 {
-    Q_UNUSED(center);
-    Q_UNUSED(notification);
+    Q_UNUSED(center)
+    Q_UNUSED(notification)
+
     return YES;
 }
+
 @end
 
 namespace OCC {
 
-bool canOsXSendUserNotification()
+void *createOsXNotificationCenterDelegate()
 {
-    return NSClassFromString(@"NSUserNotificationCenter") != nil;
+    auto delegate = [[OurDelegate alloc] init];
+    [[NSUserNotificationCenter defaultUserNotificationCenter] setDelegate:delegate];
+
+    return delegate;
+}
+
+void releaseOsXNotificationCenterDelegate(void *delegate)
+{
+    [static_cast<OurDelegate *>(delegate) release];
 }
 
 void sendOsXUserNotification(const QString &title, const QString &message)
 {
-    Class cuserNotificationCenter = NSClassFromString(@"NSUserNotificationCenter");
-    id userNotificationCenter = [cuserNotificationCenter defaultUserNotificationCenter];
-
-    static dispatch_once_t once;
-    dispatch_once(&once, ^{
-            id delegate = [[NotificationCenterDelegate alloc] init];
-            [userNotificationCenter setDelegate:delegate];
-    });
-
-    Class cuserNotification = NSClassFromString(@"NSUserNotification");
-    id notification = [[cuserNotification alloc] init];
-    [notification setTitle:[NSString stringWithUTF8String:title.toUtf8().data()]];
-    [notification setInformativeText:[NSString stringWithUTF8String:message.toUtf8().data()]];
-
-    [userNotificationCenter deliverNotification:notification];
-    [notification release];
+    @autoreleasepool {
+        NSUserNotification *notification = [[[NSUserNotification alloc] init] autorelease];
+        [notification setTitle:[NSString stringWithUTF8String:title.toUtf8().data()]];
+        [notification setInformativeText:[NSString stringWithUTF8String:message.toUtf8().data()]];
+        [[NSUserNotificationCenter defaultUserNotificationCenter] deliverNotification:notification];
+    }
 }
 
-}
+} // namespace OCC

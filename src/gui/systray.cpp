@@ -28,15 +28,39 @@
 
 namespace OCC {
 
+#ifdef Q_OS_OSX
+void *createOsXNotificationCenterDelegate();
+void releaseOsXNotificationCenterDelegate(void *delegate);
+void sendOsXUserNotification(const QString &title, const QString &message);
+#endif
+
 Systray::Systray(QObject *parent)
     : QSystemTrayIcon(parent)
+#ifdef Q_OS_OSX
+    , delegate(createOsXNotificationCenterDelegate())
+#endif
 {
+}
+
+Systray::~Systray()
+{
+#ifdef Q_OS_OSX
+    if (delegate) {
+        releaseOsXNotificationCenterDelegate(delegate);
+    }
+#endif // Q_OS_OSX
 }
 
 void Systray::showMessage(const QString &title, const QString &message, const QIcon &icon, int millisecondsTimeoutHint)
 {
+#ifdef Q_OS_OSX
+    Q_UNUSED(icon)
+    Q_UNUSED(millisecondsTimeoutHint)
+
+    sendOsXUserNotification(title, message);
+#else
 #ifdef USE_FDO_NOTIFICATIONS
-    if(QDBusInterface(NOTIFICATIONS_SERVICE, NOTIFICATIONS_PATH, NOTIFICATIONS_IFACE).isValid()) {
+    if (QDBusInterface(NOTIFICATIONS_SERVICE, NOTIFICATIONS_PATH, NOTIFICATIONS_IFACE).isValid()) {
         QList<QVariant> args = QList<QVariant>() << APPLICATION_NAME << quint32(0) << APPLICATION_ICON_NAME
                                                  << title << message << QStringList() << QVariantMap() << qint32(-1);
         QDBusMessage method = QDBusMessage::createMethodCall(NOTIFICATIONS_SERVICE, NOTIFICATIONS_PATH, NOTIFICATIONS_IFACE, "Notify");
@@ -44,14 +68,10 @@ void Systray::showMessage(const QString &title, const QString &message, const QI
         QDBusConnection::sessionBus().asyncCall(method);
     } else
 #endif
-#ifdef Q_OS_OSX
-        if (canOsXSendUserNotification()) {
-        sendOsXUserNotification(title, message);
-    } else
-#endif
     {
         QSystemTrayIcon::showMessage(title, message, icon, millisecondsTimeoutHint);
     }
+#endif // Q_OS_OSX
 }
 
 void Systray::setToolTip(const QString &tip)

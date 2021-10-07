@@ -21,11 +21,6 @@ class QIcon;
 
 namespace OCC {
 
-#ifdef Q_OS_OSX
-bool canOsXSendUserNotification();
-void sendOsXUserNotification(const QString &title, const QString &message);
-#endif
-
 /**
  * @brief The Systray class
  * @ingroup gui
@@ -33,10 +28,16 @@ void sendOsXUserNotification(const QString &title, const QString &message);
 class Systray : public QSystemTrayIcon
 {
     Q_OBJECT
+
 public:
     Systray(QObject *parent = nullptr);
+    virtual ~Systray();
+
     void showMessage(const QString &title, const QString &message, const QIcon &icon, int millisecondsTimeoutHint = 10000);
     void setToolTip(const QString &tip);
+
+private:
+    void *delegate = nullptr;
 };
 
 } // namespace OCC
