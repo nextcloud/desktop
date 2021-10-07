@@ -12,8 +12,9 @@
  * for more details.
  */
 
-#include <QThread>
 #include <QDir>
+#include <QScopeGuard>
+#include <QThread>
 
 #include "common/asserts.h"
 #include "common/utility.h"
@@ -27,14 +28,10 @@
 
 namespace OCC {
 
-void WatcherThread::watchChanges(size_t fileNotifyBufferSize,
-    bool *increaseBufferSize)
+WatcherThread::WatchChanges WatcherThread::watchChanges(size_t fileNotifyBufferSize)
 {
-    *increaseBufferSize = false;
-    const QString longPath = FileSystem::longWinPath(_path);
-
     _directory = CreateFileW(
-        longPath.toStdWString().data(),
+        reinterpret_cast<const wchar_t *>(_longPath.utf16()), // QString stores UTF-16 internally, so use that here.
         FILE_LIST_DIRECTORY,
         FILE_SHARE_WRITE | FILE_SHARE_READ | FILE_SHARE_DELETE,
         NULL,
@@ -46,8 +43,13 @@ void WatcherThread::watchChanges(size_t fileNotifyBufferSize,
         const auto error = GetLastError();
         qCWarning(lcFolderWatcher) << "Failed to create handle for" << _path << ", error:" << Utility::formatWinError(error);
         _directory = 0;
-        return;
+        return WatchChanges::Error;
     }
+
+    QScopeGuard todoBeforeReturn([this]() {
+        CancelIo(_directory);
+        closeHandle();
+    });
 
     OVERLAPPED overlapped;
     overlapped.hEvent = _resultEvent;
@@ -56,11 +58,7 @@ void WatcherThread::watchChanges(size_t fileNotifyBufferSize,
     QVarLengthArray<char, 4096 * 10> fileNotifyBuffer;
     fileNotifyBuffer.resize(static_cast<int>(fileNotifyBufferSize));
 
-    const size_t fileNameBufferSize = 4096;
-    TCHAR fileNameBuffer[fileNameBufferSize];
-
-
-    while (!_done) {
+    while (true) {
         ResetEvent(_resultEvent);
 
         FILE_NOTIFY_INFORMATION *pFileNotifyBuffer =
@@ -69,21 +67,19 @@ void WatcherThread::watchChanges(size_t fileNotifyBufferSize,
         if (!ReadDirectoryChangesW(_directory, pFileNotifyBuffer,
                 static_cast<DWORD>(fileNotifyBufferSize), true,
                 FILE_NOTIFY_CHANGE_FILE_NAME
-                | FILE_NOTIFY_CHANGE_DIR_NAME
-                | FILE_NOTIFY_CHANGE_LAST_WRITE
-                | FILE_NOTIFY_CHANGE_ATTRIBUTES, // attributes are for vfs pin state changes
-                &dwBytesReturned,
-                &overlapped,
-                nullptr)) {
+                    | FILE_NOTIFY_CHANGE_DIR_NAME
+                    | FILE_NOTIFY_CHANGE_LAST_WRITE
+                    | FILE_NOTIFY_CHANGE_ATTRIBUTES, // attributes are for vfs pin state changes
+                &dwBytesReturned, &overlapped, nullptr)) {
             const DWORD errorCode = GetLastError();
             if (errorCode == ERROR_NOTIFY_ENUM_DIR) {
                 qCDebug(lcFolderWatcher) << "The buffer for changes overflowed! Triggering a generic change and resizing";
                 emit changed(_path);
-                *increaseBufferSize = true;
+                return WatchChanges::NeedBiggerBuffer;
             } else {
                 qCWarning(lcFolderWatcher) << "ReadDirectoryChangesW error" << Utility::formatWinError(errorCode);
+                return WatchChanges::Error;
             }
-            break;
         }
 
         emit ready();
@@ -96,11 +92,11 @@ void WatcherThread::watchChanges(size_t fileNotifyBufferSize,
         const auto error = GetLastError();
         if (result == 1) {
             qCDebug(lcFolderWatcher) << "Received stop event, aborting folder watcher thread";
-            break;
+            return WatchChanges::Done;
         }
         if (result != 0) {
             qCWarning(lcFolderWatcher) << "WaitForMultipleObjects failed" << result << Utility::formatWinError(error);
-            break;
+            return WatchChanges::Error;
         }
 
         bool ok = GetOverlappedResult(_directory, &overlapped, &dwBytesReturned, false);
@@ -110,62 +106,63 @@ void WatcherThread::watchChanges(size_t fileNotifyBufferSize,
                 qCDebug(lcFolderWatcher) << "The buffer for changes overflowed! Triggering a generic change and resizing";
                 emit lostChanges();
                 emit changed(_path);
-                *increaseBufferSize = true;
+                return WatchChanges::NeedBiggerBuffer;
             } else {
                 qCWarning(lcFolderWatcher) << "GetOverlappedResult error" << Utility::formatWinError(errorCode);
+                return WatchChanges::Error;
             }
-            break;
         }
 
-        FILE_NOTIFY_INFORMATION *curEntry = pFileNotifyBuffer;
-        forever {
-            const int len = curEntry->FileNameLength / sizeof(wchar_t);
-            QString longfile = longPath + QString::fromWCharArray(curEntry->FileName, len);
+        processEntries(pFileNotifyBuffer);
+    }
+}
 
-            // Unless the file was removed or renamed, get its full long name
-            // TODO: We could still try expanding the path in the tricky cases...
-            if (curEntry->Action != FILE_ACTION_REMOVED
-                && curEntry->Action != FILE_ACTION_RENAMED_OLD_NAME) {
-                const auto wfile = longfile.toStdWString();
-                const int longNameSize = GetLongPathNameW(wfile.data(), fileNameBuffer, fileNameBufferSize);
-                const auto error = GetLastError();
-                if (longNameSize > 0) {
-                    longfile = QString::fromWCharArray(fileNameBuffer, longNameSize);
-                } else {
-                    qCWarning(lcFolderWatcher) << "Error converting file name" << longfile << "to full length, keeping original name." << Utility::formatWinError(error);
-                }
+void WatcherThread::processEntries(FILE_NOTIFY_INFORMATION *curEntry)
+{
+    while (curEntry) {
+        const size_t fileNameBufferSize = 4096;
+        TCHAR fileNameBuffer[fileNameBufferSize];
+
+        const int len = curEntry->FileNameLength / sizeof(wchar_t);
+        QString longfile = _longPath + QString::fromWCharArray(curEntry->FileName, len);
+
+        // Unless the file was removed or renamed, get its full long name
+        // TODO: We could still try expanding the path in the tricky cases...
+        if (curEntry->Action != FILE_ACTION_REMOVED && curEntry->Action != FILE_ACTION_RENAMED_OLD_NAME) {
+            const auto wfile = longfile.toStdWString();
+            const int longNameSize = GetLongPathNameW(wfile.data(), fileNameBuffer, fileNameBufferSize);
+            const auto error = GetLastError();
+            if (longNameSize > 0) {
+                longfile = QString::fromWCharArray(fileNameBuffer, longNameSize);
+            } else {
+                qCWarning(lcFolderWatcher) << "Error converting file name" << longfile << "to full length, keeping original name." << Utility::formatWinError(error);
             }
+        }
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
-            // The prefix is needed for native Windows functions before Windows 10, version 1607
-            const bool hasLongPathPrefix = longPath.startsWith(QStringLiteral("\\\\?\\"));
-            if (hasLongPathPrefix)
-            {
-                longfile.remove(0, 4);
-            }
-#endif
-            longfile = QDir::cleanPath(longfile);
-
-            // Skip modifications of folders: One of these is triggered for changes
-            // and new files in a folder, probably because of the folder's mtime
-            // changing. We don't need them.
-            const bool skip = curEntry->Action == FILE_ACTION_MODIFIED
-                && QFileInfo(longfile).isDir();
-
-            if (!skip) {
-                emit changed(longfile);
-            }
-
-            if (curEntry->NextEntryOffset == 0) {
-                break;
-            }
-            // FILE_NOTIFY_INFORMATION has no fixed size and the offset is in bytes therefor we first need to cast to char
-            curEntry = reinterpret_cast<FILE_NOTIFY_INFORMATION *>(reinterpret_cast<char*>(curEntry) + curEntry->NextEntryOffset);
+        // The prefix is needed for native Windows functions before Windows 10, version 1607
+        const bool hasLongPathPrefix = longPath.startsWith(QStringLiteral("\\\\?\\"));
+        if (hasLongPathPrefix) {
+            longfile.remove(0, 4);
         }
-    }
+#endif
+        longfile = QDir::cleanPath(longfile);
 
-    CancelIo(_directory);
-    closeHandle();
+        // Skip modifications of folders: One of these is triggered for changes
+        // and new files in a folder, probably because of the folder's mtime
+        // changing. We don't need them.
+        const bool skip = curEntry->Action == FILE_ACTION_MODIFIED && QFileInfo(longfile).isDir();
+
+        if (!skip) {
+            emit changed(longfile);
+        }
+
+        if (curEntry->NextEntryOffset == 0) {
+            return;
+        }
+        // FILE_NOTIFY_INFORMATION has no fixed size and the offset is in bytes therefor we first need to cast to char
+        curEntry = reinterpret_cast<FILE_NOTIFY_INFORMATION *>(reinterpret_cast<char *>(curEntry) + curEntry->NextEntryOffset);
+    }
 }
 
 void WatcherThread::closeHandle()
@@ -186,19 +183,32 @@ void WatcherThread::run()
     size_t bufferSize = 4096 * 10;
     const size_t maxBuffer = 64 * 1024;
 
-    while (!_done) {
-        bool increaseBufferSize = false;
-        watchChanges(bufferSize, &increaseBufferSize);
-
-        if (increaseBufferSize) {
+    while (true) {
+        switch (watchChanges(bufferSize)) {
+        case WatchChanges::NeedBiggerBuffer:
             bufferSize = qMin(bufferSize * 2, maxBuffer);
-        } else if (!_done) {
+            continue;
+        case WatchChanges::Done:
+            return;
+        case WatchChanges::Error:
             // Other errors shouldn't actually happen,
             // so sleep a bit to avoid running into the same error case in a
             // tight loop.
             sleep(2);
+        default:
+            Q_UNREACHABLE();
         }
     }
+}
+
+WatcherThread::WatcherThread(const QString &path)
+    : QThread()
+    , _path(path + (path.endsWith(QLatin1Char('/')) ? QString() : QStringLiteral("/")))
+    , _longPath(FileSystem::longWinPath(_path))
+    , _directory(0)
+    , _resultEvent(0)
+    , _stopEvent(0)
+{
 }
 
 WatcherThread::~WatcherThread()
@@ -208,18 +218,16 @@ WatcherThread::~WatcherThread()
 
 void WatcherThread::stop()
 {
-    _done = 1;
     SetEvent(_stopEvent);
 }
 
 FolderWatcherPrivate::FolderWatcherPrivate(FolderWatcher *p, const QString &path)
     : _parent(p)
 {
-    _thread = new WatcherThread(path);
-    connect(_thread, &WatcherThread::changed, _parent, qOverload<const QString &>(&FolderWatcher::changeDetected));
-    connect(_thread, &WatcherThread::lostChanges, _parent, &FolderWatcher::lostChanges);
-    connect(_thread, &WatcherThread::ready,
-        this, [this]() { _ready = 1; });
+    _thread.reset(new WatcherThread(path));
+    connect(_thread.get(), &WatcherThread::changed, _parent, qOverload<const QString &>(&FolderWatcher::changeDetected));
+    connect(_thread.get(), &WatcherThread::lostChanges, _parent, &FolderWatcher::lostChanges);
+    connect(_thread.get(), &WatcherThread::ready, this, [this]() { _ready = 1; });
     _thread->start();
 }
 
@@ -227,7 +235,6 @@ FolderWatcherPrivate::~FolderWatcherPrivate()
 {
     _thread->stop();
     _thread->wait();
-    delete _thread;
 }
 
 } // namespace OCC

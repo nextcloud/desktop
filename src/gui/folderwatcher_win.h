@@ -31,24 +31,21 @@ class WatcherThread : public QThread
 {
     Q_OBJECT
 public:
-    WatcherThread(const QString &path)
-        : QThread()
-        , _path(path + (path.endsWith(QLatin1Char('/')) ? QString() : QStringLiteral("/")))
-        , _directory(0)
-        , _resultEvent(0)
-        , _stopEvent(0)
-        , _done(false)
-    {
-    }
-
-    ~WatcherThread();
+    WatcherThread(const QString &path);
+    ~WatcherThread() override;
 
     void stop();
 
 protected:
-    void run();
-    void watchChanges(size_t fileNotifyBufferSize,
-        bool *increaseBufferSize);
+    enum class WatchChanges {
+        Done,
+        NeedBiggerBuffer,
+        Error,
+    };
+
+    void run() override;
+    WatchChanges watchChanges(size_t fileNotifyBufferSize);
+    void processEntries(FILE_NOTIFY_INFORMATION *curEntry);
     void closeHandle();
 
 signals:
@@ -57,11 +54,11 @@ signals:
     void ready();
 
 private:
-    QString _path;
+    const QString _path;
+    const QString _longPath;
     HANDLE _directory;
     HANDLE _resultEvent;
     HANDLE _stopEvent;
-    QAtomicInt _done;
 };
 
 /**
@@ -73,7 +70,7 @@ class FolderWatcherPrivate : public QObject
     Q_OBJECT
 public:
     FolderWatcherPrivate(FolderWatcher *p, const QString &path);
-    ~FolderWatcherPrivate();
+    ~FolderWatcherPrivate() override;
 
     /// Set to non-zero once the WatcherThread is capturing events.
     bool isReady() const
@@ -83,7 +80,7 @@ public:
 
 private:
     FolderWatcher *_parent;
-    WatcherThread *_thread;
+    QScopedPointer<WatcherThread> _thread;
     QAtomicInt _ready;
 };
 }
