@@ -33,7 +33,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="242"/>
         <source>View activity</source>
-        <translation type="unfinished"/>
+        <translation>Zobrazit aktivitu</translation>
     </message>
 </context>
 <context>
@@ -41,7 +41,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityList.qml" line="24"/>
         <source>Activity list</source>
-        <translation type="unfinished"/>
+        <translation>Seznam aktivit</translation>
     </message>
 </context>
 <context>
@@ -4308,7 +4308,7 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
         <location filename="../src/gui/socketapi/socketapi.cpp" line="994"/>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1137"/>
         <source>Activity</source>
-        <translation type="unfinished"/>
+        <translation>Aktivita</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="920"/>
@@ -6063,7 +6063,7 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
     <message>
         <location filename="../src/gui/tray/Window.qml" line="596"/>
         <source>%1 - File activity</source>
-        <translation type="unfinished"/>
+        <translation>%1 – aktivita ohledně souboru</translation>
     </message>
 </context>
 <context>
