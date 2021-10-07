@@ -27,6 +27,7 @@
 #include <CoreFoundation/CoreFoundation.h>
 #include <CoreServices/CoreServices.h>
 #import <Foundation/NSFileManager.h>
+#import <Foundation/NSUserDefaults.h>
 
 namespace OCC {
 
@@ -218,17 +219,13 @@ void Utility::setLaunchOnStartup(const QString &appName, const QString &guiName,
 #ifndef TOKEN_AUTH_ONLY
 bool Utility::hasDarkSystray()
 {
-    bool returnValue = false;
-    CFStringRef interfaceStyleKey = CFSTR("AppleInterfaceStyle");
-    CFStringRef interfaceStyle = NULL;
-    CFStringRef darkInterfaceStyle = CFSTR("Dark");
-    interfaceStyle = (CFStringRef)CFPreferencesCopyAppValue(interfaceStyleKey,
-        kCFPreferencesCurrentApplication);
-    if (interfaceStyle != NULL) {
-        returnValue = (kCFCompareEqualTo == CFStringCompare(interfaceStyle, darkInterfaceStyle, 0));
-        CFRelease(interfaceStyle);
+    @autoreleasepool {
+        if (auto style = [[NSUserDefaults standardUserDefaults] stringForKey:@"AppleInterfaceStyle"]) {
+            return [style isEqualToString:@"Dark"];
+        }
     }
-    return returnValue;
+
+    return false;
 }
 #endif
 
