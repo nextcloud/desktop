@@ -17,8 +17,9 @@
 #include "folderwatcher.h"
 #include "folderwatcher_mac.h"
 
-
 #include <cerrno>
+
+#include <QScopeGuard>
 #include <QStringList>
 
 
@@ -50,32 +51,29 @@ static void callback(
     Q_UNUSED(eventFlags)
     Q_UNUSED(eventIds)
 
-    const FSEventStreamEventFlags c_interestingFlags = kFSEventStreamEventFlagItemCreated // for new folder/file
+    const FSEventStreamEventFlags c_interestingFlags =
+        kFSEventStreamEventFlagItemCreated // for new folder/file
         | kFSEventStreamEventFlagItemRemoved // for rm
         | kFSEventStreamEventFlagItemInodeMetaMod // for mtime change
         | kFSEventStreamEventFlagItemRenamed // also coming for moves to trash in finder
         | kFSEventStreamEventFlagItemModified; // for content change
-    //We ignore other flags, e.g. for owner change, xattr change, Finder label change etc
+    // We ignore other flags, e.g. for owner change, xattr change, Finder label change etc
 
     qCDebug(lcFolderWatcher) << "FolderWatcherPrivate::callback by OS X";
 
     QStringList paths;
-    CFArrayRef eventPaths = (CFArrayRef)eventPathsVoid;
-    for (int i = 0; i < static_cast<int>(numEvents); ++i) {
-        CFStringRef path = reinterpret_cast<CFStringRef>(CFArrayGetValueAtIndex(eventPaths, i));
+    CFArrayRef eventPaths = static_cast<CFArrayRef>(eventPathsVoid);
 
-        QString qstring;
-        CFIndex pathLength = CFStringGetLength(path);
-        qstring.resize(pathLength);
-        CFStringGetCharacters(path, CFRangeMake(0, pathLength), reinterpret_cast<UniChar *>(qstring.data()));
-        QString fn = qstring.normalized(QString::NormalizationForm_C);
+    for (CFIndex i = 0; i < static_cast<CFIndex>(numEvents); ++i) {
+        auto cfPath = reinterpret_cast<CFStringRef>(CFArrayGetValueAtIndex(eventPaths, i));
+        const auto qPath = QString::fromCFString(cfPath).normalized(QString::NormalizationForm_C);
 
         if (!(eventFlags[i] & c_interestingFlags)) {
-            qCDebug(lcFolderWatcher) << "Ignoring non-content changes for" << fn;
+            qCDebug(lcFolderWatcher) << "Ignoring non-content changes for" << qPath;
             continue;
         }
 
-        paths.append(fn);
+        paths.append(qPath);
     }
 
     reinterpret_cast<FolderWatcherPrivate *>(clientCallBackInfo)->doNotifyParent(paths);
@@ -84,15 +82,18 @@ static void callback(
 void FolderWatcherPrivate::startWatching()
 {
     qCDebug(lcFolderWatcher) << "FolderWatcherPrivate::startWatching()" << _folder;
-    CFStringRef folderCF = CFStringCreateWithCharacters(0, reinterpret_cast<const UniChar *>(_folder.unicode()),
-        _folder.length());
-    CFArrayRef pathsToWatch = CFStringCreateArrayBySeparatingStrings(NULL, folderCF, CFSTR(":"));
 
-    FSEventStreamContext ctx = { 0, this, NULL, NULL, NULL };
+    CFStringRef cfFolder = _folder.toCFString();
+    QScopeGuard freeFolder([cfFolder]() { CFRelease(cfFolder); });
+
+    CFArrayRef pathsToWatch = CFStringCreateArrayBySeparatingStrings(nullptr, cfFolder, CFSTR(":"));
+    QScopeGuard freePaths([pathsToWatch]() { CFRelease(pathsToWatch); });
+
+    FSEventStreamContext ctx = { 0, this, nullptr, nullptr, nullptr };
 
     // TODO: Add kFSEventStreamCreateFlagFileEvents ?
 
-    _stream = FSEventStreamCreate(NULL,
+    _stream = FSEventStreamCreate(nullptr,
         &callback,
         &ctx,
         pathsToWatch,
@@ -100,8 +101,6 @@ void FolderWatcherPrivate::startWatching()
         0, // latency
         kFSEventStreamCreateFlagUseCFTypes | kFSEventStreamCreateFlagFileEvents | kFSEventStreamCreateFlagIgnoreSelf);
 
-    CFRelease(pathsToWatch);
-    CFRelease(folderCF);
     FSEventStreamScheduleWithRunLoop(_stream, CFRunLoopGetCurrent(), kCFRunLoopDefaultMode);
     FSEventStreamStart(_stream);
 }

@@ -46,6 +46,7 @@ private:
 
     FSEventStreamRef _stream;
 };
-}
+
+} // namespace OCC
 
 #endif
