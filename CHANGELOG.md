@@ -23,8 +23,10 @@ Summary
 * Bugfix - Fix copy url location for private links: [#9048](https://github.com/owncloud/client/issues/9048)
 * Bugfix - When a folder is removed we leave a database behind: [#9057](https://github.com/owncloud/client/issues/9057)
 * Bugfix - Dehydrating placeholders failed if the file is read only: [#9093](https://github.com/owncloud/client/issues/9093)
+* Bugfix - Downgrades could trigger deletion of virtual files: [#9114](https://github.com/owncloud/client/issues/9114)
 * Change - Make sharedialog preview be more resilient: [#8938](https://github.com/owncloud/client/issues/8938)
-* Enhancement - Display the error type in the issue protocol and allow filtering: [#9000](https://github.com/owncloud/client/issues/9000)
+* Enhancement - Display the error type in the issue protocol to allow sorting: [#9000](https://github.com/owncloud/client/issues/9000)
+* Enhancement - Allow to remove broken sync folders: [#9099](https://github.com/owncloud/client/pull/9099)
 
 Details
 -------
@@ -146,6 +148,12 @@ Details
    https://github.com/owncloud/client/issues/9093
    https://gitea.owncloud.services/client/client-plugin-vfs-win/pulls/33
 
+* Bugfix - Downgrades could trigger deletion of virtual files: [#9114](https://github.com/owncloud/client/issues/9114)
+
+   We now prevent the downgrade of Windows VFS folders.
+
+   https://github.com/owncloud/client/issues/9114
+
 * Change - Make sharedialog preview be more resilient: [#8938](https://github.com/owncloud/client/issues/8938)
 
    We no longer enforce png thumbnails. We no longer replace the file icon if the thumbnail is
@@ -154,11 +162,19 @@ Details
    https://github.com/owncloud/client/issues/8938
    https://github.com/owncloud/client/pull/8939
 
-* Enhancement - Display the error type in the issue protocol and allow filtering: [#9000](https://github.com/owncloud/client/issues/9000)
+* Enhancement - Display the error type in the issue protocol to allow sorting: [#9000](https://github.com/owncloud/client/issues/9000)
 
-   We now display the error type in the not synced protocol and allow to filter by the error type.
+   We now display the error type in the not synced protocol and allow to sort by the error type.
 
    https://github.com/owncloud/client/issues/9000
+   https://github.com/owncloud/client/pull/9010
+
+* Enhancement - Allow to remove broken sync folders: [#9099](https://github.com/owncloud/client/pull/9099)
+
+   In case a folder is no longer available it was not possible to remove the folder. We now made the
+   remove action available in that case.
+
+   https://github.com/owncloud/client/pull/9099
 
 Changelog for ownCloud Desktop Client [2.9.0] (2021-09-08)
 =======================================
