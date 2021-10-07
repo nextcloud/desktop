@@ -34,21 +34,22 @@ namespace OCC {
 void Utility::setupFavLink(const QString &folder)
 {
     // Finder: Place under "Places"/"Favorites" on the left sidebar
-    CFStringRef folderCFStr = CFStringCreateWithCString(0, folder.toUtf8().data(), kCFStringEncodingUTF8);
-    CFURLRef urlRef = CFURLCreateWithFileSystemPath(0, folderCFStr, kCFURLPOSIXPathStyle, true);
+    CFStringRef folderCFStr = CFStringCreateWithCString(nullptr, folder.toUtf8().data(), kCFStringEncodingUTF8);
+    QScopeGuard freeFolder([folderCFStr]() { CFRelease(folderCFStr); });
 
-    LSSharedFileListRef placesItems = LSSharedFileListCreate(0, kLSSharedFileListFavoriteItems, 0);
+    CFURLRef urlRef = CFURLCreateWithFileSystemPath(nullptr, folderCFStr, kCFURLPOSIXPathStyle, true);
+    QScopeGuard freeUrl([urlRef]() { CFRelease(urlRef); });
+
+    LSSharedFileListRef placesItems = LSSharedFileListCreate(nullptr, kLSSharedFileListFavoriteItems, nullptr);
+    QScopeGuard freePlaces([placesItems]() { CFRelease(placesItems); });
+
     if (placesItems) {
         //Insert an item to the list.
-        LSSharedFileListItemRef item = LSSharedFileListInsertItemURL(placesItems,
-            kLSSharedFileListItemLast, 0, 0,
-            urlRef, 0, 0);
-        if (item)
+        if (LSSharedFileListItemRef item = LSSharedFileListInsertItemURL(placesItems,
+                kLSSharedFileListItemLast, nullptr, nullptr, urlRef, nullptr, nullptr)) {
             CFRelease(item);
+        }
     }
-    CFRelease(placesItems);
-    CFRelease(folderCFStr);
-    CFRelease(urlRef);
 }
 
 bool Utility::hasSystemLaunchOnStartup(const QString &appName)
