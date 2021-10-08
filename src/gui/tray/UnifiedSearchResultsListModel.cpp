@@ -272,6 +272,11 @@ void UnifiedSearchResultsListModel::setSearchTerm(const QString &term)
             _searchJobConnections.clear();
             emit isSearchInProgressChanged();
         }
+
+        if (!_currentFetchMoreInProgressProviderId.isEmpty()) {
+            _currentFetchMoreInProgressProviderId.clear();
+            emit currentFetchMoreInProgressProviderIdChanged();
+        }
     }
 
     if (!_results.isEmpty()) {
