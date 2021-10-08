@@ -60,13 +60,13 @@ static QString iconUrlForDefaultIconName(const QString &defaultIconName)
         if (parts.size() > 1) {
             const QString iconFilePath = QStringLiteral(":/client/theme/") + parts[1] + QStringLiteral(".svg");
 
-            if (QFile(iconFilePath).exists()) {
+            if (QFile::exists(iconFilePath)) {
                 return iconFilePath;
             }
 
             const QString blackIconFilePath = QStringLiteral(":/client/theme/black/") + parts[1] + QStringLiteral(".svg");
 
-            if (QFile(blackIconFilePath).exists()) {
+            if (QFile::exists(blackIconFilePath)) {
                 return blackIconFilePath;
             }
         }
@@ -93,7 +93,7 @@ static QString iconUrlForDefaultIconName(const QString &defaultIconName)
 static QString iconsFromThumbnailAndFallbackIcon(QString thumbnailUrl, QString fallackIcon, QUrl serverUrl)
 {
     if (thumbnailUrl.isEmpty() && fallackIcon.isEmpty()) {
-        return QStringLiteral("");
+        return {};
     }
 
     const QUrl urlForThumbnail(thumbnailUrl);
