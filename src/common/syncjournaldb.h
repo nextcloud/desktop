@@ -354,7 +354,7 @@ public:
          */
         Optional<QVector<QPair<QByteArray, PinState>>> rawList();
 
-        SyncJournalDb *_db;
+        SyncJournalDb *_db{};
     };
     friend struct PinStateInterface;
 

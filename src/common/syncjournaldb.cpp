@@ -25,6 +25,7 @@
 #include <QDir>
 #include <sqlite3.h>
 #include <cstring>
+#include <algorithm>
 
 #include "common/syncjournaldb.h"
 #include "version.h"
@@ -2287,9 +2288,8 @@ SyncJournalDb::PinStateInterface::PinStateInterface(SyncJournalDb *db)
 }
 
 SyncJournalDb::PinStateInterface::PinStateInterface(PinStateInterface &&other)
-    : _db(other._db)
 {
-    other._db = nullptr;
+    std::swap(_db, other._db);
 }
 
 Optional<PinState> SyncJournalDb::PinStateInterface::rawForPath(const QByteArray &path)
