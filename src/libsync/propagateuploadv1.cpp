@@ -27,9 +27,11 @@
 #include "propagateremotedelete.h"
 #include "common/asserts.h"
 
-#include <QNetworkAccessManager>
-#include <QFileInfo>
 #include <QDir>
+#include <QFileInfo>
+#include <QNetworkAccessManager>
+#include <QRandomGenerator>
+
 #include <cmath>
 #include <cstring>
 #include <memory>
@@ -45,7 +47,7 @@ void PropagateUploadFileV1::doStartUpload()
         _chunkCount = int(std::ceil(_item->_size / double(chunkSize())));
     }
     _startChunk = 0;
-    _transferId = uint(qrand()) ^ uint(_item->_modtime) ^ (uint(_item->_size) << 16);
+    _transferId = uint(QRandomGenerator::global()->generate()) ^ uint(_item->_modtime) ^ (uint(_item->_size) << 16);
 
     const SyncJournalDb::UploadInfo progressInfo = propagator()->_journal->getUploadInfo(_item->_file);
 

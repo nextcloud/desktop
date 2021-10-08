@@ -319,7 +319,7 @@ SyncFileStatus SyncFileStatusTracker::resolveSyncAndErrorStatus(const QString &r
 
 void SyncFileStatusTracker::invalidateParentPaths(const QString &path)
 {
-    QStringList splitPath = path.split(QLatin1Char('/'), QString::SkipEmptyParts);
+    QStringList splitPath = path.split(QLatin1Char('/'), Qt::SkipEmptyParts);
     for (int i = 0; i < splitPath.size(); ++i) {
         QString parentPath = QStringList(splitPath.mid(0, i)).join(QLatin1Char('/'));
         emit fileStatusChanged(getSystemDestination(parentPath), fileStatus(parentPath));

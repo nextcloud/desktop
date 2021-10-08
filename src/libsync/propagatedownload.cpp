@@ -26,10 +26,12 @@
 #include "common/asserts.h"
 #include "common/vfs.h"
 
+#include <QDir>
+#include <QFileInfo>
 #include <QLoggingCategory>
 #include <QNetworkAccessManager>
-#include <QFileInfo>
-#include <QDir>
+#include <QRandomGenerator>
+
 #include <cmath>
 
 #ifdef Q_OS_UNIX
@@ -48,21 +50,22 @@ QString OWNCLOUDSYNC_EXPORT createDownloadTmpFileName(const QString &previous)
 {
     QString tmpFileName;
     QString tmpPath;
-    int slashPos = previous.lastIndexOf(QLatin1Char('/'));
+    const int slashPos = previous.lastIndexOf(QLatin1Char('/'));
     // work with both pathed filenames and only filenames
     if (slashPos == -1) {
         tmpFileName = previous;
-        tmpPath = QString();
     } else {
         tmpFileName = previous.mid(slashPos + 1);
         tmpPath = previous.left(slashPos);
     }
-    int overhead = 1 + 1 + 2 + 8; // slash dot dot-tilde ffffffff"
-    int spaceForFileName = qMin(254, tmpFileName.length() + overhead) - overhead;
+
+    auto rg = QRandomGenerator::global();
+    const int overhead = 1 + 1 + 2 + 8; // slash dot dot-tilde ffffffff"
+    const int spaceForFileName = qMin(254, tmpFileName.length() + overhead) - overhead;
     if (tmpPath.length() > 0) {
-        return QStringLiteral("%1/.%2.~%3").arg(tmpPath, tmpFileName.left(spaceForFileName), QString::number(uint(qrand() % 0xFFFFFFFF), 16));
+        return QStringLiteral("%1/.%2.~%3").arg(tmpPath, tmpFileName.left(spaceForFileName), QString::number(uint(rg->generate() % 0xFFFFFFFF), 16));
     } else {
-        return QStringLiteral(".%1.~%2").arg(tmpFileName.left(spaceForFileName), QString::number(uint(qrand() % 0xFFFFFFFF), 16));
+        return QStringLiteral(".%1.~%2").arg(tmpFileName.left(spaceForFileName), QString::number(uint(rg->generate() % 0xFFFFFFFF), 16));
     }
 }
 
@@ -699,7 +702,7 @@ void PropagateDownloadFile::slotGetFinished()
     // of the compressed data. See QTBUG-73364.
     const auto contentEncoding = job->reply()->rawHeader("content-encoding").toLower();
     if ((contentEncoding == "gzip" || contentEncoding == "deflate")
-        && (job->reply()->attribute(QNetworkRequest::HTTP2WasUsedAttribute).toBool()
+        && (job->reply()->attribute(QNetworkRequest::Http2WasUsedAttribute).toBool()
             || job->reply()->attribute(QNetworkRequest::SpdyWasUsedAttribute).toBool())) {
         bodySize = 0;
         hasSizeHeader = false;

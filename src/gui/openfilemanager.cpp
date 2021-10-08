@@ -108,7 +108,7 @@ void showInFileManager(const QString &localPath)
             // only around the path. Use setNativeArguments to bypass this logic.
             p.setNativeArguments(nativeArgs);
 #endif
-            p.start(explorer);
+            p.start(explorer, QStringList());
             p.waitForFinished(5000);
         }
     } else if (Utility::isMac()) {

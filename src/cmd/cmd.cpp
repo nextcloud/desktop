@@ -434,7 +434,6 @@ int main(int argc, char **argv)
     QString opensslConf = QCoreApplication::applicationDirPath() + QString("/openssl.cnf");
     qputenv("OPENSSL_CONF", opensslConf.toLocal8Bit());
 #endif
-    qsrand(std::random_device()());
     SyncCTX ctx { parseOptions(app.arguments()) };
 
     if (ctx.options.silent) {

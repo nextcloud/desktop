@@ -220,8 +220,6 @@ Application::Application(int &argc, char **argv)
     , _userTriggeredConnect(false)
     , _debugMode(false)
 {
-    qsrand(std::random_device()());
-
 #ifdef Q_OS_WIN
     // Ensure OpenSSL config file is only loaded from app directory
     const QString opensslConf = QCoreApplication::applicationDirPath() + QString("/openssl.cnf");

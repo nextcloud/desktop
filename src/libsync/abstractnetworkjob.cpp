@@ -206,8 +206,7 @@ void AbstractNetworkJob::slotFinished()
     const auto maxHttp2Resends = 3;
     QByteArray verb = HttpLogger::requestVerb(*reply());
     if (_reply->error() == QNetworkReply::ContentReSendError
-        && _reply->attribute(QNetworkRequest::HTTP2WasUsedAttribute).toBool()) {
-
+        && _reply->attribute(QNetworkRequest::Http2WasUsedAttribute).toBool()) {
         if ((_requestBody && !_requestBody->isSequential()) || verb.isEmpty()) {
             qCWarning(lcNetworkJob) << "Can't resend HTTP2 request, verb or body not suitable"
                                     << _reply->request().url() << verb << _requestBody;
@@ -220,8 +219,8 @@ void AbstractNetworkJob::slotFinished()
 
             resetTimeout();
             if (_requestBody) {
-                if(!_requestBody->isOpen())
-                   _requestBody->open(QIODevice::ReadOnly);
+                if (!_requestBody->isOpen())
+                    _requestBody->open(QIODevice::ReadOnly);
                 _requestBody->seek(0);
             }
             sendRequest(

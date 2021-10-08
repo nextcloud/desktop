@@ -104,7 +104,6 @@ class TestFolderWatcher : public QObject
 
 public:
     TestFolderWatcher() {
-        qsrand(QTime::currentTime().msec());
         QDir rootDir(_root.path());
         _rootPath = rootDir.canonicalPath();
         qDebug() << "creating test directory tree in " << _rootPath;

@@ -17,7 +17,7 @@ PathComponents::PathComponents(const char *path)
 }
 
 PathComponents::PathComponents(const QString &path)
-    : QStringList { path.split(QLatin1Char('/'), QString::SkipEmptyParts) }
+    : QStringList { path.split(QLatin1Char('/'), Qt::SkipEmptyParts) }
 {
 }
 

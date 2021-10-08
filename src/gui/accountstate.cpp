@@ -23,10 +23,11 @@
 #include "settingsdialog.h"
 #include "theme.h"
 
+#include <QFontMetrics>
 #include <QMessageBox>
+#include <QRandomGenerator>
 #include <QSettings>
 #include <QTimer>
-#include <qfontmetrics.h>
 
 namespace OCC {
 
@@ -82,7 +83,7 @@ AccountState::AccountState(AccountPtr account)
     , _state(AccountState::Disconnected)
     , _connectionStatus(ConnectionValidator::Undefined)
     , _waitingForNewCredentials(false)
-    , _maintenanceToConnectedDelay(60000 + (qrand() % (4 * 60000))) // 1-5min delay
+    , _maintenanceToConnectedDelay(60000 + (QRandomGenerator::global()->generate() % (4 * 60000))) // 1-5min delay
 {
     qRegisterMetaType<AccountState *>("AccountState*");
 

@@ -74,7 +74,7 @@ private slots:
             Q_ASSERT(tmp.isValid());
 
             auto createTree = [&](const QString &path) {
-                auto parts = path.split(QLatin1Char('/'), QString::SkipEmptyParts);
+                auto parts = path.split(QLatin1Char('/'), Qt::SkipEmptyParts);
                 const auto fileName = parts.back();
                 parts.pop_back(); // remove file name
                 QString workPath = tmp.path() + QLatin1Char('/');

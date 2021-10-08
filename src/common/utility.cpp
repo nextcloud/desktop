@@ -23,21 +23,20 @@
 #include "version.h"
 
 // Note:  This file must compile without QtGui
+#include <QCollator>
 #include <QCoreApplication>
-#include <QSettings>
-#include <QTextStream>
+#include <QDateTime>
 #include <QDir>
 #include <QFile>
-#include <QUrl>
-#include <QProcess>
 #include <QObject>
-#include <QThread>
-#include <QDateTime>
-#include <QSysInfo>
+#include <QProcess>
+#include <QRandomGenerator>
+#include <QSettings>
 #include <QStandardPaths>
-#include <QCollator>
 #include <QSysInfo>
-
+#include <QTextStream>
+#include <QThread>
+#include <QUrl>
 
 #ifdef Q_OS_UNIX
 #include <sys/statvfs.h>
@@ -45,9 +44,9 @@
 #include <unistd.h>
 #endif
 
+#include <cstring>
 #include <math.h>
 #include <stdarg.h>
-#include <cstring>
 
 namespace OCC {
 
@@ -55,15 +54,16 @@ Q_LOGGING_CATEGORY(lcUtility, "sync.utility")
 
 bool Utility::writeRandomFile(const QString &fname, int size)
 {
-    int maxSize = 10 * 10 * 1024;
-    qsrand(QDateTime::currentMSecsSinceEpoch());
+    auto rg = QRandomGenerator::global();
 
-    if (size == -1)
-        size = qrand() % maxSize;
+    const int maxSize = 10 * 10 * 1024;
+    if (size == -1) {
+        size = static_cast<int>(rg->generate() % maxSize);
+    }
 
     QString randString;
     for (int i = 0; i < size; i++) {
-        int r = qrand() % 128;
+        int r = static_cast<int>(rg->generate() % 128);
         randString.append(QChar(r));
     }
 
