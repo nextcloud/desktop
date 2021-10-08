@@ -14,8 +14,11 @@ RowLayout {
     property string iconPlaceholder: ""
     property bool isRounded: false
 
-    width: 200
-    height: Style.trayWindowHeaderHeight
+
+    property int textLeftMargin: 18
+    property int textRightMargin: 16
+    property int iconWidth: 24
+    property int iconLeftMargin: 12
 
     Accessible.role: Accessible.ListItem
     Accessible.name: resultTitle
@@ -23,10 +26,9 @@ RowLayout {
 
     ColumnLayout {
         id: unifiedSearchResultImageContainer
-        readonly property int iconWidth: 24
         visible: true
-        Layout.preferredWidth: iconWidth + 10
-        Layout.preferredHeight: Style.trayWindowHeaderHeight
+        Layout.preferredWidth: unifiedSearchResultItemDetails.iconWidth + 10
+        Layout.preferredHeight: unifiedSearchResultItemDetails.height
         Image {
             id: unifiedSearchResultThumbnail
             visible: false
@@ -50,23 +52,23 @@ RowLayout {
             visible: !unifiedSearchResultThumbnailPlaceholder.visible
             Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
             Layout.leftMargin: iconLeftMargin
-            Layout.preferredWidth: icons ? unifiedSearchResultImageContainer.iconWidth : 0
-            Layout.preferredHeight: icons ? unifiedSearchResultImageContainer.iconWidth: 0
+            Layout.preferredWidth: icons ? unifiedSearchResultItemDetails.iconWidth : 0
+            Layout.preferredHeight: icons ? unifiedSearchResultItemDetails.iconWidth: 0
             source: unifiedSearchResultThumbnail
             maskSource: mask
         }
         Image {
             id: unifiedSearchResultThumbnailPlaceholder
-            visible: icons && iconPlaceholder && unifiedSearchResultThumbnail.status != Image.Ready
+            visible: icons && iconPlaceholder && unifiedSearchResultThumbnail.status !== Image.Ready
             Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
             Layout.leftMargin: iconLeftMargin
             verticalAlignment: Qt.AlignCenter
             cache: true
             source: iconPlaceholder
-            sourceSize.height: unifiedSearchResultImageContainer.iconWidth
-            sourceSize.width: unifiedSearchResultImageContainer.iconWidth
-            Layout.preferredWidth: visible ? unifiedSearchResultImageContainer.iconWidth : 0
-            Layout.preferredHeight: visible ? unifiedSearchResultImageContainer.iconWidth : 0
+            sourceSize.height: unifiedSearchResultItemDetails.iconWidth
+            sourceSize.width: unifiedSearchResultItemDetails.iconWidth
+            Layout.preferredWidth: visible ? unifiedSearchResultItemDetails.iconWidth : 0
+            Layout.preferredHeight: visible ? unifiedSearchResultItemDetails.iconWidth : 0
         }
     }
 

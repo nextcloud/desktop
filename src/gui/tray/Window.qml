@@ -104,6 +104,12 @@ Window {
         border.width:   Style.trayWindowBorderWidth
         border.color:   Style.menuBorder
 
+        readonly property int unifiedSearchItemHeight: Style.trayWindowHeaderHeight
+        readonly property int unifiedSearchResultTextLeftMargin: 18
+        readonly property int unifiedSearchResultTextRightMargin: 16
+        readonly property int unifiedSearchResulIconWidth: 24
+        readonly property int unifiedSearchResulIconLeftMargin: 12
+
         Accessible.role: Accessible.Grouping
         Accessible.name: qsTr("Nextcloud desktop main dialog")
 
@@ -595,7 +601,9 @@ Window {
 
                     readonly property double textFieldIconsScaleFactor: 0.6
 
-                    readonly property int textFieldHorizontalPaddingOffset: 10
+                    readonly property double textFieldBusyIndicatorScaleFactor: 0.75
+
+                    readonly property int textFieldHorizontalPaddingOffset: 14
 
                     anchors.fill: parent
                     anchors.margins: 10
@@ -622,11 +630,13 @@ Window {
                             verticalCenter: parent.verticalCenter
                         }
 
+                        visible: !unifiedSearchResultsModel.isSearchInProgress
+
                         smooth: true;
                         antialiasing: true
                         mipmap: true
 
-                        source: "qrc:///client/theme/magnifying-glass.svg"
+                        source: "qrc:///client/theme/black/search.svg"
                         sourceSize: Qt.size(parent.height * parent.textFieldIconsScaleFactor, parent.height * parent.textFieldIconsScaleFactor)
 
                         ColorOverlay {
@@ -634,6 +644,19 @@ Window {
                             source: parent
                             color: parent.parent.textFieldIconsColor
                         }
+                    }
+
+                    BusyIndicator {
+                        id: trayWindowUnifiedSearchTextFieldIconInProgress
+                        running: visible
+                        visible: unifiedSearchResultsModel.isSearchInProgress
+                        anchors {
+                            left: parent.left
+                            leftMargin: parent.textFieldIconsOffset
+                            verticalCenter: parent.verticalCenter
+                        }
+                        width: parent.height * parent.textFieldBusyIndicatorScaleFactor
+                        height: parent.height * parent.textFieldBusyIndicatorScaleFactor
                     }
 
                     Image {
@@ -649,9 +672,9 @@ Window {
                         antialiasing: true
                         mipmap: true
 
-                        visible: !unifiedSearchResultsModel.isSearchInProgress && parent.text
+                        visible: parent.text
 
-                        source: "qrc:///client/theme/close.svg"
+                        source: "qrc:///client/theme/black/clear.svg"
                         sourceSize: Qt.size(parent.height * parent.textFieldIconsScaleFactor, parent.height * parent.textFieldIconsScaleFactor)
 
                         ColorOverlay {
@@ -671,30 +694,6 @@ Window {
                         }
                     }
 
-                    Image {
-                        id: trayWindowUnifiedSearchTextFieldIconInProgress
-
-                        anchors {
-                            right: parent.right
-                            rightMargin: parent.textFieldIconsOffset
-                            verticalCenter: parent.verticalCenter
-                        }
-
-                        smooth: true;
-                        antialiasing: true
-                        mipmap: true
-
-                        visible: unifiedSearchResultsModel.isSearchInProgress
-
-                        source: "qrc:///client/theme/change.svg"
-                        sourceSize: Qt.size(parent.height * parent.textFieldIconsScaleFactor, parent.height * parent.textFieldIconsScaleFactor)
-
-                        ColorOverlay {
-                            anchors.fill: parent
-                            source: parent
-                            color: parent.parent.textFieldIconsColor
-                        }
-                    }
                     RotationAnimator {
                         target: trayWindowUnifiedSearchTextFieldIconInProgress
                         running: trayWindowUnifiedSearchTextFieldIconInProgress.visible
@@ -767,7 +766,7 @@ Window {
 
             searchTerm: unifiedSearchResultsModel.searchTerm
             isSearchRunning: unifiedSearchResultsModel.isSearchInProgress
-            numResults: unifiedSearchResultsModel.data.length
+            isSearchResultsEmpty: unifiedSearchResultsListView.count === 0
         }
 
         UnifiedSearchResultItemSkeletonContainer {
@@ -777,6 +776,11 @@ Window {
             anchors.left: trayWindowBackground.left
             anchors.right: trayWindowBackground.right
             anchors.bottom: trayWindowBackground.bottom
+            textLeftMargin: trayWindowBackground.unifiedSearchResultTextLeftMargin
+            textRightMargin: trayWindowBackground.unifiedSearchResultTextRightMargin
+            iconWidth: trayWindowBackground.unifiedSearchResulIconWidth
+            iconLeftMargin: trayWindowBackground.unifiedSearchResulIconLeftMargin
+            itemHeight: trayWindowBackground.unifiedSearchItemHeight
         }
 
         ListView {
@@ -803,8 +807,12 @@ Window {
 
             delegate: UnifiedSearchResultListItem {
                 width: unifiedSearchResultsListView.width
-                height: Style.trayWindowHeaderHeight
+                height: trayWindowBackground.unifiedSearchItemHeight
                 isSearchInProgress: unifiedSearchResultsModel.isSearchInProgress
+                textLeftMargin: trayWindowBackground.unifiedSearchResultTextLeftMargin
+                textRightMargin: trayWindowBackground.unifiedSearchResultTextRightMargin
+                iconWidth: trayWindowBackground.unifiedSearchResulIconWidth
+                iconLeftMargin: trayWindowBackground.unifiedSearchResulIconLeftMargin
             }
 
             section.property: "providerName"

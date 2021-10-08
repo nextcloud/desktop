@@ -32,35 +32,18 @@ RowLayout {
             font.pixelSize: Style.topLinePixelSize
             color: "grey"
         }
-        Image {
+
+        BusyIndicator {
             id: unifiedSearchResultItemFetchMoreIconInProgress
+            running: visible
             visible: isFetchMoreInProgress
-            Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
             anchors {
                 horizontalCenter: parent.horizontalCenter
                 verticalCenter: parent.verticalCenter
             }
-            cache: true
-            source: "qrc:///client/theme/change.svg"
-            sourceSize.height: Style.trayWindowHeaderHeight / 2
-            sourceSize.width: Style.trayWindowHeaderHeight / 2
-            Layout.preferredWidth: Style.trayWindowHeaderHeight / 2
-            Layout.preferredHeight: Style.trayWindowHeaderHeight / 2
-
-            ColorOverlay {
-                anchors.fill: parent
-                source: parent
-                color: Style.menuBorder
-            }
-        }
-
-        RotationAnimator {
-            target: unifiedSearchResultItemFetchMoreIconInProgress
-            running:  unifiedSearchResultItemFetchMoreIconInProgress.visible && isWihinViewPort
-            from: 0
-            to: 360
-            loops: Animation.Infinite
-            duration: 1250
+            Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
+            width: Style.trayWindowHeaderHeight * 0.75
+            height: Style.trayWindowHeaderHeight * 0.75
         }
     }
 }

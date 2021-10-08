@@ -8,10 +8,10 @@ import QtGraphicalEffects 1.0
 MouseArea {
     id: unifiedSearchResultMouseArea
 
-    readonly property int iconLeftMargin: 12
-    readonly property int textLeftMargin: 4
-    readonly property int textRightMargin: 16
-    readonly property int categorySeparatorLeftMargin: 16
+    property int textLeftMargin: 18
+    property int textRightMargin: 16
+    property int iconWidth: 24
+    property int iconLeftMargin: 12
 
     readonly property bool isFetchMoreTrigger: model.typeAsString === "FetchMoreTrigger"
 
@@ -43,11 +43,16 @@ MouseArea {
         active: !isFetchMoreTrigger
         sourceComponent: UnifiedSearchResultItem {
             width: unifiedSearchResultMouseArea.width
+            height: unifiedSearchResultMouseArea.height
             title: model.resultTitle
             subline: model.subline
             icons: model.icons
             iconPlaceholder: model.imagePlaceholder
             isRounded: model.isRounded
+            textLeftMargin: unifiedSearchResultMouseArea.textLeftMargin
+            textRightMargin: unifiedSearchResultMouseArea.textRightMargin
+            iconWidth: unifiedSearchResultMouseArea.iconWidth
+            iconLeftMargin: unifiedSearchResultMouseArea.iconLeftMargin
         }
     }
 
@@ -56,7 +61,7 @@ MouseArea {
         sourceComponent: UnifiedSearchResultFetchMoreTrigger {
             isFetchMoreInProgress: unifiedSearchResultMouseArea.isFetchMoreInProgress
             width: unifiedSearchResultMouseArea.width
-            height: Style.trayWindowHeaderHeight
+            height: unifiedSearchResultMouseArea.height
             isWihinViewPort: !unifiedSearchResultMouseArea.isPooled
         }
     }

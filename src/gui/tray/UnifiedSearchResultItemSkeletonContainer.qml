@@ -8,11 +8,21 @@ import QtGraphicalEffects 1.0
 Column {
     id: unifiedSearchResultsListViewSkeletonColumn
 
+    property int textLeftMargin: 18
+    property int textRightMargin: 16
+    property int iconWidth: 24
+    property int iconLeftMargin: 12
+    property int itemHeight: Style.trayWindowHeaderHeight
+
     Repeater {
         model: 10
         UnifiedSearchResultItemSkeleton {
+            textLeftMargin: unifiedSearchResultsListViewSkeletonColumn.textLeftMargin
+            textRightMargin: unifiedSearchResultsListViewSkeletonColumn.textRightMargin
+            iconWidth: unifiedSearchResultsListViewSkeletonColumn.iconWidth
+            iconLeftMargin: unifiedSearchResultsListViewSkeletonColumn.iconLeftMargin
             width: parent.width
-            height: Style.trayWindowHeaderHeight
+            height: itemHeight
             index: model.index
         }
     }

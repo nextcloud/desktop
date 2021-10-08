@@ -44,7 +44,9 @@
         <file>theme/white/state-sync-64.png</file>
         <file>theme/white/state-sync-128.png</file>
         <file>theme/white/state-sync-256.png</file>
+        <file>theme/black/clear.svg</file>
         <file>theme/black/comment.svg</file>
+        <file>theme/black/search.svg</file>
         <file>theme/black/state-error-32.png</file>
         <file>theme/black/state-error-64.png</file>
         <file>theme/black/state-error-128.png</file>

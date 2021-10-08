@@ -8,9 +8,10 @@ import QtGraphicalEffects 1.0
 RowLayout {
     id: unifiedSearchResultSkeletonItemDetails
 
-    readonly property int iconLeftMargin: 12
-    readonly property int textLeftMargin: 4
-    readonly property int textRightMargin: 16
+    property int textLeftMargin: 18
+    property int textRightMargin: 16
+    property int iconWidth: 24
+    property int iconLeftMargin: 12
 
     property int index: 0
 
@@ -19,15 +20,14 @@ RowLayout {
 
     ColumnLayout {
         id: unifiedSearchResultSkeletonImageContainer
-        readonly property int iconWidth: 24
         visible: true
-        Layout.preferredWidth: iconWidth + 10
-        Layout.preferredHeight: Style.trayWindowHeaderHeight
+        Layout.preferredWidth: unifiedSearchResultSkeletonItemDetails.iconWidth + 10
+        Layout.preferredHeight: unifiedSearchResultSkeletonItemDetails.height
         Rectangle {
             id: unifiedSearchResultSkeletonThumbnail
             color: "grey"
-            width:  unifiedSearchResultSkeletonImageContainer.iconWidth
-            height:  unifiedSearchResultSkeletonImageContainer.iconWidth
+            width:  unifiedSearchResultSkeletonItemDetails.iconWidth
+            height:  unifiedSearchResultSkeletonItemDetails.iconWidth
             Layout.leftMargin: unifiedSearchResultSkeletonItemDetails.iconLeftMargin
             Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
         }
@@ -49,7 +49,7 @@ RowLayout {
         Rectangle {
             id: unifiedSearchResultSkeletonTextSubline
             color: "grey"
-            height: Style.topLinePixelSize
+            height: Style.subLinePixelSize
             Layout.leftMargin: unifiedSearchResultSkeletonItemDetails.textLeftMargin
             Layout.rightMargin: unifiedSearchResultSkeletonItemDetails.textRightMargin
             Layout.fillWidth: true

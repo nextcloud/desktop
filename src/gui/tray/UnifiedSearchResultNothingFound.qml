@@ -10,7 +10,7 @@ ColumnLayout {
 
     required property string searchTerm
     required property bool isSearchRunning
-    required property int numResults
+    required property bool isSearchResultsEmpty
 
     spacing: 8
     anchors.leftMargin: 10
@@ -66,7 +66,7 @@ ColumnLayout {
         if (isSearchRunning) {
             unifiedSearchResultNothingFoundContainer.visible = false;
         } else {
-            if (searchTerm && numResults === 0) {
+            if (searchTerm && isSearchResultsEmpty) {
                 unifiedSearchResultNothingFoundContainer.visible = true;
             }
         }
