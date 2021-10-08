@@ -73,8 +73,8 @@ RowLayout {
             source: iconPlaceholder
             sourceSize.height: unifiedSearchResultItemDetails.iconWidth
             sourceSize.width: unifiedSearchResultItemDetails.iconWidth
-            Layout.preferredWidth: visible ? unifiedSearchResultItemDetails.iconWidth : 0
-            Layout.preferredHeight: visible ? unifiedSearchResultItemDetails.iconWidth : 0
+            Layout.preferredWidth: unifiedSearchResultItemDetails.iconWidth
+            Layout.preferredHeight: unifiedSearchResultItemDetails.iconWidth
         }
     }
 

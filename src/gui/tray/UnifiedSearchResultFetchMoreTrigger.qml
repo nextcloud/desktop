@@ -46,8 +46,8 @@ RowLayout {
                 verticalCenter: parent.verticalCenter
             }
             Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
-            width: Style.trayWindowHeaderHeight * 0.75
-            height: Style.trayWindowHeaderHeight * 0.75
+            width: Style.trayWindowHeaderHeight * 0.6
+            height: Style.trayWindowHeaderHeight * 0.6
         }
     }
 }

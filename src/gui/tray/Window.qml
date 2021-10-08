@@ -576,12 +576,16 @@ Window {
 
         UnifiedSearchInputContainer {
             id: trayWindowUnifiedSearchInputContainer
-            height: Style.trayWindowHeaderHeight
+            height: Style.trayWindowHeaderHeight * 0.65
 
             anchors {
                 top: trayWindowHeaderBackground.bottom
                 left: trayWindowBackground.left
                 right: trayWindowBackground.right
+
+                margins: {
+                    top: 10
+                }
             }
 
             text: unifiedSearchResultsModel.searchTerm
