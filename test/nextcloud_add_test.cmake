@@ -23,7 +23,7 @@ macro(nextcloud_add_test test_class)
         )
     endif()
 
-    if (UNIX)
+    if (LINUX)
         target_link_libraries(${OWNCLOUD_TEST_CLASS}Test PRIVATE
             nextcloudsync_vfs_xattr
         )
