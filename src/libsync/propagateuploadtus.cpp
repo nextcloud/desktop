@@ -229,10 +229,18 @@ void PropagateUploadFileTUS::slotChunkFinished()
         startNextChunk();
         return;
     }
-    const QByteArray etag = getEtagFromReply(job->reply());
 
-    _finished = !etag.isEmpty();
+    // ==== handling when the upload is finished:
+    const QByteArray etag = getEtagFromReply(job->reply());
+    const QByteArray remPerms = job->reply()->rawHeader("OC-Perm");
+    if (!remPerms.isEmpty()) {
+        _item->_remotePerm = RemotePermissions::fromServerString(QString::fromUtf8(remPerms));
+    }
+
+    _finished = !(etag.isEmpty() || _item->_remotePerm.isNull());
     if (!_finished) {
+        // Either the ETag or the remote Permissions were not in the headers of the reply.
+        // Start a PROPFIND to fetch these data from the server.
         auto check = new PropfindJob(propagator()->account(), propagator()->fullRemotePath(_item->_file));
         _jobs.append(check);
         check->setProperties({ "http://owncloud.org/ns:fileid", "http://owncloud.org/ns:permissions", "getetag" });
