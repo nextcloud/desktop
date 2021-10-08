@@ -711,7 +711,7 @@ Window {
         }
 
         ActivityList {
-            visible: !unifiedSearchResultsListViewSkeleton.visible && !unifiedSearchResultsNoResultsContainer.visible && !unifiedSearchResultsErrorLabel.visible && !unifiedSearchResultsListView.visible && unifiedSearchResultsModel.searchTerm === ""
+            visible: !unifiedSearchResultsListViewSkeleton.visible && !unifiedSearchResultNothingFound.visible && !unifiedSearchResultsErrorLabel.visible && !unifiedSearchResultsListView.visible && unifiedSearchResultsModel.searchTerm === ""
             anchors.top: trayWindowUnifiedSearchContainer.bottom
             anchors.left: trayWindowBackground.left
             anchors.right: trayWindowBackground.right
@@ -759,17 +759,20 @@ Window {
             wrapMode: Text.Wrap
         }
         UnifiedSearchResultNothingFound {
-            id: unifiedSearchResultsNoResultsContainer
-            //visible: !unifiedSearchResultsListView.visible && !unifiedSearchResultsModel.errorString && unifiedSearchResultsModel.searchTerm
+            id: unifiedSearchResultNothingFound
             visible: false
             anchors.top: trayWindowUnifiedSearchContainer.bottom
             anchors.left: trayWindowBackground.left
             anchors.right: trayWindowBackground.right
+
             searchTerm: unifiedSearchResultsModel.searchTerm
+            isSearchRunning: unifiedSearchResultsModel.isSearchInProgress
+            numResults: unifiedSearchResultsModel.data.length
         }
+
         UnifiedSearchResultItemSkeletonContainer {
             id: unifiedSearchResultsListViewSkeleton
-            visible: !unifiedSearchResultsListView.visible && !unifiedSearchResultsModel.errorString && unifiedSearchResultsModel.searchTerm
+            visible: !unifiedSearchResultNothingFound.visible && !unifiedSearchResultsListView.visible && !unifiedSearchResultsModel.errorString && unifiedSearchResultsModel.searchTerm
             anchors.top: trayWindowUnifiedSearchContainer.bottom
             anchors.left: trayWindowBackground.left
             anchors.right: trayWindowBackground.right

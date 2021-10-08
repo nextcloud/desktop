@@ -7,10 +7,15 @@ import QtGraphicalEffects 1.0
 
 ColumnLayout {
     id: unifiedSearchResultNothingFoundContainer
+
+    required property string searchTerm
+    required property bool isSearchRunning
+    required property int numResults
+
     spacing: 8
     anchors.leftMargin: 10
     anchors.rightMargin: 10
-    required property string searchTerm
+
     Column {
         Layout.fillWidth: true
         Layout.preferredHeight: Style.trayWindowHeaderHeight / 2
@@ -55,5 +60,19 @@ ColumnLayout {
             elide: Text.ElideRight
             horizontalAlignment: Text.AlignHCenter
         }
+    }
+
+    onIsSearchRunningChanged: {
+        if (isSearchRunning) {
+            unifiedSearchResultNothingFoundContainer.visible = false;
+        } else {
+            if (searchTerm && numResults === 0) {
+                unifiedSearchResultNothingFoundContainer.visible = true;
+            }
+        }
+    }
+
+    onSearchTermChanged: {
+        unifiedSearchResultNothingFoundContainer.visible = false;
     }
 }
