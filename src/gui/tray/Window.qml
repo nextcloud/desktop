@@ -109,6 +109,10 @@ Window {
         readonly property int unifiedSearchResultTextRightMargin: 16
         readonly property int unifiedSearchResulIconWidth: 24
         readonly property int unifiedSearchResulIconLeftMargin: 12
+        readonly property int unifiedSearchResulTitleFontSize: Style.topLinePixelSize
+        readonly property int unifiedSearchResulSublineFontSize: Style.subLinePixelSize
+        readonly property string unifiedSearchResulTitleColor: "black"
+        readonly property string unifiedSearchResulSublineColor: "grey"
 
         Accessible.role: Accessible.Grouping
         Accessible.name: qsTr("Nextcloud desktop main dialog")
@@ -570,8 +574,9 @@ Window {
             }
         }   // Rectangle trayWindowHeaderBackground
 
-        Rectangle {
-            id: trayWindowUnifiedSearchContainer
+        UnifiedSearchInputContainer {
+            id: trayWindowUnifiedSearchInputContainer
+            height: Style.trayWindowHeaderHeight
 
             anchors {
                 top: trayWindowHeaderBackground.bottom
@@ -579,139 +584,16 @@ Window {
                 right: trayWindowBackground.right
             }
 
-            height: Style.trayWindowHeaderHeight
-            color: "transparent"
+            text: unifiedSearchResultsModel.searchTerm
+            readOnly: !UserModel.currentUser.isConnected || unifiedSearchResultsModel.currentFetchMoreInProgressProviderId
+            isSearchInProgress: unifiedSearchResultsModel.isSearchInProgress
 
-            RowLayout {
-                id: trayWindowUnifiedSearchContainerLayout
-
-                spacing: 0
-                anchors.fill: parent
-
-                TextField {
-                    id: trayWindowUnifiedSearchTextField
-
-                    text: unifiedSearchResultsModel.searchTerm
-
-                    readOnly: !UserModel.currentUser.isConnected || unifiedSearchResultsModel.currentFetchMoreInProgressProviderId
-
-                    readonly property color textFieldIconsColor: Style.menuBorder
-
-                    readonly property int textFieldIconsOffset: 10
-
-                    readonly property double textFieldIconsScaleFactor: 0.6
-
-                    readonly property double textFieldBusyIndicatorScaleFactor: 0.75
-
-                    readonly property int textFieldHorizontalPaddingOffset: 14
-
-                    anchors.fill: parent
-                    anchors.margins: 10
-
-                    leftPadding: trayWindowUnifiedSearchTextFieldSearchIcon.width + trayWindowUnifiedSearchTextFieldSearchIcon.anchors.leftMargin + textFieldHorizontalPaddingOffset
-                    rightPadding: trayWindowUnifiedSearchTextFieldClearTextButton.width + trayWindowUnifiedSearchTextFieldClearTextButton.anchors.rightMargin + textFieldHorizontalPaddingOffset
-
-                    placeholderText: qsTr("Search files, messages, events...")
-
-                    selectByMouse: true
-
-                    background: Rectangle {
-                        radius: 5
-                        border.color: parent.activeFocus ? Style.ncBlue : Style.menuBorder
-                        border.width: 1
-                    }
-
-                    Image {
-                        id: trayWindowUnifiedSearchTextFieldSearchIcon
-
-                        anchors {
-                            left: parent.left
-                            leftMargin: parent.textFieldIconsOffset
-                            verticalCenter: parent.verticalCenter
-                        }
-
-                        visible: !unifiedSearchResultsModel.isSearchInProgress
-
-                        smooth: true;
-                        antialiasing: true
-                        mipmap: true
-
-                        source: "qrc:///client/theme/black/search.svg"
-                        sourceSize: Qt.size(parent.height * parent.textFieldIconsScaleFactor, parent.height * parent.textFieldIconsScaleFactor)
-
-                        ColorOverlay {
-                            anchors.fill: parent
-                            source: parent
-                            color: parent.parent.textFieldIconsColor
-                        }
-                    }
-
-                    BusyIndicator {
-                        id: trayWindowUnifiedSearchTextFieldIconInProgress
-                        running: visible
-                        visible: unifiedSearchResultsModel.isSearchInProgress
-                        anchors {
-                            left: parent.left
-                            leftMargin: parent.textFieldIconsOffset
-                            verticalCenter: parent.verticalCenter
-                        }
-                        width: parent.height * parent.textFieldBusyIndicatorScaleFactor
-                        height: parent.height * parent.textFieldBusyIndicatorScaleFactor
-                    }
-
-                    Image {
-                        id: trayWindowUnifiedSearchTextFieldClearTextButton
-
-                        anchors {
-                            right: parent.right
-                            rightMargin: parent.textFieldIconsOffset
-                            verticalCenter: parent.verticalCenter
-                        }
-
-                        smooth: true;
-                        antialiasing: true
-                        mipmap: true
-
-                        visible: parent.text
-
-                        source: "qrc:///client/theme/black/clear.svg"
-                        sourceSize: Qt.size(parent.height * parent.textFieldIconsScaleFactor, parent.height * parent.textFieldIconsScaleFactor)
-
-                        ColorOverlay {
-                            anchors.fill: parent
-                            source: parent
-                            color: parent.parent.textFieldIconsColor
-                        }
-
-                        MouseArea {
-                            id: trayWindowUnifiedSearchTextFieldClearTextButtonMouseArea
-
-                            anchors.fill: parent
-
-                            onClicked: {
-                                unifiedSearchResultsModel.setSearchTerm("")
-                            }
-                        }
-                    }
-
-                    RotationAnimator {
-                        target: trayWindowUnifiedSearchTextFieldIconInProgress
-                        running: trayWindowUnifiedSearchTextFieldIconInProgress.visible
-                        from: 0
-                        to: 360
-                        loops: Animation.Infinite
-                        duration: 1250
-                    }
-                    onTextEdited: {
-                        unifiedSearchResultsModel.setSearchTerm(text)
-                    }
-                }
-            }
+            onTextEdited: unifiedSearchResultsModel.setSearchTerm
         }
 
         ActivityList {
             visible: !unifiedSearchResultsListViewSkeleton.visible && !unifiedSearchResultNothingFound.visible && !unifiedSearchResultsErrorLabel.visible && !unifiedSearchResultsListView.visible && unifiedSearchResultsModel.searchTerm === ""
-            anchors.top: trayWindowUnifiedSearchContainer.bottom
+            anchors.top: trayWindowUnifiedSearchInputContainer.bottom
             anchors.left: trayWindowBackground.left
             anchors.right: trayWindowBackground.right
             anchors.bottom: trayWindowBackground.bottom
@@ -750,7 +632,7 @@ Window {
             visible: unifiedSearchResultsModel.errorString && !unifiedSearchResultsListView.visible && !unifiedSearchResultsModel.isSearchInProgress && !unifiedSearchResultsModel.currentFetchMoreInProgressProviderId
             text: unifiedSearchResultsModel.errorString
             color: "red"
-            anchors.top: trayWindowUnifiedSearchContainer.bottom
+            anchors.top: trayWindowUnifiedSearchInputContainer.bottom
             anchors.left: trayWindowBackground.left
             anchors.right: trayWindowBackground.right
             anchors.bottom: trayWindowBackground.bottom
@@ -760,7 +642,7 @@ Window {
         UnifiedSearchResultNothingFound {
             id: unifiedSearchResultNothingFound
             visible: false
-            anchors.top: trayWindowUnifiedSearchContainer.bottom
+            anchors.top: trayWindowUnifiedSearchInputContainer.bottom
             anchors.left: trayWindowBackground.left
             anchors.right: trayWindowBackground.right
 
@@ -772,7 +654,7 @@ Window {
         UnifiedSearchResultItemSkeletonContainer {
             id: unifiedSearchResultsListViewSkeleton
             visible: !unifiedSearchResultNothingFound.visible && !unifiedSearchResultsListView.visible && !unifiedSearchResultsModel.errorString && unifiedSearchResultsModel.searchTerm
-            anchors.top: trayWindowUnifiedSearchContainer.bottom
+            anchors.top: trayWindowUnifiedSearchInputContainer.bottom
             anchors.left: trayWindowBackground.left
             anchors.right: trayWindowBackground.right
             anchors.bottom: trayWindowBackground.bottom
@@ -781,11 +663,16 @@ Window {
             iconWidth: trayWindowBackground.unifiedSearchResulIconWidth
             iconLeftMargin: trayWindowBackground.unifiedSearchResulIconLeftMargin
             itemHeight: trayWindowBackground.unifiedSearchItemHeight
+            titleFontSize: trayWindowBackground.unifiedSearchResulTitleFontSize
+            sublineFontSize: trayWindowBackground.unifiedSearchResulSublineFontSize
+            titleColor: trayWindowBackground.unifiedSearchResulTitleColor
+            sublineColor: trayWindowBackground.unifiedSearchResulSublineColor
+            iconColor: "#afafaf"
         }
 
         ListView {
             id: unifiedSearchResultsListView
-            anchors.top: trayWindowUnifiedSearchContainer.bottom
+            anchors.top: trayWindowUnifiedSearchInputContainer.bottom
             anchors.left: trayWindowBackground.left
             anchors.right: trayWindowBackground.right
             anchors.bottom: trayWindowBackground.bottom
@@ -813,6 +700,10 @@ Window {
                 textRightMargin: trayWindowBackground.unifiedSearchResultTextRightMargin
                 iconWidth: trayWindowBackground.unifiedSearchResulIconWidth
                 iconLeftMargin: trayWindowBackground.unifiedSearchResulIconLeftMargin
+                titleFontSize: trayWindowBackground.unifiedSearchResulTitleFontSize
+                sublineFontSize: trayWindowBackground.unifiedSearchResulSublineFontSize
+                titleColor: trayWindowBackground.unifiedSearchResulTitleColor
+                sublineColor: trayWindowBackground.unifiedSearchResulSublineColor
             }
 
             section.property: "providerName"

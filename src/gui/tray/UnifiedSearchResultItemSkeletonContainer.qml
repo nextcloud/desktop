@@ -13,6 +13,11 @@ Column {
     property int iconWidth: 24
     property int iconLeftMargin: 12
     property int itemHeight: Style.trayWindowHeaderHeight
+    property int titleFontSize: Style.topLinePixelSize
+    property int sublineFontSize: Style.subLinePixelSize
+    property string titleColor: "black"
+    property string sublineColor: "grey"
+    property string iconColor: "#afafaf"
 
     Repeater {
         model: 10
@@ -21,9 +26,14 @@ Column {
             textRightMargin: unifiedSearchResultsListViewSkeletonColumn.textRightMargin
             iconWidth: unifiedSearchResultsListViewSkeletonColumn.iconWidth
             iconLeftMargin: unifiedSearchResultsListViewSkeletonColumn.iconLeftMargin
-            width: parent.width
-            height: itemHeight
+            width: unifiedSearchResultsListViewSkeletonColumn.width
+            height: unifiedSearchResultsListViewSkeletonColumn.itemHeight
             index: model.index
+            titleFontSize: unifiedSearchResultsListViewSkeletonColumn.titleFontSize
+            sublineFontSize: unifiedSearchResultsListViewSkeletonColumn.sublineFontSize
+            titleColor: unifiedSearchResultsListViewSkeletonColumn.titleColor
+            sublineColor: unifiedSearchResultsListViewSkeletonColumn.sublineColor
+            iconColor: unifiedSearchResultsListViewSkeletonColumn.iconColor
         }
     }
 

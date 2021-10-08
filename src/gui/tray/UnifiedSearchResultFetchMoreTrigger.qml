@@ -12,6 +12,10 @@ RowLayout {
 
     property bool isWihinViewPort: false
 
+    property int fontSize: Style.topLinePixelSize
+
+    property string textColor: "grey"
+
     Accessible.role: Accessible.ListItem
     Accessible.name: qsTr("Load more results")
     Accessible.onPressAction: unifiedSearchResultMouseArea.clicked()
@@ -29,8 +33,8 @@ RowLayout {
             verticalAlignment: Text.AlignVCenter
             width: parent.width
             height: parent.height
-            font.pixelSize: Style.topLinePixelSize
-            color: "grey"
+            font.pixelSize: unifiedSearchResultItemFetchMore.fontSize
+            color: unifiedSearchResultItemFetchMore.textColor
         }
 
         BusyIndicator {

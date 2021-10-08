@@ -13,6 +13,12 @@ MouseArea {
     property int iconWidth: 24
     property int iconLeftMargin: 12
 
+    property int titleFontSize: Style.topLinePixelSize
+    property int sublineFontSize: Style.subLinePixelSize
+
+    property string titleColor: "black"
+    property string sublineColor: "grey"
+
     readonly property bool isFetchMoreTrigger: model.typeAsString === "FetchMoreTrigger"
 
     property bool isFetchMoreInProgress: unifiedSearchResultsModel.currentFetchMoreInProgressProviderId === model.providerId
@@ -53,6 +59,10 @@ MouseArea {
             textRightMargin: unifiedSearchResultMouseArea.textRightMargin
             iconWidth: unifiedSearchResultMouseArea.iconWidth
             iconLeftMargin: unifiedSearchResultMouseArea.iconLeftMargin
+            titleFontSize: unifiedSearchResultMouseArea.titleFontSize
+            sublineFontSize: unifiedSearchResultMouseArea.sublineFontSize
+            titleColor: unifiedSearchResultMouseArea.titleColor
+            sublineColor: unifiedSearchResultMouseArea.sublineColor
         }
     }
 
@@ -63,6 +73,8 @@ MouseArea {
             width: unifiedSearchResultMouseArea.width
             height: unifiedSearchResultMouseArea.height
             isWihinViewPort: !unifiedSearchResultMouseArea.isPooled
+            fontSize: unifiedSearchResultMouseArea.titleFontSize
+            textColor: unifiedSearchResultMouseArea.sublineColor
         }
     }
 

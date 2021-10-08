@@ -20,6 +20,12 @@ RowLayout {
     property int iconWidth: 24
     property int iconLeftMargin: 12
 
+    property int titleFontSize: Style.topLinePixelSize
+    property int sublineFontSize: Style.subLinePixelSize
+
+    property string titleColor: "black"
+    property string sublineColor: "grey"
+
     Accessible.role: Accessible.ListItem
     Accessible.name: resultTitle
     Accessible.onPressAction: unifiedSearchResultMouseArea.clicked()
@@ -83,17 +89,18 @@ RowLayout {
             Layout.rightMargin: textRightMargin
             Layout.fillWidth: true
             elide: Text.ElideRight
-            font.pixelSize: Style.topLinePixelSize
-            color: "black"
+            font.pixelSize: unifiedSearchResultItemDetails.titleFontSize
+            color: unifiedSearchResultItemDetails.titleColor
         }
         Text {
             id: unifiedSearchResultTextSubline
             text: subline.replace(/[\r\n]+/g, " ")
             elide: Text.ElideRight
+            font.pixelSize: unifiedSearchResultItemDetails.sublineFontSize
             Layout.leftMargin: textLeftMargin
             Layout.rightMargin: textRightMargin
             Layout.fillWidth: true
-            color: "grey"
+            color: unifiedSearchResultItemDetails.sublineColor
         }
     }
 

@@ -13,6 +13,14 @@ RowLayout {
     property int iconWidth: 24
     property int iconLeftMargin: 12
 
+    property int titleFontSize: Style.topLinePixelSize
+    property int sublineFontSize: Style.subLinePixelSize
+
+    property string titleColor: "black"
+    property string sublineColor: "grey"
+
+    property string iconColor: "#afafaf"
+
     property int index: 0
 
     Accessible.role: Accessible.ListItem
@@ -25,7 +33,7 @@ RowLayout {
         Layout.preferredHeight: unifiedSearchResultSkeletonItemDetails.height
         Rectangle {
             id: unifiedSearchResultSkeletonThumbnail
-            color: "grey"
+            color: unifiedSearchResultSkeletonItemDetails.iconColor
             width:  unifiedSearchResultSkeletonItemDetails.iconWidth
             height:  unifiedSearchResultSkeletonItemDetails.iconWidth
             Layout.leftMargin: unifiedSearchResultSkeletonItemDetails.iconLeftMargin
@@ -39,8 +47,8 @@ RowLayout {
 
         Rectangle {
             id: unifiedSearchResultSkeletonTitleText
-            color: "grey"
-            height: Style.topLinePixelSize
+            color: unifiedSearchResultSkeletonItemDetails.titleColor
+            height: unifiedSearchResultSkeletonItemDetails.titleFontSize
             Layout.leftMargin: unifiedSearchResultSkeletonItemDetails.textLeftMargin
             Layout.rightMargin: unifiedSearchResultSkeletonItemDetails.textRightMargin
             Layout.fillWidth: true
@@ -48,8 +56,8 @@ RowLayout {
 
         Rectangle {
             id: unifiedSearchResultSkeletonTextSubline
-            color: "grey"
-            height: Style.subLinePixelSize
+            color: unifiedSearchResultSkeletonItemDetails.sublineColor
+            height: unifiedSearchResultSkeletonItemDetails.sublineFontSize
             Layout.leftMargin: unifiedSearchResultSkeletonItemDetails.textLeftMargin
             Layout.rightMargin: unifiedSearchResultSkeletonItemDetails.textRightMargin
             Layout.fillWidth: true

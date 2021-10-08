@@ -43,6 +43,7 @@ set(client_UI_SRCS
     tray/ActivityList.qml
     tray/Window.qml
     tray/UserLine.qml
+    tray/UnifiedSearchInputContainer.qml
 	tray/UnifiedSearchResultFetchMoreTrigger.qml
     tray/UnifiedSearchResultItem.qml
     tray/UnifiedSearchResultItemSkeleton.qml
