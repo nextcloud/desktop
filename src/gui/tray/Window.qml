@@ -711,7 +711,7 @@ Window {
         }
 
         ActivityList {
-            visible: !unifiedSearchResultsNoResultsContainer.visible && !unifiedSearchResultsErrorLabel.visible && !unifiedSearchResultsListView.visible && unifiedSearchResultsModel.searchTerm === ""
+            visible: !unifiedSearchResultsListViewSkeleton.visible && !unifiedSearchResultsNoResultsContainer.visible && !unifiedSearchResultsErrorLabel.visible && !unifiedSearchResultsListView.visible && unifiedSearchResultsModel.searchTerm === ""
             anchors.top: trayWindowUnifiedSearchContainer.bottom
             anchors.left: trayWindowBackground.left
             anchors.right: trayWindowBackground.right
@@ -760,12 +760,22 @@ Window {
         }
         UnifiedSearchResultNothingFound {
             id: unifiedSearchResultsNoResultsContainer
-            visible: !unifiedSearchResultsListView.visible && !unifiedSearchResultsModel.errorString && unifiedSearchResultsModel.searchTerm
+            //visible: !unifiedSearchResultsListView.visible && !unifiedSearchResultsModel.errorString && unifiedSearchResultsModel.searchTerm
+            visible: false
             anchors.top: trayWindowUnifiedSearchContainer.bottom
             anchors.left: trayWindowBackground.left
             anchors.right: trayWindowBackground.right
             searchTerm: unifiedSearchResultsModel.searchTerm
         }
+        UnifiedSearchResultItemSkeletonContainer {
+            id: unifiedSearchResultsListViewSkeleton
+            visible: !unifiedSearchResultsListView.visible && !unifiedSearchResultsModel.errorString && unifiedSearchResultsModel.searchTerm
+            anchors.top: trayWindowUnifiedSearchContainer.bottom
+            anchors.left: trayWindowBackground.left
+            anchors.right: trayWindowBackground.right
+            anchors.bottom: trayWindowBackground.bottom
+        }
+
         ListView {
             id: unifiedSearchResultsListView
             anchors.top: trayWindowUnifiedSearchContainer.bottom

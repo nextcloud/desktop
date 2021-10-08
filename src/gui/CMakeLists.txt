@@ -45,6 +45,8 @@ set(client_UI_SRCS
     tray/UserLine.qml
 	tray/UnifiedSearchResultFetchMoreTrigger.qml
     tray/UnifiedSearchResultItem.qml
+    tray/UnifiedSearchResultItemSkeleton.qml
+    tray/UnifiedSearchResultItemSkeletonContainer.qml
 	tray/UnifiedSearchResultListItem.qml
     tray/UnifiedSearchResultNothingFound.qml
 	tray/UnifiedSearchResultSectionItem.qml
