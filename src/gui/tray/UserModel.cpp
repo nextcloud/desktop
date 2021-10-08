@@ -1005,8 +1005,9 @@ ActivityListModel *UserModel::currentActivityModel()
 
 UnifiedSearchResultsListModel *UserModel::currentUnifiedSearchResultsModel()
 {
-    if (currentUserIndex() < 0 || currentUserIndex() >= _users.size())
+    if (currentUserIndex() < 0 || currentUserIndex() >= _users.size()) {
         return nullptr;
+    }
 
     return _users[currentUserIndex()]->getUnifiedSearchResultsListModel();
 }

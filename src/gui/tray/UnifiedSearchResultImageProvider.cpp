@@ -29,7 +29,7 @@ public:
     AsyncImageResponse(const QString &id, const QSize &requestedSize)
     {
         if (id.isEmpty()) {
-            emitFinished(QImage());
+            emitFinished({});
             return;
         }
 
@@ -37,7 +37,7 @@ public:
         _requestedImageSize = requestedSize;
 
         if (_requestedImageSize.width() == 0 || _requestedImageSize.height() == 0 || _imagePaths.isEmpty()) {
-            emitFinished(QImage());
+            emitFinished({});
         } else {
             processNextImage();
         }
@@ -61,7 +61,7 @@ private:
     {
         if (_index < 0 || _index >= _imagePaths.size()) {
             // no valid images in the list
-            emitFinished(QImage());
+            emitFinished({});
             return;
         }   
 
@@ -107,7 +107,7 @@ private:
                 }    
             }
 
-            emitFinished(QImage());
+            emitFinished({});
         }
     }
 

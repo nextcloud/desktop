@@ -114,9 +114,7 @@ Item {
 
                 anchors.fill: parent
 
-                onClicked: {
-                    trayWindowUnifiedSearchContainer.onTextEdited("")
-                }
+                onClicked: trayWindowUnifiedSearchContainer.onTextEdited("")
             }
         }
 
@@ -128,8 +126,6 @@ Item {
             loops: Animation.Infinite
             duration: 1250
         }
-        onTextEdited: {
-            trayWindowUnifiedSearchContainer.onTextEdited(text)
-        }
+        onTextEdited: trayWindowUnifiedSearchContainer.onTextEdited(text)
     }
 }

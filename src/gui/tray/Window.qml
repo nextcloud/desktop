@@ -649,6 +649,7 @@ Window {
             anchors.top: trayWindowUnifiedSearchInputContainer.bottom
             anchors.left: trayWindowBackground.left
             anchors.right: trayWindowBackground.right
+            anchors.topMargin: 10
 
             searchTerm: unifiedSearchResultsModel.searchTerm
             isSearchRunning: unifiedSearchResultsModel.isSearchInProgress
