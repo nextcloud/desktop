@@ -1,0 +1,39 @@
+diff --git a/src/libsync/vfs/cfapi/CMakeLists.txt b/src/libsync/vfs/cfapi/CMakeLists.txt
+index 5d7900711..e64dd50a2 100644
+--- a/src/libsync/vfs/cfapi/CMakeLists.txt
++++ b/src/libsync/vfs/cfapi/CMakeLists.txt
+@@ -25,7 +25,7 @@ if (WIN32)
+ 
+     target_include_directories("nextcloudsync_vfs_cfapi" BEFORE PUBLIC ${CMAKE_CURRENT_BINARY_DIR} INTERFACE ${CMAKE_BINARY_DIR})
+ 
+-    set(vfs_installdir "${PLUGINDIR}")
++    set(vfs_installdir "${PLUGIN_INSTALL_DIR}")
+ 
+     generate_export_header(nextcloudsync_vfs_cfapi
+         BASE_NAME nextcloudsync_vfs_cfapi
+diff --git a/src/libsync/vfs/suffix/CMakeLists.txt b/src/libsync/vfs/suffix/CMakeLists.txt
+index bec840ca2..022641746 100644
+--- a/src/libsync/vfs/suffix/CMakeLists.txt
++++ b/src/libsync/vfs/suffix/CMakeLists.txt
+@@ -26,7 +26,7 @@ if(APPLE)
+     # For being loadable when client run from install dir (after make macdeployqt)
+     set(vfs_installdir "${LIB_INSTALL_DIR}/../PlugIns")
+ else()
+-    set(vfs_installdir "${PLUGINDIR}")
++    set(vfs_installdir "${PLUGIN_INSTALL_DIR}")
+ endif()
+ 
+ install(TARGETS nextcloudsync_vfs_suffix
+diff --git a/src/libsync/vfs/xattr/CMakeLists.txt b/src/libsync/vfs/xattr/CMakeLists.txt
+index f87bd4f9c..02c1cdab1 100644
+--- a/src/libsync/vfs/xattr/CMakeLists.txt
++++ b/src/libsync/vfs/xattr/CMakeLists.txt
+@@ -34,7 +34,7 @@ if (LINUX)
+         # For being loadable when client run from install dir (after make macdeployqt)
+         set(vfs_installdir "${LIB_INSTALL_DIR}/../PlugIns")
+     else()
+-        set(vfs_installdir "${PLUGINDIR}")
++        set(vfs_installdir "${PLUGIN_INSTALL_DIR}")
+     endif()
+ 
+     generate_export_header(nextcloudsync_vfs_xattr
