@@ -1,3 +1,4 @@
 0001-fix-installationpath-of-dolphin-plugin.patch
 0003-use_system_buildflags.patch
 0004-sane-cmake.patch
+0007-vfs-plugin.patch
