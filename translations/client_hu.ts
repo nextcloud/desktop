@@ -2317,37 +2317,37 @@ Ahol a törlés engedélyezett, ott az elemek törölve lesznek, ha megakadályo
         <translation>Új fájlnév</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="71"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="85"/>
         <source>Rename file</source>
         <translation>Fájl átnevezése</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="73"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="87"/>
         <source>The file %1 could not be synced because the name contains characters which are not allowed on this system.</source>
         <translation>A(z) %1 fájlt nem sikerült szinkronizálni, mert a neve a rendszeren nem megengedett karaktereket tartalmaz.</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="74"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="88"/>
         <source>The following characters are not allowed on the system: * &quot; | &amp; ? , ; : \ / ~ &lt; &gt;</source>
         <translation>A következő karakterek nem engedélyezettek a rendszeren: * &quot; | &amp; ? , ; : \ / ~ &lt; &gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="105"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="119"/>
         <source>You don&apos;t have the permission to rename this file. Please ask the author of the file to rename it.</source>
         <translation>Nincs engedélye átnevezni ezt a fájlt. Kérje meg a fájl szerzőjét, hogy nevezze át.</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="130"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="144"/>
         <source>Filename contains illegal characters: %1</source>
         <translation>A fájlnév érvénytelen karaktereket tartalmaz: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="144"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="158"/>
         <source>Could not rename file. Please make sure you are connected to the server.</source>
         <translation>A fájl nem nevezhető át. Győződjön meg róla, hogy kapcsolódik-e a kiszolgálóhoz</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="155"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="169"/>
         <source>Cannot rename file because a file with the same name does already exist on the server. Please pick another name.</source>
         <translation>A fájl nem nevezhető át, mert létezik egy ugyanilyen nevű fájl a kiszolgálón. Válasszon másik nevet.</translation>
     </message>

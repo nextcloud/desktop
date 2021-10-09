@@ -2316,37 +2316,37 @@ Os itens em que a exclusão é permitida serão excluídos se impedirem a remoç
         <translation>Novo nome de arquivo </translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="71"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="85"/>
         <source>Rename file</source>
         <translation>Renomear arquivo </translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="73"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="87"/>
         <source>The file %1 could not be synced because the name contains characters which are not allowed on this system.</source>
         <translation>O arquivo %1 não pôde ser sincronizado porque o nome contém caracteres que não são permitidos neste sistema. </translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="74"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="88"/>
         <source>The following characters are not allowed on the system: * &quot; | &amp; ? , ; : \ / ~ &lt; &gt;</source>
         <translation>Os seguintes caracteres não são permitidos no sistema: * &quot;| &amp;?,;: \ / ~ &lt;&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="105"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="119"/>
         <source>You don&apos;t have the permission to rename this file. Please ask the author of the file to rename it.</source>
         <translation>Você não tem permissão para renomear este arquivo. Peça ao autor do arquivo para renomeá-lo. </translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="130"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="144"/>
         <source>Filename contains illegal characters: %1</source>
         <translation>O nome do arquivo contém caracteres ilegais: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="144"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="158"/>
         <source>Could not rename file. Please make sure you are connected to the server.</source>
         <translation>Não foi possível renomear o arquivo. Verifique se você está conectado ao servidor. </translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="155"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="169"/>
         <source>Cannot rename file because a file with the same name does already exist on the server. Please pick another name.</source>
         <translation>Não é possível renomear o arquivo porque já existe um arquivo com o mesmo nome no servidor. Escolha outro nome. </translation>
     </message>
