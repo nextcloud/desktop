@@ -21,8 +21,7 @@
 #include <QPainter>
 #include <QSvgRenderer>
 
-namespace OCC {
-
+namespace {
 class AsyncImageResponse : public QQuickImageResponse
 {
 public:
@@ -55,59 +54,66 @@ public:
     }
 
 private:
-    slots 
-    
     void processNextImage()
     {
         if (_index < 0 || _index >= _imagePaths.size()) {
-            // no valid images in the list
             emitFinished({});
             return;
-        }   
+        }
 
         if (_imagePaths.at(_index).startsWith(QStringLiteral(":/client"))) {
-            // return a local file
             emitFinished(QIcon(_imagePaths.at(_index)).pixmap(_requestedImageSize).toImage());
             return;
         }
 
-        if (const auto currentUser = UserModel::instance()->currentUser()) {
-            if (auto currentAccount = currentUser->account()) {
-                const QUrl iconUrl = QUrl(_imagePaths.at(_index));
+        if (OCC::UserModel::instance()->currentUser() && OCC::UserModel::instance()->currentUser()->account()) {
+            const auto currentAccount = OCC::UserModel::instance()->currentUser()->account();
+            const QUrl iconUrl = QUrl(_imagePaths.at(_index));
+            if (iconUrl.isValid() && !iconUrl.scheme().isEmpty()) {
                 // fetch the remote resource
-                if (iconUrl.isValid() && !iconUrl.scheme().isEmpty()) {
-                    const auto reply = currentAccount->sendRawRequest(QByteArrayLiteral("GET"), iconUrl);
-                    connect(reply, &QNetworkReply::finished, this, [this, reply]() {
-                        const QByteArray imageData = reply->readAll();
-                        // server returns "[]" for some some file previews (have no idea why), so, we use another image
-                        // from the list if available
-                        if (imageData.isEmpty() || imageData == QByteArrayLiteral("[]")) {
-                            processNextImage();
-                        } else {
-                            if (imageData.startsWith(QByteArrayLiteral("<svg"))) {
-                                // SVG image needs proper scaling, let's do it with QPainter and QSvgRenderer
-                                QSvgRenderer svgRenderer;
-                                if (svgRenderer.load(imageData)) {
-                                    QImage scaledSvg(_requestedImageSize, QImage::Format_ARGB32);
-                                    scaledSvg.fill("transparent");
-
-                                    QPainter painterForSvg(&scaledSvg);
-                                    svgRenderer.render(&painterForSvg);
-                                    emitFinished(scaledSvg);
-                                    return;
-                                }
-                            } else {
-                                emitFinished(QImage::fromData(imageData));
-                                return;
-                            }
-                        }
-                    });
-                    ++_index;
-                    return;
-                }    
+                const auto reply = currentAccount->sendRawRequest(QByteArrayLiteral("GET"), iconUrl);
+                connect(reply, &QNetworkReply::finished, this, &AsyncImageResponse::slotProcessNetworkReply);
+                ++_index;
+                return;
             }
 
             emitFinished({});
+        }
+    }
+
+private:
+    slots
+
+        void
+        slotProcessNetworkReply()
+    {
+        const auto reply = qobject_cast<QNetworkReply *>(sender());
+        if (!reply) {
+            emitFinished({});
+            return;
+        }
+        const QByteArray imageData = reply->readAll();
+        // server returns "[]" for some some file previews (have no idea why), so, we use another image
+        // from the list if available
+        if (imageData.isEmpty() || imageData == QByteArrayLiteral("[]")) {
+            processNextImage();
+        } else {
+            if (imageData.startsWith(QByteArrayLiteral("<svg"))) {
+                // SVG image needs proper scaling, let's do it with QPainter and QSvgRenderer
+                QSvgRenderer svgRenderer;
+                if (svgRenderer.load(imageData)) {
+                    QImage scaledSvg(_requestedImageSize, QImage::Format_ARGB32);
+                    scaledSvg.fill("transparent");
+
+                    QPainter painterForSvg(&scaledSvg);
+                    svgRenderer.render(&painterForSvg);
+                    emitFinished(scaledSvg);
+                    return;
+                }
+            } else {
+                emitFinished(QImage::fromData(imageData));
+                return;
+            }
         }
     }
 
@@ -117,6 +123,9 @@ private:
     QSize _requestedImageSize;
     int _index = 0;
 };
+}
+
+namespace OCC {
 
 QQuickImageResponse *UnifiedSearchResultImageProvider::requestImageResponse(const QString &id, const QSize &requestedSize)
 {
