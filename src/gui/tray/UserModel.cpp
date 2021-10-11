@@ -586,7 +586,7 @@ ActivityListModel *User::getActivityModel()
     return _activityModel;
 }
 
-UnifiedSearchResultsListModel *User::getUnifiedSearchResultsListModel()
+UnifiedSearchResultsListModel *User::unifiedSearchResultsListModel()
 {
     return _unifiedSearchResultsModel;
 }
@@ -1009,7 +1009,7 @@ UnifiedSearchResultsListModel *UserModel::currentUnifiedSearchResultsModel()
         return nullptr;
     }
 
-    return _users[currentUserIndex()]->getUnifiedSearchResultsListModel();
+    return _users[currentUserIndex()]->unifiedSearchResultsListModel();
 }
 
 void UserModel::fetchCurrentActivityModel()

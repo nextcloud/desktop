@@ -591,7 +591,6 @@ Window {
             text: unifiedSearchResultsModel.searchTerm
             readOnly: !UserModel.currentUser.isConnected || unifiedSearchResultsModel.currentFetchMoreInProgressProviderId
             isSearchInProgress: unifiedSearchResultsModel.isSearchInProgress
-
             onTextEdited: unifiedSearchResultsModel.setSearchTerm
         }
 

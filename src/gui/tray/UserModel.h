@@ -43,7 +43,7 @@ public:
     void setCurrentUser(const bool &isCurrent);
     Folder *getFolder() const;
     ActivityListModel *getActivityModel();
-    UnifiedSearchResultsListModel *getUnifiedSearchResultsListModel();
+    UnifiedSearchResultsListModel *unifiedSearchResultsListModel();
     void openLocalFolder();
     QString name() const;
     QString server(bool shortened = true) const;

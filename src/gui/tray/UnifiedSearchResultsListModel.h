@@ -43,9 +43,8 @@ class UnifiedSearchResultsListModel : public QAbstractListModel
     Q_PROPERTY(QString errorString MEMBER _errorString NOTIFY errorStringChanged)
     Q_PROPERTY(QString searchTerm MEMBER _searchTerm NOTIFY searchTermChanged)
 
-    class UnifiedSearchProvider
+    struct UnifiedSearchProvider
     {
-    public:
         QString _id;
         QString _name;
         qint32 _cursor = -1; // current pagination value

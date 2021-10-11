@@ -26,7 +26,7 @@
 #include <QDesktopServices>
 
 namespace {
-static QString imagePlaceholderUrlForProviderId(const QString &providerId)
+QString imagePlaceholderUrlForProviderId(const QString &providerId)
 {
     if (providerId.contains(QStringLiteral("message"), Qt::CaseInsensitive)
         || providerId.contains(QStringLiteral("talk"), Qt::CaseInsensitive)) {
@@ -46,7 +46,7 @@ static QString imagePlaceholderUrlForProviderId(const QString &providerId)
     return QStringLiteral("qrc:///client/theme/change.svg");
 }
 
-static QString iconUrlForDefaultIconName(const QString &defaultIconName)
+QString iconUrlForDefaultIconName(const QString &defaultIconName)
 {
     const QUrl urlForIcon(defaultIconName);
 
@@ -90,7 +90,7 @@ static QString iconUrlForDefaultIconName(const QString &defaultIconName)
     return QStringLiteral(":/client/theme/change.svg");
 }
 
-static QString iconsFromThumbnailAndFallbackIcon(QString thumbnailUrl, QString fallackIcon, QUrl serverUrl)
+QString iconsFromThumbnailAndFallbackIcon(QString thumbnailUrl, QString fallackIcon, QUrl serverUrl)
 {
     if (thumbnailUrl.isEmpty() && fallackIcon.isEmpty()) {
         return {};

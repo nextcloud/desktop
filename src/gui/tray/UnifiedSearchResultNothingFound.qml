@@ -1,9 +1,8 @@
-import QtQml 2.12
+import QtQml 2.15
 import QtQuick 2.15
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.2
 import Style 1.0
-import QtGraphicalEffects 1.0
 
 ColumnLayout {
     id: unifiedSearchResultNothingFoundContainer
