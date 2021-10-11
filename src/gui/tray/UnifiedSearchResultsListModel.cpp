@@ -257,7 +257,7 @@ void UnifiedSearchResultsListModel::setSearchTerm(const QString &term)
     }
 
     if (!_searchTerm.isEmpty()) {
-        _unifiedSearchTextEditingFinishedTimer.setInterval(searchStartDelay());
+        _unifiedSearchTextEditingFinishedTimer.setInterval(searchTermEditingFinishedSearchStartDelay);
         connect(&_unifiedSearchTextEditingFinishedTimer, &QTimer::timeout, this,
             &UnifiedSearchResultsListModel::slotSearchTermEditingFinished);
         _unifiedSearchTextEditingFinishedTimer.start();
@@ -676,11 +676,6 @@ void UnifiedSearchResultsListModel::removeFetchMoreTrigger(const QString &provid
             endRemoveRows();
         }
     }
-}
-
-int UnifiedSearchResultsListModel::searchStartDelay()
-{
-    return searchTermEditingFinishedSearchStartDelay;
 }
 
 }

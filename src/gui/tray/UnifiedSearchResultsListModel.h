@@ -84,8 +84,6 @@ public:
     QString errorString() const;
     QString currentFetchMoreInProgressProviderId() const;
 
-    static int searchStartDelay();
-
 protected:
     QHash<int, QByteArray> roleNames() const override;
 

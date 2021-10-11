@@ -13,9 +13,9 @@
  */
 
 #include "gui/tray/UnifiedSearchResultsListModel.h"
+
 #include "account.h"
 #include "accountstate.h"
-#include "testhelper.h"
 #include "syncenginetestutils.h"
 
 #include <QAbstractItemModelTester>
@@ -36,12 +36,6 @@ public:
     FakeDesktopServicesUrlHandler(QObject *parent = nullptr)
         : QObject(parent)
     {}
-
-public slots :
-    void slotResultClicked(const QUrl &url)
-    { 
-        emit resultClicked(url);
-    }
 
 public:
 signals:
@@ -74,6 +68,10 @@ static const QVector<FakeProvider> fakeProvidersInitInfo = {
 
 static QByteArray fake404Response = R"(
 {"ocs":{"meta":{"status":"failure","statuscode":404,"message":"Invalid query, please check the syntax. API specifications are here: http:\/\/www.freedesktop.org\/wiki\/Specifications\/open-collaboration-services.\n"},"data":[]}}
+)";
+
+static QByteArray fake400Response = R"(
+{"ocs":{"meta":{"status":"failure","statuscode":400,"message":"Parameter is incorrect.\n"},"data":[]}}
 )";
 
 static QByteArray fake500Response = R"(
@@ -144,7 +142,7 @@ public:
         initSearchResultsData();
     }
 
-    // initialize the JSON response containing the fake list of providers and their properies
+    // initialize the JSON response containing the fake list of providers and their properties
     void initProvidersResponse()
     {
         QList<QVariant> providersList;
@@ -174,8 +172,7 @@ public:
             providerData._id = fakeProvider._id;
             providerData._name = fakeProvider._name;
             providerData._order = fakeProvider._order;
-            providerData._cursor = 0;
-            if (fakeProvider._numItemsToInsert > cursorStep) {
+            if (fakeProvider._numItemsToInsert > pageSize) {
                 providerData._isPaginated = true;
             }
             for (quint32 i = 0; i < fakeProvider._numItemsToInsert; ++i) {
@@ -185,13 +182,6 @@ public:
                             + QStringLiteral(" already. But, let's have a follow up tomorrow afternoon.")),
                         "http://example.de/call/abcde12345#message_12345", QStringLiteral("icon-talk"), true});
             }
-        }
-    }
-
-    void resetState()
-    {
-        for (auto &provider : _searchResultsData) {
-            provider._cursor = 0;
         }
     }
 
@@ -229,9 +219,9 @@ public:
             return results;
         }
 
-        const int n = cursor + cursorStep > provider._results.size()
+        const int n = cursor + pageSize > provider._results.size()
             ? provider._results.size() - cursor
-            : cursor + cursorStep;
+            : cursor + pageSize;
 
         for (int i = cursor; i < n; ++i) {
             results.push_back(provider._results[i]);
@@ -252,7 +242,7 @@ public:
 
         if (searchTerm == QStringLiteral("[empty]")) {
             const QVariantMap dataMap = {{QStringLiteral("name"), _searchResultsData[providerId]._name},
-                {QStringLiteral("isPaginated"), false}, {QStringLiteral("cursor"), _searchResultsData[providerId]._cursor},
+                {QStringLiteral("isPaginated"), false}, {QStringLiteral("cursor"), 0},
                 {QStringLiteral("entries"), QVariantList{}}};
 
             const QVariantMap ocsMap = {{QStringLiteral("meta"), _metaSuccess}, {QStringLiteral("data"), dataMap}};
@@ -261,11 +251,13 @@ public:
                 .toJson(QJsonDocument::Compact);
         }
 
-        _searchResultsData[providerId]._cursor += cursorStep;
+        const auto provider = _searchResultsData.value(providerId, Provider());
+
+        const auto nextCursor = cursor + pageSize < provider._results.size() ? cursor + pageSize : 0;
 
         const QVariantMap dataMap = {{QStringLiteral("name"), _searchResultsData[providerId]._name},
             {QStringLiteral("isPaginated"), _searchResultsData[providerId]._isPaginated},
-            {QStringLiteral("cursor"), _searchResultsData[providerId]._cursor},
+            {QStringLiteral("cursor"), nextCursor},
             {QStringLiteral("entries"), resultsForProvider(providerId, cursor)}};
 
         const QVariantMap ocsMap = {{QStringLiteral("meta"), _metaSuccess}, {QStringLiteral("data"), dataMap}};
@@ -277,31 +269,10 @@ public:
 
     const Provider &providerInfo(const QString &providerId) const { return _searchResultsData[providerId]; }
 
-    // returs how many elements the model is expected to have incluing Fetch More elements
-    // (if pagination is not yet done), based on current cursor values
-    int numSearhResultsWithFetchMoreElements() const
-    {
-        int total = 0;
-        for (const auto &provider : _searchResultsData) {
-            if (provider._results.size() - provider._cursor > 0) {
-                total += provider._cursor;
-            } else {
-                total += provider._results.size();
-            }
-
-            // 1 Fetch More element if there are still results available beyond cursor
-            if (provider._results.size() - provider._cursor > 0) {
-                total += 1;
-            }
-        }
-
-        return total;
-    }
-
 private:
     static FakeSearchResultsStorage *_instance;
 
-    static const int cursorStep = 5;
+    static const int pageSize = 5;
 
     QMap<QString, Provider> _searchResultsData;
 
@@ -351,30 +322,26 @@ private slots:
             const auto searchTerm = urlQuery.queryItemValue(QStringLiteral("term"));
             const auto path = req.url().path();
 
-            const auto searchForProviderPath = QStringLiteral("/ocs/v2.php/search/providers/");
             if (!req.url().toString().startsWith(accountState->account()->url().toString())) {
                 reply = new FakeErrorReply(op, req, this, 404, fake404Response);
             }
             if (format != QStringLiteral("json")) {
-                reply = new FakeErrorReply(op, req, this, 404, QByteArrayLiteral(""));
+                reply = new FakeErrorReply(op, req, this, 400, fake400Response);
             }
 
-            if (path == QStringLiteral("/ocs/v2.php/search/providers")) {
-                auto FakeSearchResultsStorage = FakeSearchResultsStorage::instance();
-                reply = new FakePayloadReply(op, req, FakeSearchResultsStorage->fakeProvidersResponseJson(), fakeQnam.data());
-            } else if (path.startsWith(QStringLiteral("/ocs/v2.php/search/providers/")) && !searchTerm.isEmpty()) {
-                const auto pathSplit = path.split(QLatin1Char('/'), Qt::SkipEmptyParts);
+            // handle fetch of providers list
+            if (path.startsWith(QStringLiteral("/ocs/v2.php/search/providers")) && searchTerm.isEmpty()) {
+                reply = new FakePayloadReply(op, req,
+                    FakeSearchResultsStorage::instance()->fakeProvidersResponseJson(), fakeQnam.data());
+            // handle search for provider
+            } else if (path.startsWith(QStringLiteral("/ocs/v2.php/search/providers")) && !searchTerm.isEmpty()) {
+                const auto pathSplit = path.mid(QString(QStringLiteral("/ocs/v2.php/search/providers")).size())
+                                           .split(QLatin1Char('/'), Qt::SkipEmptyParts);
 
-                if (pathSplit.contains(QStringLiteral("search"))) {
-                    const auto inexOfProviderId = pathSplit.indexOf(QStringLiteral("providers")) + 1;
-                    if (inexOfProviderId >= 0 && inexOfProviderId < pathSplit.size()) {
-                        const auto providerId = pathSplit.at(pathSplit.indexOf(QStringLiteral("providers")) + 1);
-                        if (!providerId.isEmpty()) {
-                            auto FakeSearchResultsStorage = FakeSearchResultsStorage::instance();
-                            reply = new FakePayloadReply(op, req, FakeSearchResultsStorage->queryProvider(providerId, searchTerm, cursor),
-                                    searchResultsReplyDelay, fakeQnam.data());
-                        }
-                    }
+                if (!pathSplit.isEmpty() && path.contains(pathSplit.first())) {
+                    reply = new FakePayloadReply(op, req,
+                        FakeSearchResultsStorage::instance()->queryProvider(pathSplit.first(), searchTerm, cursor),
+                        searchResultsReplyDelay, fakeQnam.data());
                 }
             }
 
@@ -393,9 +360,6 @@ private slots:
     }
     void testSetSearchTermStartStopSearch()
     {
-        // always reset FakeSearchResultsStorage state
-        FakeSearchResultsStorage::instance()->resetState();
-
         // make sure the model is empty
         model->setSearchTerm(QStringLiteral(""));
         QVERIFY(model->rowCount() == 0);
@@ -418,9 +382,8 @@ private slots:
         
         // #4 test that model has started the search after specific delay
         QSignalSpy searchInProgressChanged(model.data(), &OCC::UnifiedSearchResultsListModel::isSearchInProgressChanged);
-        // (UnifiedSearchResultsListModel's internal delay + FakePayloadReply::defaultDelay + searchResultsReplyDelay to
-        // allow search jobs to get created within the model)
-        QTest::qWait(OCC::UnifiedSearchResultsListModel::searchStartDelay() + FakePayloadReply::defaultDelay + searchResultsReplyDelay);
+        // allow search jobs to get created within the model
+        QVERIFY(searchInProgressChanged.wait());
         QCOMPARE(searchInProgressChanged.count(), 1);
         QVERIFY(model->isSearchInProgress());
 
@@ -431,9 +394,6 @@ private slots:
 
     void testSetSearchTermResultsFound()
     {
-        // always reset FakeSearchResultsStorage state
-        FakeSearchResultsStorage::instance()->resetState();
-
         // make sure the model is empty
         model->setSearchTerm(QStringLiteral(""));
         QVERIFY(model->rowCount() == 0);
@@ -444,76 +404,22 @@ private slots:
         QSignalSpy searchInProgressChanged(
             model.data(), &OCC::UnifiedSearchResultsListModel::isSearchInProgressChanged);
 
-        QTest::qWait(OCC::UnifiedSearchResultsListModel::searchStartDelay() + FakePayloadReply::defaultDelay
-            + searchResultsReplyDelay);
+        QVERIFY(searchInProgressChanged.wait());
 
-        
         // make sure search has started
         QCOMPARE(searchInProgressChanged.count(), 1);
         QVERIFY(model->isSearchInProgress());
 
-        while (model->isSearchInProgress()) {
-            QTest::qWait(100);
-        }
+        QVERIFY(searchInProgressChanged.wait());
 
         // make sure search has finished
         QVERIFY(!model->isSearchInProgress());
 
         QVERIFY(model->rowCount() > 0);
-
-        QCOMPARE(model->rowCount(), FakeSearchResultsStorage::instance()->numSearhResultsWithFetchMoreElements());
-
-        int cursorRequested = -1;
-
-        QSignalSpy currentFetchMoreInProgressProviderIdChanged(model.data(), &OCC::UnifiedSearchResultsListModel::currentFetchMoreInProgressProviderIdChanged);
-        QSignalSpy rowsInserted(model.data(), &OCC::UnifiedSearchResultsListModel::rowsInserted);
-        for (int i = 0; i < model->rowCount(); ++i) {
-            const auto type = model->data(model->index(i), OCC::UnifiedSearchResultsListModel::DataRole::TypeRole);
-
-            if (type == OCC::UnifiedSearchResult::Type::FetchMoreTrigger) {
-                const auto providerId = model->data(model->index(i), OCC::UnifiedSearchResultsListModel::DataRole::ProviderIdRole).toString();
-                cursorRequested = FakeSearchResultsStorage::instance()->providerInfo(providerId)._cursor;
-                model->fetchMoreTriggerClicked(providerId);
-                break;
-            }
-        }
-
-        QCOMPARE(currentFetchMoreInProgressProviderIdChanged.count(), 1);
-        QVERIFY(!model->currentFetchMoreInProgressProviderId().isEmpty());
-
-        const auto providerId = model->currentFetchMoreInProgressProviderId();
-
-        while (!model->currentFetchMoreInProgressProviderId().isEmpty()) {
-            QTest::qWait(100);
-        }
-
-        const auto expectedResultsInserted = FakeSearchResultsStorage::instance()->resultsForProviderAsVector(providerId, cursorRequested);
-
-        QCOMPARE(rowsInserted.count(), 1);
-
-        const auto arguments = rowsInserted.takeFirst();
-
-        const auto first = arguments.at(0).toInt();
-        const auto last = arguments.at(1).toInt();
-
-        QCOMPARE(expectedResultsInserted.size(), last - first);
-
-        for (int i = 0; i < expectedResultsInserted.size(); ++i) {
-            const auto &expectedResult = expectedResultsInserted[i];
-
-            const auto modelRowTitle = model->data(model->index(first + i), OCC::UnifiedSearchResultsListModel::DataRole::TitleRole).toString();
-            const auto modelRowSubline = model->data(model->index(first + i), OCC::UnifiedSearchResultsListModel::DataRole::SublineRole).toString();
-
-            QCOMPARE(expectedResult._title, modelRowTitle);
-            QCOMPARE(expectedResult._subline, modelRowSubline);
-        }
     }
 
     void testSetSearchTermResultsNotFound()
     {
-        // always reset FakeSearchResultsStorage state
-        FakeSearchResultsStorage::instance()->resetState();
-
         // make sure the model is empty
         model->setSearchTerm(QStringLiteral(""));
         QVERIFY(model->rowCount() == 0);
@@ -524,17 +430,13 @@ private slots:
         QSignalSpy searchInProgressChanged(
             model.data(), &OCC::UnifiedSearchResultsListModel::isSearchInProgressChanged);
 
-        QTest::qWait(OCC::UnifiedSearchResultsListModel::searchStartDelay() + FakePayloadReply::defaultDelay
-            + searchResultsReplyDelay);
-
+        QVERIFY(searchInProgressChanged.wait());
 
         // make sure search has started
         QCOMPARE(searchInProgressChanged.count(), 1);
         QVERIFY(model->isSearchInProgress());
 
-        while (model->isSearchInProgress()) {
-            QTest::qWait(100);
-        }
+        QVERIFY(searchInProgressChanged.wait());
 
         // make sure search has finished
         QVERIFY(!model->isSearchInProgress());
@@ -542,11 +444,70 @@ private slots:
         QVERIFY(model->rowCount() == 0);
     }
 
+    void testFetchMoreClicked()
+    {
+        // make sure the model is empty
+        model->setSearchTerm(QStringLiteral(""));
+        QVERIFY(model->rowCount() == 0);
+
+        QSignalSpy searchInProgressChanged(
+            model.data(), &OCC::UnifiedSearchResultsListModel::isSearchInProgressChanged);
+
+        // test that search term gets set, search gets started and enough results get returned
+        model->setSearchTerm(model->searchTerm() + QStringLiteral("whatever"));
+
+        QVERIFY(searchInProgressChanged.wait());
+
+        // make sure search has started
+        QVERIFY(model->isSearchInProgress());
+
+        QVERIFY(searchInProgressChanged.wait());
+
+        // make sure search has finished
+        QVERIFY(!model->isSearchInProgress());
+
+        const auto numRowsInModelPrev = model->rowCount();
+
+        // test fetch more results
+        QSignalSpy currentFetchMoreInProgressProviderIdChanged(
+            model.data(), &OCC::UnifiedSearchResultsListModel::currentFetchMoreInProgressProviderIdChanged);
+        QSignalSpy rowsInserted(model.data(), &OCC::UnifiedSearchResultsListModel::rowsInserted);
+        for (int i = 0; i < model->rowCount(); ++i) {
+            const auto type = model->data(model->index(i), OCC::UnifiedSearchResultsListModel::DataRole::TypeRole);
+
+            if (type == OCC::UnifiedSearchResult::Type::FetchMoreTrigger) {
+                const auto providerId =
+                    model->data(model->index(i), OCC::UnifiedSearchResultsListModel::DataRole::ProviderIdRole)
+                        .toString();
+                model->fetchMoreTriggerClicked(providerId);
+                break;
+            }
+        }
+
+        // make sure the currentFetchMoreInProgressProviderId was set back and forth and correct number fows has been inserted
+        QCOMPARE(currentFetchMoreInProgressProviderIdChanged.count(), 1);
+        QVERIFY(!model->currentFetchMoreInProgressProviderId().isEmpty());
+
+        QVERIFY(currentFetchMoreInProgressProviderIdChanged.wait());
+
+        QVERIFY(model->currentFetchMoreInProgressProviderId().isEmpty());
+
+        QCOMPARE(rowsInserted.count(), 1);
+
+        const auto arguments = rowsInserted.takeFirst();
+
+        QVERIFY(arguments.size() > 0);
+
+        const auto first = arguments.at(0).toInt();
+        const auto last = arguments.at(1).toInt();
+
+        const int numInsertedExpected = last - first;
+
+        QCOMPARE(model->rowCount() - numRowsInModelPrev, numInsertedExpected);
+    }
+
     void testSearchResultlicked()
     {
-        // always reset FakeSearchResultsStorage state
-        FakeSearchResultsStorage::instance()->resetState();
-
         // make sure the model is empty
         model->setSearchTerm(QStringLiteral(""));
         QVERIFY(model->rowCount() == 0);
@@ -557,123 +518,78 @@ private slots:
         QSignalSpy searchInProgressChanged(
             model.data(), &OCC::UnifiedSearchResultsListModel::isSearchInProgressChanged);
 
-        QTest::qWait(OCC::UnifiedSearchResultsListModel::searchStartDelay() + FakePayloadReply::defaultDelay
-            + searchResultsReplyDelay);
-
+        QVERIFY(searchInProgressChanged.wait());
 
         // make sure search has started
         QCOMPARE(searchInProgressChanged.count(), 1);
         QVERIFY(model->isSearchInProgress());
 
-        while (model->isSearchInProgress()) {
-            QTest::qWait(100);
-        }
+        QVERIFY(searchInProgressChanged.wait());
 
-        // make sure search has finished
+        // make sure search has finished and some results has been received
         QVERIFY(!model->isSearchInProgress());
 
         QVERIFY(model->rowCount() != 0);
 
-        QDesktopServices::setUrlHandler("http", fakeDesktopServicesUrlHandler.data(), "slotResultClicked");
-        QDesktopServices::setUrlHandler("https", fakeDesktopServicesUrlHandler.data(), "slotResultClicked");
+        QDesktopServices::setUrlHandler("http", fakeDesktopServicesUrlHandler.data(), "resultClicked");
+        QDesktopServices::setUrlHandler("https", fakeDesktopServicesUrlHandler.data(), "resultClicked");
 
         QSignalSpy resultClicked(fakeDesktopServicesUrlHandler.data(), &FakeDesktopServicesUrlHandler::resultClicked);
+ 
+        //  test click on a result item
+        QString urlForClickedResult;
 
-        QString fileOpenClickedUrl;
+        for (int i = 0; i < model->rowCount(); ++i) {
+            const auto type = model->data(model->index(i), OCC::UnifiedSearchResultsListModel::DataRole::TypeRole);
 
-        // #1 test click to open a local file URL
-        {
-            for (int i = 0; i < model->rowCount(); ++i) {
-                const auto type = model->data(model->index(i), OCC::UnifiedSearchResultsListModel::DataRole::TypeRole);
+            if (type == OCC::UnifiedSearchResult::Type::Default) {
+                const auto providerId =
+                    model->data(model->index(i), OCC::UnifiedSearchResultsListModel::DataRole::ProviderIdRole)
+                        .toString();
+                urlForClickedResult = model->data(model->index(i), OCC::UnifiedSearchResultsListModel::DataRole::ResourceUrlRole).toString();
 
-                if (type == OCC::UnifiedSearchResult::Type::Default) {
-                    const auto providerId =
-                        model->data(model->index(i), OCC::UnifiedSearchResultsListModel::DataRole::ProviderIdRole)
-                            .toString();
-                    const auto resourceUrl =
-                        model->data(model->index(i), OCC::UnifiedSearchResultsListModel::DataRole::ResourceUrlRole)
-                            .toString();
-                    if (providerId == QStringLiteral("files")) {
-                        fileOpenClickedUrl = resourceUrl;
-                        model->resultClicked(providerId, QUrl(resourceUrl));
-                        break;
-                    }
+                if (!providerId.isEmpty() && !urlForClickedResult.isEmpty()) {
+                    model->resultClicked(providerId, QUrl(urlForClickedResult));
+                    break;
                 }
             }
-
-            QCOMPARE(resultClicked.count(), 1);
-
-            const auto arguments = resultClicked.takeFirst();
-
-            const auto first = arguments.at(0).toString();
-
-            QCOMPARE(first, fileOpenClickedUrl);
         }
 
-        // #2 test click to open a remote resource URL
-        {
-            resultClicked.clear();
-            fileOpenClickedUrl.clear();
+        QCOMPARE(resultClicked.count(), 1);
 
-            for (int i = 0; i < model->rowCount(); ++i) {
-                const auto type = model->data(model->index(i), OCC::UnifiedSearchResultsListModel::DataRole::TypeRole);
+        const auto arguments = resultClicked.takeFirst();
 
-                if (type == OCC::UnifiedSearchResult::Type::Default) {
-                    const auto providerId =
-                        model->data(model->index(i), OCC::UnifiedSearchResultsListModel::DataRole::ProviderIdRole)
-                            .toString();
-                    const auto resourceUrl =
-                        model->data(model->index(i), OCC::UnifiedSearchResultsListModel::DataRole::ResourceUrlRole)
-                            .toString();
-                    if (providerId == QStringLiteral("mail")) {
-                        fileOpenClickedUrl = resourceUrl;
-                        model->resultClicked(providerId, QUrl(resourceUrl));
-                        break;
-                    }
-                }
-            }
+        const auto urlOpenTriggeredViaDesktopServices = arguments.at(0).toString();
 
-            QCOMPARE(resultClicked.count(), 1);
-
-            const auto arguments = resultClicked.takeFirst();
-
-            const auto first = arguments.at(0).toString();
-
-            QCOMPARE(first, fileOpenClickedUrl);
-        }
+        QCOMPARE(urlOpenTriggeredViaDesktopServices, urlForClickedResult);
     }
 
     void testSetSearchTermResultsError()
     {
-        // always reset FakeSearchResultsStorage state
-        FakeSearchResultsStorage::instance()->resetState();
-
         // make sure the model is empty
         model->setSearchTerm(QStringLiteral(""));
         QVERIFY(model->rowCount() == 0);
 
-        // test that search term gets set, search gets started and enough results get returned
-        model->setSearchTerm(model->searchTerm() + QStringLiteral("[HTTP500]"));
-
+        QSignalSpy errorStringChanged(model.data(), &OCC::UnifiedSearchResultsListModel::errorStringChanged);
         QSignalSpy searchInProgressChanged(
             model.data(), &OCC::UnifiedSearchResultsListModel::isSearchInProgressChanged);
 
-        QTest::qWait(OCC::UnifiedSearchResultsListModel::searchStartDelay() + FakePayloadReply::defaultDelay
-            + searchResultsReplyDelay);
+        model->setSearchTerm(model->searchTerm() + QStringLiteral("[HTTP500]"));
 
+        QVERIFY(searchInProgressChanged.wait());
 
         // make sure search has started
-        QCOMPARE(searchInProgressChanged.count(), 1);
         QVERIFY(model->isSearchInProgress());
 
-        while (model->isSearchInProgress()) {
-            QTest::qWait(100);
-        }
+        QVERIFY(searchInProgressChanged.wait());
 
         // make sure search has finished
         QVERIFY(!model->isSearchInProgress());
 
+        // make sure the model is empty and an error string has been set
         QVERIFY(model->rowCount() == 0);
+
+        QVERIFY(errorStringChanged.count() > 0);
 
         QVERIFY(!model->errorString().isEmpty());
     }
