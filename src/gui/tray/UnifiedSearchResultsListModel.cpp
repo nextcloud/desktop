@@ -90,55 +90,74 @@ QString iconUrlForDefaultIconName(const QString &defaultIconName)
     return QStringLiteral(":/client/theme/change.svg");
 }
 
-QString iconsFromThumbnailAndFallbackIcon(QString thumbnailUrl, QString fallackIcon, QUrl serverUrl)
+const QString generateUrlForThumbnail(const QString &thumbnailUrl, const QUrl &serverUrl)
+{
+    QUrl serverUrlCopy = serverUrl;
+    QString thumbnailUrlCopy = thumbnailUrl;
+
+    if (thumbnailUrlCopy.startsWith(QLatin1Char('/')) || thumbnailUrlCopy.startsWith(QLatin1Char('\\'))) {
+        // relative image resource URL, just needs some concatenation with current server URL
+        // some icons may contain parameters after (?)
+        const QStringList thumbnailUrlCopySplitted = thumbnailUrlCopy.contains(QLatin1Char('?'))
+            ? thumbnailUrlCopy.split(QLatin1Char('?'), Qt::SkipEmptyParts)
+            : QStringList{thumbnailUrlCopy};
+        Q_ASSERT(!thumbnailUrlCopySplitted.isEmpty());
+        serverUrlCopy.setPath(thumbnailUrlCopySplitted[0]);
+        thumbnailUrlCopy = serverUrlCopy.toString();
+        if (thumbnailUrlCopySplitted.size() > 1) {
+            thumbnailUrlCopy += QLatin1Char('?') + thumbnailUrlCopySplitted[1];
+        }
+    }
+
+    return thumbnailUrlCopy;
+}
+
+const QString generateUrlForIcon(const QString &fallackIcon, const QUrl &serverUrl)
+{
+    QUrl serverUrlCopy = serverUrl;
+
+    QString fallackIconCopy = fallackIcon;
+
+    if (fallackIconCopy.startsWith(QLatin1Char('/')) || fallackIconCopy.startsWith(QLatin1Char('\\'))) {
+        // relative image resource URL, just needs some concatenation with current server URL
+        // some icons may contain parameters after (?)
+        const QStringList fallackIconPathSplitted =
+            fallackIconCopy.contains(QLatin1Char('?')) ? fallackIconCopy.split(QLatin1Char('?')) : QStringList{fallackIconCopy};
+        Q_ASSERT(!fallackIconPathSplitted.isEmpty());
+        serverUrlCopy.setPath(fallackIconPathSplitted[0]);
+        fallackIconCopy = serverUrlCopy.toString();
+        if (fallackIconPathSplitted.size() > 1) {
+            fallackIconCopy += QLatin1Char('?') + fallackIconPathSplitted[1];
+        }
+    } else if (!fallackIconCopy.isEmpty()) {
+        // could be one of names for standard icons (e.g. icon-mail)
+        const auto defaultIconUrl = iconUrlForDefaultIconName(fallackIconCopy);
+        if (!defaultIconUrl.isEmpty()) {
+            fallackIconCopy = defaultIconUrl;
+        }
+    }
+
+    return fallackIconCopy;
+}
+
+QString iconsFromThumbnailAndFallbackIcon(const QString &thumbnailUrl, const QString &fallackIcon, const QUrl &serverUrl)
 {
     if (thumbnailUrl.isEmpty() && fallackIcon.isEmpty()) {
         return {};
     }
 
-    const QUrl urlForThumbnail(thumbnailUrl);
-    if ((thumbnailUrl.startsWith(QLatin1Char('/')) || thumbnailUrl.startsWith(QLatin1Char('\\')))
-        && (!urlForThumbnail.isValid() || urlForThumbnail.scheme().isEmpty())) {
-        // relative image resource URL, just needs some concatenation with current server URL
-        // some icons may contain parameters after (?)
-        const QStringList thumbnailUrlSplitted =
-            thumbnailUrl.contains(QLatin1Char('?')) ? thumbnailUrl.split(QLatin1Char('?')) : QStringList{thumbnailUrl};
-        serverUrl.setPath(thumbnailUrlSplitted[0]);
-        thumbnailUrl = serverUrl.toString();
-        if (thumbnailUrlSplitted.size() > 1) {
-            thumbnailUrl += QLatin1Char('?') + thumbnailUrlSplitted[1];
-        }
+    const QString urlForThumbnail = generateUrlForThumbnail(thumbnailUrl, serverUrl);
+    const QString urlForFallackIcon = generateUrlForIcon(fallackIcon, serverUrl);
+
+    if (urlForThumbnail.isEmpty() && !urlForFallackIcon.isEmpty()) {
+        return urlForFallackIcon;
     }
 
-    const QUrl urlForIcon(fallackIcon);
-    if ((fallackIcon.startsWith(QLatin1Char('/')) || fallackIcon.startsWith(QLatin1Char('\\')))
-        && (!urlForIcon.isValid() || urlForIcon.scheme().isEmpty())) {
-        // relative image resource URL, just needs some concatenation with current server URL
-        // some icons may contain parameters after (?)
-        const QStringList iconPathSplitted =
-            fallackIcon.contains(QLatin1Char('?')) ? fallackIcon.split(QLatin1Char('?')) : QStringList{fallackIcon};
-        serverUrl.setPath(iconPathSplitted[0]);
-        fallackIcon = serverUrl.toString();
-        if (iconPathSplitted.size() > 1) {
-            fallackIcon += QLatin1Char('?') + iconPathSplitted[1];
-        }
-    } else if (!fallackIcon.isEmpty()) {
-        // could be one of names for standard icons (e.g. icon-mail)
-        const auto defaultIconUrl = iconUrlForDefaultIconName(fallackIcon);
-        if (!defaultIconUrl.isEmpty()) {
-            fallackIcon = defaultIconUrl;
-        }
+    if (!urlForThumbnail.isEmpty() && urlForFallackIcon.isEmpty()) {
+        return urlForThumbnail;
     }
 
-    if (thumbnailUrl.isEmpty() && !fallackIcon.isEmpty()) {
-        return fallackIcon;
-    }
-
-    if (!thumbnailUrl.isEmpty() && fallackIcon.isEmpty()) {
-        return thumbnailUrl;
-    }
-
-    const QStringList listImages = {thumbnailUrl, fallackIcon};
+    const QStringList listImages = {urlForThumbnail, urlForFallackIcon};
     return listImages.join(QLatin1Char(';'));
 }
 
