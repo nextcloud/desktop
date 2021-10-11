@@ -5,6 +5,7 @@ import QtQuick.Window 2.3
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.2
 import QtGraphicalEffects 1.0
+import "../"
 
 // Custom qml modules are in /theme (and included by resources.qrc)
 import Style 1.0
@@ -630,17 +631,17 @@ Window {
 
             onLoaded: refresh()
         }
-        Label {
+        ErrorBox {
             id: unifiedSearchResultsErrorLabel
             visible: unifiedSearchResultsModel.errorString && !unifiedSearchResultsListView.visible && !unifiedSearchResultsModel.isSearchInProgress && !unifiedSearchResultsModel.currentFetchMoreInProgressProviderId
             text: unifiedSearchResultsModel.errorString
             color: "red"
+            backgroundColor: "white"
+            borderColor: "transparent"
             anchors.top: trayWindowUnifiedSearchInputContainer.bottom
             anchors.left: trayWindowBackground.left
             anchors.right: trayWindowBackground.right
-            anchors.bottom: trayWindowBackground.bottom
             anchors.margins: 10
-            wrapMode: Text.Wrap
         }
         UnifiedSearchResultNothingFound {
             id: unifiedSearchResultNothingFound
