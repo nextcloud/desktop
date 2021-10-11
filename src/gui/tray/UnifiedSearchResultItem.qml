@@ -10,7 +10,7 @@ RowLayout {
 
     property string title: ""
     property string subline: ""
-    property var icons: []
+    property string icons: ""
     property string iconPlaceholder: ""
     property bool isRounded: false
 
@@ -55,11 +55,11 @@ RowLayout {
         }
         OpacityMask {
             id: imageData
-            visible: !unifiedSearchResultThumbnailPlaceholder.visible
+            visible: !unifiedSearchResultThumbnailPlaceholder.visible && icons
             Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
             Layout.leftMargin: iconLeftMargin
-            Layout.preferredWidth: icons ? unifiedSearchResultItemDetails.iconWidth : 0
-            Layout.preferredHeight: icons ? unifiedSearchResultItemDetails.iconWidth: 0
+            Layout.preferredWidth: unifiedSearchResultItemDetails.iconWidth
+            Layout.preferredHeight: unifiedSearchResultItemDetails.iconWidth
             source: unifiedSearchResultThumbnail
             maskSource: mask
         }
