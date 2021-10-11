@@ -63,6 +63,7 @@ Item {
             ColorOverlay {
                 anchors.fill: parent
                 source: parent
+				cached: true
                 color: parent.parent.textFieldIconsColor
             }
         }
@@ -102,6 +103,7 @@ Item {
 
             ColorOverlay {
                 anchors.fill: parent
+				cached: true
                 source: parent
                 color: parent.parent.textFieldIconsColor
             }
