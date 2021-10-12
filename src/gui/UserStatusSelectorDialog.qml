@@ -11,12 +11,12 @@ Window {
         }
     }
 
-    width: view.implicitWidth
-    height: view.implicitHeight
     minimumWidth: view.implicitWidth
     minimumHeight: view.implicitHeight
     maximumWidth: view.implicitWidth
     maximumHeight: view.implicitHeight
+    width: maximumWidth
+    height: maximumHeight
 
     visible: true
 
