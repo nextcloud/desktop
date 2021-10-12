@@ -50,12 +50,14 @@ Window {
         // see also id:accountMenu below
         userLineInstantiator.active = false;
         userLineInstantiator.active = true;
+        syncStatus.model.load();
     }
 
     Connections {
         target: UserModel
         function onNewUserSelected() {
             accountMenu.close();
+            syncStatus.model.load();
         }
     }
 
@@ -564,20 +566,28 @@ Window {
             }
         }   // Rectangle trayWindowHeaderBackground
 
-       ActivityList {
-           anchors.top: trayWindowHeaderBackground.bottom
-           anchors.left: trayWindowBackground.left
-           anchors.right: trayWindowBackground.right
-           anchors.bottom: trayWindowBackground.bottom
+        SyncStatus {
+            id: syncStatus
+
+            anchors.top: trayWindowHeaderBackground.bottom
+            anchors.left: trayWindowBackground.left
+            anchors.right: trayWindowBackground.right
+        }
+
+        ActivityList {
+            anchors.top: syncStatus.bottom
+            anchors.left: trayWindowBackground.left
+            anchors.right: trayWindowBackground.right
+            anchors.bottom: trayWindowBackground.bottom
            
-           model: activityModel
-           onShowFileActivity: {
-               openFileActivityDialog(displayPath, absolutePath)
-           }
-           onActivityItemClicked: {
-               model.triggerDefaultAction(index)
-           }
-       }
+            model: activityModel
+            onShowFileActivity: {
+                openFileActivityDialog(displayPath, absolutePath)
+            }
+            onActivityItemClicked: {
+                model.triggerDefaultAction(index)
+            }
+        }
 
         Loader {
             id: fileActivityDialogLoader

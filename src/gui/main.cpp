@@ -30,6 +30,7 @@
 #include "cocoainitializer.h"
 #include "userstatusselectormodel.h"
 #include "emojimodel.h"
+#include "tray/syncstatussummary.h"
 
 #if defined(BUILD_UPDATER)
 #include "updater/updater.h"
@@ -59,6 +60,7 @@ int main(int argc, char **argv)
     Q_INIT_RESOURCE(resources);
     Q_INIT_RESOURCE(theme);
 
+    qmlRegisterType<SyncStatusSummary>("com.nextcloud.desktopclient", 1, 0, "SyncStatusSummary");
     qmlRegisterType<EmojiModel>("com.nextcloud.desktopclient", 1, 0, "EmojiModel");
     qmlRegisterType<UserStatusSelectorModel>("com.nextcloud.desktopclient", 1, 0, "UserStatusSelectorModel");
     qmlRegisterType<OCC::ActivityListModel>("com.nextcloud.desktopclient", 1, 0, "ActivityListModel");

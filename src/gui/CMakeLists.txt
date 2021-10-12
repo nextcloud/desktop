@@ -113,6 +113,7 @@ set(client_SRCS
     userstatusselectormodel.cpp
     emojimodel.cpp
     fileactivitylistmodel.cpp
+    tray/syncstatussummary.cpp
     tray/ActivityData.cpp
     tray/ActivityListModel.cpp
     tray/UserModel.cpp
