@@ -33,7 +33,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="242"/>
         <source>View activity</source>
-        <translation type="unfinished"/>
+        <translation>Pokaži dejavnost</translation>
     </message>
 </context>
 <context>
@@ -41,7 +41,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityList.qml" line="24"/>
         <source>Activity list</source>
-        <translation type="unfinished"/>
+        <translation>Seznam dejavnosti</translation>
     </message>
 </context>
 <context>
@@ -2310,7 +2310,7 @@ Predmeti v mapah, ki jih je dovoljeno izbrisati, bodo odstranjeni, če prepreču
     <message>
         <location filename="../src/gui/invalidfilenamedialog.ui" line="49"/>
         <source>Please enter a new name for the file:</source>
-        <translation type="unfinished"/>
+        <translation>Novo ime datoteke:</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.ui" line="62"/>
@@ -4307,7 +4307,7 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
         <location filename="../src/gui/socketapi/socketapi.cpp" line="994"/>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1137"/>
         <source>Activity</source>
-        <translation type="unfinished"/>
+        <translation>Dejavnosti</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="920"/>
