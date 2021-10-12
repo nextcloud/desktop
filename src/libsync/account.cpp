@@ -456,6 +456,9 @@ void Account::slotHandleSslErrors(QNetworkReply *reply, QList<QSslError> errors)
                      << "\n";
     }
 
+    qCInfo(lcAccount()) << "ssl errors" << out;
+    qCInfo(lcAccount()) << reply->sslConfiguration().peerCertificateChain();
+
     bool allPreviouslyRejected = true;
     foreach (const QSslError &error, errors) {
         if (!_rejectedCertificates.contains(error.certificate())) {
