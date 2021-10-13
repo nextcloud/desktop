@@ -53,7 +53,11 @@ SyncStatusSummary::SyncStatusSummary(QObject *parent)
 
 void SyncStatusSummary::load()
 {
-    auto accountState = UserModel::instance()->currentUser()->accountState();
+    const auto currentUser = UserModel::instance()->currentUser();
+    if (!currentUser) {
+        return;
+    }
+    auto accountState = currentUser->accountState();
 
     if (_accountState.data() == accountState.data()) {
         return;
