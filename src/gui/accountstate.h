@@ -85,13 +85,13 @@ public:
      *
      * Use from AccountManager with a prepared QSettings object only.
      */
-    static AccountState *loadFromSettings(AccountPtr account, QSettings &settings);
+    static AccountState *loadFromSettings(AccountPtr account, const QSettings &settings);
 
     /** Writes account state information to settings.
      *
      * It does not write the Account data.
      */
-    void writeToSettings(QSettings &settings);
+    void writeToSettings(QSettings &settings) const;
 
     AccountPtr account() const;
 

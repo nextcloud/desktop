@@ -1,0 +1,9 @@
+Bugfix: Do not ask for credentails at start-up when the user logged out
+
+When a user would logout, and quit the client, then on the next start
+the client would immediately ask for credentials. This has been fixed by
+storing the fact that the user logged out before in the account
+settings.
+
+https://github.com/owncloud/client/issues/8924
+
