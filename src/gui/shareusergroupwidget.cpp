@@ -468,9 +468,13 @@ void ShareUserLine::loadAvatar()
      * Currently only regular users can have avatars.
      */
     if (_share->getShareWith()->type() == Sharee::User) {
-        AvatarJob *job = new AvatarJob(_share->account(), _share->getShareWith()->shareWith(), avatarSize, this);
-        connect(job, &AvatarJob::avatarPixmap, this, &ShareUserLine::slotAvatarLoaded);
-        job->start();
+        auto account = _share->account();
+        auto capabilities = account->capabilities();
+        if (capabilities.isValid() && capabilities.avatarsAvailable()) {
+            AvatarJob *job = new AvatarJob(account, _share->getShareWith()->shareWith(), avatarSize, this);
+            connect(job, &AvatarJob::avatarPixmap, this, &ShareUserLine::slotAvatarLoaded);
+            job->start();
+        }
     }
 }
 

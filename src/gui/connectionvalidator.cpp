@@ -286,14 +286,24 @@ void ConnectionValidator::slotUserFetched(const QJsonDocument &json)
     if (!displayName.isEmpty()) {
         _account->setDavDisplayName(displayName);
     }
+
+    auto capabilities = _account->capabilities();
+    // We should have received the capabilities by now. Check that assumption in a debug build. If
+    // it's not the case, the code below will assume that they are not available.
+    Q_ASSERT(capabilities.isValid());
+
 #ifndef TOKEN_AUTH_ONLY
-    AvatarJob *job = new AvatarJob(_account, _account->davUser(), 128, this);
-    job->setTimeout(20 * 1000);
-    QObject::connect(job, &AvatarJob::avatarPixmap, this, &ConnectionValidator::slotAvatarImage);
-    job->start();
-#else
-    reportResult(Connected);
+    if (capabilities.isValid() && capabilities.avatarsAvailable()) {
+        AvatarJob *job = new AvatarJob(_account, _account->davUser(), 128, this);
+        job->setTimeout(20 * 1000);
+        QObject::connect(job, &AvatarJob::avatarPixmap, this, &ConnectionValidator::slotAvatarImage);
+        job->start();
+        // reportResult will be called when the avatar has been received by `slotAvatarImage`
+    } else
 #endif
+    {
+        reportResult(Connected);
+    }
 }
 
 #ifndef TOKEN_AUTH_ONLY
