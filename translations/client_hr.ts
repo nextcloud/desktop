@@ -31,7 +31,7 @@
         <translation>Prikaži dodatne radnje</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityItem.qml" line="242"/>
+        <location filename="../src/gui/tray/ActivityItem.qml" line="240"/>
         <source>View activity</source>
         <translation type="unfinished"/>
     </message>
@@ -4876,6 +4876,67 @@ Ovo je novi, eksperimentalni način rada. Ako se odlučite aktivirati ga, prijav
     </message>
 </context>
 <context>
+    <name>OCC::SyncStatusSummary</name>
+    <message>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="78"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="136"/>
+        <source>Offline</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="81"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="150"/>
+        <location filename="../src/gui/tray/syncstatussummary.h" line="82"/>
+        <source>All synced!</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="159"/>
+        <source>Some files couldn&apos;t be synced!</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="160"/>
+        <source>See below for errors</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="167"/>
+        <source>Syncing</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="174"/>
+        <source>Sync paused</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="181"/>
+        <source>Some files had problems during the sync!</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="182"/>
+        <source>See below for warnings</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="230"/>
+        <source>%1 of %2 · %3 left</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="234"/>
+        <source>%1 of %2</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="239"/>
+        <source>Syncing file %1 of %2</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>OCC::Systray</name>
     <message>
         <location filename="../src/gui/systray.cpp" line="93"/>
@@ -5951,7 +6012,7 @@ Ovo je novi, eksperimentalni način rada. Ako se odlučite aktivirati ga, prijav
         <translation>Pauziraj sinkronizaciju za sve</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="188"/>
+        <location filename="../src/gui/tray/Window.qml" line="190"/>
         <source>Set user status</source>
         <translation type="unfinished"/>
     </message>
@@ -6057,7 +6118,7 @@ Ovo je novi, eksperimentalni način rada. Ako se odlučite aktivirati ga, prijav
         <translation>Otvori dijaloški okvir za dijeljenje</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="596"/>
+        <location filename="../src/gui/tray/Window.qml" line="606"/>
         <source>%1 - File activity</source>
         <translation type="unfinished"/>
     </message>

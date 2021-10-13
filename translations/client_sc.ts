@@ -31,7 +31,7 @@
         <translation>Mustra àteras atziones</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityItem.qml" line="242"/>
+        <location filename="../src/gui/tray/ActivityItem.qml" line="240"/>
         <source>View activity</source>
         <translation type="unfinished"/>
     </message>
@@ -4880,6 +4880,67 @@ Custa est una modalidade noa, isperimentale. Si detzides de dda impreare, sinnal
     </message>
 </context>
 <context>
+    <name>OCC::SyncStatusSummary</name>
+    <message>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="78"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="136"/>
+        <source>Offline</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="81"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="150"/>
+        <location filename="../src/gui/tray/syncstatussummary.h" line="82"/>
+        <source>All synced!</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="159"/>
+        <source>Some files couldn&apos;t be synced!</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="160"/>
+        <source>See below for errors</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="167"/>
+        <source>Syncing</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="174"/>
+        <source>Sync paused</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="181"/>
+        <source>Some files had problems during the sync!</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="182"/>
+        <source>See below for warnings</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="230"/>
+        <source>%1 of %2 · %3 left</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="234"/>
+        <source>%1 of %2</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="239"/>
+        <source>Syncing file %1 of %2</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>OCC::Systray</name>
     <message>
         <location filename="../src/gui/systray.cpp" line="93"/>
@@ -5955,7 +6016,7 @@ Custa est una modalidade noa, isperimentale. Si detzides de dda impreare, sinnal
         <translation>Pone in pasu sincronizatzione pro totu</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="188"/>
+        <location filename="../src/gui/tray/Window.qml" line="190"/>
         <source>Set user status</source>
         <translation>Imposta istadu de s&apos;utente</translation>
     </message>
@@ -6061,7 +6122,7 @@ Custa est una modalidade noa, isperimentale. Si detzides de dda impreare, sinnal
         <translation>Aberi bentana de cumpartzidura</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="596"/>
+        <location filename="../src/gui/tray/Window.qml" line="606"/>
         <source>%1 - File activity</source>
         <translation type="unfinished"/>
     </message>
