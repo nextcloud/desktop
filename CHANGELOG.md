@@ -3,7 +3,45 @@ Changelog for ownCloud Desktop Client [unreleased] (UNRELEASED)
 The following sections list the changes in ownCloud Desktop Client unreleased relevant to
 ownCloud admins and users.
 
-[unreleased]: https://github.com/owncloud/client/compare/v2.9.0...master
+[unreleased]: https://github.com/owncloud/client/compare/v2.9.1...master
+
+Summary
+-------
+
+* Bugfix - Fix copy url location for private links: [#9048](https://github.com/owncloud/client/issues/9048)
+* Change - Make sharedialog preview be more resilient: [#8938](https://github.com/owncloud/client/issues/8938)
+* Enhancement - Allow to remove broken sync folders: [#9099](https://github.com/owncloud/client/pull/9099)
+
+Details
+-------
+
+* Bugfix - Fix copy url location for private links: [#9048](https://github.com/owncloud/client/issues/9048)
+
+   We fixed a bug where a placholder was copied to the clipboard instead of the url.
+
+   https://github.com/owncloud/client/issues/9048
+
+* Change - Make sharedialog preview be more resilient: [#8938](https://github.com/owncloud/client/issues/8938)
+
+   We no longer enforce png thumbnails. We no longer replace the file icon if the thumbnail is
+   invalid.
+
+   https://github.com/owncloud/client/issues/8938
+   https://github.com/owncloud/client/pull/8939
+
+* Enhancement - Allow to remove broken sync folders: [#9099](https://github.com/owncloud/client/pull/9099)
+
+   In case a folder is no longer available it was not possible to remove the folder. We now made the
+   remove action available in that case.
+
+   https://github.com/owncloud/client/pull/9099
+
+Changelog for ownCloud Desktop Client [2.9.1] (2021-10-13)
+=======================================
+The following sections list the changes in ownCloud Desktop Client 2.9.1 relevant to
+ownCloud admins and users.
+
+[2.9.1]: https://github.com/owncloud/client/compare/v2.9.0...v2.9.1
 
 Summary
 -------
@@ -20,13 +58,10 @@ Summary
 * Bugfix - A upgrade to 2.9 causes the usage of a new journal file: [#9019](https://github.com/owncloud/client/issues/9019)
 * Bugfix - Properly deployment of Qt translations Mac and Window: [#9022](https://github.com/owncloud/client/issues/9022)
 * Bugfix - The file status of suffix placeholders was displayed incorrectly: [#9026](https://github.com/owncloud/client/issues/9026)
-* Bugfix - Fix copy url location for private links: [#9048](https://github.com/owncloud/client/issues/9048)
 * Bugfix - When a folder is removed we leave a database behind: [#9057](https://github.com/owncloud/client/issues/9057)
 * Bugfix - Dehydrating placeholders failed if the file is read only: [#9093](https://github.com/owncloud/client/issues/9093)
 * Bugfix - Downgrades could trigger deletion of virtual files: [#9114](https://github.com/owncloud/client/issues/9114)
-* Change - Make sharedialog preview be more resilient: [#8938](https://github.com/owncloud/client/issues/8938)
-* Enhancement - Display the error type in the issue protocol to allow sorting: [#9000](https://github.com/owncloud/client/issues/9000)
-* Enhancement - Allow to remove broken sync folders: [#9099](https://github.com/owncloud/client/pull/9099)
+* Enhancement - Display the error type in the issue protocol to allow sorting: [#9010](https://github.com/owncloud/client/pull/9010)
 
 Details
 -------
@@ -127,12 +162,6 @@ Details
 
    https://github.com/owncloud/client/issues/9026
 
-* Bugfix - Fix copy url location for private links: [#9048](https://github.com/owncloud/client/issues/9048)
-
-   We fixed a bug where a placholder was copied to the clipboard instead of the url.
-
-   https://github.com/owncloud/client/issues/9048
-
 * Bugfix - When a folder is removed we leave a database behind: [#9057](https://github.com/owncloud/client/issues/9057)
 
    We fixed a bug where we left an empty `sync_journal.db` behind, when we removed a
@@ -154,27 +183,12 @@ Details
 
    https://github.com/owncloud/client/issues/9114
 
-* Change - Make sharedialog preview be more resilient: [#8938](https://github.com/owncloud/client/issues/8938)
-
-   We no longer enforce png thumbnails. We no longer replace the file icon if the thumbnail is
-   invalid.
-
-   https://github.com/owncloud/client/issues/8938
-   https://github.com/owncloud/client/pull/8939
-
-* Enhancement - Display the error type in the issue protocol to allow sorting: [#9000](https://github.com/owncloud/client/issues/9000)
+* Enhancement - Display the error type in the issue protocol to allow sorting: [#9010](https://github.com/owncloud/client/pull/9010)
 
    We now display the error type in the not synced protocol and allow to sort by the error type.
 
    https://github.com/owncloud/client/issues/9000
    https://github.com/owncloud/client/pull/9010
-
-* Enhancement - Allow to remove broken sync folders: [#9099](https://github.com/owncloud/client/pull/9099)
-
-   In case a folder is no longer available it was not possible to remove the folder. We now made the
-   remove action available in that case.
-
-   https://github.com/owncloud/client/pull/9099
 
 Changelog for ownCloud Desktop Client [2.9.0] (2021-09-08)
 =======================================
