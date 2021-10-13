@@ -1,0 +1,6 @@
+Bugfix: Properly handle Windows log off
+
+We worked around a Qt bug which prevented the client from properly shutdown
+on Windows logout or during the client update.
+
+https://github.com/owncloud/client/issues/8979
