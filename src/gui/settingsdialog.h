@@ -71,6 +71,10 @@ protected:
     void changeEvent(QEvent *) override;
     void setVisible(bool visible) override;
 
+#if defined(Q_OS_WIN) && QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+    bool nativeEvent(const QByteArray &eventType, void *message, long *result) override;
+#endif
+
 private slots:
     void accountAdded(AccountState *);
     void accountRemoved(AccountState *);
