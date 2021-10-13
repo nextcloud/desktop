@@ -8,12 +8,20 @@ ownCloud admins and users.
 Summary
 -------
 
+* Bugfix - Properly handle Windows log off: [#8979](https://github.com/owncloud/client/issues/8979)
 * Bugfix - Fix copy url location for private links: [#9048](https://github.com/owncloud/client/issues/9048)
 * Change - Make sharedialog preview be more resilient: [#8938](https://github.com/owncloud/client/issues/8938)
 * Enhancement - Allow to remove broken sync folders: [#9099](https://github.com/owncloud/client/pull/9099)
 
 Details
 -------
+
+* Bugfix - Properly handle Windows log off: [#8979](https://github.com/owncloud/client/issues/8979)
+
+   We worked around a Qt bug which prevented the client from properly shutdown on Windows logout or
+   during the client update.
+
+   https://github.com/owncloud/client/issues/8979
 
 * Bugfix - Fix copy url location for private links: [#9048](https://github.com/owncloud/client/issues/9048)
 
