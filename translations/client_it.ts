@@ -31,9 +31,9 @@
         <translation>Mostra altre azioni</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityItem.qml" line="242"/>
+        <location filename="../src/gui/tray/ActivityItem.qml" line="240"/>
         <source>View activity</source>
-        <translation type="unfinished"/>
+        <translation>Vedi attività</translation>
     </message>
 </context>
 <context>
@@ -41,7 +41,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityList.qml" line="24"/>
         <source>Activity list</source>
-        <translation type="unfinished"/>
+        <translation>Lista attività</translation>
     </message>
 </context>
 <context>
@@ -2324,7 +2324,7 @@ Gli elementi per i quali è consentita l&apos;eliminazione saranno eliminati se 
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="87"/>
         <source>The file %1 could not be synced because the name contains characters which are not allowed on this system.</source>
-        <translation type="unfinished"/>
+        <translation>Il file %1 non è stato sincronizzato perché contiene caratteri non consentiti in questo sistema.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="88"/>
@@ -2349,7 +2349,7 @@ Gli elementi per i quali è consentita l&apos;eliminazione saranno eliminati se 
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="169"/>
         <source>Cannot rename file because a file with the same name does already exist on the server. Please pick another name.</source>
-        <translation type="unfinished"/>
+        <translation>Impossibile rinominare il file perché ne esiste già uno con lo stesso nome sul server. Scegli un altro nome.</translation>
     </message>
 </context>
 <context>
@@ -4299,7 +4299,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/socketapi/socketapi.cpp" line="994"/>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1137"/>
         <source>Activity</source>
-        <translation type="unfinished"/>
+        <translation>Attività</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="920"/>
@@ -4868,6 +4868,67 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/syncengine.cpp" line="1105"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation>Spazio disponibile insufficiente sul server per alcuni caricamenti.</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::SyncStatusSummary</name>
+    <message>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="78"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="136"/>
+        <source>Offline</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="81"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="150"/>
+        <location filename="../src/gui/tray/syncstatussummary.h" line="82"/>
+        <source>All synced!</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="159"/>
+        <source>Some files couldn&apos;t be synced!</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="160"/>
+        <source>See below for errors</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="167"/>
+        <source>Syncing</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="174"/>
+        <source>Sync paused</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="181"/>
+        <source>Some files had problems during the sync!</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="182"/>
+        <source>See below for warnings</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="230"/>
+        <source>%1 of %2 · %3 left</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="234"/>
+        <source>%1 of %2</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="239"/>
+        <source>Syncing file %1 of %2</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -5946,7 +6007,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Sospendi la sincronizzazione per tutto</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="188"/>
+        <location filename="../src/gui/tray/Window.qml" line="190"/>
         <source>Set user status</source>
         <translation>Imposta lo stato utente</translation>
     </message>
@@ -6052,9 +6113,9 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Apri finestra di condivisione</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="596"/>
+        <location filename="../src/gui/tray/Window.qml" line="606"/>
         <source>%1 - File activity</source>
-        <translation type="unfinished"/>
+        <translation>%1 - Attività file</translation>
     </message>
 </context>
 <context>
