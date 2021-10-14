@@ -216,7 +216,7 @@ MouseArea {
                     anchors.right: moreActionsButton.right
                     anchors.top: moreActionsButton.top
                     
-                    Menu {
+                    AutoSizingMenu {
                         id: moreActionsButtonContextMenu
                         anchors.centerIn: parent
                         
