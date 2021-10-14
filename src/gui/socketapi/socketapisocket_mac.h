@@ -26,7 +26,7 @@ class SocketApiSocket : public QIODevice
     Q_OBJECT
 public:
     SocketApiSocket(QObject *parent, SocketApiSocketPrivate *p);
-    ~SocketApiSocket();
+    ~SocketApiSocket() override;
 
     qint64 readData(char *data, qint64 maxlen) override;
     qint64 writeData(const char *data, qint64 len) override;
@@ -50,7 +50,7 @@ class SocketApiServer : public QObject
     Q_OBJECT
 public:
     SocketApiServer();
-    ~SocketApiServer();
+    ~SocketApiServer() override;
 
     void close();
     bool listen(const QString &name);

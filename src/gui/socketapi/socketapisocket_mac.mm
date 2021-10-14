@@ -16,22 +16,32 @@
 #import <Cocoa/Cocoa.h>
 
 @protocol ChannelProtocol <NSObject>
+
 - (void)sendMessage:(NSData *)msg;
+
 @end
 
 @protocol RemoteEndProtocol <NSObject, ChannelProtocol>
+
 - (void)registerTransmitter:(id)tx;
+
 @end
 
 @interface LocalEnd : NSObject <ChannelProtocol>
-@property SocketApiSocketPrivate *wrapper;
+
+@property (atomic) SocketApiSocketPrivate *wrapper;
+
 - (instancetype)initWithWrapper:(SocketApiSocketPrivate *)wrapper;
+
 @end
 
 @interface Server : NSObject
-@property SocketApiServerPrivate *wrapper;
+
+@property (atomic) SocketApiServerPrivate *wrapper;
+
 - (instancetype)initWithWrapper:(SocketApiServerPrivate *)wrapper;
 - (void)registerClient:(NSDistantObject<RemoteEndProtocol> *)remoteEnd;
+
 @end
 
 class SocketApiSocketPrivate
@@ -66,18 +76,21 @@ public:
 
 
 @implementation LocalEnd
+
+@synthesize wrapper = _wrapper;
+
 - (instancetype)initWithWrapper:(SocketApiSocketPrivate *)wrapper
 {
     self = [super init];
-    self->_wrapper = wrapper;
+    self.wrapper = wrapper;
     return self;
 }
 
 - (void)sendMessage:(NSData *)msg
 {
-    if (_wrapper) {
-        _wrapper->inBuffer += QByteArray::fromRawNSData(msg);
-        emit _wrapper->q_ptr->readyRead();
+    if (self.wrapper) {
+        self.wrapper->inBuffer += QByteArray::fromRawNSData(msg);
+        emit self.wrapper->q_ptr->readyRead();
     }
 }
 
@@ -86,18 +99,21 @@ public:
     // The NSConnectionDidDieNotification docs say to disconnect from NSConnection here
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 
-    if (_wrapper) {
-        _wrapper->disconnectRemote();
-        emit _wrapper->q_ptr->disconnected();
+    if (self.wrapper) {
+        self.wrapper->disconnectRemote();
+        emit self.wrapper->q_ptr->disconnected();
     }
 }
 @end
 
 @implementation Server
+
+@synthesize wrapper = _wrapper;
+
 - (instancetype)initWithWrapper:(SocketApiServerPrivate *)wrapper
 {
     self = [super init];
-    self->_wrapper = wrapper;
+    self.wrapper = wrapper;
     return self;
 }
 
@@ -106,10 +122,10 @@ public:
     // This saves a few mach messages that would otherwise be needed to query the interface
     [remoteEnd setProtocolForProxy:@protocol(RemoteEndProtocol)];
 
-    SocketApiServer *server = _wrapper->q_ptr;
+    SocketApiServer *server = self.wrapper->q_ptr;
     SocketApiSocketPrivate *socketPrivate = new SocketApiSocketPrivate(remoteEnd);
     SocketApiSocket *socket = new SocketApiSocket(server, socketPrivate);
-    _wrapper->pendingConnections.append(socket);
+    self.wrapper->pendingConnections.append(socket);
     emit server->newConnection();
 
     [remoteEnd registerTransmitter:socketPrivate->localEnd];
@@ -134,25 +150,35 @@ qint64 SocketApiSocket::readData(char *data, qint64 maxlen)
 {
     Q_D(SocketApiSocket);
     qint64 len = std::min(maxlen, static_cast<qint64>(d->inBuffer.size()));
-    memcpy(data, d->inBuffer.constData(), len);
-    d->inBuffer.remove(0, len);
+    if (len < 0 || len > std::numeric_limits<int>::max()) {
+        return -1;
+    }
+
+    memcpy(data, d->inBuffer.constData(), static_cast<size_t>(len));
+    d->inBuffer.remove(0, static_cast<int>(len));
     return len;
 }
 
 qint64 SocketApiSocket::writeData(const char *data, qint64 len)
 {
     Q_D(SocketApiSocket);
-    if (d->isRemoteDisconnected)
+    if (d->isRemoteDisconnected) {
         return -1;
+    }
+
+    if (len < std::numeric_limits<NSUInteger>::min() || len > std::numeric_limits<NSUInteger>::max()) {
+        return -1;
+    }
 
     @try {
         // FIXME: The NSConnection will make this block unless the function is marked as "oneway"
         // in the protocol. This isn't async and reduces our performances but this currectly avoids
         // a Mach queue deadlock during requests bursts of the legacy OwnCloudFinder extension.
         // Since FinderSync already runs in a separate process, blocking isn't too critical.
-        [d->remoteEnd sendMessage:[NSData dataWithBytesNoCopy:const_cast<char *>(data) length:len freeWhenDone:NO]];
+        NSData *payload = QByteArray::fromRawData(data, static_cast<int>(len)).toRawNSData();
+        [d->remoteEnd sendMessage:payload];
         return len;
-    } @catch (NSException *e) {
+    } @catch (NSException *) {
         // connectionDidDie can be notified too late, also interpret any sending exception as a disconnection.
         d->disconnectRemote();
         emit disconnected();
