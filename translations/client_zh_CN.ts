@@ -4865,62 +4865,62 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::SyncStatusSummary</name>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="78"/>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="136"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="82"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="140"/>
         <source>Offline</source>
-        <translation type="unfinished"/>
+        <translation>离线</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="81"/>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="150"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="85"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="154"/>
         <location filename="../src/gui/tray/syncstatussummary.h" line="82"/>
         <source>All synced!</source>
-        <translation type="unfinished"/>
+        <translation>已同步所有文件！</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="159"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="163"/>
         <source>Some files couldn&apos;t be synced!</source>
-        <translation type="unfinished"/>
+        <translation>无法同步某些文件！</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="160"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="164"/>
         <source>See below for errors</source>
-        <translation type="unfinished"/>
+        <translation>查看下方错误</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="167"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="171"/>
         <source>Syncing</source>
-        <translation type="unfinished"/>
+        <translation>同步中</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="174"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="178"/>
         <source>Sync paused</source>
-        <translation type="unfinished"/>
+        <translation>同步已暂停</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="181"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="185"/>
         <source>Some files had problems during the sync!</source>
-        <translation type="unfinished"/>
+        <translation>某些文件在同步期间有问题！</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="182"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="186"/>
         <source>See below for warnings</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="230"/>
-        <source>%1 of %2 · %3 left</source>
-        <translation type="unfinished"/>
+        <translation>查看下方警告</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="234"/>
-        <source>%1 of %2</source>
-        <translation type="unfinished"/>
+        <source>%1 of %2 · %3 left</source>
+        <translation>%2 中的 %1 · %3 剩余</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="239"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="238"/>
+        <source>%1 of %2</source>
+        <translation>%2 中的 %1</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="243"/>
         <source>Syncing file %1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>正在同步 %2 中的 %1</translation>
     </message>
 </context>
 <context>
