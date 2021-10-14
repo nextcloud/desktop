@@ -1,0 +1,7 @@
+Bugfix: Fix icon name in desktop file with ownBrander themes
+
+Fixes broken icon reference in desktop entries for some branded build themes.
+
+https://github.com/owncloud/client/issues/8992
+https://github.com/owncloud/client/pull/9150
+

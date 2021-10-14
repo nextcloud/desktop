@@ -149,6 +149,9 @@ if(BUILD_CLIENT)
     find_package(SQLite3 3.9.0 REQUIRED)
 endif()
 
+# in the ownBrander themes, the icon files are named after the shortname
+# the theme included in this repository defines a custom icon name, therefore we set the shortname as a fallback if the
+# theme does not define the variable
 if (NOT DEFINED APPLICATION_ICON_NAME)
     set(APPLICATION_ICON_NAME "${APPLICATION_SHORTNAME}")
 endif()
