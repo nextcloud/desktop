@@ -1,12 +1,11 @@
 ## Submitting Desktop Client issues
 
 If you have questions about how to use the ownCloud Desktop Client, please
-direct these to the [mailing list][mailinglist] or our [forum][forum].
+join our [rocket chat channel][rocketchat] or our [forum][forum].
 We are also available on [IRC][irc].
 
 ### Bug Reporting Guidelines
-* __Important__: Report the issue using our [template][template], it includes all the
-  information we need to track down the issue.  
+* __Important__: When reporting an issue provide as much requested information as possible, we :heart: log files.
 * __SECURITY__: Report any potential security bug to security@owncloud.com following our [security policy](https://owncloud.org/security/) instead of filing an issue in our bug tracker
 * This repository is *only* for issues within the ownCloud desktop client. 
   Issues in other components should be reported in their own repositores: 
@@ -23,10 +22,9 @@ If your issue appears to be a bug, and hasn't been reported, open a new issue.
 Help us to maximize the effort we can spend fixing issues and adding new
 features, by not reporting duplicate issues.
 
-[template]: https://raw.github.com/owncloud/client/master/.github/issue_template.md
-[mailinglist]: https://mail.kde.org/mailman/listinfo/owncloud
-[forum]: http://forum.owncloud.org/
-[irc]: http://webchat.freenode.net/?channels=owncloud&uio=d4
+[rocketchat]: https://talk.owncloud.com/channel/desktop
+[forum]: https://central.owncloud.org/
+[irc]: https://web.libera.chat/?channels=#owncloud
 
 ## Contributing to Source Code
 
@@ -40,7 +38,7 @@ Manuals][devmanual] to get useful info like how to create your first
 application or how to test the ownCloud code with phpunit.
 
 [agreement]: http://owncloud.org/about/contributor-agreement/
-[devmanual]: http://owncloud.org/dev
+[devmanual]: https://doc.owncloud.com/desktop/latest/appendices/building.html
 [desktopman]: http://doc.owncloud.org/desktop
 
 ## Translations
