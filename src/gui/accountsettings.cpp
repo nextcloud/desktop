@@ -247,7 +247,7 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
     QModelIndex index = tv->indexAt(pos);
     if (!index.isValid()) {
         return;
-    } else if (!(index.flags() & Qt::ItemIsEnabled)) {
+    } else if (!_model->data(index, FolderStatusDelegate::IsReady).toBool()) {
         QMenu *menu = new QMenu(tv);
         menu->setAttribute(Qt::WA_DeleteOnClose);
         removeFolderAction(menu);

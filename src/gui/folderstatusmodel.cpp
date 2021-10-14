@@ -107,11 +107,10 @@ Qt::ItemFlags FolderStatusModel::flags(const QModelIndex &index) const
         return nullptr;
     }
 
-    auto flags = Qt::ItemIsEnabled;
-    if (_folders.size() > index.row()) {
-        const SubFolderInfo &folderInfo = _folders.at(index.row());
-        flags = folderInfo._folder->isReady() ? Qt::ItemIsEnabled : Qt::NoItemFlags;
-    }
+    // Always enable the item. If it isn't enabled, it cannot be in the selection model, so all
+    // actions from the context menu and the pop-up menu will have some other model index than the
+    // one under the mouse cursor!
+    const auto flags = Qt::ItemIsEnabled;
 
     switch (classify(index)) {
     case AddButton: {
@@ -271,6 +270,8 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
         return progress._overallSyncString;
     case FolderStatusDelegate::FolderSyncText:
         return tr("Local folder: %1").arg(f->shortGuiLocalPath());
+    case FolderStatusDelegate::IsReady:
+        return f->isReady();
     }
     return QVariant();
 }
