@@ -6,17 +6,15 @@ Window {
     id: dialog
     
     property NC.UserStatusSelectorModel model: NC.UserStatusSelectorModel {
-        onFinished: {
-            dialog.close()
-        }
+        onFinished: dialog.close()
     }
 
-    width: view.implicitWidth
-    height: view.implicitHeight
     minimumWidth: view.implicitWidth
     minimumHeight: view.implicitHeight
     maximumWidth: view.implicitWidth
     maximumHeight: view.implicitHeight
+    width: maximumWidth
+    height: maximumHeight
 
     visible: true
 
