@@ -13,6 +13,7 @@
  */
 
 #include "syncstatussummary.h"
+#include "accountfwd.h"
 #include "folderman.h"
 #include "navigationpanehelper.h"
 #include "networkjobs.h"
@@ -51,41 +52,24 @@ SyncStatusSummary::SyncStatusSummary(QObject *parent)
     connect(folderMan, &FolderMan::folderSyncStateChange, this, &SyncStatusSummary::onFolderSyncStateChanged);
 }
 
+bool SyncStatusSummary::reloadNeeded(AccountState *accountState) const
+{
+    if (_accountState.data() == accountState) {
+        return false;
+    }
+    return true;
+}
+
 void SyncStatusSummary::load()
 {
     const auto currentUser = UserModel::instance()->currentUser();
     if (!currentUser) {
         return;
     }
-    auto accountState = currentUser->accountState();
-
-    if (_accountState.data() == accountState.data()) {
-        return;
-    }
-
-    _accountState = accountState;
+    setAccountState(currentUser->accountState());
     clearFolderErrors();
     connectToFoldersProgress(FolderMan::instance()->map());
-    auto syncStateFallbackNeeded = true;
-    for (const auto &folder : FolderMan::instance()->map()) {
-        if (_accountState.data() != folder->accountState()) {
-            continue;
-        }
-        onFolderSyncStateChanged(folder);
-        syncStateFallbackNeeded = false;
-    }
-
-    if (syncStateFallbackNeeded) {
-        setSyncing(false);
-        setSyncStatusDetailString("");
-        if (_accountState && !_accountState->isConnected()) {
-            setSyncStatusString(tr("Offline"));
-            setSyncIcon(Theme::instance()->folderOffline());
-        } else {
-            setSyncStatusString(tr("All synced!"));
-            setSyncIcon(Theme::instance()->syncStatusOk());
-        }
-    }
+    initSyncState();
 }
 
 double SyncStatusSummary::syncProgress() const
@@ -313,6 +297,50 @@ void SyncStatusSummary::connectToFoldersProgress(const Folder::Map &folderMap)
         } else {
             disconnect(folder, &Folder::progressInfo, this, &SyncStatusSummary::onFolderProgressInfo);
         }
+    }
+}
+
+void SyncStatusSummary::onIsConnectedChanged()
+{
+    setSyncStateToConnectedState();
+}
+
+void SyncStatusSummary::setSyncStateToConnectedState()
+{
+    setSyncing(false);
+    setSyncStatusDetailString("");
+    if (_accountState && !_accountState->isConnected()) {
+        setSyncStatusString(tr("Offline"));
+        setSyncIcon(Theme::instance()->folderOffline());
+    } else {
+        setSyncStatusString(tr("All synced!"));
+        setSyncIcon(Theme::instance()->syncStatusOk());
+    }
+}
+
+void SyncStatusSummary::setAccountState(AccountStatePtr accountState)
+{
+    if (!reloadNeeded(accountState.data())) {
+        return;
+    }
+    if (_accountState) {
+        disconnect(
+            _accountState.data(), &AccountState::isConnectedChanged, this, &SyncStatusSummary::onIsConnectedChanged);
+    }
+    _accountState = accountState;
+    connect(_accountState.data(), &AccountState::isConnectedChanged, this, &SyncStatusSummary::onIsConnectedChanged);
+}
+
+void SyncStatusSummary::initSyncState()
+{
+    auto syncStateFallbackNeeded = true;
+    for (const auto &folder : FolderMan::instance()->map()) {
+        onFolderSyncStateChanged(folder);
+        syncStateFallbackNeeded = false;
+    }
+
+    if (syncStateFallbackNeeded) {
+        setSyncStateToConnectedState();
     }
 }
 }

@@ -14,6 +14,8 @@
 
 #pragma once
 
+#include "account.h"
+#include "accountfwd.h"
 #include "accountstate.h"
 #include "folderman.h"
 
@@ -59,6 +61,7 @@ private:
     void onFolderListChanged(const OCC::Folder::Map &folderMap);
     void onFolderProgressInfo(const ProgressInfo &progress);
     void onFolderSyncStateChanged(const Folder *folder);
+    void onIsConnectedChanged();
 
     void setSyncStateForFolder(const Folder *folder);
     void markFolderAsError(const Folder *folder);
@@ -66,12 +69,16 @@ private:
     bool folderErrors() const;
     bool folderError(const Folder *folder) const;
     void clearFolderErrors();
+    void setSyncStateToConnectedState();
+    bool reloadNeeded(AccountState *accountState) const;
+    void initSyncState();
 
     void setSyncProgress(double value);
     void setSyncing(bool value);
     void setSyncStatusString(const QString &value);
     void setSyncStatusDetailString(const QString &value);
     void setSyncIcon(const QUrl &value);
+    void setAccountState(AccountStatePtr accountState);
 
     AccountStatePtr _accountState;
     std::set<QString> _foldersWithErrors;
