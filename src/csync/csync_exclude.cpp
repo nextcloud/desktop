@@ -232,18 +232,16 @@ ExcludedFiles::ExcludedFiles(const QString &localPath)
     // We're in a detached exclude probably coming from a partial sync or test
     if (_localPath.isEmpty())
         return;
-
-    // Load exclude file from base dir
-    QFileInfo fi(_localPath + QStringLiteral(".sync-exclude.lst"));
-    if (fi.isReadable())
-        addInTreeExcludeFilePath(fi.absoluteFilePath());
 }
 
 ExcludedFiles::~ExcludedFiles() = default;
 
 void ExcludedFiles::addExcludeFilePath(const QString &path)
 {
-    _excludeFiles[_localPath].append(path);
+    auto &excludeFilesLocalPath = _excludeFiles[_localPath];
+    if (std::find(excludeFilesLocalPath.cbegin(), excludeFilesLocalPath.cend(), path) == excludeFilesLocalPath.cend()) {
+        excludeFilesLocalPath.append(path);
+    }
 }
 
 void ExcludedFiles::addInTreeExcludeFilePath(const QString &path)
