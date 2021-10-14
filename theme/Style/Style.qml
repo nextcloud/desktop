@@ -1,11 +1,12 @@
 pragma Singleton
 
-// Minimum for this is Qt 5.5
-import QtQuick 2.5
+import QtQuick 2.15
 
 import com.nextcloud.desktopclient 1.0
 
-QtObject {
+Item {
+    readonly property int pixelSize: fontMetrics.font.pixelSize
+
     // Colors
     property color ncBlue:      Theme.wizardHeaderBackgroundColor
     property color ncTextColor: Theme.wizardHeaderTitleColor
@@ -19,15 +20,15 @@ QtObject {
 
     // Fonts
     // We are using pixel size because this is cross platform comparable, point size isn't
-    property int topLinePixelSize: 12
-    property int subLinePixelSize: 10
+    readonly property int topLinePixelSize: pixelSize
+    readonly property int subLinePixelSize: topLinePixelSize - 2
 
     // Dimensions and sizes
-    property int trayWindowWidth: 400
-    property int trayWindowHeight: 510
+    property int trayWindowWidth: variableSize(400)
+    property int trayWindowHeight: variableSize(510)
     property int trayWindowRadius: 10
     property int trayWindowBorderWidth: 1
-    property int trayWindowHeaderHeight: 60
+    property int trayWindowHeaderHeight: variableSize(60)
 
     property int currentAccountButtonWidth: 220
     property int currentAccountButtonRadius: 2
@@ -72,4 +73,12 @@ QtObject {
     readonly property int unifiedSearchResulSublineFontSize: subLinePixelSize
     readonly property string unifiedSearchResulTitleColor: "black"
     readonly property string unifiedSearchResulSublineColor: "grey"
+
+    function variableSize(size) {
+        return size * (1 + Math.min(pixelSize / 100, 1));       
+    }
+
+    FontMetrics {
+        id: fontMetrics
+    }
 }
