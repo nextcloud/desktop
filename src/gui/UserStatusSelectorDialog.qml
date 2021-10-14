@@ -6,9 +6,7 @@ Window {
     id: dialog
     
     property NC.UserStatusSelectorModel model: NC.UserStatusSelectorModel {
-        onFinished: {
-            dialog.close()
-        }
+        onFinished: dialog.close()
     }
 
     minimumWidth: view.implicitWidth
