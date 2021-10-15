@@ -3228,7 +3228,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>%1 을(를) 종료하고 싶습니까?</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="379"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="380"/>
         <source>Account</source>
         <translation>계정</translation>
     </message>

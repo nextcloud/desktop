@@ -3249,7 +3249,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>您確定您要退出嗎 %1?</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="379"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="380"/>
         <source>Account</source>
         <translation>帳號</translation>
     </message>

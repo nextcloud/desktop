@@ -3235,7 +3235,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Czy na pewno chcesz zamknąć %1?</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="379"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="380"/>
         <source>Account</source>
         <translation>Konto</translation>
     </message>

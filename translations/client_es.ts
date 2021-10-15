@@ -3247,7 +3247,7 @@ Este es un nuevo modo experimental. Si decide utilizarlo, reporte cualquier prob
         <translation>¿Estás seguro de querer salir de %1?</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="379"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="380"/>
         <source>Account</source>
         <translation>Cuenta</translation>
     </message>
