@@ -53,10 +53,10 @@ bool ProcessDirectoryJob::checkForInvalidFileName(const PathTuple &path,
         QString errorMessage;
         const auto newFileNameEntry = entriesIter->second;
         if (newFileNameEntry.serverEntry.isValid()) {
-            errorMessage = tr("File contains trailing spaces and coudn't be renamed, because a file with the same name already exists on the server.");
+            errorMessage = tr("File contains trailing spaces and could not be renamed, because a file with the same name already exists on the server.");
         }
         if (newFileNameEntry.localEntry.isValid()) {
-            errorMessage = tr("File contains trailing spaces and coudn't be renamed, because a file with the same name already exists locally.");
+            errorMessage = tr("File contains trailing spaces and could not be renamed, because a file with the same name already exists locally.");
         }
 
         if (!errorMessage.isEmpty()) {
