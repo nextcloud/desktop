@@ -1,4 +1,4 @@
-find_package(Qt5 5.12 COMPONENTS Core Network Xml Concurrent REQUIRED)
+find_package(Qt5 5.15 COMPONENTS Core Network Xml Concurrent REQUIRED)
 get_target_property (QT_QMAKE_EXECUTABLE Qt5::qmake IMPORTED_LOCATION)
 message(STATUS "Using Qt ${Qt5Core_VERSION} (${QT_QMAKE_EXECUTABLE})")
 
