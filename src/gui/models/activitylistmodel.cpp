@@ -170,10 +170,10 @@ bool ActivityListModel::canFetchMore(const QModelIndex &) const
         return true;
 
     for (auto i = _activityLists.begin(); i != _activityLists.end(); ++i) {
-        AccountState *ast = i.key();
-        if (ast && ast->isConnected()) {
+        AccountStatePtr accountState = i.key();
+        if (accountState && accountState->isConnected()) {
             ActivityList activities = i.value();
-            if (activities.count() == 0 && !_currentlyFetching.contains(ast)) {
+            if (activities.count() == 0 && !_currentlyFetching.contains(accountState)) {
                 return true;
             }
         }
@@ -182,7 +182,7 @@ bool ActivityListModel::canFetchMore(const QModelIndex &) const
     return false;
 }
 
-void ActivityListModel::startFetchJob(AccountState *ast)
+void ActivityListModel::startFetchJob(AccountStatePtr ast)
 {
     if (!ast || !ast->isConnected()) {
         return;
@@ -243,14 +243,14 @@ void ActivityListModel::setActivityList(const ActivityList &&resultList)
 void ActivityListModel::fetchMore(const QModelIndex &)
 {
     for (const AccountStatePtr &asp : AccountManager::instance()->accounts()) {
-        if (!_activityLists.contains(asp.data()) && asp->isConnected()) {
-            _activityLists[asp.data()] = ActivityList();
-            startFetchJob(asp.data());
+        if (!_activityLists.contains(asp) && asp->isConnected()) {
+            _activityLists[asp] = ActivityList();
+            startFetchJob(asp);
         }
     }
 }
 
-void ActivityListModel::slotRefreshActivity(AccountState *ast)
+void ActivityListModel::slotRefreshActivity(AccountStatePtr ast)
 {
     if (ast && _activityLists.contains(ast)) {
         _activityLists.remove(ast);
@@ -258,7 +258,7 @@ void ActivityListModel::slotRefreshActivity(AccountState *ast)
     startFetchJob(ast);
 }
 
-void ActivityListModel::slotRemoveAccount(AccountState *ast)
+void ActivityListModel::slotRemoveAccount(AccountStatePtr ast)
 {
     if (_activityLists.contains(ast)) {
         const auto accountToRemove = ast->account()->uuid();

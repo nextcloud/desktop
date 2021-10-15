@@ -31,7 +31,7 @@ ServerNotificationHandler::ServerNotificationHandler(QObject *parent)
 {
 }
 
-void ServerNotificationHandler::slotFetchNotifications(AccountState *ptr)
+void ServerNotificationHandler::slotFetchNotifications(AccountStatePtr ptr)
 {
     // check connectivity and credentials
     if (!(ptr && ptr->isConnected() && ptr->account() && ptr->account()->credentials() && ptr->account()->credentials()->ready())) {
@@ -52,7 +52,7 @@ void ServerNotificationHandler::slotFetchNotifications(AccountState *ptr)
     _notificationJob = new JsonApiJob(ptr->account(), notificationsPath, this);
     QObject::connect(_notificationJob.data(), &JsonApiJob::jsonReceived,
         this, &ServerNotificationHandler::slotNotificationsReceived);
-    _notificationJob->setProperty("AccountStatePtr", QVariant::fromValue<AccountState *>(ptr));
+    _notificationJob->setProperty("AccountStatePtr", QVariant::fromValue<AccountStatePtr>(ptr));
 
     _notificationJob->start();
 }
@@ -66,7 +66,7 @@ void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &j
     }
 
     const auto &notifies = json.object().value(QLatin1String("ocs")).toObject().value(QLatin1String("data")).toArray();
-    AccountState *ai = qvariant_cast<AccountState *>(sender()->property("AccountStatePtr"));
+    AccountStatePtr ai(qvariant_cast<AccountState *>(sender()->property("AccountStatePtr")));
 
     ActivityList list;
     list.reserve(notifies.size());

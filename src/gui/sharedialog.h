@@ -40,7 +40,7 @@ class ShareDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit ShareDialog(QPointer<AccountState> accountState,
+    explicit ShareDialog(AccountStatePtr accountState,
         const QString &sharePath,
         const QString &localPath,
         SharePermissions maxSharingPermissions,
@@ -60,7 +60,7 @@ private:
     void showSharingUi();
 
     Ui::ShareDialog *_ui;
-    QPointer<AccountState> _accountState;
+    AccountStatePtr _accountState;
     QString _sharePath;
     QString _localPath;
     SharePermissions _maxSharingPermissions;

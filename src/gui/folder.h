@@ -17,11 +17,12 @@
 #ifndef MIRALL_FOLDER_H
 #define MIRALL_FOLDER_H
 
-#include "syncresult.h"
-#include "progressdispatcher.h"
+#include "accountstate.h"
 #include "common/syncjournaldb.h"
 #include "networkjobs.h"
+#include "progressdispatcher.h"
 #include "syncoptions.h"
+#include "syncresult.h"
 
 #include <QDateTime>
 #include <QObject>
@@ -39,7 +40,6 @@ namespace OCC {
 
 class Vfs;
 class SyncEngine;
-class AccountState;
 class SyncRunFileLog;
 class FolderWatcher;
 class LocalDiscoveryTracker;
@@ -121,13 +121,13 @@ public:
 
     /** Create a new Folder
      */
-    Folder(const FolderDefinition &definition, AccountState *accountState, std::unique_ptr<Vfs> vfs, QObject *parent = nullptr);
+    Folder(const FolderDefinition &definition, AccountStatePtr accountState, std::unique_ptr<Vfs> vfs, QObject *parent = nullptr);
 
     ~Folder() override;
     /**
      * The account the folder is configured on.
      */
-    AccountState *accountState() const { return _accountState.data(); }
+    AccountStatePtr accountState() const { return _accountState; }
 
     /**
      * alias or nickname

@@ -105,7 +105,7 @@ protected:
     }
 };
 
-AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
+AccountSettings::AccountSettings(AccountStatePtr accountState, QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::AccountSettings)
     , _wasDisabledBefore(false)
@@ -180,7 +180,7 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
 
     ui->connectLabel->setText(tr("No account configured."));
 
-    connect(_accountState, &AccountState::stateChanged, this, &AccountSettings::slotAccountStateChanged);
+    connect(_accountState.data(), &AccountState::stateChanged, this, &AccountSettings::slotAccountStateChanged);
     slotAccountStateChanged();
 
     connect(&_quotaInfo, &QuotaInfo::quotaUpdated,
@@ -1060,9 +1060,6 @@ void AccountSettings::slotDeleteAccount()
     messageBox->setAttribute(Qt::WA_DeleteOnClose);
     connect(messageBox, &QMessageBox::finished, this, [this, messageBox, yesButton]{
         if (messageBox->clickedButton() == yesButton) {
-            // Else it might access during destruction. This should be better handled by it having a QSharedPointer
-            _model->setAccountState(nullptr);
-
             auto manager = AccountManager::instance();
             manager->deleteAccount(_accountState);
             manager->save();

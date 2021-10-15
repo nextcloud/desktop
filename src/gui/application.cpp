@@ -341,7 +341,7 @@ Application::Application(int &argc, char **argv)
     connect(AccountManager::instance(), &AccountManager::accountRemoved,
         this, &Application::slotAccountStateRemoved);
     for (const auto &ai : AccountManager::instance()->accounts()) {
-        slotAccountStateAdded(ai.data());
+        slotAccountStateAdded(ai);
     }
 
     connect(FolderMan::instance()->socketApi(), &SocketApi::shareCommandReceived,
@@ -383,16 +383,16 @@ Application::~Application()
     AccountManager::instance()->shutdown();
 }
 
-void Application::slotAccountStateRemoved(AccountState *accountState)
+void Application::slotAccountStateRemoved(AccountStatePtr accountState) const
 {
     if (_gui) {
-        disconnect(accountState, &AccountState::stateChanged,
+        disconnect(accountState.data(), &AccountState::stateChanged,
             _gui.data(), &ownCloudGui::slotAccountStateChanged);
         disconnect(accountState->account().data(), &Account::serverVersionChanged,
             _gui.data(), &ownCloudGui::slotTrayMessageIfServerUnsupported);
     }
     if (_folderManager) {
-        disconnect(accountState, &AccountState::stateChanged,
+        disconnect(accountState.data(), &AccountState::stateChanged,
             _folderManager.data(), &FolderMan::slotAccountStateChanged);
         disconnect(accountState->account().data(), &Account::serverVersionChanged,
             _folderManager.data(), &FolderMan::slotServerVersionChanged);
@@ -406,13 +406,16 @@ void Application::slotAccountStateRemoved(AccountState *accountState)
     }
 }
 
-void Application::slotAccountStateAdded(AccountState *accountState)
+void Application::slotAccountStateAdded(AccountStatePtr accountState) const
 {
-    connect(accountState, &AccountState::stateChanged,
+    // Hook up the GUI slots to the account state's signals:
+    connect(accountState.data(), &AccountState::stateChanged,
         _gui.data(), &ownCloudGui::slotAccountStateChanged);
     connect(accountState->account().data(), &Account::serverVersionChanged,
         _gui.data(), &ownCloudGui::slotTrayMessageIfServerUnsupported);
-    connect(accountState, &AccountState::stateChanged,
+
+    // Hook up the folder manager slots to the account state's signals:
+    connect(accountState.data(), &AccountState::stateChanged,
         _folderManager.data(), &FolderMan::slotAccountStateChanged);
     connect(accountState->account().data(), &Account::serverVersionChanged,
         _folderManager.data(), &FolderMan::slotServerVersionChanged);

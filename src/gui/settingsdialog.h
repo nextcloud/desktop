@@ -19,8 +19,9 @@
 #include <QMainWindow>
 #include <QStyledItemDelegate>
 
-#include "progressdispatcher.h"
+#include "accountstate.h"
 #include "owncloudgui.h"
+#include "progressdispatcher.h"
 
 class QAction;
 class QActionGroup;
@@ -28,8 +29,6 @@ class QToolBar;
 class QStandardItemModel;
 
 namespace OCC {
-
-class AccountState;
 
 namespace Ui {
     class SettingsDialog;
@@ -62,7 +61,7 @@ public slots:
     void showActivityPage();
     void showIssuesList();
     void slotSwitchPage(QAction *action);
-    void slotRefreshActivity(AccountState *accountState);
+    void slotRefreshActivity(AccountStatePtr accountState);
     void slotRefreshActivityAccountStateSender();
     void slotAccountAvatarChanged();
     void slotAccountDisplayNameChanged();
@@ -72,8 +71,8 @@ protected:
     void setVisible(bool visible) override;
 
 private slots:
-    void accountAdded(AccountState *);
-    void accountRemoved(AccountState *);
+    void accountAdded(AccountStatePtr);
+    void accountRemoved(AccountStatePtr);
 
 private:
     void customizeStyle();

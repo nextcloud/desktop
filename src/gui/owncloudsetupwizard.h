@@ -71,7 +71,7 @@ private:
     void createRemoteFolder();
     void finalizeSetup(bool);
     bool ensureStartFromScratch(const QString &localFolder);
-    AccountState *applyAccountChanges();
+    AccountStatePtr applyAccountChanges();
 
     OwncloudWizard *_ocWizard;
 

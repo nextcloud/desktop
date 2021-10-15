@@ -62,7 +62,7 @@ static bool sortByFolderHeader(const FolderStatusModel::SubFolderInfo &lhs, cons
         < 0;
 }
 
-void FolderStatusModel::setAccountState(const AccountState *accountState)
+void FolderStatusModel::setAccountState(AccountStatePtr accountState)
 {
     beginResetModel();
     _dirty = false;
@@ -106,7 +106,7 @@ void FolderStatusModel::setAccountState(const AccountState *accountState)
 Qt::ItemFlags FolderStatusModel::flags(const QModelIndex &index) const
 {
     if (!_accountState) {
-        return nullptr;
+        return Qt::NoItemFlags;
     }
 
     // Always enable the item. If it isn't enabled, it cannot be in the selection model, so all

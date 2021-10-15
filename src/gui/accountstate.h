@@ -41,7 +41,7 @@ class Account;
 class AccountState : public QObject, public QSharedData
 {
     Q_OBJECT
-    Q_PROPERTY(AccountPtr account MEMBER _account)
+    Q_PROPERTY(AccountPtr account MEMBER _account READ account)
 
 public:
     enum State {
@@ -78,15 +78,15 @@ public:
     /// The actual current connectivity status.
     typedef ConnectionValidator::Status ConnectionStatus;
 
-    /// Use the account as parent
-    explicit AccountState(AccountPtr account);
     ~AccountState() override;
 
     /** Creates an account state from settings and an Account object.
      *
      * Use from AccountManager with a prepared QSettings object only.
      */
-    static AccountState *loadFromSettings(AccountPtr account, const QSettings &settings);
+    static AccountStatePtr loadFromSettings(AccountPtr account, const QSettings &settings);
+
+    static AccountStatePtr fromNewAccount(AccountPtr account);
 
     /** Writes account state information to settings.
      *
@@ -142,6 +142,9 @@ public slots:
     void checkConnectivity(bool verifyServerState = false);
 
 private:
+    /// Use the account as parent
+    explicit AccountState(AccountPtr account);
+
     void setState(State state);
 
 signals:

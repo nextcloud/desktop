@@ -71,10 +71,10 @@ public:
     void checkActivityTabVisibility();
 
 public slots:
-    void slotRefreshActivities(AccountState *ptr);
-    void slotRefreshNotifications(AccountState *ptr);
-    void slotRemoveAccount(AccountState *ptr);
-    void slotAccountActivityStatus(AccountState *ast, int statusCode);
+    void slotRefreshActivities(AccountStatePtr ptr);
+    void slotRefreshNotifications(AccountStatePtr ptr);
+    void slotRemoveAccount(AccountStatePtr ptr);
+    void slotAccountActivityStatus(AccountStatePtr ast, int statusCode);
     void slotRequestCleanupAndBlacklist(const Activity &blacklistActivity);
 
 signals:
@@ -133,8 +133,8 @@ public:
     ~ActivitySettings() override;
 
 public slots:
-    void slotRefresh(AccountState *ptr);
-    void slotRemoveAccount(AccountState *ptr);
+    void slotRefresh(AccountStatePtr ptr);
+    void slotRemoveAccount(AccountStatePtr ptr);
 
     void setNotificationRefreshInterval(std::chrono::milliseconds interval);
 
@@ -162,7 +162,7 @@ private:
     IssuesWidget *_issuesWidget;
     QProgressIndicator *_progressIndicator;
     QTimer _notificationCheckTimer;
-    QHash<AccountState *, QElapsedTimer> _timeSinceLastCheck;
+    QHash<AccountStatePtr, QElapsedTimer> _timeSinceLastCheck;
 };
 }
 #endif // ActivityWIDGET_H

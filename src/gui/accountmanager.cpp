@@ -225,7 +225,7 @@ void AccountManager::saveAccount(Account *a)
     qCDebug(lcAccountManager) << "Saved account settings, status:" << settings->status();
 }
 
-void AccountManager::saveAccountState(AccountState *a)
+void AccountManager::saveAccountState(AccountStatePtr a) const
 {
     qCDebug(lcAccountManager) << "Saving account state" << a->account()->url().toString();
     auto settings = ConfigFile::settingsWithGroup(QLatin1String(accountsC));
@@ -361,7 +361,7 @@ AccountStatePtr AccountManager::account(const QUuid uuid) {
     return _accounts.value(uuid);
 }
 
-AccountState *AccountManager::addAccount(const AccountPtr &newAccount)
+AccountStatePtr AccountManager::addAccount(const AccountPtr &newAccount)
 {
     auto id = newAccount->id();
     if (id.isEmpty() || !isAccountIdAvailable(id)) {
@@ -369,18 +369,19 @@ AccountState *AccountManager::addAccount(const AccountPtr &newAccount)
     }
     newAccount->_id = id;
 
-    auto newAccountState = new AccountState(newAccount);
+    AccountStatePtr newAccountState(AccountState::fromNewAccount(newAccount));
     addAccountState(newAccountState);
     return newAccountState;
 }
 
-void AccountManager::deleteAccount(AccountState *account)
+void AccountManager::deleteAccount(AccountStatePtr account)
 {
     auto it = std::find(_accounts.begin(), _accounts.end(), account);
     if (it == _accounts.end()) {
         return;
     }
-    auto copy = *it; // keep a reference to the shared pointer so it does not delete it just yet
+    // The argument keeps a strong reference to the AccountState, so we can safely remove other
+    // AccountStatePtr occurrences:
     _accounts.erase(it);
 
     // Forget account credentials, cookies
@@ -407,7 +408,7 @@ void AccountManager::shutdown()
 {
     const auto accounts = std::move(_accounts);
     for (const auto &acc : accounts) {
-        emit accountRemoved(acc.data());
+        emit accountRemoved(acc);
     }
 }
 
@@ -435,13 +436,13 @@ QString AccountManager::generateFreeAccountId() const
     }
 }
 
-void AccountManager::addAccountState(AccountState *accountState)
+void AccountManager::addAccountState(AccountStatePtr accountState)
 {
     QObject::connect(accountState->account().data(),
         &Account::wantsAccountSaved,
         this, &AccountManager::saveAccount);
 
-    _accounts.insert(accountState->account()->uuid(), AccountStatePtr{accountState});
+    _accounts.insert(accountState->account()->uuid(), accountState);
     emit accountAdded(accountState);
 }
 }

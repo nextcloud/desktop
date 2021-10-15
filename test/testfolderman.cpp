@@ -44,11 +44,11 @@ private slots:
         QString dirPath = dir2.canonicalPath();
 
         AccountPtr account = TestUtils::createDummyAccount();
-        AccountStatePtr newAccountState(new AccountState(account));
+        AccountStatePtr newAccountState = AccountState::fromNewAccount(account);
         FolderMan *folderman = TestUtils::folderMan();
         QCOMPARE(folderman, FolderMan::instance());
-        QVERIFY(folderman->addFolder(newAccountState.data(), TestUtils::createDummyFolderDefinition(dirPath + "/sub/ownCloud1")));
-        QVERIFY(folderman->addFolder(newAccountState.data(), TestUtils::createDummyFolderDefinition(dirPath + "/ownCloud2")));
+        QVERIFY(folderman->addFolder(newAccountState, TestUtils::createDummyFolderDefinition(dirPath + "/sub/ownCloud1")));
+        QVERIFY(folderman->addFolder(newAccountState, TestUtils::createDummyFolderDefinition(dirPath + "/ownCloud2")));
 
 
         // those should be allowed
@@ -169,10 +169,10 @@ private slots:
 
         AccountPtr account = TestUtils::createDummyAccount();
 
-        AccountStatePtr newAccountState(new AccountState(account));
+        AccountStatePtr newAccountState = AccountState::fromNewAccount(account);
         FolderMan *folderman = TestUtils::folderMan();
-        QVERIFY(folderman->addFolder(newAccountState.data(), TestUtils::createDummyFolderDefinition(dirPath + "/sub/ownCloud/")));
-        QVERIFY(folderman->addFolder(newAccountState.data(), TestUtils::createDummyFolderDefinition(dirPath + "/ownCloud2/")));
+        QVERIFY(folderman->addFolder(newAccountState, TestUtils::createDummyFolderDefinition(dirPath + "/sub/ownCloud/")));
+        QVERIFY(folderman->addFolder(newAccountState, TestUtils::createDummyFolderDefinition(dirPath + "/ownCloud2/")));
 
         // TEST
 

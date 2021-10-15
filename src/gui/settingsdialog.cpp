@@ -252,7 +252,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     connect(AccountManager::instance(), &AccountManager::accountRemoved,
         this, &SettingsDialog::accountRemoved);
     for (const auto &ai : AccountManager::instance()->accounts()) {
-        accountAdded(ai.data());
+        accountAdded(ai);
     }
 
     QTimer::singleShot(0, this, &SettingsDialog::showFirstPage);
@@ -354,7 +354,7 @@ void SettingsDialog::showIssuesList()
     _activitySettings->slotShowIssuesTab();
 }
 
-void SettingsDialog::accountAdded(AccountState *s)
+void SettingsDialog::accountAdded(AccountStatePtr s)
 {
     bool brandingSingleAccount = !Theme::instance()->multiAccount();
 
@@ -393,7 +393,7 @@ void SettingsDialog::accountAdded(AccountState *s)
     connect(s->account().data(), &Account::accountChangedDisplayName, this, &SettingsDialog::slotAccountDisplayNameChanged);
 
     // Refresh immediatly when getting online
-    connect(s, &AccountState::isConnectedChanged, this, &SettingsDialog::slotRefreshActivityAccountStateSender);
+    connect(s.data(), &AccountState::isConnectedChanged, this, &SettingsDialog::slotRefreshActivityAccountStateSender);
 
     slotRefreshActivity(s);
 }
@@ -425,7 +425,7 @@ void SettingsDialog::slotAccountDisplayNameChanged()
     }
 }
 
-void SettingsDialog::accountRemoved(AccountState *s)
+void SettingsDialog::accountRemoved(AccountStatePtr s)
 {
     for (auto it = _actionGroupWidgets.begin(); it != _actionGroupWidgets.end(); ++it) {
         auto as = qobject_cast<AccountSettings *>(*it);
@@ -475,10 +475,11 @@ QAction *SettingsDialog::createActionWithIcon(const QString &icon, const QString
 
 void SettingsDialog::slotRefreshActivityAccountStateSender()
 {
-    slotRefreshActivity(qobject_cast<AccountState*>(sender()));
+    AccountStatePtr accountState(qobject_cast<AccountState *>(sender()));
+    slotRefreshActivity(accountState);
 }
 
-void SettingsDialog::slotRefreshActivity(AccountState *accountState)
+void SettingsDialog::slotRefreshActivity(AccountStatePtr accountState)
 {
     if (accountState) {
         _activitySettings->slotRefresh(accountState);

@@ -33,7 +33,7 @@ signals:
     void newNotificationList(ActivityList);
 
 public slots:
-    void slotFetchNotifications(AccountState *ptr);
+    void slotFetchNotifications(AccountStatePtr ptr);
 
 private slots:
     void slotNotificationsReceived(const QJsonDocument &json, int statusCode);

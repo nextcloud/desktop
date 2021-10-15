@@ -41,7 +41,7 @@ class FolderStatusModel : public QAbstractItemModel
 public:
     FolderStatusModel(QObject *parent = nullptr);
     ~FolderStatusModel() override;
-    void setAccountState(const AccountState *accountState);
+    void setAccountState(AccountStatePtr accountState);
 
     Qt::ItemFlags flags(const QModelIndex &) const override;
     QVariant data(const QModelIndex &index, int role) const override;
@@ -155,7 +155,7 @@ private slots:
 private:
     QStringList createBlackList(const OCC::FolderStatusModel::SubFolderInfo &root,
         const QStringList &oldBlackList) const;
-    const AccountState *_accountState;
+    AccountStatePtr _accountState;
     bool _dirty; // If the selective sync checkboxes were changed
 
     /**

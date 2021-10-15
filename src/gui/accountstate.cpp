@@ -128,15 +128,20 @@ AccountState::~AccountState()
 {
 }
 
-AccountState *AccountState::loadFromSettings(AccountPtr account, const QSettings &settings)
+AccountStatePtr AccountState::loadFromSettings(AccountPtr account, const QSettings &settings)
 {
-    auto accountState = new AccountState(account);
+    auto accountState = AccountStatePtr(new AccountState(account));
     const bool userExplicitlySignedOut = settings.value(userExplicitlySignedOutC(), false).toBool();
     if (userExplicitlySignedOut) {
         // see writeToSettings below
         accountState->_state = SignedOut;
     }
     return accountState;
+}
+
+AccountStatePtr AccountState::fromNewAccount(AccountPtr account)
+{
+    return AccountStatePtr(new AccountState(account));
 }
 
 void AccountState::writeToSettings(QSettings &settings) const

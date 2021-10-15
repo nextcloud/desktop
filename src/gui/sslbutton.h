@@ -19,13 +19,13 @@
 #include <QPointer>
 #include <QSsl>
 
+#include "accountstate.h"
+
 class QAction;
 class QSslCertificate;
 class QSslConfiguration;
 
 namespace OCC {
-
-class AccountState;
 
 /**
  * @brief The SslButton class
@@ -36,7 +36,7 @@ class SslButton : public QToolButton
     Q_OBJECT
 public:
     explicit SslButton(QWidget *parent = nullptr);
-    void updateAccountState(AccountState *accountState);
+    void updateAccountState(AccountStatePtr accountState);
 
 public slots:
     void slotUpdateMenu();
@@ -44,7 +44,7 @@ public slots:
 private:
     QMenu *buildCertMenu(QMenu *parent, const QSslCertificate &cert,
         const QList<QSslCertificate> &userApproved, int pos, const QList<QSslCertificate> &systemCaCertificates);
-    QPointer<AccountState> _accountState;
+    AccountStatePtr _accountState;
     QMenu *_menu;
 };
 

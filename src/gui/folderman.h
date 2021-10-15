@@ -111,7 +111,7 @@ public:
 
     /** Adds a folder for an account, ensures the journal is gone and saves it in the settings.
       */
-    Folder *addFolder(AccountState *accountState, const FolderDefinition &folderDefinition);
+    Folder *addFolder(AccountStatePtr accountState, const FolderDefinition &folderDefinition);
 
     /** Removes a folder */
     void removeFolder(Folder *);
@@ -138,7 +138,7 @@ public:
      * Migrate accounts from owncloud < 2.0
      * Creates a folder for a specific configuration, identified by alias.
      */
-    Folder *setupFolderFromOldConfigFile(const QString &, AccountState *account);
+    Folder *setupFolderFromOldConfigFile(const QString &, AccountStatePtr account);
 
     /**
      * Ensures that a given directory does not contain a sync journal file.
@@ -302,7 +302,7 @@ private slots:
     void slotStartScheduledFolderSync();
     void slotEtagPollTimerTimeout();
 
-    void slotRemoveFoldersForAccount(AccountState *accountState);
+    void slotRemoveFoldersForAccount(AccountStatePtr accountState);
 
     // Wraps the Folder::syncStateChange() signal into the
     // FolderMan::folderSyncStateChange(Folder*) signal.
@@ -331,7 +331,7 @@ private:
      *  does not set an account on the new folder.
       */
     Folder *addFolderInternal(FolderDefinition folderDefinition,
-        AccountState *accountState, std::unique_ptr<Vfs> vfs);
+        AccountStatePtr accountState, std::unique_ptr<Vfs> vfs);
 
     /* unloads a folder object, does not delete it */
     void unloadFolder(Folder *);

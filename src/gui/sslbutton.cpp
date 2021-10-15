@@ -158,7 +158,7 @@ QMenu *SslButton::buildCertMenu(QMenu *parent, const QSslCertificate &cert,
     return menu;
 }
 
-void SslButton::updateAccountState(AccountState *accountState)
+void SslButton::updateAccountState(AccountStatePtr accountState)
 {
     if (!accountState || !accountState->isConnected()) {
         setVisible(false);

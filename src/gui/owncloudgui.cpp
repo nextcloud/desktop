@@ -960,12 +960,12 @@ void ownCloudGui::runNewAccountWizard()
 
 void ownCloudGui::setPauseOnAllFoldersHelper(bool pause)
 {
-    QList<AccountState *> accounts;
+    QList<AccountStatePtr> accounts;
     if (auto account = qvariant_cast<AccountStatePtr>(sender()->property(propertyAccountC))) {
-        accounts.append(account.data());
+        accounts.append(account);
     } else {
         for (const auto &a : AccountManager::instance()->accounts()) {
-            accounts.append(a.data());
+            accounts.append(a);
         }
     }
     for (auto *f : FolderMan::instance()->map()) {

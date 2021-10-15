@@ -93,7 +93,7 @@ ActivityWidget::ActivityWidget(QWidget *parent)
     connect(_model, &ActivityListModel::activityJobStatusCode,
         this, &ActivityWidget::slotAccountActivityStatus);
 
-    connect(AccountManager::instance(), &AccountManager::accountRemoved, this, [this](AccountState *ast) {
+    connect(AccountManager::instance(), &AccountManager::accountRemoved, this, [this](AccountStatePtr ast) {
         if (_accountsWithoutActivities.remove(ast->account()->displayName())) {
             showLabels();
         }
@@ -122,12 +122,12 @@ ActivityWidget::~ActivityWidget()
     delete _ui;
 }
 
-void ActivityWidget::slotRefreshActivities(AccountState *ptr)
+void ActivityWidget::slotRefreshActivities(AccountStatePtr ptr)
 {
     _model->slotRefreshActivity(ptr);
 }
 
-void ActivityWidget::slotRefreshNotifications(AccountState *ptr)
+void ActivityWidget::slotRefreshNotifications(AccountStatePtr ptr)
 {
     // start a server notification handler if no notification requests
     // are running
@@ -142,7 +142,7 @@ void ActivityWidget::slotRefreshNotifications(AccountState *ptr)
     }
 }
 
-void ActivityWidget::slotRemoveAccount(AccountState *ptr)
+void ActivityWidget::slotRemoveAccount(AccountStatePtr ptr)
 {
     _model->slotRemoveAccount(ptr);
 }
@@ -164,7 +164,7 @@ void ActivityWidget::showLabels()
     _ui->_bottomLabel->setText(t);
 }
 
-void ActivityWidget::slotAccountActivityStatus(AccountState *ast, int statusCode)
+void ActivityWidget::slotAccountActivityStatus(AccountStatePtr ast, int statusCode)
 {
     if (!(ast && ast->account())) {
         return;
@@ -327,8 +327,7 @@ void ActivityWidget::slotSendNotificationRequest(const QString &accountName, con
         QStringLiteral("DELETE") };
 
     if (validVerbs.contains(verb)) {
-        AccountStatePtr acc = AccountManager::instance()->account(accountName);
-        if (acc) {
+        if (auto acc = AccountManager::instance()->account(accountName)) {
             NotificationConfirmJob *job = new NotificationConfirmJob(acc->account());
             QUrl l(link);
             job->setLinkAndVerb(l, verb);
@@ -559,12 +558,12 @@ void ActivitySettings::slotShowIssuesTab()
     _tab->setCurrentIndex(_syncIssueTabId);
 }
 
-void ActivitySettings::slotRemoveAccount(AccountState *ptr)
+void ActivitySettings::slotRemoveAccount(AccountStatePtr ptr)
 {
     _activityWidget->slotRemoveAccount(ptr);
 }
 
-void ActivitySettings::slotRefresh(AccountState *ptr)
+void ActivitySettings::slotRefresh(AccountStatePtr ptr)
 {
     // QElapsedTimer isn't actually constructed as invalid.
     if (!_timeSinceLastCheck.contains(ptr)) {
@@ -590,7 +589,7 @@ void ActivitySettings::slotRefresh(AccountState *ptr)
 void ActivitySettings::slotRegularNotificationCheck()
 {
     for (const auto &a : AccountManager::instance()->accounts()) {
-        slotRefresh(a.data());
+        slotRefresh(a);
     }
 }
 

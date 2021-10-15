@@ -14,7 +14,6 @@
 
 #include "quotainfo.h"
 #include "account.h"
-#include "accountstate.h"
 #include "networkjobs.h"
 #include "folderman.h"
 #include "creds/abstractcredentials.h"
@@ -31,14 +30,14 @@ namespace {
     const auto failIntervalT = 5s;
 }
 
-QuotaInfo::QuotaInfo(AccountState *accountState, QObject *parent)
+QuotaInfo::QuotaInfo(AccountStatePtr accountState, QObject *parent)
     : QObject(parent)
     , _accountState(accountState)
     , _lastQuotaTotalBytes(0)
     , _lastQuotaUsedBytes(0)
     , _active(false)
 {
-    connect(accountState, &AccountState::stateChanged,
+    connect(accountState.data(), &AccountState::stateChanged,
         this, &QuotaInfo::slotAccountStateChanged);
     connect(&_jobRestartTimer, &QTimer::timeout, this, &QuotaInfo::slotCheckQuota);
     _jobRestartTimer.setSingleShot(true);

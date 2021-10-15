@@ -47,7 +47,7 @@ public:
      * Add this account in the list of saved accounts.
      * Typically called from the wizard
      */
-    AccountState *addAccount(const AccountPtr &newAccount);
+    AccountStatePtr addAccount(const AccountPtr &newAccount);
 
     /**
      * remove all accounts
@@ -73,7 +73,7 @@ public:
     /**
      * Delete the AccountState
      */
-    void deleteAccount(AccountState *account);
+    void deleteAccount(AccountStatePtr account);
 
 
     /**
@@ -104,19 +104,19 @@ private:
     QString generateFreeAccountId() const;
 
     // Adds an account to the tracked list, emitting accountAdded()
-    void addAccountState(AccountState *accountState);
+    void addAccountState(AccountStatePtr accountState);
 
 public slots:
     /// Saves account data, not including the credentials
     void saveAccount(Account *a);
 
     /// Saves account state data, not including the account
-    void saveAccountState(AccountState *a);
+    void saveAccountState(AccountStatePtr a) const;
 
 
 Q_SIGNALS:
-    void accountAdded(AccountState *account);
-    void accountRemoved(AccountState *account);
+    void accountAdded(AccountStatePtr account);
+    void accountRemoved(AccountStatePtr account);
 
 private:
     AccountManager() {}

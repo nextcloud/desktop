@@ -50,11 +50,13 @@ class FolderStatusModel;
 class AccountSettings : public QWidget
 {
     Q_OBJECT
-    Q_PROPERTY(AccountState* accountState MEMBER _accountState)
+    Q_PROPERTY(AccountStatePtr accountState MEMBER _accountState)
 
 public:
-    explicit AccountSettings(AccountState *accountState, QWidget *parent = nullptr);
+    explicit AccountSettings(AccountStatePtr accountState, QWidget *parent = nullptr);
     ~AccountSettings() override;
+
+    AccountStatePtr accountsState() const { return _accountState; }
 
 signals:
     void folderChanged();
@@ -65,8 +67,6 @@ public slots:
     void slotOpenOC();
     void slotUpdateQuota(qint64, qint64);
     void slotAccountStateChanged();
-
-    AccountState *accountsState() { return _accountState; }
 
 protected slots:
     void slotAddFolder();
@@ -104,7 +104,7 @@ private:
     FolderStatusModel *_model;
     QUrl _OCUrl;
     bool _wasDisabledBefore;
-    AccountState *_accountState;
+    AccountStatePtr _accountState;
     QuotaInfo _quotaInfo;
     QAction *_toggleSignInOutAction;
     QAction *_addAccountAction;

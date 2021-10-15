@@ -359,8 +359,7 @@ void FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account,
                 qFatal("Could not load plugin");
             }
 
-            Folder *f = addFolderInternal(std::move(folderDefinition), account.data(), std::move(vfs));
-            if (f) {
+            if (Folder *f = addFolderInternal(std::move(folderDefinition), account, std::move(vfs))) {
                 // Migrate the old "usePlaceholders" setting to the root folder pin state
                 if (settings.value(versionC(), 1).toInt() == 1
                     && settings.value(QLatin1String("usePlaceholders"), false).toBool()) {
@@ -397,16 +396,16 @@ int FolderMan::setupFoldersMigration()
     const auto &list = dir.entryList();
 
     // Normally there should be only one account when migrating.
-    AccountState *accountState = AccountManager::instance()->accounts().value(0).data();
-    for (const auto &alias : list) {
-        Folder *f = setupFolderFromOldConfigFile(alias, accountState);
-        if (f) {
-            scheduleFolder(f);
-            emit folderSyncStateChange(f);
+    if (AccountStatePtr accountState = AccountManager::instance()->accounts().value(nullptr)) {
+        for (const auto &alias : list) {
+            if (Folder *f = setupFolderFromOldConfigFile(alias, accountState)) {
+                scheduleFolder(f);
+                emit folderSyncStateChange(f);
+            }
         }
-    }
 
-    emit folderListChanged(_folderMap);
+        emit folderListChanged(_folderMap);
+    }
 
     // return the number of valid folders.
     return _folderMap.size();
@@ -523,7 +522,7 @@ QString FolderMan::unescapeAlias(const QString &alias)
 // filename is the name of the file only, it does not include
 // the configuration directory path
 // WARNING: Do not remove this code, it is used for predefined/automated deployments (2016)
-Folder *FolderMan::setupFolderFromOldConfigFile(const QString &file, AccountState *accountState)
+Folder *FolderMan::setupFolderFromOldConfigFile(const QString &file, AccountStatePtr accountState)
 {
     Folder *folder = nullptr;
 
@@ -754,7 +753,7 @@ void FolderMan::slotRunOneEtagJob()
 
 void FolderMan::slotAccountStateChanged()
 {
-    AccountState *accountState = qobject_cast<AccountState *>(sender());
+    AccountStatePtr accountState(qobject_cast<AccountState *>(sender()));
     if (!accountState) {
         return;
     }
@@ -907,7 +906,7 @@ void FolderMan::slotEtagPollTimerTimeout()
     }
 }
 
-void FolderMan::slotRemoveFoldersForAccount(AccountState *accountState)
+void FolderMan::slotRemoveFoldersForAccount(AccountStatePtr accountState)
 {
     QList<Folder *> foldersToRemove;
     // reserve a magic number
@@ -1053,7 +1052,7 @@ void FolderMan::slotFolderSyncFinished(const SyncResult &)
         startScheduledSyncSoon();
 }
 
-Folder *FolderMan::addFolder(AccountState *accountState, const FolderDefinition &folderDefinition)
+Folder *FolderMan::addFolder(AccountStatePtr accountState, const FolderDefinition &folderDefinition)
 {
     // Choose a db filename
     auto definition = folderDefinition;
@@ -1096,7 +1095,7 @@ Folder *FolderMan::addFolder(AccountState *accountState, const FolderDefinition 
 
 Folder *FolderMan::addFolderInternal(
     FolderDefinition folderDefinition,
-    AccountState *accountState,
+    AccountStatePtr accountState,
     std::unique_ptr<Vfs> vfs)
 {
     auto alias = folderDefinition.alias;

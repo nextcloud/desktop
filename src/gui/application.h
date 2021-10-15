@@ -97,8 +97,8 @@ protected slots:
     void slotCheckConnection();
     void slotUseMonoIconsChanged(bool);
     void slotCleanup();
-    void slotAccountStateAdded(AccountState *accountState);
-    void slotAccountStateRemoved(AccountState *accountState);
+    void slotAccountStateAdded(AccountStatePtr accountState) const;
+    void slotAccountStateRemoved(AccountStatePtr accountState) const;
     void slotSystemOnlineConfigurationChanged(QNetworkConfiguration);
 
 private:
