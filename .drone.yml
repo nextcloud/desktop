@@ -98,7 +98,7 @@ name: AppImage
 
 steps:
 - name: build
-  image: ghcr.io/nextcloud/continuous-integration-client-appimage:client-appimage-2
+  image: ghcr.io/nextcloud/continuous-integration-client-appimage:client-appimage-3
   environment:
     CI_UPLOAD_GIT_TOKEN:
       from_secret: CI_UPLOAD_GIT_TOKEN
