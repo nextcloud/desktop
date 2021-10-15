@@ -319,14 +319,19 @@ void NSISUpdater::wipeUpdateData()
 void NSISUpdater::slotDownloadFinished()
 {
     QNetworkReply *reply = qobject_cast<QNetworkReply *>(sender());
+    const QUrl url(reply->url());
     reply->deleteLater();
+    _file->close();
     if (reply->error() != QNetworkReply::NoError) {
         setDownloadState(DownloadFailed);
         return;
     }
+    const auto status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
+    if (status != 200) {
+        setDownloadState(DownloadFailed);
+        return;
+    }
 
-    QUrl url(reply->url());
-    _file->close();
 
     auto settings = ConfigFile::makeQSettings();
 
