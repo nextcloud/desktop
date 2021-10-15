@@ -3274,6 +3274,16 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
 <context>
     <name>OCC::ProcessDirectoryJob</name>
     <message>
+        <location filename="../src/libsync/discovery.cpp" line="56"/>
+        <source>File contains trailing spaces and coudn&apos;t be renamed, because a file with the same name already exists on the server.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="59"/>
+        <source>File contains trailing spaces and coudn&apos;t be renamed, because a file with the same name already exists locally.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/libsync/discovery.cpp" line="250"/>
         <source>Symbolic links are not supported in syncing.</source>
         <translation>Symbolische links worden niet ondersteund bij het synchroniseren.</translation>
@@ -3289,14 +3299,14 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
         <translation>Bestandsnamen die eindigen met een punt worden niet ondersteund door het bestandssysteem.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="271"/>
-        <source>File names containing the character &quot;%1&quot; are not supported on this file system.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../src/libsync/discovery.cpp" line="272"/>
         <source>File names containing the character &apos;%1&apos; are not supported on this file system.</source>
         <translation>Bestandsnamen met een &apos;%1&apos; symbool worden niet ondersteund door het bestandssysteem.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="315"/>
+        <source>File names containing the character &quot;%1&quot; are not supported on this file system.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="276"/>
@@ -3424,7 +3434,7 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
         <translation>Server gaf een foutmelding bij lezen directory &apos;%1&apos; : %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1590"/>
+        <location filename="../src/libsync/discovery.cpp" line="1635"/>
         <source>Server replied with an error while reading directory &quot;%1&quot; : %2</source>
         <translation type="unfinished"/>
     </message>

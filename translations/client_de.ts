@@ -3275,6 +3275,16 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
 <context>
     <name>OCC::ProcessDirectoryJob</name>
     <message>
+        <location filename="../src/libsync/discovery.cpp" line="56"/>
+        <source>File contains trailing spaces and coudn&apos;t be renamed, because a file with the same name already exists on the server.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="59"/>
+        <source>File contains trailing spaces and coudn&apos;t be renamed, because a file with the same name already exists locally.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/libsync/discovery.cpp" line="250"/>
         <source>Symbolic links are not supported in syncing.</source>
         <translation>Symbolische Verknüpfungen werden bei der Synchronisierung nicht unterstützt.</translation>
@@ -3290,14 +3300,14 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
         <translation>Dateinamen, die mit einem Punkt enden, werden von diesem Dateisystem nicht unterstützt.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="271"/>
-        <source>File names containing the character &quot;%1&quot; are not supported on this file system.</source>
-        <translation>Dateinamen, welche das Zeichen &quot;%1&quot; enthalten, werden von diesem Dateisystem nicht unterstützt.</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/discovery.cpp" line="272"/>
         <source>File names containing the character &apos;%1&apos; are not supported on this file system.</source>
         <translation>Dateinamen, welche das Zeichen &apos;%1&apos; enthalten, werden von diesem Dateisystem nicht unterstützt.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="315"/>
+        <source>File names containing the character &quot;%1&quot; are not supported on this file system.</source>
+        <translation>Dateinamen, welche das Zeichen &quot;%1&quot; enthalten, werden von diesem Dateisystem nicht unterstützt.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="276"/>
@@ -3425,7 +3435,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
         <translation>Der Server hat während des Lesens des Verzeichnisses &apos;%1&apos; mit einem Fehler geantwortet: %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1590"/>
+        <location filename="../src/libsync/discovery.cpp" line="1635"/>
         <source>Server replied with an error while reading directory &quot;%1&quot; : %2</source>
         <translation>Der Server hat während des Lesens des Verzeichnisses &quot;%1&quot; mit einem Fehler geantwortet: %2</translation>
     </message>

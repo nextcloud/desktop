@@ -3272,6 +3272,16 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::ProcessDirectoryJob</name>
     <message>
+        <location filename="../src/libsync/discovery.cpp" line="56"/>
+        <source>File contains trailing spaces and coudn&apos;t be renamed, because a file with the same name already exists on the server.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="59"/>
+        <source>File contains trailing spaces and coudn&apos;t be renamed, because a file with the same name already exists locally.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/libsync/discovery.cpp" line="250"/>
         <source>Symbolic links are not supported in syncing.</source>
         <translation>シンボリックリンクは同期ではサポートされていません。</translation>
@@ -3287,14 +3297,14 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>ピリオドで終わるファイル名はこのファイルシステムでサポートされていません。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="271"/>
-        <source>File names containing the character &quot;%1&quot; are not supported on this file system.</source>
-        <translation>ファイル名に含まれる文字 &quot;%1&quot; はこのファイルシステムでサポートされていません。</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/discovery.cpp" line="272"/>
         <source>File names containing the character &apos;%1&apos; are not supported on this file system.</source>
         <translation>ファイル名に含まれる文字 &apos;%1&apos; はこのファイルシステムでサポートされていません。</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="315"/>
+        <source>File names containing the character &quot;%1&quot; are not supported on this file system.</source>
+        <translation>ファイル名に含まれる文字 &quot;%1&quot; はこのファイルシステムでサポートされていません。</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="276"/>
@@ -3422,7 +3432,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>サーバーがディレクトリ &apos;%1&apos; の読み取り中にエラーで応答しました: %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1590"/>
+        <location filename="../src/libsync/discovery.cpp" line="1635"/>
         <source>Server replied with an error while reading directory &quot;%1&quot; : %2</source>
         <translation>サーバーでディレクトリ &quot;%1&quot; を読み取り中にエラーになりました: %2</translation>
     </message>
