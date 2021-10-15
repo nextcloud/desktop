@@ -378,7 +378,9 @@ void NSISUpdater::versionInfoArrived(const UpdateInfo &info)
             if (QFile(_targetFile).exists()) {
                 setDownloadState(DownloadComplete);
             } else {
-                QNetworkReply *reply = qnam()->get(QNetworkRequest(QUrl(url)));
+                auto request = QNetworkRequest(QUrl(url));
+                request.setAttribute(QNetworkRequest::RedirectPolicyAttribute, QNetworkRequest::NoLessSafeRedirectPolicy);
+                QNetworkReply *reply = qnam()->get(request);
                 connect(reply, &QIODevice::readyRead, this, &NSISUpdater::slotWriteFile);
                 connect(reply, &QNetworkReply::finished, this, &NSISUpdater::slotDownloadFinished);
                 setDownloadState(Downloading);
