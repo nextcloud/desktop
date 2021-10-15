@@ -169,7 +169,7 @@ QString OCUpdater::statusString() const
     }
 }
 
-int OCUpdater::downloadState() const
+OCUpdater::DownloadState OCUpdater::downloadState() const
 {
     return _state;
 }
@@ -370,12 +370,12 @@ void NSISUpdater::versionInfoArrived(const UpdateInfo &info)
         qCInfo(lcUpdater) << "Client is on latest version!";
         setDownloadState(UpToDate);
     } else {
-        QString url = info.downloadUrl();
+        const QString url = info.downloadUrl();
         if (url.isEmpty()) {
             showNoUrlDialog(info);
         } else {
             _targetFile = ConfigFile::configPath() + url.mid(url.lastIndexOf('/') + 1);
-            if (QFile(_targetFile).exists()) {
+            if (QFile::exists(_targetFile)) {
                 setDownloadState(DownloadComplete);
             } else {
                 auto request = QNetworkRequest(QUrl(url));
