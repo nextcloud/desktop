@@ -3245,7 +3245,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Наистина ли искате да излезете от %1?</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="363"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="380"/>
         <source>Account</source>
         <translation>Профил</translation>
     </message>

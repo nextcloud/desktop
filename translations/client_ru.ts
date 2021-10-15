@@ -3250,7 +3250,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Вы уверены, что хотите выйти из?</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="363"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="380"/>
         <source>Account</source>
         <translation>Уч.запись</translation>
     </message>

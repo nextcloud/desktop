@@ -336,6 +336,7 @@ bool SettingsDialog::nativeEvent(const QByteArray &eventType, void *message, lon
     // so they never receive WM_ENDSESSION
     // Capture the event and go down in style
     if (msg->message == WM_QUERYENDSESSION || msg->message == WM_ENDSESSION) {
+        qCInfo(lcApplication) << "Shutting down" << *msg;
         QTimer::singleShot(0, ocApp(), Application::quit);
     }
     return false;
