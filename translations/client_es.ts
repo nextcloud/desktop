@@ -3278,12 +3278,12 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
     <name>OCC::ProcessDirectoryJob</name>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="56"/>
-        <source>File contains trailing spaces and coudn&apos;t be renamed, because a file with the same name already exists on the server.</source>
+        <source>File contains trailing spaces and could not be renamed, because a file with the same name already exists on the server.</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="59"/>
-        <source>File contains trailing spaces and coudn&apos;t be renamed, because a file with the same name already exists locally.</source>
+        <source>File contains trailing spaces and could not be renamed, because a file with the same name already exists locally.</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -4897,59 +4897,59 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="82"/>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="140"/>
         <source>Offline</source>
-        <translation type="unfinished"/>
+        <translation>No conectado</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="85"/>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="154"/>
         <location filename="../src/gui/tray/syncstatussummary.h" line="82"/>
         <source>All synced!</source>
-        <translation type="unfinished"/>
+        <translation>¡Todo sincronizado!</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="163"/>
         <source>Some files couldn&apos;t be synced!</source>
-        <translation type="unfinished"/>
+        <translation>¡Algunos archivos no han podido ser sincronizados!</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="164"/>
         <source>See below for errors</source>
-        <translation type="unfinished"/>
+        <translation>Comprueba abajo los errores</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="171"/>
         <source>Syncing</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizando</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="178"/>
         <source>Sync paused</source>
-        <translation type="unfinished"/>
+        <translation>Sincronización pausada</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="185"/>
         <source>Some files had problems during the sync!</source>
-        <translation type="unfinished"/>
+        <translation>¡Algunos archivos tuvieron problemas durante la sincronización!</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="186"/>
         <source>See below for warnings</source>
-        <translation type="unfinished"/>
+        <translation>Comprueba abajo los avisos</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="234"/>
         <source>%1 of %2 · %3 left</source>
-        <translation type="unfinished"/>
+        <translation>%1 de %2 · quedan %3</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="238"/>
         <source>%1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 de %2</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="243"/>
         <source>Syncing file %1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizando archivo %1 de %2</translation>
     </message>
 </context>
 <context>
