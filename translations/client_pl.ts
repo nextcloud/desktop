@@ -3277,12 +3277,12 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
     <name>OCC::ProcessDirectoryJob</name>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="56"/>
-        <source>File contains trailing spaces and coudn&apos;t be renamed, because a file with the same name already exists on the server.</source>
+        <source>File contains trailing spaces and could not be renamed, because a file with the same name already exists on the server.</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="59"/>
-        <source>File contains trailing spaces and coudn&apos;t be renamed, because a file with the same name already exists locally.</source>
+        <source>File contains trailing spaces and could not be renamed, because a file with the same name already exists locally.</source>
         <translation type="unfinished"/>
     </message>
     <message>
