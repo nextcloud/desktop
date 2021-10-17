@@ -3277,12 +3277,12 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
     <message>
         <location filename="../src/libsync/discovery.cpp" line="56"/>
         <source>File contains trailing spaces and could not be renamed, because a file with the same name already exists on the server.</source>
-        <translation type="unfinished"/>
+        <translation>Datei enthält Leerzeichen am Ende und konnte nicht umbenannt werden, da eine Datei mit demselben Namen bereits auf dem Server existiert.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="59"/>
         <source>File contains trailing spaces and could not be renamed, because a file with the same name already exists locally.</source>
-        <translation type="unfinished"/>
+        <translation>Datei enthält Leerzeichen am Ende und konnte nicht umbenannt werden, da eine Datei mit demselben Namen bereits lokal existiert.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="250"/>
@@ -4902,7 +4902,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="154"/>
         <location filename="../src/gui/tray/syncstatussummary.h" line="82"/>
         <source>All synced!</source>
-        <translation>Alle synchronisiert!</translation>
+        <translation>Alles synchronisiert!</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="163"/>
@@ -4912,7 +4912,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="164"/>
         <source>See below for errors</source>
-        <translation>Siehe unten für Warnungen</translation>
+        <translation>Warnungen siehe unten</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="171"/>
@@ -4932,7 +4932,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="186"/>
         <source>See below for warnings</source>
-        <translation>Siehe unten für Warnungen</translation>
+        <translation>Warnungen siehe unten</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="234"/>
