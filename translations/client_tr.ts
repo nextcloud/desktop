@@ -3278,12 +3278,12 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
     <message>
         <location filename="../src/libsync/discovery.cpp" line="56"/>
         <source>File contains trailing spaces and could not be renamed, because a file with the same name already exists on the server.</source>
-        <translation type="unfinished"/>
+        <translation>Dosya adının sonunda boşluklar bulunuyor ve sunucuda aynı ada sahip bir dosya zaten var olduğundan yeniden adlandırılamadı.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="59"/>
         <source>File contains trailing spaces and could not be renamed, because a file with the same name already exists locally.</source>
-        <translation type="unfinished"/>
+        <translation>Dosya adının sonunda boşluklar bulunuyor ve yerel olarak aynı ada sahip bir dosya zaten var olduğundan yeniden adlandırılamadı.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="250"/>
