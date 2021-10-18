@@ -1033,7 +1033,7 @@ void SyncEngine::abort()
         disconnect(_discoveryPhase.data(), nullptr, this, nullptr);
         _discoveryPhase.take()->deleteLater();
 
-        Q_EMIT syncError(tr("Aborted"));
+        Q_EMIT syncError(tr("Synchronization will resume shortly."));
         finalize(false);
     }
 }
