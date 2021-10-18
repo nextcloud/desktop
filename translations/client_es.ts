@@ -3279,12 +3279,12 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
     <message>
         <location filename="../src/libsync/discovery.cpp" line="56"/>
         <source>File contains trailing spaces and could not be renamed, because a file with the same name already exists on the server.</source>
-        <translation type="unfinished"/>
+        <translation>El archivo contiene espacios al final y no puede ser renombrado porque ya existe un archivo con el mismo nombre en el servidor.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="59"/>
         <source>File contains trailing spaces and could not be renamed, because a file with the same name already exists locally.</source>
-        <translation type="unfinished"/>
+        <translation>El archivo contiene espacios al final y no puede ser renombrado porque ya existe localmente un archivo con el mismo nombre.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="250"/>
