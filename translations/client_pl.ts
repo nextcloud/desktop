@@ -3278,12 +3278,12 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
     <message>
         <location filename="../src/libsync/discovery.cpp" line="56"/>
         <source>File contains trailing spaces and could not be renamed, because a file with the same name already exists on the server.</source>
-        <translation type="unfinished"/>
+        <translation>Plik zawiera już spacje i nie można zmienić jego nazwy, ponieważ plik o tej samej nazwie już istnieje na serwerze.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="59"/>
         <source>File contains trailing spaces and could not be renamed, because a file with the same name already exists locally.</source>
-        <translation type="unfinished"/>
+        <translation>Plik zawiera już spacje i nie można zmienić jego nazwy, ponieważ plik o tej nazwie już istnieje lokalnie.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="250"/>

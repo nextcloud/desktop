@@ -3278,12 +3278,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="56"/>
         <source>File contains trailing spaces and could not be renamed, because a file with the same name already exists on the server.</source>
-        <translation type="unfinished"/>
+        <translation>檔案名稱尾端包含空格，且無法重新命名，因為伺服器上已有相同名稱的檔案存在。</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="59"/>
         <source>File contains trailing spaces and could not be renamed, because a file with the same name already exists locally.</source>
-        <translation type="unfinished"/>
+        <translation>檔案名稱尾端包含空格，且無法重新命名，因為本機已有相同名稱的檔案存在。</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="250"/>
