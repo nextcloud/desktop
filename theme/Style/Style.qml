@@ -4,7 +4,7 @@ import QtQuick 2.15
 
 import com.nextcloud.desktopclient 1.0
 
-Item {
+QtObject {
     readonly property int pixelSize: fontMetrics.font.pixelSize
 
     // Colors
@@ -74,11 +74,9 @@ Item {
     readonly property string unifiedSearchResulTitleColor: "black"
     readonly property string unifiedSearchResulSublineColor: "grey"
 
+    readonly property var fontMetrics: FontMetrics {}
+
     function variableSize(size) {
         return size * (1 + Math.min(pixelSize / 100, 1));       
-    }
-
-    FontMetrics {
-        id: fontMetrics
     }
 }
