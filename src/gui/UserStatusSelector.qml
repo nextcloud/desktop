@@ -24,10 +24,6 @@ ColumnLayout {
     spacing: 0
     property NC.UserStatusSelectorModel userStatusSelectorModel
 
-    FontMetrics {
-        id: metrics
-    }
-
     Text {
         Layout.topMargin: 16
         Layout.leftMargin: 8
@@ -108,8 +104,8 @@ ColumnLayout {
         Layout.fillWidth: true
 
         Button {
-            Layout.preferredWidth: userStatusMessageTextField.height // metrics.height * 2
-            Layout.preferredHeight: userStatusMessageTextField.height // metrics.height * 2
+            Layout.preferredWidth: userStatusMessageTextField.height 
+            Layout.preferredHeight: userStatusMessageTextField.height
             text: userStatusSelectorModel.userStatusEmoji
             onClicked: emojiDialog.open()
         }
