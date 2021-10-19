@@ -166,7 +166,7 @@ void SyncStatusSummary::setSyncStateForFolder(const Folder *folder)
     case SyncResult::Problem:
     case SyncResult::Undefined:
         setSyncing(false);
-        setSyncStatusString(tr("There is a problem with some files during the synchronisation!"));
+        setSyncStatusString(tr("Some files could not be synced!"));
         setSyncStatusDetailString(tr("See below for warnings"));
         setSyncIcon(Theme::instance()->syncStatusWarning());
         markFolderAsError(folder);
