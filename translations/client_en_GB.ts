@@ -4681,6 +4681,11 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Only %1 are available, need at least %2 to start</translation>
     </message>
     <message>
+        <location filename="../src/libsync/syncengine.cpp" line="1081"/>
+        <source>Aborted</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/libsync/syncengine.cpp" line="1396"/>
         <location filename="../src/libsync/syncengine.cpp" line="1436"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
@@ -4833,8 +4838,8 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Invalid characters, please rename &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1081"/>
-        <source>Aborted</source>
+        <location filename="../src/libsync/syncengine.cpp" line="1036"/>
+        <source>Synchronization will resume shortly.</source>
         <translation type="unfinished"/>
     </message>
     <message>
