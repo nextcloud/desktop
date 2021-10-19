@@ -926,7 +926,10 @@ void DetermineAuthTypeJob::start()
     oldFlowRequired->setIgnoreCredentialFailure(true);
 
     connect(get, &SimpleNetworkJob::finishedSignal, this, [this, get]() {
-        if (get->reply()->error() == QNetworkReply::AuthenticationRequiredError) {
+        const auto reply = get->reply();
+        const auto wwwAuthenticateHeader = reply->rawHeader("WWW-Authenticate");
+        if (reply->error() == QNetworkReply::AuthenticationRequiredError
+            && (wwwAuthenticateHeader.startsWith("Basic") || wwwAuthenticateHeader.startsWith("Bearer"))) {
             _resultGet = Basic;
         } else {
             _resultGet = LoginFlowV2;
