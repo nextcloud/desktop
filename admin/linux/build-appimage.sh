@@ -102,7 +102,7 @@ export LD_LIBRARY_PATH=/app/usr/lib/
 ./squashfs-root/usr/bin/patchelf --set-rpath '$ORIGIN/' /app/usr/lib/lib${APPNAME}sync.so.0
 
 # Build AppImage
-./squashfs-root/AppRun ${DESKTOP_FILE} -appimage
+./squashfs-root/AppRun ${DESKTOP_FILE} -appimage -updateinformation="gh-releases-zsync|nextcloud-releases|desktop|latest|Nextcloud-*-x86_64.AppImage.zsync"
 
 #move AppImage
 if [ ! -z "$DRONE_COMMIT" ]
