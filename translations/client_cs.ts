@@ -2492,7 +2492,7 @@ Záznamy událostí budou zapisovány do %1</translation>
         <translation>&lt;nobr&gt;Soubor „%1“&lt;br/&gt;se nedaří otevřít pro zápis.&lt;br/&gt;&lt;br/&gt;Výstup záznamu proto &lt;b&gt;nelze&lt;/b&gt; uložit!&lt;/nobr&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="149"/>
+        <location filename="../src/libsync/logger.cpp" line="150"/>
         <source>&lt;nobr&gt;File &quot;%1&quot;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output &lt;b&gt;cannot&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
         <translation>Soubor „%1“&lt;br/&gt; se nepodařilo otevřít pro zápis.&lt;br/&gt;&lt;br/&gt;Výstup záznamu událostí &lt;b&gt;není&lt;/b&gt; možné uložit!&lt;nobr&gt;</translation>
     </message>
@@ -4876,7 +4876,7 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1036"/>
         <source>Synchronization will resume shortly.</source>
-        <translation type="unfinished"/>
+        <translation>V synchronizaci bude zakrátko navázáno.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1110"/>

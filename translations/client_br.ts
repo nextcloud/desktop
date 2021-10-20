@@ -2472,7 +2472,7 @@ Skrivet e vo ar gazetenn e %1</translation>
         <translation>&lt;nobr&gt;Ar restr &apos;%1&apos;&lt;br/&gt; na c&apos;hell ket bezhañ digoret evit skrivañ.&lt;br/&gt; &lt;br/&gt;Ar gazetenn disoc&apos;h ne c&apos;hell ket&lt;b&gt;c&apos;hell&lt;/b&gt; ket bezhañ enrollet !&lt;/nobr&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="149"/>
+        <location filename="../src/libsync/logger.cpp" line="150"/>
         <source>&lt;nobr&gt;File &quot;%1&quot;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output &lt;b&gt;cannot&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
         <translation type="unfinished"/>
     </message>

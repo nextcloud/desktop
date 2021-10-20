@@ -2490,7 +2490,7 @@ Logs serão gravados em %1</translation>
         <translation>&lt;nobr&gt;Arquivo &apos;%1&apos;&lt;br/&gt;não pode ser aberto para escrita.&lt;br/&gt;&lt;br/&gt;A saída de log &lt;b&gt;não&lt;/b&gt; pode ser salva!&lt;/nobr&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="149"/>
+        <location filename="../src/libsync/logger.cpp" line="150"/>
         <source>&lt;nobr&gt;File &quot;%1&quot;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output &lt;b&gt;cannot&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
         <translation>&lt;nobr&gt;O arquivo &quot;%1&quot;&lt;br/&gt;não pode ser aberto para escrita .&lt;br/&gt;&lt;br/&gt;A saída do log &lt;b&gt;não pode&lt;/b&gt; ser salva!&lt;/nobr&gt;</translation>
     </message>

@@ -2493,7 +2493,7 @@ Logs will be written to %1</source>
         <translation>&lt;nobr&gt;檔案「%1」&lt;br/&gt;無法開啟與寫入。&lt;br/&gt;&lt;br/&gt;紀錄&lt;b&gt;無法&lt;/b&gt;被儲存！&lt;/nobr&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="149"/>
+        <location filename="../src/libsync/logger.cpp" line="150"/>
         <source>&lt;nobr&gt;File &quot;%1&quot;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output &lt;b&gt;cannot&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
         <translation>&lt;nobr&gt;檔案「%1」&lt;br/&gt;無法開啟供寫入。&lt;br/&gt;&lt;br/&gt;記錄&lt;b&gt;無法&lt;/b&gt;被儲存！&lt;/nobr&gt;</translation>
     </message>
@@ -4877,7 +4877,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1036"/>
         <source>Synchronization will resume shortly.</source>
-        <translation type="unfinished"/>
+        <translation>同步會很快恢復</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1110"/>

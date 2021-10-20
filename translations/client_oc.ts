@@ -33,7 +33,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="240"/>
         <source>View activity</source>
-        <translation type="unfinished"/>
+        <translation>Veire activitat</translation>
     </message>
 </context>
 <context>
@@ -41,7 +41,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityList.qml" line="24"/>
         <source>Activity list</source>
-        <translation type="unfinished"/>
+        <translation>Lista d’activitats</translation>
     </message>
 </context>
 <context>
@@ -144,7 +144,7 @@
         <location filename="../src/common/filesystembase.cpp" line="398"/>
         <location filename="../src/common/filesystembase.cpp" line="404"/>
         <source>Could not move &quot;%1&quot; to &quot;%2&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Desplaçament impossible de « %1 » a « %2 »</translation>
     </message>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="438"/>
@@ -288,7 +288,7 @@
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="402"/>
         <source>End to end encryption mnemonic</source>
-        <translation type="unfinished"/>
+        <translation>Mnemonic de chiframent del cap a la fin</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="403"/>
@@ -334,7 +334,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="263"/>
         <source>Synchronize none</source>
-        <translation type="unfinished"/>
+        <translation>Res sincronizar</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="270"/>
@@ -344,7 +344,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="88"/>
         <source>End-to-End Encryption with Virtual Files</source>
-        <translation type="unfinished"/>
+        <translation>Chiframent del cap a la fin e fichièrs virtuals</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="89"/>
@@ -2451,7 +2451,7 @@ Logs will be written to %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="149"/>
+        <location filename="../src/libsync/logger.cpp" line="150"/>
         <source>&lt;nobr&gt;File &quot;%1&quot;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output &lt;b&gt;cannot&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
         <translation type="unfinished"/>
     </message>
