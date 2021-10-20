@@ -9,7 +9,7 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
-    container: ghcr.io/nextcloud/continuous-integration-client:client-5.15-3
+    container: ghcr.io/nextcloud/continuous-integration-client:client-5.15-4
     env:
       SONAR_SERVER_URL: "https://sonarcloud.io"
       BUILD_WRAPPER_OUT_DIR: build_wrapper_output_directory # Directory where build-wrapper output will be placed
@@ -27,11 +27,24 @@ jobs:
       - name: Run build-wrapper
         run: |
           mkdir build
-          cmake -GNinja -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_C_COMPILER=clang-10 -DCMAKE_CXX_COMPILER=clang++-10 -DCMAKE_BUILD_TYPE=Release -DBUILD_UPDATER=ON -DBUILD_TESTING=1
-          build-wrapper-linux-x86-64 --out-dir ${{ env.BUILD_WRAPPER_OUT_DIR }} ninja
+          cd build
+          cmake .. -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_COMPILER=gcc-10 -DCMAKE_CXX_COMPILER=g++-10 -DBUILD_UPDATER=ON -DBUILD_TESTING=1 -DBUILD_COVERAGE=ON
+          build-wrapper-linux-x86-64 --out-dir ${{ env.BUILD_WRAPPER_OUT_DIR }} make -j 2
+      - name: Run tests
+        run: |
+          cd build
+          useradd -m -s /bin/bash test
+          chown -R test:test .
+          su -c 'xvfb-run ctest --output-on-failure --output-junit testResult.xml' test
+      - name: Generate coverage report
+        run: |
+          cd build
+          su -c 'ctest -T Coverage' test
       - name: Run sonar-scanner
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
+          cp sonar-project.properties build
+          cd build
           sonar-scanner --define sonar.host.url="${{ env.SONAR_SERVER_URL }}" --define sonar.cfamily.build-wrapper-output="${{ env.BUILD_WRAPPER_OUT_DIR }}"
