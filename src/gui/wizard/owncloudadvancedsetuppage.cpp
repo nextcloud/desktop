@@ -115,6 +115,7 @@ void OwncloudAdvancedSetupPage::initializePage()
             // Just manually hide the button and remove the layout.
             _ui.rVirtualFileSync->hide();
             _ui.wSyncStrategy->layout()->removeItem(_ui.lVirtualFileSync);
+            setRadioChecked(_ui.rSyncEverything);
         } else {
 #ifdef Q_OS_WIN
             if (vfsMode == Vfs::WindowsCfApi) {

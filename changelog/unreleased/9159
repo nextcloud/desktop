@@ -1,0 +1,6 @@
+Bugfix: Disable vfs option is ignored
+
+We fixed a branding issue where vfs was used even when the parameter was set to disabled.
+
+https://github.com/owncloud/client/issues/9159
+https://github.com/owncloud/enterprise/issues/4820
