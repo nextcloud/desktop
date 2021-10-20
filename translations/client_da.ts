@@ -2476,7 +2476,7 @@ Loggen bliver skrevet til %1</translation>
         <translation>&lt;nobr&gt;Fil &apos;%1&apos;&lt;br/&gt;kan ikke åbnes for skrivning.&lt;br/&gt;&lt;br/&gt;Log resultatet kan &lt;b&gt;ikke&lt;/b&gt; gemmes!&lt;/nobr&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="149"/>
+        <location filename="../src/libsync/logger.cpp" line="150"/>
         <source>&lt;nobr&gt;File &quot;%1&quot;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output &lt;b&gt;cannot&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
         <translation type="unfinished"/>
     </message>

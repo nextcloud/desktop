@@ -349,7 +349,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="89"/>
         <source>You seem to have the Virtual Files feature enabled on this folder. At the moment, it is not possible to implicitly download virtual files that are End-to-End encrypted. To get the best experience with Virtual Files and End-to-End Encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Kaže, da imate na tej mapi omogočeno možnost navideznih datotek. Trenutno ni mogoče neposredno prejeti tovrstnih datotek, če so šifrirane po protokolu E2E. Za najenostavnejše delo z navideznimi datotekami poskrbite, da je šifrirana mapa označena kot »Vedno na voljo krajevno«.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="97"/>
@@ -416,7 +416,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="89"/>
         <source>You seem to have the Virtual Files feature enabled on this folder. At  the moment, it is not possible to implicitly download virtual files that are End-to-End encrypted. To get the best experience with Virtual Files and End-to-End Encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Kaže, da imate na tej mapi omogočeno možnost navideznih datotek. Trenutno ni mogoče neposredno prejeti tovrstnih datotek, če so šifrirane po protokolu E2E. Za najenostavnejše delo z navideznimi datotekami poskrbite, da je šifrirana mapa označena kot »Vedno na voljo krajevno«.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="330"/>
@@ -1111,7 +1111,7 @@ Morda je napaka v knjužnicah OpenSSL.</translation>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="104"/>
         <source>The polling URL does not start with HTTPS despite the login URL started with HTTPS. Login will not be possible because this might be a security issue. Please contact your administrator.</source>
-        <translation type="unfinished"/>
+        <translation>Naslov URL za preverjanje se ne začne s HTTPS, kljub temu, da se naslov URL za prijavo je. Prijava ne bo mogoča, ker je to lahko varnostna težava. Stopite v stik s skrbnikom sistema.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="115"/>
@@ -1146,7 +1146,7 @@ Morda je napaka v knjužnicah OpenSSL.</translation>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="211"/>
         <source>The returned server URL does not start with HTTPS despite the login URL started with HTTPS. Login will not be possible because this might be a security issue. Please contact your administrator.</source>
-        <translation type="unfinished"/>
+        <translation>Vrnjen naslov URL strežnika se ne začne s HTTPS, kljub temu, da se naslov URL za prijavo je. Prijava ne bo mogoča, ker je to lahko varnostna težava. Stopite v stik s skrbnikom sistema.</translation>
     </message>
 </context>
 <context>
@@ -2325,17 +2325,17 @@ Predmeti v mapah, ki jih je dovoljeno izbrisati, bodo odstranjeni, če prepreču
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="87"/>
         <source>The file %1 could not be synced because the name contains characters which are not allowed on this system.</source>
-        <translation type="unfinished"/>
+        <translation>Datoteke %1 ni mogoče uskladiti, ker so v imenu datoteke znaki, ki jih sistem ne podpira.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="88"/>
         <source>The following characters are not allowed on the system: * &quot; | &amp; ? , ; : \ / ~ &lt; &gt;</source>
-        <translation type="unfinished"/>
+        <translation>Na tem sistemu niso dovoljeni znaki: * &quot; | &amp; ? , ; : \ / ~ &lt; &gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="119"/>
         <source>You don&apos;t have the permission to rename this file. Please ask the author of the file to rename it.</source>
-        <translation type="unfinished"/>
+        <translation>Za preimenovanje te datoteke ni ustreznih dovoljenj. Datoteko lahko spremeni le avtor.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="144"/>
@@ -2345,12 +2345,12 @@ Predmeti v mapah, ki jih je dovoljeno izbrisati, bodo odstranjeni, če prepreču
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="158"/>
         <source>Could not rename file. Please make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Datoteke ni mogoče preimenovati. Prepričajte se, da ste povezani s strežnikom.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="169"/>
         <source>Cannot rename file because a file with the same name does already exist on the server. Please pick another name.</source>
-        <translation type="unfinished"/>
+        <translation>Datoteke ni mogoče preimenovati, ker datoteka z istim imenom na strežniku že obstaja. Izbrati je treba drugo ime.</translation>
     </message>
 </context>
 <context>
@@ -2491,7 +2491,7 @@ Logs will be written to %1</source>
         <translation>&lt;nobr&gt;Datoteke »%1«&lt;br/&gt;ni mogoče odpreti za pisanje.&lt;br/&gt;&lt;br/&gt;Dnevniškega zapisa &lt;b&gt;ni mogoče&lt;/b&gt; shraniti!&lt;/nobr&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="149"/>
+        <location filename="../src/libsync/logger.cpp" line="150"/>
         <source>&lt;nobr&gt;File &quot;%1&quot;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output &lt;b&gt;cannot&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
         <translation>&lt;nobr&gt;Datoteke »%1«&lt;br/&gt;ni mogoče odpreti za pisanje.&lt;br/&gt;&lt;br/&gt;Dnevniškega zapisa &lt;b&gt;ni mogoče&lt;/b&gt; shraniti!&lt;/nobr&gt;</translation>
     </message>
@@ -2537,7 +2537,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="463"/>
         <source>&lt;p&gt;A new version of the %1 Client is available but the updating process failed.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; has been downloaded. The installed version is %3. If you confirm restart and update, your computer may reboot to complete the installation.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Na voljo je nova različica programa %1, vendar je posodobitev spodletela.&lt;/p&gt;&lt;p&gt;Program &lt;b&gt;%2&lt;/b&gt; je sicer že prejet. Trenutno nameščeno različico %3 je morda mogoče namestiti, če potrdite ponovni zagon sistema.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="469"/>
@@ -2763,7 +2763,7 @@ zahteva skrbniška dovoljenja za dokončanje opravila.</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="158"/>
         <source>Could not download update. Please open &lt;a href=&apos;%1&apos;&gt;%1&lt;/a&gt; to download the update manually.</source>
-        <translation type="unfinished"/>
+        <translation>Posodobitve ni mogoče prejeti. Odprite &lt;a href=&apos;%1&apos;&gt;%1&lt;/a&gt; za prejem in ročno namestitev.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="157"/>
@@ -2778,7 +2778,7 @@ zahteva skrbniška dovoljenja za dokončanje opravila.</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="166"/>
         <source>New %1 is available. Please open &lt;a href=&apos;%2&apos;&gt;%2&lt;/a&gt; to download the update.</source>
-        <translation type="unfinished"/>
+        <translation>Na voljo je različica %1. Kliknite na &lt;a href=&apos;%2&apos;&gt;%2&lt;/a&gt; za prejem posodobitve.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="161"/>
@@ -3276,12 +3276,12 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
     <message>
         <location filename="../src/libsync/discovery.cpp" line="56"/>
         <source>File contains trailing spaces and could not be renamed, because a file with the same name already exists on the server.</source>
-        <translation type="unfinished"/>
+        <translation>Ime datoteke vsebuje nepotrebne končne presledke in ga ni mogoče preimenovati, saj datoteka z istim imenom na strežniku že obstaja.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="59"/>
         <source>File contains trailing spaces and could not be renamed, because a file with the same name already exists locally.</source>
-        <translation type="unfinished"/>
+        <translation>Ime datoteke vsebuje nepotrebne končne presledke in ga ni mogoče preimenovati, saj datoteka z istim imenom krajevno že obstaja.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="250"/>
@@ -3381,17 +3381,17 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
     <message>
         <location filename="../src/libsync/discovery.cpp" line="946"/>
         <source>Conflict when uploading some files to a folder. Those, conflicted, are going to get cleared!</source>
-        <translation type="unfinished"/>
+        <translation>Zaznan je spor pri nalaganju nekaterih datotek v mapo. Spori bodo samodejno počiščeni!</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="959"/>
         <source>Conflict when uploading a folder. It&apos;s going to get cleared!</source>
-        <translation type="unfinished"/>
+        <translation>Zaznan je spor pri pošiljanju mape. Mapa bo počiščena!</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="962"/>
         <source>Conflict when uploading a file. It&apos;s going to get removed!</source>
-        <translation type="unfinished"/>
+        <translation>Zaznan je spor pri pošiljanju datoteke. Datoteka bo odstranjena!</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1292"/>
@@ -3704,7 +3704,7 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="260"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Datoteka %1 je trenutno v uporabi.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="265"/>
@@ -3763,12 +3763,12 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="770"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Prišlo je do napake posodabljanja metapodatkov: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="773"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Datoteka %1 je trenutno v uporabi.</translation>
     </message>
 </context>
 <context>
@@ -4077,7 +4077,7 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="194"/>
         <source>View only</source>
-        <translation type="unfinished"/>
+        <translation>Le ogled</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="198"/>
@@ -4185,7 +4185,7 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="339"/>
         <source>No results for &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Za iskalni niz »%1« ni zadetkov</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="391"/>
@@ -4875,7 +4875,7 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1036"/>
         <source>Synchronization will resume shortly.</source>
-        <translation type="unfinished"/>
+        <translation>Usklajevanje se bo v kratkem nadaljevalo.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1110"/>
@@ -4899,59 +4899,59 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="82"/>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="140"/>
         <source>Offline</source>
-        <translation type="unfinished"/>
+        <translation>Začasno nepovezan</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="85"/>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="154"/>
         <location filename="../src/gui/tray/syncstatussummary.h" line="82"/>
         <source>All synced!</source>
-        <translation type="unfinished"/>
+        <translation>Vse je usklajeno!</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="163"/>
         <source>Some files couldn&apos;t be synced!</source>
-        <translation type="unfinished"/>
+        <translation>Nekaterih datotek ni mogoče uskladiti!</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="164"/>
         <source>See below for errors</source>
-        <translation type="unfinished"/>
+        <translation>Več podrobnosti o napakah je zabeleženih spodaj</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="171"/>
         <source>Syncing</source>
-        <translation type="unfinished"/>
+        <translation>Poteka usklajevanje</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="178"/>
         <source>Sync paused</source>
-        <translation type="unfinished"/>
+        <translation>Usklajevanje je v premoru</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="185"/>
         <source>Some files had problems during the sync!</source>
-        <translation type="unfinished"/>
+        <translation>Pri nekaterih datotekah so zaznane težave med usklajevanjem!</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="186"/>
         <source>See below for warnings</source>
-        <translation type="unfinished"/>
+        <translation>Več podrobnosti o opozorilih je zabeleženih spodaj</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="234"/>
         <source>%1 of %2 · %3 left</source>
-        <translation type="unfinished"/>
+        <translation>%1 od %2 – %3 v teku</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="238"/>
         <source>%1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 od %2</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="243"/>
         <source>Syncing file %1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>Poteka usklajevanje %1 od %2</translation>
     </message>
 </context>
 <context>
@@ -5090,12 +5090,12 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="140"/>
         <source>Could not fetch predefined statuses. Make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Ni mogoče pridobiti določenih stanj. Prepričajte se, da ste povezani s strežnikom.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="144"/>
         <source>Could not fetch user status. Make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Ni mogoče pridobiti stanja uporabnika. Prepričajte se, da ste povezani s strežnikom.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="148"/>
@@ -5896,7 +5896,7 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="137"/>
         <source>What is your status?</source>
-        <translation type="unfinished"/>
+        <translation>Kako želite nastaviti stanje?</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="165"/>
@@ -6545,12 +6545,12 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
     <message>
         <location filename="../src/libsync/vfs/cfapi/vfs_cfapi.cpp" line="333"/>
         <source>Download of end-to-end encrypted file failed</source>
-        <translation type="unfinished"/>
+        <translation>Prejemanje datoteke, šifrirane E2E je spodletelo</translation>
     </message>
     <message>
         <location filename="../src/libsync/vfs/cfapi/vfs_cfapi.cpp" line="334"/>
         <source>It seems that you are trying to download a virtual file that is end-to-end encrypted. Implicitly downloading such files is not supported at the moment. To workaround this issue, go to the settings and mark the encrypted folder with &quot;Make always available locally&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Kaže, da poskušate prejeti navidezno datoteko, ki je šifrirana po metodi E2E. Trenutno za tovrstne datoteke to še ni mogoče. Za najenostavnejše delo z navideznimi datotekami poskrbite, da je šifrirana mapa označena kot »Vedno na voljo krajevno«.</translation>
     </message>
 </context>
 </TS>

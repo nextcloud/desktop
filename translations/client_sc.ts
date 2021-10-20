@@ -2493,7 +2493,7 @@ Logs ant a èssere iscritos in %1</translation>
         <translation>&lt;nobr&gt;S&apos;archìviu &apos;%1&apos;&lt;br/&gt;no at fatu a ddu abèrrere in s&apos;iscritura.&lt;br/&gt;&lt;br/&gt;Su resurtadu de su log &lt;b&gt;no&lt;/b&gt; at a èssere sarvadu!&lt;/nobr&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="149"/>
+        <location filename="../src/libsync/logger.cpp" line="150"/>
         <source>&lt;nobr&gt;File &quot;%1&quot;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output &lt;b&gt;cannot&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
         <translation>&lt;nobr&gt;S&apos;archìviu &apos;%1&apos;&lt;br/&gt;no faghet a dd&apos;abèrrere pro s&apos;iscritura.&lt;br/&gt;&lt;br/&gt;Su resurtadu de su log &lt;b&gt;no&lt;/b&gt; podet èssere sarvadu!&lt;/nobr&gt;</translation>
     </message>
