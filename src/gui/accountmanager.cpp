@@ -135,7 +135,10 @@ void AccountManager::backwardMigrationSettingsKeys(QStringList *deleteKeys, QStr
 
 bool AccountManager::restoreFromLegacySettings()
 {
-    qCInfo(lcAccountManager) << "Migrate: restoreFromLegacySettings, checking settings group"
+    static const auto logPrefix = QStringLiteral("Legacy settings migration: ");
+
+    qCInfo(lcAccountManager) << logPrefix
+                             << "restoreFromLegacySettings, checking settings group"
                              << Theme::instance()->appName();
 
     // try to open the correctly themed settings
@@ -151,7 +154,8 @@ bool AccountManager::restoreFromLegacySettings()
         oCCfgFile = oCCfgFile.left(oCCfgFile.lastIndexOf('/'));
         oCCfgFile += QLatin1String("/ownCloud/owncloud.cfg");
 
-        qCInfo(lcAccountManager) << "Migrate: checking old config " << oCCfgFile;
+        qCInfo(lcAccountManager) << logPrefix
+                                 << "checking old config " << oCCfgFile;
 
 #ifdef Q_OS_WIN
         Utility::NtfsPermissionLookupRAII ntfs_perm;
@@ -174,7 +178,8 @@ bool AccountManager::restoreFromLegacySettings()
 
                 // in case the urls are equal reset the settings object to read from
                 // the ownCloud settings object
-                qCInfo(lcAccountManager) << "Migrate oC config if " << oCUrl << " == " << overrideUrl << ":"
+                qCInfo(lcAccountManager) << logPrefix
+                                         << "Migrate oC config if " << oCUrl << " == " << overrideUrl << ":"
                                          << (oCUrl == overrideUrl ? "Yes" : "No");
                 if (oCUrl == overrideUrl) {
                     settings = std::move(oCSettings);
