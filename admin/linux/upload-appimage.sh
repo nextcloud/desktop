@@ -24,7 +24,7 @@ cd /build
 
 # AppImage
 export APPIMAGE=$(readlink -f ./Nextcloud*.AppImage)
-export UPDATE==$(readlink -f ./Nextcloud*.AppImage.zsync)
+export UPDATE=$(readlink -f ./Nextcloud*.AppImage.zsync)
 export BASENAME=$(basename ${APPIMAGE})
 
 if ! test -e $APPIMAGE ; then
