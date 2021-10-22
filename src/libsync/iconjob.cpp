@@ -31,11 +31,15 @@ IconJob::IconJob(const QUrl &url, QObject *parent) :
 
 void IconJob::finished(QNetworkReply *reply)
 {
-    if (reply->error() != QNetworkReply::NoError)
-        return;
-
     reply->deleteLater();
     deleteLater();
+
+    const auto networkError = reply->error();
+    if (networkError != QNetworkReply::NoError) {
+        emit error(networkError);
+        return;
+    }
+
     emit jobFinished(reply->readAll());
 }
 }

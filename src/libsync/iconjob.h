@@ -15,6 +15,8 @@
 #ifndef ICONJOB_H
 #define ICONJOB_H
 
+#include "owncloudlib.h"
+
 #include <QObject>
 #include <QByteArray>
 #include <QNetworkAccessManager>
@@ -27,7 +29,7 @@ namespace OCC {
  * @brief Job to fetch a icon
  * @ingroup gui
  */
-class IconJob : public QObject
+class OWNCLOUDSYNC_EXPORT IconJob : public QObject
 {
     Q_OBJECT
 public:
@@ -35,6 +37,7 @@ public:
 
 signals:
     void jobFinished(QByteArray iconData);
+    void error(QNetworkReply::NetworkError errorType);
 
 private slots:
     void finished(QNetworkReply *reply);

@@ -98,6 +98,7 @@ set(client_SRCS
     sharelinkwidget.cpp
     sharemanager.cpp
     shareusergroupwidget.cpp
+    profilepagewidget.cpp
     sharee.cpp
     sslbutton.cpp
     sslerrordialog.cpp
@@ -115,7 +116,6 @@ set(client_SRCS
     guiutility.cpp
     elidedlabel.cpp
     headerbanner.cpp
-    iconjob.cpp
     iconutils.cpp
     remotewipe.cpp
     userstatusselectormodel.cpp
