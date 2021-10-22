@@ -282,7 +282,7 @@ public:
 
 
 template <>
-OWNCLOUDSYNC_EXPORT QString Utility::enumDisplayName(SyncFileItem::Status s);
+OWNCLOUDSYNC_EXPORT QString Utility::enumToDisplayName(SyncFileItem::Status s);
 
 
 inline bool operator<(const SyncFileItemPtr &item1, const SyncFileItemPtr &item2)
