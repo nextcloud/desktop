@@ -199,7 +199,7 @@ private slots:
 
         const auto add = [](const QString &child, const QString &parent, bool result, bool casePreserving = true) {
             const auto title = QStringLiteral("CasePreserving %1: %2 is %3 child of %4").arg(casePreserving ? QStringLiteral("yes") : QStringLiteral("no"), child, result ? QString() : QStringLiteral("not"), parent);
-            QTest::addRow(qUtf8Printable(title)) << child << parent << result << casePreserving;
+            QTest::addRow("%s", qUtf8Printable(title)) << child << parent << result << casePreserving;
         };
         add(QStringLiteral("/A/a"), QStringLiteral("/A"), true);
         add(QStringLiteral("/A/a"), QStringLiteral("/A/a"), true);
