@@ -4927,7 +4927,7 @@ Ovo je novi, eksperimentalni način rada. Ako se odlučite aktivirati ga, prijav
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="169"/>
-        <source>Some files had problems during the sync!</source>
+        <source>Some files could not be synced!</source>
         <translation type="unfinished"/>
     </message>
     <message>
