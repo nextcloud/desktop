@@ -4932,8 +4932,8 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="169"/>
-        <source>Some files had problems during the sync!</source>
-        <translation>部份檔案在同步時發生問題！</translation>
+        <source>Some files could not be synced!</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="170"/>

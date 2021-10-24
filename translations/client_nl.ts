@@ -4933,7 +4933,7 @@ Fout bij instellen pin status
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="169"/>
-        <source>Some files had problems during the sync!</source>
+        <source>Some files could not be synced!</source>
         <translation type="unfinished"/>
     </message>
     <message>

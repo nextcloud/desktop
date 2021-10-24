@@ -4932,8 +4932,8 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="169"/>
-        <source>Some files had problems during the sync!</source>
-        <translation>Niektóre pliki miały problemy podczas synchronizacji!</translation>
+        <source>Some files could not be synced!</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="170"/>

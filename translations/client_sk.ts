@@ -4931,8 +4931,8 @@ Toto je nový experimentálny režim. Ak sa ho rozhodnete použiť, nahláste v�
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="169"/>
-        <source>Some files had problems during the sync!</source>
-        <translation>Niektoré súbory majú počas synchronizácie problémy!</translation>
+        <source>Some files could not be synced!</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="170"/>

@@ -4930,8 +4930,8 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="169"/>
-        <source>Some files had problems during the sync!</source>
-        <translation>Pri nekaterih datotekah so zaznane težave med usklajevanjem!</translation>
+        <source>Some files could not be synced!</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="170"/>
