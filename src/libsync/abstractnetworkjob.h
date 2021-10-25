@@ -77,7 +77,7 @@ public:
     bool timedOut() const { return _timedout; }
 
     /** Returns an error message, if any. */
-    QString errorString() const;
+    virtual QString errorString() const;
 
     /** Like errorString, but also checking the reply body for information.
      *
