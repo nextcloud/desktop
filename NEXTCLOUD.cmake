@@ -11,6 +11,7 @@ set( APPLICATION_SERVER_URL "" CACHE STRING "URL for the server to use. If enter
 set( APPLICATION_SERVER_URL_ENFORCE ON ) # If set and APPLICATION_SERVER_URL is defined, the server can only connect to the pre-defined URL
 set( APPLICATION_REV_DOMAIN "com.nextcloud.desktopclient" )
 set( APPLICATION_VIRTUALFILE_SUFFIX "nextcloud" CACHE STRING "Virtual file suffix (not including the .)")
+set( APPLICATION_OCSP_STAPLING_ENABLED OFF )
 
 set( LINUX_PACKAGE_SHORTNAME "nextcloud" )
 set( LINUX_APPLICATION_ID "${APPLICATION_REV_DOMAIN}.${LINUX_PACKAGE_SHORTNAME}")

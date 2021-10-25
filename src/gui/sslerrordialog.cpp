@@ -105,6 +105,8 @@ bool SslErrorDialog::checkFailingCertsKnown(const QList<QSslError> &errors)
 
     QStringList errorStrings;
 
+    QStringList additionalErrorStrings;
+
     QList<QSslCertificate> trustedCerts = _account->approvedCerts();
 
     for (int i = 0; i < errors.count(); ++i) {
@@ -115,6 +117,8 @@ bool SslErrorDialog::checkFailingCertsKnown(const QList<QSslError> &errors)
         errorStrings += error.errorString();
         if (!error.certificate().isNull()) {
             _unknownCerts.append(error.certificate());
+        } else {
+            additionalErrorStrings.append(error.errorString());
         }
     }
 
@@ -132,6 +136,7 @@ bool SslErrorDialog::checkFailingCertsKnown(const QList<QSslError> &errors)
     msg += QL("<h3>") + tr("Cannot connect securely to <i>%1</i>:").arg(host) + QL("</h3>");
     // loop over the unknown certs and line up their errors.
     msg += QL("<div id=\"ca_errors\">");
+
     foreach (const QSslCertificate &cert, _unknownCerts) {
         msg += QL("<div id=\"ca_error\">");
         // add the errors for this cert
@@ -146,6 +151,17 @@ bool SslErrorDialog::checkFailingCertsKnown(const QList<QSslError> &errors)
             msg += QL("<hr/>");
         }
     }
+
+    if (!additionalErrorStrings.isEmpty()) {
+        msg += QL("<h3>") + tr("Additional errors:") + QL("</h3>");
+
+        for (const auto &errorString : additionalErrorStrings) {
+            msg += QL("<div id=\"ca_error\">");
+            msg += QL("<p>") + errorString + QL("</p>");
+            msg += QL("</div>");
+        }
+    }
+
     msg += QL("</div></body></html>");
 
     auto *doc = new QTextDocument(nullptr);

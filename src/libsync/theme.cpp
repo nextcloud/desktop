@@ -399,6 +399,15 @@ bool Theme::forceOverrideServerUrl() const
 #endif
 }
 
+bool Theme::enableStaplingOCSP() const
+{
+#ifdef APPLICATION_OCSP_STAPLING_ENABLED
+    return true;
+#else
+    return false;
+#endif
+}
+
 QString Theme::forceConfigAuthType() const
 {
     return QString();

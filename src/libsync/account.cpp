@@ -389,6 +389,8 @@ QSslConfiguration Account::getOrCreateSslConfig()
     sslConfig.setSslOption(QSsl::SslOptionDisableSessionSharing, false);
     sslConfig.setSslOption(QSsl::SslOptionDisableSessionPersistence, false);
 
+    sslConfig.setOcspStaplingEnabled(Theme::instance()->enableStaplingOCSP());
+
     return sslConfig;
 }
 

@@ -239,6 +239,13 @@ public:
      * When true, the respective UI controls will be disabled
      */
     virtual bool forceOverrideServerUrl() const;
+    
+    /**
+     * Enable OCSP stapling for SSL handshakes
+     *
+     * When true, peer will be requested for Online Certificate Status Protocol response
+     */
+    virtual bool enableStaplingOCSP() const;
 
     /**
      * This is only usefull when previous version had a different overrideServerUrl
