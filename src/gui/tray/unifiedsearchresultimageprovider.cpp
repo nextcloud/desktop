@@ -14,7 +14,7 @@
 
 #include "unifiedsearchresultimageprovider.h"
 
-#include "UserModel.h"
+#include "usermodel.h"
 
 #include <QImage>
 #include <QPainter>

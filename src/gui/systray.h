@@ -18,7 +18,7 @@
 #include <QSystemTrayIcon>
 
 #include "accountmanager.h"
-#include "tray/UserModel.h"
+#include "tray/usermodel.h"
 
 class QScreen;
 class QQmlApplicationEngine;

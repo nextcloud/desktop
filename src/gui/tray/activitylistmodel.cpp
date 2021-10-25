@@ -31,8 +31,8 @@
 #include "guiutility.h"
 #include "invalidfilenamedialog.h"
 
-#include "ActivityData.h"
-#include "ActivityListModel.h"
+#include "activitydata.h"
+#include "activitylistmodel.h"
 
 #include "theme.h"
 

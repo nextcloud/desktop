@@ -8,11 +8,11 @@
 #include <QQuickImageProvider>
 #include <QHash>
 
-#include "ActivityListModel.h"
+#include "activitylistmodel.h"
 #include "accountfwd.h"
 #include "accountmanager.h"
 #include "folderman.h"
-#include "NotificationCache.h"
+#include "notificationcache.h"
 #include "userstatusselectormodel.h"
 #include "userstatusconnector.h"
 #include <chrono>

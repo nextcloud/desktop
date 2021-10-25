@@ -17,7 +17,7 @@
 
 #include <QtCore>
 
-#include "ActivityData.h"
+#include "activitydata.h"
 
 class QJsonDocument;
 

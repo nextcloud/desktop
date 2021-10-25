@@ -122,14 +122,14 @@ set(client_SRCS
     emojimodel.cpp
     fileactivitylistmodel.cpp
     tray/syncstatussummary.cpp
-    tray/ActivityData.cpp
-    tray/ActivityListModel.cpp
+    tray/activitydata.cpp
+    tray/activitylistmodel.cpp
     tray/unifiedsearchresult.cpp
     tray/unifiedsearchresultimageprovider.cpp
     tray/unifiedsearchresultslistmodel.cpp
-    tray/UserModel.cpp
-    tray/NotificationHandler.cpp
-    tray/NotificationCache.cpp
+    tray/usermodel.cpp
+    tray/notificationhandler.cpp
+    tray/notificationcache.cpp
     creds/credentialsfactory.cpp
     creds/httpcredentialsgui.cpp
     creds/oauth.cpp

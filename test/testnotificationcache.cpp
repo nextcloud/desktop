@@ -1,6 +1,6 @@
 #include <QTest>
 
-#include "tray/NotificationCache.h"
+#include "tray/notificationcache.h"
 
 class TestNotificationCache : public QObject
 {

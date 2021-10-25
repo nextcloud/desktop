@@ -1,4 +1,4 @@
-#include "NotificationHandler.h"
+#include "notificationhandler.h"
 
 #include "accountstate.h"
 #include "capabilities.h"

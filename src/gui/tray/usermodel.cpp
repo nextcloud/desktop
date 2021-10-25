@@ -1,5 +1,5 @@
-#include "NotificationHandler.h"
-#include "UserModel.h"
+#include "notificationhandler.h"
+#include "usermodel.h"
 
 #include "accountmanager.h"
 #include "owncloudgui.h"
@@ -12,8 +12,8 @@
 #include "logger.h"
 #include "guiutility.h"
 #include "syncfileitem.h"
-#include "tray/ActivityListModel.h"
-#include "tray/NotificationCache.h"
+#include "tray/activitylistmodel.h"
+#include "tray/notificationcache.h"
 #include "tray/unifiedsearchresultslistmodel.h"
 #include "userstatusconnector.h"
 
