@@ -61,6 +61,10 @@ class OWNCLOUDSYNC_EXPORT Theme : public QObject
     Q_PROPERTY(QColor wizardHeaderBackgroundColor READ wizardHeaderBackgroundColor CONSTANT)
 #endif
     Q_PROPERTY(QString updateCheckUrl READ updateCheckUrl CONSTANT)
+
+    Q_PROPERTY(QColor errorBoxTextColor READ errorBoxTextColor CONSTANT)
+    Q_PROPERTY(QColor errorBoxBackgroundColor READ errorBoxBackgroundColor CONSTANT)
+    Q_PROPERTY(QColor errorBoxBorderColor READ errorBoxBorderColor CONSTANT)
 public:
     enum CustomMediaType {
         oCSetupTop, // ownCloud connect page
@@ -546,6 +550,15 @@ public:
      * manually enabled in the configuration file.
      */
     virtual bool showVirtualFilesOption() const;
+
+    /** @return color for the ErrorBox text. */
+    virtual QColor errorBoxTextColor() const;
+
+    /** @return color for the ErrorBox background. */
+    virtual QColor errorBoxBackgroundColor() const;
+
+    /** @return color for the ErrorBox border. */
+    virtual QColor errorBoxBorderColor() const;
 
     static constexpr const char *themePrefix = ":/client/theme/";
 

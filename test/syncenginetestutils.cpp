@@ -709,14 +709,20 @@ void FakeChunkMoveReply::abort()
 }
 
 FakePayloadReply::FakePayloadReply(QNetworkAccessManager::Operation op, const QNetworkRequest &request, const QByteArray &body, QObject *parent)
-    : FakeReply { parent }
+    : FakePayloadReply(op, request, body, FakePayloadReply::defaultDelay, parent)
+{
+}
+
+FakePayloadReply::FakePayloadReply(
+    QNetworkAccessManager::Operation op, const QNetworkRequest &request, const QByteArray &body, int delay, QObject *parent)
+    : FakeReply{parent}
     , _body(body)
 {
     setRequest(request);
     setUrl(request.url());
     setOperation(op);
     open(QIODevice::ReadOnly);
-    QTimer::singleShot(10, this, &FakePayloadReply::respond);
+    QTimer::singleShot(delay, this, &FakePayloadReply::respond);
 }
 
 void FakePayloadReply::respond()

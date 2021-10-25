@@ -12,6 +12,11 @@ QtObject {
     property color lightHover:  "#f7f7f7"
     property color menuBorder:  "#bdbdbd"
 
+    // ErrorBox colors
+    property color errorBoxTextColor:       Theme.errorBoxTextColor
+    property color errorBoxBackgroundColor: Theme.errorBoxBackgroundColor
+    property color errorBoxBorderColor:     Theme.errorBoxBorderColor
+
     // Fonts
     // We are using pixel size because this is cross platform comparable, point size isn't
     property int topLinePixelSize: 12
@@ -56,4 +61,15 @@ QtObject {
 
     // Visual behaviour
     property bool hoverEffectsEnabled: true
+
+    // unified search constants
+    readonly property int unifiedSearchItemHeight: trayWindowHeaderHeight
+    readonly property int unifiedSearchResultTextLeftMargin: 18
+    readonly property int unifiedSearchResultTextRightMargin: 16
+    readonly property int unifiedSearchResulIconWidth: 24
+    readonly property int unifiedSearchResulIconLeftMargin: 12
+    readonly property int unifiedSearchResulTitleFontSize: topLinePixelSize
+    readonly property int unifiedSearchResulSublineFontSize: subLinePixelSize
+    readonly property string unifiedSearchResulTitleColor: "black"
+    readonly property string unifiedSearchResulSublineColor: "grey"
 }

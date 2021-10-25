@@ -18,6 +18,7 @@
 #include <chrono>
 
 namespace OCC {
+class UnifiedSearchResultsListModel;
 
 class User : public QObject
 {
@@ -33,6 +34,7 @@ class User : public QObject
     Q_PROPERTY(bool serverHasTalk READ serverHasTalk NOTIFY serverHasTalkChanged)
     Q_PROPERTY(QString avatar READ avatarUrl NOTIFY avatarChanged)
     Q_PROPERTY(bool isConnected READ isConnected NOTIFY accountStateChanged)
+    Q_PROPERTY(UnifiedSearchResultsListModel* unifiedSearchResultsListModel READ getUnifiedSearchResultsListModel CONSTANT)
 public:
     User(AccountStatePtr &account, const bool &isCurrent = false, QObject *parent = nullptr);
 
@@ -44,6 +46,7 @@ public:
     void setCurrentUser(const bool &isCurrent);
     Folder *getFolder() const;
     ActivityListModel *getActivityModel();
+    UnifiedSearchResultsListModel *getUnifiedSearchResultsListModel() const;
     void openLocalFolder();
     QString name() const;
     QString server(bool shortened = true) const;
@@ -113,6 +116,7 @@ private:
     AccountStatePtr _account;
     bool _isCurrentUser;
     ActivityListModel *_activityModel;
+    UnifiedSearchResultsListModel *_unifiedSearchResultsModel;
     ActivityList _blacklistedNotifications;
 
     QTimer _expiredActivitiesCheckTimer;

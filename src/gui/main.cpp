@@ -31,6 +31,7 @@
 #include "userstatusselectormodel.h"
 #include "emojimodel.h"
 #include "tray/syncstatussummary.h"
+#include "tray/unifiedsearchresultslistmodel.h"
 
 #if defined(BUILD_UPDATER)
 #include "updater/updater.h"
@@ -68,6 +69,9 @@ int main(int argc, char **argv)
     qmlRegisterType<UserStatusSelectorModel>("com.nextcloud.desktopclient", 1, 0, "UserStatusSelectorModel");
     qmlRegisterType<OCC::ActivityListModel>("com.nextcloud.desktopclient", 1, 0, "ActivityListModel");
     qmlRegisterType<OCC::FileActivityListModel>("com.nextcloud.desktopclient", 1, 0, "FileActivityListModel");
+    qmlRegisterUncreatableType<OCC::UnifiedSearchResultsListModel>(
+        "com.nextcloud.desktopclient", 1, 0, "UnifiedSearchResultsListModel", "UnifiedSearchResultsListModel");
+    qRegisterMetaType<UnifiedSearchResultsListModel *>("UnifiedSearchResultsListModel*");
 
     qmlRegisterUncreatableType<OCC::UserStatus>("com.nextcloud.desktopclient", 1, 0, "UserStatus", "Access to Status enum");
 
