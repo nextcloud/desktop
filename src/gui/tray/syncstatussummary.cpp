@@ -18,7 +18,7 @@
 #include "navigationpanehelper.h"
 #include "networkjobs.h"
 #include "syncresult.h"
-#include "tray/UserModel.h"
+#include "tray/usermodel.h"
 
 #include <theme.h>
 

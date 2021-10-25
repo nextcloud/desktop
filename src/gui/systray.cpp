@@ -17,7 +17,7 @@
 #include "theme.h"
 #include "config.h"
 #include "common/utility.h"
-#include "tray/UserModel.h"
+#include "tray/usermodel.h"
 #include "tray/unifiedsearchresultimageprovider.h"
 #include "configfile.h"
 

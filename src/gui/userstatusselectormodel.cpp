@@ -13,7 +13,7 @@
  */
 
 #include "userstatusselectormodel.h"
-#include "tray/UserModel.h"
+#include "tray/usermodel.h"
 
 #include <ocsuserstatusconnector.h>
 #include <qnamespace.h>

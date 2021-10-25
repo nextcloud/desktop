@@ -1,4 +1,4 @@
-#include "NotificationCache.h"
+#include "notificationcache.h"
 
 namespace OCC {
 

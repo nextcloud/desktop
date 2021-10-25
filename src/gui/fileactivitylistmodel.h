@@ -15,7 +15,7 @@
 #pragma once
 
 #include "accountstate.h"
-#include "tray/ActivityListModel.h"
+#include "tray/activitylistmodel.h"
 
 namespace OCC {
 

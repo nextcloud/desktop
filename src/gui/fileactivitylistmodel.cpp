@@ -14,7 +14,7 @@
 
 #include "fileactivitylistmodel.h"
 #include "folderman.h"
-#include "tray/ActivityListModel.h"
+#include "tray/activitylistmodel.h"
 
 namespace OCC {
 
