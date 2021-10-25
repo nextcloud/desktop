@@ -22,5 +22,6 @@ Icon=@APPLICATION_EXECUTABLE@
 
 # Translations
 Icon[bg_BG]=@APPLICATION_ICON_NAME@
+Name[bg_BG]=@APPLICATION_NAME@ десктоп клиент за синхронизиране
 Comment[bg_BG]=@APPLICATION_NAME@ десктоп клиент за синхронизиране 
 GenericName[bg_BG]=Синхронизиране на папка
