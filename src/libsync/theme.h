@@ -248,6 +248,13 @@ public:
     virtual bool enableStaplingOCSP() const;
 
     /**
+     * Enforce SSL validity
+     *
+     * When true, trusting the untrusted certificate is not allowed
+     */
+    virtual bool forbidBadSSL() const;
+
+    /**
      * This is only usefull when previous version had a different overrideServerUrl
      * with a different auth type in that case You should then specify "http" or "shibboleth".
      * Normaly this should be left empty.

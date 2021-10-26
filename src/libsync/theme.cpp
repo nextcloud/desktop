@@ -408,6 +408,15 @@ bool Theme::enableStaplingOCSP() const
 #endif
 }
 
+bool Theme::forbidBadSSL() const
+{
+#ifdef APPLICATION_FORBID_BAD_SSL
+    return true;
+#else
+    return false;
+#endif
+}
+
 QString Theme::forceConfigAuthType() const
 {
     return QString();

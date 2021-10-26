@@ -13,6 +13,7 @@
  */
 #include "configfile.h"
 #include "sslerrordialog.h"
+#include "theme.h"
 
 #include <QtGui>
 #include <QtNetwork>
@@ -68,6 +69,8 @@ SslErrorDialog::SslErrorDialog(AccountPtr account, QWidget *parent)
     QPushButton *cancelButton =
         _ui->_dialogButtonBox->button(QDialogButtonBox::Cancel);
     okButton->setEnabled(false);
+
+    _ui->_cbTrustConnect->setEnabled(!Theme::instance()->forbidBadSSL());
     connect(_ui->_cbTrustConnect, &QAbstractButton::clicked,
         okButton, &QWidget::setEnabled);
 
@@ -136,7 +139,6 @@ bool SslErrorDialog::checkFailingCertsKnown(const QList<QSslError> &errors)
     msg += QL("<h3>") + tr("Cannot connect securely to <i>%1</i>:").arg(host) + QL("</h3>");
     // loop over the unknown certs and line up their errors.
     msg += QL("<div id=\"ca_errors\">");
-
     foreach (const QSslCertificate &cert, _unknownCerts) {
         msg += QL("<div id=\"ca_error\">");
         // add the errors for this cert
@@ -153,7 +155,7 @@ bool SslErrorDialog::checkFailingCertsKnown(const QList<QSslError> &errors)
     }
 
     if (!additionalErrorStrings.isEmpty()) {
-        msg += QL("<h3>") + tr("Additional errors:") + QL("</h3>");
+        msg += QL("<h4>") + tr("Additional errors:") + QL("</h4>");
 
         for (const auto &errorString : additionalErrorStrings) {
             msg += QL("<div id=\"ca_error\">");
