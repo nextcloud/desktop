@@ -3276,12 +3276,12 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/libsync/discovery.cpp" line="56"/>
         <source>File contains trailing spaces and could not be renamed, because a file with the same name already exists on the server.</source>
-        <translation type="unfinished"/>
+        <translation>O arquivo contém espaços à direita e não pôde ser renomeado, porque um arquivo com o mesmo nome já existe no servidor. </translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="59"/>
         <source>File contains trailing spaces and could not be renamed, because a file with the same name already exists locally.</source>
-        <translation type="unfinished"/>
+        <translation>O arquivo contém espaços à direita e não pôde ser renomeado, porque um arquivo com o mesmo nome já existe localmente. </translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="250"/>
@@ -4875,7 +4875,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1036"/>
         <source>Synchronization will resume shortly.</source>
-        <translation type="unfinished"/>
+        <translation>A sincronização será retomada em breve.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1110"/>
@@ -4931,7 +4931,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="169"/>
         <source>Some files could not be synced!</source>
-        <translation type="unfinished"/>
+        <translation>Alguns arquivos não puderam ser sincronizados!</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="170"/>
@@ -5027,6 +5027,29 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <location filename="../src/libsync/theme.cpp" line="482"/>
         <source>&lt;p&gt;This release was supplied by %1&lt;/p&gt;</source>
         <translation>&lt;p&gt;Esta versão foi fornecida por %1&lt;/p&gt;</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::UnifiedSearchResultsListModel</name>
+    <message>
+        <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="373"/>
+        <source>Failed to fetch providers.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="384"/>
+        <source>Failed to fetch search providers for &apos;%1&apos;. Error: %2</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="418"/>
+        <source>Search has failed for &apos;%2&apos;.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="447"/>
+        <source>Search has failed for &apos;%1&apos;. Error: %2</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -5797,6 +5820,38 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     </message>
 </context>
 <context>
+    <name>UnifiedSearchInputContainer</name>
+    <message>
+        <location filename="../src/gui/tray/UnifiedSearchInputContainer.qml" line="23"/>
+        <source>Search files, messages, events...</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>UnifiedSearchResultFetchMoreTrigger</name>
+    <message>
+        <location filename="../src/gui/tray/UnifiedSearchResultFetchMoreTrigger.qml" line="24"/>
+        <source>Load more results</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>UnifiedSearchResultItemSkeleton</name>
+    <message>
+        <location filename="../src/gui/tray/UnifiedSearchResultItemSkeleton.qml" line="25"/>
+        <source>Search result skeleton.</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>UnifiedSearchResultListItem</name>
+    <message>
+        <location filename="../src/gui/tray/UnifiedSearchResultListItem.qml" line="37"/>
+        <source>Load more results</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>UserLine</name>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="15"/>
@@ -6030,7 +6085,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <translation>Pausar a sincronização para todos</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="190"/>
+        <location filename="../src/gui/tray/Window.qml" line="196"/>
         <source>Set user status</source>
         <translation>Definir o status do usuário</translation>
     </message>
@@ -6068,12 +6123,6 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <location filename="../src/gui/tray/Window.qml" line="356"/>
         <source>Current user status is do not disturb</source>
         <translation>Não Perturbe é o status atual do usuário</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/Window.qml" line="720"/>
-        <location filename="../src/gui/tray/Window.qml" line="723"/>
-        <source>Show more actions</source>
-        <translation>Mostrar mais ações</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="816"/>
@@ -6136,7 +6185,18 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <translation>Abrir janela de compartilhamento</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="606"/>
+        <location filename="../src/gui/tray/Window.qml" line="678"/>
+        <source>Unified search results list</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="720"/>
+        <location filename="../src/gui/tray/Window.qml" line="723"/>
+        <source>Show more actions</source>
+        <translation>Mostrar mais ações</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="748"/>
         <source>%1 - File activity</source>
         <translation>%1 - Atividade de arquivo</translation>
     </message>

@@ -4933,7 +4933,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="169"/>
         <source>Some files could not be synced!</source>
-        <translation type="unfinished"/>
+        <translation>Bazı dosyalar eşitlenemedi!</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="170"/>
@@ -5029,6 +5029,29 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
         <location filename="../src/libsync/theme.cpp" line="482"/>
         <source>&lt;p&gt;This release was supplied by %1&lt;/p&gt;</source>
         <translation>&lt;p&gt;Bu sürüm %1 tarafından hazırlanmıştır&lt;/p&gt;</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::UnifiedSearchResultsListModel</name>
+    <message>
+        <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="373"/>
+        <source>Failed to fetch providers.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="384"/>
+        <source>Failed to fetch search providers for &apos;%1&apos;. Error: %2</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="418"/>
+        <source>Search has failed for &apos;%2&apos;.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="447"/>
+        <source>Search has failed for &apos;%1&apos;. Error: %2</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -5799,6 +5822,38 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
     </message>
 </context>
 <context>
+    <name>UnifiedSearchInputContainer</name>
+    <message>
+        <location filename="../src/gui/tray/UnifiedSearchInputContainer.qml" line="23"/>
+        <source>Search files, messages, events...</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>UnifiedSearchResultFetchMoreTrigger</name>
+    <message>
+        <location filename="../src/gui/tray/UnifiedSearchResultFetchMoreTrigger.qml" line="24"/>
+        <source>Load more results</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>UnifiedSearchResultItemSkeleton</name>
+    <message>
+        <location filename="../src/gui/tray/UnifiedSearchResultItemSkeleton.qml" line="25"/>
+        <source>Search result skeleton.</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>UnifiedSearchResultListItem</name>
+    <message>
+        <location filename="../src/gui/tray/UnifiedSearchResultListItem.qml" line="37"/>
+        <source>Load more results</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>UserLine</name>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="15"/>
@@ -6032,7 +6087,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
         <translation>Tümünü eşitlemeyi duraklat</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="190"/>
+        <location filename="../src/gui/tray/Window.qml" line="196"/>
         <source>Set user status</source>
         <translation>Kullanıcı durumunu ayarla</translation>
     </message>
@@ -6070,12 +6125,6 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
         <location filename="../src/gui/tray/Window.qml" line="356"/>
         <source>Current user status is do not disturb</source>
         <translation>Geçerli kullanıcı durumu rahatsız etmeyin</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/Window.qml" line="720"/>
-        <location filename="../src/gui/tray/Window.qml" line="723"/>
-        <source>Show more actions</source>
-        <translation>Diğer işlemleri görüntüle</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="816"/>
@@ -6138,7 +6187,18 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
         <translation>Paylaşma penceresini aç</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="606"/>
+        <location filename="../src/gui/tray/Window.qml" line="678"/>
+        <source>Unified search results list</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="720"/>
+        <location filename="../src/gui/tray/Window.qml" line="723"/>
+        <source>Show more actions</source>
+        <translation>Diğer işlemleri görüntüle</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="748"/>
         <source>%1 - File activity</source>
         <translation>%1 - Dosya işlemi</translation>
     </message>

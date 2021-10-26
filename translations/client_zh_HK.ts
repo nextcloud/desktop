@@ -4932,7 +4932,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="169"/>
         <source>Some files could not be synced!</source>
-        <translation type="unfinished"/>
+        <translation>部份檔案無法同步！</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="170"/>
@@ -5028,6 +5028,29 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/theme.cpp" line="482"/>
         <source>&lt;p&gt;This release was supplied by %1&lt;/p&gt;</source>
         <translation>此版本由%1發佈。</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::UnifiedSearchResultsListModel</name>
+    <message>
+        <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="373"/>
+        <source>Failed to fetch providers.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="384"/>
+        <source>Failed to fetch search providers for &apos;%1&apos;. Error: %2</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="418"/>
+        <source>Search has failed for &apos;%2&apos;.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="447"/>
+        <source>Search has failed for &apos;%1&apos;. Error: %2</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -5798,6 +5821,38 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     </message>
 </context>
 <context>
+    <name>UnifiedSearchInputContainer</name>
+    <message>
+        <location filename="../src/gui/tray/UnifiedSearchInputContainer.qml" line="23"/>
+        <source>Search files, messages, events...</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>UnifiedSearchResultFetchMoreTrigger</name>
+    <message>
+        <location filename="../src/gui/tray/UnifiedSearchResultFetchMoreTrigger.qml" line="24"/>
+        <source>Load more results</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>UnifiedSearchResultItemSkeleton</name>
+    <message>
+        <location filename="../src/gui/tray/UnifiedSearchResultItemSkeleton.qml" line="25"/>
+        <source>Search result skeleton.</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>UnifiedSearchResultListItem</name>
+    <message>
+        <location filename="../src/gui/tray/UnifiedSearchResultListItem.qml" line="37"/>
+        <source>Load more results</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>UserLine</name>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="15"/>
@@ -6031,7 +6086,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>暫停所有同步</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="190"/>
+        <location filename="../src/gui/tray/Window.qml" line="196"/>
         <source>Set user status</source>
         <translation>設置用戶狀態</translation>
     </message>
@@ -6069,12 +6124,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/tray/Window.qml" line="356"/>
         <source>Current user status is do not disturb</source>
         <translation>目前用戶狀態為請勿打擾</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/Window.qml" line="720"/>
-        <location filename="../src/gui/tray/Window.qml" line="723"/>
-        <source>Show more actions</source>
-        <translation>顯示更多操作</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="816"/>
@@ -6137,7 +6186,18 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>開啟分享對話方塊</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="606"/>
+        <location filename="../src/gui/tray/Window.qml" line="678"/>
+        <source>Unified search results list</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="720"/>
+        <location filename="../src/gui/tray/Window.qml" line="723"/>
+        <source>Show more actions</source>
+        <translation>顯示更多操作</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="748"/>
         <source>%1 - File activity</source>
         <translation>%1 - 檔案活動紀錄</translation>
     </message>
