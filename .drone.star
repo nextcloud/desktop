@@ -461,7 +461,7 @@ def setupServerAndApp(logLevel):
             "php occ config:system:set trusted_domains 1 --value=owncloud",
             "php occ log:manage --level %s" % logLevel,
             "php occ config:list",
-            "php occ config:system:set skeletondirectory --value=/var/www/owncloud/server/apps/testing/data/webUISkeleton",
+            "php occ config:system:set skeletondirectory --value=/var/www/owncloud/server/apps/testing/data/tinySkeleton",
             "php occ config:system:set sharing.federation.allowHttpFallback --value=true --type=bool",
         ],
     }]

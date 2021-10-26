@@ -21,7 +21,7 @@ Feature: adding accounts
     Scenario: Adding multiple accounts
         Given user "Brian" has been created on the server with default attributes and without skeleton files
         And user "Alice" has set up a client with default settings
-        When the user adds an account with
+        When the user adds another account with
             | server      | %local_server%           |
             | user        | Brian                    |
             | password    | AaBb2Cc3Dd4              |
@@ -32,16 +32,17 @@ Feature: adding accounts
 
     Scenario: Adding account with wrong credentials
         Given the user has started the client
-        When the user adds the account with wrong credentials
-            | server   | %local_server% |
-            | user     | Alice          |
-            | password | 12345          |
+        And the user has added the following server address:
+            | server | %local_server% |
+        When the user adds the following wrong user credentials:
+            | user     | Alice |
+            | password | 12345 |
         Then error "The provided credentials are not correct" should be displayed
 
 
     Scenario: Adding account with self signed certificate for the first time
         Given the user has started the client
-        When the user adds an account with the following secure server address
+        When the user adds the following server address:
             | server | %secure_local_server% |
         And the user accepts the certificate
         Then the lock shown should be closed
