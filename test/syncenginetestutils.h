@@ -516,6 +516,8 @@ struct ItemCompletedSpy : QSignalSpy {
     {}
 
     OCC::SyncFileItemPtr findItem(const QString &path) const;
+
+    OCC::SyncFileItemPtr findItemWithExpectedRank(const QString &path, int rank) const;
 };
 
 // QTest::toString overloads

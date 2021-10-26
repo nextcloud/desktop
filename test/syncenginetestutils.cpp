@@ -1059,6 +1059,19 @@ OCC::SyncFileItemPtr ItemCompletedSpy::findItem(const QString &path) const
     return OCC::SyncFileItemPtr::create();
 }
 
+OCC::SyncFileItemPtr ItemCompletedSpy::findItemWithExpectedRank(const QString &path, int rank) const
+{
+    Q_ASSERT(size() > rank);
+    Q_ASSERT(!(*this)[rank].isEmpty());
+
+    auto item = (*this)[rank][0].value<OCC::SyncFileItemPtr>();
+    if (item->destination() == path) {
+        return item;
+    } else {
+        return OCC::SyncFileItemPtr::create();
+    }
+}
+
 FakeReply::FakeReply(QObject *parent)
     : QNetworkReply(parent)
 {

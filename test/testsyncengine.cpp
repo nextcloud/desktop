@@ -33,6 +33,14 @@ bool itemDidCompleteSuccessfully(const ItemCompletedSpy &spy, const QString &pat
     return false;
 }
 
+bool itemDidCompleteSuccessfullyWithExpectedRank(const ItemCompletedSpy &spy, const QString &path, int rank)
+{
+    if (auto item = spy.findItemWithExpectedRank(path, rank)) {
+        return item->_status == SyncFileItem::Success;
+    }
+    return false;
+}
+
 class TestSyncEngine : public QObject
 {
     Q_OBJECT
@@ -79,6 +87,29 @@ private slots:
         QVERIFY(itemDidCompleteSuccessfully(completeSpy, "Y"));
         QVERIFY(itemDidCompleteSuccessfully(completeSpy, "Z"));
         QVERIFY(itemDidCompleteSuccessfully(completeSpy, "Z/d0"));
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+    }
+
+    void testDirUploadWithDelayedAlgorithm() {
+        FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
+        ItemCompletedSpy completeSpy(fakeFolder);
+        fakeFolder.localModifier().mkdir("Y");
+        fakeFolder.localModifier().insert("Y/d0");
+        fakeFolder.localModifier().mkdir("Z");
+        fakeFolder.localModifier().insert("Z/d0");
+        fakeFolder.localModifier().insert("A/a0");
+        fakeFolder.localModifier().insert("B/b0");
+        fakeFolder.localModifier().insert("r0");
+        fakeFolder.localModifier().insert("r1");
+        fakeFolder.syncOnce();
+        QVERIFY(itemDidCompleteSuccessfullyWithExpectedRank(completeSpy, "Y", 0));
+        QVERIFY(itemDidCompleteSuccessfullyWithExpectedRank(completeSpy, "Z", 1));
+        QVERIFY(itemDidCompleteSuccessfullyWithExpectedRank(completeSpy, "Y/d0", 2));
+        QVERIFY(itemDidCompleteSuccessfullyWithExpectedRank(completeSpy, "Z/d0", 3));
+        QVERIFY(itemDidCompleteSuccessfullyWithExpectedRank(completeSpy, "A/a0", 4));
+        QVERIFY(itemDidCompleteSuccessfullyWithExpectedRank(completeSpy, "B/b0", 5));
+        QVERIFY(itemDidCompleteSuccessfullyWithExpectedRank(completeSpy, "r0", 6));
+        QVERIFY(itemDidCompleteSuccessfullyWithExpectedRank(completeSpy, "r1", 7));
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
     }
 
