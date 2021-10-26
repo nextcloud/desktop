@@ -266,7 +266,6 @@ def collaboratorShouldBeListed(context, receiver, resource, permissions):
     socketConnect = syncstate.SocketConnect()
     socketConnect.sendCommand("SHARE:" + resource + "\n")
     permissionsList = permissions.split(',')
-
     test.compare(
         str(waitForObjectExists(names.scrollArea_sharedWith_QLabel).text), receiver
     )
@@ -496,10 +495,24 @@ def step(context, receiver, resource):
     openSharingDialog(context, resource, 'folder')
 
 
-@Then('the error text "|any|" should be displayed in the sharing dialog')
-def step(context, fileShareContext):
+def getSharingDialogText():
     shareItem = SharingDialog()
     errorText = shareItem.getSharingDialogMessage()
+    return errorText
+
+
+@Then('the text "|any|" should be displayed in the sharing dialog')
+def step(context, fileShareContext):
+    errorText = getSharingDialogText()
+    test.compare(
+        errorText,
+        fileShareContext,
+    )
+
+
+@Then('the error text "|any|" should be displayed in the sharing dialog')
+def step(context, fileShareContext):
+    errorText = getSharingDialogText()
     test.compare(
         errorText,
         fileShareContext,
@@ -860,3 +873,14 @@ def step(context, itemType, resource):
         shutil.rmtree(resourcePath)
     else:
         raise Exception("No such item type for resource")
+
+
+@When(
+    'the user unshares the resource "|any|" for collaborator "|any|" using the client-UI'
+)
+def step(context, resource, receiver):
+    openSharingDialog(context, resource)
+    test.compare(
+        str(waitForObjectExists(names.scrollArea_sharedWith_QLabel).text), receiver
+    )
+    clickButton(waitForObject(names.scrollArea_deleteShareButton_QToolButton))
