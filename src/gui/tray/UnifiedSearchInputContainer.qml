@@ -20,7 +20,7 @@ TextField {
     leftPadding: trayWindowUnifiedSearchTextFieldSearchIcon.width + trayWindowUnifiedSearchTextFieldSearchIcon.anchors.leftMargin + textFieldHorizontalPaddingOffset
     rightPadding: trayWindowUnifiedSearchTextFieldClearTextButton.width + trayWindowUnifiedSearchTextFieldClearTextButton.anchors.rightMargin + textFieldHorizontalPaddingOffset
 
-    placeholderText: qsTr("Search files, messages, events…")
+    placeholderText: qsTr("Search files, messages, events …")
 
     selectByMouse: true
 
