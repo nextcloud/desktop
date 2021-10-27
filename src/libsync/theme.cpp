@@ -417,6 +417,15 @@ bool Theme::forbidBadSSL() const
 #endif
 }
 
+bool Theme::loginWithSystemUserName() const
+{
+#ifdef APPLICATION_LOGIN_WITH_SYSTEM_USERNAME
+    return true;
+#else
+    return false;
+#endif
+}
+
 QString Theme::forceConfigAuthType() const
 {
     return QString();

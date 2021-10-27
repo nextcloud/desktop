@@ -20,6 +20,7 @@
 #include "utility.h"
 
 #include <comdef.h>
+#include <Lmcons.h>
 #include <shlguid.h>
 #include <shlobj.h>
 #include <string>
@@ -380,6 +381,17 @@ QString Utility::formatWinError(long errorCode)
     return QStringLiteral("WindowsError: %1: %2").arg(QString::number(errorCode, 16), QString::fromWCharArray(_com_error(errorCode).ErrorMessage()));
 }
 
+QString Utility::getCurrentUserName()
+{
+    TCHAR username[UNLEN + 1] = {0};
+    DWORD len = sizeof(username) / sizeof(TCHAR);
+    
+    if (!GetUserName(username, &len)) {
+        qCWarning(lcUtility) << "Could not retrieve Windows user name." << formatWinError(GetLastError());
+    }
+
+    return QString::fromWCharArray(username);
+}
 
 Utility::NtfsPermissionLookupRAII::NtfsPermissionLookupRAII()
 {

@@ -242,6 +242,11 @@ namespace Utility {
      */
     OCSYNC_EXPORT bool isPathWindowsDrivePartitionRoot(const QString &path);
 
+    /**
+     * @brief Retrieves current logged-in user name from the OS
+     */
+    OCSYNC_EXPORT QString getCurrentUserName();
+
 #ifdef Q_OS_WIN
     OCSYNC_EXPORT bool registryKeyExists(HKEY hRootKey, const QString &subKey);
     OCSYNC_EXPORT QVariant registryGetKeyValue(HKEY hRootKey, const QString &subKey, const QString &valueName);
