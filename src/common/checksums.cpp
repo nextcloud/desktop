@@ -24,9 +24,7 @@
 #include <qtconcurrentrun.h>
 #include <QCryptographicHash>
 
-#ifdef ZLIB_FOUND
 #include <zlib.h>
-#endif
 
 /** \file checksums.cpp
  *
@@ -111,7 +109,6 @@ QByteArray calcSha1(QIODevice *device)
     return calcCryptoHash(device, QCryptographicHash::Sha1);
 }
 
-#ifdef ZLIB_FOUND
 QByteArray calcAdler32(QIODevice *device)
 {
     if (device->size() == 0)
@@ -130,7 +127,6 @@ QByteArray calcAdler32(QIODevice *device)
 
     return QByteArray::number(adler, 16);
 }
-#endif
 
 QByteArray makeChecksumHeader(const QByteArray &checksumType, const QByteArray &checksum)
 {
@@ -298,11 +294,9 @@ QByteArray ComputeChecksum::computeNow(QIODevice *device, const QByteArray &chec
     } else if (checksumType == checkSumSHA3C) {
         return calcCryptoHash(device, QCryptographicHash::Sha3_256);
     }
-#ifdef ZLIB_FOUND
     else if (checksumType == checkSumAdlerC) {
         return calcAdler32(device);
     }
-#endif
     // for an unknown checksum or no checksum, we're done right now
     if (!checksumType.isEmpty()) {
         qCWarning(lcChecksums) << "Unknown checksum type:" << checksumType;

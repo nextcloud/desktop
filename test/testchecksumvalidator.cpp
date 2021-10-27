@@ -112,9 +112,6 @@ using namespace OCC::Utility;
     }
 
     void testUploadChecksummingAdler() {
-#ifndef ZLIB_FOUND
-        QSKIP("ZLIB not found.", SkipSingle);
-#else
         ComputeChecksum *vali = new ComputeChecksum(this);
         _expectedType = "Adler32";
         vali->setChecksumType(_expectedType);
@@ -132,7 +129,6 @@ using namespace OCC::Utility;
         loop.exec();
 
         delete vali;
-#endif
     }
 
     void testUploadChecksummingMd5() {
@@ -155,7 +151,6 @@ using namespace OCC::Utility;
     }
 
     void testUploadChecksummingSha1() {
-
         ComputeChecksum *vali = new ComputeChecksum(this);
         _expectedType = OCC::checkSumSHA1C;
         vali->setChecksumType(_expectedType);
@@ -175,9 +170,6 @@ using namespace OCC::Utility;
     }
 
     void testDownloadChecksummingAdler() {
-#ifndef ZLIB_FOUND
-        QSKIP("ZLIB not found.", SkipSingle);
-#else
         ValidateChecksumHeader *vali = new ValidateChecksumHeader(this);
         connect(vali, &ValidateChecksumHeader::validated, this, &TestChecksumValidator::slotDownValidated);
         connect(vali, &ValidateChecksumHeader::validationFailed, this, &TestChecksumValidator::slotDownError);
@@ -209,7 +201,6 @@ using namespace OCC::Utility;
         QTRY_VERIFY(_errorSeen);
 
         delete vali;
-#endif
     }
 
 

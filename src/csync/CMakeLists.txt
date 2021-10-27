@@ -55,13 +55,9 @@ generate_export_header(csync
 target_link_libraries(csync
   ${CSYNC_REQUIRED_LIBRARIES}
   SQLite::SQLite3
+  ZLIB::ZLIB
   Qt5::Core Qt5::Concurrent
 )
-
-if(ZLIB_FOUND)
-  target_link_libraries(csync ZLIB::ZLIB)
-endif(ZLIB_FOUND)
-
 
 # For src/common/utility_mac.cpp
 if (APPLE)
