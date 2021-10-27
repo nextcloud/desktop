@@ -5824,7 +5824,7 @@ Toto je nový experimentálny režim. Ak sa ho rozhodnete použiť, nahláste v�
     <name>UnifiedSearchInputContainer</name>
     <message>
         <location filename="../src/gui/tray/UnifiedSearchInputContainer.qml" line="23"/>
-        <source>Search files, messages, events...</source>
+        <source>Search files, messages, events …</source>
         <translation type="unfinished"/>
     </message>
 </context>

@@ -5035,22 +5035,22 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
     <message>
         <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="373"/>
         <source>Failed to fetch providers.</source>
-        <translation type="unfinished"/>
+        <translation>Nepodařilo se získat seznam poskytovatelů.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="384"/>
         <source>Failed to fetch search providers for &apos;%1&apos;. Error: %2</source>
-        <translation type="unfinished"/>
+        <translation>Nepodařilo se získat z poskytovatelů vyhledávání pro „%1“: Chyba: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="418"/>
         <source>Search has failed for &apos;%2&apos;.</source>
-        <translation type="unfinished"/>
+        <translation>Hledání „%2“ se nezdařilo.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="447"/>
         <source>Search has failed for &apos;%1&apos;. Error: %2</source>
-        <translation type="unfinished"/>
+        <translation>Hledání „%1“ se nezdařilo: chyba: %2</translation>
     </message>
 </context>
 <context>
@@ -5824,7 +5824,7 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
     <name>UnifiedSearchInputContainer</name>
     <message>
         <location filename="../src/gui/tray/UnifiedSearchInputContainer.qml" line="23"/>
-        <source>Search files, messages, events...</source>
+        <source>Search files, messages, events …</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -5833,7 +5833,7 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
     <message>
         <location filename="../src/gui/tray/UnifiedSearchResultFetchMoreTrigger.qml" line="24"/>
         <source>Load more results</source>
-        <translation type="unfinished"/>
+        <translation>Načíst další výsledky</translation>
     </message>
 </context>
 <context>
@@ -5841,7 +5841,7 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
     <message>
         <location filename="../src/gui/tray/UnifiedSearchResultItemSkeleton.qml" line="25"/>
         <source>Search result skeleton.</source>
-        <translation type="unfinished"/>
+        <translation>Kostra výsledku vyhledávání.</translation>
     </message>
 </context>
 <context>
@@ -5849,7 +5849,7 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
     <message>
         <location filename="../src/gui/tray/UnifiedSearchResultListItem.qml" line="37"/>
         <source>Load more results</source>
-        <translation type="unfinished"/>
+        <translation>Načíst další výsledky</translation>
     </message>
 </context>
 <context>
@@ -6188,7 +6188,7 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
     <message>
         <location filename="../src/gui/tray/Window.qml" line="678"/>
         <source>Unified search results list</source>
-        <translation type="unfinished"/>
+        <translation>Seznam výsledků sjednoceného vyhledávání</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="720"/>

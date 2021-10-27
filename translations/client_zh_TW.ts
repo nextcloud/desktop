@@ -5036,22 +5036,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="373"/>
         <source>Failed to fetch providers.</source>
-        <translation type="unfinished"/>
+        <translation>擷取提供者失敗。</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="384"/>
         <source>Failed to fetch search providers for &apos;%1&apos;. Error: %2</source>
-        <translation type="unfinished"/>
+        <translation>擷取「%1」的搜尋提供者失敗。錯誤：%2</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="418"/>
         <source>Search has failed for &apos;%2&apos;.</source>
-        <translation type="unfinished"/>
+        <translation>搜尋「%2」失敗。</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="447"/>
         <source>Search has failed for &apos;%1&apos;. Error: %2</source>
-        <translation type="unfinished"/>
+        <translation>搜尋「%1」失敗。錯誤：%2</translation>
     </message>
 </context>
 <context>
@@ -5825,7 +5825,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <name>UnifiedSearchInputContainer</name>
     <message>
         <location filename="../src/gui/tray/UnifiedSearchInputContainer.qml" line="23"/>
-        <source>Search files, messages, events...</source>
+        <source>Search files, messages, events …</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -5834,7 +5834,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/UnifiedSearchResultFetchMoreTrigger.qml" line="24"/>
         <source>Load more results</source>
-        <translation type="unfinished"/>
+        <translation>載入更多結果</translation>
     </message>
 </context>
 <context>
@@ -5842,7 +5842,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/UnifiedSearchResultItemSkeleton.qml" line="25"/>
         <source>Search result skeleton.</source>
-        <translation type="unfinished"/>
+        <translation>搜尋結果骨架。</translation>
     </message>
 </context>
 <context>
@@ -5850,7 +5850,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/UnifiedSearchResultListItem.qml" line="37"/>
         <source>Load more results</source>
-        <translation type="unfinished"/>
+        <translation>載入更多結果</translation>
     </message>
 </context>
 <context>
@@ -6189,7 +6189,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/Window.qml" line="678"/>
         <source>Unified search results list</source>
-        <translation type="unfinished"/>
+        <translation>統一搜尋結果清單</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="720"/>

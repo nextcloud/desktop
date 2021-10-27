@@ -5820,7 +5820,7 @@ Ovo je novi, eksperimentalni način rada. Ako se odlučite aktivirati ga, prijav
     <name>UnifiedSearchInputContainer</name>
     <message>
         <location filename="../src/gui/tray/UnifiedSearchInputContainer.qml" line="23"/>
-        <source>Search files, messages, events...</source>
+        <source>Search files, messages, events …</source>
         <translation type="unfinished"/>
     </message>
 </context>

@@ -5826,7 +5826,7 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
     <name>UnifiedSearchInputContainer</name>
     <message>
         <location filename="../src/gui/tray/UnifiedSearchInputContainer.qml" line="23"/>
-        <source>Search files, messages, events...</source>
+        <source>Search files, messages, events …</source>
         <translation type="unfinished"/>
     </message>
 </context>
