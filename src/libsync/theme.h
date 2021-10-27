@@ -428,6 +428,13 @@ public:
     virtual bool connectionValidatorClearCookies() const;
 
 
+    /**
+     * Enables the response of V2/GET_CLIENT_ICON, default true.
+     * See #9167
+     */
+    virtual bool enableSocketApiIconSupport() const;
+
+
 protected:
 #ifndef TOKEN_AUTH_ONLY
     QIcon themeUniversalIcon(const QString &name, IconType iconType = IconType::BrandedIcon) const;

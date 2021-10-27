@@ -678,4 +678,9 @@ bool Theme::connectionValidatorClearCookies() const
     return false;
 }
 
+bool Theme::enableSocketApiIconSupport() const
+{
+    return true;
+}
+
 } // end namespace client

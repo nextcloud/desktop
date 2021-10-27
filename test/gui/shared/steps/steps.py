@@ -3,7 +3,7 @@ import names
 import os
 import sys
 from os import listdir
-from os.path import isfile, join
+from os.path import isfile, join, isdir
 import re
 import urllib.request
 import json
@@ -64,29 +64,20 @@ def hook(context):
         pass
 
 
-def addAccount(context):
+@Given(r'the user has added (the first|another) account with', regexp=True)
+def step(context, accountType):
     newAccount = AccountConnectionWizard()
+    if accountType == 'another':
+        toolbar = Toolbar()
+        toolbar.clickAddAccount()
+
     newAccount.addAccount(context)
-    newAccount.selectSyncFolder(context)
 
 
-@Given('the user has added an account with')
-def step(context):
-    toolbar = Toolbar()
-    toolbar.clickAddAccount()
-
-    addAccount(context)
-
-
-@When('the user adds the first account with')
-def step(context):
-    addAccount(context)
-
-
-@When('the user adds the account with wrong credentials')
+@When('the user adds the following wrong user credentials:')
 def step(context):
     newAccount = AccountConnectionWizard()
-    newAccount.addAccount(context)
+    newAccount.addUserCreds(context)
 
 
 @Then('an account should be displayed with the displayname |any| and host |any|')
@@ -131,23 +122,22 @@ def step(context):
     startClient(context)
 
 
-@When('the user adds an account with')
-def step(context):
-    toolbar = Toolbar()
-    toolbar.clickAddAccount()
-
-    addAccount(context)
-
-
-@When('the user adds an account with the following secure server address')
-def step(context):
-    for row in context.table[0:]:
-        row[1] = substituteInLineCodes(context, row[1])
-        if row[0] == 'server':
-            server = row[1]
-
+@When(r'the user adds (the first|another) account with', regexp=True)
+def step(context, accountType):
     newAccount = AccountConnectionWizard()
-    newAccount.addServer(server)
+    if accountType == 'another':
+        toolbar = Toolbar()
+        toolbar.clickAddAccount()
+
+    newAccount.addAccount(context)
+
+
+@Given('the user has added the following account information:')
+def step(context):
+    newAccount = AccountConnectionWizard()
+    newAccount.addServer(context)
+    newAccount.addUserCreds(context)
+    newAccount.selectSyncFolder(context)
 
 
 def isItemSynced(type, itemName):
@@ -188,6 +178,20 @@ def waitForFolderToBeSynced(context, folderName):
             sanitizePath(context.userData['clientSyncPathUser1'] + folderName)
         ),
         context.userData['clientSyncTimeout'] * 1000,
+    )
+
+
+def folderExists(folderPath, timeout=1000):
+    return waitFor(
+        lambda: isdir(sanitizePath(folderPath)),
+        timeout,
+    )
+
+
+def fileExists(filePath, timeout=1000):
+    return waitFor(
+        lambda: isfile(sanitizePath(filePath)),
+        timeout,
     )
 
 
@@ -266,7 +270,6 @@ def collaboratorShouldBeListed(context, receiver, resource, permissions):
     socketConnect = syncstate.SocketConnect()
     socketConnect.sendCommand("SHARE:" + resource + "\n")
     permissionsList = permissions.split(',')
-
     test.compare(
         str(waitForObjectExists(names.scrollArea_sharedWith_QLabel).text), receiver
     )
@@ -344,6 +347,46 @@ def step(context, filePath):
         "file expected to exist with content "
         + expected
         + " but does not have the expected content",
+    )
+
+
+@Then(r'^the (file|folder) "([^"]*)" should exist on the file system$', regexp=True)
+def step(context, resourceType, resource):
+    resourcePath = join(context.userData['clientSyncPathUser1'], resource)
+    resourceExists = False
+    if resourceType == 'file':
+        resourceExists = fileExists(
+            resourcePath, context.userData['clientSyncTimeout'] * 1000
+        )
+    elif resourceType == 'folder':
+        resourceExists = folderExists(
+            resourcePath, context.userData['clientSyncTimeout'] * 1000
+        )
+    else:
+        raise Exception("Unsupported resource type '" + resourceType + "'")
+
+    test.compare(
+        True,
+        resourceExists,
+        "Assert " + resourceType + " '" + resource + "' exists on the system",
+    )
+
+
+@Then(r'^the (file|folder) "([^"]*)" should not exist on the file system$', regexp=True)
+def step(context, resourceType, resource):
+    resourcePath = join(context.userData['clientSyncPathUser1'], resource)
+    resourceExists = False
+    if resourceType == 'file':
+        resourceExists = fileExists(resourcePath, 1000)
+    elif resourceType == 'folder':
+        resourceExists = folderExists(resourcePath, 1000)
+    else:
+        raise Exception("Unsupported resource type '" + resourceType + "'")
+
+    test.compare(
+        False,
+        resourceExists,
+        "Assert " + resourceType + " '" + resource + "' doesn't exist on the system",
     )
 
 
@@ -496,10 +539,24 @@ def step(context, receiver, resource):
     openSharingDialog(context, resource, 'folder')
 
 
-@Then('the error text "|any|" should be displayed in the sharing dialog')
-def step(context, fileShareContext):
+def getSharingDialogText():
     shareItem = SharingDialog()
     errorText = shareItem.getSharingDialogMessage()
+    return errorText
+
+
+@Then('the text "|any|" should be displayed in the sharing dialog')
+def step(context, fileShareContext):
+    errorText = getSharingDialogText()
+    test.compare(
+        errorText,
+        fileShareContext,
+    )
+
+
+@Then('the error text "|any|" should be displayed in the sharing dialog')
+def step(context, fileShareContext):
+    errorText = getSharingDialogText()
     test.compare(
         errorText,
         fileShareContext,
@@ -860,3 +917,130 @@ def step(context, itemType, resource):
         shutil.rmtree(resourcePath)
     else:
         raise Exception("No such item type for resource")
+
+
+@When(
+    'the user unshares the resource "|any|" for collaborator "|any|" using the client-UI'
+)
+def step(context, resource, receiver):
+    openSharingDialog(context, resource)
+    test.compare(
+        str(waitForObjectExists(names.scrollArea_sharedWith_QLabel).text), receiver
+    )
+    clickButton(waitForObject(names.scrollArea_deleteShareButton_QToolButton))
+
+
+@Given('the user has added the following server address:')
+def step(context):
+    newAccount = AccountConnectionWizard()
+    newAccount.addServer(context)
+    test.compare(
+        waitForObjectExists(newAccount.CREDENTIAL_PAGE).visible,
+        True,
+        "Assert credentials page is visible",
+    )
+
+
+@When('the user adds the following server address:')
+def step(context):
+    newAccount = AccountConnectionWizard()
+    newAccount.addServer(context)
+
+
+@Given('the user has added the following user credentials:')
+def step(context):
+    newAccount = AccountConnectionWizard()
+    newAccount.addUserCreds(context)
+    test.compare(
+        waitForObjectExists(newAccount.ADVANCE_SETUP_PAGE).visible,
+        True,
+        "Assert setup page is visible",
+    )
+
+
+@Given('the user has changed the sync directory')
+def step(context):
+    newAccount = AccountConnectionWizard()
+    newAccount.selectSyncFolder(context)
+
+
+@Given('the user has opened chose_what_to_sync dialog')
+def step(context):
+    newAccount = AccountConnectionWizard()
+    newAccount.openSyncDialog()
+    test.compare(
+        waitForObjectExists(newAccount.SELECTIVE_SYNC_DIALOG).visible,
+        True,
+        "Assert selective sync dialog is visible",
+    )
+
+
+@When('the user opens chose_what_to_sync dialog')
+def step(context):
+    newAccount = AccountConnectionWizard()
+    newAccount.openSyncDialog()
+
+
+@When('the user selects the following folders to sync:')
+def step(context):
+    newAccount = AccountConnectionWizard()
+    newAccount.selectFoldersToSync(context)
+
+
+@When('the user selects manual sync folder option')
+def step(context):
+    newAccount = AccountConnectionWizard()
+    newAccount.selectManualSyncFolder()
+
+
+@When('the user connects the account')
+def step(context):
+    newAccount = AccountConnectionWizard()
+    newAccount.connectAccount()
+
+
+@When('the user sorts the folder list by "|any|"')
+def step(context, headerText):
+    headerText = headerText.capitalize()
+    if headerText in ["Size", "Name"]:
+        newAccount = AccountConnectionWizard()
+        newAccount.sortBy(headerText)
+    else:
+        raise Exception("Sorting by '" + headerText + "' is not supported.")
+
+
+@Then('the dialog chose_what_to_sync should be visible')
+def step(context):
+    newAccount = AccountConnectionWizard()
+    test.compare(
+        waitForObjectExists(newAccount.SELECTIVE_SYNC_DIALOG).visible,
+        True,
+        "Assert selective sync dialog is visible",
+    )
+
+
+@Then('the sync all checkbox should be checked')
+def step(context):
+    newAccount = AccountConnectionWizard()
+    test.compare(
+        waitForObjectExists(newAccount.SYNC_DIALOG_ROOT_FOLDER).checkState,
+        "checked",
+        "Assert sync all checkbox is checked",
+    )
+
+
+@Then("the folders should be in the following order:")
+def step(context):
+    newAccount = AccountConnectionWizard()
+    rowIndex = 0
+    for row in context.table[1:]:
+        FOLDER_TREE_ROW = {
+            "row": rowIndex,
+            "container": newAccount.SYNC_DIALOG_ROOT_FOLDER,
+            "type": "QModelIndex",
+        }
+        expectedFolder = row[0]
+        actualFolder = waitForObjectExists(FOLDER_TREE_ROW).displayText
+        test.compare(actualFolder, expectedFolder)
+
+        rowIndex += 1

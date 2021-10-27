@@ -873,33 +873,36 @@ void SocketApi::command_V2_GET_CLIENT_ICON(const QSharedPointer<SocketApiJobV2> 
         return;
     }
 
+    QByteArray data;
     const Theme *theme = Theme::instance();
-    OC_ASSERT(theme);
-    const QIcon appIcon = theme->applicationIcon();
-    qCDebug(lcSocketApi) << Q_FUNC_INFO << " got icon from theme: " << appIcon;
+    // return an empty answer if the end point was disabled
+    if (theme->enableSocketApiIconSupport()) {
+        const QIcon appIcon = theme->applicationIcon();
+        qCDebug(lcSocketApi) << Q_FUNC_INFO << " got icon from theme: " << appIcon;
 
-    // convert to pixmap (might be smaller if size is not available)
-    const QPixmap pixmap = appIcon.pixmap(QSize(size.toInt(), size.toInt()));
+        // convert to pixmap (might be smaller if size is not available)
+        const QPixmap pixmap = appIcon.pixmap(QSize(size.toInt(), size.toInt()));
 
-    // Convert pixmap to in-memory PNG
-    QByteArray png;
-    QBuffer pngBuffer(&png);
-    auto success = pngBuffer.open(QIODevice::WriteOnly);
-    if (!success) {
-        qCWarning(lcSocketApi) << "Error opening buffer for png in " << Q_FUNC_INFO;
-        job->failure(QStringLiteral("cannot get client icon"));
-        return;
+        // Convert pixmap to in-memory PNG
+        QByteArray png;
+        QBuffer pngBuffer(&png);
+        auto success = pngBuffer.open(QIODevice::WriteOnly);
+        if (!success) {
+            qCWarning(lcSocketApi) << "Error opening buffer for png in " << Q_FUNC_INFO;
+            job->failure(QStringLiteral("cannot get client icon"));
+            return;
+        }
+
+        success = pixmap.save(&pngBuffer, "PNG");
+        if (!success) {
+            qCWarning(lcSocketApi) << "Error saving client icon as png in " << Q_FUNC_INFO;
+            job->failure(QStringLiteral("cannot get client icon"));
+            return;
+        }
+
+        data = pngBuffer.data().toBase64();
     }
-
-    success = pixmap.save(&pngBuffer, "PNG");
-    if (!success) {
-        qCWarning(lcSocketApi) << "Error saving client icon as png in " << Q_FUNC_INFO;
-        job->failure(QStringLiteral("cannot get client icon"));
-        return;
-    }
-
-    const QByteArray pngAsBase64 = pngBuffer.data().toBase64();
-    job->success({ { QStringLiteral("png"), QString::fromUtf8(pngAsBase64) } });
+    job->success({ { QStringLiteral("png"), QString::fromUtf8(data) } });
 }
 
 void SocketApi::emailPrivateLink(const QString &link)
