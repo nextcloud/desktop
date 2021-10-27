@@ -7,7 +7,8 @@
 #include <QtTest>
 
 #include "folderwatcher_linux.h"
-#include "common/utility.h"
+#include "testutils/testutils.h"
+
 
 using namespace OCC;
 
@@ -44,9 +45,9 @@ private slots:
         QVERIFY( dirs.indexOf(_root + "/a1/b1/c1")>-1);
         QVERIFY( dirs.indexOf(_root + "/a1/b1/c2")>-1);
 
-        QVERIFY(Utility::writeRandomFile(_root+"/a1/rand1.dat"));
-        QVERIFY(Utility::writeRandomFile(_root+"/a1/b1/rand2.dat"));
-        QVERIFY(Utility::writeRandomFile(_root+"/a1/b1/c1/rand3.dat"));
+        QVERIFY(TestUtils::writeRandomFile(_root + "/a1/rand1.dat"));
+        QVERIFY(TestUtils::writeRandomFile(_root + "/a1/b1/rand2.dat"));
+        QVERIFY(TestUtils::writeRandomFile(_root + "/a1/b1/c1/rand3.dat"));
 
         QVERIFY( dirs.indexOf(_root + "/a1/b2")>-1);
         QVERIFY( dirs.indexOf(_root + "/a1/b2/c1")>-1);

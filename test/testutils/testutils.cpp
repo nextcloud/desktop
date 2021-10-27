@@ -4,6 +4,7 @@
 #include "gui/accountmanager.h"
 
 #include <QCoreApplication>
+#include <QRandomGenerator>
 
 namespace {
 class HttpCredentialsTest : public OCC::HttpCredentials
@@ -55,5 +56,31 @@ namespace TestUtils {
         return man;
     }
 
+
+    bool writeRandomFile(const QString &fname, int size)
+    {
+        auto rg = QRandomGenerator::global();
+
+        const int maxSize = 10 * 10 * 1024;
+        if (size == -1) {
+            size = static_cast<int>(rg->generate() % maxSize);
+        }
+
+        QString randString;
+        for (int i = 0; i < size; i++) {
+            int r = static_cast<int>(rg->generate() % 128);
+            randString.append(QChar(r));
+        }
+
+        QFile file(fname);
+        if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+            QTextStream out(&file);
+            out << randString;
+            // optional, as QFile destructor will already do it:
+            file.close();
+            return true;
+        }
+        return false;
+    }
 }
 }

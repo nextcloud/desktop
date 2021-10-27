@@ -10,10 +10,11 @@
 #include <QString>
 
 #include "common/checksums.h"
-#include "networkjobs.h"
 #include "common/utility.h"
 #include "filesystem.h"
+#include "networkjobs.h"
 #include "propagatorjobs.h"
+#include "testutils/testutils.h"
 
 using namespace OCC;
 using namespace OCC::Utility;
@@ -68,13 +69,13 @@ using namespace OCC::Utility;
 
     void initTestCase() {
         _testfile = _root.path()+"/csFile";
-        Utility::writeRandomFile( _testfile);
+        TestUtils::writeRandomFile(_testfile);
     }
 
     void testMd5Calc()
     {
         QString file( _root.path() + "/file_a.bin");
-        QVERIFY(writeRandomFile(file));
+        QVERIFY(TestUtils::writeRandomFile(file));
         QFileInfo fi(file);
         QVERIFY(fi.exists());
 
@@ -94,7 +95,7 @@ using namespace OCC::Utility;
     void testSha1Calc()
     {
         QString file( _root.path() + "/file_b.bin");
-        writeRandomFile(file);
+        TestUtils::writeRandomFile(file);
         QFileInfo fi(file);
         QVERIFY(fi.exists());
 

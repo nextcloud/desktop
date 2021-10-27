@@ -54,7 +54,6 @@ OCSYNC_EXPORT Q_DECLARE_LOGGING_CATEGORY(lcUtility)
     OCSYNC_EXPORT void usleep(int usec);
     OCSYNC_EXPORT QString formatFingerprint(const QByteArray &, bool colonSeparated = true);
     OCSYNC_EXPORT void setupFavLink(const QString &folder);
-    OCSYNC_EXPORT bool writeRandomFile(const QString &fname, int size = -1);
     OCSYNC_EXPORT QString octetsToString(qint64 octets);
     OCSYNC_EXPORT QByteArray userAgentString();
     /**
