@@ -10,8 +10,11 @@ Summary
 
 * Bugfix - Properly handle Windows log off: [#8979](https://github.com/owncloud/client/issues/8979)
 * Bugfix - Fix copy url location for private links: [#9048](https://github.com/owncloud/client/issues/9048)
+* Bugfix - Fix icon name in desktop file with ownBrander themes: [#8992](https://github.com/owncloud/client/issues/8992)
+* Bugfix - Disable vfs option is ignored: [#9159](https://github.com/owncloud/client/issues/9159)
 * Change - Make sharedialog preview be more resilient: [#8938](https://github.com/owncloud/client/issues/8938)
 * Enhancement - Allow to remove broken sync folders: [#9099](https://github.com/owncloud/client/pull/9099)
+* Enhancement - Add branding option to disable icons in the file explorer: [#9167](https://github.com/owncloud/client/issues/9167)
 
 Details
 -------
@@ -29,6 +32,20 @@ Details
 
    https://github.com/owncloud/client/issues/9048
 
+* Bugfix - Fix icon name in desktop file with ownBrander themes: [#8992](https://github.com/owncloud/client/issues/8992)
+
+   Fixes broken icon reference in desktop entries for some branded build themes.
+
+   https://github.com/owncloud/client/issues/8992
+   https://github.com/owncloud/client/pull/9150
+
+* Bugfix - Disable vfs option is ignored: [#9159](https://github.com/owncloud/client/issues/9159)
+
+   We fixed a branding issue where vfs was used even when the parameter was set to disabled.
+
+   https://github.com/owncloud/client/issues/9159
+   https://github.com/owncloud/enterprise/issues/4820
+
 * Change - Make sharedialog preview be more resilient: [#8938](https://github.com/owncloud/client/issues/8938)
 
    We no longer enforce png thumbnails. We no longer replace the file icon if the thumbnail is
@@ -43,6 +60,13 @@ Details
    remove action available in that case.
 
    https://github.com/owncloud/client/pull/9099
+
+* Enhancement - Add branding option to disable icons in the file explorer: [#9167](https://github.com/owncloud/client/issues/9167)
+
+   We implemented a branding parameter to disable the display of icons in the file explorer
+   context menu, this only affects Windows and Linux.
+
+   https://github.com/owncloud/client/issues/9167
 
 Changelog for ownCloud Desktop Client [2.9.1] (2021-10-13)
 =======================================
