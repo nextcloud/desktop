@@ -1,0 +1,6 @@
+Enhancement: Add branding option to disable icons in the file explorer
+
+We implemented a branding parameter to disable the display of icons in the
+file explorer context menu, this only affects Windows and Linux.
+
+https://github.com/owncloud/client/issues/9167
