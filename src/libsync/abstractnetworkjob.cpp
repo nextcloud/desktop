@@ -84,9 +84,9 @@ void AbstractNetworkJob::setReply(QNetworkReply *reply)
     delete old;
 }
 
-void AbstractNetworkJob::setTimeout(qint64 msec)
+void AbstractNetworkJob::setTimeout(const std::chrono::seconds &sec)
 {
-    _timer.start(msec);
+    _timer.start(sec);
 }
 
 void AbstractNetworkJob::resetTimeout()

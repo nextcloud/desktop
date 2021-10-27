@@ -283,7 +283,7 @@ void OAuth::startAuthentication()
                     }
                     // If the reply don't contains the user id, we must do another call to query it
                     JsonApiJob *job = new JsonApiJob(_account->sharedFromThis(), QStringLiteral("ocs/v2.php/cloud/user"), this);
-                    job->setTimeout(qMin(30 * 1000ll, job->timeoutMsec()));
+                    job->setTimeout(qMin(job->timeoutSec(), 30s));
                     QNetworkRequest req;
                     // We are not connected yet so we need to handle the authentication manually
                     req.setRawHeader("Authorization", "Bearer " + accessToken.toUtf8());
@@ -415,7 +415,7 @@ SimpleNetworkJob *OAuth::postTokenRequest(const QList<QPair<QString, QString>> &
     auto job = new SimpleNetworkJob(_account->sharedFromThis(), this);
     job->setAuthenticationJob(true);
     job->prepareRequest("POST", requestTokenUrl, req, arguments);
-    job->setTimeout(qMin(30 * 1000ll, job->timeoutMsec()));
+    job->setTimeout(qMin(30s, job->timeoutSec()));
     return job;
 }
 
@@ -467,7 +467,7 @@ void OAuth::authorisationLinkAsync(std::function<void (const QUrl &)> callback) 
 void OAuth::fetchWellKnown()
 {
     auto checkServer = new CheckServerJob(_account->sharedFromThis(), this);
-    checkServer->setTimeout(qMin(30 * 1000ll, checkServer->timeoutMsec()));
+    checkServer->setTimeout(qMin(30s, checkServer->timeoutSec()));
     connect(checkServer, &CheckServerJob::instanceNotFound, this, [this](QNetworkReply *reply) {
         if (_isRefreshingToken) {
             Q_EMIT refreshError(reply->error(), reply->errorString());
@@ -487,7 +487,7 @@ void OAuth::fetchWellKnown()
             auto job = new SimpleNetworkJob(_account->sharedFromThis(), this);
             job->setAuthenticationJob(true);
             job->prepareRequest("GET", Utility::concatUrlPath(_account->url(), QStringLiteral("/.well-known/openid-configuration")));
-            job->setTimeout(qMin(30 * 1000ll, job->timeoutMsec()));
+            job->setTimeout(qMin(30s, job->timeoutSec()));
             QObject::connect(job, &SimpleNetworkJob::finishedSignal, this, [this](QNetworkReply *reply) {
                 _wellKnownFinished = true;
                 if (reply->error() != QNetworkReply::NoError) {

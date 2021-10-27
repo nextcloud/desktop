@@ -148,7 +148,7 @@ void OwncloudSetupWizard::slotFindServer()
     connect(job, &CheckServerJob::instanceFound, this, &OwncloudSetupWizard::slotFoundServer);
     connect(job, &CheckServerJob::timeout, this, &OwncloudSetupWizard::slotNoServerFoundTimeout);    
     connect(job, &CheckServerJob::instanceNotFound, this, &OwncloudSetupWizard::slotNoServerFound);
-    job->setTimeout((account->url().scheme() == "https") ? 30 * 1000 : 10 * 1000);
+    job->setTimeout((account->url().scheme() == "https") ? 30s : 10s);
     job->start();
 }
 

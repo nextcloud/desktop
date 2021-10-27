@@ -387,7 +387,7 @@ void Folder::slotRunEtagJob()
     // sync if it's different.
 
     _requestEtagJob = new RequestEtagJob(account, remotePath(), this);
-    _requestEtagJob->setTimeout(60 * 1000);
+    _requestEtagJob->setTimeout(60s);
     // check if the etag is different when retrieved
     QObject::connect(_requestEtagJob.data(), &RequestEtagJob::etagRetreived, this, &Folder::etagRetreived);
     QObject::connect(_requestEtagJob.data(), &RequestEtagJob::finishedWithResult, this, [=](const HttpResult<QByteArray>) { _timeSinceLastEtagCheckDone.start(); });

@@ -567,7 +567,7 @@ void FolderStatusModel::fetchMore(const QModelIndex &parent)
     job->setProperties(QList<QByteArray>() << "resourcetype"
                                            << "http://owncloud.org/ns:size"
                                            << "http://owncloud.org/ns:permissions");
-    job->setTimeout(60 * 1000);
+    job->setTimeout(60s);
     connect(job, &LsColJob::directoryListingSubfolders,
         this, &FolderStatusModel::slotUpdateDirectories);
     connect(job, &LsColJob::finishedWithError,

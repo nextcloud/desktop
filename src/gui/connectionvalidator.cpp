@@ -31,7 +31,10 @@ Q_LOGGING_CATEGORY(lcConnectionValidator, "sync.connectionvalidator", QtInfoMsg)
 
 // Make sure the timeout for this job is less than how often we get called
 // This makes sure we get tried often enough without "ConnectionValidator already running"
-static qint64 timeoutToUseMsec = qMax(1000, ConnectionValidator::DefaultCallingIntervalMsec - 5 * 1000);
+namespace {
+    const auto timeoutToUseMsec = ConnectionValidator::DefaultCallingIntervalSec - 5s;
+
+}
 
 ConnectionValidator::ConnectionValidator(AccountPtr account, QObject *parent)
     : QObject(parent)
@@ -295,7 +298,7 @@ void ConnectionValidator::slotUserFetched(const QJsonDocument &json)
 #ifndef TOKEN_AUTH_ONLY
     if (capabilities.isValid() && capabilities.avatarsAvailable()) {
         AvatarJob *job = new AvatarJob(_account, _account->davUser(), 128, this);
-        job->setTimeout(20 * 1000);
+        job->setTimeout(20s);
         QObject::connect(job, &AvatarJob::avatarPixmap, this, &ConnectionValidator::slotAvatarImage);
         job->start();
         // reportResult will be called when the avatar has been received by `slotAvatarImage`

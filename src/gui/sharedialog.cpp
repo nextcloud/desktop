@@ -129,7 +129,7 @@ ShareDialog::ShareDialog(QPointer<AccountState> accountState,
     auto job = new PropfindJob(accountState->account(), _sharePath);
     job->setProperties({ QByteArrayLiteral("http://open-collaboration-services.org/ns:share-permissions"),
         QByteArrayLiteral("http://owncloud.org/ns:privatelink") });
-    job->setTimeout(10 * 1000);
+    job->setTimeout(10s);
     connect(job, &PropfindJob::result, this, &ShareDialog::slotPropfindReceived);
     connect(job, &PropfindJob::finishedWithError, this, &ShareDialog::slotPropfindError);
     job->start();

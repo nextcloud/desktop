@@ -15,12 +15,16 @@
 #ifndef CONNECTIONVALIDATOR_H
 #define CONNECTIONVALIDATOR_H
 
+#include "accountfwd.h"
 #include "owncloudlib.h"
+
+#include <QNetworkReply>
 #include <QObject>
 #include <QStringList>
 #include <QVariantMap>
-#include <QNetworkReply>
-#include "accountfwd.h"
+#include <chrono>
+
+using namespace std::chrono_literals;
 
 namespace OCC {
 
@@ -97,7 +101,7 @@ public:
     Q_ENUM(Status);
 
     // How often should the Application ask this object to check for the connection?
-    enum { DefaultCallingIntervalMsec = 62 * 1000 };
+    static constexpr auto DefaultCallingIntervalSec = 62s;
 
 public slots:
     /// Checks the server and the authentication.

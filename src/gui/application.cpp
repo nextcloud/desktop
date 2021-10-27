@@ -348,7 +348,7 @@ Application::Application(int &argc, char **argv)
 
     // startup procedure.
     connect(&_checkConnectionTimer, &QTimer::timeout, this, &Application::slotCheckConnection);
-    _checkConnectionTimer.setInterval(ConnectionValidator::DefaultCallingIntervalMsec); // check for connection every 32 seconds.
+    _checkConnectionTimer.setInterval(ConnectionValidator::DefaultCallingIntervalSec);
     _checkConnectionTimer.start();
     // Also check immediately
     QTimer::singleShot(0, this, &Application::slotCheckConnection);

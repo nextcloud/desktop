@@ -30,6 +30,9 @@
 #include <QDateTime>
 #include <QTimer>
 
+#include <chrono>
+using namespace std::chrono_literals;
+
 class QUrl;
 
 
@@ -68,7 +71,7 @@ public:
     /* Content of the X-Request-ID header. (Only set after the request is sent) */
     QByteArray requestId();
 
-    qint64 timeoutMsec() const { return _timer.interval(); }
+    auto timeoutSec() const { return std::chrono::duration_cast<std::chrono::seconds>(std::chrono::milliseconds(_timer.interval())); }
     bool timedOut() const { return _timedout; }
 
     /** Returns an error message, if any. */
@@ -107,7 +110,7 @@ public:
     virtual bool needsRetry() const;
 
 public slots:
-    void setTimeout(qint64 msec);
+    void setTimeout(const std::chrono::seconds &sec);
     void resetTimeout();
 signals:
     /** Emitted on network error.
