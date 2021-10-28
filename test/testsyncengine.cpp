@@ -92,6 +92,8 @@ private slots:
 
     void testDirUploadWithDelayedAlgorithm() {
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
+        fakeFolder.syncEngine().account()->setCapabilities({ { "dav", QVariantMap{ {"bulkupload", "1.0"} } } });
+
         ItemCompletedSpy completeSpy(fakeFolder);
         fakeFolder.localModifier().mkdir("Y");
         fakeFolder.localModifier().insert("Y/d0");
