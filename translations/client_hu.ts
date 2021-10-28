@@ -4543,6 +4543,11 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
         <translation>Nem sikerült biztonságosan kapcsolódni ide: &lt;i&gt;%1&lt;/i&gt;:</translation>
     </message>
     <message>
+        <location filename="../src/gui/sslerrordialog.cpp" line="158"/>
+        <source>Additional errors:</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="166"/>
         <source>with Certificate %1</source>
         <translation>%1 tanúsítvánnyal</translation>

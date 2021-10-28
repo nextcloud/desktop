@@ -4544,6 +4544,11 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
         <translation>Nie można nawiązać bezpiecznego połączenia z &lt;i&gt;%1&lt;/i&gt;:</translation>
     </message>
     <message>
+        <location filename="../src/gui/sslerrordialog.cpp" line="158"/>
+        <source>Additional errors:</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="166"/>
         <source>with Certificate %1</source>
         <translation>z certyfikatem %1</translation>
@@ -5826,7 +5831,7 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
     <message>
         <location filename="../src/gui/tray/UnifiedSearchInputContainer.qml" line="23"/>
         <source>Search files, messages, events …</source>
-        <translation type="unfinished"/>
+        <translation>Szukaj plików, wiadomości, wydarzeń…</translation>
     </message>
 </context>
 <context>

@@ -3268,12 +3268,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="56"/>
         <source>File contains trailing spaces and could not be renamed, because a file with the same name already exists on the server.</source>
-        <translation type="unfinished"/>
+        <translation>Il fie contiene spazi finali e non può essere rinominato, perchè esiste già un file con lo stesso nome sul server.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="59"/>
         <source>File contains trailing spaces and could not be renamed, because a file with the same name already exists locally.</source>
-        <translation type="unfinished"/>
+        <translation>Il fie contiene spazi finali e non può essere rinominato, perchè esiste già un file con lo stesso nome in locale.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="250"/>
@@ -4534,6 +4534,11 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Impossibile collegarsi in modo sicuro a &lt;i&gt;%1&lt;/i&gt;:</translation>
     </message>
     <message>
+        <location filename="../src/gui/sslerrordialog.cpp" line="158"/>
+        <source>Additional errors:</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="166"/>
         <source>with Certificate %1</source>
         <translation>con certificato %1</translation>
@@ -4867,7 +4872,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1036"/>
         <source>Synchronization will resume shortly.</source>
-        <translation type="unfinished"/>
+        <translation>La sincronizzazione riprenderà a breve.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1110"/>
@@ -4891,59 +4896,59 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="124"/>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="313"/>
         <source>Offline</source>
-        <translation type="unfinished"/>
+        <translation>Non in linea</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="138"/>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="316"/>
         <location filename="../src/gui/tray/syncstatussummary.h" line="89"/>
         <source>All synced!</source>
-        <translation type="unfinished"/>
+        <translation>Tutto sincronizzato!</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="147"/>
         <source>Some files couldn&apos;t be synced!</source>
-        <translation type="unfinished"/>
+        <translation>Alcuni file non possono essere sincronizzati!</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="148"/>
         <source>See below for errors</source>
-        <translation type="unfinished"/>
+        <translation>Vedi sotto gli errori</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="155"/>
         <source>Syncing</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizzazione</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="162"/>
         <source>Sync paused</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizzazione sospesa</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="169"/>
         <source>Some files could not be synced!</source>
-        <translation type="unfinished"/>
+        <translation>Alcuni file non possono essere sincronizzati!</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="170"/>
         <source>See below for warnings</source>
-        <translation type="unfinished"/>
+        <translation>Vedi sotto gli avvisi</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="218"/>
         <source>%1 of %2 · %3 left</source>
-        <translation type="unfinished"/>
+        <translation>%1 di %2 · %3 rimasti</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="222"/>
         <source>%1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 di %2</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="227"/>
         <source>Syncing file %1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizzazione file %1 di %2</translation>
     </message>
 </context>
 <context>
@@ -5026,22 +5031,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="373"/>
         <source>Failed to fetch providers.</source>
-        <translation type="unfinished"/>
+        <translation>Recupero dei fornitori non riuscito.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="384"/>
         <source>Failed to fetch search providers for &apos;%1&apos;. Error: %2</source>
-        <translation type="unfinished"/>
+        <translation>Recupero dei fornitori di ricerca per &apos;%1&apos;. Errore: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="418"/>
         <source>Search has failed for &apos;%2&apos;.</source>
-        <translation type="unfinished"/>
+        <translation>Ricerca di &apos;%2&apos; fallita.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="447"/>
         <source>Search has failed for &apos;%1&apos;. Error: %2</source>
-        <translation type="unfinished"/>
+        <translation>Ricerca di &apos;%1&apos; fallita. Errore: %2</translation>
     </message>
 </context>
 <context>
@@ -5816,7 +5821,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/UnifiedSearchInputContainer.qml" line="23"/>
         <source>Search files, messages, events …</source>
-        <translation type="unfinished"/>
+        <translation>Cerca file, messaggi, eventi …</translation>
     </message>
 </context>
 <context>
@@ -5824,7 +5829,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/UnifiedSearchResultFetchMoreTrigger.qml" line="24"/>
         <source>Load more results</source>
-        <translation type="unfinished"/>
+        <translation>Carica più risultati</translation>
     </message>
 </context>
 <context>
@@ -5832,7 +5837,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/UnifiedSearchResultItemSkeleton.qml" line="25"/>
         <source>Search result skeleton.</source>
-        <translation type="unfinished"/>
+        <translation>Scheletro dei risultati di ricerca.</translation>
     </message>
 </context>
 <context>
@@ -5840,7 +5845,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/UnifiedSearchResultListItem.qml" line="37"/>
         <source>Load more results</source>
-        <translation type="unfinished"/>
+        <translation>Carica più risultati</translation>
     </message>
 </context>
 <context>
@@ -6179,7 +6184,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/Window.qml" line="678"/>
         <source>Unified search results list</source>
-        <translation type="unfinished"/>
+        <translation>Lista unificata dei risultati di ricerca</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="720"/>

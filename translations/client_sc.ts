@@ -4543,6 +4543,11 @@ Custa est una modalidade noa, isperimentale. Si detzides de dda impreare, sinnal
         <translation>Non faghet a su connètere in manera segura a &lt;i&gt;%1&lt;/i&gt;:</translation>
     </message>
     <message>
+        <location filename="../src/gui/sslerrordialog.cpp" line="158"/>
+        <source>Additional errors:</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="166"/>
         <source>with Certificate %1</source>
         <translation>cun Tzertificadu %1</translation>

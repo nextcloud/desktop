@@ -4544,6 +4544,11 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
         <translation>Ezin da segurtasunarekin &lt;i&gt;%1&lt;/i&gt;(e)ra konektatu:</translation>
     </message>
     <message>
+        <location filename="../src/gui/sslerrordialog.cpp" line="158"/>
+        <source>Additional errors:</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="166"/>
         <source>with Certificate %1</source>
         <translation>%1 ziurtagiriarekin</translation>

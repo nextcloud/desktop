@@ -4543,6 +4543,11 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>無法安全的連線到 &lt;i&gt;%1&lt;/i&gt;：</translation>
     </message>
     <message>
+        <location filename="../src/gui/sslerrordialog.cpp" line="158"/>
+        <source>Additional errors:</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="166"/>
         <source>with Certificate %1</source>
         <translation>與憑證 %1</translation>
@@ -5825,7 +5830,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/UnifiedSearchInputContainer.qml" line="23"/>
         <source>Search files, messages, events …</source>
-        <translation type="unfinished"/>
+        <translation>搜索檔案、訊息、活動 ...</translation>
     </message>
 </context>
 <context>
