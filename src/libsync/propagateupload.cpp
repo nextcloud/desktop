@@ -542,6 +542,15 @@ QMap<QByteArray, QByteArray> PropagateUploadFileCommon::headers()
 
 void PropagateUploadFileCommon::finalize()
 {
+    // Update the quota, if known
+    if (!_quotaUpdated) {
+        auto quotaIt = propagator()->_folderQuota.find(QFileInfo(_item->_file).path());
+        if (quotaIt != propagator()->_folderQuota.end()) {
+            quotaIt.value() -= _item->_size;
+        }
+        _quotaUpdated = true;
+    }
+
     if (_item->_remotePerm.isNull()) {
         qCWarning(lcPropagateUpload) << "PropagateUploadFileCommon::finalize: Missing permissions for" << propagator()->fullRemotePath(_item->_file);
         auto permCheck = new PropfindJob(propagator()->account(), propagator()->fullRemotePath(_item->_file));
@@ -556,10 +565,6 @@ void PropagateUploadFileCommon::finalize()
         permCheck->start();
         return;
     }
-    // Update the quota, if known
-    auto quotaIt = propagator()->_folderQuota.find(QFileInfo(_item->_file).path());
-    if (quotaIt != propagator()->_folderQuota.end())
-        quotaIt.value() -= _item->_size;
 
     // Update the database entry
     const auto result = propagator()->updateMetadata(*_item);
