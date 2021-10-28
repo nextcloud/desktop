@@ -4503,6 +4503,11 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>לא ניתן להתחבר באופן מאובטח אל &lt;i&gt;%1&lt;/i&gt;:</translation>
     </message>
     <message>
+        <location filename="../src/gui/sslerrordialog.cpp" line="158"/>
+        <source>Additional errors:</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="166"/>
         <source>with Certificate %1</source>
         <translation>עם האישור %1</translation>

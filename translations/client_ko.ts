@@ -4543,6 +4543,11 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>&lt;i&gt;%1&lt;/i&gt;에 안전하게 연결할 수 없습니다:</translation>
     </message>
     <message>
+        <location filename="../src/gui/sslerrordialog.cpp" line="158"/>
+        <source>Additional errors:</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="166"/>
         <source>with Certificate %1</source>
         <translation>인증서 %1</translation>
