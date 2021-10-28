@@ -815,31 +815,26 @@ void FolderMan::startScheduledSyncSoon()
         return;
     }
 
-    qint64 msDelay = 100; // 100ms minimum delay
-    qint64 msSinceLastSync = 0;
+    std::chrono::seconds delay;
+    std::chrono::seconds sinceLastSync;
 
     // Require a pause based on the duration of the last sync run.
     if (Folder *lastFolder = _lastSyncFolder) {
-        msSinceLastSync = lastFolder->msecSinceLastSync().count();
+        sinceLastSync = std::chrono::duration_cast<std::chrono::seconds>(lastFolder->msecSinceLastSync());
 
         //  1s   -> 1.5s pause
         // 10s   -> 5s pause
         //  1min -> 12s pause
         //  1h   -> 90s pause
-        qint64 pause = qSqrt(lastFolder->msecLastSyncDuration().count()) / 20.0 * 1000.0;
-        msDelay = qMax(msDelay, pause);
+        delay = std::chrono::seconds(static_cast<int64_t>(qSqrt(std::chrono::duration_cast<std::chrono::seconds>(lastFolder->msecLastSyncDuration()).count()) / 20));
     }
 
     // Delays beyond one minute seem too big, particularly since there
     // could be things later in the queue that shouldn't be punished by a
     // long delay!
-    msDelay = qMin(msDelay, 60 * 1000ll);
-
-    // Time since the last sync run counts against the delay
-    msDelay = qMax(1ll, msDelay - msSinceLastSync);
-
-    qCInfo(lcFolderMan) << "Starting the next scheduled sync in" << (msDelay / 1000) << "seconds";
-    _startScheduledSyncTimer.start(msDelay);
+    delay = qBound(1s, delay - sinceLastSync, 60s);
+    qCInfo(lcFolderMan) << "Starting the next scheduled sync in" << delay.count() << "seconds";
+    _startScheduledSyncTimer.start(delay);
 }
 
 /*
