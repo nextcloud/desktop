@@ -35,6 +35,8 @@
 #include <cmath>
 #include <cstring>
 
+using namespace std::chrono_literals;
+
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcPutJob, "sync.networkjob.put", QtInfoMsg)

@@ -10,6 +10,7 @@
 #include <syncengine.h>
 #include <owncloudpropagator.h>
 
+using namespace std::chrono_literals;
 using namespace OCC;
 
 static constexpr qint64 stopAfter = 3'123'668;

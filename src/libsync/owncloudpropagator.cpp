@@ -44,6 +44,8 @@
 #include <QTimerEvent>
 #include <qmath.h>
 
+using namespace std::chrono_literals;
+
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcPropagator, "sync.propagator", QtInfoMsg)

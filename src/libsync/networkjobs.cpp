@@ -41,6 +41,8 @@
 #include "creds/abstractcredentials.h"
 #include "creds/httpcredentials.h"
 
+using namespace std::chrono_literals;
+
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcEtagJob, "sync.networkjob.etag", QtInfoMsg)

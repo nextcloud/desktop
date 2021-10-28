@@ -9,6 +9,7 @@
 #include "testutils/syncenginetestutils.h"
 #include <syncengine.h>
 
+using namespace std::chrono_literals;
 using namespace OCC;
 
 /* Upload a 1/3 of a file of given size.
@@ -249,7 +250,7 @@ private slots:
         QObject parent;
         QByteArray moveChecksumHeader;
         int nGET = 0;
-        int responseDelay = 100000; // bigger than abort-wait timeout
+        const auto responseDelay = 24h; // bigger than abort-wait timeout
         fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *) -> QNetworkReply * {
             if (request.attribute(QNetworkRequest::CustomVerbAttribute) == "MOVE") {
                 QTimer::singleShot(50ms, &parent, [&]() { fakeFolder.syncEngine().abort(); });
@@ -345,7 +346,7 @@ private slots:
 
         // Make the MOVE never reply, but trigger a client-abort and apply the change remotely
         QObject parent;
-        int responseDelay = 200; // smaller than abort-wait timeout
+        const auto responseDelay = 200ms; // smaller than abort-wait timeout
         fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *) -> QNetworkReply * {
             if (request.attribute(QNetworkRequest::CustomVerbAttribute) == "MOVE") {
                 QTimer::singleShot(50ms, &parent, [&]() { fakeFolder.syncEngine().abort(); });
@@ -543,8 +544,8 @@ private slots:
         // Make the MOVE never reply, but trigger a client-abort and apply the change remotely
         QByteArray checksumHeader;
         int nGET = 0;
-        QScopedValueRollback<int> setHttpTimeout(AbstractNetworkJob::httpTimeout, 1);
-        int responseDelay = AbstractNetworkJob::httpTimeout * 1000 * 1000; // much bigger than http timeout (so a timeout will occur)
+        QScopedValueRollback<std::chrono::seconds> setHttpTimeout(AbstractNetworkJob::httpTimeout, 1s);
+        const auto responseDelay = 24h; // much bigger than http timeout (so a timeout will occur)
         // This will perform the operation on the server, but the reply will not come to the client
         fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *outgoingData) -> QNetworkReply * {
             if (!chunking) {

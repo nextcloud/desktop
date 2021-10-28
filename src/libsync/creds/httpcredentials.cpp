@@ -34,6 +34,8 @@
 #include <QSettings>
 #include <QSslKey>
 
+using namespace std::chrono_literals;
+
 Q_LOGGING_CATEGORY(lcHttpCredentials, "sync.credentials.http", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcHttpLegacyCredentials, "sync.credentials.http.legacy", QtInfoMsg)
 

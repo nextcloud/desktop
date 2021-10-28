@@ -24,6 +24,8 @@
 #include <QVarLengthArray>
 #include <set>
 
+using namespace std::chrono_literals;
+
 Q_DECLARE_METATYPE(QPersistentModelIndex)
 
 namespace OCC {

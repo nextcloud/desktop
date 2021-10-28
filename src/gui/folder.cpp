@@ -48,6 +48,8 @@
 #include <QPushButton>
 #include <QApplication>
 
+using namespace std::chrono_literals;
+
 namespace {
 
 /*

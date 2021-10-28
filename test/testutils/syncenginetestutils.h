@@ -25,6 +25,7 @@
 #include <cookiejar.h>
 #include <QTimer>
 
+#include <chrono>
 /*
  * TODO: In theory we should use QVERIFY instead of Q_ASSERT for testing, but this
  * only works when directly called from a QTest :-(
@@ -398,12 +399,12 @@ class DelayedReply : public OriginalReply
 {
 public:
     template <typename... Args>
-    explicit DelayedReply(quint64 delayMS, Args &&...args)
+    explicit DelayedReply(const std::chrono::milliseconds delayMS, Args &&...args)
         : OriginalReply(std::forward<Args>(args)...)
         , _delayMs(delayMS)
     {
     }
-    quint64 _delayMs;
+    std::chrono::milliseconds _delayMs;
 
     void respond() override
     {

@@ -29,6 +29,8 @@
 
 #include <stdio.h>
 
+using namespace std::chrono_literals;
+
 namespace OCC {
 
 static const char updateAvailableC[] = "Updater/updateAvailable";
@@ -229,7 +231,7 @@ void OCUpdater::checkForUpdate()
 {
     QNetworkReply *reply = _accessManager->get(QNetworkRequest(_updateUrl));
     connect(_timeoutWatchdog, &QTimer::timeout, this, &OCUpdater::slotTimedOut);
-    _timeoutWatchdog->start(30 * 1000);
+    _timeoutWatchdog->start(30s);
     connect(reply, &QNetworkReply::finished, this, &OCUpdater::slotVersionInfoArrived);
 
     setDownloadState(CheckingServer);

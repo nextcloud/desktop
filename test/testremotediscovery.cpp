@@ -10,6 +10,7 @@
 #include <syncengine.h>
 #include <localdiscoverytracker.h>
 
+using namespace std::chrono_literals;
 using namespace OCC;
 
 struct FakeBrokenXmlPropfindReply : FakePropfindReply {
@@ -107,7 +108,7 @@ private slots:
         });
 
         // So the test that test timeout finishes fast
-        QScopedValueRollback<int> setHttpTimeout(AbstractNetworkJob::httpTimeout, errorKind == Timeout ? 1 : 10000);
+        QScopedValueRollback<std::chrono::seconds> setHttpTimeout(AbstractNetworkJob::httpTimeout, errorKind == Timeout ? 1s : 10000s);
 
         ItemCompletedSpy completeSpy(fakeFolder);
         QSignalSpy errorSpy(&fakeFolder.syncEngine(), &SyncEngine::syncError);

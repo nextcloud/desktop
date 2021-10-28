@@ -36,6 +36,9 @@
 #include <QSet>
 #include <QNetworkProxy>
 
+using namespace std::chrono;
+using namespace std::chrono_literals;
+
 namespace {
 /*
  * [Accounts]
@@ -815,18 +818,18 @@ void FolderMan::startScheduledSyncSoon()
         return;
     }
 
-    std::chrono::seconds delay;
-    std::chrono::seconds sinceLastSync;
+    seconds delay;
+    seconds sinceLastSync;
 
     // Require a pause based on the duration of the last sync run.
     if (Folder *lastFolder = _lastSyncFolder) {
-        sinceLastSync = std::chrono::duration_cast<std::chrono::seconds>(lastFolder->msecSinceLastSync());
+        sinceLastSync = duration_cast<seconds>(lastFolder->msecSinceLastSync());
 
         //  1s   -> 1.5s pause
         // 10s   -> 5s pause
         //  1min -> 12s pause
         //  1h   -> 90s pause
-        delay = std::chrono::seconds(static_cast<int64_t>(qSqrt(std::chrono::duration_cast<std::chrono::seconds>(lastFolder->msecLastSyncDuration()).count()) / 20));
+        delay = seconds(static_cast<int64_t>(qSqrt(duration_cast<seconds>(lastFolder->msecLastSyncDuration()).count()) / 20));
     }
 
     // Delays beyond one minute seem too big, particularly since there

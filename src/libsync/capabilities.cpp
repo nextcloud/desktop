@@ -17,6 +17,8 @@
 #include <QVariantMap>
 #include <QDebug>
 
+using namespace std::chrono;
+
 namespace OCC {
 
 
@@ -105,7 +107,7 @@ int Capabilities::defaultPermissions() const
 
 std::chrono::seconds Capabilities::remotePollInterval() const
 {
-    return std::chrono::duration_cast<std::chrono::seconds>(std::chrono::milliseconds(_capabilities.value(QStringLiteral("core")).toMap().value(QStringLiteral("pollinterval")).toInt()));
+    return duration_cast<seconds>(milliseconds(_capabilities.value(QStringLiteral("core")).toMap().value(QStringLiteral("pollinterval")).toInt()));
 }
 
 bool Capabilities::notificationsAvailable() const

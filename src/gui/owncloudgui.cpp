@@ -43,6 +43,8 @@
 #include "libcloudproviders/libcloudproviders.h"
 #endif
 
+using namespace std::chrono_literals;
+
 namespace OCC {
 
 const char propertyAccountC[] = "oc_account";
@@ -544,7 +546,7 @@ void ownCloudGui::setupContextMenu()
 
 
     connect(&_delayedTrayUpdateTimer, &QTimer::timeout, this, &ownCloudGui::updateContextMenu);
-    _delayedTrayUpdateTimer.setInterval(2 * 1000);
+    _delayedTrayUpdateTimer.setInterval(2s);
     _delayedTrayUpdateTimer.setSingleShot(true);
 
     connect(_contextMenu.data(), &QMenu::aboutToShow, this, &ownCloudGui::slotContextMenuAboutToShow);

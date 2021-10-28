@@ -12,6 +12,8 @@
 
 #include <qt5keychain/keychain.h>
 
+using namespace std::chrono_literals;
+
 OC_DISABLE_DEPRECATED_WARNING
 
 Q_DECLARE_LOGGING_CATEGORY(lcHttpLegacyCredentials)

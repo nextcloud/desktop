@@ -32,6 +32,8 @@
 #include <QScopeGuard>
 #include <QTimer>
 
+using namespace std::chrono_literals;
+
 using namespace OCC;
 Q_LOGGING_CATEGORY(lcOauth, "sync.credentials.oauth", QtInfoMsg)
 

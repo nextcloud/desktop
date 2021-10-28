@@ -11,6 +11,7 @@
 #include <syncengine.h>
 #include <localdiscoverytracker.h>
 
+using namespace std::chrono_literals;
 using namespace OCC;
 
 #ifdef Q_OS_WIN

@@ -33,6 +33,8 @@
 #include <QFrame>
 #include <QRegularExpression>
 
+using namespace std::chrono_literals;
+
 namespace OCC {
 
 static const int thumbnailSize = 40;

@@ -40,7 +40,8 @@
 #include <QOperatingSystemVersion>
 #include <QStandardPaths>
 
-#define DEFAULT_MAX_LOG_LINES 20000
+#include <chrono>
+using namespace std::chrono_literals;
 
 namespace OCC {
 
@@ -157,10 +158,11 @@ void ConfigFile::setShowInExplorerNavigationPane(bool show)
     settings.sync();
 }
 
-int ConfigFile::timeout() const
+std::chrono::seconds ConfigFile::timeout() const
 {
     QSettings settings(configFile(), QSettings::IniFormat);
-    return settings.value(timeoutC(), 300).toInt(); // default to 5 min
+    const auto val = settings.value(timeoutC()).toInt(); // default to 5 min
+    return val ? std::chrono::seconds(val) : 5min;
 }
 
 qint64 ConfigFile::chunkSize() const

@@ -54,6 +54,8 @@
 #include <QElapsedTimer>
 #include <qtextcodec.h>
 
+using namespace std::chrono_literals;
+
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcEngine, "sync.engine", QtInfoMsg)
@@ -106,7 +108,7 @@ SyncEngine::SyncEngine(AccountPtr account, const QString &localPath,
     _syncFileStatusTracker.reset(new SyncFileStatusTracker(this));
 
     _clearTouchedFilesTimer.setSingleShot(true);
-    _clearTouchedFilesTimer.setInterval(30 * 1000);
+    _clearTouchedFilesTimer.setInterval(30s);
     connect(&_clearTouchedFilesTimer, &QTimer::timeout, this, &SyncEngine::slotClearTouchedFiles);
 }
 

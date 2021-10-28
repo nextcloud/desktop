@@ -24,8 +24,6 @@
 #include <QVariantMap>
 #include <chrono>
 
-using namespace std::chrono_literals;
-
 namespace OCC {
 
 /**
@@ -101,7 +99,7 @@ public:
     Q_ENUM(Status);
 
     // How often should the Application ask this object to check for the connection?
-    static constexpr auto DefaultCallingInterval = 62s;
+    static constexpr auto DefaultCallingInterval = std::chrono::seconds(62);
 
 public slots:
     /// Checks the server and the authentication.

@@ -275,8 +275,9 @@ Application::Application(int &argc, char **argv)
 
     ConfigFile cfg;
     // The timeout is initialized with an environment variable, if not, override with the value from the config
-    if (!AbstractNetworkJob::httpTimeout)
+    if (!AbstractNetworkJob::httpTimeout.count()) {
         AbstractNetworkJob::httpTimeout = cfg.timeout();
+    }
 
     // Check vfs plugins
     if (Theme::instance()->showVirtualFilesOption() && bestAvailableVfsMode() == Vfs::Off) {

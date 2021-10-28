@@ -45,6 +45,9 @@
 
 #include <climits>
 
+using namespace std::chrono;
+using namespace std::chrono_literals;
+
 // time span in milliseconds which has to be between two
 // refreshes of the notifications
 #define NOTIFICATION_REQUEST_FREE_PERIOD 15000
@@ -240,7 +243,7 @@ void ActivityWidget::slotBuildNotificationDisplay(const ActivityList &list)
         // will repeat the gui log.
 
         // after one hour, clear the gui log notification store
-        if (_guiLogTimer.elapsed() > 60 * 60 * 1000) {
+        if (_guiLogTimer.elapsed() > duration_cast<microseconds>(1h).count()) {
             _guiLoggedNotifications.clear();
         }
         if (!_guiLoggedNotifications.contains(activity.id())) {

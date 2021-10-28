@@ -22,11 +22,13 @@
 
 #include <QTimer>
 
+using namespace std::chrono_literals;
+
 namespace OCC {
 
 namespace {
-    static const int defaultIntervalT = 30 * 1000;
-    static const int failIntervalT = 5 * 1000;
+    const auto defaultIntervalT = 30s;
+    const auto failIntervalT = 5s;
 }
 
 QuotaInfo::QuotaInfo(AccountState *accountState, QObject *parent)
@@ -52,7 +54,7 @@ void QuotaInfo::setActive(bool active)
 void QuotaInfo::slotAccountStateChanged()
 {
     if (canGetQuota()) {
-        auto elapsed = _lastQuotaRecieved.msecsTo(QDateTime::currentDateTime());
+        const auto elapsed = std::chrono::seconds(_lastQuotaRecieved.secsTo(QDateTime::currentDateTime()));
         if (_lastQuotaRecieved.isNull() || elapsed >= defaultIntervalT) {
             slotCheckQuota();
         } else {

@@ -150,7 +150,7 @@ public:
     bool showInExplorerNavigationPane() const;
     void setShowInExplorerNavigationPane(bool show);
 
-    int timeout() const;
+    std::chrono::seconds timeout() const;
     qint64 chunkSize() const;
     qint64 maxChunkSize() const;
     qint64 minChunkSize() const;

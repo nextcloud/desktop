@@ -40,6 +40,9 @@
 
 Q_DECLARE_METATYPE(QTimer *)
 
+using namespace std::chrono;
+using namespace std::chrono_literals;
+
 namespace {
 const int MaxRetryCount = 5;
 }
@@ -50,7 +53,7 @@ namespace OCC {
 Q_LOGGING_CATEGORY(lcNetworkJob, "sync.networkjob", QtInfoMsg)
 
 // If not set, it is overwritten by the Application constructor with the value from the config
-int AbstractNetworkJob::httpTimeout = qEnvironmentVariableIntValue("OWNCLOUD_TIMEOUT");
+std::chrono::seconds AbstractNetworkJob::httpTimeout = std::chrono::seconds(qEnvironmentVariableIntValue("OWNCLOUD_TIMEOUT"));
 
 AbstractNetworkJob::AbstractNetworkJob(AccountPtr account, const QString &path, QObject *parent)
     : QObject(parent)
@@ -64,7 +67,7 @@ AbstractNetworkJob::AbstractNetworkJob(AccountPtr account, const QString &path, 
     OC_ASSERT(account != parent);
 
     _timer.setSingleShot(true);
-    _timer.setInterval((httpTimeout ? httpTimeout : 300) * 1000); // default to 5 minutes.
+    _timer.setInterval(httpTimeout.count() ? httpTimeout : 5min); // default to 5 minutes.
     connect(&_timer, &QTimer::timeout, this, &AbstractNetworkJob::slotTimeout);
 
     connect(this, &AbstractNetworkJob::networkActivity, this, &AbstractNetworkJob::resetTimeout);
@@ -84,7 +87,7 @@ void AbstractNetworkJob::setReply(QNetworkReply *reply)
     delete old;
 }
 
-void AbstractNetworkJob::setTimeout(const std::chrono::seconds &sec)
+void AbstractNetworkJob::setTimeout(const std::chrono::seconds sec)
 {
     _timer.start(sec);
 }

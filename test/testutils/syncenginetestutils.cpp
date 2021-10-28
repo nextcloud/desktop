@@ -11,6 +11,8 @@
 #include "accessmanager.h"
 #include "libsync/configfile.h"
 
+using namespace std::chrono_literals;
+
 PathComponents::PathComponents(const char *path)
     : PathComponents { QString::fromUtf8(path) }
 {

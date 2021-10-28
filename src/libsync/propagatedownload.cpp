@@ -38,6 +38,8 @@
 #include <unistd.h>
 #endif
 
+using namespace std::chrono_literals;
+
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcGetJob, "sync.networkjob.get", QtInfoMsg)
@@ -1048,9 +1050,9 @@ void PropagateDownloadFile::updateMetadata(bool isConflict)
         handleRecallFile(fn, propagator()->localPath(), *propagator()->_journal);
     }
 
-    qint64 duration = _stopwatch.elapsed();
-    if (isLikelyFinishedQuickly() && duration > 5 * 1000) {
-        qCWarning(lcPropagateDownload) << "WARNING: Unexpectedly slow connection, took" << duration << "msec for" << _item->_size - _resumeStart << "bytes for" << _item->_file;
+    const auto duration = std::chrono::milliseconds(_stopwatch.elapsed());
+    if (isLikelyFinishedQuickly() && duration > 5s) {
+        qCWarning(lcPropagateDownload) << "WARNING: Unexpectedly slow connection, took" << duration.count() << "ms for" << _item->_size - _resumeStart << "bytes for" << _item->_file;
     }
 }
 

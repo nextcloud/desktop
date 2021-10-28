@@ -31,7 +31,6 @@
 #include <QTimer>
 
 #include <chrono>
-using namespace std::chrono_literals;
 
 class QUrl;
 
@@ -95,9 +94,9 @@ public:
     /** Abort the job due to an error */
     void abort();
 
-    /** static variable the HTTP timeout (in seconds). If set to 0, the default will be used
+    /** static variable the HTTP timeout. If set to 0, the default will be used
      */
-    static int httpTimeout;
+    static std::chrono::seconds httpTimeout;
 
     /** whether or noth this job should be restarted after authentication */
     bool  isAuthenticationJob() const;
@@ -110,7 +109,7 @@ public:
     virtual bool needsRetry() const;
 
 public slots:
-    void setTimeout(const std::chrono::seconds &sec);
+    void setTimeout(const std::chrono::seconds sec);
     void resetTimeout();
 signals:
     /** Emitted on network error.

@@ -37,6 +37,8 @@
 
 #include "creds/dummycredentials.h"
 
+using namespace std::chrono_literals;
+
 namespace OCC {
 
 OwncloudSetupWizard::OwncloudSetupWizard(QWidget *parent)

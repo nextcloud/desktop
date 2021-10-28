@@ -9,6 +9,7 @@
 #include "testutils/syncenginetestutils.h"
 #include <syncengine.h>
 
+using namespace std::chrono_literals;
 using namespace OCC;
 
 bool itemDidComplete(const ItemCompletedSpy &spy, const QString &path)

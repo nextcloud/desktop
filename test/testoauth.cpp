@@ -13,6 +13,7 @@
 #include "theme.h"
 #include "common/asserts.h"
 
+using namespace std::chrono_literals;
 using namespace OCC;
 
 class DesktopServiceHook : public QObject
@@ -398,10 +399,10 @@ private slots:
     {
         struct Test : OAuthTestCase
         {
-            QScopedValueRollback<int> rollback;
+            QScopedValueRollback<std::chrono::seconds> rollback;
 
             Test()
-                : rollback(AbstractNetworkJob::httpTimeout, 1)
+                : rollback(AbstractNetworkJob::httpTimeout, 1s)
             {
                 localHost = QLatin1String("127.0.0.1");
             }

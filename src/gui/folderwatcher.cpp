@@ -35,6 +35,8 @@
 #include "folder.h"
 #include "filesystem.h"
 
+using namespace std::chrono_literals;
+
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcFolderWatcher, "gui.folderwatcher", QtInfoMsg)

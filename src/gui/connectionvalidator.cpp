@@ -25,6 +25,8 @@
 #include "clientproxy.h"
 #include <creds/abstractcredentials.h>
 
+using namespace std::chrono_literals;
+
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcConnectionValidator, "sync.connectionvalidator", QtInfoMsg)
