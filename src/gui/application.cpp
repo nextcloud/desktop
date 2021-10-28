@@ -19,30 +19,30 @@
 #include <iostream>
 #include <random>
 
-#include "config.h"
-#include "common/asserts.h"
 #include "account.h"
+#include "accountmanager.h"
 #include "accountstate.h"
+#include "clientproxy.h"
+#include "common/asserts.h"
+#include "common/version.h"
+#include "common/vfs.h"
+#include "config.h"
+#include "configfile.h"
 #include "connectionvalidator.h"
+#include "creds/abstractcredentials.h"
+#include "csync_exclude.h"
 #include "folder.h"
 #include "folderman.h"
-#include "logger.h"
 #include "logbrowser.h"
-#include "configfile.h"
+#include "logger.h"
+#include "owncloudsetupwizard.h"
+#include "settingsdialog.h"
+#include "sharedialog.h"
 #include "socketapi/socketapi.h"
 #include "sslerrordialog.h"
 #include "theme.h"
-#include "clientproxy.h"
-#include "sharedialog.h"
-#include "accountmanager.h"
-#include "creds/abstractcredentials.h"
-#include "updater/ocupdater.h"
-#include "owncloudsetupwizard.h"
-#include "version.h"
-#include "csync_exclude.h"
-#include "common/vfs.h"
-#include "settingsdialog.h"
 #include "translations.h"
+#include "updater/ocupdater.h"
 
 #include "config.h"
 
@@ -150,7 +150,7 @@ bool Application::configVersionMigration()
 
     // Did the client version change?
     // (The client version is adjusted further down)
-    bool versionChanged = configFile.clientVersionString() != MIRALL_VERSION_STRING;
+    bool versionChanged = configFile.clientVersionString() != OCC::Version::string();
 
     // We want to message the user either for destructive changes,
     // or if we're ignoring something and the client version changed.
@@ -196,7 +196,7 @@ bool Application::configVersionMigration()
             settings->remove(badKey);
     }
 
-    configFile.setClientVersionString(MIRALL_VERSION_STRING);
+    configFile.setClientVersionString(OCC::Version::string());
     return true;
 }
 

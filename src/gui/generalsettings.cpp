@@ -15,13 +15,12 @@
 #include "generalsettings.h"
 #include "ui_generalsettings.h"
 
-#include "theme.h"
-#include "version.h"
-#include "configfile.h"
+#include "accountmanager.h"
 #include "application.h"
+#include "common/version.h"
 #include "configfile.h"
 #include "owncloudsetupwizard.h"
-#include "accountmanager.h"
+#include "theme.h"
 
 #include "updater/updater.h"
 #include "updater/ocupdater.h"

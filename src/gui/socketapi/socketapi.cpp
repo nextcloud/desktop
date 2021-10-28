@@ -19,24 +19,23 @@
 
 #include "socketapi/socketuploadjob.h"
 
-#include "config.h"
-#include "configfile.h"
-#include "folderman.h"
-#include "folder.h"
-#include "theme.h"
-#include "common/syncjournalfilerecord.h"
-#include "syncengine.h"
-#include "syncfileitem.h"
-#include "filesystem.h"
-#include "version.h"
-#include "account.h"
-#include "accountstate.h"
 #include "account.h"
 #include "accountmanager.h"
+#include "accountstate.h"
 #include "capabilities.h"
 #include "common/asserts.h"
+#include "common/syncjournalfilerecord.h"
+#include "common/version.h"
+#include "config.h"
+#include "configfile.h"
+#include "filesystem.h"
+#include "folder.h"
+#include "folderman.h"
 #include "guiutility.h"
 #include "sharemanager.h"
+#include "syncengine.h"
+#include "syncfileitem.h"
+#include "theme.h"
 
 #include <array>
 #include <QBitArray>
@@ -576,7 +575,7 @@ void SocketApi::command_MANAGE_PUBLIC_LINKS(const QString &localFile, SocketList
 
 void SocketApi::command_VERSION(const QString &, SocketListener *listener)
 {
-    listener->sendMessage(QLatin1String("VERSION:" MIRALL_VERSION_STRING ":" MIRALL_SOCKET_API_VERSION));
+    listener->sendMessage(QStringLiteral("VERSION:%1:%2").arg(OCC::Version::string(), QStringLiteral(MIRALL_SOCKET_API_VERSION)));
 }
 
 void SocketApi::command_SHARE_MENU_TITLE(const QString &, SocketListener *listener)

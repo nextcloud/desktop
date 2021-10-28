@@ -26,12 +26,13 @@
 #include <sqlite3.h>
 #include <cstring>
 
-#include "common/syncjournaldb.h"
-#include "version.h"
-#include "filesystembase.h"
 #include "common/asserts.h"
 #include "common/checksums.h"
 #include "common/preparedsqlquerymanager.h"
+#include "common/syncjournaldb.h"
+#include "common/version.h"
+#include "filesystembase.h"
+#include "version.h"
 
 #include "common/c_jhash.h"
 
@@ -515,10 +516,10 @@ bool SyncJournalDb::checkConnect()
         forceRemoteDiscovery = true;
 
         createQuery.prepare("INSERT INTO version VALUES (?1, ?2, ?3, ?4);");
-        createQuery.bindValue(1, MIRALL_VERSION_MAJOR);
-        createQuery.bindValue(2, MIRALL_VERSION_MINOR);
-        createQuery.bindValue(3, MIRALL_VERSION_PATCH);
-        createQuery.bindValue(4, MIRALL_VERSION_BUILD);
+        createQuery.bindValue(1, OCC::Version::major());
+        createQuery.bindValue(2, OCC::Version::minor());
+        createQuery.bindValue(3, OCC::Version::patch());
+        createQuery.bindValue(4, OCC::Version::buildNumber());
         if (!createQuery.exec()) {
             return sqlFail(QStringLiteral("Update version"), createQuery);
         }
@@ -543,13 +544,13 @@ bool SyncJournalDb::checkConnect()
         }
 
         // Not comparing the BUILD id here, correct?
-        if (!(major == MIRALL_VERSION_MAJOR && minor == MIRALL_VERSION_MINOR && patch == MIRALL_VERSION_PATCH)) {
+        if (!(major == OCC::Version::major() && minor == OCC::Version::minor() && patch == OCC::Version::patch())) {
             createQuery.prepare("UPDATE version SET major=?1, minor=?2, patch =?3, custom=?4 "
                                 "WHERE major=?5 AND minor=?6 AND patch=?7;");
-            createQuery.bindValue(1, MIRALL_VERSION_MAJOR);
-            createQuery.bindValue(2, MIRALL_VERSION_MINOR);
-            createQuery.bindValue(3, MIRALL_VERSION_PATCH);
-            createQuery.bindValue(4, MIRALL_VERSION_BUILD);
+            createQuery.bindValue(1, OCC::Version::major());
+            createQuery.bindValue(2, OCC::Version::minor());
+            createQuery.bindValue(3, OCC::Version::patch());
+            createQuery.bindValue(4, OCC::Version::buildNumber());
             createQuery.bindValue(5, major);
             createQuery.bindValue(6, minor);
             createQuery.bindValue(7, patch);

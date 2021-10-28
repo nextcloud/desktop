@@ -1,5 +1,5 @@
 /*
- * Copyright (C) by Klaas Freitag <freitag@owncloud.com>
+ * Copyright (C) by Hannah von Reth <hannah.vonreth@owncloud.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -15,28 +15,32 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
+#pragma once
 
-#ifndef VERSION_H
-#define VERSION_H
+#include "ocsynclib.h"
 
 #include <QString>
-// TODO: use namespace and functions
-#cmakedefine GIT_SHA1 "@GIT_SHA1@"
 
-/* MIRALL version */
-#define MIRALL_VERSION_MAJOR @MIRALL_VERSION_MAJOR@
-#define MIRALL_VERSION_MINOR @MIRALL_VERSION_MINOR@
-#define MIRALL_VERSION_PATCH @MIRALL_VERSION_PATCH@
-#define MIRALL_VERSION_BUILD @MIRALL_VERSION_BUILD@
+namespace OCC {
+namespace Version {
+    /**
+  * "Major.Minor.Patch"
+  */
+    QString OCSYNC_EXPORT string();
+    int OCSYNC_EXPORT major();
+    int OCSYNC_EXPORT minor();
+    int OCSYNC_EXPORT patch();
+    int OCSYNC_EXPORT buildNumber();
 
-inline auto MIRALL_VERSION_SUFFIX() {
-    return QStringLiteral("@MIRALL_VERSION_SUFFIX@");
+    /**
+ * git, rc1, rc2
+ * Empty in releases
+ */
+    QString OCSYNC_EXPORT suffix();
+    /**
+ * The commit id
+ */
+    QString OCSYNC_EXPORT gitSha();
 }
 
-inline auto MIRALL_VERSION_FULL() {
-    return QStringLiteral("@MIRALL_VERSION_FULL@");
 }
-
-#define MIRALL_VERSION_STRING "@MIRALL_VERSION_STRING@"
-
-#endif // VERSION_H

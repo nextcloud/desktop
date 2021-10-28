@@ -1,0 +1,57 @@
+/*
+ * Copyright (C) by Hannah von Reth <hannah.vonreth@owncloud.com>
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
+ */
+
+#include "common/version.h"
+
+QString OCC::Version::string()
+{
+    return QStringLiteral("@MIRALL_VERSION_STRING@");
+}
+
+int OCC::Version::major()
+{
+    return @MIRALL_VERSION_MAJOR@;
+}
+
+int OCC::Version::minor()
+{
+    return @MIRALL_VERSION_MINOR@;
+}
+
+int OCC::Version::patch()
+{
+    return @MIRALL_VERSION_PATCH@;
+}
+
+int OCC::Version::buildNumber()
+{
+    return @MIRALL_VERSION_BUILD@;
+}
+
+QString OCC::Version::gitSha()
+{
+    return QStringLiteral("@GIT_SHA1@");
+}
+
+QString OCC::Version::suffix()
+{
+    return QStringLiteral("@MIRALL_VERSION_SUFFIX@");
+}
+
+
+

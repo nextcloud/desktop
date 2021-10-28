@@ -13,12 +13,12 @@
  */
 
 #include "theme.h"
-#include "config.h"
 #include "common/depreaction.h"
 #include "common/utility.h"
-#include "version.h"
-#include "configfile.h"
+#include "common/version.h"
 #include "common/vfs.h"
+#include "config.h"
+#include "configfile.h"
 
 #include <QtCore>
 #ifndef TOKEN_AUTH_ONLY
@@ -143,7 +143,7 @@ QString Theme::appName() const
 
 QString Theme::version() const
 {
-    return QStringLiteral(MIRALL_VERSION_STRING);
+    return OCC::Version::string();
 }
 
 QString Theme::configFileName() const
@@ -301,7 +301,7 @@ QString Theme::defaultServerFolder() const
 
 QString Theme::helpUrl() const
 {
-    return QStringLiteral("https://doc.owncloud.org/desktop/%1.%2/").arg(MIRALL_VERSION_MAJOR).arg(MIRALL_VERSION_MINOR);
+    return QStringLiteral("https://doc.owncloud.org/desktop/%1.%2/").arg(OCC::Version::major()).arg(OCC::Version::minor());
 }
 
 QString Theme::conflictHelpUrl() const

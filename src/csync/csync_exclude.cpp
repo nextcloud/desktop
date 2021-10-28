@@ -30,9 +30,9 @@
 
 #include "csync_exclude.h"
 
-#include "../version.h"
 #include "common/filesystembase.h"
 #include "common/utility.h"
+#include "common/version.h"
 
 #include <QString>
 #include <QFileInfo>
@@ -238,7 +238,7 @@ static CSYNC_EXCLUDE_TYPE _csync_excluded_common(const QStringRef &path, bool ex
 using namespace OCC;
 
 ExcludedFiles::ExcludedFiles()
-    : _clientVersion(MIRALL_VERSION_MAJOR, MIRALL_VERSION_MINOR, MIRALL_VERSION_PATCH)
+    : _clientVersion(OCC::Version::major(), OCC::Version::minor(), OCC::Version::patch())
 {
     // Windows used to use PathMatchSpec which allows *foo to match abc/deffoo.
     _wildcardsMatchSlash = Utility::isWindows();

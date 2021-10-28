@@ -22,9 +22,9 @@
 #endif
 #include <QCoreApplication>
 
-#include "config.h"
 #include "common/utility.h"
-#include "version.h"
+#include "common/version.h"
+#include "config.h"
 
 namespace OCC {
 

@@ -14,12 +14,12 @@
 
 #include "config.h"
 
-#include "common/utility.h"
 #include "common/asserts.h"
+#include "common/utility.h"
+#include "common/version.h"
 #include "configfile.h"
 #include "logger.h"
 #include "theme.h"
-#include "version.h"
 
 #include "creds/abstractcredentials.h"
 
@@ -539,7 +539,7 @@ void ConfigFile::setSkipUpdateCheck(bool skip, const QString &connection)
 QString ConfigFile::updateChannel() const
 {
     QString defaultUpdateChannel = QStringLiteral("stable");
-    const QString suffix = MIRALL_VERSION_SUFFIX();
+    const QString suffix = OCC::Version::suffix();
     if (suffix.startsWith(QLatin1String("daily"))
         || suffix.startsWith(QLatin1String("nightly"))
         || suffix.startsWith(QLatin1String("alpha"))

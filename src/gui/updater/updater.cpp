@@ -20,10 +20,10 @@
 #include "updater/sparkleupdater.h"
 #include "updater/ocupdater.h"
 
-#include "theme.h"
 #include "common/utility.h"
-#include "version.h"
+#include "common/version.h"
 #include "configfile.h"
+#include "theme.h"
 
 #include "config.h"
 
@@ -91,7 +91,7 @@ QUrlQuery Updater::getQueryParams()
     query.addQueryItem(QStringLiteral("buildArch"), QSysInfo::buildCpuArchitecture());
     query.addQueryItem(QStringLiteral("currentArch"), QSysInfo::currentCpuArchitecture());
 
-    query.addQueryItem(QStringLiteral("versionsuffix"), MIRALL_VERSION_SUFFIX());
+    query.addQueryItem(QStringLiteral("versionsuffix"), OCC::Version::suffix());
 
     auto channel = ConfigFile().updateChannel();
     if (channel != QLatin1String("stable")) {
@@ -148,8 +148,8 @@ qint64 Updater::Helper::versionToInt(qint64 major, qint64 minor, qint64 patch, q
 
 qint64 Updater::Helper::currentVersionToInt()
 {
-    return versionToInt(MIRALL_VERSION_MAJOR, MIRALL_VERSION_MINOR,
-        MIRALL_VERSION_PATCH, MIRALL_VERSION_BUILD);
+    return versionToInt(OCC::Version::major(), OCC::Version::minor(),
+        OCC::Version::patch(), OCC::Version::buildNumber());
 }
 
 qint64 Updater::Helper::stringVersionToInt(const QString &version)
@@ -164,7 +164,7 @@ qint64 Updater::Helper::stringVersionToInt(const QString &version)
 
 QString Updater::clientVersion()
 {
-    return MIRALL_VERSION_FULL();
+    return QStringLiteral("%1.%2.%3.%4").arg(QString::number(Version::major()), QString::number(Version::minor()), QString::number(Version::patch()), QString::number(Version::buildNumber()));
 }
 
 } // namespace OCC

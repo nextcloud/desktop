@@ -205,7 +205,6 @@ if(BUILD_TESTING)
 endif()
 
 configure_file(config.h.in ${CMAKE_CURRENT_BINARY_DIR}/config.h)
-configure_file(version.h.in ${CMAKE_CURRENT_BINARY_DIR}/version.h)
 
 feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)
 
