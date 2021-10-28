@@ -373,12 +373,7 @@ private:
     bool markRangeAsDone(qint64 start, qint64 size);
 
 public:
-    PropagateUploadFileNG(OwncloudPropagator *propagator, const SyncFileItemPtr &item)
-        : PropagateUploadFileCommon(propagator, item)
-        , _bytesToUpload(item->_size)
-    {
-    }
-
+    PropagateUploadFileNG(OwncloudPropagator *propagator, const SyncFileItemPtr &item);
     void doStartUpload() override;
 
 private:

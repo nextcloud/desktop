@@ -27,9 +27,10 @@
 #include "propagateremotedelete.h"
 #include "common/asserts.h"
 
-#include <QNetworkAccessManager>
-#include <QFileInfo>
 #include <QDir>
+#include <QFileInfo>
+#include <QNetworkAccessManager>
+#include <QRandomGenerator>
 
 #include <cmath>
 #include <cstring>
@@ -82,6 +83,11 @@ State machine:
         +-> MOVE +-----> moveJobFinished() +--> finalize()
  */
 
+PropagateUploadFileNG::PropagateUploadFileNG(OwncloudPropagator *propagator, const SyncFileItemPtr &item)
+    : PropagateUploadFileCommon(propagator, item)
+    , _bytesToUpload(item->_size)
+{
+}
 void PropagateUploadFileNG::doStartUpload()
 {
     propagator()->_activeJobList.append(this);
@@ -281,7 +287,7 @@ void PropagateUploadFileNG::slotDeleteJobFinished()
 void PropagateUploadFileNG::startNewUpload()
 {
     OC_ASSERT(propagator()->_activeJobList.count(this) == 1);
-    _transferId = uint(qrand()) ^ uint(_item->_modtime) ^ (uint(_item->_size) << 16) ^ qHash(_item->_file);
+    _transferId = QRandomGenerator::global()->generate();
     _sent = 0;
 
     propagator()->reportProgress(*_item, 0);
@@ -554,7 +560,6 @@ void PropagateUploadFileNG::slotMoveJobFinished()
     }
 
     _item->_etag = getEtagFromReply(job->reply());
-    ;
     if (_item->_etag.isEmpty()) {
         qCWarning(lcPropagateUploadNG) << "Server did not return an ETAG" << _item->_file;
         abortWithError(SyncFileItem::NormalError, tr("Missing ETag from server"));
