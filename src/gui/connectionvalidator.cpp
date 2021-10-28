@@ -32,8 +32,7 @@ Q_LOGGING_CATEGORY(lcConnectionValidator, "sync.connectionvalidator", QtInfoMsg)
 // Make sure the timeout for this job is less than how often we get called
 // This makes sure we get tried often enough without "ConnectionValidator already running"
 namespace {
-    const auto timeoutToUseMsec = ConnectionValidator::DefaultCallingIntervalSec - 5s;
-
+    const auto timeoutToUse = ConnectionValidator::DefaultCallingInterval - 5s;
 }
 
 ConnectionValidator::ConnectionValidator(AccountPtr account, QObject *parent)
@@ -91,7 +90,7 @@ void ConnectionValidator::systemProxyLookupDone(const QNetworkProxy &proxy)
 void ConnectionValidator::slotCheckServerAndAuth()
 {
     CheckServerJob *checkJob = new CheckServerJob(_account, this);
-    checkJob->setTimeout(timeoutToUseMsec);
+    checkJob->setTimeout(timeoutToUse);
     connect(checkJob, &CheckServerJob::instanceFound, this, &ConnectionValidator::slotStatusFound);
     connect(checkJob, &CheckServerJob::instanceNotFound, this, &ConnectionValidator::slotNoStatusFound);
     connect(checkJob, &CheckServerJob::timeout, this, [checkJob, this] {
@@ -174,7 +173,7 @@ void ConnectionValidator::checkAuthentication()
     qCDebug(lcConnectionValidator) << "# Check whether authenticated propfind works.";
     PropfindJob *job = new PropfindJob(_account, "/", this);
     job->setAuthenticationJob(true); // don't retry
-    job->setTimeout(timeoutToUseMsec);
+    job->setTimeout(timeoutToUse);
     job->setProperties(QList<QByteArray>() << "getlastmodified");
     connect(job, &PropfindJob::finishedWithoutError, this, &ConnectionValidator::slotAuthSuccess);
     connect(job, &PropfindJob::finishedWithError, this, &ConnectionValidator::slotAuthFailed);
@@ -225,7 +224,7 @@ void ConnectionValidator::checkServerCapabilities()
 {
     // The main flow now needs the capabilities
     JsonApiJob *job = new JsonApiJob(_account, QLatin1String("ocs/v1.php/cloud/capabilities"), this);
-    job->setTimeout(timeoutToUseMsec);
+    job->setTimeout(timeoutToUse);
     QObject::connect(job, &JsonApiJob::jsonReceived, this, &ConnectionValidator::slotCapabilitiesRecieved);
     job->start();
 }
@@ -248,7 +247,7 @@ void ConnectionValidator::slotCapabilitiesRecieved(const QJsonDocument &json)
 void ConnectionValidator::fetchUser()
 {
     JsonApiJob *job = new JsonApiJob(_account, QLatin1String("ocs/v1.php/cloud/user"), this);
-    job->setTimeout(timeoutToUseMsec);
+    job->setTimeout(timeoutToUse);
     QObject::connect(job, &JsonApiJob::jsonReceived, this, &ConnectionValidator::slotUserFetched);
     job->start();
 }

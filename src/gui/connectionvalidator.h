@@ -101,7 +101,7 @@ public:
     Q_ENUM(Status);
 
     // How often should the Application ask this object to check for the connection?
-    static constexpr auto DefaultCallingIntervalSec = 62s;
+    static constexpr auto DefaultCallingInterval = 62s;
 
 public slots:
     /// Checks the server and the authentication.
