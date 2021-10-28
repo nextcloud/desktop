@@ -309,6 +309,9 @@ void selectiveSyncFixup(OCC::SyncJournalDb *journal, const QStringList &newList)
 
 int main(int argc, char **argv)
 {
+#ifdef Q_OS_WIN
+    SetDllDirectory(L"");
+#endif
     QCoreApplication app(argc, argv);
 
 #ifdef Q_OS_WIN
