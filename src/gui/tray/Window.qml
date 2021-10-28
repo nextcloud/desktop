@@ -588,6 +588,7 @@ Window {
             readOnly: !UserModel.currentUser.isConnected || UserModel.currentUser.unifiedSearchResultsListModel.currentFetchMoreInProgressProviderId
             isSearchInProgress: UserModel.currentUser.unifiedSearchResultsListModel.isSearchInProgress
             onTextEdited: { UserModel.currentUser.unifiedSearchResultsListModel.searchTerm = trayWindowUnifiedSearchInputContainer.text }
+            onClearText: function () { UserModel.currentUser.unifiedSearchResultsListModel.searchTerm = "" }
         }
 
         ErrorBox {
