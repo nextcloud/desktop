@@ -123,8 +123,8 @@ private slots:
             qDebug() << "Version of installed Nextcloud: " << ver;
             QVERIFY(!ver.isEmpty());
 
-            QRegExp rx(APPLICATION_SHORTNAME R"( version \d+\.\d+\.\d+.*)");
-            QVERIFY(rx.exactMatch(ver));
+            const QRegularExpression rx(QRegularExpression::anchoredPattern(APPLICATION_SHORTNAME R"( version \d+\.\d+\.\d+.*)"));
+            QVERIFY(rx.match(ver).hasMatch());
         } else {
             QVERIFY(versionOfInstalledBinary().isEmpty());
         }

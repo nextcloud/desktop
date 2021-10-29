@@ -892,19 +892,21 @@ bool JsonApiJob::finished()
 
     QString jsonStr = QString::fromUtf8(reply()->readAll());
     if (jsonStr.contains("<?xml version=\"1.0\"?>")) {
-        QRegExp rex("<statuscode>(\\d+)</statuscode>");
-        if (jsonStr.contains(rex)) {
+        const QRegularExpression rex("<statuscode>(\\d+)</statuscode>");
+        const auto rexMatch = rex.match(jsonStr);
+        if (rexMatch.hasMatch()) {
             // this is a error message coming back from ocs.
-            statusCode = rex.cap(1).toInt();
+            statusCode = rexMatch.captured(1).toInt();
         }
     } else if(jsonStr.isEmpty() && httpStatusCode == notModifiedStatusCode){
         qCWarning(lcJsonApiJob) << "Nothing changed so nothing to retrieve - status code: " << httpStatusCode;
         statusCode = httpStatusCode;
     } else {
-        QRegExp rex(R"("statuscode":(\d+))");
+        const QRegularExpression rex(R"("statuscode":(\d+))");
         // example: "{"ocs":{"meta":{"status":"ok","statuscode":100,"message":null},"data":{"version":{"major":8,"minor":"... (504)
-        if (jsonStr.contains(rex)) {
-            statusCode = rex.cap(1).toInt();
+        const auto rxMatch = rex.match(jsonStr);
+        if (rxMatch.hasMatch()) {
+            statusCode = rxMatch.captured(1).toInt();
         }
     }
 

@@ -17,6 +17,7 @@
 #include "config.h"
 
 #include <QDir>
+#include <QRegularExpression>
 #include <QStringList>
 #include <QtGlobal>
 #include <QTextCodec>
@@ -281,7 +282,7 @@ void Logger::enterNextLogFile()
         // Expire old log files and deal with conflicts
         QStringList files = dir.entryList(QStringList("*owncloud.log.*"),
             QDir::Files, QDir::Name);
-        QRegExp rx(R"(.*owncloud\.log\.(\d+).*)");
+        const QRegularExpression rx(QRegularExpression::anchoredPattern(R"(.*owncloud\.log\.(\d+).*)"));
         int maxNumber = -1;
         foreach (const QString &s, files) {
             if (_logExpire > 0) {
@@ -290,8 +291,9 @@ void Logger::enterNextLogFile()
                     dir.remove(s);
                 }
             }
-            if (s.startsWith(newLogName) && rx.exactMatch(s)) {
-                maxNumber = qMax(maxNumber, rx.cap(1).toInt());
+            const auto rxMatch = rx.match(s);
+            if (s.startsWith(newLogName) && rxMatch.hasMatch()) {
+                maxNumber = qMax(maxNumber, rxMatch.captured(1).toInt());
             }
         }
         newLogName.append("." + QString::number(maxNumber + 1));

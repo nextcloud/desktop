@@ -56,10 +56,11 @@ bool NotificationConfirmJob::finished()
     const QString replyStr = reply()->readAll();
 
     if (replyStr.contains("<?xml version=\"1.0\"?>")) {
-        QRegExp rex("<statuscode>(\\d+)</statuscode>");
-        if (replyStr.contains(rex)) {
+        const QRegularExpression rex("<statuscode>(\\d+)</statuscode>");
+        const auto rexMatch = rex.match(replyStr);
+        if (rexMatch.hasMatch()) {
             // this is a error message coming back from ocs.
-            replyCode = rex.cap(1).toInt();
+            replyCode = rexMatch.captured(1).toInt();
         }
     }
     emit jobFinished(replyStr, replyCode);
