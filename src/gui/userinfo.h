@@ -68,7 +68,8 @@ class UserInfo : public QObject
 {
     Q_OBJECT
 public:
-    explicit UserInfo(OCC::AccountState *accountState, bool allowDisconnectedAccountState, bool fetchAvatarImage, QObject *parent = nullptr);
+    explicit UserInfo(OCC::AccountState *accountState, bool allowDisconnectedAccountState, bool fetchAvatarImage,
+        QObject *parent = nullptr);
 
     qint64 lastQuotaTotalBytes() const { return _lastQuotaTotalBytes; }
     qint64 lastQuotaUsedBytes() const { return _lastQuotaUsedBytes; }
@@ -111,4 +112,4 @@ private:
 
 } // namespace OCC
 
-#endif //USERINFO_H
+#endif // USERINFO_H

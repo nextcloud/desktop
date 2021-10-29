@@ -38,11 +38,13 @@ public:
     bool socketApiPinStateActionsShown() const override;
     bool isHydrating() const override;
 
-    Result<void, QString> updateMetadata(const QString &filePath, time_t modtime, qint64 size, const QByteArray &fileId) override;
+    Result<void, QString> updateMetadata(
+        const QString &filePath, time_t modtime, qint64 size, const QByteArray &fileId) override;
 
     Result<void, QString> createPlaceholder(const SyncFileItem &item) override;
     Result<void, QString> dehydratePlaceholder(const SyncFileItem &item) override;
-    Result<ConvertToPlaceholderResult, QString> convertToPlaceholder(const QString &filename, const SyncFileItem &item, const QString &replacesFile) override;
+    Result<ConvertToPlaceholderResult, QString> convertToPlaceholder(
+        const QString &filename, const SyncFileItem &item, const QString &replacesFile) override;
 
     bool needsMetadataUpdate(const SyncFileItem &item) override;
     bool isDehydratedPlaceholder(const QString &filePath) override;

@@ -44,7 +44,8 @@ public:
 
     void storeHash(uint hash)
     {
-        hashBits.setBit((hash & 0xFFFF) % NumBits); // NOLINT it's uint all the way and the modulo puts us back in the 0..1023 range
+        hashBits.setBit(
+            (hash & 0xFFFF) % NumBits); // NOLINT it's uint all the way and the modulo puts us back in the 0..1023 range
         hashBits.setBit((hash >> 16) % NumBits); // NOLINT
     }
     bool isHashMaybeStored(uint hash) const
@@ -117,7 +118,8 @@ class SocketApiJob : public QObject
 {
     Q_OBJECT
 public:
-    explicit SocketApiJob(const QString &jobId, const QSharedPointer<SocketListener> &socketListener, const QJsonObject &arguments)
+    explicit SocketApiJob(
+        const QString &jobId, const QSharedPointer<SocketListener> &socketListener, const QJsonObject &arguments)
         : _jobId(jobId)
         , _socketListener(socketListener)
         , _arguments(arguments)
@@ -142,7 +144,8 @@ class SocketApiJobV2 : public QObject
 {
     Q_OBJECT
 public:
-    explicit SocketApiJobV2(const QSharedPointer<SocketListener> &socketListener, const QByteArray &command, const QJsonObject &arguments);
+    explicit SocketApiJobV2(
+        const QSharedPointer<SocketListener> &socketListener, const QByteArray &command, const QJsonObject &arguments);
 
     void success(const QJsonObject &response) const;
     void failure(const QString &error) const;

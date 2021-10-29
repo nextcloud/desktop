@@ -50,22 +50,25 @@ public:
     ~SyncJournalDb() override;
 
     /// Create a journal path for a specific configuration
-    static QString makeDbName(const QString &localPath,
-        const QUrl &remoteUrl,
-        const QString &remotePath,
-        const QString &user);
+    static QString makeDbName(
+        const QString &localPath, const QUrl &remoteUrl, const QString &remotePath, const QString &user);
 
     /// Migrate a csync_journal to the new path, if necessary. Returns false on error
     static bool maybeMigrateDb(const QString &localPath, const QString &absoluteJournalPath);
 
     // To verify that the record could be found check with SyncJournalFileRecord::isValid()
-    bool getFileRecord(const QString &filename, SyncJournalFileRecord *rec) { return getFileRecord(filename.toUtf8(), rec); }
+    bool getFileRecord(const QString &filename, SyncJournalFileRecord *rec)
+    {
+        return getFileRecord(filename.toUtf8(), rec);
+    }
     bool getFileRecord(const QByteArray &filename, SyncJournalFileRecord *rec);
     bool getFileRecordByE2eMangledName(const QString &mangledName, SyncJournalFileRecord *rec);
     bool getFileRecordByInode(quint64 inode, SyncJournalFileRecord *rec);
-    bool getFileRecordsByFileId(const QByteArray &fileId, const std::function<void(const SyncJournalFileRecord &)> &rowCallback);
-    bool getFilesBelowPath(const QByteArray &path, const std::function<void(const SyncJournalFileRecord&)> &rowCallback);
-    bool listFilesInPath(const QByteArray &path, const std::function<void(const SyncJournalFileRecord&)> &rowCallback);
+    bool getFileRecordsByFileId(
+        const QByteArray &fileId, const std::function<void(const SyncJournalFileRecord &)> &rowCallback);
+    bool getFilesBelowPath(
+        const QByteArray &path, const std::function<void(const SyncJournalFileRecord &)> &rowCallback);
+    bool listFilesInPath(const QByteArray &path, const std::function<void(const SyncJournalFileRecord &)> &rowCallback);
     Result<void, QString> setFileRecord(const SyncJournalFileRecord &record);
 
     void keyValueStoreSet(const QString &key, QVariant value);
@@ -74,11 +77,9 @@ public:
     void keyValueStoreDelete(const QString &key);
 
     bool deleteFileRecord(const QString &filename, bool recursively = false);
-    bool updateFileRecordChecksum(const QString &filename,
-        const QByteArray &contentChecksum,
-        const QByteArray &contentChecksumType);
-    bool updateLocalMetadata(const QString &filename,
-        qint64 modtime, qint64 size, quint64 inode);
+    bool updateFileRecordChecksum(
+        const QString &filename, const QByteArray &contentChecksum, const QByteArray &contentChecksumType);
+    bool updateLocalMetadata(const QString &filename, qint64 modtime, qint64 size, quint64 inode);
 
     /// Return value for hasHydratedOrDehydratedFiles()
     struct HasHydratedDehydrated
@@ -423,12 +424,8 @@ private:
     PreparedSqlQueryManager _queryManager;
 };
 
-bool OCSYNC_EXPORT
-operator==(const SyncJournalDb::DownloadInfo &lhs,
-    const SyncJournalDb::DownloadInfo &rhs);
-bool OCSYNC_EXPORT
-operator==(const SyncJournalDb::UploadInfo &lhs,
-    const SyncJournalDb::UploadInfo &rhs);
+bool OCSYNC_EXPORT operator==(const SyncJournalDb::DownloadInfo &lhs, const SyncJournalDb::DownloadInfo &rhs);
+bool OCSYNC_EXPORT operator==(const SyncJournalDb::UploadInfo &lhs, const SyncJournalDb::UploadInfo &rhs);
 
 } // namespace OCC
 #endif // SYNCJOURNALDB_H

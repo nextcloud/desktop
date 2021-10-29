@@ -56,12 +56,12 @@ protected:
 public:
     // DOES NOT take ownership of the device.
     explicit GETFileJob(AccountPtr account, const QString &path, QIODevice *device,
-        const QMap<QByteArray, QByteArray> &headers, const QByteArray &expectedEtagForResume,
-        qint64 resumeStart, QObject *parent = nullptr);
+        const QMap<QByteArray, QByteArray> &headers, const QByteArray &expectedEtagForResume, qint64 resumeStart,
+        QObject *parent = nullptr);
     // For directDownloadUrl:
     explicit GETFileJob(AccountPtr account, const QUrl &url, QIODevice *device,
-        const QMap<QByteArray, QByteArray> &headers, const QByteArray &expectedEtagForResume,
-        qint64 resumeStart, QObject *parent = nullptr);
+        const QMap<QByteArray, QByteArray> &headers, const QByteArray &expectedEtagForResume, qint64 resumeStart,
+        QObject *parent = nullptr);
     ~GETFileJob() override
     {
         if (_bandwidthManager) {
@@ -134,11 +134,11 @@ class OWNCLOUDSYNC_EXPORT GETEncryptedFileJob : public GETFileJob
 public:
     // DOES NOT take ownership of the device.
     explicit GETEncryptedFileJob(AccountPtr account, const QString &path, QIODevice *device,
-        const QMap<QByteArray, QByteArray> &headers, const QByteArray &expectedEtagForResume,
-        qint64 resumeStart, EncryptedFile encryptedInfo, QObject *parent = nullptr);
+        const QMap<QByteArray, QByteArray> &headers, const QByteArray &expectedEtagForResume, qint64 resumeStart,
+        EncryptedFile encryptedInfo, QObject *parent = nullptr);
     explicit GETEncryptedFileJob(AccountPtr account, const QUrl &url, QIODevice *device,
-        const QMap<QByteArray, QByteArray> &headers, const QByteArray &expectedEtagForResume,
-        qint64 resumeStart, EncryptedFile encryptedInfo, QObject *parent = nullptr);
+        const QMap<QByteArray, QByteArray> &headers, const QByteArray &expectedEtagForResume, qint64 resumeStart,
+        EncryptedFile encryptedInfo, QObject *parent = nullptr);
     ~GETEncryptedFileJob() override = default;
 
 protected:

@@ -58,9 +58,7 @@ void PropagateRemoteMkdir::start()
         return;
     }
 
-    _job = new DeleteJob(propagator()->account(),
-        propagator()->fullRemotePath(_item->_file),
-        this);
+    _job = new DeleteJob(propagator()->account(), propagator()->fullRemotePath(_item->_file), this);
     connect(qobject_cast<DeleteJob *>(_job), &DeleteJob::finishedSignal, this, &PropagateRemoteMkdir::slotMkdir);
     _job->start();
 }
@@ -72,11 +70,11 @@ void PropagateRemoteMkdir::slotStartMkcolJob()
 
     qCDebug(lcPropagateRemoteMkdir) << _item->_file;
 
-    _job = new MkColJob(propagator()->account(),
-        propagator()->fullRemotePath(_item->_file),
-        this);
-    connect(qobject_cast<MkColJob *>(_job), &MkColJob::finishedWithError, this, &PropagateRemoteMkdir::slotMkcolJobFinished);
-    connect(qobject_cast<MkColJob *>(_job), &MkColJob::finishedWithoutError, this, &PropagateRemoteMkdir::slotMkcolJobFinished);
+    _job = new MkColJob(propagator()->account(), propagator()->fullRemotePath(_item->_file), this);
+    connect(qobject_cast<MkColJob *>(_job), &MkColJob::finishedWithError, this,
+        &PropagateRemoteMkdir::slotMkcolJobFinished);
+    connect(qobject_cast<MkColJob *>(_job), &MkColJob::finishedWithoutError, this,
+        &PropagateRemoteMkdir::slotMkcolJobFinished);
     _job->start();
 }
 
@@ -91,10 +89,8 @@ void PropagateRemoteMkdir::slotStartEncryptedMkcolJob(const QString &path, const
     qDebug() << filename;
     qCDebug(lcPropagateRemoteMkdir) << filename;
 
-    auto job = new MkColJob(propagator()->account(),
-                            propagator()->fullRemotePath(filename),
-                            {{"e2e-token", _uploadEncryptedHelper->folderToken() }},
-                            this);
+    auto job = new MkColJob(propagator()->account(), propagator()->fullRemotePath(filename),
+        {{"e2e-token", _uploadEncryptedHelper->folderToken()}}, this);
     connect(job, &MkColJob::finishedWithError, this, &PropagateRemoteMkdir::slotMkcolJobFinished);
     connect(job, &MkColJob::finishedWithoutError, this, &PropagateRemoteMkdir::slotMkcolJobFinished);
     _job = job;
@@ -116,14 +112,14 @@ void PropagateRemoteMkdir::setDeleteExisting(bool enabled)
     _deleteExisting = enabled;
 }
 
-void PropagateRemoteMkdir::finalizeMkColJob(QNetworkReply::NetworkError err, const QString &jobHttpReasonPhraseString, const QString &jobPath)
+void PropagateRemoteMkdir::finalizeMkColJob(
+    QNetworkReply::NetworkError err, const QString &jobHttpReasonPhraseString, const QString &jobPath)
 {
     if (_item->_httpErrorCode == 405) {
         // This happens when the directory already exists. Nothing to do.
         qDebug(lcPropagateRemoteMkdir) << "Folder" << jobPath << "already exists.";
     } else if (err != QNetworkReply::NoError) {
-        SyncFileItem::Status status = classifyError(err, _item->_httpErrorCode,
-            &propagator()->_anotherSyncNeeded);
+        SyncFileItem::Status status = classifyError(err, _item->_httpErrorCode, &propagator()->_anotherSyncNeeded);
         done(status, _item->_errorString);
         return;
     } else if (_item->_httpErrorCode != 201) {
@@ -140,26 +136,29 @@ void PropagateRemoteMkdir::finalizeMkColJob(QNetworkReply::NetworkError err, con
     propagator()->_activeJobList.append(this);
     auto propfindJob = new PropfindJob(propagator()->account(), jobPath, this);
     propfindJob->setProperties({"http://owncloud.org/ns:permissions"});
-    connect(propfindJob, &PropfindJob::result, this, [this, jobPath](const QVariantMap &result){
+    connect(propfindJob, &PropfindJob::result, this, [this, jobPath](const QVariantMap &result) {
         propagator()->_activeJobList.removeOne(this);
-        _item->_remotePerm = RemotePermissions::fromServerString(result.value(QStringLiteral("permissions")).toString());
+        _item->_remotePerm =
+            RemotePermissions::fromServerString(result.value(QStringLiteral("permissions")).toString());
 
         if (!_uploadEncryptedHelper && !_item->_isEncrypted) {
             success();
         } else {
             // We still need to mark that folder encrypted in case we were uploading it as encrypted one
-            // Another scenario, is we are creating a new folder because of move operation on an encrypted folder that works via remove + re-upload
+            // Another scenario, is we are creating a new folder because of move operation on an encrypted folder that
+            // works via remove + re-upload
             propagator()->_activeJobList.append(this);
 
             // We're expecting directory path in /Foo/Bar convention...
             Q_ASSERT(jobPath.startsWith('/') && !jobPath.endsWith('/'));
             // But encryption job expect it in Foo/Bar/ convention
-            auto job = new OCC::EncryptFolderJob(propagator()->account(), propagator()->_journal, jobPath.mid(1), _item->_fileId, this);
+            auto job = new OCC::EncryptFolderJob(
+                propagator()->account(), propagator()->_journal, jobPath.mid(1), _item->_fileId, this);
             connect(job, &OCC::EncryptFolderJob::finished, this, &PropagateRemoteMkdir::slotEncryptFolderFinished);
             job->start();
         }
     });
-    connect(propfindJob, &PropfindJob::finishedWithError, this, [this]{
+    connect(propfindJob, &PropfindJob::finishedWithError, this, [this] {
         // ignore the PROPFIND error
         propagator()->_activeJobList.removeOne(this);
         done(SyncFileItem::NormalError);
@@ -188,10 +187,10 @@ void PropagateRemoteMkdir::slotMkdir()
     // We should be encrypted as well since our parent is
     const auto remoteParentPath = parentRec._e2eMangledName.isEmpty() ? parentPath : parentRec._e2eMangledName;
     _uploadEncryptedHelper = new PropagateUploadEncrypted(propagator(), remoteParentPath, _item, this);
-    connect(_uploadEncryptedHelper, &PropagateUploadEncrypted::finalized,
-      this, &PropagateRemoteMkdir::slotStartEncryptedMkcolJob);
+    connect(_uploadEncryptedHelper, &PropagateUploadEncrypted::finalized, this,
+        &PropagateRemoteMkdir::slotStartEncryptedMkcolJob);
     connect(_uploadEncryptedHelper, &PropagateUploadEncrypted::error,
-      []{ qCDebug(lcPropagateRemoteMkdir) << "Error setting up encryption."; });
+        [] { qCDebug(lcPropagateRemoteMkdir) << "Error setting up encryption."; });
     _uploadEncryptedHelper->start();
 }
 
@@ -210,15 +209,18 @@ void PropagateRemoteMkdir::slotMkcolJobFinished()
 
     _item->_errorString = _job->errorString();
 
-    const auto jobHttpReasonPhraseString = _job->reply()->attribute(QNetworkRequest::HttpReasonPhraseAttribute).toString();
+    const auto jobHttpReasonPhraseString =
+        _job->reply()->attribute(QNetworkRequest::HttpReasonPhraseAttribute).toString();
 
     const auto jobPath = _job->path();
 
-    if (_uploadEncryptedHelper && _uploadEncryptedHelper->isFolderLocked() && !_uploadEncryptedHelper->isUnlockRunning()) {
+    if (_uploadEncryptedHelper && _uploadEncryptedHelper->isFolderLocked()
+        && !_uploadEncryptedHelper->isUnlockRunning()) {
         // since we are done, we need to unlock a folder in case it was locked
-        connect(_uploadEncryptedHelper, &PropagateUploadEncrypted::folderUnlocked, this, [this, err, jobHttpReasonPhraseString, jobPath]() {
-            finalizeMkColJob(err, jobHttpReasonPhraseString, jobPath);
-        });
+        connect(_uploadEncryptedHelper, &PropagateUploadEncrypted::folderUnlocked, this,
+            [this, err, jobHttpReasonPhraseString, jobPath]() {
+                finalizeMkColJob(err, jobHttpReasonPhraseString, jobPath);
+            });
         _uploadEncryptedHelper->unlockFolder();
     } else {
         finalizeMkColJob(err, jobHttpReasonPhraseString, jobPath);

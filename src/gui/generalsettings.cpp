@@ -49,24 +49,22 @@
 
 #include <private/qzipwriter_p.h>
 
-#define QTLEGACY (QT_VERSION < QT_VERSION_CHECK(5,9,0))
+#define QTLEGACY (QT_VERSION < QT_VERSION_CHECK(5, 9, 0))
 
 #if !(QTLEGACY)
 #include <QOperatingSystemVersion>
 #endif
 
 namespace {
-struct ZipEntry {
+struct ZipEntry
+{
     QString localFilename;
     QString zipFilename;
 };
 
 ZipEntry fileInfoToZipEntry(const QFileInfo &info)
 {
-    return {
-        info.absoluteFilePath(),
-        info.fileName()
-    };
+    return {info.absoluteFilePath(), info.fileName()};
 }
 
 ZipEntry fileInfoToLogZipEntry(const QFileInfo &info)
@@ -97,17 +95,13 @@ QVector<ZipEntry> createFileList()
 
         QDir dir(logger->logDir());
         const auto infoList = dir.entryInfoList(QDir::Files);
-        std::transform(std::cbegin(infoList), std::cend(infoList),
-                       std::back_inserter(list),
-                       fileInfoToLogZipEntry);
+        std::transform(std::cbegin(infoList), std::cend(infoList), std::back_inserter(list), fileInfoToLogZipEntry);
     } else if (!logger->logFile().isEmpty()) {
         list.append(fileInfoToZipEntry(QFileInfo(logger->logFile())));
     }
 
     const auto folders = OCC::FolderMan::instance()->map().values();
-    std::transform(std::cbegin(folders), std::cend(folders),
-                   std::back_inserter(list),
-                   syncFolderToZipEntry);
+    std::transform(std::cbegin(folders), std::cend(folders), std::back_inserter(list), syncFolderToZipEntry);
 
     return list;
 }
@@ -144,11 +138,12 @@ GeneralSettings::GeneralSettings(QWidget *parent)
 {
     _ui->setupUi(this);
 
-    connect(_ui->serverNotificationsCheckBox, &QAbstractButton::toggled,
-        this, &GeneralSettings::slotToggleOptionalServerNotifications);
+    connect(_ui->serverNotificationsCheckBox, &QAbstractButton::toggled, this,
+        &GeneralSettings::slotToggleOptionalServerNotifications);
     _ui->serverNotificationsCheckBox->setToolTip(tr("Server notifications that require attention."));
 
-    connect(_ui->showInExplorerNavigationPaneCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::slotShowInExplorerNavigationPane);
+    connect(_ui->showInExplorerNavigationPaneCheckBox, &QAbstractButton::toggled, this,
+        &GeneralSettings::slotShowInExplorerNavigationPane);
 
     // Rename 'Explorer' appropriately on non-Windows
 #ifdef Q_OS_MAC
@@ -157,10 +152,11 @@ GeneralSettings::GeneralSettings(QWidget *parent)
     _ui->showInExplorerNavigationPaneCheckBox->setText(txt);
 #endif
 
-    if(Utility::hasSystemLaunchOnStartup(Theme::instance()->appName())) {
+    if (Utility::hasSystemLaunchOnStartup(Theme::instance()->appName())) {
         _ui->autostartCheckBox->setChecked(true);
         _ui->autostartCheckBox->setDisabled(true);
-        _ui->autostartCheckBox->setToolTip(tr("You cannot disable autostart because system-wide autostart is enabled."));
+        _ui->autostartCheckBox->setToolTip(
+            tr("You cannot disable autostart because system-wide autostart is enabled."));
     } else {
         const bool hasAutoStart = Utility::hasLaunchOnStartup(Theme::instance()->appName());
         // make sure the binary location is correctly set
@@ -180,13 +176,14 @@ GeneralSettings::GeneralSettings(QWidget *parent)
 
     loadMiscSettings();
     // updater info now set in: customizeStyle
-    //slotUpdateInfo();
+    // slotUpdateInfo();
 
     // misc
     connect(_ui->monoIconsCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::saveMiscSettings);
     connect(_ui->crashreporterCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::saveMiscSettings);
     connect(_ui->newFolderLimitCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::saveMiscSettings);
-    connect(_ui->newFolderLimitSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &GeneralSettings::saveMiscSettings);
+    connect(_ui->newFolderLimitSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this,
+        &GeneralSettings::saveMiscSettings);
     connect(_ui->newExternalStorage, &QAbstractButton::toggled, this, &GeneralSettings::saveMiscSettings);
 
 #ifndef WITH_CRASHREPORTER
@@ -196,12 +193,12 @@ GeneralSettings::GeneralSettings(QWidget *parent)
     // Hide on non-Windows, or WindowsVersion < 10.
     // The condition should match the default value of ConfigFile::showInExplorerNavigationPane.
 #ifdef Q_OS_WIN
-    #if QTLEGACY
-        if (QSysInfo::windowsVersion() < QSysInfo::WV_WINDOWS10)
-    #else
-        if (QOperatingSystemVersion::current() < QOperatingSystemVersion::Windows10)
-    #endif
-            _ui->showInExplorerNavigationPaneCheckBox->setVisible(false);
+#if QTLEGACY
+    if (QSysInfo::windowsVersion() < QSysInfo::WV_WINDOWS10)
+#else
+    if (QOperatingSystemVersion::current() < QOperatingSystemVersion::Windows10)
+#endif
+        _ui->showInExplorerNavigationPaneCheckBox->setVisible(false);
 #else
     // Hide on non-Windows
     _ui->showInExplorerNavigationPaneCheckBox->setVisible(false);
@@ -237,10 +234,7 @@ GeneralSettings::~GeneralSettings()
 
 QSize GeneralSettings::sizeHint() const
 {
-    return {
-        ownCloudGui::settingsDialogSize().width(),
-        QWidget::sizeHint().height()
-    };
+    return {ownCloudGui::settingsDialogSize().width(), QWidget::sizeHint().height()};
 }
 
 void GeneralSettings::loadMiscSettings()
@@ -270,26 +264,29 @@ void GeneralSettings::slotUpdateInfo()
     // Note: the sparkle-updater is not an OCUpdater
     auto *ocupdater = qobject_cast<OCUpdater *>(Updater::instance());
     if (ocupdater) {
-        connect(ocupdater, &OCUpdater::downloadStateChanged, this, &GeneralSettings::slotUpdateInfo, Qt::UniqueConnection);
-        connect(_ui->restartButton, &QAbstractButton::clicked, ocupdater, &OCUpdater::slotStartInstaller, Qt::UniqueConnection);
+        connect(
+            ocupdater, &OCUpdater::downloadStateChanged, this, &GeneralSettings::slotUpdateInfo, Qt::UniqueConnection);
+        connect(_ui->restartButton, &QAbstractButton::clicked, ocupdater, &OCUpdater::slotStartInstaller,
+            Qt::UniqueConnection);
         connect(_ui->restartButton, &QAbstractButton::clicked, qApp, &QApplication::quit, Qt::UniqueConnection);
-        connect(_ui->updateButton, &QAbstractButton::clicked, this, &GeneralSettings::slotUpdateCheckNow, Qt::UniqueConnection);
-        connect(_ui->autoCheckForUpdatesCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::slotToggleAutoUpdateCheck);
+        connect(_ui->updateButton, &QAbstractButton::clicked, this, &GeneralSettings::slotUpdateCheckNow,
+            Qt::UniqueConnection);
+        connect(_ui->autoCheckForUpdatesCheckBox, &QAbstractButton::toggled, this,
+            &GeneralSettings::slotToggleAutoUpdateCheck);
 
         QString status = ocupdater->statusString(OCUpdater::UpdateStatusStringFormat::Html);
         Theme::replaceLinkColorStringBackgroundAware(status);
 
         _ui->updateStateLabel->setOpenExternalLinks(false);
-        connect(_ui->updateStateLabel, &QLabel::linkActivated, this, [](const QString &link) {
-            Utility::openBrowser(QUrl(link));
-        });
+        connect(_ui->updateStateLabel, &QLabel::linkActivated, this,
+            [](const QString &link) { Utility::openBrowser(QUrl(link)); });
         _ui->updateStateLabel->setText(status);
 
         _ui->restartButton->setVisible(ocupdater->downloadState() == OCUpdater::DownloadComplete);
 
-        _ui->updateButton->setEnabled(ocupdater->downloadState() != OCUpdater::CheckingServer &&
-                                      ocupdater->downloadState() != OCUpdater::Downloading &&
-                                      ocupdater->downloadState() != OCUpdater::DownloadComplete);
+        _ui->updateButton->setEnabled(ocupdater->downloadState() != OCUpdater::CheckingServer
+            && ocupdater->downloadState() != OCUpdater::Downloading
+            && ocupdater->downloadState() != OCUpdater::DownloadComplete);
 
         _ui->autoCheckForUpdatesCheckBox->setChecked(ConfigFile().autoUpdateCheck());
     }
@@ -302,8 +299,8 @@ void GeneralSettings::slotUpdateInfo()
 
     // Channel selection
     _ui->updateChannel->setCurrentIndex(ConfigFile().updateChannel() == "beta" ? 1 : 0);
-    connect(_ui->updateChannel, &QComboBox::currentTextChanged,
-        this, &GeneralSettings::slotUpdateChannelChanged, Qt::UniqueConnection);
+    connect(_ui->updateChannel, &QComboBox::currentTextChanged, this, &GeneralSettings::slotUpdateChannelChanged,
+        Qt::UniqueConnection);
 }
 
 void GeneralSettings::slotUpdateChannelChanged(const QString &channel)
@@ -311,9 +308,7 @@ void GeneralSettings::slotUpdateChannelChanged(const QString &channel)
     if (channel == ConfigFile().updateChannel())
         return;
 
-    auto msgBox = new QMessageBox(
-        QMessageBox::Warning,
-        tr("Change update channel?"),
+    auto msgBox = new QMessageBox(QMessageBox::Warning, tr("Change update channel?"),
         tr("The update channel determines which client updates will be offered "
            "for installation. The \"stable\" channel contains only upgrades that "
            "are considered reliable, while the versions in the \"beta\" channel "
@@ -325,8 +320,7 @@ void GeneralSettings::slotUpdateChannelChanged(const QString &channel)
            "the stable channel usually cannot be done immediately and means waiting "
            "for a stable version that is newer than the currently installed beta "
            "version."),
-        QMessageBox::NoButton,
-        this);
+        QMessageBox::NoButton, this);
     auto acceptButton = msgBox->addButton(tr("Change update channel"), QMessageBox::AcceptRole);
     msgBox->addButton(tr("Cancel"), QMessageBox::RejectRole);
     connect(msgBox, &QMessageBox::finished, msgBox, [this, channel, msgBox, acceptButton] {
@@ -382,8 +376,7 @@ void GeneralSettings::saveMiscSettings()
     Theme::instance()->setSystrayUseMonoIcons(isChecked);
     cfgFile.setCrashReporter(_ui->crashreporterCheckBox->isChecked());
 
-    cfgFile.setNewBigFolderSizeLimit(_ui->newFolderLimitCheckBox->isChecked(),
-        _ui->newFolderLimitSpinBox->value());
+    cfgFile.setNewBigFolderSizeLimit(_ui->newFolderLimitCheckBox->isChecked(), _ui->newFolderLimitSpinBox->value());
     cfgFile.setConfirmExternalStorage(_ui->newExternalStorage->isChecked());
 }
 
@@ -421,7 +414,8 @@ void GeneralSettings::slotIgnoreFilesEditor()
 
 void GeneralSettings::slotCreateDebugArchive()
 {
-    const auto filename = QFileDialog::getSaveFileName(this, tr("Create Debug Archive"), QString(), tr("Zip Archives") + " (*.zip)");
+    const auto filename =
+        QFileDialog::getSaveFileName(this, tr("Create Debug Archive"), QString(), tr("Zip Archives") + " (*.zip)");
     if (filename.isEmpty()) {
         return;
     }

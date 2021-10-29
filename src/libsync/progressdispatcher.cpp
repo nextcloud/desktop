@@ -40,7 +40,8 @@ QString Progress::asResultString(const SyncFileItem &item)
             return QCoreApplication::translate("progress", "Uploaded");
         }
     case CSYNC_INSTRUCTION_CONFLICT:
-        return QCoreApplication::translate("progress", "Server version downloaded, copied changed local file into conflict file");
+        return QCoreApplication::translate(
+            "progress", "Server version downloaded, copied changed local file into conflict file");
     case CSYNC_INSTRUCTION_REMOVE:
         return QCoreApplication::translate("progress", "Deleted");
     case CSYNC_INSTRUCTION_EVAL_RENAME:
@@ -93,9 +94,8 @@ QString Progress::asActionString(const SyncFileItem &item)
 
 bool Progress::isWarningKind(SyncFileItem::Status kind)
 {
-    return kind == SyncFileItem::SoftError || kind == SyncFileItem::NormalError
-        || kind == SyncFileItem::FatalError || kind == SyncFileItem::FileIgnored
-        || kind == SyncFileItem::Conflict || kind == SyncFileItem::Restoration
+    return kind == SyncFileItem::SoftError || kind == SyncFileItem::NormalError || kind == SyncFileItem::FatalError
+        || kind == SyncFileItem::FileIgnored || kind == SyncFileItem::Conflict || kind == SyncFileItem::Restoration
         || kind == SyncFileItem::DetailError || kind == SyncFileItem::BlacklistedError
         || kind == SyncFileItem::FileLocked;
 }
@@ -178,10 +178,8 @@ static bool shouldCountProgress(const SyncFileItem &item)
     const auto instruction = item._instruction;
 
     // Skip any ignored, error or non-propagated files and directories.
-    if (instruction == CSYNC_INSTRUCTION_NONE
-        || instruction == CSYNC_INSTRUCTION_UPDATE_METADATA
-        || instruction == CSYNC_INSTRUCTION_IGNORE
-        || instruction == CSYNC_INSTRUCTION_ERROR) {
+    if (instruction == CSYNC_INSTRUCTION_NONE || instruction == CSYNC_INSTRUCTION_UPDATE_METADATA
+        || instruction == CSYNC_INSTRUCTION_IGNORE || instruction == CSYNC_INSTRUCTION_ERROR) {
         return false;
     }
 
@@ -294,23 +292,18 @@ ProgressInfo::Estimates ProgressInfo::totalProgress() const
     double fps = _fileProgress._progressPerSec;
     double fpsL = 0.5;
     double fpsU = 0.8;
-    double nearMaxFps =
-        qBound(0.0,
-            (fps - fpsL * _maxFilesPerSecond) / ((fpsU - fpsL) * _maxFilesPerSecond),
-            1.0);
+    double nearMaxFps = qBound(0.0, (fps - fpsL * _maxFilesPerSecond) / ((fpsU - fpsL) * _maxFilesPerSecond), 1.0);
 
     // Compute a value that is 0 when transfer is >= U*max and
     // 1 when transfer is <= L*max
     double trans = _sizeProgress._progressPerSec;
     double transU = 0.1;
     double transL = 0.01;
-    double slowTransfer = 1.0 - qBound(0.0,
-                                    (trans - transL * _maxBytesPerSecond) / ((transU - transL) * _maxBytesPerSecond),
-                                    1.0);
+    double slowTransfer =
+        1.0 - qBound(0.0, (trans - transL * _maxBytesPerSecond) / ((transU - transL) * _maxBytesPerSecond), 1.0);
 
     double beOptimistic = nearMaxFps * slowTransfer;
-    size.estimatedEta = quint64((1.0 - beOptimistic) * size.estimatedEta
-        + beOptimistic * optimisticEta());
+    size.estimatedEta = quint64((1.0 - beOptimistic) * size.estimatedEta + beOptimistic * optimisticEta());
 
     return size;
 }
@@ -347,10 +340,8 @@ void ProgressInfo::updateEstimates()
         it.value()._progress.update();
     }
 
-    _maxFilesPerSecond = qMax(_fileProgress._progressPerSec,
-        _maxFilesPerSecond);
-    _maxBytesPerSecond = qMax(_sizeProgress._progressPerSec,
-        _maxBytesPerSecond);
+    _maxFilesPerSecond = qMax(_fileProgress._progressPerSec, _maxFilesPerSecond);
+    _maxBytesPerSecond = qMax(_sizeProgress._progressPerSec, _maxBytesPerSecond);
 }
 
 void ProgressInfo::recomputeCompletedSize()
@@ -397,7 +388,8 @@ void ProgressInfo::Progress::update()
     // Therefore, smoothing starts at 0 and ramps up to its final value over time.
     const double smoothing = 0.9 * (1.0 - _initialSmoothing);
     _initialSmoothing *= 0.7; // goes from 1 to 0.03 in 10s
-    _progressPerSec = smoothing * _progressPerSec + (1.0 - smoothing) * static_cast<double>(_completed - _prevCompleted);
+    _progressPerSec =
+        smoothing * _progressPerSec + (1.0 - smoothing) * static_cast<double>(_completed - _prevCompleted);
     _prevCompleted = _completed;
 }
 

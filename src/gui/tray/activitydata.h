@@ -54,12 +54,7 @@ class Activity
 public:
     using Identifier = QPair<qlonglong, QString>;
 
-    enum Type {
-        ActivityType,
-        NotificationType,
-        SyncResultType,
-        SyncFileItemType
-    };
+    enum Type { ActivityType, NotificationType, SyncResultType, SyncFileItemType };
 
     Type _type;
     qlonglong _id;

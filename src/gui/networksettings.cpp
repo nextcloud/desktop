@@ -48,22 +48,20 @@ NetworkSettings::NetworkSettings(QWidget *parent)
     _ui->userLineEdit->setEnabled(true);
     _ui->passwordLineEdit->setEnabled(true);
     _ui->authWidgets->setEnabled(_ui->authRequiredcheckBox->isChecked());
-    connect(_ui->authRequiredcheckBox, &QAbstractButton::toggled,
-        _ui->authWidgets, &QWidget::setEnabled);
+    connect(_ui->authRequiredcheckBox, &QAbstractButton::toggled, _ui->authWidgets, &QWidget::setEnabled);
 
-    connect(_ui->manualProxyRadioButton, &QAbstractButton::toggled,
-        _ui->manualSettings, &QWidget::setEnabled);
-    connect(_ui->manualProxyRadioButton, &QAbstractButton::toggled,
-        _ui->typeComboBox, &QWidget::setEnabled);
-    connect(_ui->manualProxyRadioButton, &QAbstractButton::toggled,
-        this, &NetworkSettings::checkAccountLocalhost);
+    connect(_ui->manualProxyRadioButton, &QAbstractButton::toggled, _ui->manualSettings, &QWidget::setEnabled);
+    connect(_ui->manualProxyRadioButton, &QAbstractButton::toggled, _ui->typeComboBox, &QWidget::setEnabled);
+    connect(_ui->manualProxyRadioButton, &QAbstractButton::toggled, this, &NetworkSettings::checkAccountLocalhost);
 
     loadProxySettings();
     loadBWLimitSettings();
 
     // proxy
-    connect(_ui->typeComboBox, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &NetworkSettings::saveProxySettings);
-    connect(_ui->proxyButtonGroup, static_cast<void (QButtonGroup::*)(int)>(&QButtonGroup::buttonClicked), this, &NetworkSettings::saveProxySettings);
+    connect(_ui->typeComboBox, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this,
+        &NetworkSettings::saveProxySettings);
+    connect(_ui->proxyButtonGroup, static_cast<void (QButtonGroup::*)(int)>(&QButtonGroup::buttonClicked), this,
+        &NetworkSettings::saveProxySettings);
     connect(_ui->hostLineEdit, &QLineEdit::editingFinished, this, &NetworkSettings::saveProxySettings);
     connect(_ui->userLineEdit, &QLineEdit::editingFinished, this, &NetworkSettings::saveProxySettings);
     connect(_ui->passwordLineEdit, &QLineEdit::editingFinished, this, &NetworkSettings::saveProxySettings);
@@ -76,8 +74,10 @@ NetworkSettings::NetworkSettings(QWidget *parent)
     connect(_ui->downloadLimitRadioButton, &QAbstractButton::clicked, this, &NetworkSettings::saveBWLimitSettings);
     connect(_ui->noDownloadLimitRadioButton, &QAbstractButton::clicked, this, &NetworkSettings::saveBWLimitSettings);
     connect(_ui->autoDownloadLimitRadioButton, &QAbstractButton::clicked, this, &NetworkSettings::saveBWLimitSettings);
-    connect(_ui->downloadSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &NetworkSettings::saveBWLimitSettings);
-    connect(_ui->uploadSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &NetworkSettings::saveBWLimitSettings);
+    connect(_ui->downloadSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this,
+        &NetworkSettings::saveBWLimitSettings);
+    connect(_ui->uploadSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this,
+        &NetworkSettings::saveBWLimitSettings);
 
     // Warn about empty proxy host
     connect(_ui->hostLineEdit, &QLineEdit::textChanged, this, &NetworkSettings::checkEmptyProxyHost);
@@ -92,10 +92,7 @@ NetworkSettings::~NetworkSettings()
 
 QSize NetworkSettings::sizeHint() const
 {
-    return {
-        ownCloudGui::settingsDialogSize().width(),
-        QWidget::sizeHint().height()
-    };
+    return {ownCloudGui::settingsDialogSize().width(), QWidget::sizeHint().height()};
 }
 
 void NetworkSettings::loadProxySettings()
@@ -176,8 +173,7 @@ void NetworkSettings::saveProxySettings()
         bool needsAuth = _ui->authRequiredcheckBox->isChecked();
         QString user = _ui->userLineEdit->text();
         QString pass = _ui->passwordLineEdit->text();
-        cfgFile.setProxyType(type, _ui->hostLineEdit->text(),
-            _ui->portSpinBox->value(), needsAuth, user, pass);
+        cfgFile.setProxyType(type, _ui->hostLineEdit->text(), _ui->portSpinBox->value(), needsAuth, user, pass);
     }
 
     ClientProxy proxy;
@@ -229,9 +225,7 @@ void NetworkSettings::checkEmptyProxyHost()
 
 void NetworkSettings::showEvent(QShowEvent *event)
 {
-    if (!event->spontaneous()
-        && _ui->manualProxyRadioButton->isChecked()
-        && _ui->hostLineEdit->text().isEmpty()) {
+    if (!event->spontaneous() && _ui->manualProxyRadioButton->isChecked() && _ui->hostLineEdit->text().isEmpty()) {
         _ui->noProxyRadioButton->setChecked(true);
         checkEmptyProxyHost();
         saveProxySettings();

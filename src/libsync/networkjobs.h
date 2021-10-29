@@ -81,7 +81,8 @@ private slots:
     bool finished() override;
 };
 
-struct ExtraFolderInfo {
+struct ExtraFolderInfo
+{
     QByteArray fileId;
     qint64 size = -1;
 };
@@ -96,9 +97,7 @@ class OWNCLOUDSYNC_EXPORT LsColXMLParser : public QObject
 public:
     explicit LsColXMLParser();
 
-    bool parse(const QByteArray &xml,
-               QHash<QString, ExtraFolderInfo> *sizes,
-               const QString &expectedPath);
+    bool parse(const QByteArray &xml, QHash<QString, ExtraFolderInfo> *sizes, const QString &expectedPath);
 
 signals:
     void directoryListingSubfolders(const QStringList &items);
@@ -268,9 +267,10 @@ class OWNCLOUDSYNC_EXPORT MkColJob : public AbstractNetworkJob
 
 public:
     explicit MkColJob(AccountPtr account, const QString &path, QObject *parent = nullptr);
-    explicit MkColJob(AccountPtr account, const QString &path, const QMap<QByteArray, QByteArray> &extraHeaders, QObject *parent = nullptr);
-    explicit MkColJob(AccountPtr account, const QUrl &url,
-        const QMap<QByteArray, QByteArray> &extraHeaders, QObject *parent = nullptr);
+    explicit MkColJob(AccountPtr account, const QString &path, const QMap<QByteArray, QByteArray> &extraHeaders,
+        QObject *parent = nullptr);
+    explicit MkColJob(AccountPtr account, const QUrl &url, const QMap<QByteArray, QByteArray> &extraHeaders,
+        QObject *parent = nullptr);
     void start() override;
 
 signals:
@@ -488,8 +488,7 @@ class OWNCLOUDSYNC_EXPORT SimpleNetworkJob : public AbstractNetworkJob
 public:
     explicit SimpleNetworkJob(AccountPtr account, QObject *parent = nullptr);
 
-    QNetworkReply *startRequest(const QByteArray &verb, const QUrl &url,
-        QNetworkRequest req = QNetworkRequest(),
+    QNetworkReply *startRequest(const QByteArray &verb, const QUrl &url, QNetworkRequest req = QNetworkRequest(),
         QIODevice *requestBody = nullptr);
 
 signals:
@@ -510,10 +509,8 @@ private slots:
  * Note: targetFun is guaranteed to be called only through the event
  * loop and never directly.
  */
-void OWNCLOUDSYNC_EXPORT fetchPrivateLinkUrl(
-    AccountPtr account, const QString &remotePath,
-    const QByteArray &numericFileId, QObject *target,
-    std::function<void(const QString &url)> targetFun);
+void OWNCLOUDSYNC_EXPORT fetchPrivateLinkUrl(AccountPtr account, const QString &remotePath,
+    const QByteArray &numericFileId, QObject *target, std::function<void(const QString &url)> targetFun);
 
 } // namespace OCC
 

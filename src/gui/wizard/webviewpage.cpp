@@ -39,8 +39,9 @@ WebViewPage::~WebViewPage() = default;
 //    QNetworkProxyFactory::setUseSystemConfiguration(_useSystemProxy);
 //}
 
-void WebViewPage::initializePage() {
-    //QNetworkProxy::setApplicationProxy(QNetworkProxy::applicationProxy());
+void WebViewPage::initializePage()
+{
+    // QNetworkProxy::setApplicationProxy(QNetworkProxy::applicationProxy());
 
     QString url;
     if (_ocWizard->registration()) {
@@ -65,7 +66,8 @@ void WebViewPage::resizeWizard()
     auto wizardSizeChanged = tryToSetWizardSize(_originalWizardSize.width() * 2, _originalWizardSize.height() * 2);
 
     if (!wizardSizeChanged) {
-        wizardSizeChanged = tryToSetWizardSize(static_cast<int>(_originalWizardSize.width() * 1.5), static_cast<int>(_originalWizardSize.height() * 1.5));
+        wizardSizeChanged = tryToSetWizardSize(
+            static_cast<int>(_originalWizardSize.width() * 1.5), static_cast<int>(_originalWizardSize.height() * 1.5));
     }
 
     if (wizardSizeChanged) {
@@ -94,23 +96,28 @@ void WebViewPage::cleanupPage()
     _ocWizard->centerWindow();
 }
 
-int WebViewPage::nextId() const {
+int WebViewPage::nextId() const
+{
     return WizardCommon::Page_AdvancedSetup;
 }
 
-bool WebViewPage::isComplete() const {
+bool WebViewPage::isComplete() const
+{
     return false;
 }
 
-AbstractCredentials* WebViewPage::getCredentials() const {
+AbstractCredentials *WebViewPage::getCredentials() const
+{
     return new WebFlowCredentials(_user, _pass, _ocWizard->_clientSslCertificate, _ocWizard->_clientSslKey);
 }
 
-void WebViewPage::setConnected() {
+void WebViewPage::setConnected()
+{
     qCInfo(lcWizardWebiewPage()) << "YAY! we are connected!";
 }
 
-void WebViewPage::urlCatched(QString user, QString pass, QString host) {
+void WebViewPage::urlCatched(QString user, QString pass, QString host)
+{
     qCInfo(lcWizardWebiewPage()) << "Got user: " << user << ", server: " << host;
 
     _user = user;

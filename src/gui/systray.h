@@ -38,8 +38,7 @@ void setTrayWindowLevelAndVisibleOnAllSpaces(QWindow *window);
  * @brief The Systray class
  * @ingroup gui
  */
-class Systray
-    : public QSystemTrayIcon
+class Systray : public QSystemTrayIcon
 {
     Q_OBJECT
 
@@ -109,4 +108,4 @@ private:
 
 } // namespace OCC
 
-#endif //SYSTRAY_H
+#endif // SYSTRAY_H

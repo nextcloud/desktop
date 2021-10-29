@@ -34,7 +34,7 @@ public:
      * @brief setCsr - the CSR with the public key.
      * This function needs to be called before start() obviously.
      */
-    void setCsr(const QByteArray& csr);
+    void setCsr(const QByteArray &csr);
 
 public slots:
     void start() override;
@@ -77,7 +77,7 @@ public:
      * @brief setCsr - the CSR with the public key.
      * This function needs to be called before start() obviously.
      */
-    void setPrivateKey(const QByteArray& privateKey);
+    void setPrivateKey(const QByteArray &privateKey);
 
 public slots:
     void start() override;
@@ -104,7 +104,7 @@ private:
  * To be used like this:
  * \code
  * _job = new SetEncryptionFlagApiJob(account, 2, this);
-  * connect(_job...);
+ * connect(_job...);
  * _job->start();
  * \encode
  *
@@ -114,12 +114,10 @@ class OWNCLOUDSYNC_EXPORT SetEncryptionFlagApiJob : public AbstractNetworkJob
 {
     Q_OBJECT
 public:
-    enum FlagAction {
-        Clear = 0,
-        Set = 1
-    };
+    enum FlagAction { Clear = 0, Set = 1 };
 
-    explicit SetEncryptionFlagApiJob(const AccountPtr &account, const QByteArray &fileId, FlagAction flagAction = Set, QObject *parent = nullptr);
+    explicit SetEncryptionFlagApiJob(
+        const AccountPtr &account, const QByteArray &fileId, FlagAction flagAction = Set, QObject *parent = nullptr);
 
 public slots:
     void start() override;
@@ -140,7 +138,7 @@ class OWNCLOUDSYNC_EXPORT LockEncryptFolderApiJob : public AbstractNetworkJob
 {
     Q_OBJECT
 public:
-    explicit LockEncryptFolderApiJob(const AccountPtr &account, const QByteArray& fileId, QObject *parent = nullptr);
+    explicit LockEncryptFolderApiJob(const AccountPtr &account, const QByteArray &fileId, QObject *parent = nullptr);
 
 public slots:
     void start() override;
@@ -149,8 +147,8 @@ protected:
     bool finished() override;
 
 signals:
-    void success(const QByteArray& fileId, const QByteArray& token);
-    void error(const QByteArray& fileId, int httpdErrorCode);
+    void success(const QByteArray &fileId, const QByteArray &token);
+    void error(const QByteArray &fileId, int httpdErrorCode);
 
 private:
     QByteArray _fileId;
@@ -161,11 +159,8 @@ class OWNCLOUDSYNC_EXPORT UnlockEncryptFolderApiJob : public AbstractNetworkJob
 {
     Q_OBJECT
 public:
-    explicit UnlockEncryptFolderApiJob (
-        const AccountPtr &account,
-        const QByteArray& fileId,
-        const QByteArray& token,
-        QObject *parent = nullptr);
+    explicit UnlockEncryptFolderApiJob(
+        const AccountPtr &account, const QByteArray &fileId, const QByteArray &token, QObject *parent = nullptr);
 
 public slots:
     void start() override;
@@ -174,8 +169,8 @@ protected:
     bool finished() override;
 
 signals:
-    void success(const QByteArray& fileId);
-    void error(const QByteArray& fileId, int httpReturnCode);
+    void success(const QByteArray &fileId);
+    void error(const QByteArray &fileId, int httpReturnCode);
 
 private:
     QByteArray _fileId;
@@ -188,11 +183,8 @@ class OWNCLOUDSYNC_EXPORT StoreMetaDataApiJob : public AbstractNetworkJob
 {
     Q_OBJECT
 public:
-    explicit StoreMetaDataApiJob (
-        const AccountPtr &account,
-        const QByteArray& fileId,
-        const QByteArray& b64Metadata,
-        QObject *parent = nullptr);
+    explicit StoreMetaDataApiJob(
+        const AccountPtr &account, const QByteArray &fileId, const QByteArray &b64Metadata, QObject *parent = nullptr);
 
 public slots:
     void start() override;
@@ -201,8 +193,8 @@ protected:
     bool finished() override;
 
 signals:
-    void success(const QByteArray& fileId);
-    void error(const QByteArray& fileId, int httpReturnCode);
+    void success(const QByteArray &fileId);
+    void error(const QByteArray &fileId, int httpReturnCode);
 
 private:
     QByteArray _fileId;
@@ -213,12 +205,8 @@ class OWNCLOUDSYNC_EXPORT UpdateMetadataApiJob : public AbstractNetworkJob
 {
     Q_OBJECT
 public:
-    explicit UpdateMetadataApiJob (
-        const AccountPtr &account,
-        const QByteArray& fileId,
-        const QByteArray& b64Metadata,
-        const QByteArray& lockedToken,
-        QObject *parent = nullptr);
+    explicit UpdateMetadataApiJob(const AccountPtr &account, const QByteArray &fileId, const QByteArray &b64Metadata,
+        const QByteArray &lockedToken, QObject *parent = nullptr);
 
 public slots:
     void start() override;
@@ -227,8 +215,8 @@ protected:
     bool finished() override;
 
 signals:
-    void success(const QByteArray& fileId);
-    void error(const QByteArray& fileId, int httpReturnCode);
+    void success(const QByteArray &fileId);
+    void error(const QByteArray &fileId, int httpReturnCode);
 
 private:
     QByteArray _fileId;
@@ -241,10 +229,7 @@ class OWNCLOUDSYNC_EXPORT GetMetadataApiJob : public AbstractNetworkJob
 {
     Q_OBJECT
 public:
-    explicit GetMetadataApiJob (
-        const AccountPtr &account,
-        const QByteArray& fileId,
-        QObject *parent = nullptr);
+    explicit GetMetadataApiJob(const AccountPtr &account, const QByteArray &fileId, QObject *parent = nullptr);
 
 public slots:
     void start() override;
@@ -254,7 +239,7 @@ protected:
 
 signals:
     void jsonReceived(const QJsonDocument &json, int statusCode);
-    void error(const QByteArray& fileId, int httpReturnCode);
+    void error(const QByteArray &fileId, int httpReturnCode);
 
 private:
     QByteArray _fileId;
@@ -264,10 +249,7 @@ class OWNCLOUDSYNC_EXPORT DeleteMetadataApiJob : public AbstractNetworkJob
 {
     Q_OBJECT
 public:
-    explicit DeleteMetadataApiJob (
-        const AccountPtr &account,
-        const QByteArray& fileId,
-        QObject *parent = nullptr);
+    explicit DeleteMetadataApiJob(const AccountPtr &account, const QByteArray &fileId, QObject *parent = nullptr);
 
 public slots:
     void start() override;
@@ -276,8 +258,8 @@ protected:
     bool finished() override;
 
 signals:
-    void success(const QByteArray& fileId);
-    void error(const QByteArray& fileId, int httpErrorCode);
+    void success(const QByteArray &fileId);
+    void error(const QByteArray &fileId, int httpErrorCode);
 
 private:
     QByteArray _fileId;

@@ -45,17 +45,11 @@ QString VfsXAttr::fileSuffix() const
     return QString();
 }
 
-void VfsXAttr::startImpl(const VfsSetupParams &)
-{
-}
+void VfsXAttr::startImpl(const VfsSetupParams &) { }
 
-void VfsXAttr::stop()
-{
-}
+void VfsXAttr::stop() { }
 
-void VfsXAttr::unregisterFolder()
-{
-}
+void VfsXAttr::unregisterFolder() { }
 
 bool VfsXAttr::socketApiPinStateActionsShown() const
 {
@@ -77,8 +71,7 @@ Result<void, QString> VfsXAttr::createPlaceholder(const SyncFileItem &item)
 {
     const auto path = QString(_setupParams.filesystemPath + item._file);
     QFile file(path);
-    if (file.exists() && file.size() > 1
-        && !FileSystem::verifyFileUnchanged(path, item._size, item._modtime)) {
+    if (file.exists() && file.size() > 1 && !FileSystem::verifyFileUnchanged(path, item._size, item._modtime)) {
         return QStringLiteral("Cannot create a placeholder because a file with the placeholder name already exist");
     }
 
@@ -112,7 +105,8 @@ Result<void, QString> VfsXAttr::dehydratePlaceholder(const SyncFileItem &item)
     return {};
 }
 
-Result<Vfs::ConvertToPlaceholderResult, QString> VfsXAttr::convertToPlaceholder(const QString &, const SyncFileItem &, const QString &)
+Result<Vfs::ConvertToPlaceholderResult, QString> VfsXAttr::convertToPlaceholder(
+    const QString &, const SyncFileItem &, const QString &)
 {
     // Nothing necessary
     return {ConvertToPlaceholderResult::Ok};
@@ -126,8 +120,7 @@ bool VfsXAttr::needsMetadataUpdate(const SyncFileItem &)
 bool VfsXAttr::isDehydratedPlaceholder(const QString &filePath)
 {
     const auto fi = QFileInfo(filePath);
-    return fi.exists() &&
-            xattr::hasNextcloudPlaceholderAttributes(filePath);
+    return fi.exists() && xattr::hasNextcloudPlaceholderAttributes(filePath);
 }
 
 bool VfsXAttr::statTypeVirtualFile(csync_file_stat_t *stat, void *statData)
@@ -177,8 +170,6 @@ Vfs::AvailabilityResult VfsXAttr::availability(const QString &folderPath)
     return availabilityInDb(folderPath);
 }
 
-void VfsXAttr::fileStatusChanged(const QString &, SyncFileStatus)
-{
-}
+void VfsXAttr::fileStatusChanged(const QString &, SyncFileStatus) { }
 
 } // namespace OCC

@@ -56,7 +56,7 @@
 #endif
 
 #define S_IFSOCK 10000 /* dummy val on Win32 */
-#define S_IFLNK 10001  /* dummy val on Win32 */
+#define S_IFLNK 10001 /* dummy val on Win32 */
 
 #define O_NOFOLLOW 0
 #define O_NOCTTY 0
@@ -95,55 +95,55 @@ using csync_stat_t = struct stat;
 
 #if defined _WIN32 && defined _UNICODE
 using mbchar_t = wchar_t;
-#define _topen           _wopen
-#define _tdirent         _wdirent
-#define _topendir        _wopendir
-#define _tclosedir       _wclosedir
-#define _treaddir        _wreaddir
-#define _trewinddir      _wrewinddir
-#define _ttelldir        _wtelldir
-#define _tseekdir        _wseekdir
-#define _tcreat          _wcreat
-#define _tstat           _wstat64
-#define _tfstat          _fstat64
-#define _tunlink         _wunlink
-#define _tmkdir(X,Y)     _wmkdir(X)
-#define _trmdir	         _wrmdir
-#define _tchmod          _wchmod
-#define _trewinddir      _wrewinddir
-#define _tchown(X, Y, Z)  0 /* no chown on Win32 */
-#define _tchdir          _wchdir
-#define _tgetcwd         _wgetcwd
+#define _topen _wopen
+#define _tdirent _wdirent
+#define _topendir _wopendir
+#define _tclosedir _wclosedir
+#define _treaddir _wreaddir
+#define _trewinddir _wrewinddir
+#define _ttelldir _wtelldir
+#define _tseekdir _wseekdir
+#define _tcreat _wcreat
+#define _tstat _wstat64
+#define _tfstat _fstat64
+#define _tunlink _wunlink
+#define _tmkdir(X, Y) _wmkdir(X)
+#define _trmdir _wrmdir
+#define _tchmod _wchmod
+#define _trewinddir _wrewinddir
+#define _tchown(X, Y, Z) 0 /* no chown on Win32 */
+#define _tchdir _wchdir
+#define _tgetcwd _wgetcwd
 #else
 using mbchar_t = char;
-#define _tdirent       dirent
-#define _topen         open
-#define _topendir      opendir
-#define _tclosedir     closedir
-#define _treaddir      readdir
-#define _trewinddir    rewinddir
-#define _ttelldir      telldir
-#define _tseekdir      seekdir
-#define _tcreat        creat
-#define _tstat         lstat
-#define _tfstat        fstat
-#define _tunlink       unlink
-#define _tmkdir(X,Y)   mkdir(X,Y)
-#define _trmdir	       rmdir
-#define _tchmod        chmod
-#define _trewinddir    rewinddir
-#define _tchown(X,Y,Z) chown(X,Y,Z)
-#define _tchdir        chdir
-#define _tgetcwd       getcwd
+#define _tdirent dirent
+#define _topen open
+#define _topendir opendir
+#define _tclosedir closedir
+#define _treaddir readdir
+#define _trewinddir rewinddir
+#define _ttelldir telldir
+#define _tseekdir seekdir
+#define _tcreat creat
+#define _tstat lstat
+#define _tfstat fstat
+#define _tunlink unlink
+#define _tmkdir(X, Y) mkdir(X, Y)
+#define _trmdir rmdir
+#define _tchmod chmod
+#define _trewinddir rewinddir
+#define _tchown(X, Y, Z) chown(X, Y, Z)
+#define _tchdir chdir
+#define _tgetcwd getcwd
 #endif
 
 /* FIXME: Implement TLS for OS X */
 #if defined(__GNUC__) && !defined(__APPLE__)
-# define CSYNC_THREAD __thread
+#define CSYNC_THREAD __thread
 #elif defined(_MSC_VER)
-# define CSYNC_THREAD __declspec(thread)
+#define CSYNC_THREAD __declspec(thread)
 #else
-# define CSYNC_THREAD
+#define CSYNC_THREAD
 #endif
 
 #endif //_C_PRIVATE_H

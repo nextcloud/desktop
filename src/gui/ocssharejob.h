@@ -61,7 +61,7 @@ public:
      */
     void setExpireDate(const QString &shareId, const QDate &date);
 
-	 /**
+    /**
      * Set note a share
      *
      * @param note The note to a share, if the note is empty the
@@ -94,9 +94,8 @@ public:
      *
      * @param permissions
      */
-    void setPermissions(const QString &shareId,
-        const Share::Permissions permissions);
-    
+    void setPermissions(const QString &shareId, const Share::Permissions permissions);
+
     /**
      * Set share link label
      */
@@ -108,8 +107,7 @@ public:
      * @param path The path of the file/folder to share
      * @param password Optionally a password for the share
      */
-    void createLinkShare(const QString &path, const QString &name,
-        const QString &password);
+    void createLinkShare(const QString &path, const QString &name, const QString &password);
 
     /**
      * Create a new share
@@ -120,11 +118,8 @@ public:
      * @param permissions The permissions the share will have
      * @param password The password to protect the share with
      */
-    void createShare(const QString &path,
-        const Share::ShareType shareType,
-        const QString &shareWith = "",
-        const Share::Permissions permissions = SharePermissionRead,
-        const QString &password = "");
+    void createShare(const QString &path, const Share::ShareType shareType, const QString &shareWith = "",
+        const Share::Permissions permissions = SharePermissionRead, const QString &password = "");
 
     /**
      * Returns information on the items shared with the current user.

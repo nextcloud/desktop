@@ -27,17 +27,14 @@ class OCSYNC_EXPORT PluginFactory
 {
 public:
     virtual ~PluginFactory();
-    virtual QObject* create(QObject* parent) = 0;
+    virtual QObject *create(QObject *parent) = 0;
 };
 
-template<class PluginClass>
+template <class PluginClass>
 class DefaultPluginFactory : public PluginFactory
 {
 public:
-    QObject* create(QObject *parent) override
-    {
-        return new PluginClass(parent);
-    }
+    QObject *create(QObject *parent) override { return new PluginClass(parent); }
 };
 
 /// Return the expected name of a plugin, for use with QPluginLoader

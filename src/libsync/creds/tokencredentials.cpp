@@ -106,8 +106,8 @@ QNetworkAccessManager *TokenCredentials::createQNAM() const
 {
     AccessManager *qnam = new TokenCredentialsAccessManager(this);
 
-    connect(qnam, SIGNAL(authenticationRequired(QNetworkReply *, QAuthenticator *)),
-        this, SLOT(slotAuthentication(QNetworkReply *, QAuthenticator *)));
+    connect(qnam, SIGNAL(authenticationRequired(QNetworkReply *, QAuthenticator *)), this,
+        SLOT(slotAuthentication(QNetworkReply *, QAuthenticator *)));
 
     return qnam;
 }
@@ -134,7 +134,7 @@ bool TokenCredentials::stillValid(QNetworkReply *reply)
     return ((reply->error() != QNetworkReply::AuthenticationRequiredError)
         // returned if user/password or token are incorrect
         && (reply->error() != QNetworkReply::OperationCanceledError
-               || !reply->property(authenticationFailedC).toBool()));
+            || !reply->property(authenticationFailedC).toBool()));
 }
 
 void TokenCredentials::invalidateToken()
@@ -152,9 +152,7 @@ void TokenCredentials::forgetSensitiveData()
     invalidateToken();
 }
 
-void TokenCredentials::persist()
-{
-}
+void TokenCredentials::persist() { }
 
 
 void TokenCredentials::slotAuthentication(QNetworkReply *reply, QAuthenticator *authenticator)

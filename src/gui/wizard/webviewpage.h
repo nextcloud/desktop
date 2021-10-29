@@ -21,11 +21,11 @@ public:
     int nextId() const override;
     bool isComplete() const override;
 
-    AbstractCredentials* getCredentials() const override;
+    AbstractCredentials *getCredentials() const override;
     void setConnected();
 
 signals:
-    void connectToOCUrl(const QString&);
+    void connectToOCUrl(const QString &);
 
 private slots:
     void urlCatched(QString user, QString pass, QString host);

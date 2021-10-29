@@ -58,20 +58,21 @@ Flow2AuthWidget::Flow2AuthWidget(QWidget *parent)
 void Flow2AuthWidget::setLogo()
 {
     const auto backgroundColor = palette().window().color();
-    const auto logoIconFileName = Theme::instance()->isBranded() ? Theme::hidpiFileName("external.png", backgroundColor)
-                                                                 : Theme::hidpiFileName(":/client/theme/colored/external.png");
+    const auto logoIconFileName = Theme::instance()->isBranded()
+        ? Theme::hidpiFileName("external.png", backgroundColor)
+        : Theme::hidpiFileName(":/client/theme/colored/external.png");
     _ui.logoLabel->setPixmap(logoIconFileName);
 }
 
 void Flow2AuthWidget::startAuth(Account *account)
 {
     Flow2Auth *oldAuth = _asyncAuth.take();
-    if(oldAuth)
+    if (oldAuth)
         oldAuth->deleteLater();
 
     _statusUpdateSkipCount = 0;
 
-    if(account) {
+    if (account) {
         _account = account;
 
         _asyncAuth.reset(new Flow2Auth(_account, this));
@@ -87,7 +88,8 @@ void Flow2AuthWidget::resetAuth(Account *account)
     startAuth(account);
 }
 
-void Flow2AuthWidget::slotAuthResult(Flow2Auth::Result r, const QString &errorString, const QString &user, const QString &appPassword)
+void Flow2AuthWidget::slotAuthResult(
+    Flow2Auth::Result r, const QString &errorString, const QString &user, const QString &appPassword)
 {
     stopSpinner(false);
 
@@ -111,7 +113,8 @@ void Flow2AuthWidget::slotAuthResult(Flow2Auth::Result r, const QString &errorSt
     emit authResult(r, errorString, user, appPassword);
 }
 
-void Flow2AuthWidget::setError(const QString &error) {
+void Flow2AuthWidget::setError(const QString &error)
+{
     if (error.isEmpty()) {
         _ui.errorLabel->hide();
     } else {
@@ -120,7 +123,8 @@ void Flow2AuthWidget::setError(const QString &error) {
     }
 }
 
-Flow2AuthWidget::~Flow2AuthWidget() {
+Flow2AuthWidget::~Flow2AuthWidget()
+{
     // Forget sensitive data
     _asyncAuth.reset();
 }
@@ -150,10 +154,9 @@ void Flow2AuthWidget::slotPollNow()
 
 void Flow2AuthWidget::slotStatusChanged(Flow2Auth::PollStatus status, int secondsLeft)
 {
-    switch(status)
-    {
+    switch (status) {
     case Flow2Auth::statusPollCountdown:
-        if(_statusUpdateSkipCount > 0) {
+        if (_statusUpdateSkipCount > 0) {
             _statusUpdateSkipCount--;
             break;
         }

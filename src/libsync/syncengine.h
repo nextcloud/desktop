@@ -57,8 +57,7 @@ class OWNCLOUDSYNC_EXPORT SyncEngine : public QObject
 {
     Q_OBJECT
 public:
-    SyncEngine(AccountPtr account, const QString &localPath,
-        const QString &remotePath, SyncJournalDb *journal);
+    SyncEngine(AccountPtr account, const QString &localPath, const QString &remotePath, SyncJournalDb *journal);
     ~SyncEngine() override;
 
     Q_INVOKABLE void startSync();
@@ -224,7 +223,7 @@ private:
     // cleanup and emit the finished signal
     void finalize(bool success);
 
-    static bool s_anySyncRunning; //true when one sync is running somewhere (for debugging)
+    static bool s_anySyncRunning; // true when one sync is running somewhere (for debugging)
 
     // Must only be acessed during update and reconcile
     QVector<SyncFileItemPtr> _syncItems;
@@ -293,4 +292,3 @@ private:
     std::set<QString> _localDiscoveryPaths;
 };
 }
-

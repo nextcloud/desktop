@@ -53,13 +53,9 @@ void VfsSuffix::startImpl(const VfsSetupParams &params)
         params.journal->deleteFileRecord(path);
 }
 
-void VfsSuffix::stop()
-{
-}
+void VfsSuffix::stop() { }
 
-void VfsSuffix::unregisterFolder()
-{
-}
+void VfsSuffix::unregisterFolder() { }
 
 bool VfsSuffix::isHydrating() const
 {
@@ -82,8 +78,7 @@ Result<void, QString> VfsSuffix::createPlaceholder(const SyncFileItem &item)
     }
 
     QFile file(fn);
-    if (file.exists() && file.size() > 1
-        && !FileSystem::verifyFileUnchanged(fn, item._size, item._modtime)) {
+    if (file.exists() && file.size() > 1 && !FileSystem::verifyFileUnchanged(fn, item._size, item._modtime)) {
         return QString("Cannot create a placeholder because a file with the placeholder name already exist");
     }
 
@@ -122,7 +117,8 @@ Result<void, QString> VfsSuffix::dehydratePlaceholder(const SyncFileItem &item)
     return {};
 }
 
-Result<Vfs::ConvertToPlaceholderResult, QString> VfsSuffix::convertToPlaceholder(const QString &, const SyncFileItem &, const QString &)
+Result<Vfs::ConvertToPlaceholderResult, QString> VfsSuffix::convertToPlaceholder(
+    const QString &, const SyncFileItem &, const QString &)
 {
     // Nothing necessary
     return Vfs::ConvertToPlaceholderResult::Ok;

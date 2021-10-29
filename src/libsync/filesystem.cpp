@@ -45,7 +45,7 @@ bool FileSystem::fileEquals(const QString &fn1, const QString &fn2)
     QByteArray buffer1(BufferSize, 0);
     QByteArray buffer2(BufferSize, 0);
     // the files have the same size, compare all of it
-    while(!f1.atEnd()){
+    while (!f1.atEnd()) {
         f1.read(buffer1.data(), BufferSize);
         f2.read(buffer2.data(), BufferSize);
         if (buffer1 != buffer2) {
@@ -59,8 +59,7 @@ time_t FileSystem::getModTime(const QString &filename)
 {
     csync_file_stat_t stat;
     qint64 result = -1;
-    if (csync_vio_local_stat(filename, &stat) != -1
-        && (stat.modtime != 0)) {
+    if (csync_vio_local_stat(filename, &stat) != -1 && (stat.modtime != 0)) {
         result = stat.modtime;
     } else {
         result = Utility::qDateTimeToTime_t(QFileInfo(filename).lastModified());
@@ -77,31 +76,25 @@ bool FileSystem::setModTime(const QString &filename, time_t modTime)
     times[0].tv_usec = times[1].tv_usec = 0;
     int rc = c_utimes(filename, times);
     if (rc != 0) {
-        qCWarning(lcFileSystem) << "Error setting mtime for" << filename
-                                << "failed: rc" << rc << ", errno:" << errno;
+        qCWarning(lcFileSystem) << "Error setting mtime for" << filename << "failed: rc" << rc << ", errno:" << errno;
         return false;
     }
     return true;
 }
 
-bool FileSystem::fileChanged(const QString &fileName,
-    qint64 previousSize,
-    time_t previousMtime)
+bool FileSystem::fileChanged(const QString &fileName, qint64 previousSize, time_t previousMtime)
 {
-    return getSize(fileName) != previousSize
-        || getModTime(fileName) != previousMtime;
+    return getSize(fileName) != previousSize || getModTime(fileName) != previousMtime;
 }
 
-bool FileSystem::verifyFileUnchanged(const QString &fileName,
-    qint64 previousSize,
-    time_t previousMtime)
+bool FileSystem::verifyFileUnchanged(const QString &fileName, qint64 previousSize, time_t previousMtime)
 {
     const qint64 actualSize = getSize(fileName);
     const time_t actualMtime = getModTime(fileName);
     if (actualSize != previousSize || actualMtime != previousMtime) {
         qCInfo(lcFileSystem) << "File" << fileName << "has changed:"
-                             << "size: " << previousSize << "<->" << actualSize
-                             << ", mtime: " << previousMtime << "<->" << actualMtime;
+                             << "size: " << previousSize << "<->" << actualSize << ", mtime: " << previousMtime << "<->"
+                             << actualMtime;
         return false;
     }
     return true;
@@ -115,7 +108,8 @@ static qint64 getSizeWithCsync(const QString &filename)
     if (csync_vio_local_stat(filename, &stat) != -1) {
         result = stat.size;
     } else {
-        qCWarning(lcFileSystem) << "Could not get size for" << filename << "with csync" << Utility::formatWinError(errno);
+        qCWarning(lcFileSystem) << "Could not get size for" << filename << "with csync"
+                                << Utility::formatWinError(errno);
     }
     return result;
 }
@@ -133,7 +127,8 @@ qint64 FileSystem::getSize(const QString &filename)
 }
 
 // Code inspired from Qt5's QDir::removeRecursively
-bool FileSystem::removeRecursively(const QString &path, const std::function<void(const QString &path, bool isDir)> &onDeleted, QStringList *errors)
+bool FileSystem::removeRecursively(
+    const QString &path, const std::function<void(const QString &path, bool isDir)> &onDeleted, QStringList *errors)
 {
     bool allRemoved = true;
     QDirIterator di(path, QDir::AllEntries | QDir::Hidden | QDir::System | QDir::NoDotAndDotDot);

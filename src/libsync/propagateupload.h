@@ -126,25 +126,15 @@ public:
 
     bool finished() override;
 
-    QIODevice *device()
-    {
-        return _device;
-    }
+    QIODevice *device() { return _device; }
 
-    QString errorString()
-    {
-        return _errorString.isEmpty() ? AbstractNetworkJob::errorString() : _errorString;
-    }
+    QString errorString() { return _errorString.isEmpty() ? AbstractNetworkJob::errorString() : _errorString; }
 
-    std::chrono::milliseconds msSinceStart() const
-    {
-        return std::chrono::milliseconds(_requestTimer.elapsed());
-    }
+    std::chrono::milliseconds msSinceStart() const { return std::chrono::milliseconds(_requestTimer.elapsed()); }
 
 signals:
     void finishedSignal();
     void uploadProgress(qint64, qint64);
-
 };
 
 /**
@@ -163,8 +153,8 @@ class PollJob : public AbstractNetworkJob
 public:
     SyncFileItemPtr _item;
     // Takes ownership of the device
-    explicit PollJob(AccountPtr account, const QString &path, const SyncFileItemPtr &item,
-        SyncJournalDb *journal, const QString &localPath, QObject *parent)
+    explicit PollJob(AccountPtr account, const QString &path, const SyncFileItemPtr &item, SyncJournalDb *journal,
+        const QString &localPath, QObject *parent)
         : AbstractNetworkJob(account, path, parent)
         , _journal(journal)
         , _localPath(localPath)
@@ -205,7 +195,8 @@ class PropagateUploadFileCommon : public PropagateItemJob
 {
     Q_OBJECT
 
-    struct UploadStatus {
+    struct UploadStatus
+    {
         SyncFileItem::Status status = SyncFileItem::NoStatus;
         QString message;
     };
@@ -229,10 +220,11 @@ protected:
      * This is needed if we wanna apply changes on the file
      * that's being uploaded while keeping the original on disk.
      */
-    struct UploadFileInfo {
-      QString _file; /// I'm still unsure if I should use a SyncFilePtr here.
-      QString _path; /// the full path on disk.
-      qint64 _size;
+    struct UploadFileInfo
+    {
+        QString _file; /// I'm still unsure if I should use a SyncFilePtr here.
+        QString _path; /// the full path on disk.
+        qint64 _size;
     };
     UploadFileInfo _fileToUpload;
     QByteArray _transmissionChecksumHeader;
@@ -250,7 +242,7 @@ public:
 
     /* start should setup the file, path and size that will be send to the server */
     void start() override;
-    void setupEncryptedFile(const QString& path, const QString& filename, quint64 size);
+    void setupEncryptedFile(const QString &path, const QString &filename, quint64 size);
     void setupUnencryptedFile();
     void startUploadFile();
     void callUnlockFolder();
@@ -287,9 +279,7 @@ protected:
      * Aborts all running network jobs, except for the ones that mayAbortJob
      * returns false on and, for async aborts, emits abortFinished when done.
      */
-    void abortNetworkJobs(
-        AbortType abortType,
-        const std::function<bool(AbstractNetworkJob *job)> &mayAbortJob);
+    void abortNetworkJobs(AbortType abortType, const std::function<bool(AbstractNetworkJob *job)> &mayAbortJob);
 
     /**
      * Checks whether the current error is one that should reset the whole
@@ -316,10 +306,11 @@ protected:
 
     /** Bases headers that need to be sent on the PUT, or in the MOVE for chunking-ng */
     QMap<QByteArray, QByteArray> headers();
+
 private:
-  PropagateUploadEncrypted *_uploadEncryptedHelper;
-  bool _uploadingEncrypted;
-  UploadStatus _uploadStatus;
+    PropagateUploadEncrypted *_uploadEncryptedHelper;
+    bool _uploadingEncrypted;
+    UploadStatus _uploadStatus;
 };
 
 /**
@@ -348,7 +339,8 @@ private:
     int _chunkCount = 0; /// Total number of chunks for this file
     uint _transferId = 0; /// transfer id (part of the url)
 
-    qint64 chunkSize() const {
+    qint64 chunkSize() const
+    {
         // Old chunking does not use dynamic chunking algorithm, and does not adjusts the chunk size respectively,
         // thus this value should be used as the one classifing item to be chunked
         return propagator()->syncOptions()._initialChunkSize;

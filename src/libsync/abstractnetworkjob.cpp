@@ -114,7 +114,8 @@ void AbstractNetworkJob::setupConnections(QNetworkReply *reply)
 {
     connect(reply, &QNetworkReply::finished, this, &AbstractNetworkJob::slotFinished);
     connect(reply, &QNetworkReply::encrypted, this, &AbstractNetworkJob::networkActivity);
-    connect(reply->manager(), &QNetworkAccessManager::proxyAuthenticationRequired, this, &AbstractNetworkJob::networkActivity);
+    connect(reply->manager(), &QNetworkAccessManager::proxyAuthenticationRequired, this,
+        &AbstractNetworkJob::networkActivity);
     connect(reply, &QNetworkReply::sslErrors, this, &AbstractNetworkJob::networkActivity);
     connect(reply, &QNetworkReply::metaDataChanged, this, &AbstractNetworkJob::networkActivity);
     connect(reply, &QNetworkReply::downloadProgress, this, &AbstractNetworkJob::networkActivity);
@@ -127,8 +128,8 @@ QNetworkReply *AbstractNetworkJob::addTimer(QNetworkReply *reply)
     return reply;
 }
 
-QNetworkReply *AbstractNetworkJob::sendRequest(const QByteArray &verb, const QUrl &url,
-    QNetworkRequest req, QIODevice *requestBody)
+QNetworkReply *AbstractNetworkJob::sendRequest(
+    const QByteArray &verb, const QUrl &url, QNetworkRequest req, QIODevice *requestBody)
 {
     auto reply = _account->sendRawRequest(verb, url, req, requestBody);
     _requestBody = requestBody;
@@ -139,8 +140,8 @@ QNetworkReply *AbstractNetworkJob::sendRequest(const QByteArray &verb, const QUr
     return reply;
 }
 
-QNetworkReply *AbstractNetworkJob::sendRequest(const QByteArray &verb, const QUrl &url,
-    QNetworkRequest req, const QByteArray &requestBody)
+QNetworkReply *AbstractNetworkJob::sendRequest(
+    const QByteArray &verb, const QUrl &url, QNetworkRequest req, const QByteArray &requestBody)
 {
     auto reply = _account->sendRawRequest(verb, url, req, requestBody);
     _requestBody = nullptr;
@@ -171,14 +172,14 @@ void AbstractNetworkJob::slotFinished()
     _timer.stop();
 
     if (_reply->error() == QNetworkReply::SslHandshakeFailedError) {
-        qCWarning(lcNetworkJob) << "SslHandshakeFailedError: " << errorString() << " : can be caused by a webserver wanting SSL client certificates";
+        qCWarning(lcNetworkJob) << "SslHandshakeFailedError: " << errorString()
+                                << " : can be caused by a webserver wanting SSL client certificates";
     }
     // Qt doesn't yet transparently resend HTTP2 requests, do so here
     const auto maxHttp2Resends = 3;
     QByteArray verb = HttpLogger::requestVerb(*reply());
     if (_reply->error() == QNetworkReply::ContentReSendError
         && _reply->attribute(QNetworkRequest::HTTP2WasUsedAttribute).toBool()) {
-
         if ((_requestBody && !_requestBody->isSequential()) || verb.isEmpty()) {
             qCWarning(lcNetworkJob) << "Can't resend HTTP2 request, verb or body not suitable"
                                     << _reply->request().url() << verb << _requestBody;
@@ -191,21 +192,16 @@ void AbstractNetworkJob::slotFinished()
 
             resetTimeout();
             if (_requestBody) {
-                if(!_requestBody->isOpen())
-                   _requestBody->open(QIODevice::ReadOnly);
+                if (!_requestBody->isOpen())
+                    _requestBody->open(QIODevice::ReadOnly);
                 _requestBody->seek(0);
             }
-            sendRequest(
-                verb,
-                _reply->request().url(),
-                _reply->request(),
-                _requestBody);
+            sendRequest(verb, _reply->request().url(), _reply->request(), _requestBody);
             return;
         }
     }
 
     if (_reply->error() != QNetworkReply::NoError) {
-
         if (_account->credentials()->retryIfNeeded(this))
             return;
 
@@ -233,10 +229,8 @@ void AbstractNetworkJob::slotFinished()
         // moves these arguments to the body if no explicit body is specified.
         // This can cause problems with redirected requests, because the redirect url
         // will no longer contain these query arguments.
-        if (reply()->operation() == QNetworkAccessManager::PostOperation
-            && requestedUrl.hasQuery()
-            && !redirectUrl.hasQuery()
-            && !_requestBody) {
+        if (reply()->operation() == QNetworkAccessManager::PostOperation && requestedUrl.hasQuery()
+            && !redirectUrl.hasQuery() && !_requestBody) {
             qCWarning(lcNetworkJob) << "Redirecting a POST request with an implicit body loses that body";
         }
 
@@ -261,17 +255,13 @@ void AbstractNetworkJob::slotFinished()
                 qCInfo(lcNetworkJob) << "Redirecting" << verb << requestedUrl << redirectUrl;
                 resetTimeout();
                 if (_requestBody) {
-                    if(!_requestBody->isOpen()) {
+                    if (!_requestBody->isOpen()) {
                         // Avoid the QIODevice::seek (QBuffer): The device is not open warning message
-                       _requestBody->open(QIODevice::ReadOnly);
+                        _requestBody->open(QIODevice::ReadOnly);
                     }
                     _requestBody->seek(0);
                 }
-                sendRequest(
-                    verb,
-                    redirectUrl,
-                    reply()->request(),
-                    _requestBody);
+                sendRequest(verb, redirectUrl, reply()->request(), _requestBody);
                 return;
             }
         }
@@ -297,7 +287,7 @@ QByteArray AbstractNetworkJob::responseTimestamp()
 
 QByteArray AbstractNetworkJob::requestId()
 {
-    return  _reply ? _reply->request().rawHeader("X-Request-ID") : QByteArray();
+    return _reply ? _reply->request().rawHeader("X-Request-ID") : QByteArray();
 }
 
 QString AbstractNetworkJob::errorString() const
@@ -347,7 +337,8 @@ void AbstractNetworkJob::start()
     const QString displayUrl = QString("%1://%2%3").arg(url.scheme()).arg(url.host()).arg(url.path());
 
     QString parentMetaObjectName = parent() ? parent()->metaObject()->className() : "";
-    qCInfo(lcNetworkJob) << metaObject()->className() << "created for" << displayUrl << "+" << path() << parentMetaObjectName;
+    qCInfo(lcNetworkJob) << metaObject()->className() << "created for" << displayUrl << "+" << path()
+                         << parentMetaObjectName;
 }
 
 void AbstractNetworkJob::slotTimeout()
@@ -366,12 +357,14 @@ void AbstractNetworkJob::onTimedOut()
     }
 }
 
-QString AbstractNetworkJob::replyStatusString() {
+QString AbstractNetworkJob::replyStatusString()
+{
     Q_ASSERT(reply());
     if (reply()->error() == QNetworkReply::NoError) {
         return QLatin1String("OK");
     } else {
-        QString enumStr = QMetaEnum::fromType<QNetworkReply::NetworkError>().valueToKey(static_cast<int>(reply()->error()));
+        QString enumStr =
+            QMetaEnum::fromType<QNetworkReply::NetworkError>().valueToKey(static_cast<int>(reply()->error()));
         return QStringLiteral("%1 %2").arg(enumStr, errorString());
     }
 }
@@ -436,7 +429,9 @@ QString networkReplyErrorString(const QNetworkReply &reply)
         return base;
     }
 
-    return AbstractNetworkJob::tr(R"(Server replied "%1 %2" to "%3 %4")").arg(QString::number(httpStatus), httpReason, HttpLogger::requestVerb(reply), reply.request().url().toDisplayString());
+    return AbstractNetworkJob::tr(R"(Server replied "%1 %2" to "%3 %4")")
+        .arg(QString::number(httpStatus), httpReason, HttpLogger::requestVerb(reply),
+            reply.request().url().toDisplayString());
 }
 
 void AbstractNetworkJob::retry()

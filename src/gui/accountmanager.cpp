@@ -62,8 +62,7 @@ bool AccountManager::restore()
 
     auto settings = ConfigFile::settingsWithGroup(QLatin1String(accountsC));
     if (settings->status() != QSettings::NoError || !settings->isWritable()) {
-        qCWarning(lcAccountManager) << "Could not read settings from" << settings->fileName()
-                                    << settings->status();
+        qCWarning(lcAccountManager) << "Could not read settings from" << settings->fileName() << settings->status();
         return false;
     }
 
@@ -74,8 +73,7 @@ bool AccountManager::restore()
     }
 
     // If there are no accounts, check the old format.
-    if (settings->childGroups().isEmpty()
-        && !settings->contains(QLatin1String(versionC))) {
+    if (settings->childGroups().isEmpty() && !settings->contains(QLatin1String(versionC))) {
         restoreFromLegacySettings();
         return true;
     }
@@ -86,7 +84,7 @@ bool AccountManager::restore()
             if (auto acc = loadAccountHelper(*settings)) {
                 acc->_id = accountId;
                 if (auto accState = AccountState::loadFromSettings(acc, *settings)) {
-                    auto jar = qobject_cast<CookieJar*>(acc->_am->cookieJar());
+                    auto jar = qobject_cast<CookieJar *>(acc->_am->cookieJar());
                     ASSERT(jar);
                     if (jar)
                         jar->restore(acc->cookieJarPath());
@@ -258,8 +256,7 @@ void AccountManager::saveAccountHelper(Account *acc, QSettings &settings, bool s
         auto *jar = qobject_cast<CookieJar *>(acc->_am->cookieJar());
         if (jar) {
             qCInfo(lcAccountManager) << "Saving cookies." << acc->cookieJarPath();
-            if (!jar->save(acc->cookieJarPath()))
-            {
+            if (!jar->save(acc->cookieJarPath())) {
                 qCWarning(lcAccountManager) << "Failed to save cookies to" << acc->cookieJarPath();
             }
         }
@@ -342,9 +339,8 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
 
 AccountStatePtr AccountManager::account(const QString &name)
 {
-    const auto it = std::find_if(_accounts.cbegin(), _accounts.cend(), [name](const auto &acc) {
-        return acc->account()->displayName() == name;
-    });
+    const auto it = std::find_if(_accounts.cbegin(), _accounts.cend(),
+        [name](const auto &acc) { return acc->account()->displayName() == name; });
     return it != _accounts.cend() ? *it : AccountStatePtr();
 }
 
@@ -390,21 +386,22 @@ AccountPtr AccountManager::createAccount()
 {
     AccountPtr acc = Account::create();
     acc->setSslErrorHandler(new SslDialogErrorHandler);
-    connect(acc.data(), &Account::proxyAuthenticationRequired,
-        ProxyAuthHandler::instance(), &ProxyAuthHandler::handleProxyAuthenticationRequired);
+    connect(acc.data(), &Account::proxyAuthenticationRequired, ProxyAuthHandler::instance(),
+        &ProxyAuthHandler::handleProxyAuthenticationRequired);
 
     return acc;
 }
 
-void AccountManager::displayMnemonic(const QString& mnemonic)
+void AccountManager::displayMnemonic(const QString &mnemonic)
 {
     auto *widget = new QDialog;
     Ui_Dialog ui;
     ui.setupUi(widget);
     widget->setWindowTitle(tr("End to end encryption mnemonic"));
-    ui.label->setText(tr("To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. "
-                         "Please note these down and keep them safe. "
-                         "They will be needed to add other devices to your account (like your mobile phone or laptop)."));
+    ui.label->setText(
+        tr("To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. "
+           "Please note these down and keep them safe. "
+           "They will be needed to add other devices to your account (like your mobile phone or laptop)."));
     ui.textEdit->setText(mnemonic);
     ui.textEdit->focusWidget();
     ui.textEdit->selectAll();
@@ -425,7 +422,7 @@ void AccountManager::shutdown()
 
 QList<AccountStatePtr> AccountManager::accounts() const
 {
-     return _accounts;
+    return _accounts;
 }
 
 bool AccountManager::isAccountIdAvailable(const QString &id) const
@@ -433,9 +430,8 @@ bool AccountManager::isAccountIdAvailable(const QString &id) const
     if (_additionalBlockedAccountIds.contains(id))
         return false;
 
-    return std::none_of(_accounts.cbegin(), _accounts.cend(), [id](const auto &acc) {
-        return acc->account()->id() == id;
-    });
+    return std::none_of(
+        _accounts.cbegin(), _accounts.cend(), [id](const auto &acc) { return acc->account()->id() == id; });
 }
 
 QString AccountManager::generateFreeAccountId() const
@@ -452,9 +448,7 @@ QString AccountManager::generateFreeAccountId() const
 
 void AccountManager::addAccountState(AccountState *accountState)
 {
-    QObject::connect(accountState->account().data(),
-        &Account::wantsAccountSaved,
-        this, &AccountManager::saveAccount);
+    QObject::connect(accountState->account().data(), &Account::wantsAccountSaved, this, &AccountManager::saveAccount);
 
     AccountStatePtr ptr(accountState);
     _accounts << ptr;

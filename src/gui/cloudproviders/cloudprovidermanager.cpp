@@ -23,40 +23,44 @@
 
 CloudProvidersProviderExporter *_providerExporter;
 
-void on_name_acquired (GDBusConnection *connection, const gchar *name, gpointer user_data)
+void on_name_acquired(GDBusConnection *connection, const gchar *name, gpointer user_data)
 {
     Q_UNUSED(name);
     CloudProviderManager *self;
-    self = static_cast<CloudProviderManager*>(user_data);
-    _providerExporter = cloud_providers_provider_exporter_new(connection, LIBCLOUDPROVIDERS_DBUS_BUS_NAME, LIBCLOUDPROVIDERS_DBUS_OBJECT_PATH);
-    cloud_providers_provider_exporter_set_name (_providerExporter, APPLICATION_NAME);
+    self = static_cast<CloudProviderManager *>(user_data);
+    _providerExporter = cloud_providers_provider_exporter_new(
+        connection, LIBCLOUDPROVIDERS_DBUS_BUS_NAME, LIBCLOUDPROVIDERS_DBUS_OBJECT_PATH);
+    cloud_providers_provider_exporter_set_name(_providerExporter, APPLICATION_NAME);
     self->registerSignals();
 }
 
-void on_name_lost (GDBusConnection *connection, const gchar *name, gpointer user_data)
+void on_name_lost(GDBusConnection *connection, const gchar *name, gpointer user_data)
 {
     Q_UNUSED(connection);
     Q_UNUSED(name);
     Q_UNUSED(user_data);
-    g_clear_object (&_providerExporter);
+    g_clear_object(&_providerExporter);
 }
 
 void CloudProviderManager::registerSignals()
 {
     OCC::FolderMan *folderManager = OCC::FolderMan::instance();
-    connect(folderManager, SIGNAL(folderListChanged(const Folder::Map &)), SLOT(slotFolderListChanged(const Folder::Map &)));
+    connect(folderManager, SIGNAL(folderListChanged(const Folder::Map &)),
+        SLOT(slotFolderListChanged(const Folder::Map &)));
     slotFolderListChanged(folderManager->map());
 }
 
-CloudProviderManager::CloudProviderManager(QObject *parent) : QObject(parent)
+CloudProviderManager::CloudProviderManager(QObject *parent)
+    : QObject(parent)
 {
     _folder_index = 0;
-    g_bus_own_name (G_BUS_TYPE_SESSION, LIBCLOUDPROVIDERS_DBUS_BUS_NAME, G_BUS_NAME_OWNER_FLAGS_NONE, nullptr, on_name_acquired, nullptr, this, nullptr);
+    g_bus_own_name(G_BUS_TYPE_SESSION, LIBCLOUDPROVIDERS_DBUS_BUS_NAME, G_BUS_NAME_OWNER_FLAGS_NONE, nullptr,
+        on_name_acquired, nullptr, this, nullptr);
 }
 
 void CloudProviderManager::slotFolderListChanged(const Folder::Map &folderMap)
 {
-    QMapIterator<QString, CloudProviderWrapper*> i(_map);
+    QMapIterator<QString, CloudProviderWrapper *> i(_map);
     while (i.hasNext()) {
         i.next();
         if (!folderMap.contains(i.key())) {

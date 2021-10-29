@@ -51,13 +51,13 @@ class FolderStatusModel;
 class AccountSettings : public QWidget
 {
     Q_OBJECT
-    Q_PROPERTY(AccountState* accountState MEMBER _accountState)
+    Q_PROPERTY(AccountState *accountState MEMBER _accountState)
 
 public:
     explicit AccountSettings(AccountState *accountState, QWidget *parent = nullptr);
     ~AccountSettings() override;
     QSize sizeHint() const override { return ownCloudGui::settingsDialogSize(); }
-    bool canEncryptOrDecrypt(const FolderStatusModel::SubFolderInfo* folderInfo);
+    bool canEncryptOrDecrypt(const FolderStatusModel::SubFolderInfo *folderInfo);
 
 signals:
     void folderChanged();
@@ -97,7 +97,7 @@ protected slots:
     void slotToggleSignInState();
     void refreshSelectiveSyncStatus();
     void slotMarkSubfolderEncrypted(FolderStatusModel::SubFolderInfo *folderInfo);
-    void slotSubfolderContextMenuRequested(const QModelIndex& idx, const QPoint& point);
+    void slotSubfolderContextMenuRequested(const QModelIndex &idx, const QPoint &point);
     void slotCustomContextMenuRequested(const QPoint &);
     void slotFolderListClicked(const QModelIndex &indx);
     void doExpand();
@@ -108,15 +108,14 @@ protected slots:
     void slotNewMnemonicGenerated();
     void slotEncryptFolderFinished(int status);
 
-    void slotSelectiveSyncChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight,
-                                  const QVector<int> &roles);
+    void slotSelectiveSyncChanged(
+        const QModelIndex &topLeft, const QModelIndex &bottomRight, const QVector<int> &roles);
 
 private:
-    void showConnectionLabel(const QString &message,
-        QStringList errors = QStringList());
+    void showConnectionLabel(const QString &message, QStringList errors = QStringList());
     bool event(QEvent *) override;
     void createAccountToolbox();
-    void openIgnoredFilesDialog(const QString & absFolderPath);
+    void openIgnoredFilesDialog(const QString &absFolderPath);
     void customizeStyle();
 
     /// Returns the alias of the selected folder, empty string if none

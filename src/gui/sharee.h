@@ -37,18 +37,9 @@ class Sharee
 {
 public:
     // Keep in sync with Share::ShareType
-    enum Type {
-        User = 0,
-        Group = 1,
-        Email = 4,
-        Federated = 6,
-        Circle = 7,
-        Room = 10
-    };
+    enum Type { User = 0, Group = 1, Email = 4, Federated = 6, Circle = 7, Room = 10 };
 
-    explicit Sharee(const QString shareWith,
-        const QString displayName,
-        const Type type);
+    explicit Sharee(const QString shareWith, const QString displayName, const Type type);
 
     QString format() const;
     QString shareWith() const;
@@ -66,10 +57,7 @@ class ShareeModel : public QAbstractListModel
 {
     Q_OBJECT
 public:
-    enum LookupMode {
-        LocalSearch = 0,
-        GlobalSearch = 1
-    };
+    enum LookupMode { LocalSearch = 0, GlobalSearch = 1 };
 
     explicit ShareeModel(const AccountPtr &account, const QString &type, QObject *parent = nullptr);
 
@@ -104,4 +92,4 @@ private:
 
 Q_DECLARE_METATYPE(QSharedPointer<OCC::Sharee>)
 
-#endif //SHAREE_H
+#endif // SHAREE_H

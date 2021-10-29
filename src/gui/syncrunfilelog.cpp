@@ -33,7 +33,7 @@ void SyncRunFileLog::start(const QString &folderPath)
     const qint64 logfileMaxSize = 10 * 1024 * 1024; // 10MiB
 
     const QString logpath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
-    if(!QDir(logpath).exists()) {
+    if (!QDir(logpath).exists()) {
         QDir().mkdir(logpath);
     }
 
@@ -42,26 +42,24 @@ void SyncRunFileLog::start(const QString &folderPath)
     QString filename = logpath + QLatin1String("/") + filenameSingle + QLatin1String("_sync.log");
 
     int depthIndex = 2;
-    while(QFile::exists(filename)) {
-
+    while (QFile::exists(filename)) {
         QFile file(filename);
-        file.open(QIODevice::ReadOnly| QIODevice::Text);
+        file.open(QIODevice::ReadOnly | QIODevice::Text);
         QTextStream in(&file);
         QString line = in.readLine();
 
-        if(QString::compare(folderPath,line,Qt::CaseSensitive)!=0) {
+        if (QString::compare(folderPath, line, Qt::CaseSensitive) != 0) {
             depthIndex++;
-            if(depthIndex <= length) {
+            if (depthIndex <= length) {
                 filenameSingle = folderPath.split(QLatin1String("/")).at(length - depthIndex) + QString("_") ///
-                        + filenameSingle;
-                filename = logpath+ QLatin1String("/") + filenameSingle + QLatin1String("_sync.log");
-            }
-            else {
+                    + filenameSingle;
+                filename = logpath + QLatin1String("/") + filenameSingle + QLatin1String("_sync.log");
+            } else {
                 filenameSingle = filenameSingle + QLatin1String("_1");
                 filename = logpath + QLatin1String("/") + filenameSingle + QLatin1String("_sync.log");
             }
-        }
-        else break;
+        } else
+            break;
     }
 
     // When the file is too big, just rename it to an old name.
@@ -98,8 +96,7 @@ void SyncRunFileLog::start(const QString &folderPath)
 void SyncRunFileLog::logItem(const SyncFileItem &item)
 {
     // don't log the directory items that are in the list
-    if (item._direction == SyncFileItem::None
-        || item._instruction == CSYNC_INSTRUCTION_IGNORE) {
+    if (item._direction == SyncFileItem::None || item._instruction == CSYNC_INSTRUCTION_IGNORE) {
         return;
     }
     QString ts = QString::fromLatin1(item._responseTimeStamp);

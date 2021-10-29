@@ -30,7 +30,8 @@ public:
     };
     Q_ENUM(Status)
 
-    explicit EncryptFolderJob(const AccountPtr &account, SyncJournalDb *journal, const QString &path, const QByteArray &fileId, QObject *parent = nullptr);
+    explicit EncryptFolderJob(const AccountPtr &account, SyncJournalDb *journal, const QString &path,
+        const QByteArray &fileId, QObject *parent = nullptr);
     void start();
 
     QString errorString() const;

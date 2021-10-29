@@ -35,7 +35,8 @@ class UserStatusSelectorModel : public QObject
 
     Q_PROPERTY(QString userStatusMessage READ userStatusMessage NOTIFY userStatusChanged)
     Q_PROPERTY(QString userStatusEmoji READ userStatusEmoji WRITE setUserStatusEmoji NOTIFY userStatusChanged)
-    Q_PROPERTY(OCC::UserStatus::OnlineStatus onlineStatus READ onlineStatus WRITE setOnlineStatus NOTIFY onlineStatusChanged)
+    Q_PROPERTY(
+        OCC::UserStatus::OnlineStatus onlineStatus READ onlineStatus WRITE setOnlineStatus NOTIFY onlineStatusChanged)
     Q_PROPERTY(int predefinedStatusesCount READ predefinedStatusesCount NOTIFY predefinedStatusesChanged)
     Q_PROPERTY(QStringList clearAtValues READ clearAtValues CONSTANT)
     Q_PROPERTY(QString clearAt READ clearAt NOTIFY clearAtChanged)
@@ -48,19 +49,16 @@ class UserStatusSelectorModel : public QObject
 public:
     explicit UserStatusSelectorModel(QObject *parent = nullptr);
 
-    explicit UserStatusSelectorModel(std::shared_ptr<UserStatusConnector> userStatusConnector,
-        QObject *parent = nullptr);
+    explicit UserStatusSelectorModel(
+        std::shared_ptr<UserStatusConnector> userStatusConnector, QObject *parent = nullptr);
 
     explicit UserStatusSelectorModel(std::shared_ptr<UserStatusConnector> userStatusConnector,
-        std::unique_ptr<DateTimeProvider> dateTimeProvider,
-        QObject *parent = nullptr);
+        std::unique_ptr<DateTimeProvider> dateTimeProvider, QObject *parent = nullptr);
 
-    explicit UserStatusSelectorModel(const UserStatus &userStatus,
-        std::unique_ptr<DateTimeProvider> dateTimeProvider,
-        QObject *parent = nullptr);
+    explicit UserStatusSelectorModel(
+        const UserStatus &userStatus, std::unique_ptr<DateTimeProvider> dateTimeProvider, QObject *parent = nullptr);
 
-    explicit UserStatusSelectorModel(const UserStatus &userStatus,
-        QObject *parent = nullptr);
+    explicit UserStatusSelectorModel(const UserStatus &userStatus, QObject *parent = nullptr);
 
     Q_INVOKABLE void load(int id);
 
@@ -100,14 +98,7 @@ signals:
     void finished();
 
 private:
-    enum class ClearStageType {
-        DontClear,
-        HalfHour,
-        OneHour,
-        FourHour,
-        Today,
-        Week
-    };
+    enum class ClearStageType { DontClear, HalfHour, OneHour, FourHour, Today, Week };
 
     void init();
     void reset();
@@ -124,20 +115,14 @@ private:
     void setError(const QString &reason);
     void clearError();
 
-    std::shared_ptr<UserStatusConnector> _userStatusConnector {};
+    std::shared_ptr<UserStatusConnector> _userStatusConnector{};
     std::vector<UserStatus> _predefinedStatuses;
     UserStatus _userStatus;
     std::unique_ptr<DateTimeProvider> _dateTimeProvider;
 
     QString _errorMessage;
 
-    std::vector<ClearStageType> _clearStages = {
-        ClearStageType::DontClear,
-        ClearStageType::HalfHour,
-        ClearStageType::OneHour,
-        ClearStageType::FourHour,
-        ClearStageType::Today,
-        ClearStageType::Week
-    };
+    std::vector<ClearStageType> _clearStages = {ClearStageType::DontClear, ClearStageType::HalfHour,
+        ClearStageType::OneHour, ClearStageType::FourHour, ClearStageType::Today, ClearStageType::Week};
 };
 }

@@ -33,7 +33,7 @@ class SlideShow : public QWidget
     Q_PROPERTY(int currentSlide READ currentSlide WRITE setCurrentSlide NOTIFY currentSlideChanged)
 
 public:
-    explicit SlideShow(QWidget* parent = nullptr);
+    explicit SlideShow(QWidget *parent = nullptr);
 
     void addSlide(const QPixmap &pixmap, const QString &label);
 

@@ -30,7 +30,7 @@
 #define Q_FALLTHROUGH() // Was added in Qt 5.8
 #endif
 
-#define c_hashsize(n) ((uint8_t) 1 << (n))
+#define c_hashsize(n) ((uint8_t)1 << (n))
 #define c_hashmask(n) (xhashsize(n) - 1)
 
 /**
@@ -59,18 +59,36 @@
  * this is the fastest good hash I could find.  There were about 2^^68
  * to choose from.  I only looked at a billion or so.
  */
-#define _c_mix(a,b,c) \
-{ \
-  (a) -= (b); (a) -= (c); (a) ^= ((c)>>13); \
-  (b) -= (c); (b) -= (a); (b) ^= ((a)<<8); \
-  (c) -= (a); (c) -= (b); (c) ^= ((b)>>13); \
-  (a) -= (b); (a) -= (c); (a) ^= ((c)>>12);  \
-  (b) -= (c); (b) -= (a); (b) ^= ((a)<<16); \
-  (c) -= (a); (c) -= (b); (c) ^= ((b)>>5); \
-  (a) -= (b); (a) -= (c); (a) ^= ((c)>>3);  \
-  (b) -= (c); (b) -= (a); (b) ^= ((a)<<10); \
-  (c) -= (a); (c) -= (b); (c) ^= ((b)>>15); \
-}
+#define _c_mix(a, b, c)                                                                                                \
+    {                                                                                                                  \
+        (a) -= (b);                                                                                                    \
+        (a) -= (c);                                                                                                    \
+        (a) ^= ((c) >> 13);                                                                                            \
+        (b) -= (c);                                                                                                    \
+        (b) -= (a);                                                                                                    \
+        (b) ^= ((a) << 8);                                                                                             \
+        (c) -= (a);                                                                                                    \
+        (c) -= (b);                                                                                                    \
+        (c) ^= ((b) >> 13);                                                                                            \
+        (a) -= (b);                                                                                                    \
+        (a) -= (c);                                                                                                    \
+        (a) ^= ((c) >> 12);                                                                                            \
+        (b) -= (c);                                                                                                    \
+        (b) -= (a);                                                                                                    \
+        (b) ^= ((a) << 16);                                                                                            \
+        (c) -= (a);                                                                                                    \
+        (c) -= (b);                                                                                                    \
+        (c) ^= ((b) >> 5);                                                                                             \
+        (a) -= (b);                                                                                                    \
+        (a) -= (c);                                                                                                    \
+        (a) ^= ((c) >> 3);                                                                                             \
+        (b) -= (c);                                                                                                    \
+        (b) -= (a);                                                                                                    \
+        (b) ^= ((a) << 10);                                                                                            \
+        (c) -= (a);                                                                                                    \
+        (c) -= (b);                                                                                                    \
+        (c) ^= ((b) >> 15);                                                                                            \
+    }
 
 /**
  * _c_mix64 -- Mix 3 64-bit values reversibly.
@@ -90,21 +108,45 @@
  * characteristics with 3-bit deltas or bigger, I didn't test for
  * those.
  */
-#define _c_mix64(a,b,c) \
-{ \
-  (a) -= (b); (a) -= (c); (a) ^= ((c)>>43); \
-  (b) -= (c); (b) -= (a); (b) ^= ((a)<<9); \
-  (c) -= (a); (c) -= (b); (c) ^= ((b)>>8); \
-  (a) -= (b); (a) -= (c); (a) ^= ((c)>>38); \
-  (b) -= (c); (b) -= (a); (b) ^= ((a)<<23); \
-  (c) -= (a); (c) -= (b); (c) ^= ((b)>>5); \
-  (a) -= (b); (a) -= (c); (a) ^= ((c)>>35); \
-  (b) -= (c); (b) -= (a); (b) ^= ((a)<<49); \
-  (c) -= (a); (c) -= (b); (c) ^= ((b)>>11); \
-  (a) -= (b); (a) -= (c); (a) ^= ((c)>>12); \
-  (b) -= (c); (b) -= (a); (b) ^= ((a)<<18); \
-  (c) -= (a); (c) -= (b); (c) ^= ((b)>>22); \
-}
+#define _c_mix64(a, b, c)                                                                                              \
+    {                                                                                                                  \
+        (a) -= (b);                                                                                                    \
+        (a) -= (c);                                                                                                    \
+        (a) ^= ((c) >> 43);                                                                                            \
+        (b) -= (c);                                                                                                    \
+        (b) -= (a);                                                                                                    \
+        (b) ^= ((a) << 9);                                                                                             \
+        (c) -= (a);                                                                                                    \
+        (c) -= (b);                                                                                                    \
+        (c) ^= ((b) >> 8);                                                                                             \
+        (a) -= (b);                                                                                                    \
+        (a) -= (c);                                                                                                    \
+        (a) ^= ((c) >> 38);                                                                                            \
+        (b) -= (c);                                                                                                    \
+        (b) -= (a);                                                                                                    \
+        (b) ^= ((a) << 23);                                                                                            \
+        (c) -= (a);                                                                                                    \
+        (c) -= (b);                                                                                                    \
+        (c) ^= ((b) >> 5);                                                                                             \
+        (a) -= (b);                                                                                                    \
+        (a) -= (c);                                                                                                    \
+        (a) ^= ((c) >> 35);                                                                                            \
+        (b) -= (c);                                                                                                    \
+        (b) -= (a);                                                                                                    \
+        (b) ^= ((a) << 49);                                                                                            \
+        (c) -= (a);                                                                                                    \
+        (c) -= (b);                                                                                                    \
+        (c) ^= ((b) >> 11);                                                                                            \
+        (a) -= (b);                                                                                                    \
+        (a) -= (c);                                                                                                    \
+        (a) ^= ((c) >> 12);                                                                                            \
+        (b) -= (c);                                                                                                    \
+        (b) -= (a);                                                                                                    \
+        (b) ^= ((a) << 18);                                                                                            \
+        (c) -= (a);                                                                                                    \
+        (c) -= (b);                                                                                                    \
+        (c) ^= ((b) >> 22);                                                                                            \
+    }
 
 /**
  * @brief hash a variable-length key into a 32-bit value
@@ -128,46 +170,59 @@
  *            of the return value.  Every 1-bit and 2-bit delta achieves
  *            avalanche. About 36+6len instructions.
  */
-static inline uint32_t c_jhash(const uint8_t *k, uint32_t length, uint32_t initval) {
-   uint32_t a = 0;
-   uint32_t b = 0;
-   uint32_t c = 0;
-   uint32_t len = 0;
+static inline uint32_t c_jhash(const uint8_t *k, uint32_t length, uint32_t initval)
+{
+    uint32_t a = 0;
+    uint32_t b = 0;
+    uint32_t c = 0;
+    uint32_t len = 0;
 
-   /* Set up the internal state */
-   len = length;
-   a = b = 0x9e3779b9; /* the golden ratio; an arbitrary value */
-   c = initval; /* the previous hash value */
+    /* Set up the internal state */
+    len = length;
+    a = b = 0x9e3779b9; /* the golden ratio; an arbitrary value */
+    c = initval; /* the previous hash value */
 
-   while (len >= 12) {
-      a += (k[0] +((uint32_t)k[1]<<8) +((uint32_t)k[2]<<16) +((uint32_t)k[3]<<24));
-      b += (k[4] +((uint32_t)k[5]<<8) +((uint32_t)k[6]<<16) +((uint32_t)k[7]<<24));
-      c += (k[8] +((uint32_t)k[9]<<8) +((uint32_t)k[10]<<16)+((uint32_t)k[11]<<24));
-      _c_mix(a,b,c);
-      k += 12; len -= 12;
-   }
+    while (len >= 12) {
+        a += (k[0] + ((uint32_t)k[1] << 8) + ((uint32_t)k[2] << 16) + ((uint32_t)k[3] << 24));
+        b += (k[4] + ((uint32_t)k[5] << 8) + ((uint32_t)k[6] << 16) + ((uint32_t)k[7] << 24));
+        c += (k[8] + ((uint32_t)k[9] << 8) + ((uint32_t)k[10] << 16) + ((uint32_t)k[11] << 24));
+        _c_mix(a, b, c);
+        k += 12;
+        len -= 12;
+    }
 
-   /* handle the last 11 bytes */
-   c += length;
-   /* all the case statements fall through */
-   switch(len) {
-     case 11: c+=((uint32_t)k[10]<<24);
-     case 10: c+=((uint32_t)k[9]<<16);
-     case 9 : c+=((uint32_t)k[8]<<8);
-     /* the first byte of c is reserved for the length */
-     case 8 : b+=((uint32_t)k[7]<<24);
-     case 7 : b+=((uint32_t)k[6]<<16);
-     case 6 : b+=((uint32_t)k[5]<<8);
-     case 5 : b+=k[4];
-     case 4 : a+=((uint32_t)k[3]<<24);
-     case 3 : a+=((uint32_t)k[2]<<16);
-     case 2 : a+=((uint32_t)k[1]<<8);
-     case 1 : a+=k[0];
-     /* case 0: nothing left to add */
-   }
-   _c_mix(a,b,c);
+    /* handle the last 11 bytes */
+    c += length;
+    /* all the case statements fall through */
+    switch (len) {
+    case 11:
+        c += ((uint32_t)k[10] << 24);
+    case 10:
+        c += ((uint32_t)k[9] << 16);
+    case 9:
+        c += ((uint32_t)k[8] << 8);
+    /* the first byte of c is reserved for the length */
+    case 8:
+        b += ((uint32_t)k[7] << 24);
+    case 7:
+        b += ((uint32_t)k[6] << 16);
+    case 6:
+        b += ((uint32_t)k[5] << 8);
+    case 5:
+        b += k[4];
+    case 4:
+        a += ((uint32_t)k[3] << 24);
+    case 3:
+        a += ((uint32_t)k[2] << 16);
+    case 2:
+        a += ((uint32_t)k[1] << 8);
+    case 1:
+        a += k[0];
+        /* case 0: nothing left to add */
+    }
+    _c_mix(a, b, c);
 
-   return c;
+    return c;
 }
 
 /**
@@ -190,66 +245,111 @@ static inline uint32_t c_jhash(const uint8_t *k, uint32_t length, uint32_t initv
  *            the return value.  No funnels.  Every 1-bit and 2-bit delta
  *            achieves avalanche. About 41+5len instructions.
  */
-static inline uint64_t c_jhash64(const uint8_t *k, uint64_t length, uint64_t intval) {
-  uint64_t a = 0;
-  uint64_t b = 0;
-  uint64_t c = 0;
-  uint64_t len = 0;
+static inline uint64_t c_jhash64(const uint8_t *k, uint64_t length, uint64_t intval)
+{
+    uint64_t a = 0;
+    uint64_t b = 0;
+    uint64_t c = 0;
+    uint64_t len = 0;
 
-  /* Set up the internal state */
-  len = length;
-  a = b = intval; /* the previous hash value */
-  c = 0x9e3779b97f4a7c13LL; /* the golden ratio; an arbitrary value */
+    /* Set up the internal state */
+    len = length;
+    a = b = intval; /* the previous hash value */
+    c = 0x9e3779b97f4a7c13LL; /* the golden ratio; an arbitrary value */
 
-  /* handle most of the key */
-  while (len >= 24)
-  {
-    a += (k[0]        +((uint64_t)k[ 1]<< 8)+((uint64_t)k[ 2]<<16)+((uint64_t)k[ 3]<<24)
-     +((uint64_t)k[4 ]<<32)+((uint64_t)k[ 5]<<40)+((uint64_t)k[ 6]<<48)+((uint64_t)k[ 7]<<56));
-    b += (k[8]        +((uint64_t)k[ 9]<< 8)+((uint64_t)k[10]<<16)+((uint64_t)k[11]<<24)
-     +((uint64_t)k[12]<<32)+((uint64_t)k[13]<<40)+((uint64_t)k[14]<<48)+((uint64_t)k[15]<<56));
-    c += (k[16]       +((uint64_t)k[17]<< 8)+((uint64_t)k[18]<<16)+((uint64_t)k[19]<<24)
-     +((uint64_t)k[20]<<32)+((uint64_t)k[21]<<40)+((uint64_t)k[22]<<48)+((uint64_t)k[23]<<56));
-    _c_mix64(a,b,c);
-    k += 24; len -= 24;
-  }
+    /* handle most of the key */
+    while (len >= 24) {
+        a += (k[0] + ((uint64_t)k[1] << 8) + ((uint64_t)k[2] << 16) + ((uint64_t)k[3] << 24) + ((uint64_t)k[4] << 32)
+            + ((uint64_t)k[5] << 40) + ((uint64_t)k[6] << 48) + ((uint64_t)k[7] << 56));
+        b += (k[8] + ((uint64_t)k[9] << 8) + ((uint64_t)k[10] << 16) + ((uint64_t)k[11] << 24) + ((uint64_t)k[12] << 32)
+            + ((uint64_t)k[13] << 40) + ((uint64_t)k[14] << 48) + ((uint64_t)k[15] << 56));
+        c += (k[16] + ((uint64_t)k[17] << 8) + ((uint64_t)k[18] << 16) + ((uint64_t)k[19] << 24)
+            + ((uint64_t)k[20] << 32) + ((uint64_t)k[21] << 40) + ((uint64_t)k[22] << 48) + ((uint64_t)k[23] << 56));
+        _c_mix64(a, b, c);
+        k += 24;
+        len -= 24;
+    }
 
-  /* handle the last 23 bytes */
-  c += length;
-  switch(len) {
-    case 23: c+=((uint64_t)k[22]<<56); Q_FALLTHROUGH();
-    case 22: c+=((uint64_t)k[21]<<48); Q_FALLTHROUGH();
-    case 21: c+=((uint64_t)k[20]<<40); Q_FALLTHROUGH();
-    case 20: c+=((uint64_t)k[19]<<32); Q_FALLTHROUGH();
-    case 19: c+=((uint64_t)k[18]<<24); Q_FALLTHROUGH();
-    case 18: c+=((uint64_t)k[17]<<16); Q_FALLTHROUGH();
-    case 17: c+=((uint64_t)k[16]<<8);  Q_FALLTHROUGH();
+    /* handle the last 23 bytes */
+    c += length;
+    switch (len) {
+    case 23:
+        c += ((uint64_t)k[22] << 56);
+        Q_FALLTHROUGH();
+    case 22:
+        c += ((uint64_t)k[21] << 48);
+        Q_FALLTHROUGH();
+    case 21:
+        c += ((uint64_t)k[20] << 40);
+        Q_FALLTHROUGH();
+    case 20:
+        c += ((uint64_t)k[19] << 32);
+        Q_FALLTHROUGH();
+    case 19:
+        c += ((uint64_t)k[18] << 24);
+        Q_FALLTHROUGH();
+    case 18:
+        c += ((uint64_t)k[17] << 16);
+        Q_FALLTHROUGH();
+    case 17:
+        c += ((uint64_t)k[16] << 8);
+        Q_FALLTHROUGH();
     /* the first byte of c is reserved for the length */
-    case 16: b+=((uint64_t)k[15]<<56); Q_FALLTHROUGH();
-    case 15: b+=((uint64_t)k[14]<<48); Q_FALLTHROUGH();
-    case 14: b+=((uint64_t)k[13]<<40); Q_FALLTHROUGH();
-    case 13: b+=((uint64_t)k[12]<<32); Q_FALLTHROUGH();
-    case 12: b+=((uint64_t)k[11]<<24); Q_FALLTHROUGH();
-    case 11: b+=((uint64_t)k[10]<<16); Q_FALLTHROUGH();
-    case 10: b+=((uint64_t)k[ 9]<<8);  Q_FALLTHROUGH();
-    case  9: b+=((uint64_t)k[ 8]);     Q_FALLTHROUGH();
-    case  8: a+=((uint64_t)k[ 7]<<56); Q_FALLTHROUGH();
-    case  7: a+=((uint64_t)k[ 6]<<48); Q_FALLTHROUGH();
-    case  6: a+=((uint64_t)k[ 5]<<40); Q_FALLTHROUGH();
-    case  5: a+=((uint64_t)k[ 4]<<32); Q_FALLTHROUGH();
-    case  4: a+=((uint64_t)k[ 3]<<24); Q_FALLTHROUGH();
-    case  3: a+=((uint64_t)k[ 2]<<16); Q_FALLTHROUGH();
-    case  2: a+=((uint64_t)k[ 1]<<8);  Q_FALLTHROUGH();
-    case  1: a+=((uint64_t)k[ 0]);
-    /* case 0: nothing left to add */
-  }
-  _c_mix64(a,b,c);
+    case 16:
+        b += ((uint64_t)k[15] << 56);
+        Q_FALLTHROUGH();
+    case 15:
+        b += ((uint64_t)k[14] << 48);
+        Q_FALLTHROUGH();
+    case 14:
+        b += ((uint64_t)k[13] << 40);
+        Q_FALLTHROUGH();
+    case 13:
+        b += ((uint64_t)k[12] << 32);
+        Q_FALLTHROUGH();
+    case 12:
+        b += ((uint64_t)k[11] << 24);
+        Q_FALLTHROUGH();
+    case 11:
+        b += ((uint64_t)k[10] << 16);
+        Q_FALLTHROUGH();
+    case 10:
+        b += ((uint64_t)k[9] << 8);
+        Q_FALLTHROUGH();
+    case 9:
+        b += ((uint64_t)k[8]);
+        Q_FALLTHROUGH();
+    case 8:
+        a += ((uint64_t)k[7] << 56);
+        Q_FALLTHROUGH();
+    case 7:
+        a += ((uint64_t)k[6] << 48);
+        Q_FALLTHROUGH();
+    case 6:
+        a += ((uint64_t)k[5] << 40);
+        Q_FALLTHROUGH();
+    case 5:
+        a += ((uint64_t)k[4] << 32);
+        Q_FALLTHROUGH();
+    case 4:
+        a += ((uint64_t)k[3] << 24);
+        Q_FALLTHROUGH();
+    case 3:
+        a += ((uint64_t)k[2] << 16);
+        Q_FALLTHROUGH();
+    case 2:
+        a += ((uint64_t)k[1] << 8);
+        Q_FALLTHROUGH();
+    case 1:
+        a += ((uint64_t)k[0]);
+        /* case 0: nothing left to add */
+    }
+    _c_mix64(a, b, c);
 
-  return c;
+    return c;
 }
 
 /**
  * }@
  */
 #endif /* _C_JHASH_H */
-

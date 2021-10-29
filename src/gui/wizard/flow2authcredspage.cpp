@@ -51,11 +51,11 @@ void Flow2AuthCredsPage::initializePage()
     Q_ASSERT(ocWizard);
     ocWizard->account()->setCredentials(CredentialsFactory::create("http"));
 
-    if(_flow2AuthWidget)
+    if (_flow2AuthWidget)
         _flow2AuthWidget->startAuth(ocWizard->account().data());
 
     // Don't hide the wizard (avoid user confusion)!
-    //wizard()->hide();
+    // wizard()->hide();
 
     _flow2AuthWidget->slotStyleChanged();
 }
@@ -64,7 +64,7 @@ void OCC::Flow2AuthCredsPage::cleanupPage()
 {
     // The next or back button was activated, show the wizard again
     wizard()->show();
-    if(_flow2AuthWidget)
+    if (_flow2AuthWidget)
         _flow2AuthWidget->resetAuth();
 
     // Forget sensitive data
@@ -72,7 +72,8 @@ void OCC::Flow2AuthCredsPage::cleanupPage()
     _user.clear();
 }
 
-void Flow2AuthCredsPage::slotFlow2AuthResult(Flow2Auth::Result r, const QString &errorString, const QString &user, const QString &appPassword)
+void Flow2AuthCredsPage::slotFlow2AuthResult(
+    Flow2Auth::Result r, const QString &errorString, const QString &user, const QString &appPassword)
 {
     Q_UNUSED(errorString)
     switch (r) {
@@ -120,13 +121,8 @@ AbstractCredentials *Flow2AuthCredsPage::getCredentials() const
 {
     auto *ocWizard = qobject_cast<OwncloudWizard *>(wizard());
     Q_ASSERT(ocWizard);
-    return new WebFlowCredentials(
-                _user,
-                _appPassword,
-                ocWizard->_clientSslCertificate,
-                ocWizard->_clientSslKey,
-                ocWizard->_clientSslCaCertificates
-    );
+    return new WebFlowCredentials(_user, _appPassword, ocWizard->_clientSslCertificate, ocWizard->_clientSslKey,
+        ocWizard->_clientSslCaCertificates);
 }
 
 bool Flow2AuthCredsPage::isComplete() const

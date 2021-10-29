@@ -49,7 +49,8 @@ SyncJournalFileRecord SyncFileItem::toSyncJournalFileRecordWithInode(const QStri
     // Update the inode if possible
     rec._inode = _inode;
     if (FileSystem::getInode(localFileName, &rec._inode)) {
-        qCDebug(lcFileItem) << localFileName << "Retrieved inode " << rec._inode << "(previous item inode: " << _inode << ")";
+        qCDebug(lcFileItem) << localFileName << "Retrieved inode " << rec._inode << "(previous item inode: " << _inode
+                            << ")";
     } else {
         // use the "old" inode coming with the item for the case where the
         // filesystem stat fails. That can happen if the the file was removed

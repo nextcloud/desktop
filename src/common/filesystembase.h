@@ -33,16 +33,16 @@ namespace OCC {
 
 OCSYNC_EXPORT Q_DECLARE_LOGGING_CATEGORY(lcFileSystem)
 
-/**
- *  \addtogroup libsync
- *  @{
- */
+    /**
+     *  \addtogroup libsync
+     *  @{
+     */
 
-/**
- * @brief This file contains file system helper
- */
-namespace FileSystem {
-
+    /**
+     * @brief This file contains file system helper
+     */
+    namespace FileSystem
+{
     /**
      * @brief Mark the file as hidden  (only has effects on windows)
      */
@@ -89,17 +89,15 @@ namespace FileSystem {
      *
      * It behaves as QFile::rename() but handles .lnk files correctly on Windows.
      */
-    bool OCSYNC_EXPORT rename(const QString &originFileName,
-        const QString &destinationFileName,
-        QString *errorString = nullptr);
+    bool OCSYNC_EXPORT rename(
+        const QString &originFileName, const QString &destinationFileName, QString *errorString = nullptr);
 
     /**
      * Rename the file \a originFileName to \a destinationFileName, and
      * overwrite the destination if it already exists - without extra checks.
      */
-    bool OCSYNC_EXPORT uncheckedRenameReplace(const QString &originFileName,
-        const QString &destinationFileName,
-        QString *errorString);
+    bool OCSYNC_EXPORT uncheckedRenameReplace(
+        const QString &originFileName, const QString &destinationFileName, QString *errorString);
 
     /**
      * Removes a file.
@@ -121,7 +119,7 @@ namespace FileSystem {
      * Warning: The resulting file may have an empty fileName and be unsuitable for use
      * with QFileInfo! Calling seek() on the QFile with >32bit signed values will fail!
      */
-    bool OCSYNC_EXPORT openAndSeekFileSharedRead(QFile *file, QString *error, qint64 seek);
+    bool OCSYNC_EXPORT openAndSeekFileSharedRead(QFile * file, QString * error, qint64 seek);
 
 #ifdef Q_OS_WIN
     /**

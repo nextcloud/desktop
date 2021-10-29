@@ -130,25 +130,25 @@ public:
      * @return QUrl full path to an icon
      */
     QUrl stateOfflineImageSource() const;
-    
+
     /**
      * @brief Returns full path to an online user status icon
      * @return QUrl full path to an icon
      */
     QUrl statusOnlineImageSource() const;
-    
+
     /**
      * @brief Returns full path to an do not disturb user status icon
      * @return QUrl full path to an icon
      */
     QUrl statusDoNotDisturbImageSource() const;
-    
+
     /**
      * @brief Returns full path to an away user status icon
      * @return QUrl full path to an icon
      */
     QUrl statusAwayImageSource() const;
-    
+
     /**
      * @brief Returns full path to an invisible user status icon
      * @return QUrl full path to an icon
@@ -181,8 +181,8 @@ public:
     static bool isHidpi(QPaintDevice *dev = nullptr);
 
     /**
-      * get an sync state icon
-      */
+     * get an sync state icon
+     */
     virtual QIcon syncStateIcon(SyncResult::Status, bool sysTray = false) const;
 
     virtual QIcon folderDisabledIcon() const;
@@ -204,15 +204,15 @@ public:
     virtual bool multiAccount() const;
 
     /**
-    * URL to documentation.
-    *
-    * This is opened in the browser when the "Help" action is selected from the tray menu.
-    *
-    * If the function is overridden to return an empty string the action is removed from
-    * the menu.
-    *
-    * Defaults to Nextclouds client documentation website.
-    */
+     * URL to documentation.
+     *
+     * This is opened in the browser when the "Help" action is selected from the tray menu.
+     *
+     * If the function is overridden to return an empty string the action is removed from
+     * the menu.
+     *
+     * Defaults to Nextclouds client documentation website.
+     */
     virtual QString helpUrl() const;
 
     /**
@@ -239,7 +239,7 @@ public:
      * When true, the respective UI controls will be disabled
      */
     virtual bool forceOverrideServerUrl() const;
-    
+
     /**
      * Enable OCSP stapling for SSL handshakes
      *
@@ -389,9 +389,7 @@ public:
      * @value UserIDEmail Wizard asks for an email as ID
      * @value UserIDCustom Specify string in \ref customUserID
      */
-    enum UserIDType { UserIDUserName = 0,
-        UserIDEmail,
-        UserIDCustom };
+    enum UserIDType { UserIDUserName = 0, UserIDEmail, UserIDCustom };
 
     /** @brief What to display as the userID (e.g. in the wizards)
      *
@@ -457,35 +455,38 @@ public:
      * important dependency versions.
      */
     virtual QString versionSwitchOutput() const;
-	
-	/**
-    * @brief Request suitable QIcon resource depending on the background colour of the parent widget.
-    *
-    * This should be replaced (TODO) by a real theming implementation for the client UI 
-    * (actually 2019/09/13 only systray theming).
-    */
-	virtual QIcon uiThemeIcon(const QString &iconName, bool uiHasDarkBg) const;
-    
+
     /**
-     * @brief Perform a calculation to check if a colour is dark or light and accounts for different sensitivity of the human eye.
+     * @brief Request suitable QIcon resource depending on the background colour of the parent widget.
+     *
+     * This should be replaced (TODO) by a real theming implementation for the client UI
+     * (actually 2019/09/13 only systray theming).
+     */
+    virtual QIcon uiThemeIcon(const QString &iconName, bool uiHasDarkBg) const;
+
+    /**
+     * @brief Perform a calculation to check if a colour is dark or light and accounts for different sensitivity of the
+     * human eye.
      *
      * @return True if the specified colour is dark.
      *
      * 2019/12/08: Moved here from SettingsDialog.
      */
     static bool isDarkColor(const QColor &color);
-    
+
     /**
-     * @brief Return the colour to be used for HTML links (e.g. used in QLabel), based on the current app palette or given colour (Dark-/Light-Mode switching).
+     * @brief Return the colour to be used for HTML links (e.g. used in QLabel), based on the current app palette or
+     * given colour (Dark-/Light-Mode switching).
      *
      * @return Background-aware colour for HTML links, based on the current app palette or given colour.
      *
      * 2019/12/08: Implemented for the Dark Mode on macOS, because the app palette can not account for that (Qt 5.12.5).
      */
     static QColor getBackgroundAwareLinkColor(const QColor &backgroundColor);
-    
+
     /**
-     * @brief Return the colour to be used for HTML links (e.g. used in QLabel), based on the current app palette (Dark-/Light-Mode switching).
+     * @brief Return the colour to be used for HTML links (e.g. used in QLabel), based on the current app palette
+     * (Dark-/Light-Mode switching).
      *
      * @return Background-aware colour for HTML links, based on the current app palette.
      *
@@ -494,7 +495,8 @@ public:
     static QColor getBackgroundAwareLinkColor();
 
     /**
-     * @brief Appends a CSS-style colour value to all HTML link tags in a given string, based on the current app palette or given colour (Dark-/Light-Mode switching).
+     * @brief Appends a CSS-style colour value to all HTML link tags in a given string, based on the current app palette
+     * or given colour (Dark-/Light-Mode switching).
      *
      * 2019/12/08: Implemented for the Dark Mode on macOS, because the app palette can not account for that (Qt 5.12.5).
      *
@@ -503,7 +505,8 @@ public:
     static void replaceLinkColorStringBackgroundAware(QString &linkString, const QColor &backgroundColor);
 
     /**
-     * @brief Appends a CSS-style colour value to all HTML link tags in a given string, based on the current app palette (Dark-/Light-Mode switching).
+     * @brief Appends a CSS-style colour value to all HTML link tags in a given string, based on the current app palette
+     * (Dark-/Light-Mode switching).
      *
      * 2019/12/08: Implemented for the Dark Mode on macOS, because the app palette can not account for that (Qt 5.12.5).
      *

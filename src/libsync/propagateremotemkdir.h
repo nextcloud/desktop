@@ -57,6 +57,7 @@ private slots:
     void success();
 
 private:
-    void finalizeMkColJob(QNetworkReply::NetworkError err, const QString &jobHttpReasonPhraseString, const QString &jobPath);
+    void finalizeMkColJob(
+        QNetworkReply::NetworkError err, const QString &jobHttpReasonPhraseString, const QString &jobPath);
 };
 }

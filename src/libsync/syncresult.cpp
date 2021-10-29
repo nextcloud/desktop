@@ -119,14 +119,13 @@ void SyncResult::processCompletedItem(const SyncFileItemPtr &item)
         _foundFilesNotSynced = true;
     }
 
-    if (item->isDirectory() && (item->_instruction == CSYNC_INSTRUCTION_NEW
-                                  || item->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE
-                                  || item->_instruction == CSYNC_INSTRUCTION_REMOVE
-                                  || item->_instruction == CSYNC_INSTRUCTION_RENAME)) {
+    if (item->isDirectory()
+        && (item->_instruction == CSYNC_INSTRUCTION_NEW || item->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE
+            || item->_instruction == CSYNC_INSTRUCTION_REMOVE || item->_instruction == CSYNC_INSTRUCTION_RENAME)) {
         _folderStructureWasChanged = true;
     }
 
-    if(item->_status == SyncFileItem::FileLocked){
+    if (item->_status == SyncFileItem::FileLocked) {
         _numLockedItems++;
         if (!_firstItemLocked) {
             _firstItemLocked = item;
@@ -151,7 +150,8 @@ void SyncResult::processCompletedItem(const SyncFileItemPtr &item)
             _numOldConflictItems++;
         }
     } else {
-        if (!item->hasErrorStatus() && item->_status != SyncFileItem::FileIgnored && item->_direction == SyncFileItem::Down) {
+        if (!item->hasErrorStatus() && item->_status != SyncFileItem::FileIgnored
+            && item->_direction == SyncFileItem::Down) {
             switch (item->_instruction) {
             case CSYNC_INSTRUCTION_NEW:
             case CSYNC_INSTRUCTION_TYPE_CHANGE:

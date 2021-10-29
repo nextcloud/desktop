@@ -23,10 +23,10 @@ using namespace OCC;
 
 Q_LOGGING_CATEGORY(PROPAGATE_REMOVE_ENCRYPTED, "nextcloud.sync.propagator.remove.encrypted")
 
-PropagateRemoteDeleteEncrypted::PropagateRemoteDeleteEncrypted(OwncloudPropagator *propagator, SyncFileItemPtr item, QObject *parent)
+PropagateRemoteDeleteEncrypted::PropagateRemoteDeleteEncrypted(
+    OwncloudPropagator *propagator, SyncFileItemPtr item, QObject *parent)
     : AbstractPropagateRemoteDeleteEncrypted(propagator, item, parent)
 {
-
 }
 
 void PropagateRemoteDeleteEncrypted::start()
@@ -78,7 +78,7 @@ void PropagateRemoteDeleteEncrypted::slotFolderEncryptedMetadataReceived(const Q
     qCDebug(PROPAGATE_REMOVE_ENCRYPTED) << "Metadata updated, sending to the server.";
 
     auto job = new UpdateMetadataApiJob(_propagator->account(), _folderId, metadata.encryptedMetadata(), _folderToken);
-    connect(job, &UpdateMetadataApiJob::success, this, [this](const QByteArray& fileId) {
+    connect(job, &UpdateMetadataApiJob::success, this, [this](const QByteArray &fileId) {
         Q_UNUSED(fileId);
         deleteRemoteItem(_item->_encryptedFileName);
     });

@@ -40,8 +40,7 @@ class OWNCLOUDSYNC_EXPORT ConfigFile
 public:
     ConfigFile();
 
-    enum Scope { UserScope,
-        SystemScope };
+    enum Scope { UserScope, SystemScope };
 
     QString configPath() const;
     QString configFile() const;
@@ -111,11 +110,8 @@ public:
     bool showExperimentalOptions() const;
 
     // proxy settings
-    void setProxyType(int proxyType,
-        const QString &host = QString(),
-        int port = 0, bool needsAuth = false,
-        const QString &user = QString(),
-        const QString &pass = QString());
+    void setProxyType(int proxyType, const QString &host = QString(), int port = 0, bool needsAuth = false,
+        const QString &user = QString(), const QString &pass = QString());
 
     int proxyType() const;
     QString proxyHostName() const;
@@ -211,8 +207,8 @@ protected:
     bool dataExists(const QString &group, const QString &key) const;
 
 private:
-    QVariant getValue(const QString &param, const QString &group = QString(),
-        const QVariant &defaultValue = QVariant()) const;
+    QVariant getValue(
+        const QString &param, const QString &group = QString(), const QVariant &defaultValue = QVariant()) const;
     void setValue(const QString &key, const QVariant &value);
 
     QString keychainProxyPasswordKey() const;

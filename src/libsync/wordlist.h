@@ -7,10 +7,10 @@
 #include "owncloudlib.h"
 
 namespace OCC {
-    namespace WordList {
-        OWNCLOUDSYNC_EXPORT QStringList getRandomWords(int nr);
-        OWNCLOUDSYNC_EXPORT QString getUnifiedString(const QStringList& l);
-    }
+namespace WordList {
+    OWNCLOUDSYNC_EXPORT QStringList getRandomWords(int nr);
+    OWNCLOUDSYNC_EXPORT QString getUnifiedString(const QStringList &l);
+}
 }
 
 #endif

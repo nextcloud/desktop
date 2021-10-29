@@ -35,10 +35,7 @@ namespace WizardCommon {
     void initErrorLabel(QLabel *errorLabel);
     void customizeHintLabel(QLabel *label);
 
-    enum SyncMode {
-        SelectiveMode,
-        BoxMode
-    };
+    enum SyncMode { SelectiveMode, BoxMode };
 
     enum Pages {
         Page_Welcome,

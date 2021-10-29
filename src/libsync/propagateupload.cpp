@@ -103,8 +103,7 @@ bool PUTFileJob::finished()
 {
     _device->close();
 
-    qCInfo(lcPutJob) << "PUT of" << reply()->request().url().toString() << "FINISHED WITH STATUS"
-                     << replyStatusString()
+    qCInfo(lcPutJob) << "PUT of" << reply()->request().url().toString() << "FINISHED WITH STATUS" << replyStatusString()
                      << reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute)
                      << reply()->attribute(QNetworkRequest::HttpReasonPhraseAttribute);
 
@@ -133,8 +132,7 @@ bool PollJob::finished()
         _item->_errorString = errorString();
 
         if (_item->_status == SyncFileItem::FatalError || _item->_httpErrorCode >= 400) {
-            if (_item->_status != SyncFileItem::FatalError
-                && _item->_httpErrorCode != 503) {
+            if (_item->_status != SyncFileItem::FatalError && _item->_httpErrorCode != 503) {
                 SyncJournalDb::PollInfo info;
                 info._file = _item->_file;
                 // no info._url removes it from the database
@@ -151,7 +149,8 @@ bool PollJob::finished()
     QByteArray jsonData = reply()->readAll().trimmed();
     QJsonParseError jsonParseError;
     QJsonObject json = QJsonDocument::fromJson(jsonData, &jsonParseError).object();
-    qCInfo(lcPollJob) << ">" << jsonData << "<" << reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() << json << jsonParseError.errorString();
+    qCInfo(lcPollJob) << ">" << jsonData << "<" << reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt()
+                      << json << jsonParseError.errorString();
     if (jsonParseError.error != QJsonParseError::NoError) {
         _item->_errorString = tr("Invalid JSON reply from the poll URL");
         _item->_status = SyncFileItem::NormalError;
@@ -240,17 +239,16 @@ void PropagateUploadFileCommon::start()
 
     const auto account = propagator()->account();
 
-    if (!account->capabilities().clientSideEncryptionAvailable() ||
-        !parentRec.isValid() ||
-        !parentRec._isE2eEncrypted) {
+    if (!account->capabilities().clientSideEncryptionAvailable() || !parentRec.isValid()
+        || !parentRec._isE2eEncrypted) {
         setupUnencryptedFile();
         return;
     }
 
     const auto remoteParentPath = parentRec._e2eMangledName.isEmpty() ? parentPath : parentRec._e2eMangledName;
     _uploadEncryptedHelper = new PropagateUploadEncrypted(propagator(), remoteParentPath, _item, this);
-    connect(_uploadEncryptedHelper, &PropagateUploadEncrypted::finalized,
-            this, &PropagateUploadFileCommon::setupEncryptedFile);
+    connect(_uploadEncryptedHelper, &PropagateUploadEncrypted::finalized, this,
+        &PropagateUploadFileCommon::setupEncryptedFile);
     connect(_uploadEncryptedHelper, &PropagateUploadEncrypted::error, [this] {
         qCDebug(lcPropagateUpload) << "Error setting up encryption.";
         done(SyncFileItem::FatalError, tr("Failed to upload encrypted file."));
@@ -258,7 +256,7 @@ void PropagateUploadFileCommon::start()
     _uploadEncryptedHelper->start();
 }
 
-void PropagateUploadFileCommon::setupEncryptedFile(const QString& path, const QString& filename, quint64 size)
+void PropagateUploadFileCommon::setupEncryptedFile(const QString &path, const QString &filename, quint64 size)
 {
     qCDebug(lcPropagateUpload) << "Starting to upload encrypted file" << path << filename << size;
     _uploadingEncrypted = true;
@@ -277,25 +275,29 @@ void PropagateUploadFileCommon::setupUnencryptedFile()
     startUploadFile();
 }
 
-void PropagateUploadFileCommon::startUploadFile() {
+void PropagateUploadFileCommon::startUploadFile()
+{
     if (propagator()->_abortRequested) {
         return;
     }
 
     // Check if the specific file can be accessed
     if (propagator()->hasCaseClashAccessibilityProblem(_fileToUpload._file)) {
-        done(SyncFileItem::NormalError, tr("File %1 cannot be uploaded because another file with the same name, differing only in case, exists").arg(QDir::toNativeSeparators(_item->_file)));
+        done(SyncFileItem::NormalError,
+            tr("File %1 cannot be uploaded because another file with the same name, differing only in case, exists")
+                .arg(QDir::toNativeSeparators(_item->_file)));
         return;
     }
 
     // Check if we believe that the upload will fail due to remote quota limits
-    const qint64 quotaGuess = propagator()->_folderQuota.value(
-        QFileInfo(_fileToUpload._file).path(), std::numeric_limits<qint64>::max());
+    const qint64 quotaGuess =
+        propagator()->_folderQuota.value(QFileInfo(_fileToUpload._file).path(), std::numeric_limits<qint64>::max());
     if (_fileToUpload._size > quotaGuess) {
         // Necessary for blacklisting logic
         _item->_httpErrorCode = 507;
         emit propagator()->insufficientRemoteStorage();
-        done(SyncFileItem::DetailError, tr("Upload of %1 exceeds the quota for the folder").arg(Utility::octetsToString(_fileToUpload._size)));
+        done(SyncFileItem::DetailError,
+            tr("Upload of %1 exceeds the quota for the folder").arg(Utility::octetsToString(_fileToUpload._size)));
         return;
     }
 
@@ -307,9 +309,7 @@ void PropagateUploadFileCommon::startUploadFile() {
     }
 
     qDebug() << "Deleting the current";
-    auto job = new DeleteJob(propagator()->account(),
-        propagator()->fullRemotePath(_fileToUpload._file),
-        this);
+    auto job = new DeleteJob(propagator()->account(), propagator()->fullRemotePath(_fileToUpload._file), this);
     _jobs.append(job);
     connect(job, &DeleteJob::finishedSignal, this, &PropagateUploadFileCommon::slotComputeContentChecksum);
     connect(job, &QObject::destroyed, this, &PropagateUploadFileCommon::slotJobDestroyed);
@@ -349,20 +349,18 @@ void PropagateUploadFileCommon::slotComputeContentChecksum()
     auto computeChecksum = new ComputeChecksum(this);
     computeChecksum->setChecksumType(checksumType);
 
-    connect(computeChecksum, &ComputeChecksum::done,
-        this, &PropagateUploadFileCommon::slotComputeTransmissionChecksum);
-    connect(computeChecksum, &ComputeChecksum::done,
-        computeChecksum, &QObject::deleteLater);
+    connect(computeChecksum, &ComputeChecksum::done, this, &PropagateUploadFileCommon::slotComputeTransmissionChecksum);
+    connect(computeChecksum, &ComputeChecksum::done, computeChecksum, &QObject::deleteLater);
     computeChecksum->start(_fileToUpload._path);
 }
 
-void PropagateUploadFileCommon::slotComputeTransmissionChecksum(const QByteArray &contentChecksumType, const QByteArray &contentChecksum)
+void PropagateUploadFileCommon::slotComputeTransmissionChecksum(
+    const QByteArray &contentChecksumType, const QByteArray &contentChecksum)
 {
     _item->_checksumHeader = makeChecksumHeader(contentChecksumType, contentChecksum);
 
     // Reuse the content checksum as the transmission checksum if possible
-    const auto supportedTransmissionChecksums =
-        propagator()->account()->capabilities().supportedChecksumTypes();
+    const auto supportedTransmissionChecksums = propagator()->account()->capabilities().supportedChecksumTypes();
     if (supportedTransmissionChecksums.contains(contentChecksumType)) {
         slotStartUpload(contentChecksumType, contentChecksum);
         return;
@@ -376,14 +374,13 @@ void PropagateUploadFileCommon::slotComputeTransmissionChecksum(const QByteArray
         computeChecksum->setChecksumType(QByteArray());
     }
 
-    connect(computeChecksum, &ComputeChecksum::done,
-        this, &PropagateUploadFileCommon::slotStartUpload);
-    connect(computeChecksum, &ComputeChecksum::done,
-        computeChecksum, &QObject::deleteLater);
+    connect(computeChecksum, &ComputeChecksum::done, this, &PropagateUploadFileCommon::slotStartUpload);
+    connect(computeChecksum, &ComputeChecksum::done, computeChecksum, &QObject::deleteLater);
     computeChecksum->start(_fileToUpload._path);
 }
 
-void PropagateUploadFileCommon::slotStartUpload(const QByteArray &transmissionChecksumType, const QByteArray &transmissionChecksum)
+void PropagateUploadFileCommon::slotStartUpload(
+    const QByteArray &transmissionChecksumType, const QByteArray &transmissionChecksum)
 {
     // Remove ourselfs from the list of active job, before any posible call to done()
     // When we start chunks, we will add it again, once for every chunks.
@@ -400,7 +397,8 @@ void PropagateUploadFileCommon::slotStartUpload(const QByteArray &transmissionCh
     const QString originalFilePath = propagator()->fullLocalPath(_item->_file);
 
     if (!FileSystem::fileExists(fullFilePath)) {
-        return slotOnErrorStartFolderUnlock(SyncFileItem::SoftError, tr("File Removed (start upload) %1").arg(fullFilePath));
+        return slotOnErrorStartFolderUnlock(
+            SyncFileItem::SoftError, tr("File Removed (start upload) %1").arg(fullFilePath));
     }
     time_t prevModtime = _item->_modtime; // the _item value was set in PropagateUploadFile::start()
     // but a potential checksum calculation could have taken some time during which the file could
@@ -410,7 +408,8 @@ void PropagateUploadFileCommon::slotStartUpload(const QByteArray &transmissionCh
     if (prevModtime != _item->_modtime) {
         propagator()->_anotherSyncNeeded = true;
         qDebug() << "prevModtime" << prevModtime << "Curr" << _item->_modtime;
-        return slotOnErrorStartFolderUnlock(SyncFileItem::SoftError, tr("Local file changed during syncing. It will be resumed."));
+        return slotOnErrorStartFolderUnlock(
+            SyncFileItem::SoftError, tr("Local file changed during syncing. It will be resumed."));
     }
 
     _fileToUpload._size = FileSystem::getSize(fullFilePath);
@@ -440,8 +439,9 @@ void PropagateUploadFileCommon::slotFolderUnlocked(const QByteArray &folderId, i
 void PropagateUploadFileCommon::slotOnErrorStartFolderUnlock(SyncFileItem::Status status, const QString &errorString)
 {
     if (_uploadingEncrypted) {
-        _uploadStatus = { status, errorString };
-        connect(_uploadEncryptedHelper, &PropagateUploadEncrypted::folderUnlocked, this, &PropagateUploadFileCommon::slotFolderUnlocked);
+        _uploadStatus = {status, errorString};
+        connect(_uploadEncryptedHelper, &PropagateUploadEncrypted::folderUnlocked, this,
+            &PropagateUploadFileCommon::slotFolderUnlocked);
         _uploadEncryptedHelper->unlockFolder();
     } else {
         done(status, errorString);
@@ -597,8 +597,8 @@ void UploadDevice::setChoked(bool b)
 
 void PropagateUploadFileCommon::startPollJob(const QString &path)
 {
-    auto *job = new PollJob(propagator()->account(), path, _item,
-        propagator()->_journal, propagator()->localPath(), this);
+    auto *job =
+        new PollJob(propagator()->account(), path, _item, propagator()->_journal, propagator()->localPath(), this);
     connect(job, &PollJob::finishedSignal, this, &PropagateUploadFileCommon::slotPollFinished);
     SyncJournalDb::PollInfo info;
     info._file = _item->_file;
@@ -635,17 +635,17 @@ void PropagateUploadFileCommon::done(SyncFileItem::Status status, const QString 
 void PropagateUploadFileCommon::checkResettingErrors()
 {
     if (_item->_httpErrorCode == 412
-        || propagator()->account()->capabilities().httpErrorCodesThatResetFailingChunkedUploads().contains(_item->_httpErrorCode)) {
+        || propagator()->account()->capabilities().httpErrorCodesThatResetFailingChunkedUploads().contains(
+            _item->_httpErrorCode)) {
         auto uploadInfo = propagator()->_journal->getUploadInfo(_item->_file);
         uploadInfo._errorCount += 1;
         if (uploadInfo._errorCount > 3) {
-            qCInfo(lcPropagateUpload) << "Reset transfer of" << _item->_file
-                                      << "due to repeated error" << _item->_httpErrorCode;
+            qCInfo(lcPropagateUpload) << "Reset transfer of" << _item->_file << "due to repeated error"
+                                      << _item->_httpErrorCode;
             uploadInfo = SyncJournalDb::UploadInfo();
         } else {
-            qCInfo(lcPropagateUpload) << "Error count for maybe-reset error" << _item->_httpErrorCode
-                                      << "on file" << _item->_file
-                                      << "is" << uploadInfo._errorCount;
+            qCInfo(lcPropagateUpload) << "Error count for maybe-reset error" << _item->_httpErrorCode << "on file"
+                                      << _item->_file << "is" << uploadInfo._errorCount;
         }
         propagator()->_journal->setUploadInfo(_item->_file, uploadInfo);
         propagator()->_journal->commit("Upload info");
@@ -670,8 +670,8 @@ void PropagateUploadFileCommon::commonErrorHandling(AbstractNetworkJob *job)
     // Ensure errors that should eventually reset the chunked upload are tracked.
     checkResettingErrors();
 
-    SyncFileItem::Status status = classifyError(job->reply()->error(), _item->_httpErrorCode,
-        &propagator()->_anotherSyncNeeded, replyContent);
+    SyncFileItem::Status status =
+        classifyError(job->reply()->error(), _item->_httpErrorCode, &propagator()->_anotherSyncNeeded, replyContent);
 
     // Insufficient remote storage.
     if (_item->_httpErrorCode == 507) {
@@ -689,7 +689,8 @@ void PropagateUploadFileCommon::commonErrorHandling(AbstractNetworkJob *job)
 
         // Set up the error
         status = SyncFileItem::DetailError;
-        errorString = tr("Upload of %1 exceeds the quota for the folder").arg(Utility::octetsToString(_fileToUpload._size));
+        errorString =
+            tr("Upload of %1 exceeds the quota for the folder").arg(Utility::octetsToString(_fileToUpload._size));
         emit propagator()->insufficientRemoteStorage();
     }
 
@@ -700,8 +701,7 @@ void PropagateUploadFileCommon::adjustLastJobTimeout(AbstractNetworkJob *job, qi
 {
     constexpr double threeMinutes = 3.0 * 60 * 1000;
 
-    job->setTimeout(qBound(
-        job->timeoutMsec(),
+    job->setTimeout(qBound(job->timeoutMsec(),
         // Calculate 3 minutes for each gigabyte of data
         qRound64(threeMinutes * fileSize / 1e9),
         // Maximum of 30 minutes
@@ -743,8 +743,7 @@ QMap<QByteArray, QByteArray> PropagateUploadFileCommon::headers()
 
     if (!_item->_etag.isEmpty() && _item->_etag != "empty_etag"
         && _item->_instruction != CSYNC_INSTRUCTION_NEW // On new files never send a If-Match
-        && _item->_instruction != CSYNC_INSTRUCTION_TYPE_CHANGE
-        && !_deleteExisting) {
+        && _item->_instruction != CSYNC_INSTRUCTION_TYPE_CHANGE && !_deleteExisting) {
         // We add quotes because the owncloud server always adds quotes around the etag, and
         //  csync_owncloud.c's owncloud_file_id always strips the quotes.
         headers[QByteArrayLiteral("If-Match")] = '"' + _item->_etag + '"';
@@ -790,8 +789,7 @@ void PropagateUploadFileCommon::finalize()
 
     // Files that were new on the remote shouldn't have online-only pin state
     // even if their parent folder is online-only.
-    if (_item->_instruction == CSYNC_INSTRUCTION_NEW
-        || _item->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE) {
+    if (_item->_instruction == CSYNC_INSTRUCTION_NEW || _item->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE) {
         auto &vfs = propagator()->syncOptions()._vfs;
         const auto pin = vfs->pinState(_item->_file);
         if (pin && *pin == PinState::OnlineOnly) {
@@ -806,8 +804,9 @@ void PropagateUploadFileCommon::finalize()
     propagator()->_journal->commit("upload file start");
 
     if (_uploadingEncrypted) {
-        _uploadStatus = { SyncFileItem::Success, QString() };
-        connect(_uploadEncryptedHelper, &PropagateUploadEncrypted::folderUnlocked, this, &PropagateUploadFileCommon::slotFolderUnlocked);
+        _uploadStatus = {SyncFileItem::Success, QString()};
+        connect(_uploadEncryptedHelper, &PropagateUploadEncrypted::folderUnlocked, this,
+            &PropagateUploadFileCommon::slotFolderUnlocked);
         _uploadEncryptedHelper->unlockFolder();
     } else {
         done(SyncFileItem::Success);
@@ -815,8 +814,7 @@ void PropagateUploadFileCommon::finalize()
 }
 
 void PropagateUploadFileCommon::abortNetworkJobs(
-    PropagatorJob::AbortType abortType,
-    const std::function<bool(AbstractNetworkJob *)> &mayAbortJob)
+    PropagatorJob::AbortType abortType, const std::function<bool(AbstractNetworkJob *)> &mayAbortJob)
 {
     if (_aborting)
         return;

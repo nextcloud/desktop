@@ -39,11 +39,7 @@ class OWNCLOUDSYNC_EXPORT SyncFileItem
 {
     Q_GADGET
 public:
-    enum Direction {
-        None = 0,
-        Up,
-        Down
-    };
+    enum Direction { None = 0, Up, Down };
     Q_ENUM(Direction)
 
     enum Status { // stored in 4 bits
@@ -163,34 +159,23 @@ public:
         return _file;
     }
 
-    bool isEmpty() const
-    {
-        return _file.isEmpty();
-    }
+    bool isEmpty() const { return _file.isEmpty(); }
 
-    bool isDirectory() const
-    {
-        return _type == ItemTypeDirectory;
-    }
+    bool isDirectory() const { return _type == ItemTypeDirectory; }
 
     /**
      * True if the item had any kind of error.
      */
     bool hasErrorStatus() const
     {
-        return _status == SyncFileItem::SoftError
-            || _status == SyncFileItem::NormalError
-            || _status == SyncFileItem::FatalError
-            || !_errorString.isEmpty();
+        return _status == SyncFileItem::SoftError || _status == SyncFileItem::NormalError
+            || _status == SyncFileItem::FatalError || !_errorString.isEmpty();
     }
 
     /**
      * Whether this item should appear on the issues tab.
      */
-    bool showInIssuesTab() const
-    {
-        return hasErrorStatus() || _status == SyncFileItem::Conflict;
-    }
+    bool showInIssuesTab() const { return hasErrorStatus() || _status == SyncFileItem::Conflict; }
 
     /**
      * Whether this item should appear on the protocol tab.

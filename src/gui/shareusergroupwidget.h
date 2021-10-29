@@ -53,12 +53,8 @@ class ShareUserGroupWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit ShareUserGroupWidget(AccountPtr account,
-        const QString &sharePath,
-        const QString &localPath,
-        SharePermissions maxSharingPermissions,
-        const QString &privateLinkUrl,
-        QWidget *parent = nullptr);
+    explicit ShareUserGroupWidget(AccountPtr account, const QString &sharePath, const QString &localPath,
+        SharePermissions maxSharingPermissions, const QString &privateLinkUrl, QWidget *parent = nullptr);
     ~ShareUserGroupWidget() override;
 
 signals:
@@ -123,11 +119,8 @@ class ShareUserLine : public QWidget
     Q_OBJECT
 
 public:
-    explicit ShareUserLine(AccountPtr account,
-        QSharedPointer<UserGroupShare> Share,
-        SharePermissions maxSharingPermissions,
-        bool isFile,
-        QWidget *parent = nullptr);
+    explicit ShareUserLine(AccountPtr account, QSharedPointer<UserGroupShare> Share,
+        SharePermissions maxSharingPermissions, bool isFile, QWidget *parent = nullptr);
     ~ShareUserLine() override;
 
     QSharedPointer<Share> share() const;
@@ -175,34 +168,34 @@ private:
     QPixmap pixmapForShareeType(Sharee::Type type, const QColor &backgroundColor = QColor()) const;
     QColor backgroundColorForShareeType(Sharee::Type type) const;
 
-  void showNoteOptions(bool show);
-  void toggleNoteOptions(bool enable);
-  void onNoteConfirmButtonClicked();
-  void setNote(const QString &note);
+    void showNoteOptions(bool show);
+    void toggleNoteOptions(bool enable);
+    void onNoteConfirmButtonClicked();
+    void setNote(const QString &note);
 
-  void toggleExpireDateOptions(bool enable);
-  void showExpireDateOptions(bool show, const QDate &initialDate = QDate());
-  void setExpireDate();
+    void toggleExpireDateOptions(bool enable);
+    void showExpireDateOptions(bool show, const QDate &initialDate = QDate());
+    void setExpireDate();
 
-  void togglePasswordSetProgressAnimation(bool show);
+    void togglePasswordSetProgressAnimation(bool show);
 
-  void enableProgessIndicatorAnimation(bool enable);
-  void disableProgessIndicatorAnimation();
+    void enableProgessIndicatorAnimation(bool enable);
+    void disableProgessIndicatorAnimation();
 
-  Ui::ShareUserLine *_ui;
-  AccountPtr _account;
-  QSharedPointer<UserGroupShare> _share;
-  bool _isFile;
+    Ui::ShareUserLine *_ui;
+    AccountPtr _account;
+    QSharedPointer<UserGroupShare> _share;
+    bool _isFile;
 
-  // _permissionEdit is a checkbox
-  QAction *_permissionReshare;
-  QAction *_deleteShareButton;
-  QAction *_permissionCreate;
-  QAction *_permissionChange;
-  QAction *_permissionDelete;
-  QAction *_noteLinkAction;
-  QAction *_expirationDateLinkAction;
-  QAction *_passwordProtectLinkAction;
+    // _permissionEdit is a checkbox
+    QAction *_permissionReshare;
+    QAction *_deleteShareButton;
+    QAction *_permissionCreate;
+    QAction *_permissionChange;
+    QAction *_permissionDelete;
+    QAction *_noteLinkAction;
+    QAction *_expirationDateLinkAction;
+    QAction *_passwordProtectLinkAction;
 };
 }
 

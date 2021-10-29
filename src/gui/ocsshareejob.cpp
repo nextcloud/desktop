@@ -25,11 +25,7 @@ OcsShareeJob::OcsShareeJob(AccountPtr account)
     connect(this, &OcsJob::jobFinished, this, &OcsShareeJob::jobDone);
 }
 
-void OcsShareeJob::getSharees(const QString &search,
-    const QString &itemType,
-    int page,
-    int perPage,
-    bool lookup)
+void OcsShareeJob::getSharees(const QString &search, const QString &itemType, int page, int perPage, bool lookup)
 {
     setVerb("GET");
 

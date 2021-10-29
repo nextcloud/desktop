@@ -45,15 +45,13 @@ static QString removeTrailingSlash(const QString &s)
 FolderStatusModel::FolderStatusModel(QObject *parent)
     : QAbstractItemModel(parent)
 {
-
 }
 
 FolderStatusModel::~FolderStatusModel() = default;
 
 static bool sortByFolderHeader(const FolderStatusModel::SubFolderInfo &lhs, const FolderStatusModel::SubFolderInfo &rhs)
 {
-    return QString::compare(lhs._folder->shortGuiRemotePathOrAppName(),
-               rhs._folder->shortGuiRemotePathOrAppName(),
+    return QString::compare(lhs._folder->shortGuiRemotePathOrAppName(), rhs._folder->shortGuiRemotePathOrAppName(),
                Qt::CaseInsensitive)
         < 0;
 }
@@ -65,10 +63,10 @@ void FolderStatusModel::setAccountState(const AccountState *accountState)
     _folders.clear();
     _accountState = accountState;
 
-    connect(FolderMan::instance(), &FolderMan::folderSyncStateChange,
-        this, &FolderStatusModel::slotFolderSyncStateChange, Qt::UniqueConnection);
-    connect(FolderMan::instance(), &FolderMan::scheduleQueueChanged,
-        this, &FolderStatusModel::slotFolderScheduleQueueChanged, Qt::UniqueConnection);
+    connect(FolderMan::instance(), &FolderMan::folderSyncStateChange, this,
+        &FolderStatusModel::slotFolderSyncStateChange, Qt::UniqueConnection);
+    connect(FolderMan::instance(), &FolderMan::scheduleQueueChanged, this,
+        &FolderStatusModel::slotFolderScheduleQueueChanged, Qt::UniqueConnection);
 
     auto folders = FolderMan::instance()->map();
     foreach (auto f, folders) {
@@ -161,7 +159,9 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
             //: Example text: "File.txt (23KB)"
             return x._size < 0 ? x._name : tr("%1 (%2)").arg(x._name, Utility::octetsToString(x._size));
         case Qt::ToolTipRole:
-            return QString(QLatin1String("<qt>") + Utility::escape(x._size < 0 ? x._name : tr("%1 (%2)").arg(x._name, Utility::octetsToString(x._size))) + QLatin1String("</qt>"));
+            return QString(QLatin1String("<qt>")
+                + Utility::escape(x._size < 0 ? x._name : tr("%1 (%2)").arg(x._name, Utility::octetsToString(x._size)))
+                + QLatin1String("</qt>"));
         case Qt::CheckStateRole:
             if (supportsSelectiveSync) {
                 return x._checked;
@@ -197,8 +197,8 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
         switch (role) {
         case Qt::DisplayRole:
             if (x->_hasError) {
-                return QVariant(tr("Error while loading the list of folders from the server.")
-                    + QString("\n") + x->_lastErrorString);
+                return QVariant(tr("Error while loading the list of folders from the server.") + QString("\n")
+                    + x->_lastErrorString);
             } else {
                 return tr("Fetching folder list from server …");
             }
@@ -511,8 +511,7 @@ QModelIndex FolderStatusModel::index(int row, int column, const QModelIndex &par
         if (pinfo->_subs.count() <= parent.row())
             return {}; // should not happen
         auto &info = pinfo->_subs[parent.row()];
-        if (!info.hasLabel()
-            && info._subs.count() <= row)
+        if (!info.hasLabel() && info._subs.count() <= row)
             return {}; // should not happen
         return createIndex(row, column, &info);
     }
@@ -596,8 +595,10 @@ void FolderStatusModel::fetchMore(const QModelIndex &parent)
     info->resetSubs(this, parent);
     QString path = info->_folder->remotePathTrailingSlash();
 
-    // info->_path always contains non-mangled name, so we need to use mangled when requesting nested folders for encrypted subfolders as required by LsColJob
-    const QString infoPath = (info->_isEncrypted && !info->_e2eMangledName.isEmpty()) ? info->_e2eMangledName : info->_path;
+    // info->_path always contains non-mangled name, so we need to use mangled when requesting nested folders for
+    // encrypted subfolders as required by LsColJob
+    const QString infoPath =
+        (info->_isEncrypted && !info->_e2eMangledName.isEmpty()) ? info->_e2eMangledName : info->_path;
 
     if (infoPath != QLatin1String("/")) {
         path += infoPath;
@@ -615,14 +616,10 @@ void FolderStatusModel::fetchMore(const QModelIndex &parent)
     job->setProperties(props);
 
     job->setTimeout(60 * 1000);
-    connect(job, &LsColJob::directoryListingSubfolders,
-        this, &FolderStatusModel::slotUpdateDirectories);
-    connect(job, &LsColJob::finishedWithError,
-        this, &FolderStatusModel::slotLscolFinishedWithError);
-    connect(job, &LsColJob::directoryListingIterated,
-        this, &FolderStatusModel::slotGatherPermissions);
-    connect(job, &LsColJob::directoryListingIterated,
-            this, &FolderStatusModel::slotGatherEncryptionStatus);
+    connect(job, &LsColJob::directoryListingSubfolders, this, &FolderStatusModel::slotUpdateDirectories);
+    connect(job, &LsColJob::finishedWithError, this, &FolderStatusModel::slotLscolFinishedWithError);
+    connect(job, &LsColJob::directoryListingIterated, this, &FolderStatusModel::slotGatherPermissions);
+    connect(job, &LsColJob::directoryListingIterated, this, &FolderStatusModel::slotGatherEncryptionStatus);
 
     job->start();
 
@@ -650,7 +647,8 @@ void FolderStatusModel::slotGatherPermissions(const QString &href, const QMap<QS
     auto job = sender();
     auto permissionMap = job->property(propertyPermissionMap).toMap();
     job->setProperty(propertyPermissionMap, QVariant()); // avoid a detach of the map while it is modified
-    ASSERT(!href.endsWith(QLatin1Char('/')), "LsColXMLParser::parse should remove the trailing slash before calling us.");
+    ASSERT(
+        !href.endsWith(QLatin1Char('/')), "LsColXMLParser::parse should remove the trailing slash before calling us.");
     permissionMap[href] = *it;
     job->setProperty(propertyPermissionMap, permissionMap);
 }
@@ -664,7 +662,8 @@ void FolderStatusModel::slotGatherEncryptionStatus(const QString &href, const QM
     auto job = sender();
     auto encryptionMap = job->property(propertyEncryptionMap).toMap();
     job->setProperty(propertyEncryptionMap, QVariant()); // avoid a detach of the map while it is modified
-    ASSERT(!href.endsWith(QLatin1Char('/')), "LsColXMLParser::parse should remove the trailing slash before calling us.");
+    ASSERT(
+        !href.endsWith(QLatin1Char('/')), "LsColXMLParser::parse should remove the trailing slash before calling us.");
     encryptionMap[href] = *it;
     job->setProperty(propertyEncryptionMap, encryptionMap);
 }
@@ -701,9 +700,11 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
     bool ok1 = true;
     bool ok2 = true;
     if (parentInfo->_checked == Qt::PartiallyChecked) {
-        selectiveSyncBlackList = parentInfo->_folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok1);
+        selectiveSyncBlackList =
+            parentInfo->_folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok1);
     }
-    auto selectiveSyncUndecidedList = parentInfo->_folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, &ok2);
+    auto selectiveSyncUndecidedList =
+        parentInfo->_folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, &ok2);
 
     if (!(ok1 && ok2)) {
         qCWarning(lcFolderStatus) << "Could not retrieve selective sync info from journal";
@@ -747,8 +748,9 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
         if (rec.isValid()) {
             newInfo._name = removeTrailingSlash(rec._path).split('/').last();
             if (rec._isE2eEncrypted && !rec._e2eMangledName.isEmpty()) {
-                // we must use local path for Settings Dialog's filesystem tree, otherwise open and create new folder actions won't work
-                // hence, we are storing _e2eMangledName separately so it can be use later for LsColJob
+                // we must use local path for Settings Dialog's filesystem tree, otherwise open and create new folder
+                // actions won't work hence, we are storing _e2eMangledName separately so it can be use later for
+                // LsColJob
                 newInfo._e2eMangledName = relativePath;
                 newInfo._path = rec._path;
             }
@@ -759,7 +761,7 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
             newInfo._name = removeTrailingSlash(relativePath).split('/').last();
         }
 
-        const auto& folderInfo = job->_folderInfos.value(path);
+        const auto &folderInfo = job->_folderInfos.value(path);
         newInfo._size = folderInfo.size;
         newInfo._fileId = folderInfo.fileId;
         if (relativePath.isEmpty())
@@ -845,8 +847,8 @@ void FolderStatusModel::slotLscolFinishedWithError(QNetworkReply *r)
     }
 }
 
-QStringList FolderStatusModel::createBlackList(const FolderStatusModel::SubFolderInfo &root,
-    const QStringList &oldBlackList) const
+QStringList FolderStatusModel::createBlackList(
+    const FolderStatusModel::SubFolderInfo &root, const QStringList &oldBlackList) const
 {
     switch (root._checked) {
     case Qt::Unchecked:
@@ -888,7 +890,8 @@ void FolderStatusModel::slotApplySelectiveSync()
 {
     for (const auto &folderInfo : qAsConst(_folders)) {
         if (!folderInfo._fetched) {
-            folderInfo._folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, QStringList());
+            folderInfo._folder->journalDb()->setSelectiveSyncList(
+                SyncJournalDb::SelectiveSyncUndecidedList, QStringList());
             continue;
         }
         const auto folder = folderInfo._folder;
@@ -907,7 +910,11 @@ void FolderStatusModel::slotApplySelectiveSync()
 
         // The folders that were undecided or blacklisted and that are now checked should go on the white list.
         // The user confirmed them already just now.
-        QStringList toAddToWhiteList = ((oldBlackListSet + folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, &ok).toSet()) - blackListSet).values();
+        QStringList toAddToWhiteList =
+            ((oldBlackListSet
+                 + folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, &ok).toSet())
+                - blackListSet)
+                .values();
 
         if (!toAddToWhiteList.isEmpty()) {
             auto whiteList = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList, &ok);
@@ -925,7 +932,7 @@ void FolderStatusModel::slotApplySelectiveSync()
             if (folder->isBusy()) {
                 folder->slotTerminateSync();
             }
-            //The part that changed should not be read from the DB on next sync because there might be new folders
+            // The part that changed should not be read from the DB on next sync because there might be new folders
             // (the ones that are no longer in the blacklist)
             foreach (const auto &it, changes) {
                 folder->journalDb()->schedulePathForRemoteDiscovery(it);
@@ -964,17 +971,17 @@ void FolderStatusModel::slotSetProgress(const ProgressInfo &progress)
     auto *pi = &_folders[folderIndex]._progress;
 
     QVector<int> roles;
-    roles << FolderStatusDelegate::SyncProgressItemString
-          << FolderStatusDelegate::WarningCount
-          << Qt::ToolTipRole;
+    roles << FolderStatusDelegate::SyncProgressItemString << FolderStatusDelegate::WarningCount << Qt::ToolTipRole;
 
     if (progress.status() == ProgressInfo::Discovery) {
         if (!progress._currentDiscoveredRemoteFolder.isEmpty()) {
-            pi->_overallSyncString = tr("Checking for changes in remote \"%1\"").arg(progress._currentDiscoveredRemoteFolder);
+            pi->_overallSyncString =
+                tr("Checking for changes in remote \"%1\"").arg(progress._currentDiscoveredRemoteFolder);
             emit dataChanged(index(folderIndex), index(folderIndex), roles);
             return;
         } else if (!progress._currentDiscoveredLocalFolder.isEmpty()) {
-            pi->_overallSyncString = tr("Checking for changes in local \"%1\"").arg(progress._currentDiscoveredLocalFolder);
+            pi->_overallSyncString =
+                tr("Checking for changes in local \"%1\"").arg(progress._currentDiscoveredLocalFolder);
             emit dataChanged(index(folderIndex), index(folderIndex), roles);
             return;
         }
@@ -988,8 +995,7 @@ void FolderStatusModel::slotSetProgress(const ProgressInfo &progress)
 
     // Status is Starting, Propagation or Done
 
-    if (!progress._lastCompletedItem.isEmpty()
-        && Progress::isWarningKind(progress._lastCompletedItem._status)) {
+    if (!progress._lastCompletedItem.isEmpty() && Progress::isWarningKind(progress._lastCompletedItem._status)) {
         pi->_warningCount++;
     }
 
@@ -1002,8 +1008,7 @@ void FolderStatusModel::slotSetProgress(const ProgressInfo &progress)
     quint64 estimatedDownBw = 0;
     QString allFilenames;
     foreach (const ProgressInfo::ProgressItem &citm, progress._currentItems) {
-        if (curItemProgress == -1 || (ProgressInfo::isSizeDependent(citm._item)
-                                         && biggerItemSize < citm._item._size)) {
+        if (curItemProgress == -1 || (ProgressInfo::isSizeDependent(citm._item) && biggerItemSize < citm._item._size)) {
             curItemProgress = citm._progress.completed();
             curItem = citm._item;
             biggerItemSize = citm._item._size;
@@ -1033,7 +1038,7 @@ void FolderStatusModel::slotSetProgress(const ProgressInfo &progress)
     if (ProgressInfo::isSizeDependent(curItem)) {
         QString s1 = Utility::octetsToString(curItemProgress);
         QString s2 = Utility::octetsToString(curItem._size);
-        //quint64 estimatedBw = progress.fileProgress(curItem).estimatedBandwidth;
+        // quint64 estimatedBw = progress.fileProgress(curItem).estimatedBandwidth;
         if (estimatedUpBw || estimatedDownBw) {
             /*
             //: Example text: "uploading foobar.png (1MB of 2MB) time left 2 minutes at a rate of 24Kb/s"
@@ -1051,8 +1056,7 @@ void FolderStatusModel::slotSetProgress(const ProgressInfo &progress)
                 //: Example text: "download 24Kb/s"   (%1 is replaced by 24Kb (translated))
                 fileProgressString.append(tr("download %1/s").arg(Utility::octetsToString(estimatedDownBw)));
 #else
-                fileProgressString.append(tr("\u2193 %1/s")
-                                              .arg(Utility::octetsToString(estimatedDownBw)));
+                fileProgressString.append(tr("\u2193 %1/s").arg(Utility::octetsToString(estimatedDownBw)));
 #endif
             }
             if (estimatedUpBw > 0) {
@@ -1061,8 +1065,7 @@ void FolderStatusModel::slotSetProgress(const ProgressInfo &progress)
                 //: Example text: "upload 24Kb/s"   (%1 is replaced by 24Kb (translated))
                 fileProgressString.append(tr("upload %1/s").arg(Utility::octetsToString(estimatedUpBw)));
 #else
-                fileProgressString.append(tr("\u2191 %1/s")
-                                              .arg(Utility::octetsToString(estimatedUpBw)));
+                fileProgressString.append(tr("\u2191 %1/s").arg(Utility::octetsToString(estimatedUpBw)));
 #endif
             }
         } else {
@@ -1096,10 +1099,7 @@ void FolderStatusModel::slotSetProgress(const ProgressInfo &progress)
 
         } else {
             //: Example text: "12 MB of 345 MB, file 6 of 7"
-            overallSyncString = tr("%1 of %2, file %3 of %4")
-                                    .arg(s1, s2)
-                                    .arg(currentFile)
-                                    .arg(totalFileCount);
+            overallSyncString = tr("%1 of %2, file %3 of %4").arg(s1, s2).arg(currentFile).arg(totalFileCount);
         }
     } else if (totalFileCount > 0) {
         // Don't attempt to estimate the time left if there is no kb to transfer.
@@ -1163,8 +1163,7 @@ void FolderStatusModel::slotFolderSyncStateChange(Folder *f)
     // update the icon etc. now
     slotUpdateFolderState(f);
 
-    if (f->syncResult().folderStructureWasChanged()
-        && (state == SyncResult::Success || state == SyncResult::Problem)) {
+    if (f->syncResult().folderStructureWasChanged() && (state == SyncResult::Success || state == SyncResult::Problem)) {
         // There is a new or a removed folder. reset all data
         resetAndFetch(index(folderIndex));
     }
@@ -1187,7 +1186,8 @@ void FolderStatusModel::slotSyncAllPendingBigFolders()
 {
     for (int i = 0; i < _folders.count(); ++i) {
         if (!_folders[i]._fetched) {
-            _folders[i]._folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, QStringList());
+            _folders[i]._folder->journalDb()->setSelectiveSyncList(
+                SyncJournalDb::SelectiveSyncUndecidedList, QStringList());
             continue;
         }
         auto folder = _folders.at(i)._folder;

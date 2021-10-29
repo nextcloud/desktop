@@ -44,14 +44,16 @@ Q_LOGGING_CATEGORY(lcCSyncVIOLocal, "nextcloud.sync.csync.vio_local", QtInfoMsg)
  * directory functions
  */
 
-struct csync_vio_handle_t {
-  DIR *dh;
-  QByteArray path;
+struct csync_vio_handle_t
+{
+    DIR *dh;
+    QByteArray path;
 };
 
 static int _csync_vio_local_stat_mb(const mbchar_t *wuri, csync_file_stat_t *buf);
 
-csync_vio_handle_t *csync_vio_local_opendir(const QString &name) {
+csync_vio_handle_t *csync_vio_local_opendir(const QString &name)
+{
     QScopedPointer<csync_vio_handle_t> handle(new csync_vio_handle_t{});
 
     auto dirname = QFile::encodeName(name);
@@ -65,70 +67,72 @@ csync_vio_handle_t *csync_vio_local_opendir(const QString &name) {
     return handle.take();
 }
 
-int csync_vio_local_closedir(csync_vio_handle_t *dhandle) {
+int csync_vio_local_closedir(csync_vio_handle_t *dhandle)
+{
     Q_ASSERT(dhandle);
     auto rc = _tclosedir(dhandle->dh);
     delete dhandle;
     return rc;
 }
 
-std::unique_ptr<csync_file_stat_t> csync_vio_local_readdir(csync_vio_handle_t *handle, OCC::Vfs *vfs) {
+std::unique_ptr<csync_file_stat_t> csync_vio_local_readdir(csync_vio_handle_t *handle, OCC::Vfs *vfs)
+{
+    struct _tdirent *dirent = nullptr;
+    std::unique_ptr<csync_file_stat_t> file_stat;
 
-  struct _tdirent *dirent = nullptr;
-  std::unique_ptr<csync_file_stat_t> file_stat;
+    do {
+        dirent = _treaddir(handle->dh);
+        if (!dirent)
+            return {};
+    } while (qstrcmp(dirent->d_name, ".") == 0 || qstrcmp(dirent->d_name, "..") == 0);
 
-  do {
-      dirent = _treaddir(handle->dh);
-      if (!dirent)
-          return {};
-  } while (qstrcmp(dirent->d_name, ".") == 0 || qstrcmp(dirent->d_name, "..") == 0);
+    file_stat = std::make_unique<csync_file_stat_t>();
+    file_stat->path = QFile::decodeName(dirent->d_name).toUtf8();
+    QByteArray fullPath = handle->path % '/' % QByteArray() % const_cast<const char *>(dirent->d_name);
+    if (file_stat->path.isNull()) {
+        file_stat->original_path = fullPath;
+        qCWarning(lcCSyncVIOLocal) << "Invalid characters in file/directory name, please rename:" << dirent->d_name
+                                   << handle->path;
+    }
 
-  file_stat = std::make_unique<csync_file_stat_t>();
-  file_stat->path = QFile::decodeName(dirent->d_name).toUtf8();
-  QByteArray fullPath = handle->path % '/' % QByteArray() % const_cast<const char *>(dirent->d_name);
-  if (file_stat->path.isNull()) {
-      file_stat->original_path = fullPath;
-      qCWarning(lcCSyncVIOLocal) << "Invalid characters in file/directory name, please rename:" << dirent->d_name << handle->path;
-  }
-
-  /* Check for availability of d_type, see manpage. */
+    /* Check for availability of d_type, see manpage. */
 #if defined(_DIRENT_HAVE_D_TYPE) || defined(__APPLE__)
-  switch (dirent->d_type) {
+    switch (dirent->d_type) {
     case DT_FIFO:
     case DT_SOCK:
     case DT_CHR:
     case DT_BLK:
-      break;
+        break;
     case DT_DIR:
     case DT_REG:
-      if (dirent->d_type == DT_DIR) {
-        file_stat->type = ItemTypeDirectory;
-      } else {
-        file_stat->type = ItemTypeFile;
-      }
-      break;
+        if (dirent->d_type == DT_DIR) {
+            file_stat->type = ItemTypeDirectory;
+        } else {
+            file_stat->type = ItemTypeFile;
+        }
+        break;
     default:
-      break;
-  }
+        break;
+    }
 #endif
 
-  if (file_stat->path.isNull())
-      return file_stat;
+    if (file_stat->path.isNull())
+        return file_stat;
 
-  if (_csync_vio_local_stat_mb(fullPath.constData(), file_stat.get()) < 0) {
-      // Will get excluded by _csync_detect_update.
-      file_stat->type = ItemTypeSkip;
-  }
+    if (_csync_vio_local_stat_mb(fullPath.constData(), file_stat.get()) < 0) {
+        // Will get excluded by _csync_detect_update.
+        file_stat->type = ItemTypeSkip;
+    }
 
-  // Override type for virtual files if desired
-  if (vfs) {
-      // Directly modifies file_stat->type.
-      // We can ignore the return value since we're done here anyway.
-      const auto result = vfs->statTypeVirtualFile(file_stat.get(), &handle->path);
-      Q_UNUSED(result)
-  }
+    // Override type for virtual files if desired
+    if (vfs) {
+        // Directly modifies file_stat->type.
+        // We can ignore the return value since we're done here anyway.
+        const auto result = vfs->statTypeVirtualFile(file_stat.get(), &handle->path);
+        Q_UNUSED(result)
+    }
 
-  return file_stat;
+    return file_stat;
 }
 
 
@@ -147,28 +151,28 @@ static int _csync_vio_local_stat_mb(const mbchar_t *wuri, csync_file_stat_t *buf
 
     switch (sb.st_mode & S_IFMT) {
     case S_IFDIR:
-      buf->type = ItemTypeDirectory;
-      break;
+        buf->type = ItemTypeDirectory;
+        break;
     case S_IFREG:
-      buf->type = ItemTypeFile;
-      break;
+        buf->type = ItemTypeFile;
+        break;
     case S_IFLNK:
     case S_IFSOCK:
-      buf->type = ItemTypeSoftLink;
-      break;
+        buf->type = ItemTypeSoftLink;
+        break;
     default:
-      buf->type = ItemTypeSkip;
-      break;
-  }
+        buf->type = ItemTypeSkip;
+        break;
+    }
 
 #ifdef __APPLE__
-  if (sb.st_flags & UF_HIDDEN) {
-      buf->is_hidden = true;
-  }
+    if (sb.st_flags & UF_HIDDEN) {
+        buf->is_hidden = true;
+    }
 #endif
 
-  buf->inode = sb.st_ino;
-  buf->modtime = sb.st_mtime;
-  buf->size = sb.st_size;
-  return 0;
+    buf->inode = sb.st_ino;
+    buf->modtime = sb.st_mtime;
+    buf->size = sb.st_size;
+    return 0;
 }

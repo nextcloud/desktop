@@ -60,8 +60,6 @@ void DummyCredentials::askFromUser()
     Q_EMIT(asked());
 }
 
-void DummyCredentials::persist()
-{
-}
+void DummyCredentials::persist() { }
 
 } // namespace OCC

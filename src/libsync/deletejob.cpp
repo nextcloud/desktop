@@ -52,8 +52,7 @@ void DeleteJob::start()
 
 bool DeleteJob::finished()
 {
-    qCInfo(lcDeleteJob) << "DELETE of" << reply()->request().url() << "FINISHED WITH STATUS"
-                       << replyStatusString();
+    qCInfo(lcDeleteJob) << "DELETE of" << reply()->request().url() << "FINISHED WITH STATUS" << replyStatusString();
 
     emit finishedSignal();
     return true;

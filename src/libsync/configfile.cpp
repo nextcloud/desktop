@@ -40,7 +40,7 @@
 #include <QNetworkProxy>
 #include <QStandardPaths>
 
-#define QTLEGACY (QT_VERSION < QT_VERSION_CHECK(5,9,0))
+#define QTLEGACY (QT_VERSION < QT_VERSION_CHECK(5, 9, 0))
 
 #if !(QTLEGACY)
 #include <QOperatingSystemVersion>
@@ -59,7 +59,7 @@ namespace chrono = std::chrono;
 
 Q_LOGGING_CATEGORY(lcConfigFile, "nextcloud.sync.configfile", QtInfoMsg)
 
-//static const char caCertsKeyC[] = "CaCertificates"; only used from account.cpp
+// static const char caCertsKeyC[] = "CaCertificates"; only used from account.cpp
 static const char remotePollIntervalC[] = "remotePollInterval";
 static const char forceSyncIntervalC[] = "forceSyncInterval";
 static const char fullLocalDiscoveryIntervalC[] = "fullLocalDiscoveryInterval";
@@ -110,8 +110,8 @@ const char certPasswd[] = "http_certificatePasswd";
 QString ConfigFile::_confDir = QString();
 bool ConfigFile::_askedUser = false;
 
-static chrono::milliseconds millisecondsValue(const QSettings &setting, const char *key,
-    chrono::milliseconds defaultValue)
+static chrono::milliseconds millisecondsValue(
+    const QSettings &setting, const char *key, chrono::milliseconds defaultValue)
 {
     return chrono::milliseconds(setting.value(QLatin1String(key), qlonglong(defaultValue.count())).toLongLong());
 }
@@ -193,15 +193,15 @@ bool ConfigFile::showInExplorerNavigationPane() const
 {
     const bool defaultValue =
 #ifdef Q_OS_WIN
-    #if QTLEGACY
+#if QTLEGACY
         (QSysInfo::windowsVersion() < QSysInfo::WV_WINDOWS10);
-    #else
+#else
         QOperatingSystemVersion::current() >= QOperatingSystemVersion::Windows10;
-    #endif
+#endif
 #else
         false
 #endif
-        ;
+    ;
     QSettings settings(configFile(), QSettings::IniFormat);
     return settings.value(QLatin1String(showInExplorerNavigationPaneC), defaultValue).toBool();
 }
@@ -320,23 +320,25 @@ QString ConfigFile::configPath() const
 {
     if (_confDir.isEmpty()) {
         if (!Utility::isWindows()) {
-            // On Unix, use the AppConfigLocation for the settings, that's configurable with the XDG_CONFIG_HOME env variable.
+            // On Unix, use the AppConfigLocation for the settings, that's configurable with the XDG_CONFIG_HOME env
+            // variable.
             _confDir = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation);
         } else {
-            // On Windows, use AppDataLocation, that's where the roaming data is and where we should store the config file
-             auto newLocation = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+            // On Windows, use AppDataLocation, that's where the roaming data is and where we should store the config
+            // file
+            auto newLocation = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
 
-             // Check if this is the first time loading the new location
-             if (!QFileInfo(newLocation).isDir()) {
-                 // Migrate data to the new locations
-                 auto oldLocation = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation);
+            // Check if this is the first time loading the new location
+            if (!QFileInfo(newLocation).isDir()) {
+                // Migrate data to the new locations
+                auto oldLocation = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation);
 
-                 // Only migrate if the old location exists.
-                 if (QFileInfo(oldLocation).isDir()) {
-                     QDir().mkpath(newLocation);
-                     copy_dir_recursive(oldLocation, newLocation);
-                 }
-             }
+                // Only migrate if the old location exists.
+                if (QFileInfo(oldLocation).isDir()) {
+                    QDir().mkpath(newLocation);
+                    copy_dir_recursive(oldLocation, newLocation);
+                }
+            }
             _confDir = newLocation;
         }
     }
@@ -407,8 +409,7 @@ QString ConfigFile::excludeFileFromSystem()
 #endif
 #ifdef Q_OS_MAC
     // exec path is inside the bundle
-    fi.setFile(QCoreApplication::applicationDirPath(),
-        QLatin1String("../Resources/") + exclFile);
+    fi.setFile(QCoreApplication::applicationDirPath(), QLatin1String("../Resources/") + exclFile);
 #endif
 
     return fi.absoluteFilePath();
@@ -420,11 +421,10 @@ QString ConfigFile::backup() const
     auto versionString = clientVersionString();
     if (!versionString.isEmpty())
         versionString.prepend('_');
-    QString backupFile =
-        QString("%1.backup_%2%3")
-            .arg(baseFile)
-            .arg(QDateTime::currentDateTime().toString("yyyyMMdd_HHmmss"))
-            .arg(versionString);
+    QString backupFile = QString("%1.backup_%2%3")
+                             .arg(baseFile)
+                             .arg(QDateTime::currentDateTime().toString("yyyyMMdd_HHmmss"))
+                             .arg(versionString);
 
     // If this exact file already exists it's most likely that a backup was
     // already done. (two backup calls directly after each other, potentially
@@ -501,7 +501,8 @@ chrono::milliseconds ConfigFile::remotePollInterval(const QString &connection) c
     auto defaultPollInterval = chrono::milliseconds(DEFAULT_REMOTE_POLL_INTERVAL);
     auto remoteInterval = millisecondsValue(settings, remotePollIntervalC, defaultPollInterval);
     if (remoteInterval < chrono::seconds(5)) {
-        qCWarning(lcConfigFile) << "Remote Interval is less than 5 seconds, reverting to" << DEFAULT_REMOTE_POLL_INTERVAL;
+        qCWarning(lcConfigFile) << "Remote Interval is less than 5 seconds, reverting to"
+                                << DEFAULT_REMOTE_POLL_INTERVAL;
         remoteInterval = defaultPollInterval;
     }
     return remoteInterval;
@@ -536,7 +537,8 @@ chrono::milliseconds ConfigFile::forceSyncInterval(const QString &connection) co
     auto defaultInterval = chrono::hours(2);
     auto interval = millisecondsValue(settings, forceSyncIntervalC, defaultInterval);
     if (interval < pollInterval) {
-        qCWarning(lcConfigFile) << "Force sync interval is less than the remote poll inteval, reverting to" << pollInterval.count();
+        qCWarning(lcConfigFile) << "Force sync interval is less than the remote poll inteval, reverting to"
+                                << pollInterval.count();
         interval = pollInterval;
     }
     return interval;
@@ -643,7 +645,7 @@ int ConfigFile::updateSegment() const
     int segment = settings.value(QLatin1String(updateSegmentC), -1).toInt();
 
     // Invalid? (Unset at the very first launch)
-    if(segment < 0 || segment > 99) {
+    if (segment < 0 || segment > 99) {
         // Save valid segment value, normally has to be done only once.
         segment = Utility::rand() % 99;
         settings.setValue(QLatin1String(updateSegmentC), segment);
@@ -656,11 +658,8 @@ QString ConfigFile::updateChannel() const
 {
     QString defaultUpdateChannel = QStringLiteral("stable");
     QString suffix = QString::fromLatin1(MIRALL_STRINGIFY(MIRALL_VERSION_SUFFIX));
-    if (suffix.startsWith("daily")
-        || suffix.startsWith("nightly")
-        || suffix.startsWith("alpha")
-        || suffix.startsWith("rc")
-        || suffix.startsWith("beta")) {
+    if (suffix.startsWith("daily") || suffix.startsWith("nightly") || suffix.startsWith("alpha")
+        || suffix.startsWith("rc") || suffix.startsWith("beta")) {
         defaultUpdateChannel = QStringLiteral("beta");
     }
 
@@ -674,11 +673,8 @@ void ConfigFile::setUpdateChannel(const QString &channel)
     settings.setValue(QLatin1String(updateChannelC), channel);
 }
 
-void ConfigFile::setProxyType(int proxyType,
-    const QString &host,
-    int port, bool needsAuth,
-    const QString &user,
-    const QString &pass)
+void ConfigFile::setProxyType(
+    int proxyType, const QString &host, int port, bool needsAuth, const QString &user, const QString &pass)
 {
     QSettings settings(configFile(), QSettings::IniFormat);
 
@@ -709,18 +705,19 @@ void ConfigFile::setProxyType(int proxyType,
     settings.sync();
 }
 
-QVariant ConfigFile::getValue(const QString &param, const QString &group,
-    const QVariant &defaultValue) const
+QVariant ConfigFile::getValue(const QString &param, const QString &group, const QVariant &defaultValue) const
 {
     QVariant systemSetting;
     if (Utility::isMac()) {
-        QSettings systemSettings(QLatin1String("/Library/Preferences/" APPLICATION_REV_DOMAIN ".plist"), QSettings::NativeFormat);
+        QSettings systemSettings(
+            QLatin1String("/Library/Preferences/" APPLICATION_REV_DOMAIN ".plist"), QSettings::NativeFormat);
         if (!group.isEmpty()) {
             systemSettings.beginGroup(group);
         }
         systemSetting = systemSettings.value(param, defaultValue);
     } else if (Utility::isUnix()) {
-        QSettings systemSettings(QString(SYSCONFDIR "/%1/%1.conf").arg(Theme::instance()->appName()), QSettings::NativeFormat);
+        QSettings systemSettings(
+            QString(SYSCONFDIR "/%1/%1.conf").arg(Theme::instance()->appName()), QSettings::NativeFormat);
         if (!group.isEmpty()) {
             systemSettings.beginGroup(group);
         }
@@ -891,7 +888,8 @@ void ConfigFile::setMoveToTrash(bool isChecked)
     setValue(moveToTrashC, isChecked);
 }
 
-bool ConfigFile::showMainDialogAsNormalWindow() const {
+bool ConfigFile::showMainDialogAsNormalWindow() const
+{
     return getValue(showMainDialogAsNormalWindowC, {}, false).toBool();
 }
 

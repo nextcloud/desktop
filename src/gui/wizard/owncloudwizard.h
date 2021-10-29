@@ -48,10 +48,7 @@ class OwncloudWizard : public QWizard
 {
     Q_OBJECT
 public:
-    enum LogType {
-        LogPlain,
-        LogParagraph
-    };
+    enum LogType { LogPlain, LogParagraph };
 
     OwncloudWizard(QWidget *parent = nullptr);
 

@@ -31,9 +31,7 @@ public:
     {
     }
 public slots:
-    void transmissionProgressSlot()
-    {
-    }
+    void transmissionProgressSlot() { }
 };
 
 #endif

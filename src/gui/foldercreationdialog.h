@@ -20,7 +20,7 @@
 namespace OCC {
 
 namespace Ui {
-class FolderCreationDialog;
+    class FolderCreationDialog;
 }
 
 class FolderCreationDialog : public QDialog

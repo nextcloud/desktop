@@ -30,7 +30,7 @@ using GMenu = _GMenu;
 struct _GActionGroup;
 using GActionGroup = _GActionGroup;
 using gchar = char;
-using gpointer = void*;
+using gpointer = void *;
 
 using namespace OCC;
 
@@ -38,12 +38,13 @@ class CloudProviderWrapper : public QObject
 {
     Q_OBJECT
 public:
-    explicit CloudProviderWrapper(QObject *parent = nullptr, Folder *folder = nullptr, int folderId = 0, CloudProvidersProviderExporter* cloudprovider = nullptr);
+    explicit CloudProviderWrapper(QObject *parent = nullptr, Folder *folder = nullptr, int folderId = 0,
+        CloudProvidersProviderExporter *cloudprovider = nullptr);
     ~CloudProviderWrapper() override;
-    CloudProvidersAccountExporter* accountExporter();
-    Folder* folder();
-    GMenuModel* getMenuModel();
-    GActionGroup* getActionGroup();
+    CloudProvidersAccountExporter *accountExporter();
+    Folder *folder();
+    GMenuModel *getMenuModel();
+    GActionGroup *getActionGroup();
     void updateStatusText(QString statusText);
     void updatePauseStatus();
 
@@ -51,7 +52,7 @@ public slots:
     void slotSyncStarted();
     void slotSyncFinished(const SyncResult &);
     void slotUpdateProgress(const QString &folder, const ProgressInfo &progress);
-    void slotSyncPausedChanged(Folder*, bool);
+    void slotSyncPausedChanged(Folder *, bool);
 
 private:
     Folder *_folder;
@@ -59,8 +60,8 @@ private:
     CloudProvidersAccountExporter *_cloudProviderAccount;
     QList<QPair<QString, QString>> _recentlyChanged;
     bool _paused;
-    GMenu* _mainMenu = nullptr;
-    GMenu* _recentMenu = nullptr;
+    GMenu *_mainMenu = nullptr;
+    GMenu *_recentMenu = nullptr;
 };
 
 #endif // CLOUDPROVIDER_H

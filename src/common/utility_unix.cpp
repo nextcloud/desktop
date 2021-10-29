@@ -49,9 +49,8 @@ QString getUserAutostartDir_private()
 bool hasLaunchOnStartup_private(const QString &appName)
 {
     Q_UNUSED(appName)
-    QString desktopFileLocation = getUserAutostartDir_private()
-                                    + QLatin1String(LINUX_APPLICATION_ID)
-                                    + QLatin1String(".desktop");
+    QString desktopFileLocation =
+        getUserAutostartDir_private() + QLatin1String(LINUX_APPLICATION_ID) + QLatin1String(".desktop");
     return QFile::exists(desktopFileLocation);
 }
 
@@ -59,9 +58,7 @@ void setLaunchOnStartup_private(const QString &appName, const QString &guiName, 
 {
     Q_UNUSED(appName)
     QString userAutoStartPath = getUserAutostartDir_private();
-    QString desktopFileLocation = userAutoStartPath
-                                    + QLatin1String(LINUX_APPLICATION_ID)
-                                    + QLatin1String(".desktop");
+    QString desktopFileLocation = userAutoStartPath + QLatin1String(LINUX_APPLICATION_ID) + QLatin1String(".desktop");
     if (enable) {
         if (!QDir().exists(userAutoStartPath) && !QDir().mkpath(userAutoStartPath)) {
             qCWarning(lcUtility) << "Could not create autostart folder" << userAutoStartPath;
@@ -80,14 +77,12 @@ void setLaunchOnStartup_private(const QString &appName, const QString &guiName, 
 
         QTextStream ts(&iniFile);
         ts.setCodec("UTF-8");
-        ts << QLatin1String("[Desktop Entry]\n")
-           << QLatin1String("Name=") << guiName << QLatin1Char('\n')
-           << QLatin1String("GenericName=") << QLatin1String("File Synchronizer\n")
-           << QLatin1String("Exec=\"") << executablePath << "\" --background\n"
+        ts << QLatin1String("[Desktop Entry]\n") << QLatin1String("Name=") << guiName << QLatin1Char('\n')
+           << QLatin1String("GenericName=") << QLatin1String("File Synchronizer\n") << QLatin1String("Exec=\"")
+           << executablePath << "\" --background\n"
            << QLatin1String("Terminal=") << "false\n"
-           << QLatin1String("Icon=") << APPLICATION_ICON_NAME << QLatin1Char('\n')
-           << QLatin1String("Categories=") << QLatin1String("Network\n")
-           << QLatin1String("Type=") << QLatin1String("Application\n")
+           << QLatin1String("Icon=") << APPLICATION_ICON_NAME << QLatin1Char('\n') << QLatin1String("Categories=")
+           << QLatin1String("Network\n") << QLatin1String("Type=") << QLatin1String("Application\n")
            << QLatin1String("StartupNotify=") << "false\n"
            << QLatin1String("X-GNOME-Autostart-enabled=") << "true\n"
            << QLatin1String("X-GNOME-Autostart-Delay=10") << Qt::endl;

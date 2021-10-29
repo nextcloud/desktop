@@ -67,10 +67,7 @@ public:
     QHash<int, QByteArray> roleNames() const override;
 
 private:
-    enum Roles {
-        EmojiRole = 0,
-        LabelRole
-    };
+    enum Roles { EmojiRole = 0, LabelRole };
 
     struct Category
     {

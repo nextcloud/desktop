@@ -25,7 +25,8 @@
 #include <QFile>
 
 #ifdef HAVE_UTIMES
-int c_utimes(const QString &uri, const struct timeval *times) {
+int c_utimes(const QString &uri, const struct timeval *times)
+{
     int ret = utimes(QFile::encodeName(uri).constData(), times);
     return ret;
 }
@@ -37,59 +38,60 @@ int c_utimes(const QString &uri, const struct timeval *times) {
 #include <errno.h>
 #include <wtypes.h>
 #define CSYNC_SECONDS_SINCE_1601 11644473600LL
-#define CSYNC_USEC_IN_SEC            1000000LL
-//after Microsoft KB167296
+#define CSYNC_USEC_IN_SEC 1000000LL
+// after Microsoft KB167296
 static void UnixTimevalToFileTime(struct timeval t, LPFILETIME pft)
 {
     LONGLONG ll;
-    ll = Int32x32To64(t.tv_sec, CSYNC_USEC_IN_SEC*10) + t.tv_usec*10 + CSYNC_SECONDS_SINCE_1601*CSYNC_USEC_IN_SEC*10;
+    ll = Int32x32To64(t.tv_sec, CSYNC_USEC_IN_SEC * 10) + t.tv_usec * 10
+        + CSYNC_SECONDS_SINCE_1601 * CSYNC_USEC_IN_SEC * 10;
     pft->dwLowDateTime = (DWORD)ll;
     pft->dwHighDateTime = ll >> 32;
 }
 
-int c_utimes(const QString &uri, const struct timeval *times) {
+int c_utimes(const QString &uri, const struct timeval *times)
+{
     FILETIME LastAccessTime;
     FILETIME LastModificationTime;
     HANDLE hFile;
 
     auto wuri = uri.toStdWString();
 
-    if(times) {
+    if (times) {
         UnixTimevalToFileTime(times[0], &LastAccessTime);
         UnixTimevalToFileTime(times[1], &LastModificationTime);
-    }
-    else {
+    } else {
         GetSystemTimeAsFileTime(&LastAccessTime);
         GetSystemTimeAsFileTime(&LastModificationTime);
     }
 
-    hFile=CreateFileW(wuri.data(), FILE_WRITE_ATTRIBUTES, FILE_SHARE_DELETE | FILE_SHARE_READ | FILE_SHARE_WRITE,
-                      NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL+FILE_FLAG_BACKUP_SEMANTICS, NULL);
-    if(hFile==INVALID_HANDLE_VALUE) {
-        switch(GetLastError()) {
-            case ERROR_FILE_NOT_FOUND:
-                errno=ENOENT;
-                break;
-            case ERROR_PATH_NOT_FOUND:
-            case ERROR_INVALID_DRIVE:
-                errno=ENOTDIR;
-                break;
-                /*case ERROR_WRITE_PROTECT:   //CreateFile sets ERROR_ACCESS_DENIED on read-only devices
-                 *                errno=EROFS;
-                 *                break;*/
-                case ERROR_ACCESS_DENIED:
-                    errno=EACCES;
-                    break;
-                default:
-                    errno=ENOENT;   //what other errors can occur?
+    hFile = CreateFileW(wuri.data(), FILE_WRITE_ATTRIBUTES, FILE_SHARE_DELETE | FILE_SHARE_READ | FILE_SHARE_WRITE,
+        NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL + FILE_FLAG_BACKUP_SEMANTICS, NULL);
+    if (hFile == INVALID_HANDLE_VALUE) {
+        switch (GetLastError()) {
+        case ERROR_FILE_NOT_FOUND:
+            errno = ENOENT;
+            break;
+        case ERROR_PATH_NOT_FOUND:
+        case ERROR_INVALID_DRIVE:
+            errno = ENOTDIR;
+            break;
+        /*case ERROR_WRITE_PROTECT:   //CreateFile sets ERROR_ACCESS_DENIED on read-only devices
+         *                errno=EROFS;
+         *                break;*/
+        case ERROR_ACCESS_DENIED:
+            errno = EACCES;
+            break;
+        default:
+            errno = ENOENT; // what other errors can occur?
         }
 
         return -1;
     }
 
-    if(!SetFileTime(hFile, NULL, &LastAccessTime, &LastModificationTime)) {
-        //can this happen?
-        errno=ENOENT;
+    if (!SetFileTime(hFile, NULL, &LastAccessTime, &LastModificationTime)) {
+        // can this happen?
+        errno = ENOENT;
         CloseHandle(hFile);
         return -1;
     }

@@ -38,13 +38,10 @@ Q_LOGGING_CATEGORY(lcOcsUserStatusConnector, "nextcloud.gui.ocsuserstatusconnect
 OCC::UserStatus::OnlineStatus stringToUserOnlineStatus(const QString &status)
 {
     // it needs to match the Status enum
-    const QHash<QString, OCC::UserStatus::OnlineStatus> preDefinedStatus {
-        { "online", OCC::UserStatus::OnlineStatus::Online },
-        { "dnd", OCC::UserStatus::OnlineStatus::DoNotDisturb },
-        { "away", OCC::UserStatus::OnlineStatus::Away },
-        { "offline", OCC::UserStatus::OnlineStatus::Offline },
-        { "invisible", OCC::UserStatus::OnlineStatus::Invisible }
-    };
+    const QHash<QString, OCC::UserStatus::OnlineStatus> preDefinedStatus{
+        {"online", OCC::UserStatus::OnlineStatus::Online}, {"dnd", OCC::UserStatus::OnlineStatus::DoNotDisturb},
+        {"away", OCC::UserStatus::OnlineStatus::Away}, {"offline", OCC::UserStatus::OnlineStatus::Offline},
+        {"invisible", OCC::UserStatus::OnlineStatus::Invisible}};
 
     // api should return invisible, dnd,... toLower() it is to make sure
     // it matches _preDefinedStatus, otherwise the default is online (0)
@@ -70,7 +67,7 @@ QString onlineStatusToString(OCC::UserStatus::OnlineStatus status)
 
 OCC::Optional<OCC::ClearAt> jsonExtractClearAt(QJsonObject jsonObject)
 {
-    OCC::Optional<OCC::ClearAt> clearAt {};
+    OCC::Optional<OCC::ClearAt> clearAt{};
     if (jsonObject.contains("clearAt") && !jsonObject.value("clearAt").isNull()) {
         OCC::ClearAt clearAtValue;
         clearAtValue._type = OCC::ClearAtType::Timestamp;
@@ -84,8 +81,7 @@ OCC::UserStatus jsonExtractUserStatus(QJsonObject json)
 {
     const auto clearAt = jsonExtractClearAt(json);
 
-    const OCC::UserStatus userStatus(json.value("messageId").toString(),
-        json.value("message").toString().trimmed(),
+    const OCC::UserStatus userStatus(json.value("messageId").toString(), json.value("message").toString().trimmed(),
         json.value("icon").toString().trimmed(), stringToUserOnlineStatus(json.value("status").toString()),
         json.value("messageIsPredefined").toBool(false), clearAt);
 
@@ -94,13 +90,8 @@ OCC::UserStatus jsonExtractUserStatus(QJsonObject json)
 
 OCC::UserStatus jsonToUserStatus(const QJsonDocument &json)
 {
-    const QJsonObject defaultValues {
-        { "icon", "" },
-        { "message", "" },
-        { "status", "online" },
-        { "messageIsPredefined", "false" },
-        { "statusIsUserDefined", "false" }
-    };
+    const QJsonObject defaultValues{{"icon", ""}, {"message", ""}, {"status", "online"},
+        {"messageIsPredefined", "false"}, {"statusIsUserDefined", "false"}};
     const auto retrievedData = json.object().value("ocs").toObject().value("data").toObject(defaultValues);
     return jsonExtractUserStatus(retrievedData);
 }
@@ -180,13 +171,9 @@ OCC::UserStatus jsonToUserStatus(QJsonObject jsonObject)
 {
     const auto clearAt = jsonToClearAt(jsonObject);
 
-    OCC::UserStatus userStatus(
-        jsonObject.value("id").toString("no-id"),
-        jsonObject.value("message").toString("No message"),
-        jsonObject.value("icon").toString("no-icon"),
-        OCC::UserStatus::OnlineStatus::Online,
-        true,
-        clearAt);
+    OCC::UserStatus userStatus(jsonObject.value("id").toString("no-id"),
+        jsonObject.value("message").toString("No message"), jsonObject.value("icon").toString("no-icon"),
+        OCC::UserStatus::OnlineStatus::Online, true, clearAt);
 
     return userStatus;
 }
@@ -267,8 +254,7 @@ void OcsUserStatusConnector::startFetchPredefinedStatuses()
         return;
     }
 
-    _getPredefinedStausesJob = new JsonApiJob(_account,
-        baseUrl + QStringLiteral("/predefined_statuses"), this);
+    _getPredefinedStausesJob = new JsonApiJob(_account, baseUrl + QStringLiteral("/predefined_statuses"), this);
     connect(_getPredefinedStausesJob, &JsonApiJob::jsonReceived, this,
         &OcsUserStatusConnector::onPredefinedStatusesFetched);
     _getPredefinedStausesJob->start();
@@ -308,8 +294,7 @@ void OcsUserStatusConnector::logResponse(const QString &message, const QJsonDocu
 
 void OcsUserStatusConnector::setUserStatusOnlineStatus(UserStatus::OnlineStatus onlineStatus)
 {
-    _setOnlineStatusJob = new JsonApiJob(_account,
-        userStatusBaseUrl + QStringLiteral("/status"), this);
+    _setOnlineStatusJob = new JsonApiJob(_account, userStatusBaseUrl + QStringLiteral("/status"), this);
     _setOnlineStatusJob->setVerb(JsonApiJob::Verb::Put);
     // Set body
     QJsonObject dataObject;

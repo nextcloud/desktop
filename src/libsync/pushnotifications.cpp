@@ -30,7 +30,8 @@ PushNotifications::PushNotifications(Account *account, QObject *parent)
     , _account(account)
     , _webSocket(new QWebSocket(QString(), QWebSocketProtocol::VersionLatest, this))
 {
-    connect(_webSocket, QOverload<QAbstractSocket::SocketError>::of(&QWebSocket::error), this, &PushNotifications::onWebSocketError);
+    connect(_webSocket, QOverload<QAbstractSocket::SocketError>::of(&QWebSocket::error), this,
+        &PushNotifications::onWebSocketError);
     connect(_webSocket, &QWebSocket::sslErrors, this, &PushNotifications::onWebSocketSslErrors);
     connect(_webSocket, &QWebSocket::connected, this, &PushNotifications::onWebSocketConnected);
     connect(_webSocket, &QWebSocket::disconnected, this, &PushNotifications::onWebSocketDisconnected);
@@ -76,7 +77,8 @@ void PushNotifications::closeWebSocket()
         _reconnectTimer->stop();
     }
 
-    disconnect(_webSocket, QOverload<QAbstractSocket::SocketError>::of(&QWebSocket::error), this, &PushNotifications::onWebSocketError);
+    disconnect(_webSocket, QOverload<QAbstractSocket::SocketError>::of(&QWebSocket::error), this,
+        &PushNotifications::onWebSocketError);
     disconnect(_webSocket, &QWebSocket::sslErrors, this, &PushNotifications::onWebSocketSslErrors);
 
     _webSocket->close();
@@ -86,7 +88,8 @@ void PushNotifications::onWebSocketConnected()
 {
     qCInfo(lcPushNotifications) << "Connected to websocket for account" << _account->url();
 
-    connect(_webSocket, &QWebSocket::textMessageReceived, this, &PushNotifications::onWebSocketTextMessageReceived, Qt::UniqueConnection);
+    connect(_webSocket, &QWebSocket::textMessageReceived, this, &PushNotifications::onWebSocketTextMessageReceived,
+        Qt::UniqueConnection);
 
     authenticateOnWebSocket();
 }
@@ -152,9 +155,7 @@ bool PushNotifications::tryReconnectToWebSocket()
 
     _reconnectTimer->setInterval(_reconnectTimerInterval);
     _reconnectTimer->setSingleShot(true);
-    connect(_reconnectTimer, &QTimer::timeout, [this]() {
-        reconnectToWebSocket();
-    });
+    connect(_reconnectTimer, &QTimer::timeout, [this]() { reconnectToWebSocket(); });
     _reconnectTimer->start();
 
     return true;
@@ -173,8 +174,10 @@ void PushNotifications::openWebSocket()
     const auto capabilities = _account->capabilities();
     const auto webSocketUrl = capabilities.pushNotificationsWebSocketUrl();
 
-    qCInfo(lcPushNotifications) << "Open connection to websocket on" << webSocketUrl << "for account" << _account->url();
-    connect(_webSocket, QOverload<QAbstractSocket::SocketError>::of(&QWebSocket::error), this, &PushNotifications::onWebSocketError);
+    qCInfo(lcPushNotifications) << "Open connection to websocket on" << webSocketUrl << "for account"
+                                << _account->url();
+    connect(_webSocket, QOverload<QAbstractSocket::SocketError>::of(&QWebSocket::error), this,
+        &PushNotifications::onWebSocketError);
     connect(_webSocket, &QWebSocket::sslErrors, this, &PushNotifications::onWebSocketSslErrors);
     _webSocket->open(webSocketUrl);
 }

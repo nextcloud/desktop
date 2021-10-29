@@ -38,10 +38,7 @@ class SyncFileItem;
 class OCSYNC_EXPORT SyncJournalFileRecord
 {
 public:
-    bool isValid() const
-    {
-        return !_path.isEmpty();
-    }
+    bool isValid() const { return !_path.isEmpty(); }
 
     /** Returns the numeric part of the full id in _fileId.
      *
@@ -72,9 +69,7 @@ public:
     bool _isE2eEncrypted = false;
 };
 
-bool OCSYNC_EXPORT
-operator==(const SyncJournalFileRecord &lhs,
-    const SyncJournalFileRecord &rhs);
+bool OCSYNC_EXPORT operator==(const SyncJournalFileRecord &lhs, const SyncJournalFileRecord &rhs);
 
 class OCSYNC_EXPORT SyncJournalErrorBlacklistRecord
 {

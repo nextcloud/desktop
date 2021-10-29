@@ -43,8 +43,10 @@ void PropagateUploadFileV1::doStartUpload()
 
     const SyncJournalDb::UploadInfo progressInfo = propagator()->_journal->getUploadInfo(_item->_file);
 
-    if (progressInfo._valid && progressInfo.isChunked() && progressInfo._modtime == _item->_modtime && progressInfo._size == _item->_size
-        && (progressInfo._contentChecksum == _item->_checksumHeader || progressInfo._contentChecksum.isEmpty() || _item->_checksumHeader.isEmpty())) {
+    if (progressInfo._valid && progressInfo.isChunked() && progressInfo._modtime == _item->_modtime
+        && progressInfo._size == _item->_size
+        && (progressInfo._contentChecksum == _item->_checksumHeader || progressInfo._contentChecksum.isEmpty()
+            || _item->_checksumHeader.isEmpty())) {
         _startChunk = progressInfo._chunk;
         _transferId = progressInfo._transferid;
         qCInfo(lcPropagateUploadV1) << _item->_file << ": Resuming from chunk " << _startChunk;
@@ -97,7 +99,8 @@ void PropagateUploadFileV1::startNextChunk()
         int sendingChunk = (_currentChunk + _startChunk) % _chunkCount;
         // XOR with chunk size to make sure everything goes well if chunk size changes between runs
         uint transid = _transferId ^ uint(chunkSize());
-        qCInfo(lcPropagateUploadV1) << "Upload chunk" << sendingChunk << "of" << _chunkCount << "transferid(remote)=" << transid;
+        qCInfo(lcPropagateUploadV1) << "Upload chunk" << sendingChunk << "of" << _chunkCount
+                                    << "transferid(remote)=" << transid;
         path += QString("-chunking-%1-%2-%3").arg(transid).arg(_chunkCount).arg(sendingChunk);
 
         headers[QByteArrayLiteral("OC-Chunked")] = QByteArrayLiteral("1");
@@ -123,8 +126,8 @@ void PropagateUploadFileV1::startNextChunk()
     }
 
     const QString fileName = _fileToUpload._path;
-    auto device = std::make_unique<UploadDevice>(
-            fileName, chunkStart, currentChunkSize, &propagator()->_bandwidthManager);
+    auto device =
+        std::make_unique<UploadDevice>(fileName, chunkStart, currentChunkSize, &propagator()->_bandwidthManager);
     if (!device->open(QIODevice::ReadOnly)) {
         qCWarning(lcPropagateUploadV1) << "Could not prepare upload device: " << device->errorString();
 
@@ -140,7 +143,8 @@ void PropagateUploadFileV1::startNextChunk()
 
     // job takes ownership of device via a QScopedPointer. Job deletes itself when finishing
     auto devicePtr = device.get(); // for connections later
-    auto *job = new PUTFileJob(propagator()->account(), propagator()->fullRemotePath(path), std::move(device), headers, _currentChunk, this);
+    auto *job = new PUTFileJob(
+        propagator()->account(), propagator()->fullRemotePath(path), std::move(device), headers, _currentChunk, this);
     _jobs.append(job);
     connect(job, &PUTFileJob::finishedSignal, this, &PropagateUploadFileV1::slotPutFinished);
     connect(job, &PUTFileJob::uploadProgress, this, &PropagateUploadFileV1::slotUploadProgress);
@@ -262,7 +266,8 @@ void PropagateUploadFileV1::slotPutFinished()
                 // just wait for the other job to finish.
                 return;
             }
-            done(SyncFileItem::NormalError, tr("The server did not acknowledge the last chunk. (No e-tag was present)"));
+            done(
+                SyncFileItem::NormalError, tr("The server did not acknowledge the last chunk. (No e-tag was present)"));
             return;
         }
 
@@ -351,19 +356,15 @@ void PropagateUploadFileV1::slotUploadProgress(qint64 sent, qint64 total)
 
 void PropagateUploadFileV1::abort(PropagatorJob::AbortType abortType)
 {
-    abortNetworkJobs(
-        abortType,
-        [this, abortType](AbstractNetworkJob *job) {
-            if (auto *putJob = qobject_cast<PUTFileJob *>(job)){
-                if (abortType == AbortType::Asynchronous
-                    && _chunkCount > 0
-                    && (((_currentChunk + _startChunk) % _chunkCount) == 0)
-                    && putJob->device()->atEnd()) {
-                    return false;
-                }
+    abortNetworkJobs(abortType, [this, abortType](AbstractNetworkJob *job) {
+        if (auto *putJob = qobject_cast<PUTFileJob *>(job)) {
+            if (abortType == AbortType::Asynchronous && _chunkCount > 0
+                && (((_currentChunk + _startChunk) % _chunkCount) == 0) && putJob->device()->atEnd()) {
+                return false;
             }
-            return true;
-        });
+        }
+        return true;
+    });
 }
 
 }

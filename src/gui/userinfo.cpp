@@ -32,7 +32,8 @@ namespace {
     static const int failIntervalT = 5 * 1000;
 }
 
-UserInfo::UserInfo(AccountState *accountState, bool allowDisconnectedAccountState, bool fetchAvatarImage, QObject *parent)
+UserInfo::UserInfo(
+    AccountState *accountState, bool allowDisconnectedAccountState, bool fetchAvatarImage, QObject *parent)
     : QObject(parent)
     , _accountState(accountState)
     , _allowDisconnectedAccountState(allowDisconnectedAccountState)
@@ -41,8 +42,7 @@ UserInfo::UserInfo(AccountState *accountState, bool allowDisconnectedAccountStat
     , _lastQuotaUsedBytes(0)
     , _active(false)
 {
-    connect(accountState, &AccountState::stateChanged,
-        this, &UserInfo::slotAccountStateChanged);
+    connect(accountState, &AccountState::stateChanged, this, &UserInfo::slotAccountStateChanged);
     connect(&_jobRestartTimer, &QTimer::timeout, this, &UserInfo::slotFetchInfo);
     _jobRestartTimer.setSingleShot(true);
 }
@@ -83,8 +83,7 @@ bool UserInfo::canGetInfo() const
         return false;
     }
     AccountPtr account = _accountState->account();
-    return (_accountState->isConnected() || _allowDisconnectedAccountState)
-        && account->credentials()
+    return (_accountState->isConnected() || _allowDisconnectedAccountState) && account->credentials()
         && account->credentials()->ready();
 }
 
@@ -128,7 +127,7 @@ void UserInfo::slotUpdateLastInfo(const QJsonDocument &json)
     qint64 used = objQuota.value("used").toDouble();
     qint64 total = objQuota.value("quota").toDouble();
 
-    if(_lastInfoReceived.isNull() || _lastQuotaUsedBytes != used || _lastQuotaTotalBytes != total) {
+    if (_lastInfoReceived.isNull() || _lastQuotaUsedBytes != used || _lastQuotaTotalBytes != total) {
         _lastQuotaUsedBytes = used;
         _lastQuotaTotalBytes = total;
         emit quotaUpdated(_lastQuotaTotalBytes, _lastQuotaUsedBytes);
@@ -138,13 +137,12 @@ void UserInfo::slotUpdateLastInfo(const QJsonDocument &json)
     _lastInfoReceived = QDateTime::currentDateTime();
 
     // Avatar Image
-    if(_fetchAvatarImage) {
+    if (_fetchAvatarImage) {
         auto *job = new AvatarJob(account, account->davUser(), 128, this);
         job->setTimeout(20 * 1000);
         QObject::connect(job, &AvatarJob::avatarPixmap, this, &UserInfo::slotAvatarImage);
         job->start();
-    }
-    else
+    } else
         emit fetchedLastInfo(this);
 }
 

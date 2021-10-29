@@ -66,28 +66,16 @@ Systray::Systray()
     : QSystemTrayIcon(nullptr)
 {
     qmlRegisterSingletonType<UserModel>("com.nextcloud.desktopclient", 1, 0, "UserModel",
-        [](QQmlEngine *, QJSEngine *) -> QObject * {
-            return UserModel::instance();
-        }
-    );
+        [](QQmlEngine *, QJSEngine *) -> QObject * { return UserModel::instance(); });
 
     qmlRegisterSingletonType<UserAppsModel>("com.nextcloud.desktopclient", 1, 0, "UserAppsModel",
-        [](QQmlEngine *, QJSEngine *) -> QObject * {
-            return UserAppsModel::instance();
-        }
-    );
+        [](QQmlEngine *, QJSEngine *) -> QObject * { return UserAppsModel::instance(); });
 
     qmlRegisterSingletonType<Systray>("com.nextcloud.desktopclient", 1, 0, "Theme",
-        [](QQmlEngine *, QJSEngine *) -> QObject * {
-            return Theme::instance();
-        }
-    );
+        [](QQmlEngine *, QJSEngine *) -> QObject * { return Theme::instance(); });
 
     qmlRegisterSingletonType<Systray>("com.nextcloud.desktopclient", 1, 0, "Systray",
-        [](QQmlEngine *, QJSEngine *) -> QObject * {
-            return Systray::instance();
-        }
-    );
+        [](QQmlEngine *, QJSEngine *) -> QObject * { return Systray::instance(); });
 
 #ifndef Q_OS_MAC
     auto contextMenu = new QMenu();
@@ -106,13 +94,15 @@ Systray::Systray()
     connect(contextMenu, &QMenu::aboutToShow, [=] {
         const auto folders = FolderMan::instance()->map();
 
-        const auto allPaused = std::all_of(std::cbegin(folders), std::cend(folders), [](Folder *f) { return f->syncPaused(); });
+        const auto allPaused =
+            std::all_of(std::cbegin(folders), std::cend(folders), [](Folder *f) { return f->syncPaused(); });
         const auto pauseText = folders.size() > 1 ? tr("Pause sync for all") : tr("Pause sync");
         pauseAction->setText(pauseText);
         pauseAction->setVisible(!allPaused);
         pauseAction->setEnabled(!allPaused);
 
-        const auto anyPaused = std::any_of(std::cbegin(folders), std::cend(folders), [](Folder *f) { return f->syncPaused(); });
+        const auto anyPaused =
+            std::any_of(std::cbegin(folders), std::cend(folders), [](Folder *f) { return f->syncPaused(); });
         const auto resumeText = folders.size() > 1 ? tr("Resume sync for all") : tr("Resume sync");
         resumeAction->setText(resumeText);
         resumeAction->setVisible(anyPaused);
@@ -120,20 +110,18 @@ Systray::Systray()
     });
 #endif
 
-    connect(UserModel::instance(), &UserModel::newUserSelected,
-        this, &Systray::slotNewUserSelected);
-    connect(UserModel::instance(), &UserModel::addAccount,
-            this, &Systray::openAccountWizard);
+    connect(UserModel::instance(), &UserModel::newUserSelected, this, &Systray::slotNewUserSelected);
+    connect(UserModel::instance(), &UserModel::addAccount, this, &Systray::openAccountWizard);
 
-    connect(AccountManager::instance(), &AccountManager::accountAdded,
-        this, &Systray::showWindow);
+    connect(AccountManager::instance(), &AccountManager::accountAdded, this, &Systray::showWindow);
 }
 
 void Systray::create()
 {
     if (_trayEngine) {
         if (!AccountManager::instance()->accounts().isEmpty()) {
-            _trayEngine->rootContext()->setContextProperty("activityModel", UserModel::instance()->currentActivityModel());
+            _trayEngine->rootContext()->setContextProperty(
+                "activityModel", UserModel::instance()->currentActivityModel());
         }
         _trayEngine->load(QStringLiteral("qrc:/qml/src/gui/tray/Window.qml"));
     }
@@ -179,9 +167,8 @@ void Systray::setPauseOnAllFoldersHelper(bool pause)
         const auto ptrList = AccountManager::instance()->accounts();
         auto result = QList<AccountState *>();
         result.reserve(ptrList.size());
-        std::transform(std::cbegin(ptrList), std::cend(ptrList), std::back_inserter(result), [](const AccountStatePtr &account) {
-            return account.data();
-        });
+        std::transform(std::cbegin(ptrList), std::cend(ptrList), std::back_inserter(result),
+            [](const AccountStatePtr &account) { return account.data(); });
         return result;
     }();
     const auto folders = FolderMan::instance()->map();
@@ -230,9 +217,10 @@ void Systray::showMessage(const QString &title, const QString &message, MessageI
 #ifdef USE_FDO_NOTIFICATIONS
     if (QDBusInterface(NOTIFICATIONS_SERVICE, NOTIFICATIONS_PATH, NOTIFICATIONS_IFACE).isValid()) {
         const QVariantMap hints = {{QStringLiteral("desktop-entry"), LINUX_APPLICATION_ID}};
-        QList<QVariant> args = QList<QVariant>() << APPLICATION_NAME << quint32(0) << APPLICATION_ICON_NAME
-                                                 << title << message << QStringList() << hints << qint32(-1);
-        QDBusMessage method = QDBusMessage::createMethodCall(NOTIFICATIONS_SERVICE, NOTIFICATIONS_PATH, NOTIFICATIONS_IFACE, "Notify");
+        QList<QVariant> args = QList<QVariant>() << APPLICATION_NAME << quint32(0) << APPLICATION_ICON_NAME << title
+                                                 << message << QStringList() << hints << qint32(-1);
+        QDBusMessage method =
+            QDBusMessage::createMethodCall(NOTIFICATIONS_SERVICE, NOTIFICATIONS_PATH, NOTIFICATIONS_IFACE, "Notify");
         method.setArguments(args);
         QDBusConnection::sessionBus().asyncCall(method);
     } else
@@ -288,7 +276,7 @@ void Systray::forceWindowInit(QQuickWindow *window) const
     // this shouldn't flicker
     window->show();
     window->hide();
-    
+
 #ifdef Q_OS_MAC
     // On macOS we need to designate the tray window as visible on all spaces and
     // at the menu bar level, otherwise showing it can cause the current spaces to
@@ -372,7 +360,7 @@ QRect Systray::taskbarGeometry() const
 {
 #if defined(Q_OS_WIN)
     QRect tbRect = Utility::getTaskbarDimensions();
-    //QML side expects effective pixels, convert taskbar dimensions if necessary
+    // QML side expects effective pixels, convert taskbar dimensions if necessary
     auto pixelRatio = currentScreen()->devicePixelRatio();
     if (pixelRatio != 1) {
         tbRect.setHeight(tbRect.height() / pixelRatio);
@@ -414,27 +402,15 @@ QPoint Systray::computeWindowReferencePoint() const
     qCDebug(lcSystray) << "taskbarScreenEdge:" << taskbarScreenEdge;
     qCDebug(lcSystray) << "trayIconCenter:" << trayIconCenter;
 
-    switch(taskbarScreenEdge) {
+    switch (taskbarScreenEdge) {
     case TaskBarPosition::Bottom:
-        return {
-            trayIconCenter.x(),
-            screenRect.bottom() - taskbarRect.height() - spacing
-        };
+        return {trayIconCenter.x(), screenRect.bottom() - taskbarRect.height() - spacing};
     case TaskBarPosition::Left:
-        return {
-            screenRect.left() + taskbarRect.width() + spacing,
-            trayIconCenter.y()
-        };
+        return {screenRect.left() + taskbarRect.width() + spacing, trayIconCenter.y()};
     case TaskBarPosition::Top:
-        return {
-            trayIconCenter.x(),
-            screenRect.top() + taskbarRect.height() + spacing
-        };
+        return {trayIconCenter.x(), screenRect.top() + taskbarRect.height() + spacing};
     case TaskBarPosition::Right:
-        return {
-            screenRect.right() - taskbarRect.width() - spacing,
-            trayIconCenter.y()
-        };
+        return {screenRect.right() - taskbarRect.width() - spacing, trayIconCenter.y()};
     }
     Q_UNREACHABLE();
 }
@@ -447,7 +423,7 @@ QPoint Systray::computeWindowPosition(int width, int height) const
     const auto screenRect = currentScreenRect();
 
     const auto topLeft = [=]() {
-        switch(taskbarScreenEdge) {
+        switch (taskbarScreenEdge) {
         case TaskBarPosition::Bottom:
             return referencePoint - QPoint(width / 2, height);
         case TaskBarPosition::Left:

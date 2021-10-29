@@ -66,7 +66,8 @@ protected:
                 if (_cred->isUsingOAuth()) {
                     req.setRawHeader("Authorization", "Bearer " + _cred->password().toUtf8());
                 } else {
-                    QByteArray credHash = QByteArray(_cred->user().toUtf8() + ":" + _cred->password().toUtf8()).toBase64();
+                    QByteArray credHash =
+                        QByteArray(_cred->user().toUtf8() + ":" + _cred->password().toUtf8()).toBase64();
                     req.setRawHeader("Authorization", "Basic " + credHash);
                 }
             } else if (!request.url().password().isEmpty()) {
@@ -114,7 +115,8 @@ static void addSettingsToJob(Account *account, QKeychain::Job *job)
 HttpCredentials::HttpCredentials() = default;
 
 // From wizard
-HttpCredentials::HttpCredentials(const QString &user, const QString &password, const QByteArray &clientCertBundle, const QByteArray &clientCertPassword)
+HttpCredentials::HttpCredentials(const QString &user, const QString &password, const QByteArray &clientCertBundle,
+    const QByteArray &clientCertPassword)
     : _user(user)
     , _password(password)
     , _ready(true)
@@ -154,8 +156,7 @@ QNetworkAccessManager *HttpCredentials::createQNAM() const
 {
     AccessManager *qnam = new HttpCredentialsAccessManager(this);
 
-    connect(qnam, &QNetworkAccessManager::authenticationRequired,
-        this, &HttpCredentials::slotAuthentication);
+    connect(qnam, &QNetworkAccessManager::authenticationRequired, this, &HttpCredentials::slotAuthentication);
 
     return qnam;
 }
@@ -210,9 +211,7 @@ void HttpCredentials::fetchFromKeychainHelper()
 
     // Old case (pre 2.6): Read client cert and then key from keychain
     const QString kck = keychainKey(
-        _account->url().toString(),
-        _user + clientCertificatePEMC,
-        _keychainMigration ? QString() : _account->id());
+        _account->url().toString(), _user + clientCertificatePEMC, _keychainMigration ? QString() : _account->id());
 
     auto *job = new QKeychain::ReadPasswordJob(Theme::instance()->appName());
     addSettingsToJob(_account, job);
@@ -241,8 +240,8 @@ bool HttpCredentials::keychainUnavailableRetryLater(QKeychain::ReadPasswordJob *
 {
 #if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
     Q_ASSERT(!incoming->insecureFallback()); // If insecureFallback is set, the next test would be pointless
-    if (_retryOnKeyChainError && (incoming->error() == QKeychain::NoBackendAvailable
-            || incoming->error() == QKeychain::OtherError)) {
+    if (_retryOnKeyChainError
+        && (incoming->error() == QKeychain::NoBackendAvailable || incoming->error() == QKeychain::OtherError)) {
         // Could be that the backend was not yet available. Wait some extra seconds.
         // (Issues #4274 and #6522)
         // (For kwallet, the error is OtherError instead of NoBackendAvailable, maybe a bug in QtKeychain)
@@ -260,14 +259,15 @@ bool HttpCredentials::keychainUnavailableRetryLater(QKeychain::ReadPasswordJob *
 
 void HttpCredentials::slotReadClientCertPasswordJobDone(QKeychain::Job *job)
 {
-    auto readJob = qobject_cast<QKeychain::ReadPasswordJob*>(job);
+    auto readJob = qobject_cast<QKeychain::ReadPasswordJob *>(job);
     if (keychainUnavailableRetryLater(readJob))
         return;
 
     if (readJob->error() == QKeychain::NoError) {
         _clientCertPassword = readJob->binaryData();
     } else {
-        qCWarning(lcHttpCredentials) << "Could not retrieve client cert password from keychain" << readJob->errorString();
+        qCWarning(lcHttpCredentials) << "Could not retrieve client cert password from keychain"
+                                     << readJob->errorString();
     }
 
     if (!unpackClientCertBundle()) {
@@ -281,7 +281,7 @@ void HttpCredentials::slotReadClientCertPasswordJobDone(QKeychain::Job *job)
 
 void HttpCredentials::slotReadClientCertPEMJobDone(QKeychain::Job *incoming)
 {
-    auto readJob = qobject_cast<QKeychain::ReadPasswordJob*>(incoming);
+    auto readJob = qobject_cast<QKeychain::ReadPasswordJob *>(incoming);
     if (keychainUnavailableRetryLater(readJob))
         return;
 
@@ -294,10 +294,8 @@ void HttpCredentials::slotReadClientCertPEMJobDone(QKeychain::Job *incoming)
     }
 
     // Load key too
-    const QString kck = keychainKey(
-        _account->url().toString(),
-        _user + clientKeyPEMC,
-        _keychainMigration ? QString() : _account->id());
+    const QString kck =
+        keychainKey(_account->url().toString(), _user + clientKeyPEMC, _keychainMigration ? QString() : _account->id());
 
     auto *job = new QKeychain::ReadPasswordJob(Theme::instance()->appName());
     addSettingsToJob(_account, job);
@@ -309,7 +307,7 @@ void HttpCredentials::slotReadClientCertPEMJobDone(QKeychain::Job *incoming)
 
 void HttpCredentials::slotReadClientKeyPEMJobDone(QKeychain::Job *incoming)
 {
-    auto readJob = qobject_cast<QKeychain::ReadPasswordJob*>(incoming);
+    auto readJob = qobject_cast<QKeychain::ReadPasswordJob *>(incoming);
     // Store key in memory
 
     if (readJob->error() == QKeychain::NoError && readJob->binaryData().length() > 0) {
@@ -333,10 +331,7 @@ void HttpCredentials::slotReadClientKeyPEMJobDone(QKeychain::Job *incoming)
 
 void HttpCredentials::slotReadPasswordFromKeychain()
 {
-    const QString kck = keychainKey(
-        _account->url().toString(),
-        _user,
-        _keychainMigration ? QString() : _account->id());
+    const QString kck = keychainKey(_account->url().toString(), _user, _keychainMigration ? QString() : _account->id());
 
     auto *job = new QKeychain::ReadPasswordJob(Theme::instance()->appName());
     addSettingsToJob(_account, job);
@@ -352,7 +347,7 @@ bool HttpCredentials::stillValid(QNetworkReply *reply)
     return ((reply->error() != QNetworkReply::AuthenticationRequiredError)
         // returned if user or password is incorrect
         && (reply->error() != QNetworkReply::OperationCanceledError
-               || !reply->property(authenticationFailedC).toBool()));
+            || !reply->property(authenticationFailedC).toBool()));
 }
 
 void HttpCredentials::slotReadJobDone(QKeychain::Job *incoming)
@@ -363,8 +358,7 @@ void HttpCredentials::slotReadJobDone(QKeychain::Job *incoming)
     // If we can't find the credentials at the keys that include the account id,
     // try to read them from the legacy locations that don't have a account id.
     if (!_keychainMigration && error == QKeychain::EntryNotFound) {
-        qCWarning(lcHttpCredentials)
-            << "Could not find keychain entries, attempting to read from legacy locations";
+        qCWarning(lcHttpCredentials) << "Could not find keychain entries, attempting to read from legacy locations";
         _keychainMigration = true;
         fetchFromKeychainHelper();
         return;
@@ -417,8 +411,8 @@ bool HttpCredentials::refreshAccessToken()
     QNetworkRequest req;
     req.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
 
-    QString basicAuth = QString("%1:%2").arg(
-        Theme::instance()->oauthClientId(), Theme::instance()->oauthClientSecret());
+    QString basicAuth =
+        QString("%1:%2").arg(Theme::instance()->oauthClientId(), Theme::instance()->oauthClientSecret());
     req.setRawHeader("Authorization", "Basic " + basicAuth.toUtf8().toBase64());
     req.setAttribute(HttpCredentials::DontAddCredentialsAttribute, true);
 
@@ -435,7 +429,8 @@ bool HttpCredentials::refreshAccessToken()
         QString accessToken = json["access_token"].toString();
         if (jsonParseError.error != QJsonParseError::NoError || json.isEmpty()) {
             // Invalid or empty JSON: Network error maybe?
-            qCWarning(lcHttpCredentials) << "Error while refreshing the token" << reply->errorString() << jsonData << jsonParseError.errorString();
+            qCWarning(lcHttpCredentials) << "Error while refreshing the token" << reply->errorString() << jsonData
+                                         << jsonParseError.errorString();
         } else if (accessToken.isEmpty()) {
             // If the json was valid, but the reply did not contain an access token, the token
             // is considered expired. (Usually the HTTP reply code is 400)
@@ -540,7 +535,8 @@ void HttpCredentials::persist()
         job->start();
         _clientCertBundle.clear();
         _clientCertPassword.clear();
-    } else if (_account->credentialSetting(QLatin1String(clientCertBundleC)).isNull() && !_clientSslCertificate.isNull()) {
+    } else if (_account->credentialSetting(QLatin1String(clientCertBundleC)).isNull()
+        && !_clientSslCertificate.isNull()) {
         // Option 2, pre 2.6 configs: We used to store the raw cert/key in the keychain and
         // still do so if no bundle is available. We can't currently migrate to Option 1
         // because we have no functions for creating an encrypted pkcs12 bundle.
@@ -560,8 +556,8 @@ void HttpCredentials::persist()
 void HttpCredentials::slotWriteClientCertPasswordJobDone(QKeychain::Job *finishedJob)
 {
     if (finishedJob && finishedJob->error() != QKeychain::NoError) {
-        qCWarning(lcHttpCredentials) << "Could not write client cert password to credentials"
-                                     << finishedJob->error() << finishedJob->errorString();
+        qCWarning(lcHttpCredentials) << "Could not write client cert password to credentials" << finishedJob->error()
+                                     << finishedJob->errorString();
     }
 
     slotWritePasswordToKeychain();
@@ -570,8 +566,8 @@ void HttpCredentials::slotWriteClientCertPasswordJobDone(QKeychain::Job *finishe
 void HttpCredentials::slotWriteClientCertPEMJobDone(QKeychain::Job *finishedJob)
 {
     if (finishedJob && finishedJob->error() != QKeychain::NoError) {
-        qCWarning(lcHttpCredentials) << "Could not write client cert to credentials"
-                                     << finishedJob->error() << finishedJob->errorString();
+        qCWarning(lcHttpCredentials) << "Could not write client cert to credentials" << finishedJob->error()
+                                     << finishedJob->errorString();
     }
 
     // write ssl key if there is one
@@ -591,8 +587,8 @@ void HttpCredentials::slotWriteClientCertPEMJobDone(QKeychain::Job *finishedJob)
 void HttpCredentials::slotWriteClientKeyPEMJobDone(QKeychain::Job *finishedJob)
 {
     if (finishedJob && finishedJob->error() != QKeychain::NoError) {
-        qCWarning(lcHttpCredentials) << "Could not write client key to credentials"
-                                     << finishedJob->error() << finishedJob->errorString();
+        qCWarning(lcHttpCredentials) << "Could not write client key to credentials" << finishedJob->error()
+                                     << finishedJob->errorString();
     }
 
     slotWritePasswordToKeychain();
@@ -612,8 +608,7 @@ void HttpCredentials::slotWritePasswordToKeychain()
 void HttpCredentials::slotWriteJobDone(QKeychain::Job *job)
 {
     if (job && job->error() != QKeychain::NoError) {
-        qCWarning(lcHttpCredentials) << "Error while writing password"
-                                     << job->error() << job->errorString();
+        qCWarning(lcHttpCredentials) << "Error while writing password" << job->error() << job->errorString();
     }
 }
 
@@ -658,7 +653,7 @@ bool HttpCredentials::unpackClientCertBundle()
     certBuffer.open(QIODevice::ReadOnly);
     QList<QSslCertificate> clientCaCertificates;
     return QSslCertificate::importPkcs12(
-            &certBuffer, &_clientSslKey, &_clientSslCertificate, &clientCaCertificates, _clientCertPassword);
+        &certBuffer, &_clientSslKey, &_clientSslCertificate, &clientCaCertificates, _clientCertPassword);
 }
 
 } // namespace OCC

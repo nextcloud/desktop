@@ -28,8 +28,7 @@ namespace OCC {
 Q_LOGGING_CATEGORY(lcMoveJob, "nextcloud.sync.networkjob.move", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcPropagateRemoteMove, "nextcloud.sync.propagator.remotemove", QtInfoMsg)
 
-MoveJob::MoveJob(AccountPtr account, const QString &path,
-    const QString &destination, QObject *parent)
+MoveJob::MoveJob(AccountPtr account, const QString &path, const QString &destination, QObject *parent)
     : AbstractNetworkJob(account, path, parent)
     , _destination(destination)
 {
@@ -66,8 +65,7 @@ void MoveJob::start()
 
 bool MoveJob::finished()
 {
-    qCInfo(lcMoveJob) << "MOVE of" << reply()->request().url() << "FINISHED WITH STATUS"
-                      << replyStatusString();
+    qCInfo(lcMoveJob) << "MOVE of" << reply()->request().url() << "FINISHED WITH STATUS" << replyStatusString();
 
     emit finishedSignal();
     return true;
@@ -87,10 +85,12 @@ void PropagateRemoteMove::start()
         // The parent has been renamed already so there is nothing more to do.
 
         if (!_item->_encryptedFileName.isEmpty()) {
-            // when renaming non-encrypted folder that contains encrypted folder, nested files of its encrypted folder are incorrectly displayed in the Settings dialog
-            // encrypted name is displayed instead of a local folder name, unless the sync folder is removed, then added again and re-synced
-            // we are fixing it by modifying the "_encryptedFileName" in such a way so it will have a renamed root path at the beginning of it as expected
-            // corrected "_encryptedFileName" is later used in propagator()->updateMetadata() call that will update the record in the Sync journal DB
+            // when renaming non-encrypted folder that contains encrypted folder, nested files of its encrypted folder
+            // are incorrectly displayed in the Settings dialog encrypted name is displayed instead of a local folder
+            // name, unless the sync folder is removed, then added again and re-synced we are fixing it by modifying the
+            // "_encryptedFileName" in such a way so it will have a renamed root path at the beginning of it as expected
+            // corrected "_encryptedFileName" is later used in propagator()->updateMetadata() call that will update the
+            // record in the Sync journal DB
 
             const auto path = _item->_file;
             const auto slashPosition = path.lastIndexOf('/');
@@ -106,7 +106,8 @@ void PropagateRemoteMove::start()
             const auto remoteParentPath = parentRec._e2eMangledName.isEmpty() ? parentPath : parentRec._e2eMangledName;
 
             const auto lastSlashPosition = _item->_encryptedFileName.lastIndexOf('/');
-            const auto encryptedName = lastSlashPosition >= 0 ? _item->_encryptedFileName.mid(lastSlashPosition + 1) : QString();
+            const auto encryptedName =
+                lastSlashPosition >= 0 ? _item->_encryptedFileName.mid(lastSlashPosition + 1) : QString();
 
             if (!encryptedName.isEmpty()) {
                 _item->_encryptedFileName = remoteParentPath + "/" + encryptedName;
@@ -118,7 +119,8 @@ void PropagateRemoteMove::start()
     }
 
     QString remoteSource = propagator()->fullRemotePath(origin);
-    QString remoteDestination = QDir::cleanPath(propagator()->account()->davUrl().path() + propagator()->fullRemotePath(_item->_renameTarget));
+    QString remoteDestination =
+        QDir::cleanPath(propagator()->account()->davUrl().path() + propagator()->fullRemotePath(_item->_renameTarget));
 
     auto &vfs = propagator()->syncOptions()._vfs;
     auto itype = _item->_type;
@@ -167,12 +169,12 @@ void PropagateRemoteMove::start()
         if (!FileSystem::fileExists(localTarget) && FileSystem::fileExists(localTargetAlt)) {
             QString error;
             if (!FileSystem::uncheckedRenameReplace(localTargetAlt, localTarget, &error)) {
-                done(SyncFileItem::NormalError, tr("Could not rename %1 to %2, error: %3")
-                     .arg(folderTargetAlt, folderTarget, error));
+                done(SyncFileItem::NormalError,
+                    tr("Could not rename %1 to %2, error: %3").arg(folderTargetAlt, folderTarget, error));
                 return;
             }
-            qCInfo(lcPropagateRemoteMove) << "Suffix vfs required local rename of"
-                                          << folderTargetAlt << "to" << folderTarget;
+            qCInfo(lcPropagateRemoteMove)
+                << "Suffix vfs required local rename of" << folderTargetAlt << "to" << folderTarget;
         }
     }
     qCDebug(lcPropagateRemoteMove) << remoteSource << remoteDestination;
@@ -205,8 +207,7 @@ void PropagateRemoteMove::slotMoveJobFinished()
     _item->_requestId = _job->requestId();
 
     if (err != QNetworkReply::NoError) {
-        SyncFileItem::Status status = classifyError(err, _item->_httpErrorCode,
-            &propagator()->_anotherSyncNeeded);
+        SyncFileItem::Status status = classifyError(err, _item->_httpErrorCode, &propagator()->_anotherSyncNeeded);
         done(status, _job->errorString());
         return;
     }
@@ -248,7 +249,8 @@ void PropagateRemoteMove::finalize()
     if (oldRecord.isValid()) {
         newItem._checksumHeader = oldRecord._checksumHeader;
         if (newItem._size != oldRecord._fileSize) {
-            qCWarning(lcPropagateRemoteMove) << "File sizes differ on server vs sync journal: " << newItem._size << oldRecord._fileSize;
+            qCWarning(lcPropagateRemoteMove)
+                << "File sizes differ on server vs sync journal: " << newItem._size << oldRecord._fileSize;
 
             // the server might have claimed a different size, we take the old one from the DB
             newItem._size = oldRecord._fileSize;
@@ -262,8 +264,7 @@ void PropagateRemoteMove::finalize()
         done(SyncFileItem::SoftError, tr("The file %1 is currently in use").arg(newItem._file));
         return;
     }
-    if (pinState && *pinState != PinState::Inherited
-        && !vfs->setPinState(newItem._renameTarget, *pinState)) {
+    if (pinState && *pinState != PinState::Inherited && !vfs->setPinState(newItem._renameTarget, *pinState)) {
         done(SyncFileItem::NormalError, tr("Error setting pin state"));
         return;
     }

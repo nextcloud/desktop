@@ -59,7 +59,7 @@ void OwncloudOAuthCredsPage::initializePage()
     _asyncAuth->start();
 
     // Don't hide the wizard (avoid user confusion)!
-    //wizard()->hide();
+    // wizard()->hide();
 }
 
 void OCC::OwncloudOAuthCredsPage::cleanupPage()
@@ -69,8 +69,8 @@ void OCC::OwncloudOAuthCredsPage::cleanupPage()
     _asyncAuth.reset();
 }
 
-void OwncloudOAuthCredsPage::asyncAuthResult(OAuth::Result r, const QString &user,
-    const QString &token, const QString &refreshToken)
+void OwncloudOAuthCredsPage::asyncAuthResult(
+    OAuth::Result r, const QString &user, const QString &token, const QString &refreshToken)
 {
     switch (r) {
     case OAuth::NotSupported: {
@@ -111,8 +111,8 @@ AbstractCredentials *OwncloudOAuthCredsPage::getCredentials() const
 {
     auto *ocWizard = qobject_cast<OwncloudWizard *>(wizard());
     Q_ASSERT(ocWizard);
-    return new HttpCredentialsGui(_user, _token, _refreshToken,
-        ocWizard->_clientCertBundle, ocWizard->_clientCertPassword);
+    return new HttpCredentialsGui(
+        _user, _token, _refreshToken, ocWizard->_clientCertBundle, ocWizard->_clientCertPassword);
 }
 
 bool OwncloudOAuthCredsPage::isComplete() const

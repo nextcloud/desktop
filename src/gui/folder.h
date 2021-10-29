@@ -73,8 +73,7 @@ public:
     static void save(QSettings &settings, const FolderDefinition &folder);
 
     /// Reads a folder definition from the current settings group.
-    static bool load(QSettings &settings, const QString &alias,
-        FolderDefinition *folder);
+    static bool load(QSettings &settings, const QString &alias, FolderDefinition *folder);
 
     /** The highest version in the settings that load() can read
      *
@@ -107,15 +106,13 @@ class Folder : public QObject
     Q_OBJECT
 
 public:
-    enum class ChangeReason {
-        Other,
-        UnLock
-    };
+    enum class ChangeReason { Other, UnLock };
     Q_ENUM(ChangeReason)
 
     /** Create a new Folder
      */
-    Folder(const FolderDefinition &definition, AccountState *accountState, std::unique_ptr<Vfs> vfs, QObject *parent = nullptr);
+    Folder(const FolderDefinition &definition, AccountState *accountState, std::unique_ptr<Vfs> vfs,
+        QObject *parent = nullptr);
 
     ~Folder() override;
 
@@ -131,7 +128,8 @@ public:
      * alias or nickname
      */
     QString alias() const;
-    QString shortGuiRemotePathOrAppName() const; // since 2.0 we don't want to show aliases anymore, show the path instead
+    QString
+    shortGuiRemotePathOrAppName() const; // since 2.0 we don't want to show aliases anymore, show the path instead
 
     /**
      * short local path to display on the GUI  (native separators)
@@ -198,12 +196,12 @@ public:
     SyncResult syncResult() const;
 
     /**
-      * This is called when the sync folder definition is removed. Do cleanups here.
-      *
-      * It removes the database, among other things.
-      *
-      * The folder is not in a valid state afterwards!
-      */
+     * This is called when the sync folder definition is removed. Do cleanups here.
+     *
+     * It removes the database, among other things.
+     *
+     * The folder is not in a valid state afterwards!
+     */
     virtual void wipeForRemoval();
 
     void onAssociatedAccountRemoved();
@@ -213,9 +211,9 @@ public:
     void setDirtyNetworkLimits();
 
     /**
-      * Ignore syncing of hidden files or not. This is defined in the
-      * folder definition
-      */
+     * Ignore syncing of hidden files or not. This is defined in the
+     * folder definition
+     */
     bool ignoreHiddenFiles();
     void setIgnoreHiddenFiles(bool ignore);
 
@@ -225,7 +223,10 @@ public:
     Vfs &vfs() { return *_vfs; }
 
     RequestEtagJob *etagJob() { return _requestEtagJob; }
-    std::chrono::milliseconds msecSinceLastSync() const { return std::chrono::milliseconds(_timeSinceLastSyncDone.elapsed()); }
+    std::chrono::milliseconds msecSinceLastSync() const
+    {
+        return std::chrono::milliseconds(_timeSinceLastSyncDone.elapsed());
+    }
     std::chrono::milliseconds msecLastSyncDuration() const { return _lastSyncDuration; }
     int consecutiveFollowUpSyncs() const { return _consecutiveFollowUpSyncs; }
     int consecutiveFailingSyncs() const { return _consecutiveFailingSyncs; }
@@ -236,30 +237,30 @@ public:
     void removeFromSettings() const;
 
     /**
-      * Returns whether a file inside this folder should be excluded.
-      */
+     * Returns whether a file inside this folder should be excluded.
+     */
     bool isFileExcludedAbsolute(const QString &fullPath) const;
 
     /**
-      * Returns whether a file inside this folder should be excluded.
-      */
+     * Returns whether a file inside this folder should be excluded.
+     */
     bool isFileExcludedRelative(const QString &relativePath) const;
 
     /** Calls schedules this folder on the FolderMan after a short delay.
-      *
-      * This should be used in situations where a sync should be triggered
-      * because a local file was modified. Syncs don't upload files that were
-      * modified too recently, and this delay ensures the modification is
-      * far enough in the past.
-      *
-      * The delay doesn't reset with subsequent calls.
-      */
+     *
+     * This should be used in situations where a sync should be triggered
+     * because a local file was modified. Syncs don't upload files that were
+     * modified too recently, and this delay ensures the modification is
+     * far enough in the past.
+     *
+     * The delay doesn't reset with subsequent calls.
+     */
     void scheduleThisFolderSoon();
 
     /**
-      * Migration: When this flag is true, this folder will save to
-      * the backwards-compatible 'Folders' section in the config file.
-      */
+     * Migration: When this flag is true, this folder will save to
+     * the backwards-compatible 'Folders' section in the config file.
+     */
     void setSaveBackwardsCompatible(bool save);
 
     /** Used to have placeholders: save in placeholder config section */
@@ -310,18 +311,18 @@ signals:
 public slots:
 
     /**
-       * terminate the current sync run
-       */
+     * terminate the current sync run
+     */
     void slotTerminateSync();
 
     // connected to the corresponding signals in the SyncEngine
     void slotAboutToRemoveAllFiles(SyncFileItem::Direction, std::function<void(bool)> callback);
 
     /**
-      * Starts a sync operation
-      *
-      * If the list of changed files is known, it is passed.
-      */
+     * Starts a sync operation
+     *
+     * If the list of changed files is known, it is passed.
+     */
     void startSync(const QStringList &pathList = QStringList());
 
     int slotDiscardDownloadProgress();
@@ -330,10 +331,10 @@ public slots:
     int errorBlackListEntryCount();
 
     /**
-       * Triggered by the folder watcher when a file/dir in this folder
-       * changes. Needs to check whether this change should trigger a new
-       * sync run to be scheduled.
-       */
+     * Triggered by the folder watcher when a file/dir in this folder
+     * changes. Needs to check whether this change should trigger a new
+     * sync run to be scheduled.
+     */
     void slotWatchedPathChanged(const QString &path, ChangeReason reason);
 
     /**
@@ -437,8 +438,7 @@ private:
         LogStatusFileLocked
     };
 
-    void createGuiLog(const QString &filename, LogStatus status, int count,
-        const QString &renameTarget = QString());
+    void createGuiLog(const QString &filename, LogStatus status, int count, const QString &renameTarget = QString());
 
     void startVfs();
 

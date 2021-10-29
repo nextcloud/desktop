@@ -106,14 +106,14 @@ void RequestEtagJob::start()
 
 bool RequestEtagJob::finished()
 {
-    qCInfo(lcEtagJob) << "Request Etag of" << reply()->request().url() << "FINISHED WITH STATUS"
-                      <<  replyStatusString();
+    qCInfo(lcEtagJob) << "Request Etag of" << reply()->request().url() << "FINISHED WITH STATUS" << replyStatusString();
 
     auto httpCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
     if (httpCode == 207) {
         // Parse DAV response
         QXmlStreamReader reader(reply());
-        reader.addExtraNamespaceDeclaration(QXmlStreamNamespaceDeclaration(QStringLiteral("d"), QStringLiteral("DAV:")));
+        reader.addExtraNamespaceDeclaration(
+            QXmlStreamNamespaceDeclaration(QStringLiteral("d"), QStringLiteral("DAV:")));
         QByteArray etag;
         while (!reader.atEnd()) {
             QXmlStreamReader::TokenType type = reader.readNext();
@@ -133,7 +133,7 @@ bool RequestEtagJob::finished()
         emit etagRetrieved(etag, QDateTime::fromString(QString::fromUtf8(_responseTimestamp), Qt::RFC2822Date));
         emit finishedWithResult(etag);
     } else {
-        emit finishedWithResult(HttpError{ httpCode, errorString() });
+        emit finishedWithResult(HttpError{httpCode, errorString()});
     }
     return true;
 }
@@ -145,14 +145,15 @@ MkColJob::MkColJob(AccountPtr account, const QString &path, QObject *parent)
 {
 }
 
-MkColJob::MkColJob(AccountPtr account, const QString &path, const QMap<QByteArray, QByteArray> &extraHeaders, QObject *parent)
+MkColJob::MkColJob(
+    AccountPtr account, const QString &path, const QMap<QByteArray, QByteArray> &extraHeaders, QObject *parent)
     : AbstractNetworkJob(account, path, parent)
     , _extraHeaders(extraHeaders)
 {
 }
 
-MkColJob::MkColJob(AccountPtr account, const QUrl &url,
-    const QMap<QByteArray, QByteArray> &extraHeaders, QObject *parent)
+MkColJob::MkColJob(
+    AccountPtr account, const QUrl &url, const QMap<QByteArray, QByteArray> &extraHeaders, QObject *parent)
     : AbstractNetworkJob(account, QString(), parent)
     , _url(url)
     , _extraHeaders(extraHeaders)
@@ -179,8 +180,7 @@ void MkColJob::start()
 
 bool MkColJob::finished()
 {
-    qCInfo(lcMkColJob) << "MKCOL of" << reply()->request().url() << "FINISHED WITH STATUS"
-                       << replyStatusString();
+    qCInfo(lcMkColJob) << "MKCOL of" << reply()->request().url() << "FINISHED WITH STATUS" << replyStatusString();
 
     if (reply()->error() != QNetworkReply::NoError) {
         Q_EMIT finishedWithError(reply());
@@ -218,7 +218,8 @@ static QString readContentsAsString(QXmlStreamReader &reader)
 
 LsColXMLParser::LsColXMLParser() = default;
 
-bool LsColXMLParser::parse(const QByteArray &xml, QHash<QString, ExtraFolderInfo> *fileInfo, const QString &expectedPath)
+bool LsColXMLParser::parse(
+    const QByteArray &xml, QHash<QString, ExtraFolderInfo> *fileInfo, const QString &expectedPath)
 {
     // Parse DAV response
     QXmlStreamReader reader(xml);
@@ -242,8 +243,8 @@ bool LsColXMLParser::parse(const QByteArray &xml, QHash<QString, ExtraFolderInfo
                 // We don't use URL encoding in our request URL (which is the expected path) (QNAM will do it for us)
                 // but the result will have URL encoding..
                 QString hrefString = QUrl::fromLocalFile(QUrl::fromPercentEncoding(reader.readElementText().toUtf8()))
-                        .adjusted(QUrl::NormalizePathSegments)
-                        .path();
+                                         .adjusted(QUrl::NormalizePathSegments)
+                                         .path();
                 if (!hrefString.startsWith(expectedPath)) {
                     qCWarning(lcLsColJob) << "Invalid href" << hrefString << "expected starting with" << expectedPath;
                     return false;
@@ -373,8 +374,9 @@ void LsColJob::start()
     QByteArray xml("<?xml version=\"1.0\" ?>\n"
                    "<d:propfind xmlns:d=\"DAV:\" xmlns:oc=\"http://owncloud.org/ns\">\n"
                    "  <d:prop>\n"
-        + propStr + "  </d:prop>\n"
-                    "</d:propfind>\n");
+        + propStr
+        + "  </d:prop>\n"
+          "</d:propfind>\n");
     auto *buf = new QBuffer(this);
     buf->setData(xml);
     buf->open(QIODevice::ReadOnly);
@@ -391,21 +393,16 @@ void LsColJob::start()
 // not all in one big blob at the end.
 bool LsColJob::finished()
 {
-    qCInfo(lcLsColJob) << "LSCOL of" << reply()->request().url() << "FINISHED WITH STATUS"
-                       << replyStatusString();
+    qCInfo(lcLsColJob) << "LSCOL of" << reply()->request().url() << "FINISHED WITH STATUS" << replyStatusString();
 
     QString contentType = reply()->header(QNetworkRequest::ContentTypeHeader).toString();
     int httpCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
     if (httpCode == 207 && contentType.contains("application/xml; charset=utf-8")) {
         LsColXMLParser parser;
-        connect(&parser, &LsColXMLParser::directoryListingSubfolders,
-            this, &LsColJob::directoryListingSubfolders);
-        connect(&parser, &LsColXMLParser::directoryListingIterated,
-            this, &LsColJob::directoryListingIterated);
-        connect(&parser, &LsColXMLParser::finishedWithError,
-            this, &LsColJob::finishedWithError);
-        connect(&parser, &LsColXMLParser::finishedWithoutError,
-            this, &LsColJob::finishedWithoutError);
+        connect(&parser, &LsColXMLParser::directoryListingSubfolders, this, &LsColJob::directoryListingSubfolders);
+        connect(&parser, &LsColXMLParser::directoryListingIterated, this, &LsColJob::directoryListingIterated);
+        connect(&parser, &LsColXMLParser::finishedWithError, this, &LsColJob::finishedWithError);
+        connect(&parser, &LsColXMLParser::finishedWithoutError, this, &LsColJob::finishedWithoutError);
 
         QString expectedPath = reply()->request().url().path(); // something like "/owncloud/remote.php/dav/folder"
         if (!parser.parse(reply()->readAll(), &_folderInfos, expectedPath)) {
@@ -433,8 +430,7 @@ CheckServerJob::CheckServerJob(AccountPtr account, QObject *parent)
     , _permanentRedirects(0)
 {
     setIgnoreCredentialFailure(true);
-    connect(this, &AbstractNetworkJob::redirected,
-        this, &CheckServerJob::slotRedirected);
+    connect(this, &AbstractNetworkJob::redirected, this, &CheckServerJob::slotRedirected);
 }
 
 void CheckServerJob::start()
@@ -502,8 +498,8 @@ void CheckServerJob::slotRedirected(QNetworkReply *reply, const QUrl &targetUrl,
         && path.endsWith(slashStatusPhp)) {
         _serverUrl = targetUrl;
         _serverUrl.setPath(path.left(path.size() - slashStatusPhp.size()));
-        qCInfo(lcCheckServerJob) << "status.php was permanently redirected to"
-                                 << targetUrl << "new server url is" << _serverUrl;
+        qCInfo(lcCheckServerJob) << "status.php was permanently redirected to" << targetUrl << "new server url is"
+                                 << _serverUrl;
         ++_permanentRedirects;
     }
 }
@@ -518,9 +514,9 @@ void CheckServerJob::metaDataChangedSlot()
 bool CheckServerJob::finished()
 {
     if (reply()->request().url().scheme() == QLatin1String("https")
-        && reply()->sslConfiguration().sessionTicket().isEmpty()
-        && reply()->error() == QNetworkReply::NoError) {
-        qCWarning(lcCheckServerJob) << "No SSL session identifier / session ticket is used, this might impact sync performance negatively.";
+        && reply()->sslConfiguration().sessionTicket().isEmpty() && reply()->error() == QNetworkReply::NoError) {
+        qCWarning(lcCheckServerJob)
+            << "No SSL session identifier / session ticket is used, this might impact sync performance negatively.";
     }
 
     mergeSslConfigurationForSslButton(reply()->sslConfiguration(), account());
@@ -545,10 +541,12 @@ bool CheckServerJob::finished()
         auto status = QJsonDocument::fromJson(body, &error);
         // empty or invalid response
         if (error.error != QJsonParseError::NoError || status.isNull()) {
-            qCWarning(lcCheckServerJob) << "status.php from server is not valid JSON!" << body << reply()->request().url() << error.errorString();
+            qCWarning(lcCheckServerJob) << "status.php from server is not valid JSON!" << body
+                                        << reply()->request().url() << error.errorString();
         }
 
-        qCInfo(lcCheckServerJob) << "status.php returns: " << status << " " << reply()->error() << " Reply: " << reply();
+        qCInfo(lcCheckServerJob) << "status.php returns: " << status << " " << reply()->error()
+                                 << " Reply: " << reply();
         if (status.object().contains("installed")) {
             emit instanceFound(_serverUrl, status.object());
         } else {
@@ -591,8 +589,9 @@ void PropfindJob::start()
     QByteArray xml = "<?xml version=\"1.0\" ?>\n"
                      "<d:propfind xmlns:d=\"DAV:\">\n"
                      "  <d:prop>\n"
-        + propStr + "  </d:prop>\n"
-                    "</d:propfind>\n";
+        + propStr
+        + "  </d:prop>\n"
+          "</d:propfind>\n";
 
     auto *buf = new QBuffer(this);
     buf->setData(xml);
@@ -614,8 +613,7 @@ QList<QByteArray> PropfindJob::properties() const
 
 bool PropfindJob::finished()
 {
-    qCInfo(lcPropfindJob) << "PROPFIND of" << reply()->request().url() << "FINISHED WITH STATUS"
-                          << replyStatusString();
+    qCInfo(lcPropfindJob) << "PROPFIND of" << reply()->request().url() << "FINISHED WITH STATUS" << replyStatusString();
 
     int http_result_code = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 
@@ -651,7 +649,9 @@ bool PropfindJob::finished()
         }
     } else {
         qCWarning(lcPropfindJob) << "*not* successful, http result code is" << http_result_code
-                                 << (http_result_code == 302 ? reply()->header(QNetworkRequest::LocationHeader).toString() : QLatin1String(""));
+                                 << (http_result_code == 302
+                                            ? reply()->header(QNetworkRequest::LocationHeader).toString()
+                                            : QLatin1String(""));
         emit finishedWithError(reply());
     }
     return true;
@@ -664,9 +664,11 @@ AvatarJob::AvatarJob(AccountPtr account, const QString &userId, int size, QObjec
     : AbstractNetworkJob(account, QString(), parent)
 {
     if (account->serverVersionInt() >= Account::makeServerVersion(10, 0, 0)) {
-        _avatarUrl = Utility::concatUrlPath(account->url(), QString("remote.php/dav/avatars/%1/%2.png").arg(userId, QString::number(size)));
+        _avatarUrl = Utility::concatUrlPath(
+            account->url(), QString("remote.php/dav/avatars/%1/%2.png").arg(userId, QString::number(size)));
     } else {
-        _avatarUrl = Utility::concatUrlPath(account->url(), QString("index.php/avatar/%1/%2").arg(userId, QString::number(size)));
+        _avatarUrl = Utility::concatUrlPath(
+            account->url(), QString("index.php/avatar/%1/%2").arg(userId, QString::number(size)));
     }
 }
 
@@ -757,8 +759,9 @@ void ProppatchJob::start()
     QByteArray xml = "<?xml version=\"1.0\" ?>\n"
                      "<d:propertyupdate xmlns:d=\"DAV:\">\n"
                      "  <d:set><d:prop>\n"
-        + propStr + "  </d:prop></d:set>\n"
-                    "</d:propertyupdate>\n";
+        + propStr
+        + "  </d:prop></d:set>\n"
+          "</d:propertyupdate>\n";
 
     auto *buf = new QBuffer(this);
     buf->setData(xml);
@@ -788,7 +791,9 @@ bool ProppatchJob::finished()
         emit success();
     } else {
         qCWarning(lcProppatchJob) << "*not* successful, http result code is" << http_result_code
-                                  << (http_result_code == 302 ? reply()->header(QNetworkRequest::LocationHeader).toString() : QLatin1String(""));
+                                  << (http_result_code == 302
+                                             ? reply()->header(QNetworkRequest::LocationHeader).toString()
+                                             : QLatin1String(""));
         emit finishedWithError();
     }
     return true;
@@ -827,7 +832,7 @@ void JsonApiJob::addQueryParams(const QUrlQuery &params)
 
 void JsonApiJob::addRawHeader(const QByteArray &headerName, const QByteArray &value)
 {
-   _request.setRawHeader(headerName, value);
+    _request.setRawHeader(headerName, value);
 }
 
 void JsonApiJob::setBody(const QJsonDocument &body)
@@ -884,7 +889,8 @@ bool JsonApiJob::finished()
     int statusCode = 0;
     int httpStatusCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
     if (reply()->error() != QNetworkReply::NoError) {
-        qCWarning(lcJsonApiJob) << "Network error: " << path() << errorString() << reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute);
+        qCWarning(lcJsonApiJob) << "Network error: " << path() << errorString()
+                                << reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute);
         statusCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
         emit jsonReceived(QJsonDocument(), statusCode);
         return true;
@@ -897,23 +903,25 @@ bool JsonApiJob::finished()
             // this is a error message coming back from ocs.
             statusCode = rex.cap(1).toInt();
         }
-    } else if(jsonStr.isEmpty() && httpStatusCode == notModifiedStatusCode){
+    } else if (jsonStr.isEmpty() && httpStatusCode == notModifiedStatusCode) {
         qCWarning(lcJsonApiJob) << "Nothing changed so nothing to retrieve - status code: " << httpStatusCode;
         statusCode = httpStatusCode;
     } else {
         QRegExp rex(R"("statuscode":(\d+))");
-        // example: "{"ocs":{"meta":{"status":"ok","statuscode":100,"message":null},"data":{"version":{"major":8,"minor":"... (504)
+        // example:
+        // "{"ocs":{"meta":{"status":"ok","statuscode":100,"message":null},"data":{"version":{"major":8,"minor":"...
+        // (504)
         if (jsonStr.contains(rex)) {
             statusCode = rex.cap(1).toInt();
         }
     }
 
     // save new ETag value
-    if(reply()->rawHeaderList().contains("ETag"))
+    if (reply()->rawHeaderList().contains("ETag"))
         emit etagResponseHeaderReceived(reply()->rawHeader("ETag"), statusCode);
 
     const auto desktopNotificationsAllowed = reply()->rawHeader(QByteArray("X-Nextcloud-User-Status"));
-    if(!desktopNotificationsAllowed.isEmpty()) {
+    if (!desktopNotificationsAllowed.isEmpty()) {
         emit allowDesktopNotificationsChanged(desktopNotificationsAllowed == "online");
     }
 
@@ -985,7 +993,8 @@ void DetermineAuthTypeJob::start()
             if (authChallenge.isEmpty()) {
                 qCWarning(lcDetermineAuthTypeJob) << "Did not receive WWW-Authenticate reply to auth-test PROPFIND";
             } else {
-                qCWarning(lcDetermineAuthTypeJob) << "Unknown WWW-Authenticate reply to auth-test PROPFIND:" << authChallenge;
+                qCWarning(lcDetermineAuthTypeJob)
+                    << "Unknown WWW-Authenticate reply to auth-test PROPFIND:" << authChallenge;
             }
             _resultPropfind = Basic;
         }
@@ -1068,8 +1077,8 @@ SimpleNetworkJob::SimpleNetworkJob(AccountPtr account, QObject *parent)
 {
 }
 
-QNetworkReply *SimpleNetworkJob::startRequest(const QByteArray &verb, const QUrl &url,
-    QNetworkRequest req, QIODevice *requestBody)
+QNetworkReply *SimpleNetworkJob::startRequest(
+    const QByteArray &verb, const QUrl &url, QNetworkRequest req, QIODevice *requestBody)
 {
     auto reply = sendRequest(verb, url, req, requestBody);
     start();
@@ -1086,7 +1095,6 @@ bool SimpleNetworkJob::finished()
 DeleteApiJob::DeleteApiJob(AccountPtr account, const QString &path, QObject *parent)
     : AbstractNetworkJob(account, path, parent)
 {
-
 }
 
 void DeleteApiJob::start()
@@ -1100,8 +1108,7 @@ void DeleteApiJob::start()
 
 bool DeleteApiJob::finished()
 {
-    qCInfo(lcJsonApiJob) << "JsonApiJob of" << reply()->request().url() << "FINISHED WITH STATUS"
-                         << reply()->error()
+    qCInfo(lcJsonApiJob) << "JsonApiJob of" << reply()->request().url() << "FINISHED WITH STATUS" << reply()->error()
                          << (reply()->error() == QNetworkReply::NoError ? QLatin1String("") : errorString());
 
     int httpStatus = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
@@ -1119,9 +1126,8 @@ bool DeleteApiJob::finished()
     return true;
 }
 
-void fetchPrivateLinkUrl(AccountPtr account, const QString &remotePath,
-    const QByteArray &numericFileId, QObject *target,
-    std::function<void(const QString &url)> targetFun)
+void fetchPrivateLinkUrl(AccountPtr account, const QString &remotePath, const QByteArray &numericFileId,
+    QObject *target, std::function<void(const QString &url)> targetFun)
 {
     QString oldUrl;
     if (!numericFileId.isEmpty())
@@ -1129,8 +1135,7 @@ void fetchPrivateLinkUrl(AccountPtr account, const QString &remotePath,
 
     // Retrieve the new link by PROPFIND
     auto *job = new PropfindJob(account, remotePath, target);
-    job->setProperties(
-        QList<QByteArray>()
+    job->setProperties(QList<QByteArray>()
         << "http://owncloud.org/ns:fileid" // numeric file id for fallback private link generation
         << "http://owncloud.org/ns:privatelink");
     job->setTimeout(10 * 1000);
@@ -1145,9 +1150,7 @@ void fetchPrivateLinkUrl(AccountPtr account, const QString &remotePath,
             targetFun(oldUrl);
         }
     });
-    QObject::connect(job, &PropfindJob::finishedWithError, target, [=](QNetworkReply *) {
-        targetFun(oldUrl);
-    });
+    QObject::connect(job, &PropfindJob::finishedWithError, target, [=](QNetworkReply *) { targetFun(oldUrl); });
     job->start();
 }
 

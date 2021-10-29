@@ -40,8 +40,8 @@ inline QByteArray getEtagFromReply(QNetworkReply *reply)
 /**
  * Given an error from the network, map to a SyncFileItem::Status error
  */
-inline SyncFileItem::Status classifyError(QNetworkReply::NetworkError nerror,
-    int httpCode, bool *anotherSyncNeeded = nullptr, const QByteArray &errorBody = QByteArray())
+inline SyncFileItem::Status classifyError(QNetworkReply::NetworkError nerror, int httpCode,
+    bool *anotherSyncNeeded = nullptr, const QByteArray &errorBody = QByteArray())
 {
     Q_ASSERT(nerror != QNetworkReply::NoError); // we should only be called when there is an error
 
@@ -62,9 +62,8 @@ inline SyncFileItem::Status classifyError(QNetworkReply::NetworkError nerror,
         // BUG: This relies on a translated string and is thus unreliable.
         //      In the future it should return a NormalError and trigger a status.php
         //      check that detects maintenance mode reliably and will terminate the sync run.
-        auto probablyMaintenance =
-                errorBody.contains(R"(>Sabre\DAV\Exception\ServiceUnavailable<)")
-                && !errorBody.contains("Storage is temporarily not available");
+        auto probablyMaintenance = errorBody.contains(R"(>Sabre\DAV\Exception\ServiceUnavailable<)")
+            && !errorBody.contains("Storage is temporarily not available");
         return probablyMaintenance ? SyncFileItem::FatalError : SyncFileItem::NormalError;
     }
 

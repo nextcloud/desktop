@@ -24,8 +24,7 @@ ToolTipUpdater::ToolTipUpdater(QTreeView *treeView)
     : QObject(treeView)
     , _treeView(treeView)
 {
-    connect(_treeView->model(), &QAbstractItemModel::dataChanged,
-        this, &ToolTipUpdater::dataChanged);
+    connect(_treeView->model(), &QAbstractItemModel::dataChanged, this, &ToolTipUpdater::dataChanged);
     _treeView->viewport()->installEventFilter(this);
 }
 
@@ -38,9 +37,7 @@ bool ToolTipUpdater::eventFilter(QObject * /*obj*/, QEvent *ev)
     return false;
 }
 
-void ToolTipUpdater::dataChanged(const QModelIndex &topLeft,
-    const QModelIndex &bottomRight,
-    const QVector<int> &roles)
+void ToolTipUpdater::dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight, const QVector<int> &roles)
 {
     if (!QToolTip::isVisible() || !roles.contains(Qt::ToolTipRole) || _toolTipPos.isNull()) {
         return;

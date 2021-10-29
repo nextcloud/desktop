@@ -51,21 +51,20 @@ SocketUploadJob::SocketUploadJob(const QSharedPointer<SocketApiJobV2> &job)
     }
 
     _db = new SyncJournalDb(_tmp.fileName(), this);
-    _engine = new SyncEngine(account->account(), _localPath.endsWith(QLatin1Char('/')) ? _localPath : _localPath + QLatin1Char('/'), _remotePath, _db);
+    _engine = new SyncEngine(account->account(),
+        _localPath.endsWith(QLatin1Char('/')) ? _localPath : _localPath + QLatin1Char('/'), _remotePath, _db);
     _engine->setParent(_db);
 
-    connect(_engine, &OCC::SyncEngine::itemCompleted, this, [this](const OCC::SyncFileItemPtr item) {
-        _syncedFiles.append(item->_file);
-    });
+    connect(_engine, &OCC::SyncEngine::itemCompleted, this,
+        [this](const OCC::SyncFileItemPtr item) { _syncedFiles.append(item->_file); });
 
     connect(_engine, &OCC::SyncEngine::finished, this, [this](bool ok) {
         if (ok) {
-            _apiJob->success({ { "localPath", _localPath }, { "syncedFiles", QJsonArray::fromStringList(_syncedFiles) } });
+            _apiJob->success({{"localPath", _localPath}, {"syncedFiles", QJsonArray::fromStringList(_syncedFiles)}});
         }
     });
-    connect(_engine, &OCC::SyncEngine::syncError, this, [this](const QString &error, ErrorCategory) {
-        _apiJob->failure(error);
-    });
+    connect(_engine, &OCC::SyncEngine::syncError, this,
+        [this](const QString &error, ErrorCategory) { _apiJob->failure(error); });
 }
 
 void SocketUploadJob::start()

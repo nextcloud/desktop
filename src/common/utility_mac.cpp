@@ -29,10 +29,9 @@ static void setupFavLink_private(const QString &folder)
 
     LSSharedFileListRef placesItems = LSSharedFileListCreate(0, kLSSharedFileListFavoriteItems, 0);
     if (placesItems) {
-        //Insert an item to the list.
-        LSSharedFileListItemRef item = LSSharedFileListInsertItemURL(placesItems,
-            kLSSharedFileListItemLast, 0, 0,
-            urlRef, 0, 0);
+        // Insert an item to the list.
+        LSSharedFileListItemRef item =
+            LSSharedFileListInsertItemURL(placesItems, kLSSharedFileListItemLast, 0, 0, urlRef, 0, 0);
         if (item)
             CFRelease(item);
     }
@@ -84,10 +83,9 @@ void setLaunchOnStartup_private(const QString &appName, const QString &guiName, 
     LSSharedFileListRef loginItems = LSSharedFileListCreate(0, kLSSharedFileListSessionLoginItems, 0);
 
     if (loginItems && enable) {
-        //Insert an item to the list.
-        LSSharedFileListItemRef item = LSSharedFileListInsertItemURL(loginItems,
-            kLSSharedFileListItemLast, 0, 0,
-            urlRef, 0, 0);
+        // Insert an item to the list.
+        LSSharedFileListItemRef item =
+            LSSharedFileListInsertItemURL(loginItems, kLSSharedFileListItemLast, 0, 0, urlRef, 0, 0);
         if (item)
             CFRelease(item);
         CFRelease(loginItems);
@@ -122,8 +120,7 @@ static bool hasDarkSystray_private()
     CFStringRef interfaceStyleKey = CFSTR("AppleInterfaceStyle");
     CFStringRef interfaceStyle = nullptr;
     CFStringRef darkInterfaceStyle = CFSTR("Dark");
-    interfaceStyle = (CFStringRef)CFPreferencesCopyAppValue(interfaceStyleKey,
-        kCFPreferencesCurrentApplication);
+    interfaceStyle = (CFStringRef)CFPreferencesCopyAppValue(interfaceStyleKey, kCFPreferencesCurrentApplication);
     if (interfaceStyle) {
         returnValue = (kCFCompareEqualTo == CFStringCompare(interfaceStyle, darkInterfaceStyle, 0));
         CFRelease(interfaceStyle);

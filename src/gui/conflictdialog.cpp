@@ -54,14 +54,12 @@ ConflictDialog::ConflictDialog(QWidget *parent)
     _ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Keep selected version"));
 
     connect(_ui->localVersionRadio, &QCheckBox::toggled, this, &ConflictDialog::updateButtonStates);
-    connect(_ui->localVersionButton, &QToolButton::clicked, this, [=] {
-        QDesktopServices::openUrl(QUrl::fromLocalFile(_solver->localVersionFilename()));
-    });
+    connect(_ui->localVersionButton, &QToolButton::clicked, this,
+        [=] { QDesktopServices::openUrl(QUrl::fromLocalFile(_solver->localVersionFilename())); });
 
     connect(_ui->remoteVersionRadio, &QCheckBox::toggled, this, &ConflictDialog::updateButtonStates);
-    connect(_ui->remoteVersionButton, &QToolButton::clicked, this, [=] {
-        QDesktopServices::openUrl(QUrl::fromLocalFile(_solver->remoteVersionFilename()));
-    });
+    connect(_ui->remoteVersionButton, &QToolButton::clicked, this,
+        [=] { QDesktopServices::openUrl(QUrl::fromLocalFile(_solver->remoteVersionFilename())); });
 
     connect(_solver, &ConflictSolver::localVersionFilenameChanged, this, &ConflictDialog::updateWidgets);
     connect(_solver, &ConflictSolver::remoteVersionFilenameChanged, this, &ConflictDialog::updateWidgets);
@@ -115,8 +113,8 @@ void ConflictDialog::accept()
     }
 
     const auto solution = isLocalPicked && isRemotePicked ? ConflictSolver::KeepBothVersions
-                        : isLocalPicked ? ConflictSolver::KeepLocalVersion
-                        : ConflictSolver::KeepRemoteVersion;
+        : isLocalPicked                                   ? ConflictSolver::KeepLocalVersion
+                                                          : ConflictSolver::KeepRemoteVersion;
     if (_solver->exec(solution)) {
         QDialog::accept();
     }
@@ -126,7 +124,8 @@ void ConflictDialog::updateWidgets()
 {
     QMimeDatabase mimeDb;
 
-    const auto updateGroup = [this, &mimeDb](const QString &filename, QLabel *linkLabel, const QString &linkText, QLabel *mtimeLabel, QLabel *sizeLabel, QToolButton *button) {
+    const auto updateGroup = [this, &mimeDb](const QString &filename, QLabel *linkLabel, const QString &linkText,
+                                 QLabel *mtimeLabel, QLabel *sizeLabel, QToolButton *button) {
         const auto fileUrl = QUrl::fromLocalFile(filename).toString();
         linkLabel->setText(QStringLiteral("<a href='%1'>%2</a>").arg(fileUrl).arg(linkText));
 
@@ -143,20 +142,12 @@ void ConflictDialog::updateWidgets()
     };
 
     const auto localVersion = _solver->localVersionFilename();
-    updateGroup(localVersion,
-                _ui->localVersionLink,
-                tr("Open local version"),
-                _ui->localVersionMtime,
-                _ui->localVersionSize,
-                _ui->localVersionButton);
+    updateGroup(localVersion, _ui->localVersionLink, tr("Open local version"), _ui->localVersionMtime,
+        _ui->localVersionSize, _ui->localVersionButton);
 
     const auto remoteVersion = _solver->remoteVersionFilename();
-    updateGroup(remoteVersion,
-                _ui->remoteVersionLink,
-                tr("Open server version"),
-                _ui->remoteVersionMtime,
-                _ui->remoteVersionSize,
-                _ui->remoteVersionButton);
+    updateGroup(remoteVersion, _ui->remoteVersionLink, tr("Open server version"), _ui->remoteVersionMtime,
+        _ui->remoteVersionSize, _ui->remoteVersionButton);
 
     const auto localMtime = QFileInfo(localVersion).lastModified();
     const auto remoteMtime = QFileInfo(remoteVersion).lastModified();
@@ -172,9 +163,9 @@ void ConflictDialog::updateButtonStates()
     _ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(isLocalPicked || isRemotePicked);
 
     const auto text = isLocalPicked && isRemotePicked ? tr("Keep both versions")
-                    : isLocalPicked ? tr("Keep local version")
-                    : isRemotePicked ? tr("Keep server version")
-                    : tr("Keep selected version");
+        : isLocalPicked                               ? tr("Keep local version")
+        : isRemotePicked                              ? tr("Keep server version")
+                                                      : tr("Keep selected version");
     _ui->buttonBox->button(QDialogButtonBox::Ok)->setText(text);
 }
 

@@ -123,7 +123,8 @@ private slots:
 
 namespace OCC {
 
-QQuickImageResponse *UnifiedSearchResultImageProvider::requestImageResponse(const QString &id, const QSize &requestedSize)
+QQuickImageResponse *UnifiedSearchResultImageProvider::requestImageResponse(
+    const QString &id, const QSize &requestedSize)
 {
     return new AsyncImageResponse(id, requestedSize);
 }

@@ -73,7 +73,7 @@ QString iconUrlForDefaultIconName(const QString &defaultIconName)
     if (urlForIcon.isValid() && !urlForIcon.scheme().isEmpty()) {
         return defaultIconName;
     }
-    
+
     if (defaultIconName.startsWith(QStringLiteral("icon-"))) {
         const auto parts = defaultIconName.split(QLatin1Char('-'));
 
@@ -84,7 +84,8 @@ QString iconUrlForDefaultIconName(const QString &defaultIconName)
                 return iconFilePath;
             }
 
-            const QString blackIconFilePath = QStringLiteral(":/client/theme/black/") + parts[1] + QStringLiteral(".svg");
+            const QString blackIconFilePath =
+                QStringLiteral(":/client/theme/black/") + parts[1] + QStringLiteral(".svg");
 
             if (QFile::exists(blackIconFilePath)) {
                 return blackIconFilePath;
@@ -132,8 +133,9 @@ QString generateUrlForIcon(const QString &fallackIcon, const QUrl &serverUrl)
     if (fallackIconCopy.startsWith(QLatin1Char('/')) || fallackIconCopy.startsWith(QLatin1Char('\\'))) {
         // relative image resource URL, just needs some concatenation with current server URL
         // some icons may contain parameters after (?)
-        const QStringList fallackIconPathSplitted =
-            fallackIconCopy.contains(QLatin1Char('?')) ? fallackIconCopy.split(QLatin1Char('?')) : QStringList{fallackIconCopy};
+        const QStringList fallackIconPathSplitted = fallackIconCopy.contains(QLatin1Char('?'))
+            ? fallackIconCopy.split(QLatin1Char('?'))
+            : QStringList{fallackIconCopy};
         Q_ASSERT(!fallackIconPathSplitted.isEmpty());
         serverUrlCopy.setPath(fallackIconPathSplitted[0]);
         fallackIconCopy = serverUrlCopy.toString();
@@ -151,7 +153,8 @@ QString generateUrlForIcon(const QString &fallackIcon, const QUrl &serverUrl)
     return fallackIconCopy;
 }
 
-QString iconsFromThumbnailAndFallbackIcon(const QString &thumbnailUrl, const QString &fallackIcon, const QUrl &serverUrl)
+QString iconsFromThumbnailAndFallbackIcon(
+    const QString &thumbnailUrl, const QString &fallackIcon, const QUrl &serverUrl)
 {
     if (thumbnailUrl.isEmpty() && fallackIcon.isEmpty()) {
         return {};
@@ -179,7 +182,8 @@ QString iconsFromThumbnailAndFallbackIcon(const QString &thumbnailUrl, const QSt
 
 constexpr int searchTermEditingFinishedSearchStartDelay = 800;
 
-// server-side bug of returning the cursor > 0 and isPaginated == 'true', using '5' as it is done on Android client's end now
+// server-side bug of returning the cursor > 0 and isPaginated == 'true', using '5' as it is done on Android client's
+// end now
 constexpr int minimumEntresNumberToShowLoadMore = 5;
 }
 namespace OCC {
@@ -198,7 +202,7 @@ QVariant UnifiedSearchResultsListModel::data(const QModelIndex &index, int role)
     switch (role) {
     case ProviderNameRole:
         return _results.at(index.row())._providerName;
-    case ProviderIdRole: 
+    case ProviderIdRole:
         return _results.at(index.row())._providerId;
     case ImagePlaceholderRole:
         return imagePlaceholderUrlForProviderId(_results.at(index.row())._providerId);
@@ -357,7 +361,8 @@ void UnifiedSearchResultsListModel::slotSearchTermEditingFinished()
 
     if (_providers.isEmpty()) {
         auto job = new JsonApiJob(_accountState->account(), QLatin1String("ocs/v2.php/search/providers"));
-        QObject::connect(job, &JsonApiJob::jsonReceived, this, &UnifiedSearchResultsListModel::slotFetchProvidersFinished);
+        QObject::connect(
+            job, &JsonApiJob::jsonReceived, this, &UnifiedSearchResultsListModel::slotFetchProvidersFinished);
         job->start();
     } else {
         startSearch();
@@ -374,7 +379,7 @@ void UnifiedSearchResultsListModel::slotFetchProvidersFinished(const QJsonDocume
         emit errorStringChanged();
         return;
     }
-    
+
     if (statusCode != 200) {
         qCCritical(lcUnifiedSearch) << QString("%1: Failed to fetch search providers for '%2'. Error: %3")
                                            .arg(statusCode)
@@ -421,7 +426,7 @@ void UnifiedSearchResultsListModel::slotSearchForProviderFinished(const QJsonDoc
     }
 
     const auto providerId = job->property("providerId").toString();
-    
+
     if (providerId.isEmpty()) {
         return;
     }
@@ -484,8 +489,8 @@ void UnifiedSearchResultsListModel::startSearchForProvider(const QString &provid
         return;
     }
 
-    auto job = new JsonApiJob(_accountState->account(),
-        QLatin1String("ocs/v2.php/search/providers/%1/search").arg(providerId));
+    auto job = new JsonApiJob(
+        _accountState->account(), QLatin1String("ocs/v2.php/search/providers/%1/search").arg(providerId));
 
     QUrlQuery params;
     params.addQueryItem(QStringLiteral("term"), _searchTerm);
@@ -505,7 +510,8 @@ void UnifiedSearchResultsListModel::startSearchForProvider(const QString &provid
     job->start();
 }
 
-void UnifiedSearchResultsListModel::parseResultsForProvider(const QJsonObject &data, const QString &providerId, bool fetchedMore)
+void UnifiedSearchResultsListModel::parseResultsForProvider(
+    const QJsonObject &data, const QString &providerId, bool fetchedMore)
 {
     const auto cursor = data.value(QStringLiteral("cursor")).toInt();
     const auto entries = data.value(QStringLiteral("entries")).toVariant().toList();
@@ -585,7 +591,8 @@ void UnifiedSearchResultsListModel::parseResultsForProvider(const QJsonObject &d
     }
 }
 
-void UnifiedSearchResultsListModel::appendResults(QVector<UnifiedSearchResult> results, const UnifiedSearchProvider &provider)
+void UnifiedSearchResultsListModel::appendResults(
+    QVector<UnifiedSearchResult> results, const UnifiedSearchProvider &provider)
 {
     if (provider._cursor > 0 && provider._isPaginated) {
         UnifiedSearchResult fetchMoreTrigger;
@@ -605,8 +612,8 @@ void UnifiedSearchResultsListModel::appendResults(QVector<UnifiedSearchResult> r
     }
 
     // insertion is done with sorting (first -> by order, then -> by name)
-    const auto itToInsertTo = std::find_if(std::begin(_results), std::end(_results),
-        [&provider](const UnifiedSearchResult &current) {
+    const auto itToInsertTo =
+        std::find_if(std::begin(_results), std::end(_results), [&provider](const UnifiedSearchResult &current) {
             // insert before other results of higher order when possible
             if (current._order > provider._order) {
                 return true;
@@ -628,7 +635,8 @@ void UnifiedSearchResultsListModel::appendResults(QVector<UnifiedSearchResult> r
     endInsertRows();
 }
 
-void UnifiedSearchResultsListModel::appendResultsToProvider(const QVector<UnifiedSearchResult> &results, const UnifiedSearchProvider &provider)
+void UnifiedSearchResultsListModel::appendResultsToProvider(
+    const QVector<UnifiedSearchResult> &results, const UnifiedSearchProvider &provider)
 {
     if (results.isEmpty()) {
         return;
@@ -661,10 +669,8 @@ void UnifiedSearchResultsListModel::appendResultsToProvider(const QVector<Unifie
 
 void UnifiedSearchResultsListModel::removeFetchMoreTrigger(const QString &providerId)
 {
-    const auto itFetchMoreTriggerForProviderReverse = std::find_if(
-        std::rbegin(_results),
-        std::rend(_results),
-        [providerId](const UnifiedSearchResult &result) {
+    const auto itFetchMoreTriggerForProviderReverse =
+        std::find_if(std::rbegin(_results), std::rend(_results), [providerId](const UnifiedSearchResult &result) {
             return result._providerId == providerId && result._type == UnifiedSearchResult::Type::FetchMoreTrigger;
         });
 
@@ -674,7 +680,8 @@ void UnifiedSearchResultsListModel::removeFetchMoreTrigger(const QString &provid
 
         if (itFetchMoreTriggerForProvider != std::end(_results)
             && itFetchMoreTriggerForProvider != std::begin(_results)) {
-            const auto eraseIndex = static_cast<int>(std::distance(std::begin(_results), itFetchMoreTriggerForProvider));
+            const auto eraseIndex =
+                static_cast<int>(std::distance(std::begin(_results), itFetchMoreTriggerForProvider));
             Q_ASSERT(eraseIndex >= 0 && eraseIndex < static_cast<int>(_results.size()));
             beginRemoveRows({}, eraseIndex, eraseIndex);
             _results.erase(itFetchMoreTriggerForProvider);

@@ -35,7 +35,8 @@ Q_LOGGING_CATEGORY(lcBandwidthManager, "nextcloud.sync.bandwidthmanager", QtInfo
 // we cannot lower this value much more. If we do, the estimated bw will be very high
 // because the buffers fill fast while the actual network algorithms are not relevant yet.
 static qint64 relativeLimitMeasuringTimerIntervalMsec = 1000 * 2;
-// See also WritingState in http://code.woboq.org/qt5/qtbase/src/network/access/qhttpprotocolhandler.cpp.html#_ZN20QHttpProtocolHandler11sendRequestEv
+// See also WritingState in
+// http://code.woboq.org/qt5/qtbase/src/network/access/qhttpprotocolhandler.cpp.html#_ZN20QHttpProtocolHandler11sendRequestEv
 
 // FIXME At some point:
 //  * Register device only after the QNR received its metaDataChanged() signal
@@ -67,23 +68,23 @@ BandwidthManager::BandwidthManager(OwncloudPropagator *p)
     _absoluteLimitTimer.start();
 
     // Relative uploads
-    QObject::connect(&_relativeUploadMeasuringTimer, &QTimer::timeout,
-        this, &BandwidthManager::relativeUploadMeasuringTimerExpired);
+    QObject::connect(
+        &_relativeUploadMeasuringTimer, &QTimer::timeout, this, &BandwidthManager::relativeUploadMeasuringTimerExpired);
     _relativeUploadMeasuringTimer.setInterval(relativeLimitMeasuringTimerIntervalMsec);
     _relativeUploadMeasuringTimer.start();
     _relativeUploadMeasuringTimer.setSingleShot(true); // will be restarted from the delay timer
-    QObject::connect(&_relativeUploadDelayTimer, &QTimer::timeout,
-        this, &BandwidthManager::relativeUploadDelayTimerExpired);
+    QObject::connect(
+        &_relativeUploadDelayTimer, &QTimer::timeout, this, &BandwidthManager::relativeUploadDelayTimerExpired);
     _relativeUploadDelayTimer.setSingleShot(true); // will be restarted from the measuring timer
 
     // Relative downloads
-    QObject::connect(&_relativeDownloadMeasuringTimer, &QTimer::timeout,
-        this, &BandwidthManager::relativeDownloadMeasuringTimerExpired);
+    QObject::connect(&_relativeDownloadMeasuringTimer, &QTimer::timeout, this,
+        &BandwidthManager::relativeDownloadMeasuringTimerExpired);
     _relativeDownloadMeasuringTimer.setInterval(relativeLimitMeasuringTimerIntervalMsec);
     _relativeDownloadMeasuringTimer.start();
     _relativeDownloadMeasuringTimer.setSingleShot(true); // will be restarted from the delay timer
-    QObject::connect(&_relativeDownloadDelayTimer, &QTimer::timeout,
-        this, &BandwidthManager::relativeDownloadDelayTimerExpired);
+    QObject::connect(
+        &_relativeDownloadDelayTimer, &QTimer::timeout, this, &BandwidthManager::relativeDownloadDelayTimerExpired);
     _relativeDownloadDelayTimer.setSingleShot(true); // will be restarted from the measuring timer
 }
 
@@ -162,16 +163,17 @@ void BandwidthManager::relativeUploadMeasuringTimerExpired()
 
     qCDebug(lcBandwidthManager) << _relativeUploadDeviceList.size() << "Starting Delay";
 
-    qint64 relativeLimitProgressMeasured = (_relativeLimitCurrentMeasuredDevice->_readWithProgress
-                                               + _relativeLimitCurrentMeasuredDevice->_read)
-        / 2;
-    qint64 relativeLimitProgressDifference = relativeLimitProgressMeasured - _relativeUploadLimitProgressAtMeasuringRestart;
-    qCDebug(lcBandwidthManager) << _relativeUploadLimitProgressAtMeasuringRestart
-                                << relativeLimitProgressMeasured << relativeLimitProgressDifference;
+    qint64 relativeLimitProgressMeasured =
+        (_relativeLimitCurrentMeasuredDevice->_readWithProgress + _relativeLimitCurrentMeasuredDevice->_read) / 2;
+    qint64 relativeLimitProgressDifference =
+        relativeLimitProgressMeasured - _relativeUploadLimitProgressAtMeasuringRestart;
+    qCDebug(lcBandwidthManager) << _relativeUploadLimitProgressAtMeasuringRestart << relativeLimitProgressMeasured
+                                << relativeLimitProgressDifference;
 
     qint64 speedkBPerSec = (relativeLimitProgressDifference / relativeLimitMeasuringTimerIntervalMsec * 1000) / 1024;
-    qCDebug(lcBandwidthManager) << relativeLimitProgressDifference / 1024 << "kB =>" << speedkBPerSec << "kB/sec on full speed ("
-                                << _relativeLimitCurrentMeasuredDevice->_readWithProgress << _relativeLimitCurrentMeasuredDevice->_read
+    qCDebug(lcBandwidthManager) << relativeLimitProgressDifference / 1024 << "kB =>" << speedkBPerSec
+                                << "kB/sec on full speed (" << _relativeLimitCurrentMeasuredDevice->_readWithProgress
+                                << _relativeLimitCurrentMeasuredDevice->_read
                                 << qAbs(_relativeLimitCurrentMeasuredDevice->_readWithProgress
                                        - _relativeLimitCurrentMeasuredDevice->_read)
                                 << ")";
@@ -183,7 +185,8 @@ void BandwidthManager::relativeUploadMeasuringTimerExpired()
     qint64 wholeTimeMsec = (100.0 / uploadLimitPercent) * relativeLimitMeasuringTimerIntervalMsec;
     qint64 waitTimeMsec = wholeTimeMsec - relativeLimitMeasuringTimerIntervalMsec;
     qint64 realWaitTimeMsec = waitTimeMsec + wholeTimeMsec;
-    qCDebug(lcBandwidthManager) << waitTimeMsec << " - " << realWaitTimeMsec << " msec for " << uploadLimitPercent << "%";
+    qCDebug(lcBandwidthManager) << waitTimeMsec << " - " << realWaitTimeMsec << " msec for " << uploadLimitPercent
+                                << "%";
 
     // We want to wait twice as long since we want to give all
     // devices the same quota we used now since we don't want
@@ -222,9 +225,8 @@ void BandwidthManager::relativeUploadDelayTimerExpired()
     _relativeUploadDeviceList.pop_front();
     _relativeUploadDeviceList.push_back(_relativeLimitCurrentMeasuredDevice);
 
-    _relativeUploadLimitProgressAtMeasuringRestart = (_relativeLimitCurrentMeasuredDevice->_readWithProgress
-                                                         + _relativeLimitCurrentMeasuredDevice->_read)
-        / 2;
+    _relativeUploadLimitProgressAtMeasuringRestart =
+        (_relativeLimitCurrentMeasuredDevice->_readWithProgress + _relativeLimitCurrentMeasuredDevice->_read) / 2;
     _relativeLimitCurrentMeasuredDevice->setBandwidthLimited(false);
     _relativeLimitCurrentMeasuredDevice->setChoked(false);
 
@@ -258,12 +260,14 @@ void BandwidthManager::relativeDownloadMeasuringTimerExpired()
     qCDebug(lcBandwidthManager) << _downloadJobList.size() << "Starting Delay";
 
     qint64 relativeLimitProgressMeasured = _relativeLimitCurrentMeasuredJob->currentDownloadPosition();
-    qint64 relativeLimitProgressDifference = relativeLimitProgressMeasured - _relativeDownloadLimitProgressAtMeasuringRestart;
-    qCDebug(lcBandwidthManager) << _relativeDownloadLimitProgressAtMeasuringRestart
-                                << relativeLimitProgressMeasured << relativeLimitProgressDifference;
+    qint64 relativeLimitProgressDifference =
+        relativeLimitProgressMeasured - _relativeDownloadLimitProgressAtMeasuringRestart;
+    qCDebug(lcBandwidthManager) << _relativeDownloadLimitProgressAtMeasuringRestart << relativeLimitProgressMeasured
+                                << relativeLimitProgressDifference;
 
     qint64 speedkBPerSec = (relativeLimitProgressDifference / relativeLimitMeasuringTimerIntervalMsec * 1000) / 1024;
-    qCDebug(lcBandwidthManager) << relativeLimitProgressDifference / 1024 << "kB =>" << speedkBPerSec << "kB/sec on full speed ("
+    qCDebug(lcBandwidthManager) << relativeLimitProgressDifference / 1024 << "kB =>" << speedkBPerSec
+                                << "kB/sec on full speed ("
                                 << _relativeLimitCurrentMeasuredJob->currentDownloadPosition();
 
     qint64 downloadLimitPercent = -_currentDownloadLimit;
@@ -273,7 +277,8 @@ void BandwidthManager::relativeDownloadMeasuringTimerExpired()
     qint64 wholeTimeMsec = (100.0 / downloadLimitPercent) * relativeLimitMeasuringTimerIntervalMsec;
     qint64 waitTimeMsec = wholeTimeMsec - relativeLimitMeasuringTimerIntervalMsec;
     qint64 realWaitTimeMsec = waitTimeMsec + wholeTimeMsec;
-    qCDebug(lcBandwidthManager) << waitTimeMsec << " - " << realWaitTimeMsec << " msec for " << downloadLimitPercent << "%";
+    qCDebug(lcBandwidthManager) << waitTimeMsec << " - " << realWaitTimeMsec << " msec for " << downloadLimitPercent
+                                << "%";
 
     // We want to wait twice as long since we want to give all
     // devices the same quota we used now since we don't want
@@ -376,7 +381,8 @@ void BandwidthManager::switchingTimerExpired()
 void BandwidthManager::absoluteLimitTimerExpired()
 {
     if (usingAbsoluteUploadLimit() && !_absoluteUploadDeviceList.empty()) {
-        qint64 quotaPerDevice = _currentUploadLimit / qMax((std::list<UploadDevice *>::size_type)1, _absoluteUploadDeviceList.size());
+        qint64 quotaPerDevice =
+            _currentUploadLimit / qMax((std::list<UploadDevice *>::size_type)1, _absoluteUploadDeviceList.size());
         qCDebug(lcBandwidthManager) << quotaPerDevice << _absoluteUploadDeviceList.size() << _currentUploadLimit;
         Q_FOREACH (UploadDevice *device, _absoluteUploadDeviceList) {
             device->giveBandwidthQuota(quotaPerDevice);
@@ -384,7 +390,8 @@ void BandwidthManager::absoluteLimitTimerExpired()
         }
     }
     if (usingAbsoluteDownloadLimit() && !_downloadJobList.empty()) {
-        qint64 quotaPerJob = _currentDownloadLimit / qMax((std::list<GETFileJob *>::size_type)1, _downloadJobList.size());
+        qint64 quotaPerJob =
+            _currentDownloadLimit / qMax((std::list<GETFileJob *>::size_type)1, _downloadJobList.size());
         qCDebug(lcBandwidthManager) << quotaPerJob << _downloadJobList.size() << _currentDownloadLimit;
         Q_FOREACH (GETFileJob *j, _downloadJobList) {
             j->giveBandwidthQuota(quotaPerJob);

@@ -49,10 +49,11 @@ using namespace OCC;
 void warnSystray()
 {
     QMessageBox::critical(nullptr, qApp->translate("main.cpp", "System Tray not available"),
-        qApp->translate("main.cpp", "%1 requires on a working system tray. "
-                                    "If you are running XFCE, please follow "
-                                    "<a href=\"http://docs.xfce.org/xfce/xfce4-panel/systray\">these instructions</a>. "
-                                    "Otherwise, please install a system tray application such as \"trayer\" and try again.")
+        qApp->translate("main.cpp",
+                "%1 requires on a working system tray. "
+                "If you are running XFCE, please follow "
+                "<a href=\"http://docs.xfce.org/xfce/xfce4-panel/systray\">these instructions</a>. "
+                "Otherwise, please install a system tray application such as \"trayer\" and try again.")
             .arg(Theme::instance()->appNameGUI()));
 }
 
@@ -73,7 +74,8 @@ int main(int argc, char **argv)
         "com.nextcloud.desktopclient", 1, 0, "UnifiedSearchResultsListModel", "UnifiedSearchResultsListModel");
     qRegisterMetaType<UnifiedSearchResultsListModel *>("UnifiedSearchResultsListModel*");
 
-    qmlRegisterUncreatableType<OCC::UserStatus>("com.nextcloud.desktopclient", 1, 0, "UserStatus", "Access to Status enum");
+    qmlRegisterUncreatableType<OCC::UserStatus>(
+        "com.nextcloud.desktopclient", 1, 0, "UserStatus", "Access to Status enum");
 
     qRegisterMetaTypeStreamOperators<Emoji>();
     qRegisterMetaType<OCC::UserStatus>("UserStatus");
@@ -177,8 +179,7 @@ int main(int argc, char **argv)
 
     // We can't call isSystemTrayAvailable with appmenu-qt5 begause it hides the systemtray
     // (issue #4693)
-    if (qgetenv("QT_QPA_PLATFORMTHEME") != "appmenu-qt5")
-    {
+    if (qgetenv("QT_QPA_PLATFORMTHEME") != "appmenu-qt5") {
         if (!QSystemTrayIcon::isSystemTrayAvailable()) {
             // If the systemtray is not there, we will wait one second for it to maybe start
             // (eg boot time) then we show the settings dialog if there is still no systemtray.
@@ -211,7 +212,8 @@ int main(int argc, char **argv)
                     app.showMainDialog();
                     QTimer::singleShot(10000, &app, &Application::tryTrayAgain);
                 } else {
-                    qCInfo(lcApplication) << "System tray still not available, but assuming it's fine on 'ubuntu' desktop";
+                    qCInfo(lcApplication)
+                        << "System tray still not available, but assuming it's fine on 'ubuntu' desktop";
                 }
             }
         }

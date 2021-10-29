@@ -99,15 +99,13 @@ void CookieJar::clearSessionCookies()
 bool CookieJar::save(const QString &fileName)
 {
     const QFileInfo info(fileName);
-    if (!info.dir().exists())
-    {
+    if (!info.dir().exists()) {
         info.dir().mkpath(".");
     }
 
     qCDebug(lcCookieJar) << fileName;
     QFile file(fileName);
-    if (!file.open(QIODevice::WriteOnly))
-    {
+    if (!file.open(QIODevice::WriteOnly)) {
         return false;
     }
     QDataStream stream(&file);
@@ -119,14 +117,12 @@ bool CookieJar::save(const QString &fileName)
 bool CookieJar::restore(const QString &fileName)
 {
     const QFileInfo info(fileName);
-    if (!info.exists())
-    {
+    if (!info.exists()) {
         return false;
     }
 
     QFile file(fileName);
-    if (!file.open(QIODevice::ReadOnly))
-    {
+    if (!file.open(QIODevice::ReadOnly)) {
         return false;
     }
     QDataStream stream(&file);

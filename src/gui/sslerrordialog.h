@@ -37,7 +37,8 @@ namespace Ui {
 class SslDialogErrorHandler : public AbstractSslErrorHandler
 {
 public:
-    bool handleErrors(QList<QSslError> errors, const QSslConfiguration &conf, QList<QSslCertificate> *certs, AccountPtr) override;
+    bool handleErrors(
+        QList<QSslError> errors, const QSslConfiguration &conf, QList<QSslCertificate> *certs, AccountPtr) override;
 };
 
 /**

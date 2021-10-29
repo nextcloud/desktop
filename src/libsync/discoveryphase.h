@@ -91,7 +91,8 @@ class DiscoverySingleLocalDirectoryJob : public QObject, public QRunnable
 {
     Q_OBJECT
 public:
-    explicit DiscoverySingleLocalDirectoryJob(const AccountPtr &account, const QString &localPath, OCC::Vfs *vfs, QObject *parent = nullptr);
+    explicit DiscoverySingleLocalDirectoryJob(
+        const AccountPtr &account, const QString &localPath, OCC::Vfs *vfs, QObject *parent = nullptr);
 
     void run() override;
 signals:
@@ -105,7 +106,8 @@ private slots:
 private:
     QString _localPath;
     AccountPtr _account;
-    OCC::Vfs* _vfs;
+    OCC::Vfs *_vfs;
+
 public:
 };
 
@@ -137,7 +139,7 @@ private slots:
     void lsJobFinishedWithErrorSlot(QNetworkReply *);
     void fetchE2eMetadata();
     void metadataReceived(const QJsonDocument &json, int statusCode);
-    void metadataError(const QByteArray& fileId, int httpReturnCode);
+    void metadataError(const QByteArray &fileId, int httpReturnCode);
 
 private:
     QVector<RemoteInfo> _results;
@@ -224,8 +226,7 @@ class DiscoveryPhase : public QObject
 
     // Check if the new folder should be deselected or not.
     // May be async. "Return" via the callback, true if the item is blacklisted
-    void checkSelectiveSyncNewFolder(const QString &path, RemotePermissions rp,
-        std::function<void(bool)> callback);
+    void checkSelectiveSyncNewFolder(const QString &path, RemotePermissions rp, std::function<void(bool)> callback);
 
     /** Given an original path, return the target path obtained when renaming is done.
      *
@@ -278,9 +279,9 @@ signals:
     void newBigFolder(const QString &folder, bool isExternal);
 
     /** For excluded items that don't show up in itemDiscovered()
-      *
-      * The path is relative to the sync folder, similar to item->_file
-      */
+     *
+     * The path is relative to the sync folder, similar to item->_file
+     */
     void silentlyExcluded(const QString &folderPath);
 
     void addErrorToGui(SyncFileItem::Status status, const QString &errorMessage, const QString &subject);

@@ -28,7 +28,8 @@ ServerNotificationHandler::ServerNotificationHandler(AccountState *accountState,
 void ServerNotificationHandler::slotFetchNotifications()
 {
     // check connectivity and credentials
-    if (!(_accountState && _accountState->isConnected() && _accountState->account() && _accountState->account()->credentials() && _accountState->account()->credentials()->ready())) {
+    if (!(_accountState && _accountState->isConnected() && _accountState->account()
+            && _accountState->account()->credentials() && _accountState->account()->credentials()->ready())) {
         deleteLater();
         return;
     }
@@ -36,7 +37,8 @@ void ServerNotificationHandler::slotFetchNotifications()
     // not yet valid, its assumed that notifications are available.
     if (_accountState->account()->capabilities().isValid()) {
         if (!_accountState->account()->capabilities().notificationsAvailable()) {
-            qCInfo(lcServerNotification) << "Account" << _accountState->account()->displayName() << "does not have notifications enabled.";
+            qCInfo(lcServerNotification) << "Account" << _accountState->account()->displayName()
+                                         << "does not have notifications enabled.";
             deleteLater();
             return;
         }
@@ -44,12 +46,12 @@ void ServerNotificationHandler::slotFetchNotifications()
 
     // if the previous notification job has finished, start next.
     _notificationJob = new JsonApiJob(_accountState->account(), notificationsPath, this);
-    QObject::connect(_notificationJob.data(), &JsonApiJob::jsonReceived,
-        this, &ServerNotificationHandler::slotNotificationsReceived);
-    QObject::connect(_notificationJob.data(), &JsonApiJob::etagResponseHeaderReceived,
-        this, &ServerNotificationHandler::slotEtagResponseHeaderReceived);
-    QObject::connect(_notificationJob.data(), &JsonApiJob::allowDesktopNotificationsChanged,
-            this, &ServerNotificationHandler::slotAllowDesktopNotificationsChanged);
+    QObject::connect(_notificationJob.data(), &JsonApiJob::jsonReceived, this,
+        &ServerNotificationHandler::slotNotificationsReceived);
+    QObject::connect(_notificationJob.data(), &JsonApiJob::etagResponseHeaderReceived, this,
+        &ServerNotificationHandler::slotEtagResponseHeaderReceived);
+    QObject::connect(_notificationJob.data(), &JsonApiJob::allowDesktopNotificationsChanged, this,
+        &ServerNotificationHandler::slotAllowDesktopNotificationsChanged);
     _notificationJob->setProperty(propertyAccountStateC, QVariant::fromValue<AccountState *>(_accountState));
     _notificationJob->addRawHeader("If-None-Match", _accountState->notificationsEtagResponseHeader());
     _notificationJob->start();
@@ -68,13 +70,13 @@ void ServerNotificationHandler::slotAllowDesktopNotificationsChanged(bool isAllo
 {
     auto *account = qvariant_cast<AccountState *>(sender()->property(propertyAccountStateC));
     if (account != nullptr) {
-       account->setDesktopNotificationsAllowed(isAllowed);
+        account->setDesktopNotificationsAllowed(isAllowed);
     }
 }
 
 void ServerNotificationHandler::slotIconDownloaded(QByteArray iconData)
 {
-    iconCache.insert(sender()->property("activityId").toInt(),iconData);
+    iconCache.insert(sender()->property("activityId").toInt(), iconData);
 }
 
 void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &json, int statusCode)
@@ -104,7 +106,7 @@ void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &j
         a._accName = ai->account()->displayName();
         a._id = json.value("notification_id").toInt();
 
-        //need to know, specially for remote_share
+        // need to know, specially for remote_share
         a._objectType = json.value("object_type").toString();
         a._status = 0;
 
@@ -147,7 +149,8 @@ void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &j
         // https://github.com/owncloud/notifications/blob/master/docs/ocs-endpoint-v1.md#deleting-a-notification-for-a-user
         ActivityLink al;
         al._label = tr("Dismiss");
-        al._link = Utility::concatUrlPath(ai->account()->url(), notificationsPath + "/" + QString::number(a._id)).toString();
+        al._link =
+            Utility::concatUrlPath(ai->account()->url(), notificationsPath + "/" + QString::number(a._id)).toString();
         al._verb = "DELETE";
         al._primary = false;
         a._links.append(al);

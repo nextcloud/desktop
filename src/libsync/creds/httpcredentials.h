@@ -81,7 +81,7 @@ public:
 
     HttpCredentials();
     explicit HttpCredentials(const QString &user, const QString &password,
-            const QByteArray &clientCertBundle = QByteArray(), const QByteArray &clientCertPassword = QByteArray());
+        const QByteArray &clientCertBundle = QByteArray(), const QByteArray &clientCertPassword = QByteArray());
 
     QString authType() const override;
     QNetworkAccessManager *createQNAM() const override;

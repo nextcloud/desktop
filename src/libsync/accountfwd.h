@@ -26,4 +26,4 @@ using AccountStatePtr = QExplicitlySharedDataPointer<AccountState>;
 
 } // namespace OCC
 
-#endif //SERVERFWD
+#endif // SERVERFWD

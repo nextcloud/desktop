@@ -104,12 +104,9 @@ public:
     static inline bool isSizeDependent(const SyncFileItem &item)
     {
         return !item.isDirectory()
-            && (item._instruction == CSYNC_INSTRUCTION_CONFLICT
-                || item._instruction == CSYNC_INSTRUCTION_SYNC
-                || item._instruction == CSYNC_INSTRUCTION_NEW
-                || item._instruction == CSYNC_INSTRUCTION_TYPE_CHANGE)
-            && !(item._type == ItemTypeVirtualFile
-                 || item._type == ItemTypeVirtualFileDehydration);
+            && (item._instruction == CSYNC_INSTRUCTION_CONFLICT || item._instruction == CSYNC_INSTRUCTION_SYNC
+                || item._instruction == CSYNC_INSTRUCTION_NEW || item._instruction == CSYNC_INSTRUCTION_TYPE_CHANGE)
+            && !(item._type == ItemTypeVirtualFile || item._type == ItemTypeVirtualFileDehydration);
     }
 
     /**
@@ -297,7 +294,8 @@ signals:
      * @param[out] full error message
      * @param[out] subject (optional)
      */
-    void addErrorToGui(const QString &folder, SyncFileItem::Status status, const QString &errorMessage, const QString &subject);
+    void addErrorToGui(
+        const QString &folder, SyncFileItem::Status status, const QString &errorMessage, const QString &subject);
 
     /**
      * @brief Emitted for a folder when a sync is done, listing all pending conflicts

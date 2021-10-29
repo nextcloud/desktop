@@ -43,10 +43,11 @@
 namespace {
 const QString TOOLBAR_CSS()
 {
-    return QStringLiteral("QToolBar { background: %1; margin: 0; padding: 0; border: none; border-bottom: 1px solid %2; spacing: 0; } "
-                          "QToolBar QToolButton { background: %1; border: none; border-bottom: 1px solid %2; margin: 0; padding: 5px; } "
-                          "QToolBar QToolBarExtension { padding:0; } "
-                          "QToolBar QToolButton:checked { background: %3; color: %4; }");
+    return QStringLiteral(
+        "QToolBar { background: %1; margin: 0; padding: 0; border: none; border-bottom: 1px solid %2; spacing: 0; } "
+        "QToolBar QToolButton { background: %1; border: none; border-bottom: 1px solid %2; margin: 0; padding: 5px; } "
+        "QToolBar QToolBarExtension { padding:0; } "
+        "QToolBar QToolButton:checked { background: %3; color: %4; }");
 }
 
 const float buttonSizeRatio = 1.618f; // golden ratio
@@ -104,10 +105,8 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     //: This name refers to the application name e.g Nextcloud
     setWindowTitle(tr("%1 Settings").arg(Theme::instance()->appNameGUI()));
 
-    connect(AccountManager::instance(), &AccountManager::accountAdded,
-        this, &SettingsDialog::accountAdded);
-    connect(AccountManager::instance(), &AccountManager::accountRemoved,
-        this, &SettingsDialog::accountRemoved);
+    connect(AccountManager::instance(), &AccountManager::accountAdded, this, &SettingsDialog::accountAdded);
+    connect(AccountManager::instance(), &AccountManager::accountRemoved, this, &SettingsDialog::accountRemoved);
 
 
     _actionGroup = new QActionGroup(this);
@@ -138,7 +137,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     _actionGroupWidgets.insert(generalAction, generalSettings);
     _actionGroupWidgets.insert(networkAction, networkSettings);
 
-    foreach(auto ai, AccountManager::instance()->accounts()) {
+    foreach (auto ai, AccountManager::instance()->accounts()) {
         accountAdded(ai.data());
     }
 
@@ -167,7 +166,7 @@ SettingsDialog::~SettingsDialog()
     delete _ui;
 }
 
-QWidget* SettingsDialog::currentPage()
+QWidget *SettingsDialog::currentPage()
 {
     return _ui->stack->currentWidget();
 }
@@ -199,7 +198,7 @@ void SettingsDialog::changeEvent(QEvent *e)
         emit styleChanged();
         break;
     case QEvent::ActivationChange:
-        if(isActiveWindow())
+        if (isActiveWindow())
             emit onActivate();
         break;
     default:
@@ -239,8 +238,7 @@ void SettingsDialog::accountAdded(AccountState *s)
     QImage avatar = s->account()->avatar();
     const QString actionText = brandingSingleAccount ? tr("Account") : s->account()->displayName();
     if (avatar.isNull()) {
-        accountAction = createColorAwareAction(QLatin1String(":/client/theme/account.svg"),
-            actionText);
+        accountAction = createColorAwareAction(QLatin1String(":/client/theme/account.svg"), actionText);
     } else {
         QIcon icon(QPixmap::fromImage(AvatarJob::makeCircularAvatar(avatar)));
         accountAction = createActionWithIcon(icon, actionText);
@@ -248,7 +246,8 @@ void SettingsDialog::accountAdded(AccountState *s)
 
     if (!brandingSingleAccount) {
         accountAction->setToolTip(s->account()->displayName());
-        accountAction->setIconText(shortDisplayNameForSettings(s->account().data(), static_cast<int>(height * buttonSizeRatio)));
+        accountAction->setIconText(
+            shortDisplayNameForSettings(s->account().data(), static_cast<int>(height * buttonSizeRatio)));
     }
 
     _toolBar->insertAction(_toolBar->actions().at(0), accountAction);
@@ -256,7 +255,7 @@ void SettingsDialog::accountAdded(AccountState *s)
     QString objectName = QLatin1String("accountSettings_");
     objectName += s->account()->displayName();
     accountSettings->setObjectName(objectName);
-    _ui->stack->insertWidget(0 , accountSettings);
+    _ui->stack->insertWidget(0, accountSettings);
 
     _actionGroup->addAction(accountAction);
     _actionGroupWidgets.insert(accountAction, accountSettings);
@@ -264,11 +263,11 @@ void SettingsDialog::accountAdded(AccountState *s)
     accountAction->trigger();
 
     connect(accountSettings, &AccountSettings::folderChanged, _gui, &ownCloudGui::slotFoldersChanged);
-    connect(accountSettings, &AccountSettings::openFolderAlias,
-        _gui, &ownCloudGui::slotFolderOpenAction);
+    connect(accountSettings, &AccountSettings::openFolderAlias, _gui, &ownCloudGui::slotFolderOpenAction);
     connect(accountSettings, &AccountSettings::showIssuesList, this, &SettingsDialog::showIssuesList);
     connect(s->account().data(), &Account::accountChangedAvatar, this, &SettingsDialog::slotAccountAvatarChanged);
-    connect(s->account().data(), &Account::accountChangedDisplayName, this, &SettingsDialog::slotAccountDisplayNameChanged);
+    connect(
+        s->account().data(), &Account::accountChangedDisplayName, this, &SettingsDialog::slotAccountDisplayNameChanged);
 
     // Connect styleChanged event, to adapt (Dark-/Light-Mode switching)
     connect(this, &SettingsDialog::styleChanged, accountSettings, &AccountSettings::slotStyleChanged);

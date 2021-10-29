@@ -30,11 +30,7 @@
 
 namespace OCC {
 
-enum class OWNCLOUDSYNC_EXPORT ClearAtType {
-    Period,
-    EndOf,
-    Timestamp
-};
+enum class OWNCLOUDSYNC_EXPORT ClearAtType { Period, EndOf, Timestamp };
 
 // TODO: If we can use C++17 make it a std::variant
 struct OWNCLOUDSYNC_EXPORT ClearAt
@@ -56,19 +52,13 @@ class OWNCLOUDSYNC_EXPORT UserStatus
     Q_PROPERTY(OnlineStatus state MEMBER _state)
 
 public:
-    enum class OnlineStatus : quint8 {
-        Online,
-        DoNotDisturb,
-        Away,
-        Offline,
-        Invisible
-    };
+    enum class OnlineStatus : quint8 { Online, DoNotDisturb, Away, Offline, Invisible };
     Q_ENUM(OnlineStatus);
 
     UserStatus();
 
-    UserStatus(const QString &id, const QString &message, const QString &icon,
-        OnlineStatus state, bool messagePredefined, const Optional<ClearAt> &clearAt = {});
+    UserStatus(const QString &id, const QString &message, const QString &icon, OnlineStatus state,
+        bool messagePredefined, const Optional<ClearAt> &clearAt = {});
 
     Q_REQUIRED_RESULT QString id() const;
     Q_REQUIRED_RESULT QString message() const;

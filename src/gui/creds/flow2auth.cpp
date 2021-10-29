@@ -69,7 +69,7 @@ void Flow2Auth::copyLinkToClipboard()
 
 void Flow2Auth::fetchNewToken(const TokenAction action)
 {
-    if(_isBusy)
+    if (_isBusy)
         return;
 
     _isBusy = true;
@@ -100,8 +100,11 @@ void Flow2Auth::fetchNewToken(const TokenAction action)
             pollToken = json.value("poll").toObject().value("token").toString();
             pollEndpoint = json.value("poll").toObject().value("endpoint").toString();
             if (_enforceHttps && QUrl(pollEndpoint).scheme() != QStringLiteral("https")) {
-                qCWarning(lcFlow2auth) << "Can not poll endpoint because the returned url" << pollEndpoint << "does not start with https";
-                emit result(Error, tr("The polling URL does not start with HTTPS despite the login URL started with HTTPS. Login will not be possible because this might be a security issue. Please contact your administrator."));
+                qCWarning(lcFlow2auth) << "Can not poll endpoint because the returned url" << pollEndpoint
+                                       << "does not start with https";
+                emit result(Error,
+                    tr("The polling URL does not start with HTTPS despite the login URL started with HTTPS. Login will "
+                       "not be possible because this might be a security issue. Please contact your administrator."));
                 return;
             }
             loginUrl = json["login"].toString();
@@ -112,8 +115,7 @@ void Flow2Auth::fetchNewToken(const TokenAction action)
             QString errorReason;
             QString errorFromJson = json["error"].toString();
             if (!errorFromJson.isEmpty()) {
-                errorReason = tr("Error returned from the server: <em>%1</em>")
-                                  .arg(errorFromJson.toHtmlEscaped());
+                errorReason = tr("Error returned from the server: <em>%1</em>").arg(errorFromJson.toHtmlEscaped());
             } else if (reply->error() != QNetworkReply::NoError) {
                 errorReason = tr("There was an error accessing the \"token\" endpoint: <br><em>%1</em>")
                                   .arg(reply->errorString().toHtmlEscaped());
@@ -144,13 +146,12 @@ void Flow2Auth::fetchNewToken(const TokenAction action)
         _secondsLeft = _secondsInterval;
         emit statusChanged(PollStatus::statusPollCountdown, _secondsLeft);
 
-        if(!_pollTimer.isActive()) {
+        if (!_pollTimer.isActive()) {
             _pollTimer.start();
         }
 
 
-        switch(action)
-        {
+        switch (action) {
         case actionOpenBrowser:
             // Try to open Browser
             if (!Utility::openBrowser(authorisationLink())) {
@@ -172,13 +173,13 @@ void Flow2Auth::fetchNewToken(const TokenAction action)
 
 void Flow2Auth::slotPollTimerTimeout()
 {
-    if(_isBusy || !_hasToken)
+    if (_isBusy || !_hasToken)
         return;
 
     _isBusy = true;
 
     _secondsLeft--;
-    if(_secondsLeft > 0) {
+    if (_secondsLeft > 0) {
         emit statusChanged(PollStatus::statusPollCountdown, _secondsLeft);
         _isBusy = false;
         return;
@@ -208,7 +209,10 @@ void Flow2Auth::slotPollTimerTimeout()
             serverUrl = json["server"].toString();
             if (_enforceHttps && serverUrl.scheme() != QStringLiteral("https")) {
                 qCWarning(lcFlow2auth) << "Returned server url" << serverUrl << "does not start with https";
-                emit result(Error, tr("The returned server URL does not start with HTTPS despite the login URL started with HTTPS. Login will not be possible because this might be a security issue. Please contact your administrator."));
+                emit result(Error,
+                    tr("The returned server URL does not start with HTTPS despite the login URL started with HTTPS. "
+                       "Login will not be possible because this might be a security issue. Please contact your "
+                       "administrator."));
                 return;
             }
             loginName = json["loginName"].toString();
@@ -220,8 +224,7 @@ void Flow2Auth::slotPollTimerTimeout()
             QString errorReason;
             QString errorFromJson = json["error"].toString();
             if (!errorFromJson.isEmpty()) {
-                errorReason = tr("Error returned from the server: <em>%1</em>")
-                                  .arg(errorFromJson.toHtmlEscaped());
+                errorReason = tr("Error returned from the server: <em>%1</em>").arg(errorFromJson.toHtmlEscaped());
             } else if (reply->error() != QNetworkReply::NoError) {
                 errorReason = tr("There was an error accessing the \"token\" endpoint: <br><em>%1</em>")
                                   .arg(reply->errorString().toHtmlEscaped());
@@ -234,7 +237,7 @@ void Flow2Auth::slotPollTimerTimeout()
             qCDebug(lcFlow2auth) << "Error when polling for the appPassword" << json << errorReason;
 
             // We get a 404 until authentication is done, so don't show this error in the GUI.
-            if(reply->error() != QNetworkReply::ContentNotFoundError)
+            if (reply->error() != QNetworkReply::ContentNotFoundError)
                 emit result(Error, errorReason);
 
             // Forget sensitive data
@@ -250,7 +253,8 @@ void Flow2Auth::slotPollTimerTimeout()
         _pollTimer.stop();
 
         // Success
-        qCInfo(lcFlow2auth) << "Success getting the appPassword for user: " << loginName << ", server: " << serverUrl.toString();
+        qCInfo(lcFlow2auth) << "Success getting the appPassword for user: " << loginName
+                            << ", server: " << serverUrl.toString();
 
         _account->setUrl(serverUrl);
 
@@ -272,7 +276,7 @@ void Flow2Auth::slotPollTimerTimeout()
 void Flow2Auth::slotPollNow()
 {
     // poll now if we're not already doing so
-    if(_isBusy || !_hasToken)
+    if (_isBusy || !_hasToken)
         return;
 
     _secondsLeft = 1;

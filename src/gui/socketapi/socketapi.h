@@ -157,7 +157,7 @@ private:
 
     /// Direct Editing
     Q_INVOKABLE void command_EDIT(const QString &localFile, SocketListener *listener);
-    DirectEditor* getDirectEditorForLocalFile(const QString &localFile);
+    DirectEditor *getDirectEditorForLocalFile(const QString &localFile);
 
 #if GUI_TESTING
     Q_INVOKABLE void command_ASYNC_ASSERT_ICON_IS_EQUAL(const QSharedPointer<SocketApiJob> &job);

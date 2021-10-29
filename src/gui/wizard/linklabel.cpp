@@ -17,9 +17,9 @@
 
 namespace OCC {
 
-LinkLabel::LinkLabel(QWidget *parent) : QLabel(parent)
+LinkLabel::LinkLabel(QWidget *parent)
+    : QLabel(parent)
 {
-
 }
 
 void LinkLabel::setUrl(const QUrl &url)

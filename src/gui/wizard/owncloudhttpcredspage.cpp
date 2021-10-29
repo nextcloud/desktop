@@ -191,7 +191,8 @@ void OwncloudHttpCredsPage::setErrorString(const QString &err)
 
 AbstractCredentials *OwncloudHttpCredsPage::getCredentials() const
 {
-    return new HttpCredentialsGui(_ui.leUsername->text(), _ui.lePassword->text(), _ocWizard->_clientCertBundle, _ocWizard->_clientCertPassword);
+    return new HttpCredentialsGui(
+        _ui.leUsername->text(), _ui.lePassword->text(), _ocWizard->_clientCertBundle, _ocWizard->_clientCertPassword);
 }
 
 void OwncloudHttpCredsPage::slotStyleChanged()
@@ -201,7 +202,7 @@ void OwncloudHttpCredsPage::slotStyleChanged()
 
 void OwncloudHttpCredsPage::customizeStyle()
 {
-    if(_progressIndi)
+    if (_progressIndi)
         _progressIndi->setColor(QGuiApplication::palette().color(QPalette::Text));
 }
 

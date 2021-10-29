@@ -35,8 +35,7 @@ SslButton::SslButton(QWidget *parent)
     setAutoRaise(true);
 
     _menu = new QMenu(this);
-    QObject::connect(_menu, &QMenu::aboutToShow,
-        this, &SslButton::slotUpdateMenu);
+    QObject::connect(_menu, &QMenu::aboutToShow, this, &SslButton::slotUpdateMenu);
     setMenu(_menu);
 }
 
@@ -46,8 +45,7 @@ static QString addCertDetailsField(const QString &key, const QString &value)
         return QString();
 
     return QLatin1String("<tr><td style=\"vertical-align: top;\"><b>") + key
-        + QLatin1String("</b></td><td style=\"vertical-align: bottom;\">") + value
-        + QLatin1String("</td></tr>");
+        + QLatin1String("</b></td><td style=\"vertical-align: bottom;\">") + value + QLatin1String("</td></tr>");
 }
 
 
@@ -55,11 +53,12 @@ static QString addCertDetailsField(const QString &key, const QString &value)
 static bool isSelfSigned(const QSslCertificate &certificate)
 {
     return certificate.issuerInfo(QSslCertificate::CommonName) == certificate.subjectInfo(QSslCertificate::CommonName)
-        && certificate.issuerInfo(QSslCertificate::OrganizationalUnitName) == certificate.subjectInfo(QSslCertificate::OrganizationalUnitName);
+        && certificate.issuerInfo(QSslCertificate::OrganizationalUnitName)
+        == certificate.subjectInfo(QSslCertificate::OrganizationalUnitName);
 }
 
-QMenu *SslButton::buildCertMenu(QMenu *parent, const QSslCertificate &cert,
-    const QList<QSslCertificate> &userApproved, int pos, const QList<QSslCertificate> &systemCaCertificates)
+QMenu *SslButton::buildCertMenu(QMenu *parent, const QSslCertificate &cert, const QList<QSslCertificate> &userApproved,
+    int pos, const QList<QSslCertificate> &systemCaCertificates)
 {
     QString cn = QStringList(cert.subjectInfo(QSslCertificate::CommonName)).join(QChar(';'));
     QString ou = QStringList(cert.subjectInfo(QSslCertificate::OrganizationalUnitName)).join(QChar(';'));
@@ -71,8 +70,7 @@ QMenu *SslButton::buildCertMenu(QMenu *parent, const QSslCertificate &cert,
         issuer = QStringList(cert.issuerInfo(QSslCertificate::OrganizationalUnitName)).join(QChar(';'));
     QString sha1 = Utility::formatFingerprint(cert.digest(QCryptographicHash::Sha1).toHex(), false);
     QByteArray sha265hash = cert.digest(QCryptographicHash::Sha256).toHex();
-    QString sha256escaped =
-        Utility::escape(Utility::formatFingerprint(sha265hash.left(sha265hash.length() / 2), false))
+    QString sha256escaped = Utility::escape(Utility::formatFingerprint(sha265hash.left(sha265hash.length() / 2), false))
         + QLatin1String("<br/>")
         + Utility::escape(Utility::formatFingerprint(sha265hash.mid(sha265hash.length() / 2), false));
     QString serial = QString::fromUtf8(cert.serialNumber());
@@ -195,10 +193,9 @@ void SslButton::slotUpdateMenu()
     }
 
     if (account->url().scheme() == QLatin1String("https")) {
-        QString sslVersion = account->_sessionCipher.protocolString()
-            + ", " + account->_sessionCipher.authenticationMethod()
-            + ", " + account->_sessionCipher.keyExchangeMethod()
-            + ", " + account->_sessionCipher.encryptionMethod();
+        QString sslVersion = account->_sessionCipher.protocolString() + ", "
+            + account->_sessionCipher.authenticationMethod() + ", " + account->_sessionCipher.keyExchangeMethod() + ", "
+            + account->_sessionCipher.encryptionMethod();
         _menu->addAction(sslVersion)->setEnabled(false);
 
         if (account->_sessionTicket.isEmpty()) {
@@ -227,7 +224,8 @@ void SslButton::slotUpdateMenu()
         // find trust anchor (informational only, verification is done by QSslSocket!)
         for (const QSslCertificate &rootCA : systemCerts) {
             if (rootCA.issuerInfo(QSslCertificate::CommonName) == chain.last().issuerInfo(QSslCertificate::CommonName)
-                && rootCA.issuerInfo(QSslCertificate::Organization) == chain.last().issuerInfo(QSslCertificate::Organization)) {
+                && rootCA.issuerInfo(QSslCertificate::Organization)
+                    == chain.last().issuerInfo(QSslCertificate::Organization)) {
                 chain.append(rootCA);
                 break;
             }

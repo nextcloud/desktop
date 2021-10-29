@@ -22,7 +22,7 @@
 #include <QDesktopServices>
 #include <QApplication>
 
-#define QTLEGACY (QT_VERSION < QT_VERSION_CHECK(5,9,0))
+#define QTLEGACY (QT_VERSION < QT_VERSION_CHECK(5, 9, 0))
 
 #if !(QTLEGACY)
 #include <QOperatingSystemVersion>
@@ -55,9 +55,10 @@ static QStringList xdgDataDirs()
 static QString findDefaultFileManager()
 {
     QProcess p;
-    p.start("xdg-mime", QStringList() << "query"
-                                      << "default"
-                                      << "inode/directory",
+    p.start("xdg-mime",
+        QStringList() << "query"
+                      << "default"
+                      << "inode/directory",
         QFile::ReadOnly);
     p.waitForFinished();
     QString fileName = QString::fromUtf8(p.readAll().trimmed());
@@ -95,12 +96,12 @@ void showInFileManager(const QString &localPath)
 {
     if (Utility::isWindows()) {
 #ifdef Q_OS_WIN
-        #if QTLEGACY
-            if (QSysInfo::windowsVersion() < QSysInfo::WV_WINDOWS10)
-        #else
-            if (QOperatingSystemVersion::current() < QOperatingSystemVersion::Windows7)
-        #endif
-                return;
+#if QTLEGACY
+        if (QSysInfo::windowsVersion() < QSysInfo::WV_WINDOWS10)
+#else
+        if (QOperatingSystemVersion::current() < QOperatingSystemVersion::Windows7)
+#endif
+            return;
 #endif
 
         const QString explorer = "explorer.exe "; // FIXME: we trust it's in PATH
@@ -123,18 +124,16 @@ void showInFileManager(const QString &localPath)
             // only around the path. Use setNativeArguments to bypass this logic.
             p.setNativeArguments(nativeArgs);
 #endif
-            p.start(explorer, QStringList {});
+            p.start(explorer, QStringList{});
             p.waitForFinished(5000);
         }
     } else if (Utility::isMac()) {
         QStringList scriptArgs;
         scriptArgs << QLatin1String("-e")
-                   << QString::fromLatin1(R"(tell application "Finder" to reveal POSIX file "%1")")
-                          .arg(localPath);
+                   << QString::fromLatin1(R"(tell application "Finder" to reveal POSIX file "%1")").arg(localPath);
         QProcess::execute(QLatin1String("/usr/bin/osascript"), scriptArgs);
         scriptArgs.clear();
-        scriptArgs << QLatin1String("-e")
-                   << QLatin1String("tell application \"Finder\" to activate");
+        scriptArgs << QLatin1String("-e") << QLatin1String("tell application \"Finder\" to activate");
         QProcess::execute(QLatin1String("/usr/bin/osascript"), scriptArgs);
     } else {
         QString app;
@@ -175,7 +174,9 @@ void showInFileManager(const QString &localPath)
 
         static QString name;
         if (name.isEmpty()) {
-            name = desktopFile.value(QString::fromLatin1("Desktop Entry/Name[%1]").arg(qApp->property("ui_lang").toString())).toString();
+            name = desktopFile
+                       .value(QString::fromLatin1("Desktop Entry/Name[%1]").arg(qApp->property("ui_lang").toString()))
+                       .toString();
             if (name.isEmpty()) {
                 name = desktopFile.value(QString::fromLatin1("Desktop Entry/Name")).toString();
             }
@@ -187,7 +188,8 @@ void showInFileManager(const QString &localPath)
         std::replace(args.begin(), args.end(), QString::fromLatin1("%f"), fileToOpen);
         std::replace(args.begin(), args.end(), QString::fromLatin1("%F"), fileToOpen);
 
-        // fixme: needs to append --icon, according to http://standards.freedesktop.org/desktop-entry-spec/desktop-entry-spec-latest.html#exec-variables
+        // fixme: needs to append --icon, according to
+        // http://standards.freedesktop.org/desktop-entry-spec/desktop-entry-spec-latest.html#exec-variables
         QStringList::iterator it = std::find(args.begin(), args.end(), QString::fromLatin1("%i"));
         if (it != args.end()) {
             (*it) = desktopFile.value("Desktop Entry/Icon").toString();

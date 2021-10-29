@@ -71,43 +71,31 @@ ownCloudGui::ownCloudGui(Application *parent)
 
     _tray->show();
 
-    connect(_tray.data(), &QSystemTrayIcon::activated,
-        this, &ownCloudGui::slotTrayClicked);
+    connect(_tray.data(), &QSystemTrayIcon::activated, this, &ownCloudGui::slotTrayClicked);
 
-    connect(_tray.data(), &Systray::openHelp,
-        this, &ownCloudGui::slotHelp);
+    connect(_tray.data(), &Systray::openHelp, this, &ownCloudGui::slotHelp);
 
-    connect(_tray.data(), &Systray::openAccountWizard,
-        this, &ownCloudGui::slotNewAccountWizard);
+    connect(_tray.data(), &Systray::openAccountWizard, this, &ownCloudGui::slotNewAccountWizard);
 
-    connect(_tray.data(), &Systray::openMainDialog,
-        this, &ownCloudGui::slotOpenMainDialog);
+    connect(_tray.data(), &Systray::openMainDialog, this, &ownCloudGui::slotOpenMainDialog);
 
-    connect(_tray.data(), &Systray::openSettings,
-        this, &ownCloudGui::slotShowSettings);
+    connect(_tray.data(), &Systray::openSettings, this, &ownCloudGui::slotShowSettings);
 
-    connect(_tray.data(), &Systray::shutdown,
-        this, &ownCloudGui::slotShutdown);
+    connect(_tray.data(), &Systray::shutdown, this, &ownCloudGui::slotShutdown);
 
-    connect(_tray.data(), &Systray::openShareDialog,
-        this, [=](const QString &sharePath, const QString &localPath) {
-                slotShowShareDialog(sharePath, localPath, ShareDialogStartPage::UsersAndGroups);
-            });
+    connect(_tray.data(), &Systray::openShareDialog, this, [=](const QString &sharePath, const QString &localPath) {
+        slotShowShareDialog(sharePath, localPath, ShareDialogStartPage::UsersAndGroups);
+    });
 
     ProgressDispatcher *pd = ProgressDispatcher::instance();
-    connect(pd, &ProgressDispatcher::progressInfo, this,
-        &ownCloudGui::slotUpdateProgress);
+    connect(pd, &ProgressDispatcher::progressInfo, this, &ownCloudGui::slotUpdateProgress);
 
     FolderMan *folderMan = FolderMan::instance();
-    connect(folderMan, &FolderMan::folderSyncStateChange,
-        this, &ownCloudGui::slotSyncStateChange);
+    connect(folderMan, &FolderMan::folderSyncStateChange, this, &ownCloudGui::slotSyncStateChange);
 
-    connect(Logger::instance(), &Logger::guiLog,
-        this, &ownCloudGui::slotShowTrayMessage);
-    connect(Logger::instance(), &Logger::optionalGuiLog,
-        this, &ownCloudGui::slotShowOptionalTrayMessage);
-    connect(Logger::instance(), &Logger::guiMessage,
-        this, &ownCloudGui::slotShowGuiMessage);
+    connect(Logger::instance(), &Logger::guiLog, this, &ownCloudGui::slotShowTrayMessage);
+    connect(Logger::instance(), &Logger::optionalGuiLog, this, &ownCloudGui::slotShowOptionalTrayMessage);
+    connect(Logger::instance(), &Logger::guiMessage, this, &ownCloudGui::slotShowGuiMessage);
 }
 
 void ownCloudGui::createTray()
@@ -127,7 +115,7 @@ bool ownCloudGui::cloudProviderApiAvailable()
         return false;
     }
     QDBusInterface dbus_iface("org.freedesktop.CloudProviderManager", "/org/freedesktop/CloudProviderManager",
-                              "org.freedesktop.CloudProvider.Manager1", _bus);
+        "org.freedesktop.CloudProvider.Manager1", _bus);
 
     if (!dbus_iface.isValid()) {
         qCInfo(lcApplication) << "DBus interface unavailable";
@@ -179,7 +167,6 @@ void ownCloudGui::slotTrayClicked(QSystemTrayIcon::ActivationReason reason)
             } else {
                 _tray->showWindow();
             }
-
         }
     }
     // FIXME: Also make sure that any auto updater dialogue https://github.com/owncloud/client/issues/5613
@@ -196,12 +183,11 @@ void ownCloudGui::slotSyncStateChange(Folder *folder)
 
     auto result = folder->syncResult();
 
-    qCInfo(lcApplication) << "Sync state changed for folder " << folder->remoteUrl().toString() << ": " << result.statusString();
+    qCInfo(lcApplication) << "Sync state changed for folder " << folder->remoteUrl().toString() << ": "
+                          << result.statusString();
 
-    if (result.status() == SyncResult::Success
-        || result.status() == SyncResult::Problem
-        || result.status() == SyncResult::SyncAbortRequested
-        || result.status() == SyncResult::Error) {
+    if (result.status() == SyncResult::Success || result.status() == SyncResult::Problem
+        || result.status() == SyncResult::SyncAbortRequested || result.status() == SyncResult::Error) {
         Logger::instance()->enterNextLogFile();
     }
 }
@@ -224,8 +210,7 @@ void ownCloudGui::slotAccountStateChanged()
 void ownCloudGui::slotTrayMessageIfServerUnsupported(Account *account)
 {
     if (account->serverVersionUnsupported()) {
-        slotShowTrayMessage(
-            tr("Unsupported Server Version"),
+        slotShowTrayMessage(tr("Unsupported Server Version"),
             tr("The server on account %1 runs an unsupported version %2. "
                "Using this client with unsupported server versions is untested and "
                "potentially dangerous. Proceed at your own risk.")
@@ -339,9 +324,7 @@ void ownCloudGui::slotComputeOverallSyncStatus()
         QStringList allStatusStrings;
         foreach (Folder *folder, map.values()) {
             QString folderMessage = FolderMan::trayTooltipStatusString(
-                folder->syncResult().status(),
-                folder->syncResult().hasUnresolvedConflicts(),
-                folder->syncPaused());
+                folder->syncResult().status(), folder->syncResult().hasUnresolvedConflicts(), folder->syncPaused());
             allStatusStrings += tr("Folder %1: %2").arg(folder->shortGuiLocalPath(), folderMessage);
         }
         trayMessage = allStatusStrings.join(QLatin1String("\n"));
@@ -439,9 +422,7 @@ void ownCloudGui::slotUpdateProgress(const QString &folder, const ProgressInfo &
                       .arg(totalFileCount)
                       .arg(Utility::durationToDescriptiveString2(progress.totalProgress().estimatedEta));
         } else {
-            msg = tr("Syncing %1 of %2")
-                      .arg(currentFile)
-                      .arg(totalFileCount);
+            msg = tr("Syncing %1 of %2").arg(currentFile).arg(totalFileCount);
         }
         //_actionStatus->setText(msg);
     } else {
@@ -451,14 +432,12 @@ void ownCloudGui::slotUpdateProgress(const QString &folder, const ProgressInfo &
             msg = tr("Syncing %1 (%2 left)")
                       .arg(totalSizeStr, Utility::durationToDescriptiveString2(progress.totalProgress().estimatedEta));
         } else {
-            msg = tr("Syncing %1")
-                      .arg(totalSizeStr);
+            msg = tr("Syncing %1").arg(totalSizeStr);
         }
         //_actionStatus->setText(msg);
     }
 
     if (!progress._lastCompletedItem.isEmpty()) {
-
         QString kindStr = Progress::asResultString(progress._lastCompletedItem);
         QString timeStr = QTime::currentTime().toString("hh:mm");
         QString actionText = tr("%1 (%2, %3)").arg(progress._lastCompletedItem._file, kindStr, timeStr);
@@ -597,8 +576,7 @@ void ownCloudGui::raiseDialog(QWidget *raiseWidget)
         if (activeProcessId != qApp->applicationPid()) {
             const auto threadId = GetCurrentThreadId();
             // don't step here with a debugger...
-            if (AttachThreadInput(threadId, activeProcessId, true))
-            {
+            if (AttachThreadInput(threadId, activeProcessId, true)) {
                 const auto hwnd = reinterpret_cast<HWND>(raiseWidget->winId());
                 SetForegroundWindow(hwnd);
                 SetWindowPos(hwnd, HWND_TOP, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
@@ -610,7 +588,8 @@ void ownCloudGui::raiseDialog(QWidget *raiseWidget)
 }
 
 
-void ownCloudGui::slotShowShareDialog(const QString &sharePath, const QString &localPath, ShareDialogStartPage startPage)
+void ownCloudGui::slotShowShareDialog(
+    const QString &sharePath, const QString &localPath, ShareDialogStartPage startPage)
 {
     const auto folder = FolderMan::instance()->folderForPath(localPath);
     if (!folder) {
@@ -631,7 +610,9 @@ void ownCloudGui::slotShowShareDialog(const QString &sharePath, const QString &l
         }
     }
 
-    auto maxSharingPermissions = resharingAllowed? SharePermissions(accountState->account()->capabilities().shareDefaultPermissions()) : SharePermissions({});
+    auto maxSharingPermissions = resharingAllowed
+        ? SharePermissions(accountState->account()->capabilities().shareDefaultPermissions())
+        : SharePermissions({});
 
     ShareDialog *w = nullptr;
     if (_shareDialogs.contains(localPath) && _shareDialogs[localPath]) {
@@ -639,7 +620,8 @@ void ownCloudGui::slotShowShareDialog(const QString &sharePath, const QString &l
         w = _shareDialogs[localPath];
     } else {
         qCInfo(lcApplication) << "Opening share dialog" << sharePath << localPath << maxSharingPermissions;
-        w = new ShareDialog(accountState, sharePath, localPath, maxSharingPermissions, fileRecord.numericFileId(), startPage);
+        w = new ShareDialog(
+            accountState, sharePath, localPath, maxSharingPermissions, fileRecord.numericFileId(), startPage);
         w->setAttribute(Qt::WA_DeleteOnClose, true);
 
         _shareDialogs[localPath] = w;

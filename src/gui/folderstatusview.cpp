@@ -17,7 +17,8 @@
 
 namespace OCC {
 
-FolderStatusView::FolderStatusView(QWidget *parent) : QTreeView(parent)
+FolderStatusView::FolderStatusView(QWidget *parent)
+    : QTreeView(parent)
 {
 }
 

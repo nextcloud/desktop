@@ -76,7 +76,8 @@ WebFlowCredentialsDialog::WebFlowCredentialsDialog(Account *account, bool useFlo
     customizeStyle();
 }
 
-void WebFlowCredentialsDialog::closeEvent(QCloseEvent* e) {
+void WebFlowCredentialsDialog::closeEvent(QCloseEvent *e)
+{
     Q_UNUSED(e)
 
 #ifdef WITH_WEBENGINE
@@ -107,11 +108,13 @@ void WebFlowCredentialsDialog::setUrl(const QUrl &url)
 #endif // WITH_WEBENGINE
 }
 
-void WebFlowCredentialsDialog::setInfo(const QString &msg) {
+void WebFlowCredentialsDialog::setInfo(const QString &msg)
+{
     _infoLabel->setText(msg);
 }
 
-void WebFlowCredentialsDialog::setError(const QString &error) {
+void WebFlowCredentialsDialog::setError(const QString &error)
+{
     // bring window to top
     slotShowSettingsDialog();
 
@@ -140,7 +143,7 @@ void WebFlowCredentialsDialog::changeEvent(QEvent *e)
         emit styleChanged();
         break;
     case QEvent::ActivationChange:
-        if(isActiveWindow())
+        if (isActiveWindow())
             emit onActivate();
         break;
     default:
@@ -158,15 +161,14 @@ void WebFlowCredentialsDialog::customizeStyle()
 void WebFlowCredentialsDialog::slotShowSettingsDialog()
 {
     // bring window to top but slightly delay, to avoid being hidden behind the SettingsDialog
-    QTimer::singleShot(100, this, [this] {
-        ownCloudGui::raiseDialog(this);
-    });
+    QTimer::singleShot(100, this, [this] { ownCloudGui::raiseDialog(this); });
 }
 
-void WebFlowCredentialsDialog::slotFlow2AuthResult(Flow2Auth::Result r, const QString &errorString, const QString &user, const QString &appPassword)
+void WebFlowCredentialsDialog::slotFlow2AuthResult(
+    Flow2Auth::Result r, const QString &errorString, const QString &user, const QString &appPassword)
 {
     Q_UNUSED(errorString)
-    if(r == Flow2Auth::LoggedIn) {
+    if (r == Flow2Auth::LoggedIn) {
         emit urlCatched(user, appPassword, QString());
     } else {
         // bring window to top

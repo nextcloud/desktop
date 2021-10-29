@@ -106,8 +106,7 @@ void OcsShareJob::setName(const QString &shareId, const QString &name)
     start();
 }
 
-void OcsShareJob::setPermissions(const QString &shareId,
-    const Share::Permissions permissions)
+void OcsShareJob::setPermissions(const QString &shareId, const Share::Permissions permissions)
 {
     appendPath(shareId);
     setVerb("PUT");
@@ -122,16 +121,14 @@ void OcsShareJob::setLabel(const QString &shareId, const QString &label)
 {
     appendPath(shareId);
     setVerb("PUT");
-    
+
     addParam(QStringLiteral("label"), label);
     _value = label;
-    
+
     start();
 }
 
-void OcsShareJob::createLinkShare(const QString &path,
-    const QString &name,
-    const QString &password)
+void OcsShareJob::createLinkShare(const QString &path, const QString &name, const QString &password)
 {
     setVerb("POST");
 
@@ -150,11 +147,8 @@ void OcsShareJob::createLinkShare(const QString &path,
     start();
 }
 
-void OcsShareJob::createShare(const QString &path,
-    const Share::ShareType shareType,
-    const QString &shareWith,
-    const Share::Permissions permissions,
-    const QString &password)
+void OcsShareJob::createShare(const QString &path, const Share::ShareType shareType, const QString &shareWith,
+    const Share::Permissions permissions, const QString &password)
 {
     Q_UNUSED(permissions)
     setVerb("POST");

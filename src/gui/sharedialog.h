@@ -44,12 +44,8 @@ class ShareDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit ShareDialog(QPointer<AccountState> accountState,
-        const QString &sharePath,
-        const QString &localPath,
-        SharePermissions maxSharingPermissions,
-        const QByteArray &numericFileId,
-        ShareDialogStartPage startPage,
+    explicit ShareDialog(QPointer<AccountState> accountState, const QString &sharePath, const QString &localPath,
+        SharePermissions maxSharingPermissions, const QByteArray &numericFileId, ShareDialogStartPage startPage,
         QWidget *parent = nullptr);
     ~ShareDialog() override;
 
@@ -92,8 +88,8 @@ private:
     ShareDialogStartPage _startPage;
     ShareManager *_manager = nullptr;
 
-    QList<ShareLinkWidget*> _linkWidgetList;
-    ShareLinkWidget* _emptyShareLinkWidget = nullptr;
+    QList<ShareLinkWidget *> _linkWidgetList;
+    ShareLinkWidget *_emptyShareLinkWidget = nullptr;
     ShareUserGroupWidget *_userGroupWidget = nullptr;
     QProgressIndicator *_progressIndicator = nullptr;
 };

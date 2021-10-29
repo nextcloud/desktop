@@ -89,7 +89,8 @@ static void addSettingsToJob(Account *account, QKeychain::Job *job)
 
 WebFlowCredentials::WebFlowCredentials() = default;
 
-WebFlowCredentials::WebFlowCredentials(const QString &user, const QString &password, const QSslCertificate &certificate, const QSslKey &key, const QList<QSslCertificate> &caCertificates)
+WebFlowCredentials::WebFlowCredentials(const QString &user, const QString &password, const QSslCertificate &certificate,
+    const QSslKey &key, const QList<QSslCertificate> &caCertificates)
     : _user(user)
     , _password(password)
     , _clientSslKey(key)
@@ -98,22 +99,25 @@ WebFlowCredentials::WebFlowCredentials(const QString &user, const QString &passw
     , _ready(true)
     , _credentialsValid(true)
 {
-
 }
 
-QString WebFlowCredentials::authType() const {
+QString WebFlowCredentials::authType() const
+{
     return QString::fromLatin1("webflow");
 }
 
-QString WebFlowCredentials::user() const {
+QString WebFlowCredentials::user() const
+{
     return _user;
 }
 
-QString WebFlowCredentials::password() const {
+QString WebFlowCredentials::password() const
+{
     return _password;
 }
 
-QNetworkAccessManager *WebFlowCredentials::createQNAM() const {
+QNetworkAccessManager *WebFlowCredentials::createQNAM() const
+{
     qCInfo(lcWebFlowCredentials()) << "Get QNAM";
     AccessManager *qnam = new WebFlowCredentialsAccessManager(this);
 
@@ -123,11 +127,13 @@ QNetworkAccessManager *WebFlowCredentials::createQNAM() const {
     return qnam;
 }
 
-bool WebFlowCredentials::ready() const {
+bool WebFlowCredentials::ready() const
+{
     return _ready;
 }
 
-void WebFlowCredentials::fetchFromKeychain() {
+void WebFlowCredentials::fetchFromKeychain()
+{
     _wasFetched = true;
 
     // Make sure we get the user from the config file
@@ -141,7 +147,8 @@ void WebFlowCredentials::fetchFromKeychain() {
     }
 }
 
-void WebFlowCredentials::askFromUser() {
+void WebFlowCredentials::askFromUser()
+{
     // Determine if the old flow has to be used (GS for now)
     // Do a DetermineAuthTypeJob to make sure that the server is still using Flow2
     auto job = new DetermineAuthTypeJob(_account->sharedFromThis(), this);
@@ -162,13 +169,14 @@ void WebFlowCredentials::askFromUser() {
             _askDialog->setUrl(url);
         }
 
-        QString msg = tr("You have been logged out of %1 as user %2. Please login again.")
-                          .arg(_account->displayName(), _user);
+        QString msg =
+            tr("You have been logged out of %1 as user %2. Please login again.").arg(_account->displayName(), _user);
         _askDialog->setInfo(msg);
 
         _askDialog->show();
 
-        connect(_askDialog, &WebFlowCredentialsDialog::urlCatched, this, &WebFlowCredentials::slotAskFromUserCredentialsProvided);
+        connect(_askDialog, &WebFlowCredentialsDialog::urlCatched, this,
+            &WebFlowCredentials::slotAskFromUserCredentialsProvided);
         connect(_askDialog, &WebFlowCredentialsDialog::onClose, this, &WebFlowCredentials::slotAskFromUserCancelled);
     });
     job->start();
@@ -176,7 +184,9 @@ void WebFlowCredentials::askFromUser() {
     qCDebug(lcWebFlowCredentials()) << "User needs to reauth!";
 }
 
-void WebFlowCredentials::slotAskFromUserCredentialsProvided(const QString &user, const QString &pass, const QString &host) {
+void WebFlowCredentials::slotAskFromUserCredentialsProvided(
+    const QString &user, const QString &pass, const QString &host)
+{
     Q_UNUSED(host)
 
     // Compare the re-entered username case-insensitive and save the new value (avoid breaking the account)
@@ -186,8 +196,7 @@ void WebFlowCredentials::slotAskFromUserCredentialsProvided(const QString &user,
     } else {
         qCInfo(lcWebFlowCredentials()) << "Authed with the wrong user!";
 
-        QString msg = tr("Please login with the user: %1")
-                .arg(_user);
+        QString msg = tr("Please login with the user: %1").arg(_user);
         _askDialog->setError(msg);
 
         if (!_askDialog->isUsingFlow2()) {
@@ -213,7 +222,8 @@ void WebFlowCredentials::slotAskFromUserCredentialsProvided(const QString &user,
     _askDialog = nullptr;
 }
 
-void WebFlowCredentials::slotAskFromUserCancelled() {
+void WebFlowCredentials::slotAskFromUserCancelled()
+{
     qCDebug(lcWebFlowCredentials()) << "User cancelled reauth!";
 
     emit asked();
@@ -222,7 +232,8 @@ void WebFlowCredentials::slotAskFromUserCancelled() {
     _askDialog = nullptr;
 }
 
-bool WebFlowCredentials::stillValid(QNetworkReply *reply) {
+bool WebFlowCredentials::stillValid(QNetworkReply *reply)
+{
     if (reply->error() != QNetworkReply::NoError) {
         qCWarning(lcWebFlowCredentials()) << reply->error();
         qCWarning(lcWebFlowCredentials()) << reply->errorString();
@@ -230,7 +241,8 @@ bool WebFlowCredentials::stillValid(QNetworkReply *reply) {
     return (reply->error() != QNetworkReply::AuthenticationRequiredError);
 }
 
-void WebFlowCredentials::persist() {
+void WebFlowCredentials::persist()
+{
     if (_user.isEmpty()) {
         // We don't even have a user nothing to see here move along
         return;
@@ -241,10 +253,8 @@ void WebFlowCredentials::persist() {
 
     // write cert if there is one
     if (!_clientSslCertificate.isNull()) {
-        auto job = new KeychainChunk::WriteJob(_account,
-                                               _user + clientCertificatePEMC,
-                                               _clientSslCertificate.toPem(),
-                                               this);
+        auto job =
+            new KeychainChunk::WriteJob(_account, _user + clientCertificatePEMC, _clientSslCertificate.toPem(), this);
         connect(job, &KeychainChunk::WriteJob::finished, this, &WebFlowCredentials::slotWriteClientCertPEMJobDone);
         job->start();
     } else {
@@ -258,10 +268,7 @@ void WebFlowCredentials::slotWriteClientCertPEMJobDone(KeychainChunk::WriteJob *
     Q_UNUSED(writeJob)
     // write ssl key if there is one
     if (!_clientSslKey.isNull()) {
-        auto job = new KeychainChunk::WriteJob(_account,
-                                               _user + clientKeyPEMC,
-                                               _clientSslKey.toPem(),
-                                               this);
+        auto job = new KeychainChunk::WriteJob(_account, _user + clientKeyPEMC, _clientSslKey.toPem(), this);
         connect(job, &KeychainChunk::WriteJob::finished, this, &WebFlowCredentials::slotWriteClientKeyPEMJobDone);
         job->start();
     } else {
@@ -281,7 +288,9 @@ void WebFlowCredentials::writeSingleClientCaCertPEM()
 
         // keep the limit
         if (index > (_clientSslCaCertificatesMaxCount - 1)) {
-            qCWarning(lcWebFlowCredentials) << "Maximum client CA cert count exceeded while writing slot" << QString::number(index) << "cutting off after" << QString::number(_clientSslCaCertificatesMaxCount) << "certs";
+            qCWarning(lcWebFlowCredentials)
+                << "Maximum client CA cert count exceeded while writing slot" << QString::number(index)
+                << "cutting off after" << QString::number(_clientSslCaCertificatesMaxCount) << "certs";
 
             _clientSslCaCertificatesWriteQueue.clear();
 
@@ -289,10 +298,8 @@ void WebFlowCredentials::writeSingleClientCaCertPEM()
             return;
         }
 
-        auto job = new KeychainChunk::WriteJob(_account,
-                                               _user + clientCaCertificatePEMC + QString::number(index),
-                                               cert.toPem(),
-                                               this);
+        auto job = new KeychainChunk::WriteJob(
+            _account, _user + clientCaCertificatePEMC + QString::number(index), cert.toPem(), this);
         connect(job, &KeychainChunk::WriteJob::finished, this, &WebFlowCredentials::slotWriteClientCaCertsPEMJobDone);
         job->start();
     } else {
@@ -355,7 +362,8 @@ void WebFlowCredentials::slotWriteJobDone(QKeychain::Job *job)
     }
 }
 
-void WebFlowCredentials::invalidateToken() {
+void WebFlowCredentials::invalidateToken()
+{
     // clear the session cookie.
     _account->clearCookieJar();
 
@@ -367,7 +375,8 @@ void WebFlowCredentials::invalidateToken() {
     QTimer::singleShot(0, _account, &Account::clearQNAMCache);
 }
 
-void WebFlowCredentials::forgetSensitiveData() {
+void WebFlowCredentials::forgetSensitiveData()
+{
     _password = QString();
     _ready = false;
 
@@ -391,19 +400,22 @@ void WebFlowCredentials::forgetSensitiveData() {
     deleteKeychainEntries();
 }
 
-void WebFlowCredentials::setAccount(Account *account) {
+void WebFlowCredentials::setAccount(Account *account)
+{
     AbstractCredentials::setAccount(account);
     if (_user.isEmpty()) {
         fetchUser();
     }
 }
 
-QString WebFlowCredentials::fetchUser() {
+QString WebFlowCredentials::fetchUser()
+{
     _user = _account->credentialSetting(userC).toString();
     return _user;
 }
 
-void WebFlowCredentials::slotAuthentication(QNetworkReply *reply, QAuthenticator *authenticator) {
+void WebFlowCredentials::slotAuthentication(QNetworkReply *reply, QAuthenticator *authenticator)
+{
     Q_UNUSED(reply)
 
     if (!_ready) {
@@ -421,7 +433,8 @@ void WebFlowCredentials::slotAuthentication(QNetworkReply *reply, QAuthenticator
     _credentialsValid = false;
 }
 
-void WebFlowCredentials::slotFinished(QNetworkReply *reply) {
+void WebFlowCredentials::slotFinished(QNetworkReply *reply)
+{
     qCInfo(lcWebFlowCredentials()) << "request finished";
 
     if (reply->error() == QNetworkReply::NoError) {
@@ -432,12 +445,10 @@ void WebFlowCredentials::slotFinished(QNetworkReply *reply) {
     }
 }
 
-void WebFlowCredentials::fetchFromKeychainHelper() {
+void WebFlowCredentials::fetchFromKeychainHelper()
+{
     // Read client cert from keychain
-    auto job = new KeychainChunk::ReadJob(_account,
-                                          _user + clientCertificatePEMC,
-                                          _keychainMigration,
-                                          this);
+    auto job = new KeychainChunk::ReadJob(_account, _user + clientCertificatePEMC, _keychainMigration, this);
     connect(job, &KeychainChunk::ReadJob::finished, this, &WebFlowCredentials::slotReadClientCertPEMJobDone);
     job->start();
 }
@@ -453,10 +464,7 @@ void WebFlowCredentials::slotReadClientCertPEMJobDone(KeychainChunk::ReadJob *re
     }
 
     // Load key too
-    auto job = new KeychainChunk::ReadJob(_account,
-                                          _user + clientKeyPEMC,
-                                          _keychainMigration,
-                                          this);
+    auto job = new KeychainChunk::ReadJob(_account, _user + clientKeyPEMC, _keychainMigration, this);
     connect(job, &KeychainChunk::ReadJob::finished, this, &WebFlowCredentials::slotReadClientKeyPEMJobDone);
     job->start();
 }
@@ -494,19 +502,20 @@ void WebFlowCredentials::readSingleClientCaCertPEM()
     // try to fetch a client ca cert
     if (_clientSslCaCertificates.count() < _clientSslCaCertificatesMaxCount) {
         auto job = new KeychainChunk::ReadJob(_account,
-                                              _user + clientCaCertificatePEMC + QString::number(_clientSslCaCertificates.count()),
-                                              _keychainMigration,
-                                              this);
+            _user + clientCaCertificatePEMC + QString::number(_clientSslCaCertificates.count()), _keychainMigration,
+            this);
         connect(job, &KeychainChunk::ReadJob::finished, this, &WebFlowCredentials::slotReadClientCaCertsPEMJobDone);
         job->start();
     } else {
-        qCWarning(lcWebFlowCredentials) << "Maximum client CA cert count exceeded while reading, ignoring after" << _clientSslCaCertificatesMaxCount;
+        qCWarning(lcWebFlowCredentials) << "Maximum client CA cert count exceeded while reading, ignoring after"
+                                        << _clientSslCaCertificatesMaxCount;
 
         slotReadClientCaCertsPEMJobDone(nullptr);
     }
 }
 
-void WebFlowCredentials::slotReadClientCaCertsPEMJobDone(KeychainChunk::ReadJob *readJob) {
+void WebFlowCredentials::slotReadClientCaCertsPEMJobDone(KeychainChunk::ReadJob *readJob)
+{
     // Store cert in memory
     if (readJob) {
         if (readJob->error() == NoError && readJob->binaryData().length() > 0) {
@@ -519,18 +528,17 @@ void WebFlowCredentials::slotReadClientCaCertsPEMJobDone(KeychainChunk::ReadJob 
             readSingleClientCaCertPEM();
             return;
         } else {
-            if (readJob->error() != QKeychain::Error::EntryNotFound ||
-                ((readJob->error() == QKeychain::Error::EntryNotFound) && _clientSslCaCertificates.count() == 0)) {
-                qCWarning(lcWebFlowCredentials) << "Unable to read client CA cert slot" << QString::number(_clientSslCaCertificates.count()) << readJob->errorString();
+            if (readJob->error() != QKeychain::Error::EntryNotFound
+                || ((readJob->error() == QKeychain::Error::EntryNotFound) && _clientSslCaCertificates.count() == 0)) {
+                qCWarning(lcWebFlowCredentials)
+                    << "Unable to read client CA cert slot" << QString::number(_clientSslCaCertificates.count())
+                    << readJob->errorString();
             }
         }
     }
 
     // Now fetch the actual server password
-    const QString kck = keychainKey(
-        _account->url().toString(),
-        _user,
-        _keychainMigration ? QString() : _account->id());
+    const QString kck = keychainKey(_account->url().toString(), _user, _keychainMigration ? QString() : _account->id());
 
     auto job = new ReadPasswordJob(Theme::instance()->appName(), this);
 #if defined(KEYCHAINCHUNK_ENABLE_INSECURE_FALLBACK)
@@ -542,7 +550,8 @@ void WebFlowCredentials::slotReadClientCaCertsPEMJobDone(KeychainChunk::ReadJob 
     job->start();
 }
 
-void WebFlowCredentials::slotReadPasswordJobDone(Job *incomingJob) {
+void WebFlowCredentials::slotReadPasswordJobDone(Job *incomingJob)
+{
     auto job = qobject_cast<ReadPasswordJob *>(incomingJob);
     QKeychain::Error error = job->error();
 
@@ -575,7 +584,8 @@ void WebFlowCredentials::slotReadPasswordJobDone(Job *incomingJob) {
     }
 }
 
-void WebFlowCredentials::deleteKeychainEntries(bool oldKeychainEntries) {
+void WebFlowCredentials::deleteKeychainEntries(bool oldKeychainEntries)
+{
     auto startDeleteJob = [this, oldKeychainEntries](QString key) {
         auto job = new KeychainChunk::DeleteJob(_account, key, oldKeychainEntries, this);
         job->start();
@@ -584,16 +594,16 @@ void WebFlowCredentials::deleteKeychainEntries(bool oldKeychainEntries) {
     startDeleteJob(_user);
 
     /* IMPORTANT - remove later - FIXME MS@2019-12-07 -->
-      * TODO: For "Log out" & "Remove account": Remove client CA certs and KEY!
-      *
-      *       Disabled as long as selecting another cert is not supported by the UI.
-      *
-      *       Being able to specify a new certificate is important anyway: expiry etc.
-      *
-      *       We introduce this dirty hack here, to allow deleting them upon Remote Wipe.
+     * TODO: For "Log out" & "Remove account": Remove client CA certs and KEY!
+     *
+     *       Disabled as long as selecting another cert is not supported by the UI.
+     *
+     *       Being able to specify a new certificate is important anyway: expiry etc.
+     *
+     *       We introduce this dirty hack here, to allow deleting them upon Remote Wipe.
      */
-    if(_account->isRemoteWipeRequested_HACK()) {
-    // <-- FIXME MS@2019-12-07
+    if (_account->isRemoteWipeRequested_HACK()) {
+        // <-- FIXME MS@2019-12-07
 
         // Also delete key / cert sub-chunks (KeychainChunk takes care of the Windows workaround)
         // The first chunk (0) has no suffix, to stay compatible with older versions and non-Windows
@@ -605,7 +615,7 @@ void WebFlowCredentials::deleteKeychainEntries(bool oldKeychainEntries) {
             startDeleteJob(_user + clientCaCertificatePEMC + QString::number(i));
         }
 
-    // FIXME MS@2019-12-07 -->
+        // FIXME MS@2019-12-07 -->
     }
     // <-- FIXME MS@2019-12-07
 }

@@ -59,9 +59,11 @@ OwncloudAdvancedSetupPage::OwncloudAdvancedSetupPage(OwncloudWizard *wizard)
     connect(_ui.pbSelectLocalFolder, &QAbstractButton::clicked, this, &OwncloudAdvancedSetupPage::slotSelectFolder);
     setButtonText(QWizard::FinishButton, tr("Connect"));
 
-    connect(_ui.rSyncEverything, &QAbstractButton::clicked, this, &OwncloudAdvancedSetupPage::slotSyncEverythingClicked);
+    connect(
+        _ui.rSyncEverything, &QAbstractButton::clicked, this, &OwncloudAdvancedSetupPage::slotSyncEverythingClicked);
     connect(_ui.rSelectiveSync, &QAbstractButton::clicked, this, &OwncloudAdvancedSetupPage::slotSelectiveSyncClicked);
-    connect(_ui.rVirtualFileSync, &QAbstractButton::clicked, this, &OwncloudAdvancedSetupPage::slotVirtualFileSyncClicked);
+    connect(
+        _ui.rVirtualFileSync, &QAbstractButton::clicked, this, &OwncloudAdvancedSetupPage::slotVirtualFileSyncClicked);
     connect(_ui.rVirtualFileSync, &QRadioButton::toggled, this, [this](bool checked) {
         if (checked) {
             _ui.lSelectiveSyncSizeLabel->clear();
@@ -85,7 +87,9 @@ OwncloudAdvancedSetupPage::OwncloudAdvancedSetupPage(OwncloudWizard *wizard)
         _ui.confTraillingSizeLabel->hide();
     }
 
-    _ui.rVirtualFileSync->setText(tr("Use &virtual files instead of downloading content immediately %1").arg(bestAvailableVfsMode() == Vfs::WindowsCfApi ? QString() : tr("(experimental)")));
+    _ui.rVirtualFileSync->setText(
+        tr("Use &virtual files instead of downloading content immediately %1")
+            .arg(bestAvailableVfsMode() == Vfs::WindowsCfApi ? QString() : tr("(experimental)")));
 
 #ifdef Q_OS_WIN
     if (bestAvailableVfsMode() == Vfs::WindowsCfApi) {
@@ -218,11 +222,14 @@ void OwncloudAdvancedSetupPage::refreshVirtualFilesAvailibility(const QString &p
     }
 
     if (Utility::isPathWindowsDrivePartitionRoot(path)) {
-        _ui.rVirtualFileSync->setText(tr("Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter."));
+        _ui.rVirtualFileSync->setText(tr("Virtual files are not supported for Windows partition roots as local folder. "
+                                         "Please choose a valid subfolder under drive letter."));
         setRadioChecked(_ui.rSyncEverything);
         _ui.rVirtualFileSync->setEnabled(false);
     } else {
-        _ui.rVirtualFileSync->setText(tr("Use &virtual files instead of downloading content immediately %1").arg(bestAvailableVfsMode() == Vfs::WindowsCfApi ? QString() : tr("(experimental)")));
+        _ui.rVirtualFileSync->setText(
+            tr("Use &virtual files instead of downloading content immediately %1")
+                .arg(bestAvailableVfsMode() == Vfs::WindowsCfApi ? QString() : tr("(experimental)")));
         _ui.rVirtualFileSync->setEnabled(true);
     }
     //
@@ -256,9 +263,9 @@ void OwncloudAdvancedSetupPage::updateStatus()
         if (_remoteFolder.isEmpty() || _remoteFolder == QLatin1String("/")) {
             t = "";
         } else {
-            t = Utility::escape(tr(R"(%1 folder "%2" is synced to local folder "%3")")
-                                    .arg(Theme::instance()->appName(), _remoteFolder,
-                                        QDir::toNativeSeparators(locFolder)));
+            t = Utility::escape(
+                tr(R"(%1 folder "%2" is synced to local folder "%3")")
+                    .arg(Theme::instance()->appName(), _remoteFolder, QDir::toNativeSeparators(locFolder)));
             _ui.rSyncEverything->setText(tr("Sync the folder \"%1\"").arg(_remoteFolder));
         }
 
@@ -272,7 +279,9 @@ void OwncloudAdvancedSetupPage::updateStatus()
     }
 
     QString lfreeSpaceStr = Utility::octetsToString(availableLocalSpace());
-    _ui.lFreeSpace->setText(QString(tr("%1 free space", "%1 gets replaced with the size and a matching unit. Example: 3 MB or 5 GB")).arg(lfreeSpaceStr));
+    _ui.lFreeSpace->setText(
+        QString(tr("%1 free space", "%1 gets replaced with the size and a matching unit. Example: 3 MB or 5 GB"))
+            .arg(lfreeSpaceStr));
 
     _ui.syncModeLabel->setText(t);
     _ui.syncModeLabel->setFixedHeight(_ui.syncModeLabel->sizeHint().height());
@@ -357,7 +366,9 @@ bool OwncloudAdvancedSetupPage::validatePage()
     if (useVirtualFileSync()) {
         const auto availability = Vfs::checkAvailability(localFolder());
         if (!availability) {
-            auto msg = new QMessageBox(QMessageBox::Warning, tr("Virtual files are not available for the selected folder"), availability.error(), QMessageBox::Ok, this);
+            auto msg =
+                new QMessageBox(QMessageBox::Warning, tr("Virtual files are not available for the selected folder"),
+                    availability.error(), QMessageBox::Ok, this);
             msg->setAttribute(Qt::WA_DeleteOnClose);
             msg->open();
             return false;
@@ -372,8 +383,7 @@ bool OwncloudAdvancedSetupPage::validatePage()
 
         if (_ui.rSyncEverything->isChecked()) {
             ConfigFile cfgFile;
-            cfgFile.setNewBigFolderSizeLimit(_ui.confCheckBoxSize->isChecked(),
-                _ui.confSpinBox->value());
+            cfgFile.setNewBigFolderSizeLimit(_ui.confCheckBoxSize->isChecked(), _ui.confSpinBox->value());
             cfgFile.setConfirmExternalStorage(_ui.confCheckBoxExternal->isChecked());
         }
 
@@ -454,7 +464,7 @@ void OwncloudAdvancedSetupPage::slotSelectiveSyncClicked()
     auto *dlg = new SelectiveSyncDialog(acc, _remoteFolder, _selectiveSyncBlacklist, this);
     dlg->setAttribute(Qt::WA_DeleteOnClose);
 
-    connect(dlg, &SelectiveSyncDialog::finished, this, [this, dlg]{
+    connect(dlg, &SelectiveSyncDialog::finished, this, [this, dlg] {
         const int result = dlg->result();
         bool updateBlacklist = false;
 
@@ -489,7 +499,6 @@ void OwncloudAdvancedSetupPage::slotSelectiveSyncClicked()
         }
 
         updateStatus();
-
     });
     dlg->open();
 }
@@ -526,8 +535,7 @@ void OwncloudAdvancedSetupPage::slotQuotaRetrieved(const QVariantMap &result)
 qint64 OwncloudAdvancedSetupPage::availableLocalSpace() const
 {
     QString localDir = localFolder();
-    QString path = !QDir(localDir).exists() && localDir.contains(QDir::homePath()) ?
-                QDir::homePath() : localDir;
+    QString path = !QDir(localDir).exists() && localDir.contains(QDir::homePath()) ? QDir::homePath() : localDir;
     QStorageInfo storage(QDir::toNativeSeparators(path));
 
     return storage.bytesAvailable();
@@ -535,7 +543,7 @@ qint64 OwncloudAdvancedSetupPage::availableLocalSpace() const
 
 QString OwncloudAdvancedSetupPage::checkLocalSpace(qint64 remoteSize) const
 {
-    return (availableLocalSpace()>remoteSize) ? QString() : tr("There isn't enough free space in the local folder!");
+    return (availableLocalSpace() > remoteSize) ? QString() : tr("There isn't enough free space in the local folder!");
 }
 
 void OwncloudAdvancedSetupPage::slotStyleChanged()
@@ -561,8 +569,9 @@ void OwncloudAdvancedSetupPage::customizeStyle()
 void OwncloudAdvancedSetupPage::styleLocalFolderLabel()
 {
     const auto backgroundColor = palette().window().color();
-    const auto folderIconFileName = Theme::instance()->isBranded() ? Theme::hidpiFileName("folder.png", backgroundColor)
-                                                                   : Theme::hidpiFileName(":/client/theme/colored/folder.png");
+    const auto folderIconFileName = Theme::instance()->isBranded()
+        ? Theme::hidpiFileName("folder.png", backgroundColor)
+        : Theme::hidpiFileName(":/client/theme/colored/folder.png");
     _ui.lLocal->setPixmap(folderIconFileName);
 }
 

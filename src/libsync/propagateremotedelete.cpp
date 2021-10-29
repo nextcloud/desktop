@@ -39,11 +39,13 @@ void PropagateRemoteDelete::start()
         } else {
             _deleteEncryptedHelper = new PropagateRemoteDeleteEncryptedRootFolder(propagator(), _item, this);
         }
-        connect(_deleteEncryptedHelper, &AbstractPropagateRemoteDeleteEncrypted::finished, this, [this] (bool success) {
+        connect(_deleteEncryptedHelper, &AbstractPropagateRemoteDeleteEncrypted::finished, this, [this](bool success) {
             if (!success) {
                 SyncFileItem::Status status = SyncFileItem::NormalError;
-                if (_deleteEncryptedHelper->networkError() != QNetworkReply::NoError && _deleteEncryptedHelper->networkError() != QNetworkReply::ContentNotFoundError) {
-                    status = classifyError(_deleteEncryptedHelper->networkError(), _item->_httpErrorCode, &propagator()->_anotherSyncNeeded);
+                if (_deleteEncryptedHelper->networkError() != QNetworkReply::NoError
+                    && _deleteEncryptedHelper->networkError() != QNetworkReply::ContentNotFoundError) {
+                    status = classifyError(_deleteEncryptedHelper->networkError(), _item->_httpErrorCode,
+                        &propagator()->_anotherSyncNeeded);
                 }
                 done(status, _deleteEncryptedHelper->errorString());
             } else {
@@ -60,9 +62,7 @@ void PropagateRemoteDelete::createDeleteJob(const QString &filename)
 {
     qCInfo(lcPropagateRemoteDelete) << "Deleting file, local" << _item->_file << "remote" << filename;
 
-    _job = new DeleteJob(propagator()->account(),
-        propagator()->fullRemotePath(filename),
-        this);
+    _job = new DeleteJob(propagator()->account(), propagator()->fullRemotePath(filename), this);
 
     connect(_job.data(), &DeleteJob::finishedSignal, this, &PropagateRemoteDelete::slotDeleteJobFinished);
     propagator()->_activeJobList.append(this);
@@ -92,8 +92,7 @@ void PropagateRemoteDelete::slotDeleteJobFinished()
     _item->_requestId = _job->requestId();
 
     if (err != QNetworkReply::NoError && err != QNetworkReply::ContentNotFoundError) {
-        SyncFileItem::Status status = classifyError(err, _item->_httpErrorCode,
-            &propagator()->_anotherSyncNeeded);
+        SyncFileItem::Status status = classifyError(err, _item->_httpErrorCode, &propagator()->_anotherSyncNeeded);
         done(status, _job->errorString());
         return;
     }

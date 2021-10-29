@@ -26,12 +26,7 @@ namespace OCC {
 
 class DirectEditor;
 
-enum PushNotificationType {
-    None = 0,
-    Files = 1,
-    Activities = 2,
-    Notifications = 4
-};
+enum PushNotificationType { None = 0, Files = 1, Activities = 2, Notifications = 4 };
 Q_DECLARE_FLAGS(PushNotificationTypes, PushNotificationType)
 Q_DECLARE_OPERATORS_FOR_FLAGS(PushNotificationTypes)
 
@@ -158,14 +153,14 @@ public:
     bool uploadConflictFiles() const;
 
     // Direct Editing
-    void addDirectEditor(DirectEditor* directEditor);
-    DirectEditor* getDirectEditorForMimetype(const QMimeType &mimeType);
-    DirectEditor* getDirectEditorForOptionalMimetype(const QMimeType &mimeType);
+    void addDirectEditor(DirectEditor *directEditor);
+    DirectEditor *getDirectEditorForMimetype(const QMimeType &mimeType);
+    DirectEditor *getDirectEditorForOptionalMimetype(const QMimeType &mimeType);
 
 private:
     QVariantMap _capabilities;
 
-    QList<DirectEditor*> _directEditors;
+    QList<DirectEditor *> _directEditors;
 };
 
 /*-------------------------------------------------------------------------------------*/
@@ -174,7 +169,7 @@ class OWNCLOUDSYNC_EXPORT DirectEditor : public QObject
 {
     Q_OBJECT
 public:
-    DirectEditor(const QString &id, const QString &name, QObject* parent = nullptr);
+    DirectEditor(const QString &id, const QString &name, QObject *parent = nullptr);
 
     void addMimetype(const QByteArray &mimeType);
     void addOptionalMimetype(const QByteArray &mimeType);
@@ -200,4 +195,4 @@ private:
 
 }
 
-#endif //CAPABILITIES_H
+#endif // CAPABILITIES_H

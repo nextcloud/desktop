@@ -124,19 +124,17 @@ protected:
      *
      * Takes ownership of the requestBody (to allow redirects).
      */
-    QNetworkReply *sendRequest(const QByteArray &verb, const QUrl &url,
-        QNetworkRequest req = QNetworkRequest(),
+    QNetworkReply *sendRequest(const QByteArray &verb, const QUrl &url, QNetworkRequest req = QNetworkRequest(),
         QIODevice *requestBody = nullptr);
 
-    QNetworkReply *sendRequest(const QByteArray &verb, const QUrl &url,
-        QNetworkRequest req, const QByteArray &requestBody);
+    QNetworkReply *sendRequest(
+        const QByteArray &verb, const QUrl &url, QNetworkRequest req, const QByteArray &requestBody);
 
     // sendRequest does not take a relative path instead of an url,
     // but the old API allowed that. We have this undefined overload
     // to help catch usage errors
     QNetworkReply *sendRequest(const QByteArray &verb, const QString &relativePath,
-        QNetworkRequest req = QNetworkRequest(),
-        QIODevice *requestBody = nullptr);
+        QNetworkRequest req = QNetworkRequest(), QIODevice *requestBody = nullptr);
 
     /** Makes this job drive a pre-made QNetworkReply
      *
@@ -153,7 +151,7 @@ protected:
      * changes. For things like setting up additional signal connections
      * on the new reply.
      */
-    virtual void newReplyHook(QNetworkReply *) {}
+    virtual void newReplyHook(QNetworkReply *) { }
 
     /// Creates a url for the account from a relative path
     QUrl makeAccountUrl(const QString &relativePath) const;

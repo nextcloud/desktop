@@ -125,15 +125,12 @@ void FolderWizardLocalPath::slotChooseLocalFolder()
 
     // open the first entry of the home dir. Otherwise the dir picker comes
     // up with the closed home dir icon, stupid Qt default...
-    QStringList dirs = d.entryList(QDir::Dirs | QDir::NoDotAndDotDot | QDir::NoSymLinks,
-        QDir::DirsFirst | QDir::Name);
+    QStringList dirs = d.entryList(QDir::Dirs | QDir::NoDotAndDotDot | QDir::NoSymLinks, QDir::DirsFirst | QDir::Name);
 
     if (dirs.count() > 0)
         sf += "/" + dirs.at(0); // Take the first dir in home dir.
 
-    QString dir = QFileDialog::getExistingDirectory(this,
-        tr("Select the source folder"),
-        sf);
+    QString dir = QFileDialog::getExistingDirectory(this, tr("Select the source folder"), sf);
     if (!dir.isEmpty()) {
         // set the last directory component name as alias
         _ui.localFolderLineEdit->setText(QDir::toNativeSeparators(dir));
@@ -157,7 +154,8 @@ FolderWizardRemotePath::FolderWizardRemotePath(const AccountPtr &account)
     connect(_ui.addFolderButton, &QAbstractButton::clicked, this, &FolderWizardRemotePath::slotAddRemoteFolder);
     connect(_ui.refreshButton, &QAbstractButton::clicked, this, &FolderWizardRemotePath::slotRefreshFolders);
     connect(_ui.folderTreeWidget, &QTreeWidget::itemExpanded, this, &FolderWizardRemotePath::slotItemExpanded);
-    connect(_ui.folderTreeWidget, &QTreeWidget::currentItemChanged, this, &FolderWizardRemotePath::slotCurrentItemChanged);
+    connect(
+        _ui.folderTreeWidget, &QTreeWidget::currentItemChanged, this, &FolderWizardRemotePath::slotCurrentItemChanged);
     connect(_ui.folderEntry, &QLineEdit::textEdited, this, &FolderWizardRemotePath::slotFolderEntryEdited);
 
     _lscolTimer.setInterval(500);
@@ -181,8 +179,7 @@ void FolderWizardRemotePath::slotAddRemoteFolder()
     auto *dlg = new QInputDialog(this);
 
     dlg->setWindowTitle(tr("Create Remote Folder"));
-    dlg->setLabelText(tr("Enter the name of the new folder to be created below \"%1\":")
-                          .arg(parent));
+    dlg->setLabelText(tr("Enter the name of the new folder to be created below \"%1\":").arg(parent));
     dlg->open(this, SLOT(slotCreateRemoteFolder(QString)));
     dlg->setAttribute(Qt::WA_DeleteOnClose);
 }
@@ -201,8 +198,7 @@ void FolderWizardRemotePath::slotCreateRemoteFolder(const QString &folder)
 
     auto *job = new MkColJob(_account, fullPath, this);
     /* check the owncloud configuration file and query the ownCloud */
-    connect(job, &MkColJob::finishedWithoutError,
-        this, &FolderWizardRemotePath::slotCreateRemoteFolderFinished);
+    connect(job, &MkColJob::finishedWithoutError, this, &FolderWizardRemotePath::slotCreateRemoteFolderFinished);
     connect(job, &AbstractNetworkJob::networkError, this, &FolderWizardRemotePath::slotHandleMkdirNetworkError);
     job->start();
 }
@@ -222,8 +218,7 @@ void FolderWizardRemotePath::slotHandleMkdirNetworkError(QNetworkReply *reply)
     if (!_account->credentials()->stillValid(reply)) {
         showWarn(tr("Authentication failed accessing %1").arg(Theme::instance()->appNameGUI()));
     } else {
-        showWarn(tr("Failed to create the folder on %1. Please check manually.")
-                     .arg(Theme::instance()->appNameGUI()));
+        showWarn(tr("Failed to create the folder on %1. Please check manually.").arg(Theme::instance()->appNameGUI()));
     }
 }
 
@@ -240,8 +235,7 @@ void FolderWizardRemotePath::slotHandleLsColNetworkError(QNetworkReply *reply)
     }
     auto job = qobject_cast<LsColJob *>(sender());
     ASSERT(job);
-    showWarn(tr("Failed to list a folder. Error: %1")
-                 .arg(job->errorStringParsingBody()));
+    showWarn(tr("Failed to list a folder. Error: %1").arg(job->errorStringParsingBody()));
 }
 
 static QTreeWidgetItem *findFirstChild(QTreeWidgetItem *parent, const QString &text)
@@ -330,9 +324,10 @@ void FolderWizardRemotePath::slotUpdateDirectories(const QStringList &list)
         path.remove(webdavFolder);
 
         // Don't allow to select subfolders of encrypted subfolders
-        const auto isAnyAncestorEncrypted = std::any_of(std::cbegin(_encryptedPaths), std::cend(_encryptedPaths), [=](const QString &encryptedPath) {
-            return path.size() > encryptedPath.size() && path.startsWith(encryptedPath);
-        });
+        const auto isAnyAncestorEncrypted =
+            std::any_of(std::cbegin(_encryptedPaths), std::cend(_encryptedPaths), [=](const QString &encryptedPath) {
+                return path.size() > encryptedPath.size() && path.startsWith(encryptedPath);
+            });
         if (isAnyAncestorEncrypted) {
             continue;
         }
@@ -410,10 +405,8 @@ void FolderWizardRemotePath::slotLsColFolderEntry()
     // No error handling, no updating, we do this manually
     // because of extra logic in the typed-path case.
     disconnect(job, nullptr, this, nullptr);
-    connect(job, &LsColJob::finishedWithError,
-        this, &FolderWizardRemotePath::slotHandleLsColNetworkError);
-    connect(job, &LsColJob::directoryListingSubfolders,
-        this, &FolderWizardRemotePath::slotTypedPathFound);
+    connect(job, &LsColJob::finishedWithError, this, &FolderWizardRemotePath::slotHandleLsColNetworkError);
+    connect(job, &LsColJob::directoryListingSubfolders, this, &FolderWizardRemotePath::slotTypedPathFound);
 }
 
 void FolderWizardRemotePath::slotTypedPathFound(const QStringList &subpaths)
@@ -430,12 +423,9 @@ LsColJob *FolderWizardRemotePath::runLsColJob(const QString &path)
         props << "http://nextcloud.org/ns:is-encrypted";
     }
     job->setProperties(props);
-    connect(job, &LsColJob::directoryListingSubfolders,
-        this, &FolderWizardRemotePath::slotUpdateDirectories);
-    connect(job, &LsColJob::finishedWithError,
-        this, &FolderWizardRemotePath::slotHandleLsColNetworkError);
-    connect(job, &LsColJob::directoryListingIterated,
-        this, &FolderWizardRemotePath::slotGatherEncryptedPaths);
+    connect(job, &LsColJob::directoryListingSubfolders, this, &FolderWizardRemotePath::slotUpdateDirectories);
+    connect(job, &LsColJob::finishedWithError, this, &FolderWizardRemotePath::slotHandleLsColNetworkError);
+    connect(job, &LsColJob::directoryListingIterated, this, &FolderWizardRemotePath::slotGatherEncryptedPaths);
     job->start();
 
     return job;
@@ -466,9 +456,11 @@ bool FolderWizardRemotePath::isComplete() const
         if (QDir::cleanPath(dir) == QDir::cleanPath(curDir)) {
             warnStrings.append(tr("This folder is already being synced."));
         } else if (dir.startsWith(curDir)) {
-            warnStrings.append(tr("You are already syncing <i>%1</i>, which is a parent folder of <i>%2</i>.").arg(Utility::escape(curDir), Utility::escape(dir)));
+            warnStrings.append(tr("You are already syncing <i>%1</i>, which is a parent folder of <i>%2</i>.")
+                                   .arg(Utility::escape(curDir), Utility::escape(dir)));
         } else if (curDir.startsWith(dir)) {
-            warnStrings.append(tr("You are already syncing <i>%1</i>, which is a subfolder of <i>%2</i>.").arg(Utility::escape(curDir), Utility::escape(dir)));
+            warnStrings.append(tr("You are already syncing <i>%1</i>, which is a subfolder of <i>%2</i>.")
+                                   .arg(Utility::escape(curDir), Utility::escape(dir)));
         }
     }
 
@@ -507,11 +499,13 @@ FolderWizardSelectiveSync::FolderWizardSelectiveSync(const AccountPtr &account)
     layout->addWidget(_selectiveSync);
 
     if (Theme::instance()->showVirtualFilesOption() && bestAvailableVfsMode() != Vfs::Off) {
-        _virtualFilesCheckBox = new QCheckBox(tr("Use virtual files instead of downloading content immediately %1").arg(bestAvailableVfsMode() == Vfs::WindowsCfApi ? QString() : tr("(experimental)")));
-        connect(_virtualFilesCheckBox, &QCheckBox::clicked, this, &FolderWizardSelectiveSync::virtualFilesCheckboxClicked);
-        connect(_virtualFilesCheckBox, &QCheckBox::stateChanged, this, [this](int state) {
-            _selectiveSync->setEnabled(state == Qt::Unchecked);
-        });
+        _virtualFilesCheckBox =
+            new QCheckBox(tr("Use virtual files instead of downloading content immediately %1")
+                              .arg(bestAvailableVfsMode() == Vfs::WindowsCfApi ? QString() : tr("(experimental)")));
+        connect(
+            _virtualFilesCheckBox, &QCheckBox::clicked, this, &FolderWizardSelectiveSync::virtualFilesCheckboxClicked);
+        connect(_virtualFilesCheckBox, &QCheckBox::stateChanged, this,
+            [this](int state) { _selectiveSync->setEnabled(state == Qt::Unchecked); });
         _virtualFilesCheckBox->setChecked(bestAvailableVfsMode() == Vfs::WindowsCfApi);
         layout->addWidget(_virtualFilesCheckBox);
     }
@@ -540,11 +534,14 @@ void FolderWizardSelectiveSync::initializePage()
         if (Utility::isPathWindowsDrivePartitionRoot(wizard()->field(QStringLiteral("sourceFolder")).toString())) {
             _virtualFilesCheckBox->setChecked(false);
             _virtualFilesCheckBox->setEnabled(false);
-            _virtualFilesCheckBox->setText(tr("Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter."));
+            _virtualFilesCheckBox->setText(tr("Virtual files are not supported for Windows partition roots as local "
+                                              "folder. Please choose a valid subfolder under drive letter."));
         } else {
             _virtualFilesCheckBox->setChecked(bestAvailableVfsMode() == Vfs::WindowsCfApi);
             _virtualFilesCheckBox->setEnabled(true);
-            _virtualFilesCheckBox->setText(tr("Use virtual files instead of downloading content immediately %1").arg(bestAvailableVfsMode() == Vfs::WindowsCfApi ? QString() : tr("(experimental)")));
+            _virtualFilesCheckBox->setText(
+                tr("Use virtual files instead of downloading content immediately %1")
+                    .arg(bestAvailableVfsMode() == Vfs::WindowsCfApi ? QString() : tr("(experimental)")));
         }
         //
     }
@@ -558,13 +555,16 @@ bool FolderWizardSelectiveSync::validatePage()
     if (useVirtualFiles) {
         const auto availability = Vfs::checkAvailability(wizard()->field(QStringLiteral("sourceFolder")).toString());
         if (!availability) {
-            auto msg = new QMessageBox(QMessageBox::Warning, tr("Virtual files are not available for the selected folder"), availability.error(), QMessageBox::Ok, this);
+            auto msg =
+                new QMessageBox(QMessageBox::Warning, tr("Virtual files are not available for the selected folder"),
+                    availability.error(), QMessageBox::Ok, this);
             msg->setAttribute(Qt::WA_DeleteOnClose);
             msg->open();
             return false;
         }
     }
-    wizard()->setProperty("selectiveSyncBlackList", useVirtualFiles ? QVariant() : QVariant(_selectiveSync->createBlackList()));
+    wizard()->setProperty(
+        "selectiveSyncBlackList", useVirtualFiles ? QVariant() : QVariant(_selectiveSync->createBlackList()));
     wizard()->setProperty("useVirtualFiles", QVariant(useVirtualFiles));
     return true;
 }

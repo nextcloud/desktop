@@ -58,8 +58,7 @@ void ConnectionValidator::checkServerAndAuth()
     // Lookup system proxy in a thread https://github.com/owncloud/client/issues/2993
     if (ClientProxy::isUsingSystemDefault()) {
         qCDebug(lcConnectionValidator) << "Trying to look up system proxy";
-        ClientProxy::lookupSystemProxyAsync(_account->url(),
-            this, SLOT(systemProxyLookupDone(QNetworkProxy)));
+        ClientProxy::lookupSystemProxyAsync(_account->url(), this, SLOT(systemProxyLookupDone(QNetworkProxy)));
     } else {
         // We want to reset the QNAM proxy so that the global proxy settings are used (via ClientProxy settings)
         _account->networkAccessManager()->setProxy(QNetworkProxy(QNetworkProxy::DefaultProxy));
@@ -76,7 +75,8 @@ void ConnectionValidator::systemProxyLookupDone(const QNetworkProxy &proxy)
     }
 
     if (proxy.type() != QNetworkProxy::NoProxy) {
-        qCInfo(lcConnectionValidator) << "Setting QNAM proxy to be system proxy" << ClientProxy::printQNetworkProxy(proxy);
+        qCInfo(lcConnectionValidator) << "Setting QNAM proxy to be system proxy"
+                                      << ClientProxy::printQNetworkProxy(proxy);
     } else {
         qCInfo(lcConnectionValidator) << "No system proxy set by OS";
     }
@@ -105,10 +105,8 @@ void ConnectionValidator::slotStatusFound(const QUrl &url, const QJsonObject &in
     QString serverVersion = CheckServerJob::version(info);
 
     // status.php was found.
-    qCInfo(lcConnectionValidator) << "** Application: ownCloud found: "
-                                  << url << " with version "
-                                  << CheckServerJob::versionString(info)
-                                  << "(" << serverVersion << ")";
+    qCInfo(lcConnectionValidator) << "** Application: ownCloud found: " << url << " with version "
+                                  << CheckServerJob::versionString(info) << "(" << serverVersion << ")";
 
     // Update server url in case of redirection
     if (_account->url() != url) {
@@ -199,8 +197,7 @@ void ConnectionValidator::slotAuthFailed(QNetworkReply *reply)
     } else if (reply->error() != QNetworkReply::NoError) {
         _errors << job->errorStringParsingBody();
 
-        const int httpStatus =
-            reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+        const int httpStatus = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
         if (httpStatus == 503) {
             _errors.clear();
             stat = ServiceUnavailable;
@@ -262,8 +259,7 @@ bool ConnectionValidator::setAndCheckServerVersion(const QString &version)
     _account->setServerVersion(version);
 
     // We cannot deal with servers < 7.0.0
-    if (_account->serverVersionInt()
-        && _account->serverVersionInt() < Account::makeServerVersion(7, 0, 0)) {
+    if (_account->serverVersionInt() && _account->serverVersionInt() < Account::makeServerVersion(7, 0, 0)) {
         _errors.append(tr("The configured server for this client is too old"));
         _errors.append(tr("Please update to the latest server and restart the client."));
         reportResult(ServerVersionMismatch);
@@ -277,8 +273,7 @@ bool ConnectionValidator::setAndCheckServerVersion(const QString &version)
     // Actual decision if we should use HTTP/2 is done in AccessManager::createRequest
     if (auto job = qobject_cast<AbstractNetworkJob *>(sender())) {
         if (auto reply = job->reply()) {
-            _account->setHttp2Supported(
-                reply->attribute(QNetworkRequest::HTTP2WasUsedAttribute).toBool());
+            _account->setHttp2Supported(reply->attribute(QNetworkRequest::HTTP2WasUsedAttribute).toBool());
         }
     }
 #endif
@@ -287,13 +282,14 @@ bool ConnectionValidator::setAndCheckServerVersion(const QString &version)
 
 void ConnectionValidator::slotUserFetched(UserInfo *userInfo)
 {
-    if(userInfo) {
+    if (userInfo) {
         userInfo->setActive(false);
         userInfo->deleteLater();
     }
 
 #ifndef TOKEN_AUTH_ONLY
-    connect(_account->e2e(), &ClientSideEncryption::initializationFinished, this, &ConnectionValidator::reportConnected);
+    connect(
+        _account->e2e(), &ClientSideEncryption::initializationFinished, this, &ConnectionValidator::reportConnected);
     _account->e2e()->initialize(_account);
 #else
     reportResult(Connected);
@@ -301,7 +297,8 @@ void ConnectionValidator::slotUserFetched(UserInfo *userInfo)
 }
 
 #ifndef TOKEN_AUTH_ONLY
-void ConnectionValidator::reportConnected() {
+void ConnectionValidator::reportConnected()
+{
     reportResult(Connected);
 }
 #endif

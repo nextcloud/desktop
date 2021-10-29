@@ -65,7 +65,8 @@ class AbstractSslErrorHandler
 {
 public:
     virtual ~AbstractSslErrorHandler() = default;
-    virtual bool handleErrors(QList<QSslError>, const QSslConfiguration &conf, QList<QSslCertificate> *, AccountPtr) = 0;
+    virtual bool handleErrors(
+        QList<QSslError>, const QSslConfiguration &conf, QList<QSslCertificate> *, AccountPtr) = 0;
 };
 
 /**
@@ -146,22 +147,17 @@ public:
      * this function. Other places should prefer to use jobs or
      * sendRequest().
      */
-    QNetworkReply *sendRawRequest(const QByteArray &verb,
-        const QUrl &url,
-        QNetworkRequest req = QNetworkRequest(),
-        QIODevice *data = nullptr);
+    QNetworkReply *sendRawRequest(
+        const QByteArray &verb, const QUrl &url, QNetworkRequest req = QNetworkRequest(), QIODevice *data = nullptr);
 
-    QNetworkReply *sendRawRequest(const QByteArray &verb,
-        const QUrl &url, QNetworkRequest req, const QByteArray &data);
+    QNetworkReply *sendRawRequest(const QByteArray &verb, const QUrl &url, QNetworkRequest req, const QByteArray &data);
 
     /** Create and start network job for a simple one-off request.
      *
      * More complicated requests typically create their own job types.
      */
-    SimpleNetworkJob *sendRequest(const QByteArray &verb,
-        const QUrl &url,
-        QNetworkRequest req = QNetworkRequest(),
-        QIODevice *data = nullptr);
+    SimpleNetworkJob *sendRequest(
+        const QByteArray &verb, const QUrl &url, QNetworkRequest req = QNetworkRequest(), QIODevice *data = nullptr);
 
     /** The ssl configuration during the first connection */
     QSslConfiguration getOrCreateSslConfig();
@@ -242,7 +238,7 @@ public:
     /// Called by network jobs on credential errors, emits invalidCredentials()
     void handleInvalidCredentials();
 
-    ClientSideEncryption* e2e();
+    ClientSideEncryption *e2e();
 
     /// Used in RemoteWipe
     void retrieveAppPassword();
@@ -362,12 +358,13 @@ private:
      *       Being able to specify a new certificate is important anyway: expiry etc.
      *
      *       We introduce this dirty hack here, to allow deleting them upon Remote Wipe.
-    */
-    public:
-        void setRemoteWipeRequested_HACK() { _isRemoteWipeRequested_HACK = true; }
-        bool isRemoteWipeRequested_HACK() { return _isRemoteWipeRequested_HACK; }
-    private:
-        bool _isRemoteWipeRequested_HACK = false;
+     */
+public:
+    void setRemoteWipeRequested_HACK() { _isRemoteWipeRequested_HACK = true; }
+    bool isRemoteWipeRequested_HACK() { return _isRemoteWipeRequested_HACK; }
+
+private:
+    bool _isRemoteWipeRequested_HACK = false;
     // <-- FIXME MS@2019-12-07
 };
 }
@@ -375,4 +372,4 @@ private:
 Q_DECLARE_METATYPE(OCC::AccountPtr)
 Q_DECLARE_METATYPE(OCC::Account *)
 
-#endif //SERVERCONNECTION_H
+#endif // SERVERCONNECTION_H

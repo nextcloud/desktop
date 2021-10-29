@@ -53,8 +53,7 @@ public:
 
 public slots:
     /// Intended for QNetworkAccessManager::proxyAuthenticationRequired()
-    void handleProxyAuthenticationRequired(const QNetworkProxy &proxy,
-        QAuthenticator *authenticator);
+    void handleProxyAuthenticationRequired(const QNetworkProxy &proxy, QAuthenticator *authenticator);
 
 private slots:
     void slotSenderDestroyed(QObject *);
@@ -71,11 +70,9 @@ private:
     /// Stores the current credentials in the keychain.
     void storeCredsInKeychain();
 
-    template<class T, typename PointerToMemberFunction>
-    void execAwait(const T *sender,
-                   PointerToMemberFunction signal,
-                   int &counter,
-                   const QEventLoop::ProcessEventsFlags flags = QEventLoop::AllEvents);
+    template <class T, typename PointerToMemberFunction>
+    void execAwait(const T *sender, PointerToMemberFunction signal, int &counter,
+        const QEventLoop::ProcessEventsFlags flags = QEventLoop::AllEvents);
 
     QString keychainUsernameKey() const;
     QString keychainPasswordKey() const;

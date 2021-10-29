@@ -36,7 +36,8 @@ FolderCreationDialog::FolderCreationDialog(const QString &destination, QWidget *
 
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
-    connect(ui->newFolderNameEdit, &QLineEdit::textChanged, this, &FolderCreationDialog::slotNewFolderNameEditTextEdited);
+    connect(
+        ui->newFolderNameEdit, &QLineEdit::textChanged, this, &FolderCreationDialog::slotNewFolderNameEditTextEdited);
 
     const QString suggestedFolderNamePrefix = QObject::tr("New folder");
 

@@ -50,6 +50,7 @@ class ProcessDirectoryJob : public QObject
     Q_OBJECT
 
     struct PathTuple;
+
 public:
     enum QueryMode {
         NormalQuery,
@@ -63,8 +64,7 @@ public:
      *
      * The base pin state is used if the root dir's pin state can't be retrieved.
      */
-    explicit ProcessDirectoryJob(DiscoveryPhase *data, PinState basePinState,
-        qint64 lastSyncTimestamp, QObject *parent)
+    explicit ProcessDirectoryJob(DiscoveryPhase *data, PinState basePinState, qint64 lastSyncTimestamp, QObject *parent)
         : QObject(parent)
         , _lastSyncTimestamp(lastSyncTimestamp)
         , _discoveryData(data)
@@ -73,9 +73,8 @@ public:
     }
 
     /// For creating subjobs
-    explicit ProcessDirectoryJob(const PathTuple &path, const SyncFileItemPtr &dirItem,
-        QueryMode queryLocal, QueryMode queryServer, qint64 lastSyncTimestamp,
-        ProcessDirectoryJob *parent)
+    explicit ProcessDirectoryJob(const PathTuple &path, const SyncFileItemPtr &dirItem, QueryMode queryLocal,
+        QueryMode queryServer, qint64 lastSyncTimestamp, ProcessDirectoryJob *parent)
         : QObject(parent)
         , _dirItem(dirItem)
         , _lastSyncTimestamp(lastSyncTimestamp)
@@ -91,15 +90,9 @@ public:
     /** Start up to nbJobs, return the number of job started; emit finished() when done */
     int processSubJobs(int nbJobs);
 
-    void setInsideEncryptedTree(bool isInsideEncryptedTree)
-    {
-        _isInsideEncryptedTree = isInsideEncryptedTree;
-    }
+    void setInsideEncryptedTree(bool isInsideEncryptedTree) { _isInsideEncryptedTree = isInsideEncryptedTree; }
 
-    bool isInsideEncryptedTree() const
-    {
-        return _isInsideEncryptedTree;
-    }
+    bool isInsideEncryptedTree() const { return _isInsideEncryptedTree; }
 
     SyncFileItemPtr _dirItem;
 
@@ -162,8 +155,7 @@ private:
 
     // return true if the file is excluded.
     // path is the full relative path of the file. localName is the base name of the local entry.
-    bool handleExcluded(const QString &path, const QString &localName, bool isDirectory,
-        bool isHidden, bool isSymlink);
+    bool handleExcluded(const QString &path, const QString &localName, bool isDirectory, bool isHidden, bool isSymlink);
 
     /** Reconcile local/remote/db information for a single item.
      *
@@ -175,16 +167,20 @@ private:
     void processFile(PathTuple, const LocalInfo &, const RemoteInfo &, const SyncJournalFileRecord &);
 
     /// processFile helper for when remote information is available, typically flows into AnalyzeLocalInfo when done
-    void processFileAnalyzeRemoteInfo(const SyncFileItemPtr &item, PathTuple, const LocalInfo &, const RemoteInfo &, const SyncJournalFileRecord &);
+    void processFileAnalyzeRemoteInfo(
+        const SyncFileItemPtr &item, PathTuple, const LocalInfo &, const RemoteInfo &, const SyncJournalFileRecord &);
 
     /// processFile helper for reconciling local changes
-    void processFileAnalyzeLocalInfo(const SyncFileItemPtr &item, PathTuple, const LocalInfo &, const RemoteInfo &, const SyncJournalFileRecord &, QueryMode recurseQueryServer);
+    void processFileAnalyzeLocalInfo(const SyncFileItemPtr &item, PathTuple, const LocalInfo &, const RemoteInfo &,
+        const SyncJournalFileRecord &, QueryMode recurseQueryServer);
 
     /// processFile helper for local/remote conflicts
-    void processFileConflict(const SyncFileItemPtr &item, PathTuple, const LocalInfo &, const RemoteInfo &, const SyncJournalFileRecord &);
+    void processFileConflict(
+        const SyncFileItemPtr &item, PathTuple, const LocalInfo &, const RemoteInfo &, const SyncJournalFileRecord &);
 
     /// processFile helper for common final processing
-    void processFileFinalize(const SyncFileItemPtr &item, PathTuple, bool recurse, QueryMode recurseQueryLocal, QueryMode recurseQueryServer);
+    void processFileFinalize(const SyncFileItemPtr &item, PathTuple, bool recurse, QueryMode recurseQueryLocal,
+        QueryMode recurseQueryServer);
 
 
     /** Checks the permission for this item, if needed, change the item to a restoration item.
@@ -229,9 +225,9 @@ private:
     DiscoverySingleDirectoryJob *startAsyncServerQuery();
 
     /** Discover the local directory
-      *
-      * Fills _localNormalQueryEntries.
-      */
+     *
+     * Fills _localNormalQueryEntries.
+     */
     void startAsyncLocalQuery();
 
 
@@ -297,7 +293,8 @@ private:
     bool _childModified = false; // the directory contains modified item what would prevent deletion
     bool _childIgnored = false; // The directory contains ignored item that would prevent deletion
     PinState _pinState = PinState::Unspecified; // The directory's pin-state, see computePinState()
-    bool _isInsideEncryptedTree = false; // this directory is encrypted or is within the tree of directories with root directory encrypted
+    bool _isInsideEncryptedTree =
+        false; // this directory is encrypted or is within the tree of directories with root directory encrypted
 
 signals:
     void finished();

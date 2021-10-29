@@ -62,13 +62,11 @@ void LocalDiscoveryTracker::slotItemCompleted(const SyncFileItemPtr &item)
     //
     // For failures, we want to add the file to the list so the next sync
     // will be able to retry it.
-    if (item->_status == SyncFileItem::Success
-        || item->_status == SyncFileItem::FileIgnored
-        || item->_status == SyncFileItem::Restoration
-        || item->_status == SyncFileItem::Conflict
+    if (item->_status == SyncFileItem::Success || item->_status == SyncFileItem::FileIgnored
+        || item->_status == SyncFileItem::Restoration || item->_status == SyncFileItem::Conflict
         || (item->_status == SyncFileItem::NoStatus
-               && (item->_instruction == CSYNC_INSTRUCTION_NONE
-                      || item->_instruction == CSYNC_INSTRUCTION_UPDATE_METADATA))) {
+            && (item->_instruction == CSYNC_INSTRUCTION_NONE
+                || item->_instruction == CSYNC_INSTRUCTION_UPDATE_METADATA))) {
         if (_previousLocalDiscoveryPaths.erase(item->_file.toUtf8()))
             qCDebug(lcLocalDiscoveryTracker) << "wiped successful item" << item->_file;
         if (!item->_renameTarget.isEmpty() && _previousLocalDiscoveryPaths.erase(item->_renameTarget.toUtf8()))
@@ -87,8 +85,7 @@ void LocalDiscoveryTracker::slotSyncFinished(bool success)
         // On overall-failure we can't forget about last sync's local discovery
         // paths yet, reuse them for the next sync again.
         // C++17: Could use std::set::merge().
-        _localDiscoveryPaths.insert(
-            _previousLocalDiscoveryPaths.begin(), _previousLocalDiscoveryPaths.end());
+        _localDiscoveryPaths.insert(_previousLocalDiscoveryPaths.begin(), _previousLocalDiscoveryPaths.end());
         qCDebug(lcLocalDiscoveryTracker) << "sync failed, keeping last sync's local discovery path list";
     }
     _previousLocalDiscoveryPaths.clear();

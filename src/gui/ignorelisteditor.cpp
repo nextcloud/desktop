@@ -36,7 +36,7 @@ IgnoreListEditor::IgnoreListEditor(QWidget *parent)
     ui->setupUi(this);
 
     ConfigFile cfgFile;
-    //FIXME This is not true. The entries are hardcoded below in setupTableReadOnlyItems
+    // FIXME This is not true. The entries are hardcoded below in setupTableReadOnlyItems
     readOnlyTooltip = tr("This entry is provided by the system at \"%1\" "
                          "and cannot be modified in this view.")
                           .arg(QDir::toNativeSeparators(cfgFile.excludeFile(ConfigFile::SystemScope)));
@@ -50,14 +50,13 @@ IgnoreListEditor::IgnoreListEditor(QWidget *parent)
         /* handle the hidden file checkbox */
 
         /* the ignoreHiddenFiles flag is a folder specific setting, but for now, it is
-        * handled globally. Save it to every folder that is defined.
-        * TODO this can now be fixed, simply attach this IgnoreListEditor to top-level account
-        * settings
-        */
+         * handled globally. Save it to every folder that is defined.
+         * TODO this can now be fixed, simply attach this IgnoreListEditor to top-level account
+         * settings
+         */
         FolderMan::instance()->setIgnoreHiddenFiles(ignoreHiddenFiles());
     });
-    connect(ui->buttonBox, &QDialogButtonBox::clicked,
-            this, &IgnoreListEditor::slotRestoreDefaults);
+    connect(ui->buttonBox, &QDialogButtonBox::clicked, this, &IgnoreListEditor::slotRestoreDefaults);
 
     ui->syncHiddenFilesCheckBox->setChecked(!FolderMan::instance()->ignoreHiddenFiles());
 }
@@ -81,7 +80,7 @@ bool IgnoreListEditor::ignoreHiddenFiles()
 
 void IgnoreListEditor::slotRestoreDefaults(QAbstractButton *button)
 {
-    if(ui->buttonBox->buttonRole(button) != QDialogButtonBox::ResetRole)
+    if (ui->buttonBox->buttonRole(button) != QDialogButtonBox::ResetRole)
         return;
 
     ui->ignoreTableWidget->slotRemoveAllItems();

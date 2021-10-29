@@ -31,7 +31,7 @@ struct sqlite3_stmt;
 namespace OCC {
 OCSYNC_EXPORT Q_DECLARE_LOGGING_CATEGORY(lcSql)
 
-class SqlQuery;
+    class SqlQuery;
 
 /**
  * @brief The SqlDatabase class
@@ -132,14 +132,14 @@ public:
     };
     NextResult next();
 
-    template<class T, typename std::enable_if<std::is_enum<T>::value, int>::type = 0>
+    template <class T, typename std::enable_if<std::is_enum<T>::value, int>::type = 0>
     void bindValue(int pos, const T &value)
     {
         qCDebug(lcSql) << "SQL bind" << pos << value;
         bindValueInternal(pos, static_cast<int>(value));
     }
 
-    template<class T, typename std::enable_if<!std::is_enum<T>::value, int>::type = 0>
+    template <class T, typename std::enable_if<!std::is_enum<T>::value, int>::type = 0>
     void bindValue(int pos, const T &value)
     {
         qCDebug(lcSql) << "SQL bind" << pos << value;

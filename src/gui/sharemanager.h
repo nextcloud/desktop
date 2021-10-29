@@ -57,13 +57,8 @@ public:
     /*
      * Constructor for shares
      */
-    explicit Share(AccountPtr account,
-        const QString &id,
-        const QString &owner,
-        const QString &ownerDisplayName,
-        const QString &path,
-        const ShareType shareType,
-        bool isPasswordSet = false,
+    explicit Share(AccountPtr account, const QString &id, const QString &owner, const QString &ownerDisplayName,
+        const QString &path, const ShareType shareType, bool isPasswordSet = false,
         const Permissions permissions = SharePermissionDefault,
         const QSharedPointer<Sharee> shareWith = QSharedPointer<Sharee>(nullptr));
 
@@ -167,19 +162,9 @@ class LinkShare : public Share
 {
     Q_OBJECT
 public:
-    explicit LinkShare(AccountPtr account,
-        const QString &id,
-        const QString &uidowner,
-        const QString &ownerDisplayName,
-        const QString &path,
-        const QString &name,
-        const QString &token,
-        const Permissions permissions,
-        bool isPasswordSet,
-        const QUrl &url,
-        const QDate &expireDate,
-        const QString &note,
-        const QString &label);
+    explicit LinkShare(AccountPtr account, const QString &id, const QString &uidowner, const QString &ownerDisplayName,
+        const QString &path, const QString &name, const QString &token, const Permissions permissions,
+        bool isPasswordSet, const QUrl &url, const QDate &expireDate, const QString &note, const QString &label);
 
     /*
      * Get the share link
@@ -210,7 +195,7 @@ public:
      * Returns the note of the link share.
      */
     QString getNote() const;
-    
+
     /*
      * Returns the label of the link share.
      */
@@ -245,19 +230,19 @@ public:
      * In case of a server error the serverError signal is emitted.
      */
     void setExpireDate(const QDate &expireDate);
-    
+
     /*
      * Set the label of the share link.
      */
     void setLabel(const QString &label);
-    
+
     /*
      * Create OcsShareJob and connect to signal/slots
      */
     template <typename LinkShareSlot>
     OcsShareJob *createShareJob(const LinkShareSlot slotFunction);
-    
-    
+
+
 signals:
     void expireDateSet();
     void noteSet();
@@ -283,17 +268,9 @@ class UserGroupShare : public Share
 {
     Q_OBJECT
 public:
-    UserGroupShare(AccountPtr account,
-        const QString &id,
-        const QString &owner,
-        const QString &ownerDisplayName,
-        const QString &path,
-        const ShareType shareType,
-        bool isPasswordSet,
-        const Permissions permissions,
-        const QSharedPointer<Sharee> shareWith,
-        const QDate &expireDate,
-        const QString &note);
+    UserGroupShare(AccountPtr account, const QString &id, const QString &owner, const QString &ownerDisplayName,
+        const QString &path, const ShareType shareType, bool isPasswordSet, const Permissions permissions,
+        const QSharedPointer<Sharee> shareWith, const QDate &expireDate, const QString &note);
 
     void setNote(const QString &note);
 
@@ -339,9 +316,7 @@ public:
      * For older server the linkShareRequiresPassword signal is emitted when it seems appropiate
      * In case of a server error the serverError signal is emitted
      */
-    void createLinkShare(const QString &path,
-        const QString &name,
-        const QString &password);
+    void createLinkShare(const QString &path, const QString &name, const QString &password);
 
     /**
      * Tell the manager to create a new share
@@ -353,11 +328,8 @@ public:
      * On success the signal shareCreated is emitted
      * In case of a server error the serverError signal is emitted
      */
-    void createShare(const QString &path,
-        const Share::ShareType shareType,
-        const QString shareWith,
-        const Share::Permissions permissions,
-        const QString &password = "");
+    void createShare(const QString &path, const Share::ShareType shareType, const QString shareWith,
+        const Share::Permissions permissions, const QString &password = "");
 
     /**
      * Fetch all the shares for path
@@ -388,6 +360,7 @@ private slots:
     void slotLinkShareCreated(const QJsonDocument &reply);
     void slotShareCreated(const QJsonDocument &reply);
     void slotOcsError(int statusCode, const QString &message);
+
 private:
     QSharedPointer<LinkShare> parseLinkShare(const QJsonObject &data);
     QSharedPointer<UserGroupShare> parseUserGroupShare(const QJsonObject &data);

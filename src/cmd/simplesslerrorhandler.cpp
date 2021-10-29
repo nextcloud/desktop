@@ -17,7 +17,8 @@
 
 namespace OCC {
 
-bool SimpleSslErrorHandler::handleErrors(QList<QSslError> errors, const QSslConfiguration &conf, QList<QSslCertificate> *certs, OCC::AccountPtr account)
+bool SimpleSslErrorHandler::handleErrors(
+    QList<QSslError> errors, const QSslConfiguration &conf, QList<QSslCertificate> *certs, OCC::AccountPtr account)
 {
     (void)account;
     (void)conf;

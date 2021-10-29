@@ -81,7 +81,7 @@ AccountPtr Account::create()
     return acc;
 }
 
-ClientSideEncryption* Account::e2e()
+ClientSideEncryption *Account::e2e()
 {
     // Qt expects everything in the connect to be a pointer, so return a pointer.
     return &_e2e;
@@ -201,12 +201,10 @@ void Account::setCredentials(AbstractCredentials *cred)
     }
     connect(_am.data(), SIGNAL(sslErrors(QNetworkReply *, QList<QSslError>)),
         SLOT(slotHandleSslErrors(QNetworkReply *, QList<QSslError>)));
-    connect(_am.data(), &QNetworkAccessManager::proxyAuthenticationRequired,
-        this, &Account::proxyAuthenticationRequired);
-    connect(_credentials.data(), &AbstractCredentials::fetched,
-        this, &Account::slotCredentialsFetched);
-    connect(_credentials.data(), &AbstractCredentials::asked,
-        this, &Account::slotCredentialsAsked);
+    connect(
+        _am.data(), &QNetworkAccessManager::proxyAuthenticationRequired, this, &Account::proxyAuthenticationRequired);
+    connect(_credentials.data(), &AbstractCredentials::fetched, this, &Account::slotCredentialsFetched);
+    connect(_credentials.data(), &AbstractCredentials::asked, this, &Account::slotCredentialsAsked);
 
     trySetupPushNotifications();
 }
@@ -233,7 +231,8 @@ void Account::trySetupPushNotifications()
             });
 
             const auto disablePushNotifications = [this]() {
-                qCInfo(lcAccount) << "Disable push notifications object because authentication failed or connection lost";
+                qCInfo(lcAccount)
+                    << "Disable push notifications object because authentication failed or connection lost";
                 if (!_pushNotifications) {
                     return;
                 }
@@ -260,8 +259,8 @@ QUrl Account::davUrl() const
 
 QUrl Account::deprecatedPrivateLinkUrl(const QByteArray &numericFileId) const
 {
-    return Utility::concatUrlPath(_userVisibleUrl,
-        QLatin1String("/index.php/f/") + QUrl::toPercentEncoding(QString::fromLatin1(numericFileId)));
+    return Utility::concatUrlPath(
+        _userVisibleUrl, QLatin1String("/index.php/f/") + QUrl::toPercentEncoding(QString::fromLatin1(numericFileId)));
 }
 
 /**
@@ -306,12 +305,12 @@ void Account::resetNetworkAccessManager()
     _am = QSharedPointer<QNetworkAccessManager>(_credentials->createQNAM(), &QObject::deleteLater);
 
     _am->setCookieJar(jar); // takes ownership of the old cookie jar
-    _am->setProxy(proxy);   // Remember proxy (issue #2108)
+    _am->setProxy(proxy); // Remember proxy (issue #2108)
 
     connect(_am.data(), SIGNAL(sslErrors(QNetworkReply *, QList<QSslError>)),
         SLOT(slotHandleSslErrors(QNetworkReply *, QList<QSslError>)));
-    connect(_am.data(), &QNetworkAccessManager::proxyAuthenticationRequired,
-        this, &Account::proxyAuthenticationRequired);
+    connect(
+        _am.data(), &QNetworkAccessManager::proxyAuthenticationRequired, this, &Account::proxyAuthenticationRequired);
 }
 
 QNetworkAccessManager *Account::networkAccessManager()
@@ -342,7 +341,8 @@ QNetworkReply *Account::sendRawRequest(const QByteArray &verb, const QUrl &url, 
     return _am->sendCustomRequest(req, verb, data);
 }
 
-QNetworkReply *Account::sendRawRequest(const QByteArray &verb, const QUrl &url, QNetworkRequest req, const QByteArray &data)
+QNetworkReply *Account::sendRawRequest(
+    const QByteArray &verb, const QUrl &url, QNetworkRequest req, const QByteArray &data)
 {
     req.setUrl(url);
     req.setSslConfiguration(this->getOrCreateSslConfig());
@@ -381,7 +381,8 @@ QSslConfiguration Account::getOrCreateSslConfig()
     }
 
     // if setting the client certificate fails, you will probably get an error similar to this:
-    //  "An internal error number 1060 happened. SSL handshake failed, client certificate was requested: SSL error: sslv3 alert handshake failure"
+    //  "An internal error number 1060 happened. SSL handshake failed, client certificate was requested: SSL error:
+    //  sslv3 alert handshake failure"
     QSslConfiguration sslConfig = QSslConfiguration::defaultConfiguration();
 
     // Try hard to re-use session for different requests
@@ -453,8 +454,8 @@ void Account::slotHandleSslErrors(QNetworkReply *reply, QList<QSslError> errors)
     QString out;
     QDebug(&out) << "SSL-Errors happened for url " << reply->url().toString();
     foreach (const QSslError &error, errors) {
-        QDebug(&out) << "\tError in " << error.certificate() << ":"
-                     << error.errorString() << "(" << error.error() << ")"
+        QDebug(&out) << "\tError in " << error.certificate() << ":" << error.errorString() << "(" << error.error()
+                     << ")"
                      << "\n";
     }
 
@@ -525,19 +526,20 @@ void Account::slotCredentialsFetched()
     if (_davUser.isEmpty()) {
         qCDebug(lcAccount) << "User id not set. Fetch it.";
         const auto fetchUserNameJob = new JsonApiJob(sharedFromThis(), QStringLiteral("/ocs/v1.php/cloud/user"));
-        connect(fetchUserNameJob, &JsonApiJob::jsonReceived, this, [this, fetchUserNameJob](const QJsonDocument &json, int statusCode) {
-            fetchUserNameJob->deleteLater();
-            if (statusCode != 100) {
-                qCWarning(lcAccount) << "Could not fetch user id. Login will probably not work.";
-                emit credentialsFetched(_credentials.data());
-                return;
-            }
+        connect(fetchUserNameJob, &JsonApiJob::jsonReceived, this,
+            [this, fetchUserNameJob](const QJsonDocument &json, int statusCode) {
+                fetchUserNameJob->deleteLater();
+                if (statusCode != 100) {
+                    qCWarning(lcAccount) << "Could not fetch user id. Login will probably not work.";
+                    emit credentialsFetched(_credentials.data());
+                    return;
+                }
 
-            const auto objData = json.object().value("ocs").toObject().value("data").toObject();
-            const auto userId = objData.value("id").toString("");
-            setDavUser(userId);
-            emit credentialsFetched(_credentials.data());
-        });
+                const auto objData = json.object().value("ocs").toObject().value("data").toObject();
+                const auto userId = objData.value("id").toString("");
+                setDavUser(userId);
+                emit credentialsFetched(_credentials.data());
+            });
         fetchUserNameJob->start();
     } else {
         qCDebug(lcAccount) << "User id already fetched.";
@@ -579,12 +581,10 @@ void Account::setCapabilities(const QVariantMap &caps)
 void Account::setupUserStatusConnector()
 {
     _userStatusConnector = std::make_shared<OcsUserStatusConnector>(sharedFromThis());
-    connect(_userStatusConnector.get(), &UserStatusConnector::userStatusFetched, this, [this](const UserStatus &) {
-        emit userStatusChanged();
-    });
-    connect(_userStatusConnector.get(), &UserStatusConnector::messageCleared, this, [this] {
-        emit userStatusChanged();
-    });
+    connect(_userStatusConnector.get(), &UserStatusConnector::userStatusFetched, this,
+        [this](const UserStatus &) { emit userStatusChanged(); });
+    connect(
+        _userStatusConnector.get(), &UserStatusConnector::messageCleared, this, [this] { emit userStatusChanged(); });
 }
 
 QString Account::serverVersion() const
@@ -596,9 +596,7 @@ int Account::serverVersionInt() const
 {
     // FIXME: Use Qt 5.5 QVersionNumber
     auto components = serverVersion().split('.');
-    return makeServerVersion(components.value(0).toInt(),
-        components.value(1).toInt(),
-        components.value(2).toInt());
+    return makeServerVersion(components.value(0).toInt(), components.value(1).toInt(), components.value(2).toInt());
 }
 
 int Account::makeServerVersion(int majorVersion, int minorVersion, int patchVersion)
@@ -627,8 +625,9 @@ void Account::setServerVersion(const QString &version)
     emit serverVersionChanged(this, oldServerVersion, version);
 }
 
-void Account::writeAppPasswordOnce(QString appPassword){
-    if(_wroteAppPassword)
+void Account::writeAppPasswordOnce(QString appPassword)
+{
+    if (_wroteAppPassword)
         return;
 
     // Fix: Password got written from Account Wizard, before finish.
@@ -636,14 +635,10 @@ void Account::writeAppPasswordOnce(QString appPassword){
     // there'll be a zombie keychain slot forever, never used again ;p
     //
     // Also don't write empty passwords (Log out -> Relaunch)
-    if(id().isEmpty() || appPassword.isEmpty())
+    if (id().isEmpty() || appPassword.isEmpty())
         return;
 
-    const QString kck = AbstractCredentials::keychainKey(
-                url().toString(),
-                davUser() + app_password,
-                id()
-    );
+    const QString kck = AbstractCredentials::keychainKey(url().toString(), davUser() + app_password, id());
 
     auto *job = new WritePasswordJob(Theme::instance()->appName());
     job->setInsecureFallback(false);
@@ -662,12 +657,9 @@ void Account::writeAppPasswordOnce(QString appPassword){
     job->start();
 }
 
-void Account::retrieveAppPassword(){
-    const QString kck = AbstractCredentials::keychainKey(
-                url().toString(),
-                credentials()->user() + app_password,
-                id()
-    );
+void Account::retrieveAppPassword()
+{
+    const QString kck = AbstractCredentials::keychainKey(url().toString(), credentials()->user() + app_password, id());
 
     auto *job = new ReadPasswordJob(Theme::instance()->appName());
     job->setInsecureFallback(false);
@@ -676,8 +668,7 @@ void Account::retrieveAppPassword(){
         auto *readJob = static_cast<ReadPasswordJob *>(incoming);
         QString pwd("");
         // Error or no valid public key error out
-        if (readJob->error() == NoError &&
-                readJob->binaryData().length() > 0) {
+        if (readJob->error() == NoError && readJob->binaryData().length() > 0) {
             pwd = readJob->binaryData();
         }
 
@@ -688,11 +679,7 @@ void Account::retrieveAppPassword(){
 
 void Account::deleteAppPassword()
 {
-    const QString kck = AbstractCredentials::keychainKey(
-                url().toString(),
-                credentials()->user() + app_password,
-                id()
-    );
+    const QString kck = AbstractCredentials::keychainKey(url().toString(), credentials()->user() + app_password, id());
 
     if (kck.isEmpty()) {
         qCDebug(lcAccount) << "appPassword is empty";
@@ -722,7 +709,8 @@ void Account::deleteAppToken()
         if (const auto deleteJob = qobject_cast<DeleteJob *>(QObject::sender())) {
             const auto httpCode = deleteJob->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
             if (httpCode != 200) {
-                qCWarning(lcAccount) << "AppToken remove failed for user: " << displayName() << " with code: " << httpCode;
+                qCWarning(lcAccount) << "AppToken remove failed for user: " << displayName()
+                                     << " with code: " << httpCode;
             } else {
                 qCInfo(lcAccount) << "AppToken for user: " << displayName() << " has been removed.";
             }
@@ -736,16 +724,15 @@ void Account::deleteAppToken()
 
 void Account::fetchDirectEditors(const QUrl &directEditingURL, const QString &directEditingETag)
 {
-    if(directEditingURL.isEmpty() || directEditingETag.isEmpty())
+    if (directEditingURL.isEmpty() || directEditingETag.isEmpty())
         return;
 
     // Check for the directEditing capability
-    if (!directEditingURL.isEmpty() &&
-        (directEditingETag.isEmpty() || directEditingETag != _lastDirectEditingETag)) {
-            // Fetch the available editors and their mime types
-            auto *job = new JsonApiJob(sharedFromThis(), QLatin1String("ocs/v2.php/apps/files/api/v1/directEditing"));
-            QObject::connect(job, &JsonApiJob::jsonReceived, this, &Account::slotDirectEditingRecieved);
-            job->start();
+    if (!directEditingURL.isEmpty() && (directEditingETag.isEmpty() || directEditingETag != _lastDirectEditingETag)) {
+        // Fetch the available editors and their mime types
+        auto *job = new JsonApiJob(sharedFromThis(), QLatin1String("ocs/v2.php/apps/files/api/v1/directEditing"));
+        QObject::connect(job, &JsonApiJob::jsonReceived, this, &Account::slotDirectEditingRecieved);
+        job->start();
     }
 }
 
@@ -760,17 +747,17 @@ void Account::slotDirectEditingRecieved(const QJsonDocument &json)
         const QString id = editor.value("id").toString();
         const QString name = editor.value("name").toString();
 
-        if(!id.isEmpty() && !name.isEmpty()) {
+        if (!id.isEmpty() && !name.isEmpty()) {
             auto mimeTypes = editor.value("mimetypes").toArray();
             auto optionalMimeTypes = editor.value("optionalMimetypes").toArray();
 
             auto *directEditor = new DirectEditor(id, name);
 
-            foreach(auto mimeType, mimeTypes) {
+            foreach (auto mimeType, mimeTypes) {
                 directEditor->addMimetype(mimeType.toString().toLatin1());
             }
 
-            foreach(auto optionalMimeType, optionalMimeTypes) {
+            foreach (auto optionalMimeType, optionalMimeTypes) {
                 directEditor->addOptionalMimetype(optionalMimeType.toString().toLatin1());
             }
 

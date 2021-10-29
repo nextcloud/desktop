@@ -45,8 +45,7 @@ public:
     bool isComplete() const override;
 
 public Q_SLOTS:
-    void asyncAuthResult(OAuth::Result, const QString &user, const QString &token,
-        const QString &reniewToken);
+    void asyncAuthResult(OAuth::Result, const QString &user, const QString &token, const QString &reniewToken);
 
 signals:
     void connectToOCUrl(const QString &);

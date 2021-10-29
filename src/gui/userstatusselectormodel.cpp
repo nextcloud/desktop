@@ -38,7 +38,8 @@ UserStatusSelectorModel::UserStatusSelectorModel(QObject *parent)
     _userStatus.setIcon("😀");
 }
 
-UserStatusSelectorModel::UserStatusSelectorModel(std::shared_ptr<UserStatusConnector> userStatusConnector, QObject *parent)
+UserStatusSelectorModel::UserStatusSelectorModel(
+    std::shared_ptr<UserStatusConnector> userStatusConnector, QObject *parent)
     : QObject(parent)
     , _userStatusConnector(userStatusConnector)
     , _userStatus("no-id", "", "😀", UserStatus::OnlineStatus::Online, false, {})
@@ -49,8 +50,7 @@ UserStatusSelectorModel::UserStatusSelectorModel(std::shared_ptr<UserStatusConne
 }
 
 UserStatusSelectorModel::UserStatusSelectorModel(std::shared_ptr<UserStatusConnector> userStatusConnector,
-    std::unique_ptr<DateTimeProvider> dateTimeProvider,
-    QObject *parent)
+    std::unique_ptr<DateTimeProvider> dateTimeProvider, QObject *parent)
     : QObject(parent)
     , _userStatusConnector(userStatusConnector)
     , _dateTimeProvider(std::move(dateTimeProvider))
@@ -59,8 +59,8 @@ UserStatusSelectorModel::UserStatusSelectorModel(std::shared_ptr<UserStatusConne
     init();
 }
 
-UserStatusSelectorModel::UserStatusSelectorModel(const UserStatus &userStatus,
-    std::unique_ptr<DateTimeProvider> dateTimeProvider, QObject *parent)
+UserStatusSelectorModel::UserStatusSelectorModel(
+    const UserStatus &userStatus, std::unique_ptr<DateTimeProvider> dateTimeProvider, QObject *parent)
     : QObject(parent)
     , _userStatus(userStatus)
     , _dateTimeProvider(std::move(dateTimeProvider))
@@ -68,8 +68,7 @@ UserStatusSelectorModel::UserStatusSelectorModel(const UserStatus &userStatus,
     _userStatus.setIcon("😀");
 }
 
-UserStatusSelectorModel::UserStatusSelectorModel(const UserStatus &userStatus,
-    QObject *parent)
+UserStatusSelectorModel::UserStatusSelectorModel(const UserStatus &userStatus, QObject *parent)
     : QObject(parent)
     , _userStatus(userStatus)
 {
@@ -90,8 +89,7 @@ void UserStatusSelectorModel::reset()
             &UserStatusSelectorModel::onUserStatusFetched);
         disconnect(_userStatusConnector.get(), &UserStatusConnector::predefinedStatusesFetched, this,
             &UserStatusSelectorModel::onPredefinedStatusesFetched);
-        disconnect(_userStatusConnector.get(), &UserStatusConnector::error, this,
-            &UserStatusSelectorModel::onError);
+        disconnect(_userStatusConnector.get(), &UserStatusConnector::error, this, &UserStatusSelectorModel::onError);
         disconnect(_userStatusConnector.get(), &UserStatusConnector::userStatusSet, this,
             &UserStatusSelectorModel::onUserStatusSet);
         disconnect(_userStatusConnector.get(), &UserStatusConnector::messageCleared, this,
@@ -110,8 +108,7 @@ void UserStatusSelectorModel::init()
         &UserStatusSelectorModel::onUserStatusFetched);
     connect(_userStatusConnector.get(), &UserStatusConnector::predefinedStatusesFetched, this,
         &UserStatusSelectorModel::onPredefinedStatusesFetched);
-    connect(_userStatusConnector.get(), &UserStatusConnector::error, this,
-        &UserStatusSelectorModel::onError);
+    connect(_userStatusConnector.get(), &UserStatusConnector::error, this, &UserStatusSelectorModel::onError);
     connect(_userStatusConnector.get(), &UserStatusConnector::userStatusSet, this,
         &UserStatusSelectorModel::onUserStatusSet);
     connect(_userStatusConnector.get(), &UserStatusConnector::messageCleared, this,
@@ -380,8 +377,7 @@ QString UserStatusSelectorModel::clearAtStageToString(ClearStageType stage) cons
 QStringList UserStatusSelectorModel::clearAtValues() const
 {
     QStringList clearAtStages;
-    std::transform(_clearStages.begin(), _clearStages.end(),
-        std::back_inserter(clearAtStages),
+    std::transform(_clearStages.begin(), _clearStages.end(), std::back_inserter(clearAtStages),
         [this](const ClearStageType &stage) { return clearAtStageToString(stage); });
 
     return clearAtStages;
@@ -436,7 +432,8 @@ QString UserStatusSelectorModel::clearAtReadable(const Optional<ClearAt> &clearA
         }
 
         case ClearAtType::Timestamp: {
-            const int difference = static_cast<int>(clearAt->_timestamp - _dateTimeProvider->currentDateTime().toTime_t());
+            const int difference =
+                static_cast<int>(clearAt->_timestamp - _dateTimeProvider->currentDateTime().toTime_t());
             return timeDifferenceToString(difference);
         }
 

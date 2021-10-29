@@ -33,18 +33,18 @@
 #include <functional>
 
 enum CSYNC_EXCLUDE_TYPE {
-  CSYNC_NOT_EXCLUDED   = 0,
-  CSYNC_FILE_SILENTLY_EXCLUDED,
-  CSYNC_FILE_EXCLUDE_AND_REMOVE,
-  CSYNC_FILE_EXCLUDE_LIST,
-  CSYNC_FILE_EXCLUDE_INVALID_CHAR,
-  CSYNC_FILE_EXCLUDE_TRAILING_SPACE,
-  CSYNC_FILE_EXCLUDE_LONG_FILENAME,
-  CSYNC_FILE_EXCLUDE_HIDDEN,
-  CSYNC_FILE_EXCLUDE_STAT_FAILED,
-  CSYNC_FILE_EXCLUDE_CONFLICT,
-  CSYNC_FILE_EXCLUDE_CANNOT_ENCODE,
-  CSYNC_FILE_EXCLUDE_SERVER_BLACKLISTED,
+    CSYNC_NOT_EXCLUDED = 0,
+    CSYNC_FILE_SILENTLY_EXCLUDED,
+    CSYNC_FILE_EXCLUDE_AND_REMOVE,
+    CSYNC_FILE_EXCLUDE_LIST,
+    CSYNC_FILE_EXCLUDE_INVALID_CHAR,
+    CSYNC_FILE_EXCLUDE_TRAILING_SPACE,
+    CSYNC_FILE_EXCLUDE_LONG_FILENAME,
+    CSYNC_FILE_EXCLUDE_HIDDEN,
+    CSYNC_FILE_EXCLUDE_STAT_FAILED,
+    CSYNC_FILE_EXCLUDE_CONFLICT,
+    CSYNC_FILE_EXCLUDE_CANNOT_ENCODE,
+    CSYNC_FILE_EXCLUDE_SERVER_BLACKLISTED,
 };
 
 class ExcludedFilesTest;
@@ -92,10 +92,7 @@ public:
      * @param filePath     the absolute path to the file
      * @param basePath     folder path from which to apply exclude rules, ends with a /
      */
-    bool isExcluded(
-        const QString &filePath,
-        const QString &basePath,
-        bool excludeHidden) const;
+    bool isExcluded(const QString &filePath, const QString &basePath, bool excludeHidden) const;
 
     /**
      * Adds an exclude pattern anchored to base path

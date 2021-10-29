@@ -60,13 +60,13 @@ namespace Utility {
     OCSYNC_EXPORT QByteArray userAgentString();
     OCSYNC_EXPORT QByteArray friendlyUserAgentString();
     /**
-      * @brief Return whether launch on startup is enabled system wide.
-      *
-      * If this returns true, the checkbox for user specific launch
-      * on startup will be hidden.
-      *
-      * Currently only implemented on Windows.
-      */
+     * @brief Return whether launch on startup is enabled system wide.
+     *
+     * If this returns true, the checkbox for user specific launch
+     * on startup will be hidden.
+     *
+     * Currently only implemented on Windows.
+     */
     OCSYNC_EXPORT bool hasSystemLaunchOnStartup(const QString &appName);
     OCSYNC_EXPORT bool hasLaunchOnStartup(const QString &appName);
     OCSYNC_EXPORT void setLaunchOnStartup(const QString &appName, const QString &guiName, bool launch);
@@ -195,9 +195,7 @@ namespace Utility {
     OCSYNC_EXPORT void sortFilenames(QStringList &fileNames);
 
     /** Appends concatPath and queryItems to the url */
-    OCSYNC_EXPORT QUrl concatUrlPath(
-        const QUrl &url, const QString &concatPath,
-        const QUrlQuery &queryItems = {});
+    OCSYNC_EXPORT QUrl concatUrlPath(const QUrl &url, const QString &concatPath, const QUrlQuery &queryItems = {});
 
     /**  Returns a new settings pre-set in a specific group.  The Settings will be created
          with the given parent. If no parent is specified, the caller must destroy the settings */
@@ -219,8 +217,7 @@ namespace Utility {
 
     /** Returns a file name based on \a fn that's suitable for a conflict.
      */
-    OCSYNC_EXPORT QString makeConflictFileName(
-        const QString &fn, const QDateTime &dt, const QString &user);
+    OCSYNC_EXPORT QString makeConflictFileName(const QString &fn, const QDateTime &dt, const QString &user);
 
     /** Returns whether a file name indicates a conflict file
      */
@@ -244,10 +241,12 @@ namespace Utility {
 #ifdef Q_OS_WIN
     OCSYNC_EXPORT bool registryKeyExists(HKEY hRootKey, const QString &subKey);
     OCSYNC_EXPORT QVariant registryGetKeyValue(HKEY hRootKey, const QString &subKey, const QString &valueName);
-    OCSYNC_EXPORT bool registrySetKeyValue(HKEY hRootKey, const QString &subKey, const QString &valueName, DWORD type, const QVariant &value);
+    OCSYNC_EXPORT bool registrySetKeyValue(
+        HKEY hRootKey, const QString &subKey, const QString &valueName, DWORD type, const QVariant &value);
     OCSYNC_EXPORT bool registryDeleteKeyTree(HKEY hRootKey, const QString &subKey);
     OCSYNC_EXPORT bool registryDeleteKeyValue(HKEY hRootKey, const QString &subKey, const QString &valueName);
-    OCSYNC_EXPORT bool registryWalkSubKeys(HKEY hRootKey, const QString &subKey, const std::function<void(HKEY, const QString &)> &callback);
+    OCSYNC_EXPORT bool registryWalkSubKeys(
+        HKEY hRootKey, const QString &subKey, const std::function<void(HKEY, const QString &)> &callback);
     OCSYNC_EXPORT QRect getTaskbarDimensions();
 
     // Possibly refactor to share code with UnixTimevalToFileTime in c_time.c

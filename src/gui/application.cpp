@@ -68,21 +68,20 @@ Q_LOGGING_CATEGORY(lcApplication, "nextcloud.gui.application", QtInfoMsg)
 
 namespace {
 
-    static const char optionsC[] =
-        "Options:\n"
-        "  --help, -h           : show this help screen.\n"
-        "  --version, -v        : show version information.\n"
-        "  -q --quit            : quit the running instance\n"
-        "  --logwindow, -l      : open a window to show log output.\n"
-        "  --logfile <filename> : write log output to file <filename>.\n"
-        "  --logdir <name>      : write each sync log output in a new file\n"
-        "                         in folder <name>.\n"
-        "  --logexpire <hours>  : removes logs older than <hours> hours.\n"
-        "                         (to be used with --logdir)\n"
-        "  --logflush           : flush the log file after every write.\n"
-        "  --logdebug           : also output debug-level messages in the log.\n"
-        "  --confdir <dirname>  : Use the given configuration folder.\n"
-        "  --background         : launch the application in the background.\n";
+    static const char optionsC[] = "Options:\n"
+                                   "  --help, -h           : show this help screen.\n"
+                                   "  --version, -v        : show version information.\n"
+                                   "  -q --quit            : quit the running instance\n"
+                                   "  --logwindow, -l      : open a window to show log output.\n"
+                                   "  --logfile <filename> : write log output to file <filename>.\n"
+                                   "  --logdir <name>      : write each sync log output in a new file\n"
+                                   "                         in folder <name>.\n"
+                                   "  --logexpire <hours>  : removes logs older than <hours> hours.\n"
+                                   "                         (to be used with --logdir)\n"
+                                   "  --logflush           : flush the log file after every write.\n"
+                                   "  --logdebug           : also output debug-level messages in the log.\n"
+                                   "  --confdir <dirname>  : Use the given configuration folder.\n"
+                                   "  --background         : launch the application in the background.\n";
 
     QString applicationTrPath()
     {
@@ -95,7 +94,8 @@ namespace {
 #if defined(Q_OS_WIN)
         return QApplication::applicationDirPath() + QLatin1String("/i18n/");
 #elif defined(Q_OS_MAC)
-        return QApplication::applicationDirPath() + QLatin1String("/../Resources/Translations"); // path defaults to app dir.
+        return QApplication::applicationDirPath()
+            + QLatin1String("/../Resources/Translations"); // path defaults to app dir.
 #elif defined(Q_OS_UNIX)
         return QString::fromLatin1(SHAREDIR "/" APPLICATION_EXECUTABLE "/i18n/");
 #endif
@@ -133,9 +133,7 @@ bool Application::configVersionMigration()
             boldMessage = tr("Continuing will mean <b>ignoring these settings</b>.");
         }
 
-        QMessageBox box(
-            QMessageBox::Warning,
-            APPLICATION_SHORTNAME,
+        QMessageBox box(QMessageBox::Warning, APPLICATION_SHORTNAME,
             tr("Some settings were configured in newer versions of this client and "
                "use features that are not available in this version.<br>"
                "<br>"
@@ -200,8 +198,7 @@ Application::Application(int &argc, char **argv)
     // setDesktopFilename to provide wayland compatibility (in general: conformance with naming standards)
     // but only on Qt >= 5.7, where setDesktopFilename was introduced
 #if (QT_VERSION >= 0x050700)
-    QString desktopFileName = QString(QLatin1String(LINUX_APPLICATION_ID)
-                                        + QLatin1String(".desktop"));
+    QString desktopFileName = QString(QLatin1String(LINUX_APPLICATION_ID) + QLatin1String(".desktop"));
     setDesktopFileName(desktopFileName);
 #endif
 
@@ -219,23 +216,26 @@ Application::Application(int &argc, char **argv)
         // We need to use the deprecated QDesktopServices::storageLocation because of its Qt4
         // behavior of adding "data" to the path
         QString oldDir = QDesktopServices::storageLocation(QDesktopServices::DataLocation);
-        if (oldDir.endsWith('/')) oldDir.chop(1); // macOS 10.11.x does not like trailing slash for rename/move.
+        if (oldDir.endsWith('/'))
+            oldDir.chop(1); // macOS 10.11.x does not like trailing slash for rename/move.
         QT_WARNING_POP
         setApplicationName(_theme->appName());
         if (QFileInfo(oldDir).isDir()) {
             auto confDir = ConfigFile().configPath();
-            if (confDir.endsWith('/')) confDir.chop(1);  // macOS 10.11.x does not like trailing slash for rename/move.
+            if (confDir.endsWith('/'))
+                confDir.chop(1); // macOS 10.11.x does not like trailing slash for rename/move.
             qCInfo(lcApplication) << "Migrating old config from" << oldDir << "to" << confDir;
 
             if (!QFile::rename(oldDir, confDir)) {
-                qCWarning(lcApplication) << "Failed to move the old config directory to its new location (" << oldDir << "to" << confDir << ")";
+                qCWarning(lcApplication) << "Failed to move the old config directory to its new location (" << oldDir
+                                         << "to" << confDir << ")";
 
                 // Try to move the files one by one
                 if (QFileInfo(confDir).isDir() || QDir().mkdir(confDir)) {
                     const QStringList filesList = QDir(oldDir).entryList(QDir::Files);
                     qCInfo(lcApplication) << "Will move the individual files" << filesList;
                     for (const auto &name : filesList) {
-                        if (!QFile::rename(oldDir + "/" + name,  confDir + "/" + name)) {
+                        if (!QFile::rename(oldDir + "/" + name, confDir + "/" + name)) {
                             qCWarning(lcApplication) << "Fallback move of " << name << "also failed";
                         }
                     }
@@ -250,7 +250,7 @@ Application::Application(int &argc, char **argv)
     }
 
     parseOptions(arguments());
-    //no need to waste time;
+    // no need to waste time;
     if (_helpOnly || _versionOnly)
         return;
 
@@ -306,9 +306,7 @@ Application::Application(int &argc, char **argv)
         Utility::sleep(5);
         if (!AccountManager::instance()->restore()) {
             qCCritical(lcApplication) << "Could not read the account settings, quitting";
-            QMessageBox::critical(
-                nullptr,
-                tr("Error accessing the configuration file"),
+            QMessageBox::critical(nullptr, tr("Error accessing the configuration file"),
                 tr("There was an error while accessing the configuration "
                    "file at %1. Please make sure the file can be accessed by your user.")
                     .arg(ConfigFile().configFile()),
@@ -338,38 +336,36 @@ Application::Application(int &argc, char **argv)
     FolderMan::instance()->setupFolders();
     _proxy.setupQtProxyFromConfig(); // folders have to be defined first, than we set up the Qt proxy.
 
-    connect(AccountManager::instance(), &AccountManager::accountAdded,
-        this, &Application::slotAccountStateAdded);
-    connect(AccountManager::instance(), &AccountManager::accountRemoved,
-        this, &Application::slotAccountStateRemoved);
+    connect(AccountManager::instance(), &AccountManager::accountAdded, this, &Application::slotAccountStateAdded);
+    connect(AccountManager::instance(), &AccountManager::accountRemoved, this, &Application::slotAccountStateRemoved);
     for (const auto &ai : AccountManager::instance()->accounts()) {
         slotAccountStateAdded(ai.data());
     }
 
-    connect(FolderMan::instance()->socketApi(), &SocketApi::shareCommandReceived,
-        _gui.data(), &ownCloudGui::slotShowShareDialog);
+    connect(FolderMan::instance()->socketApi(), &SocketApi::shareCommandReceived, _gui.data(),
+        &ownCloudGui::slotShowShareDialog);
 
-    connect(FolderMan::instance()->socketApi(), &SocketApi::fileActivityCommandReceived,
-        Systray::instance(), &Systray::showFileActivityDialog);
+    connect(FolderMan::instance()->socketApi(), &SocketApi::fileActivityCommandReceived, Systray::instance(),
+        &Systray::showFileActivityDialog);
 
     // startup procedure.
     connect(&_checkConnectionTimer, &QTimer::timeout, this, &Application::slotCheckConnection);
-    _checkConnectionTimer.setInterval(ConnectionValidator::DefaultCallingIntervalMsec); // check for connection every 32 seconds.
+    _checkConnectionTimer.setInterval(
+        ConnectionValidator::DefaultCallingIntervalMsec); // check for connection every 32 seconds.
     _checkConnectionTimer.start();
     // Also check immediately
     QTimer::singleShot(0, this, &Application::slotCheckConnection);
 
     // Can't use onlineStateChanged because it is always true on modern systems because of many interfaces
-    connect(&_networkConfigurationManager, &QNetworkConfigurationManager::configurationChanged,
-        this, &Application::slotSystemOnlineConfigurationChanged);
+    connect(&_networkConfigurationManager, &QNetworkConfigurationManager::configurationChanged, this,
+        &Application::slotSystemOnlineConfigurationChanged);
 
 #if defined(BUILD_UPDATER)
     // Update checks
     auto *updaterScheduler = new UpdaterScheduler(this);
-    connect(updaterScheduler, &UpdaterScheduler::updaterAnnouncement,
-        _gui.data(), &ownCloudGui::slotShowTrayMessage);
-    connect(updaterScheduler, &UpdaterScheduler::requestRestart,
-        _folderManager.data(), &FolderMan::slotScheduleAppRestart);
+    connect(updaterScheduler, &UpdaterScheduler::updaterAnnouncement, _gui.data(), &ownCloudGui::slotShowTrayMessage);
+    connect(
+        updaterScheduler, &UpdaterScheduler::requestRestart, _folderManager.data(), &FolderMan::slotScheduleAppRestart);
 #endif
 
     // Cleanup at Quit.
@@ -390,24 +386,23 @@ Application::~Application()
     }
 
     // Remove the account from the account manager so it can be deleted.
-    disconnect(AccountManager::instance(), &AccountManager::accountRemoved,
-        this, &Application::slotAccountStateRemoved);
+    disconnect(
+        AccountManager::instance(), &AccountManager::accountRemoved, this, &Application::slotAccountStateRemoved);
     AccountManager::instance()->shutdown();
 }
 
 void Application::slotAccountStateRemoved(AccountState *accountState)
 {
     if (_gui) {
-        disconnect(accountState, &AccountState::stateChanged,
-            _gui.data(), &ownCloudGui::slotAccountStateChanged);
-        disconnect(accountState->account().data(), &Account::serverVersionChanged,
-            _gui.data(), &ownCloudGui::slotTrayMessageIfServerUnsupported);
+        disconnect(accountState, &AccountState::stateChanged, _gui.data(), &ownCloudGui::slotAccountStateChanged);
+        disconnect(accountState->account().data(), &Account::serverVersionChanged, _gui.data(),
+            &ownCloudGui::slotTrayMessageIfServerUnsupported);
     }
     if (_folderManager) {
-        disconnect(accountState, &AccountState::stateChanged,
-            _folderManager.data(), &FolderMan::slotAccountStateChanged);
-        disconnect(accountState->account().data(), &Account::serverVersionChanged,
-            _folderManager.data(), &FolderMan::slotServerVersionChanged);
+        disconnect(
+            accountState, &AccountState::stateChanged, _folderManager.data(), &FolderMan::slotAccountStateChanged);
+        disconnect(accountState->account().data(), &Account::serverVersionChanged, _folderManager.data(),
+            &FolderMan::slotServerVersionChanged);
     }
 
     // if there is no more account, show the wizard.
@@ -420,14 +415,12 @@ void Application::slotAccountStateRemoved(AccountState *accountState)
 
 void Application::slotAccountStateAdded(AccountState *accountState)
 {
-    connect(accountState, &AccountState::stateChanged,
-        _gui.data(), &ownCloudGui::slotAccountStateChanged);
-    connect(accountState->account().data(), &Account::serverVersionChanged,
-        _gui.data(), &ownCloudGui::slotTrayMessageIfServerUnsupported);
-    connect(accountState, &AccountState::stateChanged,
-        _folderManager.data(), &FolderMan::slotAccountStateChanged);
-    connect(accountState->account().data(), &Account::serverVersionChanged,
-        _folderManager.data(), &FolderMan::slotServerVersionChanged);
+    connect(accountState, &AccountState::stateChanged, _gui.data(), &ownCloudGui::slotAccountStateChanged);
+    connect(accountState->account().data(), &Account::serverVersionChanged, _gui.data(),
+        &ownCloudGui::slotTrayMessageIfServerUnsupported);
+    connect(accountState, &AccountState::stateChanged, _folderManager.data(), &FolderMan::slotAccountStateChanged);
+    connect(accountState->account().data(), &Account::serverVersionChanged, _folderManager.data(),
+        &FolderMan::slotServerVersionChanged);
 
     _gui->slotTrayMessageIfServerUnsupported(accountState->account().data());
 }
@@ -459,8 +452,7 @@ void Application::slotCheckConnection()
 
         // Don't check if we're manually signed out or
         // when the error is permanent.
-        if (state != AccountState::SignedOut
-            && state != AccountState::ConfigurationError
+        if (state != AccountState::SignedOut && state != AccountState::ConfigurationError
             && state != AccountState::AskingCredentials) {
             accountState->checkConnectivity();
         }
@@ -499,8 +491,7 @@ void Application::slotownCloudWizardDone(int res)
 #endif
 #ifdef Q_OS_MAC
         // Don't auto start when not being 'installed'
-        shouldSetAutoStart = shouldSetAutoStart
-            && QCoreApplication::applicationDirPath().startsWith("/Applications/");
+        shouldSetAutoStart = shouldSetAutoStart && QCoreApplication::applicationDirPath().startsWith("/Applications/");
 #endif
         if (shouldSetAutoStart) {
             Utility::setLaunchOnStartup(_theme->appName(), _theme->appNameGUI(), true);
@@ -527,10 +518,8 @@ void Application::setupLogging()
 
     logger->enterNextLogFile();
 
-    qCInfo(lcApplication) << "##################" << _theme->appName()
-                          << "locale:" << QLocale::system().name()
-                          << "ui_lang:" << property("ui_lang")
-                          << "version:" << _theme->version()
+    qCInfo(lcApplication) << "##################" << _theme->appName() << "locale:" << QLocale::system().name()
+                          << "ui_lang:" << property("ui_lang") << "version:" << _theme->version()
                           << "os:" << Utility::platformName();
     qCInfo(lcApplication) << "Arguments:" << qApp->arguments();
 }
@@ -559,7 +548,8 @@ void Application::slotParseMessage(const QString &msg, QObject *)
         qCInfo(lcApplication) << "Running for" << _startedAt.elapsed() / 1000.0 << "sec";
         if (_startedAt.elapsed() < 10 * 1000) {
             // This call is mirrored with the one in int main()
-            qCWarning(lcApplication) << "Ignoring MSG_SHOWMAINDIALOG, possibly double-invocation of client via session restore and auto start";
+            qCWarning(lcApplication) << "Ignoring MSG_SHOWMAINDIALOG, possibly double-invocation of client via session "
+                                        "restore and auto start";
             return;
         }
 
@@ -579,7 +569,7 @@ void Application::parseOptions(const QStringList &options)
     if (it.hasNext())
         it.next();
 
-    //parse options; if help or bad option exit
+    // parse options; if help or bad option exit
     while (it.hasNext()) {
         QString option = it.next();
         if (option == QLatin1String("--help") || option == QLatin1String("-h")) {
@@ -667,18 +657,12 @@ void Application::showHelp()
     setHelp();
     QString helpText;
     QTextStream stream(&helpText);
-    stream << _theme->appName()
-           << QLatin1String(" version ")
-           << _theme->version() << endl;
+    stream << _theme->appName() << QLatin1String(" version ") << _theme->version() << endl;
 
-    stream << QLatin1String("File synchronisation desktop utility.") << endl
-           << endl
-           << QLatin1String(optionsC);
+    stream << QLatin1String("File synchronisation desktop utility.") << endl << endl << QLatin1String(optionsC);
 
     if (_theme->appName() == QLatin1String("ownCloud"))
-        stream << endl
-               << "For more information, see http://www.owncloud.org" << endl
-               << endl;
+        stream << endl << "For more information, see http://www.owncloud.org" << endl << endl;
 
     displayHelpText(helpText);
 }

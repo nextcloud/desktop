@@ -47,18 +47,40 @@ OCSYNC_EXPORT void csync_exclude_expand_escapes(QByteArray &input)
     for (int i = 0; i < len; ++i) {
         if (line[i] == '\\') {
             // at worst input[i+1] is \0
-            switch (line[i+1]) {
-            case '\'': line[o++] = '\''; break;
-            case '"': line[o++] = '"'; break;
-            case '?': line[o++] = '?'; break;
-            case '#': line[o++] = '#'; break;
-            case 'a': line[o++] = '\a'; break;
-            case 'b': line[o++] = '\b'; break;
-            case 'f': line[o++] = '\f'; break;
-            case 'n': line[o++] = '\n'; break;
-            case 'r': line[o++] = '\r'; break;
-            case 't': line[o++] = '\t'; break;
-            case 'v': line[o++] = '\v'; break;
+            switch (line[i + 1]) {
+            case '\'':
+                line[o++] = '\'';
+                break;
+            case '"':
+                line[o++] = '"';
+                break;
+            case '?':
+                line[o++] = '?';
+                break;
+            case '#':
+                line[o++] = '#';
+                break;
+            case 'a':
+                line[o++] = '\a';
+                break;
+            case 'b':
+                line[o++] = '\b';
+                break;
+            case 'f':
+                line[o++] = '\f';
+                break;
+            case 'n':
+                line[o++] = '\n';
+                break;
+            case 'r':
+                line[o++] = '\r';
+                break;
+            case 't':
+                line[o++] = '\t';
+                break;
+            case 'v':
+                line[o++] = '\v';
+                break;
             default:
                 // '\*' '\?' '\[' '\\' will be processed during regex translation
                 // '\\' is intentionally not expanded here (to avoid '\\*' and '\*'
@@ -78,12 +100,10 @@ OCSYNC_EXPORT void csync_exclude_expand_escapes(QByteArray &input)
 // See http://support.microsoft.com/kb/74496 and
 // https://msdn.microsoft.com/en-us/library/windows/desktop/aa365247(v=vs.85).aspx
 // Additionally, we ignore '$Recycle.Bin', see https://github.com/owncloud/client/issues/2955
-static const char *win_reserved_words_3[] = { "CON", "PRN", "AUX", "NUL" };
-static const char *win_reserved_words_4[] = {
-    "COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9",
-    "LPT1", "LPT2", "LPT3", "LPT4", "LPT5", "LPT6", "LPT7", "LPT8", "LPT9"
-};
-static const char *win_reserved_words_n[] = { "CLOCK$", "$Recycle.Bin" };
+static const char *win_reserved_words_3[] = {"CON", "PRN", "AUX", "NUL"};
+static const char *win_reserved_words_4[] = {"COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9",
+    "LPT1", "LPT2", "LPT3", "LPT4", "LPT5", "LPT6", "LPT7", "LPT8", "LPT9"};
+static const char *win_reserved_words_n[] = {"CLOCK$", "$Recycle.Bin"};
 
 /**
  * @brief Checks if filename is considered reserved by Windows
@@ -142,7 +162,7 @@ static CSYNC_EXCLUDE_TYPE _csync_excluded_common(const QString &path, bool exclu
     // 9 = strlen(".sync_.db")
     if (blen >= 9 && bname.at(0) == QLatin1Char('.')) {
         if (bname.contains(QLatin1String(".db"))) {
-            if (bname.startsWith(QLatin1String("._sync_"), Qt::CaseInsensitive)  // "._sync_*.db*"
+            if (bname.startsWith(QLatin1String("._sync_"), Qt::CaseInsensitive) // "._sync_*.db*"
                 || bname.startsWith(QLatin1String(".sync_"), Qt::CaseInsensitive) // ".sync_*.db*"
                 || bname.startsWith(QLatin1String(".csync_journal.db"), Qt::CaseInsensitive)) { // ".csync_journal.db*"
                 return CSYNC_FILE_SILENTLY_EXCLUDED;
@@ -200,7 +220,8 @@ static CSYNC_EXCLUDE_TYPE _csync_excluded_common(const QString &path, bool exclu
 
     /* Do not sync desktop.ini files anywhere in the tree. */
     const auto desktopIniFile = QStringLiteral("desktop.ini");
-    if (blen == static_cast<qsizetype>(desktopIniFile.length()) && bname.compare(desktopIniFile, Qt::CaseInsensitive) == 0) {
+    if (blen == static_cast<qsizetype>(desktopIniFile.length())
+        && bname.compare(desktopIniFile, Qt::CaseInsensitive) == 0) {
         return CSYNC_FILE_SILENTLY_EXCLUDED;
     }
 
@@ -239,8 +260,8 @@ void ExcludedFiles::addExcludeFilePath(const QString &path)
     const QFileInfo excludeFileInfo(path);
     const auto fileName = excludeFileInfo.fileName();
     const auto basePath = fileName.compare(QStringLiteral("sync-exclude.lst"), Qt::CaseInsensitive) == 0
-                                                                    ? _localPath
-                                                                    : leftIncludeLast(path, QLatin1Char('/'));
+        ? _localPath
+        : leftIncludeLast(path, QLatin1Char('/'));
     auto &excludeFilesLocalPath = _excludeFiles[basePath];
     if (std::find(excludeFilesLocalPath.cbegin(), excludeFilesLocalPath.cend(), path) == excludeFilesLocalPath.cend()) {
         excludeFilesLocalPath.append(path);
@@ -301,7 +322,7 @@ void ExcludedFiles::loadExcludeFilePatterns(const QString &basePath, QFile &file
     _allExcludes[basePath].append(patterns);
 
     // nothing to prepare if the user decided to not exclude anything
-    if (!_allExcludes.value(basePath).isEmpty()){
+    if (!_allExcludes.value(basePath).isEmpty()) {
         prepare(basePath);
     }
 }
@@ -319,7 +340,7 @@ bool ExcludedFiles::reloadExcludeFiles()
 
     bool success = true;
     const auto keys = _excludeFiles.keys();
-    for (const auto& basePath : keys) {
+    for (const auto &basePath : keys) {
         for (const auto &excludeFile : _excludeFiles.value(basePath)) {
             QFile file(excludeFile);
             if (file.exists() && file.open(QIODevice::ReadOnly)) {
@@ -366,17 +387,14 @@ bool ExcludedFiles::versionDirectiveKeepNextLine(const QByteArray &directive) co
     return true;
 }
 
-bool ExcludedFiles::isExcluded(
-    const QString &filePath,
-    const QString &basePath,
-    bool excludeHidden) const
+bool ExcludedFiles::isExcluded(const QString &filePath, const QString &basePath, bool excludeHidden) const
 {
     if (!filePath.startsWith(basePath, Utility::fsCasePreserving() ? Qt::CaseInsensitive : Qt::CaseSensitive)) {
         // Mark paths we're not responsible for as excluded...
         return true;
     }
 
-    //TODO this seems a waste, hidden files are ignored before hitting this function it seems
+    // TODO this seems a waste, hidden files are ignored before hitting this function it seems
     if (excludeHidden) {
         QString path = filePath;
         // Check all path subcomponents, but to *not* check the base path:
@@ -441,11 +459,9 @@ CSYNC_EXCLUDE_TYPE ExcludedFiles::traversalPatternMatch(const QString &path, Ite
     while (basePath.size() > _localPath.size()) {
         basePath = leftIncludeLast(basePath, QLatin1Char('/'));
         QRegularExpressionMatch m;
-        if (filetype == ItemTypeDirectory
-            && _bnameTraversalRegexDir.contains(basePath)) {
+        if (filetype == ItemTypeDirectory && _bnameTraversalRegexDir.contains(basePath)) {
             m = _bnameTraversalRegexDir[basePath].match(bnameStr);
-        } else if (filetype == ItemTypeFile
-            && _bnameTraversalRegexFile.contains(basePath)) {
+        } else if (filetype == ItemTypeFile && _bnameTraversalRegexFile.contains(basePath)) {
             m = _bnameTraversalRegexFile[basePath].match(bnameStr);
         } else {
             continue;
@@ -465,11 +481,9 @@ CSYNC_EXCLUDE_TYPE ExcludedFiles::traversalPatternMatch(const QString &path, Ite
     while (basePath.size() > _localPath.size()) {
         basePath = leftIncludeLast(basePath, QLatin1Char('/'));
         QRegularExpressionMatch m;
-        if (filetype == ItemTypeDirectory
-            && _fullTraversalRegexDir.contains(basePath)) {
+        if (filetype == ItemTypeDirectory && _fullTraversalRegexDir.contains(basePath)) {
             m = _fullTraversalRegexDir[basePath].match(path);
-        } else if (filetype == ItemTypeFile
-            && _fullTraversalRegexFile.contains(basePath)) {
+        } else if (filetype == ItemTypeFile && _fullTraversalRegexFile.contains(basePath)) {
             m = _fullTraversalRegexFile[basePath].match(path);
         } else {
             continue;
@@ -504,11 +518,9 @@ CSYNC_EXCLUDE_TYPE ExcludedFiles::fullPatternMatch(const QString &p, ItemType fi
     while (basePath.size() > _localPath.size()) {
         basePath = leftIncludeLast(basePath, QLatin1Char('/'));
         QRegularExpressionMatch m;
-        if (filetype == ItemTypeDirectory
-            && _fullRegexDir.contains(basePath)) {
+        if (filetype == ItemTypeDirectory && _fullRegexDir.contains(basePath)) {
             m = _fullRegexDir[basePath].match(p);
-        } else if (filetype == ItemTypeFile
-            && _fullRegexFile.contains(basePath)) {
+        } else if (filetype == ItemTypeFile && _fullRegexFile.contains(basePath)) {
             m = _fullRegexFile[basePath].match(p);
         } else {
             continue;
@@ -668,11 +680,11 @@ void ExcludedFiles::prepare()
     _fullRegexDir.clear();
 
     const auto keys = _allExcludes.keys();
-    for (auto const & basePath : keys)
+    for (auto const &basePath : keys)
         prepare(basePath);
 }
 
-void ExcludedFiles::prepare(const BasePathString & basePath)
+void ExcludedFiles::prepare(const BasePathString &basePath)
 {
     Q_ASSERT(_allExcludes.contains(basePath));
 
@@ -784,16 +796,15 @@ void ExcludedFiles::prepare(const BasePathString & basePath)
     // (exclude)|(excluderemove)|(bname triggers).
     // If the third group matches, the fullActivatedRegex needs to be applied
     // to the full path.
-    _bnameTraversalRegexFile[basePath].setPattern(
-        QStringLiteral("^(?P<exclude>%1)$|"
-                       "^(?P<excluderemove>%2)$|"
-                       "^(?P<trigger>%3)$")
-            .arg(bnameFileDirKeep, bnameFileDirRemove, bnameTriggerFileDir));
-    _bnameTraversalRegexDir[basePath].setPattern(
-        QStringLiteral("^(?P<exclude>%1|%2)$|"
-                       "^(?P<excluderemove>%3|%4)$|"
-                       "^(?P<trigger>%5|%6)$")
-            .arg(bnameFileDirKeep, bnameDirKeep, bnameFileDirRemove, bnameDirRemove, bnameTriggerFileDir, bnameTriggerDir));
+    _bnameTraversalRegexFile[basePath].setPattern(QStringLiteral("^(?P<exclude>%1)$|"
+                                                                 "^(?P<excluderemove>%2)$|"
+                                                                 "^(?P<trigger>%3)$")
+                                                      .arg(bnameFileDirKeep, bnameFileDirRemove, bnameTriggerFileDir));
+    _bnameTraversalRegexDir[basePath].setPattern(QStringLiteral("^(?P<exclude>%1|%2)$|"
+                                                                "^(?P<excluderemove>%3|%4)$|"
+                                                                "^(?P<trigger>%5|%6)$")
+                                                     .arg(bnameFileDirKeep, bnameDirKeep, bnameFileDirRemove,
+                                                         bnameDirRemove, bnameTriggerFileDir, bnameTriggerDir));
 
     // The full traveral regex is applied to the full path if the trigger capture of
     // the bname regex matches. Its basic form is (exclude)|(excluderemove)".
@@ -813,30 +824,30 @@ void ExcludedFiles::prepare(const BasePathString & basePath)
 
     // The full regex is applied to the full path and incorporates both bname and
     // full-path patterns. It has the form "(exclude)|(excluderemove)".
-    _fullRegexFile[basePath].setPattern(
-        QStringLiteral("(?P<exclude>"
-                       // Full patterns are anchored to the beginning
-                       "^(?:%1)(?:$|/)|"
-                       // Simple bname patterns can be any path component
-                       "(?:^|/)(?:%2)(?:$|/)|"
-                       // When checking a file for exclusion we must check all parent paths
-                       // against the dir-only patterns as well.
-                       "(?:^|/)(?:%3)/)"
-                       "|"
-                       "(?P<excluderemove>"
-                       "^(?:%4)(?:$|/)|"
-                       "(?:^|/)(?:%5)(?:$|/)|"
-                       "(?:^|/)(?:%6)/)")
-            .arg(fullFileDirKeep, bnameFileDirKeep, bnameDirKeep, fullFileDirRemove, bnameFileDirRemove, bnameDirRemove));
-    _fullRegexDir[basePath].setPattern(
-        QStringLiteral("(?P<exclude>"
-                       "^(?:%1|%2)(?:$|/)|"
-                       "(?:^|/)(?:%3|%4)(?:$|/))"
-                       "|"
-                       "(?P<excluderemove>"
-                       "^(?:%5|%6)(?:$|/)|"
-                       "(?:^|/)(?:%7|%8)(?:$|/))")
-            .arg(fullFileDirKeep, fullDirKeep, bnameFileDirKeep, bnameDirKeep, fullFileDirRemove, fullDirRemove, bnameFileDirRemove, bnameDirRemove));
+    _fullRegexFile[basePath].setPattern(QStringLiteral("(?P<exclude>"
+                                                       // Full patterns are anchored to the beginning
+                                                       "^(?:%1)(?:$|/)|"
+                                                       // Simple bname patterns can be any path component
+                                                       "(?:^|/)(?:%2)(?:$|/)|"
+                                                       // When checking a file for exclusion we must check all parent
+                                                       // paths against the dir-only patterns as well.
+                                                       "(?:^|/)(?:%3)/)"
+                                                       "|"
+                                                       "(?P<excluderemove>"
+                                                       "^(?:%4)(?:$|/)|"
+                                                       "(?:^|/)(?:%5)(?:$|/)|"
+                                                       "(?:^|/)(?:%6)/)")
+                                            .arg(fullFileDirKeep, bnameFileDirKeep, bnameDirKeep, fullFileDirRemove,
+                                                bnameFileDirRemove, bnameDirRemove));
+    _fullRegexDir[basePath].setPattern(QStringLiteral("(?P<exclude>"
+                                                      "^(?:%1|%2)(?:$|/)|"
+                                                      "(?:^|/)(?:%3|%4)(?:$|/))"
+                                                      "|"
+                                                      "(?P<excluderemove>"
+                                                      "^(?:%5|%6)(?:$|/)|"
+                                                      "(?:^|/)(?:%7|%8)(?:$|/))")
+                                           .arg(fullFileDirKeep, fullDirKeep, bnameFileDirKeep, bnameDirKeep,
+                                               fullFileDirRemove, fullDirRemove, bnameFileDirRemove, bnameDirRemove));
 
     QRegularExpression::PatternOptions patternOptions = QRegularExpression::NoPatternOption;
     if (OCC::Utility::fsCasePreserving())

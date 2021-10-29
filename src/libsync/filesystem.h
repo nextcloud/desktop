@@ -75,16 +75,12 @@ namespace FileSystem {
      *
      * @return true if the file's mtime or size are not what is expected.
      */
-    bool OWNCLOUDSYNC_EXPORT fileChanged(const QString &fileName,
-        qint64 previousSize,
-        time_t previousMtime);
+    bool OWNCLOUDSYNC_EXPORT fileChanged(const QString &fileName, qint64 previousSize, time_t previousMtime);
 
     /**
      * @brief Like !fileChanged() but with verbose logging if the file *did* change.
      */
-    bool OWNCLOUDSYNC_EXPORT verifyFileUnchanged(const QString &fileName,
-        qint64 previousSize,
-        time_t previousMtime);
+    bool OWNCLOUDSYNC_EXPORT verifyFileUnchanged(const QString &fileName, qint64 previousSize, time_t previousMtime);
 
     /**
      * Removes a directory and its contents recursively
@@ -94,8 +90,7 @@ namespace FileSystem {
      * errors are collected in errors.
      */
     bool OWNCLOUDSYNC_EXPORT removeRecursively(const QString &path,
-        const std::function<void(const QString &path, bool isDir)> &onDeleted = nullptr,
-        QStringList *errors = nullptr);
+        const std::function<void(const QString &path, bool isDir)> &onDeleted = nullptr, QStringList *errors = nullptr);
 }
 
 /** @} */

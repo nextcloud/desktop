@@ -15,9 +15,11 @@
 /*
  * Removing the root encrypted folder is consisted of multiple steps:
  * - 1st step is to obtain the folderID via LsColJob so it then can be used for the next step
- * - 2nd step is to lock the root folder useing the folderID from the previous step. !!! NOTE: If there are no nested items in the folder, this, and subsequent steps are skipped until step 7.
+ * - 2nd step is to lock the root folder useing the folderID from the previous step. !!! NOTE: If there are no nested
+ * items in the folder, this, and subsequent steps are skipped until step 7.
  * - 3rd step is to obtain the root folder's metadata (it contains list of nested files and folders)
- * - 4th step is to remove the nested files and folders from the metadata and send it to the server via UpdateMetadataApiJob
+ * - 4th step is to remove the nested files and folders from the metadata and send it to the server via
+ * UpdateMetadataApiJob
  * - 5th step is to trigger DeleteJob for every nested file and folder of the root folder
  * - 6th step is to unlock the root folder using the previously obtained token from locking
  * - 7th step is to decrypt and delete the root folder, because it is now possible as it has become empty
@@ -34,26 +36,25 @@
 #include "propagateremotedeleteencryptedrootfolder.h"
 
 namespace {
-  const char* encryptedFileNamePropertyKey = "encryptedFileName";
+const char *encryptedFileNamePropertyKey = "encryptedFileName";
 }
 
 using namespace OCC;
 
 Q_LOGGING_CATEGORY(PROPAGATE_REMOVE_ENCRYPTED_ROOTFOLDER, "nextcloud.sync.propagator.remove.encrypted.rootfolder")
 
-PropagateRemoteDeleteEncryptedRootFolder::PropagateRemoteDeleteEncryptedRootFolder(OwncloudPropagator *propagator, SyncFileItemPtr item, QObject *parent)
+PropagateRemoteDeleteEncryptedRootFolder::PropagateRemoteDeleteEncryptedRootFolder(
+    OwncloudPropagator *propagator, SyncFileItemPtr item, QObject *parent)
     : AbstractPropagateRemoteDeleteEncrypted(propagator, item, parent)
 {
-
 }
 
 void PropagateRemoteDeleteEncryptedRootFolder::start()
 {
     Q_ASSERT(_item->_isEncrypted);
 
-    const bool listFilesResult = _propagator->_journal->listFilesInPath(_item->_file.toUtf8(), [this](const OCC::SyncJournalFileRecord &record) {
-        _nestedItems[record._e2eMangledName] = record;
-    });
+    const bool listFilesResult = _propagator->_journal->listFilesInPath(_item->_file.toUtf8(),
+        [this](const OCC::SyncJournalFileRecord &record) { _nestedItems[record._e2eMangledName] = record; });
 
     if (!listFilesResult || _nestedItems.isEmpty()) {
         // if the folder is empty, just decrypt and delete it
@@ -70,11 +71,14 @@ void PropagateRemoteDeleteEncryptedRootFolder::slotFolderUnLockedSuccessfully(co
     decryptAndRemoteDelete();
 }
 
-void PropagateRemoteDeleteEncryptedRootFolder::slotFolderEncryptedMetadataReceived(const QJsonDocument &json, int statusCode)
+void PropagateRemoteDeleteEncryptedRootFolder::slotFolderEncryptedMetadataReceived(
+    const QJsonDocument &json, int statusCode)
 {
     if (statusCode == 404) {
-        // we've eneded up having no metadata, but, _nestedItems is not empty since we went this far, let's proceed with removing the nested items without modifying the metadata
-        qCDebug(PROPAGATE_REMOVE_ENCRYPTED_ROOTFOLDER) << "There is no metadata for this folder. Just remove it's nested items.";
+        // we've eneded up having no metadata, but, _nestedItems is not empty since we went this far, let's proceed with
+        // removing the nested items without modifying the metadata
+        qCDebug(PROPAGATE_REMOVE_ENCRYPTED_ROOTFOLDER)
+            << "There is no metadata for this folder. Just remove it's nested items.";
         for (auto it = _nestedItems.constBegin(); it != _nestedItems.constEnd(); ++it) {
             deleteNestedRemoteItem(it.key());
         }
@@ -90,7 +94,7 @@ void PropagateRemoteDeleteEncryptedRootFolder::slotFolderEncryptedMetadataReceiv
     qCDebug(PROPAGATE_REMOVE_ENCRYPTED_ROOTFOLDER) << "Metadata updated, sending to the server.";
 
     auto job = new UpdateMetadataApiJob(_propagator->account(), _folderId, metadata.encryptedMetadata(), _folderToken);
-    connect(job, &UpdateMetadataApiJob::success, this, [this](const QByteArray& fileId) {
+    connect(job, &UpdateMetadataApiJob::success, this, [this](const QByteArray &fileId) {
         Q_UNUSED(fileId);
         for (auto it = _nestedItems.constBegin(); it != _nestedItems.constEnd(); ++it) {
             deleteNestedRemoteItem(it.key());
@@ -140,21 +144,25 @@ void PropagateRemoteDeleteEncryptedRootFolder::slotDeleteNestedRemoteItemFinishe
         // Normally we expect "204 No Content"
         // If it is not the case, it might be because of a proxy or gateway intercepting the request, so we must
         // throw an error.
-        storeFirstErrorString(tr("Wrong HTTP code returned by server. Expected 204, but received \"%1 %2\".")
-                       .arg(httpErrorCode)
-                       .arg(deleteJob->reply()->attribute(QNetworkRequest::HttpReasonPhraseAttribute).toString()));
+        storeFirstErrorString(
+            tr("Wrong HTTP code returned by server. Expected 204, but received \"%1 %2\".")
+                .arg(httpErrorCode)
+                .arg(deleteJob->reply()->attribute(QNetworkRequest::HttpReasonPhraseAttribute).toString()));
         if (_item->_httpErrorCode == 0) {
             _item->_httpErrorCode = httpErrorCode;
         }
 
-        qCWarning(PROPAGATE_REMOVE_ENCRYPTED_ROOTFOLDER) << "Delete nested item finished with error" << httpErrorCode << ".";
+        qCWarning(PROPAGATE_REMOVE_ENCRYPTED_ROOTFOLDER)
+            << "Delete nested item finished with error" << httpErrorCode << ".";
     }
 
     if (_nestedItems.size() == 0) {
         // we wait for all _nestedItems' DeleteJobs to finish, and then - fail if any of those jobs has failed
         if (networkError() != QNetworkReply::NetworkError::NoError || _item->_httpErrorCode != 0) {
-            const int errorCode = networkError() != QNetworkReply::NetworkError::NoError ? networkError() : _item->_httpErrorCode;
-            qCCritical(PROPAGATE_REMOVE_ENCRYPTED_ROOTFOLDER) << "Delete of nested items finished with error" << errorCode << ". Failing the entire sequence.";
+            const int errorCode =
+                networkError() != QNetworkReply::NetworkError::NoError ? networkError() : _item->_httpErrorCode;
+            qCCritical(PROPAGATE_REMOVE_ENCRYPTED_ROOTFOLDER)
+                << "Delete of nested items finished with error" << errorCode << ". Failing the entire sequence.";
             taskFailed();
             return;
         }
@@ -170,19 +178,21 @@ void PropagateRemoteDeleteEncryptedRootFolder::deleteNestedRemoteItem(const QStr
     deleteJob->setFolderToken(_folderToken);
     deleteJob->setProperty(encryptedFileNamePropertyKey, filename);
 
-    connect(deleteJob, &DeleteJob::finishedSignal, this, &PropagateRemoteDeleteEncryptedRootFolder::slotDeleteNestedRemoteItemFinished);
+    connect(deleteJob, &DeleteJob::finishedSignal, this,
+        &PropagateRemoteDeleteEncryptedRootFolder::slotDeleteNestedRemoteItemFinished);
 
     deleteJob->start();
 }
 
 void PropagateRemoteDeleteEncryptedRootFolder::decryptAndRemoteDelete()
 {
-    auto job = new OCC::SetEncryptionFlagApiJob(_propagator->account(), _item->_fileId, OCC::SetEncryptionFlagApiJob::Clear, this);
-    connect(job, &OCC::SetEncryptionFlagApiJob::success, this, [this] (const QByteArray &fileId) {
+    auto job = new OCC::SetEncryptionFlagApiJob(
+        _propagator->account(), _item->_fileId, OCC::SetEncryptionFlagApiJob::Clear, this);
+    connect(job, &OCC::SetEncryptionFlagApiJob::success, this, [this](const QByteArray &fileId) {
         Q_UNUSED(fileId);
         deleteRemoteItem(_item->_file);
     });
-    connect(job, &OCC::SetEncryptionFlagApiJob::error, this, [this] (const QByteArray &fileId, int httpReturnCode) {
+    connect(job, &OCC::SetEncryptionFlagApiJob::error, this, [this](const QByteArray &fileId, int httpReturnCode) {
         Q_UNUSED(fileId);
         _item->_httpErrorCode = httpReturnCode;
         taskFailed();

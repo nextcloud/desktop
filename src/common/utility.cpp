@@ -178,13 +178,8 @@ static QLatin1String platform()
 QByteArray Utility::userAgentString()
 {
     return QStringLiteral("Mozilla/5.0 (%1) mirall/%2 (%3, %4-%5 ClientArchitecture: %6 OsArchitecture: %7)")
-        .arg(platform(),
-            QStringLiteral(MIRALL_VERSION_STRING),
-            qApp->applicationName(),
-            QSysInfo::productType(),
-            QSysInfo::kernelVersion(),
-            QSysInfo::buildCpuArchitecture(),
-            QSysInfo::currentCpuArchitecture())
+        .arg(platform(), QStringLiteral(MIRALL_VERSION_STRING), qApp->applicationName(), QSysInfo::productType(),
+            QSysInfo::kernelVersion(), QSysInfo::buildCpuArchitecture(), QSysInfo::currentCpuArchitecture())
         .toLatin1();
 }
 
@@ -217,7 +212,8 @@ void Utility::setLaunchOnStartup(const QString &appName, const QString &guiName,
 
 qint64 Utility::freeDiskSpace(const QString &path)
 {
-#if defined(Q_OS_MAC) || defined(Q_OS_FREEBSD) || defined(Q_OS_FREEBSD_KERNEL) || defined(Q_OS_NETBSD) || defined(Q_OS_OPENBSD)
+#if defined(Q_OS_MAC) || defined(Q_OS_FREEBSD) || defined(Q_OS_FREEBSD_KERNEL) || defined(Q_OS_NETBSD)                 \
+    || defined(Q_OS_OPENBSD)
     struct statvfs stat;
     if (statvfs(path.toLocal8Bit().data(), &stat) == 0) {
         return (qint64)stat.f_bavail * stat.f_frsize;
@@ -230,7 +226,8 @@ qint64 Utility::freeDiskSpace(const QString &path)
 #elif defined(Q_OS_WIN)
     ULARGE_INTEGER freeBytes;
     freeBytes.QuadPart = 0L;
-    if (GetDiskFreeSpaceEx(reinterpret_cast<const wchar_t *>(FileSystem::longWinPath(path).utf16()), &freeBytes, nullptr, nullptr)) {
+    if (GetDiskFreeSpaceEx(
+            reinterpret_cast<const wchar_t *>(FileSystem::longWinPath(path).utf16()), &freeBytes, nullptr, nullptr)) {
         return freeBytes.QuadPart;
     }
 #endif
@@ -326,15 +323,12 @@ namespace {
 // (it must be in the form ("context", "source", "comment", n)
 #undef QT_TRANSLATE_NOOP
 #define QT_TRANSLATE_NOOP(ctx, str, ...) str
-    Q_DECL_CONSTEXPR Period periods[] = {
-        { QT_TRANSLATE_NOOP("Utility", "%n year(s)", 0, _), 365 * 24 * 3600 * 1000LL },
-        { QT_TRANSLATE_NOOP("Utility", "%n month(s)", 0, _), 30 * 24 * 3600 * 1000LL },
-        { QT_TRANSLATE_NOOP("Utility", "%n day(s)", 0, _), 24 * 3600 * 1000LL },
-        { QT_TRANSLATE_NOOP("Utility", "%n hour(s)", 0, _), 3600 * 1000LL },
-        { QT_TRANSLATE_NOOP("Utility", "%n minute(s)", 0, _), 60 * 1000LL },
-        { QT_TRANSLATE_NOOP("Utility", "%n second(s)", 0, _), 1000LL },
-        { nullptr, 0 }
-    };
+    Q_DECL_CONSTEXPR Period periods[] = {{QT_TRANSLATE_NOOP("Utility", "%n year(s)", 0, _), 365 * 24 * 3600 * 1000LL},
+        {QT_TRANSLATE_NOOP("Utility", "%n month(s)", 0, _), 30 * 24 * 3600 * 1000LL},
+        {QT_TRANSLATE_NOOP("Utility", "%n day(s)", 0, _), 24 * 3600 * 1000LL},
+        {QT_TRANSLATE_NOOP("Utility", "%n hour(s)", 0, _), 3600 * 1000LL},
+        {QT_TRANSLATE_NOOP("Utility", "%n minute(s)", 0, _), 60 * 1000LL},
+        {QT_TRANSLATE_NOOP("Utility", "%n second(s)", 0, _), 1000LL}, {nullptr, 0}};
 } // anonymous namespace
 
 QString Utility::durationToDescriptiveString2(quint64 msecs)
@@ -421,7 +415,7 @@ void Utility::crash()
 uint Utility::convertSizeToUint(size_t &convertVar)
 {
     if (convertVar > UINT_MAX) {
-        //throw std::bad_cast();
+        // throw std::bad_cast();
         convertVar = UINT_MAX; // intentionally default to wrong value here to not crash: exception handling TBD
     }
     return static_cast<uint>(convertVar);
@@ -430,7 +424,7 @@ uint Utility::convertSizeToUint(size_t &convertVar)
 int Utility::convertSizeToInt(size_t &convertVar)
 {
     if (convertVar > INT_MAX) {
-        //throw std::bad_cast();
+        // throw std::bad_cast();
         convertVar = INT_MAX; // intentionally default to wrong value here to not crash: exception handling TBD
     }
     return static_cast<int>(convertVar);
@@ -574,8 +568,7 @@ void Utility::sortFilenames(QStringList &fileNames)
     std::sort(fileNames.begin(), fileNames.end(), collator);
 }
 
-QUrl Utility::concatUrlPath(const QUrl &url, const QString &concatPath,
-    const QUrlQuery &queryItems)
+QUrl Utility::concatUrlPath(const QUrl &url, const QString &concatPath, const QUrlQuery &queryItems)
 {
     QString path = url.path();
     if (!concatPath.isEmpty()) {
@@ -595,8 +588,7 @@ QUrl Utility::concatUrlPath(const QUrl &url, const QString &concatPath,
     return tmpUrl;
 }
 
-QString Utility::makeConflictFileName(
-    const QString &fn, const QDateTime &dt, const QString &user)
+QString Utility::makeConflictFileName(const QString &fn, const QDateTime &dt, const QString &user)
 {
     QString conflictFileName(fn);
     // Add conflict tag before the extension.
@@ -610,7 +602,10 @@ QString Utility::makeConflictFileName(
     if (!user.isEmpty()) {
         // Don't allow parens in the user name, to ensure
         // we can find the beginning and end of the conflict tag.
-        const auto userName = sanitizeForFileName(user).replace(QLatin1Char('('), QLatin1Char('_')).replace(QLatin1Char(')'), QLatin1Char('_'));;
+        const auto userName = sanitizeForFileName(user)
+                                  .replace(QLatin1Char('('), QLatin1Char('_'))
+                                  .replace(QLatin1Char(')'), QLatin1Char('_'));
+        ;
         conflictMarker += userName + QLatin1Char(' ');
     }
     conflictMarker += dt.toString(QStringLiteral("yyyy-MM-dd hhmmss")) + QLatin1Char(')');
@@ -708,9 +703,7 @@ QString Utility::sanitizeForFileName(const QString &name)
     QString result;
     result.reserve(name.size());
     for (const auto c : name) {
-        if (!invalid.contains(c)
-            && c.category() != QChar::Other_Control
-            && c.category() != QChar::Other_Format) {
+        if (!invalid.contains(c) && c.category() != QChar::Other_Control && c.category() != QChar::Other_Format) {
             result.append(c);
         }
     }

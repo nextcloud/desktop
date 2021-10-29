@@ -28,11 +28,7 @@ Q_LOGGING_CATEGORY(lcUtility, "nextcloud.gui.utility", QtInfoMsg)
 
 bool Utility::openBrowser(const QUrl &url, QWidget *errorWidgetParent)
 {
-    const QStringList allowedUrlSchemes = {
-        "http",
-        "https",
-        "oauthtest"
-    };
+    const QStringList allowedUrlSchemes = {"http", "https", "oauthtest"};
 
     if (!allowedUrlSchemes.contains(url.scheme())) {
         qCWarning(lcUtility) << "URL format is not supported, or it has been compromised for:" << url.toString();
@@ -41,9 +37,7 @@ bool Utility::openBrowser(const QUrl &url, QWidget *errorWidgetParent)
 
     if (!QDesktopServices::openUrl(url)) {
         if (errorWidgetParent) {
-            QMessageBox::warning(
-                errorWidgetParent,
-                QCoreApplication::translate("utility", "Could not open browser"),
+            QMessageBox::warning(errorWidgetParent, QCoreApplication::translate("utility", "Could not open browser"),
                 QCoreApplication::translate("utility",
                     "There was an error when launching the browser to go to "
                     "URL %1. Maybe no default browser is configured?")
@@ -59,14 +53,12 @@ bool Utility::openEmailComposer(const QString &subject, const QString &body, QWi
 {
     QUrl url(QLatin1String("mailto:"));
     QUrlQuery query;
-    query.setQueryItems({ { QLatin1String("subject"), subject },
-        { QLatin1String("body"), body } });
+    query.setQueryItems({{QLatin1String("subject"), subject}, {QLatin1String("body"), body}});
     url.setQuery(query);
 
     if (!QDesktopServices::openUrl(url)) {
         if (errorWidgetParent) {
-            QMessageBox::warning(
-                errorWidgetParent,
+            QMessageBox::warning(errorWidgetParent,
                 QCoreApplication::translate("utility", "Could not open email client"),
                 QCoreApplication::translate("utility",
                     "There was an error when launching the email client to "
@@ -81,7 +73,7 @@ bool Utility::openEmailComposer(const QString &subject, const QString &body, QWi
 
 QString Utility::vfsCurrentAvailabilityText(VfsItemAvailability availability)
 {
-    switch(availability) {
+    switch (availability) {
     case VfsItemAvailability::AlwaysLocal:
         return QCoreApplication::translate("utility", "Always available locally");
     case VfsItemAvailability::AllHydrated:

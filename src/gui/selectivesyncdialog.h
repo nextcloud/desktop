@@ -49,8 +49,8 @@ public:
     qint64 estimatedSize(QTreeWidgetItem *root = nullptr);
 
     // oldBlackList is a list of excluded paths, each including a trailing /
-    void setFolderInfo(const QString &folderPath, const QString &rootName,
-        const QStringList &oldBlackList = QStringList());
+    void setFolderInfo(
+        const QString &folderPath, const QString &rootName, const QStringList &oldBlackList = QStringList());
 
     QSize sizeHint() const override;
 
@@ -95,7 +95,8 @@ public:
     explicit SelectiveSyncDialog(AccountPtr account, Folder *folder, QWidget *parent = nullptr, Qt::WindowFlags f = {});
 
     // Dialog for the whole account (Used from the wizard)
-    explicit SelectiveSyncDialog(AccountPtr account, const QString &folder, const QStringList &blacklist, QWidget *parent = nullptr, Qt::WindowFlags f = {});
+    explicit SelectiveSyncDialog(AccountPtr account, const QString &folder, const QStringList &blacklist,
+        QWidget *parent = nullptr, Qt::WindowFlags f = {});
 
     void accept() override;
 

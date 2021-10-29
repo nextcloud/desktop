@@ -58,8 +58,7 @@ bool FolderWatcherPrivate::findFoldersBelow(const QDir &dir, QStringList &fullLi
         const QStringList pathes = dir.entryList(nameFilter, filter);
 
         QStringList::const_iterator constIterator;
-        for (constIterator = pathes.constBegin(); constIterator != pathes.constEnd();
-             ++constIterator) {
+        for (constIterator = pathes.constBegin(); constIterator != pathes.constEnd(); ++constIterator) {
             const QString fullPath(dir.path() + QLatin1String("/") + (*constIterator));
             fullList.append(fullPath);
             ok = findFoldersBelow(QDir(fullPath), fullList);
@@ -75,7 +74,8 @@ void FolderWatcherPrivate::inotifyRegisterPath(const QString &path)
         return;
 
     int wd = inotify_add_watch(_fd, path.toUtf8().constData(),
-        IN_CLOSE_WRITE | IN_ATTRIB | IN_MOVE | IN_CREATE | IN_DELETE | IN_DELETE_SELF | IN_MOVE_SELF | IN_UNMOUNT | IN_ONLYDIR);
+        IN_CLOSE_WRITE | IN_ATTRIB | IN_MOVE | IN_CREATE | IN_DELETE | IN_DELETE_SELF | IN_MOVE_SELF | IN_UNMOUNT
+            | IN_ONLYDIR);
     if (wd > -1) {
         _watchToPath.insert(wd, path);
         _pathToWatch.insert(path, wd);
@@ -84,9 +84,8 @@ void FolderWatcherPrivate::inotifyRegisterPath(const QString &path)
         // unreliable.
         if (_parent->_isReliable && (errno == ENOMEM || errno == ENOSPC)) {
             _parent->_isReliable = false;
-            emit _parent->becameUnreliable(
-                tr("This problem usually happens when the inotify watches are exhausted. "
-                   "Check the FAQ for details."));
+            emit _parent->becameUnreliable(tr("This problem usually happens when the inotify watches are exhausted. "
+                                              "Check the FAQ for details."));
         }
     }
 }
@@ -138,14 +137,14 @@ void FolderWatcherPrivate::slotReceivedNotification(int fd)
     len = read(fd, buffer.data(), buffer.size());
     error = errno;
     /**
-      * From inotify documentation:
-      *
-      * The behavior when the buffer given to read(2) is too
-      * small to return information about the next event
-      * depends on the kernel version: in kernels  before 2.6.21,
-      * read(2) returns 0; since kernel 2.6.21, read(2) fails with
-      * the error EINVAL.
-      */
+     * From inotify documentation:
+     *
+     * The behavior when the buffer given to read(2) is too
+     * small to return information about the next event
+     * depends on the kernel version: in kernels  before 2.6.21,
+     * read(2) returns 0; since kernel 2.6.21, read(2) fails with
+     * the error EINVAL.
+     */
     while (len < 0 && error == EINVAL) {
         // double the buffer size
         buffer.resize(buffer.size() * 2);
@@ -171,17 +170,14 @@ void FolderWatcherPrivate::slotReceivedNotification(int fd)
         QByteArray fileName(event->name);
         // Filter out journal changes - redundant with filtering in
         // FolderWatcher::pathIsIgnored.
-        if (fileName.startsWith("._sync_")
-            || fileName.startsWith(".csync_journal.db")
+        if (fileName.startsWith("._sync_") || fileName.startsWith(".csync_journal.db")
             || fileName.startsWith(".sync_")) {
             continue;
         }
         const QString p = _watchToPath[event->wd] + '/' + fileName;
         _parent->changeDetected(p);
 
-        if ((event->mask & (IN_MOVED_TO | IN_CREATE))
-            && QFileInfo(p).isDir()
-            && !_parent->pathIsIgnored(p)) {
+        if ((event->mask & (IN_MOVED_TO | IN_CREATE)) && QFileInfo(p).isDir() && !_parent->pathIsIgnored(p)) {
             slotAddFolderRecursive(p);
         }
         if (event->mask & (IN_MOVED_FROM | IN_DELETE)) {

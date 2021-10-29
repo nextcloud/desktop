@@ -92,14 +92,14 @@ Q_LOGGING_CATEGORY(lcChecksums, "nextcloud.sync.checksums", QtInfoMsg)
 
 static QByteArray calcCryptoHash(QIODevice *device, QCryptographicHash::Algorithm algo)
 {
-     QByteArray arr;
-     QCryptographicHash crypto( algo );
+    QByteArray arr;
+    QCryptographicHash crypto(algo);
 
-     if (crypto.addData(device)) {
-         arr = crypto.result().toHex();
-     }
-     return arr;
- }
+    if (crypto.addData(device)) {
+        arr = crypto.result().toHex();
+    }
+    return arr;
+}
 
 QByteArray calcMd5(QIODevice *device)
 {
@@ -114,8 +114,7 @@ QByteArray calcSha1(QIODevice *device)
 #ifdef ZLIB_FOUND
 QByteArray calcAdler32(QIODevice *device)
 {
-    if (device->size() == 0)
-    {
+    if (device->size() == 0) {
         return QByteArray();
     }
     QByteArray buf(BUFSIZE, Qt::Uninitialized);
@@ -242,9 +241,8 @@ void ComputeChecksum::start(std::unique_ptr<QIODevice> device)
 
 void ComputeChecksum::startImpl(std::unique_ptr<QIODevice> device)
 {
-    connect(&_watcher, &QFutureWatcherBase::finished,
-        this, &ComputeChecksum::slotCalculationDone,
-        Qt::UniqueConnection);
+    connect(
+        &_watcher, &QFutureWatcherBase::finished, this, &ComputeChecksum::slotCalculationDone, Qt::UniqueConnection);
 
     // We'd prefer to move the unique_ptr into the lambda, but that's
     // awkward with the C++ standard we're on
@@ -256,10 +254,10 @@ void ComputeChecksum::startImpl(std::unique_ptr<QIODevice> device)
         if (!sharedDevice->open(QIODevice::ReadOnly)) {
             if (auto file = qobject_cast<QFile *>(sharedDevice.data())) {
                 qCWarning(lcChecksums) << "Could not open file" << file->fileName()
-                        << "for reading to compute a checksum" << file->errorString();
+                                       << "for reading to compute a checksum" << file->errorString();
             } else {
                 qCWarning(lcChecksums) << "Could not open device" << sharedDevice.data()
-                        << "for reading to compute a checksum" << sharedDevice->errorString();
+                                       << "for reading to compute a checksum" << sharedDevice->errorString();
             }
             return QByteArray();
         }
@@ -273,7 +271,8 @@ QByteArray ComputeChecksum::computeNowOnFile(const QString &filePath, const QByt
 {
     QFile file(filePath);
     if (!file.open(QIODevice::ReadOnly)) {
-        qCWarning(lcChecksums) << "Could not open file" << filePath << "for reading and computing checksum" << file.errorString();
+        qCWarning(lcChecksums) << "Could not open file" << filePath << "for reading and computing checksum"
+                               << file.errorString();
         return QByteArray();
     }
 
@@ -343,8 +342,7 @@ ComputeChecksum *ValidateChecksumHeader::prepareStart(const QByteArray &checksum
 
     auto calculator = new ComputeChecksum(this);
     calculator->setChecksumType(_expectedChecksumType);
-    connect(calculator, &ComputeChecksum::done,
-        this, &ValidateChecksumHeader::slotChecksumCalculated);
+    connect(calculator, &ComputeChecksum::done, this, &ValidateChecksumHeader::slotChecksumCalculated);
     return calculator;
 }
 
@@ -360,15 +358,16 @@ void ValidateChecksumHeader::start(std::unique_ptr<QIODevice> device, const QByt
         calculator->start(std::move(device));
 }
 
-void ValidateChecksumHeader::slotChecksumCalculated(const QByteArray &checksumType,
-    const QByteArray &checksum)
+void ValidateChecksumHeader::slotChecksumCalculated(const QByteArray &checksumType, const QByteArray &checksum)
 {
     if (checksumType != _expectedChecksumType) {
-        emit validationFailed(tr("The checksum header contained an unknown checksum type \"%1\"").arg(QString::fromLatin1(_expectedChecksumType)));
+        emit validationFailed(tr("The checksum header contained an unknown checksum type \"%1\"")
+                                  .arg(QString::fromLatin1(_expectedChecksumType)));
         return;
     }
     if (checksum != _expectedChecksum) {
-        emit validationFailed(tr(R"(The downloaded file does not match the checksum, it will be resumed. "%1" != "%2")").arg(QString::fromUtf8(_expectedChecksum), QString::fromUtf8(checksum)));
+        emit validationFailed(tr(R"(The downloaded file does not match the checksum, it will be resumed. "%1" != "%2")")
+                                  .arg(QString::fromUtf8(_expectedChecksum), QString::fromUtf8(checksum)));
         return;
     }
     emit validated(checksumType, checksum);

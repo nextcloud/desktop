@@ -118,7 +118,7 @@ QString Updater::getSystemInfo()
 {
 #ifdef Q_OS_LINUX
     QProcess process;
-    process.start(QLatin1String("lsb_release"), { QStringLiteral("-a") });
+    process.start(QLatin1String("lsb_release"), {QStringLiteral("-a")});
     process.waitForFinished();
     QByteArray output = process.readAllStandardOutput();
     qCDebug(lcUpdater) << "Sys Info size: " << output.length();
@@ -160,8 +160,7 @@ qint64 Updater::Helper::versionToInt(qint64 major, qint64 minor, qint64 patch, q
 
 qint64 Updater::Helper::currentVersionToInt()
 {
-    return versionToInt(MIRALL_VERSION_MAJOR, MIRALL_VERSION_MINOR,
-        MIRALL_VERSION_PATCH, MIRALL_VERSION_BUILD);
+    return versionToInt(MIRALL_VERSION_MAJOR, MIRALL_VERSION_MINOR, MIRALL_VERSION_PATCH, MIRALL_VERSION_BUILD);
 }
 
 qint64 Updater::Helper::stringVersionToInt(const QString &version)

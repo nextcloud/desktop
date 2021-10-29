@@ -28,92 +28,70 @@ QString e2eeBaseUrl();
 namespace EncryptionHelper {
     QByteArray generateRandomFilename();
     OWNCLOUDSYNC_EXPORT QByteArray generateRandom(int size);
-    QByteArray generatePassword(const QString &wordlist, const QByteArray& salt);
+    QByteArray generatePassword(const QString &wordlist, const QByteArray &salt);
     OWNCLOUDSYNC_EXPORT QByteArray encryptPrivateKey(
-            const QByteArray& key,
-            const QByteArray& privateKey,
-            const QByteArray &salt
-    );
-    OWNCLOUDSYNC_EXPORT QByteArray decryptPrivateKey(
-            const QByteArray& key,
-            const QByteArray& data
-    );
+        const QByteArray &key, const QByteArray &privateKey, const QByteArray &salt);
+    OWNCLOUDSYNC_EXPORT QByteArray decryptPrivateKey(const QByteArray &key, const QByteArray &data);
     OWNCLOUDSYNC_EXPORT QByteArray extractPrivateKeySalt(const QByteArray &data);
-    OWNCLOUDSYNC_EXPORT QByteArray encryptStringSymmetric(
-            const QByteArray& key,
-            const QByteArray& data
-    );
-    OWNCLOUDSYNC_EXPORT QByteArray decryptStringSymmetric(
-            const QByteArray& key,
-            const QByteArray& data
-    );
+    OWNCLOUDSYNC_EXPORT QByteArray encryptStringSymmetric(const QByteArray &key, const QByteArray &data);
+    OWNCLOUDSYNC_EXPORT QByteArray decryptStringSymmetric(const QByteArray &key, const QByteArray &data);
 
     QByteArray privateKeyToPem(const QByteArray key);
 
-    //TODO: change those two EVP_PKEY into QSslKey.
-    QByteArray encryptStringAsymmetric(
-            EVP_PKEY *publicKey,
-            const QByteArray& data
-    );
-    QByteArray decryptStringAsymmetric(
-            EVP_PKEY *privateKey,
-            const QByteArray& data
-    );
+    // TODO: change those two EVP_PKEY into QSslKey.
+    QByteArray encryptStringAsymmetric(EVP_PKEY *publicKey, const QByteArray &data);
+    QByteArray decryptStringAsymmetric(EVP_PKEY *privateKey, const QByteArray &data);
 
-    OWNCLOUDSYNC_EXPORT bool fileEncryption(const QByteArray &key, const QByteArray &iv,
-                      QFile *input, QFile *output, QByteArray& returnTag);
+    OWNCLOUDSYNC_EXPORT bool fileEncryption(
+        const QByteArray &key, const QByteArray &iv, QFile *input, QFile *output, QByteArray &returnTag);
 
-    OWNCLOUDSYNC_EXPORT bool fileDecryption(const QByteArray &key, const QByteArray &iv,
-                               QFile *input, QFile *output);
+    OWNCLOUDSYNC_EXPORT bool fileDecryption(const QByteArray &key, const QByteArray &iv, QFile *input, QFile *output);
 
-//
-// Simple classes for safe (RAII) handling of OpenSSL
-// data structures
-//
-class CipherCtx {
-public:
-    CipherCtx() : _ctx(EVP_CIPHER_CTX_new())
+    //
+    // Simple classes for safe (RAII) handling of OpenSSL
+    // data structures
+    //
+    class CipherCtx
     {
-    }
+    public:
+        CipherCtx()
+            : _ctx(EVP_CIPHER_CTX_new())
+        {
+        }
 
-    ~CipherCtx()
+        ~CipherCtx() { EVP_CIPHER_CTX_free(_ctx); }
+
+        operator EVP_CIPHER_CTX *() { return _ctx; }
+
+    private:
+        Q_DISABLE_COPY(CipherCtx)
+        EVP_CIPHER_CTX *_ctx;
+    };
+
+    class OWNCLOUDSYNC_EXPORT StreamingDecryptor
     {
-        EVP_CIPHER_CTX_free(_ctx);
-    }
+    public:
+        StreamingDecryptor(const QByteArray &key, const QByteArray &iv, quint64 totalSize);
+        ~StreamingDecryptor() = default;
 
-    operator EVP_CIPHER_CTX*()
-    {
-        return _ctx;
-    }
+        QByteArray chunkDecryption(const char *input, quint64 chunkSize);
 
-private:
-    Q_DISABLE_COPY(CipherCtx)
-    EVP_CIPHER_CTX *_ctx;
-};
+        bool isInitialized() const;
+        bool isFinished() const;
 
-class OWNCLOUDSYNC_EXPORT StreamingDecryptor
-{
-public:
-    StreamingDecryptor(const QByteArray &key, const QByteArray &iv, quint64 totalSize);
-    ~StreamingDecryptor() = default;
+    private:
+        Q_DISABLE_COPY(StreamingDecryptor)
 
-    QByteArray chunkDecryption(const char *input, quint64 chunkSize);
-
-    bool isInitialized() const;
-    bool isFinished() const;
-
-private:
-    Q_DISABLE_COPY(StreamingDecryptor)
-
-    CipherCtx _ctx;
-    bool _isInitialized = false;
-    bool _isFinished = false;
-    quint64 _decryptedSoFar = 0;
-    quint64 _totalSize = 0;
-};
+        CipherCtx _ctx;
+        bool _isInitialized = false;
+        bool _isFinished = false;
+        quint64 _decryptedSoFar = 0;
+        quint64 _totalSize = 0;
+    };
 }
 
-class OWNCLOUDSYNC_EXPORT ClientSideEncryption : public QObject {
+class OWNCLOUDSYNC_EXPORT ClientSideEncryption : public QObject
+{
     Q_OBJECT
 public:
     ClientSideEncryption();
@@ -139,8 +117,8 @@ private slots:
 
 signals:
     void initializationFinished();
-    void mnemonicGenerated(const QString& mnemonic);
-    void showMnemonic(const QString& mnemonic);
+    void mnemonicGenerated(const QString &mnemonic);
+    void showMnemonic(const QString &mnemonic);
 
 private:
     void getPrivateKeyFromServer(const AccountPtr &account);
@@ -159,7 +137,7 @@ private:
     bool isInitialized = false;
 
 public:
-    //QSslKey _privateKey;
+    // QSslKey _privateKey;
     QByteArray _privateKey;
     QSslKey _publicKey;
     QSslCertificate _certificate;
@@ -168,7 +146,8 @@ public:
 };
 
 /* Generates the Metadata for the folder */
-struct EncryptedFile {
+struct EncryptedFile
+{
     QByteArray encryptionKey;
     QByteArray mimetype;
     QByteArray initializationVector;
@@ -179,12 +158,13 @@ struct EncryptedFile {
     int metadataKey;
 };
 
-class OWNCLOUDSYNC_EXPORT FolderMetadata {
+class OWNCLOUDSYNC_EXPORT FolderMetadata
+{
 public:
-    FolderMetadata(AccountPtr account, const QByteArray& metadata = QByteArray(), int statusCode = -1);
+    FolderMetadata(AccountPtr account, const QByteArray &metadata = QByteArray(), int statusCode = -1);
     QByteArray encryptedMetadata();
-    void addEncryptedFile(const EncryptedFile& f);
-    void removeEncryptedFile(const EncryptedFile& f);
+    void addEncryptedFile(const EncryptedFile &f);
+    void removeEncryptedFile(const EncryptedFile &f);
     void removeAllEncryptedFiles();
     QVector<EncryptedFile> files() const;
 
@@ -194,13 +174,13 @@ private:
      * to ease the port to Nlohmann Json API
      */
     void setupEmptyMetadata();
-    void setupExistingMetadata(const QByteArray& metadata);
+    void setupExistingMetadata(const QByteArray &metadata);
 
-    QByteArray encryptMetadataKey(const QByteArray& metadataKey) const;
-    QByteArray decryptMetadataKey(const QByteArray& encryptedKey) const;
+    QByteArray encryptMetadataKey(const QByteArray &metadataKey) const;
+    QByteArray decryptMetadataKey(const QByteArray &encryptedKey) const;
 
-    QByteArray encryptJsonObject(const QByteArray& obj, const QByteArray pass) const;
-    QByteArray decryptJsonObject(const QByteArray& encryptedJsonBlob, const QByteArray& pass) const;
+    QByteArray encryptJsonObject(const QByteArray &obj, const QByteArray pass) const;
+    QByteArray decryptJsonObject(const QByteArray &encryptedJsonBlob, const QByteArray &pass) const;
 
     QVector<EncryptedFile> _files;
     QMap<int, QByteArray> _metadataKeys;

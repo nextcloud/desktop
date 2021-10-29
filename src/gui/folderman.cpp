@@ -64,23 +64,20 @@ FolderMan::FolderMan(QObject *parent)
     _etagPollTimer.start();
 
     _startScheduledSyncTimer.setSingleShot(true);
-    connect(&_startScheduledSyncTimer, &QTimer::timeout,
-        this, &FolderMan::slotStartScheduledFolderSync);
+    connect(&_startScheduledSyncTimer, &QTimer::timeout, this, &FolderMan::slotStartScheduledFolderSync);
 
     _timeScheduler.setInterval(5000);
     _timeScheduler.setSingleShot(false);
-    connect(&_timeScheduler, &QTimer::timeout,
-        this, &FolderMan::slotScheduleFolderByTime);
+    connect(&_timeScheduler, &QTimer::timeout, this, &FolderMan::slotScheduleFolderByTime);
     _timeScheduler.start();
 
-    connect(AccountManager::instance(), &AccountManager::removeAccountFolders,
-        this, &FolderMan::slotRemoveFoldersForAccount);
+    connect(AccountManager::instance(), &AccountManager::removeAccountFolders, this,
+        &FolderMan::slotRemoveFoldersForAccount);
 
-    connect(AccountManager::instance(), &AccountManager::accountSyncConnectionRemoved,
-        this, &FolderMan::slotAccountRemoved);
+    connect(AccountManager::instance(), &AccountManager::accountSyncConnectionRemoved, this,
+        &FolderMan::slotAccountRemoved);
 
-    connect(_lockWatcher.data(), &LockWatcher::fileUnlocked,
-        this, &FolderMan::slotWatchedFileUnlocked);
+    connect(_lockWatcher.data(), &LockWatcher::fileUnlocked, this, &FolderMan::slotWatchedFileUnlocked);
 
     connect(this, &FolderMan::folderListChanged, this, &FolderMan::slotSetupPushNotifications);
 }
@@ -111,18 +108,14 @@ void FolderMan::unloadFolder(Folder *f)
 
     _folderMap.remove(f->alias());
 
-    disconnect(f, &Folder::syncStarted,
-        this, &FolderMan::slotFolderSyncStarted);
-    disconnect(f, &Folder::syncFinished,
-        this, &FolderMan::slotFolderSyncFinished);
-    disconnect(f, &Folder::syncStateChange,
-        this, &FolderMan::slotForwardFolderSyncStateChange);
-    disconnect(f, &Folder::syncPausedChanged,
-        this, &FolderMan::slotFolderSyncPaused);
-    disconnect(&f->syncEngine().syncFileStatusTracker(), &SyncFileStatusTracker::fileStatusChanged,
-        _socketApi.data(), &SocketApi::broadcastStatusPushMessage);
-    disconnect(f, &Folder::watchedFileChangedExternally,
-        &f->syncEngine().syncFileStatusTracker(), &SyncFileStatusTracker::slotPathTouched);
+    disconnect(f, &Folder::syncStarted, this, &FolderMan::slotFolderSyncStarted);
+    disconnect(f, &Folder::syncFinished, this, &FolderMan::slotFolderSyncFinished);
+    disconnect(f, &Folder::syncStateChange, this, &FolderMan::slotForwardFolderSyncStateChange);
+    disconnect(f, &Folder::syncPausedChanged, this, &FolderMan::slotFolderSyncPaused);
+    disconnect(&f->syncEngine().syncFileStatusTracker(), &SyncFileStatusTracker::fileStatusChanged, _socketApi.data(),
+        &SocketApi::broadcastStatusPushMessage);
+    disconnect(f, &Folder::watchedFileChangedExternally, &f->syncEngine().syncFileStatusTracker(),
+        &SyncFileStatusTracker::slotPathTouched);
 }
 
 int FolderMan::unloadAndDeleteAllFolders()
@@ -214,7 +207,8 @@ int FolderMan::setupFolders()
     return _folderMap.size();
 }
 
-void FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account, const QStringList &ignoreKeys, bool backwardsCompatible, bool foldersWithPlaceholders)
+void FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account, const QStringList &ignoreKeys,
+    bool backwardsCompatible, bool foldersWithPlaceholders)
 {
     for (const auto &folderAlias : settings.childGroups()) {
         // Skip folders with too-new version
@@ -237,7 +231,8 @@ void FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account,
                 folderDefinition.journalPath = defaultJournalPath;
             }
 
-            // Migration #2: journalPath might be absolute (in DataAppDir most likely) move it back to the root of local tree
+            // Migration #2: journalPath might be absolute (in DataAppDir most likely) move it back to the root of local
+            // tree
             if (folderDefinition.journalPath.at(0) != QChar('.')) {
                 QFile oldJournal(folderDefinition.journalPath);
                 QFile oldJournalShm(folderDefinition.journalPath + QStringLiteral("-shm"));
@@ -251,17 +246,21 @@ void FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account,
                 auto journalFileMoveSuccess = true;
                 // Due to db logic can't be sure which of these file exist.
                 if (oldJournal.exists()) {
-                    journalFileMoveSuccess &= oldJournal.rename(folderDefinition.localPath + "/" + folderDefinition.journalPath);
+                    journalFileMoveSuccess &=
+                        oldJournal.rename(folderDefinition.localPath + "/" + folderDefinition.journalPath);
                 }
                 if (oldJournalShm.exists()) {
-                    journalFileMoveSuccess &= oldJournalShm.rename(folderDefinition.localPath + "/" + folderDefinition.journalPath + QStringLiteral("-shm"));
+                    journalFileMoveSuccess &= oldJournalShm.rename(
+                        folderDefinition.localPath + "/" + folderDefinition.journalPath + QStringLiteral("-shm"));
                 }
                 if (oldJournalWal.exists()) {
-                    journalFileMoveSuccess &= oldJournalWal.rename(folderDefinition.localPath + "/" + folderDefinition.journalPath + QStringLiteral("-wal"));
+                    journalFileMoveSuccess &= oldJournalWal.rename(
+                        folderDefinition.localPath + "/" + folderDefinition.journalPath + QStringLiteral("-wal"));
                 }
 
                 if (!journalFileMoveSuccess) {
-                    qCWarning(lcFolderMan) << "Wasn't able to move 3.0 syncjournal database files to new location. One-time loss off sync settings possible.";
+                    qCWarning(lcFolderMan) << "Wasn't able to move 3.0 syncjournal database files to new location. "
+                                              "One-time loss off sync settings possible.";
                 } else {
                     qCInfo(lcFolderMan) << "Successfully migrated syncjournal database.";
                 }
@@ -281,8 +280,7 @@ void FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account,
             // So if the configured journalPath has a dot-underscore ("._sync_*.db")
             // but the current default doesn't have the underscore, switch to the
             // new default if no db exists yet.
-            if (folderDefinition.journalPath.startsWith("._sync_")
-                && defaultJournalPath.startsWith(".sync_")
+            if (folderDefinition.journalPath.startsWith("._sync_") && defaultJournalPath.startsWith(".sync_")
                 && !QFile::exists(folderDefinition.absoluteJournalPath())) {
                 folderDefinition.journalPath = defaultJournalPath;
             }
@@ -330,7 +328,7 @@ int FolderMan::setupFoldersMigration()
     qCInfo(lcFolderMan) << "Setup folders from " << _folderConfigPath << "(migration)";
 
     QDir dir(_folderConfigPath);
-    //We need to include hidden files just in case the alias starts with '.'
+    // We need to include hidden files just in case the alias starts with '.'
     dir.setFilter(QDir::Files | QDir::Hidden);
     const auto list = dir.entryList();
 
@@ -526,7 +524,7 @@ Folder *FolderMan::setupFolderFromOldConfigFile(const QString &file, AccountStat
     if (folder) {
         QStringList blackList = settings.value(QLatin1String("blackList")).toStringList();
         if (!blackList.empty()) {
-            //migrate settings
+            // migrate settings
             folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, blackList);
             settings.remove(QLatin1String("blackList"));
             // FIXME: If you remove this codepath, you need to provide another way to do
@@ -558,7 +556,7 @@ void FolderMan::slotFolderSyncPaused(Folder *f, bool paused)
 void FolderMan::slotFolderCanSyncChanged()
 {
     auto *f = qobject_cast<Folder *>(sender());
-     ASSERT(f);
+    ASSERT(f);
     if (f->canSync()) {
         _socketApi->slotRegisterPath(f->alias());
     } else {
@@ -597,9 +595,9 @@ void FolderMan::slotSyncOnceFileUnlocks(const QString &path)
 }
 
 /*
-  * if a folder wants to be synced, it calls this slot and is added
-  * to the queue. The slot to actually start a sync is called afterwards.
-  */
+ * if a folder wants to be synced, it calls this slot and is added
+ * to the queue. The slot to actually start a sync is called afterwards.
+ */
 void FolderMan::scheduleFolder(Folder *f)
 {
     if (!f) {
@@ -667,14 +665,15 @@ void FolderMan::slotRunOneEtagJob()
         Folder *folder = nullptr;
         for (Folder *f : qAsConst(_folderMap)) {
             if (f->etagJob()) {
-                // Caveat: always grabs the first folder with a job, but we think this is Ok for now and avoids us having a seperate queue.
+                // Caveat: always grabs the first folder with a job, but we think this is Ok for now and avoids us
+                // having a seperate queue.
                 _currentEtagJob = f->etagJob();
                 folder = f;
                 break;
             }
         }
         if (_currentEtagJob.isNull()) {
-            //qCDebug(lcFolderMan) << "No more remote ETag check jobs to schedule.";
+            // qCDebug(lcFolderMan) << "No more remote ETag check jobs to schedule.";
 
             /* now it might be a good time to check for restarting... */
             if (!isAnySyncRunning() && _appRestartRequired) {
@@ -699,20 +698,17 @@ void FolderMan::slotAccountStateChanged()
         qCInfo(lcFolderMan) << "Account" << accountName << "connected, scheduling its folders";
 
         for (Folder *f : _folderMap.values()) {
-            if (f
-                && f->canSync()
-                && f->accountState() == accountState) {
+            if (f && f->canSync() && f->accountState() == accountState) {
                 scheduleFolder(f);
             }
         }
     } else {
-        qCInfo(lcFolderMan) << "Account" << accountName << "disconnected or paused, "
-                                                           "terminating or descheduling sync folders";
+        qCInfo(lcFolderMan) << "Account" << accountName
+                            << "disconnected or paused, "
+                               "terminating or descheduling sync folders";
 
         foreach (Folder *f, _folderMap.values()) {
-            if (f
-                && f->isSyncRunning()
-                && f->accountState() == accountState) {
+            if (f && f->isSyncRunning() && f->accountState() == accountState) {
                 f->slotTerminateSync();
             }
         }
@@ -781,16 +777,17 @@ void FolderMan::startScheduledSyncSoon()
 }
 
 /*
-  * slot to start folder syncs.
-  * It is either called from the slot where folders enqueue themselves for
-  * syncing or after a folder sync was finished.
-  */
+ * slot to start folder syncs.
+ * It is either called from the slot where folders enqueue themselves for
+ * syncing or after a folder sync was finished.
+ */
 void FolderMan::slotStartScheduledFolderSync()
 {
     if (isAnySyncRunning()) {
         for (auto f : _folderMap) {
             if (f->isSyncRunning())
-                qCInfo(lcFolderMan) << "Currently folder " << f->remoteUrl().toString() << " is running, wait for finish!";
+                qCInfo(lcFolderMan) << "Currently folder " << f->remoteUrl().toString()
+                                    << " is running, wait for finish!";
         }
         return;
     }
@@ -848,10 +845,11 @@ void FolderMan::slotEtagPollTimerTimeout()
     QList<Folder *> foldersToRun;
 
     // Some folders need not to be checked because they use the push notifications
-    std::copy_if(folderMapValues.begin(), folderMapValues.end(), std::back_inserter(foldersToRun), [this](Folder *folder) -> bool {
-        const auto account = folder->accountState()->account();
-        return !pushNotificationsFilesReady(account.data());
-    });
+    std::copy_if(folderMapValues.begin(), folderMapValues.end(), std::back_inserter(foldersToRun),
+        [this](Folder *folder) -> bool {
+            const auto account = folder->accountState()->account();
+            return !pushNotificationsFilesReady(account.data());
+        });
 
     qCInfo(lcFolderMan) << "Number of folders that don't use push notifications:" << foldersToRun.size();
 
@@ -973,8 +971,8 @@ void FolderMan::slotScheduleFolderByTime()
         // Possibly it's just time for a new sync run
         bool forceSyncIntervalExpired = msecsSinceSync > ConfigFile().forceSyncInterval();
         if (forceSyncIntervalExpired) {
-            qCInfo(lcFolderMan) << "Scheduling folder" << f->alias()
-                                << "because it has been" << msecsSinceSync.count() << "ms "
+            qCInfo(lcFolderMan) << "Scheduling folder" << f->alias() << "because it has been" << msecsSinceSync.count()
+                                << "ms "
                                 << "since the last sync";
 
             scheduleFolder(f);
@@ -982,15 +980,14 @@ void FolderMan::slotScheduleFolderByTime()
         }
 
         // Retry a couple of times after failure; or regularly if requested
-        bool syncAgain =
-            (f->consecutiveFailingSyncs() > 0 && f->consecutiveFailingSyncs() < 3)
+        bool syncAgain = (f->consecutiveFailingSyncs() > 0 && f->consecutiveFailingSyncs() < 3)
             || f->syncEngine().isAnotherSyncNeeded() == DelayedFollowUp;
         auto syncAgainDelay = std::chrono::seconds(10); // 10s for the first retry-after-fail
         if (f->consecutiveFailingSyncs() > 1)
             syncAgainDelay = std::chrono::seconds(60); // 60s for each further attempt
         if (syncAgain && msecsSinceSync > syncAgainDelay) {
-            qCInfo(lcFolderMan) << "Scheduling folder" << f->alias()
-                                << ", the last" << f->consecutiveFailingSyncs() << "syncs failed"
+            qCInfo(lcFolderMan) << "Scheduling folder" << f->alias() << ", the last" << f->consecutiveFailingSyncs()
+                                << "syncs failed"
                                 << ", anotherSyncNeeded" << f->syncEngine().isAnotherSyncNeeded()
                                 << ", last status:" << f->syncResult().statusString()
                                 << ", time since last sync:" << msecsSinceSync.count();
@@ -1023,17 +1020,16 @@ void FolderMan::slotFolderSyncStarted()
         return;
 
     qCInfo(lcFolderMan, ">========== Sync started for folder [%s] of account [%s] with remote [%s]",
-        qPrintable(f->shortGuiLocalPath()),
-        qPrintable(f->accountState()->account()->displayName()),
+        qPrintable(f->shortGuiLocalPath()), qPrintable(f->accountState()->account()->displayName()),
         qPrintable(f->remoteUrl().toString()));
 }
 
 /*
-  * a folder indicates that its syncing is finished.
-  * Start the next sync after the system had some milliseconds to breath.
-  * This delay is particularly useful to avoid late file change notifications
-  * (that we caused ourselves by syncing) from triggering another spurious sync.
-  */
+ * a folder indicates that its syncing is finished.
+ * Start the next sync after the system had some milliseconds to breath.
+ * This delay is particularly useful to avoid late file change notifications
+ * (that we caused ourselves by syncing) from triggering another spurious sync.
+ */
 void FolderMan::slotFolderSyncFinished(const SyncResult &)
 {
     auto f = qobject_cast<Folder *>(sender());
@@ -1042,8 +1038,7 @@ void FolderMan::slotFolderSyncFinished(const SyncResult &)
         return;
 
     qCInfo(lcFolderMan, "<========== Sync finished for folder [%s] of account [%s] with remote [%s]",
-        qPrintable(f->shortGuiLocalPath()),
-        qPrintable(f->accountState()->account()->displayName()),
+        qPrintable(f->shortGuiLocalPath()), qPrintable(f->accountState()->account()->displayName()),
         qPrintable(f->remoteUrl().toString()));
 
     if (f == _currentSyncFolder) {
@@ -1075,9 +1070,8 @@ Folder *FolderMan::addFolder(AccountState *accountState, const FolderDefinition 
     // Migration: The first account that's configured for a local folder shall
     // be saved in a backwards-compatible way.
     const auto folderList = FolderMan::instance()->map();
-    const auto oneAccountOnly = std::none_of(folderList.cbegin(), folderList.cend(), [folder](const auto *other) {
-        return other != folder && other->cleanPath() == folder->cleanPath();
-    });
+    const auto oneAccountOnly = std::none_of(folderList.cbegin(), folderList.cend(),
+        [folder](const auto *other) { return other != folder && other->cleanPath() == folder->cleanPath(); });
 
     folder->setSaveBackwardsCompatible(oneAccountOnly);
 
@@ -1093,14 +1087,11 @@ Folder *FolderMan::addFolder(AccountState *accountState, const FolderDefinition 
 }
 
 Folder *FolderMan::addFolderInternal(
-    FolderDefinition folderDefinition,
-    AccountState *accountState,
-    std::unique_ptr<Vfs> vfs)
+    FolderDefinition folderDefinition, AccountState *accountState, std::unique_ptr<Vfs> vfs)
 {
     auto alias = folderDefinition.alias;
     int count = 0;
-    while (folderDefinition.alias.isEmpty()
-        || _folderMap.contains(folderDefinition.alias)
+    while (folderDefinition.alias.isEmpty() || _folderMap.contains(folderDefinition.alias)
         || _additionalBlockedFolderAliases.contains(folderDefinition.alias)) {
         // There is already a folder configured with this name and folder names need to be unique
         folderDefinition.alias = alias + QString::number(++count);
@@ -1125,10 +1116,10 @@ Folder *FolderMan::addFolderInternal(
     connect(folder, &Folder::syncStateChange, this, &FolderMan::slotForwardFolderSyncStateChange);
     connect(folder, &Folder::syncPausedChanged, this, &FolderMan::slotFolderSyncPaused);
     connect(folder, &Folder::canSyncChanged, this, &FolderMan::slotFolderCanSyncChanged);
-    connect(&folder->syncEngine().syncFileStatusTracker(), &SyncFileStatusTracker::fileStatusChanged,
-        _socketApi.data(), &SocketApi::broadcastStatusPushMessage);
-    connect(folder, &Folder::watchedFileChangedExternally,
-        &folder->syncEngine().syncFileStatusTracker(), &SyncFileStatusTracker::slotPathTouched);
+    connect(&folder->syncEngine().syncFileStatusTracker(), &SyncFileStatusTracker::fileStatusChanged, _socketApi.data(),
+        &SocketApi::broadcastStatusPushMessage);
+    connect(folder, &Folder::watchedFileChangedExternally, &folder->syncEngine().syncFileStatusTracker(),
+        &SyncFileStatusTracker::slotPathTouched);
 
     folder->registerFolderWatcher();
     registerFolderWithSocketApi(folder);
@@ -1142,7 +1133,8 @@ Folder *FolderMan::folderForPath(const QString &path)
     const auto folders = this->map().values();
     const auto it = std::find_if(folders.cbegin(), folders.cend(), [absolutePath](const auto *folder) {
         const QString folderPath = folder->cleanPath() + QLatin1Char('/');
-        return absolutePath.startsWith(folderPath, (Utility::isWindows() || Utility::isMac()) ? Qt::CaseInsensitive : Qt::CaseSensitive);
+        return absolutePath.startsWith(
+            folderPath, (Utility::isWindows() || Utility::isMac()) ? Qt::CaseInsensitive : Qt::CaseSensitive);
     });
 
     return it != folders.cend() ? *it : nullptr;
@@ -1201,8 +1193,7 @@ void FolderMan::removeFolder(Folder *f)
     unloadFolder(f);
     if (currentlyRunning) {
         // We want to schedule the next folder once this is done
-        connect(f, &Folder::syncFinished,
-            this, &FolderMan::slotFolderSyncFinished);
+        connect(f, &Folder::syncFinished, this, &FolderMan::slotFolderSyncFinished);
         // Let the folder delete itself when done.
         connect(f, &Folder::syncFinished, f, &QObject::deleteLater);
     } else {
@@ -1272,8 +1263,8 @@ bool FolderMan::startFromScratch(const QString &localFolder)
         QString newName = getBackupName(parentDir.absoluteFilePath(folderName));
         QString renameError;
         if (!FileSystem::rename(fi.absoluteFilePath(), newName, &renameError)) {
-            qCWarning(lcFolderMan) << "startFromScratch: Could not rename" << fi.absoluteFilePath()
-                                   << "to" << newName << "error:" << renameError;
+            qCWarning(lcFolderMan) << "startFromScratch: Could not rename" << fi.absoluteFilePath() << "to" << newName
+                                   << "error:" << renameError;
             return false;
         }
     }
@@ -1377,8 +1368,7 @@ void FolderMan::setDirtyNetworkLimits()
     }
 }
 
-void FolderMan::trayOverallStatus(const QList<Folder *> &folders,
-    SyncResult::Status *status, bool *unresolvedConflicts)
+void FolderMan::trayOverallStatus(const QList<Folder *> &folders, SyncResult::Status *status, bool *unresolvedConflicts)
 {
     *status = SyncResult::Undefined;
     *unresolvedConflicts = false;
@@ -1466,8 +1456,7 @@ void FolderMan::trayOverallStatus(const QList<Folder *> &folders,
     }
 }
 
-QString FolderMan::trayTooltipStatusString(
-    SyncResult::Status syncStatus, bool hasUnresolvedConflicts, bool paused)
+QString FolderMan::trayTooltipStatusString(SyncResult::Status syncStatus, bool hasUnresolvedConflicts, bool paused)
 {
     QString folderMessage;
     switch (syncStatus) {
@@ -1627,8 +1616,7 @@ QString FolderMan::findGoodPathForNewSyncFolder(const QString &basePath, const Q
 
     int attempt = 1;
     forever {
-        const bool isGood =
-            !QFileInfo(folder).exists()
+        const bool isGood = !QFileInfo(folder).exists()
             && FolderMan::instance()->checkPathValidityForNewFolder(folder, serverUrl).isEmpty();
         if (isGood) {
             break;
@@ -1700,7 +1688,8 @@ void FolderMan::slotSetupPushNotifications(const Folder::Map &folderMap)
         // If we can't connect at this point, the signals will be connected in slotPushNotificationsReady()
         // after the PushNotification object emitted the ready signal
         slotConnectToPushNotifications(account.data());
-        connect(account.data(), &Account::pushNotificationsReady, this, &FolderMan::slotConnectToPushNotifications, Qt::UniqueConnection);
+        connect(account.data(), &Account::pushNotificationsReady, this, &FolderMan::slotConnectToPushNotifications,
+            Qt::UniqueConnection);
     }
 }
 
@@ -1725,7 +1714,8 @@ void FolderMan::slotConnectToPushNotifications(Account *account)
 
     if (pushNotificationsFilesReady(account)) {
         qCInfo(lcFolderMan) << "Push notifications ready";
-        connect(pushNotifications, &PushNotifications::filesChanged, this, &FolderMan::slotProcessFilesPushNotification, Qt::UniqueConnection);
+        connect(pushNotifications, &PushNotifications::filesChanged, this, &FolderMan::slotProcessFilesPushNotification,
+            Qt::UniqueConnection);
     }
 }
 

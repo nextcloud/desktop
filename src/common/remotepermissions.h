@@ -41,18 +41,18 @@ private:
 
 public:
     enum Permissions {
-        CanWrite = 1,             // W
-        CanDelete = 2,            // D
-        CanRename = 3,            // N
-        CanMove = 4,              // V
-        CanAddFile = 5,           // C
+        CanWrite = 1, // W
+        CanDelete = 2, // D
+        CanRename = 3, // N
+        CanMove = 4, // V
+        CanAddFile = 5, // C
         CanAddSubDirectories = 6, // K
-        CanReshare = 7,           // R
+        CanReshare = 7, // R
         // Note: on the server, this means SharedWithMe, but in discoveryphase.cpp we also set
         // this permission when the server reports the any "share-types"
-        IsShared = 8,             // S
-        IsMounted = 9,            // M
-        IsMountedSub = 10,        // m (internal: set if the parent dir has IsMounted)
+        IsShared = 8, // S
+        IsMounted = 9, // M
+        IsMountedSub = 10, // m (internal: set if the parent dir has IsMounted)
 
         // Note: when adding support for more permissions, we need to invalid the cache in the database.
         // (by setting forceRemoteDiscovery in SyncJournalDb::checkConnect)
@@ -74,33 +74,15 @@ public:
     /// read a permissions string received from the server, never null
     static RemotePermissions fromServerString(const QString &);
 
-    bool hasPermission(Permissions p) const
-    {
-        return _value & (1 << static_cast<int>(p));
-    }
-    void setPermission(Permissions p)
-    {
-        _value |= (1 << static_cast<int>(p)) | notNullMask;
-    }
-    void unsetPermission(Permissions p)
-    {
-        _value &= ~(1 << static_cast<int>(p));
-    }
+    bool hasPermission(Permissions p) const { return _value & (1 << static_cast<int>(p)); }
+    void setPermission(Permissions p) { _value |= (1 << static_cast<int>(p)) | notNullMask; }
+    void unsetPermission(Permissions p) { _value &= ~(1 << static_cast<int>(p)); }
 
     bool isNull() const { return !(_value & notNullMask); }
-    friend bool operator==(RemotePermissions a, RemotePermissions b)
-    {
-        return a._value == b._value;
-    }
-    friend bool operator!=(RemotePermissions a, RemotePermissions b)
-    {
-        return !(a == b);
-    }
+    friend bool operator==(RemotePermissions a, RemotePermissions b) { return a._value == b._value; }
+    friend bool operator!=(RemotePermissions a, RemotePermissions b) { return !(a == b); }
 
-    friend QDebug operator<<(QDebug &dbg, RemotePermissions p)
-    {
-        return dbg << p.toString();
-    }
+    friend QDebug operator<<(QDebug &dbg, RemotePermissions p) { return dbg << p.toString(); }
 };
 
 

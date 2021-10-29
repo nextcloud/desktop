@@ -95,19 +95,14 @@ public:
      *
      * Currently plugins and modes are one-to-one but that's not required.
      */
-    enum Mode
-    {
+    enum Mode {
         Off,
         WithSuffix,
         WindowsCfApi,
         XAttr,
     };
     Q_ENUM(Mode)
-    enum class ConvertToPlaceholderResult {
-        Error,
-        Ok,
-        Locked
-    };
+    enum class ConvertToPlaceholderResult { Error, Ok, Locked };
     Q_ENUM(ConvertToPlaceholderResult)
 
     static QString modeToString(Mode mode);
@@ -115,8 +110,7 @@ public:
 
     static Result<bool, QString> checkAvailability(const QString &path);
 
-    enum class AvailabilityError
-    {
+    enum class AvailabilityError {
         // Availability can't be retrieved due to db error
         DbError,
         // Availability not available since the item doesn't exist
@@ -125,7 +119,7 @@ public:
     using AvailabilityResult = Result<VfsItemAvailability, AvailabilityError>;
 
 public:
-    explicit Vfs(QObject* parent = nullptr);
+    explicit Vfs(QObject *parent = nullptr);
     ~Vfs() override;
 
     virtual Mode mode() const = 0;
@@ -168,7 +162,8 @@ public:
      * If the remote metadata changes, the local placeholder's metadata should possibly
      * change as well.
      */
-    virtual Q_REQUIRED_RESULT Result<void, QString> updateMetadata(const QString &filePath, time_t modtime, qint64 size, const QByteArray &fileId) = 0;
+    virtual Q_REQUIRED_RESULT Result<void, QString> updateMetadata(
+        const QString &filePath, time_t modtime, qint64 size, const QByteArray &fileId) = 0;
 
     /// Create a new dehydrated placeholder. Called from PropagateDownload.
     virtual Q_REQUIRED_RESULT Result<void, QString> createPlaceholder(const SyncFileItem &item) = 0;
@@ -201,9 +196,7 @@ public:
      * for example.
      */
     virtual Q_REQUIRED_RESULT Result<Vfs::ConvertToPlaceholderResult, QString> convertToPlaceholder(
-        const QString &filename,
-        const SyncFileItem &item,
-        const QString &replacesFile = QString()) = 0;
+        const QString &filename, const SyncFileItem &item, const QString &replacesFile = QString()) = 0;
 
     /// Determine whether the file at the given absolute path is a dehydrated placeholder.
     virtual Q_REQUIRED_RESULT bool isDehydratedPlaceholder(const QString &filePath) = 0;
@@ -290,15 +283,15 @@ class OCSYNC_EXPORT VfsOff : public Vfs
     Q_OBJECT
 
 public:
-    VfsOff(QObject* parent = nullptr);
+    VfsOff(QObject *parent = nullptr);
     ~VfsOff() override;
 
     Mode mode() const override { return Vfs::Off; }
 
     QString fileSuffix() const override { return QString(); }
 
-    void stop() override {}
-    void unregisterFolder() override {}
+    void stop() override { }
+    void unregisterFolder() override { }
 
     bool socketApiPinStateActionsShown() const override { return false; }
     bool isHydrating() const override { return false; }
@@ -306,7 +299,11 @@ public:
     Result<void, QString> updateMetadata(const QString &, time_t, qint64, const QByteArray &) override { return {}; }
     Result<void, QString> createPlaceholder(const SyncFileItem &) override { return {}; }
     Result<void, QString> dehydratePlaceholder(const SyncFileItem &) override { return {}; }
-    Result<ConvertToPlaceholderResult, QString> convertToPlaceholder(const QString &, const SyncFileItem &, const QString &) override { return ConvertToPlaceholderResult::Ok; }
+    Result<ConvertToPlaceholderResult, QString> convertToPlaceholder(
+        const QString &, const SyncFileItem &, const QString &) override
+    {
+        return ConvertToPlaceholderResult::Ok;
+    }
 
     bool needsMetadataUpdate(const SyncFileItem &) override { return false; }
     bool isDehydratedPlaceholder(const QString &) override { return false; }
@@ -317,10 +314,10 @@ public:
     AvailabilityResult availability(const QString &) override { return VfsItemAvailability::AlwaysLocal; }
 
 public slots:
-    void fileStatusChanged(const QString &, SyncFileStatus) override {}
+    void fileStatusChanged(const QString &, SyncFileStatus) override { }
 
 protected:
-    void startImpl(const VfsSetupParams &) override {}
+    void startImpl(const VfsSetupParams &) override { }
 };
 
 /// Check whether the plugin for the mode is available.
@@ -334,12 +331,12 @@ OCSYNC_EXPORT std::unique_ptr<Vfs> createVfsFromPlugin(Vfs::Mode mode);
 
 } // namespace OCC
 
-#define OCC_DEFINE_VFS_FACTORY(name, Type) \
-    static_assert (std::is_base_of<OCC::Vfs, Type>::value, "Please define VFS factories only for OCC::Vfs subclasses"); \
-    namespace { \
-    void initPlugin() \
-    { \
-        OCC::Vfs::registerPlugin(QStringLiteral(name), []() -> OCC::Vfs * { return new (Type); }); \
-    } \
-    Q_COREAPP_STARTUP_FUNCTION(initPlugin) \
+#define OCC_DEFINE_VFS_FACTORY(name, Type)                                                                             \
+    static_assert(std::is_base_of<OCC::Vfs, Type>::value, "Please define VFS factories only for OCC::Vfs subclasses"); \
+    namespace {                                                                                                        \
+        void initPlugin()                                                                                              \
+        {                                                                                                              \
+            OCC::Vfs::registerPlugin(QStringLiteral(name), []() -> OCC::Vfs * { return new (Type); });                 \
+        }                                                                                                              \
+        Q_COREAPP_STARTUP_FUNCTION(initPlugin)                                                                         \
     }

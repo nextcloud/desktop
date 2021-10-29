@@ -65,8 +65,7 @@ public:
 
     explicit ActivityListModel(QObject *parent = nullptr);
 
-    explicit ActivityListModel(AccountState *accountState,
-        QObject *parent = nullptr);
+    explicit ActivityListModel(AccountState *accountState, QObject *parent = nullptr);
 
     QVariant data(const QModelIndex &index, int role) const override;
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;

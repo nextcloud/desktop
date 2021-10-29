@@ -39,10 +39,11 @@ const PreparedSqlQuery PreparedSqlQueryManager::get(PreparedSqlQueryManager::Key
     auto &query = _queries[key];
     ENFORCE(query._stmt)
     Q_ASSERT(!sqlite3_stmt_busy(query._stmt));
-    return { &query };
+    return {&query};
 }
 
-const PreparedSqlQuery PreparedSqlQueryManager::get(PreparedSqlQueryManager::Key key, const QByteArray &sql, SqlDatabase &db)
+const PreparedSqlQuery PreparedSqlQueryManager::get(
+    PreparedSqlQueryManager::Key key, const QByteArray &sql, SqlDatabase &db)
 {
     auto &query = _queries[key];
     Q_ASSERT(!sqlite3_stmt_busy(query._stmt));
@@ -50,7 +51,7 @@ const PreparedSqlQuery PreparedSqlQueryManager::get(PreparedSqlQueryManager::Key
     if (!query._stmt) {
         query._sqldb = &db;
         query._db = db.sqliteDb();
-        return { &query, query.prepare(sql) == 0 };
+        return {&query, query.prepare(sql) == 0};
     }
-    return { &query };
+    return {&query};
 }

@@ -52,11 +52,8 @@ class ShareLinkWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit ShareLinkWidget(AccountPtr account,
-        const QString &sharePath,
-        const QString &localPath,
-        SharePermissions maxSharingPermissions,
-        QWidget *parent = nullptr);
+    explicit ShareLinkWidget(AccountPtr account, const QString &sharePath, const QString &localPath,
+        SharePermissions maxSharingPermissions, QWidget *parent = nullptr);
     ~ShareLinkWidget() override;
 
     void toggleButton(bool show);
@@ -76,7 +73,7 @@ public slots:
 
 private slots:
     void slotCreateShareLink(const bool clicked);
-    void slotCopyLinkShare(const bool clicked) const;    
+    void slotCopyLinkShare(const bool clicked) const;
 
     void slotCreatePassword();
     void slotPasswordSet();
@@ -93,7 +90,7 @@ private slots:
 
     void slotDeleteAnimationFinished();
     void slotAnimationFinished();
-    
+
     void slotCreateLabel();
     void slotLabelSet();
 
@@ -107,11 +104,12 @@ signals:
 
 private:
     void displayError(const QString &errMsg);
-    
+
     void togglePasswordOptions(const bool enable = true);
     void toggleNoteOptions(const bool enable = true);
     void toggleExpireDateOptions(const bool enable = true);
-    void toggleButtonAnimation(QToolButton *button, QProgressIndicator *progressIndicator, const QAction *checkedAction) const;
+    void toggleButtonAnimation(
+        QToolButton *button, QProgressIndicator *progressIndicator, const QAction *checkedAction) const;
 
     /** Confirm with the user and then delete the share */
     void confirmAndDeleteShare();
@@ -122,7 +120,7 @@ private:
     void startAnimation(const int start, const int end);
 
     void customizeStyle();
-    
+
     void displayShareLinkLabel();
 
     Ui::ShareLinkWidget *_ui;

@@ -46,14 +46,13 @@ LogBrowser::LogBrowser(QWidget *parent)
 
     auto mainLayout = new QVBoxLayout;
 
-    auto label = new QLabel(
-        tr("The client can write debug logs to a temporary folder. "
-           "These logs are very helpful for diagnosing problems.\n"
-           "Since log files can get large, the client will start a new one for each sync "
-           "run and compress older ones. It will also delete log files after a couple "
-           "of hours to avoid consuming too much disk space.\n"
-           "If enabled, logs will be written to %1")
-        .arg(Logger::instance()->temporaryFolderLogDirPath()));
+    auto label = new QLabel(tr("The client can write debug logs to a temporary folder. "
+                               "These logs are very helpful for diagnosing problems.\n"
+                               "Since log files can get large, the client will start a new one for each sync "
+                               "run and compress older ones. It will also delete log files after a couple "
+                               "of hours to avoid consuming too much disk space.\n"
+                               "If enabled, logs will be written to %1")
+                                .arg(Logger::instance()->temporaryFolderLogDirPath()));
     label->setWordWrap(true);
     label->setTextInteractionFlags(Qt::TextSelectableByMouse);
     label->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::MinimumExpanding);
@@ -66,9 +65,8 @@ LogBrowser::LogBrowser(QWidget *parent)
     connect(enableLoggingButton, &QCheckBox::toggled, this, &LogBrowser::togglePermanentLogging);
     mainLayout->addWidget(enableLoggingButton);
 
-    label = new QLabel(
-        tr("This setting persists across client restarts.\n"
-           "Note that using any logging command line options will override this setting."));
+    label = new QLabel(tr("This setting persists across client restarts.\n"
+                          "Note that using any logging command line options will override this setting."));
     label->setWordWrap(true);
     label->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::MinimumExpanding);
     mainLayout->addWidget(label);

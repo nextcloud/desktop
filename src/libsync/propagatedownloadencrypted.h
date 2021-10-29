@@ -12,33 +12,35 @@ class QJsonDocument;
 
 namespace OCC {
 
-class PropagateDownloadEncrypted : public QObject {
-  Q_OBJECT
+class PropagateDownloadEncrypted : public QObject
+{
+    Q_OBJECT
 public:
-  PropagateDownloadEncrypted(OwncloudPropagator *propagator, const QString &localParentPath, SyncFileItemPtr item, QObject *parent = nullptr);
-  void start();
-  bool decryptFile(QFile& tmpFile);
-  QString errorString() const;
+    PropagateDownloadEncrypted(OwncloudPropagator *propagator, const QString &localParentPath, SyncFileItemPtr item,
+        QObject *parent = nullptr);
+    void start();
+    bool decryptFile(QFile &tmpFile);
+    QString errorString() const;
 
 public slots:
-  void checkFolderId(const QStringList &list);
-  void checkFolderEncryptedMetadata(const QJsonDocument &json);
-  void folderIdError();
-  void folderEncryptedMetadataError(const QByteArray &fileId, int httpReturnCode);
+    void checkFolderId(const QStringList &list);
+    void checkFolderEncryptedMetadata(const QJsonDocument &json);
+    void folderIdError();
+    void folderEncryptedMetadataError(const QByteArray &fileId, int httpReturnCode);
 
 signals:
-  void fileMetadataFound();
-  void failed();
+    void fileMetadataFound();
+    void failed();
 
-  void decryptionFinished();
+    void decryptionFinished();
 
 private:
-  OwncloudPropagator *_propagator;
-  QString _localParentPath;
-  SyncFileItemPtr _item;
-  QFileInfo _info;
-  EncryptedFile _encryptedInfo;
-  QString _errorString;
+    OwncloudPropagator *_propagator;
+    QString _localParentPath;
+    SyncFileItemPtr _item;
+    QFileInfo _info;
+    EncryptedFile _encryptedInfo;
+    QString _errorString;
 };
 
 }

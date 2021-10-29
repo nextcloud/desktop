@@ -127,9 +127,7 @@ void FileSystem::setFileReadOnlyWeak(const QString &filename, bool readonly)
     setFileReadOnly(filename, readonly);
 }
 
-bool FileSystem::rename(const QString &originFileName,
-    const QString &destinationFileName,
-    QString *errorString)
+bool FileSystem::rename(const QString &originFileName, const QString &destinationFileName, QString *errorString)
 {
     bool success = false;
     QString error;
@@ -138,9 +136,8 @@ bool FileSystem::rename(const QString &originFileName,
     QString dest = longWinPath(destinationFileName);
 
     if (isLnkFile(originFileName) || isLnkFile(destinationFileName)) {
-        success = MoveFileEx((wchar_t *)orig.utf16(),
-            (wchar_t *)dest.utf16(),
-            MOVEFILE_COPY_ALLOWED | MOVEFILE_WRITE_THROUGH);
+        success = MoveFileEx(
+            (wchar_t *)orig.utf16(), (wchar_t *)dest.utf16(), MOVEFILE_COPY_ALLOWED | MOVEFILE_WRITE_THROUGH);
         if (!success) {
             error = Utility::formatWinError(GetLastError());
         }
@@ -155,8 +152,7 @@ bool FileSystem::rename(const QString &originFileName,
     }
 
     if (!success) {
-        qCWarning(lcFileSystem) << "Error renaming file" << originFileName
-                                << "to" << destinationFileName
+        qCWarning(lcFileSystem) << "Error renaming file" << originFileName << "to" << destinationFileName
                                 << "failed: " << error;
         if (errorString) {
             *errorString = error;
@@ -165,9 +161,8 @@ bool FileSystem::rename(const QString &originFileName,
     return success;
 }
 
-bool FileSystem::uncheckedRenameReplace(const QString &originFileName,
-    const QString &destinationFileName,
-    QString *errorString)
+bool FileSystem::uncheckedRenameReplace(
+    const QString &originFileName, const QString &destinationFileName, QString *errorString)
 {
 #ifndef Q_OS_WIN
     bool success = false;
@@ -191,7 +186,7 @@ bool FileSystem::uncheckedRenameReplace(const QString &originFileName,
         return false;
     }
 
-#else //Q_OS_WIN
+#else // Q_OS_WIN
     // You can not overwrite a read-only file on windows.
     if (!QFileInfo(destinationFileName).isWritable()) {
         setFileReadOnly(destinationFileName, false);
@@ -201,8 +196,7 @@ bool FileSystem::uncheckedRenameReplace(const QString &originFileName,
     QString orig = longWinPath(originFileName);
     QString dest = longWinPath(destinationFileName);
 
-    ok = MoveFileEx((wchar_t *)orig.utf16(),
-        (wchar_t *)dest.utf16(),
+    ok = MoveFileEx((wchar_t *)orig.utf16(), (wchar_t *)dest.utf16(),
         MOVEFILE_REPLACE_EXISTING + MOVEFILE_COPY_ALLOWED + MOVEFILE_WRITE_THROUGH);
     if (!ok) {
         *errorString = Utility::formatWinError(GetLastError());
@@ -233,17 +227,11 @@ bool FileSystem::openAndSeekFileSharedRead(QFile *file, QString *errorOrNull, qi
     DWORD creationDisp = OPEN_EXISTING;
 
     // Create the file handle.
-    SECURITY_ATTRIBUTES securityAtts = { sizeof(SECURITY_ATTRIBUTES), nullptr, FALSE };
+    SECURITY_ATTRIBUTES securityAtts = {sizeof(SECURITY_ATTRIBUTES), nullptr, FALSE};
     QString fName = longWinPath(file->fileName());
 
-    HANDLE fileHandle = CreateFileW(
-        (const wchar_t *)fName.utf16(),
-        accessRights,
-        shareMode,
-        &securityAtts,
-        creationDisp,
-        FILE_ATTRIBUTE_NORMAL,
-        nullptr);
+    HANDLE fileHandle = CreateFileW((const wchar_t *)fName.utf16(), accessRights, shareMode, &securityAtts,
+        creationDisp, FILE_ATTRIBUTE_NORMAL, nullptr);
 
     // Bail out on error.
     if (fileHandle == INVALID_HANDLE_VALUE) {
@@ -335,10 +323,7 @@ QString FileSystem::fileSystemForPath(const QString &path)
     const size_t fileSystemBufferSize = 4096;
     TCHAR fileSystemBuffer[fileSystemBufferSize];
 
-    if (!GetVolumeInformationW(
-            reinterpret_cast<LPCWSTR>(drive.utf16()),
-            nullptr, 0,
-            nullptr, nullptr, nullptr,
+    if (!GetVolumeInformationW(reinterpret_cast<LPCWSTR>(drive.utf16()), nullptr, 0, nullptr, nullptr, nullptr,
             fileSystemBuffer, fileSystemBufferSize)) {
         return QString();
     }
@@ -382,25 +367,27 @@ bool FileSystem::moveToTrash(const QString &fileName, QString *errorString)
 
     if (!(QDir().mkpath(trashFilePath) && QDir().mkpath(trashInfoPath))) {
         *errorString = QCoreApplication::translate("FileSystem", "Could not make directories in trash");
-        return false; //mkpath will return true if path exists
+        return false; // mkpath will return true if path exists
     }
 
     QFileInfo f(fileName);
 
     QDir file;
     int suffix_number = 1;
-    if (file.exists(trashFilePath + f.fileName())) { //file in trash already exists, move to "filename.1"
+    if (file.exists(trashFilePath + f.fileName())) { // file in trash already exists, move to "filename.1"
         QString path = trashFilePath + f.fileName() + QLatin1Char('.');
-        while (file.exists(path + QString::number(suffix_number))) { //or to "filename.2" if "filename.1" exists, etc
+        while (file.exists(path + QString::number(suffix_number))) { // or to "filename.2" if "filename.1" exists, etc
             suffix_number++;
         }
-        if (!file.rename(f.absoluteFilePath(), path + QString::number(suffix_number))) { // rename(file old path, file trash path)
+        if (!file.rename(f.absoluteFilePath(),
+                path + QString::number(suffix_number))) { // rename(file old path, file trash path)
             *errorString = QCoreApplication::translate("FileSystem", R"(Could not move "%1" to "%2")")
                                .arg(f.absoluteFilePath(), path + QString::number(suffix_number));
             return false;
         }
     } else {
-        if (!file.rename(f.absoluteFilePath(), trashFilePath + f.fileName())) { // rename(file old path, file trash path)
+        if (!file.rename(
+                f.absoluteFilePath(), trashFilePath + f.fileName())) { // rename(file old path, file trash path)
             *errorString = QCoreApplication::translate("FileSystem", R"(Could not move "%1" to "%2")")
                                .arg(f.absoluteFilePath(), trashFilePath + f.fileName());
             return false;
@@ -409,12 +396,16 @@ bool FileSystem::moveToTrash(const QString &fileName, QString *errorString)
 
     // create file format for trash info file----- START
     QFile infoFile;
-    if (file.exists(trashInfoPath + f.fileName() + QStringLiteral(".trashinfo"))) { //TrashInfo file already exists, create "filename.1.trashinfo"
-        QString filename = trashInfoPath + f.fileName() + QLatin1Char('.') + QString::number(suffix_number) + QStringLiteral(".trashinfo");
-        infoFile.setFileName(filename); //filename+.trashinfo //  create file information file in /.local/share/Trash/info/ folder
+    if (file.exists(trashInfoPath + f.fileName()
+            + QStringLiteral(".trashinfo"))) { // TrashInfo file already exists, create "filename.1.trashinfo"
+        QString filename = trashInfoPath + f.fileName() + QLatin1Char('.') + QString::number(suffix_number)
+            + QStringLiteral(".trashinfo");
+        infoFile.setFileName(
+            filename); // filename+.trashinfo //  create file information file in /.local/share/Trash/info/ folder
     } else {
         QString filename = trashInfoPath + f.fileName() + QStringLiteral(".trashinfo");
-        infoFile.setFileName(filename); //filename+.trashinfo //  create file information file in /.local/share/Trash/info/ folder
+        infoFile.setFileName(
+            filename); // filename+.trashinfo //  create file information file in /.local/share/Trash/info/ folder
     }
 
     infoFile.open(QIODevice::ReadWrite);
@@ -422,12 +413,8 @@ bool FileSystem::moveToTrash(const QString &fileName, QString *errorString)
     QTextStream stream(&infoFile); // for write data on open file
 
     stream << "[Trash Info]\n"
-           << "Path="
-           << QUrl::toPercentEncoding(f.absoluteFilePath(), "~_-./")
-           << "\n"
-           << "DeletionDate="
-           << QDateTime::currentDateTime().toString(Qt::ISODate)
-           << '\n';
+           << "Path=" << QUrl::toPercentEncoding(f.absoluteFilePath(), "~_-./") << "\n"
+           << "DeletionDate=" << QDateTime::currentDateTime().toString(Qt::ISODate) << '\n';
     infoFile.close();
 
     // create info file format of trash file----- END
@@ -448,13 +435,9 @@ bool FileSystem::isFileLocked(const QString &fileName)
     DWORD attr = GetFileAttributesW(reinterpret_cast<const wchar_t *>(fName.utf16()));
     if (attr != INVALID_FILE_ATTRIBUTES) {
         // Try to open the file with as much access as possible..
-        HANDLE win_h = CreateFileW(
-            reinterpret_cast<const wchar_t *>(fName.utf16()),
-            GENERIC_READ | GENERIC_WRITE,
-            FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE,
-            nullptr, OPEN_EXISTING,
-            FILE_ATTRIBUTE_NORMAL | FILE_FLAG_BACKUP_SEMANTICS,
-            nullptr);
+        HANDLE win_h = CreateFileW(reinterpret_cast<const wchar_t *>(fName.utf16()), GENERIC_READ | GENERIC_WRITE,
+            FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE, nullptr, OPEN_EXISTING,
+            FILE_ATTRIBUTE_NORMAL | FILE_FLAG_BACKUP_SEMANTICS, nullptr);
 
         if (win_h == INVALID_HANDLE_VALUE) {
             /* could not be opened, so locked? */
@@ -487,7 +470,8 @@ bool FileSystem::isJunction(const QString &filename)
 {
 #ifdef Q_OS_WIN
     WIN32_FIND_DATA findData;
-    HANDLE hFind = FindFirstFileEx(reinterpret_cast<const wchar_t *>(longWinPath(filename).utf16()), FindExInfoBasic, &findData, FindExSearchNameMatch, nullptr, 0);
+    HANDLE hFind = FindFirstFileEx(reinterpret_cast<const wchar_t *>(longWinPath(filename).utf16()), FindExInfoBasic,
+        &findData, FindExSearchNameMatch, nullptr, 0);
     if (hFind != INVALID_HANDLE_VALUE) {
         FindClose(hFind);
         return false;

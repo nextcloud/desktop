@@ -48,6 +48,6 @@ private:
     Ui::AddCertificateDialog *ui;
 };
 
-} //End namespace OCC
+} // End namespace OCC
 
 #endif // ADDCERTIFICATEDIALOG_H

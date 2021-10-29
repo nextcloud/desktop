@@ -42,8 +42,8 @@ public slots:
     void slotUpdateMenu();
 
 private:
-    QMenu *buildCertMenu(QMenu *parent, const QSslCertificate &cert,
-        const QList<QSslCertificate> &userApproved, int pos, const QList<QSslCertificate> &systemCaCertificates);
+    QMenu *buildCertMenu(QMenu *parent, const QSslCertificate &cert, const QList<QSslCertificate> &userApproved,
+        int pos, const QList<QSslCertificate> &systemCaCertificates);
     QPointer<AccountState> _accountState;
     QMenu *_menu;
 };

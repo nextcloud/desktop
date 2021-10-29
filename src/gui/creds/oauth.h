@@ -49,9 +49,7 @@ public:
     }
     ~OAuth() override;
 
-    enum Result { NotSupported,
-        LoggedIn,
-        Error };
+    enum Result { NotSupported, LoggedIn, Error };
     Q_ENUM(Result);
     void start();
     bool openBrowser();
@@ -62,7 +60,8 @@ signals:
      * The state has changed.
      * when logged in, token has the value of the token.
      */
-    void result(OAuth::Result result, const QString &user = QString(), const QString &token = QString(), const QString &refreshToken = QString());
+    void result(OAuth::Result result, const QString &user = QString(), const QString &token = QString(),
+        const QString &refreshToken = QString());
 
 private:
     Account *_account;

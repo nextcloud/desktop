@@ -20,9 +20,9 @@
 
 namespace OCC {
 namespace Ui {
-namespace IconUtils {
-QPixmap pixmapForBackground(const QString &fileName, const QColor &backgroundColor);
-}
+    namespace IconUtils {
+        QPixmap pixmapForBackground(const QString &fileName, const QColor &backgroundColor);
+    }
 }
 }
 #endif // ICONUTILS_H

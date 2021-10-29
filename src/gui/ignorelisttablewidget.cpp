@@ -27,14 +27,11 @@ IgnoreListTableWidget::IgnoreListTableWidget(QWidget *parent)
                                      "This is useful for meta data."));
 
     ui->removePushButton->setEnabled(false);
-    connect(ui->tableWidget,         &QTableWidget::itemSelectionChanged,
-            this, &IgnoreListTableWidget::slotItemSelectionChanged);
-    connect(ui->removePushButton,    &QAbstractButton::clicked,
-            this, &IgnoreListTableWidget::slotRemoveCurrentItem);
-    connect(ui->addPushButton,       &QAbstractButton::clicked,
-            this, &IgnoreListTableWidget::slotAddPattern);
-    connect(ui->removeAllPushButton, &QAbstractButton::clicked,
-            this, &IgnoreListTableWidget::slotRemoveAllItems);
+    connect(
+        ui->tableWidget, &QTableWidget::itemSelectionChanged, this, &IgnoreListTableWidget::slotItemSelectionChanged);
+    connect(ui->removePushButton, &QAbstractButton::clicked, this, &IgnoreListTableWidget::slotRemoveCurrentItem);
+    connect(ui->addPushButton, &QAbstractButton::clicked, this, &IgnoreListTableWidget::slotAddPattern);
+    connect(ui->removeAllPushButton, &QAbstractButton::clicked, this, &IgnoreListTableWidget::slotRemoveAllItems);
 
     ui->tableWidget->resizeColumnsToContents();
     ui->tableWidget->horizontalHeader()->setSectionResizeMode(patternCol, QHeaderView::Stretch);
@@ -61,7 +58,7 @@ void IgnoreListTableWidget::slotItemSelectionChanged()
 void IgnoreListTableWidget::slotRemoveCurrentItem()
 {
     ui->tableWidget->removeRow(ui->tableWidget->currentRow());
-    if(ui->tableWidget->rowCount() == readOnlyRows)
+    if (ui->tableWidget->rowCount() == readOnlyRows)
         ui->removeAllPushButton->setEnabled(false);
 }
 
@@ -70,7 +67,7 @@ void IgnoreListTableWidget::slotRemoveAllItems()
     ui->tableWidget->setRowCount(0);
 }
 
-void IgnoreListTableWidget::slotWriteIgnoreFile(const QString & file)
+void IgnoreListTableWidget::slotWriteIgnoreFile(const QString &file)
 {
     QFile ignores(file);
     if (ignores.open(QIODevice::WriteOnly)) {
@@ -90,10 +87,9 @@ void IgnoreListTableWidget::slotWriteIgnoreFile(const QString & file)
             }
         }
     } else {
-        QMessageBox::warning(this, tr("Could not open file"),
-            tr("Cannot write changes to \"%1\".").arg(file));
+        QMessageBox::warning(this, tr("Could not open file"), tr("Cannot write changes to \"%1\".").arg(file));
     }
-    ignores.close(); //close the file before reloading stuff.
+    ignores.close(); // close the file before reloading stuff.
 
     FolderMan *folderMan = FolderMan::instance();
 
@@ -109,9 +105,8 @@ void IgnoreListTableWidget::slotWriteIgnoreFile(const QString & file)
 void IgnoreListTableWidget::slotAddPattern()
 {
     bool okClicked = false;
-    QString pattern = QInputDialog::getText(this, tr("Add Ignore Pattern"),
-        tr("Add a new ignore pattern:"),
-        QLineEdit::Normal, QString(), &okClicked);
+    QString pattern = QInputDialog::getText(
+        this, tr("Add Ignore Pattern"), tr("Add a new ignore pattern:"), QLineEdit::Normal, QString(), &okClicked);
 
     if (!okClicked || pattern.isEmpty())
         return;

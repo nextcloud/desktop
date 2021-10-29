@@ -83,7 +83,9 @@ void OwncloudSetupPage::setLogo()
 void OwncloudSetupPage::setupServerAddressDescriptionLabel()
 {
     const auto appName = Theme::instance()->appNameGUI();
-    _ui.serverAddressDescriptionLabel->setText(tr("The link to your %1 web interface when you open it in the browser.", "%1 will be replaced with the application name").arg(appName));
+    _ui.serverAddressDescriptionLabel->setText(tr("The link to your %1 web interface when you open it in the browser.",
+        "%1 will be replaced with the application name")
+                                                   .arg(appName));
 }
 
 void OwncloudSetupPage::setServerUrl(const QString &newUrl)
@@ -326,7 +328,7 @@ QString subjectInfoHelper(const QSslCertificate &cert, const QByteArray &qa)
     return cert.subjectInfo(qa).join(QLatin1Char('/'));
 }
 
-//called during the validation of the client certificate.
+// called during the validation of the client certificate.
 void OwncloudSetupPage::slotCertificateAccepted()
 {
     QFile certFile(addCertDial->getCertificatePath());
@@ -336,8 +338,7 @@ void OwncloudSetupPage::slotCertificateAccepted()
 
     QBuffer certDataBuffer(&certData);
     certDataBuffer.open(QIODevice::ReadOnly);
-    if (QSslCertificate::importPkcs12(&certDataBuffer,
-            &_ocWizard->_clientSslKey, &_ocWizard->_clientSslCertificate,
+    if (QSslCertificate::importPkcs12(&certDataBuffer, &_ocWizard->_clientSslKey, &_ocWizard->_clientSslCertificate,
             &_ocWizard->_clientSslCaCertificates, certPassword)) {
         _ocWizard->_clientCertBundle = certData;
         _ocWizard->_clientCertPassword = certPassword;

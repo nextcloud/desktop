@@ -31,7 +31,8 @@ namespace Utility {
     QString escape(const QStringList &l) { return escape(l.join(';')); }
 }
 
-bool SslDialogErrorHandler::handleErrors(QList<QSslError> errors, const QSslConfiguration &conf, QList<QSslCertificate> *certs, AccountPtr account)
+bool SslDialogErrorHandler::handleErrors(
+    QList<QSslError> errors, const QSslConfiguration &conf, QList<QSslCertificate> *certs, AccountPtr account)
 {
     (void)conf;
     if (!certs) {
@@ -64,15 +65,12 @@ SslErrorDialog::SslErrorDialog(AccountPtr account, QWidget *parent)
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     _ui->setupUi(this);
     setWindowTitle(tr("Untrusted Certificate"));
-    QPushButton *okButton =
-        _ui->_dialogButtonBox->button(QDialogButtonBox::Ok);
-    QPushButton *cancelButton =
-        _ui->_dialogButtonBox->button(QDialogButtonBox::Cancel);
+    QPushButton *okButton = _ui->_dialogButtonBox->button(QDialogButtonBox::Ok);
+    QPushButton *cancelButton = _ui->_dialogButtonBox->button(QDialogButtonBox::Cancel);
     okButton->setEnabled(false);
 
     _ui->_cbTrustConnect->setEnabled(!Theme::instance()->forbidBadSSL());
-    connect(_ui->_cbTrustConnect, &QAbstractButton::clicked,
-        okButton, &QWidget::setEnabled);
+    connect(_ui->_cbTrustConnect, &QAbstractButton::clicked, okButton, &QWidget::setEnabled);
 
     if (okButton) {
         okButton->setDefault(true);
@@ -89,13 +87,12 @@ SslErrorDialog::~SslErrorDialog()
 
 QString SslErrorDialog::styleSheet() const
 {
-    const QString style = QLatin1String(
-        "#cert {margin-left: 5px;} "
-        "#ca_error { color:#a00011; margin-left:5px; margin-right:5px; }"
-        "#ca_error p { margin-top: 2px; margin-bottom:2px; }"
-        "#ccert { margin-left: 5px; }"
-        "#issuer { margin-left: 5px; }"
-        "tt { font-size: small; }");
+    const QString style = QLatin1String("#cert {margin-left: 5px;} "
+                                        "#ca_error { color:#a00011; margin-left:5px; margin-right:5px; }"
+                                        "#ca_error p { margin-top: 2px; margin-bottom:2px; }"
+                                        "#ccert { margin-left: 5px; }"
+                                        "#issuer { margin-left: 5px; }"
+                                        "tt { font-size: small; }");
 
     return style;
 }
@@ -181,7 +178,8 @@ QString SslErrorDialog::certDiv(QSslCertificate cert) const
 {
     QString msg;
     msg += QL("<div id=\"cert\">");
-    msg += QL("<h3>") + tr("with Certificate %1").arg(Utility::escape(cert.subjectInfo(QSslCertificate::CommonName))) + QL("</h3>");
+    msg += QL("<h3>") + tr("with Certificate %1").arg(Utility::escape(cert.subjectInfo(QSslCertificate::CommonName)))
+        + QL("</h3>");
 
     msg += QL("<div id=\"ccert\">");
     QStringList li;
@@ -203,7 +201,7 @@ QString SslErrorDialog::certDiv(QSslCertificate cert) const
     msg += QL("<p>");
 
     if (cert.effectiveDate() < QDateTime(QDate(2016, 1, 1), QTime(), Qt::UTC)) {
-	QString sha1sum = Utility::formatFingerprint(cert.digest(QCryptographicHash::Sha1).toHex());
+        QString sha1sum = Utility::formatFingerprint(cert.digest(QCryptographicHash::Sha1).toHex());
         msg += tr("Fingerprint (SHA1): <tt>%1</tt>").arg(sha1sum) + QL("<br/>");
     }
 
@@ -217,7 +215,8 @@ QString SslErrorDialog::certDiv(QSslCertificate cert) const
 
     msg += QL("</div>");
 
-    msg += QL("<h3>") + tr("Issuer: %1").arg(Utility::escape(cert.issuerInfo(QSslCertificate::CommonName))) + QL("</h3>");
+    msg +=
+        QL("<h3>") + tr("Issuer: %1").arg(Utility::escape(cert.issuerInfo(QSslCertificate::CommonName))) + QL("</h3>");
     msg += QL("<div id=\"issuer\">");
     li.clear();
     li << tr("Organization: %1").arg(Utility::escape(cert.issuerInfo(QSslCertificate::Organization)));

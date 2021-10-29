@@ -33,13 +33,13 @@ public:
         : HttpCredentials()
     {
     }
-    HttpCredentialsGui(const QString &user, const QString &password,
-            const QByteArray &clientCertBundle, const QByteArray &clientCertPassword)
+    HttpCredentialsGui(const QString &user, const QString &password, const QByteArray &clientCertBundle,
+        const QByteArray &clientCertPassword)
         : HttpCredentials(user, password, clientCertBundle, clientCertPassword)
     {
     }
     HttpCredentialsGui(const QString &user, const QString &password, const QString &refreshToken,
-            const QByteArray &clientCertBundle, const QByteArray &clientCertPassword)
+        const QByteArray &clientCertBundle, const QByteArray &clientCertPassword)
         : HttpCredentials(user, password, clientCertBundle, clientCertPassword)
     {
         _refreshToken = refreshToken;
@@ -67,7 +67,6 @@ signals:
     void authorisationLinkChanged();
 
 private:
-
     QScopedPointer<OAuth, QScopedPointerObjectDeleteLater<OAuth>> _asyncAuth;
 };
 

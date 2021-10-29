@@ -19,7 +19,7 @@ signals:
     /**
      * Notify if wipe was requested
      */
-    void authorized(AccountState*);
+    void authorized(AccountState *);
 
     /**
      * Notify if user only needs to login again

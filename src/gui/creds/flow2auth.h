@@ -30,23 +30,13 @@ class Flow2Auth : public QObject
 {
     Q_OBJECT
 public:
-    enum TokenAction {
-        actionOpenBrowser = 1,
-        actionCopyLinkToClipboard
-    };
-    enum PollStatus {
-        statusPollCountdown = 1,
-        statusPollNow,
-        statusFetchToken,
-        statusCopyLinkToClipboard
-    };
+    enum TokenAction { actionOpenBrowser = 1, actionCopyLinkToClipboard };
+    enum PollStatus { statusPollCountdown = 1, statusPollNow, statusFetchToken, statusCopyLinkToClipboard };
 
     Flow2Auth(Account *account, QObject *parent);
     ~Flow2Auth() override;
 
-    enum Result { NotSupported,
-        LoggedIn,
-        Error };
+    enum Result { NotSupported, LoggedIn, Error };
     Q_ENUM(Result);
     void start();
     void openBrowser();
@@ -58,8 +48,8 @@ signals:
      * The state has changed.
      * when logged in, appPassword has the value of the app password.
      */
-    void result(Flow2Auth::Result result, const QString &errorString = QString(),
-                const QString &user = QString(), const QString &appPassword = QString());
+    void result(Flow2Auth::Result result, const QString &errorString = QString(), const QString &user = QString(),
+        const QString &appPassword = QString());
 
     void statusChanged(const PollStatus status, int secondsLeft);
 

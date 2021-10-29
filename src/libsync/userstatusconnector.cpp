@@ -19,9 +19,8 @@ namespace OCC {
 
 UserStatus::UserStatus() = default;
 
-UserStatus::UserStatus(
-    const QString &id, const QString &message, const QString &icon,
-    OnlineStatus state, bool messagePredefined, const Optional<ClearAt> &clearAt)
+UserStatus::UserStatus(const QString &id, const QString &message, const QString &icon, OnlineStatus state,
+    bool messagePredefined, const Optional<ClearAt> &clearAt)
     : _id(id)
     , _message(message)
     , _icon(icon)

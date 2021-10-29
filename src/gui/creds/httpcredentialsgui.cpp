@@ -49,10 +49,8 @@ void HttpCredentialsGui::askFromUserAsync()
         if (type == DetermineAuthTypeJob::OAuth) {
             _asyncAuth.reset(new OAuth(_account, this));
             _asyncAuth->_expectedUser = _account->davUser();
-            connect(_asyncAuth.data(), &OAuth::result,
-                this, &HttpCredentialsGui::asyncAuthResult);
-            connect(_asyncAuth.data(), &OAuth::destroyed,
-                this, &HttpCredentialsGui::authorisationLinkChanged);
+            connect(_asyncAuth.data(), &OAuth::result, this, &HttpCredentialsGui::asyncAuthResult);
+            connect(_asyncAuth.data(), &OAuth::destroyed, this, &HttpCredentialsGui::authorisationLinkChanged);
             _asyncAuth->start();
             emit authorisationLinkChanged();
         } else if (type == DetermineAuthTypeJob::Basic) {
@@ -66,8 +64,8 @@ void HttpCredentialsGui::askFromUserAsync()
     job->start();
 }
 
-void HttpCredentialsGui::asyncAuthResult(OAuth::Result r, const QString &user,
-    const QString &token, const QString &refreshToken)
+void HttpCredentialsGui::asyncAuthResult(
+    OAuth::Result r, const QString &user, const QString &token, const QString &refreshToken)
 {
     switch (r) {
     case OAuth::NotSupported:
@@ -98,8 +96,7 @@ void HttpCredentialsGui::showDialog()
                      "<br>"
                      "User: %2<br>"
                      "Account: %3<br>")
-                      .arg(Utility::escape(Theme::instance()->appNameGUI()),
-                          Utility::escape(_user),
+                      .arg(Utility::escape(Theme::instance()->appNameGUI()), Utility::escape(_user),
                           Utility::escape(_account->displayName()));
 
     QString reqTxt = requestAppPasswordText(_account);
@@ -108,8 +105,7 @@ void HttpCredentialsGui::showDialog()
     }
     if (!_fetchErrorString.isEmpty()) {
         msg += QLatin1String("<br>")
-            + tr("Reading from keychain failed with error: \"%1\"")
-                  .arg(Utility::escape(_fetchErrorString))
+            + tr("Reading from keychain failed with error: \"%1\"").arg(Utility::escape(_fetchErrorString))
             + QLatin1String("<br>");
     }
 
@@ -153,7 +149,6 @@ QString HttpCredentialsGui::requestAppPasswordText(const Account *account)
         return QString();
     }
 
-    return tr("<a href=\"%1\">Click here</a> to request an app password from the web interface.")
-        .arg(url);
+    return tr("<a href=\"%1\">Click here</a> to request an app password from the web interface.").arg(url);
 }
 } // namespace OCC

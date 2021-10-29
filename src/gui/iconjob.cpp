@@ -16,11 +16,10 @@
 
 namespace OCC {
 
-IconJob::IconJob(const QUrl &url, QObject *parent) :
-    QObject(parent)
+IconJob::IconJob(const QUrl &url, QObject *parent)
+    : QObject(parent)
 {
-    connect(&_accessManager, &QNetworkAccessManager::finished,
-            this, &IconJob::finished);
+    connect(&_accessManager, &QNetworkAccessManager::finished, this, &IconJob::finished);
 
     QNetworkRequest request(url);
 #if (QT_VERSION >= 0x050600)

@@ -23,9 +23,7 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcSharing, "nextcloud.gui.sharing", QtInfoMsg)
 
-Sharee::Sharee(const QString shareWith,
-    const QString displayName,
-    const Type type)
+Sharee::Sharee(const QString shareWith, const QString displayName, const Type type)
     : _shareWith(shareWith)
     , _displayName(displayName)
     , _type(type)
@@ -88,9 +86,9 @@ void ShareeModel::shareesFetched(const QJsonDocument &reply)
     QVector<QSharedPointer<Sharee>> newSharees;
 
     {
-        const QStringList shareeTypes {"users", "groups", "emails", "remotes", "circles", "rooms"};
+        const QStringList shareeTypes{"users", "groups", "emails", "remotes", "circles", "rooms"};
 
-        const auto appendSharees = [this, &shareeTypes](const QJsonObject &data, QVector<QSharedPointer<Sharee>>& out) {
+        const auto appendSharees = [this, &shareeTypes](const QJsonObject &data, QVector<QSharedPointer<Sharee>> &out) {
             for (const auto &shareeType : shareeTypes) {
                 const auto category = data.value(shareeType).toArray();
                 for (const auto &sharee : category) {
@@ -100,7 +98,8 @@ void ShareeModel::shareesFetched(const QJsonDocument &reply)
         };
 
         appendSharees(reply.object().value("ocs").toObject().value("data").toObject(), newSharees);
-        appendSharees(reply.object().value("ocs").toObject().value("data").toObject().value("exact").toObject(), newSharees);
+        appendSharees(
+            reply.object().value("ocs").toObject().value("data").toObject().value("exact").toObject(), newSharees);
     }
 
     // Filter sharees that we have already shared with
@@ -163,15 +162,14 @@ void ShareeModel::setNewSharees(const QVector<QSharedPointer<Sharee>> &newSharee
     QVector<QSharedPointer<Sharee>> oldPersistantSharee;
     oldPersistantSharee.reserve(persistent.size());
 
-    std::transform(persistent.begin(), persistent.end(), std::back_inserter(oldPersistantSharee),
-        shareeFromModelIndex);
+    std::transform(persistent.begin(), persistent.end(), std::back_inserter(oldPersistantSharee), shareeFromModelIndex);
 
     _sharees = newSharees;
 
     QModelIndexList newPersistant;
     newPersistant.reserve(persistent.size());
     foreach (const QSharedPointer<Sharee> &sharee, oldPersistantSharee) {
-        FindShareeHelper helper = { sharee };
+        FindShareeHelper helper = {sharee};
         auto it = std::find_if(_sharees.constBegin(), _sharees.constEnd(), helper);
         if (it == _sharees.constEnd()) {
             newPersistant << QModelIndex();

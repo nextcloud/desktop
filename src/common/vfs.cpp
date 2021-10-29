@@ -28,7 +28,7 @@
 
 using namespace OCC;
 
-Vfs::Vfs(QObject* parent)
+Vfs::Vfs(QObject *parent)
     : QObject(parent)
 {
 }

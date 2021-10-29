@@ -39,7 +39,7 @@ class FolderStatusModel : public QAbstractItemModel
 {
     Q_OBJECT
 public:
-    enum {FileIdRole = Qt::UserRole+1};
+    enum { FileIdRole = Qt::UserRole + 1 };
 
     FolderStatusModel(QObject *parent = nullptr);
     ~FolderStatusModel() override;
@@ -62,7 +62,8 @@ public:
         Folder *_folder = nullptr;
         QString _name; // Folder name to be displayed in the UI
         QString _path; // Sub-folder path that should always point to a local filesystem's folder
-        QString _e2eMangledName; // Mangled name that needs to be used when making fetch requests and should not be used for displaying in the UI
+        QString _e2eMangledName; // Mangled name that needs to be used when making fetch requests and should not be used
+                                 // for displaying in the UI
         QVector<int> _pathIdx;
         QVector<SubFolderInfo> _subs;
         qint64 _size = 0;
@@ -102,10 +103,7 @@ public:
 
     QVector<SubFolderInfo> _folders;
 
-    enum ItemType { RootFolder,
-        SubFolder,
-        AddButton,
-        FetchLabel };
+    enum ItemType { RootFolder, SubFolder, AddButton, FetchLabel };
     ItemType classify(const QModelIndex &index) const;
     SubFolderInfo *infoForIndex(const QModelIndex &index) const;
     bool isAnyAncestorEncrypted(const QModelIndex &index) const;
@@ -142,8 +140,8 @@ private slots:
     void slotShowFetchProgress();
 
 private:
-    QStringList createBlackList(const OCC::FolderStatusModel::SubFolderInfo &root,
-        const QStringList &oldBlackList) const;
+    QStringList createBlackList(
+        const OCC::FolderStatusModel::SubFolderInfo &root, const QStringList &oldBlackList) const;
     const AccountState *_accountState = nullptr;
     bool _dirty = false; // If the selective sync checkboxes were changed
 
@@ -164,6 +162,6 @@ signals:
 
 } // namespace OCC
 
-Q_DECLARE_METATYPE(OCC::FolderStatusModel::SubFolderInfo*)
+Q_DECLARE_METATYPE(OCC::FolderStatusModel::SubFolderInfo *)
 
 #endif // FOLDERSTATUSMODEL_H

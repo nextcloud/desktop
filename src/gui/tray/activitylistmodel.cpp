@@ -45,8 +45,7 @@ ActivityListModel::ActivityListModel(QObject *parent)
 {
 }
 
-ActivityListModel::ActivityListModel(AccountState *accountState,
-    QObject *parent)
+ActivityListModel::ActivityListModel(AccountState *accountState, QObject *parent)
     : QAbstractListModel(parent)
     , _accountState(accountState)
 {
@@ -141,7 +140,8 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
             }
 
             // get relative path to the file so we can open it in the file manager
-            const auto localFiles = FolderMan::instance()->findFileInLocalFolders(QFileInfo(relPath).path(), ast->account());
+            const auto localFiles =
+                FolderMan::instance()->findFileInLocalFolders(QFileInfo(relPath).path(), ast->account());
 
             if (localFiles.isEmpty()) {
                 return QString();
@@ -192,15 +192,11 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
         } else if (a._type == Activity::SyncResultType) {
             return "qrc:///client/theme/black/state-error.svg";
         } else if (a._type == Activity::SyncFileItemType) {
-            if (a._status == SyncFileItem::NormalError
-                || a._status == SyncFileItem::FatalError
-                || a._status == SyncFileItem::DetailError
-                || a._status == SyncFileItem::BlacklistedError) {
+            if (a._status == SyncFileItem::NormalError || a._status == SyncFileItem::FatalError
+                || a._status == SyncFileItem::DetailError || a._status == SyncFileItem::BlacklistedError) {
                 return "qrc:///client/theme/black/state-error.svg";
-            } else if (a._status == SyncFileItem::SoftError
-                || a._status == SyncFileItem::Conflict
-                || a._status == SyncFileItem::Restoration
-                || a._status == SyncFileItem::FileLocked
+            } else if (a._status == SyncFileItem::SoftError || a._status == SyncFileItem::Conflict
+                || a._status == SyncFileItem::Restoration || a._status == SyncFileItem::FileLocked
                 || a._status == SyncFileItem::FileNameInvalid) {
                 return "qrc:///client/theme/black/state-warning.svg";
             } else if (a._status == SyncFileItem::FileIgnored) {
@@ -243,7 +239,9 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
     case ActionTextRole:
         return a._subject;
     case ActionTextColorRole:
-        return a._id == -1 ? QLatin1String("#808080") : QLatin1String("#222");   // FIXME: This is a temporary workaround for _showMoreActivitiesAvailableEntry
+        return a._id == -1
+            ? QLatin1String("#808080")
+            : QLatin1String("#222"); // FIXME: This is a temporary workaround for _showMoreActivitiesAvailableEntry
     case MessageRole:
         return a._message;
     case LinkRole: {
@@ -256,7 +254,8 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
     case AccountRole:
         return a._accName;
     case PointInTimeRole:
-        //return a._id == -1 ? "" : QString("%1 - %2").arg(Utility::timeAgoInWords(a._dateTime.toLocalTime()), a._dateTime.toLocalTime().toString(Qt::DefaultLocaleShortDate));
+        // return a._id == -1 ? "" : QString("%1 - %2").arg(Utility::timeAgoInWords(a._dateTime.toLocalTime()),
+        // a._dateTime.toLocalTime().toString(Qt::DefaultLocaleShortDate));
         return a._id == -1 ? "" : Utility::timeAgoInWords(a._dateTime.toLocalTime());
     case AccountConnectedRole:
         return (ast && ast->isConnected());
@@ -291,9 +290,9 @@ void ActivityListModel::startFetchJob()
     if (!_accountState->isConnected()) {
         return;
     }
-    auto *job = new JsonApiJob(_accountState->account(), QLatin1String("ocs/v2.php/apps/activity/api/v2/activity"), this);
-    QObject::connect(job, &JsonApiJob::jsonReceived,
-        this, &ActivityListModel::activitiesReceived);
+    auto *job =
+        new JsonApiJob(_accountState->account(), QLatin1String("ocs/v2.php/apps/activity/api/v2/activity"), this);
+    QObject::connect(job, &JsonApiJob::jsonReceived, this, &ActivityListModel::activitiesReceived);
 
     QUrlQuery params;
     params.addQueryItem(QLatin1String("since"), QString::number(_currentItem));
@@ -344,8 +343,7 @@ void ActivityListModel::activitiesReceived(const QJsonDocument &json, int status
         _currentItem = list.last()._id;
 
         _totalActivitiesFetched++;
-        if (_totalActivitiesFetched == _maxActivities
-            || (_hideOldActivities && a._dateTime < oldestDate)) {
+        if (_totalActivitiesFetched == _maxActivities || (_hideOldActivities && a._dateTime < oldestDate)) {
             _showMoreActivitiesAvailableEntry = true;
             _doneFetching = true;
             break;
@@ -368,7 +366,8 @@ void ActivityListModel::addErrorToActivityList(Activity activity)
 
 void ActivityListModel::addIgnoredFileToList(Activity newActivity)
 {
-    qCInfo(lcActivity) << "First checking for duplicates then add file to the notification list of ignored files: " << newActivity._file;
+    qCInfo(lcActivity) << "First checking for duplicates then add file to the notification list of ignored files: "
+                       << newActivity._file;
 
     bool duplicate = false;
     if (_listOfIgnoredFiles.size() == 0) {
@@ -448,7 +447,8 @@ void ActivityListModel::removeActivityFromActivityList(Activity activity)
 void ActivityListModel::triggerDefaultAction(int activityIndex)
 {
     if (activityIndex < 0 || activityIndex >= _finalList.size()) {
-        qCWarning(lcActivity) << "Couldn't trigger default action at index" << activityIndex << "/ final list size:" << _finalList.size();
+        qCWarning(lcActivity) << "Couldn't trigger default action at index" << activityIndex
+                              << "/ final list size:" << _finalList.size();
         return;
     }
 
@@ -480,9 +480,8 @@ void ActivityListModel::triggerDefaultAction(int activityIndex)
         _currentConflictDialog->setLocalVersionFilename(conflictedPath);
         _currentConflictDialog->setRemoteVersionFilename(basePath);
         _currentConflictDialog->setAttribute(Qt::WA_DeleteOnClose);
-        connect(_currentConflictDialog, &ConflictDialog::accepted, folder, [folder]() {
-            folder->scheduleThisFolderSoon();
-        });
+        connect(_currentConflictDialog, &ConflictDialog::accepted, folder,
+            [folder]() { folder->scheduleThisFolderSoon(); });
         _currentConflictDialog->open();
         ownCloudGui::raiseDialog(_currentConflictDialog);
         return;
@@ -493,11 +492,10 @@ void ActivityListModel::triggerDefaultAction(int activityIndex)
 
         auto folder = FolderMan::instance()->folder(activity._folder);
         const auto folderDir = QDir(folder->path());
-        _currentInvalidFilenameDialog = new InvalidFilenameDialog(_accountState->account(), folder,
-            folderDir.filePath(activity._file));
-        connect(_currentInvalidFilenameDialog, &InvalidFilenameDialog::accepted, folder, [folder]() {
-            folder->scheduleThisFolderSoon();
-        });
+        _currentInvalidFilenameDialog =
+            new InvalidFilenameDialog(_accountState->account(), folder, folderDir.filePath(activity._file));
+        connect(_currentInvalidFilenameDialog, &InvalidFilenameDialog::accepted, folder,
+            [folder]() { folder->scheduleThisFolderSoon(); });
         _currentInvalidFilenameDialog->open();
         ownCloudGui::raiseDialog(_currentInvalidFilenameDialog);
         return;
@@ -514,14 +512,16 @@ void ActivityListModel::triggerDefaultAction(int activityIndex)
 void ActivityListModel::triggerAction(int activityIndex, int actionIndex)
 {
     if (activityIndex < 0 || activityIndex >= _finalList.size()) {
-        qCWarning(lcActivity) << "Couldn't trigger action on activity at index" << activityIndex << "/ final list size:" << _finalList.size();
+        qCWarning(lcActivity) << "Couldn't trigger action on activity at index" << activityIndex
+                              << "/ final list size:" << _finalList.size();
         return;
     }
 
     const auto activity = _finalList[activityIndex];
 
     if (actionIndex < 0 || actionIndex >= activity._links.size()) {
-        qCWarning(lcActivity) << "Couldn't trigger action at index" << actionIndex << "/ actions list size:" << activity._links.size();
+        qCWarning(lcActivity) << "Couldn't trigger action at index" << actionIndex
+                              << "/ actions list size:" << activity._links.size();
         return;
     }
 
@@ -565,7 +565,7 @@ void ActivityListModel::combineActivityLists()
         std::sort(_activityLists.begin(), _activityLists.end());
         resultList.append(_activityLists);
 
-        if(_showMoreActivitiesAvailableEntry) {
+        if (_showMoreActivitiesAvailableEntry) {
             Activity a;
             a._type = Activity::ActivityType;
             a._accName = _accountState->account()->displayName();
@@ -574,7 +574,7 @@ void ActivityListModel::combineActivityLists()
             a._dateTime = QDateTime::currentDateTime();
 
             AccountApp *app = _accountState->findApp(QLatin1String("activity"));
-            if(app) {
+            if (app) {
                 a._link = app->url();
             }
 

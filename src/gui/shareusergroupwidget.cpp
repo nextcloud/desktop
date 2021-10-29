@@ -52,17 +52,13 @@
 #include <cstring>
 
 namespace {
-    const char *passwordIsSetPlaceholder = "●●●●●●●●";
+const char *passwordIsSetPlaceholder = "●●●●●●●●";
 }
 
 namespace OCC {
 
-ShareUserGroupWidget::ShareUserGroupWidget(AccountPtr account,
-    const QString &sharePath,
-    const QString &localPath,
-    SharePermissions maxSharingPermissions,
-    const QString &privateLinkUrl,
-    QWidget *parent)
+ShareUserGroupWidget::ShareUserGroupWidget(AccountPtr account, const QString &sharePath, const QString &localPath,
+    SharePermissions maxSharingPermissions, const QString &privateLinkUrl, QWidget *parent)
     : QWidget(parent)
     , _ui(new Ui::ShareUserGroupWidget)
     , _account(account)
@@ -77,13 +73,11 @@ ShareUserGroupWidget::ShareUserGroupWidget(AccountPtr account,
 
     _ui->setupUi(this);
 
-    //Is this a file or folder?
+    // Is this a file or folder?
     _isFile = QFileInfo(localPath).isFile();
 
     _completer = new QCompleter(this);
-    _completerModel = new ShareeModel(_account,
-        _isFile ? QLatin1String("file") : QLatin1String("folder"),
-        _completer);
+    _completerModel = new ShareeModel(_account, _isFile ? QLatin1String("file") : QLatin1String("folder"), _completer);
     connect(_completerModel, &ShareeModel::shareesReady, this, &ShareUserGroupWidget::slotShareesReady);
     connect(_completerModel, &ShareeModel::displayErrorMessage, this, &ShareUserGroupWidget::displayError);
 
@@ -96,9 +90,7 @@ ShareUserGroupWidget::ShareUserGroupWidget(AccountPtr account,
     searchGloballyAction->setIcon(QIcon(":/client/theme/magnifying-glass.svg"));
     searchGloballyAction->setToolTip(tr("Search globally"));
 
-    connect(searchGloballyAction, &QAction::triggered, this, [this]() {
-        searchForSharees(ShareeModel::GlobalSearch);
-    });
+    connect(searchGloballyAction, &QAction::triggered, this, [this]() { searchForSharees(ShareeModel::GlobalSearch); });
 
     _ui->shareeLineEdit->addAction(searchGloballyAction, QLineEdit::LeadingPosition);
 
@@ -108,22 +100,20 @@ ShareUserGroupWidget::ShareUserGroupWidget(AccountPtr account,
     connect(_manager, &ShareManager::serverError, this, &ShareUserGroupWidget::displayError);
     connect(_ui->shareeLineEdit, &QLineEdit::returnPressed, this, &ShareUserGroupWidget::slotLineEditReturn);
     connect(_ui->confirmShare, &QAbstractButton::clicked, this, &ShareUserGroupWidget::slotLineEditReturn);
-    //TODO connect(_ui->privateLinkText, &QLabel::linkActivated, this, &ShareUserGroupWidget::slotPrivateLinkShare);
+    // TODO connect(_ui->privateLinkText, &QLabel::linkActivated, this, &ShareUserGroupWidget::slotPrivateLinkShare);
 
     // By making the next two QueuedConnections we can override
     // the strings the completer sets on the line edit.
-    connect(_completer, SIGNAL(activated(QModelIndex)), SLOT(slotCompleterActivated(QModelIndex)),
-        Qt::QueuedConnection);
+    connect(
+        _completer, SIGNAL(activated(QModelIndex)), SLOT(slotCompleterActivated(QModelIndex)), Qt::QueuedConnection);
     connect(_completer, SIGNAL(highlighted(QModelIndex)), SLOT(slotCompleterHighlighted(QModelIndex)),
         Qt::QueuedConnection);
 
     // Queued connection so this signal is recieved after textChanged
-    connect(_ui->shareeLineEdit, &QLineEdit::textEdited,
-        this, &ShareUserGroupWidget::slotLineEditTextEdited, Qt::QueuedConnection);
+    connect(_ui->shareeLineEdit, &QLineEdit::textEdited, this, &ShareUserGroupWidget::slotLineEditTextEdited,
+        Qt::QueuedConnection);
     _ui->shareeLineEdit->installEventFilter(this);
-    connect(&_completionTimer, &QTimer::timeout, this, [this]() {
-        searchForSharees(ShareeModel::LocalSearch);
-    });
+    connect(&_completionTimer, &QTimer::timeout, this, [this]() { searchForSharees(ShareeModel::LocalSearch); });
     _completionTimer.setSingleShot(true);
     _completionTimer.setInterval(600);
 
@@ -133,7 +123,7 @@ ShareUserGroupWidget::ShareUserGroupWidget(AccountPtr account,
     // Setup the sharee search progress indicator
     //_ui->shareeHorizontalLayout->addWidget(&_pi_sharee);
 
-    _parentScrollArea = parentWidget()->findChild<QScrollArea*>("scrollArea");
+    _parentScrollArea = parentWidget()->findChild<QScrollArea *>("scrollArea");
 
     customizeStyle();
 }
@@ -167,9 +157,7 @@ void ShareUserGroupWidget::slotLineEditReturn()
     const auto text = _ui->shareeLineEdit->text();
     for (int i = 0; i < _completerModel->rowCount(); ++i) {
         const auto sharee = _completerModel->getSharee(i);
-        if (sharee->format() == text
-            || sharee->displayName() == text
-            || sharee->shareWith() == text) {
+        if (sharee->format() == text || sharee->displayName() == text || sharee->shareWith() == text) {
             slotCompleterActivated(_completerModel->index(i));
             // make sure we do not send the same item twice (because return is called when we press
             // return to activate an item inthe completer)
@@ -211,7 +199,8 @@ void ShareUserGroupWidget::getShares()
 
 void ShareUserGroupWidget::slotShareCreated(const QSharedPointer<Share> &share)
 {
-    if (share && _account->capabilities().shareEmailPasswordEnabled() && !_account->capabilities().shareEmailPasswordEnforced()) {
+    if (share && _account->capabilities().shareEmailPasswordEnabled()
+        && !_account->capabilities().shareEmailPasswordEnforced()) {
         // remember this share Id so we can set it's password Line Edit to focus later
         _lastCreatedShareId = share->getId();
     }
@@ -235,21 +224,21 @@ void ShareUserGroupWidget::slotSharesFetched(const QList<QSharedPointer<Share>> 
     foreach (const auto &share, shares) {
         // We don't handle link shares, only TypeUser or TypeGroup
         if (share->getShareType() == Share::TypeLink) {
-            if(!share->getUidOwner().isEmpty() &&
-                    share->getUidOwner() != share->account()->davUser()){
+            if (!share->getUidOwner().isEmpty() && share->getUidOwner() != share->account()->davUser()) {
                 linkOwners.append(share->getOwnerDisplayName());
-             }
+            }
             continue;
         }
 
         // the owner of the file that shared it first
         // leave out if it's the current user
-        if(x == 0 && !share->getUidOwner().isEmpty() && !(share->getUidOwner() == _account->credentials()->user())) {
+        if (x == 0 && !share->getUidOwner().isEmpty() && !(share->getUidOwner() == _account->credentials()->user())) {
             _ui->mainOwnerLabel->setText(QString("Shared with you by ").append(share->getOwnerDisplayName()));
         }
 
 
-        Q_ASSERT(share->getShareType() == Share::TypeUser || share->getShareType() == Share::TypeGroup || share->getShareType() == Share::TypeEmail || share->getShareType() == Share::TypeRoom);
+        Q_ASSERT(share->getShareType() == Share::TypeUser || share->getShareType() == Share::TypeGroup
+            || share->getShareType() == Share::TypeEmail || share->getShareType() == Share::TypeRoom);
         auto userGroupShare = qSharedPointerDynamicCast<UserGroupShare>(share);
         auto *s = new ShareUserLine(_account, userGroupShare, _maxSharingPermissions, _isFile, _parentScrollArea);
         connect(s, &ShareUserLine::resizeRequested, this, &ShareUserGroupWidget::slotAdjustScrollWidgetSize);
@@ -263,7 +252,8 @@ void ShareUserGroupWidget::slotSharesFetched(const QList<QSharedPointer<Share>> 
 
         if (!_lastCreatedShareId.isEmpty() && share->getId() == _lastCreatedShareId) {
             _lastCreatedShareId = QString();
-            if (_account->capabilities().shareEmailPasswordEnabled() && !_account->capabilities().shareEmailPasswordEnforced()) {
+            if (_account->capabilities().shareEmailPasswordEnabled()
+                && !_account->capabilities().shareEmailPasswordEnforced()) {
                 justCreatedShareThatNeedsPassword = s;
             }
         }
@@ -294,7 +284,8 @@ void ShareUserGroupWidget::slotSharesFetched(const QList<QSharedPointer<Share>> 
     activateShareeLineEdit();
 
     if (justCreatedShareThatNeedsPassword) {
-        // always set focus to a password Line Edit when the new email share is created on a server with optional passwords enabled for email shares
+        // always set focus to a password Line Edit when the new email share is created on a server with optional
+        // passwords enabled for email shares
         justCreatedShareThatNeedsPassword->focusPasswordLineEdit();
     }
 }
@@ -323,9 +314,8 @@ void ShareUserGroupWidget::slotPrivateLinkShare()
     menu->setAttribute(Qt::WA_DeleteOnClose);
 
     // this icon is not handled by slotStyleChanged() -> customizeStyle but we can live with that
-    menu->addAction(Theme::createColorAwareIcon(":/client/theme/copy.svg"),
-                    tr("Copy link"),
-        this, SLOT(slotPrivateLinkCopy()));
+    menu->addAction(
+        Theme::createColorAwareIcon(":/client/theme/copy.svg"), tr("Copy link"), this, SLOT(slotPrivateLinkCopy()));
 
     menu->exec(QCursor::pos());
 }
@@ -354,15 +344,15 @@ void ShareUserGroupWidget::slotCompleterActivated(const QModelIndex &index)
         return;
     }
 
-// TODO Progress Indicator where should it go?
-//    auto indicator = new QProgressIndicator(viewPort);
-//    indicator->startAnimation();
-//    if (layout->count() == 1) {
-//        // No shares yet! Remove the label, add some stretch.
-//        delete layout->itemAt(0)->widget();
-//        layout->addStretch(1);
-//    }
-//    layout->insertWidget(layout->count() - 1, indicator);
+    // TODO Progress Indicator where should it go?
+    //    auto indicator = new QProgressIndicator(viewPort);
+    //    indicator->startAnimation();
+    //    if (layout->count() == 1) {
+    //        // No shares yet! Remove the label, add some stretch.
+    //        delete layout->itemAt(0)->widget();
+    //        layout->addStretch(1);
+    //    }
+    //    layout->insertWidget(layout->count() - 1, indicator);
 
     /*
      * Don't send the reshare permissions for federated shares for servers <9.1
@@ -371,30 +361,25 @@ void ShareUserGroupWidget::slotCompleterActivated(const QModelIndex &index)
      */
 
     _lastCreatedShareId = QString();
-    
+
     QString password;
     if (sharee->type() == Sharee::Email && _account->capabilities().shareEmailPasswordEnforced()) {
         _ui->shareeLineEdit->clear();
         // always show a dialog for password-enforced email shares
         bool ok = false;
-        
+
         do {
-            password = QInputDialog::getText(
-                this,
-                tr("Password for share required"),
-                tr("Please enter a password for your email share:"),
-                QLineEdit::Password,
-                QString(),
-                &ok);
+            password = QInputDialog::getText(this, tr("Password for share required"),
+                tr("Please enter a password for your email share:"), QLineEdit::Password, QString(), &ok);
         } while (password.isEmpty() && ok);
-        
+
         if (!ok) {
             return;
         }
     }
-    
-    _manager->createShare(_sharePath, Share::ShareType(sharee->type()),
-        sharee->shareWith(), _maxSharingPermissions, password);
+
+    _manager->createShare(
+        _sharePath, Share::ShareType(sharee->type()), sharee->shareWith(), _maxSharingPermissions, password);
 
     _ui->shareeLineEdit->setEnabled(false);
     _ui->shareeLineEdit->clear();
@@ -434,10 +419,7 @@ void ShareUserGroupWidget::slotPrivateLinkCopy()
 
 void ShareUserGroupWidget::slotPrivateLinkEmail()
 {
-    Utility::openEmailComposer(
-        tr("I shared something with you"),
-        _privateLinkUrl,
-        this);
+    Utility::openEmailComposer(tr("I shared something with you"), _privateLinkUrl, this);
 }
 
 void ShareUserGroupWidget::slotStyleChanged()
@@ -455,7 +437,8 @@ void ShareUserGroupWidget::customizeStyle()
     _pi_sharee.setColor(QGuiApplication::palette().color(QPalette::Text));
 
     foreach (auto pi, _parentScrollArea->findChildren<QProgressIndicator *>()) {
-        pi->setColor(QGuiApplication::palette().color(QPalette::Text));;
+        pi->setColor(QGuiApplication::palette().color(QPalette::Text));
+        ;
     }
 }
 
@@ -465,11 +448,8 @@ void ShareUserGroupWidget::activateShareeLineEdit()
     _ui->shareeLineEdit->setFocus();
 }
 
-ShareUserLine::ShareUserLine(AccountPtr account,
-                             QSharedPointer<UserGroupShare> share,
-                             SharePermissions maxSharingPermissions,
-                             bool isFile,
-                             QWidget *parent)
+ShareUserLine::ShareUserLine(AccountPtr account, QSharedPointer<UserGroupShare> share,
+    SharePermissions maxSharingPermissions, bool isFile, QWidget *parent)
     : QWidget(parent)
     , _ui(new Ui::ShareUserLine)
     , _account(account)
@@ -485,8 +465,9 @@ ShareUserLine::ShareUserLine(AccountPtr account,
     // adds permissions
     // can edit permission
     bool enabled = (maxSharingPermissions & SharePermissionUpdate);
-    if(!_isFile) enabled = enabled && (maxSharingPermissions & SharePermissionCreate &&
-                                      maxSharingPermissions & SharePermissionDelete);
+    if (!_isFile)
+        enabled =
+            enabled && (maxSharingPermissions & SharePermissionCreate && maxSharingPermissions & SharePermissionDelete);
     _ui->permissionsEdit->setEnabled(enabled);
     connect(_ui->permissionsEdit, &QAbstractButton::clicked, this, &ShareUserLine::slotEditPermissionsChanged);
     connect(_ui->noteConfirmButton, &QAbstractButton::clicked, this, &ShareUserLine::onNoteConfirmButtonClicked);
@@ -501,7 +482,7 @@ ShareUserLine::ShareUserLine(AccountPtr account,
 
     // create menu with checkable permissions
     auto *menu = new QMenu(this);
-    _permissionReshare= new QAction(tr("Can reshare"), this);
+    _permissionReshare = new QAction(tr("Can reshare"), this);
     _permissionReshare->setCheckable(true);
     _permissionReshare->setEnabled(maxSharingPermissions & SharePermissionShare);
     menu->addAction(_permissionReshare);
@@ -509,7 +490,8 @@ ShareUserLine::ShareUserLine(AccountPtr account,
 
     showNoteOptions(false);
 
-    const bool isNoteSupported = _share->getShareType() != Share::ShareType::TypeEmail && _share->getShareType() != Share::ShareType::TypeRoom;
+    const bool isNoteSupported =
+        _share->getShareType() != Share::ShareType::TypeEmail && _share->getShareType() != Share::ShareType::TypeRoom;
 
     if (isNoteSupported) {
         _noteLinkAction = new QAction(tr("Note to recipient"));
@@ -541,9 +523,9 @@ ShareUserLine::ShareUserLine(AccountPtr account,
 
     menu->addSeparator();
 
-      // Adds action to delete share widget
-      QIcon deleteicon = QIcon::fromTheme(QLatin1String("user-trash"),QIcon(QLatin1String(":/client/theme/delete.svg")));
-      _deleteShareButton= new QAction(deleteicon,tr("Unshare"), this);
+    // Adds action to delete share widget
+    QIcon deleteicon = QIcon::fromTheme(QLatin1String("user-trash"), QIcon(QLatin1String(":/client/theme/delete.svg")));
+    _deleteShareButton = new QAction(deleteicon, tr("Unshare"), this);
 
     menu->addAction(_deleteShareButton);
     connect(_deleteShareButton, &QAction::triggered, this, &ShareUserLine::on_deleteShareButton_clicked);
@@ -572,12 +554,14 @@ ShareUserLine::ShareUserLine(AccountPtr account,
     }
 
     // Adds action to display password widget (check box)
-    if (_share->getShareType() == Share::TypeEmail && (_share->isPasswordSet() || _account->capabilities().shareEmailPasswordEnabled())) {
+    if (_share->getShareType() == Share::TypeEmail
+        && (_share->isPasswordSet() || _account->capabilities().shareEmailPasswordEnabled())) {
         _passwordProtectLinkAction = new QAction(tr("Password protect"), this);
         _passwordProtectLinkAction->setCheckable(true);
         _passwordProtectLinkAction->setChecked(_share->isPasswordSet());
         // checkbox can be checked/unchedkec if the password is not yet set or if it's not enforced
-        _passwordProtectLinkAction->setEnabled(!_share->isPasswordSet() || !_account->capabilities().shareEmailPasswordEnforced());
+        _passwordProtectLinkAction->setEnabled(
+            !_share->isPasswordSet() || !_account->capabilities().shareEmailPasswordEnforced());
 
         menu->addAction(_passwordProtectLinkAction);
         connect(_passwordProtectLinkAction, &QAction::triggered, this, &ShareUserLine::slotPasswordCheckboxChanged);
@@ -663,7 +647,8 @@ void ShareUserLine::setDefaultAvatar(int avatarSize)
         text-align: center;
         line-height: %2px;
         font-size: %2px;
-    })").arg(backgroundColor.name(), QString::number(avatarSize / 2));
+    })")
+                              .arg(backgroundColor.name(), QString::number(avatarSize / 2));
     _ui->avatar->setStyleSheet(style);
 
     const auto pixmap = pixmapForShareeType(_share->getShareWith()->type(), backgroundColor);
@@ -718,7 +703,6 @@ void ShareUserLine::slotEditPermissionsChanged()
     //  folders edit = CREATE, READ, UPDATE, DELETE
     //  files edit = READ + UPDATE
     if (_ui->permissionsEdit->checkState() == Qt::Checked) {
-
         /*
          * Files can't have create or delete permisisons
          */
@@ -734,7 +718,7 @@ void ShareUserLine::slotEditPermissionsChanged()
         }
     }
 
-    if(_isFile && _permissionReshare->isEnabled() && _permissionReshare->isChecked())
+    if (_isFile && _permissionReshare->isEnabled() && _permissionReshare->isChecked())
         permissions |= SharePermissionShare;
 
     _share->setPermissions(permissions);
@@ -801,7 +785,8 @@ void ShareUserLine::slotDeleteAnimationFinished()
 
 void ShareUserLine::refreshPasswordOptions()
 {
-    const bool isPasswordEnabled = _share->getShareType() == Share::TypeEmail && _passwordProtectLinkAction->isChecked();
+    const bool isPasswordEnabled =
+        _share->getShareType() == Share::TypeEmail && _passwordProtectLinkAction->isChecked();
 
     _ui->passwordLabel->setVisible(isPasswordEnabled);
     _ui->lineEdit_password->setEnabled(isPasswordEnabled);
@@ -828,7 +813,8 @@ void ShareUserLine::slotPasswordSet()
 
     _ui->lineEdit_password->setText("");
 
-    _passwordProtectLinkAction->setEnabled(!_share->isPasswordSet() || !_account->capabilities().shareEmailPasswordEnforced());
+    _passwordProtectLinkAction->setEnabled(
+        !_share->isPasswordSet() || !_account->capabilities().shareEmailPasswordEnforced());
 
     refreshPasswordLineEditPlaceholder();
 
@@ -885,22 +871,21 @@ void ShareUserLine::displayPermissions()
 {
     auto perm = _share->getPermissions();
 
-//  folders edit = CREATE, READ, UPDATE, DELETE
-//  files edit = READ + UPDATE
-    if (perm & SharePermissionUpdate && (_isFile ||
-                                         (perm & SharePermissionCreate && perm & SharePermissionDelete))) {
+    //  folders edit = CREATE, READ, UPDATE, DELETE
+    //  files edit = READ + UPDATE
+    if (perm & SharePermissionUpdate && (_isFile || (perm & SharePermissionCreate && perm & SharePermissionDelete))) {
         _ui->permissionsEdit->setCheckState(Qt::Checked);
     } else if (!_isFile && perm & (SharePermissionUpdate | SharePermissionCreate | SharePermissionDelete)) {
         _ui->permissionsEdit->setCheckState(Qt::PartiallyChecked);
-    } else if(perm & SharePermissionRead) {
+    } else if (perm & SharePermissionRead) {
         _ui->permissionsEdit->setCheckState(Qt::Unchecked);
     }
 
-//  edit is independent of reshare
+    //  edit is independent of reshare
     if (perm & SharePermissionShare)
         _permissionReshare->setChecked(true);
 
-    if(!_isFile){
+    if (!_isFile) {
         _permissionCreate->setChecked(perm & SharePermissionCreate);
         _permissionChange->setChecked(perm & SharePermissionUpdate);
         _permissionDelete->setChecked(perm & SharePermissionDelete);
@@ -921,13 +906,15 @@ void ShareUserLine::customizeStyle()
 {
     _ui->permissionToolButton->setIcon(Theme::createColorAwareIcon(":/client/theme/more.svg"));
 
-    QIcon deleteicon = QIcon::fromTheme(QLatin1String("user-trash"),Theme::createColorAwareIcon(QLatin1String(":/client/theme/delete.svg")));
+    QIcon deleteicon = QIcon::fromTheme(
+        QLatin1String("user-trash"), Theme::createColorAwareIcon(QLatin1String(":/client/theme/delete.svg")));
     _deleteShareButton->setIcon(deleteicon);
 
     _ui->noteConfirmButton->setIcon(Theme::createColorAwareIcon(":/client/theme/confirm.svg"));
     _ui->progressIndicator->setColor(QGuiApplication::palette().color(QPalette::WindowText));
 
-    // make sure to force BackgroundRole to QPalette::WindowText for a lable, because it's parent always has a different role set that applies to children unless customized
+    // make sure to force BackgroundRole to QPalette::WindowText for a lable, because it's parent always has a different
+    // role set that applies to children unless customized
     _ui->errorLabel->setBackgroundRole(QPalette::WindowText);
 }
 

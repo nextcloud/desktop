@@ -38,24 +38,24 @@ public:
     bool socketApiPinStateActionsShown() const override { return true; }
     bool isHydrating() const override;
 
-    Result<void, QString> updateMetadata(const QString &filePath, time_t modtime, qint64 size, const QByteArray &fileId) override;
+    Result<void, QString> updateMetadata(
+        const QString &filePath, time_t modtime, qint64 size, const QByteArray &fileId) override;
 
     Result<void, QString> createPlaceholder(const SyncFileItem &item) override;
     Result<void, QString> dehydratePlaceholder(const SyncFileItem &item) override;
-    Result<Vfs::ConvertToPlaceholderResult, QString> convertToPlaceholder(const QString &filename, const SyncFileItem &item, const QString &) override;
+    Result<Vfs::ConvertToPlaceholderResult, QString> convertToPlaceholder(
+        const QString &filename, const SyncFileItem &item, const QString &) override;
 
     bool needsMetadataUpdate(const SyncFileItem &) override { return false; }
     bool isDehydratedPlaceholder(const QString &filePath) override;
     bool statTypeVirtualFile(csync_file_stat_t *stat, void *stat_data) override;
 
-    bool setPinState(const QString &folderPath, PinState state) override
-    { return setPinStateInDb(folderPath, state); }
-    Optional<PinState> pinState(const QString &folderPath) override
-    { return pinStateInDb(folderPath); }
+    bool setPinState(const QString &folderPath, PinState state) override { return setPinStateInDb(folderPath, state); }
+    Optional<PinState> pinState(const QString &folderPath) override { return pinStateInDb(folderPath); }
     AvailabilityResult availability(const QString &folderPath) override;
 
 public slots:
-    void fileStatusChanged(const QString &, SyncFileStatus) override {}
+    void fileStatusChanged(const QString &, SyncFileStatus) override { }
 
 protected:
     void startImpl(const VfsSetupParams &params) override;

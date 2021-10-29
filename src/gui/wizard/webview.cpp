@@ -43,11 +43,12 @@ Q_SIGNALS:
     void urlCatched(QString user, QString pass, QString host);
 };
 
-class WebEnginePage : public QWebEnginePage {
+class WebEnginePage : public QWebEnginePage
+{
     Q_OBJECT
 public:
-    WebEnginePage(QWebEngineProfile *profile, QObject* parent = nullptr);
-    QWebEnginePage * createWindow(QWebEnginePage::WebWindowType type) override;
+    WebEnginePage(QWebEngineProfile *profile, QObject *parent = nullptr);
+    QWebEnginePage *createWindow(QWebEnginePage::WebWindowType type) override;
     void setUrl(const QUrl &url);
 
 protected:
@@ -61,16 +62,17 @@ private:
 
 // We need a separate class here, since we cannot simply return the same WebEnginePage object
 // this leads to a strage segfault somewhere deep inside of the QWebEngine code
-class ExternalWebEnginePage : public QWebEnginePage {
+class ExternalWebEnginePage : public QWebEnginePage
+{
     Q_OBJECT
 public:
-    ExternalWebEnginePage(QWebEngineProfile *profile, QObject* parent = nullptr);
+    ExternalWebEnginePage(QWebEngineProfile *profile, QObject *parent = nullptr);
     bool acceptNavigationRequest(const QUrl &url, QWebEnginePage::NavigationType type, bool isMainFrame) override;
 };
 
 WebView::WebView(QWidget *parent)
-    : QWidget(parent),
-      _ui()
+    : QWidget(parent)
+    , _ui()
 {
     _ui.setupUi(this);
 #if QT_VERSION >= 0x051200
@@ -94,7 +96,7 @@ WebView::WebView(QWidget *parent)
      * code from: http://code.qt.io/cgit/qt/qtbase.git/tree/src/network/access/qhttpnetworkconnection.cpp
      */
     {
-        QString systemLocale = QLocale::system().name().replace(QChar::fromLatin1('_'),QChar::fromLatin1('-'));
+        QString systemLocale = QLocale::system().name().replace(QChar::fromLatin1('_'), QChar::fromLatin1('-'));
         QString acceptLanguage;
         if (systemLocale == QLatin1String("C")) {
             acceptLanguage = QString::fromLatin1("en,*");
@@ -113,11 +115,13 @@ WebView::WebView(QWidget *parent)
     connect(_schemeHandler, &WebViewPageUrlSchemeHandler::urlCatched, this, &WebView::urlCatched);
 }
 
-void WebView::setUrl(const QUrl &url) {
+void WebView::setUrl(const QUrl &url)
+{
     _page->setUrl(url);
 }
 
-WebView::~WebView() {
+WebView::~WebView()
+{
     /*
      * The Qt implmentation deletes children in the order they are added to the
      * object tree, so in this case _page is deleted after _profile, which
@@ -131,20 +135,22 @@ WebView::~WebView() {
 }
 
 WebViewPageUrlRequestInterceptor::WebViewPageUrlRequestInterceptor(QObject *parent)
-    : QWebEngineUrlRequestInterceptor(parent) {
-
+    : QWebEngineUrlRequestInterceptor(parent)
+{
 }
 
-void WebViewPageUrlRequestInterceptor::interceptRequest(QWebEngineUrlRequestInfo &info) {
+void WebViewPageUrlRequestInterceptor::interceptRequest(QWebEngineUrlRequestInfo &info)
+{
     info.setHttpHeader("OCS-APIREQUEST", "true");
 }
 
 WebViewPageUrlSchemeHandler::WebViewPageUrlSchemeHandler(QObject *parent)
-    : QWebEngineUrlSchemeHandler(parent) {
-
+    : QWebEngineUrlSchemeHandler(parent)
+{
 }
 
-void WebViewPageUrlSchemeHandler::requestStarted(QWebEngineUrlRequestJob *request) {
+void WebViewPageUrlSchemeHandler::requestStarted(QWebEngineUrlRequestJob *request)
+{
     QUrl url = request->requestUrl();
 
     QString path = url.path().mid(1); // get undecoded path
@@ -181,11 +187,13 @@ void WebViewPageUrlSchemeHandler::requestStarted(QWebEngineUrlRequestJob *reques
 }
 
 
-WebEnginePage::WebEnginePage(QWebEngineProfile *profile, QObject* parent) : QWebEnginePage(profile, parent) {
-
+WebEnginePage::WebEnginePage(QWebEngineProfile *profile, QObject *parent)
+    : QWebEnginePage(profile, parent)
+{
 }
 
-QWebEnginePage * WebEnginePage::createWindow(QWebEnginePage::WebWindowType type) {
+QWebEnginePage *WebEnginePage::createWindow(QWebEnginePage::WebWindowType type)
+{
     Q_UNUSED(type);
     auto *view = new ExternalWebEnginePage(this->profile());
     return view;
@@ -208,9 +216,10 @@ bool WebEnginePage::certificateError(const QWebEngineCertificateError &certifica
      */
     QMessageBox messageBox;
     messageBox.setText(tr("Invalid certificate detected"));
-    messageBox.setInformativeText(tr("The host \"%1\" provided an invalid certificate. Continue?").arg(certificateError.url().host()));
+    messageBox.setInformativeText(
+        tr("The host \"%1\" provided an invalid certificate. Continue?").arg(certificateError.url().host()));
     messageBox.setIcon(QMessageBox::Warning);
-    messageBox.setStandardButtons(QMessageBox::Yes|QMessageBox::No);
+    messageBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
     messageBox.setDefaultButton(QMessageBox::No);
 
     int ret = messageBox.exec();
@@ -224,18 +233,22 @@ bool WebEnginePage::acceptNavigationRequest(const QUrl &url, QWebEnginePage::Nav
     Q_UNUSED(isMainFrame);
 
     if (_enforceHttps && url.scheme() != QStringLiteral("https") && url.scheme() != QStringLiteral("nc")) {
-        QMessageBox::warning(nullptr, "Security warning", "Can not follow non https link on a https website. This might be a security issue. Please contact your administrator");
+        QMessageBox::warning(nullptr, "Security warning",
+            "Can not follow non https link on a https website. This might be a security issue. Please contact your "
+            "administrator");
         return false;
     }
     return true;
 }
 
-ExternalWebEnginePage::ExternalWebEnginePage(QWebEngineProfile *profile, QObject* parent) : QWebEnginePage(profile, parent) {
-
+ExternalWebEnginePage::ExternalWebEnginePage(QWebEngineProfile *profile, QObject *parent)
+    : QWebEnginePage(profile, parent)
+{
 }
 
 
-bool ExternalWebEnginePage::acceptNavigationRequest(const QUrl &url, QWebEnginePage::NavigationType type, bool isMainFrame)
+bool ExternalWebEnginePage::acceptNavigationRequest(
+    const QUrl &url, QWebEnginePage::NavigationType type, bool isMainFrame)
 {
     Q_UNUSED(type);
     Q_UNUSED(isMainFrame);

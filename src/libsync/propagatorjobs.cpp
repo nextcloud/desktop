@@ -100,7 +100,8 @@ void PropagateLocalRemove::start()
     qCInfo(lcPropagateLocalRemove) << "Going to delete:" << filename;
 
     if (propagator()->localFileNameClash(_item->_file)) {
-        done(SyncFileItem::NormalError, tr("Could not remove %1 because of a local file name clash").arg(QDir::toNativeSeparators(filename)));
+        done(SyncFileItem::NormalError,
+            tr("Could not remove %1 because of a local file name clash").arg(QDir::toNativeSeparators(filename)));
         return;
     }
 
@@ -118,8 +119,7 @@ void PropagateLocalRemove::start()
                 return;
             }
         } else {
-            if (FileSystem::fileExists(filename)
-                && !FileSystem::remove(filename, &removeError)) {
+            if (FileSystem::fileExists(filename) && !FileSystem::remove(filename, &removeError)) {
                 done(SyncFileItem::NormalError, removeError);
                 return;
             }
@@ -156,9 +156,7 @@ void PropagateLocalMkdir::startLocalMkdir()
         if (_deleteExistingFile) {
             QString removeError;
             if (!FileSystem::remove(newDirStr, &removeError)) {
-                done(SyncFileItem::NormalError,
-                    tr("could not delete file %1, error: %2")
-                        .arg(newDirStr, removeError));
+                done(SyncFileItem::NormalError, tr("could not delete file %1, error: %2").arg(newDirStr, removeError));
                 return;
             }
         } else if (_item->_instruction == CSYNC_INSTRUCTION_CONFLICT) {
@@ -171,7 +169,8 @@ void PropagateLocalMkdir::startLocalMkdir()
     }
 
     if (Utility::fsCasePreserving() && propagator()->localFileNameClash(_item->_file)) {
-        qCWarning(lcPropagateLocalMkdir) << "New folder to create locally already exists with different case:" << _item->_file;
+        qCWarning(lcPropagateLocalMkdir) << "New folder to create locally already exists with different case:"
+                                         << _item->_file;
         done(SyncFileItem::NormalError, tr("Attention, possible case sensitivity clash with %1").arg(newDirStr));
         return;
     }
@@ -199,9 +198,8 @@ void PropagateLocalMkdir::startLocalMkdir()
     }
     propagator()->_journal->commit("localMkdir");
 
-    auto resultStatus = _item->_instruction == CSYNC_INSTRUCTION_CONFLICT
-        ? SyncFileItem::Conflict
-        : SyncFileItem::Success;
+    auto resultStatus =
+        _item->_instruction == CSYNC_INSTRUCTION_CONFLICT ? SyncFileItem::Conflict : SyncFileItem::Success;
     done(resultStatus);
 }
 
@@ -274,8 +272,7 @@ void PropagateLocalRename::start()
             return;
         }
     }
-    if (pinState && *pinState != PinState::Inherited
-        && !vfs->setPinState(_item->_renameTarget, *pinState)) {
+    if (pinState && *pinState != PinState::Inherited && !vfs->setPinState(_item->_renameTarget, *pinState)) {
         done(SyncFileItem::NormalError, tr("Error setting pin state"));
         return;
     }

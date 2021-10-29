@@ -41,11 +41,13 @@ public:
     bool socketApiPinStateActionsShown() const override;
     bool isHydrating() const override;
 
-    Result<void, QString> updateMetadata(const QString &filePath, time_t modtime, qint64 size, const QByteArray &fileId) override;
+    Result<void, QString> updateMetadata(
+        const QString &filePath, time_t modtime, qint64 size, const QByteArray &fileId) override;
 
     Result<void, QString> createPlaceholder(const SyncFileItem &item) override;
     Result<void, QString> dehydratePlaceholder(const SyncFileItem &item) override;
-    Result<Vfs::ConvertToPlaceholderResult, QString> convertToPlaceholder(const QString &filename, const SyncFileItem &item, const QString &replacesFile) override;
+    Result<Vfs::ConvertToPlaceholderResult, QString> convertToPlaceholder(
+        const QString &filename, const SyncFileItem &item, const QString &replacesFile) override;
 
     bool needsMetadataUpdate(const SyncFileItem &) override;
     bool isDehydratedPlaceholder(const QString &filePath) override;
@@ -76,15 +78,18 @@ private:
     void onHydrationJobFinished(HydrationJob *job);
     HydrationJob *findHydrationJob(const QString &requestId) const;
 
-    struct HasHydratedDehydrated {
+    struct HasHydratedDehydrated
+    {
         bool hasHydrated = false;
         bool hasDehydrated = false;
     };
-    struct HydratationAndPinStates {
+    struct HydratationAndPinStates
+    {
         Optional<PinState> pinState;
         HasHydratedDehydrated hydrationStatus;
     };
-    HydratationAndPinStates computeRecursiveHydrationAndPinStates(const QString &path, const Optional<PinState> &basePinState);
+    HydratationAndPinStates computeRecursiveHydrationAndPinStates(
+        const QString &path, const Optional<PinState> &basePinState);
 
     QScopedPointer<VfsCfApiPrivate> d;
 };

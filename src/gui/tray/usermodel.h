@@ -29,12 +29,14 @@ class User : public QObject
     Q_PROPERTY(QUrl statusIcon READ statusIcon NOTIFY statusChanged)
     Q_PROPERTY(QString statusEmoji READ statusEmoji NOTIFY statusChanged)
     Q_PROPERTY(QString statusMessage READ statusMessage NOTIFY statusChanged)
-    Q_PROPERTY(bool desktopNotificationsAllowed READ isDesktopNotificationsAllowed NOTIFY desktopNotificationsAllowedChanged)
+    Q_PROPERTY(
+        bool desktopNotificationsAllowed READ isDesktopNotificationsAllowed NOTIFY desktopNotificationsAllowedChanged)
     Q_PROPERTY(bool hasLocalFolder READ hasLocalFolder NOTIFY hasLocalFolderChanged)
     Q_PROPERTY(bool serverHasTalk READ serverHasTalk NOTIFY serverHasTalkChanged)
     Q_PROPERTY(QString avatar READ avatarUrl NOTIFY avatarChanged)
     Q_PROPERTY(bool isConnected READ isConnected NOTIFY accountStateChanged)
-    Q_PROPERTY(UnifiedSearchResultsListModel* unifiedSearchResultsListModel READ getUnifiedSearchResultsListModel CONSTANT)
+    Q_PROPERTY(
+        UnifiedSearchResultsListModel *unifiedSearchResultsListModel READ getUnifiedSearchResultsListModel CONSTANT)
 public:
     User(AccountStatePtr &account, const bool &isCurrent = false, QObject *parent = nullptr);
 
@@ -82,7 +84,8 @@ public slots:
     void slotItemCompleted(const QString &folder, const SyncFileItemPtr &item);
     void slotProgressInfo(const QString &folder, const ProgressInfo &progress);
     void slotAddError(const QString &folderAlias, const QString &message, ErrorCategory category);
-    void slotAddErrorToGui(const QString &folderAlias, SyncFileItem::Status status, const QString &errorMessage, const QString &subject = {});
+    void slotAddErrorToGui(const QString &folderAlias, SyncFileItem::Status status, const QString &errorMessage,
+        const QString &subject = {});
     void slotNotificationRequestFinished(int statusCode);
     void slotNotifyNetworkError(QNetworkReply *reply);
     void slotEndNotificationRequest(int replyCode);
@@ -134,7 +137,7 @@ private:
 class UserModel : public QAbstractListModel
 {
     Q_OBJECT
-    Q_PROPERTY(User* currentUser READ currentUser NOTIFY newUserSelected)
+    Q_PROPERTY(User *currentUser READ currentUser NOTIFY newUserSelected)
     Q_PROPERTY(int currentUserId READ currentUserId NOTIFY newUserSelected)
 public:
     static UserModel *instance();
@@ -196,7 +199,7 @@ protected:
 private:
     static UserModel *_instance;
     UserModel(QObject *parent = nullptr);
-    QList<User*> _users;
+    QList<User *> _users;
     int _currentUserId = 0;
     bool _init = true;
 
@@ -221,11 +224,7 @@ public:
 
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 
-    enum UserAppsRoles {
-        NameRole = Qt::UserRole + 1,
-        UrlRole,
-        IconUrlRole
-    };
+    enum UserAppsRoles { NameRole = Qt::UserRole + 1, UrlRole, IconUrlRole };
 
     void buildAppList();
 

@@ -36,8 +36,8 @@ public:
 
     void clearSessionCookies();
 
-    using QNetworkCookieJar::setAllCookies;
     using QNetworkCookieJar::allCookies;
+    using QNetworkCookieJar::setAllCookies;
 
     bool save(const QString &fileName);
     bool restore(const QString &fileName);

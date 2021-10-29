@@ -56,14 +56,18 @@ void WelcomePage::styleSlideShow()
     const auto theme = Theme::instance();
     const auto backgroundColor = palette().window().color();
 
-    const auto wizardNextcloudIconFileName = theme->isBranded() ? Theme::hidpiFileName("wizard-nextcloud.png", backgroundColor)
-                                                                : Theme::hidpiFileName(":/client/theme/colored/wizard-nextcloud.png");
-    const auto wizardFilesIconFileName = theme->isBranded() ? Theme::hidpiFileName("wizard-files.png", backgroundColor)
-                                                            : Theme::hidpiFileName(":/client/theme/colored/wizard-files.png");
-    const auto wizardGroupwareIconFileName = theme->isBranded() ? Theme::hidpiFileName("wizard-groupware.png", backgroundColor)
-                                                                : Theme::hidpiFileName(":/client/theme/colored/wizard-groupware.png");
-    const auto wizardTalkIconFileName = theme->isBranded() ? Theme::hidpiFileName("wizard-talk.png", backgroundColor)
-                                                           : Theme::hidpiFileName(":/client/theme/colored/wizard-talk.png");
+    const auto wizardNextcloudIconFileName = theme->isBranded()
+        ? Theme::hidpiFileName("wizard-nextcloud.png", backgroundColor)
+        : Theme::hidpiFileName(":/client/theme/colored/wizard-nextcloud.png");
+    const auto wizardFilesIconFileName = theme->isBranded()
+        ? Theme::hidpiFileName("wizard-files.png", backgroundColor)
+        : Theme::hidpiFileName(":/client/theme/colored/wizard-files.png");
+    const auto wizardGroupwareIconFileName = theme->isBranded()
+        ? Theme::hidpiFileName("wizard-groupware.png", backgroundColor)
+        : Theme::hidpiFileName(":/client/theme/colored/wizard-groupware.png");
+    const auto wizardTalkIconFileName = theme->isBranded()
+        ? Theme::hidpiFileName("wizard-talk.png", backgroundColor)
+        : Theme::hidpiFileName(":/client/theme/colored/wizard-talk.png");
 
     _ui->slideShow->addSlide(wizardNextcloudIconFileName, tr("Keep your data secure and under your control"));
     _ui->slideShow->addSlide(wizardFilesIconFileName, tr("Secure collaboration & file exchange"));
@@ -113,7 +117,8 @@ void WelcomePage::setupHostYourOwnServerLabel()
 {
     _ui->hostYourOwnServerLabel->setText(tr("Host your own server"));
     _ui->hostYourOwnServerLabel->setAlignment(Qt::AlignCenter);
-    _ui->hostYourOwnServerLabel->setUrl(QUrl("https://docs.nextcloud.com/server/latest/admin_manual/installation/#installation"));
+    _ui->hostYourOwnServerLabel->setUrl(
+        QUrl("https://docs.nextcloud.com/server/latest/admin_manual/installation/#installation"));
 }
 
 int WelcomePage::nextId() const

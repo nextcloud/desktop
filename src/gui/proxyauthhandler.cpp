@@ -49,9 +49,7 @@ ProxyAuthHandler::~ProxyAuthHandler()
     delete _dialog;
 }
 
-void ProxyAuthHandler::handleProxyAuthenticationRequired(
-    const QNetworkProxy &proxy,
-    QAuthenticator *authenticator)
+void ProxyAuthHandler::handleProxyAuthenticationRequired(const QNetworkProxy &proxy, QAuthenticator *authenticator)
 {
     if (!_dialog) {
         return;
@@ -99,8 +97,8 @@ void ProxyAuthHandler::handleProxyAuthenticationRequired(
     // isn't reliable, so we also invalidate credentials if we previously
     // gave presumably valid credentials to the same QNAM.
     bool invalidated = false;
-    if (!_waitingForDialog && !_waitingForKeychain && (!authenticator->user().isEmpty()
-                                                          || (sending_qnam && _gaveCredentialsTo.contains(sending_qnam)))) {
+    if (!_waitingForDialog && !_waitingForKeychain
+        && (!authenticator->user().isEmpty() || (sending_qnam && _gaveCredentialsTo.contains(sending_qnam)))) {
         qCInfo(lcProxy) << "invalidating old creds" << key;
         _username.clear();
         _password.clear();
@@ -125,11 +123,10 @@ void ProxyAuthHandler::handleProxyAuthenticationRequired(
     authenticator->setPassword(_password);
     if (sending_qnam) {
         _gaveCredentialsTo.insert(sending_qnam);
-        connect(sending_qnam, &QObject::destroyed,
-            this, &ProxyAuthHandler::slotSenderDestroyed);
+        connect(sending_qnam, &QObject::destroyed, this, &ProxyAuthHandler::slotSenderDestroyed);
     }
 }
- 
+
 void ProxyAuthHandler::slotSenderDestroyed(QObject *obj)
 {
     _gaveCredentialsTo.remove(obj);
@@ -147,11 +144,8 @@ bool ProxyAuthHandler::getCredsFromDialog()
     // This function can be reentered while the dialog is open.
     // If that's the case, continue processing the dialog until
     // it's done.
-    if(_dialog) {
-        execAwait(_dialog.data(),
-                  &QDialog::finished,
-                  _waitingForDialog,
-                  QEventLoop::ExcludeSocketNotifiers);
+    if (_dialog) {
+        execAwait(_dialog.data(), &QDialog::finished, _waitingForDialog, QEventLoop::ExcludeSocketNotifiers);
     }
 
     if (_dialog && _dialog->result() == QDialog::Accepted) {
@@ -163,11 +157,9 @@ bool ProxyAuthHandler::getCredsFromDialog()
     return false;
 }
 
-template<class T, typename PointerToMemberFunction>
-void ProxyAuthHandler::execAwait(const T *sender,
-                                 PointerToMemberFunction signal,
-                                 int &counter,
-                                 const QEventLoop::ProcessEventsFlags flags)
+template <class T, typename PointerToMemberFunction>
+void ProxyAuthHandler::execAwait(
+    const T *sender, PointerToMemberFunction signal, int &counter, const QEventLoop::ProcessEventsFlags flags)
 {
     if (!sender) {
         return;
@@ -207,9 +199,7 @@ bool ProxyAuthHandler::getCredsFromKeychain()
     // This really needs the counter and the flag here, because otherwise we get
     // bad behavior when we reenter this code after the flag has been switched
     // but before the while loop has finished.
-    execAwait(_readPasswordJob.data(),
-              &QKeychain::Job::finished,
-              _waitingForKeychain);
+    execAwait(_readPasswordJob.data(), &QKeychain::Job::finished, _waitingForKeychain);
 
     if (_readPasswordJob->error() == NoError) {
         qCInfo(lcProxy) << "got creds for" << _proxy << "from keychain";
@@ -242,9 +232,7 @@ void ProxyAuthHandler::storeCredsInKeychain()
     job->setAutoDelete(false);
     job->start();
 
-    execAwait(job,
-              &QKeychain::Job::finished,
-              _waitingForKeychain);
+    execAwait(job, &QKeychain::Job::finished, _waitingForKeychain);
 
     job->deleteLater();
     if (job->error() != NoError) {

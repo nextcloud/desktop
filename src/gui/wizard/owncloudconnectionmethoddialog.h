@@ -37,12 +37,7 @@ class OwncloudConnectionMethodDialog : public QDialog
 public:
     explicit OwncloudConnectionMethodDialog(QWidget *parent = nullptr);
     ~OwncloudConnectionMethodDialog() override;
-    enum {
-        Closed = 0,
-        No_TLS,
-        Client_Side_TLS,
-        Back
-    };
+    enum { Closed = 0, No_TLS, Client_Side_TLS, Back };
 
     // The URL that was tried
     void setUrl(const QUrl &);

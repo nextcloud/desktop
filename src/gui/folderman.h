@@ -77,7 +77,7 @@ public:
     const Folder::Map &map() const;
 
     /** Adds a folder for an account, ensures the journal is gone and saves it in the settings.
-      */
+     */
     Folder *addFolder(AccountState *accountState, const FolderDefinition &folderDefinition);
 
     /** Removes a folder */
@@ -87,10 +87,10 @@ public:
     Folder *folderForPath(const QString &path);
 
     /**
-      * returns a list of local files that exist on the local harddisk for an
-      * incoming relative server path. The method checks with all existing sync
-      * folders.
-      */
+     * returns a list of local files that exist on the local harddisk for an
+     * incoming relative server path. The method checks with all existing sync
+     * folders.
+     */
     QStringList findFileInLocalFolders(const QString &relPath, const AccountPtr acc);
 
     /** Returns the folder by alias or \c nullptr if no folder with the alias exists. */
@@ -116,8 +116,8 @@ public:
     static QString trayTooltipStatusString(SyncResult::Status syncStatus, bool hasUnresolvedConflicts, bool paused);
 
     /// Compute status summarizing multiple folders
-    static void trayOverallStatus(const QList<Folder *> &folders,
-        SyncResult::Status *status, bool *unresolvedConflicts);
+    static void trayOverallStatus(
+        const QList<Folder *> &folders, SyncResult::Status *status, bool *unresolvedConflicts);
 
     // Escaping of the alias which is used in QSettings AND the file
     // system, thus need to be escaped.
@@ -203,10 +203,10 @@ public:
 
 signals:
     /**
-      * signal to indicate a folder has changed its sync state.
-      *
-      * Attention: The folder may be zero. Do a general update of the state then.
-      */
+     * signal to indicate a folder has changed its sync state.
+     *
+     * Attention: The folder may be zero. Do a general update of the state then.
+     */
     void folderSyncStateChange(Folder *);
 
     /**
@@ -297,9 +297,8 @@ private slots:
 private:
     /** Adds a new folder, does not add it to the account settings and
      *  does not set an account on the new folder.
-      */
-    Folder *addFolderInternal(FolderDefinition folderDefinition,
-        AccountState *accountState, std::unique_ptr<Vfs> vfs);
+     */
+    Folder *addFolderInternal(FolderDefinition folderDefinition, AccountState *accountState, std::unique_ptr<Vfs> vfs);
 
     /* unloads a folder object, does not delete it */
     void unloadFolder(Folder *);
@@ -317,7 +316,8 @@ private:
     // restarts the application (Linux only)
     void restartApplication();
 
-    void setupFoldersHelper(QSettings &settings, AccountStatePtr account, const QStringList &ignoreKeys, bool backwardsCompatible, bool foldersWithPlaceholders);
+    void setupFoldersHelper(QSettings &settings, AccountStatePtr account, const QStringList &ignoreKeys,
+        bool backwardsCompatible, bool foldersWithPlaceholders);
 
     void runEtagJobsIfPossible(const QList<Folder *> &folderMap);
     void runEtagJobIfPossible(Folder *folder);

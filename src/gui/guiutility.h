@@ -34,8 +34,7 @@ namespace Utility {
      *
      * If launching the email program fails, display a message.
      */
-    bool openEmailComposer(const QString &subject, const QString &body,
-        QWidget *errorWidgetParent);
+    bool openEmailComposer(const QString &subject, const QString &body, QWidget *errorWidgetParent);
 
     /** Returns a translated string indicating the current availability.
      *

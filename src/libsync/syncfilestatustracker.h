@@ -53,18 +53,17 @@ private slots:
     void slotSyncEngineRunningChanged();
 
 private:
-    struct PathComparator {
-        bool operator()( const QString& lhs, const QString& rhs ) const;
+    struct PathComparator
+    {
+        bool operator()(const QString &lhs, const QString &rhs) const;
     };
     using ProblemsMap = std::map<QString, SyncFileStatus::SyncFileStatusTag, PathComparator>;
     SyncFileStatus::SyncFileStatusTag lookupProblem(const QString &pathToMatch, const ProblemsMap &problemMap);
 
-    enum SharedFlag { UnknownShared,
-        NotShared,
-        Shared };
-    enum PathKnownFlag { PathUnknown = 0,
-        PathKnown };
-    SyncFileStatus resolveSyncAndErrorStatus(const QString &relativePath, SharedFlag sharedState, PathKnownFlag isPathKnown = PathKnown);
+    enum SharedFlag { UnknownShared, NotShared, Shared };
+    enum PathKnownFlag { PathUnknown = 0, PathKnown };
+    SyncFileStatus resolveSyncAndErrorStatus(
+        const QString &relativePath, SharedFlag sharedState, PathKnownFlag isPathKnown = PathKnown);
 
     void invalidateParentPaths(const QString &path);
     QString getSystemDestination(const QString &relativePath);

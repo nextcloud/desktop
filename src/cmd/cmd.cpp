@@ -29,9 +29,9 @@
 #include "account.h"
 #include "configfile.h" // ONLY ACCESS THE STATIC FUNCTIONS!
 #ifdef TOKEN_AUTH_ONLY
-# include "creds/tokencredentials.h"
+#include "creds/tokencredentials.h"
 #else
-# include "creds/httpcredentials.h"
+#include "creds/httpcredentials.h"
 #endif
 #include "simplesslerrorhandler.h"
 #include "syncengine.h"
@@ -58,9 +58,7 @@
 using namespace OCC;
 
 
-static void nullMessageHandler(QtMsgType, const QMessageLogContext &, const QString &)
-{
-}
+static void nullMessageHandler(QtMsgType, const QMessageLogContext &, const QString &) { }
 
 struct CmdOptions
 {
@@ -150,15 +148,9 @@ public:
         emit asked();
     }
 
-    void setSSLTrusted(bool isTrusted)
-    {
-        _sslTrusted = isTrusted;
-    }
+    void setSSLTrusted(bool isTrusted) { _sslTrusted = isTrusted; }
 
-    bool sslIsTrusted() override
-    {
-        return _sslTrusted;
-    }
+    bool sslIsTrusted() override { return _sslTrusted; }
 
 private:
     bool _sslTrusted;
@@ -182,7 +174,8 @@ void help()
     std::cout << "                         Proxy is http://server:port" << std::endl;
     std::cout << "  --trust                Trust the SSL certification." << std::endl;
     std::cout << "  --exclude [file]       Exclude list file" << std::endl;
-    std::cout << "  --unsyncedfolders [file]    File containing the list of unsynced remote folders (selective sync)" << std::endl;
+    std::cout << "  --unsyncedfolders [file]    File containing the list of unsynced remote folders (selective sync)"
+              << std::endl;
     std::cout << "  --user, -u [name]      Use [name] as the login name" << std::endl;
     std::cout << "  --password, -p [pass]  Use [pass] as password" << std::endl;
     std::cout << "  -n                     Use netrc (5) for login" << std::endl;
@@ -272,8 +265,7 @@ void parseOptions(const QStringList &app_args, CmdOptions *options)
             Logger::instance()->setLogDebug(true);
         } else if (option == "--path" && !it.peekNext().startsWith("-")) {
             options->remotePath = it.next();
-        }
-        else {
+        } else {
             help();
         }
     }
@@ -336,7 +328,8 @@ int main(int argc, char **argv)
     if (options.silent) {
         qInstallMessageHandler(nullMessageHandler);
     } else {
-        qSetMessagePattern("%{time MM-dd hh:mm:ss:zzz} [ %{type} %{category} ]%{if-debug}\t[ %{function} ]%{endif}:\t%{message}");
+        qSetMessagePattern(
+            "%{time MM-dd hh:mm:ss:zzz} [ %{type} %{category} ]%{if-debug}\t[ %{function} ]%{endif}:\t%{message}");
     }
 
     AccountPtr account = Account::create();
@@ -346,14 +339,19 @@ int main(int argc, char **argv)
         return EXIT_FAILURE;
     }
 
-    if (options.target_url.contains("/webdav", Qt::CaseInsensitive) || options.target_url.contains("/dav", Qt::CaseInsensitive)) {
+    if (options.target_url.contains("/webdav", Qt::CaseInsensitive)
+        || options.target_url.contains("/dav", Qt::CaseInsensitive)) {
         qWarning("Dav or webdav in server URL.");
-        std::cerr << "Error! Please specify only the base URL of your host with username and password. Example:" << std::endl
+        std::cerr << "Error! Please specify only the base URL of your host with username and password. Example:"
+                  << std::endl
                   << "http(s)://username:password@cloud.example.com" << std::endl;
         return EXIT_FAILURE;
     }
 
-    QUrl hostUrl = QUrl::fromUserInput((options.target_url.endsWith(QLatin1Char('/')) || options.target_url.endsWith(QLatin1Char('\\'))) ? options.target_url.chopped(1) : options.target_url);
+    QUrl hostUrl = QUrl::fromUserInput(
+        (options.target_url.endsWith(QLatin1Char('/')) || options.target_url.endsWith(QLatin1Char('\\')))
+            ? options.target_url.chopped(1)
+            : options.target_url);
 
     // Order of retrieval attempt (later attempts override earlier ones):
     // 1. From URL
@@ -453,8 +451,8 @@ int main(int argc, char **argv)
     job->start();
     loop.exec();
 
-    if (job->reply()->error() != QNetworkReply::NoError){
-        std::cout<<"Error connecting to server\n";
+    if (job->reply()->error() != QNetworkReply::NoError) {
+        std::cout << "Error connecting to server\n";
         return EXIT_FAILURE;
     }
 
@@ -483,7 +481,8 @@ restart_sync:
             qCritical() << "Could not open file containing the list of unsynced folders: " << options.unsyncedfolders;
         } else {
             // filter out empty lines and comments
-            selectiveSyncList = QString::fromUtf8(f.readAll()).split('\n').filter(QRegExp("\\S+")).filter(QRegExp("^[^#]"));
+            selectiveSyncList =
+                QString::fromUtf8(f.readAll()).split('\n').filter(QRegExp("\\S+")).filter(QRegExp("^[^#]"));
 
             for (int i = 0; i < selectiveSyncList.count(); ++i) {
                 if (!selectiveSyncList.at(i).endsWith(QLatin1Char('/'))) {
@@ -494,7 +493,8 @@ restart_sync:
     }
 
     Cmd cmd;
-    QString dbPath = options.source_dir + SyncJournalDb::makeDbName(options.source_dir, credentialFreeUrl, folder, user);
+    QString dbPath =
+        options.source_dir + SyncJournalDb::makeDbName(options.source_dir, credentialFreeUrl, folder, user);
     SyncJournalDb db(dbPath);
 
     if (!selectiveSyncList.empty()) {
@@ -507,11 +507,11 @@ restart_sync:
     SyncEngine engine(account, options.source_dir, folder, &db);
     engine.setIgnoreHiddenFiles(options.ignoreHiddenFiles);
     engine.setNetworkLimits(options.uplimit, options.downlimit);
-    QObject::connect(&engine, &SyncEngine::finished,
-        [&app](bool result) { app.exit(result ? EXIT_SUCCESS : EXIT_FAILURE); });
+    QObject::connect(
+        &engine, &SyncEngine::finished, [&app](bool result) { app.exit(result ? EXIT_SUCCESS : EXIT_FAILURE); });
     QObject::connect(&engine, &SyncEngine::transmissionProgress, &cmd, &Cmd::transmissionProgressSlot);
-    QObject::connect(&engine, &SyncEngine::syncError,
-        [](const QString &error) { qWarning() << "Sync error:" << error; });
+    QObject::connect(
+        &engine, &SyncEngine::syncError, [](const QString &error) { qWarning() << "Sync error:" << error; });
 
 
     // Exclude lists

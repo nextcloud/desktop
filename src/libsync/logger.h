@@ -74,12 +74,8 @@ public:
     /** For switching off via logwindow */
     void disableTemporaryFolderLogDir();
 
-    void addLogRule(const QSet<QString> &rules) {
-        setLogRules(_logRules + rules);
-    }
-    void removeLogRule(const QSet<QString> &rules) {
-        setLogRules(_logRules - rules);
-    }
+    void addLogRule(const QSet<QString> &rules) { setLogRules(_logRules + rules); }
+    void removeLogRule(const QSet<QString> &rules) { setLogRules(_logRules - rules); }
     void setLogRules(const QSet<QString> &rules);
 
 signals:

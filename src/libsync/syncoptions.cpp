@@ -68,6 +68,7 @@ void SyncOptions::setFilePattern(const QString &pattern)
 
 void SyncOptions::setPathPattern(const QString &pattern)
 {
-    _fileRegex.setPatternOptions(Utility::fsCasePreserving() ? QRegularExpression::CaseInsensitiveOption : QRegularExpression::NoPatternOption);
+    _fileRegex.setPatternOptions(
+        Utility::fsCasePreserving() ? QRegularExpression::CaseInsensitiveOption : QRegularExpression::NoPatternOption);
     _fileRegex.setPattern(pattern);
 }

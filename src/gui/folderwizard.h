@@ -147,11 +147,7 @@ class FolderWizard : public QWizard
 {
     Q_OBJECT
 public:
-    enum {
-        Page_Source,
-        Page_Target,
-        Page_SelectiveSync
-    };
+    enum { Page_Source, Page_Target, Page_SelectiveSync };
 
     explicit FolderWizard(AccountPtr account, QWidget *parent = nullptr);
     ~FolderWizard() override;

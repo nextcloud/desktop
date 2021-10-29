@@ -37,7 +37,8 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcDiscovery, "nextcloud.sync.discovery", QtInfoMsg)
 
-/* Given a sorted list of paths ending with '/', return whether or not the given path is within one of the paths of the list*/
+/* Given a sorted list of paths ending with '/', return whether or not the given path is within one of the paths of the
+ * list*/
 static bool findPathInList(const QStringList &list, const QString &path)
 {
     Q_ASSERT(std::is_sorted(list.begin(), list.end()));
@@ -80,8 +81,8 @@ bool DiscoveryPhase::isInSelectiveSyncBlackList(const QString &path) const
     return false;
 }
 
-void DiscoveryPhase::checkSelectiveSyncNewFolder(const QString &path, RemotePermissions remotePerm,
-    std::function<void(bool)> callback)
+void DiscoveryPhase::checkSelectiveSyncNewFolder(
+    const QString &path, RemotePermissions remotePerm, std::function<void(bool)> callback)
 {
     if (_syncOptions._confirmExternalStorage && _syncOptions._vfs->mode() == Vfs::Off
         && remotePerm.hasPermission(RemotePermissions::IsMounted)) {
@@ -115,8 +116,7 @@ void DiscoveryPhase::checkSelectiveSyncNewFolder(const QString &path, RemotePerm
     auto propfindJob = new PropfindJob(_account, _remoteFolder + path, this);
     propfindJob->setProperties(QList<QByteArray>() << "resourcetype"
                                                    << "http://owncloud.org/ns:size");
-    QObject::connect(propfindJob, &PropfindJob::finishedWithError,
-        this, [=] { return callback(false); });
+    QObject::connect(propfindJob, &PropfindJob::finishedWithError, this, [=] { return callback(false); });
     QObject::connect(propfindJob, &PropfindJob::result, this, [=](const QVariantMap &values) {
         auto result = values.value(QLatin1String("size")).toLongLong();
         if (result >= limit) {
@@ -130,8 +130,7 @@ void DiscoveryPhase::checkSelectiveSyncNewFolder(const QString &path, RemotePerm
             if (!p.endsWith(QLatin1Char('/')))
                 p += QLatin1Char('/');
             _selectiveSyncWhiteList.insert(
-                std::upper_bound(_selectiveSyncWhiteList.begin(), _selectiveSyncWhiteList.end(), p),
-                p);
+                std::upper_bound(_selectiveSyncWhiteList.begin(), _selectiveSyncWhiteList.end(), p), p);
             return callback(false);
         }
     });
@@ -174,12 +173,13 @@ QPair<bool, QByteArray> DiscoveryPhase::findAndCancelDeletedJob(const QString &o
             if (!(instruction == CSYNC_INSTRUCTION_REMOVE
                     // re-creation of virtual files count as a delete
                     || ((*it)->_type == ItemTypeVirtualFile && instruction == CSYNC_INSTRUCTION_NEW)
-                    || ((*it)->_isRestoration && instruction == CSYNC_INSTRUCTION_NEW)))
-            {
+                    || ((*it)->_isRestoration && instruction == CSYNC_INSTRUCTION_NEW))) {
                 qCWarning(lcDiscovery) << "ENFORCE(FAILING)" << originalPath;
-                qCWarning(lcDiscovery) << "instruction == CSYNC_INSTRUCTION_REMOVE" << (instruction == CSYNC_INSTRUCTION_REMOVE);
-                qCWarning(lcDiscovery) << "((*it)->_type == ItemTypeVirtualFile && instruction == CSYNC_INSTRUCTION_NEW)"
-                                       << ((*it)->_type == ItemTypeVirtualFile && instruction == CSYNC_INSTRUCTION_NEW);
+                qCWarning(lcDiscovery) << "instruction == CSYNC_INSTRUCTION_REMOVE"
+                                       << (instruction == CSYNC_INSTRUCTION_REMOVE);
+                qCWarning(lcDiscovery)
+                    << "((*it)->_type == ItemTypeVirtualFile && instruction == CSYNC_INSTRUCTION_NEW)"
+                    << ((*it)->_type == ItemTypeVirtualFile && instruction == CSYNC_INSTRUCTION_NEW);
                 qCWarning(lcDiscovery) << "((*it)->_isRestoration && instruction == CSYNC_INSTRUCTION_NEW))"
                                        << ((*it)->_isRestoration && instruction == CSYNC_INSTRUCTION_NEW);
                 qCWarning(lcDiscovery) << "instruction" << instruction;
@@ -198,7 +198,7 @@ QPair<bool, QByteArray> DiscoveryPhase::findAndCancelDeletedJob(const QString &o
         delete otherJob;
         result = true;
     }
-    return { result, oldEtag };
+    return {result, oldEtag};
 }
 
 void DiscoveryPhase::startJob(ProcessDirectoryJob *job)
@@ -244,14 +244,20 @@ void DiscoveryPhase::scheduleMoreJobs()
     }
 }
 
-DiscoverySingleLocalDirectoryJob::DiscoverySingleLocalDirectoryJob(const AccountPtr &account, const QString &localPath, OCC::Vfs *vfs, QObject *parent)
- : QObject(parent), QRunnable(), _localPath(localPath), _account(account), _vfs(vfs)
+DiscoverySingleLocalDirectoryJob::DiscoverySingleLocalDirectoryJob(
+    const AccountPtr &account, const QString &localPath, OCC::Vfs *vfs, QObject *parent)
+    : QObject(parent)
+    , QRunnable()
+    , _localPath(localPath)
+    , _account(account)
+    , _vfs(vfs)
 {
-    qRegisterMetaType<QVector<LocalInfo> >("QVector<LocalInfo>");
+    qRegisterMetaType<QVector<LocalInfo>>("QVector<LocalInfo>");
 }
 
 // Use as QRunnable
-void DiscoverySingleLocalDirectoryJob::run() {
+void DiscoverySingleLocalDirectoryJob::run()
+{
     QString localPath = _localPath;
     if (localPath.endsWith('/')) // Happens if _currentFolder._local.isEmpty()
         localPath.chop(1);
@@ -291,7 +297,7 @@ void DiscoverySingleLocalDirectoryJob::run() {
         if (state.invalidChars > 0 || state.remainingChars > 0) {
             emit childIgnored(true);
             auto item = SyncFileItemPtr::create();
-            //item->_file = _currentFolder._target + i.name;
+            // item->_file = _currentFolder._target + i.name;
             // FIXME ^^ do we really need to use _target or is local fine?
             item->_file = _localPath + i.name;
             item->_instruction = CSYNC_INSTRUCTION_IGNORE;
@@ -328,7 +334,8 @@ void DiscoverySingleLocalDirectoryJob::run() {
     emit finished(results);
 }
 
-DiscoverySingleDirectoryJob::DiscoverySingleDirectoryJob(const AccountPtr &account, const QString &path, QObject *parent)
+DiscoverySingleDirectoryJob::DiscoverySingleDirectoryJob(
+    const AccountPtr &account, const QString &path, QObject *parent)
     : QObject(parent)
     , _subPath(path)
     , _account(account)
@@ -367,10 +374,12 @@ void DiscoverySingleDirectoryJob::start()
 
     lsColJob->setProperties(props);
 
-    QObject::connect(lsColJob, &LsColJob::directoryListingIterated,
-        this, &DiscoverySingleDirectoryJob::directoryListingIteratedSlot);
-    QObject::connect(lsColJob, &LsColJob::finishedWithError, this, &DiscoverySingleDirectoryJob::lsJobFinishedWithErrorSlot);
-    QObject::connect(lsColJob, &LsColJob::finishedWithoutError, this, &DiscoverySingleDirectoryJob::lsJobFinishedWithoutErrorSlot);
+    QObject::connect(lsColJob, &LsColJob::directoryListingIterated, this,
+        &DiscoverySingleDirectoryJob::directoryListingIteratedSlot);
+    QObject::connect(
+        lsColJob, &LsColJob::finishedWithError, this, &DiscoverySingleDirectoryJob::lsJobFinishedWithErrorSlot);
+    QObject::connect(
+        lsColJob, &LsColJob::finishedWithoutError, this, &DiscoverySingleDirectoryJob::lsJobFinishedWithoutErrorSlot);
     lsColJob->start();
 
     _lsColJob = lsColJob;
@@ -464,7 +473,6 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(const QString &fi
             _size = map.value("size").toInt();
         }
     } else {
-
         RemoteInfo result;
         int slash = file.lastIndexOf('/');
         result.name = file.mid(slash + 1);
@@ -483,7 +491,7 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(const QString &fi
         _results.push_back(std::move(result));
     }
 
-    //This works in concerto with the RequestEtagJob and the Folder object to check if the remote folder changed.
+    // This works in concerto with the RequestEtagJob and the Folder object to check if the remote folder changed.
     if (map.contains("getetag")) {
         if (_firstEtag.isEmpty()) {
             _firstEtag = parseEtag(map.value(QStringLiteral("getetag")).toUtf8()); // for directory itself
@@ -494,17 +502,18 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(const QString &fi
 void DiscoverySingleDirectoryJob::lsJobFinishedWithoutErrorSlot()
 {
     if (!_ignoredFirst) {
-        // This is a sanity check, if we haven't _ignoredFirst then it means we never received any directoryListingIteratedSlot
-        // which means somehow the server XML was bogus
-        emit finished(HttpError{ 0, tr("Server error: PROPFIND reply is not XML formatted!") });
+        // This is a sanity check, if we haven't _ignoredFirst then it means we never received any
+        // directoryListingIteratedSlot which means somehow the server XML was bogus
+        emit finished(HttpError{0, tr("Server error: PROPFIND reply is not XML formatted!")});
         deleteLater();
         return;
     } else if (!_error.isEmpty()) {
-        emit finished(HttpError{ 0, _error });
+        emit finished(HttpError{0, _error});
         deleteLater();
         return;
     } else if (_isE2eEncrypted) {
-        emit etag(_firstEtag, QDateTime::fromString(QString::fromUtf8(_lsColJob->responseTimestamp()), Qt::RFC2822Date));
+        emit etag(
+            _firstEtag, QDateTime::fromString(QString::fromUtf8(_lsColJob->responseTimestamp()), Qt::RFC2822Date));
         fetchE2eMetadata();
         return;
     }
@@ -519,21 +528,18 @@ void DiscoverySingleDirectoryJob::lsJobFinishedWithErrorSlot(QNetworkReply *r)
     int httpCode = r->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
     QString msg = r->errorString();
     qCWarning(lcDiscovery) << "LSCOL job error" << r->errorString() << httpCode << r->error();
-    if (r->error() == QNetworkReply::NoError
-        && !contentType.contains("application/xml; charset=utf-8")) {
+    if (r->error() == QNetworkReply::NoError && !contentType.contains("application/xml; charset=utf-8")) {
         msg = tr("Server error: PROPFIND reply is not XML formatted!");
     }
-    emit finished(HttpError{ httpCode, msg });
+    emit finished(HttpError{httpCode, msg});
     deleteLater();
 }
 
 void DiscoverySingleDirectoryJob::fetchE2eMetadata()
 {
     auto job = new GetMetadataApiJob(_account, _fileId);
-    connect(job, &GetMetadataApiJob::jsonReceived,
-            this, &DiscoverySingleDirectoryJob::metadataReceived);
-    connect(job, &GetMetadataApiJob::error,
-            this, &DiscoverySingleDirectoryJob::metadataError);
+    connect(job, &GetMetadataApiJob::jsonReceived, this, &DiscoverySingleDirectoryJob::metadataReceived);
+    connect(job, &GetMetadataApiJob::error, this, &DiscoverySingleDirectoryJob::metadataError);
     job->start();
 }
 
@@ -546,9 +552,8 @@ void DiscoverySingleDirectoryJob::metadataReceived(const QJsonDocument &json, in
     const auto encryptedFiles = metadata.files();
 
     const auto findEncryptedFile = [=](const QString &name) {
-        const auto it = std::find_if(std::cbegin(encryptedFiles), std::cend(encryptedFiles), [=](const EncryptedFile &file) {
-            return file.encryptedFilename == name;
-        });
+        const auto it = std::find_if(std::cbegin(encryptedFiles), std::cend(encryptedFiles),
+            [=](const EncryptedFile &file) { return file.encryptedFilename == name; });
         if (it == std::cend(encryptedFiles)) {
             return Optional<EncryptedFile>();
         } else {

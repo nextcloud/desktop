@@ -85,9 +85,12 @@ bool ConflictSolver::deleteLocalVersion()
         return false;
     }
 
-    const auto message = info.isDir() ? tr("Do you want to delete the directory <i>%1</i> and all its contents permanently?").arg(info.dir().dirName())
-                                      : tr("Do you want to delete the file <i>%1</i> permanently?").arg(info.fileName());
-    const auto result = QMessageBox::question(_parentWidget, tr("Confirm deletion"), message, QMessageBox::Yes, QMessageBox::No);
+    const auto message = info.isDir()
+        ? tr("Do you want to delete the directory <i>%1</i> and all its contents permanently?")
+              .arg(info.dir().dirName())
+        : tr("Do you want to delete the file <i>%1</i> permanently?").arg(info.fileName());
+    const auto result =
+        QMessageBox::question(_parentWidget, tr("Confirm deletion"), message, QMessageBox::Yes, QMessageBox::No);
     if (result != QMessageBox::Yes)
         return false;
 

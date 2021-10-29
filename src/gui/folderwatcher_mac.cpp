@@ -39,13 +39,8 @@ FolderWatcherPrivate::~FolderWatcherPrivate()
     FSEventStreamRelease(_stream);
 }
 
-static void callback(
-    ConstFSEventStreamRef streamRef,
-    void *clientCallBackInfo,
-    size_t numEvents,
-    void *eventPathsVoid,
-    const FSEventStreamEventFlags eventFlags[],
-    const FSEventStreamEventId eventIds[])
+static void callback(ConstFSEventStreamRef streamRef, void *clientCallBackInfo, size_t numEvents, void *eventPathsVoid,
+    const FSEventStreamEventFlags eventFlags[], const FSEventStreamEventId eventIds[])
 {
     Q_UNUSED(streamRef)
     Q_UNUSED(eventFlags)
@@ -56,7 +51,7 @@ static void callback(
         | kFSEventStreamEventFlagItemInodeMetaMod // for mtime change
         | kFSEventStreamEventFlagItemRenamed // also coming for moves to trash in finder
         | kFSEventStreamEventFlagItemModified; // for content change
-    //We ignore other flags, e.g. for owner change, xattr change, Finder label change etc
+    // We ignore other flags, e.g. for owner change, xattr change, Finder label change etc
 
     qCDebug(lcFolderWatcher) << "FolderWatcherPrivate::callback by OS X";
 
@@ -85,17 +80,13 @@ static void callback(
 void FolderWatcherPrivate::startWatching()
 {
     qCDebug(lcFolderWatcher) << "FolderWatcherPrivate::startWatching()" << _folder;
-    CFStringRef folderCF = CFStringCreateWithCharacters(0, reinterpret_cast<const UniChar *>(_folder.unicode()),
-        _folder.length());
+    CFStringRef folderCF =
+        CFStringCreateWithCharacters(0, reinterpret_cast<const UniChar *>(_folder.unicode()), _folder.length());
     CFArrayRef pathsToWatch = CFStringCreateArrayBySeparatingStrings(nullptr, folderCF, CFSTR(":"));
 
-    FSEventStreamContext ctx = { 0, this, nullptr, nullptr, nullptr };
+    FSEventStreamContext ctx = {0, this, nullptr, nullptr, nullptr};
 
-    _stream = FSEventStreamCreate(nullptr,
-        &callback,
-        &ctx,
-        pathsToWatch,
-        kFSEventStreamEventIdSinceNow,
+    _stream = FSEventStreamCreate(nullptr, &callback, &ctx, pathsToWatch, kFSEventStreamEventIdSinceNow,
         0, // latency
         kFSEventStreamCreateFlagUseCFTypes | kFSEventStreamCreateFlagFileEvents | kFSEventStreamCreateFlagIgnoreSelf);
 

@@ -74,7 +74,8 @@ bool FolderWatcher::isReliable() const
     return _isReliable;
 }
 
-void FolderWatcher::appendSubPaths(QDir dir, QStringList& subPaths) {
+void FolderWatcher::appendSubPaths(QDir dir, QStringList &subPaths)
+{
     QStringList newSubPaths = dir.entryList(QDir::NoDotAndDotDot | QDir::Dirs | QDir::Files);
     for (int i = 0; i < newSubPaths.size(); i++) {
         QString path = dir.path() + "/" + newSubPaths[i];
@@ -170,8 +171,7 @@ void FolderWatcher::changeDetected(const QStringList &paths)
     // ------- handle ignores:
     for (int i = 0; i < paths.size(); ++i) {
         QString path = paths[i];
-        if (!_testNotificationPath.isEmpty()
-            && Utility::fileNamesEqual(path, _testNotificationPath)) {
+        if (!_testNotificationPath.isEmpty() && Utility::fileNamesEqual(path, _testNotificationPath)) {
             _testNotificationPath.clear();
         }
         if (pathIsIgnored(path)) {

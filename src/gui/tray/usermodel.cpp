@@ -43,26 +43,22 @@ User::User(AccountStatePtr &account, const bool &isCurrent, QObject *parent)
     , _unifiedSearchResultsModel(new UnifiedSearchResultsListModel(_account.data(), this))
     , _notificationRequestsRunning(0)
 {
-    connect(ProgressDispatcher::instance(), &ProgressDispatcher::progressInfo,
-        this, &User::slotProgressInfo);
-    connect(ProgressDispatcher::instance(), &ProgressDispatcher::itemCompleted,
-        this, &User::slotItemCompleted);
-    connect(ProgressDispatcher::instance(), &ProgressDispatcher::syncError,
-        this, &User::slotAddError);
-    connect(ProgressDispatcher::instance(), &ProgressDispatcher::addErrorToGui,
-        this, &User::slotAddErrorToGui);
+    connect(ProgressDispatcher::instance(), &ProgressDispatcher::progressInfo, this, &User::slotProgressInfo);
+    connect(ProgressDispatcher::instance(), &ProgressDispatcher::itemCompleted, this, &User::slotItemCompleted);
+    connect(ProgressDispatcher::instance(), &ProgressDispatcher::syncError, this, &User::slotAddError);
+    connect(ProgressDispatcher::instance(), &ProgressDispatcher::addErrorToGui, this, &User::slotAddErrorToGui);
 
-    connect(&_notificationCheckTimer, &QTimer::timeout,
-        this, &User::slotRefresh);
+    connect(&_notificationCheckTimer, &QTimer::timeout, this, &User::slotRefresh);
 
-    connect(&_expiredActivitiesCheckTimer, &QTimer::timeout,
-        this, &User::slotCheckExpiredActivities);
+    connect(&_expiredActivitiesCheckTimer, &QTimer::timeout, this, &User::slotCheckExpiredActivities);
 
-    connect(_account.data(), &AccountState::stateChanged,
-            [=]() { if (isConnected()) {slotRefreshImmediately();} });
+    connect(_account.data(), &AccountState::stateChanged, [=]() {
+        if (isConnected()) {
+            slotRefreshImmediately();
+        }
+    });
     connect(_account.data(), &AccountState::stateChanged, this, &User::accountStateChanged);
-    connect(_account.data(), &AccountState::hasFetchedNavigationApps,
-        this, &User::slotRebuildNavigationAppList);
+    connect(_account.data(), &AccountState::hasFetchedNavigationApps, this, &User::slotRebuildNavigationAppList);
     connect(_account->account().data(), &Account::accountChangedDisplayName, this, &User::nameChanged);
 
     connect(FolderMan::instance(), &FolderMan::folderListChanged, this, &User::hasLocalFolderChanged);
@@ -71,7 +67,8 @@ User::User(AccountStatePtr &account, const bool &isCurrent, QObject *parent)
 
     connect(_account->account().data(), &Account::accountChangedAvatar, this, &User::avatarChanged);
     connect(_account->account().data(), &Account::userStatusChanged, this, &User::statusChanged);
-    connect(_account.data(), &AccountState::desktopNotificationsAllowedChanged, this, &User::desktopNotificationsAllowedChanged);
+    connect(_account.data(), &AccountState::desktopNotificationsAllowedChanged, this,
+        &User::desktopNotificationsAllowedChanged);
 
     connect(_activityModel, &ActivityListModel::sendNotificationRequest, this, &User::slotSendNotificationRequest);
 }
@@ -89,7 +86,7 @@ void User::showDesktopNotification(const QString &title, const QString &message)
         _notificationCache.clear();
     }
 
-    const NotificationCache::Notification notification { title, message };
+    const NotificationCache::Notification notification{title, message};
     if (_notificationCache.contains(notification)) {
         return;
     }
@@ -118,7 +115,8 @@ void User::slotBuildNotificationDisplay(const ActivityList &list)
 void User::setNotificationRefreshInterval(std::chrono::milliseconds interval)
 {
     if (!checkPushNotificationsAreReady()) {
-        qCDebug(lcActivity) << "Starting Notification refresh timer with " << interval.count() / 1000 << " sec interval";
+        qCDebug(lcActivity) << "Starting Notification refresh timer with " << interval.count() / 1000
+                            << " sec interval";
         _notificationCheckTimer.start(interval.count());
     }
 }
@@ -137,12 +135,16 @@ void User::slotPushNotificationsReady()
 
 void User::slotDisconnectPushNotifications()
 {
-    disconnect(_account->account()->pushNotifications(), &PushNotifications::notificationsChanged, this, &User::slotReceivedPushNotification);
-    disconnect(_account->account()->pushNotifications(), &PushNotifications::activitiesChanged, this, &User::slotReceivedPushActivity);
+    disconnect(_account->account()->pushNotifications(), &PushNotifications::notificationsChanged, this,
+        &User::slotReceivedPushNotification);
+    disconnect(_account->account()->pushNotifications(), &PushNotifications::activitiesChanged, this,
+        &User::slotReceivedPushActivity);
 
-    disconnect(_account->account().data(), &Account::pushNotificationsDisabled, this, &User::slotDisconnectPushNotifications);
+    disconnect(
+        _account->account().data(), &Account::pushNotificationsDisabled, this, &User::slotDisconnectPushNotifications);
 
-    // connection to WebSocket may have dropped or an error occured, so we need to bring back the polling until we have re-established the connection
+    // connection to WebSocket may have dropped or an error occured, so we need to bring back the polling until we have
+    // re-established the connection
     setNotificationRefreshInterval(ConfigFile().notificationRefreshInterval());
 }
 
@@ -163,7 +165,8 @@ void User::slotReceivedPushActivity(Account *account)
 void User::slotCheckExpiredActivities()
 {
     for (const Activity &activity : _activityModel->errorsList()) {
-        if (activity._expireAtMsecs > 0 && QDateTime::currentDateTime().toMSecsSinceEpoch() >= activity._expireAtMsecs) {
+        if (activity._expireAtMsecs > 0
+            && QDateTime::currentDateTime().toMSecsSinceEpoch() >= activity._expireAtMsecs) {
             _activityModel->removeActivityFromActivityList(activity);
         }
     }
@@ -175,18 +178,23 @@ void User::slotCheckExpiredActivities()
 
 void User::connectPushNotifications() const
 {
-    connect(_account->account().data(), &Account::pushNotificationsDisabled, this, &User::slotDisconnectPushNotifications, Qt::UniqueConnection);
+    connect(_account->account().data(), &Account::pushNotificationsDisabled, this,
+        &User::slotDisconnectPushNotifications, Qt::UniqueConnection);
 
-    connect(_account->account()->pushNotifications(), &PushNotifications::notificationsChanged, this, &User::slotReceivedPushNotification, Qt::UniqueConnection);
-    connect(_account->account()->pushNotifications(), &PushNotifications::activitiesChanged, this, &User::slotReceivedPushActivity, Qt::UniqueConnection);
+    connect(_account->account()->pushNotifications(), &PushNotifications::notificationsChanged, this,
+        &User::slotReceivedPushNotification, Qt::UniqueConnection);
+    connect(_account->account()->pushNotifications(), &PushNotifications::activitiesChanged, this,
+        &User::slotReceivedPushActivity, Qt::UniqueConnection);
 }
 
 bool User::checkPushNotificationsAreReady() const
 {
     const auto pushNotifications = _account->account()->pushNotifications();
 
-    const auto pushActivitiesAvailable = _account->account()->capabilities().availablePushNotifications() & PushNotificationType::Activities;
-    const auto pushNotificationsAvailable = _account->account()->capabilities().availablePushNotifications() & PushNotificationType::Notifications;
+    const auto pushActivitiesAvailable =
+        _account->account()->capabilities().availablePushNotifications() & PushNotificationType::Activities;
+    const auto pushNotificationsAvailable =
+        _account->account()->capabilities().availablePushNotifications() & PushNotificationType::Notifications;
 
     const auto pushActivitiesAndNotificationsAvailable = pushActivitiesAvailable && pushNotificationsAvailable;
 
@@ -194,12 +202,14 @@ bool User::checkPushNotificationsAreReady() const
         connectPushNotifications();
         return true;
     } else {
-        connect(_account->account().data(), &Account::pushNotificationsReady, this, &User::slotPushNotificationsReady, Qt::UniqueConnection);
+        connect(_account->account().data(), &Account::pushNotificationsReady, this, &User::slotPushNotificationsReady,
+            Qt::UniqueConnection);
         return false;
     }
 }
 
-void User::slotRefreshImmediately() {
+void User::slotRefreshImmediately()
+{
     if (_account.data() && _account.data()->isConnected()) {
         slotRefreshActivities();
     }
@@ -209,7 +219,7 @@ void User::slotRefreshImmediately() {
 void User::slotRefresh()
 {
     slotRefreshUserStatus();
-    
+
     if (checkPushNotificationsAreReady()) {
         // we are relying on WebSocket push notifications - ignore refresh attempts from UI
         _timeSinceLastCheck[_account.data()].invalidate();
@@ -254,8 +264,7 @@ void User::slotRefreshNotifications()
     // are running
     if (_notificationRequestsRunning == 0) {
         auto *snh = new ServerNotificationHandler(_account.data());
-        connect(snh, &ServerNotificationHandler::newNotificationList,
-            this, &User::slotBuildNotificationDisplay);
+        connect(snh, &ServerNotificationHandler::newNotificationList, this, &User::slotBuildNotificationDisplay);
 
         snh->slotFetchNotifications();
     } else {
@@ -306,10 +315,8 @@ void User::slotSendNotificationRequest(const QString &accountName, const QString
             QUrl l(link);
             job->setLinkAndVerb(l, verb);
             job->setProperty("activityRow", QVariant::fromValue(row));
-            connect(job, &AbstractNetworkJob::networkError,
-                this, &User::slotNotifyNetworkError);
-            connect(job, &NotificationConfirmJob::jobFinished,
-                this, &User::slotNotifyServerFinished);
+            connect(job, &AbstractNetworkJob::networkError, this, &User::slotNotifyNetworkError);
+            connect(job, &NotificationConfirmJob::jobFinished, this, &User::slotNotifyServerFinished);
             job->start();
 
             // count the number of running notification requests. If this member var
@@ -405,8 +412,7 @@ void User::slotProgressInfo(const QString &folder, const ProgressInfo &progress)
         // Inform other components about them.
         QStringList conflicts;
         foreach (Activity activity, _activityModel->errorsList()) {
-            if (activity._folder == folder
-                && activity._status == SyncFileItem::Conflict) {
+            if (activity._folder == folder && activity._status == SyncFileItem::Conflict) {
                 conflicts.append(activity._file);
             }
         }
@@ -449,7 +455,8 @@ void User::slotAddError(const QString &folderAlias, const QString &message, Erro
     }
 }
 
-void User::slotAddErrorToGui(const QString &folderAlias, SyncFileItem::Status status, const QString &errorMessage, const QString &subject)
+void User::slotAddErrorToGui(
+    const QString &folderAlias, SyncFileItem::Status status, const QString &errorMessage, const QString &subject)
 {
     const auto folderInstance = FolderMan::instance()->folder(folderAlias);
     if (!folderInstance) {
@@ -457,7 +464,8 @@ void User::slotAddErrorToGui(const QString &folderAlias, SyncFileItem::Status st
     }
 
     if (folderInstance->accountState() == _account.data()) {
-        qCWarning(lcActivity) << "Item " << folderInstance->shortGuiLocalPath() << " retrieved resulted in " << errorMessage;
+        qCWarning(lcActivity) << "Item " << folderInstance->shortGuiLocalPath() << " retrieved resulted in "
+                              << errorMessage;
 
         Activity activity;
         activity._type = Activity::SyncFileItemType;
@@ -496,7 +504,7 @@ bool User::isUnsolvableConflict(const SyncFileItemPtr &item) const
 void User::processCompletedSyncItem(const Folder *folder, const SyncFileItemPtr &item)
 {
     Activity activity;
-    activity._type = Activity::SyncFileItemType; //client activity
+    activity._type = Activity::SyncFileItemType; // client activity
     activity._status = item->_status;
     activity._dateTime = QDateTime::currentDateTime();
     activity._message = item->_originalFile;
@@ -742,8 +750,7 @@ UserModel::UserModel(QObject *parent)
         buildUserList();
     }
 
-    connect(AccountManager::instance(), &AccountManager::accountAdded,
-        this, &UserModel::buildUserList);
+    connect(AccountManager::instance(), &AccountManager::accountAdded, this, &UserModel::buildUserList);
 }
 
 void UserModel::buildUserList()
@@ -808,23 +815,20 @@ void UserModel::addUser(AccountStatePtr &user, const bool &isCurrent)
 
         User *u = new User(user, isCurrent);
 
-        connect(u, &User::avatarChanged, this, [this, row] {
-           emit dataChanged(index(row, 0), index(row, 0), {UserModel::AvatarRole});
-        });
+        connect(u, &User::avatarChanged, this,
+            [this, row] { emit dataChanged(index(row, 0), index(row, 0), {UserModel::AvatarRole}); });
 
         connect(u, &User::statusChanged, this, [this, row] {
-            emit dataChanged(index(row, 0), index(row, 0), {UserModel::StatusIconRole, 
-			    				    UserModel::StatusEmojiRole,     
-                                                            UserModel::StatusMessageRole});
+            emit dataChanged(index(row, 0), index(row, 0),
+                {UserModel::StatusIconRole, UserModel::StatusEmojiRole, UserModel::StatusMessageRole});
         });
-        
+
         connect(u, &User::desktopNotificationsAllowedChanged, this, [this, row] {
-            emit dataChanged(index(row, 0), index(row, 0), { UserModel::DesktopNotificationsAllowedRole });
+            emit dataChanged(index(row, 0), index(row, 0), {UserModel::DesktopNotificationsAllowedRole});
         });
-        
-        connect(u, &User::accountStateChanged, this, [this, row] {
-            emit dataChanged(index(row, 0), index(row, 0), { UserModel::IsConnectedRole });
-        });
+
+        connect(u, &User::accountStateChanged, this,
+            [this, row] { emit dataChanged(index(row, 0), index(row, 0), {UserModel::IsConnectedRole}); });
 
         _users << u;
         if (isCurrent) {
@@ -881,7 +885,7 @@ Q_INVOKABLE void UserModel::switchCurrentUser(const int &id)
 {
     if (_currentUserId < 0 || _currentUserId >= _users.size())
         return;
-    
+
     _users[_currentUserId]->setCurrentUser(false);
     _users[id]->setCurrentUser(true);
     _currentUserId = id;
@@ -909,14 +913,12 @@ Q_INVOKABLE void UserModel::removeAccount(const int &id)
     if (id < 0 || id >= _users.size())
         return;
 
-    QMessageBox messageBox(QMessageBox::Question,
-        tr("Confirm Account Removal"),
+    QMessageBox messageBox(QMessageBox::Question, tr("Confirm Account Removal"),
         tr("<p>Do you really want to remove the connection to the account <i>%1</i>?</p>"
            "<p><b>Note:</b> This will <b>not</b> delete any files.</p>")
             .arg(_users[id]->name()),
         QMessageBox::NoButton);
-    QPushButton *yesButton =
-        messageBox.addButton(tr("Remove connection"), QMessageBox::YesRole);
+    QPushButton *yesButton = messageBox.addButton(tr("Remove connection"), QMessageBox::YesRole);
     messageBox.addButton(tr("Cancel"), QMessageBox::NoRole);
 
     messageBox.exec();
@@ -1034,9 +1036,8 @@ User *UserModel::currentUser() const
 
 int UserModel::findUserIdForAccount(AccountState *account) const
 {
-    const auto it = std::find_if(std::cbegin(_users), std::cend(_users), [=](const User *user) {
-        return user->account()->id() == account->account()->id();
-    });
+    const auto it = std::find_if(std::cbegin(_users), std::cend(_users),
+        [=](const User *user) { return user->account()->id() == account->account()->id(); });
 
     if (it == std::cend(_users)) {
         return -1;

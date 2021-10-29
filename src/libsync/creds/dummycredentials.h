@@ -35,7 +35,7 @@ public:
     void fetchFromKeychain() override;
     void askFromUser() override;
     void persist() override;
-    void invalidateToken() override {}
+    void invalidateToken() override { }
     void forgetSensitiveData() override{};
 };
 

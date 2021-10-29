@@ -28,16 +28,15 @@ public:
     void setInfo(const QString &msg);
     void setError(const QString &error);
 
-    bool isUsingFlow2() const {
-        return _useFlow2;
-    }
+    bool isUsingFlow2() const { return _useFlow2; }
 
 protected:
-    void closeEvent(QCloseEvent * e) override;
+    void closeEvent(QCloseEvent *e) override;
     void changeEvent(QEvent *) override;
 
 public slots:
-    void slotFlow2AuthResult(Flow2Auth::Result, const QString &errorString, const QString &user, const QString &appPassword);
+    void slotFlow2AuthResult(
+        Flow2Auth::Result, const QString &errorString, const QString &user, const QString &appPassword);
     void slotShowSettingsDialog();
 
 signals:

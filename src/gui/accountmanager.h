@@ -108,7 +108,7 @@ public slots:
     void saveAccountState(AccountState *a);
 
     /// Display a Box with the mnemonic so the user can copy it to a safe place.
-    static void displayMnemonic(const QString& mnemonic);
+    static void displayMnemonic(const QString &mnemonic);
 
 
 Q_SIGNALS:

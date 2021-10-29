@@ -51,8 +51,8 @@ Logger::Logger(QObject *parent)
     _crashLog.resize(CrashLogSize);
 #ifndef NO_MSG_HANDLER
     qInstallMessageHandler([](QtMsgType type, const QMessageLogContext &ctx, const QString &message) {
-            Logger::instance()->doLog(type, ctx, message);
-        });
+        Logger::instance()->doLog(type, ctx, message);
+    });
 #endif
 }
 
@@ -111,8 +111,7 @@ void Logger::doLog(QtMsgType type, const QMessageLogContext &ctx, const QString 
 void Logger::close()
 {
     dumpCrashLog();
-    if (_logstream)
-    {
+    if (_logstream) {
         _logstream->flush();
         _logFile.close();
         _logstream.reset();
@@ -268,7 +267,6 @@ static bool compressLog(const QString &originalName, const QString &targetName)
 void Logger::enterNextLogFile()
 {
     if (!_logDirectory.isEmpty()) {
-
         QDir dir(_logDirectory);
         if (!dir.exists()) {
             dir.mkpath(".");
@@ -279,8 +277,7 @@ void Logger::enterNextLogFile()
         QString newLogName = now.toString("yyyyMMdd_HHmm") + "_owncloud.log";
 
         // Expire old log files and deal with conflicts
-        QStringList files = dir.entryList(QStringList("*owncloud.log.*"),
-            QDir::Files, QDir::Name);
+        QStringList files = dir.entryList(QStringList("*owncloud.log.*"), QDir::Files, QDir::Name);
         QRegExp rx(R"(.*owncloud\.log\.(\d+).*)");
         int maxNumber = -1;
         foreach (const QString &s, files) {

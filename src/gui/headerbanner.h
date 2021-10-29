@@ -75,8 +75,8 @@ class HeaderBanner : public QWidget
 public:
     HeaderBanner(QWidget *parent = nullptr);
 
-    void setup(const QString &title, const QPixmap &logo, const QPixmap &banner,
-               const Qt::TextFormat titleFormat, const QString &styleSheet);
+    void setup(const QString &title, const QPixmap &logo, const QPixmap &banner, const Qt::TextFormat titleFormat,
+        const QString &styleSheet);
 
 protected:
     void paintEvent(QPaintEvent *event) override;

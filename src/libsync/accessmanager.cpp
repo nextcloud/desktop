@@ -54,7 +54,8 @@ QByteArray AccessManager::generateRequestId()
     return QUuid::createUuid().toByteArray(QUuid::WithoutBraces);
 }
 
-QNetworkReply *AccessManager::createRequest(QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *outgoingData)
+QNetworkReply *AccessManager::createRequest(
+    QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *outgoingData)
 {
     QNetworkRequest newRequest(request);
 
@@ -81,7 +82,8 @@ QNetworkReply *AccessManager::createRequest(QNetworkAccessManager::Operation op,
 #if QT_VERSION >= QT_VERSION_CHECK(5, 9, 4)
     // only enable HTTP2 with Qt 5.9.4 because old Qt have too many bugs (e.g. QTBUG-64359 is fixed in >= Qt 5.9.4)
     if (newRequest.url().scheme() == "https") { // Not for "http": QTBUG-61397
-        // http2 seems to cause issues, as with our recommended server setup we don't support http2, disable it by default for now
+        // http2 seems to cause issues, as with our recommended server setup we don't support http2, disable it by
+        // default for now
         static const bool http2EnabledEnv = qEnvironmentVariableIntValue("OWNCLOUD_HTTP2_ENABLED") == 1;
 
         newRequest.setAttribute(QNetworkRequest::HTTP2AllowedAttribute, http2EnabledEnv);

@@ -19,7 +19,7 @@
 #include <QStyle>
 #include <QStyleHints>
 
-#define HASQT5_11 (QT_VERSION >= QT_VERSION_CHECK(5,11,0))
+#define HASQT5_11 (QT_VERSION >= QT_VERSION_CHECK(5, 11, 0))
 
 namespace OCC {
 
@@ -27,7 +27,8 @@ static const int Spacing = 6;
 static const int SlideDuration = 1000;
 static const int SlideDistance = 400;
 
-SlideShow::SlideShow(QWidget *parent) : QWidget(parent)
+SlideShow::SlideShow(QWidget *parent)
+    : QWidget(parent)
 {
     setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
 }
@@ -101,10 +102,7 @@ QSize SlideShow::sizeHint() const
         pixmapSize.setWidth(std::max(pixmap.width(), pixmapSize.width()));
         pixmapSize.setHeight(std::max(pixmap.height(), pixmapSize.height()));
     }
-    return {
-        std::max(labelSize.width(), pixmapSize.width()),
-        labelSize.height() + Spacing + pixmapSize.height()
-    };
+    return {std::max(labelSize.width(), pixmapSize.width()), labelSize.height() + Spacing + pixmapSize.height()};
 }
 
 void SlideShow::startShow(int interval)
@@ -158,7 +156,8 @@ void SlideShow::paintEvent(QPaintEvent *)
     if (_animation) {
         int from = _animation->startValue().toInt();
         int to = _animation->endValue().toInt();
-        qreal progress = _animation->easingCurve().valueForProgress(_animation->currentTime() / static_cast<qreal>(_animation->duration()));
+        qreal progress = _animation->easingCurve().valueForProgress(
+            _animation->currentTime() / static_cast<qreal>(_animation->duration()));
 
         painter.save();
         painter.setOpacity(1.0 - progress);
@@ -191,11 +190,13 @@ void SlideShow::maybeRestartTimer()
 void SlideShow::drawSlide(QPainter *painter, int index)
 {
     QString label = _labels.value(index);
-    QRect labelRect = style()->itemTextRect(fontMetrics(), rect(), Qt::AlignBottom | Qt::AlignHCenter, isEnabled(), label);
+    QRect labelRect =
+        style()->itemTextRect(fontMetrics(), rect(), Qt::AlignBottom | Qt::AlignHCenter, isEnabled(), label);
     style()->drawItemText(painter, labelRect, Qt::AlignCenter, palette(), isEnabled(), label, QPalette::WindowText);
 
     QPixmap pixmap = _pixmaps.value(index);
-    QRect pixmapRect = style()->itemPixmapRect(QRect(0, 0, width(), labelRect.top() - Spacing), Qt::AlignCenter, pixmap);
+    QRect pixmapRect =
+        style()->itemPixmapRect(QRect(0, 0, width(), labelRect.top() - Spacing), Qt::AlignCenter, pixmap);
     style()->drawItemPixmap(painter, pixmapRect, Qt::AlignCenter, pixmap);
 }
 

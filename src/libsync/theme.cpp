@@ -229,7 +229,7 @@ QIcon Theme::themeIcon(const QString &name, bool sysTray) const
 
         const QString svgName = QString(Theme::themePrefix) + QString::fromLatin1("%1/%2.svg").arg(flavor).arg(name);
         QSvgRenderer renderer(svgName);
-        const auto createPixmapFromSvg = [&renderer] (int size) {
+        const auto createPixmapFromSvg = [&renderer](int size) {
             QImage img(size, size, QImage::Format_ARGB32);
             img.fill(Qt::GlobalColor::transparent);
             QPainter imgPainter(&img);
@@ -237,14 +237,15 @@ QIcon Theme::themeIcon(const QString &name, bool sysTray) const
             return QPixmap::fromImage(img);
         };
 
-        const auto loadPixmap = [flavor, name] (int size) {
-            const QString pixmapName = QString(Theme::themePrefix) + QString::fromLatin1("%1/%2-%3.png").arg(flavor).arg(name).arg(size);
+        const auto loadPixmap = [flavor, name](int size) {
+            const QString pixmapName =
+                QString(Theme::themePrefix) + QString::fromLatin1("%1/%2-%3.png").arg(flavor).arg(name).arg(size);
             return QPixmap(pixmapName);
         };
 
         const auto useSvg = shouldPreferSvg();
-        const auto sizes = useSvg ? QVector<int>{ 16, 32, 64, 128, 256 }
-                                  : QVector<int>{ 16, 22, 32, 48, 64, 128, 256, 512, 1024 };
+        const auto sizes =
+            useSvg ? QVector<int>{16, 32, 64, 128, 256} : QVector<int>{16, 22, 32, 48, 64, 128, 256, 512, 1024};
         for (int size : sizes) {
             auto px = useSvg ? createPixmapFromSvg(size) : loadPixmap(size);
             if (px.isNull()) {
@@ -279,8 +280,8 @@ QString Theme::themeImagePath(const QString &name, int size, bool sysTray) const
 
     // branded client may have several sizes of the same icon
     const QString filePath = (useSvg || size <= 0)
-            ? QString(Theme::themePrefix) + QString::fromLatin1("%1/%2").arg(flavor).arg(name)
-            : QString(Theme::themePrefix) + QString::fromLatin1("%1/%2-%3").arg(flavor).arg(name).arg(size);
+        ? QString(Theme::themePrefix) + QString::fromLatin1("%1/%2").arg(flavor).arg(name)
+        : QString(Theme::themePrefix) + QString::fromLatin1("%1/%2-%3").arg(flavor).arg(name).arg(size);
 
     const QString svgPath = filePath + ".svg";
     if (useSvg) {
@@ -367,7 +368,9 @@ QString Theme::helpUrl() const
 #ifdef APPLICATION_HELP_URL
     return QString::fromLatin1(APPLICATION_HELP_URL);
 #else
-    return QString::fromLatin1("https://docs.nextcloud.com/desktop/%1.%2/").arg(MIRALL_VERSION_MAJOR).arg(MIRALL_VERSION_MINOR);
+    return QString::fromLatin1("https://docs.nextcloud.com/desktop/%1.%2/")
+        .arg(MIRALL_VERSION_MAJOR)
+        .arg(MIRALL_VERSION_MINOR);
 #endif
 }
 
@@ -452,7 +455,8 @@ bool Theme::systrayUseMonoIcons() const
 
 bool Theme::monoIconsAvailable() const
 {
-    QString themeDir = QString(Theme::themePrefix) + QString::fromLatin1("%1/").arg(Theme::instance()->systrayIconFlavor(true));
+    QString themeDir =
+        QString(Theme::themePrefix) + QString::fromLatin1("%1/").arg(Theme::instance()->systrayIconFlavor(true));
     return QDir(themeDir).exists();
 }
 
@@ -481,8 +485,7 @@ QString Theme::gitSHA1() const
 {
     QString devString;
 #ifdef GIT_SHA1
-    const QString githubPrefix(QLatin1String(
-        "https://github.com/nextcloud/desktop/commit/"));
+    const QString githubPrefix(QLatin1String("https://github.com/nextcloud/desktop/commit/"));
     const QString gitSha1(QLatin1String(GIT_SHA1));
     devString = QCoreApplication::translate("nextcloudTheme::about()",
         "<p><small>Built from Git revision <a href=\"%1\">%2</a>"
@@ -505,17 +508,15 @@ QString Theme::about() const
 
     QString devString;
     //: Example text: "<p>Nextcloud Desktop Client</p>"   (%1 is the application name)
-    devString = tr("<p>%1 Desktop Client</p>")
-              .arg(APPLICATION_NAME);
+    devString = tr("<p>%1 Desktop Client</p>").arg(APPLICATION_NAME);
 
     devString += tr("<p>Version %1. For more information please click <a href='%2'>here</a>.</p>")
-              .arg(QString::fromLatin1(MIRALL_STRINGIFY(MIRALL_VERSION)) + QString(" (%1)").arg(osName))
-              .arg(helpUrl());
+                     .arg(QString::fromLatin1(MIRALL_STRINGIFY(MIRALL_VERSION)) + QString(" (%1)").arg(osName))
+                     .arg(helpUrl());
 
-    devString += tr("<p><small>Using virtual files plugin: %1</small></p>")
-                     .arg(Vfs::modeToString(bestAvailableVfsMode()));
-    devString += QStringLiteral("<br>%1")
-              .arg(QSysInfo::productType() % QLatin1Char('-') % QSysInfo::kernelVersion());
+    devString +=
+        tr("<p><small>Using virtual files plugin: %1</small></p>").arg(Vfs::modeToString(bestAvailableVfsMode()));
+    devString += QStringLiteral("<br>%1").arg(QSysInfo::productType() % QLatin1Char('-') % QSysInfo::kernelVersion());
 
     return devString;
 }
@@ -524,11 +525,10 @@ QString Theme::aboutDetails() const
 {
     QString devString;
     devString = tr("<p>Version %1. For more information please click <a href='%2'>here</a>.</p>")
-              .arg(MIRALL_VERSION_STRING)
-              .arg(helpUrl());
+                    .arg(MIRALL_VERSION_STRING)
+                    .arg(helpUrl());
 
-    devString += tr("<p>This release was supplied by %1</p>")
-              .arg(APPLICATION_VENDOR);
+    devString += tr("<p>This release was supplied by %1</p>").arg(APPLICATION_VENDOR);
 
     devString += gitSHA1();
 
@@ -751,15 +751,13 @@ QString Theme::versionSwitchOutput() const
 {
     QString helpText;
     QTextStream stream(&helpText);
-    stream << appName()
-           << QLatin1String(" version ")
-           << version() << Qt::endl;
+    stream << appName() << QLatin1String(" version ") << version() << Qt::endl;
 #ifdef GIT_SHA1
     stream << "Git revision " << GIT_SHA1 << Qt::endl;
 #endif
     stream << "Using Qt " << qVersion() << ", built against Qt " << QT_VERSION_STR << Qt::endl;
 
-    if(!QGuiApplication::platformName().isEmpty())
+    if (!QGuiApplication::platformName().isEmpty())
         stream << "Using Qt platform plugin '" << QGuiApplication::platformName() << "'" << Qt::endl;
 
     stream << "Using '" << QSslSocket::sslLibraryVersionString() << "'" << Qt::endl;
@@ -796,7 +794,8 @@ void Theme::replaceLinkColorStringBackgroundAware(QString &linkString)
 
 void Theme::replaceLinkColorString(QString &linkString, const QColor &newColor)
 {
-    linkString.replace(QRegularExpression("(<a href|<a style='color:#([a-zA-Z0-9]{6});' href)"), QString::fromLatin1("<a style='color:%1;' href").arg(newColor.name()));
+    linkString.replace(QRegularExpression("(<a href|<a style='color:#([a-zA-Z0-9]{6});' href)"),
+        QString::fromLatin1("<a style='color:%1;' href").arg(newColor.name()));
 }
 
 QIcon Theme::createColorAwareIcon(const QString &name, const QPalette &palette)
@@ -870,7 +869,7 @@ QColor Theme::errorBoxBackgroundColor() const
 }
 
 QColor Theme::errorBoxBorderColor() const
-{ 
+{
     return QColor{"black"};
 }
 

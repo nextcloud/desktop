@@ -72,7 +72,11 @@ bool Capabilities::sharePublicLinkSupportsUploadOnly() const
 
 bool Capabilities::sharePublicLinkAskOptionalPassword() const
 {
-    return _capabilities["files_sharing"].toMap()["public"].toMap()["password"].toMap()["askForOptionalPassword"].toBool();
+    return _capabilities["files_sharing"]
+        .toMap()["public"]
+        .toMap()["password"]
+        .toMap()["askForOptionalPassword"]
+        .toBool();
 }
 
 bool Capabilities::sharePublicLinkEnforcePassword() const
@@ -102,10 +106,10 @@ bool Capabilities::shareResharing() const
 
 int Capabilities::shareDefaultPermissions() const
 {
-    if(_capabilities["files_sharing"].toMap().contains("default_permissions")) {
+    if (_capabilities["files_sharing"].toMap().contains("default_permissions")) {
         return _capabilities["files_sharing"].toMap()["default_permissions"].toInt();
     }
-    
+
     return {};
 }
 
@@ -171,8 +175,11 @@ QList<QByteArray> Capabilities::supportedChecksumTypes() const
 QByteArray Capabilities::preferredUploadChecksumType() const
 {
     return qEnvironmentVariable("OWNCLOUD_CONTENT_CHECKSUM_TYPE",
-                                _capabilities.value(QStringLiteral("checksums")).toMap()
-                                .value(QStringLiteral("preferredUploadType"), QStringLiteral("SHA1")).toString()).toUtf8();
+        _capabilities.value(QStringLiteral("checksums"))
+            .toMap()
+            .value(QStringLiteral("preferredUploadType"), QStringLiteral("SHA1"))
+            .toString())
+        .toUtf8();
 }
 
 QByteArray Capabilities::uploadChecksumType() const
@@ -198,9 +205,8 @@ bool Capabilities::chunkingNg() const
 
 bool Capabilities::userStatusNotification() const
 {
-    return _capabilities.contains("notifications") &&
-        _capabilities["notifications"].toMap().contains("ocs-endpoints") &&
-        _capabilities["notifications"].toMap()["ocs-endpoints"].toStringList().contains("user-status");
+    return _capabilities.contains("notifications") && _capabilities["notifications"].toMap().contains("ocs-endpoints")
+        && _capabilities["notifications"].toMap()["ocs-endpoints"].toStringList().contains("user-status");
 }
 
 bool Capabilities::userStatus() const
@@ -293,26 +299,26 @@ QStringList Capabilities::blacklistedFiles() const
 /*-------------------------------------------------------------------------------------*/
 
 // Direct Editing
-void Capabilities::addDirectEditor(DirectEditor* directEditor)
+void Capabilities::addDirectEditor(DirectEditor *directEditor)
 {
-    if(directEditor)
+    if (directEditor)
         _directEditors.append(directEditor);
 }
 
-DirectEditor* Capabilities::getDirectEditorForMimetype(const QMimeType &mimeType)
+DirectEditor *Capabilities::getDirectEditorForMimetype(const QMimeType &mimeType)
 {
-    foreach(DirectEditor* editor, _directEditors) {
-        if(editor->hasMimetype(mimeType))
+    foreach (DirectEditor *editor, _directEditors) {
+        if (editor->hasMimetype(mimeType))
             return editor;
     }
 
     return nullptr;
 }
 
-DirectEditor* Capabilities::getDirectEditorForOptionalMimetype(const QMimeType &mimeType)
+DirectEditor *Capabilities::getDirectEditorForOptionalMimetype(const QMimeType &mimeType)
 {
-    foreach(DirectEditor* editor, _directEditors) {
-        if(editor->hasOptionalMimetype(mimeType))
+    foreach (DirectEditor *editor, _directEditors) {
+        if (editor->hasOptionalMimetype(mimeType))
             return editor;
     }
 
@@ -321,7 +327,7 @@ DirectEditor* Capabilities::getDirectEditorForOptionalMimetype(const QMimeType &
 
 /*-------------------------------------------------------------------------------------*/
 
-DirectEditor::DirectEditor(const QString &id, const QString &name, QObject* parent)
+DirectEditor::DirectEditor(const QString &id, const QString &name, QObject *parent)
     : QObject(parent)
     , _id(id)
     , _name(name)

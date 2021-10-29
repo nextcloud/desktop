@@ -47,8 +47,7 @@ public:
 
 protected:
     void run();
-    void watchChanges(size_t fileNotifyBufferSize,
-        bool *increaseBufferSize);
+    void watchChanges(size_t fileNotifyBufferSize, bool *increaseBufferSize);
     void closeHandle();
 
 signals:

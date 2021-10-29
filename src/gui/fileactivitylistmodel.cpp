@@ -58,8 +58,7 @@ void FileActivityListModel::startFetchJob()
 
     const QString url(QStringLiteral("ocs/v2.php/apps/activity/api/v2/activity/filter"));
     auto job = new JsonApiJob(accountState()->account(), url, this);
-    QObject::connect(job, &JsonApiJob::jsonReceived,
-        this, &FileActivityListModel::activitiesReceived);
+    QObject::connect(job, &JsonApiJob::jsonReceived, this, &FileActivityListModel::activitiesReceived);
 
     QUrlQuery params;
     params.addQueryItem(QStringLiteral("sort"), QStringLiteral("asc"));

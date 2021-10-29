@@ -84,8 +84,8 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
 #ifdef WITH_WEBENGINE
     connect(_webViewPage, &WebViewPage::connectToOCUrl, this, &OwncloudWizard::connectToOCUrl);
 #endif // WITH_WEBENGINE
-    connect(_advancedSetupPage, &OwncloudAdvancedSetupPage::createLocalAndRemoteFolders,
-        this, &OwncloudWizard::createLocalAndRemoteFolders);
+    connect(_advancedSetupPage, &OwncloudAdvancedSetupPage::createLocalAndRemoteFolders, this,
+        &OwncloudWizard::createLocalAndRemoteFolders);
     connect(this, &QWizard::customButtonClicked, this, &OwncloudWizard::skipFolderConfiguration);
 
 
@@ -121,12 +121,12 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
 void OwncloudWizard::centerWindow()
 {
     const auto wizardWindow = window();
-    const auto screen = QGuiApplication::screenAt(wizardWindow->pos())
-        ? QGuiApplication::screenAt(wizardWindow->pos())
-        : QGuiApplication::primaryScreen();
+    const auto screen = QGuiApplication::screenAt(wizardWindow->pos()) ? QGuiApplication::screenAt(wizardWindow->pos())
+                                                                       : QGuiApplication::primaryScreen();
     const auto screenGeometry = screen->geometry();
     const auto windowGeometry = wizardWindow->geometry();
-    const auto newWindowPosition = screenGeometry.center() - QPoint(windowGeometry.width() / 2, windowGeometry.height() / 2);
+    const auto newWindowPosition =
+        screenGeometry.center() - QPoint(windowGeometry.width() / 2, windowGeometry.height() / 2);
     wizardWindow->move(newWindowPosition);
 }
 
@@ -156,7 +156,7 @@ QList<QSize> OwncloudWizard::calculateWizardPageSizes() const
 int OwncloudWizard::calculateLongestSideOfWizardPages(const QList<QSize> &pageSizes) const
 {
     return std::accumulate(std::cbegin(pageSizes), std::cend(pageSizes), 0, [](int current, const QSize &size) {
-        return std::max({ current, size.width(), size.height() });
+        return std::max({current, size.width(), size.height()});
     });
 }
 
@@ -292,12 +292,12 @@ void OwncloudWizard::slotCurrentPageChanged(int id)
         id == WizardCommon::Page_WebView ||
 #endif // WITH_WEBENGINE
         id == WizardCommon::Page_Flow2AuthCreds) {
-        setButtonLayout({ QWizard::Stretch, QWizard::BackButton });
+        setButtonLayout({QWizard::Stretch, QWizard::BackButton});
     } else if (id == WizardCommon::Page_AdvancedSetup) {
-        setButtonLayout({ QWizard::Stretch, QWizard::CustomButton1, QWizard::BackButton, QWizard::FinishButton });
+        setButtonLayout({QWizard::Stretch, QWizard::CustomButton1, QWizard::BackButton, QWizard::FinishButton});
         setNextButtonAsDefault();
     } else {
-        setButtonLayout({ QWizard::Stretch, QWizard::BackButton, QWizard::NextButton });
+        setButtonLayout({QWizard::Stretch, QWizard::BackButton, QWizard::NextButton});
         setNextButtonAsDefault();
     }
 
@@ -305,7 +305,8 @@ void OwncloudWizard::slotCurrentPageChanged(int id)
         emit clearPendingRequests();
     }
 
-    if (id == WizardCommon::Page_AdvancedSetup && (_credentialsPage == _browserCredsPage || _credentialsPage == _flow2CredsPage)) {
+    if (id == WizardCommon::Page_AdvancedSetup
+        && (_credentialsPage == _browserCredsPage || _credentialsPage == _flow2CredsPage)) {
         // For OAuth, disable the back button in the Page_AdvancedSetup because we don't want
         // to re-open the browser.
         button(QWizard::BackButton)->setEnabled(false);
@@ -391,7 +392,8 @@ void OwncloudWizard::bringToTop()
     ownCloudGui::raiseDialog(this);
 }
 
-void OwncloudWizard::askExperimentalVirtualFilesFeature(QWidget *receiver, const std::function<void(bool enable)> &callback)
+void OwncloudWizard::askExperimentalVirtualFilesFeature(
+    QWidget *receiver, const std::function<void(bool enable)> &callback)
 {
     const auto bestVfsMode = bestAvailableVfsMode();
     QMessageBox *msgBox = nullptr;
@@ -401,9 +403,7 @@ void OwncloudWizard::askExperimentalVirtualFilesFeature(QWidget *receiver, const
         callback(true);
         return;
     case Vfs::WithSuffix:
-        msgBox = new QMessageBox(
-            QMessageBox::Warning,
-            tr("Enable experimental feature?"),
+        msgBox = new QMessageBox(QMessageBox::Warning, tr("Enable experimental feature?"),
             tr("When the \"virtual files\" mode is enabled no files will be downloaded initially. "
                "Instead, a tiny \"%1\" file will be created for each file that exists on the server. "
                "The contents can be downloaded by running these files or by using their context menu."

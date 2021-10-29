@@ -59,11 +59,11 @@ private:
     bool _userStatusSupported = false;
     bool _userStatusEmojisSupported = false;
 
-    QPointer<JsonApiJob> _clearMessageJob {};
-    QPointer<JsonApiJob> _setMessageJob {};
-    QPointer<JsonApiJob> _setOnlineStatusJob {};
-    QPointer<JsonApiJob> _getPredefinedStausesJob {};
-    QPointer<JsonApiJob> _getUserStatusJob {};
+    QPointer<JsonApiJob> _clearMessageJob{};
+    QPointer<JsonApiJob> _setMessageJob{};
+    QPointer<JsonApiJob> _setOnlineStatusJob{};
+    QPointer<JsonApiJob> _getPredefinedStausesJob{};
+    QPointer<JsonApiJob> _getUserStatusJob{};
 
     UserStatus _userStatus;
 };
