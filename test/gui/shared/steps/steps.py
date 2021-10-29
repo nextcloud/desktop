@@ -303,12 +303,45 @@ def step(context, fileName):
     waitForFileToBeSynced(context, fileName)
 
 
+@Given(
+    'the user has created a file "|any|" with the following content on the file system'
+)
+def step(context, filename):
+    createFile(context, filename)
+
+
 @When('the user creates a file "|any|" with the following content on the file system')
 def step(context, filename):
+    createFile(context, filename)
+
+
+def createFile(context, filename):
     fileContent = "\n".join(context.multiLineText)
     f = open(context.userData['clientSyncPathUser1'] + filename, "w")
     f.write(fileContent)
     f.close()
+
+
+@When('the user creates a folder "|any|"')
+def step(context, foldername):
+    createFolder(context, foldername)
+
+
+@Given('the user has created a folder "|any|"')
+def step(context, foldername):
+    createFolder(context, foldername)
+
+
+def createFolder(context, foldername):
+    path = join(context.userData['clientSyncPathUser1'], foldername)
+    os.makedirs(path)
+
+
+@When('the user copies the folder "|any|" to "|any|"')
+def step(context, sourceFolder, destinationFolder):
+    source_dir = join(context.userData['clientSyncPathUser1'], sourceFolder)
+    destination_dir = join(context.userData['clientSyncPathUser1'], destinationFolder)
+    shutil.copytree(source_dir, destination_dir)
 
 
 @Given(r"^(.*) on the server (.*)$", regexp=True)
@@ -480,6 +513,12 @@ def step(context, files):
 def step(context, filename):
     activity = Activity()
     activity.checkFileExist(filename)
+
+
+@Then('the file "|any|" should be blacklisted')
+def step(context, filename):
+    activity = Activity()
+    activity.checkBlackListedFileExist(filename)
 
 
 @When('the user selects "|any|" tab in the activity')
