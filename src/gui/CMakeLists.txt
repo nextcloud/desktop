@@ -121,6 +121,7 @@ set(client_SRCS
     userstatusselectormodel.cpp
     emojimodel.cpp
     fileactivitylistmodel.cpp
+    tray/svgimageprovider.cpp
     tray/syncstatussummary.cpp
     tray/activitydata.cpp
     tray/activitylistmodel.cpp

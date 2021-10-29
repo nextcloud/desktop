@@ -46,16 +46,8 @@ TextField {
         smooth: true;
         antialiasing: true
         mipmap: true
-
-        source: "qrc:///client/theme/black/search.svg"
+        source: "image://svgimage-custom-color/search.svg" + "/" + trayWindowUnifiedSearchTextField.textFieldIconsColor
         sourceSize: Qt.size(parent.height * parent.textFieldIconsScaleFactor, parent.height * parent.textFieldIconsScaleFactor)
-
-        ColorOverlay {
-            anchors.fill: parent
-            source: parent
-            cached: true
-            color: parent.parent.textFieldIconsColor
-        }
     }
 
     BusyIndicator {
@@ -87,16 +79,8 @@ TextField {
         mipmap: true
 
         visible: parent.text
-
-        source: "qrc:///client/theme/black/clear.svg"
+        source: "image://svgimage-custom-color/clear.svg" + "/" + trayWindowUnifiedSearchTextField.textFieldIconsColor
         sourceSize: Qt.size(parent.height * parent.textFieldIconsScaleFactor, parent.height * parent.textFieldIconsScaleFactor)
-
-        ColorOverlay {
-            anchors.fill: parent
-            cached: true
-            source: parent
-            color: parent.parent.textFieldIconsColor
-        }
 
         MouseArea {
             id: trayWindowUnifiedSearchTextFieldClearTextButtonMouseArea

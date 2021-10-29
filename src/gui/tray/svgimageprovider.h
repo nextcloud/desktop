@@ -12,19 +12,17 @@
  * for more details.
  */
 
-#ifndef ICONUTILS_H
-#define ICONUTILS_H
+#pragma once
 
-#include <QColor>
-#include <QPixmap>
+#include <QQuickImageProvider>
 
 namespace OCC {
 namespace Ui {
-namespace IconUtils {
-QPixmap pixmapForBackground(const QString &fileName, const QColor &backgroundColor);
-QPixmap createSvgPixmapWithCustomColor(const QString &fileName, const QColor &customColor, const QSize &size = {});
-QPixmap drawSvgWithCustomFillColor(const QString &sourceSvgPath, const QColor &fillColor, const QSize &size = {});
+    class SvgImageProvider : public QQuickImageProvider
+    {
+    public:
+        SvgImageProvider();
+        QImage requestImage(const QString &id, QSize *size, const QSize &requestedSize) override;
+    };
 }
 }
-}
-#endif // ICONUTILS_H
