@@ -4048,7 +4048,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Leisti redaguoti</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="194"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="193"/>
         <source>View only</source>
         <translation type="unfinished"/>
     </message>
@@ -4073,7 +4073,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Nustoti bendrinti</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="223"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="222"/>
         <source>Link name</source>
         <translation type="unfinished"/>
     </message>
@@ -4093,7 +4093,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Nustatyti galiojimo pabaigos datą</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="302"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="305"/>
         <source>Delete link</source>
         <translation type="unfinished"/>
     </message>
@@ -4694,7 +4694,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Leidžiami tik %1, būtina bent %2, kad galėtumėte pradėti</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1081"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1028"/>
         <source>Aborted</source>
         <translation type="unfinished"/>
     </message>
@@ -4861,12 +4861,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Failo pavadinime yra bent vienas neleistinas simbolis</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1098"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1045"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation>Mažai vietos diske: atsisiuntimai, kurie sumažintų vietą iki %1 buvo praleisti.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1105"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1052"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation>Kai kuriems įkėlimams serveryje neužteks vietos.</translation>
     </message>

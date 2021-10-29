@@ -4049,7 +4049,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Cheñchamentoù aotreet</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="194"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="193"/>
         <source>View only</source>
         <translation type="unfinished"/>
     </message>
@@ -4074,7 +4074,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Nag eskemm ken</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="223"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="222"/>
         <source>Link name</source>
         <translation type="unfinished"/>
     </message>
@@ -4094,7 +4094,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Lakaat un deizat termen</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="302"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="305"/>
         <source>Delete link</source>
         <translation type="unfinished"/>
     </message>
@@ -4695,7 +4695,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Nez eus nemet %1 dieub, ret eo kaout %2 d&apos;an neubeutañ evit kregiñ</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1081"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1028"/>
         <source>Aborted</source>
         <translation type="unfinished"/>
     </message>
@@ -4862,12 +4862,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Un arouez fall ez eus d&apos;an neubeutañ en anv restr</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1098"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1045"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation>Plas el lenner re vihan : ar bellgargadennoù a lako ar plas dieub da mont dindan %1 a vo ankouaet.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1105"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1052"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation>N&apos;ez eus ket trawalc&apos;h a blas war ar servijour evit pelgasadennoù zo.</translation>
     </message>

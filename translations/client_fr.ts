@@ -4071,7 +4071,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Autoriser la modification</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="194"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="193"/>
         <source>View only</source>
         <translation>Voir uniquement</translation>
     </message>
@@ -4096,7 +4096,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Ne plus partager</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="223"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="222"/>
         <source>Link name</source>
         <translation>Nom du lien</translation>
     </message>
@@ -4116,7 +4116,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Définir une date d&apos;expiration</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="302"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="305"/>
         <source>Delete link</source>
         <translation>Supprimer le lien</translation>
     </message>
@@ -4718,7 +4718,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Seulement %1 disponibles, il faut au moins %2 pour démarrer</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1081"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1028"/>
         <source>Aborted</source>
         <translation>Annulé</translation>
     </message>
@@ -4885,12 +4885,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Le nom de fichier contient au moins un caractère non valable</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1098"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1045"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation>L&apos;espace disque est faible : les téléchargements qui amèneraient à réduire l&apos;espace libre en dessous de %1 ont été ignorés.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1105"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1052"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation>Il n&apos;y a pas suffisamment d’espace disponible sur le serveur pour certains téléversements.</translation>
     </message>

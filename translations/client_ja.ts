@@ -4073,7 +4073,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>編集を許可</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="194"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="193"/>
         <source>View only</source>
         <translation>表示のみ</translation>
     </message>
@@ -4098,7 +4098,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>共有解除</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="223"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="222"/>
         <source>Link name</source>
         <translation>リンク名</translation>
     </message>
@@ -4118,7 +4118,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>有効期限を設定</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="302"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="305"/>
         <source>Delete link</source>
         <translation>リンクを削除</translation>
     </message>
@@ -4719,7 +4719,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>%1 しか空き容量がありません、開始するためには少なくとも %2 は必要です。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1081"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1028"/>
         <source>Aborted</source>
         <translation>中断しました</translation>
     </message>
@@ -4886,12 +4886,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>ファイル名に1文字以上の無効な文字が含まれています</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1098"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1045"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation>ディスク容量が少ない：%1以下の空き容量を減らすダウンロードはスキップされました。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1105"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1052"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation>いくつかのアップロードのために、サーバーに十分なスペースがありません。</translation>
     </message>

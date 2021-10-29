@@ -4052,7 +4052,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Επιτρέπεται η επεξεργασία</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="194"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="193"/>
         <source>View only</source>
         <translation type="unfinished"/>
     </message>
@@ -4077,7 +4077,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Αναίρεση διαμοιρασμού</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="223"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="222"/>
         <source>Link name</source>
         <translation type="unfinished"/>
     </message>
@@ -4097,7 +4097,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Ορισμός ημερομηνίας λήξης</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="302"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="305"/>
         <source>Delete link</source>
         <translation type="unfinished"/>
     </message>
@@ -4698,7 +4698,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Μόνο %1 είναι διαθέσιμα, απαιτούνται τουλάχιστον %2 για την εκκίνηση</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1081"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1028"/>
         <source>Aborted</source>
         <translation>Ματαιώθηκε</translation>
     </message>
@@ -4865,12 +4865,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Το όνομα αρχείου περιέχει έναν τουλάχιστον μη έγκυρο χαρακτήρα</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1098"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1045"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation>Ο χώρος δίσκου είναι χαμηλός: Οι λήψεις που θα μειώσουν τον ελέυθερο χώρο κάτω από %1 θα αγνοηθούν.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1105"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1052"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation>Μη αρκετός διαθέσιμος χώρος στον διακομιστή για μερικές μεταφορτώσεις.</translation>
     </message>

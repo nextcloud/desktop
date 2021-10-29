@@ -4038,7 +4038,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Овозможи уредување</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="194"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="193"/>
         <source>View only</source>
         <translation type="unfinished"/>
     </message>
@@ -4063,7 +4063,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Не споделувај</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="223"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="222"/>
         <source>Link name</source>
         <translation type="unfinished"/>
     </message>
@@ -4083,7 +4083,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Постави рок на траење</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="302"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="305"/>
         <source>Delete link</source>
         <translation type="unfinished"/>
     </message>
@@ -4684,7 +4684,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Достапно е %1, потребно е %2 за почеток</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1081"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1028"/>
         <source>Aborted</source>
         <translation>Откажано</translation>
     </message>
@@ -4851,12 +4851,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Името на датотеката соджи невалиден карактер</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1098"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1045"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation>Има малку простор на дискот: Преземањата ќе доведат да просторот на дискот се намали под %1 поради тоа се прескокнува.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1105"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1052"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation type="unfinished"/>
     </message>
