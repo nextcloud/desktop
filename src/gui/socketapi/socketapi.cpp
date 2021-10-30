@@ -214,73 +214,45 @@ void SocketListener::sendMessage(const QString &message, bool doWait) const
 SocketApi::SocketApi(QObject *parent)
     : QObject(parent)
 {
-    QString socketPath;
-
     qRegisterMetaType<SocketListener *>("SocketListener*");
     qRegisterMetaType<QSharedPointer<SocketApiJob>>("QSharedPointer<SocketApiJob>");
     qRegisterMetaType<QSharedPointer<SocketApiJobV2>>("QSharedPointer<SocketApiJobV2>");
 
-    if (Utility::isWindows()) {
-        socketPath = QLatin1String("\\\\.\\pipe\\")
-            + QLatin1String("ownCloud-")
-            + QString::fromLocal8Bit(qgetenv("USERNAME"));
-        // TODO: once the windows extension supports multiple
-        // client connections, switch back to the theme name
-        // See issue #2388
-        // + Theme::instance()->appName();
-    } else if (Utility::isMac()) {
-        // This must match the code signing Team setting of the extension
-        // Example for developer builds (with ad-hoc signing identity): "" "com.owncloud.desktopclient" ".socketApi"
-        // Example for official signed packages: "9B5WD74GWJ." "com.owncloud.desktopclient" ".socketApi"
-        socketPath = SOCKETAPI_TEAM_IDENTIFIER_PREFIX APPLICATION_REV_DOMAIN ".socketApi";
-#ifdef Q_OS_MAC
-        CFURLRef url = (CFURLRef)CFAutorelease((CFURLRef)CFBundleCopyBundleURL(CFBundleGetMainBundle()));
-        QString bundlePath = QUrl::fromCFURL(url).path();
+    const QString socketPath = Utility::socketApiSocketPath();
 
-        auto _system = [](const QString &cmd, const QStringList &args) {
-            QProcess process;
-            process.setProcessChannelMode(QProcess::MergedChannels);
-            process.start(cmd, args);
-            if (!process.waitForFinished()) {
-                qCWarning(lcSocketApi) << "Failed to load shell extension:" << cmd << args.join(" ") << process.errorString();
-            } else {
-                qCInfo(lcSocketApi) << (process.exitCode() != 0 ? "Failed to load" : "Loaded") << "shell extension:" << cmd << args.join(" ") << process.readAll();
-            }
-        };
-        // Add it again. This was needed for Mojave to trigger a load.
-        _system(QStringLiteral("pluginkit"), { QStringLiteral("-a"), QStringLiteral("%1Contents/PlugIns/FinderSyncExt.appex/").arg(bundlePath) });
-        // Tell Finder to use the Extension (checking it from System Preferences -> Extensions)
-        _system(QStringLiteral("pluginkit"), { QStringLiteral("-e"), QStringLiteral("use"), QStringLiteral("-i"), QStringLiteral(APPLICATION_REV_DOMAIN ".FinderSyncExt") });
-
-#endif
-    } else if (Utility::isLinux() || Utility::isBSD()) {
-        QString runtimeDir;
-        runtimeDir = QStandardPaths::writableLocation(QStandardPaths::RuntimeLocation);
-        socketPath = runtimeDir + "/" + Theme::instance()->appName() + "/socket";
-    } else {
-        qCWarning(lcSocketApi) << "An unexpected system detected, this probably won't work.";
-    }
-
+    // Remove any old socket that might be lying around:
     SocketApiServer::removeServer(socketPath);
-    QFileInfo info(socketPath);
-    if (!info.dir().exists()) {
-        bool result = info.dir().mkpath(".");
-        qCDebug(lcSocketApi) << "creating" << info.dir().path() << result;
-        if (result) {
-            QFile::setPermissions(socketPath,
-                QFile::Permissions(QFile::ReadOwner + QFile::WriteOwner + QFile::ExeOwner));
+
+    // Create the socket path:
+    if (!Utility::isMac()) {
+        // Not on macOS: there the directory is there, and created for us by the sandboxing
+        // environment, because we belong to an App Group.
+        QFileInfo info(socketPath);
+        if (!info.dir().exists()) {
+            bool result = info.dir().mkpath(".");
+            qCDebug(lcSocketApi) << "creating" << info.dir().path() << result;
+            if (result) {
+                QFile::setPermissions(socketPath,
+                    QFile::Permissions(QFile::ReadOwner | QFile::WriteOwner | QFile::ExeOwner));
+            }
         }
     }
-    if (!_localServer.listen(socketPath)) {
-        qCWarning(lcSocketApi) << "can't start server" << socketPath;
-    } else {
-        qCInfo(lcSocketApi) << "server started, listening at " << socketPath;
-    }
 
+    // Wire up the server instance to us, so we can accept new connections:
     connect(&_localServer, &SocketApiServer::newConnection, this, &SocketApi::slotNewConnection);
+
+    // Start listeneing:
+    if (_localServer.listen(socketPath)) {
+        qCInfo(lcSocketApi) << "server started, listening at " << socketPath;
+    } else {
+        qCWarning(lcSocketApi) << "can't start server" << socketPath;
+    }
 
     // folder watcher
     connect(FolderMan::instance(), &FolderMan::folderSyncStateChange, this, &SocketApi::slotUpdateFolderView);
+
+    // Now we're ready to start the native shell integration:
+    Utility::startShellIntegration();
 }
 
 SocketApi::~SocketApi()

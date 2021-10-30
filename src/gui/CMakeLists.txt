@@ -74,6 +74,7 @@ set(client_SRCS
     quotainfo.cpp
     accountstate.cpp
     authenticationdialog.cpp
+    platform.cpp
     proxyauthhandler.cpp
     proxyauthdialog.cpp
     tooltipupdater.cpp
@@ -151,10 +152,10 @@ IF( APPLE )
     target_link_libraries(owncloudCore PUBLIC Qt5::MacExtras)
 
     target_sources(owncloudCore PRIVATE
-            cocoainitializer_mac.mm
+            platform_mac.mm
             systray.mm
             settingsdialog_mac.mm
-
+            guiutility_mac.mm
             folderwatcher_mac.cpp)
 
     if(SPARKLE_FOUND)
@@ -167,6 +168,8 @@ IF( APPLE )
    endif()
 elseif( WIN32 )
     target_sources(owncloudCore PRIVATE
+            platform_win.cpp
+            guiutility_win.cpp
             folderwatcher_win.cpp
             navigationpanehelper.cpp)
 elseif(UNIX AND NOT APPLE )
@@ -176,7 +179,10 @@ elseif(UNIX AND NOT APPLE )
         target_link_libraries(owncloudCore PUBLIC Qt5::DBus)
         target_compile_definitions(owncloudCore PUBLIC "USE_FDO_NOTIFICATIONS")
     endif()
-    target_sources(owncloudCore PRIVATE folderwatcher_linux.cpp)
+    target_sources(owncloudCore PRIVATE
+            folderwatcher_linux.cpp
+            platform_unix.cpp
+            guiutility_unix.cpp)
 endif()
 
 

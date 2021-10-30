@@ -26,9 +26,11 @@
 
 #include "common/asserts.h"
 
-using namespace OCC;
+namespace OCC {
+Q_LOGGING_CATEGORY(lcGuiUtility, "gui.utility", QtInfoMsg)
+}
 
-Q_LOGGING_CATEGORY(lcUtility, "gui.utility", QtInfoMsg)
+using namespace OCC;
 
 bool Utility::openBrowser(const QUrl &url, QWidget *errorWidgetParent)
 {
@@ -42,7 +44,7 @@ bool Utility::openBrowser(const QUrl &url, QWidget *errorWidgetParent)
                     "URL %1. Maybe no default browser is configured?")
                     .arg(url.toString()));
         }
-        qCWarning(lcUtility) << "QDesktopServices::openUrl failed for" << url;
+        qCWarning(lcGuiUtility) << "QDesktopServices::openUrl failed for" << url;
         return false;
     }
     return true;
@@ -66,7 +68,7 @@ bool Utility::openEmailComposer(const QString &subject, const QString &body, QWi
                     "create a new message. Maybe no default email client is "
                     "configured?"));
         }
-        qCWarning(lcUtility) << "QDesktopServices::openUrl failed for" << url;
+        qCWarning(lcGuiUtility) << "QDesktopServices::openUrl failed for" << url;
         return false;
     }
     return true;

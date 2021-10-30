@@ -1,5 +1,6 @@
 /*
  * Copyright (C) by Daniel Molkentin <danimo@owncloud.com>
+ * Copyright (C) by Erik Verbruggen <erik@verbruggen.consulting>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -13,12 +14,11 @@
  */
 
 #include "application.h"
-#include "cocoainitializer.h"
+#include "platform.h"
 
-#import <Foundation/NSAutoreleasePool.h>
 #import <AppKit/NSApplication.h>
 
-#include <QMessageBox>
+#include <QProcess>
 
 @interface OwnAppDelegate : NSObject <NSApplicationDelegate>
 - (BOOL)applicationShouldHandleReopen:(NSApplication *)sender hasVisibleWindows:(BOOL)flag;
@@ -37,27 +37,35 @@
 @end
 
 namespace OCC {
-namespace Mac {
 
-class CocoaInitializer::Private {
-  public:
-    NSAutoreleasePool* autoReleasePool;
-    OwnAppDelegate *appDelegate;
+class MacPlatform : public Platform
+{
+public:
+    MacPlatform();
+    ~MacPlatform() override;
+
+private:
+    QMacAutoReleasePool _autoReleasePool;
+    OwnAppDelegate *_appDelegate;
 };
 
-CocoaInitializer::CocoaInitializer() {
-  d = new CocoaInitializer::Private();
-  NSApplicationLoad();
-  d->autoReleasePool = [[NSAutoreleasePool alloc] init];
-  d->appDelegate = [[OwnAppDelegate alloc] init];
-  [[NSApplication sharedApplication] setDelegate:d->appDelegate];
+MacPlatform::MacPlatform()
+{
+    NSApplicationLoad();
+    _appDelegate = [[OwnAppDelegate alloc] init];
+    [[NSApplication sharedApplication] setDelegate:_appDelegate];
+
+    signal(SIGPIPE, SIG_IGN);
 }
 
-CocoaInitializer::~CocoaInitializer() {
-    [d->appDelegate release];
-    [d->autoReleasePool release];
-    delete d;
+MacPlatform::~MacPlatform()
+{
+    [_appDelegate release];
 }
 
-} // namespace Mac
+std::unique_ptr<Platform> Platform::create()
+{
+    return std::make_unique<MacPlatform>();
+}
+
 } // namespace OCC

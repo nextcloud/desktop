@@ -1,5 +1,5 @@
 /*
- * Copyright (C) by Daniel Molkentin <danimo@owncloud.com>
+ * Copyright (C) by Erik Verbruggen <erik@verbruggen.consulting>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -12,23 +12,31 @@
  * for more details.
  */
 
+#include "application.h"
+#include "platform.h"
+
+#include <QCoreApplication>
+
 namespace OCC {
-namespace Mac {
 
-    /**
- * @brief CocoaInitializer provides an AutoRelease Pool via RIIA for use in main()
- * @ingroup gui
- */
-    class CocoaInitializer
+class WinPlatform : public Platform
+{
+public:
+    WinPlatform()
     {
-    public:
-        CocoaInitializer();
-        ~CocoaInitializer();
+        QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling, true);
+    }
 
-    private:
-        class Private;
-        Private *d;
-    };
+    ~WinPlatform() override;
+};
 
-} // namespace Mac
+WinPlatform::~WinPlatform()
+{
+}
+
+std::unique_ptr<Platform> Platform::create()
+{
+    return std::make_unique<WinPlatform>();
+}
+
 } // namespace OCC
