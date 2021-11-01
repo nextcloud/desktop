@@ -249,7 +249,7 @@ void ShareUserGroupWidget::slotSharesFetched(const QList<QSharedPointer<Share>> 
         }
 
 
-        Q_ASSERT(share->getShareType() == Share::TypeUser || share->getShareType() == Share::TypeGroup || share->getShareType() == Share::TypeEmail || share->getShareType() == Share::TypeRoom);
+        Q_ASSERT(Share::isUserGroupShare(share->getShareType()));
         auto userGroupShare = qSharedPointerDynamicCast<UserGroupShare>(share);
         auto *s = new ShareUserLine(_account, userGroupShare, _maxSharingPermissions, _isFile, _parentScrollArea);
         connect(s, &ShareUserLine::resizeRequested, this, &ShareUserGroupWidget::slotAdjustScrollWidgetSize);
@@ -1031,6 +1031,12 @@ void ShareUserLine::showExpireDateOptions(bool show, const QDate &initialDate)
         _ui->calendar->setMinimumDate(QDate::currentDate().addDays(1));
         _ui->calendar->setDate(initialDate.isValid() ? initialDate : _ui->calendar->minimumDate());
         _ui->calendar->setFocus();
+
+        if (enforceExpirationDateForShare(_share->getShareType())) {
+            _ui->calendar->setMaximumDate(maxExpirationDateForShare(_share->getShareType(), _ui->calendar->maximumDate()));
+            _expirationDateLinkAction->setChecked(true);
+            _expirationDateLinkAction->setEnabled(false);
+        }
     }
 
     emit resizeRequested();
@@ -1070,6 +1076,35 @@ void ShareUserLine::togglePasswordSetProgressAnimation(bool show)
 void ShareUserLine::disableProgessIndicatorAnimation()
 {
     enableProgessIndicatorAnimation(false);
+}
+
+QDate ShareUserLine::maxExpirationDateForShare(const Share::ShareType type, const QDate &fallbackDate) const
+{
+    auto daysToExpire = 0;
+    if (type == Share::ShareType::TypeRemote) {
+        daysToExpire = _account->capabilities().shareRemoteExpireDateDays();
+    } else if (type == Share::ShareType::TypeEmail) {
+       daysToExpire = _account->capabilities().sharePublicLinkExpireDateDays();
+    } else {
+        daysToExpire = _account->capabilities().shareInternalExpireDateDays();
+    }
+
+    if (daysToExpire > 0) {
+        return QDate::currentDate().addDays(daysToExpire);
+    }
+
+    return fallbackDate;
+}
+
+bool ShareUserLine::enforceExpirationDateForShare(const Share::ShareType type) const
+{
+    if (type == Share::ShareType::TypeRemote) {
+        return _account->capabilities().shareRemoteEnforceExpireDate();
+    } else if (type == Share::ShareType::TypeEmail) {
+        return _account->capabilities().sharePublicLinkEnforceExpireDate();
+    } else {
+        return _account->capabilities().shareInternalEnforceExpireDate();
+    }
 }
 
 void ShareUserLine::setPasswordConfirmed()

@@ -130,6 +130,11 @@ public:
      */
     void deleteShare();
 
+     /*
+     * Is it a share with a user or group (local or remote)
+     */
+    static bool isUserGroupShare(const ShareType type);
+
 signals:
     void permissionsSet();
     void shareDeleted();
