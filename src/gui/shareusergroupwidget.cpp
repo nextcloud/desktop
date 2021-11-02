@@ -249,7 +249,7 @@ void ShareUserGroupWidget::slotSharesFetched(const QList<QSharedPointer<Share>> 
         }
 
 
-        Q_ASSERT(Share::isUserGroupShare(share->getShareType()));
+        Q_ASSERT(Share::isShareTypeUserGroupEmailRoomOrRemote(share->getShareType()));
         auto userGroupShare = qSharedPointerDynamicCast<UserGroupShare>(share);
         auto *s = new ShareUserLine(_account, userGroupShare, _maxSharingPermissions, _isFile, _parentScrollArea);
         connect(s, &ShareUserLine::resizeRequested, this, &ShareUserGroupWidget::slotAdjustScrollWidgetSize);
@@ -1102,9 +1102,9 @@ bool ShareUserLine::enforceExpirationDateForShare(const Share::ShareType type) c
         return _account->capabilities().shareRemoteEnforceExpireDate();
     } else if (type == Share::ShareType::TypeEmail) {
         return _account->capabilities().sharePublicLinkEnforceExpireDate();
-    } else {
-        return _account->capabilities().shareInternalEnforceExpireDate();
     }
+
+    return _account->capabilities().shareInternalEnforceExpireDate();
 }
 
 void ShareUserLine::setPasswordConfirmed()

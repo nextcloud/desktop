@@ -516,7 +516,9 @@ void ShareLinkWidget::toggleExpireDateOptions(const bool enable)
     
     const auto date = enable ? _linkShare->getExpireDate() : QDate::currentDate().addDays(1);
     _ui->calendar->setDate(date);
-    _ui->calendar->setMinimumDate(date);
+    _ui->calendar->setMinimumDate(QDate::currentDate().addDays(1));
+    _ui->calendar->setMaximumDate(
+        QDate::currentDate().addDays(_account->capabilities().sharePublicLinkExpireDateDays()));
     _ui->calendar->setFocus();
     
     if (!enable && _linkShare && _linkShare->getExpireDate().isValid()) {

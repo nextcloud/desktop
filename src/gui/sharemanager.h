@@ -133,7 +133,7 @@ public:
      /*
      * Is it a share with a user or group (local or remote)
      */
-    static bool isUserGroupShare(const ShareType type);
+    static bool isShareTypeUserGroupEmailRoomOrRemote(const ShareType type);
 
 signals:
     void permissionsSet();
