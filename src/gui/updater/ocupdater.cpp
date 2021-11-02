@@ -12,11 +12,12 @@
  * for more details.
  */
 
-#include "theme.h"
-#include "configfile.h"
-#include "common/utility.h"
 #include "accessmanager.h"
 #include "application.h"
+#include "common/utility.h"
+#include "common/version.h"
+#include "configfile.h"
+#include "theme.h"
 
 #include "updater/ocupdater.h"
 
@@ -243,9 +244,8 @@ bool OCUpdater::updateSucceeded() const
 {
     QSettings settings(ConfigFile::configFile(), QSettings::IniFormat);
 
-    qint64 targetVersionInt = Helper::stringVersionToInt(settings.value(updateTargetVersionC).toString());
-    qint64 currentVersion = Helper::currentVersionToInt();
-    return currentVersion >= targetVersionInt;
+    const auto targetVersionInt = QVersionNumber::fromString(settings.value(updateTargetVersionC).toString());
+    return Version::versionWithBuildNumber() >= targetVersionInt;
 }
 
 void OCUpdater::slotVersionInfoArrived()
@@ -334,23 +334,22 @@ void NSISUpdater::slotDownloadFinished()
 void NSISUpdater::versionInfoArrived(const UpdateInfo &info)
 {
     QSettings settings(ConfigFile::configFile(), QSettings::IniFormat);
-    qint64 infoVersion = Helper::stringVersionToInt(info.version());
-    auto seenString = settings.value(seenVersionC).toString();
-    qint64 seenVersion = Helper::stringVersionToInt(seenString);
-    qint64 currVersion = Helper::currentVersionToInt();
+    const auto infoVersion = QVersionNumber::fromString(info.version());
+    const auto seenString = settings.value(seenVersionC).toString();
+    const auto seenVersion = QVersionNumber::fromString(seenString);
     qCInfo(lcUpdater) << "Version info arrived:"
-            << "Your version:" << currVersion
-            << "Skipped version:" << seenVersion << seenString
-            << "Available version:" << infoVersion << info.version()
-            << "Available version string:" << info.versionString()
-            << "Web url:" << info.web()
-            << "Download url:" << info.downloadUrl();
+                      << "Your version:" << Version::versionWithBuildNumber()
+                      << "Skipped version:" << seenVersion << seenString
+                      << "Available version:" << infoVersion << info.version()
+                      << "Available version string:" << info.versionString()
+                      << "Web url:" << info.web()
+                      << "Download url:" << info.downloadUrl();
     if (info.version().isEmpty())
     {
         qCInfo(lcUpdater) << "No version information available at the moment";
         setDownloadState(UpToDate);
-    } else if (infoVersion <= currVersion
-               || infoVersion <= seenVersion) {
+    } else if (infoVersion <= Version::versionWithBuildNumber()
+        || infoVersion <= seenVersion) {
         qCInfo(lcUpdater) << "Client is on latest version!";
         setDownloadState(UpToDate);
     } else {
@@ -399,7 +398,7 @@ void NSISUpdater::showNoUrlDialog(const UpdateInfo &info)
     QString txt = tr("<p>A new version of the %1 Client is available.</p>"
                      "<p><b>%2</b> is available for download. The installed version is %3.</p>")
                       .arg(Utility::escape(Theme::instance()->appNameGUI()),
-                          Utility::escape(info.versionString()), Utility::escape(clientVersion()));
+                          Utility::escape(info.versionString()), Utility::escape(Version::versionWithBuildNumber().toString()));
 
     lbl->setText(txt);
     lbl->setTextFormat(Qt::RichText);
@@ -450,7 +449,7 @@ void NSISUpdater::showUpdateErrorDialog(const QString &targetVersion)
     QString txt = tr("<p>A new version of the %1 Client is available but the updating process failed.</p>"
                      "<p><b>%2</b> has been downloaded. The installed version is %3.</p>")
                       .arg(Utility::escape(Theme::instance()->appNameGUI()),
-                          Utility::escape(targetVersion), Utility::escape(clientVersion()));
+                          Utility::escape(targetVersion), Utility::escape(Version::versionWithBuildNumber().toString()));
 
     lbl->setText(txt);
     lbl->setTextFormat(Qt::RichText);
@@ -501,7 +500,7 @@ bool NSISUpdater::handleStartup()
             if (updateSucceeded()) {
                 // success: clean up
                 qCInfo(lcUpdater) << "The requested update attempt has succeeded"
-                        << Helper::currentVersionToInt();
+                                  << Version::versionWithBuildNumber();
                 wipeUpdateData();
                 return false;
             } else {
@@ -553,10 +552,8 @@ void PassiveUpdateNotifier::backgroundCheckForUpdate()
 
 void PassiveUpdateNotifier::versionInfoArrived(const UpdateInfo &info)
 {
-    qint64 currentVer = Helper::currentVersionToInt();
-    qint64 remoteVer = Helper::stringVersionToInt(info.version());
-
-    if (info.version().isEmpty() || currentVer >= remoteVer) {
+    const auto remoteVer = QVersionNumber::fromString(info.version());
+    if (info.version().isEmpty() || Version::versionWithBuildNumber() >= remoteVer) {
         qCInfo(lcUpdater) << "Client is on latest version!";
         setDownloadState(UpToDate);
     } else {

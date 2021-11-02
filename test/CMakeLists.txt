@@ -3,8 +3,6 @@ include(owncloud_add_test.cmake)
 add_subdirectory(testutils)
 
 owncloud_add_test(OwncloudPropagator)
-owncloud_add_test(Updater)
-
 owncloud_add_test(OwnSql)
 owncloud_add_test(SyncJournalDB)
 owncloud_add_test(SyncFileItem)

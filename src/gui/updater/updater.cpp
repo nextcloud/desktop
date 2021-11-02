@@ -85,7 +85,7 @@ QUrlQuery Updater::getQueryParams()
     if (!sysInfo.isEmpty()) {
         query.addQueryItem(QStringLiteral("client"), sysInfo);
     }
-    query.addQueryItem(QStringLiteral("version"), clientVersion());
+    query.addQueryItem(QStringLiteral("version"), Version::versionWithBuildNumber().toString());
     query.addQueryItem(QStringLiteral("platform"), platform);
     query.addQueryItem(QStringLiteral("oem"), theme->appName());
     query.addQueryItem(QStringLiteral("buildArch"), QSysInfo::buildCpuArchitecture());
@@ -138,34 +138,6 @@ Updater *Updater::create()
     // the best we can do is notify about updates
     return new PassiveUpdateNotifier(url);
 #endif
-}
-
-
-qint64 Updater::Helper::versionToInt(qint64 major, qint64 minor, qint64 patch, qint64 build)
-{
-    return major << 56 | minor << 48 | patch << 40 | build;
-}
-
-qint64 Updater::Helper::currentVersionToInt()
-{
-    // TODO: directly use QVersionNumber
-    return versionToInt(OCC::Version::version().majorVersion(), OCC::Version::version().minorVersion(),
-        OCC::Version::version().microVersion(), OCC::Version::buildNumber());
-}
-
-qint64 Updater::Helper::stringVersionToInt(const QString &version)
-{
-    if (version.isEmpty())
-        return 0;
-    QByteArray baVersion = version.toLatin1();
-    int major = 0, minor = 0, patch = 0, build = 0;
-    sscanf(baVersion, "%d.%d.%d.%d", &major, &minor, &patch, &build);
-    return versionToInt(major, minor, patch, build);
-}
-
-QString Updater::clientVersion()
-{
-    return Version::versionWithBuildNumber().toString();
 }
 
 } // namespace OCC

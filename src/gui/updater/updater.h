@@ -29,13 +29,6 @@ class Updater : public QObject
 {
     Q_OBJECT
 public:
-    struct Helper
-    {
-        static qint64 stringVersionToInt(const QString &version);
-        static qint64 currentVersionToInt();
-        static qint64 versionToInt(qint64 major, qint64 minor, qint64 patch, qint64 build);
-    };
-
     static Updater *instance();
     static QUrl updateUrl();
 
@@ -44,7 +37,6 @@ public:
     virtual bool handleStartup() = 0;
 
 protected:
-    static QString clientVersion();
     Updater()
         : QObject(nullptr)
     {
