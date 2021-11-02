@@ -24,7 +24,7 @@ ColumnLayout {
     spacing: 0
     property NC.UserStatusSelectorModel userStatusSelectorModel
 
-    Text {
+    Label {
         Layout.topMargin: 16
         Layout.leftMargin: 8
         Layout.rightMargin: 8
@@ -85,7 +85,7 @@ ColumnLayout {
         }
     }
 
-    Text {
+    Label {
         Layout.topMargin: 16
         Layout.leftMargin: 8
         Layout.rightMargin: 8
@@ -157,7 +157,7 @@ ColumnLayout {
        Layout.bottomMargin: 8
        Layout.alignment: Qt.AlignTop
 
-       Text {
+       Label {
            text: qsTr("Clear status message after")
        }
 
