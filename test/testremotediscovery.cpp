@@ -169,7 +169,7 @@ private slots:
         QCOMPARE(completeSpy.findItem("nopermissions/A")->_instruction, CSYNC_INSTRUCTION_ERROR);
         QVERIFY(completeSpy.findItem("noetag")->_errorString.contains("ETag"));
         QVERIFY(completeSpy.findItem("nofileid")->_errorString.contains("file id"));
-        QVERIFY(completeSpy.findItem("nopermissions/A")->_errorString.contains("permissions"));
+        QVERIFY(completeSpy.findItem("nopermissions/A")->_errorString.contains("permission"));
     }
 };
 

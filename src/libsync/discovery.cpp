@@ -487,7 +487,7 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
         if (serverEntry.size == -1)
             missingData.append(tr("size"));
         if (serverEntry.remotePerm.isNull())
-            missingData.append(tr("permissions"));
+            missingData.append(tr("permission"));
         if (serverEntry.etag.isEmpty())
             missingData.append("ETag");
         if (serverEntry.fileId.isEmpty())
@@ -495,7 +495,7 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
         if (!missingData.isEmpty()) {
             item->_instruction = CSYNC_INSTRUCTION_ERROR;
             _childIgnored = true;
-            item->_errorString = tr("server reported no %1").arg(missingData.join(QLatin1String(", ")));
+            item->_errorString = tr("Server reported no %1").arg(missingData.join(QLatin1String(", ")));
             emit _discoveryData->itemDiscovered(item);
             return;
         }
