@@ -140,7 +140,7 @@ QByteArray Utility::userAgentString()
 {
     return QStringLiteral("Mozilla/5.0 (%1) mirall/%2 (%3, %4-%5 ClientArchitecture: %6 OsArchitecture: %7)")
         .arg(platform(),
-            OCC::Version::string(),
+            OCC::Version::displayString(),
             // accessing the theme to fetch the string is rather difficult
             // since this is only needed server-side to identify clients, the app name (as of 2.9, the short name) is good enough
             qApp->applicationName(),

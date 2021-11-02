@@ -19,24 +19,25 @@
 #include "accountmanager.h"
 #include "accountstate.h"
 #include "application.h"
+#include "clientproxy.h"
+#include "common/syncjournalfilerecord.h"
+#include "common/version.h"
+#include "common/vfs.h"
+#include "configfile.h"
+#include "creds/abstractcredentials.h"
+#include "csync_exclude.h"
+#include "filesystem.h"
 #include "folder.h"
 #include "folderman.h"
-#include "logger.h"
-#include "configfile.h"
-#include "networkjobs.h"
-#include "common/syncjournalfilerecord.h"
-#include "syncresult.h"
-#include "clientproxy.h"
-#include "syncengine.h"
-#include "syncrunfilelog.h"
-#include "socketapi/socketapi.h"
-#include "theme.h"
-#include "filesystem.h"
 #include "localdiscoverytracker.h"
-#include "csync_exclude.h"
-#include "common/vfs.h"
-#include "creds/abstractcredentials.h"
+#include "logger.h"
+#include "networkjobs.h"
 #include "settingsdialog.h"
+#include "socketapi/socketapi.h"
+#include "syncengine.h"
+#include "syncresult.h"
+#include "syncrunfilelog.h"
+#include "theme.h"
 
 #include <QTimer>
 #include <QUrl>
@@ -534,7 +535,7 @@ void Folder::startVfs()
     vfsParams.journal = &_journal;
     vfsParams.providerDisplayName = Theme::instance()->appNameGUI();
     vfsParams.providerName = Theme::instance()->appName();
-    vfsParams.providerVersion = Theme::instance()->version();
+    vfsParams.providerVersion = Version::version();
     vfsParams.multipleAccountsRegistered = AccountManager::instance()->accounts().size() > 1;
 
     connect(_vfs.data(), &Vfs::beginHydrating, this, &Folder::slotHydrationStarts);

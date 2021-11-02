@@ -238,7 +238,7 @@ static CSYNC_EXCLUDE_TYPE _csync_excluded_common(const QStringRef &path, bool ex
 using namespace OCC;
 
 ExcludedFiles::ExcludedFiles()
-    : _clientVersion(OCC::Version::major(), OCC::Version::minor(), OCC::Version::patch())
+    : _clientVersion(OCC::Version::version())
 {
     // Windows used to use PathMatchSpec which allows *foo to match abc/deffoo.
     _wildcardsMatchSlash = Utility::isWindows();
@@ -277,7 +277,7 @@ void ExcludedFiles::setWildcardsMatchSlash(bool onoff)
     prepare();
 }
 
-void ExcludedFiles::setClientVersion(ExcludedFiles::Version version)
+void ExcludedFiles::setClientVersion(QVersionNumber version)
 {
     _clientVersion = version;
 }
@@ -321,7 +321,7 @@ bool ExcludedFiles::versionDirectiveKeepNextLine(const QByteArray &directive) co
     if (argVersions.size() != 3)
         return true;
 
-    auto argVersion = std::make_tuple(argVersions[0].toInt(), argVersions[1].toInt(), argVersions[2].toInt());
+    const auto argVersion = QVersionNumber(argVersions[0].toInt(), argVersions[1].toInt(), argVersions[2].toInt());
     if (op == "<=")
         return _clientVersion <= argVersion;
     if (op == "<")

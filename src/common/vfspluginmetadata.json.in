@@ -1,4 +1,4 @@
 {
     "type": "vfs",
-    "version": "@MIRALL_VERSION_STRING@"
+    "version": "@MIRALL_VERSION@"
 }

@@ -575,7 +575,7 @@ void SocketApi::command_MANAGE_PUBLIC_LINKS(const QString &localFile, SocketList
 
 void SocketApi::command_VERSION(const QString &, SocketListener *listener)
 {
-    listener->sendMessage(QStringLiteral("VERSION:%1:%2").arg(OCC::Version::string(), QStringLiteral(MIRALL_SOCKET_API_VERSION)));
+    listener->sendMessage(QStringLiteral("VERSION:%1:%2").arg(OCC::Version::versionWithBuildNumber().toString(), QStringLiteral(MIRALL_SOCKET_API_VERSION)));
 }
 
 void SocketApi::command_SHARE_MENU_TITLE(const QString &, SocketListener *listener)

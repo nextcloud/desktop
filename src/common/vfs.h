@@ -16,6 +16,7 @@
 #include <QObject>
 #include <QScopedPointer>
 #include <QSharedPointer>
+#include <QVersionNumber>
 
 #include <memory>
 
@@ -62,7 +63,7 @@ struct OCSYNC_EXPORT VfsSetupParams
     /// Strings potentially passed on to the platform
     QString providerDisplayName;
     QString providerName;
-    QString providerVersion;
+    QVersionNumber providerVersion;
 
     /** when registering with the system we might use
      *  a different presentaton to identify the accounts

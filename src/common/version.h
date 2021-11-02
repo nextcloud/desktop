@@ -20,27 +20,31 @@
 #include "ocsynclib.h"
 
 #include <QString>
+#include <QVersionNumber>
 
-namespace OCC {
-namespace Version {
-    /**
-  * "Major.Minor.Patch"
-  */
-    QString OCSYNC_EXPORT string();
-    int OCSYNC_EXPORT major();
-    int OCSYNC_EXPORT minor();
-    int OCSYNC_EXPORT patch();
-    int OCSYNC_EXPORT buildNumber();
+namespace OCC::Version {
+OCSYNC_EXPORT const QVersionNumber &version();
 
-    /**
+OCSYNC_EXPORT const QVersionNumber &versionWithBuildNumber();
+
+inline int buildNumber()
+{
+    return versionWithBuildNumber().segmentAt(3);
+}
+
+/**
  * git, rc1, rc2
  * Empty in releases
  */
-    QString OCSYNC_EXPORT suffix();
-    /**
+OCSYNC_EXPORT QString suffix();
+
+/**
  * The commit id
  */
-    QString OCSYNC_EXPORT gitSha();
-}
+OCSYNC_EXPORT QString gitSha();
 
+inline auto displayString()
+{
+    return QStringLiteral("%1-%2").arg(versionWithBuildNumber().toString(), suffix());
+}
 }

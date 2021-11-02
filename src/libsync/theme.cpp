@@ -141,11 +141,6 @@ QString Theme::appName() const
     return QStringLiteral(APPLICATION_SHORTNAME);
 }
 
-QString Theme::version() const
-{
-    return OCC::Version::string();
-}
-
 QString Theme::configFileName() const
 {
     return QStringLiteral(APPLICATION_EXECUTABLE ".cfg");
@@ -301,7 +296,7 @@ QString Theme::defaultServerFolder() const
 
 QString Theme::helpUrl() const
 {
-    return QStringLiteral("https://doc.owncloud.org/desktop/%1.%2/").arg(OCC::Version::major()).arg(OCC::Version::minor());
+    return QStringLiteral("https://doc.owncloud.org/desktop/%1.%2/").arg(OCC::Version::version().majorVersion()).arg(OCC::Version::version().microVersion());
 }
 
 QString Theme::conflictHelpUrl() const
@@ -425,11 +420,11 @@ QString Theme::aboutVersions(Theme::VersionFormat format) const
     }();
     const QString qtVersion = QString::fromUtf8(qVersion());
     const QString qtVersionString = (QLatin1String(QT_VERSION_STR) == qtVersion ? qtVersion : QCoreApplication::translate("ownCloudTheme::qtVer", "%1 (Built against Qt %1)").arg(qtVersion, QStringLiteral(QT_VERSION_STR)));
-    QString _version = version();
+    QString _version = Version::displayString();
     QString gitUrl;
 #ifdef GIT_SHA1
     if (format != Theme::VersionFormat::Url) {
-        _version = QCoreApplication::translate("ownCloudTheme::versionWithSha", "%1 %2").arg(version(), gitSHA1(format));
+        _version = QCoreApplication::translate("ownCloudTheme::versionWithSha", "%1 %2").arg(_version, gitSHA1(format));
     } else {
         gitUrl = gitSHA1(format) + br;
     }
@@ -466,7 +461,7 @@ QString Theme::about() const
               "%5 and the %5 logo are registered trademarks of %4 in the "
               "United States, other countries, or both.</p>"
               "<p><small>%6</small></p>")
-        .arg(Utility::escape(version()),
+        .arg(Utility::escape(Version::displayString()),
             Utility::escape(QStringLiteral("https://" APPLICATION_DOMAIN)),
             Utility::escape(QStringLiteral(APPLICATION_DOMAIN)),
             Utility::escape(vendor),

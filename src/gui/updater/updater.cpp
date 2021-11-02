@@ -148,8 +148,9 @@ qint64 Updater::Helper::versionToInt(qint64 major, qint64 minor, qint64 patch, q
 
 qint64 Updater::Helper::currentVersionToInt()
 {
-    return versionToInt(OCC::Version::major(), OCC::Version::minor(),
-        OCC::Version::patch(), OCC::Version::buildNumber());
+    // TODO: directly use QVersionNumber
+    return versionToInt(OCC::Version::version().majorVersion(), OCC::Version::version().minorVersion(),
+        OCC::Version::version().microVersion(), OCC::Version::buildNumber());
 }
 
 qint64 Updater::Helper::stringVersionToInt(const QString &version)
@@ -164,7 +165,7 @@ qint64 Updater::Helper::stringVersionToInt(const QString &version)
 
 QString Updater::clientVersion()
 {
-    return QStringLiteral("%1.%2.%3.%4").arg(QString::number(Version::major()), QString::number(Version::minor()), QString::number(Version::patch()), QString::number(Version::buildNumber()));
+    return Version::versionWithBuildNumber().toString();
 }
 
 } // namespace OCC

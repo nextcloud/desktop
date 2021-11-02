@@ -516,10 +516,10 @@ bool SyncJournalDb::checkConnect()
         forceRemoteDiscovery = true;
 
         createQuery.prepare("INSERT INTO version VALUES (?1, ?2, ?3, ?4);");
-        createQuery.bindValue(1, OCC::Version::major());
-        createQuery.bindValue(2, OCC::Version::minor());
-        createQuery.bindValue(3, OCC::Version::patch());
-        createQuery.bindValue(4, OCC::Version::buildNumber());
+        const auto segments = OCC::Version::versionWithBuildNumber().segments();
+        for (int i = 0; i < segments.size(); ++i) {
+            createQuery.bindValue(i + 1, segments[i]);
+        }
         if (!createQuery.exec()) {
             return sqlFail(QStringLiteral("Update version"), createQuery);
         }
@@ -544,13 +544,13 @@ bool SyncJournalDb::checkConnect()
         }
 
         // Not comparing the BUILD id here, correct?
-        if (!(major == OCC::Version::major() && minor == OCC::Version::minor() && patch == OCC::Version::patch())) {
+        if (QVersionNumber(major, minor, patch) != OCC::Version::version()) {
             createQuery.prepare("UPDATE version SET major=?1, minor=?2, patch =?3, custom=?4 "
                                 "WHERE major=?5 AND minor=?6 AND patch=?7;");
-            createQuery.bindValue(1, OCC::Version::major());
-            createQuery.bindValue(2, OCC::Version::minor());
-            createQuery.bindValue(3, OCC::Version::patch());
-            createQuery.bindValue(4, OCC::Version::buildNumber());
+            const auto segments = OCC::Version::versionWithBuildNumber().segments();
+            for (int i = 0; i < segments.size(); ++i) {
+                createQuery.bindValue(i + 1, segments[i]);
+            }
             createQuery.bindValue(5, major);
             createQuery.bindValue(6, minor);
             createQuery.bindValue(7, patch);

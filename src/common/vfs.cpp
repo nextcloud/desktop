@@ -182,7 +182,7 @@ bool OCC::isVfsPluginAvailable(Vfs::Mode mode)
         qCWarning(lcPlugin) << "Plugin has wrong type" << loader.fileName() << metadata[QStringLiteral("type")];
         return false;
     }
-    if (metadata[QStringLiteral("version")].toString() != OCC::Version::string()) {
+    if (metadata[QStringLiteral("version")].toString() != OCC::Version::version().toString()) {
         qCWarning(lcPlugin) << "Plugin has wrong version" << loader.fileName() << metadata[QStringLiteral("version")];
         return false;
     }

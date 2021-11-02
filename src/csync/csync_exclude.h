@@ -26,9 +26,10 @@
 #include "csync.h"
 
 #include <QObject>
+#include <QRegularExpression>
 #include <QSet>
 #include <QString>
-#include <QRegularExpression>
+#include <QVersionNumber>
 
 #include <functional>
 
@@ -65,8 +66,6 @@ class OCSYNC_EXPORT ExcludedFiles : public QObject
 {
     Q_OBJECT
 public:
-    typedef std::tuple<int, int, int> Version;
-
     ExcludedFiles();
     ~ExcludedFiles() override;
 
@@ -127,7 +126,7 @@ public:
     /**
      * Sets the client version, only used for testing.
      */
-    void setClientVersion(Version version);
+    void setClientVersion(QVersionNumber version);
 
     /**
      * @brief Check if the given path should be excluded in a traversal situation.
@@ -245,7 +244,7 @@ private:
      * The client version. Used to evaluate version-dependent excludes,
      * see versionDirectiveKeepNextLine().
      */
-    Version _clientVersion;
+    QVersionNumber _clientVersion;
 
     friend class TestExcludedFiles;
 };

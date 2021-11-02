@@ -150,7 +150,7 @@ bool Application::configVersionMigration()
 
     // Did the client version change?
     // (The client version is adjusted further down)
-    bool versionChanged = configFile.clientVersionString() != OCC::Version::string();
+    const bool versionChanged = QVersionNumber::fromString(configFile.clientVersionString()) != OCC::Version::version();
 
     // We want to message the user either for destructive changes,
     // or if we're ignoring something and the client version changed.
@@ -196,7 +196,7 @@ bool Application::configVersionMigration()
             settings->remove(badKey);
     }
 
-    configFile.setClientVersionString(OCC::Version::string());
+    configFile.setClientVersionString(OCC::Version::version().toString());
     return true;
 }
 
@@ -567,7 +567,7 @@ void Application::parseOptions(const QStringList &arguments)
     QString descriptionText;
     QTextStream descriptionTextStream(&descriptionText);
 
-    descriptionTextStream << tr("%1 version %2\r\nFile synchronization desktop utility.").arg(_theme->appName(), _theme->version()) << endl;
+    descriptionTextStream << tr("%1 version %2\r\nFile synchronization desktop utility.").arg(_theme->appName(), OCC::Version::displayString()) << endl;
 
     if (_theme->appName() == QLatin1String("ownCloud")) {
         descriptionTextStream << endl

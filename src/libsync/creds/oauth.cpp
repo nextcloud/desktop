@@ -15,6 +15,7 @@
 #include "creds/oauth.h"
 
 #include "account.h"
+#include "common/version.h"
 #include "credentialmanager.h"
 #include "creds/httpcredentials.h"
 #include "networkjobs.h"
@@ -112,7 +113,7 @@ private:
                 Q_EMIT errorOccured(error.errorString());
             }
         });
-        const QJsonObject json({ { QStringLiteral("client_name"), QStringLiteral("%1 %2").arg(Theme::instance()->appNameGUI(), Theme::instance()->version()) },
+        const QJsonObject json({ { QStringLiteral("client_name"), QStringLiteral("%1 %2").arg(Theme::instance()->appNameGUI(), OCC::Version::versionWithBuildNumber().toString()) },
             { QStringLiteral("redirect_uris"), QJsonArray { QStringLiteral("http://127.0.0.1") } },
             { QStringLiteral("application_type"), QStringLiteral("native") },
             { QStringLiteral("token_endpoint_auth_method"), QStringLiteral("client_secret_basic") } });

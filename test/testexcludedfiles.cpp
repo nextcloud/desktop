@@ -638,7 +638,7 @@ private slots:
     void check_version_directive()
     {
         ExcludedFiles excludes;
-        excludes.setClientVersion(ExcludedFiles::Version(2, 5, 0));
+        excludes.setClientVersion(QVersionNumber(2, 5, 0));
 
         std::vector<std::pair<const char *, bool>> tests = {
             { "#!version == 2.5.0", true },

@@ -18,29 +18,16 @@
 
 #include "common/version.h"
 
-QString OCC::Version::string()
+const QVersionNumber &OCC::Version::version()
 {
-    return QStringLiteral("@MIRALL_VERSION_STRING@");
+    static const auto v = QVersionNumber({ @MIRALL_VERSION_MAJOR@, @MIRALL_VERSION_MINOR@, @MIRALL_VERSION_PATCH@ });
+    return v;
 }
 
-int OCC::Version::major()
+const QVersionNumber &OCC::Version::versionWithBuildNumber()
 {
-    return @MIRALL_VERSION_MAJOR@;
-}
-
-int OCC::Version::minor()
-{
-    return @MIRALL_VERSION_MINOR@;
-}
-
-int OCC::Version::patch()
-{
-    return @MIRALL_VERSION_PATCH@;
-}
-
-int OCC::Version::buildNumber()
-{
-    return @MIRALL_VERSION_BUILD@;
+    static const auto v = QVersionNumber({ @MIRALL_VERSION_MAJOR@, @MIRALL_VERSION_MINOR@, @MIRALL_VERSION_PATCH@, @MIRALL_VERSION_BUILD@ });
+    return v;
 }
 
 QString OCC::Version::gitSha()
@@ -52,6 +39,3 @@ QString OCC::Version::suffix()
 {
     return QStringLiteral("@MIRALL_VERSION_SUFFIX@");
 }
-
-
-
