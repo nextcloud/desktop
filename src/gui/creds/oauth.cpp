@@ -70,13 +70,14 @@ void OAuth::start()
                 QByteArray peek = socket->peek(qMin(socket->bytesAvailable(), 4000LL)); //The code should always be within the first 4K
                 if (peek.indexOf('\n') < 0)
                     return; // wait until we find a \n
-                QRegExp rx("^GET /\\?code=([a-zA-Z0-9]+)[& ]"); // Match a  /?code=...  URL
-                if (rx.indexIn(peek) != 0) {
+                const QRegularExpression rx("^GET /\\?code=([a-zA-Z0-9]+)[& ]"); // Match a  /?code=...  URL
+                const auto rxMatch = rx.match(peek);
+                if (!rxMatch.hasMatch()) {
                     httpReplyAndClose(socket, "404 Not Found", "<html><head><title>404 Not Found</title></head><body><center><h1>404 Not Found</h1></center></body></html>");
                     return;
                 }
 
-                QString code = rx.cap(1); // The 'code' is the first capture of the regexp
+                QString code = rxMatch.captured(1); // The 'code' is the first capture of the regexp
 
                 QUrl requestToken = Utility::concatUrlPath(_account->url().toString(), QLatin1String("/index.php/apps/oauth2/api/v1/token"));
                 QNetworkRequest req;

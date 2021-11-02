@@ -579,7 +579,7 @@ void SyncEngine::startSync()
         invalidFilenamePattern = R"([\\:?*"<>|])";
     }
     if (!invalidFilenamePattern.isEmpty())
-        _discoveryPhase->_invalidFilenameRx = QRegExp(invalidFilenamePattern);
+        _discoveryPhase->_invalidFilenameRx = QRegularExpression(invalidFilenamePattern);
     _discoveryPhase->_serverBlacklistedFiles = _account->capabilities().blacklistedFiles();
     _discoveryPhase->_ignoreHiddenFiles = ignoreHiddenFiles();
 
@@ -695,7 +695,7 @@ void SyncEngine::slotDiscoveryFinished()
             const QString script = qEnvironmentVariable("OWNCLOUD_POST_UPDATE_SCRIPT");
 
             qCDebug(lcEngine) << "Post Update Script: " << script;
-            auto scriptArgs = script.split(QRegExp("\\s+"), Qt::SkipEmptyParts);
+            auto scriptArgs = script.split(QRegularExpression("\\s+"), Qt::SkipEmptyParts);
             if (scriptArgs.size() > 0) {
                 const auto scriptExecutable = scriptArgs.takeFirst();
                 QProcess::execute(scriptExecutable, scriptArgs);

@@ -12,7 +12,7 @@
  * for more details.
  */
 
-#include <QRegExp>
+#include <QRegularExpression>
 
 #include "syncrunfilelog.h"
 #include "common/utility.h"
@@ -104,9 +104,10 @@ void SyncRunFileLog::logItem(const SyncFileItem &item)
     }
     QString ts = QString::fromLatin1(item._responseTimeStamp);
     if (ts.length() > 6) {
-        QRegExp rx(R"((\d\d:\d\d:\d\d))");
-        if (ts.contains(rx)) {
-            ts = rx.cap(0);
+        const QRegularExpression rx(R"((\d\d:\d\d:\d\d))");
+        const auto rxMatch = rx.match(ts);
+        if (rxMatch.hasMatch()) {
+            ts = rxMatch.captured(0);
         }
     }
 
