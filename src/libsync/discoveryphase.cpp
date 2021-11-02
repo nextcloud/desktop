@@ -351,6 +351,7 @@ void DiscoverySingleDirectoryJob::start()
           << "getetag"
           << "http://owncloud.org/ns:size"
           << "http://owncloud.org/ns:id"
+          << "http://owncloud.org/ns:fileid"
           << "http://owncloud.org/ns:downloadURL"
           << "http://owncloud.org/ns:dDC"
           << "http://owncloud.org/ns:permissions"
@@ -453,6 +454,9 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(const QString &fi
                 _dataFingerprint = "[empty]";
             }
         }
+        if (map.contains(QStringLiteral("fileid"))) {
+            _localFileId = map.value(QStringLiteral("fileid")).toUtf8();
+        }
         if (map.contains("id")) {
             _fileId = map.value("id").toUtf8();
         }
@@ -529,7 +533,7 @@ void DiscoverySingleDirectoryJob::lsJobFinishedWithErrorSlot(QNetworkReply *r)
 
 void DiscoverySingleDirectoryJob::fetchE2eMetadata()
 {
-    auto job = new GetMetadataApiJob(_account, _fileId);
+    const auto job = new GetMetadataApiJob(_account, _localFileId);
     connect(job, &GetMetadataApiJob::jsonReceived,
             this, &DiscoverySingleDirectoryJob::metadataReceived);
     connect(job, &GetMetadataApiJob::error,

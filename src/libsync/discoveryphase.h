@@ -144,6 +144,7 @@ private:
     QString _subPath;
     QByteArray _firstEtag;
     QByteArray _fileId;
+    QByteArray _localFileId;
     AccountPtr _account;
     // The first result is for the directory itself and need to be ignored.
     // This flag is true if it was already ignored.
