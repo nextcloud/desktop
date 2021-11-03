@@ -189,6 +189,9 @@ private:
   void enableProgessIndicatorAnimation(bool enable);
   void disableProgessIndicatorAnimation();
 
+  QDate maxExpirationDateForShare(const Share::ShareType type, const QDate &fallbackDate) const;
+  bool enforceExpirationDateForShare(const Share::ShareType type) const;
+
   Ui::ShareUserLine *_ui;
   AccountPtr _account;
   QSharedPointer<UserGroupShare> _share;
