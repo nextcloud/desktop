@@ -3,6 +3,7 @@ if(NOT TOKEN_AUTH_ONLY)
 endif()
 
 include(ECMEnableSanitizers)
+include(CompilerCaching)
 
 set(REQUIRED_QT_VERSION "5.15.0")
 
