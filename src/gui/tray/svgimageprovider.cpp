@@ -28,11 +28,9 @@ namespace Ui {
 
     QImage SvgImageProvider::requestImage(const QString &id, QSize *size, const QSize &requestedSize)
     {
-        Q_UNUSED(size)
-
         Q_ASSERT(!id.isEmpty());
 
-        const auto idSplit = id.split(QLatin1Char('/'), Qt::SkipEmptyParts);
+        const auto idSplit = id.split(QStringLiteral("/"), Qt::SkipEmptyParts);
 
         if (idSplit.isEmpty()) {
             qCWarning(lcSvgImageProvider) << "Image id is incorrect!";
@@ -47,7 +45,7 @@ namespace Ui {
             return {};
         }
 
-        return IconUtils::createSvgPixmapWithCustomColor(pixmapName, pixmapColor, requestedSize).toImage();
+        return IconUtils::createSvgImageWithCustomColor(pixmapName, pixmapColor, size, requestedSize);
     }
 }
 }

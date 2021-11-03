@@ -22,8 +22,9 @@ namespace OCC {
 namespace Ui {
 namespace IconUtils {
 QPixmap pixmapForBackground(const QString &fileName, const QColor &backgroundColor);
-QPixmap createSvgPixmapWithCustomColor(const QString &fileName, const QColor &customColor, const QSize &size = {});
-QPixmap drawSvgWithCustomFillColor(const QString &sourceSvgPath, const QColor &fillColor, const QSize &size = {});
+QImage createSvgImageWithCustomColor(const QString &fileName, const QColor &customColor, QSize *originalSize = nullptr, const QSize &requestedSize = {});
+QPixmap createSvgPixmapWithCustomColorCached(const QString &fileName, const QColor &customColor, QSize *originalSize = nullptr, const QSize &requestedSize = {});
+QImage drawSvgWithCustomFillColor(const QString &sourceSvgPath, const QColor &fillColor, QSize *originalSize = nullptr, const QSize &requestedSize = {});
 }
 }
 }

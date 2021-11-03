@@ -17,7 +17,7 @@ TextField {
 
     readonly property int textFieldHorizontalPaddingOffset: 14
 
-    property var onClearText: function(){}
+    signal clearText()
 
     leftPadding: trayWindowUnifiedSearchTextFieldSearchIcon.width + trayWindowUnifiedSearchTextFieldSearchIcon.anchors.leftMargin + textFieldHorizontalPaddingOffset
     rightPadding: trayWindowUnifiedSearchTextFieldClearTextButton.width + trayWindowUnifiedSearchTextFieldClearTextButton.anchors.rightMargin + textFieldHorizontalPaddingOffset
@@ -87,7 +87,7 @@ TextField {
 
             anchors.fill: parent
 
-            onClicked: trayWindowUnifiedSearchTextField.onClearText()
+            onClicked: trayWindowUnifiedSearchTextField.clearText()
         }
     }
 }

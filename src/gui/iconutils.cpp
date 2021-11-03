@@ -25,125 +25,157 @@
 namespace {
 QString findSvgFilePath(const QString &fileName, const QStringList &possibleColors)
 {
-    const QString baseSvgNoColor{QString{OCC::Theme::themePrefix} + fileName};
-    if (QFile::exists(baseSvgNoColor)) {
-        return baseSvgNoColor;
-    }
+    QString result;
+    result = QString{OCC::Theme::themePrefix} + fileName;
+    if (QFile::exists(result)) {
+        return result;
+    } else {
+        for (const auto &color : possibleColors) {
+            result = QString{OCC::Theme::themePrefix} + color + QStringLiteral("/") + fileName;
 
-    for (const auto &color : possibleColors) {
-        const QString baseSVG{QString{OCC::Theme::themePrefix} + color + QLatin1Char('/') + fileName};
-
-        if (QFile::exists(baseSVG)) {
-            return baseSVG;
+            if (QFile::exists(result)) {
+                return result;
+            }
         }
+        result.clear();
     }
 
-    return {};
+    return result;
 }
 }
 
 namespace OCC {
 namespace Ui {
-    Q_LOGGING_CATEGORY(lcIconUtils, "nextcloud.gui.iconutils", QtInfoMsg)
-    namespace IconUtils {
-        QPixmap pixmapForBackground(const QString &fileName, const QColor &backgroundColor)
-        {
-            Q_ASSERT(!fileName.isEmpty());
+namespace IconUtils {
+Q_LOGGING_CATEGORY(lcIconUtils, "nextcloud.gui.iconutils", QtInfoMsg)
+QPixmap pixmapForBackground(const QString &fileName, const QColor &backgroundColor)
+{
+    Q_ASSERT(!fileName.isEmpty());
 
-            const auto pixmapColor = backgroundColor.isValid()
-                && !Theme::isDarkColor(backgroundColor)
-                ? QColorConstants::Svg::black
-                : QColorConstants::Svg::white;
+    const auto pixmapColor = backgroundColor.isValid() && !Theme::isDarkColor(backgroundColor)
+        ? QColorConstants::Svg::black
+        : QColorConstants::Svg::white;
+    ;
+    return createSvgPixmapWithCustomColorCached(fileName, pixmapColor);
+}
 
-            return createSvgPixmapWithCustomColor(fileName, pixmapColor);
-        }
+QImage createSvgImageWithCustomColor(const QString &fileName, const QColor &customColor, QSize *originalSize, const QSize &requestedSize)
+{
+    Q_ASSERT(!fileName.isEmpty());
+    Q_ASSERT(customColor.isValid());
 
-        QPixmap createSvgPixmapWithCustomColor(const QString &fileName, const QColor &customColor, const QSize &size)
-        {
-            Q_ASSERT(!fileName.isEmpty());
-            Q_ASSERT(customColor.isValid());
+    QImage result{};
 
-            if (fileName.isEmpty()) {
-                qWarning(lcIconUtils) << "fileName is empty";
+    if (fileName.isEmpty() || !customColor.isValid()) {
+        qWarning(lcIconUtils) << "invalid fileName or customColor";
+        return result;
+    }
+
+    // some icons are present in white or black only, so, we need to check both when needed
+    const auto iconBaseColors = QStringList{QStringLiteral("black"), QStringLiteral("white")};
+
+    // check if there is an existing image matching the custom color
+    {
+        const auto customColorName = [&customColor]() {
+            auto result = customColor.name();
+            if (result.startsWith(QStringLiteral("#"))) {
+                if (result == QStringLiteral("#000000")) {
+                    result = QStringLiteral("black");
+                }
+                if (result == QStringLiteral("#ffffff")) {
+                    result = QStringLiteral("white");
+                }
             }
+            return result;
+        }();
 
-            if (!customColor.isValid()) {
-                qWarning(lcIconUtils) << "customColor is invalid";
+        if (iconBaseColors.contains(customColorName)) {
+            result = QImage{QString{OCC::Theme::themePrefix} + customColorName + QStringLiteral("/") + fileName};
+            if (!result.isNull()) {
+                return result;
             }
-
-            const auto customColorName = customColor.name();
-
-            const QString cacheKey = fileName + QLatin1Char(',') + customColorName;
-
-            QPixmap cachedPixmap;
-
-            // check for existing QPixmap in cache
-            if (QPixmapCache::find(cacheKey, &cachedPixmap)) {
-                return cachedPixmap;
-            }
-
-            // some icons are present in white or black only, so, we need to check both when needed
-            const auto iconBaseColors = QStringList{QStringLiteral("black"), QStringLiteral("white")};
-
-            // check if there is an existing pixmap matching the custom color
-            if (iconBaseColors.contains(customColorName)) {
-                cachedPixmap = QPixmap::fromImage(QImage{QString{OCC::Theme::themePrefix} + customColorName + QLatin1Char('/') + fileName});
-                QPixmapCache::insert(cacheKey, cachedPixmap);
-                return cachedPixmap;
-            }
-
-            // find the first matching svg file
-            const auto sourceSvg = findSvgFilePath(fileName, iconBaseColors);
-
-            Q_ASSERT(!sourceSvg.isEmpty());
-            if (sourceSvg.isEmpty()) {
-                qWarning(lcIconUtils) << "Failed to find base SVG file for" << cacheKey;
-                return {};
-            }
-
-            cachedPixmap = drawSvgWithCustomFillColor(sourceSvg, customColor, size);
-
-            Q_ASSERT(!cachedPixmap.isNull());
-            if (cachedPixmap.isNull()) {
-                qWarning(lcIconUtils) << "Failed to load pixmap for" << cacheKey;
-                return {};
-            }
-
-            QPixmapCache::insert(cacheKey, cachedPixmap);
-
-            return cachedPixmap;
-        }
-
-        QPixmap drawSvgWithCustomFillColor(const QString &sourceSvgPath, const QColor &fillColor, const QSize &size)
-        {
-            QSvgRenderer svgRenderer;
-
-            if (!svgRenderer.load(sourceSvgPath)) {
-                qCWarning(lcIconUtils) << "Could no load initial SVG image";
-                return {};
-            }
-
-            const auto requestedSize = size.isValid() ? size : svgRenderer.defaultSize();
-
-            // render source image
-            QImage svgImage(requestedSize, QImage::Format_ARGB32);
-            {
-                QPainter svgImagePainter(&svgImage);
-                svgImage.fill(Qt::GlobalColor::transparent);
-                svgRenderer.render(&svgImagePainter);
-            }
-
-            // draw target image with custom fillColor
-            QImage image(requestedSize, QImage::Format_ARGB32);
-            image.fill(QColor(fillColor));
-            {
-                QPainter imagePainter(&image);
-                imagePainter.setCompositionMode(QPainter::CompositionMode_DestinationIn);
-                imagePainter.drawImage(0, 0, svgImage);
-            }
-
-            return QPixmap::fromImage(image);
         }
     }
+    
+    // find the first matching svg file
+    const auto sourceSvg = findSvgFilePath(fileName, iconBaseColors);
+
+    Q_ASSERT(!sourceSvg.isEmpty());
+    if (sourceSvg.isEmpty()) {
+        qWarning(lcIconUtils) << "Failed to find base SVG file for" << fileName;
+        return result;
+    }
+
+    result = drawSvgWithCustomFillColor(sourceSvg, customColor, originalSize, requestedSize);
+
+    Q_ASSERT(!result.isNull());
+    if (result.isNull()) {
+        qWarning(lcIconUtils) << "Failed to load pixmap for" << fileName;
+    }
+
+    return result;
+}
+
+QPixmap createSvgPixmapWithCustomColorCached(const QString &fileName, const QColor &customColor, QSize *originalSize, const QSize &requestedSize)
+{
+    QPixmap cachedPixmap;
+
+    const auto customColorName = customColor.name();
+
+    const QString cacheKey = fileName + QStringLiteral(",") + customColorName;
+
+    // check for existing QPixmap in cache
+    if (QPixmapCache::find(cacheKey, &cachedPixmap)) {
+        if (originalSize) {
+            *originalSize = {};
+        }
+        return cachedPixmap;
+    }
+
+    cachedPixmap = QPixmap::fromImage(createSvgImageWithCustomColor(fileName, customColor, originalSize, requestedSize));
+
+    if (!cachedPixmap.isNull()) {
+        QPixmapCache::insert(cacheKey, cachedPixmap);
+    }
+
+    return cachedPixmap;
+}
+
+QImage drawSvgWithCustomFillColor(
+    const QString &sourceSvgPath, const QColor &fillColor, QSize *originalSize, const QSize &requestedSize)
+{
+    QSvgRenderer svgRenderer;
+
+    if (!svgRenderer.load(sourceSvgPath)) {
+        qCWarning(lcIconUtils) << "Could no load initial SVG image";
+        return {};
+    }
+
+    const auto reqSize = requestedSize.isValid() ? requestedSize : svgRenderer.defaultSize();
+
+    if (originalSize) {
+        *originalSize = svgRenderer.defaultSize();
+    }
+
+    // render source image
+    QImage svgImage(reqSize, QImage::Format_ARGB32);
+    {
+        QPainter svgImagePainter(&svgImage);
+        svgImage.fill(Qt::GlobalColor::transparent);
+        svgRenderer.render(&svgImagePainter);
+    }
+
+    // draw target image with custom fillColor
+    QImage image(reqSize, QImage::Format_ARGB32);
+    image.fill(QColor(fillColor));
+    {
+        QPainter imagePainter(&image);
+        imagePainter.setCompositionMode(QPainter::CompositionMode_DestinationIn);
+        imagePainter.drawImage(0, 0, svgImage);
+    }
+
+    return image;
+}
+}
 }
 }
