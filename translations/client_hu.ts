@@ -41,7 +41,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityList.qml" line="24"/>
         <source>Activity list</source>
-        <translation>Tevékenység lista</translation>
+        <translation>Tevékenységlista</translation>
     </message>
 </context>
 <context>
@@ -1455,8 +1455,9 @@ Ha ez véletlen volt, és úgy dönt, hogy megtartja ezeket a fájlokat, akkor �
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation>A(z) &apos;%1&apos; mappában lévő összes fájl törlésre került a szerverről. Ezeket a törléseket szinkronizáljuk a helyi szinkronizálási mappával, így, hacsak nincs joga a visszaállításra, ezek a fájlok nem lesznek elérhetők.
-Ha úgy dönt, hogy visszaállítja a fájlokat, akkor azokat újra szinkronizálja a szerverrel, ha erre jogosult.
+        <translation>A(z) „%1” szinkronizálási mappában lévő összes fájl törlésre került a kiszolgálóról.
+Ezek a törlések szinkronizálva lesznek a helyi szinkronizálási mappával, így, hacsak nincs joga a helyreállításhoz, akkor ezek a fájlok nem lesznek elérhetők.
+Ha úgy dönt, hogy helyreállítja a fájlokat, akkor azokat újra lesznek szinkronizálva a kiszolgálóval, ha erre jogosult.
 Ha úgy dönt, hogy törli a fájlokat, akkor azok nem lesznek elérhetők Önnek, hacsak nem Ön a tulajdonos.</translation>
     </message>
     <message>
@@ -1910,7 +1911,7 @@ Ha úgy dönt, hogy törli a fájlokat, akkor azok nem lesznek elérhetők Önne
         <location filename="../src/gui/folderwizard.cpp" line="512"/>
         <location filename="../src/gui/folderwizard.cpp" line="549"/>
         <source>Use virtual files instead of downloading content immediately %1</source>
-        <translation>Használjon virtuális fájlokat a tartalom azonnali letöltése helyett %1</translation>
+        <translation>Virtuális fájlok használata a tartalom azonnali letöltése helyett %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="512"/>
@@ -1926,7 +1927,7 @@ Ha úgy dönt, hogy törli a fájlokat, akkor azok nem lesznek elérhetők Önne
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="563"/>
         <source>Virtual files are not available for the selected folder</source>
-        <translation>Virtuális fájlok nem érhetők el a kiválasztott mappához</translation>
+        <translation>A virtuális fájlok nem érhetők el a kiválasztott mappához</translation>
     </message>
 </context>
 <context>
@@ -1957,7 +1958,7 @@ Ha úgy dönt, hogy törli a fájlokat, akkor azok nem lesznek elérhetők Önne
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="213"/>
         <source>We received an unexpected download Content-Length.</source>
-        <translation>Helytelen letöltött tartalomhosszúságot kaptunk.</translation>
+        <translation>Váratlan letöltési „Content-Length” fejléc fogadva.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="240"/>
@@ -2092,7 +2093,7 @@ Ha úgy dönt, hogy törli a fájlokat, akkor azok nem lesznek elérhetők Önne
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="162"/>
         <source>You cannot disable autostart because system-wide autostart is enabled.</source>
-        <translation>Az automatikus indítást nem tilthatja le, mert az egész rendszerre kiterjedő automatikus indítás engedélyezve van.</translation>
+        <translation>Az automatikus indítást nem tilthatja le, mert az egész rendszerre kiterjedő automatikus indítás engedélyezett.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="310"/>
@@ -2116,7 +2117,7 @@ Ne feledje, hogy ez csak azt választja ki, hogy a frissítések milyen készlet
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="325"/>
         <source>Cancel</source>
-        <translation>Mégsem</translation>
+        <translation>Mégse</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="418"/>
@@ -2136,7 +2137,7 @@ Ne feledje, hogy ez csak azt választja ki, hogy a frissítések milyen készlet
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="424"/>
         <source>Debug archive is created at %1</source>
-        <translation>A hibakeresési archívum a(z) %1 címen jön létre</translation>
+        <translation>A hibakeresési archívum itt lett létrehozva: %1</translation>
     </message>
 </context>
 <context>
@@ -2493,7 +2494,7 @@ A naplók ide lesznek írva: %1</translation>
         <translation>&lt;nobr&gt;A(z) „%1” fájlt&lt;br/&gt;nem lehet írásra megnyitni.&lt;br/&gt;&lt;br/&gt;A naplózás kimenete &lt;b&gt;nem&lt;/b&gt; menthető!&lt;/nobr&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="150"/>
+        <location filename="../src/libsync/logger.cpp" line="151"/>
         <source>&lt;nobr&gt;File &quot;%1&quot;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output &lt;b&gt;cannot&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
         <translation>&lt;nobr&gt;A(z) „%1” fájlt&lt;br/&gt;nem lehet írásra megnyitni.&lt;br/&gt;&lt;br/&gt;A naplózás kimenete &lt;b&gt;nem&lt;/b&gt; menthető!&lt;/nobr&gt;</translation>
     </message>
@@ -2544,7 +2545,7 @@ A naplók ide lesznek írva: %1</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="469"/>
         <source>Ask again later</source>
-        <translation>Kérdezzen rá később</translation>
+        <translation>Rákérdezés később</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="470"/>
@@ -3302,7 +3303,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
     <message>
         <location filename="../src/libsync/discovery.cpp" line="272"/>
         <source>File names containing the character &apos;%1&apos; are not supported on this file system.</source>
-        <translation>A(z) &apos;%1&apos; karaktert tartalmazó fájlnevek nem támogatottak ebben a fájlrendszerben.</translation>
+        <translation>A(z) „%1” karaktert tartalmazó fájlnevek nem támogatottak ezen a fájlrendszeren.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="315"/>
@@ -3332,32 +3333,32 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
     <message>
         <location filename="../src/libsync/discovery.cpp" line="292"/>
         <source>File/Folder is ignored because it&apos;s hidden.</source>
-        <translation>A fájlt / mappát figyelmen kívül hagyva, mivel rejtett.</translation>
+        <translation>A fájl/mappa figyelmen kívül hagyva, mert rejtett.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="295"/>
         <source>Stat failed.</source>
-        <translation>Stat nem sikerült.</translation>
+        <translation>Az elem kizárás vagy hiba miatt kihagyva.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="298"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
-        <translation>Konfliktus: A kiszolgáló verziója letöltve, a helyi példány átnevezve és nincs feltöltve.</translation>
+        <translation>Ütközés: A kiszolgáló verziója letöltve, a helyi példány átnevezve és nem lett feltöltve.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="302"/>
         <source>The filename cannot be encoded on your file system.</source>
-        <translation>A fájlnév nem kódolható a fájlrendszerben.</translation>
+        <translation>A fájlnév nem kódolható a fájlrendszeren.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="305"/>
         <source>The filename is blacklisted on the server.</source>
-        <translation>A fájlnév feketelistára került a szerveren.</translation>
+        <translation>A fájlnév feketelistára került a kiszolgálón.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="371"/>
         <source>File has extension reserved for virtual files.</source>
-        <translation>A fájl kiterjesztése virtuális fájlokra van fenntartva.</translation>
+        <translation>A fájlnak virtuális fájlok számára fenntartott kiterjesztése van.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="446"/>
@@ -3367,17 +3368,17 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
     <message>
         <location filename="../src/libsync/discovery.cpp" line="448"/>
         <source>permissions</source>
-        <translation>engedélyek</translation>
+        <translation>jogosultságok</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="452"/>
         <source>file id</source>
-        <translation>fájl azonosítója</translation>
+        <translation>fájlazonosító</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="456"/>
         <source>server reported no %1</source>
-        <translation>szerver nem jelentett %1</translation>
+        <translation>kiszolgáló jelentése: hiányzó %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="946"/>
@@ -3397,7 +3398,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1292"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
-        <translation>A &quot;válassza ki a szinkronizálni kívánt elemeket&quot; feketelista miatt figyelmen kívül hagyva</translation>
+        <translation>A „válassza ki a szinkronizálni kívánt elemeket” feketelista miatt figyelmen kívül hagyva</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1325"/>
@@ -3412,12 +3413,12 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1343"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
-        <translation>Nem lehet ezt a fájlt feltölteni, mert csak olvasható a szerveren, visszaállítva</translation>
+        <translation>Ezt a fájlt nem lehet feltölteni, mert csak olvasható a kiszolgálón, helyreállítás</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1365"/>
         <source>Moved to invalid target, restoring</source>
-        <translation>Érvénytelen célba mozgatás, visszaállítás</translation>
+        <translation>Érvénytelen célba mozgatás, helyreállítás</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1378"/>
@@ -3427,17 +3428,17 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1487"/>
         <source>Error while reading the database</source>
-        <translation>Hiba történt az adatbázis olvasása közben</translation>
+        <translation>Hiba történt az adatbázis olvasása során</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1548"/>
         <source>Server replied with an error while reading directory &apos;%1&apos; : %2</source>
-        <translation>A kiszolgáló a következő hibával válaszolt a(z) &apos;%1&apos; könyvtár olvasása közben: % 2</translation>
+        <translation>A kiszolgáló a következő hibával válaszolt a(z) „%1” könyvtár olvasása során: %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1635"/>
         <source>Server replied with an error while reading directory &quot;%1&quot; : %2</source>
-        <translation>A kiszolgáló a következő hibával válaszolt a(z) „%1” könyvtár olvasása során: % 2</translation>
+        <translation>A kiszolgáló a következő hibával válaszolt a(z) „%1” könyvtár olvasása során: %2</translation>
     </message>
 </context>
 <context>
@@ -3535,7 +3536,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="1099"/>
         <source>The file %1 is currently in use</source>
-        <translation>A %1 fájl épp használatban van</translation>
+        <translation>A(z) %1 fájl épp használatban van</translation>
     </message>
 </context>
 <context>
@@ -3627,7 +3628,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="265"/>
         <source>The file %1 is currently in use</source>
-        <translation>A %1 fájl épp használatban van</translation>
+        <translation>A(z) %1 fájl épp használatban van</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="257"/>
@@ -3659,7 +3660,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
     <message>
         <location filename="../src/libsync/propagateremotedeleteencryptedrootfolder.cpp" line="143"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
-        <translation>A kiszolgáló helytelen HTTP-kódot adott vissza. 204-re várt, de  az érték &quot;%1 %2&quot; volt.</translation>
+        <translation>A kiszolgáló helytelen HTTP-kódot adott vissza. 204-et várt, de  az érték &quot;%1 %2&quot; volt.</translation>
     </message>
 </context>
 <context>
@@ -3682,7 +3683,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="267"/>
         <source>The file %1 is currently in use</source>
-        <translation>A %1 fájl épp használatban van</translation>
+        <translation>A(z) %1 fájl épp használatban van</translation>
     </message>
 </context>
 <context>
@@ -3690,7 +3691,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="170"/>
         <source>Could not rename %1 to %2, error: %3</source>
-        <translation>A(z) %1, nem nevezhető át erre: %2, hiba: %3</translation>
+        <translation>A(z) %1 nem nevezhető át erre: %2, hiba: %3</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="219"/>
@@ -3754,7 +3755,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="420"/>
         <source>Failed to unlock encrypted folder.</source>
-        <translation>Nem sikerült a titkosított mappa feloldása.</translation>
+        <translation>Nem sikerült feloldani a titkosított mappát.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="769"/>
@@ -3769,7 +3770,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="773"/>
         <source>The file %1 is currently in use</source>
-        <translation>A %1 fájl épp használatban van</translation>
+        <translation>A(z) %1 fájl épp használatban van</translation>
     </message>
 </context>
 <context>
@@ -4113,7 +4114,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="228"/>
         <source>Password protect</source>
-        <translation>Jelszóvédelem</translation>
+        <translation>Jelszavas védelem</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="247"/>
@@ -4171,7 +4172,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="95"/>
         <source>Search globally</source>
-        <translation>Keresés mindenben</translation>
+        <translation>Keresés globálisan</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="325"/>
@@ -4296,7 +4297,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
     <message>
         <location filename="../src/gui/socketapi.cpp" line="891"/>
         <source>Select new location …</source>
-        <translation>Új hely kiválasztása …</translation>
+        <translation>Új hely kiválasztása…</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="905"/>
@@ -4338,7 +4339,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
     <message>
         <location filename="../src/gui/socketapi.cpp" line="948"/>
         <source>Resharing this folder is not allowed</source>
-        <translation>A mappa újramegosztása nem megengedett</translation>
+        <translation>A mappa továbbosztása nem megengedett</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="962"/>
@@ -4364,17 +4365,17 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
     <message>
         <location filename="../src/gui/socketapi.cpp" line="1089"/>
         <source>Resolve conflict …</source>
-        <translation>Konfliktus feloldása …</translation>
+        <translation>Konfliktus feloldása…</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="1093"/>
         <source>Move and rename …</source>
-        <translation>Áthelyezés és átnevezés …</translation>
+        <translation>Áthelyezés és átnevezés…</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="1096"/>
         <source>Move, rename and upload …</source>
-        <translation>Áthelyezés, átnevezés és feltöltés …</translation>
+        <translation>Áthelyezés, átnevezés és feltöltés…</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="1098"/>
@@ -4384,7 +4385,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
     <message>
         <location filename="../src/gui/socketapi.cpp" line="1104"/>
         <source>Move and upload …</source>
-        <translation>Áthelyezés és feltöltés …</translation>
+        <translation>Áthelyezés és feltöltés…</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="1105"/>
@@ -4545,7 +4546,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="158"/>
         <source>Additional errors:</source>
-        <translation type="unfinished"/>
+        <translation>További hibák:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="166"/>
@@ -4922,7 +4923,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="148"/>
         <source>See below for errors</source>
-        <translation>Hibákat lásd lent</translation>
+        <translation>A hibákat lásd lent</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="155"/>
@@ -4937,27 +4938,27 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="169"/>
         <source>Some files could not be synced!</source>
-        <translation type="unfinished"/>
+        <translation>Néhány fájlt nem lehet szinkronizálni.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="170"/>
         <source>See below for warnings</source>
-        <translation>Hibákat lásd lent </translation>
+        <translation>A figyelmeztetéseket lásd lent</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="218"/>
         <source>%1 of %2 · %3 left</source>
-        <translation>%1 a %2-ból/ből · %3 van vissza</translation>
+        <translation>%1 / %2 · %3 van hátra</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="222"/>
         <source>%1 of %2</source>
-        <translation>%1 a %2-ból/ből </translation>
+        <translation>%1 / %2</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="227"/>
         <source>Syncing file %1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 / %2 fájl szinkronizálása</translation>
     </message>
 </context>
 <context>
@@ -4992,7 +4993,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
     <message>
         <location filename="../src/gui/systray.cpp" line="101"/>
         <source>Exit %1</source>
-        <translation>Kilépés %1</translation>
+        <translation>Kilépés a %1ból</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="108"/>
@@ -5040,22 +5041,22 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
     <message>
         <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="373"/>
         <source>Failed to fetch providers.</source>
-        <translation type="unfinished"/>
+        <translation>A szolgáltatók lekérése sikertelen</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="384"/>
         <source>Failed to fetch search providers for &apos;%1&apos;. Error: %2</source>
-        <translation type="unfinished"/>
+        <translation>A(z) „%1” keresésszolgáltatóinak lekérése sikertelen. Hiba: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="418"/>
         <source>Search has failed for &apos;%2&apos;.</source>
-        <translation type="unfinished"/>
+        <translation>A keresés a következőre sikertelen: „%2”.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="447"/>
         <source>Search has failed for &apos;%1&apos;. Error: %2</source>
-        <translation type="unfinished"/>
+        <translation>A keresés a következőre sikertelen: „%1”. Hiba: %2</translation>
     </message>
 </context>
 <context>
@@ -5720,7 +5721,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="359"/>
         <source>Sign up with a provider</source>
-        <translation>Iratkozzon fel egy szolgáltatóhoz</translation>
+        <translation>Regisztráció egy szolgáltatóval</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="365"/>
@@ -5830,7 +5831,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
     <message>
         <location filename="../src/gui/tray/UnifiedSearchInputContainer.qml" line="23"/>
         <source>Search files, messages, events …</source>
-        <translation type="unfinished"/>
+        <translation>Fájlok, üzenetek, események keresése…</translation>
     </message>
 </context>
 <context>
@@ -5838,7 +5839,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
     <message>
         <location filename="../src/gui/tray/UnifiedSearchResultFetchMoreTrigger.qml" line="24"/>
         <source>Load more results</source>
-        <translation type="unfinished"/>
+        <translation>További találatok betöltése</translation>
     </message>
 </context>
 <context>
@@ -5846,7 +5847,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
     <message>
         <location filename="../src/gui/tray/UnifiedSearchResultItemSkeleton.qml" line="25"/>
         <source>Search result skeleton.</source>
-        <translation type="unfinished"/>
+        <translation>Keresési találatok vázlata.</translation>
     </message>
 </context>
 <context>
@@ -5854,7 +5855,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
     <message>
         <location filename="../src/gui/tray/UnifiedSearchResultListItem.qml" line="37"/>
         <source>Load more results</source>
-        <translation type="unfinished"/>
+        <translation>További találatok betöltése</translation>
     </message>
 </context>
 <context>
@@ -6193,7 +6194,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
     <message>
         <location filename="../src/gui/tray/Window.qml" line="678"/>
         <source>Unified search results list</source>
-        <translation type="unfinished"/>
+        <translation>Egyesített keresési találatlista</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="720"/>
@@ -6204,7 +6205,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, kérjük, jelezze 
     <message>
         <location filename="../src/gui/tray/Window.qml" line="748"/>
         <source>%1 - File activity</source>
-        <translation>%1 - Fájl tevékenység</translation>
+        <translation>%1 – Fájl tevékenység</translation>
     </message>
 </context>
 <context>

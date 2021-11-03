@@ -2451,7 +2451,7 @@ Logs will be written to %1</source>
         <translation>&lt;nobr&gt;Faili &apos;%1&apos;&lt;br/&gt;ei saa kirjutamiseks avada.&lt;br/&gt;&lt;br/&gt;Logi väljundit &lt;b&gt;ei saa&lt;/b&gt; salvestada!&lt;/nobr&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="150"/>
+        <location filename="../src/libsync/logger.cpp" line="151"/>
         <source>&lt;nobr&gt;File &quot;%1&quot;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output &lt;b&gt;cannot&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
         <translation type="unfinished"/>
     </message>

@@ -2470,7 +2470,7 @@ Protokoloj estos skribataj al %1.</translation>
         <translation>&lt;nobr&gt;Dosiero „%1“&lt;br/&gt;ne eblis malfermiĝi.&lt;br/&gt;&lt;br/&gt;La eligo de la protokolo &lt;b&gt;ne&lt;/b&gt; povas esti konservita!&lt;/nobr&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="150"/>
+        <location filename="../src/libsync/logger.cpp" line="151"/>
         <source>&lt;nobr&gt;File &quot;%1&quot;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output &lt;b&gt;cannot&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
         <translation type="unfinished"/>
     </message>
