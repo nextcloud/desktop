@@ -34,6 +34,7 @@
 #include "sharedialog.h"
 #include "accountmanager.h"
 #include "creds/abstractcredentials.h"
+#include "pushnotifications.h"
 
 #if defined(BUILD_UPDATER)
 #include "updater/ocupdater.h"
@@ -459,9 +460,10 @@ void Application::slotCheckConnection()
 
         // Don't check if we're manually signed out or
         // when the error is permanent.
-        if (state != AccountState::SignedOut
-            && state != AccountState::ConfigurationError
-            && state != AccountState::AskingCredentials) {
+        const auto pushNotifications = accountState->account()->pushNotifications();
+        const auto pushNotificationsAvailable = (pushNotifications && pushNotifications->isReady());
+        if (state != AccountState::SignedOut && state != AccountState::ConfigurationError
+            && state != AccountState::AskingCredentials && !pushNotificationsAvailable) {
             accountState->checkConnectivity();
         }
     }
