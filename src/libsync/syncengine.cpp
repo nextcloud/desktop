@@ -15,6 +15,7 @@
 
 #include "syncengine.h"
 #include "account.h"
+#include "common/filesystembase.h"
 #include "owncloudpropagator.h"
 #include "common/syncjournaldb.h"
 #include "common/syncjournalfilerecord.h"
@@ -53,6 +54,7 @@
 #include <QSslCertificate>
 #include <QProcess>
 #include <QElapsedTimer>
+#include <QFileInfo>
 #include <qtextcodec.h>
 
 namespace OCC {
@@ -1023,9 +1025,17 @@ void SyncEngine::switchToVirtualFiles(const QString &localPath, SyncJournalDb &j
 {
     qCInfo(lcEngine) << "Convert to virtual files inside" << localPath;
     journal.getFilesBelowPath({}, [&](const SyncJournalFileRecord &rec) {
+        const auto path = rec.path();
+        const auto fileName = QFileInfo(path).fileName();
+        if (FileSystem::isExcludeFile(fileName)) {
+            return;
+        }
         SyncFileItem item;
-        QString localFile = localPath + rec.path();
-        vfs.convertToPlaceholder(localFile, item, localFile);
+        QString localFile = localPath + path;
+        const auto result = vfs.convertToPlaceholder(localFile, item, localFile);
+        if (!result.isValid()) {
+            qCWarning(lcEngine) << "Could not convert file to placeholder" << result.error();
+        }
     });
 }
 
