@@ -671,7 +671,7 @@ void Folder::setVirtualFilesEnabled(bool enabled)
         startVfs();
         if (newMode != Vfs::Off) {
             _saveInFoldersWithPlaceholders = true;
-            SyncEngine::switchToVirtualFiles(path(), _journal, *_vfs);
+            switchToVirtualFiles();
         }
         saveToSettings();
     }
@@ -686,6 +686,11 @@ void Folder::setRootPinState(PinState state)
     // We don't actually need discovery, but it's important to recurse
     // into all folders, so the changes can be applied.
     slotNextSyncFullLocalDiscovery();
+}
+
+void Folder::switchToVirtualFiles()
+{
+    SyncEngine::switchToVirtualFiles(path(), _journal, *_vfs);
 }
 
 bool Folder::supportsSelectiveSync() const

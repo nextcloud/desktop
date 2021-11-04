@@ -859,6 +859,12 @@ bool Theme::showVirtualFilesOption() const
     return ConfigFile().showExperimentalOptions() || vfsMode == Vfs::WindowsCfApi;
 }
 
+bool Theme::enforceVirtualFilesSyncFolder() const
+{
+    const auto vfsMode = bestAvailableVfsMode();
+    return ENFORCE_VIRTUAL_FILES_SYNC_FOLDER && vfsMode != OCC::Vfs::Off;
+}
+
 QColor Theme::errorBoxTextColor() const
 {
     return QColor{"white"};
