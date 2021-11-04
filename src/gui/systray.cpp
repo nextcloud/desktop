@@ -17,6 +17,7 @@
 #include "theme.h"
 #include "config.h"
 #include "common/utility.h"
+#include "tray/svgimageprovider.h"
 #include "tray/usermodel.h"
 #include "tray/unifiedsearchresultimageprovider.h"
 #include "configfile.h"
@@ -59,6 +60,7 @@ void Systray::setTrayEngine(QQmlApplicationEngine *trayEngine)
 
     _trayEngine->addImportPath("qrc:/qml/theme");
     _trayEngine->addImageProvider("avatars", new ImageProvider);
+    _trayEngine->addImageProvider(QLatin1String("svgimage-custom-color"), new OCC::Ui::SvgImageProvider);
     _trayEngine->addImageProvider(QLatin1String("unified-search-result-icon"), new UnifiedSearchResultImageProvider);
 }
 

@@ -29,34 +29,61 @@ public:
     }
 
 private slots:
-    void testPixmapForBackground()
+    void testDrawSvgWithCustomFillColor()
     {
-        const QDir blackSvgDir(QString(OCC::Theme::themePrefix) + QStringLiteral("black"));
+        const QString blackSvgDirPath{QString{OCC::Theme::themePrefix} + QStringLiteral("black")};
+        const QDir blackSvgDir(blackSvgDirPath);
         const QStringList blackImages = blackSvgDir.entryList(QStringList("*.svg"));
 
-        const QDir whiteSvgDir(QString(OCC::Theme::themePrefix) + QStringLiteral("white"));
+        Q_ASSERT(!blackImages.isEmpty());
+
+        QVERIFY(!OCC::Ui::IconUtils::drawSvgWithCustomFillColor(blackSvgDirPath + QStringLiteral("/") + blackImages.at(0), QColorConstants::Svg::red).isNull());
+
+        QVERIFY(!OCC::Ui::IconUtils::drawSvgWithCustomFillColor(blackSvgDirPath + QStringLiteral("/") + blackImages.at(0), QColorConstants::Svg::green).isNull());
+
+        const QString whiteSvgDirPath{QString{OCC::Theme::themePrefix} + QStringLiteral("white")};
+        const QDir whiteSvgDir(whiteSvgDirPath);
         const QStringList whiteImages = whiteSvgDir.entryList(QStringList("*.svg"));
 
-        if (blackImages.size() > 0) {
-            // white pixmap for dark background - should not fail
-            QVERIFY(!OCC::Ui::IconUtils::pixmapForBackground(whiteImages.at(0), QColor("blue")).isNull());
-        }
+        Q_ASSERT(!whiteImages.isEmpty());
 
-        if (whiteImages.size() > 0) {
-            // black pixmap for bright background - should not fail
-            QVERIFY(!OCC::Ui::IconUtils::pixmapForBackground(blackImages.at(0), QColor("yellow")).isNull());
-        }
+        QVERIFY(!OCC::Ui::IconUtils::drawSvgWithCustomFillColor(whiteSvgDirPath + QStringLiteral("/") + whiteImages.at(0), QColorConstants::Svg::blue).isNull());
+    }
 
-        const auto blackImagesExclusive = QSet<QString>(blackImages.begin(), blackImages.end()).subtract(QSet<QString>(whiteImages.begin(), whiteImages.end()));
-        const auto whiteImagesExclusive = QSet<QString>(whiteImages.begin(), whiteImages.end()).subtract(QSet<QString>(blackImages.begin(), blackImages.end()));
+    void testCreateSvgPixmapWithCustomColor()
+    {
+        const QDir blackSvgDir(QString(QString{OCC::Theme::themePrefix}) + QStringLiteral("black"));
+        const QStringList blackImages = blackSvgDir.entryList(QStringList("*.svg"));
 
-        if (blackImagesExclusive != whiteImagesExclusive) {
-            // black pixmap for dark background - should fail as we don't have this image in black
-            QVERIFY(OCC::Ui::IconUtils::pixmapForBackground(blackImagesExclusive.values().at(0), QColor("blue")).isNull());
+        QVERIFY(!blackImages.isEmpty());
 
-            // white pixmap for bright background - should fail as we don't have this image in white
-            QVERIFY(OCC::Ui::IconUtils::pixmapForBackground(whiteImagesExclusive.values().at(0), QColor("yellow")).isNull());
-        }
+        QVERIFY(!OCC::Ui::IconUtils::createSvgImageWithCustomColor(blackImages.at(0), QColorConstants::Svg::red).isNull());
+
+        QVERIFY(!OCC::Ui::IconUtils::createSvgImageWithCustomColor(blackImages.at(0), QColorConstants::Svg::green).isNull());
+
+        const QDir whiteSvgDir(QString(QString{OCC::Theme::themePrefix}) + QStringLiteral("white"));
+        const QStringList whiteImages = whiteSvgDir.entryList(QStringList("*.svg"));
+        
+        QVERIFY(!whiteImages.isEmpty());
+
+        QVERIFY(!OCC::Ui::IconUtils::createSvgImageWithCustomColor(whiteImages.at(0), QColorConstants::Svg::blue).isNull());
+    }
+
+    void testPixmapForBackground()
+    {
+        const QDir blackSvgDir(QString(QString{OCC::Theme::themePrefix}) + QStringLiteral("black"));
+        const QStringList blackImages = blackSvgDir.entryList(QStringList("*.svg"));
+
+        const QDir whiteSvgDir(QString(QString{OCC::Theme::themePrefix}) + QStringLiteral("white"));
+        const QStringList whiteImages = whiteSvgDir.entryList(QStringList("*.svg"));
+
+        QVERIFY(!blackImages.isEmpty());
+
+        QVERIFY(!OCC::Ui::IconUtils::pixmapForBackground(whiteImages.at(0), QColor("blue")).isNull());
+
+        QVERIFY(!whiteImages.isEmpty());
+
+        QVERIFY(!OCC::Ui::IconUtils::pixmapForBackground(blackImages.at(0), QColor("yellow")).isNull());
     }
 };
 
