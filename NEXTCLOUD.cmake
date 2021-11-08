@@ -34,6 +34,7 @@ option( BUILD_UPDATER "Build updater" OFF )
 
 option( WITH_PROVIDERS "Build with providers list" ON )
 
+option( ENFORCE_VIRTUAL_FILES_SYNC_FOLDER "Enforce use of virtual files sync folder when available" OFF )
 
 ## Theming options
 set(NEXTCLOUD_BACKGROUND_COLOR "#0082c9" CACHE STRING "Default Nextcloud background color")

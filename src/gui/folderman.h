@@ -324,6 +324,8 @@ private:
 
     bool pushNotificationsFilesReady(Account *account);
 
+    bool isSwitchToVfsNeeded(const FolderDefinition &folderDefinition) const;
+
     QSet<Folder *> _disabledFolders;
     Folder::Map _folderMap;
     QString _folderConfigPath;

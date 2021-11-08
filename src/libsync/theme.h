@@ -565,6 +565,8 @@ public:
      */
     virtual bool showVirtualFilesOption() const;
 
+    virtual bool enforceVirtualFilesSyncFolder() const;
+
     /** @return color for the ErrorBox text. */
     virtual QColor errorBoxTextColor() const;
 
