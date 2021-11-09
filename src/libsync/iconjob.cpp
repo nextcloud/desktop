@@ -16,22 +16,23 @@
 
 namespace OCC {
 
-IconJob::IconJob(const QUrl &url, QObject *parent) :
-    QObject(parent)
+IconJob::IconJob(AccountPtr account, const QUrl &url, QObject *parent)
+    : QObject(parent)
 {
-    connect(&_accessManager, &QNetworkAccessManager::finished,
-            this, &IconJob::finished);
-
     QNetworkRequest request(url);
 #if (QT_VERSION >= 0x050600)
     request.setAttribute(QNetworkRequest::FollowRedirectsAttribute, true);
 #endif
-    _accessManager.get(request);
+    const auto reply = account->sendRawRequest(QByteArrayLiteral("GET"), url, request);
+    connect(reply, &QNetworkReply::finished, this, &IconJob::finished);
 }
 
-void IconJob::finished(QNetworkReply *reply)
+void IconJob::finished()
 {
-    reply->deleteLater();
+    const auto reply = qobject_cast<QNetworkReply *>(sender());
+    if (!reply) {
+        return;
+    }
     deleteLater();
 
     const auto networkError = reply->error();

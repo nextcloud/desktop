@@ -15,6 +15,8 @@
 #ifndef ICONJOB_H
 #define ICONJOB_H
 
+#include "account.h"
+#include "accountfwd.h"
 #include "owncloudlib.h"
 
 #include <QObject>
@@ -33,17 +35,14 @@ class OWNCLOUDSYNC_EXPORT IconJob : public QObject
 {
     Q_OBJECT
 public:
-    explicit IconJob(const QUrl &url, QObject *parent = nullptr);
+    explicit IconJob(AccountPtr account, const QUrl &url, QObject *parent = nullptr);
 
 signals:
     void jobFinished(QByteArray iconData);
     void error(QNetworkReply::NetworkError errorType);
 
 private slots:
-    void finished(QNetworkReply *reply);
-
-private:
-    QNetworkAccessManager _accessManager;
+    void finished();
 };
 }
 

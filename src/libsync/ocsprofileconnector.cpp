@@ -145,7 +145,7 @@ void OcsProfileConnector::loadHovercardActionIcon(const std::size_t hovercardAct
 void OcsProfileConnector::startFetchIconJob(const std::size_t hovercardActionIndex)
 {
     const auto hovercardAction = _currentHovercard._actions[hovercardActionIndex];
-    const auto iconJob = new IconJob{hovercardAction._iconUrl, this};
+    const auto iconJob = new IconJob{_account, hovercardAction._iconUrl, this};
     connect(iconJob, &IconJob::jobFinished,
         [this, hovercardActionIndex](QByteArray iconData) { loadHovercardActionIcon(hovercardActionIndex, iconData); });
     connect(iconJob, &IconJob::error, this, [](QNetworkReply::NetworkError errorType) {
