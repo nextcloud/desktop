@@ -12,7 +12,9 @@
  * for more details.
  */
 
+#include "ocsprofileconnector.h"
 #include "sharee.h"
+#include "tray/usermodel.h"
 #include "ui_shareusergroupwidget.h"
 #include "ui_shareuserline.h"
 #include "shareusergroupwidget.h"
@@ -36,7 +38,9 @@
 #include <QFileInfo>
 #include <QAbstractProxyModel>
 #include <QCompleter>
-#include <qlayout.h>
+#include <QBoxLayout>
+#include <QIcon>
+#include <QLayout>
 #include <QPropertyAnimation>
 #include <QMenu>
 #include <QAction>
@@ -48,14 +52,36 @@
 #include <QPainter>
 #include <QListWidget>
 #include <QSvgRenderer>
+#include <QPushButton>
+#include <QContextMenuEvent>
 
 #include <cstring>
 
 namespace {
-    const char *passwordIsSetPlaceholder = "●●●●●●●●";
+const char *passwordIsSetPlaceholder = "●●●●●●●●";
+
 }
 
 namespace OCC {
+
+AvatarEventFilter::AvatarEventFilter(QObject *parent)
+    : QObject(parent)
+{
+}
+
+
+bool AvatarEventFilter::eventFilter(QObject *obj, QEvent *event)
+{
+    if (event->type() == QEvent::ContextMenu) {
+        const auto contextMenuEvent = dynamic_cast<QContextMenuEvent *>(event);
+        if (!contextMenuEvent) {
+            return false;
+        }
+        emit contextMenu(contextMenuEvent->globalPos());
+        return true;
+    }
+    return QObject::eventFilter(obj, event);
+}
 
 ShareUserGroupWidget::ShareUserGroupWidget(AccountPtr account,
     const QString &sharePath,
@@ -465,16 +491,14 @@ void ShareUserGroupWidget::activateShareeLineEdit()
     _ui->shareeLineEdit->setFocus();
 }
 
-ShareUserLine::ShareUserLine(AccountPtr account,
-                             QSharedPointer<UserGroupShare> share,
-                             SharePermissions maxSharingPermissions,
-                             bool isFile,
-                             QWidget *parent)
+ShareUserLine::ShareUserLine(AccountPtr account, QSharedPointer<UserGroupShare> share,
+    SharePermissions maxSharingPermissions, bool isFile, QWidget *parent)
     : QWidget(parent)
     , _ui(new Ui::ShareUserLine)
     , _account(account)
     , _share(share)
     , _isFile(isFile)
+    , _profilePageMenu(account, share->getShareWith()->shareWith())
 {
     Q_ASSERT(_share);
     _ui->setupUi(this);
@@ -618,9 +642,20 @@ ShareUserLine::ShareUserLine(AccountPtr account,
         _permissionReshare->setVisible(false);
     }
 
+    const auto avatarEventFilter = new AvatarEventFilter(_ui->avatar);
+    connect(avatarEventFilter, &AvatarEventFilter::contextMenu, this, &ShareUserLine::onAvatarContextMenu);
+    _ui->avatar->installEventFilter(avatarEventFilter);
+
     loadAvatar();
 
     customizeStyle();
+}
+
+void ShareUserLine::onAvatarContextMenu(const QPoint &globalPosition)
+{
+    if (_share->getShareType() == Share::TypeUser) {
+        _profilePageMenu.exec(globalPosition);
+    }
 }
 
 void ShareUserLine::loadAvatar()
