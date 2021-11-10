@@ -100,6 +100,12 @@ AccountState::AccountState(AccountPtr account)
     connect(this, &AccountState::urlUpdated, this, [this] {
         checkConnectivity(false);
     });
+    connect(account.data(), &Account::requestUrlUpdate, this, &AccountState::updateUrlDialog, Qt::QueuedConnection);
+    connect(
+        this, &AccountState::urlUpdated, this, [this] {
+            checkConnectivity(false);
+        },
+        Qt::QueuedConnection);
 }
 
 AccountState::~AccountState()

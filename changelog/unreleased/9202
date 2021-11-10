@@ -1,0 +1,8 @@
+Bugfix: The client no longer idles after a minor url change
+
+When the client detects a change of the url we ask the user to accept
+the change or if it was only representational change (demo.com vs demo.com/) we directly accept the change.
+Due to a bug the we aborted the sync only after we updated the url.
+This caused the client to idle for one minute.
+
+https://github.com/owncloud/client/pull/9202
