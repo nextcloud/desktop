@@ -166,7 +166,7 @@ def isFileSynced(fileName):
 def waitForFileToBeSynced(context, fileName):
     waitFor(
         lambda: isFileSynced(
-            sanitizePath(context.userData['clientSyncPathUser1'] + fileName)
+            sanitizePath(context.userData['currentUserSyncPath'] + fileName)
         ),
         context.userData['clientSyncTimeout'] * 1000,
     )
@@ -175,7 +175,7 @@ def waitForFileToBeSynced(context, fileName):
 def waitForFolderToBeSynced(context, folderName):
     waitFor(
         lambda: isFolderSynced(
-            sanitizePath(context.userData['clientSyncPathUser1'] + folderName)
+            sanitizePath(context.userData['currentUserSyncPath'] + folderName)
         ),
         context.userData['clientSyncTimeout'] * 1000,
     )
@@ -266,7 +266,7 @@ def step(context, receiver, resource, permissions):
 
 
 def collaboratorShouldBeListed(context, receiver, resource, permissions):
-    resource = substituteInLineCodes(context, resource)
+    resource = getResourcePath(context, resource)
     socketConnect = syncstate.SocketConnect()
     socketConnect.sendCommand("SHARE:" + resource + "\n")
     permissionsList = permissions.split(',')
@@ -304,43 +304,55 @@ def step(context, fileName):
 
 
 @Given(
-    'the user has created a file "|any|" with the following content on the file system'
+    'user "|any|" has created a file "|any|" with the following content inside the sync folder'
 )
-def step(context, filename):
-    createFile(context, filename)
+def step(context, username, filename):
+    createFile(context, filename, username)
 
 
-@When('the user creates a file "|any|" with the following content on the file system')
-def step(context, filename):
-    createFile(context, filename)
+@When(
+    'user "|any|" creates a file "|any|" with the following content inside the sync folder'
+)
+def step(context, username, filename):
+    createFile(context, filename, username)
 
 
-def createFile(context, filename):
+def createFile(context, filename, username=None):
     fileContent = "\n".join(context.multiLineText)
-    f = open(context.userData['clientSyncPathUser1'] + filename, "w")
+    syncPath = None
+    if username:
+        syncPath = getUserSyncPath(context, username)
+    else:
+        syncPath = context.userData['currentUserSyncPath']
+    f = open(join(syncPath, filename), "w")
     f.write(fileContent)
     f.close()
 
 
-@When('the user creates a folder "|any|"')
-def step(context, foldername):
-    createFolder(context, foldername)
+@When('user "|any|" creates a folder "|any|" inside the sync folder')
+def step(context, username, foldername):
+    createFolder(context, foldername, username)
 
 
-@Given('the user has created a folder "|any|"')
-def step(context, foldername):
-    createFolder(context, foldername)
+@Given('user "|any|" has created a folder "|any|" inside the sync folder')
+def step(context, username, foldername):
+    createFolder(context, foldername, username)
 
 
-def createFolder(context, foldername):
-    path = join(context.userData['clientSyncPathUser1'], foldername)
+def createFolder(context, foldername, username=None):
+    syncPath = None
+    if username:
+        syncPath = getUserSyncPath(context, username)
+    else:
+        syncPath = context.userData['currentUserSyncPath']
+    path = join(syncPath, foldername)
     os.makedirs(path)
 
 
 @When('the user copies the folder "|any|" to "|any|"')
 def step(context, sourceFolder, destinationFolder):
-    source_dir = join(context.userData['clientSyncPathUser1'], sourceFolder)
-    destination_dir = join(context.userData['clientSyncPathUser1'], destinationFolder)
+    source_dir = join(context.userData['currentUserSyncPath'], sourceFolder)
+    destination_dir = join(context.userData['currentUserSyncPath'], destinationFolder)
     shutil.copytree(source_dir, destination_dir)
 
 
@@ -371,7 +383,7 @@ def step(context, stepPart1):
 @Then('the file "|any|" should exist on the file system with the following content')
 def step(context, filePath):
     expected = "\n".join(context.multiLineText)
-    filePath = context.userData['clientSyncPathUser1'] + filePath
+    filePath = context.userData['currentUserSyncPath'] + filePath
     f = open(filePath, 'r')
     contents = f.read()
     test.compare(
@@ -385,7 +397,7 @@ def step(context, filePath):
 
 @Then(r'^the (file|folder) "([^"]*)" should exist on the file system$', regexp=True)
 def step(context, resourceType, resource):
-    resourcePath = join(context.userData['clientSyncPathUser1'], resource)
+    resourcePath = join(context.userData['currentUserSyncPath'], resource)
     resourceExists = False
     if resourceType == 'file':
         resourceExists = fileExists(
@@ -407,7 +419,7 @@ def step(context, resourceType, resource):
 
 @Then(r'^the (file|folder) "([^"]*)" should not exist on the file system$', regexp=True)
 def step(context, resourceType, resource):
-    resourcePath = join(context.userData['clientSyncPathUser1'], resource)
+    resourcePath = join(context.userData['currentUserSyncPath'], resource)
     resourceExists = False
     if resourceType == 'file':
         resourceExists = fileExists(resourcePath, 1000)
@@ -433,7 +445,7 @@ def step(context):
 @Given('the user has changed the content of local file "|any|" to:')
 def step(context, filename):
     fileContent = "\n".join(context.multiLineText)
-    f = open(context.userData['clientSyncPathUser1'] + filename, "w")
+    f = open(context.userData['currentUserSyncPath'] + filename, "w")
     f.write(fileContent)
     f.close()
 
@@ -466,14 +478,14 @@ def step(context, filename):
     extpart = filename.split('.')[1]
     onlyfiles = [
         f
-        for f in listdir(context.userData['clientSyncPathUser1'])
-        if isfile(join(context.userData['clientSyncPathUser1'], f))
+        for f in listdir(context.userData['currentUserSyncPath'])
+        if isfile(join(context.userData['currentUserSyncPath'], f))
     ]
     found = False
     pattern = re.compile(buildConflictedRegex(filename))
     for file in onlyfiles:
         if pattern.match(file):
-            f = open(context.userData['clientSyncPathUser1'] + file, 'r')
+            f = open(context.userData['currentUserSyncPath'] + file, 'r')
             contents = f.read()
             if contents == expected:
                 found = True
@@ -528,7 +540,7 @@ def step(context, tabName):
 
 
 def openSharingDialog(context, resource, itemType='file'):
-    resource = sanitizePath(substituteInLineCodes(context, resource))
+    resource = getResourcePath(context, resource)
 
     if itemType == 'folder':
         waitFor(
@@ -549,7 +561,6 @@ def openSharingDialog(context, resource, itemType='file'):
 
 @When('the user opens the public links dialog of "|any|" using the client-UI')
 def step(context, resource):
-    resource = sanitizePath(substituteInLineCodes(context, resource))
     openSharingDialog(context, resource)
     publicLinkDialog = PublicLinkDialog()
     publicLinkDialog.openPublicLinkDialog()
@@ -573,8 +584,8 @@ def step(context):
     waitFor(lambda: (test.xvp("publicLinkPasswordProgressIndicatorInvisible")))
 
 
-@When('user "|any|" opens the sharing dialog of "|any|" using the client-UI')
-def step(context, receiver, resource):
+@When('the user opens the sharing dialog of "|any|" using the client-UI')
+def step(context, resource):
     openSharingDialog(context, resource, 'folder')
 
 
@@ -603,7 +614,7 @@ def step(context, fileShareContext):
 
 
 def createPublicLinkShare(context, resource, password='', permissions=''):
-    resource = sanitizePath(substituteInLineCodes(context, resource))
+    resource = getResourcePath(context, resource)
     openSharingDialog(context, resource)
     publicLinkDialog = PublicLinkDialog()
     publicLinkDialog.openPublicLinkDialog()
@@ -860,7 +871,7 @@ def step(context, resource, content):
 
     snooze(5)
 
-    f = open(context.userData['clientSyncPathUser1'] + resource, "w")
+    f = open(context.userData['currentUserSyncPath'] + resource, "w")
     f.write(content)
     f.close()
 
@@ -949,7 +960,7 @@ def step(context, errorMsg):
 
 @When(r'the user deletes the (file|folder) "([^"]*)"', regexp=True)
 def step(context, itemType, resource):
-    resourcePath = sanitizePath(context.userData['clientSyncPathUser1'] + resource)
+    resourcePath = sanitizePath(context.userData['currentUserSyncPath'] + resource)
     if itemType == 'file':
         os.remove(resourcePath)
     elif itemType == 'folder':
@@ -995,12 +1006,6 @@ def step(context):
         True,
         "Assert setup page is visible",
     )
-
-
-@Given('the user has changed the sync directory')
-def step(context):
-    newAccount = AccountConnectionWizard()
-    newAccount.selectSyncFolder(context)
 
 
 @Given('the user has opened chose_what_to_sync dialog')

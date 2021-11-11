@@ -10,7 +10,7 @@ Feature: Syncing files
     @smokeTest
     Scenario: Syncing a file to the server
         Given user "Alice" has set up a client with default settings
-        When the user creates a file "lorem-for-upload.txt" with the following content on the file system
+        When user "Alice" creates a file "lorem-for-upload.txt" with the following content inside the sync folder
             """
             test content
             """
@@ -63,10 +63,9 @@ Feature: Syncing files
         And user "Alice" has created folder "large-folder" on the server
         And the user has started the client
         And the user has added the following account information:
-            | server      | %local_server%           |
-            | user        | Alice                    |
-            | password    | 1234                     |
-            | localfolder | %client_sync_path_user1% |
+            | server   | %local_server% |
+            | user     | Alice          |
+            | password | 1234           |
         When the user opens chose_what_to_sync dialog
         Then the dialog chose_what_to_sync should be visible
         And the sync all checkbox should be checked
@@ -77,10 +76,9 @@ Feature: Syncing files
         And user "Alice" has created folder "large-folder" on the server
         And the user has started the client
         And the user has added the following account information:
-            | server      | %local_server%           |
-            | user        | Alice                    |
-            | password    | 1234                     |
-            | localfolder | %client_sync_path_user1% |
+            | server   | %local_server% |
+            | user     | Alice          |
+            | password | 1234           |
         When the user selects the following folders to sync:
             | folder        |
             | simple-folder |
@@ -96,10 +94,9 @@ Feature: Syncing files
         And user "Alice" has uploaded file on the server with content "test content" to "lorem.txt"
         And the user has started the client
         And the user has added the following account information:
-            | server      | %local_server%           |
-            | user        | Alice                    |
-            | password    | 1234                     |
-            | localfolder | %client_sync_path_user1% |
+            | server   | %local_server% |
+            | user     | Alice          |
+            | password | 1234           |
         When the user selects manual sync folder option
         And the user connects the account
         Then the folder "simple-folder" should not exist on the file system
@@ -115,10 +112,9 @@ Feature: Syncing files
         And user "Alice" has created folder "bFolder" on the server
         And the user has started the client
         And the user has added the following account information:
-            | server      | %local_server%           |
-            | user        | Alice                    |
-            | password    | 1234                     |
-            | localfolder | %client_sync_path_user1% |
+            | server   | %local_server% |
+            | user     | Alice          |
+            | password | 1234           |
         When the user opens chose_what_to_sync dialog
         # folders are sorted by name in ascending order by default
         Then the folders should be in the following order:
@@ -151,7 +147,7 @@ Feature: Syncing files
 
     Scenario Outline: Syncing a folder to the server
         Given user "Alice" has set up a client with default settings
-        When the user creates a folder "<foldername>"
+        When user "Alice" creates a folder "<foldername>" inside the sync folder
         And the user waits for folder "<foldername>" to be synced
         Then as "Alice" folder "<foldername>" should exist on the server
         Examples:
@@ -161,35 +157,35 @@ Feature: Syncing files
 
 
     Scenario: Many subfolders can be synced
-        Given user "Alice" has set up a client with default settings
-        And the user has created a folder "parent"
-        When the user creates a folder "parent/subfolderEmpty1"
-        And the user creates a folder "parent/subfolderEmpty2"
-        And the user creates a folder "parent/subfolderEmpty3"
-        And the user creates a folder "parent/subfolderEmpty4"
-        And the user creates a folder "parent/subfolderEmpty5"
-        And the user creates a folder "parent/subfolder1"
-        And the user creates a folder "parent/subfolder2"
-        And the user creates a folder "parent/subfolder3"
-        And the user creates a folder "parent/subfolder4"
-        And the user creates a folder "parent/subfolder5"
-        And the user creates a file "parent/subfolder1/test.txt" with the following content on the file system
+        Given user "Alice" has created folder "parent" on the server 
+        And user "Alice" has set up a client with default settings
+        When user "Alice" creates a folder "parent/subfolderEmpty1" inside the sync folder
+        And user "Alice" creates a folder "parent/subfolderEmpty2" inside the sync folder
+        And user "Alice" creates a folder "parent/subfolderEmpty3" inside the sync folder
+        And user "Alice" creates a folder "parent/subfolderEmpty4" inside the sync folder
+        And user "Alice" creates a folder "parent/subfolderEmpty5" inside the sync folder
+        And user "Alice" creates a folder "parent/subfolder1" inside the sync folder
+        And user "Alice" creates a folder "parent/subfolder2" inside the sync folder
+        And user "Alice" creates a folder "parent/subfolder3" inside the sync folder
+        And user "Alice" creates a folder "parent/subfolder4" inside the sync folder
+        And user "Alice" creates a folder "parent/subfolder5" inside the sync folder
+        And user "Alice" creates a file "parent/subfolder1/test.txt" with the following content inside the sync folder
             """
             test content
             """
-        And the user creates a file "parent/subfolder2/test.txt" with the following content on the file system
+        And user "Alice" creates a file "parent/subfolder2/test.txt" with the following content inside the sync folder
             """
             test content
             """
-        And the user creates a file "parent/subfolder3/test.txt" with the following content on the file system
+        And user "Alice" creates a file "parent/subfolder3/test.txt" with the following content inside the sync folder
             """
             test content
             """
-        And the user creates a file "parent/subfolder4/test.txt" with the following content on the file system
+        And user "Alice" creates a file "parent/subfolder4/test.txt" with the following content inside the sync folder
             """
             test content
             """
-        And the user creates a file "parent/subfolder5/test.txt" with the following content on the file system
+        And user "Alice" creates a file "parent/subfolder5/test.txt" with the following content inside the sync folder
             """
             test content
             """
@@ -208,8 +204,8 @@ Feature: Syncing files
 
     Scenario: Both original and copied folders can be synced
         Given user "Alice" has set up a client with default settings
-        And the user has created a folder "original"
-        And the user has created a file "original/test.txt" with the following content on the file system
+        And user "Alice" has created a folder "original" inside the sync folder
+        And user "Alice" has created a file "original/test.txt" with the following content inside the sync folder
             """
             test content
             """
@@ -221,9 +217,9 @@ Feature: Syncing files
 
     Scenario: Verify that you can create a subfolder with long name
         Given user "Alice" has set up a client with default settings
-        And the user has created a folder "Folder1"
-        When the user creates a folder "Folder1/really long folder name with some spaces and special char such as $%ñ&"
-        And the user creates a file "Folder1/really long folder name with some spaces and special char such as $%ñ&/test.txt" with the following content on the file system
+        And user "Alice" has created a folder "Folder1" inside the sync folder
+        When user "Alice" creates a folder "Folder1/really long folder name with some spaces and special char such as $%ñ&" inside the sync folder
+        And user "Alice" creates a file "Folder1/really long folder name with some spaces and special char such as $%ñ&/test.txt" with the following content inside the sync folder
             """
             test content
             """
@@ -238,9 +234,9 @@ Feature: Syncing files
 
 
     Scenario: Verify pre existing folders in local (Desktop client) are copied over to the server
-        Given the user has created a folder "Folder1"
-        And the user has created a folder "Folder1/subFolder1"
-        And the user has created a folder "Folder1/subFolder1/subFolder2"
+        Given user "Alice" has created a folder "Folder1" inside the sync folder
+        And user "Alice" has created a folder "Folder1/subFolder1" inside the sync folder
+        And user "Alice" has created a folder "Folder1/subFolder1/subFolder2" inside the sync folder
         And user "Alice" has set up a client with default settings
         When the user waits for folder "Folder1" to be synced
         Then as "Alice" folder "Folder1" should exist on the server
@@ -250,8 +246,8 @@ Feature: Syncing files
 
      Scenario: Filenames that are rejected by the server are reported
         Given user "Alice" has set up a client with default settings
-        And the user has created a folder "Folder1"
-        When the user creates a file "Folder1/a\\a.txt" with the following content on the file system
+        And user "Alice" has created a folder "Folder1" inside the sync folder
+        When user "Alice" creates a file "Folder1/a\\a.txt" with the following content inside the sync folder
             """
             test content
             """
