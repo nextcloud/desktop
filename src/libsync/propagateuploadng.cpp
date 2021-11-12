@@ -222,12 +222,14 @@ void PropagateUploadFileNG::slotPropfindFinished()
 void PropagateUploadFileNG::slotPropfindFinishedWithError()
 {
     auto job = qobject_cast<LsColJob *>(sender());
+    _item->_httpErrorCode = job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    _item->_responseTimeStamp = job->responseTimestamp();
+    _item->_requestId = job->requestId();
     slotJobDestroyed(job); // remove it from the _jobs list
+
     QNetworkReply::NetworkError err = job->reply()->error();
-    auto httpErrorCode = job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-    auto status = classifyError(err, httpErrorCode, &propagator()->_anotherSyncNeeded);
+    auto status = classifyError(err, _item->_httpErrorCode, &propagator()->_anotherSyncNeeded);
     if (status == SyncFileItem::FatalError) {
-        _item->_requestId = job->requestId();
         propagator()->_activeJobList.removeOne(this);
         abortWithError(status, job->errorStringParsingBody());
         return;
@@ -239,14 +241,16 @@ void PropagateUploadFileNG::slotDeleteJobFinished()
 {
     auto job = qobject_cast<DeleteJob *>(sender());
     OC_ASSERT(job);
-    _jobs.remove(_jobs.indexOf(job));
+    _item->_httpErrorCode = job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    _item->_responseTimeStamp = job->responseTimestamp();
+    _item->_requestId = job->requestId();
+    slotJobDestroyed(job);
 
     QNetworkReply::NetworkError err = job->reply()->error();
     if (err != QNetworkReply::NoError && err != QNetworkReply::ContentNotFoundError) {
         const int httpStatus = job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
         SyncFileItem::Status status = classifyError(err, httpStatus);
         if (status == SyncFileItem::FatalError) {
-            _item->_requestId = job->requestId();
             abortWithError(status, job->errorString());
             return;
         } else {
@@ -305,10 +309,12 @@ void PropagateUploadFileNG::slotMkColFinished()
 {
     propagator()->_activeJobList.removeOne(this);
     auto job = qobject_cast<MkColJob *>(sender());
-    slotJobDestroyed(job); // remove it from the _jobs list
-    QNetworkReply::NetworkError err = job->reply()->error();
     _item->_httpErrorCode = job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    _item->_responseTimeStamp = job->responseTimestamp();
+    _item->_requestId = job->requestId();
+    slotJobDestroyed(job); // remove it from the _jobs list
 
+    QNetworkReply::NetworkError err = job->reply()->error();
     if (err != QNetworkReply::NoError || _item->_httpErrorCode != 201) {
         _item->_requestId = job->requestId();
         SyncFileItem::Status status = classifyError(err, _item->_httpErrorCode,
@@ -416,6 +422,10 @@ void PropagateUploadFileNG::slotPutFinished()
     PUTFileJob *job = qobject_cast<PUTFileJob *>(sender());
     OC_ASSERT(job);
 
+    _item->_httpErrorCode = job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    _item->_responseTimeStamp = job->responseTimestamp();
+    _item->_requestId = job->requestId();
+
     slotJobDestroyed(job); // remove it from the _jobs list
 
     propagator()->_activeJobList.removeOne(this);
@@ -428,8 +438,6 @@ void PropagateUploadFileNG::slotPutFinished()
     QNetworkReply::NetworkError err = job->reply()->error();
 
     if (err != QNetworkReply::NoError) {
-        _item->_httpErrorCode = job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-        _item->_requestId = job->requestId();
         commonErrorHandling(job);
         return;
     }

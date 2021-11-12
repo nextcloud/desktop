@@ -1,0 +1,6 @@
+Fix: Add request time and other missing data to .owncloudsync.log
+
+Some parameters were missing for some operations. This fix makes the 
+log more complete and more useful as a result.
+
+https://github.com/owncloud/client/issues/7348
