@@ -716,6 +716,7 @@ Window {
             anchors.right: trayWindowBackground.right
             anchors.bottom: trayWindowBackground.bottom
 
+            activeFocusOnTab: true
             model: activityModel
             onShowFileActivity: {
                 openFileActivityDialog(displayPath, absolutePath)
