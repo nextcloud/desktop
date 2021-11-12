@@ -19,6 +19,7 @@
 #include "common/utility.h"
 #include "tray/svgimageprovider.h"
 #include "tray/usermodel.h"
+#include "tray/wheelhandler.h"
 #include "tray/unifiedsearchresultimageprovider.h"
 #include "configfile.h"
 
@@ -90,6 +91,8 @@ Systray::Systray()
             return Systray::instance();
         }
     );
+
+    qmlRegisterType<WheelHandler>("com.nextcloud.desktopclient", 1, 0, "WheelHandler");
 
 #ifndef Q_OS_MAC
     auto contextMenu = new QMenu();

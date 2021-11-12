@@ -6,6 +6,7 @@ import Style 1.0
 import com.nextcloud.desktopclient 1.0 as NC
 
 ScrollView {
+    id: controlRoot
     property alias model: activityList.model
 
     signal showFileActivity(string displayPath, string absolutePath)
@@ -14,6 +15,10 @@ ScrollView {
     contentWidth: availableWidth
 
     ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
+
+    data: NC.WheelHandler {
+        target: controlRoot.contentItem
+    }
 
     ListView {
         id: activityList
