@@ -22,8 +22,7 @@ GlobalWheelFilter::GlobalWheelFilter(QObject *parent)
 {
 }
 
-GlobalWheelFilter::~GlobalWheelFilter()
-{}
+GlobalWheelFilter::~GlobalWheelFilter() = default;
 
 GlobalWheelFilter *GlobalWheelFilter::self()
 {
@@ -38,12 +37,12 @@ void GlobalWheelFilter::setItemHandlerAssociation(QQuickItem *item, WheelHandler
     m_handlersForItem.insert(item, handler);
 
     connect(item, &QObject::destroyed, this, [this](QObject *obj) {
-        QQuickItem *item = static_cast<QQuickItem *>(obj);
+        auto item = static_cast<QQuickItem *>(obj);
         m_handlersForItem.remove(item);
     });
 
     connect(handler, &QObject::destroyed, this, [this](QObject *obj) {
-        WheelHandler *handler = static_cast<WheelHandler *>(obj);
+        auto handler = static_cast<WheelHandler *>(obj);
         removeItemHandlerAssociation(handler->target(), handler);
     });
 }
@@ -62,11 +61,11 @@ void GlobalWheelFilter::removeItemHandlerAssociation(QQuickItem *item, WheelHand
 bool GlobalWheelFilter::eventFilter(QObject *watched, QEvent *event)
 {
     if (event->type() == QEvent::Wheel) {
-        QQuickItem *item = qobject_cast<QQuickItem *>(watched);
+        auto item = qobject_cast<QQuickItem *>(watched);
         if (!item || !item->isEnabled()) {
             return QObject::eventFilter(watched, event);
         }
-        QWheelEvent *we = static_cast<QWheelEvent *>(event);
+        auto we = static_cast<QWheelEvent *>(event);
         m_wheelEvent.initializeFromEvent(we);
 
         bool shouldBlock = false;
@@ -186,18 +185,12 @@ KirigamiWheelEvent::KirigamiWheelEvent(QObject *parent)
     : QObject(parent)
 {}
 
-KirigamiWheelEvent::~KirigamiWheelEvent()
-{}
+KirigamiWheelEvent::~KirigamiWheelEvent() = default;
 
 void KirigamiWheelEvent::initializeFromEvent(QWheelEvent *event)
 {
-#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
     m_x = event->position().x();
     m_y = event->position().y();
-#else
-    m_x = event->x();
-    m_y = event->y();
-#endif
     m_angleDelta = event->angleDelta();
     m_pixelDelta = event->pixelDelta();
     m_buttons = event->buttons();
@@ -259,9 +252,7 @@ WheelHandler::WheelHandler(QObject *parent)
 {
 }
 
-WheelHandler::~WheelHandler()
-{
-}
+WheelHandler::~WheelHandler() = default;
 
 QQuickItem *WheelHandler::target() const
 {

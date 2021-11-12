@@ -13,6 +13,7 @@ ScrollView {
     signal activityItemClicked(int index)
 
     contentWidth: availableWidth
+    padding: 1
 
     ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
 

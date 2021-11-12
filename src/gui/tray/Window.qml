@@ -651,51 +651,61 @@ Window {
             iconColor: "#afafaf"
         }
 
-        ListView {
-            id: unifiedSearchResultsListView
+        ScrollView {
+            id: controlRoot
+            padding: 1
+            contentWidth: availableWidth
+
+            ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
+
+            data: WheelHandler {
+                target: controlRoot.contentItem
+            }
+            visible: unifiedSearchResultsListView.count > 0
+
             anchors.top: trayWindowUnifiedSearchInputContainer.bottom
             anchors.left: trayWindowBackground.left
             anchors.right: trayWindowBackground.right
             anchors.bottom: trayWindowBackground.bottom
-            spacing: 4
-            visible: count > 0
-            clip: true
-            ScrollBar.vertical: ScrollBar {
-                id: unifiedSearchResultsListViewScrollbar
-            }
 
-            keyNavigationEnabled: true
+            ListView {
+                id: unifiedSearchResultsListView
+                spacing: 4
+                clip: true
 
-            reuseItems: true
+                keyNavigationEnabled: true
 
-            Accessible.role: Accessible.List
-            Accessible.name: qsTr("Unified search results list")
+                reuseItems: true
 
-            model: UserModel.currentUser.unifiedSearchResultsListModel
+                Accessible.role: Accessible.List
+                Accessible.name: qsTr("Unified search results list")
 
-            delegate: UnifiedSearchResultListItem {
-                width: unifiedSearchResultsListView.width
-                height: trayWindowBackground.Style.unifiedSearchItemHeight
-                isSearchInProgress:  unifiedSearchResultsListView.model.isSearchInProgress
-                textLeftMargin: trayWindowBackground.Style.unifiedSearchResultTextLeftMargin
-                textRightMargin: trayWindowBackground.Style.unifiedSearchResultTextRightMargin
-                iconWidth: trayWindowBackground.Style.unifiedSearchResulIconWidth
-                iconLeftMargin: trayWindowBackground.Style.unifiedSearchResulIconLeftMargin
-                titleFontSize: trayWindowBackground.Style.unifiedSearchResulTitleFontSize
-                sublineFontSize: trayWindowBackground.Style.unifiedSearchResulSublineFontSize
-                titleColor: trayWindowBackground.Style.unifiedSearchResulTitleColor
-                sublineColor: trayWindowBackground.Style.unifiedSearchResulSublineColor
-                currentFetchMoreInProgressProviderId: unifiedSearchResultsListView.model.currentFetchMoreInProgressProviderId
-                fetchMoreTriggerClicked: unifiedSearchResultsListView.model.fetchMoreTriggerClicked
-                resultClicked: unifiedSearchResultsListView.model.resultClicked
-                ListView.onPooled: isPooled = true
-                ListView.onReused: isPooled = false
-            }
+                model: UserModel.currentUser.unifiedSearchResultsListModel
 
-            section.property: "providerName"
-            section.criteria: ViewSection.FullString
-            section.delegate: UnifiedSearchResultSectionItem {
-                width: unifiedSearchResultsListView.width
+                delegate: UnifiedSearchResultListItem {
+                    width: unifiedSearchResultsListView.width
+                    height: trayWindowBackground.Style.unifiedSearchItemHeight
+                    isSearchInProgress:  unifiedSearchResultsListView.model.isSearchInProgress
+                    textLeftMargin: trayWindowBackground.Style.unifiedSearchResultTextLeftMargin
+                    textRightMargin: trayWindowBackground.Style.unifiedSearchResultTextRightMargin
+                    iconWidth: trayWindowBackground.Style.unifiedSearchResulIconWidth
+                    iconLeftMargin: trayWindowBackground.Style.unifiedSearchResulIconLeftMargin
+                    titleFontSize: trayWindowBackground.Style.unifiedSearchResulTitleFontSize
+                    sublineFontSize: trayWindowBackground.Style.unifiedSearchResulSublineFontSize
+                    titleColor: trayWindowBackground.Style.unifiedSearchResulTitleColor
+                    sublineColor: trayWindowBackground.Style.unifiedSearchResulSublineColor
+                    currentFetchMoreInProgressProviderId: unifiedSearchResultsListView.model.currentFetchMoreInProgressProviderId
+                    fetchMoreTriggerClicked: unifiedSearchResultsListView.model.fetchMoreTriggerClicked
+                    resultClicked: unifiedSearchResultsListView.model.resultClicked
+                    ListView.onPooled: isPooled = true
+                    ListView.onReused: isPooled = false
+                }
+
+                section.property: "providerName"
+                section.criteria: ViewSection.FullString
+                section.delegate: UnifiedSearchResultSectionItem {
+                    width: unifiedSearchResultsListView.width
+                }
             }
         }
 

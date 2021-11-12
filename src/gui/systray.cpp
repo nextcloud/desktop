@@ -19,7 +19,7 @@
 #include "common/utility.h"
 #include "tray/svgimageprovider.h"
 #include "tray/usermodel.h"
-#include "tray/wheelhandler.h"
+#include "wheelhandler.h"
 #include "tray/unifiedsearchresultimageprovider.h"
 #include "configfile.h"
 
