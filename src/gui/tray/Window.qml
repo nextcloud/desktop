@@ -142,187 +142,180 @@ Window {
                     Accessible.name: qsTr("Current account")
                     Accessible.onPressAction: currentAccountButton.clicked()
 
-                    MouseArea {
-                        id: accountBtnMouseArea
+                    // We call open() instead of popup() because we want to position it
+                    // exactly below the dropdown button, not the mouse
+                    onClicked: {
+                        syncPauseButton.text = Systray.syncIsPaused() ? qsTr("Resume sync for all") : qsTr("Pause sync for all")
+                        if (accountMenu.visible) {
+                            accountMenu.close()
+                        } else {
+                            accountMenu.open()
+                        }
+                    }
 
-                        anchors.fill:   parent
-                        hoverEnabled:   Style.hoverEffectsEnabled
+                    Loader {
+                        id: userStatusSelectorDialogLoader
+                    }
 
-                        // We call open() instead of popup() because we want to position it
-                        // exactly below the dropdown button, not the mouse
-                        onClicked: {
-                            syncPauseButton.text = Systray.syncIsPaused() ? qsTr("Resume sync for all") : qsTr("Pause sync for all")
-                            if (accountMenu.visible) {
-                                accountMenu.close()
-                            } else {
-                                accountMenu.open()
-                            }
+                    Menu {
+                        id: accountMenu
+
+                        // x coordinate grows towards the right
+                        // y coordinate grows towards the bottom
+                        x: (currentAccountButton.x + 2)
+                        y: (currentAccountButton.y + Style.trayWindowHeaderHeight + 2)
+
+                        width: (Style.currentAccountButtonWidth - 2)
+                        height: Math.min(implicitHeight, maxMenuHeight)
+                        closePolicy: Menu.CloseOnPressOutsideParent | Menu.CloseOnEscape
+
+                        background: Rectangle {
+                            border.color: Style.menuBorder
+                            radius: Style.currentAccountButtonRadius
                         }
 
-                        Loader {
-                            id: userStatusSelectorDialogLoader
+                        onClosed: {
+                            // HACK: reload account Instantiator immediately by restting it - could be done better I guess
+                            // see also onVisibleChanged above
+                            userLineInstantiator.active = false;
+                            userLineInstantiator.active = true;
                         }
 
-                        Menu {
-                            id: accountMenu
-
-                            // x coordinate grows towards the right
-                            // y coordinate grows towards the bottom
-                            x: (currentAccountButton.x + 2)
-                            y: (currentAccountButton.y + Style.trayWindowHeaderHeight + 2)
-
-                            width: (Style.currentAccountButtonWidth - 2)
-                            height: Math.min(implicitHeight, maxMenuHeight)
-                            closePolicy: Menu.CloseOnPressOutsideParent | Menu.CloseOnEscape
-
-                            background: Rectangle {
-                                border.color: Style.menuBorder
-                                radius: Style.currentAccountButtonRadius
-                            }
-
-                            onClosed: {
-                                // HACK: reload account Instantiator immediately by restting it - could be done better I guess
-                                // see also onVisibleChanged above
-                                userLineInstantiator.active = false;
-                                userLineInstantiator.active = true;
-                            }
-
-                            Instantiator {
-                                id: userLineInstantiator
-                                model: UserModel
-                                delegate: UserLine {
-                                    onShowUserStatusSelectorDialog: {
-                                        userStatusSelectorDialogLoader.source = "qrc:/qml/src/gui/UserStatusSelectorDialog.qml"
-                                        userStatusSelectorDialogLoader.item.title = qsTr("Set user status")
-                                        userStatusSelectorDialogLoader.item.model.load(index)
-                                        userStatusSelectorDialogLoader.item.show()
-                                    }
+                        Instantiator {
+                            id: userLineInstantiator
+                            model: UserModel
+                            delegate: UserLine {
+                                onShowUserStatusSelectorDialog: {
+                                    userStatusSelectorDialogLoader.source = "qrc:/qml/src/gui/UserStatusSelectorDialog.qml"
+                                    userStatusSelectorDialogLoader.item.title = qsTr("Set user status")
+                                    userStatusSelectorDialogLoader.item.model.load(index)
+                                    userStatusSelectorDialogLoader.item.show()
                                 }
-                                onObjectAdded: accountMenu.insertItem(index, object)
-                                onObjectRemoved: accountMenu.removeItem(object)
                             }
+                            onObjectAdded: accountMenu.insertItem(index, object)
+                            onObjectRemoved: accountMenu.removeItem(object)
+                        }
 
-                            MenuItem {
-                                id: addAccountButton
-                                height: Style.addAccountButtonHeight
-                                hoverEnabled: true
+                        MenuItem {
+                            id: addAccountButton
+                            height: Style.addAccountButtonHeight
+                            hoverEnabled: true
 
-                                background: Item {
-                                    height: parent.height
-                                    width: parent.menu.width
-                                    Rectangle {
-                                        anchors.fill: parent
-                                        anchors.margins: 1
-                                        color: parent.parent.hovered ? Style.lightHover : "transparent"
-                                    }
-                                }
-
-                                RowLayout {
+                            background: Item {
+                                height: parent.height
+                                width: parent.menu.width
+                                Rectangle {
                                     anchors.fill: parent
-                                    spacing: 0
-
-                                    Image {
-                                        Layout.leftMargin: 12
-                                        verticalAlignment: Qt.AlignCenter
-                                        source: "qrc:///client/theme/black/add.svg"
-                                        sourceSize.width: Style.headerButtonIconSize
-                                        sourceSize.height: Style.headerButtonIconSize
-                                    }
-                                    Label {
-                                        Layout.leftMargin: 14
-                                        text: qsTr("Add account")
-                                        color: "black"
-                                        font.pixelSize: Style.topLinePixelSize
-                                    }
-                                    // Filler on the right
-                                    Item {
-                                        Layout.fillWidth: true
-                                        Layout.fillHeight: true
-                                    }
-                                }
-                                onClicked: UserModel.addAccount()
-
-                                Accessible.role: Accessible.MenuItem
-                                Accessible.name: qsTr("Add new account")
-                                Accessible.onPressAction: addAccountButton.clicked()
-                            }
-
-                            MenuSeparator {
-                                contentItem: Rectangle {
-                                    implicitHeight: 1
-                                    color: Style.menuBorder
+                                    anchors.margins: 1
+                                    color: parent.parent.hovered || parent.parent.visualFocus ? Style.lightHover : "transparent"
                                 }
                             }
 
-                            MenuItem {
-                                id: syncPauseButton
-                                font.pixelSize: Style.topLinePixelSize
-                                hoverEnabled: true
-                                onClicked: Systray.pauseResumeSync()
+                            RowLayout {
+                                anchors.fill: parent
+                                spacing: 0
 
-                                background: Item {
-                                    height: parent.height
-                                    width: parent.menu.width
-                                    Rectangle {
-                                        anchors.fill: parent
-                                        anchors.margins: 1
-                                        color: parent.parent.hovered ? Style.lightHover : "transparent"
-                                    }
+                                Image {
+                                    Layout.leftMargin: 12
+                                    verticalAlignment: Qt.AlignCenter
+                                    source: "qrc:///client/theme/black/add.svg"
+                                    sourceSize.width: Style.headerButtonIconSize
+                                    sourceSize.height: Style.headerButtonIconSize
                                 }
+                                Label {
+                                    Layout.leftMargin: 14
+                                    text: qsTr("Add account")
+                                    color: "black"
+                                    font.pixelSize: Style.topLinePixelSize
+                                }
+                                // Filler on the right
+                                Item {
+                                    Layout.fillWidth: true
+                                    Layout.fillHeight: true
+                                }
+                            }
+                            onClicked: UserModel.addAccount()
 
-                                Accessible.role: Accessible.MenuItem
-                                Accessible.name: Systray.syncIsPaused() ? qsTr("Resume sync for all") : qsTr("Pause sync for all")
-                                Accessible.onPressAction: syncPauseButton.clicked()
+                            Accessible.role: Accessible.MenuItem
+                            Accessible.name: qsTr("Add new account")
+                            Accessible.onPressAction: addAccountButton.clicked()
+                        }
+
+                        MenuSeparator {
+                            contentItem: Rectangle {
+                                implicitHeight: 1
+                                color: Style.menuBorder
+                            }
+                        }
+
+                        MenuItem {
+                            id: syncPauseButton
+                            font.pixelSize: Style.topLinePixelSize
+                            hoverEnabled: true
+                            onClicked: Systray.pauseResumeSync()
+
+                            background: Item {
+                                height: parent.height
+                                width: parent.menu.width
+                                Rectangle {
+                                    anchors.fill: parent
+                                    anchors.margins: 1
+                                    color: parent.parent.hovered || parent.parent.visualFocus ? Style.lightHover : "transparent"
+                                }
                             }
 
-                            MenuItem {
-                                id: settingsButton
-                                text: qsTr("Settings")
-                                font.pixelSize: Style.topLinePixelSize
-                                hoverEnabled: true
-                                onClicked: Systray.openSettings()
+                            Accessible.role: Accessible.MenuItem
+                            Accessible.name: Systray.syncIsPaused() ? qsTr("Resume sync for all") : qsTr("Pause sync for all")
+                            Accessible.onPressAction: syncPauseButton.clicked()
+                        }
 
-                                background: Item {
-                                    height: parent.height
-                                    width: parent.menu.width
-                                    Rectangle {
-                                        anchors.fill: parent
-                                        anchors.margins: 1
-                                        color: parent.parent.hovered ? Style.lightHover : "transparent"
-                                    }
+                        MenuItem {
+                            id: settingsButton
+                            text: qsTr("Settings")
+                            font.pixelSize: Style.topLinePixelSize
+                            hoverEnabled: true
+                            onClicked: Systray.openSettings()
+
+                            background: Item {
+                                height: parent.height
+                                width: parent.menu.width
+                                Rectangle {
+                                    anchors.fill: parent
+                                    anchors.margins: 1
+                                    color: parent.parent.hovered || parent.parent.visualFocus ? Style.lightHover : "transparent"
                                 }
-
-                                Accessible.role: Accessible.MenuItem
-                                Accessible.name: text
-                                Accessible.onPressAction: settingsButton.clicked()
                             }
 
-                            MenuItem {
-                                id: exitButton
-                                text: qsTr("Exit");
-                                font.pixelSize: Style.topLinePixelSize
-                                hoverEnabled: true
-                                onClicked: Systray.shutdown()
+                            Accessible.role: Accessible.MenuItem
+                            Accessible.name: text
+                            Accessible.onPressAction: settingsButton.clicked()
+                        }
 
-                                background: Item {
-                                    height: parent.height
-                                    width: parent.menu.width
-                                    Rectangle {
-                                        anchors.fill: parent
-                                        anchors.margins: 1
-                                        color: parent.parent.hovered ? Style.lightHover : "transparent"
-                                    }
+                        MenuItem {
+                            id: exitButton
+                            text: qsTr("Exit");
+                            font.pixelSize: Style.topLinePixelSize
+                            hoverEnabled: true
+                            onClicked: Systray.shutdown()
+
+                            background: Item {
+                                height: parent.height
+                                width: parent.menu.width
+                                Rectangle {
+                                    anchors.fill: parent
+                                    anchors.margins: 1
+                                    color: parent.parent.hovered || parent.parent.visualFocus ? Style.lightHover : "transparent"
                                 }
-
-                                Accessible.role: Accessible.MenuItem
-                                Accessible.name: text
-                                Accessible.onPressAction: exitButton.clicked()
                             }
+
+                            Accessible.role: Accessible.MenuItem
+                            Accessible.name: text
+                            Accessible.onPressAction: exitButton.clicked()
                         }
                     }
 
                     background: Rectangle {
-                        color: accountBtnMouseArea.containsMouse ? "white" : "transparent"
+                        color: parent.hovered || parent.visualFocus ? "white" : "transparent"
                         opacity: 0.2
                     }
 
