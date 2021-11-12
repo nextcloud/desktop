@@ -216,13 +216,6 @@ bool Capabilities::chunkingNg() const
     return _capabilities["dav"].toMap()["chunking"].toByteArray() >= "1.0";
 }
 
-bool Capabilities::userStatusNotification() const
-{
-    return _capabilities.contains("notifications") &&
-        _capabilities["notifications"].toMap().contains("ocs-endpoints") &&
-        _capabilities["notifications"].toMap()["ocs-endpoints"].toStringList().contains("user-status");
-}
-
 bool Capabilities::userStatus() const
 {
     if (!_capabilities.contains("user_status")) {
