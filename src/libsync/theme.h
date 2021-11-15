@@ -435,6 +435,13 @@ public:
     virtual bool enableSocketApiIconSupport() const;
 
 
+    /**
+     * Warn if we find multiple db files in the sync root.
+     * This can indicate that the sync dir is shared between multiple clients or accounts
+     */
+    virtual bool warnOnMultipleDb() const;
+
+
 protected:
 #ifndef TOKEN_AUTH_ONLY
     QIcon themeUniversalIcon(const QString &name, IconType iconType = IconType::BrandedIcon) const;

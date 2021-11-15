@@ -1535,10 +1535,17 @@ Result<void, QString> FolderMan::unsupportedConfiguration(const QString &path) c
     if (it == _unsupportedConfigurationError.end()) {
         it = _unsupportedConfigurationError.insert(path, [&]() -> Result<void, QString> {
             if (numberOfSyncJournals(path) > 1) {
-                return tr("Multiple accounts are sharing the folder %1.\n"
-                          "This configuration is know to lead to dataloss and is no longer supported.\n"
-                          "Please consider removing this folder from the account and adding it again.")
-                    .arg(path);
+                const QString error = tr("Multiple accounts are sharing the folder %1.\n"
+                                         "This configuration is know to lead to dataloss and is no longer supported.\n"
+                                         "Please consider removing this folder from the account and adding it again.")
+                                          .arg(path);
+                if (Theme::instance()->warnOnMultipleDb()) {
+                    qCWarning(lcFolderMan) << error;
+                    return error;
+                } else {
+                    qCWarning(lcFolderMan) << error << "this error is not displayed to the user as this is a branded"
+                                           << "client and the error itself might be a false positive caused by a previous broken migration";
+                }
             }
             return {};
         }());
