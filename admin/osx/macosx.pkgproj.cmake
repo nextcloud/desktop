@@ -695,7 +695,12 @@
 		<key>PROJECT_SETTINGS</key>
 		<dict>
 			<key>ADVANCED_OPTIONS</key>
-			<dict/>
+            <dict>
+                    <key>installer-script.options:hostArchitectures</key>
+                    <array>
+                            <string>x86_64,arm64</string>
+                    </array>
+			</dict>
 			<key>BUILD_FORMAT</key>
 			<integer>0</integer>
 			<key>BUILD_PATH</key>
