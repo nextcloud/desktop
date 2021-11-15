@@ -1531,13 +1531,19 @@ void FolderMan::restartApplication()
 
 Result<void, QString> FolderMan::unsupportedConfiguration(const QString &path) const
 {
-    if (numberOfSyncJournals(path) > 1) {
-        return tr("Multiple accounts are sharing the folder %1.\n"
-                  "This configuration is know to lead to dataloss and is no longer supported.\n"
-                  "Please consider removing this folder from the account and adding it again.")
-            .arg(path);
+    auto it = _unsupportedConfigurationError.find(path);
+    if (it == _unsupportedConfigurationError.end()) {
+        it = _unsupportedConfigurationError.insert(path, [&]() -> Result<void, QString> {
+            if (numberOfSyncJournals(path) > 1) {
+                return tr("Multiple accounts are sharing the folder %1.\n"
+                          "This configuration is know to lead to dataloss and is no longer supported.\n"
+                          "Please consider removing this folder from the account and adding it again.")
+                    .arg(path);
+            }
+            return {};
+        }());
     }
-    return {};
+    return *it;
 }
 
 bool FolderMan::checkVfsAvailability(const QString &path, Vfs::Mode mode) const

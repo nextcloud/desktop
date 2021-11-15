@@ -385,6 +385,8 @@ private:
 
     bool _appRestartRequired;
 
+    mutable QMap<QString, Result<void, QString>> _unsupportedConfigurationError;
+
     static FolderMan *_instance;
     explicit FolderMan(QObject *parent = nullptr);
     friend class OCC::Application;
