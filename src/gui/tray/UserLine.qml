@@ -16,6 +16,7 @@ MenuItem {
 
     property variant dialog;
     property variant comp;
+    activeFocusOnTab: false
 
     signal showUserStatusSelectorDialog(int id)
 
@@ -35,21 +36,11 @@ MenuItem {
             Accessible.role: Accessible.Button
             Accessible.name: qsTr("Switch to account") + " " + name
 
-            MouseArea {
-                anchors.fill: parent
-                hoverEnabled: true
-                onContainsMouseChanged: {
-                    accountStatusIndicatorBackground.color = (containsMouse ? "#f6f6f6" : "white")
-                }
-                onClicked: {
-                    if (!isCurrentUser) {
-                        UserModel.switchCurrentUser(id)
-                    } else {
-                        accountMenu.close()
-                    }
-                }
+            onClicked: if (!isCurrentUser) {
+                UserModel.switchCurrentUser(id)
+            } else {
+                accountMenu.close()
             }
-
 
             background: Item {
                 height: parent.height
@@ -57,7 +48,7 @@ MenuItem {
                 Rectangle {
                     anchors.fill: parent
                     anchors.margins: 1
-                    color: parent.parent.hovered ? Style.lightHover : "transparent"
+                    color: parent.parent.hovered || parent.parent.visualFocus ? Style.lightHover : "transparent"
                 }
             }
 
@@ -81,7 +72,7 @@ MenuItem {
                         height: width
                         anchors.bottom: accountAvatar.bottom
                         anchors.right: accountAvatar.right
-                        color: "white"
+                        color: accountButton.hovered || accountButton.visualFocus ? "#f6f6f6" : "white"
                         radius: width*0.5
                     }
                     Image {
@@ -163,21 +154,16 @@ MenuItem {
             Accessible.name: qsTr("Account actions")
             Accessible.onPressAction: userMoreButtonMouseArea.clicked()
 
-            MouseArea {
-                id: userMoreButtonMouseArea
-                anchors.fill: parent
-                hoverEnabled: true
-                onClicked: {
-                    if (userMoreButtonMenu.visible) {
-                        userMoreButtonMenu.close()
-                    } else {
-                        userMoreButtonMenu.popup()
-                    }
+            onClicked: {
+                if (userMoreButtonMenu.visible) {
+                    userMoreButtonMenu.close()
+                } else {
+                    userMoreButtonMenu.popup()
                 }
             }
             background:
                 Rectangle {
-                color: userMoreButtonMouseArea.containsMouse ? "grey" : "transparent"
+                color: userMoreButton.hovered || userMoreButton.visualFocus ? "grey" : "transparent"
                 opacity: 0.2
                 height: userMoreButton.height - 2
                 y: userMoreButton.y + 1
@@ -196,7 +182,6 @@ MenuItem {
                 MenuItem {
                     visible: model.isConnected && model.serverHasUserStatus
                     height: visible ? implicitHeight : 0
-                    
                     text: qsTr("Set status")
                     font.pixelSize: Style.topLinePixelSize
                     hoverEnabled: true

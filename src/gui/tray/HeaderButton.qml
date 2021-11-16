@@ -25,7 +25,7 @@ Button {
     Layout.preferredHeight: Style.trayWindowHeaderHeight
 
     background: Rectangle {
-        color: root.hovered ? "white" : "transparent"
+        color: root.hovered || root.visualFocus ? "white" : "transparent"
         opacity: 0.2
     }
 }
