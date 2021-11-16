@@ -70,8 +70,7 @@ public:
 
     void keyValueStoreSet(const QString &key, QVariant value);
     qint64 keyValueStoreGetInt(const QString &key, qint64 defaultValue);
-    bool keyValueStoreGetBool(const QString &key, bool defaultValue);
-    QVariant keyValueStoreGet(const QString &key, QVariant defaultValue = {});
+    bool keyValueStoreGetBool(const QString &key, const bool defaultValue);
     void keyValueStoreDelete(const QString &key);
 
     bool deleteFileRecord(const QString &filename, bool recursively = false);
@@ -373,6 +372,7 @@ public:
     int autotestFailCounter = -1;
 
 private:
+    OCC::Optional<PreparedSqlQuery> keyValueStoreExecuteSelectQuery(const QString &key);
     int getFileRecordCount();
     bool updateDatabaseStructure();
     bool updateMetadataTableStructure();
