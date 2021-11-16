@@ -444,6 +444,8 @@ private:
 
     void startVfs();
 
+    void correctPlaceholderFiles();
+
     AccountStatePtr _accountState;
     FolderDefinition _definition;
     QString _canonicalLocalPath; // As returned with QFileInfo:canonicalFilePath.  Always ends with "/"

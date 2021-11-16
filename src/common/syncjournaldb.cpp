@@ -1016,6 +1016,29 @@ qint64 SyncJournalDb::keyValueStoreGetInt(const QString &key, qint64 defaultValu
     return query->int64Value(0);
 }
 
+bool SyncJournalDb::keyValueStoreGetBool(const QString &key, bool defaultValue)
+{
+    QMutexLocker locker(&_mutex);
+    if (!checkConnect()) {
+        return defaultValue;
+    }
+
+    const auto query = _queryManager.get(PreparedSqlQueryManager::GetKeyValueStoreQuery,
+        QByteArrayLiteral("SELECT value FROM key_value_store WHERE key = ?1;"), _db);
+    if (!query) {
+        return defaultValue;
+    }
+
+    query->bindValue(1, key);
+    query->exec();
+
+    if (!query->next().hasData) {
+        return defaultValue;
+    }
+
+    return query->intValue(0);
+}
+
 QVariant SyncJournalDb::keyValueStoreGet(const QString &key, QVariant defaultValue)
 {
     QMutexLocker locker(&_mutex);

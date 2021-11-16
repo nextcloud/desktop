@@ -866,9 +866,25 @@ void Folder::startSync(const QStringList &pathList)
 
     _engine->setIgnoreHiddenFiles(_definition.ignoreHiddenFiles);
 
+    correctPlaceholderFiles();
+
     QMetaObject::invokeMethod(_engine.data(), "startSync", Qt::QueuedConnection);
 
     emit syncStarted();
+}
+
+void Folder::correctPlaceholderFiles()
+{
+    if (_definition.virtualFilesMode == Vfs::Off) {
+        return;
+    }
+    static const auto placeholdersCorrectedKey = QStringLiteral("placeholders_corrected");
+    const auto placeholdersCorrected = _journal.keyValueStoreGetBool(placeholdersCorrectedKey, false);
+    if (!placeholdersCorrected) {
+        qCDebug(lcFolder) << "Make sure all virtual files are placeholder files";
+        switchToVirtualFiles();
+        _journal.keyValueStoreSet(placeholdersCorrectedKey, true);
+    }
 }
 
 void Folder::setSyncOptions()

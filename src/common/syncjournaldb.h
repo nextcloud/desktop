@@ -70,6 +70,7 @@ public:
 
     void keyValueStoreSet(const QString &key, QVariant value);
     qint64 keyValueStoreGetInt(const QString &key, qint64 defaultValue);
+    bool keyValueStoreGetBool(const QString &key, bool defaultValue);
     QVariant keyValueStoreGet(const QString &key, QVariant defaultValue = {});
     void keyValueStoreDelete(const QString &key);
 
