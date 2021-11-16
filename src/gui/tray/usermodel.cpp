@@ -658,7 +658,7 @@ QString User::statusEmoji() const
 
 bool User::serverHasUserStatus() const
 {
-    return _account->account()->capabilities().userStatusNotification();
+    return _account->account()->capabilities().userStatus();
 }
 
 QImage User::avatar() const
