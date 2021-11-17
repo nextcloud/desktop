@@ -98,24 +98,13 @@ message(STATUS "GIT_SHA1 ${GIT_SHA1}")
 set(SYSCONFDIR ${SYSCONF_INSTALL_DIR})
 set(SHAREDIR ${CMAKE_INSTALL_DATADIR})
 
-#####
-## handle BUILD_OWNCLOUD_OSX_BUNDLE
-# BUILD_OWNCLOUD_OSX_BUNDLE was not initialized OR set to true on OSX
-if(APPLE AND (NOT DEFINED BUILD_OWNCLOUD_OSX_BUNDLE OR BUILD_OWNCLOUD_OSX_BUNDLE))
-    set(BUILD_OWNCLOUD_OSX_BUNDLE ON)
+# Build MacOS app bundle if wished
+if(APPLE AND BUILD_OWNCLOUD_OSX_BUNDLE)
+    message(STATUS "Build MacOS app bundle")
     set(OWNCLOUD_OSX_BUNDLE "${APPLICATION_NAME}.app")
     set(LIB_INSTALL_DIR "${APPLICATION_NAME}.app/Contents/MacOS")
     set(BIN_INSTALL_DIR "${APPLICATION_NAME}.app/Contents/MacOS")
-
-# BUILD_OWNCLOUD_OSX_BUNDLE was disabled on OSX
-elseif(APPLE AND NOT BUILD_OWNCLOUD_OSX_BUNDLE)
-    message(FATAL_ERROR "Building in non-bundle mode on OSX is currently not supported. Comment this error out if you want to work on/test it.")
-
-# any other platform
-else()
-    set(BUILD_OWNCLOUD_OSX_BUNDLE OFF)
 endif()
-#####
 
 # this option removes Http authentication, keychain, shibboleth etc and is intended for
 # external authentication mechanisms
