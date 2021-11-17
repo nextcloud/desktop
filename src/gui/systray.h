@@ -20,6 +20,8 @@
 #include "accountmanager.h"
 #include "tray/usermodel.h"
 
+#include <QQmlNetworkAccessManagerFactory>
+
 class QScreen;
 class QQmlApplicationEngine;
 class QQuickWindow;
@@ -27,6 +29,14 @@ class QWindow;
 class QQuickWindow;
 
 namespace OCC {
+
+class AccessManagerFactory : public QQmlNetworkAccessManagerFactory
+{
+public:
+    AccessManagerFactory();
+
+    QNetworkAccessManager* create(QObject *parent) override;
+};
 
 #ifdef Q_OS_OSX
 bool canOsXSendUserNotification();
@@ -105,6 +115,8 @@ private:
     bool _isOpen = false;
     bool _syncIsPaused = true;
     QPointer<QQmlApplicationEngine> _trayEngine;
+
+    AccessManagerFactory _accessManagerFactory;
 };
 
 } // namespace OCC
