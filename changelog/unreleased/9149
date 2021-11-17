@@ -1,0 +1,8 @@
+Bugfix: immediately propagate changes to the ignore list
+
+Previously, when changing the ignore list, those changes would not be
+propagated to existing sync folders. Only after restarting the client,
+would these changes be applied.
+
+https://github.com/owncloud/client/issues/8975
+https://github.com/owncloud/client/pull/9149

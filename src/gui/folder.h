@@ -374,6 +374,9 @@ public slots:
      */
     void schedulePathForLocalDiscovery(const QString &relativePath);
 
+    /// Reloads the excludes, used when changing the user-defined excludes after saving them to disk.
+    bool reloadExcludes();
+
 private slots:
     void slotSyncStarted();
     void slotSyncFinished(bool);
@@ -424,8 +427,6 @@ private slots:
 
 private:
     void connectSyncRoot();
-
-    bool reloadExcludes();
 
     void showSyncResultPopup();
 

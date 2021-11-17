@@ -571,47 +571,47 @@ This action will abort any currently running synchronization.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="186"/>
+        <location filename="../src/gui/accountstate.cpp" line="192"/>
         <source>Signed out</source>
         <translation>已登出</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="188"/>
+        <location filename="../src/gui/accountstate.cpp" line="194"/>
         <source>Disconnected</source>
         <translation>已經離線</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="190"/>
+        <location filename="../src/gui/accountstate.cpp" line="196"/>
         <source>Connected</source>
         <translation>已連線</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="192"/>
+        <location filename="../src/gui/accountstate.cpp" line="198"/>
         <source>Service unavailable</source>
         <translation>服務無法使用</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="194"/>
+        <location filename="../src/gui/accountstate.cpp" line="200"/>
         <source>Maintenance mode</source>
         <translation>維護模式</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="196"/>
+        <location filename="../src/gui/accountstate.cpp" line="202"/>
         <source>Network error</source>
         <translation>網路異常</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="198"/>
+        <location filename="../src/gui/accountstate.cpp" line="204"/>
         <source>Configuration error</source>
         <translation>設定錯誤</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="200"/>
+        <location filename="../src/gui/accountstate.cpp" line="206"/>
         <source>Asking Credentials</source>
         <translation>詢問憑證</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="202"/>
+        <location filename="../src/gui/accountstate.cpp" line="208"/>
         <source>Unknown account state</source>
         <translation>未知的帳號狀態</translation>
     </message>
@@ -1275,7 +1275,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1535"/>
+        <location filename="../src/gui/folderman.cpp" line="1538"/>
         <source>Multiple accounts are sharing the folder %1.
 This configuration is know to lead to dataloss and is no longer supported.
 Please consider removing this folder from the account and adding it again.</source>
@@ -1855,12 +1855,12 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <translation>%1 無法寫入變更。</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="132"/>
+        <location filename="../src/gui/ignorelisteditor.cpp" line="133"/>
         <source>Add Ignore Pattern</source>
         <translation>增加忽略格式</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="133"/>
+        <location filename="../src/gui/ignorelisteditor.cpp" line="134"/>
         <source>Add a new ignore pattern:</source>
         <translation>增加一個新的忽略格式:</translation>
     </message>
@@ -3653,89 +3653,89 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="908"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="911"/>
         <source>I shared something with you</source>
         <translation>我與您已分享的了一些東西</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="921"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="951"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="924"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="954"/>
         <source>Share...</source>
         <translation>分享...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="923"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="967"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="926"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="970"/>
         <source>Copy private link to clipboard</source>
         <translation>將私人連結複製到剪貼簿</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="924"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="927"/>
         <source>Send private link by email...</source>
         <translation>通過電子郵件發送私人連結...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="949"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="952"/>
         <source>Resharing this file is not allowed</source>
         <translation>不允許重新共享此檔案</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="949"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="952"/>
         <source>Resharing this folder is not allowed</source>
         <translation>不允許重新共享此目錄</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="961"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="964"/>
         <source>Create and copy public link to clipboard</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="963"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="966"/>
         <source>Copy public link to clipboard</source>
         <translation>複製公開的連結到剪貼簿</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1051"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1054"/>
         <source>Open in browser</source>
         <translation>用瀏覽器開啟</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1059"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1062"/>
         <source>Show file versions in browser</source>
         <translation>在瀏覽器中顯示檔案版本</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1082"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1085"/>
         <source>Rename...</source>
         <translation>改名...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1085"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1088"/>
         <source>Rename and upload...</source>
         <translation>重命名並上傳...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1090"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1093"/>
         <source>Move and rename...</source>
         <translation>移動並重命名...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1093"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1096"/>
         <source>Move, rename and upload...</source>
         <translation>移動，重命名和上傳...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1096"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1099"/>
         <source>Delete local changes</source>
         <translation>刪除本地端更改</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1101"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1104"/>
         <source>Move and upload...</source>
         <translation>移動並上傳...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1102"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1105"/>
         <source>Delete</source>
         <translation>刪除</translation>
     </message>

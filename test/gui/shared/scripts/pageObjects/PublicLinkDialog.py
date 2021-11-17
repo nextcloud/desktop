@@ -76,7 +76,7 @@ class PublicLinkDialog:
 
         test.compare(
             str(squish.waitForObjectExists(self.ITEM_TO_SHARE).text),
-            resource.replace(context.userData['clientSyncPathUser1'], ''),
+            resource.replace(context.userData['currentUserSyncPath'], ''),
         )
 
         if radioObjectName:

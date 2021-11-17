@@ -29,6 +29,15 @@
 #include <QSettings>
 #include <QTimer>
 
+namespace {
+
+inline const QLatin1String userExplicitlySignedOutC()
+{
+    return QLatin1String("userExplicitlySignedOut");
+}
+
+} // anonymous namespace
+
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcAccountState, "gui.account.state", QtInfoMsg)
@@ -101,20 +110,37 @@ AccountState::AccountState(AccountPtr account)
     connect(this, &AccountState::urlUpdated, this, [this] {
         checkConnectivity(false);
     });
+    connect(account.data(), &Account::requestUrlUpdate, this, &AccountState::updateUrlDialog, Qt::QueuedConnection);
+    connect(
+        this, &AccountState::urlUpdated, this, [this] {
+            checkConnectivity(false);
+        },
+        Qt::QueuedConnection);
 }
 
 AccountState::~AccountState()
 {
 }
 
-AccountState *AccountState::loadFromSettings(AccountPtr account, QSettings & /*settings*/)
+AccountState *AccountState::loadFromSettings(AccountPtr account, const QSettings &settings)
 {
     auto accountState = new AccountState(account);
+    const bool userExplicitlySignedOut = settings.value(userExplicitlySignedOutC(), false).toBool();
+    if (userExplicitlySignedOut) {
+        // see writeToSettings below
+        accountState->_state = SignedOut;
+    }
     return accountState;
 }
 
-void AccountState::writeToSettings(QSettings & /*settings*/)
+void AccountState::writeToSettings(QSettings &settings) const
 {
+    // The SignedOut state is the only state where the client should *not* ask for credentials, nor
+    // try to connect to the server. All other states should transition to Connected by either
+    // (re-)trying to make a connection, or by authenticating (AskCredentials). So we save the
+    // SignedOut state to indicate that the client should not try to re-connect the next time it
+    // is started.
+    settings.setValue(userExplicitlySignedOutC(), _state == SignedOut);
 }
 
 AccountPtr AccountState::account() const

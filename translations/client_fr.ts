@@ -571,47 +571,47 @@ Cette action stoppera toute synchronisation en cours.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="186"/>
+        <location filename="../src/gui/accountstate.cpp" line="192"/>
         <source>Signed out</source>
         <translation>Session fermée</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="188"/>
+        <location filename="../src/gui/accountstate.cpp" line="194"/>
         <source>Disconnected</source>
         <translation>Déconnecté</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="190"/>
+        <location filename="../src/gui/accountstate.cpp" line="196"/>
         <source>Connected</source>
         <translation>Connecté</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="192"/>
+        <location filename="../src/gui/accountstate.cpp" line="198"/>
         <source>Service unavailable</source>
         <translation>Service indisponible</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="194"/>
+        <location filename="../src/gui/accountstate.cpp" line="200"/>
         <source>Maintenance mode</source>
         <translation>Mode maintenance</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="196"/>
+        <location filename="../src/gui/accountstate.cpp" line="202"/>
         <source>Network error</source>
         <translation>Erreur réseau</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="198"/>
+        <location filename="../src/gui/accountstate.cpp" line="204"/>
         <source>Configuration error</source>
         <translation>Erreur de configuration</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="200"/>
+        <location filename="../src/gui/accountstate.cpp" line="206"/>
         <source>Asking Credentials</source>
         <translation>informations d&apos;identification demandées</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="202"/>
+        <location filename="../src/gui/accountstate.cpp" line="208"/>
         <source>Unknown account state</source>
         <translation>Etat du compte inconnu</translation>
     </message>
@@ -1276,7 +1276,7 @@ S&apos;il s&apos;agissait d&apos;un accident et que vous choisissiez de conserve
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1535"/>
+        <location filename="../src/gui/folderman.cpp" line="1538"/>
         <source>Multiple accounts are sharing the folder %1.
 This configuration is know to lead to dataloss and is no longer supported.
 Please consider removing this folder from the account and adding it again.</source>
@@ -1856,12 +1856,12 @@ Les éléments dont la suppression est autorisée seront supprimés s&apos;ils e
         <translation>Impossible d&apos;écrire les modifications sur &apos;%1&apos;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="132"/>
+        <location filename="../src/gui/ignorelisteditor.cpp" line="133"/>
         <source>Add Ignore Pattern</source>
         <translation>Ajouter un motif d&apos;exclusion</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="133"/>
+        <location filename="../src/gui/ignorelisteditor.cpp" line="134"/>
         <source>Add a new ignore pattern:</source>
         <translation>Ajoutez un nouveau motif d&apos;exclusion :</translation>
     </message>
@@ -3655,89 +3655,89 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="908"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="911"/>
         <source>I shared something with you</source>
         <translation>J&apos;ai partagé quelque chose avec vous</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="921"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="951"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="924"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="954"/>
         <source>Share...</source>
         <translation>partager</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="923"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="967"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="926"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="970"/>
         <source>Copy private link to clipboard</source>
         <translation>Copier le lien privé vers le presse-papier</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="924"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="927"/>
         <source>Send private link by email...</source>
         <translation>Envoyer le lien privé par courriel...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="949"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="952"/>
         <source>Resharing this file is not allowed</source>
         <translation>Le repartage de ce fichier n&apos;est pas permis</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="949"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="952"/>
         <source>Resharing this folder is not allowed</source>
         <translation>Le repartage de ce dossier n&apos;est pas autorisé</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="961"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="964"/>
         <source>Create and copy public link to clipboard</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="963"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="966"/>
         <source>Copy public link to clipboard</source>
         <translation>Copier le lien public dans le presse-papier</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1051"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1054"/>
         <source>Open in browser</source>
         <translation>Ouvrir dans le navigateur web</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1059"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1062"/>
         <source>Show file versions in browser</source>
         <translation>Montrer les versions du fichier dans le navigateur</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1082"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1085"/>
         <source>Rename...</source>
         <translation>Renommer...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1085"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1088"/>
         <source>Rename and upload...</source>
         <translation>Renommer et téléverser...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1090"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1093"/>
         <source>Move and rename...</source>
         <translation>Déplacer et renommer...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1093"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1096"/>
         <source>Move, rename and upload...</source>
         <translation>Déplacer, renommer et téléverser...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1096"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1099"/>
         <source>Delete local changes</source>
         <translation>Supprimer les changements locaux</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1101"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1104"/>
         <source>Move and upload...</source>
         <translation>Déplacer et téléverser...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1102"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1105"/>
         <source>Delete</source>
         <translation>Supprimer</translation>
     </message>

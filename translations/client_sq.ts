@@ -571,47 +571,47 @@ Ky veprim do të shkaktojë ndërprerjen e çfarëdo njëkohësimi në kryerje e
         <translation>Hidheni tej</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="186"/>
+        <location filename="../src/gui/accountstate.cpp" line="192"/>
         <source>Signed out</source>
         <translation>I dalë</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="188"/>
+        <location filename="../src/gui/accountstate.cpp" line="194"/>
         <source>Disconnected</source>
         <translation>I shkëputur</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="190"/>
+        <location filename="../src/gui/accountstate.cpp" line="196"/>
         <source>Connected</source>
         <translation>I lidhur</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="192"/>
+        <location filename="../src/gui/accountstate.cpp" line="198"/>
         <source>Service unavailable</source>
         <translation>Shërbimi nuk po punon</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="194"/>
+        <location filename="../src/gui/accountstate.cpp" line="200"/>
         <source>Maintenance mode</source>
         <translation>Mënyra mirëmbajtje</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="196"/>
+        <location filename="../src/gui/accountstate.cpp" line="202"/>
         <source>Network error</source>
         <translation>Gabim rrjeti</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="198"/>
+        <location filename="../src/gui/accountstate.cpp" line="204"/>
         <source>Configuration error</source>
         <translation>Gabim formësimi</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="200"/>
+        <location filename="../src/gui/accountstate.cpp" line="206"/>
         <source>Asking Credentials</source>
         <translation>Po kërkohen Kredencialet</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="202"/>
+        <location filename="../src/gui/accountstate.cpp" line="208"/>
         <source>Unknown account state</source>
         <translation>Gjendje e panjohur llogarie</translation>
     </message>
@@ -1276,7 +1276,7 @@ Nëse ky qe aksident dhe vendosni t’i mbani kartelat tuaja, ato do të rinjëk
         <translation>%1 Ju lutemi, zgjidhni një tjetër!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1535"/>
+        <location filename="../src/gui/folderman.cpp" line="1538"/>
         <source>Multiple accounts are sharing the folder %1.
 This configuration is know to lead to dataloss and is no longer supported.
 Please consider removing this folder from the account and adding it again.</source>
@@ -1858,12 +1858,12 @@ Objektet mbi të cilët lejohet fshirja do të fshihen, nëse pengojnë heqjen e
         <translation>S’shkruhen dot ndryshimet te &apos;%1&apos;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="132"/>
+        <location filename="../src/gui/ignorelisteditor.cpp" line="133"/>
         <source>Add Ignore Pattern</source>
         <translation>Shtoni Mostër Shpërfilljeje</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="133"/>
+        <location filename="../src/gui/ignorelisteditor.cpp" line="134"/>
         <source>Add a new ignore pattern:</source>
         <translation>Shtoni një mostër të re shpërfilljeje:</translation>
     </message>
@@ -3656,89 +3656,89 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="908"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="911"/>
         <source>I shared something with you</source>
         <translation>Ndava diçka me ju</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="921"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="951"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="924"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="954"/>
         <source>Share...</source>
         <translation>Ndani me të tjerë…</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="923"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="967"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="926"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="970"/>
         <source>Copy private link to clipboard</source>
         <translation>Kopjoje lidhjen private në të papastër</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="924"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="927"/>
         <source>Send private link by email...</source>
         <translation>Dërgoni lidhje private me email…</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="949"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="952"/>
         <source>Resharing this file is not allowed</source>
         <translation>Rindarja e kësaj kartelë s’është e lejuar</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="949"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="952"/>
         <source>Resharing this folder is not allowed</source>
         <translation>Nuk lejohet rindarja e kësaj dosjeje</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="961"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="964"/>
         <source>Create and copy public link to clipboard</source>
         <translation>Krijoni dhe kopjojeni lidhjen publike në të papastër</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="963"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="966"/>
         <source>Copy public link to clipboard</source>
         <translation>Kopjoje lidhjen publike në të papastër</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1051"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1054"/>
         <source>Open in browser</source>
         <translation>Hape në shfletues</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1059"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1062"/>
         <source>Show file versions in browser</source>
         <translation>Shfaq në shfletues versione kartele</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1082"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1085"/>
         <source>Rename...</source>
         <translation>Riemërtoni…</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1085"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1088"/>
         <source>Rename and upload...</source>
         <translation>Riemërtoni dhe ngarkoni…</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1090"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1093"/>
         <source>Move and rename...</source>
         <translation>Zhvendosni dhe riemërtoni…</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1093"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1096"/>
         <source>Move, rename and upload...</source>
         <translation>Zhvendosni, riemërtoni dhe ngarkoni…</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1096"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1099"/>
         <source>Delete local changes</source>
         <translation>Fshiji ndryshimet vendore</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1101"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1104"/>
         <source>Move and upload...</source>
         <translation>Zhvendosni dhe ngarkoni…</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1102"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1105"/>
         <source>Delete</source>
         <translation>Fshije</translation>
     </message>

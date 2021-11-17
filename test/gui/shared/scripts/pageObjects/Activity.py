@@ -56,3 +56,26 @@ class Activity:
                 "type": "QModelIndex",
             }
         )
+
+    def checkBlackListedFileExist(self, filename):
+        squish.waitForObject(names.settings_OCC_SettingsDialog)
+
+        # The blacklisted file does not have text like (conflicted copy) appended to it in the not synced table.
+        fileRow = squish.waitForObject(
+            {
+                "column": 1,
+                "container": names.oCC_IssuesWidget_tableView_QTableView,
+                "text": filename,
+                "type": "QModelIndex",
+            }
+        )["row"]
+
+        squish.waitForObjectExists(
+            {
+                "column": 6,
+                "row": fileRow,
+                "container": names.oCC_IssuesWidget_tableView_QTableView,
+                "text": "Blacklisted",
+                "type": "QModelIndex",
+            }
+        )

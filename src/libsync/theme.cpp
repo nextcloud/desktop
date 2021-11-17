@@ -678,4 +678,9 @@ bool Theme::enableSocketApiIconSupport() const
     return true;
 }
 
+bool Theme::warnOnMultipleDb() const
+{
+    return isVanilla();
+}
+
 } // end namespace client

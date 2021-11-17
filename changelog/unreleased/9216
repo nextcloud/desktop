@@ -1,0 +1,7 @@
+Enhancement: Branding option to disable warning for multiple sync_journal.db's
+
+We added a branding option that disables the `Multiple accounts are sharing the folder` warning.
+In previous client versions a bug caused the creation of new sync journals, causing false positives in the detection.
+While this can be handled by the individual user, companies with multiple hundreds of users may opt to disable the warning.
+
+https://github.com/owncloud/client/pull/9216

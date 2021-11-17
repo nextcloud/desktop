@@ -13,8 +13,8 @@ Feature: Sharing
         Given user "Brian" has been created on the server with default attributes and without skeleton files
         And user "Alice" has uploaded file with content "ownCloud test text file 0" to "/textfile0.txt" on the server
         And user "Alice" has set up a client with default settings
-        When the user adds "Brian Murphy" as collaborator of resource "%client_sync_path_user1%/textfile0.txt" with permissions "edit,share" using the client-UI
-        Then user "Brian Murphy" should be listed in the collaborators list for file "%client_sync_path_user1%/textfile0.txt" with permissions "edit,share" on the client-UI
+        When the user adds "Brian Murphy" as collaborator of resource "textfile0.txt" with permissions "edit,share" using the client-UI
+        Then user "Brian Murphy" should be listed in the collaborators list for file "textfile0.txt" with permissions "edit,share" on the client-UI
 
 
     Scenario: Share files/folders with special characters in their name
@@ -22,16 +22,16 @@ Feature: Sharing
         And user "Alice" has created folder "SampleFolder,With,$pecial?Characters" on the server
         And user "Alice" has uploaded file with content "ownCloud test text file 0" to "/$ample1?.txt" on the server
         And user "Alice" has set up a client with default settings
-        When the user adds "Brian Murphy" as collaborator of resource "%client_sync_path_user1%/SampleFolder,With,$pecial?Characters" with permissions "edit,share" using the client-UI
-        And the user adds "Brian Murphy" as collaborator of resource "%client_sync_path_user1%/$ample1?.txt" with permissions "edit,share" using the client-UI
-        Then user "Brian Murphy" should be listed in the collaborators list for file "%client_sync_path_user1%/SampleFolder,With,$pecial?Characters" with permissions "edit,share" on the client-UI
-        And user "Brian Murphy" should be listed in the collaborators list for file "%client_sync_path_user1%/$ample1?.txt" with permissions "edit,share" on the client-UI
+        When the user adds "Brian Murphy" as collaborator of resource "SampleFolder,With,$pecial?Characters" with permissions "edit,share" using the client-UI
+        And the user adds "Brian Murphy" as collaborator of resource "$ample1?.txt" with permissions "edit,share" using the client-UI
+        Then user "Brian Murphy" should be listed in the collaborators list for file "SampleFolder,With,$pecial?Characters" with permissions "edit,share" on the client-UI
+        And user "Brian Murphy" should be listed in the collaborators list for file "$ample1?.txt" with permissions "edit,share" on the client-UI
 
     @issue-7459
     Scenario: Progress indicator should not be visible after unselecting the password protection checkbox while sharing through public link
         Given user "Alice" has uploaded file with content "ownCloud test text file 0" to "/textfile0.txt" on the server
         And user "Alice" has set up a client with default settings
-        When the user opens the public links dialog of "%client_sync_path_user1%/textfile0.txt" using the client-UI
+        When the user opens the public links dialog of "textfile0.txt" using the client-UI
         And the user toggles the password protection using the client-UI
         And the user toggles the password protection using the client-UI
         Then the password progress indicator should not be visible in the client-UI - expected to fail
@@ -42,7 +42,7 @@ Feature: Sharing
         And user "Alice" has uploaded file with content "ownCloud test text file 0" to "/textfile0.txt" on the server
         And user "Alice" has shared file "/textfile0.txt" on the server with user "Brian" with "read, share" permission
         And user "Brian" has set up a client with default settings
-        When user "Brian" opens the sharing dialog of "%client_sync_path_user1%/textfile0.txt" using the client-UI
+        When the user opens the sharing dialog of "textfile0.txt" using the client-UI
         Then the error text "The item is not shared with any users or groups" should be displayed in the sharing dialog
 
 
@@ -50,8 +50,8 @@ Feature: Sharing
         Given group "grp1" has been created on the server
         And user "Alice" has uploaded file with content "ownCloud test text file 0" to "/textfile0.txt" on the server
         And user "Alice" has set up a client with default settings
-        When the user adds group "grp1" as collaborator of resource "%client_sync_path_user1%/textfile0.txt" with permissions "edit,share" using the client-UI
-        Then group "grp1" should be listed in the collaborators list for file "%client_sync_path_user1%/textfile0.txt" with permissions "edit,share" on the client-UI
+        When the user adds group "grp1" as collaborator of resource "textfile0.txt" with permissions "edit,share" using the client-UI
+        Then group "grp1" should be listed in the collaborators list for file "textfile0.txt" with permissions "edit,share" on the client-UI
 
 
     Scenario: User (non-author) can not share to a group to which the file is already shared
@@ -62,7 +62,7 @@ Feature: Sharing
         And user "Alice" has shared file "/textfile0.txt" on the server with user "Brian" with "read, share, update" permission
         And user "Alice" has shared file "/textfile0.txt" on the server with group "grp1" with "read, share, update" permission
         And user "Brian" has set up a client with default settings
-        When the user tires to share resource "%client_sync_path_user1%/textfile0.txt" with the group "grp1" using the client-UI
+        When the user tires to share resource "textfile0.txt" with the group "grp1" using the client-UI
         Then the error "Path already shared with this group" should be displayed
 
 
@@ -92,7 +92,7 @@ Feature: Sharing
         And user "Alice" has uploaded file with content "ownCloud test text file 0" to "textfile0.txt" on the server
         And user "Alice" has shared file "textfile0.txt" on the server with user "Brian" with "all" permissions
         And user "Alice" has set up a client with default settings
-        When the user unshares the resource "%client_sync_path_user1%/textfile0.txt" for collaborator "Brian Murphy" using the client-UI
+        When the user unshares the resource "textfile0.txt" for collaborator "Brian Murphy" using the client-UI
         Then the text "The item is not shared with any users or groups" should be displayed in the sharing dialog
         And as "Brian" file "textfile0.txt" on the server should not exist
 
@@ -103,7 +103,7 @@ Feature: Sharing
         And user "Alice" has uploaded file with content "ownCloud test text file 0" to "textfile0.txt" on the server
         And user "Alice" has shared folder "simple-folder" on the server with user "Brian" with "all" permissions
         And user "Alice" has set up a client with default settings
-        When the user unshares the resource "%client_sync_path_user1%/simple-folder" for collaborator "Brian Murphy" using the client-UI
+        When the user unshares the resource "simple-folder" for collaborator "Brian Murphy" using the client-UI
         Then the text "The item is not shared with any users or groups" should be displayed in the sharing dialog
         And as "Brian" folder "simple-folder" on the server should not exist
 
@@ -119,14 +119,14 @@ Feature: Sharing
         And user "Brian" has shared folder "Shares/simple-folder" on the server with user "Carol"
         And user "Brian" has set up a client with default settings
         And user "Alice" has updated the share permissions on the server for folder "/simple-folder" to "read" for user "Brian"
-        When user "Brian" opens the sharing dialog of "%client_sync_path_user1%/Shares/simple-folder" using the client-UI
+        When the user opens the sharing dialog of "Shares/simple-folder" using the client-UI
         Then the error text "The file can not be shared because it was shared without sharing permission." should be displayed in the sharing dialog
 
     @smokeTest
     Scenario: simple sharing of a file by public link without password
         Given user "Alice" has uploaded file with content "ownCloud test text file 0" to "/textfile0.txt" on the server
         And user "Alice" has set up a client with default settings
-        When the user creates a new public link for file "%client_sync_path_user1%/textfile0.txt" without password using the client-UI
+        When the user creates a new public link for file "textfile0.txt" without password using the client-UI
         Then as user "Alice" the file "textfile0.txt" should have a public link on the server
         And the public should be able to download the file "textfile0.txt" without password from the last created public link by "Alice" on the server
 
@@ -134,7 +134,7 @@ Feature: Sharing
     Scenario: simple sharing of a file by public link with password
         Given user "Alice" has set up a client with default settings
         And user "Alice" has uploaded file with content "ownCloud test text file 0" to "/textfile0.txt" on the server
-        When the user creates a new public link for file "%client_sync_path_user1%/textfile0.txt" with password "pass123" using the client-UI
+        When the user creates a new public link for file "textfile0.txt" with password "pass123" using the client-UI
         Then as user "Alice" the file "textfile0.txt" should have a public link on the server
         And the public should be able to download the file "textfile0.txt" with password "pass123" from the last created public link by "Alice" on the server
 
@@ -146,7 +146,7 @@ Feature: Sharing
             | path       | textfile0.txt |
             | name       | Public link   |
             | expireDate | 2031-10-14    |
-        When the user opens the public links dialog of "%client_sync_path_user1%/textfile0.txt" using the client-UI
+        When the user opens the public links dialog of "textfile0.txt" using the client-UI
         And the user edits the public link named "Public link" of file "textfile0.txt" changing following
             | expireDate | 2038-07-21 |
         Then the fields of the last public link share response of user "Alice" should include on the server
@@ -156,7 +156,7 @@ Feature: Sharing
     Scenario: simple sharing of a folder by public link without password
         Given user "Alice" has created folder "simple-folder" on the server
         And user "Alice" has set up a client with default settings
-        When the user creates a new public link with permissions "Download / View" for folder "%client_sync_path_user1%/simple-folder" without password using the client-UI
+        When the user creates a new public link with permissions "Download / View" for folder "simple-folder" without password using the client-UI
         Then as user "Alice" the folder "simple-folder" should have a public link on the server
         And the public should be able to download the folder "lorem.txt" without password from the last created public link by "Alice" on the server
 
@@ -164,7 +164,7 @@ Feature: Sharing
     Scenario: simple sharing of a folder by public link with password
         Given user "Alice" has created folder "simple-folder" on the server
         And user "Alice" has set up a client with default settings
-        When the user creates a new public link with permissions "Download / View" for folder "%client_sync_path_user1%/simple-folder" with password "pass123" using the client-UI
+        When the user creates a new public link with permissions "Download / View" for folder "simple-folder" with password "pass123" using the client-UI
         Then as user "Alice" the folder "simple-folder" should have a public link on the server
         And the public should be able to download the folder "lorem.txt" with password "pass123" from the last created public link by "Alice" on the server
 
@@ -177,7 +177,7 @@ Feature: Sharing
             | name        | Public link                  |
             | expireDate  | 2031-10-14                   |
             | permissions | read, update, create, delete |
-        When the user opens the public links dialog of "%client_sync_path_user1%/simple-folder" using the client-UI
+        When the user opens the public links dialog of "simple-folder" using the client-UI
         And the user edits the public link named "Public link" of file "simple-folder" changing following
             | expireDate | 2038-07-21 |
         Then the fields of the last public link share response of user "Alice" on the server should include
@@ -187,7 +187,7 @@ Feature: Sharing
     Scenario Outline: simple sharing of folder by public link with different roles
         Given user "Alice" has created folder "simple-folder" on the server
         And user "Alice" has set up a client with default settings
-        When the user creates a new public link for folder "%client_sync_path_user1%/simple-folder" using the client-UI with these details:
+        When the user creates a new public link for folder "simple-folder" using the client-UI with these details:
             | role | <role> |
         Then user "Alice" on the server should have a share with these details:
             | field       | value          |
@@ -207,7 +207,7 @@ Feature: Sharing
         Given user "Alice" has created folder "simple-folder" on the server
         And user "Alice" has created file "simple-folder/lorem.txt" on the server
         And user "Alice" has set up a client with default settings
-        When the user creates a new public link for folder "%client_sync_path_user1%/simple-folder" with "Contributor" using the client-UI
+        When the user creates a new public link for folder "simple-folder" with "Contributor" using the client-UI
         Then user "Alice" on the server should have a share with these details:
             | field       | value          |
             | share_type  | public_link    |
@@ -225,11 +225,11 @@ Feature: Sharing
         And user "Alice" has shared folder "simple-folder" on the server with user "Brian" with "all" permissions
         And user "Alice" has shared file "lorem.txt" on the server with user "Brian" with "all" permissions
         And user "Alice" has set up a client with default settings
-        When the user removes permissions "<permissions>" for user "Brian Murphy" of resource "%client_sync_path_user1%/simple-folder" using the client-UI
+        When the user removes permissions "<permissions>" for user "Brian Murphy" of resource "simple-folder" using the client-UI
         And the user closes the sharing dialog
-        And the user removes permissions "<permissions>" for user "Brian Murphy" of resource "%client_sync_path_user1%/lorem.txt" using the client-UI
-        Then "<permissions>" permissions should not be displayed for user "Brian Murphy" for resource "%client_sync_path_user1%/simple-folder" on the client-UI
-        And "<permissions>" permissions should not be displayed for user "Brian Murphy" for resource "%client_sync_path_user1%/lorem.txt" on the client-UI
+        And the user removes permissions "<permissions>" for user "Brian Murphy" of resource "lorem.txt" using the client-UI
+        Then "<permissions>" permissions should not be displayed for user "Brian Murphy" for resource "simple-folder" on the client-UI
+        And "<permissions>" permissions should not be displayed for user "Brian Murphy" for resource "lorem.txt" on the client-UI
         And user "Alice" on the server should have a share with these details:
             | field       | value                        |
             | uid_owner   | Alice                        |

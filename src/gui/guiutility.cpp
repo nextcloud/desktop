@@ -22,6 +22,11 @@
 #include <QUrlQuery>
 #include <QIcon>
 
+#ifdef Q_OS_WIN
+#include <QThread>
+#include <QTimer>
+#endif
+
 #include "theme.h"
 
 #include "common/asserts.h"
@@ -31,6 +36,53 @@ Q_LOGGING_CATEGORY(lcGuiUtility, "gui.utility", QtInfoMsg)
 }
 
 using namespace OCC;
+
+namespace {
+
+#ifdef Q_OS_WIN
+void watchWM()
+{
+    // Qt only receives window message if a window was displayed at least once
+    // create an invisible window to handle WM_ENDSESSION
+    QThread::create([] {
+        WNDCLASS wc = {};
+        wc.hInstance = GetModuleHandle(nullptr);
+        wc.lpszClassName = L"ocWindowMessageWatcher";
+        wc.lpfnWndProc = [](HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) -> LRESULT {
+            //            qDebug() << MSG { hwnd, msg, wParam, lParam, 0, {} };
+            if (msg == WM_QUERYENDSESSION) {
+                return 1;
+            } else if (msg == WM_ENDSESSION) {
+                qCInfo(OCC::lcUtility) << "Received WM_ENDSESSION quitting";
+                QTimer::singleShot(0, qApp, &QApplication::quit);
+                return 0;
+            }
+            return DefWindowProc(hwnd, msg, wParam, lParam);
+        };
+
+        OC_ASSERT(RegisterClass(&wc));
+
+        auto window = CreateWindowW(wc.lpszClassName, L"watcher", WS_OVERLAPPED, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, nullptr, nullptr, wc.hInstance, nullptr);
+        OC_ASSERT_X(window, Utility::formatWinError(GetLastError()).toUtf8().constData());
+
+        bool run = true;
+        QObject::connect(qApp, &QApplication::aboutToQuit, [&run] {
+            run = false;
+        });
+        MSG msg;
+        while (run) {
+            if (!PeekMessageW(&msg, window, 0, 0, PM_REMOVE)) {
+                QThread::msleep(100);
+            } else {
+                TranslateMessage(&msg);
+                DispatchMessage(&msg);
+            }
+        }
+    })->start();
+}
+Q_COREAPP_STARTUP_FUNCTION(watchWM);
+#endif
+}
 
 bool Utility::openBrowser(const QUrl &url, QWidget *errorWidgetParent)
 {
