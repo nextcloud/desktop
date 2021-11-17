@@ -17,7 +17,6 @@ const QString notificationsPath = QLatin1String("ocs/v2.php/apps/notifications/a
 const char propertyAccountStateC[] = "oc_account_state";
 const int successStatusCode = 200;
 const int notModifiedStatusCode = 304;
-QMap<int, QByteArray> ServerNotificationHandler::iconCache;
 
 ServerNotificationHandler::ServerNotificationHandler(AccountState *accountState, QObject *parent)
     : QObject(parent)
@@ -72,11 +71,6 @@ void ServerNotificationHandler::slotAllowDesktopNotificationsChanged(bool isAllo
     }
 }
 
-void ServerNotificationHandler::slotIconDownloaded(QByteArray iconData)
-{
-    iconCache.insert(sender()->property("activityId").toInt(),iconData);
-}
-
 void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &json, int statusCode)
 {
     if (statusCode != successStatusCode && statusCode != notModifiedStatusCode) {
@@ -111,12 +105,6 @@ void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &j
         a._subject = json.value("subject").toString();
         a._message = json.value("message").toString();
         a._icon = json.value("icon").toString();
-
-        if (!a._icon.isEmpty()) {
-            auto *iconJob = new IconJob(_accountState->account(), QUrl(a._icon));
-            iconJob->setProperty("activityId", a._id);
-            connect(iconJob, &IconJob::jobFinished, this, &ServerNotificationHandler::slotIconDownloaded);
-        }
 
         QUrl link(json.value("link").toString());
         if (!link.isEmpty()) {
