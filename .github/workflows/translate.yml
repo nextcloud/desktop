@@ -5,6 +5,10 @@ on:
   schedule:
     - cron: "0 3 * * *"
 
+defaults:
+  run:
+    shell: pwsh
+
 jobs:
   update-translations:
     runs-on: ubuntu-latest
@@ -36,22 +40,21 @@ jobs:
 
       - name: update-repo-before-commit
         run: |
-          set -x
           git status
           git stash
           git pull --ff-only origin
-          [[ "$(git stash list)" != "" ]] && git stash pop
 
       - name: commit and push
         if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
-        env:
-          DEPLOYMENT_SSH_KEY: ${{ secrets.DEPLOYMENT_SSH_KEY }}
         run: |
-          install -d -m 0700 ~/.ssh
-          echo "$DEPLOYMENT_SSH_KEY" > ~/.ssh/id_ed25519
-          chmod 0600 ~/.ssh/id_ed25519
-          git config user.name "ownClouders"
-          git config user.email "devops@owncloud.com"
-          git add translations/
-          git commit -m "[tx] updated client translations from transifex [skip ci]"
-          git push git@github.com:owncloud/client.git
+        if( -not (git stash list)) {
+            git stash pop
+            install -d -m 0700 ~/.ssh
+            Set-Content -Value "${{ secrets.DEPLOYMENT_SSH_KEY }}" -Path ~/.ssh/id_ed25519
+            chmod 0600 ~/.ssh/id_ed25519
+            git config user.name "ownClouders"
+            git config user.email "devops@owncloud.com"
+            git add translations/
+            git commit -m "[tx] updated client translations from transifex [skip ci]"
+            git push git@github.com:owncloud/client.git
+          }
