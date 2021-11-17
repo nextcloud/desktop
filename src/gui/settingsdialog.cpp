@@ -326,23 +326,6 @@ void SettingsDialog::setVisible(bool visible)
     QMainWindow::setVisible(visible);
 }
 
-#if defined(Q_OS_WIN) && QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-
-bool SettingsDialog::nativeEvent(const QByteArray &eventType, void *message, long *result)
-{
-    auto msg = reinterpret_cast<MSG *>(message);
-    // https://github.com/owncloud/client/issues/8979
-    // Qt5 has a bug that Windows already get closed on WM_QUERYENDSESSION
-    // so they never receive WM_ENDSESSION
-    // Capture the event and go down in style
-    if (msg->message == WM_QUERYENDSESSION || msg->message == WM_ENDSESSION) {
-        qCInfo(lcApplication) << "Shutting down" << *msg;
-        QTimer::singleShot(0, ocApp(), Application::quit);
-    }
-    return false;
-}
-#endif
-
 void SettingsDialog::slotSwitchPage(QAction *action)
 {
     _ui->stack->setCurrentWidget(_actionGroupWidgets.value(action));

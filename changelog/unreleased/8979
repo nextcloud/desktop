@@ -1,6 +1,7 @@
 Bugfix: Properly handle Windows log off
 
-We worked around a Qt bug which prevented the client from properly shutdown
-on Windows logout or during the client update.
+We now ensure that we receive the window messages dispatched by the system.
 
 https://github.com/owncloud/client/issues/8979
+https://github.com/owncloud/client/pull/9142
+https://github.com/owncloud/client/pull/9220
