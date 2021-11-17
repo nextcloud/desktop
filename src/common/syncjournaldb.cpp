@@ -996,46 +996,42 @@ void SyncJournalDb::keyValueStoreSet(const QString &key, QVariant value)
 
 qint64 SyncJournalDb::keyValueStoreGetInt(const QString &key, qint64 defaultValue)
 {
-    QMutexLocker locker(&_mutex);
-    if (!checkConnect()) {
-        return defaultValue;
+    const auto sqlQuery = keyValueStoreExecuteSelectQuery(key);
+    if (sqlQuery.isValid()) {
+        return sqlQuery.get()->int64Value(0);
     }
-
-    const auto query = _queryManager.get(PreparedSqlQueryManager::GetKeyValueStoreQuery, QByteArrayLiteral("SELECT value FROM key_value_store WHERE key = ?1;"), _db);
-    if (!query) {
-        return defaultValue;
-    }
-
-    query->bindValue(1, key);
-    query->exec();
-
-    if (!query->next().hasData) {
-        return defaultValue;
-    }
-
-    return query->int64Value(0);
+    return defaultValue;
 }
 
-QVariant SyncJournalDb::keyValueStoreGet(const QString &key, QVariant defaultValue)
+bool SyncJournalDb::keyValueStoreGetBool(const QString &key, const bool defaultValue)
+{
+    const auto sqlQuery = keyValueStoreExecuteSelectQuery(key);
+    if (sqlQuery.isValid()) {
+        return sqlQuery.get()->intValue(0);
+    }
+    return defaultValue;
+}
+
+OCC::Optional<PreparedSqlQuery> SyncJournalDb::keyValueStoreExecuteSelectQuery(const QString &key)
 {
     QMutexLocker locker(&_mutex);
     if (!checkConnect()) {
-        return defaultValue;
+        return {};
     }
 
     const auto query = _queryManager.get(PreparedSqlQueryManager::GetKeyValueStoreQuery, QByteArrayLiteral("SELECT value FROM key_value_store WHERE key = ?1;"), _db);
     if (!query) {
-        return defaultValue;
+        return {};
     }
 
     query->bindValue(1, key);
     query->exec();
 
     if (!query->next().hasData) {
-        return defaultValue;
+        return {};
     }
 
-    return query->stringValue(0);
+    return query;
 }
 
 void SyncJournalDb::keyValueStoreDelete(const QString &key)
