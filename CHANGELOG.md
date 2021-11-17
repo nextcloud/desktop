@@ -8,29 +8,58 @@ ownCloud admins and users.
 Summary
 -------
 
+* Bugfix - Add request time and other missing data to .owncloudsync.log: [#7348](https://github.com/owncloud/client/issues/7348)
+* Bugfix - Do not ask for credentails at start-up when the user logged out: [#8924](https://github.com/owncloud/client/issues/8924)
 * Bugfix - Properly handle Windows log off: [#8979](https://github.com/owncloud/client/issues/8979)
 * Bugfix - Fix copy url location for private links: [#9048](https://github.com/owncloud/client/issues/9048)
+* Bugfix - Immediately propagate changes to the ignore list: [#8975](https://github.com/owncloud/client/issues/8975)
 * Bugfix - Fix icon name in desktop file with ownBrander themes: [#8992](https://github.com/owncloud/client/issues/8992)
 * Bugfix - Disable vfs option is ignored: [#9159](https://github.com/owncloud/client/issues/9159)
+* Bugfix - The client no longer idles after a minor url change: [#9202](https://github.com/owncloud/client/pull/9202)
 * Change - Make sharedialog preview be more resilient: [#8938](https://github.com/owncloud/client/issues/8938)
 * Enhancement - Allow to remove broken sync folders: [#9099](https://github.com/owncloud/client/pull/9099)
 * Enhancement - Add branding option to disable icons in the file explorer: [#9167](https://github.com/owncloud/client/issues/9167)
+* Enhancement - Branding option to disable warning for multiple sync_journal.db's: [#9216](https://github.com/owncloud/client/pull/9216)
 
 Details
 -------
 
+* Bugfix - Add request time and other missing data to .owncloudsync.log: [#7348](https://github.com/owncloud/client/issues/7348)
+
+   Some parameters were missing for some operations. This fix makes the log more complete and more
+   useful as a result.
+
+   https://github.com/owncloud/client/issues/7348
+
+* Bugfix - Do not ask for credentails at start-up when the user logged out: [#8924](https://github.com/owncloud/client/issues/8924)
+
+   When a user would logout, and quit the client, then on the next start the client would
+   immediately ask for credentials. This has been fixed by storing the fact that the user logged
+   out before in the account settings.
+
+   https://github.com/owncloud/client/issues/8924
+
 * Bugfix - Properly handle Windows log off: [#8979](https://github.com/owncloud/client/issues/8979)
 
-   We worked around a Qt bug which prevented the client from properly shutdown on Windows logout or
-   during the client update.
+   We now ensure that we receive the window messages dispatched by the system.
 
    https://github.com/owncloud/client/issues/8979
+   https://github.com/owncloud/client/pull/9142
+   https://github.com/owncloud/client/pull/9220
 
 * Bugfix - Fix copy url location for private links: [#9048](https://github.com/owncloud/client/issues/9048)
 
    We fixed a bug where a placholder was copied to the clipboard instead of the url.
 
    https://github.com/owncloud/client/issues/9048
+
+* Bugfix - Immediately propagate changes to the ignore list: [#8975](https://github.com/owncloud/client/issues/8975)
+
+   Previously, when changing the ignore list, those changes would not be propagated to existing
+   sync folders. Only after restarting the client, would these changes be applied.
+
+   https://github.com/owncloud/client/issues/8975
+   https://github.com/owncloud/client/pull/9149
 
 * Bugfix - Fix icon name in desktop file with ownBrander themes: [#8992](https://github.com/owncloud/client/issues/8992)
 
@@ -45,6 +74,15 @@ Details
 
    https://github.com/owncloud/client/issues/9159
    https://github.com/owncloud/enterprise/issues/4820
+
+* Bugfix - The client no longer idles after a minor url change: [#9202](https://github.com/owncloud/client/pull/9202)
+
+   When the client detects a change of the url we ask the user to accept the change or if it was only
+   representational change (demo.com vs demo.com/) we directly accept the change. Due to a bug
+   the we aborted the sync only after we updated the url. This caused the client to idle for one
+   minute.
+
+   https://github.com/owncloud/client/pull/9202
 
 * Change - Make sharedialog preview be more resilient: [#8938](https://github.com/owncloud/client/issues/8938)
 
@@ -67,6 +105,15 @@ Details
    context menu, this only affects Windows and Linux.
 
    https://github.com/owncloud/client/issues/9167
+
+* Enhancement - Branding option to disable warning for multiple sync_journal.db's: [#9216](https://github.com/owncloud/client/pull/9216)
+
+   We added a branding option that disables the `Multiple accounts are sharing the folder`
+   warning. In previous client versions a bug caused the creation of new sync journals, causing
+   false positives in the detection. While this can be handled by the individual user, companies
+   with multiple hundreds of users may opt to disable the warning.
+
+   https://github.com/owncloud/client/pull/9216
 
 Changelog for ownCloud Desktop Client [2.9.1] (2021-10-13)
 =======================================
