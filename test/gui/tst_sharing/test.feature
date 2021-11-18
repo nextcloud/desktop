@@ -207,7 +207,8 @@ Feature: Sharing
         Given user "Alice" has created folder "simple-folder" on the server
         And user "Alice" has created file "simple-folder/lorem.txt" on the server
         And user "Alice" has set up a client with default settings
-        When the user creates a new public link for folder "simple-folder" with "Contributor" using the client-UI
+        When the user creates a new public link for folder "simple-folder" using the client-UI with these details:
+            | role | Contributor |
         Then user "Alice" on the server should have a share with these details:
             | field       | value          |
             | share_type  | public_link    |
@@ -219,17 +220,19 @@ Feature: Sharing
 
 
     Scenario Outline: change collaborator permissions of a file & folder
-        Given user "Alice" has created folder "simple-folder" on the server
+        Given the setting "shareapi_auto_accept_share" on the server of app "core" has been set to "yes"
+        And the administrator on the server has set the default folder for received shares to "Shares"
+        And user "Alice" has created folder "simple-folder" on the server
         And user "Alice" has created file "lorem.txt" on the server
         And user "Brian" has been created on the server with default attributes and without skeleton files
         And user "Alice" has shared folder "simple-folder" on the server with user "Brian" with "all" permissions
         And user "Alice" has shared file "lorem.txt" on the server with user "Brian" with "all" permissions
         And user "Alice" has set up a client with default settings
         When the user removes permissions "<permissions>" for user "Brian Murphy" of resource "simple-folder" using the client-UI
-        And the user closes the sharing dialog
-        And the user removes permissions "<permissions>" for user "Brian Murphy" of resource "lorem.txt" using the client-UI
         Then "<permissions>" permissions should not be displayed for user "Brian Murphy" for resource "simple-folder" on the client-UI
-        And "<permissions>" permissions should not be displayed for user "Brian Murphy" for resource "lorem.txt" on the client-UI
+        When the user closes the sharing dialog
+        And the user removes permissions "<permissions>" for user "Brian Murphy" of resource "lorem.txt" using the client-UI
+        Then "<permissions>" permissions should not be displayed for user "Brian Murphy" for resource "lorem.txt" on the client-UI
         And user "Alice" on the server should have a share with these details:
             | field       | value                        |
             | uid_owner   | Alice                        |

@@ -5,6 +5,12 @@ import test
 
 class SharingDialog:
 
+    ITEM_TO_SHARE = {
+        "name": "label_name",
+        "type": "QLabel",
+        "visible": 1,
+        "window": names.sharingDialog_OCC_ShareDialog,
+    }
     SHARE_WITH_COLLABORATOR_INPUT_FIELD = {
         "container": names.qt_tabwidget_stackedwidget_SharingDialogUG_OCC_ShareUserGroupWidget,
         "name": "shareeLineEdit",
@@ -118,3 +124,9 @@ class SharingDialog:
             squish.clickButton(
                 squish.waitForObject(names.scrollArea_permissionsEdit_QCheckBox)
             )
+
+    def verifyResource(self, resource):
+        test.compare(
+            str(squish.waitForObjectExists(self.ITEM_TO_SHARE).text),
+            resource,
+        )
