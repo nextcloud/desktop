@@ -551,67 +551,67 @@ Deze actie annuleert alle huidig lopende synchronisatie.</translation>
 <context>
     <name>OCC::AccountState</name>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="64"/>
+        <location filename="../src/gui/accountstate.cpp" line="73"/>
         <source>Url update requested for %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="65"/>
+        <location filename="../src/gui/accountstate.cpp" line="74"/>
         <source>The url for %1 changed from %2 to %3, do you want to accept the changed url?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="68"/>
+        <location filename="../src/gui/accountstate.cpp" line="77"/>
         <source>Change url permanently to %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="69"/>
+        <location filename="../src/gui/accountstate.cpp" line="78"/>
         <source>Reject</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="192"/>
+        <location filename="../src/gui/accountstate.cpp" line="212"/>
         <source>Signed out</source>
         <translation>Afgemeld</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="194"/>
+        <location filename="../src/gui/accountstate.cpp" line="214"/>
         <source>Disconnected</source>
         <translation>Niet verbonden</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="196"/>
+        <location filename="../src/gui/accountstate.cpp" line="216"/>
         <source>Connected</source>
         <translation>Verbonden</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="198"/>
+        <location filename="../src/gui/accountstate.cpp" line="218"/>
         <source>Service unavailable</source>
         <translation>Dienst niet beschikbaar</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="200"/>
+        <location filename="../src/gui/accountstate.cpp" line="220"/>
         <source>Maintenance mode</source>
         <translation>Onderhoudsmodus</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="202"/>
+        <location filename="../src/gui/accountstate.cpp" line="222"/>
         <source>Network error</source>
         <translation>Netwerkfout</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="204"/>
+        <location filename="../src/gui/accountstate.cpp" line="224"/>
         <source>Configuration error</source>
         <translation>Configuratiefout</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="206"/>
+        <location filename="../src/gui/accountstate.cpp" line="226"/>
         <source>Asking Credentials</source>
         <translation>Verzoek om inloggegevens</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="208"/>
+        <location filename="../src/gui/accountstate.cpp" line="228"/>
         <source>Unknown account state</source>
         <translation>Onbekende account-status</translation>
     </message>
@@ -3254,7 +3254,7 @@ Dit is een nieuwe, experimentele modus. Als je besluit deze te gebruiken, meld d
         <translation>Weet je zeker dat je %1 wilt afsluiten?</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="380"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="363"/>
         <source>Account</source>
         <translation>Account</translation>
     </message>
@@ -4864,53 +4864,53 @@ Dit is een nieuwe, experimentele modus. Als je besluit deze te gebruiken, meld d
 <context>
     <name>utility</name>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="39"/>
+        <location filename="../src/gui/guiutility.cpp" line="91"/>
         <source>Could not open browser</source>
         <translation>Kon het browser niet openen</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="40"/>
+        <location filename="../src/gui/guiutility.cpp" line="92"/>
         <source>There was an error when launching the browser to go to URL %1. Maybe no default browser is configured?</source>
         <translation>Er is een fout opgetreden bij het starten van de browser om naar %1 te gaan. Misschien is er geen standaard browser geconfigureerd?</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="63"/>
+        <location filename="../src/gui/guiutility.cpp" line="115"/>
         <source>Could not open email client</source>
         <translation>Kon e-mailclient niet openen</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="64"/>
+        <location filename="../src/gui/guiutility.cpp" line="116"/>
         <source>There was an error when launching the email client to create a new message. Maybe no default email client is configured?</source>
         <translation>Er trad een fout op bij het starten van de e-mailclient om een nieuw bericht te maken. Misschien is er geen e-mailclient gedefinieerd?</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="79"/>
+        <location filename="../src/gui/guiutility.cpp" line="131"/>
         <source>Always available locally</source>
         <translation>Altijd lokaal beschikbaar</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="83"/>
+        <location filename="../src/gui/guiutility.cpp" line="135"/>
         <source>Some available online only</source>
         <translation>Enkele alleen online beschikbaar</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="85"/>
-        <location filename="../src/gui/guiutility.cpp" line="87"/>
+        <location filename="../src/gui/guiutility.cpp" line="137"/>
+        <location filename="../src/gui/guiutility.cpp" line="139"/>
         <source>Available online only</source>
         <translation>Alleen online beschikbaar</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="81"/>
+        <location filename="../src/gui/guiutility.cpp" line="133"/>
         <source>Currently available locally</source>
         <translation>Momenteel lokaal beschikbaar</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="94"/>
+        <location filename="../src/gui/guiutility.cpp" line="146"/>
         <source>Make always available locally</source>
         <translation>Altijd lokaal beschikbaar maken</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="99"/>
+        <location filename="../src/gui/guiutility.cpp" line="151"/>
         <source>Free up local space</source>
         <translation>Lokale ruimte vrijmaken</translation>
     </message>

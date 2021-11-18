@@ -551,67 +551,67 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::AccountState</name>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="64"/>
+        <location filename="../src/gui/accountstate.cpp" line="73"/>
         <source>Url update requested for %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="65"/>
+        <location filename="../src/gui/accountstate.cpp" line="74"/>
         <source>The url for %1 changed from %2 to %3, do you want to accept the changed url?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="68"/>
+        <location filename="../src/gui/accountstate.cpp" line="77"/>
         <source>Change url permanently to %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="69"/>
+        <location filename="../src/gui/accountstate.cpp" line="78"/>
         <source>Reject</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="192"/>
+        <location filename="../src/gui/accountstate.cpp" line="212"/>
         <source>Signed out</source>
         <translation>已登出</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="194"/>
+        <location filename="../src/gui/accountstate.cpp" line="214"/>
         <source>Disconnected</source>
         <translation>已經離線</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="196"/>
+        <location filename="../src/gui/accountstate.cpp" line="216"/>
         <source>Connected</source>
         <translation>已連線</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="198"/>
+        <location filename="../src/gui/accountstate.cpp" line="218"/>
         <source>Service unavailable</source>
         <translation>服務無法使用</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="200"/>
+        <location filename="../src/gui/accountstate.cpp" line="220"/>
         <source>Maintenance mode</source>
         <translation>維護模式</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="202"/>
+        <location filename="../src/gui/accountstate.cpp" line="222"/>
         <source>Network error</source>
         <translation>網路異常</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="204"/>
+        <location filename="../src/gui/accountstate.cpp" line="224"/>
         <source>Configuration error</source>
         <translation>設定錯誤</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="206"/>
+        <location filename="../src/gui/accountstate.cpp" line="226"/>
         <source>Asking Credentials</source>
         <translation>詢問憑證</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="208"/>
+        <location filename="../src/gui/accountstate.cpp" line="228"/>
         <source>Unknown account state</source>
         <translation>未知的帳號狀態</translation>
     </message>
@@ -3249,7 +3249,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>您確定您要退出嗎 %1?</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="380"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="363"/>
         <source>Account</source>
         <translation>帳號</translation>
     </message>
@@ -4858,53 +4858,53 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>utility</name>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="39"/>
+        <location filename="../src/gui/guiutility.cpp" line="91"/>
         <source>Could not open browser</source>
         <translation>無法開啟瀏覽器</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="40"/>
+        <location filename="../src/gui/guiutility.cpp" line="92"/>
         <source>There was an error when launching the browser to go to URL %1. Maybe no default browser is configured?</source>
         <translation>啟動瀏覽器以訪問超連結％1時發生錯誤。 也許沒有配置默認瀏覽器？</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="63"/>
+        <location filename="../src/gui/guiutility.cpp" line="115"/>
         <source>Could not open email client</source>
         <translation>不能開啟電子郵件客戶端</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="64"/>
+        <location filename="../src/gui/guiutility.cpp" line="116"/>
         <source>There was an error when launching the email client to create a new message. Maybe no default email client is configured?</source>
         <translation>啟動電子郵件客戶端以建立新訊息時發生錯誤。 也許沒有配置默認的電子郵件客戶端？</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="79"/>
+        <location filename="../src/gui/guiutility.cpp" line="131"/>
         <source>Always available locally</source>
         <translation>始終在本地可用的</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="83"/>
+        <location filename="../src/gui/guiutility.cpp" line="135"/>
         <source>Some available online only</source>
         <translation>一些僅在線可用的</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="85"/>
-        <location filename="../src/gui/guiutility.cpp" line="87"/>
+        <location filename="../src/gui/guiutility.cpp" line="137"/>
+        <location filename="../src/gui/guiutility.cpp" line="139"/>
         <source>Available online only</source>
         <translation>僅在線可用的</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="81"/>
+        <location filename="../src/gui/guiutility.cpp" line="133"/>
         <source>Currently available locally</source>
         <translation>目前本地可用的</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="94"/>
+        <location filename="../src/gui/guiutility.cpp" line="146"/>
         <source>Make always available locally</source>
         <translation>使本地始終可用的</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="99"/>
+        <location filename="../src/gui/guiutility.cpp" line="151"/>
         <source>Free up local space</source>
         <translation>釋放本地端空間</translation>
     </message>

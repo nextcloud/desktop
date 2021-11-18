@@ -551,67 +551,67 @@ Esta acción interromperá calquera sincronización que estea agora en proceso.<
 <context>
     <name>OCC::AccountState</name>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="64"/>
+        <location filename="../src/gui/accountstate.cpp" line="73"/>
         <source>Url update requested for %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="65"/>
+        <location filename="../src/gui/accountstate.cpp" line="74"/>
         <source>The url for %1 changed from %2 to %3, do you want to accept the changed url?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="68"/>
+        <location filename="../src/gui/accountstate.cpp" line="77"/>
         <source>Change url permanently to %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="69"/>
+        <location filename="../src/gui/accountstate.cpp" line="78"/>
         <source>Reject</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="192"/>
+        <location filename="../src/gui/accountstate.cpp" line="212"/>
         <source>Signed out</source>
         <translation>Desconectado</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="194"/>
+        <location filename="../src/gui/accountstate.cpp" line="214"/>
         <source>Disconnected</source>
         <translation>Desconectado</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="196"/>
+        <location filename="../src/gui/accountstate.cpp" line="216"/>
         <source>Connected</source>
         <translation>Conectado</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="198"/>
+        <location filename="../src/gui/accountstate.cpp" line="218"/>
         <source>Service unavailable</source>
         <translation>Servizo non dispoñíbel</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="200"/>
+        <location filename="../src/gui/accountstate.cpp" line="220"/>
         <source>Maintenance mode</source>
         <translation>Modo de mantemento</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="202"/>
+        <location filename="../src/gui/accountstate.cpp" line="222"/>
         <source>Network error</source>
         <translation>Produciuse un erro de rede</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="204"/>
+        <location filename="../src/gui/accountstate.cpp" line="224"/>
         <source>Configuration error</source>
         <translation>Produciuse un erro de configuración</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="206"/>
+        <location filename="../src/gui/accountstate.cpp" line="226"/>
         <source>Asking Credentials</source>
         <translation>Solicitando credenciais</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="208"/>
+        <location filename="../src/gui/accountstate.cpp" line="228"/>
         <source>Unknown account state</source>
         <translation>Estado da conta descoñecido</translation>
     </message>
@@ -3250,7 +3250,7 @@ Este é un modo novo e experimental. Se decide usalo, informe de calquera proble
         <translation>Confirma que quere saír de %1?</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="380"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="363"/>
         <source>Account</source>
         <translation>Conta</translation>
     </message>
@@ -4859,53 +4859,53 @@ Este é un modo novo e experimental. Se decide usalo, informe de calquera proble
 <context>
     <name>utility</name>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="39"/>
+        <location filename="../src/gui/guiutility.cpp" line="91"/>
         <source>Could not open browser</source>
         <translation>Non foi posíbel abrir o navegador</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="40"/>
+        <location filename="../src/gui/guiutility.cpp" line="92"/>
         <source>There was an error when launching the browser to go to URL %1. Maybe no default browser is configured?</source>
         <translation>Produciuse un erro ao iniciar o navegador para ir ao URL %1. Quizais non estea configurado ningún navegador predeterminado?</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="63"/>
+        <location filename="../src/gui/guiutility.cpp" line="115"/>
         <source>Could not open email client</source>
         <translation>Non foi posíbel abrir o cliente de correo</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="64"/>
+        <location filename="../src/gui/guiutility.cpp" line="116"/>
         <source>There was an error when launching the email client to create a new message. Maybe no default email client is configured?</source>
         <translation>Produciuse un erro ao iniciar o cliente de correo electrónico para crear unha nova mensaxe. Quizais non estea configurado ningún cliente de correo electrónico?</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="79"/>
+        <location filename="../src/gui/guiutility.cpp" line="131"/>
         <source>Always available locally</source>
         <translation>Sempre dispoñíbel localmente </translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="83"/>
+        <location filename="../src/gui/guiutility.cpp" line="135"/>
         <source>Some available online only</source>
         <translation>Algúns dispoñíbeis só en liña</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="85"/>
-        <location filename="../src/gui/guiutility.cpp" line="87"/>
+        <location filename="../src/gui/guiutility.cpp" line="137"/>
+        <location filename="../src/gui/guiutility.cpp" line="139"/>
         <source>Available online only</source>
         <translation>Só dispoñíbel en liña</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="81"/>
+        <location filename="../src/gui/guiutility.cpp" line="133"/>
         <source>Currently available locally</source>
         <translation>Actualmente dispoñíbel localmente</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="94"/>
+        <location filename="../src/gui/guiutility.cpp" line="146"/>
         <source>Make always available locally</source>
         <translation>Facelo sempre dispoñíbel localmente </translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="99"/>
+        <location filename="../src/gui/guiutility.cpp" line="151"/>
         <source>Free up local space</source>
         <translation>Liberar espazo local</translation>
     </message>
