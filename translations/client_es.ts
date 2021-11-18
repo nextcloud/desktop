@@ -5050,22 +5050,22 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
 <context>
     <name>OCC::UnifiedSearchResultsListModel</name>
     <message>
-        <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="373"/>
+        <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="374"/>
         <source>Failed to fetch providers.</source>
         <translation>Fallo al recuperar los proveedores.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="384"/>
+        <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="385"/>
         <source>Failed to fetch search providers for &apos;%1&apos;. Error: %2</source>
         <translation>Fallo al recuperar los proveedores de búsqueda para &apos;%1&apos;. Error: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="418"/>
+        <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="419"/>
         <source>Search has failed for &apos;%2&apos;.</source>
         <translation>La búsqueda ha fallado para &apos;%2&apos;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="447"/>
+        <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="448"/>
         <source>Search has failed for &apos;%1&apos;. Error: %2</source>
         <translation>La búsqueda ha fallado para &apos;%1&apos;. Error: %2</translation>
     </message>

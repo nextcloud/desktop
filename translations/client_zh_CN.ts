@@ -5031,22 +5031,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::UnifiedSearchResultsListModel</name>
     <message>
-        <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="373"/>
+        <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="374"/>
         <source>Failed to fetch providers.</source>
         <translation>获取提供商失败</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="384"/>
+        <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="385"/>
         <source>Failed to fetch search providers for &apos;%1&apos;. Error: %2</source>
         <translation>未能获取 &apos;&apos;%1&apos; 的搜索提供商。错误： %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="418"/>
+        <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="419"/>
         <source>Search has failed for &apos;%2&apos;.</source>
         <translation>搜索 &apos;%2&apos; 失败</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="447"/>
+        <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="448"/>
         <source>Search has failed for &apos;%1&apos;. Error: %2</source>
         <translation>搜索“%1”失败。错误：%2</translation>
     </message>

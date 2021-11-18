@@ -5049,22 +5049,22 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, akkor jelezze nek�
 <context>
     <name>OCC::UnifiedSearchResultsListModel</name>
     <message>
-        <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="373"/>
+        <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="374"/>
         <source>Failed to fetch providers.</source>
         <translation>A szolgáltatók lekérése sikertelen</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="384"/>
+        <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="385"/>
         <source>Failed to fetch search providers for &apos;%1&apos;. Error: %2</source>
         <translation>A(z) „%1” keresésszolgáltatóinak lekérése sikertelen. Hiba: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="418"/>
+        <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="419"/>
         <source>Search has failed for &apos;%2&apos;.</source>
         <translation>A keresés a következőre sikertelen: „%2”.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="447"/>
+        <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="448"/>
         <source>Search has failed for &apos;%1&apos;. Error: %2</source>
         <translation>A keresés a következőre sikertelen: „%1”. Hiba: %2</translation>
     </message>

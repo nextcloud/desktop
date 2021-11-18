@@ -5048,22 +5048,22 @@ Toto je nový experimentálny režim. Ak sa ho rozhodnete použiť, nahláste v�
 <context>
     <name>OCC::UnifiedSearchResultsListModel</name>
     <message>
-        <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="373"/>
+        <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="374"/>
         <source>Failed to fetch providers.</source>
         <translation>Nepodarilo sa načítať poskytovateľov.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="384"/>
+        <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="385"/>
         <source>Failed to fetch search providers for &apos;%1&apos;. Error: %2</source>
         <translation>Nepodarilo sa načítať poskytovateľov vyhľadávania pre „%1“. Chyba: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="418"/>
+        <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="419"/>
         <source>Search has failed for &apos;%2&apos;.</source>
         <translation>Vyhľadávanie &apos;%2&apos; zlyhalo.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="447"/>
+        <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="448"/>
         <source>Search has failed for &apos;%1&apos;. Error: %2</source>
         <translation>Vyhľadávanie &apos;%1&apos; zlyhalo. Chyba: %2</translation>
     </message>

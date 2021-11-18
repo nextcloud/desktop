@@ -5049,22 +5049,22 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
 <context>
     <name>OCC::UnifiedSearchResultsListModel</name>
     <message>
-        <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="373"/>
+        <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="374"/>
         <source>Failed to fetch providers.</source>
         <translation>Nie udało się pobrać dostawców.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="384"/>
+        <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="385"/>
         <source>Failed to fetch search providers for &apos;%1&apos;. Error: %2</source>
         <translation>Nie udało się pobrać dostawców wyszukiwania dla &apos;%1&apos;. Błąd: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="418"/>
+        <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="419"/>
         <source>Search has failed for &apos;%2&apos;.</source>
         <translation>Wyszukiwanie nie powiodło się dla &apos;%2&apos;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="447"/>
+        <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="448"/>
         <source>Search has failed for &apos;%1&apos;. Error: %2</source>
         <translation>Wyszukiwanie nie powiodło się dla &apos;%1&apos;. Błąd: %2</translation>
     </message>
