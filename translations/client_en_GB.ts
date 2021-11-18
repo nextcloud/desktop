@@ -1344,13 +1344,6 @@ This means that the synchronization client might not upload local changes immedi
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1260"/>
-        <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
-Are you sure you want to sync those actions with the server?
-If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../src/gui/folder.cpp" line="1052"/>
         <source>All files in the sync folder '%1' were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
@@ -1405,7 +1398,22 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
         <translation>Keep Local Files as Conflict</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1232"/>
+        <location filename="../src/gui/folder.cpp" line="1255"/>
+        <source>All files in the sync folder '%1' folder were deleted on the server.
+These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
+If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
+If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1260"/>
+        <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
+Are you sure you want to sync those actions with the server?
+If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1255"/>
         <source>All files in the sync folder &quot;%1&quot; folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
@@ -1413,7 +1421,7 @@ If you decide to delete the files, they will be unavailable to you, unless you a
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1237"/>
+        <location filename="../src/gui/folder.cpp" line="1260"/>
         <source>All the files in your local sync folder &quot;%1&quot; were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
@@ -1427,14 +1435,6 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folder.cpp" line="1268"/>
         <source>Remove all files</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/folder.cpp" line="1255"/>
-        <source>All files in the sync folder '%1' folder were deleted on the server.
-These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
-If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
-If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -1484,7 +1484,7 @@ If you decide to delete the files, they will be unavailable to you, unless you a
         <translation>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="390"/>
+        <location filename="../src/gui/folderman.cpp" line="398"/>
         <source>An old sync journal &quot;%1&quot; was found, but could not be removed. Please make sure that no application is currently using it.</source>
         <translation type="unfinished"/>
     </message>
@@ -2838,12 +2838,12 @@ for additional privileges during the process.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="259"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="264"/>
         <source>%1 folder &quot;%2&quot; is synced to local folder &quot;%3&quot;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="262"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="267"/>
         <source>Sync the folder &quot;%1&quot;</source>
         <translation type="unfinished"/>
     </message>
@@ -3334,13 +3334,23 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation type="unfinished"/>
     </message>
     <message>
+        <location filename="../src/libsync/discovery.cpp" line="456"/>
+        <source>server reported no %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="490"/>
+        <source>permission</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/libsync/discovery.cpp" line="452"/>
         <source>file id</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="456"/>
-        <source>server reported no %1</source>
+        <location filename="../src/libsync/discovery.cpp" line="498"/>
+        <source>Server reported no %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -4148,7 +4158,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>No results for &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="339"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="365"/>
         <source>No results for &quot;%1&quot;</source>
         <translation type="unfinished"/>
     </message>
@@ -4763,14 +4773,14 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>File names ending with a period are not supported on this file system.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="501"/>
-        <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
-        <translation>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="507"/>
         <source>File names containing the character &apos;%1&apos; are not supported on this file system.</source>
         <translation>File names containing the character &apos;%1&apos; are not supported on this file system.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="501"/>
+        <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
+        <translation>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="510"/>
@@ -4823,14 +4833,14 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Stat failed.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="560"/>
-        <source>Unable to read from the sync journal.</source>
-        <translation>Unable to read from the sync journal.</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="571"/>
         <source>Filename encoding is not valid</source>
         <translation>Filename encoding is not valid</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="560"/>
+        <source>Unable to read from the sync journal.</source>
+        <translation>Unable to read from the sync journal.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="643"/>
@@ -4843,14 +4853,14 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Invalid characters, please rename &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1036"/>
-        <source>Synchronization will resume shortly.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="1110"/>
         <source>File name contains at least one invalid character</source>
         <translation>File name contains at least one invalid character</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="1056"/>
+        <source>Synchronization will resume shortly.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1045"/>
@@ -5792,7 +5802,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>UnifiedSearchInputContainer</name>
     <message>
-        <location filename="../src/gui/tray/UnifiedSearchInputContainer.qml" line="23"/>
+        <location filename="../src/gui/tray/UnifiedSearchInputContainer.qml" line="25"/>
         <source>Search files, messages, events …</source>
         <translation type="unfinished"/>
     </message>
@@ -5835,22 +5845,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="94"/>
-        <source>Account connected</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="94"/>
-        <source>Account not connected</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="94"/>
         <source>Current user status is online</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="94"/>
         <source>Current user status is do not disturb</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/UserLine.qml" line="94"/>
+        <source>Account connected</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/UserLine.qml" line="94"/>
+        <source>Account not connected</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -5864,7 +5874,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="200"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="185"/>
         <source>Set status</source>
         <translation type="unfinished"/>
     </message>
@@ -6055,7 +6065,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="196"/>
+        <location filename="../src/gui/tray/Window.qml" line="190"/>
         <source>Set user status</source>
         <translation type="unfinished"/>
     </message>
@@ -6155,7 +6165,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="678"/>
+        <location filename="../src/gui/tray/Window.qml" line="672"/>
         <source>Unified search results list</source>
         <translation type="unfinished"/>
     </message>
@@ -6166,7 +6176,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="748"/>
+        <location filename="../src/gui/tray/Window.qml" line="743"/>
         <source>%1 - File activity</source>
         <translation type="unfinished"/>
     </message>

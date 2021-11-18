@@ -1352,15 +1352,6 @@ Honek esan nahi du sinkronizazio bezeroak agian ez duela berehalakoan kargatuko 
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1260"/>
-        <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
-Are you sure you want to sync those actions with the server?
-If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
-        <translation>Zure tokiko &apos;%1&apos; sinkronizazio karpetako fitxategi guztiak ezabatu dira. Ezabaketa hauek zerbitzarian sinkronizatuko dira, beraz ezingo dituzu fitxategiok erabili leheneratu ezean.
-Ziur zaude ekintza hauek zerbitzarian sinkronizatu nahi dituzula?
-Ezabaketa nahigabea izan bada eta erabakitzen baduzu fitxategiok mantentzea, hauek zerbitzarian ber-sinkronizatuko dira.</translation>
-    </message>
-    <message>
         <location filename="../src/gui/folder.cpp" line="1052"/>
         <source>All files in the sync folder '%1' were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
@@ -1421,7 +1412,27 @@ Nahi al duzu zure tokiko fitxategi berrienak gatazkako fitxategi gisa mantentzea
         <translation>Mantendu fitxategi lokalak gatazka gisa</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1232"/>
+        <location filename="../src/gui/folder.cpp" line="1255"/>
+        <source>All files in the sync folder '%1' folder were deleted on the server.
+These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
+If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
+If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
+        <translation>&apos;% 1&apos; sinkronizazio-karpetaren fitxategi guztiak ezabatuko dira zerbitzaritik.
+Ezabaketa horiek zure sinkronizazio-karpetan sinkronizatuko dira, eta horren ondorioz fitxategiak ezingo dituzu berriro erabili leheneratzeko eskubiderik ez baduzu.
+Fitxategiak leheneratzea erabakitzen baduzu, zerbitzariarekin berriro sinkronizatuko dira horretarako eskubiderik baduzu.
+Fitxategiak ezabatzea erabakitzen baduzu, ez dira erabilgarri egongo, jabea izan ezean.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1260"/>
+        <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
+Are you sure you want to sync those actions with the server?
+If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
+        <translation>Zure tokiko &apos;%1&apos; sinkronizazio karpetako fitxategi guztiak ezabatu dira. Ezabaketa hauek zerbitzarian sinkronizatuko dira, beraz ezingo dituzu fitxategiok erabili leheneratu ezean.
+Ziur zaude ekintza hauek zerbitzarian sinkronizatu nahi dituzula?
+Ezabaketa nahigabea izan bada eta erabakitzen baduzu fitxategiok mantentzea, hauek zerbitzarian ber-sinkronizatuko dira.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1255"/>
         <source>All files in the sync folder &quot;%1&quot; folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
@@ -1432,7 +1443,7 @@ Fitxategiak leheneratzea erabakitzen baduzu, berriro sinkronizatuko dira zerbitz
 Fitxategiak ezabatzea erabakitzen baduzu, ezingo dituzu erabilgarri izan, jabea ez bazara behintzat.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1237"/>
+        <location filename="../src/gui/folder.cpp" line="1260"/>
         <source>All the files in your local sync folder &quot;%1&quot; were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
@@ -1449,17 +1460,6 @@ Istripua izan bada eta zure fitxategiak mantentzea erabakitzen baduzu, zerbitzar
         <location filename="../src/gui/folder.cpp" line="1268"/>
         <source>Remove all files</source>
         <translation>Ezabatu fitxategi guztiak</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folder.cpp" line="1255"/>
-        <source>All files in the sync folder '%1' folder were deleted on the server.
-These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
-If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
-If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation>&apos;% 1&apos; sinkronizazio-karpetaren fitxategi guztiak ezabatuko dira zerbitzaritik.
-Ezabaketa horiek zure sinkronizazio-karpetan sinkronizatuko dira, eta horren ondorioz fitxategiak ezingo dituzu berriro erabili leheneratzeko eskubiderik ez baduzu.
-Fitxategiak leheneratzea erabakitzen baduzu, zerbitzariarekin berriro sinkronizatuko dira horretarako eskubiderik baduzu.
-Fitxategiak ezabatzea erabakitzen baduzu, ez dira erabilgarri egongo, jabea izan ezean.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1269"/>
@@ -1508,7 +1508,7 @@ Fitxategiak ezabatzea erabakitzen baduzu, ez dira erabilgarri egongo, jabea izan
         <translation>Aurkitu da &apos;%1&apos; sinkronizazio erregistro zaharra, baina ezin da ezabatu. Ziurtatu aplikaziorik ez dela erabiltzen ari.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="390"/>
+        <location filename="../src/gui/folderman.cpp" line="398"/>
         <source>An old sync journal &quot;%1&quot; was found, but could not be removed. Please make sure that no application is currently using it.</source>
         <translation>&quot;% 1&quot; sinkronizazio egunkari zahar bat aurkitu da, baina ezin izan da kendu. Ziurtatu ez dela aplikaziorik erabiltzen ari.</translation>
     </message>
@@ -2868,12 +2868,12 @@ pribilegio gehigarriak eskatzen ahal dizu prozesuan.</translation>
         <translation>Fitxategi birtualak ez dira bateragarriak Windows partizio sustraiekin karpeta lokal bezala. Mesedez aukeratu baliozko azpikarpeta bat diskoaren letra azpian.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="259"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="264"/>
         <source>%1 folder &quot;%2&quot; is synced to local folder &quot;%3&quot;</source>
         <translation>%1 karpeta &quot;%2&quot; lokaleko &quot;%3&quot; karpetan dago sinkronizatuta</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="262"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="267"/>
         <source>Sync the folder &quot;%1&quot;</source>
         <translation>Sinkronizatu &quot;%1&quot; karpeta</translation>
     </message>
@@ -3278,12 +3278,12 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
     <message>
         <location filename="../src/libsync/discovery.cpp" line="56"/>
         <source>File contains trailing spaces and could not be renamed, because a file with the same name already exists on the server.</source>
-        <translation type="unfinished"/>
+        <translation>Fitxategiak zuriuneak ditu eta ezin izan da berrizendatu, izen berdina duen fitxategi bat zerbitzarian existitzen delako dagoeneko.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="59"/>
         <source>File contains trailing spaces and could not be renamed, because a file with the same name already exists locally.</source>
-        <translation type="unfinished"/>
+        <translation>Fitxategiak zuriuneak ditu eta ezin izan da berrizendatu, izen berdina duen fitxategi bat existitzen delako lokalean dagoeneko.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="250"/>
@@ -3371,14 +3371,24 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
         <translation>baimenak</translation>
     </message>
     <message>
+        <location filename="../src/libsync/discovery.cpp" line="456"/>
+        <source>server reported no %1</source>
+        <translation>zerbitzariak ez du %1-rik jakinarazi</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="490"/>
+        <source>permission</source>
+        <translation>baimena</translation>
+    </message>
+    <message>
         <location filename="../src/libsync/discovery.cpp" line="452"/>
         <source>file id</source>
         <translation>fitxategiaren id-a</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="456"/>
-        <source>server reported no %1</source>
-        <translation>zerbitzariak ez du %1-rik jakinarazi</translation>
+        <location filename="../src/libsync/discovery.cpp" line="498"/>
+        <source>Server reported no %1</source>
+        <translation>Zerbitzariak ez du %1-rik jakinarazi</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="946"/>
@@ -4185,7 +4195,7 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
         <translation>Ez dago emaitzarik &apos;%1&apos;(r)entzako</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="339"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="365"/>
         <source>No results for &quot;%1&quot;</source>
         <translation>Ez dago &quot;% 1&quot; (r)entzako emaitzarik</translation>
     </message>
@@ -4546,7 +4556,7 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="158"/>
         <source>Additional errors:</source>
-        <translation type="unfinished"/>
+        <translation>Errore gehigarriak:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="166"/>
@@ -4800,14 +4810,14 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
         <translation>Puntu batekin amaitzen diren fitxategi-izenak ez dira onartzen fitxategi-sistema honetan.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="501"/>
-        <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
-        <translation>Ezin izan da ireki edo sortu datu-base lokal sinkronizatua. Ziurtatu idazteko baimena daukazula karpeta sinkronizatu lokalean. </translation>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="507"/>
         <source>File names containing the character &apos;%1&apos; are not supported on this file system.</source>
         <translation>&apos;%1&apos; karakterea daukaten fitxategi-izenak ez dira onartzen fitxategi-sistema honetan.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="501"/>
+        <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
+        <translation>Ezin izan da ireki edo sortu datu-base lokal sinkronizatua. Ziurtatu idazteko baimena daukazula karpeta sinkronizatu lokalean. </translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="510"/>
@@ -4860,14 +4870,14 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
         <translation>Hasierak huts egin du.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="560"/>
-        <source>Unable to read from the sync journal.</source>
-        <translation>Ezin izan da sinkronizazio-egunkaria irakurri.</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="571"/>
         <source>Filename encoding is not valid</source>
         <translation>Fitxategiaren kodeketa baliogabea da</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="560"/>
+        <source>Unable to read from the sync journal.</source>
+        <translation>Ezin izan da sinkronizazio-egunkaria irakurri.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="643"/>
@@ -4880,14 +4890,14 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
         <translation>Baliogabeko karaktereak, aldatu &quot;%1&quot; izena</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1036"/>
-        <source>Synchronization will resume shortly.</source>
-        <translation>Sinkronizazioak laster jarraituko du.</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="1110"/>
         <source>File name contains at least one invalid character</source>
         <translation>Fitxategi izenak behintzat baliogabeko karaktere bat du</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="1056"/>
+        <source>Synchronization will resume shortly.</source>
+        <translation>Sinkronizazioak laster jarraituko du.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1045"/>
@@ -5041,22 +5051,22 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
     <message>
         <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="373"/>
         <source>Failed to fetch providers.</source>
-        <translation type="unfinished"/>
+        <translation>Ezin izan dira hornitzaileak atzitu.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="384"/>
         <source>Failed to fetch search providers for &apos;%1&apos;. Error: %2</source>
-        <translation type="unfinished"/>
+        <translation>Ezin izan dira bilaketa hornitzaileak lortu &apos;%1?-(r)entzat. Errorea: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="418"/>
         <source>Search has failed for &apos;%2&apos;.</source>
-        <translation type="unfinished"/>
+        <translation>&apos;%2&apos; bilaketak huts egin du.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="447"/>
         <source>Search has failed for &apos;%1&apos;. Error: %2</source>
-        <translation type="unfinished"/>
+        <translation>&apos;%1&apos; bilaketak huts egin du. Errorea: %2</translation>
     </message>
 </context>
 <context>
@@ -5829,9 +5839,9 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
 <context>
     <name>UnifiedSearchInputContainer</name>
     <message>
-        <location filename="../src/gui/tray/UnifiedSearchInputContainer.qml" line="23"/>
+        <location filename="../src/gui/tray/UnifiedSearchInputContainer.qml" line="25"/>
         <source>Search files, messages, events …</source>
-        <translation type="unfinished"/>
+        <translation>Bilatu fitxategiak, mezuak, gertaerak ...</translation>
     </message>
 </context>
 <context>
@@ -5839,7 +5849,7 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
     <message>
         <location filename="../src/gui/tray/UnifiedSearchResultFetchMoreTrigger.qml" line="24"/>
         <source>Load more results</source>
-        <translation type="unfinished"/>
+        <translation>Kargatu emaitza gehiago </translation>
     </message>
 </context>
 <context>
@@ -5847,7 +5857,7 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
     <message>
         <location filename="../src/gui/tray/UnifiedSearchResultItemSkeleton.qml" line="25"/>
         <source>Search result skeleton.</source>
-        <translation type="unfinished"/>
+        <translation>Bilaketa emaitzen eskeletoa.</translation>
     </message>
 </context>
 <context>
@@ -5855,7 +5865,7 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
     <message>
         <location filename="../src/gui/tray/UnifiedSearchResultListItem.qml" line="37"/>
         <source>Load more results</source>
-        <translation type="unfinished"/>
+        <translation>Kargatu emaitza gehiago </translation>
     </message>
 </context>
 <context>
@@ -5872,16 +5882,6 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="94"/>
-        <source>Account connected</source>
-        <translation>Kontua konektatuta</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="94"/>
-        <source>Account not connected</source>
-        <translation>Kontua ez dago konektatuta</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="94"/>
         <source>Current user status is online</source>
         <translation>Erabiltzailea linean dago</translation>
     </message>
@@ -5889,6 +5889,16 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
         <location filename="../src/gui/tray/UserLine.qml" line="94"/>
         <source>Current user status is do not disturb</source>
         <translation>Erabiltzailea &apos;ez molestatu&apos; egoeran dago</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/UserLine.qml" line="94"/>
+        <source>Account connected</source>
+        <translation>Kontua konektatuta</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/UserLine.qml" line="94"/>
+        <source>Account not connected</source>
+        <translation>Kontua ez dago konektatuta</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="158"/>
@@ -5901,7 +5911,7 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
         <translation>Kendu kontua</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="200"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="185"/>
         <source>Set status</source>
         <translation>Ezarri egoera</translation>
     </message>
@@ -6092,7 +6102,7 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
         <translation>Pausatu sinkronizazioa guztientzat</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="196"/>
+        <location filename="../src/gui/tray/Window.qml" line="190"/>
         <source>Set user status</source>
         <translation>Ezarri erabiltzaile-egoera</translation>
     </message>
@@ -6192,9 +6202,9 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
         <translation>Ireki partekatzeko elkarrizketa-koadroa</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="678"/>
+        <location filename="../src/gui/tray/Window.qml" line="672"/>
         <source>Unified search results list</source>
-        <translation type="unfinished"/>
+        <translation>Bateratutako bilaketaren emaitzen zerrenda</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="720"/>
@@ -6203,7 +6213,7 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
         <translation>Erakutsi ekintza gehiago</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="748"/>
+        <location filename="../src/gui/tray/Window.qml" line="743"/>
         <source>%1 - File activity</source>
         <translation>%1 - Fitxategiaren jarduera</translation>
     </message>

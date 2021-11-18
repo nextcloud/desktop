@@ -1352,15 +1352,6 @@ This means that the synchronization client might not upload local changes immedi
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1260"/>
-        <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
-Are you sure you want to sync those actions with the server?
-If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
-        <translation>在您本機同步資料夾「%1」中的所有檔案都已刪除。這些刪除將會與您的伺服器同步，除非復原，否則這些檔案將不可用。
-您確定您想要與伺服器同步那些動作嗎？
-如果這是意外，而且您決定保留您的檔案，它們將會自伺服器重新同步。</translation>
-    </message>
-    <message>
         <location filename="../src/gui/folder.cpp" line="1052"/>
         <source>All files in the sync folder '%1' were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
@@ -1420,7 +1411,27 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
         <translation>將本機檔案視為衝突檔案</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1232"/>
+        <location filename="../src/gui/folder.cpp" line="1255"/>
+        <source>All files in the sync folder '%1' folder were deleted on the server.
+These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
+If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
+If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
+        <translation>「%1」資料夾中的所有檔案已從伺服器上移除。
+同步後，這些檔案也會從您的本地資料夾中移除。除非您有復原的權限，否則您將無法讀取這些檔案。
+假如您決定復原這些檔案，只要您擁有權限，這些檔案就會重新和伺服器同步。
+假如您決定移除這些檔案，除非您是檔案的所有者，否則您將無法讀取這些檔案。</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1260"/>
+        <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
+Are you sure you want to sync those actions with the server?
+If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
+        <translation>在您本機同步資料夾「%1」中的所有檔案都已刪除。這些刪除將會與您的伺服器同步，除非復原，否則這些檔案將不可用。
+您確定您想要與伺服器同步那些動作嗎？
+如果這是意外，而且您決定保留您的檔案，它們將會自伺服器重新同步。</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1255"/>
         <source>All files in the sync folder &quot;%1&quot; folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
@@ -1431,7 +1442,7 @@ If you decide to delete the files, they will be unavailable to you, unless you a
 假如您決定移除這些檔案，除非您是檔案的所有者，否則您將無法讀取這些檔案。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1237"/>
+        <location filename="../src/gui/folder.cpp" line="1260"/>
         <source>All the files in your local sync folder &quot;%1&quot; were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
@@ -1448,17 +1459,6 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <location filename="../src/gui/folder.cpp" line="1268"/>
         <source>Remove all files</source>
         <translation>移除所有檔案</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folder.cpp" line="1255"/>
-        <source>All files in the sync folder '%1' folder were deleted on the server.
-These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
-If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
-If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation>「%1」資料夾中的所有檔案已從伺服器上移除。
-同步後，這些檔案也會從您的本地資料夾中移除。除非您有復原的權限，否則您將無法讀取這些檔案。
-假如您決定復原這些檔案，只要您擁有權限，這些檔案就會重新和伺服器同步。
-假如您決定移除這些檔案，除非您是檔案的所有者，否則您將無法讀取這些檔案。</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1269"/>
@@ -1507,7 +1507,7 @@ If you decide to delete the files, they will be unavailable to you, unless you a
         <translation>發現較舊的同步處理日誌「%1」，但無法移除。請確認沒有應用程式正在使用它。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="390"/>
+        <location filename="../src/gui/folderman.cpp" line="398"/>
         <source>An old sync journal &quot;%1&quot; was found, but could not be removed. Please make sure that no application is currently using it.</source>
         <translation>發現較舊的同步處理日誌「%1」，但無法移除。請確認沒有應用程式正在使用它。</translation>
     </message>
@@ -2868,12 +2868,12 @@ for additional privileges during the process.</source>
         <translation>Windows 分割區跟目錄不支援將虛擬檔案作為本機資料夾使用。請在磁碟區代號下選擇有效的子資料夾。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="259"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="264"/>
         <source>%1 folder &quot;%2&quot; is synced to local folder &quot;%3&quot;</source>
         <translation>%1 資料夾「%2」與本機資料夾「%3」同步</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="262"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="267"/>
         <source>Sync the folder &quot;%1&quot;</source>
         <translation>同步資料夾「%1」</translation>
     </message>
@@ -3371,13 +3371,23 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>權限</translation>
     </message>
     <message>
+        <location filename="../src/libsync/discovery.cpp" line="456"/>
+        <source>server reported no %1</source>
+        <translation>伺服器回報沒有 %1</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="490"/>
+        <source>permission</source>
+        <translation>權限</translation>
+    </message>
+    <message>
         <location filename="../src/libsync/discovery.cpp" line="452"/>
         <source>file id</source>
         <translation>檔案 ID</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="456"/>
-        <source>server reported no %1</source>
+        <location filename="../src/libsync/discovery.cpp" line="498"/>
+        <source>Server reported no %1</source>
         <translation>伺服器回報沒有 %1</translation>
     </message>
     <message>
@@ -4185,7 +4195,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>「%1」沒有結果</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="339"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="365"/>
         <source>No results for &quot;%1&quot;</source>
         <translation>「%1」沒有結果</translation>
     </message>
@@ -4800,14 +4810,14 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>此檔案系統不支援以「.」結尾的檔案名稱。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="501"/>
-        <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
-        <translation>無法開啟或建立本機同步資料庫。請確保您有寫入同步資料夾的權限。</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="507"/>
         <source>File names containing the character &apos;%1&apos; are not supported on this file system.</source>
         <translation>此檔案系統不支援包含「%1」字元的檔案名稱。</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="501"/>
+        <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
+        <translation>無法開啟或建立本機同步資料庫。請確保您有寫入同步資料夾的權限。</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="510"/>
@@ -4860,14 +4870,14 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>統計失敗。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="560"/>
-        <source>Unable to read from the sync journal.</source>
-        <translation>無法讀取同步日誌。</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="571"/>
         <source>Filename encoding is not valid</source>
         <translation>檔案名稱編碼無效</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="560"/>
+        <source>Unable to read from the sync journal.</source>
+        <translation>無法讀取同步日誌。</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="643"/>
@@ -4880,14 +4890,14 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>無效的字元，請重新命名為「%1」</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1036"/>
-        <source>Synchronization will resume shortly.</source>
-        <translation>同步會很快恢復</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="1110"/>
         <source>File name contains at least one invalid character</source>
         <translation>檔案名稱包含至少一個無效的字元</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="1056"/>
+        <source>Synchronization will resume shortly.</source>
+        <translation>同步會很快恢復</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1045"/>
@@ -5829,7 +5839,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>UnifiedSearchInputContainer</name>
     <message>
-        <location filename="../src/gui/tray/UnifiedSearchInputContainer.qml" line="23"/>
+        <location filename="../src/gui/tray/UnifiedSearchInputContainer.qml" line="25"/>
         <source>Search files, messages, events …</source>
         <translation>搜尋檔案、訊息、事件……</translation>
     </message>
@@ -5872,16 +5882,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="94"/>
-        <source>Account connected</source>
-        <translation>帳號已連結</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="94"/>
-        <source>Account not connected</source>
-        <translation>未連線帳號</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="94"/>
         <source>Current user status is online</source>
         <translation>目前的使用者狀態為在線上</translation>
     </message>
@@ -5889,6 +5889,16 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/tray/UserLine.qml" line="94"/>
         <source>Current user status is do not disturb</source>
         <translation>目前的使用者狀態為請勿打擾</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/UserLine.qml" line="94"/>
+        <source>Account connected</source>
+        <translation>帳號已連結</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/UserLine.qml" line="94"/>
+        <source>Account not connected</source>
+        <translation>未連線帳號</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="158"/>
@@ -5901,7 +5911,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>移除帳號</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="200"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="185"/>
         <source>Set status</source>
         <translation>設定狀態</translation>
     </message>
@@ -6092,7 +6102,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>暫停所有同步</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="196"/>
+        <location filename="../src/gui/tray/Window.qml" line="190"/>
         <source>Set user status</source>
         <translation>設定使用者狀態</translation>
     </message>
@@ -6192,7 +6202,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>開啟分享對話框</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="678"/>
+        <location filename="../src/gui/tray/Window.qml" line="672"/>
         <source>Unified search results list</source>
         <translation>統一搜尋結果清單</translation>
     </message>
@@ -6203,7 +6213,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>顯示更多動作</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="748"/>
+        <location filename="../src/gui/tray/Window.qml" line="743"/>
         <source>%1 - File activity</source>
         <translation>%1 - 檔案事件</translation>
     </message>

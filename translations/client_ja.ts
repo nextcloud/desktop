@@ -1352,15 +1352,6 @@ This means that the synchronization client might not upload local changes immedi
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1260"/>
-        <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
-Are you sure you want to sync those actions with the server?
-If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
-        <translation>ローカル同期フォルダー &apos;%1&apos;内のすべてのファイルが削除されました。この削除はサーバーに同期され、復元されない限りそのファイルは使用できなくなります。
-このアクションをサーバーと同期してもよろしいですか？
-これが操作ミスであり、ファイルを維持することにした場合、ファイルはサーバーから再同期されます。</translation>
-    </message>
-    <message>
         <location filename="../src/gui/folder.cpp" line="1052"/>
         <source>All files in the sync folder '%1' were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
@@ -1418,7 +1409,27 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
         <translation>コンフリクト時にローカルファイルを保持</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1232"/>
+        <location filename="../src/gui/folder.cpp" line="1255"/>
+        <source>All files in the sync folder '%1' folder were deleted on the server.
+These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
+If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
+If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
+        <translation>同期フォルダー &apos;%1&apos;フォルダー内のすべてのファイルがサーバー上で削除されました。
+これらの削除はローカル同期フォルダーと同期され、復元する権限がない限り、ファイルは使用できなくなります。 
+ファイルを復元したい場合、権限があればサーバーと再同期されます。
+ファイルを削除することにした場合、所有者でない限り、ファイルは利用できなくなります。</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1260"/>
+        <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
+Are you sure you want to sync those actions with the server?
+If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
+        <translation>ローカル同期フォルダー &apos;%1&apos;内のすべてのファイルが削除されました。この削除はサーバーに同期され、復元されない限りそのファイルは使用できなくなります。
+このアクションをサーバーと同期してもよろしいですか？
+これが操作ミスであり、ファイルを維持することにした場合、ファイルはサーバーから再同期されます。</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1255"/>
         <source>All files in the sync folder &quot;%1&quot; folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
@@ -1429,7 +1440,7 @@ If you decide to delete the files, they will be unavailable to you, unless you a
 ファイルを削除することにした場合、所有者でない限り、ファイルは利用できなくなります。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1237"/>
+        <location filename="../src/gui/folder.cpp" line="1260"/>
         <source>All the files in your local sync folder &quot;%1&quot; were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
@@ -1446,17 +1457,6 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <location filename="../src/gui/folder.cpp" line="1268"/>
         <source>Remove all files</source>
         <translation>すべてのファイルを削除</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folder.cpp" line="1255"/>
-        <source>All files in the sync folder '%1' folder were deleted on the server.
-These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
-If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
-If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation>同期フォルダー &apos;%1&apos;フォルダー内のすべてのファイルがサーバー上で削除されました。
-これらの削除はローカル同期フォルダーと同期され、復元する権限がない限り、ファイルは使用できなくなります。 
-ファイルを復元したい場合、権限があればサーバーと再同期されます。
-ファイルを削除することにした場合、所有者でない限り、ファイルは利用できなくなります。</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1269"/>
@@ -1505,7 +1505,7 @@ If you decide to delete the files, they will be unavailable to you, unless you a
         <translation>古い同期ジャーナル  &apos;%1&apos; が見つかりましたが、削除できませんでした。それを現在使用しているアプリケーションが存在しないか確認してください。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="390"/>
+        <location filename="../src/gui/folderman.cpp" line="398"/>
         <source>An old sync journal &quot;%1&quot; was found, but could not be removed. Please make sure that no application is currently using it.</source>
         <translation>古い同期ジャーナル  &quot;%1&quot; が見つかりましたが、削除できませんでした。それを現在使用しているアプリケーションが存在しないか確認してください。</translation>
     </message>
@@ -2864,12 +2864,12 @@ for additional privileges during the process.</source>
         <translation>仮想ファイルは、ローカルフォルダーのWindowsルートパーティションではサポートされていません。ドライブレターの下の有効なサブフォルダを選択してください。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="259"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="264"/>
         <source>%1 folder &quot;%2&quot; is synced to local folder &quot;%3&quot;</source>
         <translation>%1 のフォルダー &quot;%2&quot; はローカルフォルダー &quot;%3&quot; と同期しています</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="262"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="267"/>
         <source>Sync the folder &quot;%1&quot;</source>
         <translation>&quot;%1&quot; フォルダーを同期</translation>
     </message>
@@ -3367,14 +3367,24 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>権限</translation>
     </message>
     <message>
+        <location filename="../src/libsync/discovery.cpp" line="456"/>
+        <source>server reported no %1</source>
+        <translation>サーバーから no %1 と通知がありました</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="490"/>
+        <source>permission</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/libsync/discovery.cpp" line="452"/>
         <source>file id</source>
         <translation>ファイルID</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="456"/>
-        <source>server reported no %1</source>
-        <translation>サーバーから no %1 と通知がありました</translation>
+        <location filename="../src/libsync/discovery.cpp" line="498"/>
+        <source>Server reported no %1</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="946"/>
@@ -4181,7 +4191,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>&apos;%1&apos; は見つかりませんでした</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="339"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="365"/>
         <source>No results for &quot;%1&quot;</source>
         <translation>&quot;%1&quot; は見つかりませんでした</translation>
     </message>
@@ -4796,14 +4806,14 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>末尾にピリオドを使うファイル名はサポートされていません</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="501"/>
-        <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
-        <translation>ローカル同期データベースを開いたり作成できません。 同期フォルダーに書き込み権限があることを確認してください。</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="507"/>
         <source>File names containing the character &apos;%1&apos; are not supported on this file system.</source>
         <translation>ファイル名に使用できない文字列が含まれています: &apos;%1&apos;</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="501"/>
+        <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
+        <translation>ローカル同期データベースを開いたり作成できません。 同期フォルダーに書き込み権限があることを確認してください。</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="510"/>
@@ -4856,14 +4866,14 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>情報取得エラー</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="560"/>
-        <source>Unable to read from the sync journal.</source>
-        <translation>同期ジャーナルから読み込みできません</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="571"/>
         <source>Filename encoding is not valid</source>
         <translation>ファイル名のエンコーディングが無効です。</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="560"/>
+        <source>Unable to read from the sync journal.</source>
+        <translation>同期ジャーナルから読み込みできません</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="643"/>
@@ -4876,14 +4886,14 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>無効な文字です、&quot;%1&quot; を変更してください。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1036"/>
-        <source>Synchronization will resume shortly.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="1110"/>
         <source>File name contains at least one invalid character</source>
         <translation>ファイル名に1文字以上の無効な文字が含まれています</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="1056"/>
+        <source>Synchronization will resume shortly.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1045"/>
@@ -5825,7 +5835,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>UnifiedSearchInputContainer</name>
     <message>
-        <location filename="../src/gui/tray/UnifiedSearchInputContainer.qml" line="23"/>
+        <location filename="../src/gui/tray/UnifiedSearchInputContainer.qml" line="25"/>
         <source>Search files, messages, events …</source>
         <translation type="unfinished"/>
     </message>
@@ -5868,16 +5878,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="94"/>
-        <source>Account connected</source>
-        <translation>アカウント接続済</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="94"/>
-        <source>Account not connected</source>
-        <translation>アカウントは接続していません</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="94"/>
         <source>Current user status is online</source>
         <translation>現在のユーザーステータスはオンラインです</translation>
     </message>
@@ -5885,6 +5885,16 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/tray/UserLine.qml" line="94"/>
         <source>Current user status is do not disturb</source>
         <translation>現在のユーザーステータスは取り込み中です</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/UserLine.qml" line="94"/>
+        <source>Account connected</source>
+        <translation>アカウント接続済</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/UserLine.qml" line="94"/>
+        <source>Account not connected</source>
+        <translation>アカウントは接続していません</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="158"/>
@@ -5897,7 +5907,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>アカウントを削除</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="200"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="185"/>
         <source>Set status</source>
         <translation>ステータスを設定</translation>
     </message>
@@ -6088,7 +6098,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>全ての同期を一時停止</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="196"/>
+        <location filename="../src/gui/tray/Window.qml" line="190"/>
         <source>Set user status</source>
         <translation>ステータスを設定</translation>
     </message>
@@ -6188,7 +6198,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>共有ダイアログを開く</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="678"/>
+        <location filename="../src/gui/tray/Window.qml" line="672"/>
         <source>Unified search results list</source>
         <translation type="unfinished"/>
     </message>
@@ -6199,7 +6209,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>その他のアクションを表示</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="748"/>
+        <location filename="../src/gui/tray/Window.qml" line="743"/>
         <source>%1 - File activity</source>
         <translation>%1 - ファイルアクティビティ</translation>
     </message>
