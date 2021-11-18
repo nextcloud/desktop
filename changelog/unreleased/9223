@@ -1,0 +1,10 @@
+Bugfix:  Display correct error message for files containign `\:?*"<>|`
+
+While the error message was supposed to be:
+`File names containing the character '%1' are not supported on this file system.`
+
+We displayed:
+`The file name is a reserved name on this file system.`
+
+https://github.com/owncloud/client/pull/9223/
+

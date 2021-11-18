@@ -250,16 +250,20 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const QString &loc
             if (item->_file.endsWith(QLatin1Char('.'))) {
                 item->_errorString = tr("File names ending with a period are not supported on this file system.");
             } else {
-                const auto unsupportedCharacters = QStringLiteral("\\:?*\"<>|");
-                for (const auto &x : unsupportedCharacters) {
-                    if (item->_file.contains(x)) {
-                        item->_errorString = tr("File names containing the character '%1' are not supported on this file system.")
-                                                 .arg(x);
-                        break;
+                const auto unsupportedCharacter = [](const QString &fName) {
+                    const auto unsupportedCharacter = QStringLiteral("\\:?*\"<>|");
+                    for (const auto &x : unsupportedCharacter) {
+                        if (fName.contains(x)) {
+                            return x;
+                        }
                     }
-                }
+                    return QChar();
+                }(item->_file);
 
-                if (isInvalidPattern) {
+                if (!unsupportedCharacter.isNull()) {
+                    item->_errorString = tr("File names containing the character '%1' are not supported on this file system.")
+                                             .arg(unsupportedCharacter);
+                } else if (isInvalidPattern) {
                     item->_errorString = tr("File name contains at least one invalid character");
                 } else {
                     item->_errorString = tr("The file name is a reserved name on this file system.");
