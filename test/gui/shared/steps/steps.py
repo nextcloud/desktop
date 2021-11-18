@@ -679,13 +679,6 @@ def step(context, resource):
         createPublicShareWithRole(context, resource, role)
 
 
-@When(
-    'the user creates a new public link for folder "|any|" with "|any|" using the client-UI'
-)
-def step(context, resource, role):
-    createPublicShareWithRole(context, resource, role)
-
-
 @When('the user logs out of the client-UI')
 def step(context):
     accountStatus = AccountStatus()
@@ -833,6 +826,7 @@ def step(context, permissions, user, resource):
     permissionsList = permissions.split(',')
 
     shareItem = SharingDialog()
+    shareItem.verifyResource(resource)
     editChecked, shareChecked = shareItem.getAvailablePermission()
 
     if 'edit' in permissionsList:
