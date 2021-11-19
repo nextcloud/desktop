@@ -167,7 +167,7 @@ def build_and_test_client(ctx, c_compiler, cxx_compiler, build_type, generator, 
                  [
                      {
                          "name": "ctest",
-                         "image": "owncloudci/client",
+                         "image": "owncloudci/client:2.9-amd64",
                          "pull": "always",
                          "environment": {
                              "LC_ALL": "C.UTF-8",
@@ -244,7 +244,7 @@ def build_client(ctx, c_compiler, cxx_compiler, build_type, generator, build_com
     return [
         {
             "name": "cmake",
-            "image": "owncloudci/client",
+            "image": "owncloudci/client:2.9-amd64",
             "pull": "always",
             "environment": {
                 "LC_ALL": "C.UTF-8",
@@ -257,7 +257,7 @@ def build_client(ctx, c_compiler, cxx_compiler, build_type, generator, build_com
         },
         {
             "name": build_command,
-            "image": "owncloudci/client",
+            "image": "owncloudci/client:2.9-amd64",
             "pull": "always",
             "environment": {
                 "LC_ALL": "C.UTF-8",
