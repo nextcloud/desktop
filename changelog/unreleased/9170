@@ -1,0 +1,6 @@
+Bugfix: Crash when handling locked files
+
+We fixed a crash that could occur when trying to add a locked folder to the databse.
+
+
+https://github.com/owncloud/client/issues/9170

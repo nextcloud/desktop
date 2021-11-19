@@ -22,8 +22,11 @@
 #include <QFile>
 #include <QLoggingCategory>
 #include <QtConcurrent>
+
+using namespace std::chrono_literals;
+
 namespace {
-auto UpdateMetaDataRetyTimeOut = std::chrono::seconds(30);
+constexpr auto UpdateMetaDataRetyTimeOut = 30s;
 }
 namespace OCC {
 
@@ -130,13 +133,12 @@ void PropagateRemoteMkdir::success()
 {
     // Never save the etag on first mkdir.
     // Only fully propagated directories should have the etag set.
-    auto itemCopy = *_item;
-    itemCopy._etag.clear();
+    auto itemCopy = SyncFileItemPtr::create(*_item);
+    itemCopy->_etag.clear();
 
     // save the file id already so we can detect rename or remove
     // also convert to a placeholder for the proper behaviour of the file
-    Q_ASSERT(thread() == qApp->thread());
-    const auto result = propagator()->updateMetadata(itemCopy);
+    const auto result = propagator()->updateMetadata(*itemCopy);
     if (!result) {
         done(SyncFileItem::FatalError, tr("Error writing metadata to the database: %1").arg(result.error()));
         return;
@@ -148,48 +150,7 @@ void PropagateRemoteMkdir::success()
         // in case the file lock is active.
         // Retry the conversion for UpdateMetaDataRetyTimeOut
         // TODO: make update updateMetadata async in general
-
-        // QtConcurrent does not support moves
-        // use shared_ptr to manage the Result object
-        using resultType = decltype(result);
-        using resultTypePtr = decltype(std::shared_ptr<resultType>());
-
-        auto *watcher = new QFutureWatcher<resultTypePtr>(this);
-        connect(watcher, &QFutureWatcherBase::finished, this, [watcher, this] {
-            const auto *result = watcher->result().get();
-            if (*result) {
-                switch (result->get()) {
-                case Vfs::ConvertToPlaceholderResult::Ok:
-                    done(SyncFileItem::Success);
-                    return;
-                case Vfs::ConvertToPlaceholderResult::Locked:
-                    done(SyncFileItem::SoftError, tr("Setting file status failed due to file lock"));
-                    return;
-                case Vfs::ConvertToPlaceholderResult::Error:
-                    Q_UNREACHABLE();
-                }
-            }
-            done(SyncFileItem::FatalError, result->error());
-        });
-
-        watcher->setFuture(QtConcurrent::run([p = propagator(), itemCopy] {
-            // Try to update the meta data with a 30s timeout
-            const auto start = std::chrono::steady_clock::now();
-            while ((std::chrono::steady_clock::now() - start) < UpdateMetaDataRetyTimeOut) {
-                QThread::sleep(1);
-                auto result = std::make_shared<resultType>(p->updateMetadata(itemCopy));
-                if (*result) {
-                    if (result->get() == Vfs::ConvertToPlaceholderResult::Locked) {
-                        continue;
-                    } else {
-                        return result;
-                    }
-                } else {
-                    return result;
-                }
-            }
-            return std::make_shared<resultType>(Vfs::ConvertToPlaceholderResult::Locked);
-        }));
+        retryUpdateMetadata(std::chrono::steady_clock::now(), itemCopy);
         return;
     }
 #else
@@ -197,4 +158,33 @@ void PropagateRemoteMkdir::success()
 #endif
     done(SyncFileItem::Success);
 }
+
+#ifdef Q_OS_WIN
+void PropagateRemoteMkdir::retryUpdateMetadata(std::chrono::steady_clock::time_point start, SyncFileItemPtr item)
+{
+    // Try to update the meta data with a 30s timeout
+    if ((std::chrono::steady_clock::now() - start) < UpdateMetaDataRetyTimeOut) {
+        auto result = propagator()->updateMetadata(*item);
+        if (result) {
+            switch (*result) {
+            case Vfs::ConvertToPlaceholderResult::Ok:
+                done(SyncFileItem::Success);
+                return;
+            case Vfs::ConvertToPlaceholderResult::Locked:
+                // retry in 1s
+                QTimer::singleShot(1s, this, [start, item, this] {
+                    retryUpdateMetadata(start, item);
+                });
+                return;
+            case Vfs::ConvertToPlaceholderResult::Error:
+                Q_UNREACHABLE();
+            }
+        } else {
+            done(SyncFileItem::FatalError, result.error());
+            return;
+        }
+    }
+    done(SyncFileItem::SoftError, tr("Setting file status failed due to file lock"));
+};
+#endif
 }

@@ -52,5 +52,11 @@ private slots:
     void slotStartMkcolJob();
     void slotMkcolJobFinished();
     void success();
+
+private:
+#ifdef Q_OS_WIN
+    void retryUpdateMetadata(std::chrono::steady_clock::time_point start, SyncFileItemPtr item);
+
+#endif
 };
 }
