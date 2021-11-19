@@ -1043,6 +1043,12 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         if (isOnlineOnlyFolder) {
             // if we're wiping a folder, we will only get this function called once and will wipe a folder along with it's files and also display one error in GUI
             qCInfo(lcDisco) << "Wiping virtual folder without db entry for" << path._local;
+            if (isfolderPlaceHolderAvailabilityOnlineOnly && folderPlaceHolderAvailability.isValid()) {
+                qCInfo(lcDisco) << "*folderPlaceHolderAvailability:" << *folderPlaceHolderAvailability;
+            }
+            if (isFolderPinStateOnlineOnly && folderPinState.isValid()) {
+                qCInfo(lcDisco) << "*folderPinState:" << *folderPinState;
+            }
             emit _discoveryData->addErrorToGui(SyncFileItem::SoftError, tr("Conflict when uploading a folder. It's going to get cleared!"), path._local);
         } else {
             qCInfo(lcDisco) << "Wiping virtual file without db entry for" << path._local;
