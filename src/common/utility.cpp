@@ -109,6 +109,11 @@ void Utility::setupFavLink(const QString &folder)
     setupFavLink_private(folder);
 }
 
+void Utility::removeFavLink(const QString &folder)
+{
+    removeFavLink_private(folder);
+}
+
 QString Utility::octetsToString(qint64 octets)
 {
 #define THE_FACTOR 1024

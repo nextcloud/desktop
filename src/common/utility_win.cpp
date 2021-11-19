@@ -74,6 +74,40 @@ static void setupFavLink_private(const QString &folder)
         qCWarning(lcUtility) << "linking" << folder << "to" << linkName << "failed!";
 }
 
+static void removeFavLink_private(const QString &folder)
+{
+    const QDir folderDir(folder);
+
+    // #1 Remove the Desktop.ini to reset the folder icon
+    if (!QFile::remove(folderDir.absoluteFilePath(QLatin1String("Desktop.ini")))) {
+        qCWarning(lcUtility) << "Remove Desktop.ini from" << folder
+                             << " has failed. Make sure it exists and is not locked by another process.";
+    }
+
+    // #2 Remove the system file attribute
+    const auto folderAttrs = GetFileAttributesW(folder.toStdWString().c_str());
+    if (!SetFileAttributesW(folder.toStdWString().c_str(), folderAttrs & ~FILE_ATTRIBUTE_SYSTEM)) {
+        qCWarning(lcUtility) << "Remove system file attribute failed for:" << folder;
+    }
+
+    // #3 Remove the link to this folder
+    PWSTR path;
+    if (!SHGetKnownFolderPath(FOLDERID_Links, 0, nullptr, &path) == S_OK) {
+        qCWarning(lcUtility) << "SHGetKnownFolderPath for " << folder << "has failed.";
+        return;
+    }
+
+    const QDir links(QString::fromWCharArray(path));
+    CoTaskMemFree(path);
+
+    const auto linkName = QDir(links).absoluteFilePath(folderDir.dirName() + QLatin1String(".lnk"));
+
+    qCInfo(lcUtility) << "Removing favorite link from" << folder << "to" << linkName;
+    if (!QFile::remove(linkName)) {
+        qCWarning(lcUtility) << "Removing a favorite link from" << folder << "to" << linkName << "failed.";
+    }
+}
+
 bool hasSystemLaunchOnStartup_private(const QString &appName)
 {
     QString runPath = QLatin1String(systemRunPathC);
