@@ -352,7 +352,16 @@ void Account::setCredentialSetting(const QString &key, const QVariant &value)
 void Account::slotHandleSslErrors(QPointer<QNetworkReply> reply, const QList<QSslError> &errors)
 {
     const NetworkJobTimeoutPauser pauser(reply);
-    qCDebug(lcAccount) << "SSL diagnostics for url " << reply->url().toString();
+
+    // Copy info out of reply ASAP
+    if (reply.isNull()) {
+        return;
+    }
+
+    const QString urlString = reply->url().toString();
+    const auto sslConfiguration = reply->sslConfiguration();
+
+    qCDebug(lcAccount) << "SSL diagnostics for url " << urlString;
     QList<QSslError> filteredErrors;
     QList<QSslError> ignoredErrors;
     for (const auto &error : qAsConst(errors)) {
@@ -370,7 +379,7 @@ void Account::slotHandleSslErrors(QPointer<QNetworkReply> reply, const QList<QSs
     }
 
     // ask the _sslErrorHandler what to do with filteredErrors
-    const auto handleErrors = [reply, this](const QList<QSslError> &filteredErrors) -> QList<QSslError> {
+    const auto handleErrors = [&urlString, &sslConfiguration, this](const QList<QSslError> &filteredErrors) -> QList<QSslError> {
         if (filteredErrors.isEmpty()) {
             return {};
         }
@@ -384,14 +393,14 @@ void Account::slotHandleSslErrors(QPointer<QNetworkReply> reply, const QList<QSs
 
         // If all certs have previously been rejected by the user, don't ask again.
         if (allPreviouslyRejected) {
-            qCInfo(lcAccount) << "SSL diagnostics for url " << reply->url().toString()
+            qCInfo(lcAccount) << "SSL diagnostics for url " << urlString
                               << ": certificates not trusted by user decision, returning.";
             return {};
         }
 
         if (_sslErrorHandler.isNull()) {
             qCWarning(lcAccount) << Q_FUNC_INFO << " called without a valid SSL error handler for account" << url()
-                                 << "(" << reply->url().toString() << ")";
+                                 << "(" << urlString << ")";
             return {};
         }
 
@@ -401,7 +410,7 @@ void Account::slotHandleSslErrors(QPointer<QNetworkReply> reply, const QList<QSs
         // handleErrors returns.
         QSharedPointer<QNetworkAccessManager> qnamLock = _am;
         QList<QSslCertificate> approvedCerts;
-        if (_sslErrorHandler->handleErrors(filteredErrors, reply->sslConfiguration(), &approvedCerts, sharedFromThis())) {
+        if (_sslErrorHandler->handleErrors(filteredErrors, sslConfiguration, &approvedCerts, sharedFromThis())) {
             if (!approvedCerts.isEmpty()) {
                 QSslSocket::addDefaultCaCertificates(approvedCerts);
                 addApprovedCerts(approvedCerts);
@@ -421,12 +430,23 @@ void Account::slotHandleSslErrors(QPointer<QNetworkReply> reply, const QList<QSs
         }
         return {};
     };
+
+    // Call `handleErrors` NOW, BEFORE checking if the scoped `reply` pointer. The lambda might take
+    // a long time to complete: if a dialog is shown, the user could be "slow" to click it away, and
+    // the reply might have been deleted at that point. So if we'd do this call inside the if below,
+    // the object inside the reply guarded pointer could there, but might be gone *after* we finish
+    // with `ignoreSslErrors`. Even when the scenario with a deleted reply happens, the handling is
+    // still needed: the `handleErrors` call will also set the default CA certificates through
+    // `QSslSocket::addDefaultCaCertificates()`, so future requests/replies can use those
+    // user-approved certificates.
+    auto moreIgnoredErrors = handleErrors(filteredErrors);
+
     // always apply the filter when we leave the scope
     if (reply) {
         // Warning: Do *not* use ignoreSslErrors() (without args) here:
         // it permanently ignores all SSL errors for this host, even
         // certificate changes.
-        reply->ignoreSslErrors(ignoredErrors + handleErrors(filteredErrors));
+        reply->ignoreSslErrors(ignoredErrors + moreIgnoredErrors);
     }
 }
 
