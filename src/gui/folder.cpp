@@ -879,7 +879,7 @@ void Folder::correctPlaceholderFiles()
         return;
     }
     static const auto placeholdersCorrectedKey = QStringLiteral("placeholders_corrected");
-    const auto placeholdersCorrected = _journal.keyValueStoreGetBool(placeholdersCorrectedKey, false);
+    const auto placeholdersCorrected = _journal.keyValueStoreGetInt(placeholdersCorrectedKey, 0);
     if (!placeholdersCorrected) {
         qCDebug(lcFolder) << "Make sure all virtual files are placeholder files";
         switchToVirtualFiles();
