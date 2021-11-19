@@ -5,3 +5,4 @@ We now ensure that we receive the window messages dispatched by the system.
 https://github.com/owncloud/client/issues/8979
 https://github.com/owncloud/client/pull/9142
 https://github.com/owncloud/client/pull/9220
+https://github.com/owncloud/client/pull/9227
