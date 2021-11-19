@@ -1077,7 +1077,7 @@ Dit zal alle synchronisaties, die op dit moment bezig zijn, afbreken.</translati
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="264"/>
         <source>Directory not accessible on client, permission denied</source>
-        <translation>Map niet toegankelijk op client, toestemming geweigerd</translation>
+        <translation>Map niet toegankelijk op client, toegang geweigerd</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="268"/>
@@ -1276,7 +1276,7 @@ Dit kan een probleem zijn met je OpenSSL-bibliotheken.</translation>
     <message>
         <location filename="../src/gui/folder.cpp" line="465"/>
         <source>%1 has a sync conflict. Please check the conflict file!</source>
-        <translation>%1 heeft een sync conflict. Controleer het conflict bestand!</translation>
+        <translation>%1 heeft een sync conflict. Controleer het conflictbestand!</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="470"/>
@@ -1488,7 +1488,7 @@ Als dit een ongelukje was en je de bestanden wilt behouden, worden ze opnieuw ge
     <message>
         <location filename="../src/gui/foldercreationdialog.cpp" line="76"/>
         <source>Could not create a folder! Check your write permissions.</source>
-        <translation>Kon map niet aanmaken! Controleer je schrijfrechten.</translation>
+        <translation>Kon map niet aanmaken! Controleer je schrijfmachtiging.</translation>
     </message>
 </context>
 <context>
@@ -1591,7 +1591,7 @@ Als dit een ongelukje was en je de bestanden wilt behouden, worden ze opnieuw ge
     <message>
         <location filename="../src/gui/folderman.cpp" line="1537"/>
         <source>You have no permission to write to the selected folder!</source>
-        <translation>U heeft geen permissie om te schrijven naar de geselecteerde map!</translation>
+        <translation>U heeft geen machtiging om te schrijven naar de geselecteerde map!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1584"/>
@@ -3370,7 +3370,7 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
     <message>
         <location filename="../src/libsync/discovery.cpp" line="448"/>
         <source>permissions</source>
-        <translation>permissies</translation>
+        <translation>machtigingen</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="456"/>
@@ -3380,7 +3380,7 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
     <message>
         <location filename="../src/libsync/discovery.cpp" line="490"/>
         <source>permission</source>
-        <translation>permissie</translation>
+        <translation>machtiging</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="452"/>
@@ -3415,12 +3415,12 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1325"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
-        <translation>Niet toegestaan, omdat je geen permissies hebt om submappen aan die map toe te voegen</translation>
+        <translation>Niet toegestaan, omdat je geen machtiging hebt om submappen aan die map toe te voegen</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1330"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
-        <translation>Niet toegestaan omdat je geen rechten hebt om bestanden in die map toe te voegen</translation>
+        <translation>Niet toegestaan omdat je geen machtiging hebt om bestanden in die map toe te voegen</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1343"/>
@@ -3993,12 +3993,12 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="293"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
-        <translation>Het bestand kan niet worden gedeeld, omdat het werd gedeeld zonder verder delen toestemming.</translation>
+        <translation>Het bestand kan niet worden gedeeld, omdat het werd gedeeld zonder verder delen machtiging.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="300"/>
         <source>The file cannot be shared because it does not have sharing permission.</source>
-        <translation>Het bestand kan niet worden gedeeld, omdat het werd gedeeld zonder verder delen toestemming.</translation>
+        <translation>Het bestand kan niet worden gedeeld, omdat het werd gedeeld zonder verder delen machtiging.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="366"/>
@@ -4631,7 +4631,7 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="125"/>
         <source>Failed to load or create the journal file. Make sure you have read and write permissions in the local sync folder.</source>
-        <translation>Kon het journal bestand niet maken of lezen. Controleer of u de juiste lees- en schrijfrechten in de lokale syncmap hebt.</translation>
+        <translation>Kon het journal bestand niet maken of lezen. Controleer of u de juiste lees- en schrijfrmachtigingen in de lokale syncmap hebt.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="129"/>
@@ -4748,17 +4748,17 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1455"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
-        <translation>Niet toegestaan, omdat je geen permissies hebt om submappen aan die map toe te voegen</translation>
+        <translation>Niet toegestaan, omdat je geen machtiging hebt om submappen aan die map toe te voegen</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1470"/>
         <source>Not allowed because you don&apos;t have permission to add parent folder</source>
-        <translation>Niet toegestaan omdat u geen rechten hebt om een bovenliggende map toe te voegen</translation>
+        <translation>Niet toegestaan omdat u geen machtiging hebt om een bovenliggende map toe te voegen</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1477"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
-        <translation>Niet toegestaan omdat u geen rechten hebt om bestanden in die map toe te voegen</translation>
+        <translation>Niet toegestaan omdat u geen machtiging hebt om bestanden in die map toe te voegen</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1502"/>
@@ -5648,7 +5648,7 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="730"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If this box is checked, existing content in the local folder will be erased to start a clean sync from the server.&lt;/p&gt;&lt;p&gt;Do not check this if the local content should be uploaded to the servers folder.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Als deze checkbox is aangevinkt zullen bestaande bestanden in de lokale map worden gewist om een schone sync vanaf de server te starten.&lt;/p&gt;&lt;p&gt;Vink dit niet aan als de lokale bestanden naar de map op de server zouden moeten worden geüploaded.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Als deze checkbox is aangevinkt zullen bestaande bestanden in de lokale map worden gewist om een schone sync vanaf de server te starten.&lt;/p&gt;&lt;p&gt;Vink dit niet aan als de lokale bestanden naar de map op de server zouden moeten worden geüploadet.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="733"/>
