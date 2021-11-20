@@ -3407,7 +3407,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>El servidor ha respost amb un error en llegir la carpeta «%1»: %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1635"/>
+        <location filename="../src/libsync/discovery.cpp" line="1641"/>
         <source>Server replied with an error while reading directory &quot;%1&quot; : %2</source>
         <translation type="unfinished"/>
     </message>

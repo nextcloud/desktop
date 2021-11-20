@@ -3448,7 +3448,7 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
         <translation>Server gaf een foutmelding bij lezen directory &apos;%1&apos; : %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1635"/>
+        <location filename="../src/libsync/discovery.cpp" line="1641"/>
         <source>Server replied with an error while reading directory &quot;%1&quot; : %2</source>
         <translation>Server gaf een foutmelding bij lezen directory &quot;%1&apos;&quot;: %2</translation>
     </message>

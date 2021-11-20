@@ -3442,7 +3442,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Ошибка сервера при попытке прочитать каталог «%1»: %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1635"/>
+        <location filename="../src/libsync/discovery.cpp" line="1641"/>
         <source>Server replied with an error while reading directory &quot;%1&quot; : %2</source>
         <translation>Ошибка сервера при попытке прочитать каталог «%1»: %2</translation>
     </message>
@@ -4954,17 +4954,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="218"/>
         <source>%1 of %2 · %3 left</source>
-        <translation type="unfinished"/>
+        <translation>%1 из %2, осталось %3</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="222"/>
         <source>%1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 из %2</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="227"/>
         <source>Syncing file %1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>Синхронизируется файл %1 из %2</translation>
     </message>
 </context>
 <context>
@@ -5052,17 +5052,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="385"/>
         <source>Failed to fetch search providers for &apos;%1&apos;. Error: %2</source>
-        <translation type="unfinished"/>
+        <translation>Не удалось получить список поставщиков поиска %1: Ошибка: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="419"/>
         <source>Search has failed for &apos;%2&apos;.</source>
-        <translation type="unfinished"/>
+        <translation>Ошибка поиска %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="448"/>
         <source>Search has failed for &apos;%1&apos;. Error: %2</source>
-        <translation type="unfinished"/>
+        <translation>Ошибка поиска %1: Ошибка %2</translation>
     </message>
 </context>
 <context>
@@ -5854,7 +5854,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/UnifiedSearchResultItemSkeleton.qml" line="25"/>
         <source>Search result skeleton.</source>
-        <translation type="unfinished"/>
+        <translation>Шаблон результатов поиска.</translation>
     </message>
 </context>
 <context>

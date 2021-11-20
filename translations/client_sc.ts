@@ -3445,7 +3445,7 @@ Custa est una modalidade noa, isperimentale. Si detzides de dda impreare, sinnal
         <translation>Su serbidore at dadu errore leghende sa cartella &apos;%1&apos; : %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1635"/>
+        <location filename="../src/libsync/discovery.cpp" line="1641"/>
         <source>Server replied with an error while reading directory &quot;%1&quot; : %2</source>
         <translation>Su serbidore nd&apos;at torradu un&apos;errore leghende sa cartella &quot;%1&quot; : %2</translation>
     </message>

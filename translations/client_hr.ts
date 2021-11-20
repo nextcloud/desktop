@@ -3441,7 +3441,7 @@ Ovo je novi, eksperimentalni način rada. Ako se odlučite aktivirati ga, prijav
         <translation>Poslužitelj je javio pogrešku pri čitanju direktorija &apos;%1&apos; : %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1635"/>
+        <location filename="../src/libsync/discovery.cpp" line="1641"/>
         <source>Server replied with an error while reading directory &quot;%1&quot; : %2</source>
         <translation type="unfinished"/>
     </message>

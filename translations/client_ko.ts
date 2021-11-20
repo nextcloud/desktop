@@ -3445,7 +3445,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>서버가 디렉토리 &apos;%1&apos;을(를) 읽는 중 오류에 대응함: %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1635"/>
+        <location filename="../src/libsync/discovery.cpp" line="1641"/>
         <source>Server replied with an error while reading directory &quot;%1&quot; : %2</source>
         <translation type="unfinished"/>
     </message>

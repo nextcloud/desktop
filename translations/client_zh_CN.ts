@@ -3428,7 +3428,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>服务器在读取目录 &apos;%1&apos; 时回复了一个错误：%2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1635"/>
+        <location filename="../src/libsync/discovery.cpp" line="1641"/>
         <source>Server replied with an error while reading directory &quot;%1&quot; : %2</source>
         <translation>服务器在读取目录 &quot;%1&quot; 时返回了一个错误: %2 </translation>
     </message>

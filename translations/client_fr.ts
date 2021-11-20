@@ -3440,7 +3440,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Le serveur a répondu avec une erreur au moment de lire le dossier &apos;%1&apos; : %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1635"/>
+        <location filename="../src/libsync/discovery.cpp" line="1641"/>
         <source>Server replied with an error while reading directory &quot;%1&quot; : %2</source>
         <translation type="unfinished"/>
     </message>
