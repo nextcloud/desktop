@@ -25,6 +25,9 @@
 #ifdef Q_OS_WIN
 #include <QMetaMethod>
 
+#include <QtWinExtras/qwinfunctions.h>
+#include <qt_windows.h>
+
 #include <chrono>
 #include <thread>
 
@@ -63,11 +66,9 @@ void startShutdownWatcher()
         WNDCLASS wc = {};
         wc.hInstance = GetModuleHandle(nullptr);
         wc.lpszClassName = L"ocWindowMessageWatcher";
-#if MIRALL_VERSION_MINOR > 9
-// TODO: for now we won't display a proper icon
-#error "Please add the QtWinExtras dependency"
-        wc.hIcon = QtWin::toHICON(Theme::instance()->applicationIcon().pixmap(64, 64));
-#endif
+        if (qobject_cast<QGuiApplication *>(qApp)) {
+            wc.hIcon = QtWin::toHICON(Theme::instance()->applicationIcon().pixmap(64, 64));
+        }
         wc.lpfnWndProc = [](HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) -> LRESULT {
             //            qDebug() << MSG { hwnd, msg, wParam, lParam, 0, {} };
             if (msg == WM_QUERYENDSESSION) {
