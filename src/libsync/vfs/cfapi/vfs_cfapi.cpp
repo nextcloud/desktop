@@ -160,6 +160,9 @@ Result<Vfs::ConvertToPlaceholderResult, QString> VfsCfApi::convertToPlaceholder(
     const auto replacesPath = QDir::toNativeSeparators(replacesFile);
 
     const auto handle = cfapi::handleForPath(localPath);
+    if (!handle) {
+        return { "Invalid handle for path " + localPath };
+    }
     if (cfapi::findPlaceholderInfo(handle)) {
         return cfapi::updatePlaceholderInfo(handle, item._modtime, item._size, item._fileId, replacesPath);
     } else {
