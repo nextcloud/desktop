@@ -146,6 +146,14 @@ OCSYNC_EXPORT Q_DECLARE_LOGGING_CATEGORY(lcUtility)
     // case sensitivity.
     OCSYNC_EXPORT bool fileNamesEqual(const QString &fn1, const QString &fn2);
 
+    inline auto stripTrailingSlash(QStringView s)
+    {
+        if (s.endsWith(QLatin1Char('/'))) {
+            s.chop(1);
+        }
+        return s.toString();
+    }
+
     // Call the given command with the switch --version and rerun the first line
     // of the output.
     // If command is empty, the function calls the running application which, on

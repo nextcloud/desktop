@@ -1,0 +1,7 @@
+Bugfix: Config migration on systems with a 2.4 and a 2.8 config
+
+We fixed a bug where the client migrated the old settings from 2.4 to 2.9 instead of the 2.8 settings.
+Only branded clients where affected by the issue.
+
+https://github.com/owncloud/client/issues/9224
+https://github.com/owncloud/client/pull/9226
