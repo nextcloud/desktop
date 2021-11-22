@@ -71,15 +71,15 @@ namespace {
 void migrateConfigFile(const QCoreApplication *app)
 {
     using namespace OCC;
-
     if (!ConfigFile::exists()) {
         // check whether an old config location must be migrated
         // we support multiple locations from old versions
         // these are worked on in-order to upgrade from version to version
         // the algorithm is the same for all these locations, thus we can use a loop
-        QStringList configLocationsToMigrate;
-
-        {
+        // note that we try to migrate in descending order, i.e., we try to migrate from the last release, then from the release before, ...
+        // this is done in order to avoid porting old configu
+        const auto configLocationsToMigrate = [&app] {
+            QStringList out;
             // note: this change is temporary to allow using QDesktopServices etc. to determine the paths
             // the application name was changed to
             auto scopeGuard = qScopeGuard([&app, oldApplicationName = app->applicationName()] {
@@ -87,52 +87,59 @@ void migrateConfigFile(const QCoreApplication *app)
                 app->setApplicationName(oldApplicationName);
             });
 
+            auto addLegacyLocation = [&out](const QString &path) {
+                if (QFileInfo(path).isDir()) {
+                    // macOS 10.11.x does not like trailing slash for rename/move.
+                    out.append(Utility::stripTrailingSlash(path));
+                }
+            };
+
             QCoreApplication::setApplicationName(Theme::instance()->appNameGUI());
+
+            // location used in versions from 2.5 to 2.8
+            addLegacyLocation(QStandardPaths::writableLocation(Utility::isWindows() ? QStandardPaths::AppDataLocation : QStandardPaths::AppConfigLocation));
 
             // location used in versions <= 2.4
             // We need to use the deprecated QDesktopServices::storageLocation because of its Qt4 behavior of adding "data" to the path
-            configLocationsToMigrate.append(QDesktopServices::storageLocation(QDesktopServices::DataLocation));
+            addLegacyLocation(QDesktopServices::storageLocation(QDesktopServices::DataLocation));
+            return out;
+        }();
 
-            // location used in versions from 2.5 to 2.8
-            configLocationsToMigrate.append(QStandardPaths::writableLocation(Utility::isWindows() ? QStandardPaths::AppDataLocation : QStandardPaths::AppConfigLocation));
-        }
+        // macOS 10.11.x does not like trailing slash for rename/move.
+        const auto confDir = Utility::stripTrailingSlash(ConfigFile::configPath());
+        for (auto &oldDir : configLocationsToMigrate) {
+            qCInfo(lcApplication) << Q_FUNC_INFO << "Migrating old config from" << oldDir << "to" << confDir;
 
+            if (!QFile::rename(oldDir, confDir)) {
+                qCWarning(lcApplication) << Q_FUNC_INFO << "Failed to move the old config directory to its new location (" << oldDir << "to" << confDir << ")";
 
-        for (auto oldDir : configLocationsToMigrate) {
-            if (oldDir.endsWith('/')) {
-                // macOS 10.11.x does not like trailing slash for rename/move.
-                oldDir.chop(1);
-            }
-
-            if (QFileInfo(oldDir).isDir()) {
-                auto confDir = ConfigFile::configPath();
-                if (confDir.endsWith('/'))
-                    confDir.chop(1); // macOS 10.11.x does not like trailing slash for rename/move.
-                qCInfo(lcApplication) << "Migrating old config from" << oldDir << "to" << confDir;
-
-                if (!QFile::rename(oldDir, confDir)) {
-                    qCWarning(lcApplication) << "Failed to move the old config directory to its new location (" << oldDir << "to" << confDir << ")";
-
-                    // Try to move the files one by one
-                    if (QFileInfo(confDir).isDir() || QDir().mkpath(confDir)) {
-                        const auto filesList = QDir(oldDir).entryInfoList(QDir::Files);
-                        qCInfo(lcApplication) << "Will move the individual files" << filesList;
-                        for (const auto &fileInfo : filesList) {
-                            if (!QFile::rename(fileInfo.canonicalFilePath(), confDir + "/" + fileInfo.fileName())) {
-                                qCWarning(lcApplication) << "Fallback move of " << fileInfo.fileName() << "also failed";
-                            }
+                // Try to move the files one by one
+                if (QFileInfo(confDir).isDir() || QDir().mkpath(confDir)) {
+                    const auto filesList = QDir(oldDir).entryInfoList(QDir::Files);
+                    qCInfo(lcApplication) << Q_FUNC_INFO << "Will move the individual files" << filesList;
+                    for (const auto &fileInfo : filesList) {
+                        if (!QFile::rename(fileInfo.canonicalFilePath(), confDir + "/" + fileInfo.fileName())) {
+                            qCWarning(lcApplication) << Q_FUNC_INFO << "Fallback move of " << fileInfo.fileName() << "also failed";
+                        } else {
+                            // we found a suitable config directory to migrate, hence we can stop here
+                            // if we continued to run, we would try to overwrite the working migration
+                            break;
                         }
                     }
-                } else {
-#ifndef Q_OS_WIN
-                    // Create a symbolic link so a downgrade of the client would still find the config.
-                    QFile::link(confDir, oldDir);
-#endif
                 }
+            } else {
+#ifndef Q_OS_WIN
+                // Create a symbolic link so a downgrade of the client would still find the config.
+                QFile::link(confDir, oldDir);
+#endif
+                // we found a suitable config directory to migrate, hence we can stop here
+                // if we continued to run, we would try to overwrite the working migration
+                break;
             }
         }
     }
 }
+
 
 } // namespace
 
