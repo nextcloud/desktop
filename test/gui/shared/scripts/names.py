@@ -112,3 +112,6 @@ choose_What_to_Sync_OCC_SelectiveSyncDialog = {"type": "OCC::SelectiveSyncDialog
 choose_What_to_Sync_Deselect_remote_folders_you_do_not_wish_to_synchronize_QLabel = {"text": "Deselect remote folders you do not wish to synchronize.", "type": "QLabel", "unnamed": 1, "visible": 1, "window": choose_What_to_Sync_OCC_SelectiveSyncDialog}
 choose_What_To_Synchronize_QTreeWidget = {"aboveWidget": choose_What_to_Sync_Deselect_remote_folders_you_do_not_wish_to_synchronize_QLabel, "type": "QTreeWidget", "unnamed": 1, "visible": 1, "window": choose_What_to_Sync_OCC_SelectiveSyncDialog}
 deselect_remote_folders_you_do_not_wish_to_synchronize_QHeaderView = {"container": choose_What_To_Synchronize_QTreeWidget, "orientation": 1, "type": "QHeaderView", "unnamed": 1, "visible": 1}
+linkShares_QToolButton_2 = {"container": oCC_ShareLinkWidget_linkShares_QTableWidget, "occurrence": 2, "type": "QToolButton", "unnamed": 1, "visible": 1}
+oCC_ShareLinkWidget_Delete_QPushButton = {"container": qt_tabwidget_stackedwidget_OCC_ShareLinkWidget_OCC_ShareLinkWidget, "text": "Delete", "type": "QPushButton", "unnamed": 1, "visible": 1}
+oCC_ShareLinkWidget_pushButton_setPassword_QPushButton = {"container": qt_tabwidget_stackedwidget_OCC_ShareLinkWidget_OCC_ShareLinkWidget, "name": "pushButton_setPassword", "type": "QPushButton", "visible": 1}

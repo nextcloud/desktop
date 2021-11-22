@@ -172,3 +172,25 @@ class PublicLinkDialog:
                 == "Public link"
             )
         )
+
+    def changePassword(self, publicLinkName, password):
+        test.compare(
+            str(squish.waitForObjectExists(self.PUBLIC_LINK_NAME).text),
+            publicLinkName,
+        )
+        squish.mouseClick(
+            squish.waitForObject(names.oCC_ShareLinkWidget_lineEdit_password_QLineEdit),
+            0,
+            0,
+            squish.Qt.NoModifier,
+            squish.Qt.LeftButton,
+        )
+        squish.type(
+            squish.waitForObject(names.oCC_ShareLinkWidget_lineEdit_password_QLineEdit),
+            password,
+        )
+        squish.clickButton(
+            squish.waitForObject(
+                names.oCC_ShareLinkWidget_pushButton_setPassword_QPushButton
+            )
+        )

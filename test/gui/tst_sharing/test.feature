@@ -131,12 +131,40 @@ Feature: Sharing
         And the public should be able to download the file "textfile0.txt" without password from the last created public link by "Alice" on the server
 
 
-    Scenario: simple sharing of a file by public link with password
+    Scenario: sharing of a file by public link and deleting the link
+        Given user "Alice" has uploaded file with content "ownCloud test text file 0" to "/textfile0.txt" on the server
+        And user "Alice" has set up a client with default settings
+        And user "Alice" has created a public link on the server with following settings
+            | path     | textfile0.txt |
+            | name     | Public-link   |
+        When the user deletes the public link for file "textfile0.txt"
+        Then as user "Alice" the file "/textfile0.txt" should not have any public link on the server
+
+
+    Scenario Outline: simple sharing of a file by public link with password
         Given user "Alice" has set up a client with default settings
         And user "Alice" has uploaded file with content "ownCloud test text file 0" to "/textfile0.txt" on the server
-        When the user creates a new public link for file "textfile0.txt" with password "pass123" using the client-UI
+        When the user creates a new public link for file "textfile0.txt" with password "<password>" using the client-UI
         Then as user "Alice" the file "textfile0.txt" should have a public link on the server
-        And the public should be able to download the file "textfile0.txt" with password "pass123" from the last created public link by "Alice" on the server
+        And the public should be able to download the file "textfile0.txt" with password "<password>" from the last created public link by "Alice" on the server
+        Examples:
+            | password   |
+            |password1234|
+            | p@$s!23    |
+
+
+    Scenario: sharing of a file by public link with password and changing the password
+        Given user "Alice" has set up a client with default settings
+        And user "Alice" has uploaded file with content "ownCloud test text file 0" to "/textfile0.txt" on the server
+        And user "Alice" has created a public link on the server with following settings
+            | path     | textfile0.txt |
+            | name     | Public-link   |
+            | password | 1234          |
+        When the user opens the public links dialog of "textfile0.txt" using the client-UI
+        And the user changes the password of public link "Public-link" to "password1234" using the client-UI
+        Then as user "Alice" the file "textfile0.txt" should have a public link on the server
+        And the public should be able to download the file "textfile0.txt" with password "password1234" from the last created public link by "Alice" on the server
+
 
     @issue-8733
     Scenario: user changes the expiration date of an already existing public link using webUI

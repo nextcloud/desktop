@@ -1082,3 +1082,25 @@ def step(context):
         test.compare(actualFolder, expectedFolder)
 
         rowIndex += 1
+
+
+@When('the user deletes the public link for file "|any|"')
+def step(context, resource):
+    openSharingDialog(context, resource)
+    publicLinkDialog = PublicLinkDialog()
+    publicLinkDialog.openPublicLinkDialog()
+
+    test.compare(
+        str(waitForObjectExists(publicLinkDialog.ITEM_TO_SHARE).text),
+        resource.replace(context.userData['currentUserSyncPath'], ''),
+    )
+    clickButton(waitForObject(names.linkShares_QToolButton_2))
+    clickButton(waitForObject(names.oCC_ShareLinkWidget_Delete_QPushButton))
+
+
+@When(
+    'the user changes the password of public link "|any|" to "|any|" using the client-UI'
+)
+def step(context, publicLinkName, password):
+    publicLinkDialog = PublicLinkDialog()
+    publicLinkDialog.changePassword(publicLinkName, password)
