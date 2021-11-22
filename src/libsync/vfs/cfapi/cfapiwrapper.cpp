@@ -586,13 +586,18 @@ OCC::CfApiWrapper::FileHandle OCC::CfApiWrapper::handleForPath(const QString &pa
         return {};
     }
 
-    if (QFileInfo(path).isDir()) {
+    QFileInfo pathFileInfo(path);
+    if (!pathFileInfo.exists()) {
+        return {};
+    }
+
+    if (pathFileInfo.isDir()) {
         HANDLE handle = nullptr;
         const qint64 openResult = CfOpenFileWithOplock(path.toStdWString().data(), CF_OPEN_FILE_FLAG_NONE, &handle);
         if (openResult == S_OK) {
             return {handle, [](HANDLE h) { CfCloseHandle(h); }};
         }
-    } else {
+    } else if (pathFileInfo.isFile()) {
         const auto longpath = OCC::FileSystem::longWinPath(path);
         const auto handle = CreateFile(longpath.toStdWString().data(), 0, 0, nullptr,
                                        OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
