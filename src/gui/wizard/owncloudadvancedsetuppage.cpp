@@ -62,6 +62,7 @@ OwncloudAdvancedSetupPage::OwncloudAdvancedSetupPage(OwncloudWizard *wizard)
     if (Theme::instance()->enforceVirtualFilesSyncFolder()) {
         _ui.rSyncEverything->setDisabled(true);
         _ui.rSelectiveSync->setDisabled(true);
+        _ui.bSelectiveSync->setDisabled(true);
     }
 
     connect(_ui.rSyncEverything, &QAbstractButton::clicked, this, &OwncloudAdvancedSetupPage::slotSyncEverythingClicked);
