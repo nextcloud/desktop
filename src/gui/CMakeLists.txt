@@ -206,6 +206,7 @@ set(3rdparty_SRC
     ../3rdparty/qtsingleapplication/qtsingleapplication.cpp
     ../3rdparty/qtsingleapplication/qtsinglecoreapplication.cpp
     ../3rdparty/kmessagewidget/kmessagewidget.cpp
+    ../3rdparty/kirigami/wheelhandler.cpp
    )
 
 if(NOT WIN32)
@@ -375,6 +376,7 @@ target_include_directories(nextcloudCore
   PUBLIC
   ${CMAKE_SOURCE_DIR}/src/3rdparty/QProgressIndicator
   ${CMAKE_SOURCE_DIR}/src/3rdparty/qtlockedfile
+  ${CMAKE_SOURCE_DIR}/src/3rdparty/kirigami
   ${CMAKE_SOURCE_DIR}/src/3rdparty/qtsingleapplication
   ${CMAKE_SOURCE_DIR}/src/3rdparty/kmessagewidget
   ${CMAKE_CURRENT_BINARY_DIR}
