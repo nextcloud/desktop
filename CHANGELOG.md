@@ -15,7 +15,9 @@ Summary
 * Bugfix - Immediately propagate changes to the ignore list: [#8975](https://github.com/owncloud/client/issues/8975)
 * Bugfix - Fix icon name in desktop file with ownBrander themes: [#8992](https://github.com/owncloud/client/issues/8992)
 * Bugfix - Disable vfs option is ignored: [#9159](https://github.com/owncloud/client/issues/9159)
+* Bugfix - Crash when handling locked files: [#9170](https://github.com/owncloud/client/issues/9170)
 * Bugfix - The client no longer idles after a minor url change: [#9202](https://github.com/owncloud/client/pull/9202)
+* Bugfix - Config migration on systems with a 2.4 and a 2.8 config: [#9224](https://github.com/owncloud/client/issues/9224)
 * Change - Make sharedialog preview be more resilient: [#8938](https://github.com/owncloud/client/issues/8938)
 * Enhancement - Allow to remove broken sync folders: [#9099](https://github.com/owncloud/client/pull/9099)
 * Enhancement - Add branding option to disable icons in the file explorer: [#9167](https://github.com/owncloud/client/issues/9167)
@@ -46,6 +48,7 @@ Details
    https://github.com/owncloud/client/issues/8979
    https://github.com/owncloud/client/pull/9142
    https://github.com/owncloud/client/pull/9220
+   https://github.com/owncloud/client/pull/9227
 
 * Bugfix - Fix copy url location for private links: [#9048](https://github.com/owncloud/client/issues/9048)
 
@@ -75,6 +78,12 @@ Details
    https://github.com/owncloud/client/issues/9159
    https://github.com/owncloud/enterprise/issues/4820
 
+* Bugfix - Crash when handling locked files: [#9170](https://github.com/owncloud/client/issues/9170)
+
+   We fixed a crash that could occur when trying to add a locked folder to the databse.
+
+   https://github.com/owncloud/client/issues/9170
+
 * Bugfix - The client no longer idles after a minor url change: [#9202](https://github.com/owncloud/client/pull/9202)
 
    When the client detects a change of the url we ask the user to accept the change or if it was only
@@ -83,6 +92,14 @@ Details
    minute.
 
    https://github.com/owncloud/client/pull/9202
+
+* Bugfix - Config migration on systems with a 2.4 and a 2.8 config: [#9224](https://github.com/owncloud/client/issues/9224)
+
+   We fixed a bug where the client migrated the old settings from 2.4 to 2.9 instead of the 2.8
+   settings. Only branded clients where affected by the issue.
+
+   https://github.com/owncloud/client/issues/9224
+   https://github.com/owncloud/client/pull/9226
 
 * Change - Make sharedialog preview be more resilient: [#8938](https://github.com/owncloud/client/issues/8938)
 
