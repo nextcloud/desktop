@@ -39,7 +39,7 @@
 <context>
     <name>ActivityList</name>
     <message>
-        <location filename="../src/gui/tray/ActivityList.qml" line="24"/>
+        <location filename="../src/gui/tray/ActivityList.qml" line="30"/>
         <source>Activity list</source>
         <translation>Lista de atividades</translation>
     </message>
@@ -2865,12 +2865,12 @@ pode solicitar por privilégios adicionais durante o processo.</translation>
         <translation>Arquivos virtuais não são suportados como partição raiz do Windows como pasta local. Escolha uma subpasta válida na letra da unidade. </translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="264"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="265"/>
         <source>%1 folder &quot;%2&quot; is synced to local folder &quot;%3&quot;</source>
         <translation>%1 pasta &quot;%2&quot; está sincronizada com a pasta local &quot;%3&quot; </translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="267"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="268"/>
         <source>Sync the folder &quot;%1&quot;</source>
         <translation>Sincronizar a pasta &quot;%1&quot;</translation>
     </message>
@@ -3444,7 +3444,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <translation>O servidor respondeu com um erro ao ler o diretório &apos;%1&apos; : %2 </translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1641"/>
+        <location filename="../src/libsync/discovery.cpp" line="1646"/>
         <source>Server replied with an error while reading directory &quot;%1&quot; : %2</source>
         <translation>O servidor respondeu com um erro ao ler o diretório  &quot;%1&quot; : %2</translation>
     </message>
@@ -6200,7 +6200,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <translation>Abrir janela de compartilhamento</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="672"/>
+        <location filename="../src/gui/tray/Window.qml" line="681"/>
         <source>Unified search results list</source>
         <translation>Lista unificada de resultados de pesquisa </translation>
     </message>
@@ -6211,7 +6211,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <translation>Mostrar mais ações</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="743"/>
+        <location filename="../src/gui/tray/Window.qml" line="753"/>
         <source>%1 - File activity</source>
         <translation>%1 - Atividade de arquivo</translation>
     </message>

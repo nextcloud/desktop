@@ -39,7 +39,7 @@
 <context>
     <name>ActivityList</name>
     <message>
-        <location filename="../src/gui/tray/ActivityList.qml" line="24"/>
+        <location filename="../src/gui/tray/ActivityList.qml" line="30"/>
         <source>Activity list</source>
         <translation>Seznam dejavnosti</translation>
     </message>
@@ -2866,12 +2866,12 @@ zahteva skrbniška dovoljenja za dokončanje opravila.</translation>
         <translation>Kot krajevne datoteke na ravni korenske mape v okolju Windows navidezne datoteke niso podprte. Izbrati je treba ustrezno podrejeno mapo na črkovnem pogonu.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="264"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="265"/>
         <source>%1 folder &quot;%2&quot; is synced to local folder &quot;%3&quot;</source>
         <translation>%1 mapa »%2« je usklajena s krajevno mapo »%3«</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="267"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="268"/>
         <source>Sync the folder &quot;%1&quot;</source>
         <translation>Uskladi mapo » %1 «</translation>
     </message>
@@ -3444,7 +3444,7 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
         <translation>Odziv strežnika vključuje napako med branjem mape »%1«: %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1641"/>
+        <location filename="../src/libsync/discovery.cpp" line="1646"/>
         <source>Server replied with an error while reading directory &quot;%1&quot; : %2</source>
         <translation>Odziv strežnika vključuje napako med branjem mape »%1«: %2</translation>
     </message>
@@ -6200,7 +6200,7 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
         <translation>Odpri pogovorno okno souporabe</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="672"/>
+        <location filename="../src/gui/tray/Window.qml" line="681"/>
         <source>Unified search results list</source>
         <translation>Poenoten seznam rezultatov iskanja</translation>
     </message>
@@ -6211,7 +6211,7 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
         <translation>Pokaži več možnosti</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="743"/>
+        <location filename="../src/gui/tray/Window.qml" line="753"/>
         <source>%1 - File activity</source>
         <translation>%1 - Dejavnost datoteke</translation>
     </message>

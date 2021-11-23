@@ -39,7 +39,7 @@
 <context>
     <name>ActivityList</name>
     <message>
-        <location filename="../src/gui/tray/ActivityList.qml" line="24"/>
+        <location filename="../src/gui/tray/ActivityList.qml" line="30"/>
         <source>Activity list</source>
         <translation>Lista aktywności</translation>
     </message>
@@ -2868,12 +2868,12 @@ o dodatkowe uprawnienia podczas procesu aktualizacji.</translation>
         <translation>Pliki wirtualne nie są obsługiwane w przypadku katalogów głównych partycji Windows jako katalogu lokalnego. Wybierz prawidłowy podkatalog według litery dysku.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="264"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="265"/>
         <source>%1 folder &quot;%2&quot; is synced to local folder &quot;%3&quot;</source>
         <translation>Katalog %1 &quot;%2&quot; jest synchronizowany z katalogiem lokalnym &quot;%3&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="267"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="268"/>
         <source>Sync the folder &quot;%1&quot;</source>
         <translation>Synchronizuj katalog &quot;%1&quot;</translation>
     </message>
@@ -3446,7 +3446,7 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
         <translation>Serwer odpowiedział z błędem podczas odczytu katalogu &apos;%1&apos; : %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1641"/>
+        <location filename="../src/libsync/discovery.cpp" line="1646"/>
         <source>Server replied with an error while reading directory &quot;%1&quot; : %2</source>
         <translation>Serwer odpowiedział z błędem podczas odczytu katalogu &quot;%1&quot; : %2</translation>
     </message>
@@ -6202,7 +6202,7 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
         <translation>Otwórz okno udostępnienia</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="672"/>
+        <location filename="../src/gui/tray/Window.qml" line="681"/>
         <source>Unified search results list</source>
         <translation>Ujednolicona lista wyników wyszukiwania</translation>
     </message>
@@ -6213,7 +6213,7 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
         <translation>Pokaż więcej akcji</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="743"/>
+        <location filename="../src/gui/tray/Window.qml" line="753"/>
         <source>%1 - File activity</source>
         <translation>%1 — Aktywność pliku</translation>
     </message>
