@@ -16,6 +16,7 @@
 
 #include "config.h"
 
+#include <QCoreApplication>
 #include <QDir>
 #include <QStringList>
 #include <QtGlobal>
@@ -52,8 +53,15 @@ namespace OCC {
 
 Logger *Logger::instance()
 {
-    static Logger log;
-    return &log;
+    static auto *log = [] {
+        auto log = new Logger;
+        qAddPostRoutine([] {
+            Logger::instance()->close();
+            delete Logger::instance();
+        });
+        return log;
+    }();
+    return log;
 }
 
 Logger::Logger(QObject *parent)
@@ -104,6 +112,7 @@ void Logger::doLog(QtMsgType type, const QMessageLogContext &ctx, const QString 
         }
 #endif
         if (type == QtFatalMsg) {
+            dumpCrashLog();
             close();
 #if defined(Q_OS_WIN)
             // Make application terminate in a way that can be caught by the crash reporter
@@ -115,7 +124,6 @@ void Logger::doLog(QtMsgType type, const QMessageLogContext &ctx, const QString 
 
 void Logger::close()
 {
-    dumpCrashLog();
     if (_logstream)
     {
         _logstream->flush();
