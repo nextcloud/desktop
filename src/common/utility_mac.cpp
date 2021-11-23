@@ -41,6 +41,11 @@ static void setupFavLink_private(const QString &folder)
     CFRelease(urlRef);
 }
 
+static void removeFavLink_private(const QString &folder)
+{
+    Q_UNUSED(folder)
+}
+
 bool hasLaunchOnStartup_private(const QString &)
 {
     // this is quite some duplicate code with setLaunchOnStartup, at some point we should fix this FIXME.
