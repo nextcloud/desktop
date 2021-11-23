@@ -185,6 +185,8 @@ Then, in Terminal:
    .. code-block:: bash
 
       % echo 'export CMAKE_INSTALL_PREFIX=~/Builds' >> ~/.nextcloud_build_variables
+      # If you want to build a macOS app bundle for distribution
+      % echo 'export BUILD_OWNCLOUD_OSX_BUNDLE=ON' >> ~/.nextcloud_build_variables
       
    Replace ``~/Builds`` with a different directory if you'd like the build to end up elsewhere.
    
