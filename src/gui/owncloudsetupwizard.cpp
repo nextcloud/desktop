@@ -170,11 +170,14 @@ void OwncloudSetupWizard::slotFoundServer(const QUrl &url, const QJsonObject &in
             _ocWizard->account()->setUrl(url);
         } else {
             auto accountState = new AccountState(_ocWizard->account());
-            connect(accountState, &AccountState::urlUpdated, this, [accountState, this] {
-                accountState->deleteLater();
-                slotDetermineAuthType();
-            });
-            accountState->updateUrlDialog(url);
+            if (auto dialog = accountState->updateUrlDialog(url)) {
+                // Dialog is show, make sure the accountState is deleted when the dialog is done.
+                connect(dialog, &QDialog::finished, accountState, &QObject::deleteLater);
+                connect(accountState, &AccountState::urlUpdated, this, &OwncloudSetupWizard::slotDetermineAuthType);
+            } else {
+                // No dialog is show, we're done with the accountState.
+                delete accountState;
+            }
             return;
         }
     }

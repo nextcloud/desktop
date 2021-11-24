@@ -45,11 +45,13 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcAccountState, "gui.account.state", QtInfoMsg)
 
-void AccountState::updateUrlDialog(const QUrl &newUrl)
+// Returns the dialog when one is shown, so callers can attach to signals. If no dialog is shown
+// (because there is one already, or the new URL matches the current URL), a nullptr is returned.
+QDialog *AccountState::updateUrlDialog(const QUrl &newUrl)
 {
     // guard to prevent multiple dialogs
     if (_updateUrlDialog) {
-        return;
+        return nullptr;
     }
     auto accept = [=] {
         _account->setUrl(newUrl);
@@ -71,7 +73,7 @@ void AccountState::updateUrlDialog(const QUrl &newUrl)
 
     if (matchUrl(newUrl, _account->url())) {
         accept();
-        return;
+        return nullptr;
     }
 
     _updateUrlDialog = new QMessageBox(QMessageBox::Warning, tr("Url update requested for %1").arg(_account->displayName()),
@@ -86,6 +88,7 @@ void AccountState::updateUrlDialog(const QUrl &newUrl)
         }
     });
     _updateUrlDialog->show();
+    return _updateUrlDialog;
 }
 
 AccountState::AccountState(AccountPtr account)

@@ -25,8 +25,9 @@
 #include "creds/abstractcredentials.h"
 #include <memory>
 
-class QSettings;
+class QDialog;
 class QMessageBox;
+class QSettings;
 
 namespace OCC {
 
@@ -132,7 +133,7 @@ public:
      *  was not so long ago.
      */
     void tagLastSuccessfullETagRequest(const QDateTime &tp);
-    void updateUrlDialog(const QUrl &url);
+    QDialog *updateUrlDialog(const QUrl &url);
 
 public slots:
     /// Triggers a ping to the server to update state and
