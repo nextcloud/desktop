@@ -51,7 +51,7 @@ namespace {
 // TODO: 2.11 move to the new Platform class
 struct
 {
-    HANDLE windowMessageWatcherEvent = CreateEventW(nullptr, true, false, L"watchWMEvent");
+    HANDLE windowMessageWatcherEvent = CreateEventW(nullptr, true, false, nullptr);
     bool windowMessageWatcherRun = true;
 } watchWMCtx;
 
