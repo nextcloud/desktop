@@ -108,4 +108,9 @@ static inline bool hasDarkSystray_private()
     return true;
 }
 
+QString Utility::getCurrentUserName()
+{
+    return {};
+}
+
 } // namespace OCC
