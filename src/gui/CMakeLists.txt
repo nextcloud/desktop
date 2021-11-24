@@ -258,6 +258,10 @@ if (NOT DEFINED APPLICATION_ICON_NAME)
     set(APPLICATION_ICON_NAME ${APPLICATION_SHORTNAME})
 endif()
 
+if(NOT DEFINED APPLICATION_FOLDER_ICON_INDEX)
+    set(APPLICATION_FOLDER_ICON_INDEX 0)
+endif()
+
 # Generate png icons from svg
 find_program(SVG_CONVERTER
   NAMES inkscape inkscape.exe rsvg-convert
@@ -269,8 +273,23 @@ if (NOT SVG_CONVERTER)
 endif()
 
 function(generate_sized_png_from_svg icon_path size)
+  set(options)
+  set(oneValueArgs OUTPUT_ICON_NAME OUTPUT_ICON_PATH)
+  set(multiValueArgs)
+
+  cmake_parse_arguments(ARG "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
+
   get_filename_component(icon_name_dir ${icon_path} DIRECTORY)
   get_filename_component(icon_name_wle ${icon_path} NAME_WLE)
+
+  if (ARG_OUTPUT_ICON_NAME)
+    set(icon_name_wle ${ARG_OUTPUT_ICON_NAME})
+  endif ()
+
+  if (ARG_OUTPUT_ICON_PATH)
+    set(icon_name_dir ${ARG_OUTPUT_ICON_PATH})
+  endif ()
+  
 
   if (EXISTS "${icon_name_dir}/${size}-${icon_name_wle}.png")
     return()
@@ -317,22 +336,84 @@ if(WIN32)
 endif()
 
 set(APP_ICON_SVG "${theme_dir}/colored/${APPLICATION_ICON_NAME}-icon.svg")
-generate_sized_png_from_svg(${APP_ICON_SVG} 16)
-generate_sized_png_from_svg(${APP_ICON_SVG} 24)
-generate_sized_png_from_svg(${APP_ICON_SVG} 32)
-generate_sized_png_from_svg(${APP_ICON_SVG} 48)
-generate_sized_png_from_svg(${APP_ICON_SVG} 64)
-generate_sized_png_from_svg(${APP_ICON_SVG} 128)
-generate_sized_png_from_svg(${APP_ICON_SVG} 256)
-generate_sized_png_from_svg(${APP_ICON_SVG} 512)
-generate_sized_png_from_svg(${APP_ICON_SVG} 1024)
+
+# generate secondary icon if available (currently for Windows only)--------------------------------------
+set(APP_SECONDARY_ICONS "${theme_dir}/colored/icons")
+set(APP_ICON_WIN_FOLDER_SVG "${APP_SECONDARY_ICONS}/${APPLICATION_ICON_NAME}-icon-win-folder.svg")
+
+set(RC_DEPENDENCIES "")
+
+if (EXISTS ${APP_ICON_WIN_FOLDER_SVG})
+    get_filename_component(output_icon_name_win ${APP_ICON_WIN_FOLDER_SVG} NAME_WLE)
+    # Product icon (for smallest size)
+    foreach(size IN ITEMS 16;20)
+        generate_sized_png_from_svg(${APP_ICON_SVG} ${size} OUTPUT_ICON_NAME ${output_icon_name_win} OUTPUT_ICON_PATH "${APP_SECONDARY_ICONS}/")
+    endforeach()
+
+    # Product icon with Windows folder (for sizes larger than 20)
+    foreach(size IN ITEMS 24;32;40;48;64;128;256;512;1024)
+        generate_sized_png_from_svg(${APP_ICON_WIN_FOLDER_SVG} ${size} OUTPUT_ICON_NAME ${output_icon_name_win} OUTPUT_ICON_PATH "${APP_SECONDARY_ICONS}/")
+    endforeach()
+
+    file(GLOB_RECURSE OWNCLOUD_ICONS_WIN_FOLDER "${APP_SECONDARY_ICONS}/*-${APPLICATION_ICON_NAME}-icon*")
+    set(APP_ICON_WIN_FOLDER_ICO_NAME "${APPLICATION_ICON_NAME}-win-folder")
+    set(RC_DEPENDENCIES "${RC_DEPENDENCIES} ${APP_ICON_WIN_FOLDER_ICO_NAME}.ico")
+    ecm_add_app_icon(APP_ICON_WIN_FOLDER ICONS "${OWNCLOUD_ICONS_WIN_FOLDER}" SIDEBAR_ICONS "${OWNCLOUD_SIDEBAR_ICONS}" OUTFILE_BASENAME "${APP_ICON_WIN_FOLDER_ICO_NAME}" ICON_INDEX 2)
+endif()
+# --------------------------------------
+
+if (NOT ${RC_DEPENDENCIES} STREQUAL "")
+    string(STRIP ${RC_DEPENDENCIES} RC_DEPENDENCIES)
+endif()
+
+# generate primary icon from SVG (due to Win .ico vs .rc dependency issues, primary icon must always be generated last)--------------------------------------
+if(WIN32)
+    foreach(size IN ITEMS 16;20;24;32;40;48;64;128;256;512;1024)
+        generate_sized_png_from_svg(${APP_ICON_SVG} ${size})
+    endforeach()
+else()
+    foreach(size IN ITEMS 16;24;32;48;64;128;256;512;1024)
+        generate_sized_png_from_svg(${APP_ICON_SVG} ${size})
+    endforeach()
+endif()
 
 file(GLOB_RECURSE OWNCLOUD_ICONS "${theme_dir}/colored/*-${APPLICATION_ICON_NAME}-icon*")
+
 if(APPLE)
     file(GLOB_RECURSE OWNCLOUD_SIDEBAR_ICONS "${theme_dir}/colored/*-${APPLICATION_ICON_NAME}-sidebar*")
     MESSAGE(STATUS "OWNCLOUD_SIDEBAR_ICONS: ${APPLICATION_ICON_NAME}: ${OWNCLOUD_SIDEBAR_ICONS}")
 endif()
-ecm_add_app_icon(APP_ICON ICONS "${OWNCLOUD_ICONS}" SIDEBAR_ICONS "${OWNCLOUD_SIDEBAR_ICONS}" OUTFILE_BASENAME "${APPLICATION_ICON_NAME}")
+
+ecm_add_app_icon(APP_ICON RC_DEPENDENCIES ${RC_DEPENDENCIES} ICONS "${OWNCLOUD_ICONS}" SIDEBAR_ICONS "${OWNCLOUD_SIDEBAR_ICONS}" OUTFILE_BASENAME "${APPLICATION_ICON_NAME}" ICON_INDEX 1)
+# --------------------------------------
+
+if(WIN32)
+# merge *.rc.in files for Windows (multiple ICON resources must be placed in a single file, otherwise, this won't work de to a bug in Windows compiler https://developercommunity.visualstudio.com/t/visual-studio-2017-prof-1557-cvt1100-duplicate-res/363156)
+    function(merge_files IN_FILE OUT_FILE)
+        file(READ ${IN_FILE} CONTENTS)
+        message("Merging ${IN_FILE} into ${OUT_FILE}")
+        file(APPEND ${OUT_FILE} "${CONTENTS}")
+    endfunction()
+    message("APP_ICON is: ${APP_ICON}")
+    if(APP_ICON)
+        get_filename_component(RC_IN_FOLDER ${APP_ICON}} DIRECTORY)
+
+        file(GLOB_RECURSE RC_IN_FILES "${RC_IN_FOLDER}/*rc.in")
+
+        foreach(rc_in_file IN ITEMS ${RC_IN_FILES})
+          get_filename_component(rc_in_file_name ${rc_in_file} NAME)
+          get_filename_component(app_icon_name "${APP_ICON}.in" NAME)
+          if(NOT "${rc_in_file_name}" STREQUAL "${app_icon_name}")
+              merge_files(${rc_in_file} "${APP_ICON}.in")
+              if (DEFINED APPLICATION_FOLDER_ICON_INDEX)
+                  MATH(EXPR APPLICATION_FOLDER_ICON_INDEX "${APPLICATION_FOLDER_ICON_INDEX}+1")
+                  message("APPLICATION_FOLDER_ICON_INDEX is now set to: ${APPLICATION_FOLDER_ICON_INDEX}")
+              endif()
+          endif()
+        endforeach()
+    endif()
+endif()
+# --------------------------------------
 
 if(UNIX AND NOT APPLE)
   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIE")
@@ -545,3 +626,5 @@ if(NOT BUILD_OWNCLOUD_OSX_BUNDLE AND NOT WIN32)
         update_xdg_mimetypes( ${CMAKE_INSTALL_DATADIR}/mime/packages )
     endif(SharedMimeInfo_FOUND)
 endif()
+
+configure_file(configgui.h.in ${CMAKE_CURRENT_BINARY_DIR}/configgui.h)

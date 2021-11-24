@@ -18,6 +18,7 @@
 
 #include "asserts.h"
 #include "utility.h"
+#include "gui/configgui.h"
 
 #include <comdef.h>
 #include <Lmcons.h>
@@ -48,7 +49,14 @@ static void setupFavLink_private(const QString &folder)
         desktopIni.open(QFile::WriteOnly);
         desktopIni.write("[.ShellClassInfo]\r\nIconResource=");
         desktopIni.write(QDir::toNativeSeparators(qApp->applicationFilePath()).toUtf8());
-        desktopIni.write(",0\r\n");
+#ifdef APPLICATION_FOLDER_ICON_INDEX
+        const auto iconIndex = APPLICATION_FOLDER_ICON_INDEX;
+#else
+        const auto iconIndex = "0";
+#endif
+        desktopIni.write(",");
+        desktopIni.write(iconIndex);
+        desktopIni.write("\r\n");
         desktopIni.close();
 
         // Set the folder as system and Desktop.ini as hidden+system for explorer to pick it.
