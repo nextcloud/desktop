@@ -41,6 +41,18 @@ bool itemDidCompleteSuccessfullyWithExpectedRank(const ItemCompletedSpy &spy, co
     return false;
 }
 
+int itemSuccessfullyCompletedGetRank(const ItemCompletedSpy &spy, const QString &path)
+{
+    auto itItem = std::find_if(spy.begin(), spy.end(), [&path] (auto currentItem) {
+        auto item = currentItem[0].template value<OCC::SyncFileItemPtr>();
+        return item->destination() == path;
+    });
+    if (itItem != spy.end()) {
+        return itItem - spy.begin();
+    }
+    return -1;
+}
+
 class TestSyncEngine : public QObject
 {
     Q_OBJECT
@@ -92,6 +104,8 @@ private slots:
 
     void testDirUploadWithDelayedAlgorithm() {
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
+        fakeFolder.syncEngine().account()->setCapabilities({ { "dav", QVariantMap{ {"bulkupload", "1.0"} } } });
+
         ItemCompletedSpy completeSpy(fakeFolder);
         fakeFolder.localModifier().mkdir("Y");
         fakeFolder.localModifier().insert("Y/d0");
@@ -104,12 +118,18 @@ private slots:
         fakeFolder.syncOnce();
         QVERIFY(itemDidCompleteSuccessfullyWithExpectedRank(completeSpy, "Y", 0));
         QVERIFY(itemDidCompleteSuccessfullyWithExpectedRank(completeSpy, "Z", 1));
-        QVERIFY(itemDidCompleteSuccessfullyWithExpectedRank(completeSpy, "Y/d0", 2));
-        QVERIFY(itemDidCompleteSuccessfullyWithExpectedRank(completeSpy, "Z/d0", 3));
-        QVERIFY(itemDidCompleteSuccessfullyWithExpectedRank(completeSpy, "A/a0", 4));
-        QVERIFY(itemDidCompleteSuccessfullyWithExpectedRank(completeSpy, "B/b0", 5));
-        QVERIFY(itemDidCompleteSuccessfullyWithExpectedRank(completeSpy, "r0", 6));
-        QVERIFY(itemDidCompleteSuccessfullyWithExpectedRank(completeSpy, "r1", 7));
+        QVERIFY(itemDidCompleteSuccessfully(completeSpy, "Y/d0"));
+        QVERIFY(itemSuccessfullyCompletedGetRank(completeSpy, "Y/d0") > 1);
+        QVERIFY(itemDidCompleteSuccessfully(completeSpy, "Z/d0"));
+        QVERIFY(itemSuccessfullyCompletedGetRank(completeSpy, "Z/d0") > 1);
+        QVERIFY(itemDidCompleteSuccessfully(completeSpy, "A/a0"));
+        QVERIFY(itemSuccessfullyCompletedGetRank(completeSpy, "A/a0") > 1);
+        QVERIFY(itemDidCompleteSuccessfully(completeSpy, "B/b0"));
+        QVERIFY(itemSuccessfullyCompletedGetRank(completeSpy, "B/b0") > 1);
+        QVERIFY(itemDidCompleteSuccessfully(completeSpy, "r0"));
+        QVERIFY(itemSuccessfullyCompletedGetRank(completeSpy, "r0") > 1);
+        QVERIFY(itemDidCompleteSuccessfully(completeSpy, "r1"));
+        QVERIFY(itemSuccessfullyCompletedGetRank(completeSpy, "r1") > 1);
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
     }
 
@@ -490,7 +510,9 @@ private slots:
         int remoteQuota = 1000;
         int n507 = 0, nPUT = 0;
         QObject parent;
-        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *) -> QNetworkReply * {
+        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *outgoingData) -> QNetworkReply * {
+            Q_UNUSED(outgoingData)
+
             if (op == QNetworkAccessManager::PutOperation) {
                 nPUT++;
                 if (request.rawHeader("OC-Total-Length").toInt() > remoteQuota) {
@@ -775,6 +797,95 @@ private slots:
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
         QCOMPARE(QFileInfo(fakeFolder.localPath() + "foo").lastModified(), datetime);
+    }
+
+    /**
+     * Checks whether subsequent large uploads are skipped after a 507 error
+     */
+    void testErrorsWithBulkUpload()
+    {
+        FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
+        fakeFolder.syncEngine().account()->setCapabilities({ { "dav", QVariantMap{ {"bulkupload", "1.0"} } } });
+
+        // Disable parallel uploads
+        SyncOptions syncOptions;
+        syncOptions._parallelNetworkJobs = 0;
+        fakeFolder.syncEngine().setSyncOptions(syncOptions);
+
+        int nPUT = 0;
+        int nPOST = 0;
+        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *outgoingData) -> QNetworkReply * {
+            auto contentType = request.header(QNetworkRequest::ContentTypeHeader).toString();
+            if (op == QNetworkAccessManager::PostOperation) {
+                ++nPOST;
+                if (contentType.startsWith(QStringLiteral("multipart/related; boundary="))) {
+                    auto jsonReplyObject = fakeFolder.forEachReplyPart(outgoingData, contentType, [] (const QMap<QString, QByteArray> &allHeaders) -> QJsonObject {
+                        auto reply = QJsonObject{};
+                        const auto fileName = allHeaders[QStringLiteral("X-File-Path")];
+                        if (fileName.endsWith("A/big2") ||
+                                fileName.endsWith("A/big3") ||
+                                fileName.endsWith("A/big4") ||
+                                fileName.endsWith("A/big5") ||
+                                fileName.endsWith("A/big7") ||
+                                fileName.endsWith("B/big8")) {
+                            reply.insert(QStringLiteral("error"), true);
+                            reply.insert(QStringLiteral("etag"), {});
+                            return reply;
+                        } else {
+                            reply.insert(QStringLiteral("error"), false);
+                            reply.insert(QStringLiteral("etag"), {});
+                        }
+                        return reply;
+                    });
+                    if (jsonReplyObject.size()) {
+                        auto jsonReply = QJsonDocument{};
+                        jsonReply.setObject(jsonReplyObject);
+                        return new FakeJsonErrorReply{op, request, this, 200, jsonReply};
+                    }
+                    return  nullptr;
+                }
+            } else if (op == QNetworkAccessManager::PutOperation) {
+                ++nPUT;
+                const auto fileName = getFilePathFromUrl(request.url());
+                if (fileName.endsWith("A/big2") ||
+                        fileName.endsWith("A/big3") ||
+                        fileName.endsWith("A/big4") ||
+                        fileName.endsWith("A/big5") ||
+                        fileName.endsWith("A/big7") ||
+                        fileName.endsWith("B/big8")) {
+                    return new FakeErrorReply(op, request, this, 412);
+                }
+                return  nullptr;
+            }
+            return  nullptr;
+        });
+
+        fakeFolder.localModifier().insert("A/big", 1);
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(nPUT, 0);
+        QCOMPARE(nPOST, 1);
+        nPUT = 0;
+        nPOST = 0;
+
+        fakeFolder.localModifier().insert("A/big1", 1); // ok
+        fakeFolder.localModifier().insert("A/big2", 1); // ko
+        fakeFolder.localModifier().insert("A/big3", 1); // ko
+        fakeFolder.localModifier().insert("A/big4", 1); // ko
+        fakeFolder.localModifier().insert("A/big5", 1); // ko
+        fakeFolder.localModifier().insert("A/big6", 1); // ok
+        fakeFolder.localModifier().insert("A/big7", 1); // ko
+        fakeFolder.localModifier().insert("A/big8", 1); // ok
+        fakeFolder.localModifier().insert("B/big8", 1); // ko
+
+        QVERIFY(!fakeFolder.syncOnce());
+        QCOMPARE(nPUT, 0);
+        QCOMPARE(nPOST, 1);
+        nPUT = 0;
+        nPOST = 0;
+
+        QVERIFY(!fakeFolder.syncOnce());
+        QCOMPARE(nPUT, 6);
+        QCOMPARE(nPOST, 0);
     }
 };
 

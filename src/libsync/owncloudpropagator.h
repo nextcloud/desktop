@@ -31,6 +31,8 @@
 #include "accountfwd.h"
 #include "syncoptions.h"
 
+#include <deque>
+
 namespace OCC {
 
 Q_DECLARE_LOGGING_CATEGORY(lcPropagator)
@@ -45,6 +47,8 @@ qint64 criticalFreeSpaceLimit();
  * Uploads will still run and downloads that are small enough will continue too.
  */
 qint64 freeSpaceLimit();
+
+void blacklistUpdate(SyncJournalDb *journal, SyncFileItem &item);
 
 class SyncJournalDb;
 class OwncloudPropagator;
@@ -380,19 +384,6 @@ private:
     bool scheduleDelayedJobs();
 };
 
-class BulkPropagatorJob : public PropagatorCompositeJob
-{
-    Q_OBJECT
-public:
-
-    explicit BulkPropagatorJob(OwncloudPropagator *propagator,
-                               const QVector<SyncFileItemPtr> &items);
-
-private:
-
-    QVector<SyncFileItemPtr> _items;
-};
-
 /**
  * @brief Dummy job that just mark it as completed and ignored
  * @ingroup libsync
@@ -431,7 +422,8 @@ public:
 
 public:
     OwncloudPropagator(AccountPtr account, const QString &localDir,
-        const QString &remoteFolder, SyncJournalDb *progressDb)
+                       const QString &remoteFolder, SyncJournalDb *progressDb,
+                       QSet<QString> &bulkUploadBlackList)
         : _journal(progressDb)
         , _finishedEmited(false)
         , _bandwidthManager(this)
@@ -440,6 +432,7 @@ public:
         , _account(account)
         , _localDir((localDir.endsWith(QChar('/'))) ? localDir : localDir + '/')
         , _remoteFolder((remoteFolder.endsWith(QChar('/'))) ? remoteFolder : remoteFolder + '/')
+        , _bulkUploadBlackList(bulkUploadBlackList)
     {
         qRegisterMetaType<PropagatorJob::AbortType>("PropagatorJob::AbortType");
     }
@@ -611,7 +604,7 @@ public:
 
     Q_REQUIRED_RESULT bool isDelayedUploadItem(const SyncFileItemPtr &item) const;
 
-    Q_REQUIRED_RESULT const QVector<SyncFileItemPtr>& delayedTasks() const
+    Q_REQUIRED_RESULT const std::deque<SyncFileItemPtr>& delayedTasks() const
     {
         return _delayedTasks;
     }
@@ -619,6 +612,12 @@ public:
     void setScheduleDelayedTasks(bool active);
 
     void clearDelayedTasks();
+
+    void addToBulkUploadBlackList(const QString &file);
+
+    void removeFromBulkUploadBlackList(const QString &file);
+
+    bool isInBulkUploadBlackList(const QString &file) const;
 
 private slots:
 
@@ -674,8 +673,12 @@ private:
     const QString _localDir; // absolute path to the local directory. ends with '/'
     const QString _remoteFolder; // remote folder, ends with '/'
 
-    QVector<SyncFileItemPtr> _delayedTasks;
+    std::deque<SyncFileItemPtr> _delayedTasks;
     bool _scheduleDelayedTasks = false;
+
+    QSet<QString> &_bulkUploadBlackList;
+
+    static bool _allowDelayedUpload;
 };
 
 

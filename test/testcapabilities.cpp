@@ -243,6 +243,20 @@ private slots:
 
         QCOMPARE(defaultSharePermissionsAvailable, 31);
     }
+
+    void testBulkUploadAvailable_bulkUploadAvailable_returnTrue()
+    {
+        QVariantMap bulkuploadMap;
+        bulkuploadMap["bulkupload"] = "1.0";
+
+        QVariantMap capabilitiesMap;
+        capabilitiesMap["dav"] = bulkuploadMap;
+
+        const auto &capabilities = OCC::Capabilities(capabilitiesMap);
+        const auto bulkuploadAvailable = capabilities.bulkUpload();
+
+        QCOMPARE(bulkuploadAvailable, true);
+    }
 };
 
 QTEST_GUILESS_MAIN(TestCapabilities)

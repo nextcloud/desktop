@@ -77,7 +77,7 @@ public:
     bool timedOut() const { return _timedout; }
 
     /** Returns an error message, if any. */
-    QString errorString() const;
+    virtual QString errorString() const;
 
     /** Like errorString, but also checking the reply body for information.
      *
@@ -137,6 +137,9 @@ protected:
     QNetworkReply *sendRequest(const QByteArray &verb, const QString &relativePath,
         QNetworkRequest req = QNetworkRequest(),
         QIODevice *requestBody = nullptr);
+
+    QNetworkReply *sendRequest(const QByteArray &verb, const QUrl &url,
+        QNetworkRequest req, QHttpMultiPart *requestBody);
 
     /** Makes this job drive a pre-made QNetworkReply
      *

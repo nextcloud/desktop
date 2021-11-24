@@ -216,6 +216,11 @@ bool Capabilities::chunkingNg() const
     return _capabilities["dav"].toMap()["chunking"].toByteArray() >= "1.0";
 }
 
+bool Capabilities::bulkUpload() const
+{
+    return _capabilities["dav"].toMap()["bulkupload"].toByteArray() >= "1.0";
+}
+
 bool Capabilities::userStatus() const
 {
     if (!_capabilities.contains("user_status")) {

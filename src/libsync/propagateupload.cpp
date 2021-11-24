@@ -49,25 +49,6 @@ Q_LOGGING_CATEGORY(lcPropagateUpload, "nextcloud.sync.propagator.upload", QtInfo
 Q_LOGGING_CATEGORY(lcPropagateUploadV1, "nextcloud.sync.propagator.upload.v1", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcPropagateUploadNG, "nextcloud.sync.propagator.upload.ng", QtInfoMsg)
 
-/**
- * We do not want to upload files that are currently being modified.
- * To avoid that, we don't upload files that have a modification time
- * that is too close to the current time.
- *
- * This interacts with the msBetweenRequestAndSync delay in the folder
- * manager. If that delay between file-change notification and sync
- * has passed, we should accept the file for upload here.
- */
-static bool fileIsStillChanging(const SyncFileItem &item)
-{
-    const QDateTime modtime = Utility::qDateTimeFromTime_t(item._modtime);
-    const qint64 msSinceMod = modtime.msecsTo(QDateTime::currentDateTimeUtc());
-
-    return std::chrono::milliseconds(msSinceMod) < SyncEngine::minimumFileAgeForUpload
-        // if the mtime is too much in the future we *do* upload the file
-        && msSinceMod > -10000;
-}
-
 PUTFileJob::~PUTFileJob()
 {
     // Make sure that we destroy the QNetworkReply before our _device of which it keeps an internal pointer.
