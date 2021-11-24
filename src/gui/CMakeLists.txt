@@ -2,9 +2,9 @@ include(ECMAddAppIcon)
 
 find_package(Qt5 REQUIRED COMPONENTS Widgets)
 
-#if (WIN32)
-#    find_package(Qt5 REQUIRED COMPONENTS WinExtras)
-#endif()
+if (WIN32)
+    find_package(Qt5 REQUIRED COMPONENTS WinExtras)
+endif()
 
 add_subdirectory(updater)
 
@@ -176,7 +176,7 @@ elseif( WIN32 )
             guiutility_win.cpp
             folderwatcher_win.cpp
             navigationpanehelper.cpp)
-#    target_link_libraries(owncloudCore PUBLIC Qt5::WinExtras)
+    target_link_libraries(owncloudCore PUBLIC Qt5::WinExtras)
 elseif(UNIX AND NOT APPLE )
     ## handle DBUS for Fdo notifications
     find_package(Qt5 COMPONENTS DBus)
