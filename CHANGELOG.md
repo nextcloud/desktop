@@ -3,25 +3,20 @@ Changelog for ownCloud Desktop Client [unreleased] (UNRELEASED)
 The following sections list the changes in ownCloud Desktop Client unreleased relevant to
 ownCloud admins and users.
 
-[unreleased]: https://github.com/owncloud/client/compare/v2.9.1...master
+[unreleased]: https://github.com/owncloud/client/compare/v2.9.2...master
 
 Summary
 -------
 
 * Bugfix - Add request time and other missing data to .owncloudsync.log: [#7348](https://github.com/owncloud/client/issues/7348)
 * Bugfix - Do not ask for credentails at start-up when the user logged out: [#8924](https://github.com/owncloud/client/issues/8924)
-* Bugfix - Properly handle Windows log off: [#8979](https://github.com/owncloud/client/issues/8979)
 * Bugfix - Fix copy url location for private links: [#9048](https://github.com/owncloud/client/issues/9048)
 * Bugfix - Immediately propagate changes to the ignore list: [#8975](https://github.com/owncloud/client/issues/8975)
 * Bugfix - Fix icon name in desktop file with ownBrander themes: [#8992](https://github.com/owncloud/client/issues/8992)
-* Bugfix - Disable vfs option is ignored: [#9159](https://github.com/owncloud/client/issues/9159)
 * Bugfix - Crash when handling locked files: [#9170](https://github.com/owncloud/client/issues/9170)
-* Bugfix - The client no longer idles after a minor url change: [#9202](https://github.com/owncloud/client/pull/9202)
-* Bugfix - Config migration on systems with a 2.4 and a 2.8 config: [#9224](https://github.com/owncloud/client/issues/9224)
+* Bugfix - Display correct error message for files containign `\:?*"<>|`: [#9223](https://github.com/owncloud/client/pull/9223/)
 * Change - Make sharedialog preview be more resilient: [#8938](https://github.com/owncloud/client/issues/8938)
 * Enhancement - Allow to remove broken sync folders: [#9099](https://github.com/owncloud/client/pull/9099)
-* Enhancement - Add branding option to disable icons in the file explorer: [#9167](https://github.com/owncloud/client/issues/9167)
-* Enhancement - Branding option to disable warning for multiple sync_journal.db's: [#9216](https://github.com/owncloud/client/pull/9216)
 
 Details
 -------
@@ -40,15 +35,6 @@ Details
    out before in the account settings.
 
    https://github.com/owncloud/client/issues/8924
-
-* Bugfix - Properly handle Windows log off: [#8979](https://github.com/owncloud/client/issues/8979)
-
-   We now ensure that we receive the window messages dispatched by the system.
-
-   https://github.com/owncloud/client/issues/8979
-   https://github.com/owncloud/client/pull/9142
-   https://github.com/owncloud/client/pull/9220
-   https://github.com/owncloud/client/pull/9227
 
 * Bugfix - Fix copy url location for private links: [#9048](https://github.com/owncloud/client/issues/9048)
 
@@ -71,18 +57,71 @@ Details
    https://github.com/owncloud/client/issues/8992
    https://github.com/owncloud/client/pull/9150
 
+* Bugfix - Crash when handling locked files: [#9170](https://github.com/owncloud/client/issues/9170)
+
+   We fixed a crash that could occur when trying to add a locked folder to the databse.
+
+   https://github.com/owncloud/client/issues/9170
+
+* Bugfix - Display correct error message for files containign `\:?*"<>|`: [#9223](https://github.com/owncloud/client/pull/9223/)
+
+   While the error message was supposed to be: `File names containing the character '%1' are not
+   supported on this file system.`
+
+   We displayed: `The file name is a reserved name on this file system.`
+
+   https://github.com/owncloud/client/pull/9223/
+
+* Change - Make sharedialog preview be more resilient: [#8938](https://github.com/owncloud/client/issues/8938)
+
+   We no longer enforce png thumbnails. We no longer replace the file icon if the thumbnail is
+   invalid.
+
+   https://github.com/owncloud/client/issues/8938
+   https://github.com/owncloud/client/pull/8939
+
+* Enhancement - Allow to remove broken sync folders: [#9099](https://github.com/owncloud/client/pull/9099)
+
+   In case a folder is no longer available it was not possible to remove the folder. We now made the
+   remove action available in that case.
+
+   https://github.com/owncloud/client/pull/9099
+
+Changelog for ownCloud Desktop Client [2.9.2] (2021-11-24)
+=======================================
+The following sections list the changes in ownCloud Desktop Client 2.9.2 relevant to
+ownCloud admins and users.
+
+[2.9.2]: https://github.com/owncloud/client/compare/v2.9.1...v2.9.2
+
+Summary
+-------
+
+* Bugfix - Properly handle Windows log off: [#8979](https://github.com/owncloud/client/issues/8979)
+* Bugfix - Disable vfs option is ignored: [#9159](https://github.com/owncloud/client/issues/9159)
+* Bugfix - The client no longer idles after a minor url change: [#9202](https://github.com/owncloud/client/pull/9202)
+* Bugfix - Config migration on systems with a 2.4 and a 2.8 config: [#9224](https://github.com/owncloud/client/issues/9224)
+* Enhancement - Add branding option to disable icons in the file explorer: [#9167](https://github.com/owncloud/client/issues/9167)
+* Enhancement - Branding option to disable warning for multiple sync_journal.db's: [#9216](https://github.com/owncloud/client/pull/9216)
+
+Details
+-------
+
+* Bugfix - Properly handle Windows log off: [#8979](https://github.com/owncloud/client/issues/8979)
+
+   We now ensure that we receive the window messages dispatched by the system.
+
+   https://github.com/owncloud/client/issues/8979
+   https://github.com/owncloud/client/pull/9142
+   https://github.com/owncloud/client/pull/9220
+   https://github.com/owncloud/client/pull/9227
+
 * Bugfix - Disable vfs option is ignored: [#9159](https://github.com/owncloud/client/issues/9159)
 
    We fixed a branding issue where vfs was used even when the parameter was set to disabled.
 
    https://github.com/owncloud/client/issues/9159
    https://github.com/owncloud/enterprise/issues/4820
-
-* Bugfix - Crash when handling locked files: [#9170](https://github.com/owncloud/client/issues/9170)
-
-   We fixed a crash that could occur when trying to add a locked folder to the databse.
-
-   https://github.com/owncloud/client/issues/9170
 
 * Bugfix - The client no longer idles after a minor url change: [#9202](https://github.com/owncloud/client/pull/9202)
 
@@ -100,21 +139,6 @@ Details
 
    https://github.com/owncloud/client/issues/9224
    https://github.com/owncloud/client/pull/9226
-
-* Change - Make sharedialog preview be more resilient: [#8938](https://github.com/owncloud/client/issues/8938)
-
-   We no longer enforce png thumbnails. We no longer replace the file icon if the thumbnail is
-   invalid.
-
-   https://github.com/owncloud/client/issues/8938
-   https://github.com/owncloud/client/pull/8939
-
-* Enhancement - Allow to remove broken sync folders: [#9099](https://github.com/owncloud/client/pull/9099)
-
-   In case a folder is no longer available it was not possible to remove the folder. We now made the
-   remove action available in that case.
-
-   https://github.com/owncloud/client/pull/9099
 
 * Enhancement - Add branding option to disable icons in the file explorer: [#9167](https://github.com/owncloud/client/issues/9167)
 
