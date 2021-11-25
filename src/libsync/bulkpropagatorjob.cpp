@@ -301,11 +301,10 @@ void BulkPropagatorJob::slotOnErrorStartFolderUnlock(SyncFileItemPtr item,
 
 void BulkPropagatorJob::slotPutFinishedOneFile(const BulkUploadItem &singleFile,
                                                PutMultiFileJob *job,
-                                               const QJsonObject &fullReplyObject)
+                                               const QJsonObject &fileReply)
 {
     bool finished = false;
 
-    const auto fileReply = fullReplyObject.value(QChar('/') + singleFile._item->_file).toObject();
     qCInfo(lcBulkPropagatorJob()) << singleFile._item->_file << "file headers" << fileReply;
 
     if (!fileReply[QStringLiteral("error")].toBool()) {
@@ -371,8 +370,12 @@ void BulkPropagatorJob::slotPutFinished()
     const auto replyJson = QJsonDocument::fromJson(replyData);
     const auto fullReplyObject = replyJson.object();
 
-    for (const auto &oneFile : _filesToUpload) {
-        slotPutFinishedOneFile(oneFile, job, fullReplyObject);
+    for (const auto &singleFile : _filesToUpload) {
+        if (!fullReplyObject.contains(singleFile._remotePath)) {
+            continue;
+        }
+        const auto singleReplyObject = fullReplyObject[singleFile._remotePath].toObject();
+        slotPutFinishedOneFile(singleFile, job, singleReplyObject);
     }
 
     finalize();
