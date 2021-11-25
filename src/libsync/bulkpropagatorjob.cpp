@@ -84,6 +84,9 @@ bool BulkPropagatorJob::scheduleSelfOrChild()
     if (_items.empty()) {
         return false;
     }
+    if (!_pendingChecksumFiles.empty()) {
+        return false;
+    }
 
     _state = Running;
     for(int i = 0; i < batchSize && !_items.empty(); ++i) {
