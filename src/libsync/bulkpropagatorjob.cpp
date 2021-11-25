@@ -320,7 +320,7 @@ void BulkPropagatorJob::slotPutFinishedOneFile(const BulkUploadItem &singleFile,
     singleFile._item->_responseTimeStamp = job->responseTimestamp();
     singleFile._item->_requestId = job->requestId();
     if (singleFile._item->_httpErrorCode != 200) {
-        commonErrorHandling(singleFile._item);
+        commonErrorHandling(singleFile._item, fileReply[QStringLiteral("message")].toString());
         return;
     }
 
@@ -583,12 +583,13 @@ void BulkPropagatorJob::checkResettingErrors(SyncFileItemPtr item) const
     }
 }
 
-void BulkPropagatorJob::commonErrorHandling(SyncFileItemPtr item)
+void BulkPropagatorJob::commonErrorHandling(SyncFileItemPtr item,
+                                            const QString &errorMessage)
 {
     // Ensure errors that should eventually reset the chunked upload are tracked.
     checkResettingErrors(item);
 
-    abortWithError(item, SyncFileItem::NormalError, tr("Error"));
+    abortWithError(item, SyncFileItem::NormalError, errorMessage);
 }
 
 bool BulkPropagatorJob::checkFileStillExists(SyncFileItemPtr item,

@@ -127,7 +127,8 @@ private:
     /**
      * Error handling functionality that is shared between jobs.
      */
-    void commonErrorHandling(SyncFileItemPtr item);
+    void commonErrorHandling(SyncFileItemPtr item,
+                             const QString &errorMessage);
 
     bool checkFileStillExists(SyncFileItemPtr item,
                               const bool finished,
