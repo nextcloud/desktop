@@ -874,6 +874,55 @@ Ekintza honek unean uneko sinkronizazioa bertan behera utziko du.</translation>
     </message>
 </context>
 <context>
+    <name>OCC::BulkPropagatorJob</name>
+    <message>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="115"/>
+        <source>File %1 cannot be uploaded because another file with the same name, differing only in case, exists</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="259"/>
+        <source>File Removed (start upload) %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="269"/>
+        <source>Local file changed during syncing. It will be resumed.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="280"/>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="597"/>
+        <source>Local file changed during sync.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="407"/>
+        <source>Error updating metadata: %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="410"/>
+        <source>The file %1 is currently in use</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="571"/>
+        <source>Error</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="580"/>
+        <source>The local file was removed during sync.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="627"/>
+        <source>; Restoration Failed: %1</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>OCC::CleanupPollsJob</name>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1159"/>
@@ -1127,7 +1176,7 @@ Baliteke OpenSSL liburutegiekin arazoa egotea.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="118"/>
-        <location filename="../src/gui/creds/flow2auth.cpp" line="226"/>
+        <location filename="../src/gui/creds/flow2auth.cpp" line="236"/>
         <source>There was an error accessing the &quot;token&quot; endpoint: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
         <translation>Errore bat gertatu da &quot;token&quot; amaierako puntuan sartzean: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
