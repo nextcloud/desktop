@@ -194,8 +194,10 @@ void BulkPropagatorJob::triggerUpload()
             if (FileSystem::isFileLocked(singleFile._localPath)) {
                 emit propagator()->seenLockedFile(singleFile._localPath);
             }
-            // Soft error because this is likely caused by the user modifying his files while syncing
-            abortWithError(singleFile._item, SyncFileItem::SoftError, device->errorString());
+
+            abortWithError(singleFile._item, SyncFileItem::NormalError, device->errorString());
+            emit finished(SyncFileItem::NormalError);
+
             return;
         }
         singleFile._headers["X-File-Path"] = singleFile._remotePath.toUtf8();
