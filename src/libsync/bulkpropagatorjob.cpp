@@ -64,6 +64,8 @@ QByteArray getHeaderFromJsonReply(const QJsonObject &reply, const QByteArray &he
     return reply.value(headerName).toString().toLatin1();
 }
 
+constexpr auto batchSize = 100;
+
 }
 
 namespace OCC {
@@ -73,7 +75,8 @@ BulkPropagatorJob::BulkPropagatorJob(OwncloudPropagator *propagator,
     : PropagatorJob(propagator)
     , _items(items)
 {
-    _filesToUpload.reserve(100);
+    _filesToUpload.reserve(batchSize);
+    _pendingChecksumFiles.reserve(batchSize);
 }
 
 bool BulkPropagatorJob::scheduleSelfOrChild()
@@ -83,7 +86,7 @@ bool BulkPropagatorJob::scheduleSelfOrChild()
     }
 
     _state = Running;
-    for(int i = 0; i < 100 && !_items.empty(); ++i) {
+    for(int i = 0; i < batchSize && !_items.empty(); ++i) {
         auto currentItem = _items.front();
         _items.pop_front();
         _pendingChecksumFiles.insert(currentItem->_file);
