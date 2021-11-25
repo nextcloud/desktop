@@ -66,6 +66,7 @@ QByteArray getHeaderFromJsonReply(const QJsonObject &reply, const QByteArray &he
 
 constexpr auto batchSize = 100;
 
+constexpr auto parallelJobsMaximumCount = 1;
 }
 
 namespace OCC {
@@ -107,7 +108,7 @@ bool BulkPropagatorJob::scheduleSelfOrChild()
 
 PropagatorJob::JobParallelism BulkPropagatorJob::parallelism()
 {
-    return PropagatorJob::JobParallelism::WaitForFinished;
+    return PropagatorJob::JobParallelism::FullParallelism;
 }
 
 void BulkPropagatorJob::startUploadFile(SyncFileItemPtr item, UploadFileInfo fileToUpload)
@@ -225,6 +226,9 @@ void BulkPropagatorJob::triggerUpload()
     adjustLastJobTimeout(job.get(), timeout);
     _jobs.append(job.get());
     job.release()->start();
+    if (parallelism() == PropagatorJob::JobParallelism::FullParallelism && _jobs.size() < parallelJobsMaximumCount) {
+        scheduleSelfOrChild();
+    }
 }
 
 void BulkPropagatorJob::slotComputeTransmissionChecksum(SyncFileItemPtr item,
@@ -378,7 +382,7 @@ void BulkPropagatorJob::slotPutFinished()
         slotPutFinishedOneFile(singleFile, job, singleReplyObject);
     }
 
-    finalize();
+    finalize(fullReplyObject);
 }
 
 void BulkPropagatorJob::slotUploadProgress(SyncFileItemPtr item, qint64 sent, qint64 total)
@@ -438,18 +442,23 @@ void BulkPropagatorJob::finalizeOneFile(const BulkUploadItem &oneFile)
     propagator()->_journal->commit("upload file start");
 }
 
-void BulkPropagatorJob::finalize()
+void BulkPropagatorJob::finalize(const QJsonObject &fullReply)
 {
-    for(const auto &oneFile : _filesToUpload) {
-        if (!oneFile._item->hasErrorStatus()) {
-            finalizeOneFile(oneFile);
+    for(auto singleFileIt = std::begin(_filesToUpload); singleFileIt != std::end(_filesToUpload); ) {
+        const auto &singleFile = *singleFileIt;
+
+        if (!fullReply.contains(singleFile._remotePath)) {
+            ++singleFileIt;
+            continue;
+        }
+        if (!singleFile._item->hasErrorStatus()) {
+            finalizeOneFile(singleFile);
         }
 
-        done(oneFile._item, oneFile._item->_status, {});
-    }
+        done(singleFile._item, singleFile._item->_status, {});
 
-    Q_ASSERT(!_filesToUpload.empty());
-    _filesToUpload.clear();
+        singleFileIt = _filesToUpload.erase(singleFileIt);
+    }
 
     if (_items.empty()) {
         if (!_jobs.empty()) {

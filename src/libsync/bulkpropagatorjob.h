@@ -98,7 +98,7 @@ private:
     void adjustLastJobTimeout(AbstractNetworkJob *job,
                               qint64 fileSize) const;
 
-    void finalize();
+    void finalize(const QJsonObject &fullReply);
 
     void finalizeOneFile(const BulkUploadItem &oneFile);
 
