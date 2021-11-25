@@ -283,7 +283,6 @@ void PropagateUploadFileNG::slotDeleteJobFinished()
     }
 }
 
-
 void PropagateUploadFileNG::startNewUpload()
 {
     OC_ASSERT(propagator()->_activeJobList.count(this) == 1);

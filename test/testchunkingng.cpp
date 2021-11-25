@@ -12,9 +12,17 @@
 using namespace std::chrono_literals;
 using namespace OCC;
 
+namespace {
+
+const QVariantMap TestCapabilities = {
+    { "dav", QVariantMap { { "chunking", "1.0" } } },
+    { "checksums", QVariantMap { { "preferredUploadType", "md5" } } }
+};
+
+
 /* Upload a 1/3 of a file of given size.
  * fakeFolder needs to be synchronized */
-static void partialUpload(FakeFolder &fakeFolder, const QString &name, qint64 size)
+void partialUpload(FakeFolder &fakeFolder, const QString &name, qint64 size)
 {
     QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
     QCOMPARE(fakeFolder.uploadState().children.count(), 0); // The state should be clean
@@ -42,13 +50,14 @@ static void partialUpload(FakeFolder &fakeFolder, const QString &name, qint64 si
 }
 
 // Reduce max chunk size a bit so we get more chunks
-static void setChunkSize(SyncEngine &engine, qint64 size)
+void setChunkSize(SyncEngine &engine, qint64 size)
 {
     SyncOptions options;
     options._maxChunkSize = size;
     options._initialChunkSize = size;
     options._minChunkSize = size;
     engine.setSyncOptions(options);
+}
 }
 
 class TestChunkingNG : public QObject
@@ -59,7 +68,7 @@ private slots:
 
     void testFileUpload() {
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
-        fakeFolder.syncEngine().account()->setCapabilities({ { "dav", QVariantMap{ {"chunking", "1.0"} } } });
+        fakeFolder.syncEngine().account()->setCapabilities(TestCapabilities);
         setChunkSize(fakeFolder.syncEngine(), 1 * 1000 * 1000);
         const int size = 10 * 1000 * 1000; // 10 MB
 
@@ -79,7 +88,7 @@ private slots:
     // Test resuming when there's a confusing chunk added
     void testResume1() {
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
-        fakeFolder.syncEngine().account()->setCapabilities({ { "dav", QVariantMap{ {"chunking", "1.0"} } } });
+        fakeFolder.syncEngine().account()->setCapabilities(TestCapabilities);
         const int size = 10 * 1000 * 1000; // 10 MB
         setChunkSize(fakeFolder.syncEngine(), 1 * 1000 * 1000);
 
@@ -115,7 +124,7 @@ private slots:
     // Test resuming when one of the uploaded chunks got removed
     void testResume2() {
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
-        fakeFolder.syncEngine().account()->setCapabilities({ { "dav", QVariantMap{ {"chunking", "1.0"} } } });
+        fakeFolder.syncEngine().account()->setCapabilities(TestCapabilities);
         setChunkSize(fakeFolder.syncEngine(), 1 * 1000 * 1000);
         const int size = 150 * 1000 * 1000; // 30 MB
         partialUpload(fakeFolder, "A/a0", size);
@@ -170,7 +179,7 @@ private slots:
     // Test resuming when all chunks are already present
     void testResume3() {
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
-        fakeFolder.syncEngine().account()->setCapabilities({ { "dav", QVariantMap{ {"chunking", "1.0"} } } });
+        fakeFolder.syncEngine().account()->setCapabilities(TestCapabilities);
         const int size = 30 * 1000 * 1000; // 30 MB
         setChunkSize(fakeFolder.syncEngine(), 1 * 1000 * 1000);
 
@@ -215,7 +224,7 @@ private slots:
     // chunk sizes being larger than the file size
     void testResume4() {
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
-        fakeFolder.syncEngine().account()->setCapabilities({ { "dav", QVariantMap{ {"chunking", "1.0"} } } });
+        fakeFolder.syncEngine().account()->setCapabilities(TestCapabilities);
         const int size = 30 * 1000 * 1000; // 300 MB
         setChunkSize(fakeFolder.syncEngine(), 1 * 1000 * 1000);
 
@@ -370,7 +379,7 @@ private slots:
     void testRemoveStale1() {
 
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
-        fakeFolder.syncEngine().account()->setCapabilities({ { "dav", QVariantMap{ {"chunking", "1.0"} } } });
+        fakeFolder.syncEngine().account()->setCapabilities(TestCapabilities);
         const int size = 10 * 1000 * 1000; // 10 MB
         setChunkSize(fakeFolder.syncEngine(), 1 * 1000 * 1000);
 
@@ -395,7 +404,7 @@ private slots:
     void testRemoveStale2() {
 
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
-        fakeFolder.syncEngine().account()->setCapabilities({ { "dav", QVariantMap{ {"chunking", "1.0"} } } });
+        fakeFolder.syncEngine().account()->setCapabilities(TestCapabilities);
         const int size = 10 * 1000 * 1000; // 10 MB
         setChunkSize(fakeFolder.syncEngine(), 1 * 1000 * 1000);
 
@@ -411,7 +420,7 @@ private slots:
 
     void testCreateConflictWhileSyncing() {
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
-        fakeFolder.syncEngine().account()->setCapabilities({ { "dav", QVariantMap{ {"chunking", "1.0"} } } });
+        fakeFolder.syncEngine().account()->setCapabilities(TestCapabilities);
         const int size = 10 * 1000 * 1000; // 10 MB
         setChunkSize(fakeFolder.syncEngine(), 1 * 1000 * 1000);
 
@@ -467,7 +476,7 @@ private slots:
     void testModifyLocalFileWhileUploading() {
 
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
-        fakeFolder.syncEngine().account()->setCapabilities({ { "dav", QVariantMap{ {"chunking", "1.0"} } } });
+        fakeFolder.syncEngine().account()->setCapabilities(TestCapabilities);
         const int size = 10 * 1000 * 1000; // 100 MB
         setChunkSize(fakeFolder.syncEngine(), 1 * 1000 * 1000);
 
@@ -506,7 +515,7 @@ private slots:
     void testResumeServerDeletedChunks() {
 
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
-        fakeFolder.syncEngine().account()->setCapabilities({ { "dav", QVariantMap{ {"chunking", "1.0"} } } });
+        fakeFolder.syncEngine().account()->setCapabilities(TestCapabilities);
         const int size = 30 * 1000 * 1000; // 30 MB
         setChunkSize(fakeFolder.syncEngine(), 1 * 1000 * 1000);
         partialUpload(fakeFolder, "A/a0", size);
@@ -591,7 +600,7 @@ private slots:
 
     void testPercentEncoding() {
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
-        fakeFolder.syncEngine().account()->setCapabilities({ { "dav", QVariantMap{ {"chunking", "1.0"} } } });
+        fakeFolder.syncEngine().account()->setCapabilities(TestCapabilities);
         const int size = 5 * 1000 * 1000;
         setChunkSize(fakeFolder.syncEngine(), 1 * 1000 * 1000);
 
@@ -608,7 +617,7 @@ private slots:
     // Test uploading large files (2.5GiB)
     void testVeryBigFiles() {
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
-        fakeFolder.syncEngine().account()->setCapabilities({ { "dav", QVariantMap{ {"chunking", "1.0"} } } });
+        fakeFolder.syncEngine().account()->setCapabilities(TestCapabilities);
         const qint64 size = 2.5 * 1024 * 1024 * 1024; // 2.5 GiB
 
         // Partial upload of big files
