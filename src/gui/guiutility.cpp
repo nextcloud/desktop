@@ -33,8 +33,6 @@
 
 using namespace std::chrono;
 using namespace std::chrono_literals;
-
-#include "version.h"
 #endif
 
 #include "theme.h"
