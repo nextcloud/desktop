@@ -307,7 +307,7 @@ void BulkPropagatorJob::slotPutFinishedOneFile(const BulkUploadItem &singleFile,
 
     qCInfo(lcBulkPropagatorJob()) << singleFile._item->_file << "file headers" << fileReply;
 
-    if (!fileReply[QStringLiteral("error")].toBool()) {
+    if (fileReply.contains("error") && !fileReply[QStringLiteral("error")].toBool()) {
         singleFile._item->_httpErrorCode = static_cast<quint16>(200);
     } else {
         singleFile._item->_httpErrorCode = static_cast<quint16>(412);
