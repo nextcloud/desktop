@@ -878,48 +878,48 @@ Současně tato akce zruší jakoukoli právě probíhající synchronizaci.</tr
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="115"/>
         <source>File %1 cannot be uploaded because another file with the same name, differing only in case, exists</source>
-        <translation type="unfinished"/>
+        <translation>Soubor %1 nelze nahrát, protože existuje jiný soubor se stejným názvem, lišící se pouze velikostí písmen</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="259"/>
         <source>File Removed (start upload) %1</source>
-        <translation type="unfinished"/>
+        <translation>Soubor odebrán (zahájit nahrávání) %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="269"/>
         <source>Local file changed during syncing. It will be resumed.</source>
-        <translation type="unfinished"/>
+        <translation>Místní soubor se během synchronizace změnil. Bude zopakována.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="280"/>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="597"/>
         <source>Local file changed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>Místní soubor byl změněn během synchronizace.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="407"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Chyba při aktualizování metadat: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="410"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Soubor %1 je v tuto chvíli používán jinou aplikací</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="571"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>Chyba</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="580"/>
         <source>The local file was removed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>Místní soubor byl odstraněn během synchronizace.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="627"/>
         <source>; Restoration Failed: %1</source>
-        <translation type="unfinished"/>
+        <translation>; Obnovení se nezdařilo: %1</translation>
     </message>
 </context>
 <context>

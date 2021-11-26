@@ -878,48 +878,48 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="115"/>
         <source>File %1 cannot be uploaded because another file with the same name, differing only in case, exists</source>
-        <translation type="unfinished"/>
+        <translation>無法上傳 %1 檔案，因為另一個僅有大小寫不同的相同名稱檔案已存在</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="259"/>
         <source>File Removed (start upload) %1</source>
-        <translation type="unfinished"/>
+        <translation>已移除檔案（開始上傳）%1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="269"/>
         <source>Local file changed during syncing. It will be resumed.</source>
-        <translation type="unfinished"/>
+        <translation>本機檔案在同步的過程中被修改。其將會被復原。</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="280"/>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="597"/>
         <source>Local file changed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>本機檔案在同步的過程中被修改。</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="407"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>更新詮釋資料時發生錯誤：%1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="410"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>檔案 %1 目前使用中</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="571"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>錯誤</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="580"/>
         <source>The local file was removed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>本機檔案在同步的過程中被移除。</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="627"/>
         <source>; Restoration Failed: %1</source>
-        <translation type="unfinished"/>
+        <translation>；復原失敗：%1</translation>
     </message>
 </context>
 <context>
@@ -3038,7 +3038,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="77"/>
         <source>Keep your data secure and under your control</source>
-        <translation>保障您資料的安全，讓您的資料在您自己的掌控之下</translation>
+        <translation>保障您的資料安全，且由您掌控</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="78"/>
@@ -5331,7 +5331,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="68"/>
         <source>Keep your data secure and under your control</source>
-        <translation>確保您的資料安全且在您的掌控之下</translation>
+        <translation>保障您的資料安全，且由您掌控</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="69"/>
