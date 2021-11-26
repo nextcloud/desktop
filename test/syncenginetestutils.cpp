@@ -488,7 +488,7 @@ void FakePutMultiFileReply::respond()
         fileInfoReply.insert("OC-FileID", QLatin1String{fileInfo->fileId});
         fileInfoReply.insert("X-OC-MTime", "accepted"); // Prevents Q_ASSERT(!_runningNow) since we'll call PropagateItemJob::done twice in that case.
         emit uploadProgress(fileInfo->size, totalSize);
-        allFileInfoReply.insert(fileInfo->path(), fileInfoReply);
+        allFileInfoReply.insert(QChar('/') + fileInfo->path(), fileInfoReply);
     }
     reply.setObject(allFileInfoReply);
     _payload = reply.toJson();

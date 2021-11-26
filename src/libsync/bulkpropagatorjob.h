@@ -98,7 +98,7 @@ private:
     void adjustLastJobTimeout(AbstractNetworkJob *job,
                               qint64 fileSize) const;
 
-    void finalize();
+    void finalize(const QJsonObject &fullReply);
 
     void finalizeOneFile(const BulkUploadItem &oneFile);
 
@@ -127,7 +127,8 @@ private:
     /**
      * Error handling functionality that is shared between jobs.
      */
-    void commonErrorHandling(SyncFileItemPtr item);
+    void commonErrorHandling(SyncFileItemPtr item,
+                             const QString &errorMessage);
 
     bool checkFileStillExists(SyncFileItemPtr item,
                               const bool finished,

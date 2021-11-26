@@ -64,6 +64,9 @@ QByteArray getHeaderFromJsonReply(const QJsonObject &reply, const QByteArray &he
     return reply.value(headerName).toString().toLatin1();
 }
 
+constexpr auto batchSize = 100;
+
+constexpr auto parallelJobsMaximumCount = 1;
 }
 
 namespace OCC {
@@ -73,7 +76,8 @@ BulkPropagatorJob::BulkPropagatorJob(OwncloudPropagator *propagator,
     : PropagatorJob(propagator)
     , _items(items)
 {
-    _filesToUpload.reserve(100);
+    _filesToUpload.reserve(batchSize);
+    _pendingChecksumFiles.reserve(batchSize);
 }
 
 bool BulkPropagatorJob::scheduleSelfOrChild()
@@ -81,9 +85,12 @@ bool BulkPropagatorJob::scheduleSelfOrChild()
     if (_items.empty()) {
         return false;
     }
+    if (!_pendingChecksumFiles.empty()) {
+        return false;
+    }
 
     _state = Running;
-    for(int i = 0; i < 100 && !_items.empty(); ++i) {
+    for(int i = 0; i < batchSize && !_items.empty(); ++i) {
         auto currentItem = _items.front();
         _items.pop_front();
         _pendingChecksumFiles.insert(currentItem->_file);
@@ -101,7 +108,7 @@ bool BulkPropagatorJob::scheduleSelfOrChild()
 
 PropagatorJob::JobParallelism BulkPropagatorJob::parallelism()
 {
-    return PropagatorJob::JobParallelism::WaitForFinished;
+    return PropagatorJob::JobParallelism::FullParallelism;
 }
 
 void BulkPropagatorJob::startUploadFile(SyncFileItemPtr item, UploadFileInfo fileToUpload)
@@ -219,6 +226,9 @@ void BulkPropagatorJob::triggerUpload()
     adjustLastJobTimeout(job.get(), timeout);
     _jobs.append(job.get());
     job.release()->start();
+    if (parallelism() == PropagatorJob::JobParallelism::FullParallelism && _jobs.size() < parallelJobsMaximumCount) {
+        scheduleSelfOrChild();
+    }
 }
 
 void BulkPropagatorJob::slotComputeTransmissionChecksum(SyncFileItemPtr item,
@@ -295,14 +305,13 @@ void BulkPropagatorJob::slotOnErrorStartFolderUnlock(SyncFileItemPtr item,
 
 void BulkPropagatorJob::slotPutFinishedOneFile(const BulkUploadItem &singleFile,
                                                PutMultiFileJob *job,
-                                               const QJsonObject &fullReplyObject)
+                                               const QJsonObject &fileReply)
 {
     bool finished = false;
 
-    const auto fileReply = fullReplyObject.value(QChar('/') + singleFile._item->_file).toObject();
     qCInfo(lcBulkPropagatorJob()) << singleFile._item->_file << "file headers" << fileReply;
 
-    if (!fileReply[QStringLiteral("error")].toBool()) {
+    if (fileReply.contains("error") && !fileReply[QStringLiteral("error")].toBool()) {
         singleFile._item->_httpErrorCode = static_cast<quint16>(200);
     } else {
         singleFile._item->_httpErrorCode = static_cast<quint16>(412);
@@ -311,7 +320,7 @@ void BulkPropagatorJob::slotPutFinishedOneFile(const BulkUploadItem &singleFile,
     singleFile._item->_responseTimeStamp = job->responseTimestamp();
     singleFile._item->_requestId = job->requestId();
     if (singleFile._item->_httpErrorCode != 200) {
-        commonErrorHandling(singleFile._item);
+        commonErrorHandling(singleFile._item, fileReply[QStringLiteral("message")].toString());
         return;
     }
 
@@ -365,11 +374,15 @@ void BulkPropagatorJob::slotPutFinished()
     const auto replyJson = QJsonDocument::fromJson(replyData);
     const auto fullReplyObject = replyJson.object();
 
-    for (const auto &oneFile : _filesToUpload) {
-        slotPutFinishedOneFile(oneFile, job, fullReplyObject);
+    for (const auto &singleFile : _filesToUpload) {
+        if (!fullReplyObject.contains(singleFile._remotePath)) {
+            continue;
+        }
+        const auto singleReplyObject = fullReplyObject[singleFile._remotePath].toObject();
+        slotPutFinishedOneFile(singleFile, job, singleReplyObject);
     }
 
-    finalize();
+    finalize(fullReplyObject);
 }
 
 void BulkPropagatorJob::slotUploadProgress(SyncFileItemPtr item, qint64 sent, qint64 total)
@@ -429,18 +442,23 @@ void BulkPropagatorJob::finalizeOneFile(const BulkUploadItem &oneFile)
     propagator()->_journal->commit("upload file start");
 }
 
-void BulkPropagatorJob::finalize()
+void BulkPropagatorJob::finalize(const QJsonObject &fullReply)
 {
-    for(const auto &oneFile : _filesToUpload) {
-        if (!oneFile._item->hasErrorStatus()) {
-            finalizeOneFile(oneFile);
+    for(auto singleFileIt = std::begin(_filesToUpload); singleFileIt != std::end(_filesToUpload); ) {
+        const auto &singleFile = *singleFileIt;
+
+        if (!fullReply.contains(singleFile._remotePath)) {
+            ++singleFileIt;
+            continue;
+        }
+        if (!singleFile._item->hasErrorStatus()) {
+            finalizeOneFile(singleFile);
         }
 
-        done(oneFile._item, oneFile._item->_status, {});
-    }
+        done(singleFile._item, singleFile._item->_status, {});
 
-    Q_ASSERT(!_filesToUpload.empty());
-    _filesToUpload.clear();
+        singleFileIt = _filesToUpload.erase(singleFileIt);
+    }
 
     if (_items.empty()) {
         if (!_jobs.empty()) {
@@ -565,12 +583,13 @@ void BulkPropagatorJob::checkResettingErrors(SyncFileItemPtr item) const
     }
 }
 
-void BulkPropagatorJob::commonErrorHandling(SyncFileItemPtr item)
+void BulkPropagatorJob::commonErrorHandling(SyncFileItemPtr item,
+                                            const QString &errorMessage)
 {
     // Ensure errors that should eventually reset the chunked upload are tracked.
     checkResettingErrors(item);
 
-    abortWithError(item, SyncFileItem::NormalError, tr("Error"));
+    abortWithError(item, SyncFileItem::NormalError, errorMessage);
 }
 
 bool BulkPropagatorJob::checkFileStillExists(SyncFileItemPtr item,
