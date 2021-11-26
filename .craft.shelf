@@ -8,7 +8,7 @@ revision = feca22a30f8d3a2122fd9b2097351fcb2da28543
 
 [craft/craft-blueprints-owncloud]
 version = master
-revision = 0e31c84c29e776a4708e4e443b47752bf8ad67a2
+revision = a75f876009e18088bb5f0428c71c8814cb0d01ee
 
 [craft/craft-core]
 version = master
