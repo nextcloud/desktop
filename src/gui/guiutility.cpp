@@ -51,7 +51,7 @@ namespace {
 // TODO: 2.11 move to the new Platform class
 struct
 {
-    HANDLE windowMessageWatcherEvent = CreateEventW(nullptr, true, false, L"watchWMEvent");
+    HANDLE windowMessageWatcherEvent = CreateEventW(nullptr, true, false, nullptr);
     bool windowMessageWatcherRun = true;
 } watchWMCtx;
 
@@ -77,7 +77,7 @@ void startShutdownWatcher()
             } else if (msg == WM_ENDSESSION) {
                 qCDebug(OCC::lcUtility) << "Received WM_ENDSESSION quitting";
                 QMetaObject::invokeMethod(qApp, &QApplication::quit);
-                QElapsedTimer shutdownTimer;
+                auto start = steady_clock::now();
                 if (lParam == ENDSESSION_LOGOFF) {
                     // block the windows shutdown until we are done
                     const QString description = QApplication::translate("Utility", "Shutting down %1").arg(Theme::instance()->appNameGUI());
@@ -87,7 +87,7 @@ void startShutdownWatcher()
                 if (lParam == ENDSESSION_LOGOFF) {
                     OC_ASSERT(ShutdownBlockReasonDestroy(hwnd));
                 }
-                qCInfo(OCC::lcUtility) << "WM_ENDSESSION successfully shut down" << shutdownTimer.elapsed();
+                qCInfo(OCC::lcUtility) << "WM_ENDSESSION successfully shut down" << (steady_clock::now() - start);
                 watchWMCtx.windowMessageWatcherRun = false;
                 return 0;
             }

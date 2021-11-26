@@ -346,5 +346,6 @@ inline bool Utility::isBSD()
 #endif
 }
 
+OCSYNC_EXPORT QDebug &operator<<(QDebug &debug, std::chrono::nanoseconds in);
 }
 #endif // UTILITY_H
