@@ -876,50 +876,45 @@ S tem dejanjem prav tako prekinete vsa trenutna usklajevanja v izvajanju.</trans
 <context>
     <name>OCC::BulkPropagatorJob</name>
     <message>
-        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="115"/>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="122"/>
         <source>File %1 cannot be uploaded because another file with the same name, differing only in case, exists</source>
-        <translation type="unfinished"/>
+        <translation>Datoteke %1 ni mogoče naložiti, saj obstaja druga, istoimenska datoteka, ki se od nje razlikuje le po velikih črkah v imenu.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="259"/>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="271"/>
         <source>File Removed (start upload) %1</source>
-        <translation type="unfinished"/>
+        <translation>Datoteka je odstranjena (začni pošiljanje) %1.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="269"/>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="281"/>
         <source>Local file changed during syncing. It will be resumed.</source>
-        <translation type="unfinished"/>
+        <translation>Krajevna datoteka je bila med usklajevanjem spremenjena. Usklajena bo, ko bo shranjena.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="280"/>
-        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="597"/>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="292"/>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="618"/>
         <source>Local file changed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>Krajevna datoteka je bila med usklajevanjem spremenjena.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="407"/>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="422"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Prišlo je do napake posodabljanja metapodatkov: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="410"/>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="425"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Datoteka %1 je trenutno v uporabi.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="571"/>
-        <source>Error</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="580"/>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="601"/>
         <source>The local file was removed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>Krajevna datoteka je bila med usklajevanjem odstranjena.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="627"/>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="648"/>
         <source>; Restoration Failed: %1</source>
-        <translation type="unfinished"/>
+        <translation>Obnovitev je spodletela: %1</translation>
     </message>
 </context>
 <context>
@@ -5098,22 +5093,22 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
     <message>
         <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="374"/>
         <source>Failed to fetch providers.</source>
-        <translation>Pridobivanje ponudnikov je spodletelo</translation>
+        <translation>Pridobivanje ponudnikov je spodletelo.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="385"/>
         <source>Failed to fetch search providers for &apos;%1&apos;. Error: %2</source>
-        <translation>Spodletelo je pridobivanje iskanja za &apos;%1&apos;. Napaka %2</translation>
+        <translation>Spodletelo je pridobivanje ponudnikov iskanja za »%1«. Napaka %2</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="419"/>
         <source>Search has failed for &apos;%2&apos;.</source>
-        <translation>Spodletelo je iskanje za &apos;%2&apos;.</translation>
+        <translation>Iskanje »%2« je spodletelo.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="448"/>
         <source>Search has failed for &apos;%1&apos;. Error: %2</source>
-        <translation>Spodletelo je iskanje za &apos;%1&apos;. Napaka: %2</translation>
+        <translation>Iskanje »%1« je spodletelo. Napaka: %2</translation>
     </message>
 </context>
 <context>
@@ -5187,17 +5182,17 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="148"/>
         <source>User status feature is not supported. You will not be able to set your user status.</source>
-        <translation>Funkcija statusa uporabnika ni podprta. Uporabniškega statusa ne boste mogli nastaviti.</translation>
+        <translation>Možnost prikaza stanja uporabnika ni podprta. Uporabniškega statusa ne bo mogoče nastaviti.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="152"/>
         <source>Emojis feature is not supported. Some user status functionality may not work.</source>
-        <translation>Funkcija emotikonov ni podrprta.  Nekatere funkcije statusa uporabnika morda ne bodo delovale.</translation>
+        <translation>Možnost uporabe izraznih ikon ni podprta. Nekatere možnosti stanja uporabnika morda ne bodo na voljo.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="156"/>
         <source>Could not set user status. Make sure you are connected to the server.</source>
-        <translation>Ni mogoče nastaviti stanja uporabnika. Prepričajte se, da ste povezani s strežnikom.</translation>
+        <translation>Stanja uporabnika ni mogoče nastaviti. Prepričajte se, da ste povezani s strežnikom.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="160"/>
@@ -5483,7 +5478,7 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="418"/>
         <source>Checking for changes in remote &quot;%1&quot;</source>
-        <translation>Poteka preverjanje sprememb na oddaljenem mestu »%1«</translation>
+        <translation>Poteka preverjanje sprememb na oddaljenem mestu »%1«.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="419"/>
@@ -5493,7 +5488,7 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="421"/>
         <source>Checking for changes in local &quot;%1&quot;</source>
-        <translation>Poteka preverjanje za krajevne spremembe v »%1«</translation>
+        <translation>Poteka preverjanje za krajevne spremembe v »%1«.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="437"/>
@@ -5888,7 +5883,7 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
     <message>
         <location filename="../src/gui/tray/UnifiedSearchInputContainer.qml" line="25"/>
         <source>Search files, messages, events …</source>
-        <translation>Iskanje datotek, sporočil, dogodkov, ...</translation>
+        <translation>Iskanje datotek, sporočil, dogodkov ...</translation>
     </message>
 </context>
 <context>
@@ -5896,7 +5891,7 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
     <message>
         <location filename="../src/gui/tray/UnifiedSearchResultFetchMoreTrigger.qml" line="24"/>
         <source>Load more results</source>
-        <translation>Naloži več rezultatov</translation>
+        <translation>Naloži več zadetkov</translation>
     </message>
 </context>
 <context>
@@ -5904,7 +5899,7 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
     <message>
         <location filename="../src/gui/tray/UnifiedSearchResultItemSkeleton.qml" line="25"/>
         <source>Search result skeleton.</source>
-        <translation>Rezultat iskanja skeleta.</translation>
+        <translation>Skelet zadetkov iskanja.</translation>
     </message>
 </context>
 <context>
@@ -5912,7 +5907,7 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
     <message>
         <location filename="../src/gui/tray/UnifiedSearchResultListItem.qml" line="37"/>
         <source>Load more results</source>
-        <translation>Naloži več rezultatov</translation>
+        <translation>Naloži več zadetkov</translation>
     </message>
 </context>
 <context>
@@ -6116,12 +6111,12 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
     <message>
         <location filename="../src/common/checksums.cpp" line="367"/>
         <source>The checksum header contained an unknown checksum type &quot;%1&quot;</source>
-        <translation>Zaglavje kontrolne vsote vsebuje neznan tip kontrolne vsote »%1«</translation>
+        <translation>Glava nadzorne vsote vsebuje neznano vrsto zapisa »%1«.</translation>
     </message>
     <message>
         <location filename="../src/common/checksums.cpp" line="371"/>
         <source>The downloaded file does not match the checksum, it will be resumed. &quot;%1&quot; != &quot;%2&quot;</source>
-        <translation>Prenesena datoteka ni skladna s kontrolno vsoto, zato bo prenos ponovljen. &apos;%1&apos; != &apos;%2&apos;</translation>
+        <translation>Nadzorna vsota prejete datoteke ni skladna s varnostno nadzorno vsoto, zato bo prejem ponovljen. »%1« != »%2«</translation>
     </message>
 </context>
 <context>
@@ -6251,7 +6246,7 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
     <message>
         <location filename="../src/gui/tray/Window.qml" line="681"/>
         <source>Unified search results list</source>
-        <translation>Poenoten seznam rezultatov iskanja</translation>
+        <translation>Poenoten seznam zadetkov iskanja</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="720"/>
@@ -6262,7 +6257,7 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
     <message>
         <location filename="../src/gui/tray/Window.qml" line="753"/>
         <source>%1 - File activity</source>
-        <translation>%1 - Dejavnost datoteke</translation>
+        <translation>%1 – Dejavnost datoteke</translation>
     </message>
 </context>
 <context>
@@ -6280,7 +6275,7 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
     <message>
         <location filename="../src/gui/main.cpp" line="45"/>
         <source>%1 requires on a working system tray. If you are running XFCE, please follow &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;these instructions&lt;/a&gt;. Otherwise, please install a system tray application such as &quot;trayer&quot; and try again.</source>
-        <translation>%1 zahteva uporabo sistemske obvestilne vrstice. Pri uporabnikih namizja XFCE je treba upoštevati &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt; ta navodila &lt;/a&gt;. V nasprotnem primeru namestite aplikacijo za sistemsko obvestilno vrstico, kot je &quot;trayer&quot;, in poskusite znova.</translation>
+        <translation>%1 zahteva uporabo sistemske obvestilne vrstice. Pri uporabnikih namizja XFCE je treba upoštevati &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt; ta navodila &lt;/a&gt;. V nasprotnem primeru namestite program sistemske obvestilne vrstice, kot je »trayer«&quot; in poskusite znova.</translation>
     </message>
 </context>
 <context>
