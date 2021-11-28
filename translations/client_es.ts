@@ -878,43 +878,43 @@ Además, esta acción interrumpirá cualquier sincronización en curso.</transla
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="122"/>
         <source>File %1 cannot be uploaded because another file with the same name, differing only in case, exists</source>
-        <translation type="unfinished"/>
+        <translation>El archivo %1 no se puede subir porque ya existe otro con el mismo nombre, solo difiere en las mayúsculas/minúsculas</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="271"/>
         <source>File Removed (start upload) %1</source>
-        <translation type="unfinished"/>
+        <translation>Archivo eliminado (comenzar subida) %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="281"/>
         <source>Local file changed during syncing. It will be resumed.</source>
-        <translation type="unfinished"/>
+        <translation>Un archivo local ha cambiado durante la sincronización. Será subido.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="292"/>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="618"/>
         <source>Local file changed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>Un archivo local ha cambiado durante la sincronización.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="422"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Error al actualizar los metadatos: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="425"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>El archivo %1 se encuentra en uso</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="601"/>
         <source>The local file was removed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>El archivo local ha sido eliminado durante la sincronización.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="648"/>
         <source>; Restoration Failed: %1</source>
-        <translation type="unfinished"/>
+        <translation>; Fallo al restaurar: %1</translation>
     </message>
 </context>
 <context>
