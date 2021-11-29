@@ -707,6 +707,7 @@ OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> OCC::CfApiWrapper::up
     OCC::Utility::UnixTimeToLargeIntegerFiletime(modtime, &metadata.BasicInfo.LastWriteTime);
     OCC::Utility::UnixTimeToLargeIntegerFiletime(modtime, &metadata.BasicInfo.LastAccessTime);
     OCC::Utility::UnixTimeToLargeIntegerFiletime(modtime, &metadata.BasicInfo.ChangeTime);
+    metadata.BasicInfo.FileAttributes = 0;
 
     const qint64 result = CfUpdatePlaceholder(handle.get(), &metadata,
                                               fileIdentity.data(), sizeToDWORD(fileIdentitySize),
