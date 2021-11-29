@@ -47,7 +47,7 @@ jobs:
       - name: commit and push
         if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
         run: |
-          if( -not (git stash list)) {
+          if(git stash list) {
               git stash pop
               install -d -m 0700 ~/.ssh
               Set-Content -Value "${{ secrets.DEPLOYMENT_SSH_KEY }}" -Path ~/.ssh/id_ed25519
