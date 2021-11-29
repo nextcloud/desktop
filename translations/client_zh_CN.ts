@@ -4,7 +4,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityActionButton.qml" line="42"/>
         <source>Activity action button</source>
-        <translation>动态操作按钮按钮</translation>
+        <translation>动态操作按钮</translation>
     </message>
 </context>
 <context>
