@@ -72,7 +72,7 @@ int c_utimes(const QString &uri, const struct timeval *times) {
     }
 
     hFile = CreateFileW(reinterpret_cast<const wchar_t *>(wuri.utf16()), FILE_WRITE_ATTRIBUTES, FILE_SHARE_DELETE | FILE_SHARE_READ | FILE_SHARE_WRITE,
-        NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL + FILE_FLAG_BACKUP_SEMANTICS, NULL);
+        NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL | FILE_FLAG_BACKUP_SEMANTICS, NULL);
     if(hFile==INVALID_HANDLE_VALUE) {
         const auto error = GetLastError();
         qCWarning(lcCSyncCtime) << Q_FUNC_INFO << "for" << wuri << "failed with error:" << OCC::Utility::formatWinError(error);
