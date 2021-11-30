@@ -24,7 +24,7 @@ https://github.com/owncloud/client.
 
 ## Building the source code
 
-[Building the Client](https://doc.owncloud.org/desktop/building.html)
+[Building the Client](https://doc.owncloud.com/desktop/next/appendices/building.html)
 in the ownCloud Desktop Client manual.
 
 ## Reporting issues and contributing
