@@ -1,3 +1,4 @@
+===========
 Visual Tour
 ===========
 
@@ -11,23 +12,7 @@ as an icon in the system tray (Windows, KDE), status bar
 (macOS), or notification area (Ubuntu).
 
 .. image:: images/icon.png
-
-Main dialog
-~~~~~~~~~~~
-
-.. index:: activity, recent changes, sync activity, main dialog, adding account, account, add account, remove account
-
-The main dialog, which can be invoked from the tray icon in the
-taskbar, will show files information about the activities of the sync
-client and Nextcloud. If there are any synchronization issues, they
-will show up here. The dialog also gives information about other
-activities or notifications like Talk mentions or file changes. It
-does also show the status of the user.
-
-.. image:: images/main_dialog.png
-
-When clicking on the avatar a menu opens where it is possible to add a
-new account or removing an existing account.
+   :alt: desktop client icon
 
 Menu
 ----
@@ -45,8 +30,9 @@ A right click on the icon provides the following menu:
 .. NOTE::
     This menu is not available on macOS.
 
+
 Settings
---------
+~~~~~~~~
 
 Account Settings
 ~~~~~~~~~~~~~~~~
@@ -218,3 +204,98 @@ while syncing for a three times. These are listed in the activity view.
 There also is a button to retry the sync for another three times.
 
 For more detailed information see :ref:`ignored-files-label`.
+
+Main dialog
+-----------
+
+.. index:: activity, recent changes, sync activity, main dialog, adding account, account, add account, remove account, sync state, user status, unified search, share dialog
+
+Sync State
+~~~~~~~~~~
+
+The main dialog, which can be invoked from the tray icon in the
+taskbar, will show files information about the activities of the sync
+client and Nextcloud.
+
+
+.. image:: images/sync-state-paused.png
+   :alt: sync state paused
+
+.. image:: images/sync-state-syncing.png
+   :alt: sync state syncing
+
+.. image:: images/sync-state-synced.png
+   :alt: sync state synced
+
+
+If there are any synchronization issues, they will show up here:
+
+.. image:: images/sync-state-warnings.png
+   :alt: sync state warnings
+
+For more information on how to solve these issues see :doc:`troubleshooting`.
+
+When clicking on the avatar a menu opens where it is
+possible to add a new account or removing an existing account.
+
+.. image:: images/user-account-options.png
+   :alt: user account options
+
+
+User Status
+~~~~~~~~~~~
+
+User status is displayed in the Nextcloud desktop client's tray window.
+Default user status is always "Online" if no other status is available from the server-side.
+
+.. image:: images/status_feature_example.png
+   :alt: User Status feature in the tray window
+
+When clicking on ``Set status`` you can edit the emoji, message and the timer to clear your user status:
+
+.. image:: images/set-user-status.png
+   :alt: set user status menu option
+
+|
+
+.. image:: images/set-user-status-menu.png
+   :alt: changing the user status
+
+Activities list
+~~~~~~~~~~~~~~~
+
+The dialog also gives information about other activities or
+notifications like Talk mentions or file changes.
+It does also show the status of the user.
+
+.. image:: images/main_dialog.png
+   :alt: main dialog activities list
+
+Unified search
+~~~~~~~~~~~~~~
+
+With the unified search you can find everything you have in your server - files,
+Talk messages, calendar appointments:
+
+.. image:: images/unified-search-files.png
+   :alt: unified search files search result
+
+.. image:: images/unified-search-talk.png
+   :alt: unified search Talk conversations search result
+
+.. image:: images/unified-search-events.png
+   :alt: unified search calendar appointments search result
+
+
+Share dialog: Talk options and View Profile
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can now share a file directly in a conversation in Talk and view the sharee user profile:
+
+.. image:: images/open-share-dialog.png
+   :alt: open share dialog option
+
+|
+
+.. image:: images/share-dialog-view-profile.png
+   :alt: shared dialog sharing options

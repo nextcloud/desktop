@@ -21,7 +21,7 @@ result, the Nextcloud Client runs on Linux, Windows, and MacOS.
 The Synchronization Process
 ---------------------------
 
-The process of synchronization keeps files in two separate repositories the 
+The process of synchronization keeps files in two separate repositories the
 same. When synchronized:
 
 - If a file is added to one repository it is copied to the other synchronized repository.
@@ -93,7 +93,7 @@ traverses the file tree and compares the modification time of each file with an
 expected value stored in its database. If the value is not the same, the client
 determines that the file has been modified in the local repository.
 
-.. note:: On the local side, the modification time is a good attribute to use for 
+.. note:: On the local side, the modification time is a good attribute to use for
    detecting changes, because
    the value does not depend on time shifts and such.
 
@@ -122,7 +122,7 @@ Conflict files are always created on the client and never on the server.
 
   In ownCloud 10.0 we implemented a checksum feature which checks the file integrity on upload and download by computing a checksum after the file transfer finishes.
   The client queries the server capabilities after login to decide which checksum algorithm to use.
-  Currently, SHA1 is hard-coded in the official server release and can't be changed by the end-user. 
+  Currently, SHA1 is hard-coded in the official server release and can't be changed by the end-user.
   Note that the server additionally also supports MD5 and Adler-32, but the desktop client will always use the checksum algorithm announced in the capabilities:
 
   ::
@@ -202,14 +202,14 @@ Conflict files are always created on the client and never on the server.
   Upload
   ~~~~~~
 
-  A checksum is calculated with the previously negotiated algorithm by the client and sent along with the file in an HTTP Header. 
+  A checksum is calculated with the previously negotiated algorithm by the client and sent along with the file in an HTTP Header.
   ```OC-Checksum: [algorithm]:[checksum]```
 
   .. image:: ./images/checksums/client-activity.png
 
-  During file upload, the server computes SHA1, MD5, and Adler-32 checksums and compares one of them to the checksum supplied by the client. 
+  During file upload, the server computes SHA1, MD5, and Adler-32 checksums and compares one of them to the checksum supplied by the client.
 
-  On mismatch, the server returns HTTP Status code 400 (Bad Request) thus signaling the client that the upload failed. 
+  On mismatch, the server returns HTTP Status code 400 (Bad Request) thus signaling the client that the upload failed.
   The server then discards the upload, and the client blacklists the file:
 
   .. image:: ./images/checksums/testing-checksums.png
@@ -223,29 +223,29 @@ Conflict files are always created on the client and never on the server.
     client.</s:message>
     </d:error>
 
-  The client retries the upload using exponential back-off. 
+  The client retries the upload using exponential back-off.
   On success (matching checksum) the computed checksums are stored by the server in ``oc_filecache`` alongside the file.
 
   Chunked Upload
   ~~~~~~~~~~~~~~
 
-  Mostly same as above. 
-  The checksum of the full file is sent with every chunk of the file. 
+  Mostly same as above.
+  The checksum of the full file is sent with every chunk of the file.
   But the server only compares the checksum after receiving the checksum sent with the last chunk.
 
   Download
   ~~~~~~~~
 
   The server sends the checksum in an HTTP header with the file. (same format as above).
-  If no checksum is found in ``oc_filecache`` (freshly mounted external storage) it is computed and stored in ``oc_filecache`` on the first download. 
-  The checksum is then provided on all subsequent downloads but not on the first. 
+  If no checksum is found in ``oc_filecache`` (freshly mounted external storage) it is computed and stored in ``oc_filecache`` on the first download.
+  The checksum is then provided on all subsequent downloads but not on the first.
 
 .. _ignored-files-label:
 
 Ignored Files
 -------------
 
-The Nextcloud Client supports the ability to exclude or ignore certain files from the synchronization process. 
+The Nextcloud Client supports the ability to exclude or ignore certain files from the synchronization process.
 Some system wide file patterns that are used to exclude or ignore files are included with the client by default and the Nextcloud Client provides the ability to add custom patterns.
 
 By default, the Nextcloud Client ignores the following files:
@@ -262,18 +262,18 @@ By default, the Nextcloud Client ignores the following files:
 If a pattern selected using a checkbox in the `ignoredFilesEditor-label` (or if
 a line in the exclude file starts with the character ``]`` directly followed by
 the file pattern), files matching the pattern are considered *fleeting meta
-data*. 
+data*.
 
 These files are ignored and *removed* by the client if found in the
-synchronized folder. 
+synchronized folder.
 This is suitable for meta files created by some applications that have no sustainable meaning.
 
-If a pattern ends with the forward slash (``/``) character, only directories are matched. 
+If a pattern ends with the forward slash (``/``) character, only directories are matched.
 The pattern is only applied for directory components of filenames selected using the checkbox.
 
 To match filenames against the exclude patterns, the UNIX standard C library
-function ``fnmatch`` is used. 
-This process checks the filename against the specified pattern using standard shell wildcard pattern matching. 
+function ``fnmatch`` is used.
+This process checks the filename against the specified pattern using standard shell wildcard pattern matching.
 For more information, please refer to `The opengroup website
 <http://pubs.opengroup.org/onlinepubs/009695399/utilities/xcu_chap02.html#tag_02_13_01>`_.
 
@@ -369,7 +369,7 @@ is renamed or moved.
 Example:
 
   <oc:id>00000020oc5cfy6qqizm</oc:id>
-  
+
 End-to-end Encryption
 ---------------------
 
@@ -440,13 +440,3 @@ Files that must be removed from the local storage only, need to be dehydrated vi
 
 .. note::
     * End-to-end Encryption works with Virtual Files (VFS) but only on a per-folder level. Folders with E2EE can be made available offline in their entirety, but the individual files in them can not be retrieved on demand. This is mainly due to two technical reasons. First, the Windows VFS API is not designed for handling encrypted files. Second, while the VFS is designed to deal mostly with large files, E2EE is mostly recommended for use with small files as encrypting and decrypting large files puts large demands on the computer infrastructure.
-
-
-User Status
------------
-
-Starting from 3.2.0, user status is displayed in the Nextcloud desktop client's tray window. The icon and a text message are displayed as long as those are set in the user's account menu in the Web UI (server's website). At the moment, setting the status from the desktop client is not available.
-The status is updated almost immediately after it is set in the Web UI. Default user status is always "Online" if no other status is available from the server-side.
-
-.. image:: images/status_feature_example.png
-   :alt: User Status feature in the tray window
