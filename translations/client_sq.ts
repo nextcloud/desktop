@@ -4445,7 +4445,7 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="472"/>
         <source>Start a &amp;clean sync (Create a backup and erases the local folder!)</source>
-        <translation type="unfinished"/>
+        <translation>Nis një njëkohësim të &amp;pastër (Krijon një kopjeruajtje dhe fshin dosjen vendore!)</translation>
     </message>
 </context>
 <context>
@@ -4597,17 +4597,17 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="96"/>
         <source>Restored</source>
-        <translation type="unfinished"/>
+        <translation>E rikthyer</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="100"/>
         <source>Blacklisted</source>
-        <translation type="unfinished"/>
+        <translation>Në listë bllokimesh</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="102"/>
         <source>Excluded</source>
-        <translation type="unfinished"/>
+        <translation>E përjashtuar</translation>
     </message>
 </context>
 <context>
