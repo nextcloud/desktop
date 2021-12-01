@@ -19,12 +19,12 @@
     <message>
         <location filename="../src/3rdparty/libcrashreporter-qt/src/libcrashreporter-gui/CrashReporter.ui" line="257"/>
         <source>Send this report</source>
-        <translation type="unfinished"/>
+        <translation>Изпрати доклада</translation>
     </message>
     <message>
         <location filename="../src/3rdparty/libcrashreporter-qt/src/libcrashreporter-gui/CrashReporter.ui" line="264"/>
         <source>Don&apos;t send</source>
-        <translation type="unfinished"/>
+        <translation>Не изпращай</translation>
     </message>
     <message>
         <location filename="../src/3rdparty/libcrashreporter-qt/src/libcrashreporter-gui/CrashReporter.ui" line="284"/>
@@ -505,7 +505,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="353"/>
         <source> (experimental)</source>
-        <translation type="unfinished"/>
+        <translation>(експериментален)</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="502"/>
@@ -726,7 +726,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="462"/>
         <source>Show in file browser</source>
-        <translation type="unfinished"/>
+        <translation>Покажи в file browser</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="158"/>
@@ -836,7 +836,7 @@ File synchronization desktop utility.</source>
     <message>
         <location filename="../src/gui/application.cpp" line="610"/>
         <source>Enable debug mode.</source>
-        <translation type="unfinished"/>
+        <translation>Пуснете debug режима.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="613"/>
@@ -1403,7 +1403,7 @@ Please consider removing this folder from the account and adding it again.</sour
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="272"/>
         <source>Local folder: %1</source>
-        <translation type="unfinished"/>
+        <translation>Локална папка: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="992"/>
@@ -1560,12 +1560,12 @@ Please consider removing this folder from the account and adding it again.</sour
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="477"/>
         <source> (experimental)</source>
-        <translation type="unfinished"/>
+        <translation>(експериментален)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="509"/>
         <source>Virtual files are not available for the selected folder</source>
-        <translation type="unfinished"/>
+        <translation>Виртуалните файлове не са налични за избраната папка</translation>
     </message>
 </context>
 <context>
@@ -1992,7 +1992,7 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/gui/models/models.cpp" line="103"/>
         <source>No filter</source>
-        <translation type="unfinished"/>
+        <translation>Без филтър</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="217"/>
@@ -2002,7 +2002,7 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="296"/>
         <source>Status Filter:</source>
-        <translation type="unfinished"/>
+        <translation>Филтър на статуса:</translation>
     </message>
 </context>
 <context>
@@ -2228,7 +2228,7 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="271"/>
         <source>Unknown Error</source>
-        <translation type="unfinished"/>
+        <translation>Непозната Грешка</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="295"/>
@@ -2355,7 +2355,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="84"/>
         <source> (experimental)</source>
-        <translation type="unfinished"/>
+        <translation>(експериментален)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="84"/>
@@ -2375,7 +2375,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="208"/>
         <source>Virtual files are not available for the selected folder</source>
-        <translation type="unfinished"/>
+        <translation>Виртуалните файлове не са налични за избраната папка</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="242"/>
@@ -2844,7 +2844,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="261"/>
         <source>Failed to rename file</source>
-        <translation type="unfinished"/>
+        <translation>Неуспешно преименуване на файла</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="267"/>
@@ -3067,7 +3067,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/models/protocolitemmodel.cpp" line="134"/>
         <source>Issues</source>
-        <translation type="unfinished"/>
+        <translation>Проблеми</translation>
     </message>
     <message>
         <location filename="../src/gui/models/protocolitemmodel.cpp" line="134"/>
@@ -3120,12 +3120,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="115"/>
         <source>Show in file browser</source>
-        <translation type="unfinished"/>
+        <translation>Покажи в file browser</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="126"/>
         <source>Show in web browser</source>
-        <translation type="unfinished"/>
+        <translation>Покажи в web browser</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="139"/>
@@ -3252,7 +3252,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/settingsdialog.ui" line="14"/>
         <source>MainWindow</source>
-        <translation type="unfinished"/>
+        <translation>Главен прозорец</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.ui" line="39"/>
@@ -4262,7 +4262,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="303"/>
         <source>Up to date (%1)</source>
-        <translation type="unfinished"/>
+        <translation>Актуален (%1)</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="307"/>
@@ -4585,12 +4585,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="94"/>
         <source>File Ignored</source>
-        <translation type="unfinished"/>
+        <translation>Файлът е игнориран</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="96"/>
         <source>Restored</source>
-        <translation type="unfinished"/>
+        <translation>Върнат</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="100"/>
@@ -4663,7 +4663,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/guiutility.cpp" line="83"/>
         <source>Shutting down %1</source>
-        <translation type="unfinished"/>
+        <translation>Изключва се %1</translation>
     </message>
 </context>
 <context>
