@@ -883,7 +883,7 @@ Táto akcia zruší všetky prebiehajúce synchronizácie.</translation>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="271"/>
         <source>File removed (start upload) %1</source>
-        <translation type="unfinished"/>
+        <translation>Súbor odobratý (spustiť nahrávanie) %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="271"/>
