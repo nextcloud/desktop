@@ -882,6 +882,11 @@ Ova će radnja prekinuti bilo koju trenutačnu sinkronizaciju.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="271"/>
+        <source>File removed (start upload) %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="271"/>
         <source>File Removed (start upload) %1</source>
         <translation type="unfinished"/>
     </message>
