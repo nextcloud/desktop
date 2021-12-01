@@ -34,7 +34,8 @@ if (NOT DEFINED PACKAGE)
     set(PACKAGE "${LINUX_PACKAGE_SHORTNAME}-client")
 endif()
 
-set( CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules )
+set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules)
+set(ECM_MODULE_DIR ${CMAKE_SOURCE_DIR}/cmake/modules)
 
 include(ECMCoverageOption)
 
@@ -68,7 +69,7 @@ if(NOT WITH_CRASHREPORTER)
     message(STATUS "Build of crashreporter disabled.")
 endif()
 
-include(GNUInstallDirs)
+include(KDEInstallDirs)
 include(DefineInstallationPaths)
 include(GenerateExportHeader)
 
