@@ -401,6 +401,7 @@ void WebFlowCredentials::setAccount(Account *account) {
 QString WebFlowCredentials::fetchUser() {
     _user = _account->credentialSetting(userC).toString();
     return _user;
+    // test change
 }
 
 void WebFlowCredentials::slotAuthentication(QNetworkReply *reply, QAuthenticator *authenticator) {
