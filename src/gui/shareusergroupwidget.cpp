@@ -337,10 +337,10 @@ void ShareUserGroupWidget::slotAdjustScrollWidgetSize()
 
     const auto shareUserLineChildsCount = shareUserLineChilds.count();
     scrollArea->setVisible(shareUserLineChildsCount > 0);
-    if (shareUserLineChildsCount > 0 && shareUserLineChildsCount <= 3) {
+    if (shareUserLineChildsCount > 0) {
         scrollArea->setFixedHeight(scrollArea->widget()->sizeHint().height());
     }
-    scrollArea->setFrameShape(shareUserLineChildsCount > 3 ? QFrame::StyledPanel : QFrame::NoFrame);
+    scrollArea->setFrameShape(QFrame::NoFrame);
 }
 
 void ShareUserGroupWidget::slotPrivateLinkShare()
