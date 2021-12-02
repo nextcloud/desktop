@@ -237,7 +237,7 @@ public:
 #else
         tcgetattr(STDIN_FILENO, &tios);
         termios tios_new = tios;
-        tios_new.c_lflag &= ~ECHO;
+        tios_new.c_lflag &= ~static_cast<tcflag_t>(ECHO);
         tcsetattr(STDIN_FILENO, TCSANOW, &tios_new);
 #endif
     }
@@ -263,7 +263,7 @@ private:
 QString queryPassword(const QString &user)
 {
     EchoDisabler disabler;
-    std::cout << "Password for user " << qUtf8Printable(user) << ": ";
+    std::cout << "Password for user " << qPrintable(user) << ": ";
     std::string s;
     std::getline(std::cin, s);
     return QString::fromStdString(s);
@@ -302,7 +302,7 @@ private:
 };
 #endif /* TOKEN_AUTH_ONLY */
 
-void help()
+[[noreturn]] void help()
 {
     const char *binaryName = APPLICATION_EXECUTABLE "cmd";
 
@@ -335,9 +335,9 @@ void help()
     exit(0);
 }
 
-void showVersion()
+[[noreturn]] void showVersion()
 {
-    std::cout << qUtf8Printable(Theme::instance()->versionSwitchOutput());
+    std::cout << qPrintable(Theme::instance()->versionSwitchOutput());
     exit(0);
 }
 
@@ -370,7 +370,7 @@ CmdOptions parseOptions(const QStringList &app_args)
     }
     QFileInfo fi(options.source_dir);
     if (!fi.exists()) {
-        std::cerr << "Source dir '" << qUtf8Printable(options.source_dir) << "' does not exist." << std::endl;
+        std::cerr << "Source dir '" << qPrintable(options.source_dir) << "' does not exist." << std::endl;
         exit(1);
     }
     options.source_dir = fi.absoluteFilePath();
@@ -512,7 +512,7 @@ int main(int argc, char **argv)
 
     if (!ctx.options.proxy.isNull()) {
         QString host;
-        int port = 0;
+        uint32_t port = 0;
         bool ok;
 
         QStringList pList = ctx.options.proxy.split(':');
@@ -523,13 +523,29 @@ int main(int argc, char **argv)
             if (host.startsWith("//"))
                 host.remove(0, 2);
 
-            port = pList.at(2).toInt(&ok);
+            port = pList.at(2).toUInt(&ok);
+            if (!ok || port > std::numeric_limits<uint16_t>::max()) {
+                qFatal("Invalid port number");
+            }
 
             QNetworkProxyFactory::setUseSystemConfiguration(false);
-            QNetworkProxy::setApplicationProxy(QNetworkProxy(QNetworkProxy::HttpProxy, host, port));
+            QNetworkProxy::setApplicationProxy(QNetworkProxy(QNetworkProxy::HttpProxy, host, static_cast<uint16_t>(port)));
         } else {
             qFatal("Could not read httpproxy. The proxy should have the format \"http://hostname:port\".");
         }
+    }
+
+    // Pre-flight check: verify that the file specified by --unsyncedfolders can be read by us:
+    if (!ctx.options.unsyncedfolders.isNull()) { // yes, isNull and not isEmpty because...:
+        // ... if the user entered "--unsyncedfolders ''" on the command-line, opening that will
+        // also fail
+        QFile f(ctx.options.unsyncedfolders);
+        if (!f.open(QFile::ReadOnly)) {
+            qFatal("Cannot read unsyncedfolders file '%s': %s",
+                qPrintable(ctx.options.unsyncedfolders),
+                qPrintable(f.errorString()));
+        }
+        f.close();
     }
 
     SimpleSslErrorHandler *sslErrorHandler = new SimpleSslErrorHandler;

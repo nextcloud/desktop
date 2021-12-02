@@ -1,0 +1,8 @@
+Bugfix: Do not sync when unsyncedfolders file cannot be read
+
+owncloudcmd now checks if the file specified by --unsyncedfolders exists
+and can be read, before starting the sync. If it does not exist, show an
+error message and quit immediately.
+    
+https://github.com/owncloud/client/issues/9165
+https://github.com/owncloud/client/pull/9241

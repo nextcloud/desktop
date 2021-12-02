@@ -1,0 +1,6 @@
+Bugfix: Issues with long file path
+
+We fixed another issue with long Windows paths.
+
+
+https://github.com/owncloud/enterprise/issues/4896
