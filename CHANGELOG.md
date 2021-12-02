@@ -8,6 +8,7 @@ ownCloud admins and users.
 Summary
 -------
 
+* Bugfix - Issues with long file path: [#4896](https://github.com/owncloud/enterprise/issues/4896)
 * Bugfix - Add request time and other missing data to .owncloudsync.log: [#7348](https://github.com/owncloud/client/issues/7348)
 * Bugfix - Do not ask for credentails at start-up when the user logged out: [#8924](https://github.com/owncloud/client/issues/8924)
 * Bugfix - Fix copy url location for private links: [#9048](https://github.com/owncloud/client/issues/9048)
@@ -15,11 +16,18 @@ Summary
 * Bugfix - Fix icon name in desktop file with ownBrander themes: [#8992](https://github.com/owncloud/client/issues/8992)
 * Bugfix - Crash when handling locked files: [#9170](https://github.com/owncloud/client/issues/9170)
 * Bugfix - Display correct error message for files containign `\:?*"<>|`: [#9223](https://github.com/owncloud/client/pull/9223/)
+* Bugfix - Do not sync when unsyncedfolders file cannot be read: [#9165](https://github.com/owncloud/client/issues/9165)
 * Change - Make sharedialog preview be more resilient: [#8938](https://github.com/owncloud/client/issues/8938)
 * Enhancement - Allow to remove broken sync folders: [#9099](https://github.com/owncloud/client/pull/9099)
 
 Details
 -------
+
+* Bugfix - Issues with long file path: [#4896](https://github.com/owncloud/enterprise/issues/4896)
+
+   We fixed another issue with long Windows paths.
+
+   https://github.com/owncloud/enterprise/issues/4896
 
 * Bugfix - Add request time and other missing data to .owncloudsync.log: [#7348](https://github.com/owncloud/client/issues/7348)
 
@@ -71,6 +79,14 @@ Details
    We displayed: `The file name is a reserved name on this file system.`
 
    https://github.com/owncloud/client/pull/9223/
+
+* Bugfix - Do not sync when unsyncedfolders file cannot be read: [#9165](https://github.com/owncloud/client/issues/9165)
+
+   Owncloudcmd now checks if the file specified by --unsyncedfolders exists and can be read,
+   before starting the sync. If it does not exist, show an error message and quit immediately.
+
+   https://github.com/owncloud/client/issues/9165
+   https://github.com/owncloud/client/pull/9241
 
 * Change - Make sharedialog preview be more resilient: [#8938](https://github.com/owncloud/client/issues/8938)
 
