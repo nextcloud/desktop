@@ -230,6 +230,8 @@ public:
      */
     bool serverVersionUnsupported() const;
 
+    bool isUsernamePrefillSupported() const;
+
     /** True when the server connection is using HTTP2  */
     bool isHttp2Supported() { return _http2Supported; }
     void setHttp2Supported(bool value) { _http2Supported = value; }

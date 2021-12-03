@@ -57,6 +57,7 @@ using namespace QKeychain;
 
 namespace {
 constexpr int pushNotificationsReconnectInterval = 1000 * 60 * 2;
+constexpr int usernamePrefillServerVersinMinSupportedMajor = 24;
 }
 
 namespace OCC {
@@ -627,6 +628,11 @@ bool Account::serverVersionUnsupported() const
     }
     return serverVersionInt() < makeServerVersion(NEXTCLOUD_SERVER_VERSION_MIN_SUPPORTED_MAJOR,
                NEXTCLOUD_SERVER_VERSION_MIN_SUPPORTED_MINOR, NEXTCLOUD_SERVER_VERSION_MIN_SUPPORTED_PATCH);
+}
+
+bool Account::isUsernamePrefillSupported() const
+{
+    return serverVersionInt() >= makeServerVersion(usernamePrefillServerVersinMinSupportedMajor, 0, 0);
 }
 
 void Account::setServerVersion(const QString &version)
