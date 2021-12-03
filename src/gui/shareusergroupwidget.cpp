@@ -159,7 +159,7 @@ ShareUserGroupWidget::ShareUserGroupWidget(AccountPtr account,
     // Setup the sharee search progress indicator
     //_ui->shareeHorizontalLayout->addWidget(&_pi_sharee);
 
-    _parentScrollArea = parentWidget()->findChild<QScrollArea*>("scrollArea");
+    _parentScrollArea = parentWidget()->findChild<QScrollArea*>("scrollAreaUsers");
 
     customizeStyle();
 }

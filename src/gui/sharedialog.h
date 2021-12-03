@@ -26,6 +26,7 @@
 #include <QWidget>
 
 class QProgressIndicator;
+class QVBoxLayout;
 
 namespace OCC {
 
@@ -97,6 +98,9 @@ private:
     ShareLinkWidget* _emptyShareLinkWidget = nullptr;
     ShareUserGroupWidget *_userGroupWidget = nullptr;
     QProgressIndicator *_progressIndicator = nullptr;
+    
+    QWidget *_scrollAreaLinksViewPort = nullptr;
+    QVBoxLayout *_scrollAreaLinksLayout = nullptr;
 };
 
 } // namespace OCC
