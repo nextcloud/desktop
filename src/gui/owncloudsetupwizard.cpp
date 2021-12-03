@@ -424,8 +424,10 @@ void OwncloudSetupWizard::slotAssistantFinished(int result)
                     f->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList,
                         QStringList() << QLatin1String("/"));
                 }
+                qCDebug(lcWizard) << "Local sync folder" << localFolder << "successfully created!";
+            } else {
+                qCWarning(lcWizard) << "Failed to create local sync folder!";
             }
-            qCDebug(lcWizard) << "Local sync folder" << localFolder << "successfully created!";
         }
     }
 
