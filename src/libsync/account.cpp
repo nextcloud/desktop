@@ -629,6 +629,15 @@ bool Account::serverVersionUnsupported() const
                NEXTCLOUD_SERVER_VERSION_MIN_SUPPORTED_MINOR, NEXTCLOUD_SERVER_VERSION_MIN_SUPPORTED_PATCH);
 }
 
+bool Account::isUsernamePrefillSupported() const
+{
+    if (serverVersionInt() == 0) {
+        return false;
+    }
+    return serverVersionInt() >= makeServerVersion(NEXTCLOUD_USERNAME_PREFILL_SERVER_VERSION_MIN_SUPPORTED_MAJOR,
+               0, 0);
+}
+
 void Account::setServerVersion(const QString &version)
 {
     if (version == _serverVersion) {
