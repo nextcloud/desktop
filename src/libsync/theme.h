@@ -255,13 +255,6 @@ public:
     virtual bool forbidBadSSL() const;
 
     /**
-     * Use current logged in username from the system
-     *
-     * When true, the Web login form will be pre-filled with system user name
-     */
-    bool loginWithSystemUserName() const;
-
-    /**
      * This is only usefull when previous version had a different overrideServerUrl
      * with a different auth type in that case You should then specify "http" or "shibboleth".
      * Normaly this should be left empty.
