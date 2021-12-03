@@ -419,8 +419,10 @@ void ShareUserGroupWidget::slotCompleterActivated(const QModelIndex &index)
         }
     }
     
-    _manager->createShare(_sharePath, Share::ShareType(sharee->type()),
-        sharee->shareWith(), _maxSharingPermissions, password);
+    // assign text area contents to 'initialNote' so the share will get created with 'note' set
+    const QString initialNote;
+    _manager->createShare(_sharePath, Share::ShareType(sharee->type()), sharee->shareWith(), _maxSharingPermissions,
+        password, initialNote);
 
     _ui->shareeLineEdit->setEnabled(false);
     _ui->shareeLineEdit->clear();

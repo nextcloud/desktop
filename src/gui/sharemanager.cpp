@@ -424,7 +424,8 @@ void ShareManager::createShare(const QString &path,
     const Share::ShareType shareType,
     const QString shareWith,
     const Share::Permissions desiredPermissions,
-    const QString &password)
+    const QString &password,
+    const QString &note)
 {
     auto job = new OcsShareJob(_account);
     connect(job, &OcsJob::ocsError, this, &ShareManager::slotOcsError);
@@ -451,7 +452,7 @@ void ShareManager::createShare(const QString &path,
             auto *job = new OcsShareJob(_account);
             connect(job, &OcsShareJob::shareJobFinished, this, &ShareManager::slotShareCreated);
             connect(job, &OcsJob::ocsError, this, &ShareManager::slotOcsError);
-            job->createShare(path, shareType, shareWith, validPermissions, password);
+        job->createShare(path, shareType, shareWith, validPermissions, password, note);
         });
     job->getSharedWithMe();
 }

@@ -124,7 +124,8 @@ public:
         const Share::ShareType shareType,
         const QString &shareWith = "",
         const Share::Permissions permissions = SharePermissionRead,
-        const QString &password = "");
+        const QString &password = "",
+        const QString &note = "");
 
     /**
      * Returns information on the items shared with the current user.

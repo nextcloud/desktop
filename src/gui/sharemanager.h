@@ -362,7 +362,8 @@ public:
         const Share::ShareType shareType,
         const QString shareWith,
         const Share::Permissions permissions,
-        const QString &password = "");
+        const QString &password = "",
+        const QString &note="");
 
     /**
      * Fetch all the shares for path

@@ -154,7 +154,8 @@ void OcsShareJob::createShare(const QString &path,
     const Share::ShareType shareType,
     const QString &shareWith,
     const Share::Permissions permissions,
-    const QString &password)
+    const QString &password,
+    const QString &note)
 {
     Q_UNUSED(permissions)
     setVerb("POST");
@@ -165,6 +166,10 @@ void OcsShareJob::createShare(const QString &path,
 
     if (!password.isEmpty()) {
         addParam(QString::fromLatin1("password"), password);
+    }
+
+    if (!note.isEmpty()) {
+        addParam(QString::fromLatin1("note"), note);
     }
 
     start();
