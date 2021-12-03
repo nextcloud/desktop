@@ -434,12 +434,6 @@ void ShareLinkWidget::toggleNoteOptions(const bool enable)
     } 
 }
 
-void ShareLinkWidget::slotAnimationFinished()
-{
-    emit resizeRequested();
-    deleteLater();
-}
-
 void ShareLinkWidget::slotCreateLabel()
 {
     const auto labelText = _shareLinkEdit->text();
@@ -456,14 +450,6 @@ void ShareLinkWidget::slotLabelSet()
 {
     toggleButtonAnimation(_shareLinkButton, _shareLinkProgressIndicator, _shareLinkWidgetAction);
     displayShareLinkLabel();
-}
-
-void ShareLinkWidget::slotDeleteAnimationFinished()
-{
-    // There is a painting bug where a small line of this widget isn't
-    // properly cleared. This explicit repaint() call makes sure any trace of
-    // the share widget is removed once it's destroyed. #4189
-    connect(this, SIGNAL(destroyed(QObject *)), parentWidget(), SLOT(repaint()));
 }
 
 void ShareLinkWidget::slotCreateShareRequiresPassword(const QString &message)

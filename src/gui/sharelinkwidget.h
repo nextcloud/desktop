@@ -90,9 +90,6 @@ private slots:
 
     void slotContextMenuButtonClicked();
     void slotLinkContextMenuActionTriggered(QAction *action);
-
-    void slotDeleteAnimationFinished();
-    void slotAnimationFinished();
     
     void slotCreateLabel();
     void slotLabelSet();
