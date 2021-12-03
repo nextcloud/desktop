@@ -133,7 +133,7 @@ void Flow2Auth::fetchNewToken(const TokenAction action)
 
         _loginUrl = loginUrl;
 
-        if (Theme::instance()->loginWithSystemUserName()) {
+        if (_account->isUsernamePrefillSupported()) {
             const auto userName = Utility::getCurrentUserName();
             if (!userName.isEmpty()) {
                 auto query = QUrlQuery(_loginUrl);
