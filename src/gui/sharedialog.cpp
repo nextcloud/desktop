@@ -236,12 +236,12 @@ void ShareDialog::slotSharesFetched(const QList<QSharedPointer<Share>> &shares)
 void ShareDialog::slotAdjustScrollWidgetSize()
 {
     auto count = this->findChildren<ShareLinkWidget *>().count();
-    count = count > 3 ? 3 : count;
+    count = count >= 6 ? 6 : count;
     auto height = _linkWidgetList.size() > 0 ? _linkWidgetList.at(_linkWidgetList.size() - 1)->sizeHint().height() : 0;
     _ui->scrollAreaLinks->setFixedWidth(_ui->verticalLayout->sizeHint().width());
     _ui->scrollAreaLinks->setFixedHeight(height * count);
     _ui->scrollAreaLinks->setVisible(height > 0);
-    _ui->scrollAreaLinks->setFrameShape(count > 3 ? QFrame::StyledPanel : QFrame::NoFrame);
+    _ui->scrollAreaLinks->setFrameShape(count > 6 ? QFrame::StyledPanel : QFrame::NoFrame);
 }
 
 ShareDialog::~ShareDialog()
