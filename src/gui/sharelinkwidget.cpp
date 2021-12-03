@@ -411,22 +411,6 @@ void ShareLinkWidget::slotPasswordSetError(const int code, const QString &messag
     emit createPasswordProcessed();
 }
 
-void ShareLinkWidget::startAnimation(const int start, const int end)
-{
-    auto *animation = new QPropertyAnimation(this, "maximumHeight", this);
-
-    animation->setDuration(500);
-    animation->setStartValue(start);
-    animation->setEndValue(end);
-
-    connect(animation, &QAbstractAnimation::finished, this, &ShareLinkWidget::slotAnimationFinished);
-    if (end < start) // that is to remove the widget, not to show it
-        connect(animation, &QAbstractAnimation::finished, this, &ShareLinkWidget::slotDeleteAnimationFinished);
-    connect(animation, &QVariantAnimation::valueChanged, this, &ShareLinkWidget::resizeRequested);
-
-    animation->start();
-}
-
 void ShareLinkWidget::slotDeleteShareFetched()
 {
     slotToggleShareLinkAnimation(false);
