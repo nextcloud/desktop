@@ -883,7 +883,7 @@ Además, esta acción interrumpirá cualquier sincronización en curso.</transla
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="271"/>
         <source>File removed (start upload) %1</source>
-        <translation type="unfinished"/>
+        <translation>Archivo eliminado (comenzar subida) %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="271"/>
