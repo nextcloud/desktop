@@ -4866,53 +4866,53 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
 <context>
     <name>utility</name>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="128"/>
+        <location filename="../src/gui/guiutility.cpp" line="129"/>
         <source>Could not open browser</source>
         <translation>S’hapet dot shfletuesi</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="129"/>
+        <location filename="../src/gui/guiutility.cpp" line="130"/>
         <source>There was an error when launching the browser to go to URL %1. Maybe no default browser is configured?</source>
         <translation>Pati një gabim gjatë nisjes së shfletuesit për të hapur URL-në %1. Mos vallë nuk ka shfletues parazgjedhje të formësuar?</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="152"/>
+        <location filename="../src/gui/guiutility.cpp" line="153"/>
         <source>Could not open email client</source>
         <translation>S’u hap dot klienti email</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="153"/>
+        <location filename="../src/gui/guiutility.cpp" line="154"/>
         <source>There was an error when launching the email client to create a new message. Maybe no default email client is configured?</source>
         <translation>Pati një gabim gjatë nisjes së klientit email për të krijuar një mesazh të ri. Mos vallë s’ka të formësuar klient parazgjedhje për email-in?</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="168"/>
+        <location filename="../src/gui/guiutility.cpp" line="169"/>
         <source>Always available locally</source>
         <translation>Përherë i passhëm lokalisht</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="172"/>
+        <location filename="../src/gui/guiutility.cpp" line="173"/>
         <source>Some available online only</source>
         <translation>Disa të passhëm vetëm &lt;em&gt;online&lt;/em&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="174"/>
-        <location filename="../src/gui/guiutility.cpp" line="176"/>
+        <location filename="../src/gui/guiutility.cpp" line="175"/>
+        <location filename="../src/gui/guiutility.cpp" line="177"/>
         <source>Available online only</source>
         <translation>I passhëm vetëm &lt;em&gt;online&lt;/em&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="170"/>
+        <location filename="../src/gui/guiutility.cpp" line="171"/>
         <source>Currently available locally</source>
         <translation>Aktualisht i passhëm lokalisht</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="183"/>
+        <location filename="../src/gui/guiutility.cpp" line="184"/>
         <source>Make always available locally</source>
         <translation>Bëje përherë të passhëm lokalisht</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="188"/>
+        <location filename="../src/gui/guiutility.cpp" line="189"/>
         <source>Free up local space</source>
         <translation>Liro hapësirë vendore</translation>
     </message>

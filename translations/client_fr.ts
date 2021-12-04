@@ -4865,53 +4865,53 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
 <context>
     <name>utility</name>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="128"/>
+        <location filename="../src/gui/guiutility.cpp" line="129"/>
         <source>Could not open browser</source>
         <translation>Impossible de démarrer le navigateur</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="129"/>
+        <location filename="../src/gui/guiutility.cpp" line="130"/>
         <source>There was an error when launching the browser to go to URL %1. Maybe no default browser is configured?</source>
         <translation>Une erreur est survenue au lancement du navigateur pour visiter l&apos;adresse %1. Il est possible qu&apos;aucun navigateur par défaut ne soit configuré.</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="152"/>
+        <location filename="../src/gui/guiutility.cpp" line="153"/>
         <source>Could not open email client</source>
         <translation>Impossible d&apos;ouvrir le client de messagerie</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="153"/>
+        <location filename="../src/gui/guiutility.cpp" line="154"/>
         <source>There was an error when launching the email client to create a new message. Maybe no default email client is configured?</source>
         <translation>Il y a eu une erreur lors du lancement du client de messagerie pour créer un nouveau message. Peut-être qu&apos;aucun client de messagerie n&apos;est configuré ?</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="168"/>
+        <location filename="../src/gui/guiutility.cpp" line="169"/>
         <source>Always available locally</source>
         <translation>Toujours disponible localement</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="172"/>
+        <location filename="../src/gui/guiutility.cpp" line="173"/>
         <source>Some available online only</source>
         <translation>Certains sont disponibles uniquement en ligne </translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="174"/>
-        <location filename="../src/gui/guiutility.cpp" line="176"/>
+        <location filename="../src/gui/guiutility.cpp" line="175"/>
+        <location filename="../src/gui/guiutility.cpp" line="177"/>
         <source>Available online only</source>
         <translation>Disponible uniquement en ligne</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="170"/>
+        <location filename="../src/gui/guiutility.cpp" line="171"/>
         <source>Currently available locally</source>
         <translation>Actuellement disponible localement</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="183"/>
+        <location filename="../src/gui/guiutility.cpp" line="184"/>
         <source>Make always available locally</source>
         <translation>Rendre toujours disponible localement</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="188"/>
+        <location filename="../src/gui/guiutility.cpp" line="189"/>
         <source>Free up local space</source>
         <translation>Libérer de l&apos;espace local</translation>
     </message>

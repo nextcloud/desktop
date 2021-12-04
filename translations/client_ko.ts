@@ -4842,53 +4842,53 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>utility</name>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="128"/>
+        <location filename="../src/gui/guiutility.cpp" line="129"/>
         <source>Could not open browser</source>
         <translation>브라우저를 열 수 없음</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="129"/>
+        <location filename="../src/gui/guiutility.cpp" line="130"/>
         <source>There was an error when launching the browser to go to URL %1. Maybe no default browser is configured?</source>
         <translation>URL %1을(를) 열기 위해서 브라우저를 실행하는 중 오류가 발생했습니다. 기본 브라우저를 설정하셨습니까?</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="152"/>
+        <location filename="../src/gui/guiutility.cpp" line="153"/>
         <source>Could not open email client</source>
         <translation>이메일 클라이언트를 열 수 없음</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="153"/>
+        <location filename="../src/gui/guiutility.cpp" line="154"/>
         <source>There was an error when launching the email client to create a new message. Maybe no default email client is configured?</source>
         <translation>새 메시지를 작성하기 위한 이메일 클라이언트를 여는 중 오류가 발생했습니다. 기본 이메일 클라이언트를 설정하셨습니까?</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="168"/>
+        <location filename="../src/gui/guiutility.cpp" line="169"/>
         <source>Always available locally</source>
         <translation>항상 로컬에서만 이용 가능</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="172"/>
+        <location filename="../src/gui/guiutility.cpp" line="173"/>
         <source>Some available online only</source>
         <translation>몇 가지는 온라인에서만 이용 가능</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="174"/>
-        <location filename="../src/gui/guiutility.cpp" line="176"/>
+        <location filename="../src/gui/guiutility.cpp" line="175"/>
+        <location filename="../src/gui/guiutility.cpp" line="177"/>
         <source>Available online only</source>
         <translation>온라인에서만 이용 가능</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="170"/>
+        <location filename="../src/gui/guiutility.cpp" line="171"/>
         <source>Currently available locally</source>
         <translation>로컬에서 현재 이용 가능</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="183"/>
+        <location filename="../src/gui/guiutility.cpp" line="184"/>
         <source>Make always available locally</source>
         <translation>항상 로컬에서만 이용 가능하게 함</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="188"/>
+        <location filename="../src/gui/guiutility.cpp" line="189"/>
         <source>Free up local space</source>
         <translation>로컬 공간을 해제함</translation>
     </message>
