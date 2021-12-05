@@ -3425,7 +3425,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/libsync/discovery.cpp" line="490"/>
         <source>permission</source>
-        <translation type="unfinished"/>
+        <translation>permissão</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="494"/>
@@ -3435,7 +3435,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/libsync/discovery.cpp" line="498"/>
         <source>Server reported no %1</source>
-        <translation type="unfinished"/>
+        <translation>Servidor relatou não %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1038"/>

@@ -4,7 +4,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityActionButton.qml" line="42"/>
         <source>Activity action button</source>
-        <translation type="unfinished"/>
+        <translation>Aktivitetsaksjoner</translation>
     </message>
 </context>
 <context>
@@ -12,28 +12,28 @@
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="36"/>
         <source>Open %1 locally</source>
-        <translation type="unfinished"/>
+        <translation>Åpne %1 lokalt</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="164"/>
         <source>Open share dialog</source>
-        <translation type="unfinished"/>
+        <translation>Åpne delingsdialog</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="168"/>
         <source>Share %1</source>
-        <translation type="unfinished"/>
+        <translation>Del %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="190"/>
         <location filename="../src/gui/tray/ActivityItem.qml" line="193"/>
         <source>Show more actions</source>
-        <translation type="unfinished"/>
+        <translation>Vis flere handlinger</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="240"/>
         <source>View activity</source>
-        <translation type="unfinished"/>
+        <translation>Vis aktivitet</translation>
     </message>
 </context>
 <context>
@@ -41,7 +41,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityList.qml" line="30"/>
         <source>Activity list</source>
-        <translation type="unfinished"/>
+        <translation>Aktivitetsliste</translation>
     </message>
 </context>
 <context>
@@ -54,7 +54,7 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="122"/>
         <source>Checking for changes in &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Ser etter endringer i &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="122"/>
@@ -144,7 +144,7 @@
         <location filename="../src/common/filesystembase.cpp" line="398"/>
         <location filename="../src/common/filesystembase.cpp" line="404"/>
         <source>Could not move &quot;%1&quot; to &quot;%2&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Kan ikke flytte &quot;%1&quot; til &quot;%2&quot;</translation>
     </message>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="438"/>
@@ -160,17 +160,17 @@
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="158"/>
         <source>Error removing &quot;%1&quot;: %2</source>
-        <translation type="unfinished"/>
+        <translation>Feil ved fjerning av &quot;%1&quot;: %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="158"/>
         <source>Error removing &apos;%1&apos;: %2</source>
-        <translation type="unfinished"/>
+        <translation>Feil ved fjerning av &quot;%1&quot;: %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="174"/>
         <source>Could not remove folder &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Kan ikke slette katalog &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="174"/>
@@ -198,7 +198,7 @@
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="56"/>
         <source>Logo</source>
-        <translation type="unfinished"/>
+        <translation>Logo</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="65"/>
@@ -208,7 +208,7 @@
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="73"/>
         <source>Switch to your browser to connect your account</source>
-        <translation type="unfinished"/>
+        <translation>Bytt til nettleseren din for å koble til kontoen din</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="148"/>
@@ -226,7 +226,7 @@
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="44"/>
         <source>&amp;Choose …</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Velg</translation>
     </message>
 </context>
 <context>
@@ -275,12 +275,12 @@
     <message>
         <location filename="../src/libsync/abstractpropagateremotedeleteencrypted.cpp" line="139"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Feil HTTP-kode returnert av serveren. Forventet 204, men mottok &quot;%1 %2&quot;.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractpropagateremotedeleteencrypted.cpp" line="181"/>
         <source>&quot;%1 Failed to unlock encrypted folder %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>&quot;%1 feilet med å låse opp kryptert katalog %2&quot;.</translation>
     </message>
 </context>
 <context>
@@ -293,7 +293,7 @@
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="405"/>
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
-        <translation type="unfinished"/>
+        <translation>For å beskytte din kryptografiske identitet, krypterer vi den med en mnemonic med 12 ordbok ord. Vennligst noter disse ned og oppbevar dem trygt. De vil være nødvendige for å legge til andre enheter på kontoen din (som mobiltelefonen eller den bærbare datamaskinen).</translation>
     </message>
 </context>
 <context>
@@ -344,22 +344,22 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="88"/>
         <source>End-to-End Encryption with Virtual Files</source>
-        <translation type="unfinished"/>
+        <translation>Ende-til-ende-kryptering med virtuelle filer</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="89"/>
         <source>You seem to have the Virtual Files feature enabled on this folder. At the moment, it is not possible to implicitly download virtual files that are End-to-End encrypted. To get the best experience with Virtual Files and End-to-End Encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Du ser ut til å ha funksjonen virtuelle filer aktivert på denne mappen. For øyeblikket er det ikke mulig å implisitt laste ned virtuelle filer som er ende-til-ende-kryptert. For å få den beste opplevelsen med virtuelle filer og ende-til-ende-kryptering, sørg for at den krypterte mappen er merket med &quot;Gjør alltid tilgjengelig lokalt&quot;.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="97"/>
         <source>Don&apos;t encrypt folder</source>
-        <translation type="unfinished"/>
+        <translation>Ikke krypter katalog</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="100"/>
         <source>Encrypt folder</source>
-        <translation type="unfinished"/>
+        <translation>Krypter katalog</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="233"/>
@@ -370,7 +370,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="235"/>
         <source>Display mnemonic</source>
-        <translation type="unfinished"/>
+        <translation>Vis mnemonic</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="241"/>
@@ -416,23 +416,24 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="89"/>
         <source>You seem to have the Virtual Files feature enabled on this folder. At  the moment, it is not possible to implicitly download virtual files that are End-to-End encrypted. To get the best experience with Virtual Files and End-to-End Encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Du ser ut til å ha funksjonen virtuelle filer aktivert på denne mappen. For øyeblikket er det ikke mulig å implisitt laste ned virtuelle filer som er ende-til-ende-kryptert. For å få den beste opplevelsen med virtuelle filer og ende-til-ende-kryptering, sørg for at den krypterte mappen er merket med &quot;Gjør alltid tilgjengelig lokalt&quot;.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="330"/>
         <source>You cannot encrypt a folder with contents, please remove the files.
 Wait for the new sync, then encrypt it.</source>
-        <translation type="unfinished"/>
+        <translation>Du kan ikke kryptere en mappe med innhold, vennligst fjern filene.
+Vent på den nye synkroniseringen, og krypter den deretter.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="354"/>
         <source>Encryption failed</source>
-        <translation type="unfinished"/>
+        <translation>Kryptering feilet.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="354"/>
         <source>Could not encrypt folder because the folder does not exist anymore</source>
-        <translation type="unfinished"/>
+        <translation>Kunne ikke kryptere mappen fordi mappen ikke eksisterer lengre</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="466"/>
@@ -455,13 +456,13 @@ Wait for the new sync, then encrypt it.</source>
         <location filename="../src/gui/accountsettings.cpp" line="494"/>
         <location filename="../src/gui/accountsettings.cpp" line="560"/>
         <source>Create new folder</source>
-        <translation type="unfinished"/>
+        <translation>Ny katalog</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="500"/>
         <location filename="../src/gui/accountsettings.cpp" line="586"/>
         <source>Availability</source>
-        <translation type="unfinished"/>
+        <translation>Tilgjengelighet</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="565"/>
@@ -496,17 +497,17 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="594"/>
         <source>Disable virtual file support …</source>
-        <translation type="unfinished"/>
+        <translation>Deaktiver støtte for virtuelle filer</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="603"/>
         <source>Enable virtual file support %1 …</source>
-        <translation type="unfinished"/>
+        <translation>Aktiver støtte for virtuelle filer %1 …</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="603"/>
         <source>(experimental)</source>
-        <translation type="unfinished"/>
+        <translation>(eksperimentell)</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="696"/>
@@ -516,7 +517,7 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="697"/>
         <source>&lt;p&gt;Could not create local folder &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Kunne ikke opprette lokal katalog &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="752"/>
@@ -536,7 +537,7 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="864"/>
         <source>Disable virtual file support?</source>
-        <translation type="unfinished"/>
+        <translation>Deaktiver støtte for virtuelle filer?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="865"/>
@@ -545,12 +546,16 @@ Wait for the new sync, then encrypt it.</source>
 The only advantage of disabling virtual file support is that the selective sync feature will become available again.
 
 This action will abort any currently running synchronization.</source>
-        <translation type="unfinished"/>
+        <translation>Denne handlingen vil deaktivere støtte for virtuelle filer. Som en konsekvens vil innholdet i mapper som for øyeblikket er merket som &quot;bare tilgjengelig på nettet&quot; bli lastet ned.
+
+Den eneste fordelen med å deaktivere støtte for virtuelle filer er at den selektive synkroniseringsfunksjonen blir tilgjengelig igjen.
+
+Denne handlingen vil avbryte enhver synkronisering som kjører.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="872"/>
         <source>Disable support</source>
-        <translation type="unfinished"/>
+        <translation>Deaktiver support</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="990"/>
@@ -600,7 +605,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1114"/>
         <source>%1 as %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 som %2</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1121"/>
@@ -630,12 +635,12 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1143"/>
         <source>Obtaining authorization from the browser. &lt;a href=&apos;%1&apos;&gt;Click here&lt;/a&gt; to re-open the browser.</source>
-        <translation type="unfinished"/>
+        <translation>Innhenting av autorisasjon fra nettleseren. &lt;a href=&apos;%1&apos;&gt;Klikk her&lt;/a&gt; for å åpne nettleseren på nytt. </translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1147"/>
         <source>Connecting to %1 …</source>
-        <translation type="unfinished"/>
+        <translation>Kobler til %1 …</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1152"/>
@@ -723,7 +728,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="147"/>
         <source>Asking Credentials</source>
-        <translation type="unfinished"/>
+        <translation>Spør etter legitimasjon</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="149"/>
@@ -736,12 +741,12 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="376"/>
         <source>Files from the ignore list as well as symbolic links are not synced.</source>
-        <translation type="unfinished"/>
+        <translation>Filer fra ignoreringslisten så vel som symbolske lenker synkroniseres ikke.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="573"/>
         <source>For more activities please open the Activity app.</source>
-        <translation type="unfinished"/>
+        <translation>For flere aktiviteter, åpne Aktivitetsappen.</translation>
     </message>
     <message>
         <location filename="../src/gui/activitylistmodel.cpp" line="241"/>
@@ -2601,7 +2606,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/networksettings.ui" line="131"/>
         <source>Proxy server requires authentication</source>
-        <translation>Proxy-serveren krever pålogging</translation>
+        <translation>Proxy-server krever autentisering</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="176"/>
@@ -2651,7 +2656,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="37"/>
         <source>Hostname of proxy server</source>
-        <translation>Servernavnet til proxy-serveren</translation>
+        <translation>Vertsnavn på proxy-server</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="38"/>
@@ -3866,7 +3871,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="43"/>
         <source>The proxy server needs a username and password.</source>
-        <translation>Proxy-serveren trenger et brukernavn og et passord.</translation>
+        <translation>Proxy-server trenger brukernavn og passord.</translation>
     </message>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="50"/>
@@ -4988,7 +4993,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/systray.cpp" line="105"/>
         <source>Open main dialog</source>
-        <translation type="unfinished"/>
+        <translation>Åpne hovedvindu</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="108"/>
@@ -6606,22 +6611,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/userstatus.cpp" line="55"/>
         <source>Away</source>
-        <translation type="unfinished"/>
+        <translation>Borte</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatus.cpp" line="57"/>
         <source>Do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>Ikke forstyrr</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatus.cpp" line="60"/>
         <source>Offline</source>
-        <translation type="unfinished"/>
+        <translation>Avkoblet</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatus.cpp" line="62"/>
         <source>Online</source>
-        <translation type="unfinished"/>
+        <translation>Påkoblet</translation>
     </message>
 </context>
 <context>
