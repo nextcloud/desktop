@@ -787,7 +787,7 @@ Vous prenez vos propres risques.</translation>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="79"/>
         <source>An encrypted pkcs12 bundle is strongly recommended as a copy will be stored in the configuration file.</source>
-        <translation>Un paquet pkcs12 encrypté est vivement recommandé vu qu&apos;une copie sera stockée dans le fichier de configuration.</translation>
+        <translation>Un paquet pkcs12 chiffré est vivement recommandé vu qu&apos;une copie sera stockée dans le fichier de configuration.</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.cpp" line="38"/>
@@ -876,17 +876,17 @@ Vous prenez vos propres risques.</translation>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="122"/>
         <source>File %1 cannot be uploaded because another file with the same name, differing only in case, exists</source>
-        <translation>Le fichier %1 ne peut être téléchargé parce qu&apos;un autre fichier existe avec le même nom mais une casse différente</translation>
+        <translation>Le fichier %1 ne peut être téléversé parce qu&apos;un autre fichier avec le même nom hormis la casse existe</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="271"/>
         <source>File removed (start upload) %1</source>
-        <translation type="unfinished"/>
+        <translation>Fichier supprimé (démarrer le téléversement) %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="271"/>
         <source>File Removed (start upload) %1</source>
-        <translation>Fichier supprimé (démarrer le téléchargement) %1</translation>
+        <translation>Fichier supprimé (démarrer le téléversement) %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="281"/>
@@ -1393,12 +1393,11 @@ Cela peut être un problème avec vos bibliothèques OpenSSL.</translation>
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
 
 %1</source>
-        <translation>Les modifications apportées aux dossiers synchronisés n&apos;ont pas pu être suivies de manière fiable.
+        <translation>Les modifications apportées aux dossiers synchronisés ne peuvent pas être suivies de manière fiable.
 
-Cela signifie que le client de synchronisation peut ne pas télécharger immédiatement les modifications locales, mais uniquement rechercher les modifications locales et les télécharger à l&apos;occasion (toutes les deux heures par défaut).
+Cela signifie que le client de synchronisation ne va pas téléverser immédiatement les modifications locales, mais va à la place rechercher et téléverser les modifications locales qu&apos;occasionnellement (toutes les deux heures par défaut).
 
-%1
-</translation>
+%1</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1052"/>
@@ -1797,7 +1796,7 @@ S&apos;il s&apos;agissait d&apos;un accident et que vous choisissiez de conserve
         <location filename="../src/gui/folderstatusmodel.cpp" line="1062"/>
         <source>upload %1/s</source>
         <extracomment>Example text: &quot;upload 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
-        <translation>envoi %1/s</translation>
+        <translation>Téléversement %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1064"/>
@@ -2226,7 +2225,7 @@ Notez que cela ne permet seulement de sélectionner où sont récupérées les m
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="111"/>
         <source>Reading from keychain failed with error: &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>La lecture à partir du trousseau a échoué avec l&apos;erreur : &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="111"/>
@@ -2914,7 +2913,7 @@ L&apos;assistant de mise à jour peut vous demandez des autorisations supplémen
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="227"/>
         <source>Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter.</source>
-        <translation type="unfinished"/>
+        <translation>Les fichiers virtuels ne sont pas pris en charge pour les racines de partition Windows en tant que dossier local. Veuillez choisir un sous-dossier valide sous la lettre du lecteur. </translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="265"/>
@@ -3139,7 +3138,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="395"/>
         <source>The authenticated request to the server was redirected to &quot;%1&quot;. The URL is bad, the server is misconfigured.</source>
-        <translation type="unfinished"/>
+        <translation>La demande authentifiée au serveur a été redirigée vers &quot;%1&quot;. L&apos;URL est mauvaise, le serveur est mal configuré. </translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="408"/>
@@ -3295,7 +3294,13 @@ The virtual files mode is mutually exclusive with selective sync. Currently unse
 Switching to this mode will abort any currently running synchronization.
 
 This is a new, experimental mode. If you decide to use it, please report any issues that come up.</source>
-        <translation type="unfinished"/>
+        <translation>Lorsque le mode « fichiers virtuels » est activé, aucun fichier ne sera téléchargé initialement. Au lieu de cela, un petit fichier &quot;%1&quot; sera créé pour chaque fichier existant sur le serveur. Le contenu peut être téléchargé en exécutant ces fichiers ou en utilisant leur menu contextuel.
+
+Le mode fichiers virtuels est mutuellement exclusif avec synchronisation sélective. Les dossiers actuellement non sélectionnés seront convertis en dossiers en ligne uniquement et vos paramètres de synchronisation sélective seront réinitialisés.
+
+Le passage à ce mode annulera toute synchronisation en cours.
+
+Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;utiliser, veuillez signaler tout problème qui surviendrait.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="421"/>
@@ -3321,12 +3326,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="56"/>
         <source>File contains trailing spaces and could not be renamed, because a file with the same name already exists on the server.</source>
-        <translation type="unfinished"/>
+        <translation>Le fichier contient des espaces de fin et n&apos;a pas pu être renommé, car un fichier du même nom existe déjà sur le serveur.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="59"/>
         <source>File contains trailing spaces and could not be renamed, because a file with the same name already exists locally.</source>
-        <translation type="unfinished"/>
+        <translation>Le fichier contient des espaces de fin et n&apos;a pas pu être renommé, car un fichier du même nom existe déjà localement.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="293"/>
@@ -3421,7 +3426,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="490"/>
         <source>permission</source>
-        <translation type="unfinished"/>
+        <translation>permission</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="494"/>
@@ -3431,12 +3436,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="498"/>
         <source>Server reported no %1</source>
-        <translation type="unfinished"/>
+        <translation>Le serveur n&apos;a signalé aucun %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1038"/>
         <source>Conflict when uploading some files to a folder. Those, conflicted, are going to get cleared!</source>
-        <translation type="unfinished"/>
+        <translation>Conflit lors du téléversement de certains fichiers dans un dossier. Ceux conflictuels seront effacer!</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1057"/>
@@ -3491,7 +3496,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1646"/>
         <source>Server replied with an error while reading directory &quot;%1&quot; : %2</source>
-        <translation type="unfinished"/>
+        <translation>Le serveur a répondu avec une erreur lors de la lecture du dossier &quot;%1&quot; : %2</translation>
     </message>
 </context>
 <context>
@@ -3731,7 +3736,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="246"/>
         <source>Error writing metadata to the database: %1</source>
-        <translation type="unfinished"/>
+        <translation>Erreur d&apos;écriture des métadonnées dans la base de données : %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="249"/>
@@ -3777,7 +3782,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="237"/>
         <source>Failed to upload encrypted file.</source>
-        <translation>Échec d&apos;envoi du fichier crypté.</translation>
+        <translation>Échec d&apos;envoi du fichier chiffré.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="268"/>
@@ -3808,7 +3813,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="415"/>
         <source>Failed to unlock encrypted folder.</source>
-        <translation>Impossible de déverrouiller le dossier crypté.</translation>
+        <translation>Impossible de déverrouiller le dossier chiffré.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="769"/>
@@ -4373,7 +4378,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/socketapi/socketapi.cpp" line="994"/>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1137"/>
         <source>Activity</source>
-        <translation type="unfinished"/>
+        <translation>Activité</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="996"/>
@@ -4600,7 +4605,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="158"/>
         <source>Additional errors:</source>
-        <translation type="unfinished"/>
+        <translation>Erreurs supplémentaires :</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="184"/>
@@ -4941,7 +4946,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1056"/>
         <source>Synchronization will resume shortly.</source>
-        <translation type="unfinished"/>
+        <translation>La synchronisation reprendra sous peu.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1073"/>
@@ -4960,59 +4965,59 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="124"/>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="313"/>
         <source>Offline</source>
-        <translation type="unfinished"/>
+        <translation>Hors ligne</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="138"/>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="316"/>
         <location filename="../src/gui/tray/syncstatussummary.h" line="89"/>
         <source>All synced!</source>
-        <translation type="unfinished"/>
+        <translation>Tous synchronisés!</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="147"/>
         <source>Some files couldn&apos;t be synced!</source>
-        <translation type="unfinished"/>
+        <translation>Certains fichiers n&apos;ont pas pu être synchronisés!</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="148"/>
         <source>See below for errors</source>
-        <translation type="unfinished"/>
+        <translation>Voir ci-dessous pour les erreurs</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="155"/>
         <source>Syncing</source>
-        <translation type="unfinished"/>
+        <translation>Synchronisation</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="162"/>
         <source>Sync paused</source>
-        <translation type="unfinished"/>
+        <translation>Synchronisation mise en pause</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="169"/>
         <source>Some files could not be synced!</source>
-        <translation type="unfinished"/>
+        <translation>Certains fichiers n&apos;ont pas pu être synchronisés!</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="170"/>
         <source>See below for warnings</source>
-        <translation type="unfinished"/>
+        <translation>Voir ci-dessous pour les avertissements</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="218"/>
         <source>%1 of %2 · %3 left</source>
-        <translation type="unfinished"/>
+        <translation>%1 sur %2 · %3 restants</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="222"/>
         <source>%1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 sur 2%</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="227"/>
         <source>Syncing file %1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>Synchronisation du fichier %1 sur %2</translation>
     </message>
 </context>
 <context>
@@ -5095,22 +5100,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="374"/>
         <source>Failed to fetch providers.</source>
-        <translation type="unfinished"/>
+        <translation>Échec de la récupération des fournisseurs.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="385"/>
         <source>Failed to fetch search providers for &apos;%1&apos;. Error: %2</source>
-        <translation type="unfinished"/>
+        <translation>Échec de la récupération des fournisseurs de recherche pour &apos;%1&apos;. Erreur : %2</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="419"/>
         <source>Search has failed for &apos;%2&apos;.</source>
-        <translation type="unfinished"/>
+        <translation>La recherche de &apos;%2&apos; a échoué.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="448"/>
         <source>Search has failed for &apos;%1&apos;. Error: %2</source>
-        <translation type="unfinished"/>
+        <translation>La recherche de &apos;%1&apos; a échoué. Erreur: %2</translation>
     </message>
 </context>
 <context>
@@ -5174,17 +5179,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="140"/>
         <source>Could not fetch predefined statuses. Make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Impossible de récupérer les statuts prédéfinis. Assurez-vous que vous êtes connecté au serveur.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="144"/>
         <source>Could not fetch user status. Make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Impossible de récupérer le statut de l&apos;utilisateur. Assurez-vous que vous êtes connecté au serveur.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="148"/>
         <source>User status feature is not supported. You will not be able to set your user status.</source>
-        <translation type="unfinished"/>
+        <translation>La fonction de statut d&apos;utilisateur n&apos;est pas prise en charge. Vous ne pourrez pas définir votre statut d&apos;utilisateur.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="152"/>
@@ -5740,7 +5745,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="32"/>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="353"/>
         <source>TextLabel</source>
-        <translation type="unfinished"/>
+        <translation>Étiquette de texte</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="73"/>
@@ -5885,7 +5890,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/UnifiedSearchInputContainer.qml" line="25"/>
         <source>Search files, messages, events …</source>
-        <translation type="unfinished"/>
+        <translation>Rechercher des fichiers, des messages, des événements …</translation>
     </message>
 </context>
 <context>
@@ -5893,7 +5898,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/UnifiedSearchResultFetchMoreTrigger.qml" line="24"/>
         <source>Load more results</source>
-        <translation type="unfinished"/>
+        <translation>Charger plus de résultats</translation>
     </message>
 </context>
 <context>
@@ -5901,7 +5906,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/UnifiedSearchResultItemSkeleton.qml" line="25"/>
         <source>Search result skeleton.</source>
-        <translation type="unfinished"/>
+        <translation>Squelette de résultat de recherche.</translation>
     </message>
 </context>
 <context>
@@ -5909,7 +5914,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/UnifiedSearchResultListItem.qml" line="37"/>
         <source>Load more results</source>
-        <translation type="unfinished"/>
+        <translation>Charger plus de résultats</translation>
     </message>
 </context>
 <context>
@@ -6113,12 +6118,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/common/checksums.cpp" line="367"/>
         <source>The checksum header contained an unknown checksum type &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>L&apos;en-tête de somme de contrôle contenait un type de somme de contrôle inconnu &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../src/common/checksums.cpp" line="371"/>
         <source>The downloaded file does not match the checksum, it will be resumed. &quot;%1&quot; != &quot;%2&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Le fichier téléchargé ne correspond pas à la somme de contrôle, il sera repris. &quot;%1&quot; != &quot;%2&quot;</translation>
     </message>
 </context>
 <context>
@@ -6248,7 +6253,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/Window.qml" line="681"/>
         <source>Unified search results list</source>
-        <translation type="unfinished"/>
+        <translation>Liste de résultats de recherche unifiée</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="720"/>
@@ -6259,7 +6264,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/Window.qml" line="753"/>
         <source>%1 - File activity</source>
-        <translation type="unfinished"/>
+        <translation>%1 - Activité de fichier</translation>
     </message>
 </context>
 <context>
@@ -6277,7 +6282,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/main.cpp" line="52"/>
         <source>%1 requires on a working system tray. If you are running XFCE, please follow &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;these instructions&lt;/a&gt;. Otherwise, please install a system tray application such as &quot;trayer&quot; and try again.</source>
-        <translation type="unfinished"/>
+        <translation>%1 nécessite une barre d&apos;état système fonctionnelle. Si vous utiliser XFCE, veuillez suivre &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;ces instructions&lt;/a&gt;. Sinon, installez une application de la barre d&apos;état système telle que &quot;trayer&quot; et réessayez.</translation>
     </message>
 </context>
 <context>
@@ -6671,7 +6676,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/vfs/cfapi/vfs_cfapi.cpp" line="334"/>
         <source>It seems that you are trying to download a virtual file that is end-to-end encrypted. Implicitly downloading such files is not supported at the moment. To workaround this issue, go to the settings and mark the encrypted folder with &quot;Make always available locally&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Il semble que vous essayez de télécharger un fichier virtuel chiffré  de bout en bout. Le téléchargement implicite de tels fichiers n&apos;est pas pris en charge pour le moment. Pour contourner ce problème, accédez aux paramètres et marquez le dossier chiffré avec &quot;Rendre toujours disponible localement&quot;.</translation>
     </message>
 </context>
 </TS>
