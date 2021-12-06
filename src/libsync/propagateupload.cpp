@@ -210,6 +210,7 @@ void PropagateUploadFileCommon::start()
         }
         _item->_file = _item->_renameTarget;
         _item->_modtime = FileSystem::getModTime(newFilePathAbsolute);
+        Q_ASSERT(_item->_modtime > 0);
     }
 
     SyncJournalFileRecord parentRec;
@@ -312,6 +313,7 @@ void PropagateUploadFileCommon::slotComputeContentChecksum()
     // and not the _fileToUpload because we are checking the original file, not there
     // probably temporary one.
     _item->_modtime = FileSystem::getModTime(filePath);
+    Q_ASSERT(_item->_modtime > 0);
 
     const QByteArray checksumType = propagator()->account()->capabilities().preferredUploadChecksumType();
 
@@ -383,11 +385,13 @@ void PropagateUploadFileCommon::slotStartUpload(const QByteArray &transmissionCh
     if (!FileSystem::fileExists(fullFilePath)) {
         return slotOnErrorStartFolderUnlock(SyncFileItem::SoftError, tr("File Removed (start upload) %1").arg(fullFilePath));
     }
+    Q_ASSERT(_item->_modtime > 0);
     time_t prevModtime = _item->_modtime; // the _item value was set in PropagateUploadFile::start()
     // but a potential checksum calculation could have taken some time during which the file could
     // have been changed again, so better check again here.
 
     _item->_modtime = FileSystem::getModTime(originalFilePath);
+    Q_ASSERT(_item->_modtime > 0);
     if (prevModtime != _item->_modtime) {
         propagator()->_anotherSyncNeeded = true;
         qDebug() << "prevModtime" << prevModtime << "Curr" << _item->_modtime;
@@ -585,6 +589,7 @@ void PropagateUploadFileCommon::startPollJob(const QString &path)
     info._file = _item->_file;
     info._url = path;
     info._modtime = _item->_modtime;
+    Q_ASSERT(_item->_modtime > 0);
     info._fileSize = _item->_size;
     propagator()->_journal->setPollInfo(info);
     propagator()->_journal->commit("add poll info");
@@ -707,6 +712,7 @@ QMap<QByteArray, QByteArray> PropagateUploadFileCommon::headers()
 {
     QMap<QByteArray, QByteArray> headers;
     headers[QByteArrayLiteral("Content-Type")] = QByteArrayLiteral("application/octet-stream");
+    Q_ASSERT(_item->_modtime > 0);
     headers[QByteArrayLiteral("X-OC-Mtime")] = QByteArray::number(qint64(_item->_modtime));
     if (qEnvironmentVariableIntValue("OWNCLOUD_LAZYOPS"))
         headers[QByteArrayLiteral("OC-LazyOps")] = QByteArrayLiteral("true");
