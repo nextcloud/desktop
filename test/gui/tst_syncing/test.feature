@@ -157,7 +157,7 @@ Feature: Syncing files
 
 
     Scenario: Many subfolders can be synced
-        Given user "Alice" has created folder "parent" on the server 
+        Given user "Alice" has created folder "parent" on the server
         And user "Alice" has set up a client with default settings
         When user "Alice" creates a folder "parent/subfolderEmpty1" inside the sync folder
         And user "Alice" creates a folder "parent/subfolderEmpty2" inside the sync folder
