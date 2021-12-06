@@ -564,6 +564,7 @@ void PropagateDownloadFile::startAfterIsEncryptedIsChecked()
         return checksum_header.startsWith("SHA")
             || checksum_header.startsWith("MD5:");
     };
+    Q_ASSERT(_item->_modtime > 0);
     if (_item->_instruction == CSYNC_INSTRUCTION_CONFLICT
         && _item->_size == _item->_previousSize
         && !_item->_checksumHeader.isEmpty()
@@ -592,11 +593,14 @@ void PropagateDownloadFile::conflictChecksumComputed(const QByteArray &checksumT
         // Apply the server mtime locally if necessary, ensuring the journal
         // and local mtimes end up identical
         auto fn = propagator()->fullLocalPath(_item->_file);
+        Q_ASSERT(_item->_modtime > 0);
         if (_item->_modtime != _item->_previousModtime) {
+            Q_ASSERT(_item->_modtime > 0);
             FileSystem::setModTime(fn, _item->_modtime);
             emit propagator()->touchedFile(fn);
         }
         _item->_modtime = FileSystem::getModTime(fn);
+        Q_ASSERT(_item->_modtime > 0);
         updateMetadata(/*isConflict=*/false);
         return;
     }
@@ -820,6 +824,7 @@ void PropagateDownloadFile::slotGetFinished()
         // It is possible that the file was modified on the server since we did the discovery phase
         // so make sure we have the up-to-date time
         _item->_modtime = job->lastModified();
+        Q_ASSERT(_item->_modtime > 0);
     }
 
     _tmpFile.close();
@@ -1058,10 +1063,12 @@ void PropagateDownloadFile::downloadFinished()
         return;
     }
 
+    Q_ASSERT(_item->_modtime > 0);
     FileSystem::setModTime(_tmpFile.fileName(), _item->_modtime);
     // We need to fetch the time again because some file systems such as FAT have worse than a second
     // Accuracy, and we really need the time from the file system. (#3103)
     _item->_modtime = FileSystem::getModTime(_tmpFile.fileName());
+    Q_ASSERT(_item->_modtime > 0);
 
     bool previousFileExists = FileSystem::fileExists(fn);
     if (previousFileExists) {
