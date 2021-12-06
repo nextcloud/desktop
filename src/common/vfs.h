@@ -197,20 +197,20 @@ public:
      * Usually this would forward to setting the pin state flag in the db table,
      * but some vfs plugins will store the pin state in file attributes instead.
      *
-     * folderPath is relative to the sync folder. Can be "" for root folder.
+     * relFilePath is relative to the sync folder. Can be "" for root folder.
      */
-    virtual OC_REQUIRED_RESULT bool setPinState(const QString &folderPath, PinState state) = 0;
+    virtual OC_REQUIRED_RESULT bool setPinState(const QString &relFilePath, PinState state) = 0;
 
     /** Returns the pin state of an item at a path.
      *
      * Usually backed by the db's effectivePinState() function but some vfs
      * plugins will override it to retrieve the state from elsewhere.
      *
-     * folderPath is relative to the sync folder. Can be "" for root folder.
+     * relFilePath is relative to the sync folder. Can be "" for root folder.
      *
      * Returns none on retrieval error.
      */
-    virtual OC_REQUIRED_RESULT Optional<PinState> pinState(const QString &folderPath) = 0;
+    virtual OC_REQUIRED_RESULT Optional<PinState> pinState(const QString &relFilePath) = 0;
 
     /** Returns availability status of an item at a path.
      *
