@@ -68,7 +68,6 @@ private slots:
     void slotCreatePasswordForLinkShare(const QString &password);
     void slotCreatePasswordForLinkShareProcessed();
     void slotLinkShareRequiresPassword(const QString &message);
-    void slotAdjustScrollWidgetSize();
 
 signals:
     void toggleShareLinkAnimation(bool start);
@@ -82,6 +81,7 @@ private:
     void initShareManager();
     ShareLinkWidget *addLinkShareWidget(const QSharedPointer<LinkShare> &linkShare);
     void initLinkShareWidget();
+    void adjustScrollWidgetSize();
 
     Ui::ShareDialog *_ui;
 
@@ -99,8 +99,8 @@ private:
     ShareUserGroupWidget *_userGroupWidget = nullptr;
     QProgressIndicator *_progressIndicator = nullptr;
     
-    QWidget *_scrollAreaLinksViewPort = nullptr;
-    QVBoxLayout *_scrollAreaLinksLayout = nullptr;
+    QWidget *_scrollAreaViewPort = nullptr;
+    QVBoxLayout *_scrollAreaLayout = nullptr;
 };
 
 } // namespace OCC
