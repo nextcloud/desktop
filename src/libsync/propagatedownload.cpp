@@ -370,12 +370,6 @@ void PropagateDownloadFile::start()
             return;
         }
         qCDebug(lcPropagateDownload) << "dehydrating file" << _item->_file;
-        auto r = vfs->dehydratePlaceholder(*_item);
-        if (!r) {
-            done(SyncFileItem::NormalError, r.error());
-            return;
-        }
-        propagator()->_journal->deleteFileRecord(_item->_originalFile);
         updateMetadata(false);
         return;
     }

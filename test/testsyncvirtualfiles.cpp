@@ -41,6 +41,7 @@ void triggerDownload(FakeFolder &folder, const QByteArray &path)
     journal.schedulePathForRemoteDiscovery(record._path);
 }
 
+// TODO: triggering dehydration by other means than the pin state is an unsupported scenario
 void markForDehydration(FakeFolder &folder, const QByteArray &path)
 {
     auto &journal = folder.syncJournal();
@@ -1173,45 +1174,6 @@ private slots:
         QVERIFY(fakeFolder.syncOnce());
         QVERIFY(fakeFolder.currentLocalState().find("onlinerenamed2/file1rename" DVSUFFIX));
         QCOMPARE(*vfs->pinState("onlinerenamed2/file1rename" DVSUFFIX), PinState::OnlineOnly);
-    }
-
-    void testIncompatiblePins()
-    {
-        FakeFolder fakeFolder{ FileInfo() };
-        auto vfs = setupVfs(fakeFolder);
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
-
-        auto setPin = [&] (const QByteArray &path, PinState state) {
-            fakeFolder.syncJournal().internalPinStates().setForPath(path, state);
-        };
-
-        fakeFolder.remoteModifier().mkdir("local");
-        fakeFolder.remoteModifier().mkdir("online");
-        QVERIFY(fakeFolder.syncOnce());
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
-
-        setPin("local", PinState::AlwaysLocal);
-        setPin("online", PinState::OnlineOnly);
-
-        fakeFolder.localModifier().insert("local/file1");
-        fakeFolder.localModifier().insert("online/file1");
-        QVERIFY(fakeFolder.syncOnce());
-
-        markForDehydration(fakeFolder, "local/file1");
-        triggerDownload(fakeFolder, "online/file1");
-
-        // the sync sets the changed files pin states to unspecified
-        QVERIFY(fakeFolder.syncOnce());
-
-        QVERIFY(fakeFolder.currentLocalState().find("online/file1"));
-        QVERIFY(fakeFolder.currentLocalState().find("local/file1" DVSUFFIX));
-        QCOMPARE(*vfs->pinState("online/file1"), PinState::Unspecified);
-        QCOMPARE(*vfs->pinState("local/file1" DVSUFFIX), PinState::Unspecified);
-
-        // no change on another sync
-        QVERIFY(fakeFolder.syncOnce());
-        QVERIFY(fakeFolder.currentLocalState().find("online/file1"));
-        QVERIFY(fakeFolder.currentLocalState().find("local/file1" DVSUFFIX));
     }
 };
 

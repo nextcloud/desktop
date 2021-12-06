@@ -1,0 +1,7 @@
+Bugfix: Fix failing dehydration causing files to be moved to trash
+
+If files where dehydrated by the user the action could fail under certain conditions
+which caused a deletion of the file.
+
+https://github.com/owncloud/client/pull/9257
+https://github.com/owncloud/client-desktop-vfs-win/pull/9

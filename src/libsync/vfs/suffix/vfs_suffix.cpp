@@ -72,7 +72,28 @@ bool VfsSuffix::isHydrating() const
 
 Result<Vfs::ConvertToPlaceholderResult, QString> VfsSuffix::updateMetadata(const SyncFileItem &item, const QString &filePath, const QString &)
 {
-    FileSystem::setModTime(filePath, item._modtime);
+    if (item._type == ItemTypeVirtualFileDehydration) {
+        SyncFileItem virtualItem(item);
+        virtualItem._file = item._renameTarget;
+        auto r = createPlaceholder(virtualItem);
+        if (!r) {
+            return r.error();
+        }
+        // Move the item's pin state
+        auto pin = _setupParams.journal->internalPinStates().rawForPath(item._file.toUtf8());
+        if (pin && *pin != PinState::Inherited) {
+            setPinState(item._renameTarget, *pin);
+        }
+        if (item._file != item._renameTarget) { // can be the same when renaming foo -> foo.owncloud to dehydrate
+            QString error;
+            if (!FileSystem::remove(_setupParams.filesystemPath + item._file, &error)) {
+                return error;
+            }
+        }
+        _setupParams.journal->deleteFileRecord(item._originalFile);
+    } else {
+        OC_ASSERT(FileSystem::setModTime(filePath, item._modtime));
+    }
     return Vfs::ConvertToPlaceholderResult::Ok;
 }
 
@@ -85,41 +106,15 @@ Result<void, QString> VfsSuffix::createPlaceholder(const SyncFileItem &item)
     QFile file(fn);
     if (file.exists() && file.size() > 1
         && !FileSystem::verifyFileUnchanged(fn, item._size, item._modtime)) {
-        return QStringLiteral("Cannot create a placeholder because a file with the placeholder name already exist");
+        return tr("Cannot create a placeholder because a file with the placeholder name already exist");
     }
 
-    if (!file.open(QFile::ReadWrite | QFile::Truncate))
+    if (!file.open(QFile::ReadWrite | QFile::Truncate)) {
         return file.errorString();
-
+    }
     file.write(" ");
     file.close();
-    FileSystem::setModTime(fn, item._modtime);
-    return {};
-}
-
-Result<void, QString> VfsSuffix::dehydratePlaceholder(const SyncFileItem &item)
-{
-    SyncFileItem virtualItem(item);
-    virtualItem._file = item._renameTarget;
-    auto r = createPlaceholder(virtualItem);
-    if (!r)
-        return r;
-
-    if (item._file != item._renameTarget) { // can be the same when renaming foo -> foo.owncloud to dehydrate
-        QFile::remove(_setupParams.filesystemPath + item._file);
-    }
-
-    // Move the item's pin state
-    auto pin = _setupParams.journal->internalPinStates().rawForPath(item._file.toUtf8());
-    if (pin && *pin != PinState::Inherited) {
-        setPinState(item._renameTarget, *pin);
-        setPinState(item._file, PinState::Inherited);
-    }
-
-    // Ensure the pin state isn't contradictory
-    pin = pinState(item._renameTarget);
-    if (pin && *pin == PinState::AlwaysLocal)
-        setPinState(item._renameTarget, PinState::Unspecified);
+    OC_ASSERT(FileSystem::setModTime(fn, item._modtime));
     return {};
 }
 
