@@ -565,6 +565,9 @@ void PropagateDownloadFile::startAfterIsEncryptedIsChecked()
             || checksum_header.startsWith("MD5:");
     };
     Q_ASSERT(_item->_modtime > 0);
+    if (_item->_modtime <= 0) {
+        qCWarning(lcPropagateDownload()) << "invalid modified time" << _item->_file << _item->_modtime;
+    }
     if (_item->_instruction == CSYNC_INSTRUCTION_CONFLICT
         && _item->_size == _item->_previousSize
         && !_item->_checksumHeader.isEmpty()
@@ -594,6 +597,9 @@ void PropagateDownloadFile::conflictChecksumComputed(const QByteArray &checksumT
         // and local mtimes end up identical
         auto fn = propagator()->fullLocalPath(_item->_file);
         Q_ASSERT(_item->_modtime > 0);
+        if (_item->_modtime <= 0) {
+            qCWarning(lcPropagateDownload()) << "invalid modified time" << _item->_file << _item->_modtime;
+        }
         if (_item->_modtime != _item->_previousModtime) {
             Q_ASSERT(_item->_modtime > 0);
             FileSystem::setModTime(fn, _item->_modtime);
@@ -601,6 +607,9 @@ void PropagateDownloadFile::conflictChecksumComputed(const QByteArray &checksumT
         }
         _item->_modtime = FileSystem::getModTime(fn);
         Q_ASSERT(_item->_modtime > 0);
+        if (_item->_modtime <= 0) {
+            qCWarning(lcPropagateDownload()) << "invalid modified time" << _item->_file << _item->_modtime;
+        }
         updateMetadata(/*isConflict=*/false);
         return;
     }
@@ -825,6 +834,9 @@ void PropagateDownloadFile::slotGetFinished()
         // so make sure we have the up-to-date time
         _item->_modtime = job->lastModified();
         Q_ASSERT(_item->_modtime > 0);
+        if (_item->_modtime <= 0) {
+            qCWarning(lcPropagateDownload()) << "invalid modified time" << _item->_file << _item->_modtime;
+        }
     }
 
     _tmpFile.close();
@@ -1068,6 +1080,9 @@ void PropagateDownloadFile::downloadFinished()
         return;
     }
     Q_ASSERT(_item->_modtime > 0);
+    if (_item->_modtime <= 0) {
+        qCWarning(lcPropagateDownload()) << "invalid modified time" << _item->_file << _item->_modtime;
+    }
     FileSystem::setModTime(_tmpFile.fileName(), _item->_modtime);
     // We need to fetch the time again because some file systems such as FAT have worse than a second
     // Accuracy, and we really need the time from the file system. (#3103)
@@ -1077,6 +1092,9 @@ void PropagateDownloadFile::downloadFinished()
         return;
     }
     Q_ASSERT(_item->_modtime > 0);
+    if (_item->_modtime <= 0) {
+        qCWarning(lcPropagateDownload()) << "invalid modified time" << _item->_file << _item->_modtime;
+    }
 
     bool previousFileExists = FileSystem::fileExists(fn);
     if (previousFileExists) {
