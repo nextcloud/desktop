@@ -389,7 +389,13 @@ void ProcessDirectoryJob::processFile(PathTuple path,
     item->_originalFile = path._original;
     item->_previousSize = dbEntry._fileSize;
     item->_previousModtime = dbEntry._modtime;
-    item->_renameTarget = localEntry.renameName;
+    if (!localEntry.renameName.isEmpty()) {
+        if (_dirItem) {
+            item->_renameTarget = _dirItem->_file + "/" + localEntry.renameName;
+        } else {
+            item->_renameTarget = localEntry.renameName;
+        }
+    }
 
     if (dbEntry._modtime == localEntry.modtime && dbEntry._type == ItemTypeVirtualFile && localEntry.type == ItemTypeFile) {
         item->_type = ItemTypeFile;
