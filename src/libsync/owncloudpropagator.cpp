@@ -1126,6 +1126,13 @@ void PropagateDirectory::slotSubJobsFinished(SyncFileItem::Status status)
         if (_item->_instruction == CSYNC_INSTRUCTION_NEW && _item->_direction == SyncFileItem::Down) {
             // special case for local MKDIR, set local directory mtime
             // (it's not synced later at all, but can be nice to have it set initially)
+
+            if (_item->_modtime <= 0) {
+                status = _item->_status = SyncFileItem::NormalError;
+                _item->_errorString = tr("Error updating metadata due to invalid modified time");
+                qCWarning(lcDirectory) << "Error writing to the database for file" << _item->_file;
+            }
+
             FileSystem::setModTime(propagator()->fullLocalPath(_item->destination()), _item->_modtime);
         }
 
