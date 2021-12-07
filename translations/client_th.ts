@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="th_TH" version="2.1">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="th_TH">
 <context>
     <name>ActivityActionButton</name>
     <message>
