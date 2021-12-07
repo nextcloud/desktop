@@ -385,12 +385,20 @@ void PropagateUploadFileCommon::slotStartUpload(const QByteArray &transmissionCh
     if (!FileSystem::fileExists(fullFilePath)) {
         return slotOnErrorStartFolderUnlock(SyncFileItem::SoftError, tr("File Removed (start upload) %1").arg(fullFilePath));
     }
+    if (_item->_modtime <= 0) {
+        return slotOnErrorStartFolderUnlock(
+            SyncFileItem::SoftError, tr("Local file has invalid modified time. Do not upload to the server."));
+    }
     Q_ASSERT(_item->_modtime > 0);
     time_t prevModtime = _item->_modtime; // the _item value was set in PropagateUploadFile::start()
     // but a potential checksum calculation could have taken some time during which the file could
     // have been changed again, so better check again here.
 
     _item->_modtime = FileSystem::getModTime(originalFilePath);
+    if (_item->_modtime <= 0) {
+        return slotOnErrorStartFolderUnlock(
+            SyncFileItem::SoftError, tr("Local file has invalid modified time. Do not upload to the server."));
+    }
     Q_ASSERT(_item->_modtime > 0);
     if (prevModtime != _item->_modtime) {
         propagator()->_anotherSyncNeeded = true;
