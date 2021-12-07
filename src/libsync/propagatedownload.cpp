@@ -1063,11 +1063,19 @@ void PropagateDownloadFile::downloadFinished()
         return;
     }
 
+    if (_item->_modtime <= 0) {
+        done(SyncFileItem::NormalError, tr("File %1 has invalid modified time reported by server. Do not save it.").arg(QDir::toNativeSeparators(_item->_file)));
+        return;
+    }
     Q_ASSERT(_item->_modtime > 0);
     FileSystem::setModTime(_tmpFile.fileName(), _item->_modtime);
     // We need to fetch the time again because some file systems such as FAT have worse than a second
     // Accuracy, and we really need the time from the file system. (#3103)
     _item->_modtime = FileSystem::getModTime(_tmpFile.fileName());
+    if (_item->_modtime <= 0) {
+        done(SyncFileItem::NormalError, tr("File %1 has invalid modified time reported by server. Do not save it.").arg(QDir::toNativeSeparators(_item->_file)));
+        return;
+    }
     Q_ASSERT(_item->_modtime > 0);
 
     bool previousFileExists = FileSystem::fileExists(fn);
