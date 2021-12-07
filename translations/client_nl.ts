@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="nl" version="2.1">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="nl">
 <context>
     <name>ActivityActionButton</name>
     <message>
@@ -882,7 +882,7 @@ Dit zal alle synchronisaties, die op dit moment bezig zijn, afbreken.</translati
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="271"/>
         <source>File removed (start upload) %1</source>
-        <translation type="unfinished"/>
+        <translation>Bestand verwijderd (start upload) %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="271"/>
