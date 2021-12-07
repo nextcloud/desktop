@@ -275,6 +275,9 @@ void BulkPropagatorJob::slotStartUpload(SyncFileItemPtr item,
     // have been changed again, so better check again here.
 
     item->_modtime = FileSystem::getModTime(originalFilePath);
+    if (item->_modtime <= 0) {
+        return slotOnErrorStartFolderUnlock(item, SyncFileItem::SoftError, tr("Local file has invalid modified time. Do not upload to the server."));
+    }
     if (prevModtime != item->_modtime) {
         propagator()->_anotherSyncNeeded = true;
         qDebug() << "trigger another sync after checking modified time of item" << item->_file << "prevModtime" << prevModtime << "Curr" << item->_modtime;
