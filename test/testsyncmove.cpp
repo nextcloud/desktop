@@ -841,21 +841,74 @@ private slots:
 
     }
 
+    void testRenameParallelism_data()
+    {
+        QTest::addColumn<Vfs::Mode>("vfsMode");
+        QTest::addColumn<bool>("filesAreDehydrated");
+
+        QTest::newRow("Vfs::Off") << Vfs::Off << true;
+
+        if (isVfsPluginAvailable(Vfs::WindowsCfApi)) {
+            QTest::newRow("Vfs::WindowsCfApi dehydrated") << Vfs::WindowsCfApi << true;
+
+            // TODO: then hydrated version will fail due to an issue in the winvfs plugin, so leave it disabled for now.
+            // QTest::newRow("Vfs::WindowsCfApi hydrated") << Vfs::WindowsCfApi << false;
+        } else if (Utility::isWindows()) {
+            QWARN("Skipping Vfs::WindowsCfApi");
+        }
+    }
+
     // Test that deletes don't run before renames
     void testRenameParallelism()
     {
-        FakeFolder fakeFolder{ FileInfo{} };
+        QFETCH(Vfs::Mode, vfsMode);
+        QFETCH(bool, filesAreDehydrated);
+
+        FakeFolder fakeFolder({ FileInfo {} }, vfsMode);
+
+        FileInfo::ComparissonOption cmpOpt = FileInfo::ContentIsKing;
+        if (vfsMode != Vfs::Off) {
+            auto vfs = QSharedPointer<Vfs>(createVfsFromPlugin(vfsMode).release());
+            QVERIFY(vfs);
+            fakeFolder.switchToVfs(vfs);
+            fakeFolder.syncJournal().internalPinStates().setForPath("", filesAreDehydrated ? PinState::OnlineOnly : PinState::AlwaysLocal);
+
+            // make files virtual
+            fakeFolder.syncOnce();
+
+            cmpOpt = FileInfo::IgnoreContentOfDehydratedFiles;
+        }
+
         fakeFolder.remoteModifier().mkdir("A");
         fakeFolder.remoteModifier().insert("A/file");
         QVERIFY(fakeFolder.syncOnce());
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        {
+            auto localState = fakeFolder.currentLocalState();
+            FileInfo *file = localState.find({ "A/file" });
+            QVERIFY(file != nullptr); // check if the file exists
+            if (vfsMode != Vfs::Off) {
+                QCOMPARE(file->isDehydratedPlaceholder, filesAreDehydrated);
+            }
+            QVERIFY(localState.equals(fakeFolder.currentRemoteState(), cmpOpt));
+        }
 
         fakeFolder.localModifier().mkdir("B");
         fakeFolder.localModifier().rename("A/file", "B/file");
         fakeFolder.localModifier().remove("A");
-
         QVERIFY(fakeFolder.syncOnce());
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        {
+            auto localState = fakeFolder.currentLocalState();
+            QVERIFY(localState.find("A/file") == nullptr); // check if the file is gone
+            QVERIFY(localState.find("A") == nullptr); // check if the directory is gone
+            FileInfo *file = localState.find({ "B/file" });
+            QVERIFY(file != nullptr); // check if the file exists
+            if (vfsMode != Vfs::Off) {
+                QCOMPARE(file->isDehydratedPlaceholder, filesAreDehydrated); // check that no-one messed with the placeholder state
+            }
+            QVERIFY(localState.equals(fakeFolder.currentRemoteState(), cmpOpt));
+        }
     }
 
     void testMovedWithError_data()
@@ -871,7 +924,6 @@ private slots:
         } else {
             QWARN("Skipping Vfs::WindowsCfApi");
         }
-
 #endif
     }
 

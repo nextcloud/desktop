@@ -160,22 +160,22 @@ private slots:
 
         //3.
         // File should be recovered
-        QCOMPARE(currentLocalState.find("normalDirectory_PERM_CKDNV_/cannotBeModified_PERM_DVN_.data")->size, cannotBeModifiedSize);
-        QCOMPARE(currentLocalState.find("readonlyDirectory_PERM_M_/cannotBeModified_PERM_DVN_.data")->size, cannotBeModifiedSize);
+        QCOMPARE(currentLocalState.find("normalDirectory_PERM_CKDNV_/cannotBeModified_PERM_DVN_.data")->contentSize, cannotBeModifiedSize);
+        QCOMPARE(currentLocalState.find("readonlyDirectory_PERM_M_/cannotBeModified_PERM_DVN_.data")->contentSize, cannotBeModifiedSize);
         // and conflict created
         auto c1 = findConflict(currentLocalState, "normalDirectory_PERM_CKDNV_/cannotBeModified_PERM_DVN_.data");
         QVERIFY(c1);
-        QCOMPARE(c1->size, cannotBeModifiedSize + 1);
+        QCOMPARE(c1->contentSize, cannotBeModifiedSize + 1);
         auto c2 = findConflict(currentLocalState, "readonlyDirectory_PERM_M_/cannotBeModified_PERM_DVN_.data");
         QVERIFY(c2);
-        QCOMPARE(c2->size, cannotBeModifiedSize + 1);
+        QCOMPARE(c2->contentSize, cannotBeModifiedSize + 1);
         // remove the conflicts for the next state comparison
         fakeFolder.localModifier().remove(c1->path());
         fakeFolder.localModifier().remove(c2->path());
 
         //4. File should be updated, that's tested by assertLocalAndRemoteDir
-        QCOMPARE(currentLocalState.find("normalDirectory_PERM_CKDNV_/canBeModified_PERM_W_.data")->size, canBeModifiedSize + 1);
-        QCOMPARE(currentLocalState.find("readonlyDirectory_PERM_M_/canBeModified_PERM_W_.data")->size, canBeModifiedSize + 1);
+        QCOMPARE(currentLocalState.find("normalDirectory_PERM_CKDNV_/canBeModified_PERM_W_.data")->contentSize, canBeModifiedSize + 1);
+        QCOMPARE(currentLocalState.find("readonlyDirectory_PERM_M_/canBeModified_PERM_W_.data")->contentSize, canBeModifiedSize + 1);
 
         //5.
         // the file should be in the server and local

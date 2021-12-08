@@ -36,8 +36,7 @@ static void partialUpload(FakeFolder &fakeFolder, const QString &name, qint64 si
 
     QCOMPARE(fakeFolder.uploadState().children.count(), 1); // the transfer was done with chunking
     auto upStateChildren = fakeFolder.uploadState().children.first().children;
-    QCOMPARE(sizeWhenAbort, std::accumulate(upStateChildren.cbegin(), upStateChildren.cend(), 0,
-                                            [](int s, const FileInfo &i) { return s + i.size; }));
+    QCOMPARE(sizeWhenAbort, std::accumulate(upStateChildren.cbegin(), upStateChildren.cend(), 0, [](int s, const FileInfo &i) { return s + i.contentSize; }));
 }
 
 // Reduce max chunk size a bit so we get more chunks
@@ -66,7 +65,7 @@ private slots:
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
         QCOMPARE(fakeFolder.uploadState().children.count(), 1); // the transfer was done with chunking
-        QCOMPARE(fakeFolder.currentRemoteState().find("A/a0")->size, size);
+        QCOMPARE(fakeFolder.currentRemoteState().find("A/a0")->contentSize, size);
 
         // Check that another upload of the same file also work.
         fakeFolder.localModifier().appendByte("A/a0");
@@ -86,7 +85,7 @@ private slots:
         QCOMPARE(fakeFolder.uploadState().children.count(), 1);
         auto chunkingId = fakeFolder.uploadState().children.first().name;
         const auto &chunkMap = fakeFolder.uploadState().children.first().children;
-        qint64 uploadedSize = std::accumulate(chunkMap.begin(), chunkMap.end(), 0LL, [](qint64 s, const FileInfo &f) { return s + f.size; });
+        qint64 uploadedSize = std::accumulate(chunkMap.begin(), chunkMap.end(), 0LL, [](qint64 s, const FileInfo &f) { return s + f.contentSize; });
         QVERIFY(uploadedSize > 2 * 1000 * 1000); // at least 2 MB
 
         // Add a fake chunk to make sure it gets deleted
@@ -105,7 +104,7 @@ private slots:
         QVERIFY(fakeFolder.syncOnce());
 
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
-        QCOMPARE(fakeFolder.currentRemoteState().find("A/a0")->size, size);
+        QCOMPARE(fakeFolder.currentRemoteState().find("A/a0")->contentSize, size);
         // The same chunk id was re-used
         QCOMPARE(fakeFolder.uploadState().children.count(), 1);
         QCOMPARE(fakeFolder.uploadState().children.first().name, chunkingId);
@@ -121,7 +120,7 @@ private slots:
         QCOMPARE(fakeFolder.uploadState().children.count(), 1);
         auto chunkingId = fakeFolder.uploadState().children.first().name;
         const auto &chunkMap = fakeFolder.uploadState().children.first().children;
-        qint64 uploadedSize = std::accumulate(chunkMap.begin(), chunkMap.end(), 0LL, [](qint64 s, const FileInfo &f) { return s + f.size; });
+        qint64 uploadedSize = std::accumulate(chunkMap.begin(), chunkMap.end(), 0LL, [](qint64 s, const FileInfo &f) { return s + f.contentSize; });
         QVERIFY(uploadedSize > 2 * 1000 * 1000); // at least 50 MB
         QVERIFY(chunkMap.size() >= 3); // at least three chunks
 
@@ -139,7 +138,7 @@ private slots:
         fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *) -> QNetworkReply * {
             if (op == QNetworkAccessManager::PutOperation) {
                 // Test that we properly resuming, not resending the first chunk
-                Q_ASSERT(request.rawHeader("OC-Chunk-Offset").toLongLong() >= firstChunk.size);
+                Q_ASSERT(request.rawHeader("OC-Chunk-Offset").toLongLong() >= firstChunk.contentSize);
             } else if (op == QNetworkAccessManager::DeleteOperation) {
                 deletedPaths.append(request.url().path());
             }
@@ -160,7 +159,7 @@ private slots:
         }
 
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
-        QCOMPARE(fakeFolder.currentRemoteState().find("A/a0")->size, size);
+        QCOMPARE(fakeFolder.currentRemoteState().find("A/a0")->contentSize, size);
         // The same chunk id was re-used
         QCOMPARE(fakeFolder.uploadState().children.count(), 1);
         QCOMPARE(fakeFolder.uploadState().children.first().name, chunkingId);
@@ -177,7 +176,7 @@ private slots:
         QCOMPARE(fakeFolder.uploadState().children.count(), 1);
         auto chunkingId = fakeFolder.uploadState().children.first().name;
         const auto &chunkMap = fakeFolder.uploadState().children.first().children;
-        qint64 uploadedSize = std::accumulate(chunkMap.begin(), chunkMap.end(), 0LL, [](qint64 s, const FileInfo &f) { return s + f.size; });
+        qint64 uploadedSize = std::accumulate(chunkMap.begin(), chunkMap.end(), 0LL, [](qint64 s, const FileInfo &f) { return s + f.contentSize; });
         QVERIFY(uploadedSize > 5 * 1000 * 1000); // at least 5 MB
 
         // Add a chunk that makes the file completely uploaded
@@ -204,7 +203,7 @@ private slots:
         QVERIFY(!sawDelete);
 
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
-        QCOMPARE(fakeFolder.currentRemoteState().find("A/a0")->size, size);
+        QCOMPARE(fakeFolder.currentRemoteState().find("A/a0")->contentSize, size);
         // The same chunk id was re-used
         QCOMPARE(fakeFolder.uploadState().children.count(), 1);
         QCOMPARE(fakeFolder.uploadState().children.first().name, chunkingId);
@@ -222,7 +221,7 @@ private slots:
         QCOMPARE(fakeFolder.uploadState().children.count(), 1);
         auto chunkingId = fakeFolder.uploadState().children.first().name;
         const auto &chunkMap = fakeFolder.uploadState().children.first().children;
-        qint64 uploadedSize = std::accumulate(chunkMap.begin(), chunkMap.end(), 0LL, [](qint64 s, const FileInfo &f) { return s + f.size; });
+        qint64 uploadedSize = std::accumulate(chunkMap.begin(), chunkMap.end(), 0LL, [](qint64 s, const FileInfo &f) { return s + f.contentSize; });
         QVERIFY(uploadedSize > 5 * 1000 * 1000); // at least 5 MB
 
         // Add a chunk that makes the file more than completely uploaded
@@ -232,7 +231,7 @@ private slots:
         QVERIFY(fakeFolder.syncOnce());
 
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
-        QCOMPARE(fakeFolder.currentRemoteState().find("A/a0")->size, size);
+        QCOMPARE(fakeFolder.currentRemoteState().find("A/a0")->contentSize, size);
         QCOMPARE(fakeFolder.uploadState().children.count(), 1);
     }
 
@@ -384,7 +383,7 @@ private slots:
         QVERIFY(fakeFolder.syncOnce());
 
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
-        QCOMPARE(fakeFolder.currentRemoteState().find("A/a0")->size, size + 1);
+        QCOMPARE(fakeFolder.currentRemoteState().find("A/a0")->contentSize, size + 1);
         // A different chunk id was used, and the previous one is removed
         QCOMPARE(fakeFolder.uploadState().children.count(), 1);
         QVERIFY(fakeFolder.uploadState().children.first().name != chunkingId);
@@ -443,7 +442,7 @@ private slots:
         auto localState = fakeFolder.currentLocalState();
 
         // A0 is the one from the server
-        QCOMPARE(localState.find("A/a0")->size, size);
+        QCOMPARE(localState.find("A/a0")->contentSize, size);
         QCOMPARE(localState.find("A/a0")->contentChar, 'C');
 
         // There is a conflict file with our version
@@ -453,7 +452,7 @@ private slots:
         });
         QVERIFY(it != stateAChildren.cend());
         QCOMPARE(it->contentChar, 'B');
-        QCOMPARE(it->size, size+1);
+        QCOMPARE(it->contentSize, size + 1);
 
         // Remove the conflict file so the comparison works!
         fakeFolder.localModifier().remove("A/" + it->name);
@@ -494,7 +493,7 @@ private slots:
         QVERIFY(fakeFolder.syncOnce());
 
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
-        QCOMPARE(fakeFolder.currentRemoteState().find("A/a0")->size, size+1);
+        QCOMPARE(fakeFolder.currentRemoteState().find("A/a0")->contentSize, size + 1);
 
         // A different chunk id was used, and the previous one is removed
         QCOMPARE(fakeFolder.uploadState().children.count(), 1);
@@ -517,7 +516,7 @@ private slots:
         QVERIFY(fakeFolder.syncOnce());
 
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
-        QCOMPARE(fakeFolder.currentRemoteState().find("A/a0")->size, size);
+        QCOMPARE(fakeFolder.currentRemoteState().find("A/a0")->contentSize, size);
 
         // A different chunk id was used
         QCOMPARE(fakeFolder.uploadState().children.count(), 1);
@@ -618,7 +617,7 @@ private slots:
         // Now resume
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
-        QCOMPARE(fakeFolder.currentRemoteState().find("A/a0")->size, size);
+        QCOMPARE(fakeFolder.currentRemoteState().find("A/a0")->contentSize, size);
 
         // The same chunk id was re-used
         QCOMPARE(fakeFolder.uploadState().children.count(), 1);
@@ -629,7 +628,7 @@ private slots:
         fakeFolder.localModifier().appendByte("A/a0");
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
-        QCOMPARE(fakeFolder.currentRemoteState().find("A/a0")->size, size + 1);
+        QCOMPARE(fakeFolder.currentRemoteState().find("A/a0")->contentSize, size + 1);
     }
 
 
