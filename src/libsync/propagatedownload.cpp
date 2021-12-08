@@ -1076,6 +1076,7 @@ void PropagateDownloadFile::downloadFinished()
     }
 
     if (_item->_modtime <= 0) {
+        FileSystem::remove(_tmpFile.fileName());
         done(SyncFileItem::NormalError, tr("File %1 has invalid modified time reported by server. Do not save it.").arg(QDir::toNativeSeparators(_item->_file)));
         return;
     }
@@ -1088,6 +1089,7 @@ void PropagateDownloadFile::downloadFinished()
     // Accuracy, and we really need the time from the file system. (#3103)
     _item->_modtime = FileSystem::getModTime(_tmpFile.fileName());
     if (_item->_modtime <= 0) {
+        FileSystem::remove(_tmpFile.fileName());
         done(SyncFileItem::NormalError, tr("File %1 has invalid modified time reported by server. Do not save it.").arg(QDir::toNativeSeparators(_item->_file)));
         return;
     }
