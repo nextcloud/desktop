@@ -3366,12 +3366,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>El nom del fitxer es troba en la llista de prohibicions del servidor.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="413"/>
+        <location filename="../src/libsync/discovery.cpp" line="419"/>
         <source>File has extension reserved for virtual files.</source>
         <translation>El fitxer té una extensió reservada per als fitxers virtuals.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="488"/>
+        <location filename="../src/libsync/discovery.cpp" line="494"/>
         <source>size</source>
         <translation>mida</translation>
     </message>
@@ -3386,67 +3386,67 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="490"/>
+        <location filename="../src/libsync/discovery.cpp" line="496"/>
         <source>permission</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="494"/>
+        <location filename="../src/libsync/discovery.cpp" line="500"/>
         <source>file id</source>
         <translation>id de fitxer</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="498"/>
+        <location filename="../src/libsync/discovery.cpp" line="504"/>
         <source>Server reported no %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1038"/>
+        <location filename="../src/libsync/discovery.cpp" line="1044"/>
         <source>Conflict when uploading some files to a folder. Those, conflicted, are going to get cleared!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1057"/>
+        <location filename="../src/libsync/discovery.cpp" line="1063"/>
         <source>Conflict when uploading a folder. It&apos;s going to get cleared!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1060"/>
+        <location filename="../src/libsync/discovery.cpp" line="1066"/>
         <source>Conflict when uploading a file. It&apos;s going to get removed!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1390"/>
+        <location filename="../src/libsync/discovery.cpp" line="1396"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>S&apos;ha ignorat perquè es troba a la llista de prohibicions «Trieu què voleu sincronitzar»</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1423"/>
+        <location filename="../src/libsync/discovery.cpp" line="1429"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>No es permet perquè no teniu permís per a afegir subcarpetes en aquesta carpeta</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1428"/>
+        <location filename="../src/libsync/discovery.cpp" line="1434"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>No es permet perquè no teniu permís per a afegir fitxers en aquesta carpeta</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1441"/>
+        <location filename="../src/libsync/discovery.cpp" line="1447"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>No es permet carregar aquest fitxer perquè és de només lectura en el servidor; s&apos;està restaurant</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1463"/>
+        <location filename="../src/libsync/discovery.cpp" line="1469"/>
         <source>Moved to invalid target, restoring</source>
         <translation>S&apos;ha mogut a una destinació no vàlida; s&apos;està restaurant</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1476"/>
+        <location filename="../src/libsync/discovery.cpp" line="1482"/>
         <source>Not allowed to remove, restoring</source>
         <translation>No es permet suprimir; s&apos;està restaurant</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1585"/>
+        <location filename="../src/libsync/discovery.cpp" line="1591"/>
         <source>Error while reading the database</source>
         <translation>Error while reading the database</translation>
     </message>
@@ -3456,7 +3456,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>El servidor ha respost amb un error en llegir la carpeta «%1»: %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1646"/>
+        <location filename="../src/libsync/discovery.cpp" line="1652"/>
         <source>Server replied with an error while reading directory &quot;%1&quot; : %2</source>
         <translation type="unfinished"/>
     </message>

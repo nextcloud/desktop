@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="nl">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="nl" version="2.1">
 <context>
     <name>ActivityActionButton</name>
     <message>
@@ -3407,12 +3407,12 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
         <translation>De bestandsnaam staat op de negeerlijst van de server.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="413"/>
+        <location filename="../src/libsync/discovery.cpp" line="419"/>
         <source>File has extension reserved for virtual files.</source>
         <translation>Bestand heeft een extensie gereserveerd voor virtuele bestanden.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="488"/>
+        <location filename="../src/libsync/discovery.cpp" line="494"/>
         <source>size</source>
         <translation>omvang</translation>
     </message>
@@ -3427,67 +3427,67 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
         <translation>Server meldde geen %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="490"/>
+        <location filename="../src/libsync/discovery.cpp" line="496"/>
         <source>permission</source>
         <translation>machtiging</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="494"/>
+        <location filename="../src/libsync/discovery.cpp" line="500"/>
         <source>file id</source>
         <translation>bestand id</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="498"/>
+        <location filename="../src/libsync/discovery.cpp" line="504"/>
         <source>Server reported no %1</source>
         <translation>Server rapporteerde nr %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1038"/>
+        <location filename="../src/libsync/discovery.cpp" line="1044"/>
         <source>Conflict when uploading some files to a folder. Those, conflicted, are going to get cleared!</source>
         <translation>Conflict bij het uploaden van sommige bestanden naar een map. Die betreffende conflicterende bestanden zullen worden gewist!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1057"/>
+        <location filename="../src/libsync/discovery.cpp" line="1063"/>
         <source>Conflict when uploading a folder. It&apos;s going to get cleared!</source>
         <translation>Conflict bij het uploaden van een map. Het wordt opgeruimd!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1060"/>
+        <location filename="../src/libsync/discovery.cpp" line="1066"/>
         <source>Conflict when uploading a file. It&apos;s going to get removed!</source>
         <translation>Conflict bij het uploaden van een bestand. Het wordt verwijderd!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1390"/>
+        <location filename="../src/libsync/discovery.cpp" line="1396"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Genegeerd vanwege de &quot;wat synchroniseren&quot; negeerlijst</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1423"/>
+        <location filename="../src/libsync/discovery.cpp" line="1429"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Niet toegestaan, omdat je geen machtiging hebt om submappen aan die map toe te voegen</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1428"/>
+        <location filename="../src/libsync/discovery.cpp" line="1434"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Niet toegestaan omdat je geen machtiging hebt om bestanden in die map toe te voegen</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1441"/>
+        <location filename="../src/libsync/discovery.cpp" line="1447"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Niet toegestaan om dit bestand te uploaden, omdat het alleen-lezen is op de server, herstellen</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1463"/>
+        <location filename="../src/libsync/discovery.cpp" line="1469"/>
         <source>Moved to invalid target, restoring</source>
         <translation>Verplaatst naar ongeldig doel, herstellen</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1476"/>
+        <location filename="../src/libsync/discovery.cpp" line="1482"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Niet toegestaan om te verwijderen, herstellen</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1585"/>
+        <location filename="../src/libsync/discovery.cpp" line="1591"/>
         <source>Error while reading the database</source>
         <translation>Fout bij lezen database</translation>
     </message>
@@ -3497,7 +3497,7 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
         <translation>Server gaf een foutmelding bij lezen directory &apos;%1&apos; : %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1646"/>
+        <location filename="../src/libsync/discovery.cpp" line="1652"/>
         <source>Server replied with an error while reading directory &quot;%1&quot; : %2</source>
         <translation>Server gaf een foutmelding bij lezen directory &quot;%1&apos;&quot;: %2</translation>
     </message>

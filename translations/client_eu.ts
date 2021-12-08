@@ -3405,12 +3405,12 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
         <translation>Fitxategiaren izena zerrenda beltzean dago zerbitzarian.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="413"/>
+        <location filename="../src/libsync/discovery.cpp" line="419"/>
         <source>File has extension reserved for virtual files.</source>
         <translation>Fitxategiak fitxategi birtualentzako gordetako luzapena du.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="488"/>
+        <location filename="../src/libsync/discovery.cpp" line="494"/>
         <source>size</source>
         <translation>tamaina</translation>
     </message>
@@ -3425,67 +3425,67 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
         <translation>zerbitzariak ez du %1-rik jakinarazi</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="490"/>
+        <location filename="../src/libsync/discovery.cpp" line="496"/>
         <source>permission</source>
         <translation>baimena</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="494"/>
+        <location filename="../src/libsync/discovery.cpp" line="500"/>
         <source>file id</source>
         <translation>fitxategiaren id-a</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="498"/>
+        <location filename="../src/libsync/discovery.cpp" line="504"/>
         <source>Server reported no %1</source>
         <translation>Zerbitzariak ez du %1-rik jakinarazi</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1038"/>
+        <location filename="../src/libsync/discovery.cpp" line="1044"/>
         <source>Conflict when uploading some files to a folder. Those, conflicted, are going to get cleared!</source>
         <translation>Gatazka gertatu da fitxategi batzuk karpetara kargatzean. Gatazka sortu dutenak garbitu egingo dira!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1057"/>
+        <location filename="../src/libsync/discovery.cpp" line="1063"/>
         <source>Conflict when uploading a folder. It&apos;s going to get cleared!</source>
         <translation>Gatazka gertatu da karpeta kargatzean. Garbituko da!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1060"/>
+        <location filename="../src/libsync/discovery.cpp" line="1066"/>
         <source>Conflict when uploading a file. It&apos;s going to get removed!</source>
         <translation>Gatazka gertatu da fitxategia kargatzean. Garbituko da!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1390"/>
+        <location filename="../src/libsync/discovery.cpp" line="1396"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Ez ikusi egin zaio, &quot;aukeratu zer sinkronizatu&quot; zerrenda beltzagatik.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1423"/>
+        <location filename="../src/libsync/discovery.cpp" line="1429"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Ez da onartu, ez daukazulako baimenik karpeta horretan azpikarpetak gehitzeko</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1428"/>
+        <location filename="../src/libsync/discovery.cpp" line="1434"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Ez da onartu, ez daukazulako baimenik karpeta horretan fitxategiak gehitzeko</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1441"/>
+        <location filename="../src/libsync/discovery.cpp" line="1447"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Ez dago baimenik fitxategi hau kargatzek zerbitzarian irakurtzeko soilik delako, leheneratzen.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1463"/>
+        <location filename="../src/libsync/discovery.cpp" line="1469"/>
         <source>Moved to invalid target, restoring</source>
         <translation>Baliogabeko helburura mugitu da, berrezartzen</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1476"/>
+        <location filename="../src/libsync/discovery.cpp" line="1482"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Ezabatzeko baimenik gabe, berrezartzen</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1585"/>
+        <location filename="../src/libsync/discovery.cpp" line="1591"/>
         <source>Error while reading the database</source>
         <translation>Errorea datu-basea irakurtzean</translation>
     </message>
@@ -3495,7 +3495,7 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
         <translation>Zerbitzariak errore batekin erantzun du irakurtzean &apos;%1&apos; : %2 direktorioa </translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1646"/>
+        <location filename="../src/libsync/discovery.cpp" line="1652"/>
         <source>Server replied with an error while reading directory &quot;%1&quot; : %2</source>
         <translation>Zerbitzariak errore batekin erantzun du &quot;% 1&quot; direktorioa irakurtzean:% 2</translation>
     </message>

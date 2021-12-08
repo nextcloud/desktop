@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="sl">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="sl" version="2.1">
 <context>
     <name>ActivityActionButton</name>
     <message>
@@ -635,7 +635,7 @@ S tem dejanjem prav tako prekinete vsa trenutna usklajevanja v izvajanju.</trans
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1143"/>
         <source>Obtaining authorization from the browser. &lt;a href=&apos;%1&apos;&gt;Click here&lt;/a&gt; to re-open the browser.</source>
-        <translation>Poteka pridobitev overitve prek brskalnika. &lt;a href=&apos;%1&apos;&gt;Kliknite&lt;/a&gt; to za ponovno odpiranje brskalnika.</translation>
+        <translation>Poteka pridobitev overitve po brskalniku. &lt;a href=&apos;%1&apos;&gt;Kliknite&lt;/a&gt; to za ponovno odpiranje brskalnika.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1147"/>
@@ -2241,7 +2241,7 @@ Zavedati se je treba, da izbor določa le različice programske opreme za nadgra
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="156"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Click here&lt;/a&gt; to request an app password from the web interface.</source>
-        <translation>&lt;a href=&quot;%1&quot;&gt;Kliknite&lt;/a&gt; za dodelitev gesla programa prek spletnega vmesnika.</translation>
+        <translation>&lt;a href=&quot;%1&quot;&gt;Kliknite&lt;/a&gt; za dodelitev gesla programa po spletnem vmesniku.</translation>
     </message>
 </context>
 <context>
@@ -3403,12 +3403,12 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
         <translation>Ime datoteke je na črnem seznamu strežnika.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="413"/>
+        <location filename="../src/libsync/discovery.cpp" line="419"/>
         <source>File has extension reserved for virtual files.</source>
         <translation>Datoteka ima predpono, ki je zadržana za navidezne datoteke.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="488"/>
+        <location filename="../src/libsync/discovery.cpp" line="494"/>
         <source>size</source>
         <translation>velikost</translation>
     </message>
@@ -3423,67 +3423,67 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
         <translation>prejet je odziv strežnika %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="490"/>
+        <location filename="../src/libsync/discovery.cpp" line="496"/>
         <source>permission</source>
         <translation>dovoljenje</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="494"/>
+        <location filename="../src/libsync/discovery.cpp" line="500"/>
         <source>file id</source>
         <translation>ID datoteke</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="498"/>
+        <location filename="../src/libsync/discovery.cpp" line="504"/>
         <source>Server reported no %1</source>
         <translation>Prejet je odziv strežnika %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1038"/>
+        <location filename="../src/libsync/discovery.cpp" line="1044"/>
         <source>Conflict when uploading some files to a folder. Those, conflicted, are going to get cleared!</source>
         <translation>Zaznan je spor pri nalaganju nekaterih datotek v mapo. Spori bodo samodejno počiščeni!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1057"/>
+        <location filename="../src/libsync/discovery.cpp" line="1063"/>
         <source>Conflict when uploading a folder. It&apos;s going to get cleared!</source>
         <translation>Zaznan je spor pri pošiljanju mape. Mapa bo počiščena!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1060"/>
+        <location filename="../src/libsync/discovery.cpp" line="1066"/>
         <source>Conflict when uploading a file. It&apos;s going to get removed!</source>
         <translation>Zaznan je spor pri pošiljanju datoteke. Datoteka bo odstranjena!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1390"/>
+        <location filename="../src/libsync/discovery.cpp" line="1396"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Predmet ni usklajevan, ker je na »črnem seznamu datotek« za usklajevanje</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1423"/>
+        <location filename="../src/libsync/discovery.cpp" line="1429"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Dejanje ni dovoljeno! Ni ustreznih dovoljenj za dodajanje podmap v to mapo.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1428"/>
+        <location filename="../src/libsync/discovery.cpp" line="1434"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Dejanje ni dovoljeno, ker ni ustreznih dovoljenj za dodajanje datotek v to mapo</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1441"/>
+        <location filename="../src/libsync/discovery.cpp" line="1447"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Te datoteke ni dovoljeno poslati, ker ima določena dovoljenja le za branje. Datoteka bo obnovljena na izvorno različico.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1463"/>
+        <location filename="../src/libsync/discovery.cpp" line="1469"/>
         <source>Moved to invalid target, restoring</source>
         <translation>Predmet je premaknjen na neveljaven cilj, vsebina bo obnovljena.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1476"/>
+        <location filename="../src/libsync/discovery.cpp" line="1482"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Odstranjevanje ni dovoljeno, vsebina bo obnovljena.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1585"/>
+        <location filename="../src/libsync/discovery.cpp" line="1591"/>
         <source>Error while reading the database</source>
         <translation>Napaka branja podatkovne zbirke</translation>
     </message>
@@ -3493,7 +3493,7 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
         <translation>Odziv strežnika vključuje napako med branjem mape »%1«: %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1646"/>
+        <location filename="../src/libsync/discovery.cpp" line="1652"/>
         <source>Server replied with an error while reading directory &quot;%1&quot; : %2</source>
         <translation>Odziv strežnika vključuje napako med branjem mape »%1«: %2</translation>
     </message>

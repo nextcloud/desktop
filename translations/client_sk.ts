@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="sk_SK">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="sk_SK" version="2.1">
 <context>
     <name>ActivityActionButton</name>
     <message>
@@ -3404,12 +3404,12 @@ Toto je nový experimentálny režim. Ak sa ho rozhodnete použiť, nahláste v�
         <translation>Súbor je na tomto serveri na čiernej listine.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="413"/>
+        <location filename="../src/libsync/discovery.cpp" line="419"/>
         <source>File has extension reserved for virtual files.</source>
         <translation>Prípona súboru je rezervovaná pre virtuálne súbory.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="488"/>
+        <location filename="../src/libsync/discovery.cpp" line="494"/>
         <source>size</source>
         <translation>veľkosť</translation>
     </message>
@@ -3424,67 +3424,67 @@ Toto je nový experimentálny režim. Ak sa ho rozhodnete použiť, nahláste v�
         <translation>server nevrátil žiadne %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="490"/>
+        <location filename="../src/libsync/discovery.cpp" line="496"/>
         <source>permission</source>
         <translation>oprávnenie</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="494"/>
+        <location filename="../src/libsync/discovery.cpp" line="500"/>
         <source>file id</source>
         <translation>id súboru</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="498"/>
+        <location filename="../src/libsync/discovery.cpp" line="504"/>
         <source>Server reported no %1</source>
         <translation>Server nevrátil žiadne %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1038"/>
+        <location filename="../src/libsync/discovery.cpp" line="1044"/>
         <source>Conflict when uploading some files to a folder. Those, conflicted, are going to get cleared!</source>
         <translation>Konflikt pri nahrávaní niektorých súborov do priečinka. Konfliktné súbory budú odstránené!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1057"/>
+        <location filename="../src/libsync/discovery.cpp" line="1063"/>
         <source>Conflict when uploading a folder. It&apos;s going to get cleared!</source>
         <translation>Konflikt pri nahrávaní priečinka. Bude odstránený!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1060"/>
+        <location filename="../src/libsync/discovery.cpp" line="1066"/>
         <source>Conflict when uploading a file. It&apos;s going to get removed!</source>
         <translation>Konflikt pri nahrávaní súboru. Bude odstránený!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1390"/>
+        <location filename="../src/libsync/discovery.cpp" line="1396"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Ignorované podľa nastavenia &quot;vybrať čo synchronizovať&quot;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1423"/>
+        <location filename="../src/libsync/discovery.cpp" line="1429"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Nie je dovolené, lebo nemáte oprávnenie pridávať podpriečinky do tohto priečinka</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1428"/>
+        <location filename="../src/libsync/discovery.cpp" line="1434"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Nie je možné, pretože nemáte oprávnenie pridávať súbory do tohto priečinka</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1441"/>
+        <location filename="../src/libsync/discovery.cpp" line="1447"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Nie je dovolené tento súbor nahrať, pretože je na serveri iba na čítanie, obnovujem</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1463"/>
+        <location filename="../src/libsync/discovery.cpp" line="1469"/>
         <source>Moved to invalid target, restoring</source>
         <translation>Presunuté do neplatného cieľa, obnovujem</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1476"/>
+        <location filename="../src/libsync/discovery.cpp" line="1482"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Nie je dovolené odstrániť, obnovujem</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1585"/>
+        <location filename="../src/libsync/discovery.cpp" line="1591"/>
         <source>Error while reading the database</source>
         <translation>Chyba pri čítaní z databáze</translation>
     </message>
@@ -3494,7 +3494,7 @@ Toto je nový experimentálny režim. Ak sa ho rozhodnete použiť, nahláste v�
         <translation>Server odpovedal chybne počas čítania adresára &apos;%1&apos; : %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1646"/>
+        <location filename="../src/libsync/discovery.cpp" line="1652"/>
         <source>Server replied with an error while reading directory &quot;%1&quot; : %2</source>
         <translation>Server odpovedal chybne počas načítania priečinka &quot;%1&quot; : %2</translation>
     </message>
