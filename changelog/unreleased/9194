@@ -1,0 +1,7 @@
+Bugfix: Don't abort upload if chunk is locked
+
+Since 2.9 we know that we need exclusive file access to a file to properly handle it with Windows virtual files.
+Therefore we checked for the locked state before we start the upload.
+Due to a bug we checked that for each file chunk, now we only check when the upload starts and when it finished completely.
+
+https://github.com/owncloud/client/issues/9194
