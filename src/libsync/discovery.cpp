@@ -542,6 +542,19 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
             } else {
                 item->_instruction = CSYNC_INSTRUCTION_SYNC;
             }
+        } else if (dbEntry._modtime <= 0 && serverEntry.modtime > 0) {
+            item->_direction = SyncFileItem::Down;
+            item->_modtime = serverEntry.modtime;
+            item->_size = sizeOnServer;
+            if (serverEntry.isDirectory) {
+                ENFORCE(dbEntry.isDirectory());
+                item->_instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
+            } else if (!localEntry.isValid() && _queryLocal != ParentNotChanged) {
+                // Deleted locally, changed on server
+                item->_instruction = CSYNC_INSTRUCTION_NEW;
+            } else {
+                item->_instruction = CSYNC_INSTRUCTION_SYNC;
+            }
         } else if (dbEntry._remotePerm != serverEntry.remotePerm || dbEntry._fileId != serverEntry.fileId || metaDataSizeNeedsUpdateForE2EeFilePlaceholder) {
             if (metaDataSizeNeedsUpdateForE2EeFilePlaceholder) {
                 // we are updating placeholder sizes after migrating from older versions with VFS + E2EE implicit hydration not supported

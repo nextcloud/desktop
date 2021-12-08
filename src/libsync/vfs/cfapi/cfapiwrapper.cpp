@@ -643,6 +643,10 @@ OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> OCC::CfApiWrapper::se
 
 OCC::Result<void, QString> OCC::CfApiWrapper::createPlaceholderInfo(const QString &path, time_t modtime, qint64 size, const QByteArray &fileId)
 {
+    if (modtime <= 0) {
+        return {QString{"Could not update metadata due to invalid modified time for %1: %2"}.arg(path).arg(modtime)};
+    }
+
     const auto fileInfo = QFileInfo(path);
     const auto localBasePath = QDir::toNativeSeparators(fileInfo.path()).toStdWString();
     const auto relativePath = fileInfo.fileName().toStdWString();
@@ -690,6 +694,10 @@ OCC::Result<void, QString> OCC::CfApiWrapper::createPlaceholderInfo(const QStrin
 OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> OCC::CfApiWrapper::updatePlaceholderInfo(const FileHandle &handle, time_t modtime, qint64 size, const QByteArray &fileId, const QString &replacesPath)
 {
     Q_ASSERT(handle);
+
+    if (modtime <= 0) {
+        return {QString{"Could not update metadata due to invalid modified time for %1: %2"}.arg(pathForHandle(handle)).arg(modtime)};
+    }
 
     const auto info = replacesPath.isEmpty() ? findPlaceholderInfo(handle)
                                              : findPlaceholderInfo(handleForPath(replacesPath));
