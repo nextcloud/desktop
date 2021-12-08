@@ -33,7 +33,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="240"/>
         <source>View activity</source>
-        <translation type="unfinished"/>
+        <translation>Prikaži aktivnost</translation>
     </message>
 </context>
 <context>
@@ -41,7 +41,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityList.qml" line="30"/>
         <source>Activity list</source>
-        <translation type="unfinished"/>
+        <translation>Popis aktivnosti</translation>
     </message>
 </context>
 <context>
@@ -54,7 +54,7 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="122"/>
         <source>Checking for changes in &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Provjera izmjena u „%1”</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="122"/>
@@ -144,7 +144,7 @@
         <location filename="../src/common/filesystembase.cpp" line="398"/>
         <location filename="../src/common/filesystembase.cpp" line="404"/>
         <source>Could not move &quot;%1&quot; to &quot;%2&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Nije moguće premjestiti „%1” u „%2”</translation>
     </message>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="438"/>
@@ -160,7 +160,7 @@
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="158"/>
         <source>Error removing &quot;%1&quot;: %2</source>
-        <translation type="unfinished"/>
+        <translation>Pogreška prilikom uklanjanja „%1”: %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="158"/>
@@ -170,7 +170,7 @@
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="174"/>
         <source>Could not remove folder &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Nije moguće ukloniti mapu „%1”</translation>
     </message>
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="174"/>
@@ -349,7 +349,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="89"/>
         <source>You seem to have the Virtual Files feature enabled on this folder. At the moment, it is not possible to implicitly download virtual files that are End-to-End encrypted. To get the best experience with Virtual Files and End-to-End Encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Čini se da ste omogućili značajku virtualnih datoteka za ovu mapu. U ovom trenutku nije moguće implicitno preuzeti virtualne datoteke koje su cjelovito šifrirane. Za najbolje iskustvo korištenja virtualnih datoteka i cjelovitog šifriranja provjerite je li šifrirana mapa označena s „Učini uvijek dostupnim lokalno”.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="97"/>
@@ -855,7 +855,7 @@ Ova će radnja prekinuti bilo koju trenutačnu sinkronizaciju.</translation>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="32"/>
         <source>Enter username and password for &quot;%1&quot; at %2.</source>
-        <translation type="unfinished"/>
+        <translation>Unesite korisničko ime i zaporku za „%1” na %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="32"/>
@@ -1178,7 +1178,7 @@ Možda se radi o pogrešci u radu OpenSSL biblioteka.</translation>
         <location filename="../src/gui/creds/flow2auth.cpp" line="118"/>
         <location filename="../src/gui/creds/flow2auth.cpp" line="236"/>
         <source>There was an error accessing the &quot;token&quot; endpoint: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Došlo je do pogreške prilikom pristupanja krajnjoj točki „token”: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="121"/>
@@ -1485,14 +1485,19 @@ Ako ste slučajno odabrali ovu radnju i želite zadržati svoje datoteke, ponovn
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation type="unfinished"/>
+        <translation>Sve datoteke u mapi za sinkronizaciju „%1” izbrisane su s poslužitelja.
+Ta će se brisanja sinkronizirati s lokalnom mapom za sinkronizaciju, što znači da će takve datoteke biti nedostupne ako nemate ovlasti za vraćanje. 
+Ako odlučite vratiti datoteke, ponovno će se sinkronizirati s poslužiteljem ako imate potrebne ovlasti.
+Ako odlučite izbrisati datoteke, one će vam biti nedostupne ako niste njihov vlasnik.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1260"/>
         <source>All the files in your local sync folder &quot;%1&quot; were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
-        <translation type="unfinished"/>
+        <translation>Sve datoteke u vašoj lokalnoj mapi za sinkronizaciju „%1” su izbrisane. Ova će se brisanja sinkronizirati s vašim poslužiteljem, što znači da će te datoteke biti nedostupne ako ih ne vratite.
+Jeste li sigurni da želite sinkronizirati te radnje s poslužiteljem?
+Ako ste slučajno odabrali ovu radnju i želite zadržati svoje datoteke, ponovno će se sinkronizirati s poslužitelja.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1264"/>
@@ -1553,7 +1558,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="398"/>
         <source>An old sync journal &quot;%1&quot; was found, but could not be removed. Please make sure that no application is currently using it.</source>
-        <translation type="unfinished"/>
+        <translation>Pronađen je stari sinkronizacijski dnevnik „%1” ali ga nije moguće ukloniti. Provjerite koristi li ga trenutno neka druga aplikacija.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1246"/>
@@ -1741,12 +1746,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="973"/>
         <source>Checking for changes in remote &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Provjera za promjene u udaljenom „%1”</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="977"/>
         <source>Checking for changes in local &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Provjera za promjene u lokalnom „%1”</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="984"/>
@@ -1906,7 +1911,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="184"/>
         <source>Enter the name of the new folder to be created below &quot;%1&quot;:</source>
-        <translation type="unfinished"/>
+        <translation>Unesite naziv nove mape koja će se stvoriti ispod „%1”:</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="213"/>
@@ -2221,7 +2226,7 @@ Imajte na umu da se ovime odabire samo kategorija iz koje dolaze nadogradnje i d
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="111"/>
         <source>Reading from keychain failed with error: &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Čitanje s privjeska nije uspjelo, pogreška: „%1”</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="111"/>
@@ -2264,7 +2269,7 @@ Imajte na umu da se ovime odabire samo kategorija iz koje dolaze nadogradnje i d
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="40"/>
         <source>This entry is provided by the system at &quot;%1&quot; and cannot be modified in this view.</source>
-        <translation type="unfinished"/>
+        <translation>Ovaj unos osigurava sustav na „%1” i ne može se mijenjati u ovom prikazu.</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="40"/>
@@ -2316,7 +2321,7 @@ Stavke za koje je dopušteno brisanje bit će izbrisane ako sprječavaju uklanja
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="94"/>
         <source>Cannot write changes to &quot;%1&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Nije moguće zapisati promjene u „%1”.</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="94"/>
@@ -2339,62 +2344,62 @@ Stavke za koje je dopušteno brisanje bit će izbrisane ako sprječavaju uklanja
     <message>
         <location filename="../src/gui/invalidfilenamedialog.ui" line="14"/>
         <source>Invalid filename</source>
-        <translation type="unfinished"/>
+        <translation>Nevažeći naziv datoteke</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.ui" line="23"/>
         <source>The file could not be synced because it contains characters which are not allowed on this system.</source>
-        <translation type="unfinished"/>
+        <translation>Datoteka se nije mogla sinkronizirati jer sadrži znakove koji nisu dopušteni na ovom sustavu.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.ui" line="36"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>Pogreška</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.ui" line="49"/>
         <source>Please enter a new name for the file:</source>
-        <translation type="unfinished"/>
+        <translation>Unesite novi naziv datoteke:</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.ui" line="62"/>
         <source>New filename</source>
-        <translation type="unfinished"/>
+        <translation>Novi naziv datoteke</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="85"/>
         <source>Rename file</source>
-        <translation type="unfinished"/>
+        <translation>Preimenuj datoteku</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="87"/>
         <source>The file %1 could not be synced because the name contains characters which are not allowed on this system.</source>
-        <translation type="unfinished"/>
+        <translation>Datoteka %1 se nije mogla sinkronizirati jer njen naziv sadrži znakove koji nisu dopušteni na ovom sustavu.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="88"/>
         <source>The following characters are not allowed on the system: * &quot; | &amp; ? , ; : \ / ~ &lt; &gt;</source>
-        <translation type="unfinished"/>
+        <translation>Sljedeći znakovi nisu dopušteni na ovom sustavu: * &quot; | &amp; ? , ; : \ / ~ &lt; &gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="119"/>
         <source>You don&apos;t have the permission to rename this file. Please ask the author of the file to rename it.</source>
-        <translation type="unfinished"/>
+        <translation>Nemate dopuštenje za preimenovanje ove datoteke. Zatražite autora datoteke da je preimenuje.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="144"/>
         <source>Filename contains illegal characters: %1</source>
-        <translation type="unfinished"/>
+        <translation>Naziv datoteke sadrži nedopuštene znakove: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="158"/>
         <source>Could not rename file. Please make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Nije moguće preimenovati datoteku. Provjerite jeste li povezani s poslužiteljem.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="169"/>
         <source>Cannot rename file because a file with the same name does already exist on the server. Please pick another name.</source>
-        <translation type="unfinished"/>
+        <translation>Nije moguće preimenovati datoteku jer datoteka s istim nazivom već postoji na poslužitelju. Odaberite neki drugi naziv.</translation>
     </message>
 </context>
 <context>
@@ -2539,7 +2544,7 @@ Zapisi se zapisuju u %1</translation>
     <message>
         <location filename="../src/libsync/logger.cpp" line="151"/>
         <source>&lt;nobr&gt;File &quot;%1&quot;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output &lt;b&gt;cannot&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;nobr&gt;Datoteka „%1”&lt;br/&gt;ne može se otvoriti radi zapisivanja.&lt;br/&gt;&lt;br/&gt;Izlaz zapisa &lt;b&gt;ne može&lt;/b&gt; se spremiti!&lt;/nobr&gt;</translation>
     </message>
 </context>
 <context>
@@ -2583,7 +2588,7 @@ Zapisi se zapisuju u %1</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="463"/>
         <source>&lt;p&gt;A new version of the %1 Client is available but the updating process failed.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; has been downloaded. The installed version is %3. If you confirm restart and update, your computer may reboot to complete the installation.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Raspoloživa je nova inačica klijenta %1 ali nije uspjelo ažuriranje na novu inačicu.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; je preuzet. Instalirana je inačica %3. Ako potvrdite ponovno pokretanje i ažuriranje, računalo će se možda isključiti i ponovno uključiti radi dovršavanja instalacije.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="477"/>
@@ -2769,7 +2774,7 @@ dodatne ovlasti tijekom postupka.</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="109"/>
         <source>A new update for %1 is about to be installed. The updater may ask for additional privileges during the process. Your computer may reboot to complete the installation.</source>
-        <translation type="unfinished"/>
+        <translation>Sada će se instalirati novo ažuriranje za %1. Alat za ažuriranje može tražiti dodatne ovlasti tijekom postupka. Računalo će se možda isključiti i ponovno uključiti radi dovršavanja instalacije.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="143"/>
@@ -2809,7 +2814,7 @@ dodatne ovlasti tijekom postupka.</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="158"/>
         <source>Could not download update. Please open &lt;a href=&apos;%1&apos;&gt;%1&lt;/a&gt; to download the update manually.</source>
-        <translation type="unfinished"/>
+        <translation>Nije moguće preuzeti ažuriranje. Otvorite &lt;a href=&apos;%1&apos;&gt;%1&lt;/a&gt; kako biste ručno preuzeli ažuriranje.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="160"/>
@@ -2824,7 +2829,7 @@ dodatne ovlasti tijekom postupka.</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="166"/>
         <source>New %1 is available. Please open &lt;a href=&apos;%2&apos;&gt;%2&lt;/a&gt; to download the update.</source>
-        <translation type="unfinished"/>
+        <translation>Dostupan je novi %1. Otvorite &lt;a href=&apos;%2&apos;&gt;%2&lt;/a&gt; za preuzimanje ažuriranja.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="168"/>
@@ -2914,12 +2919,12 @@ dodatne ovlasti tijekom postupka.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="265"/>
         <source>%1 folder &quot;%2&quot; is synced to local folder &quot;%3&quot;</source>
-        <translation type="unfinished"/>
+        <translation>%1 mapa „%2” sinkronizirana je s lokalnom mapom „%3”</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="268"/>
         <source>Sync the folder &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Sinkroniziraj mapu „%1”</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="273"/>
@@ -3134,7 +3139,7 @@ Nije preporučljivo koristiti ga.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="395"/>
         <source>The authenticated request to the server was redirected to &quot;%1&quot;. The URL is bad, the server is misconfigured.</source>
-        <translation type="unfinished"/>
+        <translation>Autorizirani zahtjev poslužitelju preusmjeren je na „%1”. URL je neispravan, poslužitelj je pogrešno konfiguriran.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="408"/>
@@ -3322,12 +3327,12 @@ Ovo je novi, eksperimentalni način rada. Ako se odlučite aktivirati ga, prijav
     <message>
         <location filename="../src/libsync/discovery.cpp" line="56"/>
         <source>File contains trailing spaces and could not be renamed, because a file with the same name already exists on the server.</source>
-        <translation type="unfinished"/>
+        <translation>Datoteka sadrži završne praznine i nije je moguće preimenovati jer datoteka s istim nazivom već postoji na poslužitelju.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="59"/>
         <source>File contains trailing spaces and could not be renamed, because a file with the same name already exists locally.</source>
-        <translation type="unfinished"/>
+        <translation>Datoteka sadrži završne praznine i nije je moguće preimenovati jer datoteka s istim nazivom već postoji na lokalnoj pohrani.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="293"/>
@@ -3352,7 +3357,7 @@ Ovo je novi, eksperimentalni način rada. Ako se odlučite aktivirati ga, prijav
     <message>
         <location filename="../src/libsync/discovery.cpp" line="315"/>
         <source>File names containing the character &quot;%1&quot; are not supported on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>Nazivi datoteka koji sadrže znak „%1” nisu podržani u ovom datotečnom sustavu.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="317"/>
@@ -3400,12 +3405,12 @@ Ovo je novi, eksperimentalni način rada. Ako se odlučite aktivirati ga, prijav
         <translation>Ovaj naziv datoteke je blokiran na poslužitelju.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="413"/>
+        <location filename="../src/libsync/discovery.cpp" line="419"/>
         <source>File has extension reserved for virtual files.</source>
         <translation>Datoteka ima nastavak koji je rezerviran za virtualne datoteke.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="488"/>
+        <location filename="../src/libsync/discovery.cpp" line="494"/>
         <source>size</source>
         <translation>veličina</translation>
     </message>
@@ -3420,67 +3425,67 @@ Ovo je novi, eksperimentalni način rada. Ako se odlučite aktivirati ga, prijav
         <translation>poslužitelj javlja da nema %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="490"/>
+        <location filename="../src/libsync/discovery.cpp" line="496"/>
         <source>permission</source>
-        <translation type="unfinished"/>
+        <translation>dopuštenje</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="494"/>
+        <location filename="../src/libsync/discovery.cpp" line="500"/>
         <source>file id</source>
         <translation>id datoteke</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="498"/>
+        <location filename="../src/libsync/discovery.cpp" line="504"/>
         <source>Server reported no %1</source>
-        <translation type="unfinished"/>
+        <translation>Poslužitelj javlja da nema %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1038"/>
+        <location filename="../src/libsync/discovery.cpp" line="1044"/>
         <source>Conflict when uploading some files to a folder. Those, conflicted, are going to get cleared!</source>
         <translation>Došlo je do nepodudaranja pri otpremanju nekih datoteka u mapu. Nepodudarne datoteke će biti izbrisane!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1057"/>
+        <location filename="../src/libsync/discovery.cpp" line="1063"/>
         <source>Conflict when uploading a folder. It&apos;s going to get cleared!</source>
         <translation>Došlo je do nepodudaranja pri otpremanju mape. Nepodudarne mape će biti izbrisane!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1060"/>
+        <location filename="../src/libsync/discovery.cpp" line="1066"/>
         <source>Conflict when uploading a file. It&apos;s going to get removed!</source>
         <translation>Došlo je do nepodudaranja pri otpremanju datoteke. Nepodudarna datoteka će biti uklonjena!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1390"/>
+        <location filename="../src/libsync/discovery.cpp" line="1396"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Zanemareno zbog crne liste „odaberi što će se sinkronizirati”</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1423"/>
+        <location filename="../src/libsync/discovery.cpp" line="1429"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Nije dopušteno jer nemate dopuštenje za dodavanje podmapa u tu mapu</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1428"/>
+        <location filename="../src/libsync/discovery.cpp" line="1434"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Nije dopušteno jer nemate dopuštenje za dodavanje datoteka u tu mapu</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1441"/>
+        <location filename="../src/libsync/discovery.cpp" line="1447"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Nije dopušteno otpremiti ovu datoteku jer je dostupna samo za čitanje na poslužitelju, vraćanje</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1463"/>
+        <location filename="../src/libsync/discovery.cpp" line="1469"/>
         <source>Moved to invalid target, restoring</source>
         <translation>Premješteno na nevažeće odredište, vraćanje</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1476"/>
+        <location filename="../src/libsync/discovery.cpp" line="1482"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Nije dopušteno uklanjanje, vraćanje</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1585"/>
+        <location filename="../src/libsync/discovery.cpp" line="1591"/>
         <source>Error while reading the database</source>
         <translation>Pogreška pri čitanju baze podataka</translation>
     </message>
@@ -3490,9 +3495,9 @@ Ovo je novi, eksperimentalni način rada. Ako se odlučite aktivirati ga, prijav
         <translation>Poslužitelj je javio pogrešku pri čitanju direktorija &apos;%1&apos; : %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1646"/>
+        <location filename="../src/libsync/discovery.cpp" line="1652"/>
         <source>Server replied with an error while reading directory &quot;%1&quot; : %2</source>
-        <translation type="unfinished"/>
+        <translation>Poslužitelj je javio pogrešku pri čitanju direktorija „%1” : %2</translation>
     </message>
 </context>
 <context>
@@ -4133,7 +4138,7 @@ Ovo je novi, eksperimentalni način rada. Ako se odlučite aktivirati ga, prijav
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="193"/>
         <source>View only</source>
-        <translation type="unfinished"/>
+        <translation>Samo za gledanje</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="199"/>
@@ -4158,7 +4163,7 @@ Ovo je novi, eksperimentalni način rada. Ako se odlučite aktivirati ga, prijav
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="222"/>
         <source>Link name</source>
-        <translation type="unfinished"/>
+        <translation>Naziv pozivnice</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="254"/>
@@ -4178,7 +4183,7 @@ Ovo je novi, eksperimentalni način rada. Ako se odlučite aktivirati ga, prijav
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="305"/>
         <source>Delete link</source>
-        <translation type="unfinished"/>
+        <translation>Izbriši poveznicu</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="310"/>
@@ -4241,7 +4246,7 @@ Ovo je novi, eksperimentalni način rada. Ako se odlučite aktivirati ga, prijav
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="365"/>
         <source>No results for &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Nema rezultata za „%1”</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="410"/>
@@ -4373,7 +4378,7 @@ Ovo je novi, eksperimentalni način rada. Ako se odlučite aktivirati ga, prijav
         <location filename="../src/gui/socketapi/socketapi.cpp" line="994"/>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1137"/>
         <source>Activity</source>
-        <translation type="unfinished"/>
+        <translation>Aktivnost</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="996"/>
@@ -4600,7 +4605,7 @@ Ovo je novi, eksperimentalni način rada. Ako se odlučite aktivirati ga, prijav
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="158"/>
         <source>Additional errors:</source>
-        <translation type="unfinished"/>
+        <translation>Dodatne pogreške:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="184"/>
@@ -4941,7 +4946,7 @@ Ovo je novi, eksperimentalni način rada. Ako se odlučite aktivirati ga, prijav
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1056"/>
         <source>Synchronization will resume shortly.</source>
-        <translation type="unfinished"/>
+        <translation>Sinkronizacija će se uskoro nastaviti.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1073"/>
@@ -4960,59 +4965,59 @@ Ovo je novi, eksperimentalni način rada. Ako se odlučite aktivirati ga, prijav
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="124"/>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="313"/>
         <source>Offline</source>
-        <translation type="unfinished"/>
+        <translation>Izvanmrežno</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="138"/>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="316"/>
         <location filename="../src/gui/tray/syncstatussummary.h" line="89"/>
         <source>All synced!</source>
-        <translation type="unfinished"/>
+        <translation>Sve je sinkronizirano!</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="147"/>
         <source>Some files couldn&apos;t be synced!</source>
-        <translation type="unfinished"/>
+        <translation>Neke datoteke nije bilo moguće sinkronizirati!</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="148"/>
         <source>See below for errors</source>
-        <translation type="unfinished"/>
+        <translation>Pregledajte pogreške u nastavku</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="155"/>
         <source>Syncing</source>
-        <translation type="unfinished"/>
+        <translation>Sinkronizacija</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="162"/>
         <source>Sync paused</source>
-        <translation type="unfinished"/>
+        <translation>Sinkronizacija je pauzirana</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="169"/>
         <source>Some files could not be synced!</source>
-        <translation type="unfinished"/>
+        <translation>Neke datoteke nije bilo moguće sinkronizirati!</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="170"/>
         <source>See below for warnings</source>
-        <translation type="unfinished"/>
+        <translation>Pregledajte upozorenja u nastavku</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="218"/>
         <source>%1 of %2 · %3 left</source>
-        <translation type="unfinished"/>
+        <translation>%1 od %2 · preostalo %3</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="222"/>
         <source>%1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 od %2</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="227"/>
         <source>Syncing file %1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>Sinkronizacija datoteke %1 od %2</translation>
     </message>
 </context>
 <context>
@@ -5095,22 +5100,22 @@ Ovo je novi, eksperimentalni način rada. Ako se odlučite aktivirati ga, prijav
     <message>
         <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="374"/>
         <source>Failed to fetch providers.</source>
-        <translation type="unfinished"/>
+        <translation>Dohvaćanje davatelja nije uspjelo.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="385"/>
         <source>Failed to fetch search providers for &apos;%1&apos;. Error: %2</source>
-        <translation type="unfinished"/>
+        <translation>Nije uspjelo dohvaćanje davatelja usluga pretraživanja za &apos;%1&apos;. Pogreška: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="419"/>
         <source>Search has failed for &apos;%2&apos;.</source>
-        <translation type="unfinished"/>
+        <translation>Pretraživanje za „%2“ nije uspjelo.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="448"/>
         <source>Search has failed for &apos;%1&apos;. Error: %2</source>
-        <translation type="unfinished"/>
+        <translation>Pretraživanje za „%1” nije uspjelo. Pogreška: %2</translation>
     </message>
 </context>
 <context>
@@ -5174,96 +5179,96 @@ Ovo je novi, eksperimentalni način rada. Ako se odlučite aktivirati ga, prijav
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="140"/>
         <source>Could not fetch predefined statuses. Make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Nije moguće dohvatiti unaprijed definirane statuse. Provjerite jeste li povezani s poslužiteljem.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="144"/>
         <source>Could not fetch user status. Make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Nije moguće dohvatiti status korisnika. Provjerite jeste li povezani s poslužiteljem.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="148"/>
         <source>User status feature is not supported. You will not be able to set your user status.</source>
-        <translation type="unfinished"/>
+        <translation>Nije podržana značajka statusa korisnika. Nećete moći postaviti status korisnika.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="152"/>
         <source>Emojis feature is not supported. Some user status functionality may not work.</source>
-        <translation type="unfinished"/>
+        <translation>Nije podržana značajka emojija. Neke funkcije statusa korisnika možda neće raditi.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="156"/>
         <source>Could not set user status. Make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Nije moguće postaviti status korisnika. Provjerite jeste li povezani s poslužiteljem.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="160"/>
         <source>Could not clear user status message. Make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Nije moguće izbrisati poruku o statusu korisnika. Provjerite jeste li povezani s poslužiteljem.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="358"/>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="456"/>
         <source>Don&apos;t clear</source>
-        <translation type="unfinished"/>
+        <translation>Ne briši</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="361"/>
         <source>30 minutes</source>
-        <translation type="unfinished"/>
+        <translation>30 minuta</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="364"/>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="416"/>
         <source>1 hour</source>
-        <translation type="unfinished"/>
+        <translation>1 sat</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="367"/>
         <source>4 hours</source>
-        <translation type="unfinished"/>
+        <translation>4 sata</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="370"/>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="445"/>
         <source>Today</source>
-        <translation type="unfinished"/>
+        <translation>Danas</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="373"/>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="447"/>
         <source>This week</source>
-        <translation type="unfinished"/>
+        <translation>Ovaj tjedan</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="405"/>
         <source>Less than a minute</source>
-        <translation type="unfinished"/>
+        <translation>Prije manje od minute</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="409"/>
         <source>1 minute</source>
-        <translation type="unfinished"/>
+        <translation>1 minuta</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="411"/>
         <source>%1 minutes</source>
-        <translation type="unfinished"/>
+        <translation>%1 minuta</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="418"/>
         <source>%1 hours</source>
-        <translation type="unfinished"/>
+        <translation>%1 sati</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="423"/>
         <source>1 day</source>
-        <translation type="unfinished"/>
+        <translation>1 dan</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="425"/>
         <source>%1 days</source>
-        <translation type="unfinished"/>
+        <translation>%1 dana</translation>
     </message>
 </context>
 <context>
@@ -5480,7 +5485,7 @@ Ovo je novi, eksperimentalni način rada. Ako se odlučite aktivirati ga, prijav
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="418"/>
         <source>Checking for changes in remote &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Provjera za promjene u udaljenom „%1”</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="419"/>
@@ -5490,7 +5495,7 @@ Ovo je novi, eksperimentalni način rada. Ako se odlučite aktivirati ga, prijav
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="421"/>
         <source>Checking for changes in local &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Provjera za promjene u lokalnom „%1”</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="437"/>
@@ -5885,7 +5890,7 @@ Ovo je novi, eksperimentalni način rada. Ako se odlučite aktivirati ga, prijav
     <message>
         <location filename="../src/gui/tray/UnifiedSearchInputContainer.qml" line="25"/>
         <source>Search files, messages, events …</source>
-        <translation type="unfinished"/>
+        <translation>Traži datoteke, poruke, događaje…</translation>
     </message>
 </context>
 <context>
@@ -5893,7 +5898,7 @@ Ovo je novi, eksperimentalni način rada. Ako se odlučite aktivirati ga, prijav
     <message>
         <location filename="../src/gui/tray/UnifiedSearchResultFetchMoreTrigger.qml" line="24"/>
         <source>Load more results</source>
-        <translation type="unfinished"/>
+        <translation>Učitaj više rezultata</translation>
     </message>
 </context>
 <context>
@@ -5901,7 +5906,7 @@ Ovo je novi, eksperimentalni način rada. Ako se odlučite aktivirati ga, prijav
     <message>
         <location filename="../src/gui/tray/UnifiedSearchResultItemSkeleton.qml" line="25"/>
         <source>Search result skeleton.</source>
-        <translation type="unfinished"/>
+        <translation>Kostur rezultata pretraživanja.</translation>
     </message>
 </context>
 <context>
@@ -5909,7 +5914,7 @@ Ovo je novi, eksperimentalni način rada. Ako se odlučite aktivirati ga, prijav
     <message>
         <location filename="../src/gui/tray/UnifiedSearchResultListItem.qml" line="37"/>
         <source>Load more results</source>
-        <translation type="unfinished"/>
+        <translation>Učitaj više rezultata</translation>
     </message>
 </context>
 <context>
@@ -5957,7 +5962,7 @@ Ovo je novi, eksperimentalni način rada. Ako se odlučite aktivirati ga, prijav
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="185"/>
         <source>Set status</source>
-        <translation type="unfinished"/>
+        <translation>Postavi status</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="205"/>
@@ -5982,52 +5987,52 @@ Ovo je novi, eksperimentalni način rada. Ako se odlučite aktivirati ga, prijav
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="38"/>
         <source>Online status</source>
-        <translation type="unfinished"/>
+        <translation>Status na mreži</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="55"/>
         <source>Online</source>
-        <translation type="unfinished"/>
+        <translation>Na mreži</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="65"/>
         <source>Away</source>
-        <translation type="unfinished"/>
+        <translation>Odsutan</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="76"/>
         <source>Do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>Ne ometaj</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="86"/>
         <source>Invisible</source>
-        <translation type="unfinished"/>
+        <translation>Nevidljiv</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="99"/>
         <source>Status message</source>
-        <translation type="unfinished"/>
+        <translation>Poruka statusa</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="137"/>
         <source>What is your status?</source>
-        <translation type="unfinished"/>
+        <translation>Koji je vaš status?</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="165"/>
         <source>Clear status message after</source>
-        <translation type="unfinished"/>
+        <translation>Izbriši poruku statusa nakon</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="182"/>
         <source>Clear status message</source>
-        <translation type="unfinished"/>
+        <translation>Izbriši poruku statusa</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="188"/>
         <source>Set status message</source>
-        <translation type="unfinished"/>
+        <translation>Postavi poruku statusa</translation>
     </message>
 </context>
 <context>
@@ -6113,12 +6118,12 @@ Ovo je novi, eksperimentalni način rada. Ako se odlučite aktivirati ga, prijav
     <message>
         <location filename="../src/common/checksums.cpp" line="367"/>
         <source>The checksum header contained an unknown checksum type &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Zaglavlje kontrolnog zbroja sadrži nepoznatu vrstu kontrolnog zbroja „%1”</translation>
     </message>
     <message>
         <location filename="../src/common/checksums.cpp" line="371"/>
         <source>The downloaded file does not match the checksum, it will be resumed. &quot;%1&quot; != &quot;%2&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Preuzeta se datoteka ne podudara s kontrolnim zbrojem, nastavit će se. „%1” != „%2”</translation>
     </message>
 </context>
 <context>
@@ -6148,7 +6153,7 @@ Ovo je novi, eksperimentalni način rada. Ako se odlučite aktivirati ga, prijav
     <message>
         <location filename="../src/gui/tray/Window.qml" line="190"/>
         <source>Set user status</source>
-        <translation type="unfinished"/>
+        <translation>Postavi status korisnika</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="227"/>
@@ -6248,7 +6253,7 @@ Ovo je novi, eksperimentalni način rada. Ako se odlučite aktivirati ga, prijav
     <message>
         <location filename="../src/gui/tray/Window.qml" line="681"/>
         <source>Unified search results list</source>
-        <translation type="unfinished"/>
+        <translation>Objedinjen popis rezultata pretraživanja</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="720"/>
@@ -6259,7 +6264,7 @@ Ovo je novi, eksperimentalni način rada. Ako se odlučite aktivirati ga, prijav
     <message>
         <location filename="../src/gui/tray/Window.qml" line="753"/>
         <source>%1 - File activity</source>
-        <translation type="unfinished"/>
+        <translation>%1 – aktivnost datoteke</translation>
     </message>
 </context>
 <context>
