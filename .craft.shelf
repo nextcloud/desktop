@@ -12,7 +12,7 @@ revision = a75f876009e18088bb5f0428c71c8814cb0d01ee
 
 [craft/craft-core]
 version = master
-revision = 45a879869b7f70445f71c696885ee25563064120
+revision = 2d1cbfe61170450994c4d1e2ae9c9e509e2d3f30
 
 [core/cacert]
 version = 2020-12-08
