@@ -189,9 +189,20 @@ void ActivityListModel::startFetchJob(AccountState *ast)
     }
     JsonApiJob *job = new JsonApiJob(ast->account(), QStringLiteral("ocs/v2.php/cloud/activity"), this);
     QObject::connect(job, &JsonApiJob::jsonReceived,
-        this, [ast, this](const QJsonDocument &json, int statusCode) {
+        this, [job, ast, this](const QJsonDocument &json, int statusCode) {
             _currentlyFetching.remove(ast);
             const auto activities = json.object().value(QStringLiteral("ocs")).toObject().value(QStringLiteral("data")).toArray();
+
+            /*
+             * in case the activity app is disabled or not installed, the server returns an empty 500 response instead of a response
+             * with the expected status code 999
+             * we are not entirely sure when this has changed, but it is likely that there is a regression in the activity addon
+             * to support this new behavior, we have to fake the expected status code
+             */
+            if (job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() != 200) {
+                emit activityJobStatusCode(ast, 999);
+                return;
+            }
 
             ActivityList list;
             list.reserve(activities.size());
