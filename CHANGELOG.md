@@ -17,6 +17,8 @@ Summary
 * Bugfix - Crash when handling locked files: [#9170](https://github.com/owncloud/client/issues/9170)
 * Bugfix - Display correct error message for files containign `\:?*"<>|`: [#9223](https://github.com/owncloud/client/pull/9223/)
 * Bugfix - Do not sync when unsyncedfolders file cannot be read: [#9165](https://github.com/owncloud/client/issues/9165)
+* Bugfix - Fix failing dehydration causing files to be moved to trash: [#9257](https://github.com/owncloud/client/pull/9257)
+* Bugfix - Do not show Activity tab if server app is disabled or uninstalled: [#9260](https://github.com/owncloud/client/issues/9260)
 * Change - Make sharedialog preview be more resilient: [#8938](https://github.com/owncloud/client/issues/8938)
 * Enhancement - Allow to remove broken sync folders: [#9099](https://github.com/owncloud/client/pull/9099)
 
@@ -87,6 +89,22 @@ Details
 
    https://github.com/owncloud/client/issues/9165
    https://github.com/owncloud/client/pull/9241
+
+* Bugfix - Fix failing dehydration causing files to be moved to trash: [#9257](https://github.com/owncloud/client/pull/9257)
+
+   If files where dehydrated by the user the action could fail under certain conditions which
+   caused a deletion of the file.
+
+   https://github.com/owncloud/client/pull/9257
+   https://github.com/owncloud/client-desktop-vfs-win/pull/9
+
+* Bugfix - Do not show Activity tab if server app is disabled or uninstalled: [#9260](https://github.com/owncloud/client/issues/9260)
+
+   The Activity app API nowadays returns error responses in case the app is disabled or
+   uninstalled. This new behavior is now supported in the client.
+
+   https://github.com/owncloud/client/issues/9260
+   https://github.com/owncloud/client/pull/9266
 
 * Change - Make sharedialog preview be more resilient: [#8938](https://github.com/owncloud/client/issues/8938)
 
