@@ -781,6 +781,18 @@ QString OwncloudPropagator::adjustRenamedPath(const QString &original) const
 
 Result<Vfs::ConvertToPlaceholderResult, QString> OwncloudPropagator::updatePlaceholder(const SyncFileItem &item, const QString &fileName, const QString &replacesFile)
 {
+    Q_ASSERT([&] {
+        if (item._type == ItemTypeVirtualFileDehydration) {
+            // when dehydrating the file must not be pinned
+            // don't use destinatio() with suffix placeholder
+            const auto pin = syncOptions()._vfs->pinState(item._file);
+            if (pin && pin.get() == PinState::AlwaysLocal) {
+                qDebug() << fileName << item.destination() << item._file;
+                return false;
+            }
+        }
+        return true;
+    }());
     return syncOptions()._vfs->updateMetadata(item, fileName, replacesFile);
 }
 

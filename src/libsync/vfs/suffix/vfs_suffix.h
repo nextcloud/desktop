@@ -42,7 +42,6 @@ public:
 
 
     Result<void, QString> createPlaceholder(const SyncFileItem &item) override;
-    Result<void, QString> dehydratePlaceholder(const SyncFileItem &item) override;
 
     bool needsMetadataUpdate(const SyncFileItem &) override { return false; }
     bool isDehydratedPlaceholder(const QString &filePath) override;

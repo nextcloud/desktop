@@ -81,6 +81,7 @@ void startShutdownWatcher()
                 if (lParam == ENDSESSION_LOGOFF) {
                     // block the windows shutdown until we are done
                     const QString description = QApplication::translate("Utility", "Shutting down %1").arg(Theme::instance()->appNameGUI());
+                    qCDebug(OCC::lcUtility) << "Block shutdown until we are ready" << description;
                     OC_ASSERT(ShutdownBlockReasonCreate(hwnd, reinterpret_cast<const wchar_t *>(description.utf16())));
                 }
                 WaitForSingleObject(watchWMCtx.windowMessageWatcherEvent, INFINITE);

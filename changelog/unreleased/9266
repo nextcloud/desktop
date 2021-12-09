@@ -1,0 +1,7 @@
+Bugfix: Do not show Activity tab if server app is disabled or uninstalled
+
+The Activity app API nowadays returns error responses in case the app is disabled or uninstalled.
+This new behavior is now supported in the client.
+    
+https://github.com/owncloud/client/issues/9260
+https://github.com/owncloud/client/pull/9266

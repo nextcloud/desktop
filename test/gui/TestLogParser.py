@@ -32,29 +32,63 @@ def traverse_loop(data):
                                 if 'result' in error and error['result'] == 'PASS':
                                     continue
 
-                                # Append the information of failing tests into the list of failing tests
-                                # If the error detail is missing(occurs mainly in runtime error) then we display the entire error object.
-                                test = {
-                                    "Feature File": str(feature_file['name']),
-                                    "Feature": str(feature['name']),
-                                    "Scenario": str(scenario['name']),
-                                    "Test Step": str(test_step['name']),
-                                    "Error Details": str(error['detail'])
-                                    if ('detail' in error)
-                                    else "Error details not found",
-                                }
+                                # Again, we will have to loop through the 'tests' to get failing tests from Scenario Outlines.
+                                if "tests" in error and len(error['tests']) > 0:
+                                    for outlineStep in error['tests']:
+                                        # Append the information of failing tests into the list of failing tests
+                                        if (
+                                            'result' in outlineStep
+                                            and outlineStep['result'] == 'ERROR'
+                                        ):
+                                            failing_test = {
+                                                "Feature File": str(
+                                                    feature_file['name']
+                                                ),
+                                                "Feature": str(feature['name']),
+                                                "Scenario": str(scenario['name']),
+                                                "Example": str(test_step['name']),
+                                                "Test Step": str(error['name']),
+                                                "Error Details": str(
+                                                    outlineStep['detail']
+                                                )
+                                                if ('detail' in outlineStep)
+                                                else "Error details not found",
+                                            }
+                                            failing_tests.append(failing_test)
+                                    continue
 
-                                failing_tests.append(test)
+                                # Append the information of failing tests into the list of failing tests
+                                # If the error detail is missing(occurs mainly in runtime error) then we display "Error details not found" message.
+                                if 'result' in error and error['result'] == 'ERROR':
+                                    failing_test = {
+                                        "Feature File": str(feature_file['name']),
+                                        "Feature": str(feature['name']),
+                                        "Scenario": str(scenario['name']),
+                                        "Test Step": str(test_step['name']),
+                                        "Error Details": str(error['detail'])
+                                        if ('detail' in error)
+                                        else "Error details not found",
+                                    }
+                                    failing_tests.append(failing_test)
 
     return failing_tests
 
 
 def filter_redundancy(raw_data):
     unique_scenarios = []
+    unique_scenario_outline_examples = []
     filtered_data = []
 
     for scenario in raw_data:
-        if scenario['Scenario'] not in unique_scenarios:
+        # The 'Scenario' name in Scenario Outline is not unique for each test.
+        # So we use 'Example' to uniquely identify each test in Scenario Outline.
+        if (
+            'Example' in scenario
+            and scenario['Example'] not in unique_scenario_outline_examples
+        ):
+            unique_scenario_outline_examples.append(scenario['Example'])
+            filtered_data.append(scenario)
+        elif 'Example' not in scenario and scenario['Scenario'] not in unique_scenarios:
             unique_scenarios.append(scenario['Scenario'])
             filtered_data.append(scenario)
         else:

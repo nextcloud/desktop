@@ -99,8 +99,11 @@ class AccountConnectionWizard:
         syncPath = createUserSyncPath(context, clientDetails['user'])
 
         try:
+            oldwaitForObjectTimeout = squish.testSettings.waitForObjectTimeout
+            squish.testSettings.waitForObjectTimeout = 1000
             squish.clickButton(squish.waitForObject(self.ERROR_OK_BUTTON))
         except LookupError:
+            squish.testSettings.waitForObjectTimeout = oldwaitForObjectTimeout
             pass
         squish.clickButton(squish.waitForObject(self.SELECT_LOCAL_FOLDER))
         squish.mouseClick(squish.waitForObject(self.DIRECTORY_NAME_BOX))

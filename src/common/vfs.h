@@ -165,13 +165,6 @@ public:
     /// Create a new dehydrated placeholder. Called from PropagateDownload.
     virtual OC_REQUIRED_RESULT Result<void, QString> createPlaceholder(const SyncFileItem &item) = 0;
 
-    /** Convert a hydrated placeholder to a dehydrated one. Called from PropagateDownlaod.
-     *
-     * This is different from delete+create because preserving some file metadata
-     * (like pin states) may be essential for some vfs plugins.
-     */
-    virtual OC_REQUIRED_RESULT Result<void, QString> dehydratePlaceholder(const SyncFileItem &item) = 0;
-
     /** Discovery hook: even unchanged files may need UPDATE_METADATA.
      *
      * For instance cfapi vfs wants local hydrated non-placeholder files to
@@ -198,20 +191,20 @@ public:
      * Usually this would forward to setting the pin state flag in the db table,
      * but some vfs plugins will store the pin state in file attributes instead.
      *
-     * folderPath is relative to the sync folder. Can be "" for root folder.
+     * relFilePath is relative to the sync folder. Can be "" for root folder.
      */
-    virtual OC_REQUIRED_RESULT bool setPinState(const QString &folderPath, PinState state) = 0;
+    virtual OC_REQUIRED_RESULT bool setPinState(const QString &relFilePath, PinState state) = 0;
 
     /** Returns the pin state of an item at a path.
      *
      * Usually backed by the db's effectivePinState() function but some vfs
      * plugins will override it to retrieve the state from elsewhere.
      *
-     * folderPath is relative to the sync folder. Can be "" for root folder.
+     * relFilePath is relative to the sync folder. Can be "" for root folder.
      *
      * Returns none on retrieval error.
      */
-    virtual OC_REQUIRED_RESULT Optional<PinState> pinState(const QString &folderPath) = 0;
+    virtual OC_REQUIRED_RESULT Optional<PinState> pinState(const QString &relFilePath) = 0;
 
     /** Returns availability status of an item at a path.
      *
@@ -292,7 +285,6 @@ public:
     bool isHydrating() const override { return false; }
 
     Result<void, QString> createPlaceholder(const SyncFileItem &) override { return {}; }
-    Result<void, QString> dehydratePlaceholder(const SyncFileItem &) override { return {}; }
 
     bool needsMetadataUpdate(const SyncFileItem &) override { return false; }
     bool isDehydratedPlaceholder(const QString &) override { return false; }
