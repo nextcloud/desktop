@@ -185,7 +185,7 @@ QPair<bool, QByteArray> DiscoveryPhase::findAndCancelDeletedJob(const QString &o
                 qCWarning(lcDiscovery) << "instruction" << instruction;
                 qCWarning(lcDiscovery) << "(*it)->_type" << (*it)->_type;
                 qCWarning(lcDiscovery) << "(*it)->_isRestoration " << (*it)->_isRestoration;
-                ENFORCE(false);
+                Q_ASSERT(false);
             }
             (*it)->_instruction = CSYNC_INSTRUCTION_NONE;
             result = true;
