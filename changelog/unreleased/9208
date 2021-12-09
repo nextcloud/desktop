@@ -1,0 +1,7 @@
+Enhancement: Also ignore local reapeating errors for a period of time
+
+If an error occurs on the server (a url is not reachable) we try a couple of times, then we ignore that file for a period of time.
+We now do the same with erros that occure locally.
+
+https://github.com/owncloud/client/issues/9208
+https://github.com/owncloud/client/issues/9133

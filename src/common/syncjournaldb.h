@@ -87,7 +87,7 @@ public:
     static qint64 getPHash(const QByteArray &);
 
     void setErrorBlacklistEntry(const SyncJournalErrorBlacklistRecord &item);
-    void wipeErrorBlacklistEntry(const QString &file);
+    void wipeErrorBlacklistEntry(const QString &relativeFile);
     void wipeErrorBlacklistCategory(SyncJournalErrorBlacklistRecord::Category category);
     int wipeErrorBlacklist();
     int errorBlackListEntryCount();

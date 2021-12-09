@@ -1607,18 +1607,19 @@ int SyncJournalDb::wipeErrorBlacklist()
     return -1;
 }
 
-void SyncJournalDb::wipeErrorBlacklistEntry(const QString &file)
+void SyncJournalDb::wipeErrorBlacklistEntry(const QString &relativeFile)
 {
-    if (file.isEmpty()) {
+    if (relativeFile.isEmpty()) {
         return;
     }
+    Q_ASSERT(QFileInfo(relativeFile).isRelative());
 
     QMutexLocker locker(&_mutex);
     if (checkConnect()) {
         SqlQuery query(_db);
 
         query.prepare("DELETE FROM blacklist WHERE path=?1");
-        query.bindValue(1, file);
+        query.bindValue(1, relativeFile);
         if (!query.exec()) {
             sqlFail(QStringLiteral("Deletion of blacklist item failed."), query);
         }

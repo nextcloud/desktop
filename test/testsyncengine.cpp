@@ -524,6 +524,7 @@ private slots:
 
         // Good OC-Checksum
         checksumValue = "SHA1:19b1928d58a2030d08023f3d7054516dbc186f20"; // printf 'A%.0s' {1..16} | sha1sum -
+        fakeFolder.syncJournal().wipeErrorBlacklist();
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
         checksumValue = QByteArray();
@@ -535,6 +536,7 @@ private slots:
 
         // Good Content-MD5
         contentMd5Value = "d8a73157ce10cd94a91c2079fc9a92c8"; // printf 'A%.0s' {1..16} | md5sum -
+        fakeFolder.syncJournal().wipeErrorBlacklist();
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
@@ -547,6 +549,7 @@ private slots:
         fakeFolder.remoteModifier().create("A/a7", 16, 'A');
         QVERIFY(!fakeFolder.syncOnce());
         contentMd5Value.clear();
+        fakeFolder.syncJournal().wipeErrorBlacklist();
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
@@ -555,6 +558,7 @@ private slots:
         fakeFolder.remoteModifier().create("A/a8", 16, 'A');
         QVERIFY(!fakeFolder.syncOnce()); // Since the supported SHA1 checksum is invalid, no download
         checksumValue =  "Unsupported:XXXX SHA1:19b1928d58a2030d08023f3d7054516dbc186f20 Invalid:XxX";
+        fakeFolder.syncJournal().wipeErrorBlacklist();
         QVERIFY(fakeFolder.syncOnce()); // The supported SHA1 checksum is valid now, so the file are downloaded
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
     }

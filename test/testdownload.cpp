@@ -86,6 +86,7 @@ private slots:
             }
             return nullptr;
         });
+        fakeFolder.syncJournal().wipeErrorBlacklist();
         QVERIFY(fakeFolder.syncOnce()); // now this succeeds
         QCOMPARE(ranges, QByteArray("bytes=" + QByteArray::number(stopAfter) + "-"));
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
@@ -197,6 +198,7 @@ private slots:
                 QTest::qFail("There shouldn't be any download", __FILE__, __LINE__);
             return nullptr;
         });
+        fakeFolder.syncJournal().wipeErrorBlacklist();
         QVERIFY(fakeFolder.syncOnce());
 
         // The a1 file is still tere and have the right content

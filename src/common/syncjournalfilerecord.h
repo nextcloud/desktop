@@ -67,13 +67,16 @@ operator==(const SyncJournalFileRecord &lhs,
 
 class OCSYNC_EXPORT SyncJournalErrorBlacklistRecord
 {
+    Q_GADGET
 public:
-    enum Category {
+    enum class Category {
         /// Normal errors have no special behavior
         Normal = 0,
         /// These get a special summary message
-        InsufficientRemoteStorage
+        InsufficientRemoteStorage,
+        LocalSoftError
     };
+    Q_ENUM(Category)
 
     SyncJournalErrorBlacklistRecord()
         : _retryCount(0)

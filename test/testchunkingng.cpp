@@ -438,6 +438,7 @@ private slots:
         QCOMPARE(fakeFolder.uploadState().children.count(), 1); // We did not clean the chunks at this point
 
         // Now we will download the server file and create a conflict
+        fakeFolder.syncJournal().wipeErrorBlacklist();
         QVERIFY(fakeFolder.syncOnce());
         auto localState = fakeFolder.currentLocalState();
 

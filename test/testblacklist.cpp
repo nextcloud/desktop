@@ -73,7 +73,7 @@ private slots:
 
             auto entry = fakeFolder.syncJournal().errorBlacklistEntry(testFileName);
             QVERIFY(entry.isValid());
-            QCOMPARE(entry._errorCategory, SyncJournalErrorBlacklistRecord::Normal);
+            QCOMPARE(entry._errorCategory, SyncJournalErrorBlacklistRecord::Category::Normal);
             QCOMPARE(entry._retryCount, 1);
             QCOMPARE(counter, 1);
             QVERIFY(entry._ignoreDuration > 0);
@@ -94,7 +94,7 @@ private slots:
 
             auto entry = fakeFolder.syncJournal().errorBlacklistEntry(testFileName);
             QVERIFY(entry.isValid());
-            QCOMPARE(entry._errorCategory, SyncJournalErrorBlacklistRecord::Normal);
+            QCOMPARE(entry._errorCategory, SyncJournalErrorBlacklistRecord::Category::Normal);
             QCOMPARE(entry._retryCount, 1);
             QCOMPARE(counter, 1);
             QVERIFY(entry._ignoreDuration > 0);
@@ -121,7 +121,7 @@ private slots:
 
             auto entry = fakeFolder.syncJournal().errorBlacklistEntry(testFileName);
             QVERIFY(entry.isValid());
-            QCOMPARE(entry._errorCategory, SyncJournalErrorBlacklistRecord::Normal);
+            QCOMPARE(entry._errorCategory, SyncJournalErrorBlacklistRecord::Category::Normal);
             QCOMPARE(entry._retryCount, 2);
             QCOMPARE(counter, 2);
             QVERIFY(entry._ignoreDuration > 0);
@@ -143,7 +143,7 @@ private slots:
 
             auto entry = fakeFolder.syncJournal().errorBlacklistEntry(testFileName);
             QVERIFY(entry.isValid());
-            QCOMPARE(entry._errorCategory, SyncJournalErrorBlacklistRecord::Normal);
+            QCOMPARE(entry._errorCategory, SyncJournalErrorBlacklistRecord::Category::Normal);
             QCOMPARE(entry._retryCount, 3);
             QCOMPARE(counter, 3);
             QVERIFY(entry._ignoreDuration > 0);
