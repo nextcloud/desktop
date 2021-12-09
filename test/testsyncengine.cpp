@@ -123,6 +123,9 @@ private slots:
         QCOMPARE(getDbChecksum("a3.eml"), referenceChecksum);
         QCOMPARE(getDbChecksum("b3.txt"), referenceChecksum);
 
+        // Make sure that the lastModified time caused by the setContent calls below is actually different:
+        QThread::sleep(1);
+
         ItemCompletedSpy completeSpy(fakeFolder);
         // Touch the file without changing the content, shouldn't upload
         fakeFolder.localModifier().setContents("a1.eml", 'A');
@@ -140,7 +143,12 @@ private slots:
         QVERIFY(!itemDidComplete(completeSpy, "a1.eml"));
         QVERIFY(itemDidCompleteSuccessfully(completeSpy, "a2.eml"));
         QVERIFY(itemDidCompleteSuccessfully(completeSpy, "a3.eml"));
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        // The local and remote state now differ: the local mtime for `a1.eml` is bigger (newer) than on the server, because
+        // the upload was skipped (same checksum). So first verify that this is the case:
+        QVERIFY(fakeFolder.currentLocalState().find("a1.eml")->lastModified() > fakeFolder.currentRemoteState().find("a1.eml")->lastModified());
+        // And then check if everything else actually is the same:
+        QVERIFY(fakeFolder.currentLocalState().equals(fakeFolder.currentRemoteState(), FileInfo::IgnoreLastModified));
     }
 
     void testSelectiveSyncBug() {
@@ -753,7 +761,7 @@ private slots:
         fakeFolder.remoteModifier().insert("foo/bar");
         auto datetime = QDateTime::currentDateTime();
         datetime.setSecsSinceEpoch(datetime.toSecsSinceEpoch()); // wipe ms
-        fakeFolder.remoteModifier().find("foo")->lastModified = datetime;
+        fakeFolder.remoteModifier().find("foo")->setLastModified(datetime);
 
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());

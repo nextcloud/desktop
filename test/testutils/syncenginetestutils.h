@@ -109,6 +109,13 @@ public:
     void setModTime(const QString &relativePath, const QDateTime &modTime) override;
 };
 
+static inline qint64 defaultLastModified()
+{
+    auto precise = QDateTime::currentDateTimeUtc().addDays(-7);
+    time_t timeInSeconds = OCC::Utility::qDateTimeToTime_t(precise);
+    return timeInSeconds;
+}
+
 /// FIXME: we should make it explicit in the construtor if we're talking about a hydrated or a dehydrated file!
 class FileInfo : public FileModifier
 {
@@ -167,19 +174,44 @@ public:
         return name < other.name;
     }
 
-    bool operator==(const FileInfo &other) const;
+    enum CompareWhat {
+        CompareLastModified,
+        IgnoreLastModified,
+    };
+
+    bool operator==(const FileInfo &other) const { return equals(other, CompareLastModified); }
+
+    bool equals(const FileInfo &other, CompareWhat compareWhat) const;
 
     bool operator!=(const FileInfo &other) const
     {
         return !operator==(other);
     }
 
-    enum ComparissonOption {
-        IgnoreContentOfDehydratedFiles,
-        ContentIsKing,
-    };
+    QDateTime lastModified() const
+    {
+        return QDateTime::fromSecsSinceEpoch(_lastModifiedInSecondsUTC, Qt::LocalTime);
+    }
 
-    bool equals(const FileInfo &other, ComparissonOption opt) const;
+    QDateTime lastModifiedInUtc() const
+    {
+        return QDateTime::fromSecsSinceEpoch(_lastModifiedInSecondsUTC, Qt::UTC);
+    }
+
+    void setLastModified(const QDateTime &t)
+    {
+        _lastModifiedInSecondsUTC = t.toSecsSinceEpoch();
+    }
+
+    qint64 lastModifiedInSecondsUTC() const
+    {
+        return _lastModifiedInSecondsUTC;
+    }
+
+    void setLastModifiedFromSecondsUTC(qint64 utcSecs)
+    {
+        _lastModifiedInSecondsUTC = utcSecs;
+    }
 
     QString path() const;
     QString absolutePath() const;
@@ -190,7 +222,7 @@ public:
     bool isDir = true;
     bool isShared = false;
     OCC::RemotePermissions permissions; // When uset, defaults to everything
-    QDateTime lastModified = QDateTime::currentDateTimeUtc().addDays(-7);
+    qint64 _lastModifiedInSecondsUTC = defaultLastModified();
     QByteArray etag = generateEtag();
     QByteArray fileId = generateFileId();
     QByteArray checksums;
@@ -208,12 +240,16 @@ public:
 
     friend inline QDebug operator<<(QDebug dbg, const FileInfo &fi)
     {
-        return dbg << "{ " << fi.path() << ": "
-                   << ", fileSize:" << fi.fileSize
-                   << ", contentSize:" << fi.contentSize
-                   << ", contentChar:" << fi.contentChar
-                   << ", isDehydratedPlaceholder:" << fi.isDehydratedPlaceholder
-                   << ", children:" << fi.children;
+        return dbg.nospace().noquote()
+            << "{ '" << fi.path() << "': "
+            << ", isDir:" << fi.isDir
+            << QStringLiteral(", lastModified: %1 (%2)").arg(QString::number(fi._lastModifiedInSecondsUTC), fi.lastModifiedInUtc().toString())
+            << ", fileSize:" << fi.fileSize
+            << ", contentSize:" << fi.contentSize
+            << QStringLiteral(", contentChar: 0x%1").arg(QString::number(int(fi.contentChar), 16))
+            << ", isDehydratedPlaceholder:" << fi.isDehydratedPlaceholder
+            << ", children:" << fi.children
+            << " }";
     }
 };
 
@@ -614,11 +650,11 @@ inline void addFilesDbData(QStringList &dest, const FileInfo &fi)
 {
     // could include etag, permissions etc, but would need extra work
     if (fi.isDir) {
-        dest += QStringLiteral("%1 - %2 %3 %4").arg(fi.name, fi.isDir ? QStringLiteral("dir") : QStringLiteral("file"), QString::number(fi.lastModified.toSecsSinceEpoch()), QString::fromUtf8(fi.fileId));
+        dest += QStringLiteral("%1 - %2 %3 %4").arg(fi.name, fi.isDir ? QStringLiteral("dir") : QStringLiteral("file"), QString::number(fi.lastModifiedInSecondsUTC()), QString::fromUtf8(fi.fileId));
         for (const auto &fi : fi.children)
             addFilesDbData(dest, fi);
     } else {
-        dest += QStringLiteral("%1 - %2 %3 %4 %5").arg(fi.name, fi.isDir ? QStringLiteral("dir") : QStringLiteral("file"), QString::number(fi.contentSize), QString::number(fi.lastModified.toSecsSinceEpoch()), QString::fromUtf8(fi.fileId));
+        dest += QStringLiteral("%1 - %2 %3 %4 %5").arg(fi.name, fi.isDir ? QStringLiteral("dir") : QStringLiteral("file"), QString::number(fi.contentSize), QString::number(fi.lastModifiedInSecondsUTC()), QString::fromUtf8(fi.fileId));
     }
 }
 
