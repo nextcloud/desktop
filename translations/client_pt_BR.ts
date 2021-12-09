@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="pt_BR" version="2.1">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="pt_BR">
 <context>
     <name>ActivityActionButton</name>
     <message>
@@ -878,54 +878,59 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="122"/>
         <source>File %1 cannot be uploaded because another file with the same name, differing only in case, exists</source>
-        <translation type="unfinished"/>
+        <translation>O arquivo %1 não pode ser carregado porque existe outro arquivo com o mesmo nome, diferindo apenas no caso</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="271"/>
         <source>File removed (start upload) %1</source>
-        <translation type="unfinished"/>
+        <translation>Arquivo removido (iniciar envio) %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="271"/>
         <source>File Removed (start upload) %1</source>
+        <translation>Arquivo removido (iniciar envio) %1</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="279"/>
+        <source>Local file has invalid modified time. Do not upload to the server.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="281"/>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="284"/>
         <source>Local file changed during syncing. It will be resumed.</source>
-        <translation type="unfinished"/>
+        <translation>Arquivo local alterado durante a sincronização. Será retomado.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="292"/>
-        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="618"/>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="295"/>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="621"/>
         <source>Local file changed during sync.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="422"/>
-        <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Arquivo local alterado durante a sincronização.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="425"/>
+        <source>Error updating metadata: %1</source>
+        <translation>Erro ao atualizar metadados: %1</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="428"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>O arquivo %1 está atualmente em uso</translation>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="601"/>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="604"/>
         <source>The local file was removed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>O arquivo local foi removido durante a sincronização.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="648"/>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="651"/>
         <source>; Restoration Failed: %1</source>
-        <translation type="unfinished"/>
+        <translation>; A restauração falhou: %1</translation>
     </message>
 </context>
 <context>
     <name>OCC::CleanupPollsJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1305"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1312"/>
         <source>Error writing metadata to the database</source>
         <translation>Ocorreu um erro ao escrever metadados no banco de dados</translation>
     </message>
@@ -3438,52 +3443,52 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <translation>Servidor relatou não %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1044"/>
+        <location filename="../src/libsync/discovery.cpp" line="1057"/>
         <source>Conflict when uploading some files to a folder. Those, conflicted, are going to get cleared!</source>
         <translation>Conflito ao enviar alguns arquivos para uma pasta. Esses, em conflito, serão eliminados! </translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1063"/>
+        <location filename="../src/libsync/discovery.cpp" line="1076"/>
         <source>Conflict when uploading a folder. It&apos;s going to get cleared!</source>
         <translation>Conflito ao enviar uma pasta. Vai ser limpa! </translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1066"/>
+        <location filename="../src/libsync/discovery.cpp" line="1079"/>
         <source>Conflict when uploading a file. It&apos;s going to get removed!</source>
         <translation>Conflito ao enviar um arquivo. Vai ser removido! </translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1396"/>
+        <location filename="../src/libsync/discovery.cpp" line="1409"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Ignorado devido à lista negra &quot;escolher o que sincronizar&quot; </translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1429"/>
+        <location filename="../src/libsync/discovery.cpp" line="1442"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Não permitido porque você não tem permissão para adicionar subpastas a essa pasta</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1434"/>
+        <location filename="../src/libsync/discovery.cpp" line="1447"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Não permitido porque você não tem permissão para adicionar arquivos nessa pasta </translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1447"/>
+        <location filename="../src/libsync/discovery.cpp" line="1460"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Não é permitido fazer upload deste arquivo porque ele é somente leitura no servidor, restaurando </translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1469"/>
+        <location filename="../src/libsync/discovery.cpp" line="1482"/>
         <source>Moved to invalid target, restoring</source>
         <translation>Movido para destino inválido, restaurando </translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1482"/>
+        <location filename="../src/libsync/discovery.cpp" line="1495"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Não tem permissão para remover, restaurar </translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1591"/>
+        <location filename="../src/libsync/discovery.cpp" line="1604"/>
         <source>Error while reading the database</source>
         <translation>Erro ao ler o banco de dados </translation>
     </message>
@@ -3493,7 +3498,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <translation>O servidor respondeu com um erro ao ler o diretório &apos;%1&apos; : %2 </translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1652"/>
+        <location filename="../src/libsync/discovery.cpp" line="1665"/>
         <source>Server replied with an error while reading directory &quot;%1&quot; : %2</source>
         <translation>O servidor respondeu com um erro ao ler o diretório  &quot;%1&quot; : %2</translation>
     </message>
@@ -3506,12 +3511,17 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <translation>Ocorreu um erro ao escrever metadados no banco de dados</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1141"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1132"/>
+        <source>Error updating metadata due to invalid modified time</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1148"/>
         <source>Error updating metadata: %1</source>
         <translation>Erro ao atualizar metadados: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1145"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1152"/>
         <source>File is currently in use</source>
         <translation>O arquivo está atualmente em uso </translation>
     </message>
@@ -3530,13 +3540,13 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="496"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1112"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1145"/>
         <source>File has changed since discovery</source>
         <translation>O arquivo foi alterado desde a descoberta</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="522"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="613"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="626"/>
         <source>File %1 cannot be downloaded because of a local file name clash!</source>
         <translation>O arquivo %1 não pode ser baixado devido a um conflito local no nome do arquivo!</translation>
     </message>
@@ -3546,22 +3556,22 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <translation>O arquivo %1 não pode ser baixado devido a um conflito local no nome do arquivo!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="665"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="678"/>
         <source>The download would reduce free local disk space below the limit</source>
         <translation>O download reduziria o espaço livre no disco local abaixo do limite</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="669"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="682"/>
         <source>Free space on disk is less than %1</source>
         <translation>O espaço livre no disco é inferior a %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="790"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="803"/>
         <source>File was deleted from server</source>
         <translation>O arquivo foi apagado do servidor</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="859"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="876"/>
         <source>The file could not be downloaded completely.</source>
         <translation>O arquivo não pôde ser baixado completamente.</translation>
     </message>
@@ -3571,12 +3581,12 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <translation>O arquivo baixado está vazio apesar do servidor ter anunciado que ele deveria ter %1.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="866"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="883"/>
         <source>The downloaded file is empty, but the server said it should have been %1.</source>
         <translation>O arquivo baixado está vazio, mas o servidor disse que deveria ser %1.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1057"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1074"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
         <translation>O arquivo %1 não pôde ser salvo devido a um conflito com um nome de arquivo local!</translation>
     </message>
@@ -3586,12 +3596,18 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <translation>Ocorreu um erro ao escrever metadados no banco de dados</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1183"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1079"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1091"/>
+        <source>File %1 has invalid modified time reported by server. Do not save it.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1216"/>
         <source>Error updating metadata: %1</source>
         <translation>Erro ao atualizar metadados: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1186"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1219"/>
         <source>The file %1 is currently in use</source>
         <translation>O arquivo %1 está correntemente em uso</translation>
     </message>
@@ -3779,38 +3795,44 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
 <context>
     <name>OCC::PropagateUploadFileCommon</name>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="237"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="241"/>
         <source>Failed to upload encrypted file.</source>
         <translation>Falha ao fazer upload do arquivo criptografado. </translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="268"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="272"/>
         <source>File %1 cannot be uploaded because another file with the same name, differing only in case, exists</source>
         <translation>O arquivo %1 não pôde ser enviado porque um outro arquivo com o mesmo nome, diferenciando apenas letras maiúsculas e minúsculas, existe</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="279"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="673"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="283"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="701"/>
         <source>Upload of %1 exceeds the quota for the folder</source>
         <translation>O envio de %1 excede a cota para a pasta</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="384"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="392"/>
         <source>File Removed (start upload) %1</source>
         <translation>Arquivo Removido (iniciar envio) %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="394"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="396"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="409"/>
+        <source>Local file has invalid modified time. Do not upload to the server.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagateupload.cpp" line="418"/>
         <source>Local file changed during syncing. It will be resumed.</source>
         <translation>Arquivo local alterado durante a sincronização. Ele será retomado.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="405"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="429"/>
         <source>Local file changed during sync.</source>
         <translation>Arquivo local modificado durante a sincronização.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="415"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="439"/>
         <source>Failed to unlock encrypted folder.</source>
         <translation>Falha ao desbloquear a pasta criptografada. </translation>
     </message>
@@ -3820,12 +3842,12 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <translation>Ocorreu um erro ao escrever metadados no banco de dados</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="765"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="797"/>
         <source>Error updating metadata: %1</source>
         <translation>Erro ao atualizar metadados: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="768"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="800"/>
         <source>The file %1 is currently in use</source>
         <translation>O arquivo %1 está correntemente em uso</translation>
     </message>
@@ -3833,32 +3855,32 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
 <context>
     <name>OCC::PropagateUploadFileNG</name>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="418"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="430"/>
         <source>The local file was removed during sync.</source>
         <translation>O arquivo local foi removido durante a sincronização.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="429"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="445"/>
         <source>Local file changed during sync.</source>
         <translation>O arquivo local foi modificado durante a sincronização.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="468"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="484"/>
         <source>Poll URL missing</source>
         <translation>URL de enquete ausente </translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="477"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="493"/>
         <source>Unexpected return code from server (%1)</source>
         <translation>Código de retorno inesperado do servidor (%1)</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="484"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="500"/>
         <source>Missing File ID from server</source>
         <translation>Falta ID do arquivo do servidor</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="498"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="514"/>
         <source>Missing ETag from server</source>
         <translation>Falta ETag do servidor</translation>
     </message>
@@ -3866,22 +3888,22 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
 <context>
     <name>OCC::PropagateUploadFileV1</name>
     <message>
-        <location filename="../src/libsync/propagateuploadv1.cpp" line="216"/>
+        <location filename="../src/libsync/propagateuploadv1.cpp" line="228"/>
         <source>Poll URL missing</source>
         <translation>Faltando conjunto de URL</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadv1.cpp" line="240"/>
+        <location filename="../src/libsync/propagateuploadv1.cpp" line="252"/>
         <source>The local file was removed during sync.</source>
         <translation>O arquivo local foi removido durante a sincronização.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadv1.cpp" line="251"/>
+        <location filename="../src/libsync/propagateuploadv1.cpp" line="267"/>
         <source>Local file changed during sync.</source>
         <translation>O arquivo local foi modificado durante a sincronização.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadv1.cpp" line="265"/>
+        <location filename="../src/libsync/propagateuploadv1.cpp" line="281"/>
         <source>The server did not acknowledge the last chunk. (No e-tag was present)</source>
         <translation>O servidor não reconheceu o último pedaço. (Nenhuma e-tag estava presente)</translation>
     </message>
@@ -5071,24 +5093,24 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
 <context>
     <name>OCC::Theme</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="517"/>
+        <location filename="../src/libsync/theme.cpp" line="508"/>
         <source>&lt;p&gt;%1 Desktop Client&lt;/p&gt;</source>
         <extracomment>Example text: &quot;&lt;p&gt;Nextcloud Desktop Client&lt;/p&gt;&quot; (%1 is the application name)</extracomment>
         <translation>&lt;p&gt;%1 Cliente Desktop&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="520"/>
-        <location filename="../src/libsync/theme.cpp" line="535"/>
+        <location filename="../src/libsync/theme.cpp" line="511"/>
+        <location filename="../src/libsync/theme.cpp" line="526"/>
         <source>&lt;p&gt;Version %1. For more information please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt;.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Versão %1. Para mais informações clique &lt;a href=&apos;%2&apos;&gt;aqui&lt;/a&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="524"/>
+        <location filename="../src/libsync/theme.cpp" line="515"/>
         <source>&lt;p&gt;&lt;small&gt;Using virtual files plugin: %1&lt;/small&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;small&gt;Usando o plugin de arquivos virtuais:  %1&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="539"/>
+        <location filename="../src/libsync/theme.cpp" line="530"/>
         <source>&lt;p&gt;This release was supplied by %1&lt;/p&gt;</source>
         <translation>&lt;p&gt;Esta versão foi fornecida por %1&lt;/p&gt;</translation>
     </message>
@@ -5275,6 +5297,24 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <location filename="../src/common/vfs.cpp" line="75"/>
         <source>The Virtual filesystem feature requires a NTFS file system, %1 is using %2</source>
         <translation>O recurso de sistema de arquivos virtual requer um sistema de arquivos NTFS,  %1 está usando %2</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::VfsSuffix</name>
+    <message>
+        <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="72"/>
+        <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="82"/>
+        <source>Error updating metadata due to invalid modified time</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>OCC::VfsXAttr</name>
+    <message>
+        <location filename="../src/libsync/vfs/xattr/vfs_xattr.cpp" line="73"/>
+        <location filename="../src/libsync/vfs/xattr/vfs_xattr.cpp" line="83"/>
+        <source>Error updating metadata due to invalid modified time</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -6286,7 +6326,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
 <context>
     <name>nextcloudTheme::about()</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="496"/>
+        <location filename="../src/libsync/theme.cpp" line="487"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;small&gt;Construído da revisão Git &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; em %3, %4 usando Qt %5, %6&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
