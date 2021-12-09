@@ -450,8 +450,10 @@ QVector<FileInfo *> FakePutMultiFileReply::performMultiPart(FileInfo &remoteRoot
             auto headerParts = oneHeader.split(QStringLiteral(": "));
             allHeaders[headerParts.at(0)] = headerParts.at(1);
         }
-        auto fileName = allHeaders[QStringLiteral("X-File-Path")];
+        const auto fileName = allHeaders[QStringLiteral("X-File-Path")];
+        const auto modtime = allHeaders[QByteArrayLiteral("X-File-Mtime")].toLongLong();
         Q_ASSERT(!fileName.isEmpty());
+        Q_ASSERT(modtime > 0);
         FileInfo *fileInfo = remoteRootFileInfo.find(fileName);
         if (fileInfo) {
             fileInfo->size = onePartBody.size();
@@ -480,13 +482,7 @@ void FakePutMultiFileReply::respond()
     for(auto fileInfo : qAsConst(_allFileInfo)) {
         QJsonObject fileInfoReply;
         fileInfoReply.insert("error", QStringLiteral("false"));
-        fileInfoReply.insert("OC-OperationStatus", fileInfo->operationStatus);
-        fileInfoReply.insert("X-File-Path", fileInfo->path());
-        fileInfoReply.insert("OC-ETag", QLatin1String{fileInfo->etag});
-        fileInfoReply.insert("ETag", QLatin1String{fileInfo->etag});
         fileInfoReply.insert("etag", QLatin1String{fileInfo->etag});
-        fileInfoReply.insert("OC-FileID", QLatin1String{fileInfo->fileId});
-        fileInfoReply.insert("X-OC-MTime", "accepted"); // Prevents Q_ASSERT(!_runningNow) since we'll call PropagateItemJob::done twice in that case.
         emit uploadProgress(fileInfo->size, totalSize);
         allFileInfoReply.insert(QChar('/') + fileInfo->path(), fileInfoReply);
     }
@@ -977,7 +973,12 @@ QNetworkReply *FakeQNAM::createRequest(QNetworkAccessManager::Operation op, cons
         } else if (verb == QLatin1String("GET") || op == QNetworkAccessManager::GetOperation) {
             reply = new FakeGetReply { info, op, newRequest, this };
         } else if (verb == QLatin1String("PUT") || op == QNetworkAccessManager::PutOperation) {
-            reply = new FakePutReply { info, op, newRequest, outgoingData->readAll(), this };
+            if (request.hasRawHeader(QByteArrayLiteral("X-OC-Mtime")) &&
+                    request.rawHeader(QByteArrayLiteral("X-OC-Mtime")).toLongLong() <= 0) {
+                reply = new FakeErrorReply { op, request, this, 500 };
+            } else {
+                reply = new FakePutReply { info, op, newRequest, outgoingData->readAll(), this };
+            }
         } else if (verb == QLatin1String("MKCOL")) {
             reply = new FakeMkcolReply { info, op, newRequest, this };
         } else if (verb == QLatin1String("DELETE") || op == QNetworkAccessManager::DeleteOperation) {
