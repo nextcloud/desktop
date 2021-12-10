@@ -302,7 +302,7 @@ void BulkPropagatorJob::slotStartUpload(SyncFileItemPtr item,
     item->_modtime = FileSystem::getModTime(originalFilePath);
     if (item->_modtime <= 0) {
         _pendingChecksumFiles.remove(item->_file);
-        slotOnErrorStartFolderUnlock(item, SyncFileItem::NormalError, tr("File %1 has invalid modified time. Do not upload to the server.").arg(QDir::toNativeSeparators(item->_file)));
+        slotOnErrorStartFolderUnlock(item, SyncFileItem::NormalError, tr("File %1 has invalid modification time. Do not upload to the server.").arg(QDir::toNativeSeparators(item->_file)));
         checkPropagationIsDone();
         return;
     }
