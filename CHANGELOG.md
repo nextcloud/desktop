@@ -15,6 +15,7 @@ Summary
 * Bugfix - Immediately propagate changes to the ignore list: [#8975](https://github.com/owncloud/client/issues/8975)
 * Bugfix - Fix icon name in desktop file with ownBrander themes: [#8992](https://github.com/owncloud/client/issues/8992)
 * Bugfix - Crash when handling locked files: [#9170](https://github.com/owncloud/client/issues/9170)
+* Bugfix - Don't abort upload if chunk is locked: [#9194](https://github.com/owncloud/client/issues/9194)
 * Bugfix - Display correct error message for files containign `\:?*"<>|`: [#9223](https://github.com/owncloud/client/pull/9223/)
 * Bugfix - Do not sync when unsyncedfolders file cannot be read: [#9165](https://github.com/owncloud/client/issues/9165)
 * Bugfix - Fix failing dehydration causing files to be moved to trash: [#9257](https://github.com/owncloud/client/pull/9257)
@@ -72,6 +73,15 @@ Details
    We fixed a crash that could occur when trying to add a locked folder to the databse.
 
    https://github.com/owncloud/client/issues/9170
+
+* Bugfix - Don't abort upload if chunk is locked: [#9194](https://github.com/owncloud/client/issues/9194)
+
+   Since 2.9 we know that we need exclusive file access to a file to properly handle it with Windows
+   virtual files. Therefore we checked for the locked state before we start the upload. Due to a bug
+   we checked that for each file chunk, now we only check when the upload starts and when it finished
+   completely.
+
+   https://github.com/owncloud/client/issues/9194
 
 * Bugfix - Display correct error message for files containign `\:?*"<>|`: [#9223](https://github.com/owncloud/client/pull/9223/)
 
