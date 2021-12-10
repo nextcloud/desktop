@@ -90,6 +90,16 @@ PropagateUploadFileNG::PropagateUploadFileNG(OwncloudPropagator *propagator, con
 }
 void PropagateUploadFileNG::doStartUpload()
 {
+    const QString fileName = propagator()->fullLocalPath(_item->_file);
+    // If the file is currently locked, we want to retry the sync
+    // when it becomes available again.
+    const auto lockMode = propagator()->syncOptions().requiredLockMode();
+    if (FileSystem::isFileLocked(fileName, lockMode)) {
+        emit propagator()->seenLockedFile(fileName, lockMode);
+        abortWithError(SyncFileItem::SoftError, tr("%1 the file is currently in use").arg(fileName));
+        return;
+    }
+
     propagator()->_activeJobList.append(this);
 
     UploadRangeInfo rangeinfo = { 0, _item->_size };
@@ -386,14 +396,6 @@ void PropagateUploadFileNG::startNextChunk()
     _currentChunkSize = qMin(propagator()->_chunkSize, _rangesToUpload.first().size);
 
     const QString fileName = propagator()->fullLocalPath(_item->_file);
-    // If the file is currently locked, we want to retry the sync
-    // when it becomes available again.
-    const auto lockMode = propagator()->syncOptions().requiredLockMode();
-    if (FileSystem::isFileLocked(fileName, lockMode)) {
-        emit propagator()->seenLockedFile(fileName, lockMode);
-        abortWithError(SyncFileItem::SoftError, tr("%1 the file is currently in use").arg(fileName));
-        return;
-    }
     auto device = std::make_unique<UploadDevice>(fileName, _currentChunkOffset, _currentChunkSize,
         &propagator()->_bandwidthManager);
     if (!device->open(QIODevice::ReadOnly)) {

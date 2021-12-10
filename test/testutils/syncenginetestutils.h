@@ -110,6 +110,7 @@ public:
     void setModTime(const QString &relativePath, const QDateTime &modTime) override;
 };
 
+/// FIXME: we should make it explicit in the construtor if we're talking about a hydrated or a dehydrated file!
 class FileInfo : public FileModifier
 {
 public:
@@ -123,19 +124,21 @@ public:
     FileInfo(const QString &name, qint64 size)
         : name { name }
         , isDir { false }
-        , size { size }
+        , fileSize(size)
+        , contentSize { size }
     {
     }
     FileInfo(const QString &name, qint64 size, char contentChar)
         : name { name }
         , isDir { false }
-        , size { size }
+        , fileSize(size)
+        , contentSize { size }
         , contentChar { contentChar }
     {
     }
     FileInfo(const QString &name, const std::initializer_list<FileInfo> &children);
 
-    void addChild(const FileInfo &info);
+    FileInfo &addChild(const FileInfo &info);
 
     void remove(const QString &relativePath) override;
 
@@ -153,6 +156,7 @@ public:
 
     void setModTime(const QString &relativePath, const QDateTime &modTime) override;
 
+    /// Return a pointer to the FileInfo, or a nullptr if it doesn't exist
     FileInfo *find(PathComponents pathComponents, const bool invalidateEtags = false);
 
     FileInfo *createDir(const QString &relativePath);
@@ -171,6 +175,13 @@ public:
         return !operator==(other);
     }
 
+    enum ComparissonOption {
+        IgnoreContentOfDehydratedFiles,
+        ContentIsKing,
+    };
+
+    bool equals(const FileInfo &other, ComparissonOption opt) const;
+
     QString path() const;
     QString absolutePath() const;
 
@@ -185,8 +196,10 @@ public:
     QByteArray fileId = generateFileId();
     QByteArray checksums;
     QByteArray extraDavProperties;
-    qint64 size = 0;
+    qint64 fileSize = 0;
+    qint64 contentSize = 0;
     char contentChar = 'W';
+    bool isDehydratedPlaceholder = false;
 
     // Sorted by name to be able to compare trees
     QMap<QString, FileInfo> children;
@@ -196,7 +209,12 @@ public:
 
     friend inline QDebug operator<<(QDebug dbg, const FileInfo &fi)
     {
-        return dbg << "{ " << fi.path() << ": " << fi.children;
+        return dbg << "{ " << fi.path() << ": "
+                   << ", fileSize:" << fi.fileSize
+                   << ", contentSize:" << fi.contentSize
+                   << ", contentChar:" << fi.contentChar
+                   << ", isDehydratedPlaceholder:" << fi.isDehydratedPlaceholder
+                   << ", children:" << fi.children;
     }
 };
 
@@ -472,9 +490,10 @@ class FakeFolder
     OCC::AccountPtr _account;
     std::unique_ptr<OCC::SyncJournalDb> _journalDb;
     std::unique_ptr<OCC::SyncEngine> _syncEngine;
+    OCC::Vfs::Mode _vfsMode;
 
 public:
-    FakeFolder(const FileInfo &fileTemplate);
+    FakeFolder(const FileInfo &fileTemplate, OCC::Vfs::Mode vfsMode = OCC::Vfs::Off);
 
     void switchToVfs(QSharedPointer<OCC::Vfs> vfs);
 
@@ -524,10 +543,12 @@ public:
         return execUntilFinished();
     }
 
+    bool isDehydratedPlaceholder(const QString &filePath);
+
 private:
     static void toDisk(QDir &dir, const FileInfo &templateFi);
 
-    static void fromDisk(QDir &dir, FileInfo &templateFi);
+    void fromDisk(QDir &dir, FileInfo &templateFi);
 };
 
 
@@ -572,7 +593,7 @@ inline void addFiles(QStringList &dest, const FileInfo &fi)
         for (const auto &fi : fi.children)
             addFiles(dest, fi);
     } else {
-        dest += QStringLiteral("%1 - %2 %3-bytes").arg(fi.path()).arg(fi.size).arg(fi.contentChar);
+        dest += QStringLiteral("%1 - %2 %3-bytes").arg(fi.path()).arg(fi.contentSize).arg(fi.contentChar);
     }
 }
 
@@ -598,7 +619,7 @@ inline void addFilesDbData(QStringList &dest, const FileInfo &fi)
         for (const auto &fi : fi.children)
             addFilesDbData(dest, fi);
     } else {
-        dest += QStringLiteral("%1 - %2 %3 %4 %5").arg(fi.name, fi.isDir ? QStringLiteral("dir") : QStringLiteral("file"), QString::number(fi.size), QString::number(fi.lastModified.toSecsSinceEpoch()), QString::fromUtf8(fi.fileId));
+        dest += QStringLiteral("%1 - %2 %3 %4 %5").arg(fi.name, fi.isDir ? QStringLiteral("dir") : QStringLiteral("file"), QString::number(fi.contentSize), QString::number(fi.lastModified.toSecsSinceEpoch()), QString::fromUtf8(fi.fileId));
     }
 }
 

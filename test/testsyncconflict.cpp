@@ -136,8 +136,8 @@ private slots:
         QCOMPARE(remote.find(conflictMap[a1FileId])->contentChar, 'L');
         QCOMPARE(remote.find("A/a1")->contentChar, 'R');
 
-        QCOMPARE(remote.find(conflictMap[a2FileId])->size, 5);
-        QCOMPARE(remote.find("A/a2")->size, 6);
+        QCOMPARE(remote.find(conflictMap[a2FileId])->contentSize, 5);
+        QCOMPARE(remote.find("A/a2")->contentSize, 6);
     }
 
     void testSeparateUpload()
@@ -206,8 +206,8 @@ private slots:
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
         QCOMPARE(conflictMap.size(), 1);
         QVERIFY(conflictMap.contains(a1ConflictFileId));
-        QCOMPARE(fakeFolder.currentRemoteState().find(conflictName)->size, 66);
-        QCOMPARE(fakeFolder.currentRemoteState().find(conflictMap[a1ConflictFileId])->size, 65);
+        QCOMPARE(fakeFolder.currentRemoteState().find(conflictName)->contentSize, 66);
+        QCOMPARE(fakeFolder.currentRemoteState().find(conflictMap[a1ConflictFileId])->contentSize, 65);
         conflictMap.clear();
     }
 
@@ -440,7 +440,7 @@ private slots:
 
         // 1)
         QVERIFY(itemConflict(completeSpy, "Z"));
-        QCOMPARE(fakeFolder.currentLocalState().find("Z")->size, 63);
+        QCOMPARE(fakeFolder.currentLocalState().find("Z")->contentSize, 63);
         QVERIFY(conflicts[2].contains("Z"));
         QCOMPARE(conflicts[2].toUtf8(), conflictRecords[2]);
         QVERIFY(QFileInfo(fakeFolder.localPath() + conflicts[2]).isDir());
@@ -448,7 +448,7 @@ private slots:
 
         // 2)
         QVERIFY(itemConflict(completeSpy, "A/a1"));
-        QCOMPARE(fakeFolder.currentLocalState().find("A/a1")->size, 5);
+        QCOMPARE(fakeFolder.currentLocalState().find("A/a1")->contentSize, 5);
         QVERIFY(conflicts[0].contains("A/a1"));
         QCOMPARE(conflicts[0].toUtf8(), conflictRecords[0]);
         QVERIFY(QFileInfo(fakeFolder.localPath() + conflicts[0]).isDir());
@@ -456,7 +456,7 @@ private slots:
 
         // 3)
         QVERIFY(itemConflict(completeSpy, "B"));
-        QCOMPARE(fakeFolder.currentLocalState().find("B")->size, 31);
+        QCOMPARE(fakeFolder.currentLocalState().find("B")->contentSize, 31);
         QVERIFY(conflicts[1].contains("B"));
         QCOMPARE(conflicts[1].toUtf8(), conflictRecords[1]);
         QVERIFY(QFileInfo(fakeFolder.localPath() + conflicts[1]).isDir());

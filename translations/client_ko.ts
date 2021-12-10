@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="ko" version="2.1">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="ko">
 <context>
     <name>CrashReporter</name>
     <message>
@@ -2685,12 +2685,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateDirectory</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1016"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1028"/>
         <source>Error updating metadata: %1</source>
         <translation>메타데이터 갱신 오류: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1019"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1031"/>
         <source>%1 the folder is currently in use</source>
         <translation>%1 폴더는 현재 이용 중입니다</translation>
     </message>
@@ -2703,57 +2703,57 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>공간 해제 실패, 파일 %1 은(는) 현재 이용 중입니다</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="390"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="468"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="384"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="462"/>
         <source>File %1 can not be downloaded because of a local file name clash with %2!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="526"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="520"/>
         <source>The download would reduce free local disk space below the limit</source>
         <translation>이 파일을 다운로드하면 로컬 디스크 공간이 제한 이하로 남게 됨</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="530"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="524"/>
         <source>Free space on disk is less than %1</source>
         <translation>디스크에 남은 공간이 %1보다 적음</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="653"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="647"/>
         <source>File was deleted from server</source>
         <translation>서버에서 파일이 삭제됨</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="720"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="714"/>
         <source>The file could not be downloaded completely.</source>
         <translation>파일을 완전히 다운로드할 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="727"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="721"/>
         <source>The downloaded file is empty despite the server announced it should have been %1.</source>
         <translation>서버에서 알려 온 파일 크기가 %1이지만 다운로드한 파일이 비어 있습니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="907"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="901"/>
         <source>File %1 cannot be saved because of a local file name clash with %2!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1029"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1023"/>
         <source>Error updating metadata: %1</source>
         <translation>메타데이터 갱신 에러: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="476"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="931"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="967"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1032"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="470"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="925"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="961"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1026"/>
         <source>The file %1 is currently in use</source>
         <translation>파일 %1 은(는) 현재 이용 중입니다</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="364"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="959"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="953"/>
         <source>File has changed since discovery</source>
         <translation>발견 이후 파일이 변경됨</translation>
     </message>
@@ -2897,12 +2897,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateUpdateMetaDataJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1162"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1174"/>
         <source>Could not update file : %1</source>
         <translation>파일을 갱신할 수 없습니다 : %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1165"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1177"/>
         <source>The file %1 is currently in use</source>
         <translation>파일 %1 은(는) 현재 이용 중입니다</translation>
     </message>
@@ -2949,37 +2949,37 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateUploadFileNG</name>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="383"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="93"/>
         <source>%1 the file is currently in use</source>
         <translation>%1  파일은  현재 이용 중입니다</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="478"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="480"/>
         <source>The local file was removed during sync.</source>
         <translation>로컬 파일이 동기화 중 삭제되었습니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="489"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="491"/>
         <source>Local file changed during sync.</source>
         <translation>로컬 파일이 동기화 중 변경되었습니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="526"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="528"/>
         <source>The server did ask for a removed legacy feature(polling)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="531"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="533"/>
         <source>Unexpected return code from server (%1)</source>
         <translation>서버에서 예상하지 못한 응답 코드를 반환함(%1)</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="538"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="540"/>
         <source>Missing File ID from server</source>
         <translation>서버에 파일 ID가 없음</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="552"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="554"/>
         <source>Missing ETag from server</source>
         <translation>서버에 ETag가 없음</translation>
     </message>
@@ -4099,6 +4099,14 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/common/vfs.cpp" line="85"/>
         <source>The Virtual filesystem feature is not supported on network drives</source>
         <translation>네트워크 드라이버에서는 가상 파일 시스템 기능이 지원되지 않습니다</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::VfsSuffix</name>
+    <message>
+        <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="109"/>
+        <source>Cannot create a placeholder because a file with the placeholder name already exist</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

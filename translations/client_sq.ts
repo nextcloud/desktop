@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="sq" version="2.1">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="sq">
 <context>
     <name>CrashReporter</name>
     <message>
@@ -2709,12 +2709,12 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
 <context>
     <name>OCC::PropagateDirectory</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1016"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1028"/>
         <source>Error updating metadata: %1</source>
         <translation>Gabim në përditësim tejtëdhënash: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1019"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1031"/>
         <source>%1 the folder is currently in use</source>
         <translation type="unfinished"/>
     </message>
@@ -2727,57 +2727,57 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
         <translation>S’u arrit të lirohet hapësirë, kartela %1 është aktualisht në përdorim</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="390"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="468"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="384"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="462"/>
         <source>File %1 can not be downloaded because of a local file name clash with %2!</source>
         <translation>Kartela %1 s’mund shkarkohet, për shkak të një përplasjeje emrash kartele vendore me %2!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="526"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="520"/>
         <source>The download would reduce free local disk space below the limit</source>
         <translation>Shkarkimi mund të ulë nën kufi sasinë e hapësirës së lirë në disk</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="530"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="524"/>
         <source>Free space on disk is less than %1</source>
         <translation>Hapësira e lirë në disk është nën %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="653"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="647"/>
         <source>File was deleted from server</source>
         <translation>Kartela është fshirë te shërbyesi</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="720"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="714"/>
         <source>The file could not be downloaded completely.</source>
         <translation>Kartela s’u shkarkua plotësisht.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="727"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="721"/>
         <source>The downloaded file is empty despite the server announced it should have been %1.</source>
         <translation>Kartela e shkarkuar është e zbrazët, edhe pse shërbyesi njoftoi se duhej të ishte %1.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="907"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="901"/>
         <source>File %1 cannot be saved because of a local file name clash with %2!</source>
         <translation>Kartela %1 s’mund të ruhet, për shkak të një përplasjeje emrash kartele vendore me %2!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1029"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1023"/>
         <source>Error updating metadata: %1</source>
         <translation>Gabim në përditësim tejtëdhënash: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="476"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="931"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="967"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1032"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="470"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="925"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="961"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1026"/>
         <source>The file %1 is currently in use</source>
         <translation>Kartela %1 është aktualisht në përdorim</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="364"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="959"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="953"/>
         <source>File has changed since discovery</source>
         <translation>Kartela ka ndryshuar, qëkurse u zbulua</translation>
     </message>
@@ -2921,12 +2921,12 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
 <context>
     <name>OCC::PropagateUpdateMetaDataJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1162"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1174"/>
         <source>Could not update file : %1</source>
         <translation>S’u përditësua dot kartela : %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1165"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1177"/>
         <source>The file %1 is currently in use</source>
         <translation>Kartela %1 është aktualisht në përdorim</translation>
     </message>
@@ -2973,37 +2973,37 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
 <context>
     <name>OCC::PropagateUploadFileNG</name>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="383"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="93"/>
         <source>%1 the file is currently in use</source>
         <translation>%1 kartela është aktualisht në përdorim</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="478"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="480"/>
         <source>The local file was removed during sync.</source>
         <translation>Kartela vendore u hoq gjatë njëkohësimit.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="489"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="491"/>
         <source>Local file changed during sync.</source>
         <translation>Kartela vendore ndryshoi gjatë njëkohësimit.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="526"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="528"/>
         <source>The server did ask for a removed legacy feature(polling)</source>
         <translation>Shërbyesi kërkoi një veçori të dikurshme që është hequr (vjelje)</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="531"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="533"/>
         <source>Unexpected return code from server (%1)</source>
         <translation>Kod i papritur përgjigjeje nga shërbyesi (%1)</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="538"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="540"/>
         <source>Missing File ID from server</source>
         <translation>Mungon ID kartele nga shërbyesi</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="552"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="554"/>
         <source>Missing ETag from server</source>
         <translation>Mungon ETag nga shërbyesi</translation>
     </message>
@@ -4123,6 +4123,14 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
         <location filename="../src/common/vfs.cpp" line="85"/>
         <source>The Virtual filesystem feature is not supported on network drives</source>
         <translation>Veçoria e sistemit Virtual të kartelave nuk mbulohet në disqe rrjeti</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::VfsSuffix</name>
+    <message>
+        <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="109"/>
+        <source>Cannot create a placeholder because a file with the placeholder name already exist</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

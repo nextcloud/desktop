@@ -134,11 +134,12 @@ FileInfo::FileInfo(const QString &name, const std::initializer_list<FileInfo> &c
         addChild(source);
 }
 
-void FileInfo::addChild(const FileInfo &info)
+FileInfo &FileInfo::addChild(const FileInfo &info)
 {
-    auto &dest = this->children[info.name] = info;
+    FileInfo &dest = this->children[info.name] = info;
     dest.parentPath = path();
     dest.fixupParentPathRecursively();
+    return dest;
 }
 
 void FileInfo::remove(const QString &relativePath)
@@ -167,7 +168,7 @@ void FileInfo::appendByte(const QString &relativePath, char contentChar)
     Q_UNUSED(contentChar);
     FileInfo *file = findInvalidatingEtags(relativePath);
     Q_ASSERT(file);
-    file->size += 1;
+    file->contentSize += 1;
 }
 
 void FileInfo::modifyByte(const QString &relativePath, quint64 offset, char contentChar)
@@ -256,9 +257,39 @@ bool FileInfo::operator==(const FileInfo &other) const
     // Consider files to be equal between local<->remote as a user would.
     return name == other.name
         && isDir == other.isDir
-        && size == other.size
+        && contentSize == other.contentSize
         && contentChar == other.contentChar
         && children == other.children;
+}
+
+bool FileInfo::equals(const FileInfo &other, ComparissonOption opt) const
+{
+    switch (opt) {
+    case ContentIsKing:
+        return *this == other;
+    case IgnoreContentOfDehydratedFiles:
+        if (!isDehydratedPlaceholder && !other.isDehydratedPlaceholder) {
+            if (contentSize != other.contentSize || contentChar != other.contentChar) {
+                return false;
+            }
+        }
+
+        if (name == other.name && isDir == other.isDir && fileSize == other.fileSize && lastModified == other.lastModified) {
+            if (children.size() == other.children.size()) {
+                for (auto it = children.constBegin(), eit = children.constEnd(),
+                          oit = other.children.constBegin(), oeit = other.children.constEnd();
+                     it != eit && oit != oeit; ++it, ++oit) {
+                    if (!it->equals(*oit, opt)) {
+                        return false;
+                    }
+                }
+            }
+        }
+
+        return true;
+    }
+
+    Q_UNREACHABLE();
 }
 
 QString FileInfo::path() const
@@ -334,7 +365,7 @@ FakePropfindReply::FakePropfindReply(FileInfo &remoteRootFileInfo, QNetworkAcces
         auto gmtDate = fileInfo.lastModified.toUTC();
         auto stringDate = QLocale::c().toString(gmtDate, QStringLiteral("ddd, dd MMM yyyy HH:mm:ss 'GMT'"));
         xml.writeTextElement(davUri, QStringLiteral("getlastmodified"), stringDate);
-        xml.writeTextElement(davUri, QStringLiteral("getcontentlength"), QString::number(fileInfo.size));
+        xml.writeTextElement(davUri, QStringLiteral("getcontentlength"), QString::number(fileInfo.contentSize));
         xml.writeTextElement(davUri, QStringLiteral("getetag"), QStringLiteral("\"%1\"").arg(QString::fromLatin1(fileInfo.etag)));
         xml.writeTextElement(ocUri, QStringLiteral("permissions"), !fileInfo.permissions.isNull() ? QString(fileInfo.permissions.toString()) : fileInfo.isShared ? QStringLiteral("SRDNVCKW")
                                                                                                                                                                  : QStringLiteral("RDNVCKW"));
@@ -411,8 +442,9 @@ FileInfo *FakePutReply::perform(FileInfo &remoteRootFileInfo, const QNetworkRequ
     Q_ASSERT(!fileName.isEmpty());
     FileInfo *fileInfo = remoteRootFileInfo.find(fileName);
     if (fileInfo) {
-        fileInfo->size = putPayload.size();
+        fileInfo->contentSize = putPayload.size();
         fileInfo->contentChar = putPayload.at(0);
+        fileInfo->fileSize = fileInfo->contentSize; // it's hydrated on the server, so these are the same
     } else {
         // Assume that the file is filled with the same character
         fileInfo = remoteRootFileInfo.create(fileName, putPayload.size(), putPayload.at(0));
@@ -424,7 +456,7 @@ FileInfo *FakePutReply::perform(FileInfo &remoteRootFileInfo, const QNetworkRequ
 
 void FakePutReply::respond()
 {
-    emit uploadProgress(fileInfo->size, fileInfo->size);
+    emit uploadProgress(fileInfo->contentSize, fileInfo->contentSize);
     setRawHeader("OC-ETag", fileInfo->etag);
     setRawHeader("ETag", fileInfo->etag);
     setRawHeader("OC-FileID", fileInfo->fileId);
@@ -538,7 +570,7 @@ void FakeGetReply::respond()
         return;
     }
     payload = fileInfo->contentChar;
-    size = fileInfo->size;
+    size = fileInfo->contentSize;
     setHeader(QNetworkRequest::ContentLengthHeader, size);
     setAttribute(QNetworkRequest::HttpStatusCodeAttribute, 200);
     setRawHeader("OC-ETag", fileInfo->etag);
@@ -679,12 +711,12 @@ FileInfo *FakeChunkMoveReply::perform(FileInfo &uploadsFileInfo, FileInfo &remot
         if (chunkNameLongLong != prev)
             break;
         Q_ASSERT(!x.isDir);
-        Q_ASSERT(x.size > 0); // There should not be empty chunks
-        size += x.size;
+        Q_ASSERT(x.contentSize > 0); // There should not be empty chunks
+        size += x.contentSize;
         Q_ASSERT(!payload || payload == x.contentChar);
         payload = x.contentChar;
         ++count;
-        prev = chunkNameLongLong + x.size;
+        prev = chunkNameLongLong + x.contentSize;
     }
     Q_ASSERT(sourceFolderChildren.count() == count); // There should not be holes or extra files
 
@@ -701,8 +733,9 @@ FileInfo *FakeChunkMoveReply::perform(FileInfo &uploadsFileInfo, FileInfo &remot
         if (request.rawHeader("If") != start + " ([\"" + fileInfo->etag + "\"])") {
             return nullptr;
         }
-        fileInfo->size = size;
+        fileInfo->contentSize = size;
         fileInfo->contentChar = payload;
+        fileInfo->fileSize = fileInfo->contentSize; // it's hydrated on the server, so these are the same
     } else {
         Q_ASSERT(!request.hasRawHeader("If"));
         // Assume that the file is filled with the same character
@@ -883,8 +916,9 @@ QNetworkReply *FakeQNAM::createRequest(QNetworkAccessManager::Operation op, cons
     return reply;
 }
 
-FakeFolder::FakeFolder(const FileInfo &fileTemplate)
+FakeFolder::FakeFolder(const FileInfo &fileTemplate, OCC::Vfs::Mode vfsMode)
     : _localModifier(_tempDir.path())
+    , _vfsMode(vfsMode)
 {
     // Needs to be done once
     OCC::SyncEngine::minimumFileAgeForUpload = std::chrono::milliseconds(0);
@@ -1002,6 +1036,11 @@ void FakeFolder::execUntilItemCompleted(const QString &relativePath)
     QVERIFY(false);
 }
 
+bool FakeFolder::isDehydratedPlaceholder(const QString &filePath)
+{
+    return _syncEngine->syncOptions()._vfs->isDehydratedPlaceholder(filePath);
+}
+
 void FakeFolder::toDisk(QDir &dir, const FileInfo &templateFi)
 {
     for (const auto &child : templateFi.children) {
@@ -1013,7 +1052,7 @@ void FakeFolder::toDisk(QDir &dir, const FileInfo &templateFi)
         } else {
             QFile file { dir.filePath(child.name) };
             file.open(QFile::WriteOnly);
-            file.write(QByteArray {}.fill(child.contentChar, child.size));
+            file.write(QByteArray {}.fill(child.contentChar, child.contentSize));
             file.close();
             OCC::FileSystem::setModTime(file.fileName(), OCC::Utility::qDateTimeToTime_t(child.lastModified));
         }
@@ -1030,15 +1069,25 @@ void FakeFolder::fromDisk(QDir &dir, FileInfo &templateFi)
             FileInfo &subFi = templateFi.children[diskChild.fileName()] = FileInfo { diskChild.fileName() };
             fromDisk(subDir, subFi);
         } else {
-            QFile f { diskChild.filePath() };
-            f.open(QFile::ReadOnly);
-            auto content = f.read(1);
-            if (content.size() == 0) {
-                qWarning() << "Empty file at:" << diskChild.filePath();
-                continue;
+            FileInfo fi(diskChild.fileName());
+            fi.isDir = false;
+            fi.fileSize = diskChild.size();
+            fi.isDehydratedPlaceholder = isDehydratedPlaceholder(diskChild.absoluteFilePath());
+            if (fi.isDehydratedPlaceholder) {
+                fi.contentChar = '\0';
+            } else {
+                QFile f { diskChild.filePath() };
+                f.open(QFile::ReadOnly);
+                auto content = f.read(1);
+                if (content.size() == 0) {
+                    qWarning() << "Empty file at:" << diskChild.filePath();
+                    continue;
+                }
+                fi.contentChar = content.at(0);
+                fi.contentSize = fi.fileSize;
             }
-            char contentChar = content.at(0);
-            templateFi.children.insert(diskChild.fileName(), FileInfo { diskChild.fileName(), diskChild.size(), contentChar });
+
+            templateFi.children.insert(fi.name, fi);
         }
     }
 }
@@ -1067,7 +1116,7 @@ FileInfo FakeFolder::dbState() const
         auto &item = parentDir.children[name];
         item.name = name;
         item.parentPath = parentDir.path();
-        item.size = record._fileSize;
+        item.contentSize = record._fileSize;
         item.isDir = record._type == ItemTypeDirectory;
         item.permissions = record._remotePerm;
         item.etag = record._etag;
