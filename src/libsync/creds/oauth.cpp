@@ -224,6 +224,10 @@ void OAuth::startAuthentication()
                     httpReplyAndClose(socket, QByteArrayLiteral("400 Bad Request"), QByteArrayLiteral("<html><head><title>400 Bad Request</title></head><body><center><h1>400 Bad Request</h1></center></body></html>"));
                     return;
                 }
+                // we only allow one response
+                qCDebug(lcOauth) << "Recieved the first valid request, stoping to listen";
+                _server.close();
+
                 auto job = postTokenRequest({
                     { QStringLiteral("grant_type"), QStringLiteral("authorization_code") },
                     { QStringLiteral("code"), args.queryItemValue(QStringLiteral("code")) },
@@ -231,10 +235,6 @@ void OAuth::startAuthentication()
                     { QStringLiteral("code_verifier"), QString::fromUtf8(_pkceCodeVerifier) },
                 });
                 QObject::connect(job, &SimpleNetworkJob::finishedSignal, this, [this, socket](QNetworkReply *reply) {
-                    qScopeGuard([this] {
-                        // close the server once we are done here
-                        _server.close();
-                    });
                     const auto jsonData = reply->readAll();
                     QJsonParseError jsonParseError;
                     const auto data = QJsonDocument::fromJson(jsonData, &jsonParseError).object().toVariantMap();

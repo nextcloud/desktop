@@ -1,0 +1,6 @@
+Bugfix: Always restart OAuth2 on error
+
+We now always restart the OAuth2 process once we got a result.
+This will ensure that a second try after an error occurred can succeed.
+
+https://github.com/owncloud/client/issues/9196

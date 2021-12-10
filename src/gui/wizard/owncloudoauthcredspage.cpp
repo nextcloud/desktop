@@ -43,18 +43,15 @@ OwncloudOAuthCredsPage::OwncloudOAuthCredsPage()
 
     connect(_ui.openLinkButton, &QCommandLinkButton::clicked, [this] {
         _ui.errorLabel->hide();
-        if (_asyncAuth)
-            _asyncAuth->openBrowser();
+        oauth()->openBrowser();
     });
     _ui.openLinkButton->setContextMenuPolicy(Qt::CustomContextMenu);
     QObject::connect(_ui.openLinkButton, &QWidget::customContextMenuRequested, [this](const QPoint &pos) {
         auto menu = new QMenu(_ui.openLinkButton);
         menu->addAction(tr("Copy link to clipboard"), this, [this] {
-            if (_asyncAuth) {
-                _asyncAuth->authorisationLinkAsync([](const QUrl &link) {
-                    QApplication::clipboard()->setText(link.toString(QUrl::FullyEncoded));
-                });
-            }
+            oauth()->authorisationLinkAsync([](const QUrl &link) {
+                QApplication::clipboard()->setText(link.toString(QUrl::FullyEncoded));
+            });
         });
         menu->setAttribute(Qt::WA_DeleteOnClose);
         menu->popup(_ui.openLinkButton->mapToGlobal(pos));
@@ -66,9 +63,8 @@ void OwncloudOAuthCredsPage::initializePage()
     OwncloudWizard *ocWizard = qobject_cast<OwncloudWizard *>(wizard());
     Q_ASSERT(ocWizard);
     ocWizard->account()->setCredentials(new HttpCredentialsGui);
-    _asyncAuth.reset(new OAuth(ocWizard->account().data(), this));
-    connect(_asyncAuth.data(), &OAuth::result, this, &OwncloudOAuthCredsPage::asyncAuthResult, Qt::QueuedConnection);
-    _asyncAuth->startAuthentication();
+
+    oauth();
     ocApp()->gui()->settingsDialog()->showMinimized();
 }
 
@@ -82,6 +78,7 @@ void OCC::OwncloudOAuthCredsPage::cleanupPage()
 void OwncloudOAuthCredsPage::asyncAuthResult(OAuth::Result r, const QString &user,
     const QString &token, const QString &refreshToken)
 {
+    _asyncAuth.reset();
     switch (r) {
     case OAuth::NotSupported: {
         /* OAuth not supported (can't open browser), fallback to HTTP credentials */
@@ -105,6 +102,16 @@ void OwncloudOAuthCredsPage::asyncAuthResult(OAuth::Result r, const QString &use
         break;
     }
     }
+}
+
+OAuth *OwncloudOAuthCredsPage::oauth()
+{
+    if (!_asyncAuth) {
+        _asyncAuth.reset(new OAuth(owncloudWizard()->account().data(), this));
+        connect(_asyncAuth.data(), &OAuth::result, this, &OwncloudOAuthCredsPage::asyncAuthResult, Qt::QueuedConnection);
+        _asyncAuth->startAuthentication();
+    }
+    return _asyncAuth.get();
 }
 
 int OwncloudOAuthCredsPage::nextId() const
