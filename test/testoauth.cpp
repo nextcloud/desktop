@@ -126,7 +126,7 @@ public:
                 return this->statusPhpReply(op, req);
             }
             OC_ASSERT(device);
-            OC_ASSERT(device->bytesAvailable() > 0); // OAuth2 always sends around POST data.
+            OC_ASSERT(device && device->bytesAvailable() > 0); // OAuth2 always sends around POST data.
             return this->tokenReply(op, req);
         });
 
