@@ -276,10 +276,12 @@ void BulkPropagatorJob::slotStartUpload(SyncFileItemPtr item,
 
     item->_modtime = FileSystem::getModTime(originalFilePath);
     if (item->_modtime <= 0) {
-        return slotOnErrorStartFolderUnlock(item, SyncFileItem::SoftError, tr("Local file has invalid modified time. Do not upload to the server."));
+        _pendingChecksumFiles.remove(item->_file);
+        return slotOnErrorStartFolderUnlock(item, SyncFileItem::NormalError, tr("File %1 has invalid modified time. Do not upload to the server.").arg(QDir::toNativeSeparators(item->_file)));
     }
     if (prevModtime != item->_modtime) {
         propagator()->_anotherSyncNeeded = true;
+        _pendingChecksumFiles.remove(item->_file);
         qDebug() << "trigger another sync after checking modified time of item" << item->_file << "prevModtime" << prevModtime << "Curr" << item->_modtime;
         return slotOnErrorStartFolderUnlock(item, SyncFileItem::SoftError, tr("Local file changed during syncing. It will be resumed."));
     }
@@ -292,6 +294,7 @@ void BulkPropagatorJob::slotStartUpload(SyncFileItemPtr item,
     // or not yet fully copied to the destination.
     if (fileIsStillChanging(*item)) {
         propagator()->_anotherSyncNeeded = true;
+        _pendingChecksumFiles.remove(item->_file);
         return slotOnErrorStartFolderUnlock(item, SyncFileItem::SoftError, tr("Local file changed during sync."));
     }
 
