@@ -12,6 +12,7 @@ void setupLogger()
 
     OCC::Logger::instance()->setLogFile(QStringLiteral("-"));
     OCC::Logger::instance()->addLogRule({ QStringLiteral("sync.httplogger=true") });
+    OCC::Logger::instance()->setLogDebug(true);
 }
 Q_COREAPP_STARTUP_FUNCTION(setupLogger);
 }
