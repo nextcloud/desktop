@@ -893,7 +893,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="279"/>
         <source>Local file has invalid modified time. Do not upload to the server.</source>
-        <translation type="unfinished"/>
+        <translation>本機檔案的修改時間無效。不要上傳到伺服器。</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="284"/>
@@ -3515,7 +3515,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1132"/>
         <source>Error updating metadata due to invalid modified time</source>
-        <translation type="unfinished"/>
+        <translation>因為修改時間無效，所以更新詮釋資料時發生錯誤</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1148"/>
@@ -3542,7 +3542,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="496"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1145"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1147"/>
         <source>File has changed since discovery</source>
         <translation>尋找的過程中檔案已經被更改</translation>
     </message>
@@ -3598,18 +3598,18 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>將詮釋資料寫入到資料庫時發生錯誤</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1079"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1091"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1080"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1093"/>
         <source>File %1 has invalid modified time reported by server. Do not save it.</source>
-        <translation type="unfinished"/>
+        <translation>伺服器回報檔案 %1 的修改時間無效。不要儲存。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1216"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1218"/>
         <source>Error updating metadata: %1</source>
         <translation>更新詮釋資料時發生錯誤：%1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1219"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1221"/>
         <source>The file %1 is currently in use</source>
         <translation>檔案 %1 目前正在使用中</translation>
     </message>
@@ -3821,7 +3821,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/propagateupload.cpp" line="396"/>
         <location filename="../src/libsync/propagateupload.cpp" line="409"/>
         <source>Local file has invalid modified time. Do not upload to the server.</source>
-        <translation type="unfinished"/>
+        <translation>本機檔案的修改時間無效。不要上傳到伺服器。</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="418"/>
@@ -5307,7 +5307,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="72"/>
         <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="82"/>
         <source>Error updating metadata due to invalid modified time</source>
-        <translation type="unfinished"/>
+        <translation>因為修改時間無效，所以更新詮釋資料時發生錯誤</translation>
     </message>
 </context>
 <context>
@@ -5316,7 +5316,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/vfs/xattr/vfs_xattr.cpp" line="73"/>
         <location filename="../src/libsync/vfs/xattr/vfs_xattr.cpp" line="83"/>
         <source>Error updating metadata due to invalid modified time</source>
-        <translation type="unfinished"/>
+        <translation>因為修改時間無效，所以更新詮釋資料時發生錯誤</translation>
     </message>
 </context>
 <context>

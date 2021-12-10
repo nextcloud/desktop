@@ -893,7 +893,7 @@ Současně tato akce zruší jakoukoli právě probíhající synchronizaci.</tr
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="279"/>
         <source>Local file has invalid modified time. Do not upload to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Místní soubor nemá platný čas změny. Nenahrávat na server.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="284"/>
@@ -3514,7 +3514,7 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1132"/>
         <source>Error updating metadata due to invalid modified time</source>
-        <translation type="unfinished"/>
+        <translation>Chyba při aktualizaci metadat z důvodu neplatného času změny</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1148"/>
@@ -3541,7 +3541,7 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="496"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1145"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1147"/>
         <source>File has changed since discovery</source>
         <translation>Soubor se mezitím změnil</translation>
     </message>
@@ -3597,18 +3597,18 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
         <translation>Chyba zápisu metadat do databáze</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1079"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1091"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1080"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1093"/>
         <source>File %1 has invalid modified time reported by server. Do not save it.</source>
-        <translation type="unfinished"/>
+        <translation>Soubor %1 nemá platný čas změny, hlášený na server. Neukládat ho.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1216"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1218"/>
         <source>Error updating metadata: %1</source>
         <translation>Chyba při aktualizování metadat: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1219"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1221"/>
         <source>The file %1 is currently in use</source>
         <translation>Soubor %1 je v tuto chvíli používán jinou aplikací</translation>
     </message>
@@ -3820,7 +3820,7 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
         <location filename="../src/libsync/propagateupload.cpp" line="396"/>
         <location filename="../src/libsync/propagateupload.cpp" line="409"/>
         <source>Local file has invalid modified time. Do not upload to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Místní soubor nemá platný čas změny. Nenahrávat na server.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="418"/>
@@ -5306,7 +5306,7 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
         <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="72"/>
         <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="82"/>
         <source>Error updating metadata due to invalid modified time</source>
-        <translation type="unfinished"/>
+        <translation>Chyba při aktualizaci metadat z důvodu neplatného času změny</translation>
     </message>
 </context>
 <context>
@@ -5315,7 +5315,7 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
         <location filename="../src/libsync/vfs/xattr/vfs_xattr.cpp" line="73"/>
         <location filename="../src/libsync/vfs/xattr/vfs_xattr.cpp" line="83"/>
         <source>Error updating metadata due to invalid modified time</source>
-        <translation type="unfinished"/>
+        <translation>Chyba při aktualizaci metadat z důvodu neplatného času změny</translation>
     </message>
 </context>
 <context>
