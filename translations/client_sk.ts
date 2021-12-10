@@ -3541,7 +3541,7 @@ Toto je nový experimentálny režim. Ak sa ho rozhodnete použiť, nahláste v�
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="496"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1145"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1147"/>
         <source>File has changed since discovery</source>
         <translation>Súbor sa medzitým zmenil</translation>
     </message>
@@ -3597,18 +3597,18 @@ Toto je nový experimentálny režim. Ak sa ho rozhodnete použiť, nahláste v�
         <translation>Chyba pri zápise metadát do databázy</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1079"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1091"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1080"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1093"/>
         <source>File %1 has invalid modified time reported by server. Do not save it.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1216"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1218"/>
         <source>Error updating metadata: %1</source>
         <translation>Chyba pri aktualizácii metadát: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1219"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1221"/>
         <source>The file %1 is currently in use</source>
         <translation>Súbor %1 sa v súčasnosti používa</translation>
     </message>

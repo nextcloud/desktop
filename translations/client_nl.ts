@@ -3544,7 +3544,7 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="496"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1145"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1147"/>
         <source>File has changed since discovery</source>
         <translation>Het bestand is gewijzigd sinds het is gevonden</translation>
     </message>
@@ -3600,18 +3600,18 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
         <translation>Fout bij schrijven van Metadata naar de database</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1079"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1091"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1080"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1093"/>
         <source>File %1 has invalid modified time reported by server. Do not save it.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1216"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1218"/>
         <source>Error updating metadata: %1</source>
         <translation>Fout bij bijwerken metadata: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1219"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1221"/>
         <source>The file %1 is currently in use</source>
         <translation>Bestand %1 is al in gebruik</translation>
     </message>

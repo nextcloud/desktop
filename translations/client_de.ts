@@ -893,7 +893,7 @@ Diese Aktion bricht jede derzeit laufende Synchronisierung ab.</translation>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="279"/>
         <source>Local file has invalid modified time. Do not upload to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Die lokale Datei hat eine ungültige Änderungszeit. Nicht auf den Server hochladen.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="284"/>
@@ -3514,7 +3514,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1132"/>
         <source>Error updating metadata due to invalid modified time</source>
-        <translation type="unfinished"/>
+        <translation>Fehler beim Aktualisieren der Metadaten aufgrund einer ungültigen Änderungszeit</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1148"/>
@@ -3541,7 +3541,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="496"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1145"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1147"/>
         <source>File has changed since discovery</source>
         <translation>Datei ist seit der Entdeckung geändert worden</translation>
     </message>
@@ -3597,18 +3597,18 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
         <translation>Fehler beim Schreiben der Metadaten in die Datenbank</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1079"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1091"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1080"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1093"/>
         <source>File %1 has invalid modified time reported by server. Do not save it.</source>
-        <translation type="unfinished"/>
+        <translation>Datei %1 hat eine ungültige Änderungszeit, die vom Server gemeldet wurde. Speichern Sie sie nicht.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1216"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1218"/>
         <source>Error updating metadata: %1</source>
         <translation>Fehler beim Aktualisieren der Metadaten: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1219"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1221"/>
         <source>The file %1 is currently in use</source>
         <translation>Die Datei %1 ist aktuell in Benutzung</translation>
     </message>
@@ -3820,7 +3820,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
         <location filename="../src/libsync/propagateupload.cpp" line="396"/>
         <location filename="../src/libsync/propagateupload.cpp" line="409"/>
         <source>Local file has invalid modified time. Do not upload to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Die lokale Datei hat eine ungültige Änderungszeit. Nicht auf den Server hochladen.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="418"/>
@@ -5306,7 +5306,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
         <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="72"/>
         <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="82"/>
         <source>Error updating metadata due to invalid modified time</source>
-        <translation type="unfinished"/>
+        <translation>Fehler beim Aktualisieren der Metadaten aufgrund einer ungültigen Änderungszeit</translation>
     </message>
 </context>
 <context>
@@ -5315,7 +5315,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
         <location filename="../src/libsync/vfs/xattr/vfs_xattr.cpp" line="73"/>
         <location filename="../src/libsync/vfs/xattr/vfs_xattr.cpp" line="83"/>
         <source>Error updating metadata due to invalid modified time</source>
-        <translation type="unfinished"/>
+        <translation>Fehler beim Aktualisieren der Metadaten aufgrund einer ungültigen Änderungszeit</translation>
     </message>
 </context>
 <context>
