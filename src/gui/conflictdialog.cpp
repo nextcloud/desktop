@@ -21,6 +21,7 @@
 #include <QDebug>
 #include <QDesktopServices>
 #include <QFileInfo>
+#include <QLoggingCategory>
 #include <QMimeDatabase>
 #include <QPushButton>
 #include <QUrl>
@@ -42,6 +43,8 @@ void setBoldFont(QWidget *widget, bool bold)
 }
 
 namespace OCC {
+
+Q_LOGGING_CATEGORY(lcConflictDialog, "nextcloud.gui.conflictdialog", QtInfoMsg)
 
 ConflictDialog::ConflictDialog(QWidget *parent)
     : QDialog(parent)
@@ -109,6 +112,9 @@ void ConflictDialog::accept()
     const auto isLocalPicked = _ui->localVersionRadio->isChecked();
     const auto isRemotePicked = _ui->remoteVersionRadio->isChecked();
 
+    qCInfo(lcConflictDialog) << "[ConflictDialog] accept() isLocalPicked:" << isLocalPicked
+                             << " isLocalPicked:" << isLocalPicked;
+
     Q_ASSERT(isLocalPicked || isRemotePicked);
     if (!isLocalPicked && !isRemotePicked) {
         return;
@@ -117,6 +123,9 @@ void ConflictDialog::accept()
     const auto solution = isLocalPicked && isRemotePicked ? ConflictSolver::KeepBothVersions
                         : isLocalPicked ? ConflictSolver::KeepLocalVersion
                         : ConflictSolver::KeepRemoteVersion;
+
+    qCInfo(lcConflictDialog) << "[ConflictDialog] accept() solution:" << solution;
+
     if (_solver->exec(solution)) {
         QDialog::accept();
     }
@@ -170,6 +179,9 @@ void ConflictDialog::updateButtonStates()
     const auto isLocalPicked = _ui->localVersionRadio->isChecked();
     const auto isRemotePicked = _ui->remoteVersionRadio->isChecked();
     _ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(isLocalPicked || isRemotePicked);
+
+    qCInfo(lcConflictDialog) << "[ConflictDialog] updateButtonStates() isLocalPicked:" << isLocalPicked
+                             << " isLocalPicked:" << isLocalPicked;
 
     const auto text = isLocalPicked && isRemotePicked ? tr("Keep both versions")
                     : isLocalPicked ? tr("Keep local version")

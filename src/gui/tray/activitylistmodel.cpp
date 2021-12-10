@@ -475,6 +475,8 @@ void ActivityListModel::triggerDefaultAction(int activityIndex)
         if (!_currentConflictDialog.isNull()) {
             _currentConflictDialog->close();
         }
+        qCInfo(lcActivity) << "[ActivityListModel] [ConflictDialog] triggerDefaultAction() Open for baseName:" << baseName << " conflictedPath:" << conflictedPath
+                           << " basePath: " << basePath;
         _currentConflictDialog = new ConflictDialog;
         _currentConflictDialog->setBaseFilename(baseName);
         _currentConflictDialog->setLocalVersionFilename(conflictedPath);

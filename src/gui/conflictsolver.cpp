@@ -42,6 +42,7 @@ QString ConflictSolver::remoteVersionFilename() const
 
 bool ConflictSolver::exec(ConflictSolver::Solution solution)
 {
+    qCInfo(lcConflict) << "[ConflictSolver] exec() solution:" << solution;
     switch (solution) {
     case KeepLocalVersion:
         return overwriteRemoteVersion();
@@ -76,11 +77,14 @@ void ConflictSolver::setRemoteVersionFilename(const QString &remoteVersionFilena
 
 bool ConflictSolver::deleteLocalVersion()
 {
+    qCInfo(lcConflict) << "[ConflictSolver] deleteLocalVersion() _localVersionFilename:" << _localVersionFilename;
     if (_localVersionFilename.isEmpty()) {
         return false;
     }
 
     QFileInfo info(_localVersionFilename);
+    qCInfo(lcConflict) << "[ConflictSolver] deleteLocalVersion() info(_localVersionFilename).exists():" << info.exists()
+                       << " info(_localVersionFilename).isDir():" << info.isDir();
     if (!info.exists()) {
         return false;
     }
@@ -88,23 +92,32 @@ bool ConflictSolver::deleteLocalVersion()
     const auto message = info.isDir() ? tr("Do you want to delete the directory <i>%1</i> and all its contents permanently?").arg(info.dir().dirName())
                                       : tr("Do you want to delete the file <i>%1</i> permanently?").arg(info.fileName());
     const auto result = QMessageBox::question(_parentWidget, tr("Confirm deletion"), message, QMessageBox::Yes, QMessageBox::No);
+    qCInfo(lcConflict) << "[ConflictSolver] deleteLocalVersion() QMessageBox::question(_parentWidget, tr(Confirm deletion) result:"
+                       << result;
     if (result != QMessageBox::Yes)
         return false;
-
+    bool res = false;
     if (info.isDir()) {
-        return FileSystem::removeRecursively(_localVersionFilename);
+        res = FileSystem::removeRecursively(_localVersionFilename);
     } else {
-        return QFile(_localVersionFilename).remove();
+        res = QFile(_localVersionFilename).remove();
     }
+
+    qCInfo(lcConflict) << "[ConflictSolver] deleteLocalVersion() res:" << res;
+
+    return res;
 }
 
 bool ConflictSolver::renameLocalVersion()
 {
+    qCInfo(lcConflict) << "[ConflictSolver] renameLocalVersion() _localVersionFilename:" << _localVersionFilename;
+
     if (_localVersionFilename.isEmpty()) {
         return false;
     }
 
     QFileInfo info(_localVersionFilename);
+    qCInfo(lcConflict) << "[ConflictSolver] renameLocalVersion() info(_localVersionFilename).exists():" << info.exists();
     if (!info.exists()) {
         return false;
     }
@@ -128,6 +141,7 @@ bool ConflictSolver::renameLocalVersion()
 
     QString error;
     if (FileSystem::uncheckedRenameReplace(_localVersionFilename, targetFilename, &error)) {
+        qCInfo(lcConflict) << "[ConflictSolver] renameLocalVersion() return true";
         return true;
     } else {
         qCWarning(lcConflict) << "Rename error:" << error;
@@ -138,6 +152,8 @@ bool ConflictSolver::renameLocalVersion()
 
 bool ConflictSolver::overwriteRemoteVersion()
 {
+    qCInfo(lcConflict) << "[ConflictSolver] overwriteRemoteVersion() _localVersionFilename:" << _localVersionFilename
+                       << " _remoteVersionFilename:" << _remoteVersionFilename;
     if (_localVersionFilename.isEmpty()) {
         return false;
     }
@@ -147,12 +163,15 @@ bool ConflictSolver::overwriteRemoteVersion()
     }
 
     QFileInfo info(_localVersionFilename);
+    qCInfo(lcConflict) << "[ConflictSolver] overwriteRemoteVersion() info(_localVersionFilename).exists():"
+                       << info.exists();
     if (!info.exists()) {
         return false;
     }
 
     QString error;
     if (FileSystem::uncheckedRenameReplace(_localVersionFilename, _remoteVersionFilename, &error)) {
+        qCInfo(lcConflict) << "[ConflictSolver] overwriteRemoteVersion() return true";
         return true;
     } else {
         qCWarning(lcConflict) << "Rename error:" << error;
