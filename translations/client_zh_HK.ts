@@ -892,38 +892,38 @@ This action will abort any currently running synchronization.</source>
         <translation>檔案已移除（開始上傳）%1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="279"/>
-        <source>Local file has invalid modified time. Do not upload to the server.</source>
-        <translation>近端檔案的修改時間無效。 不要上傳到伺服器。</translation>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="280"/>
+        <source>File %1 has invalid modified time. Do not upload to the server.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="284"/>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="286"/>
         <source>Local file changed during syncing. It will be resumed.</source>
         <translation>近端端的檔案在同步的過程中被更改。同步將會重新開始。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="295"/>
-        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="621"/>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="298"/>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="624"/>
         <source>Local file changed during sync.</source>
         <translation>近端端的檔案在同步過程中被更改。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="425"/>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="428"/>
         <source>Error updating metadata: %1</source>
         <translation>更新元數據時出錯：%1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="428"/>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="431"/>
         <source>The file %1 is currently in use</source>
         <translation>檔案 %1 正在使用中</translation>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="604"/>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="607"/>
         <source>The local file was removed during sync.</source>
         <translation>近端的檔案在同步過程中被刪除。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="651"/>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="654"/>
         <source>; Restoration Failed: %1</source>
         <translation>；復原失敗 %1</translation>
     </message>
@@ -3812,15 +3812,16 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>上傳%1將會超過資料夾的大小限制</translation>
     </message>
     <message>
+        <location filename="../src/libsync/propagateupload.cpp" line="320"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="395"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="408"/>
+        <source>File %1 has invalid modified time. Do not upload to the server.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/libsync/propagateupload.cpp" line="392"/>
         <source>File Removed (start upload) %1</source>
         <translation>移除檔案（開始上傳）%1</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="396"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="409"/>
-        <source>Local file has invalid modified time. Do not upload to the server.</source>
-        <translation>近端檔案的修改時間無效。 不要上傳到伺服器。</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="418"/>

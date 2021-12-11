@@ -891,38 +891,38 @@ Además, esta acción interrumpirá cualquier sincronización en curso.</transla
         <translation>Archivo eliminado (comenzar subida) %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="279"/>
-        <source>Local file has invalid modified time. Do not upload to the server.</source>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="280"/>
+        <source>File %1 has invalid modified time. Do not upload to the server.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="284"/>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="286"/>
         <source>Local file changed during syncing. It will be resumed.</source>
         <translation>Un archivo local ha cambiado durante la sincronización. Será subido.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="295"/>
-        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="621"/>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="298"/>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="624"/>
         <source>Local file changed during sync.</source>
         <translation>Un archivo local ha cambiado durante la sincronización.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="425"/>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="428"/>
         <source>Error updating metadata: %1</source>
         <translation>Error al actualizar los metadatos: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="428"/>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="431"/>
         <source>The file %1 is currently in use</source>
         <translation>El archivo %1 se encuentra en uso</translation>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="604"/>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="607"/>
         <source>The local file was removed during sync.</source>
         <translation>El archivo local ha sido eliminado durante la sincronización.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="651"/>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="654"/>
         <source>; Restoration Failed: %1</source>
         <translation>; Fallo al restaurar: %1</translation>
     </message>
@@ -3814,15 +3814,16 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
         <translation>La subida %1 excede el límite de tamaño de la carpeta</translation>
     </message>
     <message>
+        <location filename="../src/libsync/propagateupload.cpp" line="320"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="395"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="408"/>
+        <source>File %1 has invalid modified time. Do not upload to the server.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/libsync/propagateupload.cpp" line="392"/>
         <source>File Removed (start upload) %1</source>
         <translation>Archivo eliminado (comenzar subida) %1</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="396"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="409"/>
-        <source>Local file has invalid modified time. Do not upload to the server.</source>
-        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="418"/>
