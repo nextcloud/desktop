@@ -891,38 +891,38 @@ S tem dejanjem prav tako prekinete vsa trenutna usklajevanja v izvajanju.</trans
         <translation>Datoteka je odstranjena (začni pošiljanje) %1.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="279"/>
-        <source>Local file has invalid modified time. Do not upload to the server.</source>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="280"/>
+        <source>File %1 has invalid modified time. Do not upload to the server.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="284"/>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="286"/>
         <source>Local file changed during syncing. It will be resumed.</source>
         <translation>Krajevna datoteka je bila med usklajevanjem spremenjena. Usklajena bo, ko bo shranjena.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="295"/>
-        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="621"/>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="298"/>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="624"/>
         <source>Local file changed during sync.</source>
         <translation>Krajevna datoteka je bila med usklajevanjem spremenjena.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="425"/>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="428"/>
         <source>Error updating metadata: %1</source>
         <translation>Prišlo je do napake posodabljanja metapodatkov: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="428"/>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="431"/>
         <source>The file %1 is currently in use</source>
         <translation>Datoteka %1 je trenutno v uporabi.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="604"/>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="607"/>
         <source>The local file was removed during sync.</source>
         <translation>Krajevna datoteka je bila med usklajevanjem odstranjena.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="651"/>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="654"/>
         <source>; Restoration Failed: %1</source>
         <translation>Obnovitev je spodletela: %1</translation>
     </message>
@@ -3811,15 +3811,16 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
         <translation>Pošiljanje %1 preseže omejitev, določeno za mapo.</translation>
     </message>
     <message>
+        <location filename="../src/libsync/propagateupload.cpp" line="320"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="395"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="408"/>
+        <source>File %1 has invalid modified time. Do not upload to the server.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/libsync/propagateupload.cpp" line="392"/>
         <source>File Removed (start upload) %1</source>
         <translation>Datoteka je odstranjena (začni pošiljanje) %1.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="396"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="409"/>
-        <source>Local file has invalid modified time. Do not upload to the server.</source>
-        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="418"/>
