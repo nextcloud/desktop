@@ -889,7 +889,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="280"/>
         <source>File %1 has invalid modified time. Do not upload to the server.</source>
-        <translation type="unfinished"/>
+        <translation>文件 %1 修改时间无效。不要上传到服务器。</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="286"/>
@@ -3799,7 +3799,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/propagateupload.cpp" line="395"/>
         <location filename="../src/libsync/propagateupload.cpp" line="408"/>
         <source>File %1 has invalid modified time. Do not upload to the server.</source>
-        <translation type="unfinished"/>
+        <translation>文件 %1 修改时间无效。不要上传到服务器。</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="392"/>

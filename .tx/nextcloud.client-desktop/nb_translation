@@ -22,5 +22,6 @@ Icon=@APPLICATION_EXECUTABLE@
 
 # Translations
 Icon[nb_NO]=@APPLICATION_ICON_NAME@
+Name[nb_NO]=@APPLICATION_NAME@ skrivebord
 Comment[nb_NO]=@APPLICATION_NAME@ klient for synkroinisering
 GenericName[nb_NO]=Mappe synkroinisering

@@ -893,7 +893,7 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="280"/>
         <source>File %1 has invalid modified time. Do not upload to the server.</source>
-        <translation type="unfinished"/>
+        <translation>O arquivo %1 possui data/hora de modificação inválida. Não enviar ao servidor.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="286"/>
@@ -3513,7 +3513,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1132"/>
         <source>Error updating metadata due to invalid modified time</source>
-        <translation type="unfinished"/>
+        <translation>Erro ao atualizar os metadados devido a erro na data/hora modificada</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1148"/>
@@ -3599,7 +3599,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <location filename="../src/libsync/propagatedownload.cpp" line="1080"/>
         <location filename="../src/libsync/propagatedownload.cpp" line="1093"/>
         <source>File %1 has invalid modified time reported by server. Do not save it.</source>
-        <translation type="unfinished"/>
+        <translation>O arquivo %1 possui erro na data/hora modificada informado pelo servidor. Não salvar.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="1218"/>
@@ -3815,7 +3815,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <location filename="../src/libsync/propagateupload.cpp" line="395"/>
         <location filename="../src/libsync/propagateupload.cpp" line="408"/>
         <source>File %1 has invalid modified time. Do not upload to the server.</source>
-        <translation type="unfinished"/>
+        <translation>O arquivo %1 possui data/hora de modificação inválida. Não enviar ao servidor.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="392"/>
@@ -5306,7 +5306,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="72"/>
         <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="82"/>
         <source>Error updating metadata due to invalid modified time</source>
-        <translation type="unfinished"/>
+        <translation>Erro ao atualizar os metadados devido a erro na data/hora modificada</translation>
     </message>
 </context>
 <context>
@@ -5315,7 +5315,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <location filename="../src/libsync/vfs/xattr/vfs_xattr.cpp" line="73"/>
         <location filename="../src/libsync/vfs/xattr/vfs_xattr.cpp" line="83"/>
         <source>Error updating metadata due to invalid modified time</source>
-        <translation type="unfinished"/>
+        <translation>Erro ao atualizar os metadados devido a erro na data/hora modificada</translation>
     </message>
 </context>
 <context>
