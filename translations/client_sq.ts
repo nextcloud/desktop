@@ -4130,7 +4130,7 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
     <message>
         <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="109"/>
         <source>Cannot create a placeholder because a file with the placeholder name already exist</source>
-        <translation type="unfinished"/>
+        <translation>S’mund të krijohet një vendmbajtëse, ngaqë ka tashmë një kartelë me emrin e vendmbajtëses</translation>
     </message>
 </context>
 <context>
