@@ -893,7 +893,7 @@ Ez a művelet megszakítja a jelenleg futó szinkronizálást.</translation>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="280"/>
         <source>File %1 has invalid modified time. Do not upload to the server.</source>
-        <translation type="unfinished"/>
+        <translation>A(z) %1 fájl módosítási ideje érvénytelen. Ne töltse fel a kiszolgálóra.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="286"/>
@@ -3515,7 +3515,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, akkor jelezze nek�
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1132"/>
         <source>Error updating metadata due to invalid modified time</source>
-        <translation type="unfinished"/>
+        <translation>Hiba a metaadatok frissítésekor, mert a módosítás ideje érvénytelen</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1148"/>
@@ -3601,7 +3601,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, akkor jelezze nek�
         <location filename="../src/libsync/propagatedownload.cpp" line="1080"/>
         <location filename="../src/libsync/propagatedownload.cpp" line="1093"/>
         <source>File %1 has invalid modified time reported by server. Do not save it.</source>
-        <translation type="unfinished"/>
+        <translation>A(z) %1 fájl módosítási ideje a kiszolgáló szerint érvénytelen. Ne mentse el.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="1218"/>
@@ -3817,7 +3817,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, akkor jelezze nek�
         <location filename="../src/libsync/propagateupload.cpp" line="395"/>
         <location filename="../src/libsync/propagateupload.cpp" line="408"/>
         <source>File %1 has invalid modified time. Do not upload to the server.</source>
-        <translation type="unfinished"/>
+        <translation>A(z) %1 fájl módosítási ideje érvénytelen. Ne töltse fel a kiszolgálóra.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="392"/>
@@ -5308,7 +5308,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, akkor jelezze nek�
         <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="72"/>
         <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="82"/>
         <source>Error updating metadata due to invalid modified time</source>
-        <translation type="unfinished"/>
+        <translation>Hiba a metaadatok frissítésekor, mert a módosítás ideje érvénytelen</translation>
     </message>
 </context>
 <context>
@@ -5317,7 +5317,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, akkor jelezze nek�
         <location filename="../src/libsync/vfs/xattr/vfs_xattr.cpp" line="73"/>
         <location filename="../src/libsync/vfs/xattr/vfs_xattr.cpp" line="83"/>
         <source>Error updating metadata due to invalid modified time</source>
-        <translation type="unfinished"/>
+        <translation>Hiba a metaadatok frissítésekor, mert a módosítás ideje érvénytelen</translation>
     </message>
 </context>
 <context>
