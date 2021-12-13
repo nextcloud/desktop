@@ -107,6 +107,25 @@ Feature: Sharing
         Then the text "The item is not shared with any users or groups" should be displayed in the sharing dialog
         And as "Brian" folder "simple-folder" on the server should not exist
 
+
+    Scenario: share a file with many users
+        Given user "Brian" has been created on the server with default attributes and without skeleton files
+        And user "Carol" has been created on the server with default attributes and without skeleton files
+        And user "David" has been created on the server with default attributes and without skeleton files
+        And user "Alice" has uploaded file with content "ownCloud test text file 0" to "/textfile0.txt" on the server
+        And user "Alice" has set up a client with default settings
+        When the user adds following collaborators of resource "textfile0.txt" using the client-UI
+            | user         | permissions |
+            | Brian Murphy | edit,share  |
+            | Carol King   | edit,share  |
+            | David Lopez  | edit,share  |
+        Then the following users should be listed in as collaborators for file "textfile0.txt" on the client-UI
+            | user         | permissions |
+            | Brian Murphy | edit,share  |
+            | Carol King   | edit,share  |
+            | David Lopez  | edit,share  |
+
+
     @issue-7423
     Scenario: unshare a reshared file
         Given the setting "shareapi_auto_accept_share" on the server of app "core" has been set to "no"

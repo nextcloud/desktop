@@ -74,8 +74,6 @@ class SharingDialog:
         ):
             squish.clickButton(squish.waitForObject(self.SHARE_PERMISSIONS_CHECKBOX))
 
-        squish.clickButton(squish.waitForObject(self.SHARING_DIALOG_CLOSE_BUTTON))
-
     def getSharingDialogMessage(self):
         return str(squish.waitForObjectExists(self.SHARING_DIALOG).text)
 
@@ -130,3 +128,6 @@ class SharingDialog:
             str(squish.waitForObjectExists(self.ITEM_TO_SHARE).text),
             resource,
         )
+
+    def closeSharingDialog(self):
+        squish.clickButton(squish.waitForObject(self.SHARING_DIALOG_CLOSE_BUTTON))
