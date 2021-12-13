@@ -204,7 +204,7 @@ void SyncFileStatusTracker::decSyncCountAndEmitStatusChanged(const QString &rela
     }
 }
 
-void SyncFileStatusTracker::slotAboutToPropagate(SyncFileItemSet &items)
+void SyncFileStatusTracker::slotAboutToPropagate(const SyncFileItemSet &items)
 {
     OC_ASSERT(_syncCount.isEmpty());
 

@@ -143,7 +143,7 @@ signals:
     void rootEtag(const QByteArray &, const QDateTime &);
 
     // after the above signals. with the items that actually need propagating
-    void aboutToPropagate(SyncFileItemSet &);
+    void aboutToPropagate(const SyncFileItemSet &items);
 
     // after each item completed by a job (successful or not)
     void itemCompleted(const SyncFileItemPtr &);
