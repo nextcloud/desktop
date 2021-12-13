@@ -175,21 +175,24 @@ bool SyncEngine::checkErrorBlacklisting(SyncFileItem &item)
     qCInfo(lcEngine) << "Item is on blacklist: " << entry._file
                      << "retries:" << entry._retryCount
                      << "for another" << waitSeconds << "s";
-
     // We need to indicate that we skip this file due to blacklisting
     // for reporting and for making sure we don't update the blacklist
     // entry yet.
     // Classification is this _instruction and _status
     item._instruction = CSYNC_INSTRUCTION_IGNORE;
-    item._status = SyncFileItem::BlacklistedError;
+    if (entry._errorCategory == SyncJournalErrorBlacklistRecord::Category::LocalSoftError) {
+        item._status = SyncFileItem::SoftError;
+        item._errorString = entry._errorString;
+    } else {
+        item._status = SyncFileItem::BlacklistedError;
 
-    auto waitSecondsStr = Utility::durationToDescriptiveString1(1000 * waitSeconds);
-    item._errorString = tr("%1 (skipped due to earlier error, trying again in %2)").arg(entry._errorString, waitSecondsStr);
+        auto waitSecondsStr = Utility::durationToDescriptiveString1(1000 * waitSeconds);
+        item._errorString = tr("%1 (skipped due to earlier error, trying again in %2)").arg(entry._errorString, waitSecondsStr);
 
-    if (entry._errorCategory == SyncJournalErrorBlacklistRecord::InsufficientRemoteStorage) {
-        slotInsufficientRemoteStorage();
+        if (entry._errorCategory == SyncJournalErrorBlacklistRecord::Category::InsufficientRemoteStorage) {
+            slotInsufficientRemoteStorage();
+        }
     }
-
     return true;
 }
 

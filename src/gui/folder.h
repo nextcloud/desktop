@@ -410,7 +410,7 @@ private slots:
     void slotFolderConflicts(const QString &folder, const QStringList &conflictPaths);
 
     /** Warn users if they create a file or folder that is selective-sync excluded */
-    void warnOnNewExcludedItem(const SyncJournalFileRecord &record, const QStringRef &path);
+    void warnOnNewExcludedItem(const SyncJournalFileRecord &record, QStringView path);
 
     /** Warn users about an unreliable folder watcher */
     void slotWatcherUnreliable(const QString &message);

@@ -98,6 +98,9 @@ Folder::Folder(const FolderDefinition &definition,
 
     _syncResult.setFolder(_definition.alias);
 
+    // those errors should not persist over sessions
+    _journal.wipeErrorBlacklistCategory(SyncJournalErrorBlacklistRecord::Category::LocalSoftError);
+
     _engine.reset(new SyncEngine(_accountState->account(), path(), remotePath(), &_journal));
     // pass the setting if hidden files are to be ignored, will be read in csync_update
     _engine->setIgnoreHiddenFiles(_definition.ignoreHiddenFiles);
@@ -602,7 +605,10 @@ void Folder::slotWatchedPathChanged(const QString &path, ChangeReason reason)
         return;
     }
 
-    auto relativePath = path.midRef(this->path().size());
+    auto relativePath = path.mid(this->path().size());
+    if (reason == ChangeReason::UnLock) {
+        journalDb()->wipeErrorBlacklistEntry(relativePath);
+    }
 
     // Add to list of locally modified paths
     //
@@ -637,7 +643,7 @@ void Folder::slotWatchedPathChanged(const QString &path, ChangeReason reason)
             && !FileSystem::fileChanged(path, record._fileSize, record._modtime)) {
             spurious = true;
 
-            if (auto pinState = _vfs->pinState(relativePath.toString())) {
+            if (auto pinState = _vfs->pinState(relativePath)) {
                 if (*pinState == PinState::AlwaysLocal && record.isVirtualFile())
                     spurious = false;
                 if (*pinState == PinState::OnlineOnly && record.isFile())
@@ -1158,7 +1164,7 @@ void Folder::slotFolderConflicts(const QString &folder, const QStringList &confl
         r.setNumOldConflictItems(conflictPaths.size() - r.numNewConflictItems());
 }
 
-void Folder::warnOnNewExcludedItem(const SyncJournalFileRecord &record, const QStringRef &path)
+void Folder::warnOnNewExcludedItem(const SyncJournalFileRecord &record, QStringView path)
 {
     // Never warn for items in the database
     if (record.isValid())

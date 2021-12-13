@@ -175,13 +175,11 @@ static SyncJournalErrorBlacklistRecord createBlacklistEntry(
 
     entry._ignoreDuration = qBound(minBlacklistTime, entry._ignoreDuration, maxBlacklistTime);
 
-    if (item._status == SyncFileItem::SoftError) {
-        // Track these errors, but don't actively suppress them.
-        entry._ignoreDuration = 0;
-    }
-
     if (item._httpErrorCode == 507) {
-        entry._errorCategory = SyncJournalErrorBlacklistRecord::InsufficientRemoteStorage;
+        entry._errorCategory = SyncJournalErrorBlacklistRecord::Category::InsufficientRemoteStorage;
+    } else if (item._httpErrorCode == 0 && item._status == SyncFileItem::SoftError) {
+        // assume a local error
+        entry._errorCategory = SyncJournalErrorBlacklistRecord::Category::LocalSoftError;
     }
 
     return entry;
@@ -195,11 +193,9 @@ static void blacklistUpdate(SyncJournalDb *journal, SyncFileItem &item)
 {
     SyncJournalErrorBlacklistRecord oldEntry = journal->errorBlacklistEntry(item._file);
 
-    const bool mayBlacklist = (item._status == SyncFileItem::NormalError)
-        || ((item._status == SyncFileItem::SoftError
-                || item._status == SyncFileItem::DetailError)
-            && item._httpErrorCode != 0 // or non-local error
-        );
+    const bool mayBlacklist = item._status == SyncFileItem::NormalError
+        || item._status == SyncFileItem::SoftError
+        || item._status == SyncFileItem::DetailError;
 
     // No new entry? Possibly remove the old one, then done.
     if (!mayBlacklist) {
@@ -215,24 +211,20 @@ static void blacklistUpdate(SyncJournalDb *journal, SyncFileItem &item)
     // Suppress the error if it was and continues to be blacklisted.
     // An ignoreDuration of 0 mean we're tracking the error, but not actively
     // suppressing it.
-    if (item._hasBlacklistEntry && newEntry._ignoreDuration > 0) {
-        item._status = SyncFileItem::BlacklistedError;
-
-        qCInfo(lcPropagator) << "blacklisting " << item._file
-                             << " for " << newEntry._ignoreDuration
-                             << ", retry count " << newEntry._retryCount;
-
-        return;
-    }
-
     // Some soft errors might become louder on repeat occurrence
     if (item._status == SyncFileItem::SoftError
-        && newEntry._retryCount > 1) {
-        qCWarning(lcPropagator) << "escalating soft error on " << item._file
+        && newEntry._retryCount > 1
+        && item._httpErrorCode != 0) {
+        qCWarning(lcPropagator) << "escalating http soft error on " << item._file
                                 << " to normal error, " << item._httpErrorCode;
         item._status = SyncFileItem::NormalError;
-        return;
+    } else if (item._status != SyncFileItem::SoftError && item._hasBlacklistEntry && newEntry._ignoreDuration > 0) {
+        item._status = SyncFileItem::BlacklistedError;
     }
+
+    qCInfo(lcPropagator) << "blacklisting " << item._file
+                         << " for " << newEntry._ignoreDuration
+                         << ", retry count " << newEntry._retryCount;
 }
 
 void PropagateItemJob::done(SyncFileItem::Status statusArg, const QString &errorString)

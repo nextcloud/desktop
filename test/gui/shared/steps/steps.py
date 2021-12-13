@@ -239,6 +239,21 @@ def step(context, receiver, resource, permissions):
     openSharingDialog(context, resource)
     shareItem = SharingDialog()
     shareItem.addCollaborator(receiver, permissions)
+    shareItem.closeSharingDialog()
+
+
+@When('the user adds following collaborators of resource "|any|" using the client-UI')
+def step(context, resource):
+    openSharingDialog(context, resource)
+    shareItem = SharingDialog()
+
+    # In the following loop we are trying to share resource with given permission to one user at a time given from the data table in the feature file
+    for row in context.table[1:]:
+        receiver = row[0]
+        permissions = row[1]
+        shareItem.addCollaborator(receiver, permissions)
+
+    shareItem.closeSharingDialog()
 
 
 @When(
@@ -248,6 +263,7 @@ def step(context, receiver, resource, permissions):
     openSharingDialog(context, resource)
     shareItem = SharingDialog()
     shareItem.addCollaborator(receiver, permissions, True)
+    shareItem.closeSharingDialog()
 
 
 @Then(
@@ -265,14 +281,39 @@ def step(context, receiver, resource, permissions):
     collaboratorShouldBeListed(context, receiver, resource, permissions)
 
 
-def collaboratorShouldBeListed(context, receiver, resource, permissions):
+def collaboratorShouldBeListed(
+    context, receiver, resource, permissions, receiverCount=0
+):
     resource = getResourcePath(context, resource)
     socketConnect = syncstate.SocketConnect()
     socketConnect.sendCommand("SHARE:" + resource + "\n")
     permissionsList = permissions.split(',')
-    test.compare(
-        str(waitForObjectExists(names.scrollArea_sharedWith_QLabel).text), receiver
+
+    waitForObject(
+        {
+            "container": names.sharingDialogUG_scrollArea_QScrollArea,
+            "name": "sharedWith",
+            "type": "QLabel",
+            "visible": 1,
+        }
     )
+
+    # findAllObjects: This functionfinds and returns a list of object references identified by the symbolic or real (multi-property) name objectName.
+    sharedWithObj = findAllObjects(
+        {
+            "container": names.sharingDialogUG_scrollArea_QScrollArea,
+            "name": "sharedWith",
+            "type": "QLabel",
+            "visible": 1,
+        }
+    )
+
+    #     we use sharedWithObj list from above while verifying if users are listed or not.
+    #     For this we need an index value i.e receiverCount
+    #     For 1st user in the list the index will be 0 which is receiverCount default value
+    #     For 2nd user in the list the index will be 1 and so on
+
+    test.compare(str(sharedWithObj[receiverCount].text), receiver)
     test.compare(
         waitForObjectExists(names.scrollArea_permissionsEdit_QCheckBox).checked,
         ('edit' in permissionsList),
@@ -281,6 +322,8 @@ def collaboratorShouldBeListed(context, receiver, resource, permissions):
         waitForObjectExists(names.scrollArea_permissionShare_QCheckBox).checked,
         ('share' in permissionsList),
     )
+    shareItem = SharingDialog()
+    shareItem.closeSharingDialog()
 
 
 @When('the user waits for the files to sync')
@@ -1104,3 +1147,20 @@ def step(context, resource):
 def step(context, publicLinkName, password):
     publicLinkDialog = PublicLinkDialog()
     publicLinkDialog.changePassword(publicLinkName, password)
+
+
+@Then(
+    'the following users should be listed in as collaborators for file "|any|" on the client-UI'
+)
+def step(context, resource):
+    #     Here we are trying to verify if the user added in when step are listed in the client-UI or not
+    #     We now have a variable name receiverCount which is used in collaboratorShouldBeListed function call
+    receiverCount = 0
+    for row in context.table[1:]:
+        receiver = row[0]
+        permissions = row[1]
+
+        collaboratorShouldBeListed(
+            context, receiver, resource, permissions, receiverCount
+        )
+        receiverCount += 1
