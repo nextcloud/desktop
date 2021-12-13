@@ -4127,7 +4127,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="109"/>
         <source>Cannot create a placeholder because a file with the placeholder name already exist</source>
-        <translation type="unfinished"/>
+        <translation>Não é possível criar um marcador porque já existe um arquivo com o nome do marcador</translation>
     </message>
 </context>
 <context>
@@ -4450,7 +4450,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="472"/>
         <source>Start a &amp;clean sync (Create a backup and erases the local folder!)</source>
-        <translation type="unfinished"/>
+        <translation>Inicie uma &amp;limpa sincronização e  (crie um backup e apague a pasta local!)</translation>
     </message>
 </context>
 <context>
@@ -4675,7 +4675,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/gui/guiutility.cpp" line="83"/>
         <source>Shutting down %1</source>
-        <translation type="unfinished"/>
+        <translation>Desligando %1</translation>
     </message>
 </context>
 <context>
