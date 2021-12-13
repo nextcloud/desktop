@@ -623,10 +623,12 @@ private slots:
 
     void testNoLocalEncoding()
     {
+#ifndef Q_OS_WIN
         const auto utf8Locale = QTextCodec::codecForLocale();
         if (utf8Locale->mibEnum() != 106) {
             QSKIP(qUtf8Printable(QStringLiteral("Test only works for UTF8 locale, but current locale is %1").arg(QString::fromUtf8(utf8Locale->name()))));
         }
+#endif
 
         FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
         QVERIFY(fakeFolder.syncOnce());
@@ -635,9 +637,11 @@ private slots:
         // Utf8 locale can sync both
         fakeFolder.remoteModifier().insert("A/tößt");
         fakeFolder.remoteModifier().insert("A/t𠜎t");
+        fakeFolder.remoteModifier().insert("A/💩");
         QVERIFY(fakeFolder.syncOnce());
         QVERIFY(fakeFolder.currentLocalState().find("A/tößt"));
         QVERIFY(fakeFolder.currentLocalState().find("A/t𠜎t"));
+        QVERIFY(fakeFolder.currentLocalState().find("A/💩"));
 
 #if !defined(Q_OS_MAC) && !defined(Q_OS_WIN)
         // Try again with a locale that can represent ö but not 𠜎 (4-byte utf8).
