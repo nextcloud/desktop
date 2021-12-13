@@ -14,6 +14,8 @@
 
 #include "syncfilestatus.h"
 
+#include <QDebug>
+
 namespace OCC {
 SyncFileStatus::SyncFileStatus()
     : _tag(StatusNone)
@@ -81,4 +83,13 @@ QString SyncFileStatus::toSocketAPIString() const
 
     return statusString;
 }
+}
+
+
+QDebug &operator<<(QDebug &debug, const OCC::SyncFileStatus &item)
+{
+    QDebugStateSaver saver(debug);
+    debug.setAutoInsertSpaces(false);
+    debug << "OCC::SyncFileStatus(shared=" << item.shared() << ", tag=" << item.tag() << ")";
+    return debug;
 }
