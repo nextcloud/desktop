@@ -22,6 +22,7 @@ Summary
 * Bugfix - Do not show Activity tab if server app is disabled or uninstalled: [#9260](https://github.com/owncloud/client/issues/9260)
 * Change - Make sharedialog preview be more resilient: [#8938](https://github.com/owncloud/client/issues/8938)
 * Enhancement - Allow to remove broken sync folders: [#9099](https://github.com/owncloud/client/pull/9099)
+* Enhancement - Also ignore local reapeating errors for a period of time: [#9208](https://github.com/owncloud/client/issues/9208)
 
 Details
 -------
@@ -130,6 +131,14 @@ Details
    remove action available in that case.
 
    https://github.com/owncloud/client/pull/9099
+
+* Enhancement - Also ignore local reapeating errors for a period of time: [#9208](https://github.com/owncloud/client/issues/9208)
+
+   If an error occurs on the server (a url is not reachable) we try a couple of times, then we ignore
+   that file for a period of time. We now do the same with erros that occure locally.
+
+   https://github.com/owncloud/client/issues/9208
+   https://github.com/owncloud/client/issues/9133
 
 Changelog for ownCloud Desktop Client [2.9.2] (2021-11-24)
 =======================================
