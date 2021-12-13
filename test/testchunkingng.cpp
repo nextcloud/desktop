@@ -277,7 +277,7 @@ private slots:
 
         // Now the next sync gets a NEW/NEW conflict and since there's no checksum
         // it just becomes a UPDATE_METADATA
-        auto checkIsUpdateMetaData = [&](SyncFileItemSet &items) {
+        auto checkIsUpdateMetaData = [&](const SyncFileItemSet &items) {
             QCOMPARE(items.size(), 2);
             auto it = items.cbegin();
             QCOMPARE(it->get()->_file, QLatin1String("A"));

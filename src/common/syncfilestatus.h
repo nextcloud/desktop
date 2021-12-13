@@ -67,6 +67,7 @@ inline bool operator!=(const SyncFileStatus &a, const SyncFileStatus &b)
     return !(a == b);
 }
 }
+OCSYNC_EXPORT QDebug &operator<<(QDebug &debug, const OCC::SyncFileStatus &item);
 
 Q_DECLARE_METATYPE(OCC::SyncFileStatus)
 

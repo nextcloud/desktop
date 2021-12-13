@@ -293,6 +293,7 @@ inline bool operator<(const SyncFileItemPtr &item1, const SyncFileItemPtr &item2
 using SyncFileItemSet = std::set<SyncFileItemPtr>;
 }
 
+Q_DECLARE_METATYPE(OCC::SyncFileItemSet)
 Q_DECLARE_METATYPE(OCC::SyncFileItem)
 Q_DECLARE_METATYPE(OCC::SyncFileItemPtr)
 

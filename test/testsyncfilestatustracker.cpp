@@ -18,14 +18,18 @@ public:
     StatusPushSpy(SyncEngine &syncEngine)
         : QSignalSpy(&syncEngine.syncFileStatusTracker(), &SyncFileStatusTracker::fileStatusChanged)
         , _syncEngine(syncEngine)
-    { }
+    {
+    }
 
-    SyncFileStatus statusOf(const QString &relativePath) const {
-        QFileInfo file(_syncEngine.localPath(), relativePath);
+    SyncFileStatus statusOf(const QString &relativePath) const
+    {
+        const QFileInfo file(_syncEngine.localPath(), relativePath);
         // Start from the end to get the latest status
         for (auto it = crbegin(); it != crend(); ++it) {
-            if (QFileInfo(it->at(0).toString()) == file)
+            const auto info = QFileInfo(it->at(0).toString());
+            if (info == file) {
                 return it->at(1).value<SyncFileStatus>();
+            }
         }
         return SyncFileStatus();
     }
@@ -58,7 +62,7 @@ class TestSyncFileStatusTracker : public QObject
         QDirIterator it(root, QDir::AllEntries | QDir::NoDotAndDotDot, QDirIterator::Subdirectories);
         while (it.hasNext()) {
             QString filePath = it.next().mid(root.size());
-            SyncFileStatus pushedStatus = statusSpy.statusOf(filePath);
+            auto pushedStatus = statusSpy.statusOf(filePath);
             if (pushedStatus != SyncFileStatus()) {
                 QCOMPARE(fakeFolder.syncEngine().syncFileStatusTracker().fileStatus(filePath), pushedStatus);
             }
@@ -141,12 +145,14 @@ private slots:
         QCOMPARE(statusSpy.statusOf("D"), SyncFileStatus(SyncFileStatus::StatusSync));
         QCOMPARE(statusSpy.statusOf("D/d0"), SyncFileStatus(SyncFileStatus::StatusSync));
 
+        statusSpy.clear();
         fakeFolder.execUntilItemCompleted("D");
         verifyThatPushMatchesPull(fakeFolder, statusSpy);
-        QCOMPARE(statusSpy.statusOf(""), SyncFileStatus(SyncFileStatus::StatusSync));
-        QCOMPARE(statusSpy.statusOf("D"), SyncFileStatus(SyncFileStatus::StatusSync));
-        QCOMPARE(statusSpy.statusOf("D/d0"), SyncFileStatus(SyncFileStatus::StatusSync));
+        QCOMPARE(statusSpy.statusOf(""), SyncFileStatus(SyncFileStatus::StatusNone));
+        QCOMPARE(statusSpy.statusOf("D"), SyncFileStatus(SyncFileStatus::StatusNone));
+        QCOMPARE(statusSpy.statusOf("D/d0"), SyncFileStatus(SyncFileStatus::StatusNone));
 
+        statusSpy.clear();
         fakeFolder.execUntilFinished();
         verifyThatPushMatchesPull(fakeFolder, statusSpy);
         QCOMPARE(statusSpy.statusOf(""), SyncFileStatus(SyncFileStatus::StatusUpToDate));
@@ -169,12 +175,14 @@ private slots:
         QCOMPARE(statusSpy.statusOf("D"), SyncFileStatus(SyncFileStatus::StatusSync));
         QCOMPARE(statusSpy.statusOf("D/d0"), SyncFileStatus(SyncFileStatus::StatusSync));
 
+        statusSpy.clear();
         fakeFolder.execUntilItemCompleted("D");
         verifyThatPushMatchesPull(fakeFolder, statusSpy);
-        QCOMPARE(statusSpy.statusOf(""), SyncFileStatus(SyncFileStatus::StatusSync));
-        QCOMPARE(statusSpy.statusOf("D"), SyncFileStatus(SyncFileStatus::StatusSync));
-        QCOMPARE(statusSpy.statusOf("D/d0"), SyncFileStatus(SyncFileStatus::StatusSync));
+        QCOMPARE(statusSpy.statusOf(""), SyncFileStatus(SyncFileStatus::StatusNone));
+        QCOMPARE(statusSpy.statusOf("D"), SyncFileStatus(SyncFileStatus::StatusNone));
+        QCOMPARE(statusSpy.statusOf("D/d0"), SyncFileStatus(SyncFileStatus::StatusNone));
 
+        statusSpy.clear();
         fakeFolder.execUntilFinished();
         verifyThatPushMatchesPull(fakeFolder, statusSpy);
         QCOMPARE(statusSpy.statusOf(""), SyncFileStatus(SyncFileStatus::StatusUpToDate));

@@ -709,7 +709,7 @@ void PropagateDownloadFile::slotGetFinished()
         // This happened when trying to resume a file. The Content-Range header was files, Content-Length was == 0
         qCDebug(lcPropagateDownload) << bodySize << _item->_size << _tmpFile.size() << job->resumeStart();
         FileSystem::remove(_tmpFile.fileName());
-        done(SyncFileItem::SoftError, QStringLiteral("Broken webserver returning empty content length for non-empty file on resume"));
+        done(SyncFileItem::SoftError, tr("Broken webserver returned empty content length for non-empty file on resume"));
         return;
     }
 
