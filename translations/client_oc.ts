@@ -3382,7 +3382,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="496"/>
         <source>permission</source>
-        <translation type="unfinished"/>
+        <translation>permission</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="500"/>
