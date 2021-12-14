@@ -21,7 +21,8 @@ __TODO__: [patch_release_template.md](https://github.com/owncloud/client/blob/ma
 ### Build
 
 * [ ] DEV: Tag and build [builds](https://confluence.owncloud.com/display/OG/Build+and+Tags#BuildandTags-Sprintbuild) for theme 'ownCloud' and 'testpilotcloud' (includes ChangeLog for the tag on https://github.com/owncloud/client/releases/)
-* [ ] QA: Ping #documentation-internal: Changelog is ready. (open doc issues for already known doc-relevant items)
+* [ ] QA: Upload linux gpg keys to key server [key_server_upload](https://gitea.owncloud.services/client/linux-docker-install/src/branch/master/key_server_upload.sh)
+* [ ] QA: Ping ``#documentation-internal``: Changelog is ready. (open doc issues for already known doc-relevant items)
 * [ ] DEV: Provide 'testpilotcloud' on **Beta** update channel
 * [ ] Beta/RC [Communication](https://confluence.owncloud.com/display/OG/Marketing+and+Communication)
    * [ ] Website links for beta (needed for the following posts)
