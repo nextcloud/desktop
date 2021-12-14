@@ -17,6 +17,7 @@
 #include "common/utility.h"
 #include "common/filesystembase.h"
 #include "hydrationjob.h"
+#include "theme.h"
 #include "vfs_cfapi.h"
 
 #include <QCoreApplication>
@@ -40,6 +41,9 @@ Q_LOGGING_CATEGORY(lcCfApiWrapper, "nextcloud.sync.vfs.cfapi.wrapper", QtInfoMsg
       FIELD_SIZE( CF_OPERATION_PARAMETERS, field ) )
 
 namespace {
+constexpr auto syncRootFlagsFull = 34;
+constexpr auto syncRootFlagsNoCfApiContextMenu = 2;
+
 void cfApiSendTransferInfo(const CF_CONNECTION_KEY &connectionKey, const CF_TRANSFER_KEY &transferKey, NTSTATUS status, void *buffer, qint64 offset, qint64 currentBlockLength, qint64 totalLength)
 {
 
@@ -428,8 +432,10 @@ bool createSyncRootRegistryKeys(const QString &providerName, const QString &fold
         QVariant value;
     };
 
+    const auto flags = OCC::Theme::instance()->enforceVirtualFilesSyncFolder() ? syncRootFlagsNoCfApiContextMenu : syncRootFlagsFull;
+
     const QVector<RegistryKeyInfo> registryKeysToSet = {
-        { providerSyncRootIdRegistryKey, QStringLiteral("Flags"), REG_DWORD, 34 },
+        { providerSyncRootIdRegistryKey, QStringLiteral("Flags"), REG_DWORD, flags },
         { providerSyncRootIdRegistryKey, QStringLiteral("DisplayNameResource"), REG_EXPAND_SZ, displayName },
         { providerSyncRootIdRegistryKey, QStringLiteral("IconResource"), REG_EXPAND_SZ, QString(QDir::toNativeSeparators(qApp->applicationFilePath()) + QStringLiteral(",0")) },
         { providerSyncRootIdUserSyncRootsRegistryKey, windowsSid, REG_SZ, syncRootPath }
