@@ -953,6 +953,14 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             item->_modtime = localEntry.modtime;
             item->_type = localEntry.isDirectory ? ItemTypeDirectory : ItemTypeFile;
             _childModified = true;
+        } else if (dbEntry._modtime > 0 && localEntry.modtime <= 0) {
+            item->_instruction = CSYNC_INSTRUCTION_SYNC;
+            item->_direction = SyncFileItem::Down;
+            item->_size = localEntry.size > 0 ? localEntry.size : dbEntry._fileSize;
+            item->_modtime = dbEntry._modtime;
+            item->_previousModtime = dbEntry._modtime;
+            item->_type = localEntry.isDirectory ? ItemTypeDirectory : ItemTypeFile;
+            _childModified = true;
         } else {
             // Local file was changed
             item->_instruction = CSYNC_INSTRUCTION_SYNC;
