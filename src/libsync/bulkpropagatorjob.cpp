@@ -231,6 +231,26 @@ void BulkPropagatorJob::triggerUpload()
     }
 }
 
+void BulkPropagatorJob::checkPropagationIsDone()
+{
+    if (_items.empty()) {
+        if (!_jobs.empty()) {
+            // just wait for the other job to finish.
+            return;
+        }
+        if (!_pendingChecksumFiles.empty()) {
+            // just wait for the other job to finish.
+            return;
+        }
+
+        qCInfo(lcBulkPropagatorJob) << "final status" << _finalStatus;
+        emit finished(_finalStatus);
+        propagator()->scheduleNextJob();
+    } else {
+        scheduleSelfOrChild();
+    }
+}
+
 void BulkPropagatorJob::slotComputeTransmissionChecksum(SyncFileItemPtr item,
                                                         UploadFileInfo fileToUpload)
 {
@@ -268,7 +288,10 @@ void BulkPropagatorJob::slotStartUpload(SyncFileItemPtr item,
     const QString originalFilePath = propagator()->fullLocalPath(item->_file);
 
     if (!FileSystem::fileExists(fullFilePath)) {
-        return slotOnErrorStartFolderUnlock(item, SyncFileItem::SoftError, tr("File removed (start upload) %1").arg(fullFilePath));
+        _pendingChecksumFiles.remove(item->_file);
+        slotOnErrorStartFolderUnlock(item, SyncFileItem::SoftError, tr("File Removed (start upload) %1").arg(fullFilePath));
+        checkPropagationIsDone();
+        return;
     }
     const time_t prevModtime = item->_modtime; // the _item value was set in PropagateUploadFile::start()
     // but a potential checksum calculation could have taken some time during which the file could
@@ -277,13 +300,17 @@ void BulkPropagatorJob::slotStartUpload(SyncFileItemPtr item,
     item->_modtime = FileSystem::getModTime(originalFilePath);
     if (item->_modtime <= 0) {
         _pendingChecksumFiles.remove(item->_file);
-        return slotOnErrorStartFolderUnlock(item, SyncFileItem::NormalError, tr("File %1 has invalid modified time. Do not upload to the server.").arg(QDir::toNativeSeparators(item->_file)));
+        slotOnErrorStartFolderUnlock(item, SyncFileItem::NormalError, tr("File %1 has invalid modified time. Do not upload to the server.").arg(QDir::toNativeSeparators(item->_file)));
+        checkPropagationIsDone();
+        return;
     }
     if (prevModtime != item->_modtime) {
         propagator()->_anotherSyncNeeded = true;
         _pendingChecksumFiles.remove(item->_file);
         qDebug() << "trigger another sync after checking modified time of item" << item->_file << "prevModtime" << prevModtime << "Curr" << item->_modtime;
-        return slotOnErrorStartFolderUnlock(item, SyncFileItem::SoftError, tr("Local file changed during syncing. It will be resumed."));
+        slotOnErrorStartFolderUnlock(item, SyncFileItem::SoftError, tr("Local file changed during syncing. It will be resumed."));
+        checkPropagationIsDone();
+        return;
     }
 
     fileToUpload._size = FileSystem::getSize(fullFilePath);
@@ -295,7 +322,9 @@ void BulkPropagatorJob::slotStartUpload(SyncFileItemPtr item,
     if (fileIsStillChanging(*item)) {
         propagator()->_anotherSyncNeeded = true;
         _pendingChecksumFiles.remove(item->_file);
-        return slotOnErrorStartFolderUnlock(item, SyncFileItem::SoftError, tr("Local file changed during sync."));
+        slotOnErrorStartFolderUnlock(item, SyncFileItem::SoftError, tr("Local file changed during sync."));
+        checkPropagationIsDone();
+        return;
     }
 
     doStartUpload(item, fileToUpload, transmissionChecksum);
@@ -466,22 +495,7 @@ void BulkPropagatorJob::finalize(const QJsonObject &fullReply)
         singleFileIt = _filesToUpload.erase(singleFileIt);
     }
 
-    if (_items.empty()) {
-        if (!_jobs.empty()) {
-            // just wait for the other job to finish.
-            return;
-        }
-        if (!_pendingChecksumFiles.empty()) {
-            // just wait for the other job to finish.
-            return;
-        }
-
-        qCInfo(lcBulkPropagatorJob) << "final status" << _finalStatus;
-        emit finished(_finalStatus);
-        propagator()->scheduleNextJob();
-    } else {
-        scheduleSelfOrChild();
-    }
+    checkPropagationIsDone();
 }
 
 void BulkPropagatorJob::done(SyncFileItemPtr item,
