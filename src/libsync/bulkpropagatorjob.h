@@ -151,6 +151,8 @@ private:
 
     void triggerUpload();
 
+    void checkPropagationIsDone();
+
     std::deque<SyncFileItemPtr> _items;
 
     QVector<AbstractNetworkJob *> _jobs; /// network jobs that are currently in transit
