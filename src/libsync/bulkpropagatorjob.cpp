@@ -234,11 +234,7 @@ void BulkPropagatorJob::triggerUpload()
 void BulkPropagatorJob::checkPropagationIsDone()
 {
     if (_items.empty()) {
-        if (!_jobs.empty()) {
-            // just wait for the other job to finish.
-            return;
-        }
-        if (!_pendingChecksumFiles.empty()) {
+        if (!_jobs.empty() || !_pendingChecksumFiles.empty()) {
             // just wait for the other job to finish.
             return;
         }
