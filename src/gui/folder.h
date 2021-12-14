@@ -289,6 +289,8 @@ public:
 
     void switchToVirtualFiles();
 
+    void processSwitchedToVirtualFiles();
+
     /** Whether this folder should show selective sync ui */
     bool supportsSelectiveSync() const;
 
@@ -499,6 +501,10 @@ private:
      * disabled or different.
      */
     bool _vfsOnOffPending = false;
+
+    /** Whether this folder has just switched to VFS or not
+     */
+    bool _hasSwitchedToVfs = false;
 
     /**
      * Watches this folder's local directory for changes.

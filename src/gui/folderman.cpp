@@ -211,6 +211,10 @@ int FolderMan::setupFolders()
 
     emit folderListChanged(_folderMap);
 
+    for (const auto folder : _folderMap) {
+        folder->processSwitchedToVirtualFiles();
+    }
+
     return _folderMap.size();
 }
 

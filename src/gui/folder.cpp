@@ -691,6 +691,15 @@ void Folder::setRootPinState(PinState state)
 void Folder::switchToVirtualFiles()
 {
     SyncEngine::switchToVirtualFiles(path(), _journal, *_vfs);
+    _hasSwitchedToVfs = true;
+}
+
+void Folder::processSwitchedToVirtualFiles()
+{
+    if (_hasSwitchedToVfs) {
+        _hasSwitchedToVfs = false;
+        saveToSettings();
+    }
 }
 
 bool Folder::supportsSelectiveSync() const
