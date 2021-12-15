@@ -16,6 +16,7 @@ Summary
 * Bugfix - Fix icon name in desktop file with ownBrander themes: [#8992](https://github.com/owncloud/client/issues/8992)
 * Bugfix - Crash when handling locked files: [#9170](https://github.com/owncloud/client/issues/9170)
 * Bugfix - Don't abort upload if chunk is locked: [#9194](https://github.com/owncloud/client/issues/9194)
+* Bugfix - Always restart OAuth2 on error: [#9196](https://github.com/owncloud/client/issues/9196)
 * Bugfix - Display correct error message for files containign `\:?*"<>|`: [#9223](https://github.com/owncloud/client/pull/9223/)
 * Bugfix - Do not sync when unsyncedfolders file cannot be read: [#9165](https://github.com/owncloud/client/issues/9165)
 * Bugfix - Fix failing dehydration causing files to be moved to trash: [#9257](https://github.com/owncloud/client/pull/9257)
@@ -83,6 +84,13 @@ Details
    completely.
 
    https://github.com/owncloud/client/issues/9194
+
+* Bugfix - Always restart OAuth2 on error: [#9196](https://github.com/owncloud/client/issues/9196)
+
+   We now always restart the OAuth2 process once we got a result. This will ensure that a second try
+   after an error occurred can succeed.
+
+   https://github.com/owncloud/client/issues/9196
 
 * Bugfix - Display correct error message for files containign `\:?*"<>|`: [#9223](https://github.com/owncloud/client/pull/9223/)
 
