@@ -1,0 +1,6 @@
+Enhancement: Remove the availability menu from the ui
+
+The availability options should be handled on a folder base and in the file browser. 
+
+
+https://github.com/owncloud/client/pull/9291
