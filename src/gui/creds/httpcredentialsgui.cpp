@@ -92,13 +92,12 @@ void HttpCredentialsGui::askFromUserAsync()
 void HttpCredentialsGui::asyncAuthResult(OAuth::Result r, const QString &user,
     const QString &token, const QString &refreshToken)
 {
+    _asyncAuth.reset();
     switch (r) {
     case OAuth::NotSupported:
         showDialog();
-        _asyncAuth.reset(nullptr);
         return;
     case OAuth::Error:
-        _asyncAuth.reset(nullptr);
         emit asked();
         return;
     case OAuth::LoggedIn:
@@ -111,7 +110,6 @@ void HttpCredentialsGui::asyncAuthResult(OAuth::Result r, const QString &user,
     _refreshToken = refreshToken;
     _ready = true;
     persist();
-    _asyncAuth.reset(nullptr);
     emit asked();
 }
 

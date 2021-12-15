@@ -28,6 +28,7 @@
 
 
 namespace OCC {
+class OAuth;
 
 
 class OwncloudOAuthCredsPage : public AbstractCredentialsWizardPage
@@ -51,12 +52,13 @@ public Q_SLOTS:
 signals:
     void connectToOCUrl(const QString &);
 
-public:
+private:
+    OAuth *oauth();
     QString _user;
     QString _token;
     QString _refreshToken;
-    QScopedPointer<OAuth> _asyncAuth;
     Ui_OwncloudOAuthCredsPage _ui;
+    QScopedPointer<OAuth> _asyncAuth;
 };
 
 } // namespace OCC

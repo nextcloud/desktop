@@ -976,140 +976,140 @@ File synchronization desktop utility.</source>
 <context>
     <name>OCC::Folder</name>
     <message>
-        <location filename="../src/gui/folder.cpp" line="198"/>
+        <location filename="../src/gui/folder.cpp" line="201"/>
         <source>Local folder %1 does not exist.</source>
         <translation>المجلد المحلي %1 غير موجود.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="200"/>
+        <location filename="../src/gui/folder.cpp" line="203"/>
         <source>%1 should be a folder but is not.</source>
         <translation>%1 يجب أن يكون مجلدًا لكنه ليس كذلك.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="202"/>
+        <location filename="../src/gui/folder.cpp" line="205"/>
         <source>%1 is not readable.</source>
         <translation>%1 غير قابل للقراءة.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="465"/>
+        <location filename="../src/gui/folder.cpp" line="468"/>
         <source>%1 has been removed.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 تمت إزالته.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="479"/>
+        <location filename="../src/gui/folder.cpp" line="482"/>
         <source>%1 has been updated.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 تم تحديثه.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="486"/>
+        <location filename="../src/gui/folder.cpp" line="489"/>
         <source>%1 has been renamed to %2.</source>
         <comment>%1 and %2 name files.</comment>
         <translation>%1 تمت إعادة تسميته باسم %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="493"/>
+        <location filename="../src/gui/folder.cpp" line="496"/>
         <source>%1 has been moved to %2.</source>
         <translation>%1 تم نقله إلى %2.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="463"/>
+        <location filename="../src/gui/folder.cpp" line="466"/>
         <source>%1 and %n other file(s) have been removed.</source>
         <translation><numerusform>تمت إزالة %1 و%n ملف آخر.</numerusform><numerusform>تمت إزالة %1 و%n ملف آخر.</numerusform><numerusform>تمت إزالة %1 و%n ملفين آخرين.</numerusform><numerusform>تمت إزالة %1 و%n ملفات أخرى.</numerusform><numerusform>تمت إزالة %1 و%n ملفات أخرى.</numerusform><numerusform>تمت إزالة %1 و%n ملفات أخرى.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="204"/>
+        <location filename="../src/gui/folder.cpp" line="207"/>
         <source>%1 is not writable.</source>
         <translation type="unfinished"/>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="470"/>
+        <location filename="../src/gui/folder.cpp" line="473"/>
         <source>%1 and %n other file(s) have been added.</source>
         <translation><numerusform>تمت إضافة %1 و%n ملف آخر.</numerusform><numerusform>تمت إضافة %1 و%n ملف آخر.</numerusform><numerusform>تمت إضافة %1 و%n ملفين آخرين.</numerusform><numerusform>تمت إضافة %1 و%n ملفات أخرى.</numerusform><numerusform>تمت إضافة %1 و%n ملفات أخرى.</numerusform><numerusform>تمت إضافة %1 و%n ملفات أخرى.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="472"/>
+        <location filename="../src/gui/folder.cpp" line="475"/>
         <source>%1 has been added.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 تمت إضافته.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="477"/>
+        <location filename="../src/gui/folder.cpp" line="480"/>
         <source>%1 and %n other file(s) have been updated.</source>
         <translation><numerusform>تم تحديث %1 و%n ملف آخر.</numerusform><numerusform>تم تحديث %1 و%n ملف آخر.</numerusform><numerusform>تم تحديث %1 و%n ملفين آخرين.</numerusform><numerusform>تم تحديث %1 و%n ملفات أخرى.</numerusform><numerusform>تم تحديث %1 و%n ملفات أخرى.</numerusform><numerusform>تم تحديث %1 و%n ملفات أخرى.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="484"/>
+        <location filename="../src/gui/folder.cpp" line="487"/>
         <source>%1 has been renamed to %2 and %n other file(s) have been renamed.</source>
         <translation><numerusform>تمت إعادة تسمية %1 باسم %2 وتمت إعادة تسمية %n ملف آخر.</numerusform><numerusform>تمت إعادة تسمية %1 باسم %2 وتمت إعادة تسمية %n ملف آخر.</numerusform><numerusform>تمت إعادة تسمية %1 باسم %2 وتمت إعادة تسمية %n ملفين آخرين.</numerusform><numerusform>تمت إعادة تسمية %1 باسم %2 وتمت إعادة تسمية %n ملفات أخرى.</numerusform><numerusform>تمت إعادة تسمية %1 باسم %2 وتمت إعادة تسمية %n ملفات أخرى.</numerusform><numerusform>تمت إعادة تسمية %1 باسم %2 وتمت إعادة تسمية %n ملفات أخرى.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="491"/>
+        <location filename="../src/gui/folder.cpp" line="494"/>
         <source>%1 has been moved to %2 and %n other file(s) have been moved.</source>
         <translation><numerusform>تم نقل %1 إلى %2 وتم نقل %n ملف آخر.</numerusform><numerusform>تم نقل %1 إلى %2 وتم نقل %n ملف آخر.</numerusform><numerusform>تم نقل %1 إلى %2 وتم نقل %n ملفين آخرين.</numerusform><numerusform>تم نقل %1 إلى %2 وتم نقل %n ملفات أخرى.</numerusform><numerusform>تم نقل %1 إلى %2 وتم نقل %n ملفات أخرى.</numerusform><numerusform>تم نقل %1 إلى %2 وتم نقل %n ملفات أخرى.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="498"/>
+        <location filename="../src/gui/folder.cpp" line="501"/>
         <source>%1 has and %n other file(s) have sync conflicts.</source>
         <translation><numerusform>حدث تعارض في مزامنة %1 ومزامنة %n ملف آخر.</numerusform><numerusform>حدث تعارض في مزامنة %1 ومزامنة %n ملف آخر.</numerusform><numerusform>حدث تعارض في مزامنة %1 ومزامنة %n ملفين آخرين.</numerusform><numerusform>حدث تعارض في مزامنة %1 ومزامنة %n ملفات أخرى.</numerusform><numerusform>حدث تعارض في مزامنة %1 ومزامنة %n ملفات أخرى.</numerusform><numerusform>حدث تعارض في مزامنة %1 ومزامنة %n ملفات أخرى.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="500"/>
+        <location filename="../src/gui/folder.cpp" line="503"/>
         <source>%1 has a sync conflict. Please check the conflict file!</source>
         <translation>%1 حدث تعارض في مزامنته. يُرجى فحص ملف التعارض!</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="505"/>
+        <location filename="../src/gui/folder.cpp" line="508"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
         <translation><numerusform>تعذّرت مزامنة %1 و%n ملف آخر بسبب الأخطاء. اطلع على السجل للحصول على التفاصيل.</numerusform><numerusform>تعذّرت مزامنة %1 و%n ملف آخر بسبب الأخطاء. اطلع على السجل للحصول على التفاصيل.</numerusform><numerusform>تعذّرت مزامنة %1 و%n ملفين آخرين بسبب الأخطاء. اطلع على السجل للحصول على التفاصيل.</numerusform><numerusform>تعذّرت مزامنة %1 و%n ملفات أخرى بسبب الأخطاء. اطلع على السجل للحصول على التفاصيل.</numerusform><numerusform>تعذّرت مزامنة %1 و%n ملفات أخرى بسبب الأخطاء. اطلع على السجل للحصول على التفاصيل.</numerusform><numerusform>تعذّرت مزامنة %1 و%n ملفات أخرى بسبب الأخطاء. اطلع على السجل للحصول على التفاصيل.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="507"/>
+        <location filename="../src/gui/folder.cpp" line="510"/>
         <source>%1 could not be synced due to an error. See the log for details.</source>
         <translation>%1 تعذّرت المزامنة بسبب حدوث خطأ. اطلع على السجل للحصول على التفاصيل.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="513"/>
+        <location filename="../src/gui/folder.cpp" line="516"/>
         <source>Sync Activity</source>
         <translation>نشاط المزامنة</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="874"/>
+        <location filename="../src/gui/folder.cpp" line="880"/>
         <source>Could not read system exclude file</source>
         <translation>تعذّرت قراءة ملف استبعاد النظام</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1117"/>
+        <location filename="../src/gui/folder.cpp" line="1123"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>تمت إضافة مجلد جديد أكبر من %1 ميجا بايت: %2.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1120"/>
+        <location filename="../src/gui/folder.cpp" line="1126"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>تمت إضافة مجلد من وحدات التخزين الخارجية.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1121"/>
+        <location filename="../src/gui/folder.cpp" line="1127"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>يُرجى الانتقال إلى الإعدادات لتحديده إذا كنت ترغب في تنزيله.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1180"/>
+        <location filename="../src/gui/folder.cpp" line="1186"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation>تم إنشاء المجلد %1 لكن تم استبعاده من المزامنة مسبقًا. لن تتم مزامنة البيانات الموجودة بداخله.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1183"/>
+        <location filename="../src/gui/folder.cpp" line="1189"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
         <translation>تم إنشاء ملف %1 لكن تم استبعاده من المزامنة مسبقًا. لن تتم مزامنته.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1194"/>
+        <location filename="../src/gui/folder.cpp" line="1200"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
@@ -1122,7 +1122,7 @@ This means that the synchronization client might not upload local changes immedi
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1271"/>
+        <location filename="../src/gui/folder.cpp" line="1277"/>
         <source>All files in the sync folder '%1' folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
@@ -1133,7 +1133,7 @@ If you decide to delete the files, they will be unavailable to you, unless you a
 إذا قررت حذف الملفات، ستكون غير متوفرة لك، ما لم تكن أنت المالك.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1276"/>
+        <location filename="../src/gui/folder.cpp" line="1282"/>
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
@@ -1142,17 +1142,17 @@ If this was an accident and you decide to keep your files, they will be re-synce
 إذا حدث ذلك صدفة، وقررت الاحتفاظ بملفاتك، ستتم إعادة مزامنتها من الخادم.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1280"/>
+        <location filename="../src/gui/folder.cpp" line="1286"/>
         <source>Remove All Files?</source>
         <translation>هل تريد إزالة كل الملفات؟</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1284"/>
+        <location filename="../src/gui/folder.cpp" line="1290"/>
         <source>Remove all files</source>
         <translation>إزالة كل الملفات</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1285"/>
+        <location filename="../src/gui/folder.cpp" line="1291"/>
         <source>Keep files</source>
         <translation>حفظ الملفات</translation>
     </message>
@@ -2437,7 +2437,7 @@ for additional privileges during the process.</source>
 <context>
     <name>OCC::OwncloudPropagator</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="700"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="692"/>
         <source>File %1 is currently in use</source>
         <translation type="unfinished"/>
     </message>
@@ -2706,12 +2706,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateDirectory</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1028"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1020"/>
         <source>Error updating metadata: %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1031"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1023"/>
         <source>%1 the folder is currently in use</source>
         <translation type="unfinished"/>
     </message>
@@ -2743,6 +2743,11 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/propagatedownload.cpp" line="647"/>
         <source>File was deleted from server</source>
         <translation>تم حذف الملف من الخادم</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagatedownload.cpp" line="707"/>
+        <source>Broken webserver returned empty content length for non-empty file on resume</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="714"/>
@@ -2782,7 +2787,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateItemJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="249"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="241"/>
         <source>; Restoration Failed: %1</source>
         <translation>؛ فشلت الاستعادة: %1</translation>
     </message>
@@ -2918,12 +2923,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateUpdateMetaDataJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1174"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1166"/>
         <source>Could not update file : %1</source>
         <translation>تعذر تحديث الملف : ٪ 1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1177"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1169"/>
         <source>The file %1 is currently in use</source>
         <translation type="unfinished"/>
     </message>
@@ -4006,58 +4011,58 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::SyncEngine</name>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="185"/>
+        <location filename="../src/libsync/syncengine.cpp" line="188"/>
         <source>%1 (skipped due to earlier error, trying again in %2)</source>
         <translation>%1 (تم التجاوز بسبب خطأ سابق، أعد المحاولة مرة أخرى في %2)</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="389"/>
+        <location filename="../src/libsync/syncengine.cpp" line="392"/>
         <source>Only %1 are available, need at least %2 to start</source>
         <comment>Placeholders are postfixed with file sizes using Utility::octetsToString()</comment>
         <translation>يتوفر %1 فقط، مطلوب %2 على الأقل للبدء</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="417"/>
+        <location filename="../src/libsync/syncengine.cpp" line="420"/>
         <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
         <translation>تعذّر فتح قاعد بيانات المزامنة المحلية أو إنشاؤها. تأكد أن لديك حق وصول للكتابة في مجلد المزامنة.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1004"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1007"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation>مساحة القرص منخفضة: تم تجاوز التنزيلات التي تقلل المساحة الفارغة عن %1.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1011"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1014"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation>لا تتوفر مساحة كافية على الخادم لبعض التحميلات.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="315"/>
+        <location filename="../src/libsync/syncengine.cpp" line="318"/>
         <source>Unresolved conflict.</source>
         <translation>تعارض معلق.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="433"/>
+        <location filename="../src/libsync/syncengine.cpp" line="436"/>
         <source>Using virtual files with suffix, but suffix is not set</source>
         <translation>استخدام ملفات ظاهرية ذات لاحقة، ولكن بدون تعيين اللاحقة</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="445"/>
+        <location filename="../src/libsync/syncengine.cpp" line="448"/>
         <source>Unable to read the blacklist from the local database</source>
         <translation>تعذّرت قراءة القائمة السوداء من قاعدة البيانات المحلية</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="478"/>
+        <location filename="../src/libsync/syncengine.cpp" line="481"/>
         <source>Unable to read from the sync journal.</source>
         <translation>تعذّرت القراءة من دفتر يومية المزامنة.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="566"/>
+        <location filename="../src/libsync/syncengine.cpp" line="569"/>
         <source>Cannot open the sync journal</source>
         <translation>لا يمكن فتح دفتر يومية المزامنة</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="986"/>
+        <location filename="../src/libsync/syncengine.cpp" line="989"/>
         <source>Aborted</source>
         <translation>تم الإلغاء</translation>
     </message>
