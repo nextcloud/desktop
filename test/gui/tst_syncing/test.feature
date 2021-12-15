@@ -147,13 +147,14 @@ Feature: Syncing files
 
     Scenario Outline: Syncing a folder to the server
         Given user "Alice" has set up a client with default settings
-        When user "Alice" creates a folder "<foldername>" inside the sync folder
-        And the user waits for folder "<foldername>" to be synced
-        Then as "Alice" folder "<foldername>" should exist on the server
+        When user "Alice" creates a folder <foldername> inside the sync folder
+        And the user waits for folder <foldername> to be synced
+        Then as "Alice" folder <foldername> should exist on the server
         Examples:
-            | foldername                                                             |
-            | myFolder                                                               |
-            | really long folder name with some spaces and special char such as $%ñ& |
+            | foldername                                                               |
+            | "myFolder"                                                               |
+            | "really long folder name with some spaces and special char such as $%ñ&" |
+            | "folder with space at end "                                              |
 
 
     Scenario: Many subfolders can be synced
