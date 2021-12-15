@@ -245,7 +245,7 @@ Feature: Syncing files
         And as "Alice" folder "Folder1/subFolder1/subFolder2" should exist on the server
 
     @skip @issue-9281
-     Scenario: Filenames that are rejected by the server are reported
+    Scenario: Filenames that are rejected by the server are reported
         Given user "Alice" has set up a client with default settings
         And user "Alice" has created a folder "Folder1" inside the sync folder
         When user "Alice" creates a file "Folder1/a\\a.txt" with the following content inside the sync folder
@@ -257,3 +257,38 @@ Feature: Syncing files
         When the user clicks on the activity tab
         And the user selects "Not Synced" tab in the activity
         Then the file "Folder1/a\\a.txt" should be blacklisted
+
+
+    Scenario Outline: Verify one empty folder with a length longer than the allowed limit will not be synced
+        Given user "Alice" has set up a client with default settings
+        And user "Alice" has created a folder "<foldername>" inside the sync folder
+        When user "Alice" creates a folder "<foldername>/<foldername>" inside the sync folder
+        And user "Alice" creates a folder "<foldername>/<foldername>/<foldername>" inside the sync folder
+        And user "Alice" creates a folder "<foldername>/<foldername>/<foldername>/<foldername>" inside the sync folder
+        And user "Alice" creates a folder "<foldername>/<foldername>/<foldername>/<foldername>/<foldername>" inside the sync folder
+        And the user waits for folder "<foldername>/<foldername>/<foldername>/<foldername>/<foldername>" to be synced
+        Then as "Alice" folder "<foldername>" should exist on the server
+        And as "Alice" folder "<foldername>/<foldername>" should exist on the server
+        And as "Alice" folder "<foldername>/<foldername>/<foldername>" should exist on the server
+        And as "Alice" folder "<foldername>/<foldername>/<foldername>/<foldername>" should exist on the server
+        And as "Alice" folder "<foldername>/<foldername>/<foldername>/<foldername>/<foldername>" should exist on the server
+        Examples:
+            | foldername                                                      |
+            | An empty folder which name is obviously more than 59 characters |
+
+    
+    Scenario: Invalid system names are synced in linux
+        Given user "Alice" has set up a client with default settings
+        And user "Alice" has created folder "COM" on the server
+        And user "Alice" has created folder "test%" on the server
+        And user "Alice" has uploaded file on the server with content "server content" to "/PRN"
+        And user "Alice" has uploaded file on the server with content "server content" to "/foo%"
+        When the user waits for the files to sync
+        Then the folder "COM" should exist on the file system
+        And the folder "test%" should exist on the file system
+        And the file "PRN" should exist on the file system
+        And the file "foo%" should exist on the file system
+        And as "Alice" folder "COM" should exist on the server
+        And as "Alice" folder "test%" should exist on the server
+        And as "Alice" file "/PRN" should exist on the server
+        And as "Alice" file "/foo%" should exist on the server
