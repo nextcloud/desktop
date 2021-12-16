@@ -506,6 +506,8 @@ void User::processCompletedSyncItem(const Folder *folder, const SyncFileItemPtr 
     activity._folder = folder->alias();
     activity._fileAction = "";
 
+    const auto fileName = QFileInfo(item->_originalFile).fileName();
+
     if (item->_instruction == CSYNC_INSTRUCTION_REMOVE) {
         activity._fileAction = "file_deleted";
     } else if (item->_instruction == CSYNC_INSTRUCTION_NEW) {
@@ -520,15 +522,15 @@ void User::processCompletedSyncItem(const Folder *folder, const SyncFileItemPtr 
         qCWarning(lcActivity) << "Item " << item->_file << " retrieved successfully.";
 
         if (item->_direction != SyncFileItem::Up) {
-            activity._message = tr("Synced %1").arg(item->_originalFile);
+            activity._message = tr("Synced %1").arg(fileName);
         } else if (activity._fileAction == "file_renamed") {
-            activity._message = tr("You renamed %1").arg(item->_originalFile);
+            activity._message = tr("You renamed %1").arg(fileName);
         } else if (activity._fileAction == "file_deleted") {
-            activity._message = tr("You deleted %1").arg(item->_originalFile);
+            activity._message = tr("You deleted %1").arg(fileName);
         } else if (activity._fileAction == "file_created") {
-            activity._message = tr("You created %1").arg(item->_originalFile);
+            activity._message = tr("You created %1").arg(fileName);
         } else {
-            activity._message = tr("You changed %1").arg(item->_originalFile);
+            activity._message = tr("You changed %1").arg(fileName);
         }
 
         _activityModel->addSyncFileItemToActivityList(activity);
