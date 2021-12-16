@@ -164,6 +164,12 @@ void BulkPropagatorJob::doStartUpload(SyncFileItemPtr item,
         fileToUpload._file = item->_file = item->_renameTarget;
         fileToUpload._path = propagator()->fullLocalPath(fileToUpload._file);
         item->_modtime = FileSystem::getModTime(newFilePathAbsolute);
+        if (item->_modtime <= 0) {
+            _pendingChecksumFiles.remove(item->_file);
+            slotOnErrorStartFolderUnlock(item, SyncFileItem::NormalError, tr("File %1 has invalid modified time. Do not upload to the server.").arg(QDir::toNativeSeparators(item->_file)));
+            checkPropagationIsDone();
+            return;
+        }
     }
 
     const auto remotePath = propagator()->fullRemotePath(fileToUpload._file);
