@@ -100,12 +100,12 @@
         <translation>Shpënia te hedhurinat s’është e sendërtuar në këtë platformë</translation>
     </message>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="162"/>
+        <location filename="../src/libsync/filesystem.cpp" line="163"/>
         <source>Error removing &apos;%1&apos;: %2</source>
         <translation>Gabim gjatë lëvizjes së &apos;%1&apos;: %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="178"/>
+        <location filename="../src/libsync/filesystem.cpp" line="179"/>
         <source>Could not remove folder &apos;%1&apos;</source>
         <translation>S’u hoq dot dosja &apos;%1&apos;</translation>
     </message>
@@ -1786,22 +1786,22 @@ Kini parasysh që kjo përzgjedh vetëm se nga cili thes merren përmirësimet, 
 <context>
     <name>OCC::HttpCredentialsGui</name>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="120"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="118"/>
         <source>Please enter %1 password:&lt;br&gt;&lt;br&gt;User: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
         <translation>Ju lutemi, jepni fjalëkalimin %1:&lt;br&gt;&lt;br&gt;Përdorues: %2&lt;br&gt;Llogari: %3&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="134"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="132"/>
         <source>Reading from keychain failed with error: &apos;%1&apos;</source>
         <translation>Leximi prej vargut të kyçeve dështoi me gabimin: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="141"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="139"/>
         <source>Enter Password</source>
         <translation>Jepni Fjalëkalimin</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="181"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="179"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Click here&lt;/a&gt; to request an app password from the web interface.</source>
         <translation>&lt;a href=&quot;%1&quot;&gt;Klikoni këtu&lt;/a&gt; që të kërkoni një fjalëkalim aplikacioni prej ndërfaqes web.</translation>
     </message>
@@ -2432,7 +2432,7 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
         <translation>Hyrje që nga shfletuesi juaj</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="52"/>
+        <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="51"/>
         <source>Copy link to clipboard</source>
         <translation>Kopjoja lidhjen në të papastër</translation>
     </message>
@@ -2440,7 +2440,7 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
 <context>
     <name>OCC::OwncloudPropagator</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="692"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="702"/>
         <source>File %1 is currently in use</source>
         <translation>Kartela %1 është aktualisht në përdorim</translation>
     </message>
@@ -2709,12 +2709,12 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
 <context>
     <name>OCC::PropagateDirectory</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1020"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1043"/>
         <source>Error updating metadata: %1</source>
         <translation>Gabim në përditësim tejtëdhënash: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1023"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1046"/>
         <source>%1 the folder is currently in use</source>
         <translation type="unfinished"/>
     </message>
@@ -2926,12 +2926,12 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
 <context>
     <name>OCC::PropagateUpdateMetaDataJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1166"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1199"/>
         <source>Could not update file : %1</source>
         <translation>S’u përditësua dot kartela : %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1169"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1202"/>
         <source>The file %1 is currently in use</source>
         <translation>Kartela %1 është aktualisht në përdorim</translation>
     </message>
@@ -4030,12 +4030,12 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
         <translation>S’arrihet të hapet apo të krijohet një bazë vendore të dhënash njëkohësimi. Sigurohuni që keni të drejta shkrimi te dosja e njëkohësimeve.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1007"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1014"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation>Hapësira në disk është e pakët: Shkarkimet që do ta ulnin hapësirën e lirë nën %1 janë anashkaluar.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1014"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1021"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation>Ka hapësirë të pamjaftueshme në shërbyes për disa nga ngarkimet.</translation>
     </message>
@@ -4065,7 +4065,7 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
         <translation>S’hapet dot regjistri i njëkohësimeve.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="989"/>
+        <location filename="../src/libsync/syncengine.cpp" line="996"/>
         <source>Aborted</source>
         <translation>U ndërpre</translation>
     </message>

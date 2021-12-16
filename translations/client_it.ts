@@ -100,12 +100,12 @@
         <translation>Spostare il cestino non è implementato in questa piattaforma</translation>
     </message>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="162"/>
+        <location filename="../src/libsync/filesystem.cpp" line="163"/>
         <source>Error removing &apos;%1&apos;: %2</source>
         <translation>Errore durante la rimozione di &apos;%1&apos;: %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="178"/>
+        <location filename="../src/libsync/filesystem.cpp" line="179"/>
         <source>Could not remove folder &apos;%1&apos;</source>
         <translation>Impossibile rimuovere la cartella &apos;%1&apos;</translation>
     </message>
@@ -1784,22 +1784,22 @@ Nota che ciò seleziona solo da dove vengono presi gli aggiornamenti e che non c
 <context>
     <name>OCC::HttpCredentialsGui</name>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="120"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="118"/>
         <source>Please enter %1 password:&lt;br&gt;&lt;br&gt;User: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
         <translation>Digita la password di %1:&lt;br&gt;&lt;br&gt;Utente: &apos;%2&lt;br&gt;Account: %3&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="134"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="132"/>
         <source>Reading from keychain failed with error: &apos;%1&apos;</source>
         <translation>Lettura dal portachiavi non riuscita con errore: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="141"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="139"/>
         <source>Enter Password</source>
         <translation>Digita password</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="181"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="179"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Click here&lt;/a&gt; to request an app password from the web interface.</source>
         <translation>&lt;a href=&quot;%1&quot;&gt;Fai clic qui&lt;/a&gt; per richiedere una password dell&apos;applicazione dall&apos;interfaccia web.</translation>
     </message>
@@ -2424,7 +2424,7 @@ for additional privileges during the process.</source>
         <translation>Accedi tramite il tuo browser</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="52"/>
+        <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="51"/>
         <source>Copy link to clipboard</source>
         <translation>Copia link negli appunti</translation>
     </message>
@@ -2432,7 +2432,7 @@ for additional privileges during the process.</source>
 <context>
     <name>OCC::OwncloudPropagator</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="692"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="702"/>
         <source>File %1 is currently in use</source>
         <translation type="unfinished"/>
     </message>
@@ -2701,12 +2701,12 @@ Si tratta di una nuova modalità sperimentale. Se decidi di usarla, ti preghiamo
 <context>
     <name>OCC::PropagateDirectory</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1020"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1043"/>
         <source>Error updating metadata: %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1023"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1046"/>
         <source>%1 the folder is currently in use</source>
         <translation type="unfinished"/>
     </message>
@@ -2918,12 +2918,12 @@ Si tratta di una nuova modalità sperimentale. Se decidi di usarla, ti preghiamo
 <context>
     <name>OCC::PropagateUpdateMetaDataJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1166"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1199"/>
         <source>Could not update file : %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1169"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1202"/>
         <source>The file %1 is currently in use</source>
         <translation type="unfinished"/>
     </message>
@@ -4022,12 +4022,12 @@ Si tratta di una nuova modalità sperimentale. Se decidi di usarla, ti preghiamo
         <translation>Non posso aprire o creare il database locale di sincronizzazione. Assicurarsi di avere il i permessi di scrittura nella cartella di sincronizzazione</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1007"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1014"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation>Lo spazio su disco è scarso: I downloads che ridurranno lo spazio libero al di sotto di %1 verranno saltati.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1014"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1021"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation>Non c&apos;è spazio disponibile sul server per effettuare caricamenti.</translation>
     </message>
@@ -4057,7 +4057,7 @@ Si tratta di una nuova modalità sperimentale. Se decidi di usarla, ti preghiamo
         <translation>Impossibile aprire il registro di sincronizzazione</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="989"/>
+        <location filename="../src/libsync/syncengine.cpp" line="996"/>
         <source>Aborted</source>
         <translation>Interrotto</translation>
     </message>

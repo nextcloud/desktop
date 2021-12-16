@@ -100,12 +100,12 @@
         <translation>Mover a la papelera no está implementado en esta plataforma.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="162"/>
+        <location filename="../src/libsync/filesystem.cpp" line="163"/>
         <source>Error removing &apos;%1&apos;: %2</source>
         <translation>Error eliminando &apos;%1&apos;: %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="178"/>
+        <location filename="../src/libsync/filesystem.cpp" line="179"/>
         <source>Could not remove folder &apos;%1&apos;</source>
         <translation>No se pudo eliminar la carpeta &apos;%1&apos;</translation>
     </message>
@@ -1783,22 +1783,22 @@ Nota: esto solo selecciona el canal deseado y no permite vueltas atras. Por lo q
 <context>
     <name>OCC::HttpCredentialsGui</name>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="120"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="118"/>
         <source>Please enter %1 password:&lt;br&gt;&lt;br&gt;User: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
         <translation>Por favor introduzca la contraseña de %1:&lt;br&gt;&lt;br&gt;Usuario: %2&lt;br&gt;Cuenta: %3&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="134"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="132"/>
         <source>Reading from keychain failed with error: &apos;%1&apos;</source>
         <translation>La lectura del llavero ha fallado y ha generado este error: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="141"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="139"/>
         <source>Enter Password</source>
         <translation>Introduzca la contraseña</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="181"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="179"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Click here&lt;/a&gt; to request an app password from the web interface.</source>
         <translation>&lt;a href=&quot;%1&quot;&gt;Haga clic aquí&lt;/a&gt; para solicitar una contraseña de aplicación desde la interfaz web.</translation>
     </message>
@@ -2427,7 +2427,7 @@ for additional privileges during the process.</source>
         <translation>Inicia sesión en tu navegador de internet</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="52"/>
+        <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="51"/>
         <source>Copy link to clipboard</source>
         <translation>Copiar enlace al portapapeles</translation>
     </message>
@@ -2435,7 +2435,7 @@ for additional privileges during the process.</source>
 <context>
     <name>OCC::OwncloudPropagator</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="692"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="702"/>
         <source>File %1 is currently in use</source>
         <translation type="unfinished"/>
     </message>
@@ -2704,12 +2704,12 @@ Este es un nuevo modo experimental. Si decide utilizarlo, reporte cualquier prob
 <context>
     <name>OCC::PropagateDirectory</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1020"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1043"/>
         <source>Error updating metadata: %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1023"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1046"/>
         <source>%1 the folder is currently in use</source>
         <translation type="unfinished"/>
     </message>
@@ -2921,12 +2921,12 @@ Este es un nuevo modo experimental. Si decide utilizarlo, reporte cualquier prob
 <context>
     <name>OCC::PropagateUpdateMetaDataJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1166"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1199"/>
         <source>Could not update file : %1</source>
         <translation>No se pudo actualizar el archivo: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1169"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1202"/>
         <source>The file %1 is currently in use</source>
         <translation type="unfinished"/>
     </message>
@@ -4025,12 +4025,12 @@ Este es un nuevo modo experimental. Si decide utilizarlo, reporte cualquier prob
         <translation>Imposible abrir o crear la base de datos local de sincronización. Asegúrese de que tiene permisos de escritura en la carpeta de sincronización.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1007"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1014"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation>Poco espacio libre en disco: La descarga lo reducirá por debajo del %1, debería abortar.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1014"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1021"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation>No hay suficiente espacio libre en el servidor para algunas subidas.</translation>
     </message>
@@ -4060,7 +4060,7 @@ Este es un nuevo modo experimental. Si decide utilizarlo, reporte cualquier prob
         <translation>No es posible abrir el diario de sincronización</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="989"/>
+        <location filename="../src/libsync/syncengine.cpp" line="996"/>
         <source>Aborted</source>
         <translation>Interrumpido</translation>
     </message>
