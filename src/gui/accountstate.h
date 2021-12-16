@@ -171,6 +171,10 @@ public:
     */
     void setDesktopNotificationsAllowed(bool isAllowed);
 
+    ConnectionStatus lastConnectionStatus() const;
+    
+    void trySignIn();
+
 public slots:
     /// Triggers a ping to the server to update state and
     /// connection status and errors.
@@ -205,6 +209,7 @@ private:
     AccountPtr _account;
     State _state;
     ConnectionStatus _connectionStatus;
+    ConnectionStatus _lastConnectionValidatorStatus = ConnectionStatus::Undefined;
     QStringList _connectionErrors;
     bool _waitingForNewCredentials;
     QDateTime _timeOfLastETagCheck;
