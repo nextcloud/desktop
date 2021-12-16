@@ -5,3 +5,5 @@ Therefore we checked for the locked state before we start the upload.
 Due to a bug we checked that for each file chunk, now we only check when the upload starts and when it finished completely.
 
 https://github.com/owncloud/client/issues/9194
+https://github.com/owncloud/client/pull/9264
+https://github.com/owncloud/client/pull/9296
