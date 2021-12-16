@@ -1,0 +1,9 @@
+Bugfix: Handle file locks for delete jobs
+
+We no longer report an error when the client tries to delete a locked file
+but wait for the lock to be removed.
+
+This only works when a file is deleted not on folders.
+
+https://github.com/owncloud/client/issues/9293
+https://github.com/owncloud/client/pull/9295

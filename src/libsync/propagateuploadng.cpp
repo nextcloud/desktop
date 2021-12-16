@@ -90,7 +90,7 @@ void PropagateUploadFileNG::doStartUpload()
     const auto lockMode = propagator()->syncOptions().requiredLockMode();
     if (FileSystem::isFileLocked(fileName, lockMode)) {
         emit propagator()->seenLockedFile(fileName, lockMode);
-        abortWithError(SyncFileItem::SoftError, tr("%1 the file is currently in use").arg(fileName));
+        abortWithError(SyncFileItem::SoftError, tr("%1 the file is currently in use").arg(QDir::toNativeSeparators(fileName)));
         return;
     }
 
