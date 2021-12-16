@@ -60,6 +60,7 @@ public:
         AccountConnectedRole,
         SyncFileStatusRole,
         DisplayActions,
+        ShareableRole,
     };
     Q_ENUM(DataRole)
 
