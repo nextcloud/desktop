@@ -645,7 +645,7 @@ Ekintza honek unean uneko sinkronizazioa bertan behera utziko du.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1153"/>
         <source>No connection to %1 at %2.</source>
-        <translation>Konexiorik ez %1-ekin %2-etan</translation>
+        <translation>Konexiorik ez %1-ekin %2-en</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1158"/>
@@ -881,43 +881,43 @@ Ekintza honek unean uneko sinkronizazioa bertan behera utziko du.</translation>
         <translation>%1 fitxategia ezin da kargatu izen bereko beste fitxategi bat dagoelako -soilik kasuan ezberdina-</translation>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="271"/>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="287"/>
         <source>File Removed (start upload) %1</source>
         <translation>Fitxategia kendu da (hasi karga) %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="280"/>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="296"/>
         <source>File %1 has invalid modified time. Do not upload to the server.</source>
         <translation>%1 fitxategiak aldaketa-data baliogabea du. Ez igo hau zerbitzarira.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="286"/>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="304"/>
         <source>Local file changed during syncing. It will be resumed.</source>
         <translation>Fitxategi lokala aldatu egin da sinkronizazioa egin bitartean. Berrekin egingo da.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="298"/>
-        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="624"/>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="318"/>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="631"/>
         <source>Local file changed during sync.</source>
         <translation>Fitxategi lokala aldatu da sinkronizazioan.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="428"/>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="450"/>
         <source>Error updating metadata: %1</source>
         <translation>Erorrea metadatuak eguneratzen: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="431"/>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="453"/>
         <source>The file %1 is currently in use</source>
         <translation>%1 fitxategia momentu honetan erabilpean dago</translation>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="607"/>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="614"/>
         <source>The local file was removed during sync.</source>
         <translation>Fitxategi lokala ezabatu da sinkronizazioan.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="654"/>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="661"/>
         <source>; Restoration Failed: %1</source>
         <translation>; Berreskurapenak huts egin du: %1</translation>
     </message>
@@ -1101,6 +1101,19 @@ Ekintza honek unean uneko sinkronizazioa bertan behera utziko du.</translation>
         <location filename="../src/gui/connectionvalidator.cpp" line="268"/>
         <source>Please update to the latest server and restart the client.</source>
         <translation>Mesedez eguneratu zerbitzarira eta berrabiarazi bezeroa.</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::DiscoveryPhase</name>
+    <message>
+        <location filename="../src/libsync/discoveryphase.cpp" line="189"/>
+        <source>Error while canceling delete of a file</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/discoveryphase.cpp" line="190"/>
+        <source>Error while canceling delete of %1</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

@@ -882,43 +882,43 @@ This action will abort any currently running synchronization.</source>
         <translation>%1檔案未能上傳，因為另一個同名（僅大小寫不同）的檔案已經存在</translation>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="271"/>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="287"/>
         <source>File Removed (start upload) %1</source>
         <translation>檔案已移除（開始上傳）%1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="280"/>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="296"/>
         <source>File %1 has invalid modified time. Do not upload to the server.</source>
         <translation>檔案 %1 的修改時間無效。 請勿上傳到伺服器。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="286"/>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="304"/>
         <source>Local file changed during syncing. It will be resumed.</source>
         <translation>近端端的檔案在同步的過程中被更改。同步將會重新開始。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="298"/>
-        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="624"/>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="318"/>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="631"/>
         <source>Local file changed during sync.</source>
         <translation>近端端的檔案在同步過程中被更改。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="428"/>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="450"/>
         <source>Error updating metadata: %1</source>
         <translation>更新元數據時出錯：%1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="431"/>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="453"/>
         <source>The file %1 is currently in use</source>
         <translation>檔案 %1 正在使用中</translation>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="607"/>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="614"/>
         <source>The local file was removed during sync.</source>
         <translation>近端的檔案在同步過程中被刪除。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="654"/>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="661"/>
         <source>; Restoration Failed: %1</source>
         <translation>；復原失敗 %1</translation>
     </message>
@@ -1102,6 +1102,19 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/gui/connectionvalidator.cpp" line="268"/>
         <source>Please update to the latest server and restart the client.</source>
         <translation>請將伺服器端更新到最新版並重新啟動客戶端</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::DiscoveryPhase</name>
+    <message>
+        <location filename="../src/libsync/discoveryphase.cpp" line="189"/>
+        <source>Error while canceling delete of a file</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/discoveryphase.cpp" line="190"/>
+        <source>Error while canceling delete of %1</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
