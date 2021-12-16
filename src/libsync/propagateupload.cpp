@@ -213,6 +213,8 @@ void PropagateUploadFileCommon::start()
         Q_ASSERT(_item->_modtime > 0);
         if (_item->_modtime <= 0) {
             qCWarning(lcPropagateUpload()) << "invalid modified time" << _item->_file << _item->_modtime;
+            slotOnErrorStartFolderUnlock(SyncFileItem::NormalError, tr("File %1 has invalid modified time. Do not upload to the server.").arg(QDir::toNativeSeparators(_item->_file)));
+            return;
         }
     }
 

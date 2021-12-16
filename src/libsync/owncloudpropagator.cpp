@@ -772,6 +772,10 @@ bool OwncloudPropagator::createConflict(const SyncFileItemPtr &item,
 
     QString renameError;
     auto conflictModTime = FileSystem::getModTime(fn);
+    if (conflictModTime <= 0) {
+        *error = tr("Impossible to get modification time for file in conflict %1)").arg(fn);
+        return false;
+    }
     QString conflictUserName;
     if (account()->capabilities().uploadConflictFiles())
         conflictUserName = account()->davDisplayName();

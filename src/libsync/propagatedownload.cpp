@@ -599,6 +599,7 @@ void PropagateDownloadFile::conflictChecksumComputed(const QByteArray &checksumT
         Q_ASSERT(_item->_modtime > 0);
         if (_item->_modtime <= 0) {
             qCWarning(lcPropagateDownload()) << "invalid modified time" << _item->_file << _item->_modtime;
+            return;
         }
         if (_item->_modtime != _item->_previousModtime) {
             Q_ASSERT(_item->_modtime > 0);
@@ -609,6 +610,7 @@ void PropagateDownloadFile::conflictChecksumComputed(const QByteArray &checksumT
         Q_ASSERT(_item->_modtime > 0);
         if (_item->_modtime <= 0) {
             qCWarning(lcPropagateDownload()) << "invalid modified time" << _item->_file << _item->_modtime;
+            return;
         }
         updateMetadata(/*isConflict=*/false);
         return;
