@@ -136,7 +136,7 @@ void ConnectionValidator::slotStatusFound(const QUrl &url, const QJsonObject &in
 void ConnectionValidator::slotNoStatusFound(QNetworkReply *reply)
 {
     auto job = qobject_cast<CheckServerJob *>(sender());
-    qCWarning(lcConnectionValidator) << reply->error() << job->errorString() << reply->peek(1024);
+    qCWarning(lcConnectionValidator) << reply->error() << reply->errorString() << job->errorString() << reply->peek(1024);
     if (reply->error() == QNetworkReply::SslHandshakeFailedError) {
         reportResult(SslError);
         return;
