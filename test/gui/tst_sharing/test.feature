@@ -301,3 +301,17 @@ Feature: Sharing
             | edit        | read, share                  | read, share              |
             | share       | read, update, create, delete | read,update              |
             | edit,share  | read                         | read                     |
+
+
+    Scenario: sharee deletes a file shared by sharer
+        Given the setting "shareapi_auto_accept_share" on the server of app "core" has been set to "yes"
+        And the administrator on the server has set the default folder for received shares to "Shares"
+        And user "Alice" has uploaded file with content "ownCloud test text file 0" to "textfile.txt" on the server
+        And user "Brian" has been created on the server with default attributes and without skeleton files
+        And user "Alice" has shared file "textfile.txt" on the server with user "Brian" with "all" permissions
+        And user "Brian" has set up a client with default settings
+        When the user waits for file "Shares/textfile.txt" to be synced
+        And the user deletes the file "Shares/textfile.txt"
+        And the user waits for the files to sync
+        Then as "Brian" file "Shares/textfile0.txt" on the server should not exist
+        And as "Alice" file "textfile0.txt" on the server should not exist

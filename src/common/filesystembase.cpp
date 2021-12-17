@@ -330,8 +330,7 @@ bool FileSystem::fileExists(const QString &filename, const QFileInfo &fileInfo)
     // not valid. There needs to be one initialised here. Otherwise the incoming
     // fileInfo is re-used.
     if (fileInfo.filePath() != filename) {
-        QFileInfo myFI(filename);
-        re = myFI.exists();
+        re = QFileInfo::exists(filename);
     }
     return re;
 }

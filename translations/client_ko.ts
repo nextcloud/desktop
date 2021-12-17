@@ -84,28 +84,28 @@
         <translation>현재 사용되고 있는 파일 명으로 %1 을(를) 개명할 수 없습니다. </translation>
     </message>
     <message>
-        <location filename="../src/common/filesystembase.cpp" line="399"/>
+        <location filename="../src/common/filesystembase.cpp" line="398"/>
         <source>Could not make directories in trash</source>
         <translation>휴지통에 디렉토리를 만들수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../src/common/filesystembase.cpp" line="413"/>
-        <location filename="../src/common/filesystembase.cpp" line="419"/>
+        <location filename="../src/common/filesystembase.cpp" line="412"/>
+        <location filename="../src/common/filesystembase.cpp" line="418"/>
         <source>Could not move &apos;%1&apos; to &apos;%2&apos;</source>
         <translation>&apos;%1&apos; 을(를) &apos;%2&apos; 로 이동할 수 없습니다</translation>
     </message>
     <message>
-        <location filename="../src/common/filesystembase.cpp" line="453"/>
+        <location filename="../src/common/filesystembase.cpp" line="452"/>
         <source>Moving to the trash is not implemented on this platform</source>
         <translation>이 플랫폼에서는 휴지통으로 이동하지 않습니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="162"/>
+        <location filename="../src/libsync/filesystem.cpp" line="163"/>
         <source>Error removing &apos;%1&apos;: %2</source>
         <translation>&apos;%1&apos; 삭제 중 오류: %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="178"/>
+        <location filename="../src/libsync/filesystem.cpp" line="179"/>
         <source>Could not remove folder &apos;%1&apos;</source>
         <translation>&apos;%1&apos; 폴더를 삭제할 수 없음</translation>
     </message>
@@ -1774,22 +1774,22 @@ Note that this selects only what pool upgrades are taken from, and that there ar
 <context>
     <name>OCC::HttpCredentialsGui</name>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="120"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="118"/>
         <source>Please enter %1 password:&lt;br&gt;&lt;br&gt;User: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
         <translation>%1 암호를 입력하십시오:&lt;br&gt; &lt;br&gt;사용자: %2&lt;br&gt;계정: %3&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="134"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="132"/>
         <source>Reading from keychain failed with error: &apos;%1&apos;</source>
         <translation>키 체인에서 읽어올 수 없음: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="141"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="139"/>
         <source>Enter Password</source>
         <translation>암호 입력</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="181"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="179"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Click here&lt;/a&gt; to request an app password from the web interface.</source>
         <translation>웹 인터페이스에서 앱 암호를 요청하려면 &lt;a href=&quot;%1&quot;&gt;여기&lt;/a&gt;를 누르십시오.</translation>
     </message>
@@ -2414,7 +2414,7 @@ for additional privileges during the process.</source>
         <translation>내 브라우저에 로그인</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="52"/>
+        <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="51"/>
         <source>Copy link to clipboard</source>
         <translation>클립보드에 링크 복사</translation>
     </message>
@@ -2422,7 +2422,7 @@ for additional privileges during the process.</source>
 <context>
     <name>OCC::OwncloudPropagator</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="692"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="702"/>
         <source>File %1 is currently in use</source>
         <translation>파일 %1 은(는) 현재 이용 중입니다</translation>
     </message>
@@ -2685,12 +2685,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateDirectory</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1020"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1043"/>
         <source>Error updating metadata: %1</source>
         <translation>메타데이터 갱신 오류: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1023"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1046"/>
         <source>%1 the folder is currently in use</source>
         <translation>%1 폴더는 현재 이용 중입니다</translation>
     </message>
@@ -2774,27 +2774,27 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateLocalMkdir</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="141"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="144"/>
         <source>could not delete file %1, error: %2</source>
         <translation>%1 파일을 삭제할 수 없음, 오류: %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="156"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="159"/>
         <source>Can not create local folder %1 because of a local file name clash with %2</source>
         <translation>로컬 파일 명이 %2 와 충돌하기 때문에 로컬 폴더 %1 을(를) 생성할 수 없습니다</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="175"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="178"/>
         <source>Error updating metadata: %1</source>
         <translation>메타데이터 갱신 에러: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="178"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="181"/>
         <source>The file %1 is currently in use</source>
         <translation>파일 %1 은(는) 현재 이용 중입니다</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="162"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="165"/>
         <source>could not create folder %1</source>
         <translation>폴더 %1을(를) 만들 수 없음</translation>
     </message>
@@ -2806,36 +2806,41 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <source>Could not remove %1 because of a local file name clash with %2!</source>
         <translation>로컬 파일 명이 %2 와 충돌하기 때문에 %1 을(를) 제거할 수 없습니다!</translation>
     </message>
+    <message>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="104"/>
+        <source>%1 the file is currently in use</source>
+        <translation>%1  파일은  현재 이용 중입니다</translation>
+    </message>
 </context>
 <context>
     <name>OCC::PropagateLocalRename</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="216"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="219"/>
         <source>File %1 can not be renamed to %2 because of a local file name clash</source>
         <translation>로컬 파일 이름이 충돌하여 파일 %1의 이름을 %2(으)로 변경할 수 없음</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="223"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="226"/>
         <source>Could not rename %1 to %2, the file is currently in use</source>
         <translation>%1 을(를) %2 로 개명할 수 없습니다, 이 파일이 현재 사용 중입니다</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="252"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="255"/>
         <source>Error updating metadata: %1</source>
         <translation>메타데이터 갱신 에러: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="255"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="258"/>
         <source>The file %1 is currently in use</source>
         <translation>파일 %1 은(는) 현재 이용 중입니다</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="261"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="264"/>
         <source>Failed to rename file</source>
         <translation>파일 개명에 실패했습니다</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="267"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="270"/>
         <source>Error setting pin state</source>
         <translation>핀 상태 설정 에러</translation>
     </message>
@@ -2902,12 +2907,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateUpdateMetaDataJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1166"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1199"/>
         <source>Could not update file : %1</source>
         <translation>파일을 갱신할 수 없습니다 : %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1169"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1202"/>
         <source>The file %1 is currently in use</source>
         <translation>파일 %1 은(는) 현재 이용 중입니다</translation>
     </message>
@@ -4006,12 +4011,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>로컬 동기화 데이터베이스를 열 수 없습니다. 동기화 폴더에 쓰기 권한이 있는지 확인하십시오.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1007"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1014"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation>디스크 공간이 부족합니다: 남은 디스크 공간을 %1 이하로 떨어트리는 항목을 다운로드하지 않습니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1014"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1021"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation>서버에 일부 파일을 업로드할 공간이 부족합니다.</translation>
     </message>
@@ -4041,7 +4046,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>동기화 저널을 열 수 없음</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="989"/>
+        <location filename="../src/libsync/syncengine.cpp" line="996"/>
         <source>Aborted</source>
         <translation>중단됨</translation>
     </message>

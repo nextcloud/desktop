@@ -1,0 +1,5 @@
+Bugfix: A folder moved on the server was displayed as outdated
+
+We fixed a bug where a folder moved on the server was displayed as outdated.
+
+https://github.com/owncloud/client/issues/9071

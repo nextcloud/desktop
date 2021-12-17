@@ -47,10 +47,10 @@ Q_LOGGING_CATEGORY(lcPropagateLocalRename, "sync.propagator.localrename", QtInfo
  *
  * \a path is relative to propagator()->_localDir + _item->_file and should start with a slash
  */
-bool PropagateLocalRemove::removeRecursively(const QString &path)
+bool PropagateLocalRemove::removeRecursively(const QString &absolute, QString *error)
 {
-    QString absolute = propagator()->fullLocalPath(_item->_file + path);
     QStringList errors;
+    // path, isDir
     QList<QPair<QString, bool>> deleted;
     bool success = FileSystem::removeRecursively(
         absolute,
@@ -75,7 +75,7 @@ bool PropagateLocalRemove::removeRecursively(const QString &path)
             propagator()->_journal->deleteFileRecord(it.first.mid(propagator()->localPath().size()), it.second);
         }
 
-        _error = errors.join(QStringLiteral(", "));
+        *error = errors.join(QStringLiteral(", "));
     }
     return success;
 }
@@ -95,25 +95,28 @@ void PropagateLocalRemove::start()
         return;
     }
 
-    QString removeError;
-    if (_moveToTrash) {
-        if ((QDir(filename).exists() || FileSystem::fileExists(filename))
-            && !FileSystem::moveToTrash(filename, &removeError)) {
-            done(SyncFileItem::NormalError, removeError);
+    if (FileSystem::fileExists(filename)) {
+        bool ok;
+        QString removeError;
+        const auto lockMode = propagator()->syncOptions().requiredLockMode();
+        if (FileSystem::isFileLocked(filename, lockMode)) {
+            emit propagator()->seenLockedFile(filename, lockMode);
+            done(SyncFileItem::SoftError, tr("%1 the file is currently in use").arg(QDir::toNativeSeparators(filename)));
             return;
         }
-    } else {
-        if (_item->isDirectory()) {
-            if (QDir(filename).exists() && !removeRecursively(QString())) {
-                done(SyncFileItem::NormalError, _error);
-                return;
-            }
+
+        if (_moveToTrash) {
+            ok = FileSystem::moveToTrash(filename, &removeError);
         } else {
-            if (FileSystem::fileExists(filename)
-                && !FileSystem::remove(filename, &removeError)) {
-                done(SyncFileItem::NormalError, removeError);
-                return;
+            if (_item->isDirectory()) {
+                ok = removeRecursively(filename, &removeError);
+            } else {
+                ok = FileSystem::remove(filename, &removeError);
             }
+        }
+        if (!ok) {
+            done(SyncFileItem::NormalError, removeError);
+            return;
         }
     }
     propagator()->reportProgress(*_item, 0);

@@ -209,7 +209,7 @@ private slots:
         QCOMPARE(nDELETE, 2);
 
         // Move-and-change, size+content only
-        auto mtime = fakeFolder.remoteModifier().find("B/b2")->lastModified;
+        auto mtime = fakeFolder.remoteModifier().find("B/b2")->lastModified();
         fakeFolder.localModifier().rename("B/b2", "B/b2m");
         fakeFolder.localModifier().appendByte("B/b2m");
         fakeFolder.localModifier().setModTime("B/b2m", mtime);
@@ -221,7 +221,7 @@ private slots:
 
         // Move-and-change, content only -- c1 has no checksum, so we fail to detect this!
         // NOTE: This is an expected failure.
-        mtime = fakeFolder.remoteModifier().find("C/c1")->lastModified;
+        mtime = fakeFolder.remoteModifier().find("C/c1")->lastModified();
         fakeFolder.localModifier().rename("C/c1", "C/c1m");
         fakeFolder.localModifier().setContents("C/c1m", 'C');
         fakeFolder.localModifier().setModTime("C/c1m", mtime);
@@ -240,7 +240,7 @@ private slots:
         QCOMPARE(nDELETE, 4);
 
         // Move-and-change, content only, this time while having a checksum
-        mtime = fakeFolder.remoteModifier().find("C/c3")->lastModified;
+        mtime = fakeFolder.remoteModifier().find("C/c3")->lastModified();
         fakeFolder.localModifier().rename("C/c3", "C/c3m");
         fakeFolder.localModifier().setContents("C/c3m", 'C');
         fakeFolder.localModifier().setModTime("C/c3m", mtime);
@@ -642,8 +642,8 @@ private slots:
         fakeFolder.setServerOverride(counter.functor());
 
         // Changing the mtime on the server (without invalidating the etag)
-        fakeFolder.remoteModifier().find("A/a1")->lastModified = QDateTime::currentDateTimeUtc().addSecs(-50000);
-        fakeFolder.remoteModifier().find("A/a2")->lastModified = QDateTime::currentDateTimeUtc().addSecs(-40000);
+        fakeFolder.remoteModifier().find("A/a1")->setLastModified(QDateTime::currentDateTime().addSecs(-50000));
+        fakeFolder.remoteModifier().find("A/a2")->setLastModified(QDateTime::currentDateTime().addSecs(-40000));
 
         // Move a few files
         fakeFolder.remoteModifier().rename("A/a1", "A/a1_server_renamed");
@@ -662,7 +662,8 @@ private slots:
         QCOMPARE(counter.nMOVE, 1);
         QCOMPARE(counter.nDELETE, 0);
 
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        // Check that everything other than the mtime is still equal:
+        QVERIFY(fakeFolder.currentLocalState().equals(fakeFolder.currentRemoteState(), FileInfo::IgnoreLastModified));
     }
 
     // Test for https://github.com/owncloud/client/issues/6694
@@ -851,7 +852,7 @@ private slots:
         if (isVfsPluginAvailable(Vfs::WindowsCfApi)) {
             QTest::newRow("Vfs::WindowsCfApi dehydrated") << Vfs::WindowsCfApi << true;
 
-            // TODO: then hydrated version will fail due to an issue in the winvfs plugin, so leave it disabled for now.
+            // TODO: the hydrated version will fail due to an issue in the winvfs plugin, so leave it disabled for now.
             // QTest::newRow("Vfs::WindowsCfApi hydrated") << Vfs::WindowsCfApi << false;
         } else if (Utility::isWindows()) {
             QWARN("Skipping Vfs::WindowsCfApi");
@@ -866,7 +867,6 @@ private slots:
 
         FakeFolder fakeFolder({ FileInfo {} }, vfsMode);
 
-        FileInfo::ComparissonOption cmpOpt = FileInfo::ContentIsKing;
         if (vfsMode != Vfs::Off) {
             auto vfs = QSharedPointer<Vfs>(createVfsFromPlugin(vfsMode).release());
             QVERIFY(vfs);
@@ -875,8 +875,6 @@ private slots:
 
             // make files virtual
             fakeFolder.syncOnce();
-
-            cmpOpt = FileInfo::IgnoreContentOfDehydratedFiles;
         }
 
         fakeFolder.remoteModifier().mkdir("A");
@@ -885,12 +883,16 @@ private slots:
 
         {
             auto localState = fakeFolder.currentLocalState();
-            FileInfo *file = localState.find({ "A/file" });
-            QVERIFY(file != nullptr); // check if the file exists
-            if (vfsMode != Vfs::Off) {
-                QCOMPARE(file->isDehydratedPlaceholder, filesAreDehydrated);
-            }
-            QVERIFY(localState.equals(fakeFolder.currentRemoteState(), cmpOpt));
+            FileInfo *localFile = localState.find({ "A/file" });
+            QVERIFY(localFile != nullptr); // check if the file exists
+            QCOMPARE(vfsMode == Vfs::Off || localFile->isDehydratedPlaceholder, vfsMode == Vfs::Off || filesAreDehydrated);
+
+            auto remoteState = fakeFolder.currentRemoteState();
+            FileInfo *remoteFile = remoteState.find({ "A/file" });
+            QVERIFY(remoteFile != nullptr);
+            QCOMPARE(localFile->lastModified(), remoteFile->lastModified());
+
+            QCOMPARE(localState, remoteState);
         }
 
         fakeFolder.localModifier().mkdir("B");
@@ -902,12 +904,16 @@ private slots:
             auto localState = fakeFolder.currentLocalState();
             QVERIFY(localState.find("A/file") == nullptr); // check if the file is gone
             QVERIFY(localState.find("A") == nullptr); // check if the directory is gone
-            FileInfo *file = localState.find({ "B/file" });
-            QVERIFY(file != nullptr); // check if the file exists
-            if (vfsMode != Vfs::Off) {
-                QCOMPARE(file->isDehydratedPlaceholder, filesAreDehydrated); // check that no-one messed with the placeholder state
-            }
-            QVERIFY(localState.equals(fakeFolder.currentRemoteState(), cmpOpt));
+            FileInfo *localFile = localState.find({ "B/file" });
+            QVERIFY(localFile != nullptr); // check if the file exists
+            QCOMPARE(vfsMode == Vfs::Off || localFile->isDehydratedPlaceholder, vfsMode == Vfs::Off || filesAreDehydrated);
+
+            auto remoteState = fakeFolder.currentRemoteState();
+            FileInfo *remoteFile = remoteState.find({ "B/file" });
+            QVERIFY(remoteFile != nullptr);
+            QCOMPARE(localFile->lastModified(), remoteFile->lastModified());
+
+            QCOMPARE(localState, remoteState);
         }
     }
 

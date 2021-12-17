@@ -24,6 +24,13 @@ private slots:
          */
 
         FileInfo finalState;
+
+        auto checkAgainstFinalState = [&finalState](const FileInfo &currentRemoteState) {
+            // The final state should be the same for every iteration, EXCEPT for the lastModified times:
+            // these will differ (well, increase), because files are re-created with every iteration.
+            return currentRemoteState.equals(finalState, FileInfo::IgnoreLastModified);
+        };
+
         for (int count = 0; true; ++count) {
             qInfo() << "Starting Iteration" << count;
 
@@ -55,7 +62,7 @@ private slots:
                 // No error was thrown, we are finished
                 QVERIFY(result);
                 QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
-                QCOMPARE(fakeFolder.currentRemoteState(), finalState);
+                QVERIFY(checkAgainstFinalState(fakeFolder.currentRemoteState()));
                 return;
             }
 
@@ -71,8 +78,7 @@ private slots:
             if (count == 0) {
                 finalState = fakeFolder.currentRemoteState();
             } else {
-                // the final state should be the same for every iteration
-                QCOMPARE(fakeFolder.currentRemoteState(), finalState);
+                QVERIFY(checkAgainstFinalState(fakeFolder.currentRemoteState()));
             }
         }
     }

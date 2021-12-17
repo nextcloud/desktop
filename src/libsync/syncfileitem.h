@@ -125,6 +125,7 @@ public:
         , _inode(0)
         , _previousSize(0)
         , _previousModtime(0)
+        , _relevantDirectoyInstruction(false)
     {
     }
 
@@ -278,6 +279,9 @@ public:
 
     QString _directDownloadUrl;
     QString _directDownloadCookies;
+
+    bool _relevantDirectoyInstruction = false;
+    bool _finished = false;
 };
 
 
@@ -296,6 +300,12 @@ using SyncFileItemSet = std::set<SyncFileItemPtr>;
 Q_DECLARE_METATYPE(OCC::SyncFileItemSet)
 Q_DECLARE_METATYPE(OCC::SyncFileItem)
 Q_DECLARE_METATYPE(OCC::SyncFileItemPtr)
+
+OWNCLOUDSYNC_EXPORT QDebug operator<<(QDebug debug, const OCC::SyncFileItem *item);
+inline QDebug operator<<(QDebug debug, const OCC::SyncFileItemPtr &item)
+{
+    return debug << item.data();
+}
 
 
 #endif // SYNCFILEITEM_H

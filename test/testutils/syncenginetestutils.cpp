@@ -168,7 +168,10 @@ void FileInfo::appendByte(const QString &relativePath, char contentChar)
     Q_UNUSED(contentChar);
     FileInfo *file = findInvalidatingEtags(relativePath);
     Q_ASSERT(file);
-    file->contentSize += 1;
+    if (!file->isDehydratedPlaceholder) {
+        file->contentSize += 1;
+    }
+    file->fileSize += 1;
 }
 
 void FileInfo::modifyByte(const QString &relativePath, quint64 offset, char contentChar)
@@ -205,7 +208,7 @@ void FileInfo::setModTime(const QString &relativePath, const QDateTime &modTime)
 {
     FileInfo *file = findInvalidatingEtags(relativePath);
     Q_ASSERT(file);
-    file->lastModified = modTime;
+    file->setLastModified(modTime);
 }
 
 FileInfo *FileInfo::find(PathComponents pathComponents, const bool invalidateEtags)
@@ -252,44 +255,45 @@ FileInfo *FileInfo::create(const QString &relativePath, qint64 size, char conten
     return &child;
 }
 
-bool FileInfo::operator==(const FileInfo &other) const
+bool FileInfo::equals(const FileInfo &other, CompareWhat compareWhat) const
 {
-    // Consider files to be equal between local<->remote as a user would.
-    return name == other.name
-        && isDir == other.isDir
-        && contentSize == other.contentSize
-        && contentChar == other.contentChar
-        && children == other.children;
-}
-
-bool FileInfo::equals(const FileInfo &other, ComparissonOption opt) const
-{
-    switch (opt) {
-    case ContentIsKing:
-        return *this == other;
-    case IgnoreContentOfDehydratedFiles:
-        if (!isDehydratedPlaceholder && !other.isDehydratedPlaceholder) {
-            if (contentSize != other.contentSize || contentChar != other.contentChar) {
-                return false;
-            }
+    // Only check the content and contentSize if both files are hydrated:
+    if (!isDehydratedPlaceholder && !other.isDehydratedPlaceholder) {
+        if (contentSize != other.contentSize || contentChar != other.contentChar) {
+            return false;
         }
-
-        if (name == other.name && isDir == other.isDir && fileSize == other.fileSize && lastModified == other.lastModified) {
-            if (children.size() == other.children.size()) {
-                for (auto it = children.constBegin(), eit = children.constEnd(),
-                          oit = other.children.constBegin(), oeit = other.children.constEnd();
-                     it != eit && oit != oeit; ++it, ++oit) {
-                    if (!it->equals(*oit, opt)) {
-                        return false;
-                    }
-                }
-            }
-        }
-
-        return true;
     }
 
-    Q_UNREACHABLE();
+    // We need to check this before we use isDir in the next if-statement:
+    if (isDir != other.isDir) {
+        return false;
+    }
+
+    if (compareWhat == CompareLastModified) {
+        // Don't check directory mtime: it might change when (unsynced) files get created.
+        if (!isDir && _lastModifiedInSecondsUTC != other._lastModifiedInSecondsUTC) {
+            return false;
+        }
+    }
+
+    if (name != other.name || fileSize != other.fileSize) {
+        return false;
+    }
+
+    if (children.size() != other.children.size()) {
+        return false;
+    }
+
+    for (auto it = children.constBegin(), eit = children.constEnd(); it != eit; ++it) {
+        auto oit = other.children.constFind(it.key());
+        if (oit == other.children.constEnd()) {
+            return false;
+        } else if (!it.value().equals(oit.value(), compareWhat)) {
+            return false;
+        }
+    }
+
+    return true;
 }
 
 QString FileInfo::path() const
@@ -362,7 +366,7 @@ FakePropfindReply::FakePropfindReply(FileInfo &remoteRootFileInfo, QNetworkAcces
         } else
             xml.writeEmptyElement(davUri, QStringLiteral("resourcetype"));
 
-        auto gmtDate = fileInfo.lastModified.toUTC();
+        auto gmtDate = fileInfo.lastModifiedInUtc();
         auto stringDate = QLocale::c().toString(gmtDate, QStringLiteral("ddd, dd MMM yyyy HH:mm:ss 'GMT'"));
         xml.writeTextElement(davUri, QStringLiteral("getlastmodified"), stringDate);
         xml.writeTextElement(davUri, QStringLiteral("getcontentlength"), QString::number(fileInfo.contentSize));
@@ -444,12 +448,12 @@ FileInfo *FakePutReply::perform(FileInfo &remoteRootFileInfo, const QNetworkRequ
     if (fileInfo) {
         fileInfo->contentSize = putPayload.size();
         fileInfo->contentChar = putPayload.at(0);
-        fileInfo->fileSize = fileInfo->contentSize; // it's hydrated on the server, so these are the same
     } else {
         // Assume that the file is filled with the same character
         fileInfo = remoteRootFileInfo.create(fileName, putPayload.size(), putPayload.at(0));
     }
-    fileInfo->lastModified = OCC::Utility::qDateTimeFromTime_t(request.rawHeader("X-OC-Mtime").toLongLong());
+    fileInfo->fileSize = fileInfo->contentSize; // it's hydrated on the server, so these are the same
+    fileInfo->setLastModifiedFromSecondsUTC(request.rawHeader("X-OC-Mtime").toLongLong());
     remoteRootFileInfo.find(fileName, /*invalidate_etags=*/true);
     return fileInfo;
 }
@@ -576,6 +580,7 @@ void FakeGetReply::respond()
     setRawHeader("OC-ETag", fileInfo->etag);
     setRawHeader("ETag", fileInfo->etag);
     setRawHeader("OC-FileId", fileInfo->fileId);
+    setRawHeader("X-OC-Mtime", QByteArray::number(fileInfo->lastModifiedInSecondsUTC()));
     emit metaDataChanged();
     if (bytesAvailable())
         emit readyRead();
@@ -643,6 +648,7 @@ void FakeGetWithDataReply::respond()
     setRawHeader("OC-ETag", fileInfo->etag);
     setRawHeader("ETag", fileInfo->etag);
     setRawHeader("OC-FileId", fileInfo->fileId);
+    setRawHeader("X-OC-Mtime", QByteArray::number(fileInfo->lastModifiedInSecondsUTC()));
     emit metaDataChanged();
     if (bytesAvailable())
         emit readyRead();
@@ -741,7 +747,7 @@ FileInfo *FakeChunkMoveReply::perform(FileInfo &uploadsFileInfo, FileInfo &remot
         // Assume that the file is filled with the same character
         fileInfo = remoteRootFileInfo.create(fileName, size, payload);
     }
-    fileInfo->lastModified = OCC::Utility::qDateTimeFromTime_t(request.rawHeader("X-OC-Mtime").toLongLong());
+    fileInfo->setLastModifiedFromSecondsUTC(request.rawHeader("X-OC-Mtime").toLongLong());
     remoteRootFileInfo.find(fileName, /*invalidate_etags=*/true);
 
     return fileInfo;
@@ -1054,7 +1060,7 @@ void FakeFolder::toDisk(QDir &dir, const FileInfo &templateFi)
             file.open(QFile::WriteOnly);
             file.write(QByteArray {}.fill(child.contentChar, child.contentSize));
             file.close();
-            OCC::FileSystem::setModTime(file.fileName(), OCC::Utility::qDateTimeToTime_t(child.lastModified));
+            OCC::FileSystem::setModTime(file.fileName(), child.lastModifiedInSecondsUTC());
         }
     }
 }
@@ -1067,12 +1073,14 @@ void FakeFolder::fromDisk(QDir &dir, FileInfo &templateFi)
             QDir subDir = dir;
             subDir.cd(diskChild.fileName());
             FileInfo &subFi = templateFi.children[diskChild.fileName()] = FileInfo { diskChild.fileName() };
+            subFi.setLastModified(diskChild.lastModified());
             fromDisk(subDir, subFi);
         } else {
             FileInfo fi(diskChild.fileName());
             fi.isDir = false;
             fi.fileSize = diskChild.size();
             fi.isDehydratedPlaceholder = isDehydratedPlaceholder(diskChild.absoluteFilePath());
+            fi.setLastModified(diskChild.lastModified());
             if (fi.isDehydratedPlaceholder) {
                 fi.contentChar = '\0';
             } else {
@@ -1120,7 +1128,7 @@ FileInfo FakeFolder::dbState() const
         item.isDir = record._type == ItemTypeDirectory;
         item.permissions = record._remotePerm;
         item.etag = record._etag;
-        item.lastModified = OCC::Utility::qDateTimeFromTime_t(record._modtime);
+        item.setLastModifiedFromSecondsUTC(record._modtime);
         item.fileId = record._fileId;
         item.checksums = record._checksumHeader;
         // item.contentChar can't be set from the db

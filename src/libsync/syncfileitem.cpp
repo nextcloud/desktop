@@ -107,3 +107,15 @@ QString Utility::enumToDisplayName(SyncFileItem::Status s)
     Q_UNREACHABLE();
 }
 }
+
+QDebug operator<<(QDebug debug, const OCC::SyncFileItem *item)
+{
+    if (!item) {
+        debug << "OCC::SyncFileItem(0x0)";
+    } else {
+        QDebugStateSaver saver(debug);
+        debug.setAutoInsertSpaces(false);
+        debug << "OCC::SyncFileItem(destination=" << item->destination() << ", type=" << item->_type << ", status=" << item->_status << ")";
+    }
+    return debug;
+}

@@ -42,8 +42,7 @@ public:
     void start() override;
 
 private:
-    bool removeRecursively(const QString &path);
-    QString _error;
+    bool removeRecursively(const QString &absolute, QString *error);
     bool _moveToTrash;
 };
 

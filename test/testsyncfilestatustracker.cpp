@@ -148,16 +148,16 @@ private slots:
         statusSpy.clear();
         fakeFolder.execUntilItemCompleted("D");
         verifyThatPushMatchesPull(fakeFolder, statusSpy);
-        QCOMPARE(statusSpy.statusOf(""), SyncFileStatus(SyncFileStatus::StatusNone));
-        QCOMPARE(statusSpy.statusOf("D"), SyncFileStatus(SyncFileStatus::StatusNone));
-        QCOMPARE(statusSpy.statusOf("D/d0"), SyncFileStatus(SyncFileStatus::StatusNone));
+        QCOMPARE(statusSpy.statusOf(""), SyncFileStatus(SyncFileStatus::StatusUpToDate));
+        QCOMPARE(statusSpy.statusOf("D"), SyncFileStatus(SyncFileStatus::StatusUpToDate));
+        QCOMPARE(statusSpy.statusOf("D/d0"), SyncFileStatus(SyncFileStatus::StatusUpToDate));
 
         statusSpy.clear();
         fakeFolder.execUntilFinished();
         verifyThatPushMatchesPull(fakeFolder, statusSpy);
         QCOMPARE(statusSpy.statusOf(""), SyncFileStatus(SyncFileStatus::StatusUpToDate));
-        QCOMPARE(statusSpy.statusOf("D"), SyncFileStatus(SyncFileStatus::StatusUpToDate));
-        QCOMPARE(statusSpy.statusOf("D/d0"), SyncFileStatus(SyncFileStatus::StatusUpToDate));
+        QCOMPARE(statusSpy.statusOf("D"), SyncFileStatus(SyncFileStatus::StatusNone));
+        QCOMPARE(statusSpy.statusOf("D/d0"), SyncFileStatus(SyncFileStatus::StatusNone));
 
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
     }
@@ -178,16 +178,16 @@ private slots:
         statusSpy.clear();
         fakeFolder.execUntilItemCompleted("D");
         verifyThatPushMatchesPull(fakeFolder, statusSpy);
-        QCOMPARE(statusSpy.statusOf(""), SyncFileStatus(SyncFileStatus::StatusNone));
-        QCOMPARE(statusSpy.statusOf("D"), SyncFileStatus(SyncFileStatus::StatusNone));
-        QCOMPARE(statusSpy.statusOf("D/d0"), SyncFileStatus(SyncFileStatus::StatusNone));
+        QCOMPARE(statusSpy.statusOf(""), SyncFileStatus(SyncFileStatus::StatusUpToDate));
+        QCOMPARE(statusSpy.statusOf("D"), SyncFileStatus(SyncFileStatus::StatusUpToDate));
+        QCOMPARE(statusSpy.statusOf("D/d0"), SyncFileStatus(SyncFileStatus::StatusUpToDate));
 
         statusSpy.clear();
         fakeFolder.execUntilFinished();
         verifyThatPushMatchesPull(fakeFolder, statusSpy);
         QCOMPARE(statusSpy.statusOf(""), SyncFileStatus(SyncFileStatus::StatusUpToDate));
-        QCOMPARE(statusSpy.statusOf("D"), SyncFileStatus(SyncFileStatus::StatusUpToDate));
-        QCOMPARE(statusSpy.statusOf("D/d0"), SyncFileStatus(SyncFileStatus::StatusUpToDate));
+        QCOMPARE(statusSpy.statusOf("D"), SyncFileStatus(SyncFileStatus::StatusNone));
+        QCOMPARE(statusSpy.statusOf("D/d0"), SyncFileStatus(SyncFileStatus::StatusNone));
 
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
     }
