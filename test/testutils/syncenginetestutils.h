@@ -628,7 +628,7 @@ inline void addFiles(QStringList &dest, const FileInfo &fi)
         for (const auto &fi : fi.children)
             addFiles(dest, fi);
     } else {
-        dest += QStringLiteral("%1 - %2 %3-bytes").arg(fi.path()).arg(fi.contentSize).arg(fi.contentChar);
+        dest += QStringLiteral("%1 - %2 %3-bytes (%4)").arg(fi.path(), QString::number(fi.contentSize), QChar::fromLatin1(fi.contentChar), fi.lastModifiedInUtc().toString());
     }
 }
 

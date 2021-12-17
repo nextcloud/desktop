@@ -300,8 +300,10 @@ private slots:
     }
 
     void testSelectiveSyncNoPopup() {
+        const auto original = FileInfo::A12_B12_C12_S12();
+
         // Unselecting all folder should not cause the popup to be shown
-        FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
+        FakeFolder fakeFolder(original);
 
         int aboutToRemoveAllFilesCalled = 0;
         QObject::connect(&fakeFolder.syncEngine(), &SyncEngine::aboutToRemoveAllFiles,
@@ -319,7 +321,7 @@ private slots:
 
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), FileInfo{}); // all files should be one localy
-        QCOMPARE(fakeFolder.currentRemoteState(), FileInfo::A12_B12_C12_S12()); // Server not changed
+        QCOMPARE(fakeFolder.currentRemoteState(), original); // Server not changed
         QCOMPARE(aboutToRemoveAllFilesCalled, 0); // But we did not show the popup
     }
 
