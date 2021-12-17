@@ -84,18 +84,18 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/common/filesystembase.cpp" line="399"/>
+        <location filename="../src/common/filesystembase.cpp" line="398"/>
         <source>Could not make directories in trash</source>
         <translation>Non posso creare cartelle nel cestino</translation>
     </message>
     <message>
-        <location filename="../src/common/filesystembase.cpp" line="413"/>
-        <location filename="../src/common/filesystembase.cpp" line="419"/>
+        <location filename="../src/common/filesystembase.cpp" line="412"/>
+        <location filename="../src/common/filesystembase.cpp" line="418"/>
         <source>Could not move &apos;%1&apos; to &apos;%2&apos;</source>
         <translation>Impossibile muovere &apos;%1&apos; a &apos;%2&apos;</translation>
     </message>
     <message>
-        <location filename="../src/common/filesystembase.cpp" line="453"/>
+        <location filename="../src/common/filesystembase.cpp" line="452"/>
         <source>Moving to the trash is not implemented on this platform</source>
         <translation>Spostare il cestino non è implementato in questa piattaforma</translation>
     </message>
@@ -2790,27 +2790,27 @@ Si tratta di una nuova modalità sperimentale. Se decidi di usarla, ti preghiamo
 <context>
     <name>OCC::PropagateLocalMkdir</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="141"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="144"/>
         <source>could not delete file %1, error: %2</source>
         <translation>Impossibile eliminare il file %1, errore: %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="156"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="159"/>
         <source>Can not create local folder %1 because of a local file name clash with %2</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="175"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="178"/>
         <source>Error updating metadata: %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="178"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="181"/>
         <source>The file %1 is currently in use</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="162"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="165"/>
         <source>could not create folder %1</source>
         <translation>impossibile creare la cartella %1</translation>
     </message>
@@ -2822,36 +2822,41 @@ Si tratta di una nuova modalità sperimentale. Se decidi di usarla, ti preghiamo
         <source>Could not remove %1 because of a local file name clash with %2!</source>
         <translation type="unfinished"/>
     </message>
+    <message>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="104"/>
+        <source>%1 the file is currently in use</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>OCC::PropagateLocalRename</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="216"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="219"/>
         <source>File %1 can not be renamed to %2 because of a local file name clash</source>
         <translation>Il file %1 non può essere rinominato in %2 a causa di un conflitto con il nome di un file locale</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="223"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="226"/>
         <source>Could not rename %1 to %2, the file is currently in use</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="252"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="255"/>
         <source>Error updating metadata: %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="255"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="258"/>
         <source>The file %1 is currently in use</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="261"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="264"/>
         <source>Failed to rename file</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="267"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="270"/>
         <source>Error setting pin state</source>
         <translation>Errore ad impostare il pin state</translation>
     </message>

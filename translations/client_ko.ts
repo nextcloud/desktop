@@ -84,18 +84,18 @@
         <translation>현재 사용되고 있는 파일 명으로 %1 을(를) 개명할 수 없습니다. </translation>
     </message>
     <message>
-        <location filename="../src/common/filesystembase.cpp" line="399"/>
+        <location filename="../src/common/filesystembase.cpp" line="398"/>
         <source>Could not make directories in trash</source>
         <translation>휴지통에 디렉토리를 만들수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../src/common/filesystembase.cpp" line="413"/>
-        <location filename="../src/common/filesystembase.cpp" line="419"/>
+        <location filename="../src/common/filesystembase.cpp" line="412"/>
+        <location filename="../src/common/filesystembase.cpp" line="418"/>
         <source>Could not move &apos;%1&apos; to &apos;%2&apos;</source>
         <translation>&apos;%1&apos; 을(를) &apos;%2&apos; 로 이동할 수 없습니다</translation>
     </message>
     <message>
-        <location filename="../src/common/filesystembase.cpp" line="453"/>
+        <location filename="../src/common/filesystembase.cpp" line="452"/>
         <source>Moving to the trash is not implemented on this platform</source>
         <translation>이 플랫폼에서는 휴지통으로 이동하지 않습니다.</translation>
     </message>
@@ -2774,27 +2774,27 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateLocalMkdir</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="141"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="144"/>
         <source>could not delete file %1, error: %2</source>
         <translation>%1 파일을 삭제할 수 없음, 오류: %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="156"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="159"/>
         <source>Can not create local folder %1 because of a local file name clash with %2</source>
         <translation>로컬 파일 명이 %2 와 충돌하기 때문에 로컬 폴더 %1 을(를) 생성할 수 없습니다</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="175"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="178"/>
         <source>Error updating metadata: %1</source>
         <translation>메타데이터 갱신 에러: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="178"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="181"/>
         <source>The file %1 is currently in use</source>
         <translation>파일 %1 은(는) 현재 이용 중입니다</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="162"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="165"/>
         <source>could not create folder %1</source>
         <translation>폴더 %1을(를) 만들 수 없음</translation>
     </message>
@@ -2806,36 +2806,41 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <source>Could not remove %1 because of a local file name clash with %2!</source>
         <translation>로컬 파일 명이 %2 와 충돌하기 때문에 %1 을(를) 제거할 수 없습니다!</translation>
     </message>
+    <message>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="104"/>
+        <source>%1 the file is currently in use</source>
+        <translation>%1  파일은  현재 이용 중입니다</translation>
+    </message>
 </context>
 <context>
     <name>OCC::PropagateLocalRename</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="216"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="219"/>
         <source>File %1 can not be renamed to %2 because of a local file name clash</source>
         <translation>로컬 파일 이름이 충돌하여 파일 %1의 이름을 %2(으)로 변경할 수 없음</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="223"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="226"/>
         <source>Could not rename %1 to %2, the file is currently in use</source>
         <translation>%1 을(를) %2 로 개명할 수 없습니다, 이 파일이 현재 사용 중입니다</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="252"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="255"/>
         <source>Error updating metadata: %1</source>
         <translation>메타데이터 갱신 에러: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="255"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="258"/>
         <source>The file %1 is currently in use</source>
         <translation>파일 %1 은(는) 현재 이용 중입니다</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="261"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="264"/>
         <source>Failed to rename file</source>
         <translation>파일 개명에 실패했습니다</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="267"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="270"/>
         <source>Error setting pin state</source>
         <translation>핀 상태 설정 에러</translation>
     </message>
