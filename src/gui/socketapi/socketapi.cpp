@@ -767,7 +767,10 @@ void SocketApi::command_DELETE_ITEM(const QString &localFile, SocketListener *)
         return;
 
     if (info.isDir()) {
-        FileSystem::removeRecursively(localFile);
+        FileSystem::RemoveEntryList removed;
+        FileSystem::RemoveEntryList locked;
+        FileSystem::RemoveErrorList errors;
+        FileSystem::removeRecursively(localFile, &removed, &locked, &errors);
     } else {
         QFile(localFile).remove();
     }
