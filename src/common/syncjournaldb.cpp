@@ -1626,6 +1626,26 @@ void SyncJournalDb::wipeErrorBlacklistEntry(const QString &relativeFile)
     }
 }
 
+void SyncJournalDb::wipeErrorBlacklistEntry(const QString &relativeFile, SyncJournalErrorBlacklistRecord::Category category)
+{
+    if (relativeFile.isEmpty()) {
+        return;
+    }
+    Q_ASSERT(QFileInfo(relativeFile).isRelative());
+
+    QMutexLocker locker(&_mutex);
+    if (checkConnect()) {
+        SqlQuery query(_db);
+
+        query.prepare("DELETE FROM blacklist WHERE path=?1 AND errorCategory=?2");
+        query.bindValue(1, relativeFile);
+        query.bindValue(1, category);
+        if (!query.exec()) {
+            sqlFail(QStringLiteral("Deletion of blacklist item failed."), query);
+        }
+    }
+}
+
 void SyncJournalDb::wipeErrorBlacklistCategory(SyncJournalErrorBlacklistRecord::Category category)
 {
     QMutexLocker locker(&_mutex);
