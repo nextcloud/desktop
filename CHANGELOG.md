@@ -12,6 +12,7 @@ Summary
 * Bugfix - Add request time and other missing data to .owncloudsync.log: [#7348](https://github.com/owncloud/client/issues/7348)
 * Bugfix - Do not ask for credentails at start-up when the user logged out: [#8924](https://github.com/owncloud/client/issues/8924)
 * Bugfix - Fix copy url location for private links: [#9048](https://github.com/owncloud/client/issues/9048)
+* Bugfix - A folder moved on the server was displayed as outdated: [#9071](https://github.com/owncloud/client/issues/9071)
 * Bugfix - Immediately propagate changes to the ignore list: [#8975](https://github.com/owncloud/client/issues/8975)
 * Bugfix - Fix icon name in desktop file with ownBrander themes: [#8992](https://github.com/owncloud/client/issues/8992)
 * Bugfix - Crash when handling locked files: [#9170](https://github.com/owncloud/client/issues/9170)
@@ -21,9 +22,11 @@ Summary
 * Bugfix - Do not sync when unsyncedfolders file cannot be read: [#9165](https://github.com/owncloud/client/issues/9165)
 * Bugfix - Fix failing dehydration causing files to be moved to trash: [#9257](https://github.com/owncloud/client/pull/9257)
 * Bugfix - Do not show Activity tab if server app is disabled or uninstalled: [#9260](https://github.com/owncloud/client/issues/9260)
+* Bugfix - Handle file locks for delete jobs: [#9293](https://github.com/owncloud/client/issues/9293)
 * Change - Make sharedialog preview be more resilient: [#8938](https://github.com/owncloud/client/issues/8938)
 * Enhancement - Allow to remove broken sync folders: [#9099](https://github.com/owncloud/client/pull/9099)
 * Enhancement - Also ignore local reapeating errors for a period of time: [#9208](https://github.com/owncloud/client/issues/9208)
+* Enhancement - Remove the availability menu from the ui: [#9291](https://github.com/owncloud/client/pull/9291)
 
 Details
 -------
@@ -55,6 +58,12 @@ Details
 
    https://github.com/owncloud/client/issues/9048
 
+* Bugfix - A folder moved on the server was displayed as outdated: [#9071](https://github.com/owncloud/client/issues/9071)
+
+   We fixed a bug where a folder moved on the server was displayed as outdated.
+
+   https://github.com/owncloud/client/issues/9071
+
 * Bugfix - Immediately propagate changes to the ignore list: [#8975](https://github.com/owncloud/client/issues/8975)
 
    Previously, when changing the ignore list, those changes would not be propagated to existing
@@ -84,6 +93,8 @@ Details
    completely.
 
    https://github.com/owncloud/client/issues/9194
+   https://github.com/owncloud/client/pull/9264
+   https://github.com/owncloud/client/pull/9296
 
 * Bugfix - Always restart OAuth2 on error: [#9196](https://github.com/owncloud/client/issues/9196)
 
@@ -125,6 +136,16 @@ Details
    https://github.com/owncloud/client/issues/9260
    https://github.com/owncloud/client/pull/9266
 
+* Bugfix - Handle file locks for delete jobs: [#9293](https://github.com/owncloud/client/issues/9293)
+
+   We no longer report an error when the client tries to delete a locked file but wait for the lock to
+   be removed.
+
+   This only works when a file is deleted not on folders.
+
+   https://github.com/owncloud/client/issues/9293
+   https://github.com/owncloud/client/pull/9295
+
 * Change - Make sharedialog preview be more resilient: [#8938](https://github.com/owncloud/client/issues/8938)
 
    We no longer enforce png thumbnails. We no longer replace the file icon if the thumbnail is
@@ -147,6 +168,12 @@ Details
 
    https://github.com/owncloud/client/issues/9208
    https://github.com/owncloud/client/issues/9133
+
+* Enhancement - Remove the availability menu from the ui: [#9291](https://github.com/owncloud/client/pull/9291)
+
+   The availability options should be handled on a folder base and in the file browser.
+
+   https://github.com/owncloud/client/pull/9291
 
 Changelog for ownCloud Desktop Client [2.9.2] (2021-11-24)
 =======================================
