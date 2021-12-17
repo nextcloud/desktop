@@ -86,16 +86,30 @@ namespace FileSystem {
         qint64 previousSize,
         time_t previousMtime);
 
+
+    struct RemoveEntry
+    {
+        const QString path;
+        const bool isDir;
+    };
+    struct RemoveError
+    {
+        const RemoveEntry entry;
+        const QString error;
+    };
+
+    using RemoveEntryList = std::vector<RemoveEntry>;
+    using RemoveErrorList = std::vector<RemoveError>;
+
     /**
      * Removes a directory and its contents recursively
      *
      * Returns true if all removes succeeded.
-     * onDeleted() is called for each deleted file or directory, including the root.
-     * errors are collected in errors.
      */
     bool OWNCLOUDSYNC_EXPORT removeRecursively(const QString &path,
-        const std::function<void(const QString &path, bool isDir)> &onDeleted = nullptr,
-        QStringList *errors = nullptr);
+        RemoveEntryList *success,
+        RemoveEntryList *locked,
+        RemoveErrorList *errors);
 }
 
 /** @} */

@@ -605,6 +605,21 @@ void Folder::slotWatchedPathChanged(const QString &path, ChangeReason reason)
     const QString relativePath = path.mid(this->path().size());
     if (reason == ChangeReason::UnLock) {
         journalDb()->wipeErrorBlacklistEntry(relativePath, SyncJournalErrorBlacklistRecord::Category::LocalSoftError);
+
+        {
+            // horrible hack to compensate that we don't handle folder deletes on a per file basis
+            int index = 0;
+            QString p = relativePath;
+            while ((index = p.lastIndexOf(QLatin1Char('/'))) != -1) {
+                p = p.left(index);
+                const auto rec = journalDb()->errorBlacklistEntry(p);
+                if (rec.isValid()) {
+                    if (rec._errorCategory == SyncJournalErrorBlacklistRecord::Category::LocalSoftError) {
+                        journalDb()->wipeErrorBlacklistEntry(p);
+                    }
+                }
+            }
+        }
     }
 
     // Add to list of locally modified paths

@@ -47,35 +47,50 @@ Q_LOGGING_CATEGORY(lcPropagateLocalRename, "sync.propagator.localrename", QtInfo
  *
  * \a path is relative to propagator()->_localDir + _item->_file and should start with a slash
  */
-bool PropagateLocalRemove::removeRecursively(const QString &absolute, QString *error)
+bool PropagateLocalRemove::removeRecursively(const QString &absolute)
 {
-    QStringList errors;
-    // path, isDir
-    QList<QPair<QString, bool>> deleted;
-    bool success = FileSystem::removeRecursively(
+    FileSystem::RemoveEntryList removed;
+    FileSystem::RemoveEntryList locked;
+    FileSystem::RemoveErrorList errors;
+    const bool success = FileSystem::removeRecursively(
         absolute,
-        [&deleted](const QString &path, bool isDir) {
-            // by prepending, a folder deletion may be followed by content deletions
-            deleted.prepend(qMakePair(path, isDir));
-        },
+        &removed,
+        &locked,
         &errors);
 
     if (!success) {
         // We need to delete the entries from the database now from the deleted vector.
         // Do it while avoiding redundant delete calls to the journal.
         QString deletedDir;
-        for (const auto &it : qAsConst(deleted)) {
-            if (!it.first.startsWith(propagator()->localPath()))
+        for (const auto &it : qAsConst(removed)) {
+            if (!it.path.startsWith(propagator()->localPath()))
                 continue;
-            if (!deletedDir.isEmpty() && it.first.startsWith(deletedDir))
+            if (!deletedDir.isEmpty() && it.path.startsWith(deletedDir))
                 continue;
-            if (it.second) {
-                deletedDir = it.first;
+            if (it.isDir) {
+                deletedDir = it.path;
             }
-            propagator()->_journal->deleteFileRecord(it.first.mid(propagator()->localPath().size()), it.second);
+            propagator()->_journal->deleteFileRecord(it.path.mid(propagator()->localPath().size()), it.isDir);
         }
-
-        *error = errors.join(QStringLiteral(", "));
+        if (!errors.empty()) {
+            QStringList errorList;
+            errorList.reserve(errors.size());
+            for (const auto &err : errors) {
+                errorList.append(tr("%1 failed with: %2").arg(QDir::toNativeSeparators(err.entry.path), err.error));
+            }
+            done(SyncFileItem::NormalError, errorList.join(QStringLiteral(", ")));
+            return false;
+        } else if (!locked.empty()) {
+            QStringList errorList;
+            errorList.reserve(errors.size());
+            for (const auto &l : locked) {
+                // unlock is handled in hack in `void Folder::slotWatchedPathChanged`
+                emit propagator()->seenLockedFile(l.path, FileSystem::LockMode::Exclusive);
+                errorList.append(tr("%1 the file is currently in use").arg(QDir::toNativeSeparators(l.path)));
+            }
+            done(SyncFileItem::SoftError, errorList.join(QStringLiteral(", ")));
+            return false;
+        }
     }
     return success;
 }
@@ -96,20 +111,22 @@ void PropagateLocalRemove::start()
     }
 
     if (FileSystem::fileExists(filename)) {
-        bool ok;
-        QString removeError;
-        const auto lockMode = propagator()->syncOptions().requiredLockMode();
-        if (FileSystem::isFileLocked(filename, lockMode)) {
-            emit propagator()->seenLockedFile(filename, lockMode);
+        if (FileSystem::isFileLocked(filename, FileSystem::LockMode::Exclusive)) {
+            emit propagator()->seenLockedFile(filename, FileSystem::LockMode::Exclusive);
             done(SyncFileItem::SoftError, tr("%1 the file is currently in use").arg(QDir::toNativeSeparators(filename)));
             return;
         }
 
+        bool ok = false;
+        QString removeError;
         if (_moveToTrash) {
             ok = FileSystem::moveToTrash(filename, &removeError);
         } else {
             if (_item->isDirectory()) {
-                ok = removeRecursively(filename, &removeError);
+                // removeRecursively will call done on error
+                if (!(ok = removeRecursively(filename))) {
+                    return;
+                }
             } else {
                 ok = FileSystem::remove(filename, &removeError);
             }
