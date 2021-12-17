@@ -23,10 +23,12 @@ Summary
 * Bugfix - Fix failing dehydration causing files to be moved to trash: [#9257](https://github.com/owncloud/client/pull/9257)
 * Bugfix - Do not show Activity tab if server app is disabled or uninstalled: [#9260](https://github.com/owncloud/client/issues/9260)
 * Bugfix - Handle file locks for delete jobs: [#9293](https://github.com/owncloud/client/issues/9293)
+* Bugfix - We fixed a possible crash: [#13](https://github.com/owncloud/client-desktop-vfs-win/pull/13)
 * Change - Make sharedialog preview be more resilient: [#8938](https://github.com/owncloud/client/issues/8938)
 * Enhancement - Allow to remove broken sync folders: [#9099](https://github.com/owncloud/client/pull/9099)
 * Enhancement - Also ignore local reapeating errors for a period of time: [#9208](https://github.com/owncloud/client/issues/9208)
 * Enhancement - Remove the availability menu from the ui: [#9291](https://github.com/owncloud/client/pull/9291)
+* Enhancement - Add the syncroot to the search indexed with Windows VFS: [#12](https://github.com/owncloud/client-desktop-vfs-win/pull/12)
 
 Details
 -------
@@ -146,6 +148,12 @@ Details
    https://github.com/owncloud/client/issues/9293
    https://github.com/owncloud/client/pull/9295
 
+* Bugfix - We fixed a possible crash: [#13](https://github.com/owncloud/client-desktop-vfs-win/pull/13)
+
+   We fixed a possible crash that could happen during the initialisation of the vfs plugin.
+
+   https://github.com/owncloud/client-desktop-vfs-win/pull/13
+
 * Change - Make sharedialog preview be more resilient: [#8938](https://github.com/owncloud/client/issues/8938)
 
    We no longer enforce png thumbnails. We no longer replace the file icon if the thumbnail is
@@ -174,6 +182,13 @@ Details
    The availability options should be handled on a folder base and in the file browser.
 
    https://github.com/owncloud/client/pull/9291
+
+* Enhancement - Add the syncroot to the search indexed with Windows VFS: [#12](https://github.com/owncloud/client-desktop-vfs-win/pull/12)
+
+   Microsoft recommends adding the syncroot to search indexer to improve the performance with
+   the file status icons.
+
+   https://github.com/owncloud/client-desktop-vfs-win/pull/12
 
 Changelog for ownCloud Desktop Client [2.9.2] (2021-11-24)
 =======================================
