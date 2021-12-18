@@ -1109,12 +1109,12 @@ Bu işlem şu anda yürütülmekte olan eşitleme işlemlerini durdurur.</transl
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="189"/>
         <source>Error while canceling delete of a file</source>
-        <translation type="unfinished"/>
+        <translation>Bir dosyanın silinmesi iptal edilirken sorun çıktı</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="190"/>
         <source>Error while canceling delete of %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 silinmesi iptal edilirken sorun çıktı</translation>
     </message>
 </context>
 <context>
@@ -3041,8 +3041,13 @@ güncelleyici başka izinler isteyebilir.</translation>
     <name>OCC::OwncloudPropagator</name>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="776"/>
-        <source>Impossible to get modification time for file in conflict %1)</source>
+        <source>Impossible to get modification time for file in conflict %1</source>
         <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="776"/>
+        <source>Impossible to get modification time for file in conflict %1)</source>
+        <translation>%1 ile çakışan dosyasının değiştirilme zamanı alınamadı)</translation>
     </message>
 </context>
 <context>

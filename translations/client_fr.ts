@@ -3040,6 +3040,11 @@ L&apos;assistant de mise à jour peut vous demandez des autorisations supplémen
     <name>OCC::OwncloudPropagator</name>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="776"/>
+        <source>Impossible to get modification time for file in conflict %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="776"/>
         <source>Impossible to get modification time for file in conflict %1)</source>
         <translation type="unfinished"/>
     </message>
