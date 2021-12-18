@@ -89,6 +89,30 @@ bool Logger::isLoggingToFile() const
 void Logger::doLog(QtMsgType type, const QMessageLogContext &ctx, const QString &message)
 {
     const QString msg = qFormatLogMessage(type, ctx, message);
+#if defined(Q_OS_WIN) && defined(QT_DEBUG)
+    // write logs to Output window of Visual Studio
+    {
+        QString prefix;
+        switch (type) {
+        case QtDebugMsg:
+            break;
+        case QtInfoMsg:
+            break;
+        case QtWarningMsg:
+            prefix = QStringLiteral("[WARNING] ");
+            break;
+        case QtCriticalMsg:
+            prefix = QStringLiteral("[CRITICAL ERROR] ");
+            break;
+        case QtFatalMsg:
+            prefix = QStringLiteral("[FATAL ERROR] ");
+            break;
+        }
+        auto msgW = QString(prefix + message).toStdWString();
+        msgW.append(L"\n");
+        OutputDebugString(msgW.c_str());
+    }
+#endif
     {
         QMutexLocker lock(&_mutex);
         _crashLogIndex = (_crashLogIndex + 1) % CrashLogSize;
