@@ -1,0 +1,8 @@
+Bugfix: Make first sync start fast again. 
+
+The first sync of the folders start now directly after startup instead of  
+after a full "pausing" interval.
+
+Also better say nothing than "Waiting..." which confuses users.
+
+https://github.com/owncloud/client/issues/9253

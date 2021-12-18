@@ -1071,14 +1071,10 @@ void FolderStatusModel::slotFolderSyncStateChange(Folder *f)
             if (other != f && other->isSyncRunning())
                 pos += 1;
         }
-        QString message;
-        if (pos <= 0) {
-            message = tr("Waiting...");
-        } else {
-            message = tr("Waiting for %n other folder(s)...", "", pos);
+        if (pos > 0) {
+            pi._overallSyncString = tr("Waiting for %n other folder(s)...", "", pos);
         }
         pi = SubFolderInfo::Progress();
-        pi._overallSyncString = message;
     } else if (state == SyncResult::SyncPrepare) {
         pi = SubFolderInfo::Progress();
         pi._overallSyncString = tr("Preparing to sync...");

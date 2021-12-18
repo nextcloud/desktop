@@ -817,7 +817,7 @@ void FolderMan::startScheduledSyncSoon()
         return;
     }
 
-    seconds delay;
+    seconds delay { 2s }; // Startup, if _lastSyncFolder is still empty.
     seconds sinceLastSync;
 
     // Require a pause based on the duration of the last sync run.
@@ -829,6 +829,8 @@ void FolderMan::startScheduledSyncSoon()
         //  1min -> 12s pause
         //  1h   -> 90s pause
         delay = seconds(static_cast<int64_t>(qSqrt(duration_cast<seconds>(lastFolder->msecLastSyncDuration()).count()) / 20));
+    } else {
+        qDebug() << "Setting initial sync start delay of" << delay.count();
     }
 
     // Delays beyond one minute seem too big, particularly since there
