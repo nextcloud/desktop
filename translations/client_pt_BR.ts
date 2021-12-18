@@ -1109,12 +1109,12 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="189"/>
         <source>Error while canceling delete of a file</source>
-        <translation type="unfinished"/>
+        <translation>Erro ao cancelar exclusão de um arquivo</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="190"/>
         <source>Error while canceling delete of %1</source>
-        <translation type="unfinished"/>
+        <translation>Erro ao cancelar exclusão de %1</translation>
     </message>
 </context>
 <context>
@@ -3038,8 +3038,13 @@ pode solicitar por privilégios adicionais durante o processo.</translation>
     <name>OCC::OwncloudPropagator</name>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="776"/>
-        <source>Impossible to get modification time for file in conflict %1)</source>
+        <source>Impossible to get modification time for file in conflict %1</source>
         <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="776"/>
+        <source>Impossible to get modification time for file in conflict %1)</source>
+        <translation>Impossível obter hora de modificação para o arquivo em conflito %1)</translation>
     </message>
 </context>
 <context>

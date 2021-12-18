@@ -3040,8 +3040,13 @@ můžete být požádáni o dodatečná oprávnění.</translation>
     <name>OCC::OwncloudPropagator</name>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="776"/>
-        <source>Impossible to get modification time for file in conflict %1)</source>
+        <source>Impossible to get modification time for file in conflict %1</source>
         <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="776"/>
+        <source>Impossible to get modification time for file in conflict %1)</source>
+        <translation>Nedaří se získat čas změny pro soubor v konfliktu %1)</translation>
     </message>
 </context>
 <context>
