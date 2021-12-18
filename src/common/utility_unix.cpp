@@ -37,6 +37,11 @@ static void setupFavLink_private(const QString &folder)
     }
 }
 
+static void removeFavLink_private(const QString &folder)
+{
+    Q_UNUSED(folder)
+}
+
 // returns the autostart directory the linux way
 // and respects the XDG_CONFIG_HOME env variable
 QString getUserAutostartDir_private()
@@ -80,17 +85,17 @@ void setLaunchOnStartup_private(const QString &appName, const QString &guiName, 
 
         QTextStream ts(&iniFile);
         ts.setCodec("UTF-8");
-        ts << QLatin1String("[Desktop Entry]") << endl
-           << QLatin1String("Name=") << guiName << endl
-           << QLatin1String("GenericName=") << QLatin1String("File Synchronizer") << endl
-           << QLatin1String("Exec=\"") << executablePath << "\" --background" << endl
-           << QLatin1String("Terminal=") << "false" << endl
-           << QLatin1String("Icon=") << APPLICATION_ICON_NAME << endl
-           << QLatin1String("Categories=") << QLatin1String("Network") << endl
-           << QLatin1String("Type=") << QLatin1String("Application") << endl
-           << QLatin1String("StartupNotify=") << "false" << endl
-           << QLatin1String("X-GNOME-Autostart-enabled=") << "true" << endl
-           << QLatin1String("X-GNOME-Autostart-Delay=10") << endl;
+        ts << QLatin1String("[Desktop Entry]\n")
+           << QLatin1String("Name=") << guiName << QLatin1Char('\n')
+           << QLatin1String("GenericName=") << QLatin1String("File Synchronizer\n")
+           << QLatin1String("Exec=\"") << executablePath << "\" --background\n"
+           << QLatin1String("Terminal=") << "false\n"
+           << QLatin1String("Icon=") << APPLICATION_ICON_NAME << QLatin1Char('\n')
+           << QLatin1String("Categories=") << QLatin1String("Network\n")
+           << QLatin1String("Type=") << QLatin1String("Application\n")
+           << QLatin1String("StartupNotify=") << "false\n"
+           << QLatin1String("X-GNOME-Autostart-enabled=") << "true\n"
+           << QLatin1String("X-GNOME-Autostart-Delay=10") << Qt::endl;
     } else {
         if (!QFile::remove(desktopFileLocation)) {
             qCWarning(lcUtility) << "Could not remove autostart desktop file";
@@ -101,6 +106,11 @@ void setLaunchOnStartup_private(const QString &appName, const QString &guiName, 
 static inline bool hasDarkSystray_private()
 {
     return true;
+}
+
+QString Utility::getCurrentUserName()
+{
+    return {};
 }
 
 } // namespace OCC

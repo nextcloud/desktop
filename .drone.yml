@@ -3,15 +3,15 @@ name: qt-5.15
 
 steps:
 - name: cmake
-  image: ghcr.io/nextcloud/continuous-integration-client:client-5.15-1
+  image: ghcr.io/nextcloud/continuous-integration-client:client-5.15-4
   volumes:
     - name: build
       path: /drone/build
   commands:
     - cd /drone/build
-    - cmake -DCMAKE_C_COMPILER=gcc-10 -DCMAKE_CXX_COMPILER=g++-10 -DCMAKE_BUILD_TYPE=Debug -DBUILD_UPDATER=ON -DBUILD_TESTING=1 -DECM_ENABLE_SANITIZERS=address ../src
+    - cmake -DCMAKE_C_COMPILER=gcc-10 -DCMAKE_CXX_COMPILER=g++-10 -DCMAKE_BUILD_TYPE=Debug -DBUILD_UPDATER=ON -DBUILD_TESTING=1 -DECM_ENABLE_SANITIZERS=address -DCMAKE_CXX_FLAGS=-Werror ../src
 - name: compile
-  image: ghcr.io/nextcloud/continuous-integration-client:client-5.15-1
+  image: ghcr.io/nextcloud/continuous-integration-client:client-5.15-4
   volumes:
     - name: build
       path: /drone/build
@@ -19,7 +19,7 @@ steps:
     - cd /drone/build
     - make -j$(nproc)
 - name: test
-  image: ghcr.io/nextcloud/continuous-integration-client:client-5.15-1
+  image: ghcr.io/nextcloud/continuous-integration-client:client-5.15-4
   volumes:
     - name: build
       path: /drone/build
@@ -27,7 +27,7 @@ steps:
     - cd /drone/build
     - useradd -m -s /bin/bash test
     - chown -R test:test .
-    - su -c 'ASAN_OPTIONS=detect_leaks=0 ctest --output-on-failure' test
+    - su -c 'ASAN_OPTIONS=detect_leaks=0 xvfb-run ctest --output-on-failure' test
 
 volumes:
 - name: build
@@ -47,23 +47,23 @@ name: qt-5.15-clang
 
 steps:
 - name: cmake
-  image: ghcr.io/nextcloud/continuous-integration-client:client-5.15-1
+  image: ghcr.io/nextcloud/continuous-integration-client:client-5.15-4
   volumes:
     - name: build
       path: /drone/build
   commands:
     - cd /drone/build
-    - cmake -GNinja -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_C_COMPILER=clang-10 -DCMAKE_CXX_COMPILER=clazy -DCMAKE_BUILD_TYPE=Debug -DBUILD_UPDATER=ON -DBUILD_TESTING=1 -DECM_ENABLE_SANITIZERS=address ../src
+    - cmake -GNinja -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_C_COMPILER=clang-10 -DCMAKE_CXX_COMPILER=clang++-10 -DCMAKE_BUILD_TYPE=Debug -DBUILD_UPDATER=ON -DBUILD_TESTING=1 -DECM_ENABLE_SANITIZERS=address -DCMAKE_CXX_FLAGS=-Werror ../src
 - name: compile
-  image: ghcr.io/nextcloud/continuous-integration-client:client-5.15-1
+  image: ghcr.io/nextcloud/continuous-integration-client:client-5.15-4
   volumes:
     - name: build
       path: /drone/build
   commands:
     - cd /drone/build
-    - ninja 2>1 | /drone/src/admin/linux/count_compiler_warnings.py /drone/src
+    - ninja
 - name: test
-  image: ghcr.io/nextcloud/continuous-integration-client:client-5.15-1
+  image: ghcr.io/nextcloud/continuous-integration-client:client-5.15-4
   volumes:
     - name: build
       path: /drone/build
@@ -71,9 +71,9 @@ steps:
     - cd /drone/build
     - useradd -m -s /bin/bash test
     - chown -R test:test .
-    - su -c 'ASAN_OPTIONS=detect_leaks=0 ctest --output-on-failure' test
+    - su -c 'ASAN_OPTIONS=detect_leaks=0 xvfb-run ctest --output-on-failure' test
 - name: clang-tidy
-  image: ghcr.io/nextcloud/continuous-integration-client:client-5.15-1
+  image: ghcr.io/nextcloud/continuous-integration-client:client-5.15-4
   volumes:
     - name: build
       path: /drone/build
@@ -98,14 +98,14 @@ name: AppImage
 
 steps:
 - name: build
-  image: ghcr.io/nextcloud/continuous-integration-client-appimage:client-appimage-2
+  image: ghcr.io/nextcloud/continuous-integration-client-appimage:client-appimage-3
   environment:
     CI_UPLOAD_GIT_TOKEN:
       from_secret: CI_UPLOAD_GIT_TOKEN
     CI_UPLOAD_GIT_USERNAME:
       from_secret: CI_UPLOAD_GIT_USERNAME
   commands:
-    - /bin/bash -c "./admin/linux/build-appimage.sh"
+    - BUILDNR=$DRONE_BUILD_NUMBER VERSION_SUFFIX=$DRONE_PULL_REQUEST BUILD_UPDATER=ON DESKTOP_CLIENT_ROOT=$DRONE_WORKSPACE /bin/bash -c "./admin/linux/build-appimage.sh"
     - /bin/bash -c "./admin/linux/upload-appimage.sh" || echo "Upload failed, however this is an optional step."
 trigger:
   branch:

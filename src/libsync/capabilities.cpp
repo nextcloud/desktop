@@ -90,6 +90,26 @@ int Capabilities::sharePublicLinkExpireDateDays() const
     return _capabilities["files_sharing"].toMap()["public"].toMap()["expire_date"].toMap()["days"].toInt();
 }
 
+bool Capabilities::shareInternalEnforceExpireDate() const
+{
+    return _capabilities["files_sharing"].toMap()["public"].toMap()["expire_date_internal"].toMap()["enforced"].toBool();
+}
+
+int Capabilities::shareInternalExpireDateDays() const
+{
+    return _capabilities["files_sharing"].toMap()["public"].toMap()["expire_date_internal"].toMap()["days"].toInt();
+}
+
+bool Capabilities::shareRemoteEnforceExpireDate() const
+{
+    return _capabilities["files_sharing"].toMap()["public"].toMap()["expire_date_remote"].toMap()["enforced"].toBool();
+}
+
+int Capabilities::shareRemoteExpireDateDays() const
+{
+    return _capabilities["files_sharing"].toMap()["public"].toMap()["expire_date_remote"].toMap()["days"].toInt();
+}
+
 bool Capabilities::sharePublicLinkMultiple() const
 {
     return _capabilities["files_sharing"].toMap()["public"].toMap()["multiple"].toBool();
@@ -98,6 +118,15 @@ bool Capabilities::sharePublicLinkMultiple() const
 bool Capabilities::shareResharing() const
 {
     return _capabilities["files_sharing"].toMap()["resharing"].toBool();
+}
+
+int Capabilities::shareDefaultPermissions() const
+{
+    if(_capabilities["files_sharing"].toMap().contains("default_permissions")) {
+        return _capabilities["files_sharing"].toMap()["default_permissions"].toInt();
+    }
+    
+    return {};
 }
 
 bool Capabilities::clientSideEncryptionAvailable() const
@@ -187,11 +216,27 @@ bool Capabilities::chunkingNg() const
     return _capabilities["dav"].toMap()["chunking"].toByteArray() >= "1.0";
 }
 
+bool Capabilities::bulkUpload() const
+{
+    return _capabilities["dav"].toMap()["bulkupload"].toByteArray() >= "1.0";
+}
+
 bool Capabilities::userStatus() const
 {
-    return _capabilities.contains("notifications") &&
-        _capabilities["notifications"].toMap().contains("ocs-endpoints") &&
-        _capabilities["notifications"].toMap()["ocs-endpoints"].toStringList().contains("user-status");
+    if (!_capabilities.contains("user_status")) {
+        return false;
+    }
+    const auto userStatusMap = _capabilities["user_status"].toMap();
+    return userStatusMap.value("enabled", false).toBool();
+}
+
+bool Capabilities::userStatusSupportsEmoji() const
+{
+    if (!userStatus()) {
+        return false;
+    }
+    const auto userStatusMap = _capabilities["user_status"].toMap();
+    return userStatusMap.value("supports_emoji", false).toBool();
 }
 
 PushNotificationTypes Capabilities::availablePushNotifications() const

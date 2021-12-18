@@ -323,12 +323,29 @@ void OwncloudSetupWizard::slotConnectToOCUrl(const QString &url)
     qCInfo(lcWizard) << "Connect to url: " << url;
     AbstractCredentials *creds = _ocWizard->getCredentials();
     _ocWizard->account()->setCredentials(creds);
-    _ocWizard->setField(QLatin1String("OCUrl"), url);
-    _ocWizard->appendToConfigurationLog(tr("Trying to connect to %1 at %2 …")
-                                            .arg(Theme::instance()->appNameGUI())
-                                            .arg(url));
 
-    testOwnCloudConnect();
+    const auto fetchUserNameJob = new JsonApiJob(_ocWizard->account()->sharedFromThis(), QStringLiteral("/ocs/v1.php/cloud/user"));
+    connect(fetchUserNameJob, &JsonApiJob::jsonReceived, this, [this, url](const QJsonDocument &json, int statusCode) {
+        if (statusCode != 100) {
+            qCWarning(lcWizard) << "Could not fetch username.";
+        }
+
+        sender()->deleteLater();
+
+        const auto objData = json.object().value("ocs").toObject().value("data").toObject();
+        const auto userId = objData.value("id").toString("");
+        const auto displayName = objData.value("display-name").toString("");
+        _ocWizard->account()->setDavUser(userId);
+        _ocWizard->account()->setDavDisplayName(displayName);
+
+        _ocWizard->setField(QLatin1String("OCUrl"), url);
+        _ocWizard->appendToConfigurationLog(tr("Trying to connect to %1 at %2 …")
+                                                .arg(Theme::instance()->appNameGUI())
+                                                .arg(url));
+
+        testOwnCloudConnect();
+    });
+    fetchUserNameJob->start();
 }
 
 void OwncloudSetupWizard::testOwnCloudConnect()
@@ -579,9 +596,6 @@ void OwncloudSetupWizard::slotCreateRemoteFolderFinished(QNetworkReply *reply)
 
 void OwncloudSetupWizard::finalizeSetup(bool success)
 {
-    // enable/disable the finish button.
-    _ocWizard->enableFinishOnResultWidget(success);
-
     const QString localFolder = _ocWizard->property("localFolder").toString();
     if (success) {
         if (!(localFolder.isEmpty() || _remoteFolder.isEmpty())) {
@@ -670,6 +684,7 @@ void OwncloudSetupWizard::slotAssistantFinished(int result)
     }
 
     // notify others.
+    _ocWizard->done(QWizard::Accepted);
     emit ownCloudWizardDone(result);
 }
 

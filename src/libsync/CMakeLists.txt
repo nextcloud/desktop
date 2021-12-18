@@ -29,6 +29,7 @@ set(libsync_SRCS
     configfile.cpp
     abstractnetworkjob.cpp
     networkjobs.cpp
+    iconjob.cpp
     owncloudpropagator.cpp
     nextcloudtheme.cpp
     abstractpropagateremotedeleteencrypted.cpp
@@ -39,6 +40,8 @@ set(libsync_SRCS
     propagateupload.cpp
     propagateuploadv1.cpp
     propagateuploadng.cpp
+    bulkpropagatorjob.cpp
+    putmultifilejob.cpp
     propagateremotedelete.cpp
     propagateremotedeleteencrypted.cpp
     propagateremotedeleteencryptedrootfolder.cpp
@@ -55,11 +58,20 @@ set(libsync_SRCS
     theme.cpp
     clientsideencryption.cpp
     clientsideencryptionjobs.cpp
+    datetimeprovider.cpp
+    ocsuserstatusconnector.cpp
+    userstatusconnector.cpp
+    ocsprofileconnector.cpp
     creds/dummycredentials.cpp
     creds/abstractcredentials.cpp
     creds/credentialscommon.cpp
     creds/keychainchunk.cpp
 )
+
+if (WIN32)
+    # to fix warnings from ntstatus.h
+    add_definitions(-DUMDF_USING_NTSTATUS)
+endif()
 
 if(TOKEN_AUTH_ONLY)
     set (libsync_SRCS ${libsync_SRCS} creds/tokencredentials.cpp)
@@ -95,11 +107,13 @@ IF (NOT APPLE)
 ENDIF(NOT APPLE)
 
 find_package(Qt5 REQUIRED COMPONENTS WebSockets)
+
 add_library(nextcloudsync SHARED ${libsync_SRCS})
-set_target_properties(nextcloudsync PROPERTIES LIBRARY_OUTPUT_NAME ${APPLICATION_EXECUTABLE}sync)
+add_library(Nextcloud::sync ALIAS nextcloudsync)
+
 target_link_libraries(nextcloudsync
   PUBLIC
-  nextcloud_csync
+  Nextcloud::csync
   OpenSSL::Crypto
   OpenSSL::SSL
   ${OS_SPECIFIC_LINK_LIBRARIES}
@@ -127,11 +141,19 @@ GENERATE_EXPORT_HEADER( nextcloudsync
 
 target_include_directories(nextcloudsync PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
 
-
-set_target_properties( nextcloudsync  PROPERTIES
-	VERSION ${MIRALL_VERSION}
-	SOVERSION ${MIRALL_SOVERSION}
-	RUNTIME_OUTPUT_DIRECTORY ${BIN_OUTPUT_DIRECTORY}
+set_target_properties(
+  nextcloudsync
+    PROPERTIES
+      VERSION
+        ${MIRALL_VERSION}
+      SOVERSION
+        ${MIRALL_SOVERSION}
+      RUNTIME_OUTPUT_DIRECTORY
+        ${BIN_OUTPUT_DIRECTORY}
+      LIBRARY_OUTPUT_NAME
+        ${APPLICATION_EXECUTABLE}sync
+      RUNTIME_OUTPUT_NAME
+        ${APPLICATION_EXECUTABLE}sync
 )
 
 if(NOT BUILD_OWNCLOUD_OSX_BUNDLE)

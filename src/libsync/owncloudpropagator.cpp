@@ -21,12 +21,14 @@
 #include "propagateremotedelete.h"
 #include "propagateremotemove.h"
 #include "propagateremotemkdir.h"
+#include "bulkpropagatorjob.h"
 #include "propagatorjobs.h"
 #include "filesystem.h"
 #include "common/utility.h"
 #include "account.h"
 #include "common/asserts.h"
 #include "discoveryphase.h"
+#include "syncfileitem.h"
 
 #ifdef Q_OS_WIN
 #include <windef.h>
@@ -47,6 +49,7 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcPropagator, "nextcloud.sync.propagator", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcDirectory, "nextcloud.sync.propagator.directory", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcRootDirectory, "nextcloud.sync.propagator.root.directory", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcCleanupPolls, "nextcloud.sync.propagator.cleanuppolls", QtInfoMsg)
 
 qint64 criticalFreeSpaceLimit()
@@ -171,7 +174,7 @@ static SyncJournalErrorBlacklistRecord createBlacklistEntry(
  *
  * May adjust the status or item._errorString.
  */
-static void blacklistUpdate(SyncJournalDb *journal, SyncFileItem &item)
+void blacklistUpdate(SyncJournalDb *journal, SyncFileItem &item)
 {
     SyncJournalErrorBlacklistRecord oldEntry = journal->errorBlacklistEntry(item._file);
 
@@ -269,6 +272,7 @@ void PropagateItemJob::done(SyncFileItem::Status statusArg, const QString &error
     case SyncFileItem::NoStatus:
     case SyncFileItem::BlacklistedError:
     case SyncFileItem::FileLocked:
+    case SyncFileItem::FileNameInvalid:
         // nothing
         break;
     }
@@ -357,15 +361,13 @@ PropagateItemJob *OwncloudPropagator::createJob(const SyncFileItemPtr &item)
             job->setDeleteExistingFolder(deleteExisting);
             return job;
         } else {
-            PropagateUploadFileCommon *job = nullptr;
-            if (item->_size > syncOptions()._initialChunkSize && account()->capabilities().chunkingNg()) {
-                // Item is above _initialChunkSize, thus will be classified as to be chunked
-                job = new PropagateUploadFileNG(this, item);
+            if (deleteExisting || !isDelayedUploadItem(item)) {
+                auto job = createUploadJob(item, deleteExisting);
+                return job.release();
             } else {
-                job = new PropagateUploadFileV1(this, item);
+                pushDelayedUploadTask(item);
+                return nullptr;
             }
-            job->setDeleteExisting(deleteExisting);
-            return job;
         }
     case CSYNC_INSTRUCTION_RENAME:
         if (item->_direction == SyncFileItem::Up) {
@@ -380,6 +382,35 @@ PropagateItemJob *OwncloudPropagator::createJob(const SyncFileItemPtr &item)
         return nullptr;
     }
     return nullptr;
+}
+
+std::unique_ptr<PropagateUploadFileCommon> OwncloudPropagator::createUploadJob(SyncFileItemPtr item, bool deleteExisting)
+{
+    auto job = std::unique_ptr<PropagateUploadFileCommon>{};
+
+    if (item->_size > syncOptions()._initialChunkSize && account()->capabilities().chunkingNg()) {
+        // Item is above _initialChunkSize, thus will be classified as to be chunked
+        job = std::make_unique<PropagateUploadFileNG>(this, item);
+    } else {
+        job = std::make_unique<PropagateUploadFileV1>(this, item);
+    }
+
+    job->setDeleteExisting(deleteExisting);
+
+    removeFromBulkUploadBlackList(item->_file);
+
+    return job;
+}
+
+void OwncloudPropagator::pushDelayedUploadTask(SyncFileItemPtr item)
+{
+    _delayedTasks.push_back(item);
+}
+
+void OwncloudPropagator::resetDelayedUploadTasks()
+{
+    _scheduleDelayedTasks = false;
+    _delayedTasks.clear();
 }
 
 qint64 OwncloudPropagator::smallFileSize()
@@ -417,6 +448,7 @@ void OwncloudPropagator::start(SyncFileItemVector &&items)
             items.end());
     }
 
+    resetDelayedUploadTasks();
     _rootJob.reset(new PropagateRootDirectory(this));
     QStack<QPair<QString /* directory name */, PropagateDirectory * /* job */>> directories;
     directories.push(qMakePair(QString(), _rootJob.data()));
@@ -472,56 +504,17 @@ void OwncloudPropagator::start(SyncFileItemVector &&items)
         }
 
         if (item->isDirectory()) {
-            auto *dir = new PropagateDirectory(this, item);
-
-            if (item->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE
-                && item->_direction == SyncFileItem::Up) {
-                // Skip all potential uploads to the new folder.
-                // Processing them now leads to problems with permissions:
-                // checkForPermissions() has already run and used the permissions
-                // of the file we're about to delete to decide whether uploading
-                // to the new dir is ok...
-                foreach (const SyncFileItemPtr &item2, items) {
-                    if (item2->destination().startsWith(item->destination() + "/")) {
-                        item2->_instruction = CSYNC_INSTRUCTION_NONE;
-                        _anotherSyncNeeded = true;
-                    }
-                }
-            }
-
-            if (item->_instruction == CSYNC_INSTRUCTION_REMOVE) {
-                // We do the removal of directories at the end, because there might be moves from
-                // these directories that will happen later.
-                directoriesToRemove.prepend(dir);
-                removedDirectory = item->_file + "/";
-
-                // We should not update the etag of parent directories of the removed directory
-                // since it would be done before the actual remove (issue #1845)
-                // NOTE: Currently this means that we don't update those etag at all in this sync,
-                //       but it should not be a problem, they will be updated in the next sync.
-                for (int i = 0; i < directories.size(); ++i) {
-                    if (directories[i].second->_item->_instruction == CSYNC_INSTRUCTION_UPDATE_METADATA)
-                        directories[i].second->_item->_instruction = CSYNC_INSTRUCTION_NONE;
-                }
-            } else {
-                PropagateDirectory *currentDirJob = directories.top().second;
-                currentDirJob->appendJob(dir);
-            }
-            directories.push(qMakePair(item->destination() + "/", dir));
+            startDirectoryPropagation(item,
+                                      directories,
+                                      directoriesToRemove,
+                                      removedDirectory,
+                                      items);
         } else {
-            if (item->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE) {
-                // will delete directories, so defer execution
-                directoriesToRemove.prepend(createJob(item));
-                removedDirectory = item->_file + "/";
-            } else {
-                directories.top().second->appendTask(item);
-            }
-
-            if (item->_instruction == CSYNC_INSTRUCTION_CONFLICT) {
-                // This might be a file or a directory on the local side. If it's a
-                // directory we want to skip processing items inside it.
-                maybeConflictDirectory = item->_file + "/";
-            }
+            startFilePropagation(item,
+                                 directories,
+                                 directoriesToRemove,
+                                 removedDirectory,
+                                 maybeConflictDirectory);
         }
     }
 
@@ -533,6 +526,75 @@ void OwncloudPropagator::start(SyncFileItemVector &&items)
 
     _jobScheduled = false;
     scheduleNextJob();
+}
+
+void OwncloudPropagator::startDirectoryPropagation(const SyncFileItemPtr &item,
+                                                   QStack<QPair<QString, PropagateDirectory *>> &directories,
+                                                   QVector<PropagatorJob *> &directoriesToRemove,
+                                                   QString &removedDirectory,
+                                                   const SyncFileItemVector &items)
+{
+    auto directoryPropagationJob = std::make_unique<PropagateDirectory>(this, item);
+
+    if (item->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE
+        && item->_direction == SyncFileItem::Up) {
+        // Skip all potential uploads to the new folder.
+        // Processing them now leads to problems with permissions:
+        // checkForPermissions() has already run and used the permissions
+        // of the file we're about to delete to decide whether uploading
+        // to the new dir is ok...
+        foreach (const SyncFileItemPtr &dirItem, items) {
+            if (dirItem->destination().startsWith(item->destination() + "/")) {
+                dirItem->_instruction = CSYNC_INSTRUCTION_NONE;
+                _anotherSyncNeeded = true;
+            }
+        }
+    }
+
+    if (item->_instruction == CSYNC_INSTRUCTION_REMOVE) {
+        // We do the removal of directories at the end, because there might be moves from
+        // these directories that will happen later.
+        directoriesToRemove.prepend(directoryPropagationJob.get());
+        removedDirectory = item->_file + "/";
+
+        // We should not update the etag of parent directories of the removed directory
+        // since it would be done before the actual remove (issue #1845)
+        // NOTE: Currently this means that we don't update those etag at all in this sync,
+        //       but it should not be a problem, they will be updated in the next sync.
+        for (int i = 0; i < directories.size(); ++i) {
+            if (directories[i].second->_item->_instruction == CSYNC_INSTRUCTION_UPDATE_METADATA) {
+                directories[i].second->_item->_instruction = CSYNC_INSTRUCTION_NONE;
+            }
+        }
+    } else {
+        const auto currentDirJob = directories.top().second;
+        currentDirJob->appendJob(directoryPropagationJob.get());
+    }
+    directories.push(qMakePair(item->destination() + "/", directoryPropagationJob.release()));
+}
+
+void OwncloudPropagator::startFilePropagation(const SyncFileItemPtr &item,
+                                              QStack<QPair<QString, PropagateDirectory *> > &directories,
+                                              QVector<PropagatorJob *> &directoriesToRemove,
+                                              QString &removedDirectory,
+                                              QString &maybeConflictDirectory)
+{
+    if (item->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE) {
+        // will delete directories, so defer execution
+        auto job = createJob(item);
+        if (job) {
+            directoriesToRemove.prepend(job);
+        }
+        removedDirectory = item->_file + "/";
+    } else {
+        directories.top().second->appendTask(item);
+    }
+
+    if (item->_instruction == CSYNC_INSTRUCTION_CONFLICT) {
+        // This might be a file or a directory on the local side. If it's a
+        // directory we want to skip processing items inside it.
+        maybeConflictDirectory = item->_file + "/";
+    }
 }
 
 const SyncOptions &OwncloudPropagator::syncOptions() const
@@ -710,6 +772,10 @@ bool OwncloudPropagator::createConflict(const SyncFileItemPtr &item,
 
     QString renameError;
     auto conflictModTime = FileSystem::getModTime(fn);
+    if (conflictModTime <= 0) {
+        *error = tr("Impossible to get modification time for file in conflict %1").arg(fn);
+        return false;
+    }
     QString conflictUserName;
     if (account()->capabilities().uploadConflictFiles())
         conflictUserName = account()->davDisplayName();
@@ -798,6 +864,38 @@ Result<Vfs::ConvertToPlaceholderResult, QString> OwncloudPropagator::staticUpdat
         return dBresult.error();
     }
     return Vfs::ConvertToPlaceholderResult::Ok;
+}
+
+bool OwncloudPropagator::isDelayedUploadItem(const SyncFileItemPtr &item) const
+{
+    return account()->capabilities().bulkUpload() && !_scheduleDelayedTasks && !item->_isEncrypted && _syncOptions._minChunkSize > item->_size && !isInBulkUploadBlackList(item->_file);
+}
+
+void OwncloudPropagator::setScheduleDelayedTasks(bool active)
+{
+    _scheduleDelayedTasks = active;
+}
+
+void OwncloudPropagator::clearDelayedTasks()
+{
+    _delayedTasks.clear();
+}
+
+void OwncloudPropagator::addToBulkUploadBlackList(const QString &file)
+{
+    qCDebug(lcPropagator) << "black list for bulk upload" << file;
+    _bulkUploadBlackList.insert(file);
+}
+
+void OwncloudPropagator::removeFromBulkUploadBlackList(const QString &file)
+{
+    qCDebug(lcPropagator) << "black list for bulk upload" << file;
+    _bulkUploadBlackList.remove(file);
+}
+
+bool OwncloudPropagator::isInBulkUploadBlackList(const QString &file) const
+{
+    return _bulkUploadBlackList.contains(file);
 }
 
 // ================================================================================
@@ -1010,6 +1108,7 @@ void PropagateDirectory::slotFirstJobFinished(SyncFileItem::Status status)
             // Synchronously abort
             abort(AbortType::Synchronous);
             _state = Finished;
+            qCInfo(lcPropagator) << "PropagateDirectory::slotFirstJobFinished" << "emit finished" << status;
             emit finished(status);
         }
         return;
@@ -1031,6 +1130,13 @@ void PropagateDirectory::slotSubJobsFinished(SyncFileItem::Status status)
         if (_item->_instruction == CSYNC_INSTRUCTION_NEW && _item->_direction == SyncFileItem::Down) {
             // special case for local MKDIR, set local directory mtime
             // (it's not synced later at all, but can be nice to have it set initially)
+
+            if (_item->_modtime <= 0) {
+                status = _item->_status = SyncFileItem::NormalError;
+                _item->_errorString = tr("Error updating metadata due to invalid modified time");
+                qCWarning(lcDirectory) << "Error writing to the database for file" << _item->_file;
+            }
+
             FileSystem::setModTime(propagator()->fullLocalPath(_item->destination()), _item->_modtime);
         }
 
@@ -1052,6 +1158,7 @@ void PropagateDirectory::slotSubJobsFinished(SyncFileItem::Status status)
         }
     }
     _state = Finished;
+    qCInfo(lcPropagator) << "PropagateDirectory::slotSubJobsFinished" << "emit finished" << status;
     emit finished(status);
 }
 
@@ -1104,21 +1211,37 @@ qint64 PropagateRootDirectory::committedDiskSpace() const
 
 bool PropagateRootDirectory::scheduleSelfOrChild()
 {
-    if (_state == Finished)
-        return false;
+    qCInfo(lcRootDirectory()) << "scheduleSelfOrChild" << _state << "pending uploads" << propagator()->delayedTasks().size() << "subjobs state" << _subJobs._state;
 
-    if (PropagateDirectory::scheduleSelfOrChild())
+    if (_state == Finished) {
+        return false;
+    }
+
+    if (PropagateDirectory::scheduleSelfOrChild() && propagator()->delayedTasks().empty()) {
         return true;
+    }
 
     // Important: Finish _subJobs before scheduling any deletes.
-    if (_subJobs._state != Finished)
+    if (_subJobs._state != Finished) {
         return false;
+    }
+
+    if (!propagator()->delayedTasks().empty()) {
+        return scheduleDelayedJobs();
+    }
 
     return _dirDeletionJobs.scheduleSelfOrChild();
 }
 
 void PropagateRootDirectory::slotSubJobsFinished(SyncFileItem::Status status)
 {
+    qCInfo(lcRootDirectory()) << status << "slotSubJobsFinished" << _state << "pending uploads" << propagator()->delayedTasks().size() << "subjobs state" << _subJobs._state;
+
+    if (!propagator()->delayedTasks().empty()) {
+        scheduleDelayedJobs();
+        return;
+    }
+
     if (status != SyncFileItem::Success
         && status != SyncFileItem::Restoration
         && status != SyncFileItem::Conflict) {
@@ -1126,6 +1249,7 @@ void PropagateRootDirectory::slotSubJobsFinished(SyncFileItem::Status status)
             // Synchronously abort
             abort(AbortType::Synchronous);
             _state = Finished;
+            qCInfo(lcPropagator) << "PropagateRootDirectory::slotSubJobsFinished" << "emit finished" << status;
             emit finished(status);
         }
         return;
@@ -1137,7 +1261,19 @@ void PropagateRootDirectory::slotSubJobsFinished(SyncFileItem::Status status)
 void PropagateRootDirectory::slotDirDeletionJobsFinished(SyncFileItem::Status status)
 {
     _state = Finished;
+    qCInfo(lcPropagator) << "PropagateRootDirectory::slotDirDeletionJobsFinished" << "emit finished" << status;
     emit finished(status);
+}
+
+bool PropagateRootDirectory::scheduleDelayedJobs()
+{
+    qCInfo(lcPropagator) << "PropagateRootDirectory::scheduleDelayedJobs";
+    propagator()->setScheduleDelayedTasks(true);
+    auto bulkPropagatorJob = std::make_unique<BulkPropagatorJob>(propagator(), propagator()->delayedTasks());
+    propagator()->clearDelayedTasks();
+    _subJobs.appendJob(bulkPropagatorJob.release());
+    _subJobs._state = Running;
+    return _subJobs.scheduleSelfOrChild();
 }
 
 // ================================================================================
@@ -1198,4 +1334,5 @@ QString OwncloudPropagator::remotePath() const
 {
     return _remoteFolder;
 }
+
 }

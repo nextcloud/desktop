@@ -22,7 +22,7 @@ namespace OCC {
  * @brief The MoveJob class
  * @ingroup libsync
  */
-class MoveJob : public AbstractNetworkJob
+class OWNCLOUDSYNC_EXPORT MoveJob : public AbstractNetworkJob
 {
     Q_OBJECT
     const QString _destination;

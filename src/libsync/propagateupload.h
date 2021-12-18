@@ -131,7 +131,7 @@ public:
         return _device;
     }
 
-    QString errorString()
+    QString errorString() const override
     {
         return _errorString.isEmpty() ? AbstractNetworkJob::errorString() : _errorString;
     }

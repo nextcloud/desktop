@@ -138,6 +138,125 @@ private slots:
 
         QCOMPARE(capabilities.pushNotificationsWebSocketUrl(), websocketUrl);
     }
+
+    void testUserStatus_userStatusAvailable_returnTrue()
+    {
+        QVariantMap userStatusMap;
+        userStatusMap["enabled"] = true;
+
+        QVariantMap capabilitiesMap;
+        capabilitiesMap["user_status"] = userStatusMap;
+
+        const OCC::Capabilities capabilities(capabilitiesMap);
+
+        QVERIFY(capabilities.userStatus());
+    }
+
+    void testUserStatus_userStatusNotAvailable_returnFalse()
+    {
+        QVariantMap userStatusMap;
+        userStatusMap["enabled"] = false;
+
+        QVariantMap capabilitiesMap;
+        capabilitiesMap["user_status"] = userStatusMap;
+
+        const OCC::Capabilities capabilities(capabilitiesMap);
+
+        QVERIFY(!capabilities.userStatus());
+    }
+
+    void testUserStatus_userStatusNotInCapabilites_returnFalse()
+    {
+        QVariantMap capabilitiesMap;
+
+        const OCC::Capabilities capabilities(capabilitiesMap);
+
+        QVERIFY(!capabilities.userStatus());
+    }
+
+    void testUserStatusSupportsEmoji_supportsEmojiAvailable_returnTrue()
+    {
+        QVariantMap userStatusMap;
+        userStatusMap["enabled"] = true;
+        userStatusMap["supports_emoji"] = true;
+
+        QVariantMap capabilitiesMap;
+        capabilitiesMap["user_status"] = userStatusMap;
+
+        const OCC::Capabilities capabilities(capabilitiesMap);
+
+        QVERIFY(capabilities.userStatus());
+    }
+
+    void testUserStatusSupportsEmoji_supportsEmojiNotAvailable_returnFalse()
+    {
+        QVariantMap userStatusMap;
+        userStatusMap["enabled"] = true;
+        userStatusMap["supports_emoji"] = false;
+
+        QVariantMap capabilitiesMap;
+        capabilitiesMap["user_status"] = userStatusMap;
+
+        const OCC::Capabilities capabilities(capabilitiesMap);
+
+        QVERIFY(!capabilities.userStatusSupportsEmoji());
+    }
+
+    void testUserStatusSupportsEmoji_supportsEmojiNotInCapabilites_returnFalse()
+    {
+        QVariantMap userStatusMap;
+        userStatusMap["enabled"] = true;
+
+        QVariantMap capabilitiesMap;
+        capabilitiesMap["user_status"] = userStatusMap;
+
+        const OCC::Capabilities capabilities(capabilitiesMap);
+
+        QVERIFY(!capabilities.userStatusSupportsEmoji());
+    }
+    
+    void testShareDefaultPermissions_defaultSharePermissionsNotInCapabilities_returnZero()
+    {
+        QVariantMap filesSharingMap;
+        filesSharingMap["api_enabled"] = false;
+        
+        QVariantMap capabilitiesMap;
+        capabilitiesMap["files_sharing"] = filesSharingMap;
+        
+        const OCC::Capabilities capabilities(capabilitiesMap);
+        const auto defaultSharePermissionsNotInCapabilities = capabilities.shareDefaultPermissions();
+
+        QCOMPARE(defaultSharePermissionsNotInCapabilities, {});
+    }
+    
+    void testShareDefaultPermissions_defaultSharePermissionsAvailable_returnPermissions()
+    {
+        QVariantMap filesSharingMap;
+        filesSharingMap["api_enabled"] = true;
+        filesSharingMap["default_permissions"] = 31;
+        
+        QVariantMap capabilitiesMap;
+        capabilitiesMap["files_sharing"] = filesSharingMap;
+        
+        const OCC::Capabilities capabilities(capabilitiesMap);
+        const auto defaultSharePermissionsAvailable = capabilities.shareDefaultPermissions();
+
+        QCOMPARE(defaultSharePermissionsAvailable, 31);
+    }
+
+    void testBulkUploadAvailable_bulkUploadAvailable_returnTrue()
+    {
+        QVariantMap bulkuploadMap;
+        bulkuploadMap["bulkupload"] = "1.0";
+
+        QVariantMap capabilitiesMap;
+        capabilitiesMap["dav"] = bulkuploadMap;
+
+        const auto &capabilities = OCC::Capabilities(capabilitiesMap);
+        const auto bulkuploadAvailable = capabilities.bulkUpload();
+
+        QCOMPARE(bulkuploadAvailable, true);
+    }
 };
 
 QTEST_GUILESS_MAIN(TestCapabilities)

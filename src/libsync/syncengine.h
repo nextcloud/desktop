@@ -134,6 +134,8 @@ public:
      */
     static void wipeVirtualFiles(const QString &localPath, SyncJournalDb &journal, Vfs &vfs);
 
+    static void switchToVirtualFiles(const QString &localPath, SyncJournalDb &journal, Vfs &vfs);
+
     auto getPropagator() { return _propagator; } // for the test
 
 signals:
@@ -239,6 +241,8 @@ private:
     QScopedPointer<DiscoveryPhase> _discoveryPhase;
     QSharedPointer<OwncloudPropagator> _propagator;
 
+    QSet<QString> _bulkUploadBlackList;
+
     // List of all files with conflicts
     QSet<QString> _seenConflictFiles;
 
@@ -291,9 +295,6 @@ private:
     LocalDiscoveryStyle _lastLocalDiscoveryStyle = LocalDiscoveryStyle::FilesystemOnly;
     LocalDiscoveryStyle _localDiscoveryStyle = LocalDiscoveryStyle::FilesystemOnly;
     std::set<QString> _localDiscoveryPaths;
-
-    // TODO: Remove this when the file restoration problem is fixed for a user
-    int _dataFingerprintSetFailCount = 0;
 };
 }
 

@@ -57,7 +57,13 @@ OwncloudAdvancedSetupPage::OwncloudAdvancedSetupPage(OwncloudWizard *wizard)
     setupCustomization();
 
     connect(_ui.pbSelectLocalFolder, &QAbstractButton::clicked, this, &OwncloudAdvancedSetupPage::slotSelectFolder);
-    setButtonText(QWizard::NextButton, tr("Connect"));
+    setButtonText(QWizard::FinishButton, tr("Connect"));
+
+    if (Theme::instance()->enforceVirtualFilesSyncFolder()) {
+        _ui.rSyncEverything->setDisabled(true);
+        _ui.rSelectiveSync->setDisabled(true);
+        _ui.bSelectiveSync->setDisabled(true);
+    }
 
     connect(_ui.rSyncEverything, &QAbstractButton::clicked, this, &OwncloudAdvancedSetupPage::slotSyncEverythingClicked);
     connect(_ui.rSelectiveSync, &QAbstractButton::clicked, this, &OwncloudAdvancedSetupPage::slotSelectiveSyncClicked);
@@ -134,8 +140,8 @@ void OwncloudAdvancedSetupPage::initializePage()
     }
 
     _checking = false;
-    _ui.lSelectiveSyncSizeLabel->setText(QString());
-    _ui.lSyncEverythingSizeLabel->setText(QString());
+    _ui.lSelectiveSyncSizeLabel->clear();
+    _ui.lSyncEverythingSizeLabel->clear();
 
     // Update the local folder - this is not guaranteed to find a good one
     QString goodLocalFolder = FolderMan::instance()->findGoodPathForNewSyncFolder(localFolder(), serverUrl());
@@ -145,7 +151,7 @@ void OwncloudAdvancedSetupPage::initializePage()
     updateStatus();
 
     // ensure "next" gets the focus, not obSelectLocalFolder
-    QTimer::singleShot(0, wizard()->button(QWizard::NextButton), SLOT(setFocus()));
+    QTimer::singleShot(0, wizard()->button(QWizard::FinishButton), qOverload<>(&QWidget::setFocus));
 
     auto acc = static_cast<OwncloudWizard *>(wizard())->account();
     auto quotaJob = new PropfindJob(acc, _remoteFolder, this);
@@ -327,7 +333,8 @@ QUrl OwncloudAdvancedSetupPage::serverUrl() const
 
 int OwncloudAdvancedSetupPage::nextId() const
 {
-    return WizardCommon::Page_Result;
+    // tells the caller that this is the last dialog page
+    return -1;
 }
 
 QString OwncloudAdvancedSetupPage::localFolder() const

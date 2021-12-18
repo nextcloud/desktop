@@ -494,6 +494,12 @@ void SocketApi::broadcastMessage(const QString &msg, bool doWait)
     }
 }
 
+void SocketApi::processFileActivityRequest(const QString &localFile)
+{
+    const auto fileData = FileData::get(localFile);
+    emit fileActivityCommandReceived(fileData.serverRelativePath, fileData.localPath);
+}
+
 void SocketApi::processShareRequest(const QString &localFile, SocketListener *listener, ShareDialogStartPage startPage)
 {
     auto theme = Theme::instance();
@@ -578,6 +584,13 @@ void SocketApi::command_SHARE(const QString &localFile, SocketListener *listener
     processShareRequest(localFile, listener, ShareDialogStartPage::UsersAndGroups);
 }
 
+void SocketApi::command_ACTIVITY(const QString &localFile, SocketListener *listener)
+{
+    Q_UNUSED(listener);
+
+    processFileActivityRequest(localFile);
+}
+
 void SocketApi::command_MANAGE_PUBLIC_LINKS(const QString &localFile, SocketListener *listener)
 {
     processShareRequest(localFile, listener, ShareDialogStartPage::PublicLinks);
@@ -617,7 +630,7 @@ void SocketApi::command_EDIT(const QString &localFile, SocketListener *listener)
     params.addQueryItem("path", fileData.serverRelativePath);
     params.addQueryItem("editorId", editor->id());
     job->addQueryParams(params);
-    job->usePOST();
+    job->setVerb(JsonApiJob::Verb::Post);
 
     QObject::connect(job, &JsonApiJob::jsonReceived, [](const QJsonDocument &json){
         auto data = json.object().value("ocs").toObject().value("data").toObject();
@@ -976,12 +989,13 @@ void OCC::SocketApi::openPrivateLink(const QString &link)
 
 void SocketApi::command_GET_STRINGS(const QString &argument, SocketListener *listener)
 {
-    static std::array<std::pair<const char *, QString>, 5> strings { {
+    static std::array<std::pair<const char *, QString>, 6> strings { {
         { "SHARE_MENU_TITLE", tr("Share options") },
+        { "FILE_ACTIVITY_MENU_TITLE", tr("Activity") },
         { "CONTEXT_MENU_TITLE", Theme::instance()->appNameGUI() },
         { "COPY_PRIVATE_LINK_MENU_TITLE", tr("Copy private link to clipboard") },
         { "EMAIL_PRIVATE_LINK_MENU_TITLE", tr("Send private link by email …") },
-        { "CONTEXT_MENU_ICON", APPLICATION_ICON_NAME},
+        { "CONTEXT_MENU_ICON", APPLICATION_ICON_NAME },
     } };
     listener->sendMessage(QString("GET_STRINGS:BEGIN"));
     for (const auto& key_value : strings) {
@@ -1118,6 +1132,11 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
         const auto isE2eEncryptedPath = fileData.journalRecord()._isE2eEncrypted || !fileData.journalRecord()._e2eMangledName.isEmpty();
         auto flagString = isOnTheServer && !isE2eEncryptedPath ? QLatin1String("::") : QLatin1String(":d:");
 
+        const QFileInfo fileInfo(fileData.localPath);
+        if (!fileInfo.isDir()) {
+            listener->sendMessage(QLatin1String("MENU_ITEM:ACTIVITY") + flagString + tr("Activity"));
+        }
+
         DirectEditor* editor = getDirectEditorForLocalFile(fileData.localPath);
         if (editor) {
             //listener->sendMessage(QLatin1String("MENU_ITEM:EDIT") + flagString + tr("Edit via ") + editor->name());
@@ -1132,7 +1151,6 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
         bool isConflict = Utility::isConflictFile(fileData.folderRelativePath);
         if (isConflict || !isOnTheServer) {
             // Check whether this new file is in a read-only directory
-            QFileInfo fileInfo(fileData.localPath);
             const auto parentDir = fileData.parentFolder();
             const auto parentRecord = parentDir.journalRecord();
             const bool canAddToDir =
@@ -1207,9 +1225,11 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
         auto makePinContextMenu = [&](bool makeAvailableLocally, bool freeSpace) {
             listener->sendMessage(QLatin1String("MENU_ITEM:CURRENT_PIN:d:")
                 + Utility::vfsCurrentAvailabilityText(*combined));
-            listener->sendMessage(QLatin1String("MENU_ITEM:MAKE_AVAILABLE_LOCALLY:")
-                + (makeAvailableLocally ? QLatin1String(":") : QLatin1String("d:"))
-                + Utility::vfsPinActionText());
+            if (!Theme::instance()->enforceVirtualFilesSyncFolder()) {
+                listener->sendMessage(QLatin1String("MENU_ITEM:MAKE_AVAILABLE_LOCALLY:")
+                    + (makeAvailableLocally ? QLatin1String(":") : QLatin1String("d:")) + Utility::vfsPinActionText());
+            }
+            
             listener->sendMessage(QLatin1String("MENU_ITEM:MAKE_ONLINE_ONLY:")
                 + (freeSpace ? QLatin1String(":") : QLatin1String("d:"))
                 + Utility::vfsFreeSpaceActionText());

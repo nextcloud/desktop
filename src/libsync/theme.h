@@ -61,6 +61,10 @@ class OWNCLOUDSYNC_EXPORT Theme : public QObject
     Q_PROPERTY(QColor wizardHeaderBackgroundColor READ wizardHeaderBackgroundColor CONSTANT)
 #endif
     Q_PROPERTY(QString updateCheckUrl READ updateCheckUrl CONSTANT)
+
+    Q_PROPERTY(QColor errorBoxTextColor READ errorBoxTextColor CONSTANT)
+    Q_PROPERTY(QColor errorBoxBackgroundColor READ errorBoxBackgroundColor CONSTANT)
+    Q_PROPERTY(QColor errorBoxBorderColor READ errorBoxBorderColor CONSTANT)
 public:
     enum CustomMediaType {
         oCSetupTop, // ownCloud connect page
@@ -151,6 +155,18 @@ public:
      */
     QUrl statusInvisibleImageSource() const;
 
+    QUrl syncStatusOk() const;
+
+    QUrl syncStatusError() const;
+
+    QUrl syncStatusRunning() const;
+
+    QUrl syncStatusPause() const;
+
+    QUrl syncStatusWarning() const;
+
+    QUrl folderOffline() const;
+
     /**
      * @brief configFileName
      * @return the name of the config file.
@@ -223,6 +239,20 @@ public:
      * When true, the respective UI controls will be disabled
      */
     virtual bool forceOverrideServerUrl() const;
+    
+    /**
+     * Enable OCSP stapling for SSL handshakes
+     *
+     * When true, peer will be requested for Online Certificate Status Protocol response
+     */
+    virtual bool enableStaplingOCSP() const;
+
+    /**
+     * Enforce SSL validity
+     *
+     * When true, trusting the untrusted certificate is not allowed
+     */
+    virtual bool forbidBadSSL() const;
 
     /**
      * This is only usefull when previous version had a different overrideServerUrl
@@ -534,6 +564,19 @@ public:
      * manually enabled in the configuration file.
      */
     virtual bool showVirtualFilesOption() const;
+
+    virtual bool enforceVirtualFilesSyncFolder() const;
+
+    /** @return color for the ErrorBox text. */
+    virtual QColor errorBoxTextColor() const;
+
+    /** @return color for the ErrorBox background. */
+    virtual QColor errorBoxBackgroundColor() const;
+
+    /** @return color for the ErrorBox border. */
+    virtual QColor errorBoxBorderColor() const;
+
+    static constexpr const char *themePrefix = ":/client/theme/";
 
 protected:
 #ifndef TOKEN_AUTH_ONLY

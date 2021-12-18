@@ -1,11 +1,27 @@
 <RCC>
     <qresource prefix="/qml">
+        <file>src/gui/UserStatusSelector.qml</file>
+        <file>src/gui/UserStatusSelectorDialog.qml</file>
+        <file>src/gui/EmojiPicker.qml</file>
+        <file>src/gui/ErrorBox.qml</file>
         <file>src/gui/tray/Window.qml</file>
         <file>src/gui/tray/UserLine.qml</file>
         <file>src/gui/tray/HeaderButton.qml</file>
+        <file>src/gui/tray/SyncStatus.qml</file>
         <file>theme/Style/Style.qml</file>
         <file>theme/Style/qmldir</file>
         <file>src/gui/tray/ActivityActionButton.qml</file>
         <file>src/gui/tray/ActivityItem.qml</file>
+        <file>src/gui/tray/AutoSizingMenu.qml</file>
+        <file>src/gui/tray/ActivityList.qml</file>
+        <file>src/gui/tray/FileActivityDialog.qml</file>
+        <file>src/gui/tray/UnifiedSearchInputContainer.qml</file>
+        <file>src/gui/tray/UnifiedSearchResultFetchMoreTrigger.qml</file>
+        <file>src/gui/tray/UnifiedSearchResultItem.qml</file>
+        <file>src/gui/tray/UnifiedSearchResultItemSkeleton.qml</file>
+        <file>src/gui/tray/UnifiedSearchResultItemSkeletonContainer.qml</file>
+        <file>src/gui/tray/UnifiedSearchResultListItem.qml</file>
+        <file>src/gui/tray/UnifiedSearchResultNothingFound.qml</file>
+        <file>src/gui/tray/UnifiedSearchResultSectionItem.qml</file>
     </qresource>
 </RCC>

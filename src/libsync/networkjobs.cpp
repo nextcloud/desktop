@@ -830,13 +830,49 @@ void JsonApiJob::addRawHeader(const QByteArray &headerName, const QByteArray &va
    _request.setRawHeader(headerName, value);
 }
 
+void JsonApiJob::setBody(const QJsonDocument &body)
+{
+    _body = body.toJson();
+    qCDebug(lcJsonApiJob) << "Set body for request:" << _body;
+    if (!_body.isEmpty()) {
+        _request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+    }
+}
+
+
+void JsonApiJob::setVerb(Verb value)
+{
+    _verb = value;
+}
+
+
+QByteArray JsonApiJob::verbToString() const
+{
+    switch (_verb) {
+    case Verb::Get:
+        return "GET";
+    case Verb::Post:
+        return "POST";
+    case Verb::Put:
+        return "PUT";
+    case Verb::Delete:
+        return "DELETE";
+    }
+    return "GET";
+}
+
 void JsonApiJob::start()
 {
     addRawHeader("OCS-APIREQUEST", "true");
     auto query = _additionalParams;
     query.addQueryItem(QLatin1String("format"), QLatin1String("json"));
     QUrl url = Utility::concatUrlPath(account()->url(), path(), query);
-    sendRequest(_usePOST ? "POST" : "GET", url, _request);
+    const auto httpVerb = verbToString();
+    if (!_body.isEmpty()) {
+        sendRequest(httpVerb, url, _request, _body);
+    } else {
+        sendRequest(httpVerb, url, _request);
+    }
     AbstractNetworkJob::start();
 }
 
@@ -856,19 +892,21 @@ bool JsonApiJob::finished()
 
     QString jsonStr = QString::fromUtf8(reply()->readAll());
     if (jsonStr.contains("<?xml version=\"1.0\"?>")) {
-        QRegExp rex("<statuscode>(\\d+)</statuscode>");
-        if (jsonStr.contains(rex)) {
+        const QRegularExpression rex("<statuscode>(\\d+)</statuscode>");
+        const auto rexMatch = rex.match(jsonStr);
+        if (rexMatch.hasMatch()) {
             // this is a error message coming back from ocs.
-            statusCode = rex.cap(1).toInt();
+            statusCode = rexMatch.captured(1).toInt();
         }
     } else if(jsonStr.isEmpty() && httpStatusCode == notModifiedStatusCode){
         qCWarning(lcJsonApiJob) << "Nothing changed so nothing to retrieve - status code: " << httpStatusCode;
         statusCode = httpStatusCode;
     } else {
-        QRegExp rex(R"("statuscode":(\d+),)");
+        const QRegularExpression rex(R"("statuscode":(\d+))");
         // example: "{"ocs":{"meta":{"status":"ok","statuscode":100,"message":null},"data":{"version":{"major":8,"minor":"... (504)
-        if (jsonStr.contains(rex)) {
-            statusCode = rex.cap(1).toInt();
+        const auto rxMatch = rex.match(jsonStr);
+        if (rxMatch.hasMatch()) {
+            statusCode = rxMatch.captured(1).toInt();
         }
     }
 
@@ -930,7 +968,10 @@ void DetermineAuthTypeJob::start()
     oldFlowRequired->setIgnoreCredentialFailure(true);
 
     connect(get, &SimpleNetworkJob::finishedSignal, this, [this, get]() {
-        if (get->reply()->error() == QNetworkReply::AuthenticationRequiredError) {
+        const auto reply = get->reply();
+        const auto wwwAuthenticateHeader = reply->rawHeader("WWW-Authenticate");
+        if (reply->error() == QNetworkReply::AuthenticationRequiredError
+            && (wwwAuthenticateHeader.startsWith("Basic") || wwwAuthenticateHeader.startsWith("Bearer"))) {
             _resultGet = Basic;
         } else {
             _resultGet = LoginFlowV2;

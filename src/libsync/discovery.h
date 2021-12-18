@@ -104,6 +104,13 @@ public:
     SyncFileItemPtr _dirItem;
 
 private:
+    struct Entries
+    {
+        QString nameOverride;
+        SyncJournalFileRecord dbEntry;
+        RemoteInfo serverEntry;
+        LocalInfo localEntry;
+    };
 
     /** Structure representing a path during discovery. A same path may have different value locally
      * or on the server in case of renames.
@@ -142,6 +149,8 @@ private:
             return result;
         }
     };
+
+    bool checkForInvalidFileName(const PathTuple &path, const std::map<QString, Entries> &entries, Entries &entry);
 
     /** Iterate over entries inside the directory (non-recursively).
      *

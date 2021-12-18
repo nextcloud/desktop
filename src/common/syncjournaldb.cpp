@@ -93,7 +93,6 @@ static QByteArray defaultJournalMode(const QString &dbPath)
 SyncJournalDb::SyncJournalDb(const QString &dbFilePath, QObject *parent)
     : QObject(parent)
     , _dbFile(dbFilePath)
-    , _mutex(QMutex::Recursive)
     , _transaction(0)
     , _metadataTableIsEmpty(false)
 {
@@ -1002,41 +1001,20 @@ qint64 SyncJournalDb::keyValueStoreGetInt(const QString &key, qint64 defaultValu
         return defaultValue;
     }
 
-    const auto query = _queryManager.get(PreparedSqlQueryManager::GetKeyValueStoreQuery, QByteArrayLiteral("SELECT value FROM key_value_store WHERE key = ?1;"), _db);
+    const auto query = _queryManager.get(PreparedSqlQueryManager::GetKeyValueStoreQuery, QByteArrayLiteral("SELECT value FROM key_value_store WHERE key=?1"), _db);
     if (!query) {
         return defaultValue;
     }
 
     query->bindValue(1, key);
     query->exec();
+    auto result = query->next();
 
-    if (!query->next().hasData) {
+    if (!result.ok || !result.hasData) {
         return defaultValue;
     }
 
     return query->int64Value(0);
-}
-
-QVariant SyncJournalDb::keyValueStoreGet(const QString &key, QVariant defaultValue)
-{
-    QMutexLocker locker(&_mutex);
-    if (!checkConnect()) {
-        return defaultValue;
-    }
-
-    const auto query = _queryManager.get(PreparedSqlQueryManager::GetKeyValueStoreQuery, QByteArrayLiteral("SELECT value FROM key_value_store WHERE key = ?1;"), _db);
-    if (!query) {
-        return defaultValue;
-    }
-
-    query->bindValue(1, key);
-    query->exec();
-
-    if (!query->next().hasData) {
-        return defaultValue;
-    }
-
-    return query->stringValue(0);
 }
 
 void SyncJournalDb::keyValueStoreDelete(const QString &key)

@@ -211,6 +211,10 @@ int FolderMan::setupFolders()
 
     emit folderListChanged(_folderMap);
 
+    for (const auto folder : _folderMap) {
+        folder->processSwitchedToVirtualFiles();
+    }
+
     return _folderMap.size();
 }
 
@@ -292,6 +296,11 @@ void FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account,
                 SyncJournalDb::maybeMigrateDb(folderDefinition.localPath, folderDefinition.absoluteJournalPath());
             }
 
+            const auto switchToVfs = isSwitchToVfsNeeded(folderDefinition);
+            if (switchToVfs) {
+                folderDefinition.virtualFilesMode = bestAvailableVfsMode();
+            }
+
             auto vfs = createVfsFromPlugin(folderDefinition.virtualFilesMode);
             if (!vfs) {
                 // TODO: Must do better error handling
@@ -300,6 +309,9 @@ void FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account,
 
             Folder *f = addFolderInternal(std::move(folderDefinition), account.data(), std::move(vfs));
             if (f) {
+                if (switchToVfs) {
+                    f->switchToVirtualFiles();
+                }
                 // Migrate the old "usePlaceholders" setting to the root folder pin state
                 if (settings.value(QLatin1String(versionC), 1).toInt() == 1
                     && settings.value(QLatin1String("usePlaceholders"), false).toBool()) {
@@ -835,6 +847,19 @@ bool FolderMan::pushNotificationsFilesReady(Account *account)
     const auto pushFilesAvailable = account->capabilities().availablePushNotifications() & PushNotificationType::Files;
 
     return pushFilesAvailable && pushNotifications && pushNotifications->isReady();
+}
+
+bool FolderMan::isSwitchToVfsNeeded(const FolderDefinition &folderDefinition) const
+{
+    auto result = false;
+    if (ENFORCE_VIRTUAL_FILES_SYNC_FOLDER &&
+            folderDefinition.virtualFilesMode != bestAvailableVfsMode() &&
+            folderDefinition.virtualFilesMode == Vfs::Off &&
+            OCC::Theme::instance()->showVirtualFilesOption()) {
+        result = true;
+    }
+
+    return result;
 }
 
 void FolderMan::slotEtagPollTimerTimeout()

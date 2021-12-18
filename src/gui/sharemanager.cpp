@@ -146,6 +146,12 @@ void Share::deleteShare()
     job->deleteShare(getId());
 }
 
+bool Share::isShareTypeUserGroupEmailRoomOrRemote(const ShareType type)
+{
+    return (type == Share::TypeUser || type == Share::TypeGroup || type == Share::TypeEmail || type == Share::TypeRoom
+        || type == Share::TypeRemote);
+}
+
 void Share::slotDeleted()
 {
     updateFolder(_account, _path);
@@ -195,12 +201,16 @@ LinkShare::LinkShare(AccountPtr account,
     Permissions permissions,
     bool isPasswordSet,
     const QUrl &url,
-    const QDate &expireDate)
+    const QDate &expireDate,
+    const QString &note,
+    const QString &label)
     : Share(account, id, uidowner, ownerDisplayName, path, Share::TypeLink, isPasswordSet, permissions)
     , _name(name)
     , _token(token)
+    , _note(note)
     , _expireDate(expireDate)
     , _url(url)
+    , _label(label)
 {
 }
 
@@ -224,20 +234,19 @@ QString LinkShare::getNote() const
     return _note;
 }
 
+QString LinkShare::getLabel() const
+{
+    return _label;
+}
+
 void LinkShare::setName(const QString &name)
 {
-    auto *job = new OcsShareJob(_account);
-    connect(job, &OcsShareJob::shareJobFinished, this, &LinkShare::slotNameSet);
-    connect(job, &OcsJob::ocsError, this, &LinkShare::slotOcsError);
-    job->setName(getId(), name);
+    createShareJob(&LinkShare::slotNameSet)->setName(getId(), name);
 }
 
 void LinkShare::setNote(const QString &note)
 {
-    auto *job = new OcsShareJob(_account);
-    connect(job, &OcsShareJob::shareJobFinished, this, &LinkShare::slotNoteSet);
-    connect(job, &OcsJob::ocsError, this, &LinkShare::slotOcsError);
-    job->setNote(getId(), note);
+    createShareJob(&LinkShare::slotNoteSet)->setNote(getId(), note);
 }
 
 void LinkShare::slotNoteSet(const QJsonDocument &, const QVariant &note)
@@ -253,10 +262,20 @@ QString LinkShare::getToken() const
 
 void LinkShare::setExpireDate(const QDate &date)
 {
+    createShareJob(&LinkShare::slotExpireDateSet)->setExpireDate(getId(), date);
+}
+
+void LinkShare::setLabel(const QString &label)
+{
+    createShareJob(&LinkShare::slotLabelSet)->setLabel(getId(), label);
+}
+
+template <typename LinkShareSlot>
+OcsShareJob *LinkShare::createShareJob(const LinkShareSlot slotFunction) {
     auto *job = new OcsShareJob(_account);
-    connect(job, &OcsShareJob::shareJobFinished, this, &LinkShare::slotExpireDateSet);
+    connect(job, &OcsShareJob::shareJobFinished, this, slotFunction);
     connect(job, &OcsJob::ocsError, this, &LinkShare::slotOcsError);
-    job->setExpireDate(getId(), date);
+    return job;
 }
 
 void LinkShare::slotExpireDateSet(const QJsonDocument &reply, const QVariant &value)
@@ -281,6 +300,14 @@ void LinkShare::slotNameSet(const QJsonDocument &, const QVariant &value)
     emit nameSet();
 }
 
+void LinkShare::slotLabelSet(const QJsonDocument &, const QVariant &label)
+{
+    if (_label != label.toString()) {
+        _label = label.toString();
+        emit labelSet();
+    }
+}
+
 UserGroupShare::UserGroupShare(AccountPtr account,
     const QString &id,
     const QString &owner,
@@ -296,7 +323,7 @@ UserGroupShare::UserGroupShare(AccountPtr account,
     , _note(note)
     , _expireDate(expireDate)
 {
-    Q_ASSERT(shareType == TypeUser || shareType == TypeGroup || shareType == TypeEmail);
+    Q_ASSERT(Share::isShareTypeUserGroupEmailRoomOrRemote(shareType));
     Q_ASSERT(shareWith);
 }
 
@@ -326,6 +353,11 @@ QDate UserGroupShare::getExpireDate() const
 
 void UserGroupShare::setExpireDate(const QDate &date)
 {
+    if (_expireDate == date) {
+        emit expireDateSet();
+        return;
+    }
+
     auto *job = new OcsShareJob(_account);
     connect(job, &OcsShareJob::shareJobFinished, this, &UserGroupShare::slotExpireDateSet);
     connect(job, &OcsJob::ocsError, this, &UserGroupShare::slotOcsError);
@@ -461,7 +493,7 @@ void ShareManager::slotSharesFetched(const QJsonDocument &reply)
 
         if (shareType == Share::TypeLink) {
             newShare = parseLinkShare(data);
-        } else if (shareType == Share::TypeGroup || shareType == Share::TypeUser || shareType == Share::TypeEmail) {
+        } else if (Share::isShareTypeUserGroupEmailRoomOrRemote(static_cast <Share::ShareType>(shareType))) {
             newShare = parseUserGroupShare(data);
         } else {
             newShare = parseShare(data);
@@ -524,6 +556,11 @@ QSharedPointer<LinkShare> ShareManager::parseLinkShare(const QJsonObject &data)
     if (data.value("expiration").isString()) {
         expireDate = QDate::fromString(data.value("expiration").toString(), "yyyy-MM-dd 00:00:00");
     }
+    
+    QString note;
+    if (data.value("note").isString()) {
+        note = data.value("note").toString();
+    }
 
     return QSharedPointer<LinkShare>(new LinkShare(_account,
         data.value("id").toVariant().toString(), // "id" used to be an integer, support both
@@ -535,7 +572,9 @@ QSharedPointer<LinkShare> ShareManager::parseLinkShare(const QJsonObject &data)
         (Share::Permissions)data.value("permissions").toInt(),
         data.value("share_with").isString(), // has password?
         url,
-        expireDate));
+        expireDate,
+        note,
+        data.value("label").toString()));
 }
 
 QSharedPointer<Share> ShareManager::parseShare(const QJsonObject &data)

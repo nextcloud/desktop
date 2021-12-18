@@ -18,7 +18,9 @@
 #include <QSystemTrayIcon>
 
 #include "accountmanager.h"
-#include "tray/UserModel.h"
+#include "tray/usermodel.h"
+
+#include <QQmlNetworkAccessManagerFactory>
 
 class QScreen;
 class QQmlApplicationEngine;
@@ -27,6 +29,14 @@ class QWindow;
 class QQuickWindow;
 
 namespace OCC {
+
+class AccessManagerFactory : public QQmlNetworkAccessManagerFactory
+{
+public:
+    AccessManagerFactory();
+
+    QNetworkAccessManager* create(QObject *parent) override;
+};
 
 #ifdef Q_OS_OSX
 bool canOsXSendUserNotification();
@@ -79,6 +89,7 @@ signals:
     void hideWindow();
     void showWindow();
     void openShareDialog(const QString &sharePath, const QString &localPath);
+    void showFileActivityDialog(const QString &sharePath, const QString &localPath);
 
 public slots:
     void slotNewUserSelected();
@@ -104,6 +115,8 @@ private:
     bool _isOpen = false;
     bool _syncIsPaused = true;
     QPointer<QQmlApplicationEngine> _trayEngine;
+
+    AccessManagerFactory _accessManagerFactory;
 };
 
 } // namespace OCC

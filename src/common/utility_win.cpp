@@ -18,8 +18,10 @@
 
 #include "asserts.h"
 #include "utility.h"
+#include "gui/configgui.h"
 
 #include <comdef.h>
+#include <Lmcons.h>
 #include <shlguid.h>
 #include <shlobj.h>
 #include <string>
@@ -47,7 +49,14 @@ static void setupFavLink_private(const QString &folder)
         desktopIni.open(QFile::WriteOnly);
         desktopIni.write("[.ShellClassInfo]\r\nIconResource=");
         desktopIni.write(QDir::toNativeSeparators(qApp->applicationFilePath()).toUtf8());
-        desktopIni.write(",0\r\n");
+#ifdef APPLICATION_FOLDER_ICON_INDEX
+        const auto iconIndex = APPLICATION_FOLDER_ICON_INDEX;
+#else
+        const auto iconIndex = "0";
+#endif
+        desktopIni.write(",");
+        desktopIni.write(iconIndex);
+        desktopIni.write("\r\n");
         desktopIni.close();
 
         // Set the folder as system and Desktop.ini as hidden+system for explorer to pick it.
@@ -72,6 +81,40 @@ static void setupFavLink_private(const QString &folder)
     qCInfo(lcUtility) << "Creating favorite link from" << folder << "to" << linkName;
     if (!QFile::link(folder, linkName))
         qCWarning(lcUtility) << "linking" << folder << "to" << linkName << "failed!";
+}
+
+static void removeFavLink_private(const QString &folder)
+{
+    const QDir folderDir(folder);
+
+    // #1 Remove the Desktop.ini to reset the folder icon
+    if (!QFile::remove(folderDir.absoluteFilePath(QLatin1String("Desktop.ini")))) {
+        qCWarning(lcUtility) << "Remove Desktop.ini from" << folder
+                             << " has failed. Make sure it exists and is not locked by another process.";
+    }
+
+    // #2 Remove the system file attribute
+    const auto folderAttrs = GetFileAttributesW(folder.toStdWString().c_str());
+    if (!SetFileAttributesW(folder.toStdWString().c_str(), folderAttrs & ~FILE_ATTRIBUTE_SYSTEM)) {
+        qCWarning(lcUtility) << "Remove system file attribute failed for:" << folder;
+    }
+
+    // #3 Remove the link to this folder
+    PWSTR path;
+    if (!SHGetKnownFolderPath(FOLDERID_Links, 0, nullptr, &path) == S_OK) {
+        qCWarning(lcUtility) << "SHGetKnownFolderPath for " << folder << "has failed.";
+        return;
+    }
+
+    const QDir links(QString::fromWCharArray(path));
+    CoTaskMemFree(path);
+
+    const auto linkName = QDir(links).absoluteFilePath(folderDir.dirName() + QLatin1String(".lnk"));
+
+    qCInfo(lcUtility) << "Removing favorite link from" << folder << "to" << linkName;
+    if (!QFile::remove(linkName)) {
+        qCWarning(lcUtility) << "Removing a favorite link from" << folder << "to" << linkName << "failed.";
+    }
 }
 
 bool hasSystemLaunchOnStartup_private(const QString &appName)
@@ -346,6 +389,17 @@ QString Utility::formatWinError(long errorCode)
     return QStringLiteral("WindowsError: %1: %2").arg(QString::number(errorCode, 16), QString::fromWCharArray(_com_error(errorCode).ErrorMessage()));
 }
 
+QString Utility::getCurrentUserName()
+{
+    TCHAR username[UNLEN + 1] = {0};
+    DWORD len = sizeof(username) / sizeof(TCHAR);
+    
+    if (!GetUserName(username, &len)) {
+        qCWarning(lcUtility) << "Could not retrieve Windows user name." << formatWinError(GetLastError());
+    }
+
+    return QString::fromWCharArray(username);
+}
 
 Utility::NtfsPermissionLookupRAII::NtfsPermissionLookupRAII()
 {

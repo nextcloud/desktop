@@ -139,6 +139,26 @@ QNetworkReply *AbstractNetworkJob::sendRequest(const QByteArray &verb, const QUr
     return reply;
 }
 
+QNetworkReply *AbstractNetworkJob::sendRequest(const QByteArray &verb, const QUrl &url,
+    QNetworkRequest req, const QByteArray &requestBody)
+{
+    auto reply = _account->sendRawRequest(verb, url, req, requestBody);
+    _requestBody = nullptr;
+    adoptRequest(reply);
+    return reply;
+}
+
+QNetworkReply *AbstractNetworkJob::sendRequest(const QByteArray &verb,
+                                               const QUrl &url,
+                                               QNetworkRequest req,
+                                               QHttpMultiPart *requestBody)
+{
+    auto reply = _account->sendRawRequest(verb, url, req, requestBody);
+    _requestBody = nullptr;
+    adoptRequest(reply);
+    return reply;
+}
+
 void AbstractNetworkJob::adoptRequest(QNetworkReply *reply)
 {
     addTimer(reply);
@@ -154,8 +174,6 @@ QUrl AbstractNetworkJob::makeAccountUrl(const QString &relativePath) const
 
 QUrl AbstractNetworkJob::makeDavUrl(const QString &relativePath) const
 {
-    // ensure we always used the remote folder
-    ASSERT(relativePath.startsWith(QLatin1Char('/')))
     return Utility::concatUrlPath(_account->davUrl(), relativePath);
 }
 

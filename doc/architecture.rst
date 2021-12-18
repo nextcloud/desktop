@@ -406,7 +406,7 @@ Virtual Files
 -------------
 
 .. note::
-    * This feature is currently only available on ``Windows`` by default. ``Linux`` implementation is experimental and must be enabled by adding ``showExperimentalOptions=true`` to the ``nextcloud.cfg`` configuration file in the ``App Data`` folder. ``macOS``, at the moment, is using the same backend as ``Linux`` one. It can be enabled with the same ``showExperimentalOptions`` flag.
+    * This feature is currently only available on ``Windows`` by default. ``Linux`` and ``macOS`` implementations are experimental and must be enabled by adding ``showExperimentalOptions=true`` to the ``nextcloud.cfg`` configuration file in the ``App Data`` folder.
 
 Oftentimes, users are working with a huge amount of files that are big in size. Synchronizing every such file to a device that's running a Nextcloud desktop client is not always possible due to the user's device storage space limitation.
 Let's assume that your desktop client is connected to a server that has 1TB of data. You want all those files at hand, so you can quickly access any file via the file explorer. Your device has 512GB local storage device.
@@ -416,8 +416,15 @@ Needless to say, this is far from being convenient.
 That's why, starting from 3.2.0, we are introducing the VFS (Virtual Files) feature. You may have had experience working with a similar feature in other cloud sync clients. This feature is known by different names: Files On-Demand, SmartSync, etc.
 The VFS does not occupy much space on the user's storage. It just creates placeholders for each file and folder. These files are quite small and only contain metadata needed to display them properly and to fetch the actual file when needed.
 
-One will see a hydration (in other words - file download) process when double-clicking on a file that must become available. There will be a progress-bar popup displayed if the file is large enough. So, the hydration process can be observed and it makes it easy to then find out, how long, it would take to fetch the actual file from the server.
-The "Hydration" can be thought of as "downloading" or "fetching" the file contents. As soon as hydration is complete, the file will then be opened normally as now it is a real file on the user's storage. It won't disappear, and, from now on, will always be available, unless it is manually dehydrated.
+When one tries to open a file, for example by double clicking on a
+file in the Windows Explorer, one will see that the file gets
+downloaded and becomes available locally. This can be observed by a
+small progress-bar popup if the file is large enough.
+
+As soon as the download is complete, the file will then be opened
+normally as now it is a real file on the user's storage. It won't
+disappear, and, from now on, will always be available, unless it is
+manually dehydrated.
 
 .. image:: images/vfs_hydration_progress_bar.png
    :alt: VFS hydration progress bar

@@ -545,6 +545,11 @@ void FolderWizardSelectiveSync::initializePage()
             _virtualFilesCheckBox->setChecked(bestAvailableVfsMode() == Vfs::WindowsCfApi);
             _virtualFilesCheckBox->setEnabled(true);
             _virtualFilesCheckBox->setText(tr("Use virtual files instead of downloading content immediately %1").arg(bestAvailableVfsMode() == Vfs::WindowsCfApi ? QString() : tr("(experimental)")));
+
+            if (Theme::instance()->enforceVirtualFilesSyncFolder()) {
+                _virtualFilesCheckBox->setChecked(true);
+                _virtualFilesCheckBox->setDisabled(true);
+            }
         }
         //
     }

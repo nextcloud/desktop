@@ -34,6 +34,7 @@
 #include "sharedialog.h"
 #include "accountmanager.h"
 #include "creds/abstractcredentials.h"
+#include "pushnotifications.h"
 
 #if defined(BUILD_UPDATER)
 #include "updater/ocupdater.h"
@@ -178,7 +179,7 @@ Application::Application(int &argc, char **argv)
     , _showLogWindow(false)
     , _logExpire(0)
     , _logFlush(false)
-    , _logDebug(false)
+    , _logDebug(true)
     , _userTriggeredConnect(false)
     , _debugMode(false)
     , _backgroundMode(false)
@@ -349,6 +350,9 @@ Application::Application(int &argc, char **argv)
     connect(FolderMan::instance()->socketApi(), &SocketApi::shareCommandReceived,
         _gui.data(), &ownCloudGui::slotShowShareDialog);
 
+    connect(FolderMan::instance()->socketApi(), &SocketApi::fileActivityCommandReceived,
+        Systray::instance(), &Systray::showFileActivityDialog);
+
     // startup procedure.
     connect(&_checkConnectionTimer, &QTimer::timeout, this, &Application::slotCheckConnection);
     _checkConnectionTimer.setInterval(ConnectionValidator::DefaultCallingIntervalMsec); // check for connection every 32 seconds.
@@ -456,9 +460,10 @@ void Application::slotCheckConnection()
 
         // Don't check if we're manually signed out or
         // when the error is permanent.
-        if (state != AccountState::SignedOut
-            && state != AccountState::ConfigurationError
-            && state != AccountState::AskingCredentials) {
+        const auto pushNotifications = accountState->account()->pushNotifications();
+        const auto pushNotificationsAvailable = (pushNotifications && pushNotifications->isReady());
+        if (state != AccountState::SignedOut && state != AccountState::ConfigurationError
+            && state != AccountState::AskingCredentials && !pushNotificationsAvailable) {
             accountState->checkConnectivity();
         }
     }

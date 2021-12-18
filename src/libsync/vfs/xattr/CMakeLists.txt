@@ -7,18 +7,23 @@ if (LINUX)
     add_library(nextcloudsync_vfs_xattr SHARED
         ${vfs_xattr_SRCS}
     )
+
+    target_link_libraries(nextcloudsync_vfs_xattr PRIVATE Nextcloud::sync)
+
     set_target_properties(nextcloudsync_vfs_xattr
-        PROPERTIES
-        LIBRARY_OUTPUT_NAME ${APPLICATION_EXECUTABLE}sync_vfs_xattr
-    )
-
-    target_link_libraries(nextcloudsync_vfs_xattr PRIVATE nextcloudsync)
-
-    set_target_properties(nextcloudsync_vfs_xattr PROPERTIES
-        LIBRARY_OUTPUT_DIRECTORY ${BIN_OUTPUT_DIRECTORY}
-        RUNTIME_OUTPUT_DIRECTORY ${BIN_OUTPUT_DIRECTORY}
-        PREFIX ""
-        AUTOMOC TRUE
+      PROPERTIES
+        LIBRARY_OUTPUT_DIRECTORY
+          ${BIN_OUTPUT_DIRECTORY}
+        RUNTIME_OUTPUT_DIRECTORY
+          ${BIN_OUTPUT_DIRECTORY}
+        PREFIX
+          ""
+        AUTOMOC
+          TRUE
+        LIBRARY_OUTPUT_NAME
+          ${APPLICATION_EXECUTABLE}sync_vfs_xattr
+        RUNTIME_OUTPUT_NAME
+          ${APPLICATION_EXECUTABLE}sync_vfs_xattr
     )
 
     target_include_directories(nextcloudsync_vfs_xattr BEFORE PUBLIC ${CMAKE_CURRENT_BINARY_DIR} INTERFACE ${CMAKE_CURRENT_BINARY_DIR})

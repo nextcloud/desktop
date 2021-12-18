@@ -65,6 +65,20 @@ class TestPushNotifications : public QObject
     Q_OBJECT
 
 private slots:
+    void testTryReconnect_capabilitesReportPushNotificationsAvailable_reconnectForEver()
+    {
+        FakeWebSocketServer fakeServer;
+        auto account = FakeWebSocketServer::createAccount();
+        account->setPushNotificationsReconnectInterval(0);
+
+        // Let if fail a few times
+        QVERIFY(failThreeAuthenticationAttempts(fakeServer, account));
+        QVERIFY(failThreeAuthenticationAttempts(fakeServer, account));
+
+        // Push notifications should try to reconnect
+        QVERIFY(fakeServer.authenticateAccount(account));
+    }
+
     void testSetup_correctCredentials_authenticateAndEmitReady()
     {
         FakeWebSocketServer fakeServer;
@@ -271,20 +285,6 @@ private slots:
                 QVERIFY(verifyCalledOnceWithAccount(*notificationsChangedSpy, account));
                 QVERIFY(verifyCalledOnceWithAccount(*activitiesChangedSpy, account));
             }));
-    }
-
-    void testTryReconnect_capabilitesReportPushNotificationsAvailable_reconnectForEver()
-    {
-        FakeWebSocketServer fakeServer;
-        auto account = FakeWebSocketServer::createAccount();
-        account->setPushNotificationsReconnectInterval(0);
-
-        // Let if fail a few times
-        QVERIFY(failThreeAuthenticationAttempts(fakeServer, account));
-        QVERIFY(failThreeAuthenticationAttempts(fakeServer, account));
-
-        // Push notifications should try to reconnect
-        QVERIFY(fakeServer.authenticateAccount(account));
     }
 };
 

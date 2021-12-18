@@ -7,7 +7,6 @@ include(CheckCXXSourceCompiles)
 
 set(PACKAGE ${APPLICATION_NAME})
 set(VERSION ${APPLICATION_VERSION})
-set(DATADIR ${DATA_INSTALL_DIR})
 set(LIBDIR ${LIB_INSTALL_DIR})
 set(SYSCONFDIR ${SYSCONF_INSTALL_DIR})
 
@@ -23,6 +22,12 @@ if (NOT LINUX)
     check_library_exists(rt nanosleep "" HAVE_LIBRT)
 
     set(CMAKE_REQUIRED_LIBRARIES ${CMAKE_REQUIRED_LIBRARIES} )
+
+    # Systems not using glibc require linker flag for argp
+    check_library_exists(argp argp_parse "" HAVE_LIBARGP)
+    if(HAVE_ARGP_H AND HAVE_LIBARGP)
+        set(CMAKE_REQUIRED_LIBRARIES ${CMAKE_REQUIRED_LIBRARIES} argp)
+    endif()
 endif (NOT LINUX)
 
 if(WIN32)

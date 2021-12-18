@@ -108,27 +108,7 @@ void Flow2AuthWidget::slotAuthResult(Flow2Auth::Result r, const QString &errorSt
     }
     }
 
-    _account->setCredentials(new WebFlowCredentials(user, appPassword));
-    const auto fetchUserNameJob = new JsonApiJob(_account->sharedFromThis(), QStringLiteral("/ocs/v1.php/cloud/user"));
-    connect(fetchUserNameJob, &JsonApiJob::jsonReceived, this, [this, fetchUserNameJob, r, errorString, user, appPassword](const QJsonDocument &json, int statusCode) {
-        fetchUserNameJob->deleteLater();
-        if (statusCode != 100) {
-            qCWarning(lcFlow2AuthWidget) << "Could not fetch username.";
-            _account->setDavUser("");
-            _account->setDavDisplayName(user);
-            emit authResult(r, errorString, user, appPassword);
-            return;
-        }
-
-        const auto objData = json.object().value("ocs").toObject().value("data").toObject();
-        const auto userId = objData.value("id").toString(user);
-        const auto displayName = objData.value("display-name").toString();
-        _account->setDavUser(userId);
-        _account->setDavDisplayName(displayName);
-
-        emit authResult(r, errorString, user, appPassword);
-    });
-    fetchUserNameJob->start();
+    emit authResult(r, errorString, user, appPassword);
 }
 
 void Flow2AuthWidget::setError(const QString &error) {

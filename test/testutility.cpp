@@ -58,8 +58,7 @@ private slots:
 
     void testLaunchOnStartup()
     {
-        qsrand(QDateTime::currentDateTime().toTime_t());
-        QString postfix = QString::number(qrand());
+        QString postfix = QString::number(OCC::Utility::rand());
 
         const QString appName = QString::fromLatin1("testLaunchOnStartup.%1").arg(postfix);
         const QString guiName = "LaunchOnStartup GUI Name";
@@ -124,8 +123,8 @@ private slots:
             qDebug() << "Version of installed Nextcloud: " << ver;
             QVERIFY(!ver.isEmpty());
 
-            QRegExp rx(APPLICATION_SHORTNAME R"( version \d+\.\d+\.\d+.*)");
-            QVERIFY(rx.exactMatch(ver));
+            const QRegularExpression rx(QRegularExpression::anchoredPattern(APPLICATION_SHORTNAME R"( version \d+\.\d+\.\d+.*)"));
+            QVERIFY(rx.match(ver).hasMatch());
         } else {
             QVERIFY(versionOfInstalledBinary().isEmpty());
         }

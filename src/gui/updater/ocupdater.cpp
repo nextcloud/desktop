@@ -107,7 +107,7 @@ bool OCUpdater::performUpdate()
         const auto messageBoxStartInstaller = new QMessageBox(QMessageBox::Information,
             tr("New %1 update ready").arg(Theme::instance()->appNameGUI()),
             tr("A new update for %1 is about to be installed. The updater may ask "
-               "for additional privileges during the process.")
+               "for additional privileges during the process. Your computer may reboot to complete the installation.")
                 .arg(Theme::instance()->appNameGUI()),
             QMessageBox::Ok,
             nullptr);
@@ -144,7 +144,7 @@ void OCUpdater::backgroundCheckForUpdate()
     }
 }
 
-QString OCUpdater::statusString() const
+QString OCUpdater::statusString(UpdateStatusStringFormat format) const
 {
     QString updateVersion = _updateInfo.versionString();
 
@@ -153,12 +153,20 @@ QString OCUpdater::statusString() const
         return tr("Downloading %1. Please wait …").arg(updateVersion);
     case DownloadComplete:
         return tr("%1 available. Restart application to start the update.").arg(updateVersion);
-    case DownloadFailed:
+    case DownloadFailed: {
+        if (format == UpdateStatusStringFormat::Html) {
+            return tr("Could not download update. Please open <a href='%1'>%1</a> to download the update manually.").arg(_updateInfo.web());
+        }
         return tr("Could not download update. Please open %1 to download the update manually.").arg(_updateInfo.web());
+    }
     case DownloadTimedOut:
         return tr("Could not check for new updates.");
-    case UpdateOnlyAvailableThroughSystem:
+    case UpdateOnlyAvailableThroughSystem: {
+        if (format == UpdateStatusStringFormat::Html) {
+            return tr("New %1 is available. Please open <a href='%2'>%2</a> to download the update.").arg(updateVersion, _updateInfo.web());
+        }
         return tr("New %1 is available. Please open %2 to download the update.").arg(updateVersion, _updateInfo.web());
+    }
     case CheckingServer:
         return tr("Checking update server …");
     case Unknown:
@@ -214,7 +222,7 @@ void OCUpdater::slotStartInstaller()
         };
 
         QString msiLogFile = cfg.configPath() + "msi.log";
-        QString command = QString("&{msiexec /norestart /passive /i '%1' /L*V '%2'| Out-Null ; &'%3'}")
+        QString command = QString("&{msiexec /promptrestart /passive /i '%1' /L*V '%2'| Out-Null ; &'%3'}")
              .arg(preparePathForPowershell(updateFile))
              .arg(preparePathForPowershell(msiLogFile))
              .arg(preparePathForPowershell(QCoreApplication::applicationFilePath()));
@@ -453,7 +461,7 @@ void NSISUpdater::showUpdateErrorDialog(const QString &targetVersion)
     ico->setPixmap(infoIcon.pixmap(iconSize));
     auto lbl = new QLabel;
     QString txt = tr("<p>A new version of the %1 Client is available but the updating process failed.</p>"
-                     "<p><b>%2</b> has been downloaded. The installed version is %3.</p>")
+                     "<p><b>%2</b> has been downloaded. The installed version is %3. If you confirm restart and update, your computer may reboot to complete the installation.</p>")
                       .arg(Utility::escape(Theme::instance()->appNameGUI()),
                           Utility::escape(targetVersion), Utility::escape(clientVersion()));
 

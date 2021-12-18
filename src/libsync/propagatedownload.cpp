@@ -63,9 +63,9 @@ QString OWNCLOUDSYNC_EXPORT createDownloadTmpFileName(const QString &previous)
     int overhead = 1 + 1 + 2 + 8; // slash dot dot-tilde ffffffff"
     int spaceForFileName = qMin(254, tmpFileName.length() + overhead) - overhead;
     if (tmpPath.length() > 0) {
-        return tmpPath + '/' + '.' + tmpFileName.left(spaceForFileName) + ".~" + (QString::number(uint(qrand() % 0xFFFFFFFF), 16));
+        return tmpPath + '/' + '.' + tmpFileName.left(spaceForFileName) + ".~" + (QString::number(uint(Utility::rand() % 0xFFFFFFFF), 16));
     } else {
-        return '.' + tmpFileName.left(spaceForFileName) + ".~" + (QString::number(uint(qrand() % 0xFFFFFFFF), 16));
+        return '.' + tmpFileName.left(spaceForFileName) + ".~" + (QString::number(uint(Utility::rand() % 0xFFFFFFFF), 16));
     }
 }
 
@@ -78,7 +78,6 @@ GETFileJob::GETFileJob(AccountPtr account, const QString &path, QIODevice *devic
     , _headers(headers)
     , _expectedEtagForResume(expectedEtagForResume)
     , _expectedContentLength(-1)
-    , _contentLength(-1)
     , _resumeStart(resumeStart)
     , _errorStatus(SyncFileItem::NoStatus)
     , _bandwidthLimited(false)
@@ -87,6 +86,7 @@ GETFileJob::GETFileJob(AccountPtr account, const QString &path, QIODevice *devic
     , _bandwidthManager(nullptr)
     , _hasEmittedFinishedSignal(false)
     , _lastModified()
+    , _contentLength(-1)
 {
 }
 
@@ -94,10 +94,10 @@ GETFileJob::GETFileJob(AccountPtr account, const QUrl &url, QIODevice *device,
     const QMap<QByteArray, QByteArray> &headers, const QByteArray &expectedEtagForResume,
     qint64 resumeStart, QObject *parent)
     : AbstractNetworkJob(account, url.toEncoded(), parent)
+    , _device(device)
     , _headers(headers)
     , _expectedEtagForResume(expectedEtagForResume)
     , _expectedContentLength(-1)
-    , _contentLength(-1)
     , _resumeStart(resumeStart)
     , _errorStatus(SyncFileItem::NoStatus)
     , _directDownloadUrl(url)
@@ -107,7 +107,7 @@ GETFileJob::GETFileJob(AccountPtr account, const QUrl &url, QIODevice *device,
     , _bandwidthManager(nullptr)
     , _hasEmittedFinishedSignal(false)
     , _lastModified()
-    , _device(device)
+    , _contentLength(-1)
 {
 }
 
@@ -220,9 +220,10 @@ void GETFileJob::slotMetaDataChanged()
     qint64 start = 0;
     QByteArray ranges = reply()->rawHeader("Content-Range");
     if (!ranges.isEmpty()) {
-        QRegExp rx("bytes (\\d+)-");
-        if (rx.indexIn(ranges) >= 0) {
-            start = rx.cap(1).toLongLong();
+        const QRegularExpression rx("bytes (\\d+)-");
+        const auto rxMatch = rx.match(ranges);
+        if (rxMatch.hasMatch()) {
+            start = rxMatch.captured(1).toLongLong();
         }
     }
     if (start != _resumeStart) {
@@ -563,6 +564,10 @@ void PropagateDownloadFile::startAfterIsEncryptedIsChecked()
         return checksum_header.startsWith("SHA")
             || checksum_header.startsWith("MD5:");
     };
+    Q_ASSERT(_item->_modtime > 0);
+    if (_item->_modtime <= 0) {
+        qCWarning(lcPropagateDownload()) << "invalid modified time" << _item->_file << _item->_modtime;
+    }
     if (_item->_instruction == CSYNC_INSTRUCTION_CONFLICT
         && _item->_size == _item->_previousSize
         && !_item->_checksumHeader.isEmpty()
@@ -591,11 +596,22 @@ void PropagateDownloadFile::conflictChecksumComputed(const QByteArray &checksumT
         // Apply the server mtime locally if necessary, ensuring the journal
         // and local mtimes end up identical
         auto fn = propagator()->fullLocalPath(_item->_file);
+        Q_ASSERT(_item->_modtime > 0);
+        if (_item->_modtime <= 0) {
+            qCWarning(lcPropagateDownload()) << "invalid modified time" << _item->_file << _item->_modtime;
+            return;
+        }
         if (_item->_modtime != _item->_previousModtime) {
+            Q_ASSERT(_item->_modtime > 0);
             FileSystem::setModTime(fn, _item->_modtime);
             emit propagator()->touchedFile(fn);
         }
         _item->_modtime = FileSystem::getModTime(fn);
+        Q_ASSERT(_item->_modtime > 0);
+        if (_item->_modtime <= 0) {
+            qCWarning(lcPropagateDownload()) << "invalid modified time" << _item->_file << _item->_modtime;
+            return;
+        }
         updateMetadata(/*isConflict=*/false);
         return;
     }
@@ -819,6 +835,10 @@ void PropagateDownloadFile::slotGetFinished()
         // It is possible that the file was modified on the server since we did the discovery phase
         // so make sure we have the up-to-date time
         _item->_modtime = job->lastModified();
+        Q_ASSERT(_item->_modtime > 0);
+        if (_item->_modtime <= 0) {
+            qCWarning(lcPropagateDownload()) << "invalid modified time" << _item->_file << _item->_modtime;
+        }
     }
 
     _tmpFile.close();
@@ -1057,10 +1077,28 @@ void PropagateDownloadFile::downloadFinished()
         return;
     }
 
+    if (_item->_modtime <= 0) {
+        FileSystem::remove(_tmpFile.fileName());
+        done(SyncFileItem::NormalError, tr("File %1 has invalid modified time reported by server. Do not save it.").arg(QDir::toNativeSeparators(_item->_file)));
+        return;
+    }
+    Q_ASSERT(_item->_modtime > 0);
+    if (_item->_modtime <= 0) {
+        qCWarning(lcPropagateDownload()) << "invalid modified time" << _item->_file << _item->_modtime;
+    }
     FileSystem::setModTime(_tmpFile.fileName(), _item->_modtime);
     // We need to fetch the time again because some file systems such as FAT have worse than a second
     // Accuracy, and we really need the time from the file system. (#3103)
     _item->_modtime = FileSystem::getModTime(_tmpFile.fileName());
+    if (_item->_modtime <= 0) {
+        FileSystem::remove(_tmpFile.fileName());
+        done(SyncFileItem::NormalError, tr("File %1 has invalid modified time reported by server. Do not save it.").arg(QDir::toNativeSeparators(_item->_file)));
+        return;
+    }
+    Q_ASSERT(_item->_modtime > 0);
+    if (_item->_modtime <= 0) {
+        qCWarning(lcPropagateDownload()) << "invalid modified time" << _item->_file << _item->_modtime;
+    }
 
     bool previousFileExists = FileSystem::fileExists(fn);
     if (previousFileExists) {

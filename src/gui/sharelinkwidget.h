@@ -23,6 +23,10 @@
 #include <QSharedPointer>
 #include <QList>
 #include <QToolButton>
+#include <QHBoxLayout>
+#include <QLabel>
+#include <QLineEdit>
+#include <QWidgetAction>
 
 class QMenu;
 class QTableWidgetItem;
@@ -37,6 +41,7 @@ class AbstractCredentials;
 class SyncResult;
 class LinkShare;
 class Share;
+class ElidedLabel;
 
 /**
  * @brief The ShareDialog class
@@ -64,20 +69,20 @@ public:
 
 public slots:
     void slotDeleteShareFetched();
-    void slotToggleShareLinkAnimation(bool start);
-    void slotToggleButtonAnimation(QToolButton *button, QProgressIndicator *progressIndicator, bool optionEnabled, bool start);
-    void slotServerError(int code, const QString &message);
+    void slotToggleShareLinkAnimation(const bool start);
+    void slotServerError(const int code, const QString &message);
     void slotCreateShareRequiresPassword(const QString &message);
     void slotStyleChanged();
 
 private slots:
-    void slotCreateShareLink(bool clicked);
+    void slotCreateShareLink(const bool clicked);
+    void slotCopyLinkShare(const bool clicked) const;    
 
     void slotCreatePassword();
     void slotPasswordSet();
-    void slotPasswordSetError(int code, const QString &message);
+    void slotPasswordSetError(const int code, const QString &message);
 
-	void slotCreateNote();
+    void slotCreateNote();
     void slotNoteSet();
 
     void slotSetExpireDate();
@@ -88,6 +93,9 @@ private slots:
 
     void slotDeleteAnimationFinished();
     void slotAnimationFinished();
+    
+    void slotCreateLabel();
+    void slotLabelSet();
 
 signals:
     void createLinkShare();
@@ -99,18 +107,11 @@ signals:
 
 private:
     void displayError(const QString &errMsg);
-
-    void showPasswordOptions(bool show);
-    void togglePasswordOptions(bool enable);
-
-	void showNoteOptions(bool show);
-    void toggleNoteOptions(bool enable);
-    void setNote(const QString &note);
-
-    void showExpireDateOptions(bool show);
-    void toggleExpireDateOptions(bool enable);
-
-    void slotCopyLinkShare(bool clicked);
+    
+    void togglePasswordOptions(const bool enable = true);
+    void toggleNoteOptions(const bool enable = true);
+    void toggleExpireDateOptions(const bool enable = true);
+    void toggleButtonAnimation(QToolButton *button, QProgressIndicator *progressIndicator, const QAction *checkedAction) const;
 
     /** Confirm with the user and then delete the share */
     void confirmAndDeleteShare();
@@ -121,6 +122,8 @@ private:
     void startAnimation(const int start, const int end);
 
     void customizeStyle();
+    
+    void displayShareLinkLabel();
 
     Ui::ShareLinkWidget *_ui;
     AccountPtr _account;
@@ -146,6 +149,14 @@ private:
     QAction *_unshareLinkAction;
     QAction *_addAnotherLinkAction;
     QAction *_noteLinkAction;
+    QHBoxLayout *_shareLinkLayout{};
+    QLabel *_shareLinkLabel{};
+    ElidedLabel *_shareLinkElidedLabel{};
+    QLineEdit *_shareLinkEdit{};
+    QToolButton *_shareLinkButton{};
+    QProgressIndicator *_shareLinkProgressIndicator{};
+    QWidget *_shareLinkDefaultWidget{};
+    QWidgetAction *_shareLinkWidgetAction{};
 };
 }
 

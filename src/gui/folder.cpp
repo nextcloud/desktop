@@ -669,8 +669,10 @@ void Folder::setVirtualFilesEnabled(bool enabled)
 
         _definition.virtualFilesMode = newMode;
         startVfs();
-        if (newMode != Vfs::Off)
+        if (newMode != Vfs::Off) {
             _saveInFoldersWithPlaceholders = true;
+            switchToVirtualFiles();
+        }
         saveToSettings();
     }
 }
@@ -684,6 +686,20 @@ void Folder::setRootPinState(PinState state)
     // We don't actually need discovery, but it's important to recurse
     // into all folders, so the changes can be applied.
     slotNextSyncFullLocalDiscovery();
+}
+
+void Folder::switchToVirtualFiles()
+{
+    SyncEngine::switchToVirtualFiles(path(), _journal, *_vfs);
+    _hasSwitchedToVfs = true;
+}
+
+void Folder::processSwitchedToVirtualFiles()
+{
+    if (_hasSwitchedToVfs) {
+        _hasSwitchedToVfs = false;
+        saveToSettings();
+    }
 }
 
 bool Folder::supportsSelectiveSync() const
@@ -859,9 +875,25 @@ void Folder::startSync(const QStringList &pathList)
 
     _engine->setIgnoreHiddenFiles(_definition.ignoreHiddenFiles);
 
+    correctPlaceholderFiles();
+
     QMetaObject::invokeMethod(_engine.data(), "startSync", Qt::QueuedConnection);
 
     emit syncStarted();
+}
+
+void Folder::correctPlaceholderFiles()
+{
+    if (_definition.virtualFilesMode == Vfs::Off) {
+        return;
+    }
+    static const auto placeholdersCorrectedKey = QStringLiteral("placeholders_corrected");
+    const auto placeholdersCorrected = _journal.keyValueStoreGetInt(placeholdersCorrectedKey, 0);
+    if (!placeholdersCorrected) {
+        qCDebug(lcFolder) << "Make sure all virtual files are placeholder files";
+        switchToVirtualFiles();
+        _journal.keyValueStoreSet(placeholdersCorrectedKey, true);
+    }
 }
 
 void Folder::setSyncOptions()
@@ -1261,6 +1293,11 @@ void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction dir, std::functio
     msgBox->open();
 }
 
+QString Folder::fileFromLocalPath(const QString &localPath) const
+{
+    return localPath.mid(cleanPath().length() + 1);
+}
+
 void FolderDefinition::save(QSettings &settings, const FolderDefinition &folder)
 {
     settings.setValue(QLatin1String("localPath"), folder.localPath);
@@ -1353,5 +1390,6 @@ QString FolderDefinition::defaultJournalPath(AccountPtr account)
 {
     return SyncJournalDb::makeDbName(localPath, account->url(), targetPath, account->credentials()->user());
 }
+
 
 } // namespace OCC

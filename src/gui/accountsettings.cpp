@@ -587,12 +587,14 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
 
         ac = availabilityMenu->addAction(Utility::vfsPinActionText());
         connect(ac, &QAction::triggered, this, [this]() { slotSetCurrentFolderAvailability(PinState::AlwaysLocal); });
+        ac->setDisabled(Theme::instance()->enforceVirtualFilesSyncFolder());
 
         ac = availabilityMenu->addAction(Utility::vfsFreeSpaceActionText());
         connect(ac, &QAction::triggered, this, [this]() { slotSetCurrentFolderAvailability(PinState::OnlineOnly); });
 
         ac = menu->addAction(tr("Disable virtual file support …"));
         connect(ac, &QAction::triggered, this, &AccountSettings::slotDisableVfsCurrentFolder);
+        ac->setDisabled(Theme::instance()->enforceVirtualFilesSyncFolder());
     }
 
     if (Theme::instance()->showVirtualFilesOption()
@@ -760,6 +762,7 @@ void AccountSettings::slotRemoveCurrentFolder()
         messageBox->addButton(tr("Cancel"), QMessageBox::NoRole);
         connect(messageBox, &QMessageBox::finished, this, [messageBox, yesButton, folder, row, this]{
             if (messageBox->clickedButton() == yesButton) {
+                Utility::removeFavLink(folder->path());
                 FolderMan::instance()->removeFolder(folder);
                 _model->removeRow(row);
 

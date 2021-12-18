@@ -64,6 +64,7 @@ public slots:
 
 signals:
     void shareCommandReceived(const QString &sharePath, const QString &localPath, ShareDialogStartPage startPage);
+    void fileActivityCommandReceived(const QString &sharePath, const QString &localPath);
 
 private slots:
     void slotNewConnection();
@@ -102,6 +103,7 @@ private:
 
     // opens share dialog, sends reply
     void processShareRequest(const QString &localFile, SocketListener *listener, ShareDialogStartPage startPage);
+    void processFileActivityRequest(const QString &localFile);
 
     Q_INVOKABLE void command_RETRIEVE_FOLDER_STATUS(const QString &argument, SocketListener *listener);
     Q_INVOKABLE void command_RETRIEVE_FILE_STATUS(const QString &argument, SocketListener *listener);
@@ -111,6 +113,7 @@ private:
     Q_INVOKABLE void command_SHARE_MENU_TITLE(const QString &argument, SocketListener *listener);
 
     // The context menu actions
+    Q_INVOKABLE void command_ACTIVITY(const QString &localFile, SocketListener *listener);
     Q_INVOKABLE void command_SHARE(const QString &localFile, SocketListener *listener);
     Q_INVOKABLE void command_MANAGE_PUBLIC_LINKS(const QString &localFile, SocketListener *listener);
     Q_INVOKABLE void command_COPY_PUBLIC_LINK(const QString &localFile, SocketListener *listener);

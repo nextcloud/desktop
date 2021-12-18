@@ -39,10 +39,18 @@ void PropagateUploadFileV1::doStartUpload()
 {
     _chunkCount = int(std::ceil(_fileToUpload._size / double(chunkSize())));
     _startChunk = 0;
-    _transferId = uint(qrand()) ^ uint(_item->_modtime) ^ (uint(_fileToUpload._size) << 16);
+    Q_ASSERT(_item->_modtime > 0);
+    if (_item->_modtime <= 0) {
+        qCWarning(lcPropagateUpload()) << "invalid modified time" << _item->_file << _item->_modtime;
+    }
+    _transferId = uint(Utility::rand()) ^ uint(_item->_modtime) ^ (uint(_fileToUpload._size) << 16);
 
     const SyncJournalDb::UploadInfo progressInfo = propagator()->_journal->getUploadInfo(_item->_file);
 
+    Q_ASSERT(_item->_modtime > 0);
+    if (_item->_modtime <= 0) {
+        qCWarning(lcPropagateUpload()) << "invalid modified time" << _item->_file << _item->_modtime;
+    }
     if (progressInfo._valid && progressInfo.isChunked() && progressInfo._modtime == _item->_modtime && progressInfo._size == _item->_size
         && (progressInfo._contentChecksum == _item->_checksumHeader || progressInfo._contentChecksum.isEmpty() || _item->_checksumHeader.isEmpty())) {
         _startChunk = progressInfo._chunk;
@@ -56,6 +64,10 @@ void PropagateUploadFileV1::doStartUpload()
         pi._valid = true;
         pi._chunk = 0;
         pi._transferid = 0; // We set a null transfer id because it is not chunked.
+        Q_ASSERT(_item->_modtime > 0);
+        if (_item->_modtime <= 0) {
+            qCWarning(lcPropagateUpload()) << "invalid modified time" << _item->_file << _item->_modtime;
+        }
         pi._modtime = _item->_modtime;
         pi._errorCount = 0;
         pi._contentChecksum = _item->_checksumHeader;
@@ -245,6 +257,10 @@ void PropagateUploadFileV1::slotPutFinished()
     }
 
     // Check whether the file changed since discovery. the file check here is the original and not the temprary.
+    Q_ASSERT(_item->_modtime > 0);
+    if (_item->_modtime <= 0) {
+        qCWarning(lcPropagateUpload()) << "invalid modified time" << _item->_file << _item->_modtime;
+    }
     if (!FileSystem::verifyFileUnchanged(fullFilePath, _item->_size, _item->_modtime)) {
         propagator()->_anotherSyncNeeded = true;
         if (!_finished) {
@@ -283,6 +299,10 @@ void PropagateUploadFileV1::slotPutFinished()
         }
         pi._chunk = (currentChunk + _startChunk + 1) % _chunkCount; // next chunk to start with
         pi._transferid = _transferId;
+        Q_ASSERT(_item->_modtime > 0);
+        if (_item->_modtime <= 0) {
+            qCWarning(lcPropagateUpload()) << "invalid modified time" << _item->_file << _item->_modtime;
+        }
         pi._modtime = _item->_modtime;
         pi._errorCount = 0; // successful chunk upload resets
         pi._contentChecksum = _item->_checksumHeader;

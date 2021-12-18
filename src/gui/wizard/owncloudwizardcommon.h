@@ -50,7 +50,6 @@ namespace WizardCommon {
         Page_WebView,
 #endif // WITH_WEBENGINE
         Page_AdvancedSetup,
-        Page_Result
     };
 
 } // ns WizardCommon

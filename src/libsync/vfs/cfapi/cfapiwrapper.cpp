@@ -17,6 +17,7 @@
 #include "common/utility.h"
 #include "common/filesystembase.h"
 #include "hydrationjob.h"
+#include "theme.h"
 #include "vfs_cfapi.h"
 
 #include <QCoreApplication>
@@ -40,6 +41,9 @@ Q_LOGGING_CATEGORY(lcCfApiWrapper, "nextcloud.sync.vfs.cfapi.wrapper", QtInfoMsg
       FIELD_SIZE( CF_OPERATION_PARAMETERS, field ) )
 
 namespace {
+constexpr auto syncRootFlagsFull = 34;
+constexpr auto syncRootFlagsNoCfApiContextMenu = 2;
+
 void cfApiSendTransferInfo(const CF_CONNECTION_KEY &connectionKey, const CF_TRANSFER_KEY &transferKey, NTSTATUS status, void *buffer, qint64 offset, qint64 currentBlockLength, qint64 totalLength)
 {
 
@@ -428,8 +432,10 @@ bool createSyncRootRegistryKeys(const QString &providerName, const QString &fold
         QVariant value;
     };
 
+    const auto flags = OCC::Theme::instance()->enforceVirtualFilesSyncFolder() ? syncRootFlagsNoCfApiContextMenu : syncRootFlagsFull;
+
     const QVector<RegistryKeyInfo> registryKeysToSet = {
-        { providerSyncRootIdRegistryKey, QStringLiteral("Flags"), REG_DWORD, 34 },
+        { providerSyncRootIdRegistryKey, QStringLiteral("Flags"), REG_DWORD, flags },
         { providerSyncRootIdRegistryKey, QStringLiteral("DisplayNameResource"), REG_EXPAND_SZ, displayName },
         { providerSyncRootIdRegistryKey, QStringLiteral("IconResource"), REG_EXPAND_SZ, QString(QDir::toNativeSeparators(qApp->applicationFilePath()) + QStringLiteral(",0")) },
         { providerSyncRootIdUserSyncRootsRegistryKey, windowsSid, REG_SZ, syncRootPath }
@@ -499,7 +505,7 @@ OCC::Result<void, QString> OCC::CfApiWrapper::registerSyncRoot(const QString &pa
     const auto version = std::wstring(providerVersion.toStdWString().data());
 
     CF_SYNC_REGISTRATION info;
-    info.StructSize = sizeof(info) + (name.length() + version.length()) * sizeof(wchar_t);
+    info.StructSize = static_cast<ULONG>(sizeof(info) + (name.length() + version.length()) * sizeof(wchar_t));
     info.ProviderName = name.data();
     info.ProviderVersion = version.data();
     info.SyncRootIdentity = nullptr;
@@ -586,13 +592,18 @@ OCC::CfApiWrapper::FileHandle OCC::CfApiWrapper::handleForPath(const QString &pa
         return {};
     }
 
-    if (QFileInfo(path).isDir()) {
+    QFileInfo pathFileInfo(path);
+    if (!pathFileInfo.exists()) {
+        return {};
+    }
+
+    if (pathFileInfo.isDir()) {
         HANDLE handle = nullptr;
         const qint64 openResult = CfOpenFileWithOplock(path.toStdWString().data(), CF_OPEN_FILE_FLAG_NONE, &handle);
         if (openResult == S_OK) {
             return {handle, [](HANDLE h) { CfCloseHandle(h); }};
         }
-    } else {
+    } else if (pathFileInfo.isFile()) {
         const auto longpath = OCC::FileSystem::longWinPath(path);
         const auto handle = CreateFile(longpath.toStdWString().data(), 0, 0, nullptr,
                                        OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
@@ -638,6 +649,10 @@ OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> OCC::CfApiWrapper::se
 
 OCC::Result<void, QString> OCC::CfApiWrapper::createPlaceholderInfo(const QString &path, time_t modtime, qint64 size, const QByteArray &fileId)
 {
+    if (modtime <= 0) {
+        return {QString{"Could not update metadata due to invalid modified time for %1: %2"}.arg(path).arg(modtime)};
+    }
+
     const auto fileInfo = QFileInfo(path);
     const auto localBasePath = QDir::toNativeSeparators(fileInfo.path()).toStdWString();
     const auto relativePath = fileInfo.fileName().toStdWString();
@@ -686,6 +701,10 @@ OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> OCC::CfApiWrapper::up
 {
     Q_ASSERT(handle);
 
+    if (modtime <= 0) {
+        return {QString{"Could not update metadata due to invalid modified time for %1: %2"}.arg(pathForHandle(handle)).arg(modtime)};
+    }
+
     const auto info = replacesPath.isEmpty() ? findPlaceholderInfo(handle)
                                              : findPlaceholderInfo(handleForPath(replacesPath));
     if (!info) {
@@ -702,13 +721,14 @@ OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> OCC::CfApiWrapper::up
     OCC::Utility::UnixTimeToLargeIntegerFiletime(modtime, &metadata.BasicInfo.LastWriteTime);
     OCC::Utility::UnixTimeToLargeIntegerFiletime(modtime, &metadata.BasicInfo.LastAccessTime);
     OCC::Utility::UnixTimeToLargeIntegerFiletime(modtime, &metadata.BasicInfo.ChangeTime);
+    metadata.BasicInfo.FileAttributes = 0;
 
     const qint64 result = CfUpdatePlaceholder(handle.get(), &metadata,
                                               fileIdentity.data(), sizeToDWORD(fileIdentitySize),
                                               nullptr, 0, CF_UPDATE_FLAG_MARK_IN_SYNC, nullptr, nullptr);
 
     if (result != S_OK) {
-        qCWarning(lcCfApiWrapper) << "Couldn't update placeholder info for" << pathForHandle(handle) << ":" << QString::fromWCharArray(_com_error(result).ErrorMessage());
+        qCWarning(lcCfApiWrapper) << "Couldn't update placeholder info for" << pathForHandle(handle) << ":" << QString::fromWCharArray(_com_error(result).ErrorMessage()) << replacesPath;
         return { "Couldn't update placeholder info" };
     }
 

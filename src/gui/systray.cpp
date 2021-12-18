@@ -17,8 +17,12 @@
 #include "theme.h"
 #include "config.h"
 #include "common/utility.h"
-#include "tray/UserModel.h"
+#include "tray/svgimageprovider.h"
+#include "tray/usermodel.h"
+#include "wheelhandler.h"
+#include "tray/unifiedsearchresultimageprovider.h"
 #include "configfile.h"
+#include "accessmanager.h"
 
 #include <QCursor>
 #include <QGuiApplication>
@@ -56,8 +60,12 @@ void Systray::setTrayEngine(QQmlApplicationEngine *trayEngine)
 {
     _trayEngine = trayEngine;
 
+    _trayEngine->setNetworkAccessManagerFactory(&_accessManagerFactory);
+
     _trayEngine->addImportPath("qrc:/qml/theme");
     _trayEngine->addImageProvider("avatars", new ImageProvider);
+    _trayEngine->addImageProvider(QLatin1String("svgimage-custom-color"), new OCC::Ui::SvgImageProvider);
+    _trayEngine->addImageProvider(QLatin1String("unified-search-result-icon"), new UnifiedSearchResultImageProvider);
 }
 
 Systray::Systray()
@@ -86,6 +94,8 @@ Systray::Systray()
             return Systray::instance();
         }
     );
+
+    qmlRegisterType<WheelHandler>("com.nextcloud.desktopclient", 1, 0, "WheelHandler");
 
 #ifndef Q_OS_MAC
     auto contextMenu = new QMenu();
@@ -496,6 +506,16 @@ QPoint Systray::calcTrayIconCenter() const
     // On Linux, fall back to mouse position (assuming tray icon is activated by mouse click)
     return QCursor::pos(currentScreen());
 #endif
+}
+
+AccessManagerFactory::AccessManagerFactory()
+    : QQmlNetworkAccessManagerFactory()
+{
+}
+
+QNetworkAccessManager* AccessManagerFactory::create(QObject *parent)
+{
+    return new AccessManager(parent);
 }
 
 } // namespace OCC

@@ -13,6 +13,8 @@
  */
 
 #include "account.h"
+#include "accountfwd.h"
+#include "clientsideencryptionjobs.h"
 #include "cookiejar.h"
 #include "networkjobs.h"
 #include "configfile.h"
@@ -27,6 +29,7 @@
 
 #include "common/asserts.h"
 #include "clientsideencryption.h"
+#include "ocsuserstatusconnector.h"
 
 #include <QLoggingCategory>
 #include <QNetworkReply>
@@ -43,7 +46,10 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonArray>
+#include <QLoggingCategory>
+#include <QHttpMultiPart>
 
+#include <qsslconfiguration.h>
 #include <qt5keychain/keychain.h>
 #include "creds/abstractcredentials.h"
 
@@ -51,6 +57,7 @@ using namespace QKeychain;
 
 namespace {
 constexpr int pushNotificationsReconnectInterval = 1000 * 60 * 2;
+constexpr int usernamePrefillServerVersinMinSupportedMajor = 24;
 }
 
 namespace OCC {
@@ -92,6 +99,7 @@ QString Account::davPath() const
 void Account::setSharedThis(AccountPtr sharedThis)
 {
     _sharedThis = sharedThis.toWeakRef();
+    setupUserStatusConnector();
 }
 
 QString Account::davPathBase()
@@ -336,6 +344,36 @@ QNetworkReply *Account::sendRawRequest(const QByteArray &verb, const QUrl &url, 
     return _am->sendCustomRequest(req, verb, data);
 }
 
+QNetworkReply *Account::sendRawRequest(const QByteArray &verb, const QUrl &url, QNetworkRequest req, const QByteArray &data)
+{
+    req.setUrl(url);
+    req.setSslConfiguration(this->getOrCreateSslConfig());
+    if (verb == "HEAD" && data.isEmpty()) {
+        return _am->head(req);
+    } else if (verb == "GET" && data.isEmpty()) {
+        return _am->get(req);
+    } else if (verb == "POST") {
+        return _am->post(req, data);
+    } else if (verb == "PUT") {
+        return _am->put(req, data);
+    } else if (verb == "DELETE" && data.isEmpty()) {
+        return _am->deleteResource(req);
+    }
+    return _am->sendCustomRequest(req, verb, data);
+}
+
+QNetworkReply *Account::sendRawRequest(const QByteArray &verb, const QUrl &url, QNetworkRequest req, QHttpMultiPart *data)
+{
+    req.setUrl(url);
+    req.setSslConfiguration(this->getOrCreateSslConfig());
+    if (verb == "PUT") {
+        return _am->put(req, data);
+    } else if (verb == "POST") {
+        return _am->post(req, data);
+    }
+    return _am->sendCustomRequest(req, verb, data);
+}
+
 SimpleNetworkJob *Account::sendRequest(const QByteArray &verb, const QUrl &url, QNetworkRequest req, QIODevice *data)
 {
     auto job = new SimpleNetworkJob(sharedFromThis());
@@ -365,13 +403,15 @@ QSslConfiguration Account::getOrCreateSslConfig()
     sslConfig.setSslOption(QSsl::SslOptionDisableSessionSharing, false);
     sslConfig.setSslOption(QSsl::SslOptionDisableSessionPersistence, false);
 
+    sslConfig.setOcspStaplingEnabled(Theme::instance()->enableStaplingOCSP());
+
     return sslConfig;
 }
 
 void Account::setApprovedCerts(const QList<QSslCertificate> certs)
 {
     _approvedCerts = certs;
-    QSslSocket::addDefaultCaCertificates(certs);
+    QSslConfiguration::defaultConfiguration().addCaCertificates(certs);
 }
 
 void Account::addApprovedCerts(const QList<QSslCertificate> certs)
@@ -432,6 +472,9 @@ void Account::slotHandleSslErrors(QNetworkReply *reply, QList<QSslError> errors)
                      << "\n";
     }
 
+    qCInfo(lcAccount()) << "ssl errors" << out;
+    qCInfo(lcAccount()) << reply->sslConfiguration().peerCertificateChain();
+
     bool allPreviouslyRejected = true;
     foreach (const QSslError &error, errors) {
         if (!_rejectedCertificates.contains(error.certificate())) {
@@ -463,7 +506,7 @@ void Account::slotHandleSslErrors(QNetworkReply *reply, QList<QSslError> errors)
             return;
 
         if (!approvedCerts.isEmpty()) {
-            QSslSocket::addDefaultCaCertificates(approvedCerts);
+            QSslConfiguration::defaultConfiguration().addCaCertificates(approvedCerts);
             addApprovedCerts(approvedCerts);
             emit wantsAccountSaved(this);
 
@@ -543,7 +586,19 @@ void Account::setCapabilities(const QVariantMap &caps)
 {
     _capabilities = Capabilities(caps);
 
+    setupUserStatusConnector();
     trySetupPushNotifications();
+}
+
+void Account::setupUserStatusConnector()
+{
+    _userStatusConnector = std::make_shared<OcsUserStatusConnector>(sharedFromThis());
+    connect(_userStatusConnector.get(), &UserStatusConnector::userStatusFetched, this, [this](const UserStatus &) {
+        emit userStatusChanged();
+    });
+    connect(_userStatusConnector.get(), &UserStatusConnector::messageCleared, this, [this] {
+        emit userStatusChanged();
+    });
 }
 
 QString Account::serverVersion() const
@@ -573,6 +628,11 @@ bool Account::serverVersionUnsupported() const
     }
     return serverVersionInt() < makeServerVersion(NEXTCLOUD_SERVER_VERSION_MIN_SUPPORTED_MAJOR,
                NEXTCLOUD_SERVER_VERSION_MIN_SUPPORTED_MINOR, NEXTCLOUD_SERVER_VERSION_MIN_SUPPORTED_PATCH);
+}
+
+bool Account::isUsernamePrefillSupported() const
+{
+    return serverVersionInt() >= makeServerVersion(usernamePrefillServerVersinMinSupportedMajor, 0, 0);
 }
 
 void Account::setServerVersion(const QString &version)
@@ -741,6 +801,11 @@ void Account::slotDirectEditingRecieved(const QJsonDocument &json)
 PushNotifications *Account::pushNotifications() const
 {
     return _pushNotifications;
+}
+
+std::shared_ptr<UserStatusConnector> Account::userStatusConnector() const
+{
+    return _userStatusConnector;
 }
 
 } // namespace OCC

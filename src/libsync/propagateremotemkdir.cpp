@@ -138,7 +138,7 @@ void PropagateRemoteMkdir::finalizeMkColJob(QNetworkReply::NetworkError err, con
     }
 
     propagator()->_activeJobList.append(this);
-    auto propfindJob = new PropfindJob(_job->account(), _job->path(), this);
+    auto propfindJob = new PropfindJob(propagator()->account(), jobPath, this);
     propfindJob->setProperties({"http://owncloud.org/ns:permissions"});
     connect(propfindJob, &PropfindJob::result, this, [this, jobPath](const QVariantMap &result){
         propagator()->_activeJobList.removeOne(this);

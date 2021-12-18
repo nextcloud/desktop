@@ -12,7 +12,7 @@
 BasedOnStyle: WebKit
 
 Standard: Cpp11
-ColumnLimit: 0
+ColumnLimit: 120
 
 # Disable reflow of qdoc comments: indentation rules are different.
 # Translation comments are also excluded
@@ -61,3 +61,5 @@ ForEachMacros:   [ foreach, Q_FOREACH, BOOST_FOREACH, forever, Q_FOREVER, QBENCH
 MaxEmptyLinesToKeep: 2
 KeepEmptyLinesAtTheStartOfBlocks: false
 
+SpaceBeforeCpp11BracedList: false
+Cpp11BracedListStyle: true

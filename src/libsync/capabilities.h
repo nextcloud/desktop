@@ -55,10 +55,17 @@ public:
     bool sharePublicLinkEnforcePassword() const;
     bool sharePublicLinkEnforceExpireDate() const;
     int sharePublicLinkExpireDateDays() const;
+    bool shareInternalEnforceExpireDate() const;
+    int shareInternalExpireDateDays() const;
+    bool shareRemoteEnforceExpireDate() const;
+    int shareRemoteExpireDateDays() const;
     bool sharePublicLinkMultiple() const;
     bool shareResharing() const;
+    int shareDefaultPermissions() const;
     bool chunkingNg() const;
+    bool bulkUpload() const;
     bool userStatus() const;
+    bool userStatusSupportsEmoji() const;
 
     /// Returns which kind of push notfications are available
     PushNotificationTypes availablePushNotifications() const;

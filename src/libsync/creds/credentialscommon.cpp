@@ -14,7 +14,6 @@
  */
 
 #include <QList>
-#include <QRegExp>
 #include <QString>
 #include <QSslCertificate>
 #include <QSslConfiguration>

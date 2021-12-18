@@ -24,6 +24,7 @@ cd /build
 
 # AppImage
 export APPIMAGE=$(readlink -f ./Nextcloud*.AppImage)
+export UPDATE=$(readlink -f ./Nextcloud*.AppImage.zsync)
 export BASENAME=$(basename ${APPIMAGE})
 
 if ! test -e $APPIMAGE ; then
@@ -70,6 +71,7 @@ upload_release_asset()
 {
     uploadUrl=$1
     echo $(curl --max-time 900 -u $GIT_USERNAME:$GIT_TOKEN -X POST $uploadUrl --header "Content-Type: application/octet-stream" --upload-file $APPIMAGE)
+    echo $(curl --max-time 900 -u $GIT_USERNAME:$GIT_TOKEN -X POST $uploadUrl --header "Content-Type: application/octet-stream" --upload-file $UPDATE)
 }
 
 delete_release_asset()

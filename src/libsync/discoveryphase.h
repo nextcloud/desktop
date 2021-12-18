@@ -70,6 +70,7 @@ struct LocalInfo
 {
     /** FileName of the entry (this does not contains any directory or path, just the plain name */
     QString name;
+    QString renameName;
     time_t modtime = 0;
     int64_t size = 0;
     uint64_t inode = 0;
@@ -143,6 +144,7 @@ private:
     QString _subPath;
     QByteArray _firstEtag;
     QByteArray _fileId;
+    QByteArray _localFileId;
     AccountPtr _account;
     // The first result is for the directory itself and need to be ignored.
     // This flag is true if it was already ignored.
@@ -254,7 +256,7 @@ public:
     AccountPtr _account;
     SyncOptions _syncOptions;
     ExcludedFiles *_excludes;
-    QRegExp _invalidFilenameRx; // FIXME: maybe move in ExcludedFiles
+    QRegularExpression _invalidFilenameRx; // FIXME: maybe move in ExcludedFiles
     QStringList _serverBlacklistedFiles; // The blacklist from the capabilities
     bool _ignoreHiddenFiles = false;
     std::function<bool(const QString &)> _shouldDiscoverLocaly;

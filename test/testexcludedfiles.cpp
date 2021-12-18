@@ -265,7 +265,7 @@ private slots:
         QCOMPARE(excludeList.write("bar"), 3);
         excludeList.close();
 
-        excludedFiles->addInTreeExcludeFilePath(fooExcludeList);
+        excludedFiles->addExcludeFilePath(fooExcludeList);
         excludedFiles->reloadExcludeFiles();
         QCOMPARE(check_file_full(QByteArray(fooDir.toUtf8() + "/bar")), CSYNC_FILE_EXCLUDE_LIST);
         QCOMPARE(check_file_full(QByteArray(fooDir.toUtf8() + "/baz")), CSYNC_NOT_EXCLUDED);
@@ -700,7 +700,77 @@ private slots:
             QVERIFY(excludes.versionDirectiveKeepNextLine(test.first) == test.second);
         }
     }
-
+     
+    void testAddExcludeFilePath_addSameFilePath_listSizeDoesNotIncrease()
+    {
+        excludedFiles.reset(new ExcludedFiles());
+        const auto filePath = QString("exclude/.sync-exclude.lst");
+        
+        excludedFiles->addExcludeFilePath(filePath);
+        excludedFiles->addExcludeFilePath(filePath);        
+        
+        QCOMPARE(excludedFiles->_excludeFiles.size(), 1);
+    }
+    
+    void testAddExcludeFilePath_addDifferentFilePaths_listSizeIncrease()
+    {
+        excludedFiles.reset(new ExcludedFiles());
+        
+        const auto filePath1 = QString("exclude1/.sync-exclude.lst");
+        const auto filePath2 = QString("exclude2/.sync-exclude.lst");
+    
+        excludedFiles->addExcludeFilePath(filePath1);
+        excludedFiles->addExcludeFilePath(filePath2);
+        
+        QCOMPARE(excludedFiles->_excludeFiles.size(), 2);
+    }
+    
+    void testAddExcludeFilePath_addDefaultExcludeFile_returnCorrectMap()
+    {
+        const QString basePath("syncFolder/");
+        const QString folder1("syncFolder/folder1/");
+        const QString folder2(folder1 + "folder2/");
+        excludedFiles.reset(new ExcludedFiles(basePath));
+        
+        const QString defaultExcludeList("desktop-client/config-folder/sync-exclude.lst");
+        const QString folder1ExcludeList(folder1 + ".sync-exclude.lst");
+        const QString folder2ExcludeList(folder2 + ".sync-exclude.lst");
+        
+        excludedFiles->addExcludeFilePath(defaultExcludeList);
+        excludedFiles->addExcludeFilePath(folder1ExcludeList);
+        excludedFiles->addExcludeFilePath(folder2ExcludeList);
+        
+        QCOMPARE(excludedFiles->_excludeFiles.size(), 3);
+        QCOMPARE(excludedFiles->_excludeFiles[basePath].first(), defaultExcludeList);
+        QCOMPARE(excludedFiles->_excludeFiles[folder1].first(), folder1ExcludeList);
+        QCOMPARE(excludedFiles->_excludeFiles[folder2].first(), folder2ExcludeList);
+    }
+    
+    void testReloadExcludeFiles_fileDoesNotExist_returnFalse() {
+        excludedFiles.reset(new ExcludedFiles());
+        const QString nonExistingFile("directory/.sync-exclude.lst");
+        excludedFiles->addExcludeFilePath(nonExistingFile);
+        QCOMPARE(excludedFiles->reloadExcludeFiles(), false);
+        QCOMPARE(excludedFiles->_allExcludes.size(), 0);
+    }
+    
+    void testReloadExcludeFiles_fileExists_returnTrue()
+    {
+        const auto tempDir = QStandardPaths::writableLocation(QStandardPaths::TempLocation);
+        excludedFiles.reset(new ExcludedFiles(tempDir + "/"));
+        
+        const auto subTempDir = QStringLiteral("exclude");
+        QVERIFY(QDir(tempDir).mkpath(subTempDir));
+        
+        const auto existingFilePath = QString(tempDir + '/' + subTempDir + "/.sync-exclude.lst");
+        QFile excludeList(existingFilePath);
+        QVERIFY(excludeList.open(QFile::WriteOnly));
+        excludeList.close();
+        
+        excludedFiles->addExcludeFilePath(existingFilePath);
+        QCOMPARE(excludedFiles->reloadExcludeFiles(), true);
+        QCOMPARE(excludedFiles->_allExcludes.size(), 1);
+    }
 };
 
 QTEST_APPLESS_MAIN(TestExcludedFiles)

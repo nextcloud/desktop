@@ -70,7 +70,6 @@ public:
 
     void keyValueStoreSet(const QString &key, QVariant value);
     qint64 keyValueStoreGetInt(const QString &key, qint64 defaultValue);
-    QVariant keyValueStoreGet(const QString &key, QVariant defaultValue = {});
     void keyValueStoreDelete(const QString &key);
 
     bool deleteFileRecord(const QString &filename, bool recursively = false);
@@ -393,7 +392,7 @@ private:
 
     SqlDatabase _db;
     QString _dbFile;
-    QMutex _mutex; // Public functions are protected with the mutex.
+    QRecursiveMutex _mutex; // Public functions are protected with the mutex.
     QMap<QByteArray, int> _checksymTypeCache;
     int _transaction;
     bool _metadataTableIsEmpty;

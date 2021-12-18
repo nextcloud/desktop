@@ -31,6 +31,8 @@ class QJsonObject;
 
 namespace OCC {
 
+class OcsShareJob;
+
 class Share : public QObject
 {
     Q_OBJECT
@@ -128,6 +130,11 @@ public:
      */
     void deleteShare();
 
+     /*
+     * Is it a share with a user or group (local or remote)
+     */
+    static bool isShareTypeUserGroupEmailRoomOrRemote(const ShareType type);
+
 signals:
     void permissionsSet();
     void shareDeleted();
@@ -175,7 +182,9 @@ public:
         const Permissions permissions,
         bool isPasswordSet,
         const QUrl &url,
-        const QDate &expireDate);
+        const QDate &expireDate,
+        const QString &note,
+        const QString &label);
 
     /*
      * Get the share link
@@ -205,8 +214,12 @@ public:
     /*
      * Returns the note of the link share.
      */
-
     QString getNote() const;
+    
+    /*
+     * Returns the label of the link share.
+     */
+    QString getLabel() const;
 
     /*
      * Set the name of the link share.
@@ -214,7 +227,6 @@ public:
      * Emits either nameSet() or serverError().
      */
     void setName(const QString &name);
-
 
     /*
      * Set the note of the link share.
@@ -238,16 +250,30 @@ public:
      * In case of a server error the serverError signal is emitted.
      */
     void setExpireDate(const QDate &expireDate);
-
+    
+    /*
+     * Set the label of the share link.
+     */
+    void setLabel(const QString &label);
+    
+    /*
+     * Create OcsShareJob and connect to signal/slots
+     */
+    template <typename LinkShareSlot>
+    OcsShareJob *createShareJob(const LinkShareSlot slotFunction);
+    
+    
 signals:
     void expireDateSet();
     void noteSet();
     void nameSet();
+    void labelSet();
 
 private slots:
     void slotNoteSet(const QJsonDocument &, const QVariant &value);
     void slotExpireDateSet(const QJsonDocument &reply, const QVariant &value);
     void slotNameSet(const QJsonDocument &, const QVariant &value);
+    void slotLabelSet(const QJsonDocument &, const QVariant &value);
 
 private:
     QString _name;
@@ -255,6 +281,7 @@ private:
     QString _note;
     QDate _expireDate;
     QUrl _url;
+    QString _label;
 };
 
 class UserGroupShare : public Share
