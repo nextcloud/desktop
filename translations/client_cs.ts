@@ -3041,7 +3041,7 @@ můžete být požádáni o dodatečná oprávnění.</translation>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="776"/>
         <source>Impossible to get modification time for file in conflict %1</source>
-        <translation type="unfinished"/>
+        <translation>Pro soubor %1, který je v konfliktu, se nedaří zjistit čas poslední změny</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="776"/>
