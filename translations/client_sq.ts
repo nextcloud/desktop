@@ -102,7 +102,7 @@
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="178"/>
         <source>Could not remove folder</source>
-        <translation type="unfinished"/>
+        <translation>S’u hoq dot dosje</translation>
     </message>
 </context>
 <context>
@@ -2813,7 +2813,7 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="79"/>
         <source>%1 failed with: %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 dështoi me: %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="109"/>
