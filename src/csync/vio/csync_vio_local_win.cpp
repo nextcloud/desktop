@@ -215,7 +215,8 @@ int csync_vio_local_stat(const QString &uri, csync_file_stat_t *buf)
     FileIndex.QuadPart &= 0x0000FFFFFFFFFFFF;
     /* printf("Index: %I64i\n", FileIndex.QuadPart); */
     buf->inode = FileIndex.QuadPart;
-    buf->size = (fileInfo.nFileSizeHigh * ((int64_t)(MAXDWORD)+1)) + fileInfo.nFileSizeLow;
+
+    buf->size = ULARGE_INTEGER { { fileInfo.nFileSizeLow, fileInfo.nFileSizeHigh } }.QuadPart;
 
     DWORD rem;
     buf->modtime = FileTimeToUnixTime(&fileInfo.ftLastWriteTime, &rem);
