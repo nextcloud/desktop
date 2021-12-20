@@ -25,6 +25,7 @@ using namespace OCC::Utility;
         QTemporaryDir _root;
         QString _testfile;
         QString _expectedError;
+        ValidateChecksumHeader::FailureReason _expectedFailureReason = ValidateChecksumHeader::FailureReason::Success;
         QByteArray     _expected;
         QByteArray     _expectedType;
         bool           _successDown;
@@ -44,8 +45,8 @@ using namespace OCC::Utility;
 
     void slotDownError(const QString &errMsg, ValidateChecksumHeader::FailureReason reason)
     {
-        Q_UNUSED(reason);
         QCOMPARE(_expectedError, errMsg);
+        QCOMPARE(_expectedFailureReason, reason);
         _errorSeen = true;
     }
 
@@ -199,12 +200,14 @@ using namespace OCC::Utility;
         QTRY_VERIFY(_successDown);
 
         _expectedError = QStringLiteral("The downloaded file does not match the checksum, it will be resumed. \"543345\" != \"%1\"").arg(QString::fromUtf8(_expected));
+        _expectedFailureReason = ValidateChecksumHeader::FailureReason::ChecksumMismatch;
         _errorSeen = false;
         file->seek(0);
         vali->start(_testfile, "Adler32:543345");
         QTRY_VERIFY(_errorSeen);
 
         _expectedError = QLatin1String("The checksum header contained an unknown checksum type \"Klaas32\"");
+        _expectedFailureReason = ValidateChecksumHeader::FailureReason::ChecksumTypeUnknown;
         _errorSeen = false;
         file->seek(0);
         vali->start(_testfile, "Klaas32:543345");
