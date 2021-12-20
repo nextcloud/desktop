@@ -42,10 +42,11 @@ using namespace OCC::Utility;
          _successDown = true;
     }
 
-    void slotDownError(const QString &errMsg)
+    void slotDownError(const QString &errMsg, ValidateChecksumHeader::FailureReason reason)
     {
-         QCOMPARE(_expectedError, errMsg);
-         _errorSeen = true;
+        Q_UNUSED(reason);
+        QCOMPARE(_expectedError, errMsg);
+        _errorSeen = true;
     }
 
     static QByteArray shellSum( const QByteArray& cmd, const QString& file )

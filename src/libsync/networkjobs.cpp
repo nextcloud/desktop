@@ -1084,6 +1084,25 @@ bool SimpleNetworkJob::finished()
     return true;
 }
 
+SimpleFileManipulationNetworkJob::SimpleFileManipulationNetworkJob(AccountPtr account, const QString &filePath, QObject *parent)
+    : AbstractNetworkJob(account, filePath, parent)
+{
+}
+
+QNetworkReply *SimpleFileManipulationNetworkJob::startRequest(
+    const QByteArray &verb, QNetworkRequest req, QIODevice *requestBody)
+{
+    const auto davUrlString = makeDavUrl(path()).toString();
+    auto reply = sendRequest(verb, makeDavUrl(path()), req, requestBody);
+    start();
+    return reply;
+}
+
+bool SimpleFileManipulationNetworkJob::finished()
+{
+    emit finishedSignal(reply());
+    return true;
+}
 
 DeleteApiJob::DeleteApiJob(AccountPtr account, const QString &path, QObject *parent)
     : AbstractNetworkJob(account, path, parent)

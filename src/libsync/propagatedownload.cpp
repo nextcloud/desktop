@@ -22,7 +22,6 @@
 #include "common/utility.h"
 #include "filesystem.h"
 #include "propagatorjobs.h"
-#include <common/checksums.h>
 #include <common/asserts.h>
 #include <common/constants.h>
 #include "clientsideencryptionjobs.h"
@@ -923,11 +922,55 @@ void PropagateDownloadFile::slotGetFinished()
     validator->start(_tmpFile.fileName(), checksumHeader);
 }
 
-void PropagateDownloadFile::slotChecksumFail(const QString &errMsg)
-{ 
-    FileSystem::remove(_tmpFile.fileName());
-    propagator()->_anotherSyncNeeded = true;
-    done(SyncFileItem::SoftError, errMsg); // tr("The file downloaded with a broken checksum, will be redownloaded."));
+void PropagateDownloadFile::slotChecksumFail(const QString &errMsg, ValidateChecksumHeader::FailureReason reason)
+{
+    const auto processChecksumFailure = [this, errMsg]() {
+        FileSystem::remove(_tmpFile.fileName());
+        propagator()->_anotherSyncNeeded = true;
+        done(SyncFileItem::SoftError, errMsg); // tr("The file downloaded with a broken checksum, will be redownloaded."));
+    };
+
+    if (reason == ValidateChecksumHeader::FailureReason::ChecksumMismatch
+        && propagator()->account()->isChecksumRecalculateRequestSupported()) {
+        if (const auto validator = qobject_cast<ValidateChecksumHeader *>(sender())) {
+            const QByteArray calculatedChecksum(validator->calculatedChecksumType() + ':' + validator->calculatedChecksum());
+            const QString fullRemotePathForFile(propagator()->fullRemotePath(_isEncrypted ? _item->_encryptedFileName : _item->_file));
+            auto *job = new SimpleFileManipulationNetworkJob(propagator()->account(), fullRemotePathForFile);
+            QObject::connect(job, &SimpleFileManipulationNetworkJob::finishedSignal, this, [this, calculatedChecksum, processChecksumFailure](QNetworkReply *reply) {
+                if (reply->error() == QNetworkReply::NoError) {
+                    const auto newChecksumFromServer = reply->rawHeader(checkSumHeaderC);
+                    if (newChecksumFromServer == calculatedChecksum) {
+                        const auto newChecksumFromServerSplit = newChecksumFromServer.split(':');
+                        if (newChecksumFromServerSplit.size() > 1) {
+                            transmissionChecksumValidated(
+                                newChecksumFromServerSplit.first(), newChecksumFromServerSplit.last());
+                            return;
+                        }
+                    }
+                    
+                    qCCritical(lcPropagateDownload) << "Checksum recalculation has failed for file:" << reply->url()
+                                                    << " " << checkSumHeaderC << " received is:" << newChecksumFromServer;
+                }
+                
+                if (reply->error() != QNetworkReply::NoError) {
+                    qCCritical(lcPropagateDownload)
+                        << "Checksum recalculation has failed for file:" << reply->url()
+                        << " Recalculation request has finished with error:" << reply->errorString();
+                }
+
+                processChecksumFailure();
+            });
+
+            qCWarning(lcPropagateDownload) << "Checksum validation has failed for file:" << fullRemotePathForFile
+                                           << " Requesting checksum recalculation on the server...";
+            QNetworkRequest req;
+            req.setRawHeader(checksumRecalculateOnServer, validator->calculatedChecksumType());
+            job->startRequest(QByteArrayLiteral("PATCH"), req);
+            return;
+        }
+    }
+
+    processChecksumFailure();
 }
 
 void PropagateDownloadFile::deleteExistingFolder()

@@ -499,6 +499,24 @@ private slots:
 };
 
 /**
+ * @brief A basic file manipulation job
+ * @ingroup libsync
+ */
+class OWNCLOUDSYNC_EXPORT SimpleFileManipulationNetworkJob : public AbstractNetworkJob
+{
+    Q_OBJECT
+public:
+    explicit SimpleFileManipulationNetworkJob(AccountPtr account, const QString &filePath, QObject *parent = nullptr);
+
+    QNetworkReply *startRequest(const QByteArray &verb, QNetworkRequest req = QNetworkRequest(),  QIODevice *requestBody = nullptr);
+
+signals:
+    void finishedSignal(QNetworkReply *reply);
+private slots:
+    bool finished() override;
+};
+
+/**
  * @brief Runs a PROPFIND to figure out the private link url
  *
  * The numericFileId is used only to build the deprecatedPrivateLinkUrl

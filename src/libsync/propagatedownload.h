@@ -17,6 +17,7 @@
 #include "owncloudpropagator.h"
 #include "networkjobs.h"
 #include "clientsideencryption.h"
+#include <common/checksums.h>
 
 #include <QBuffer>
 #include <QFile>
@@ -235,7 +236,7 @@ private slots:
 
     void abort(PropagatorJob::AbortType abortType) override;
     void slotDownloadProgress(qint64, qint64);
-    void slotChecksumFail(const QString &errMsg);
+    void slotChecksumFail(const QString &errMsg, ValidateChecksumHeader::FailureReason reason);
 
 private:
     void startAfterIsEncryptedIsChecked();
