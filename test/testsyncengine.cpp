@@ -8,6 +8,7 @@
 #include <QtTest>
 #include "syncenginetestutils.h"
 #include <syncengine.h>
+#include <propagatorjobs.h>
 
 using namespace OCC;
 
@@ -551,16 +552,27 @@ private slots:
         QObject parent;
 
         QByteArray checksumValue;
+        QByteArray checksumValueRecalculated;
         QByteArray contentMd5Value;
+        bool isChecksumRecalculateSupported = false;
 
         fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *) -> QNetworkReply * {
             if (op == QNetworkAccessManager::GetOperation) {
                 auto reply = new FakeGetReply(fakeFolder.remoteModifier(), op, request, &parent);
                 if (!checksumValue.isNull())
-                    reply->setRawHeader("OC-Checksum", checksumValue);
+                    reply->setRawHeader(OCC::checkSumHeaderC, checksumValue);
                 if (!contentMd5Value.isNull())
-                    reply->setRawHeader("Content-MD5", contentMd5Value);
+                    reply->setRawHeader(OCC::contentMd5HeaderC, contentMd5Value);
                 return reply;
+            } else if (op == QNetworkAccessManager::CustomOperation) {
+                if (request.hasRawHeader(OCC::checksumRecalculateOnServer)) {
+                    if (!isChecksumRecalculateSupported) {
+                        return new FakeErrorReply(op, request, &parent, 402);
+                    }
+                    auto reply = new FakeGetReply(fakeFolder.remoteModifier(), op, request, &parent);
+                    reply->setRawHeader(OCC::checkSumHeaderC, checksumValueRecalculated);
+                    return reply;
+                }
             }
             return nullptr;
         });
@@ -575,8 +587,11 @@ private slots:
         fakeFolder.remoteModifier().create("A/a4", 16, 'A');
         QVERIFY(!fakeFolder.syncOnce());
 
+        const QByteArray matchedSha1Checksum(QByteArrayLiteral("SHA1:19b1928d58a2030d08023f3d7054516dbc186f20"));
+        const QByteArray mismatchedSha1Checksum(matchedSha1Checksum.chopped(1));
+
         // Good OC-Checksum
-        checksumValue = "SHA1:19b1928d58a2030d08023f3d7054516dbc186f20"; // printf 'A%.0s' {1..16} | sha1sum -
+        checksumValue = matchedSha1Checksum; // printf 'A%.0s' {1..16} | sha1sum -
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
         checksumValue = QByteArray();
@@ -610,6 +625,35 @@ private slots:
         checksumValue =  "Unsupported:XXXX SHA1:19b1928d58a2030d08023f3d7054516dbc186f20 Invalid:XxX";
         QVERIFY(fakeFolder.syncOnce()); // The supported SHA1 checksum is valid now, so the file are downloaded
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        // Begin Test mismatch recalculation---------------------------------------------------------------------------------
+
+        const auto prevServerVersion = fakeFolder.account()->serverVersion();
+        fakeFolder.account()->setServerVersion(QString("%1.0.0").arg(fakeFolder.account()->checksumRecalculateServerVersionMinSupportedMajor()));
+
+        // Mismatched OC-Checksum and X-Recalculate-Hash is not supported -> sync must fail
+        isChecksumRecalculateSupported = false;
+        checksumValue = mismatchedSha1Checksum;
+        checksumValueRecalculated = matchedSha1Checksum;
+        fakeFolder.remoteModifier().create("A/a9", 16, 'A');
+        QVERIFY(!fakeFolder.syncOnce());
+
+        // Mismatched OC-Checksum and X-Recalculate-Hash is supported, but, recalculated checksum is again mismatched -> sync must fail
+        isChecksumRecalculateSupported = true;
+        checksumValue = mismatchedSha1Checksum;
+        checksumValueRecalculated = mismatchedSha1Checksum;
+        QVERIFY(!fakeFolder.syncOnce());
+
+        // Mismatched OC-Checksum and X-Recalculate-Hash is supported, and, recalculated checksum is a match -> sync must succeed
+        isChecksumRecalculateSupported = true;
+        checksumValue = mismatchedSha1Checksum;
+        checksumValueRecalculated = matchedSha1Checksum;
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        checksumValue = QByteArray();
+
+        fakeFolder.account()->setServerVersion(prevServerVersion);
+        // End Test mismatch recalculation-----------------------------------------------------------------------------------
     }
 
     // Tests the behavior of invalid filename detection

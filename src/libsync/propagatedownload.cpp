@@ -922,7 +922,8 @@ void PropagateDownloadFile::slotGetFinished()
     validator->start(_tmpFile.fileName(), checksumHeader);
 }
 
-void PropagateDownloadFile::slotChecksumFail(const QString &errMsg, ValidateChecksumHeader::FailureReason reason)
+void PropagateDownloadFile::slotChecksumFail(const QString &errMsg,
+    const QByteArray &calculatedChecksumType, const QByteArray &calculatedChecksum, ValidateChecksumHeader::FailureReason reason)
 {
     const auto processChecksumFailure = [this, errMsg]() {
         FileSystem::remove(_tmpFile.fileName());
@@ -932,24 +933,23 @@ void PropagateDownloadFile::slotChecksumFail(const QString &errMsg, ValidateChec
 
     if (reason == ValidateChecksumHeader::FailureReason::ChecksumMismatch
         && propagator()->account()->isChecksumRecalculateRequestSupported()) {
-        if (const auto validator = qobject_cast<ValidateChecksumHeader *>(sender())) {
-            const QByteArray calculatedChecksum(validator->calculatedChecksumType() + ':' + validator->calculatedChecksum());
+            const QByteArray calculatedChecksumHeader(calculatedChecksumType + ':' + calculatedChecksum);
             const QString fullRemotePathForFile(propagator()->fullRemotePath(_isEncrypted ? _item->_encryptedFileName : _item->_file));
-            auto *job = new SimpleFileManipulationNetworkJob(propagator()->account(), fullRemotePathForFile);
-            QObject::connect(job, &SimpleFileManipulationNetworkJob::finishedSignal, this, [this, calculatedChecksum, processChecksumFailure](QNetworkReply *reply) {
+            auto *job = new SimpleFileJob(propagator()->account(), fullRemotePathForFile);
+            QObject::connect(job, &SimpleFileJob::finishedSignal, this, [this, calculatedChecksumHeader, processChecksumFailure](QNetworkReply *reply) {
                 if (reply->error() == QNetworkReply::NoError) {
-                    const auto newChecksumFromServer = reply->rawHeader(checkSumHeaderC);
-                    if (newChecksumFromServer == calculatedChecksum) {
-                        const auto newChecksumFromServerSplit = newChecksumFromServer.split(':');
-                        if (newChecksumFromServerSplit.size() > 1) {
+                    const auto newChecksumHeaderFromServer = reply->rawHeader(checkSumHeaderC);
+                    if (newChecksumHeaderFromServer == calculatedChecksumHeader) {
+                        const auto newChecksumHeaderFromServerSplit = newChecksumHeaderFromServer.split(':');
+                        if (newChecksumHeaderFromServerSplit.size() > 1) {
                             transmissionChecksumValidated(
-                                newChecksumFromServerSplit.first(), newChecksumFromServerSplit.last());
+                                newChecksumHeaderFromServerSplit.first(), newChecksumHeaderFromServerSplit.last());
                             return;
                         }
                     }
                     
                     qCCritical(lcPropagateDownload) << "Checksum recalculation has failed for file:" << reply->url()
-                                                    << " " << checkSumHeaderC << " received is:" << newChecksumFromServer;
+                                                    << " " << checkSumHeaderC << " received is:" << newChecksumHeaderFromServer;
                 }
                 
                 if (reply->error() != QNetworkReply::NoError) {
@@ -964,10 +964,9 @@ void PropagateDownloadFile::slotChecksumFail(const QString &errMsg, ValidateChec
             qCWarning(lcPropagateDownload) << "Checksum validation has failed for file:" << fullRemotePathForFile
                                            << " Requesting checksum recalculation on the server...";
             QNetworkRequest req;
-            req.setRawHeader(checksumRecalculateOnServer, validator->calculatedChecksumType());
+            req.setRawHeader(checksumRecalculateOnServer, calculatedChecksumType);
             job->startRequest(QByteArrayLiteral("PATCH"), req);
             return;
-        }
     }
 
     processChecksumFailure();

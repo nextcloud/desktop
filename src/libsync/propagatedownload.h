@@ -236,7 +236,8 @@ private slots:
 
     void abort(PropagatorJob::AbortType abortType) override;
     void slotDownloadProgress(qint64, qint64);
-    void slotChecksumFail(const QString &errMsg, ValidateChecksumHeader::FailureReason reason);
+    void slotChecksumFail(const QString &errMsg, const QByteArray &calculatedChecksumType,
+        const QByteArray &calculatedChecksum, ValidateChecksumHeader::FailureReason reason);
 
 private:
     void startAfterIsEncryptedIsChecked();
