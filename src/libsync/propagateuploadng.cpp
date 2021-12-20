@@ -485,7 +485,7 @@ void PropagateUploadFileNG::slotPutFinished()
     }
 
     // Check whether the file changed since discovery.
-    if (!FileSystem::verifyFileUnchanged(fullFilePath, _item->_size, _item->_modtime)) {
+    if (FileSystem::fileChanged(fullFilePath, _item->_size, _item->_modtime)) {
         propagator()->_anotherSyncNeeded = true;
         if (!_finished) {
             abortWithError(SyncFileItem::SoftError, tr("Local file changed during sync."));

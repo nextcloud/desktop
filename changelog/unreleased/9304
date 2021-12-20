@@ -1,0 +1,5 @@
+Enhancement: Don't log error when checking removed file for changes
+
+We removed some misleading error messages from the log.
+
+https://github.com/owncloud/client/issues/9304

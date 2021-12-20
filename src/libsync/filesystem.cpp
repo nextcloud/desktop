@@ -89,27 +89,24 @@ bool FileSystem::setModTime(const QString &filename, time_t modTime)
     return true;
 }
 
-bool FileSystem::fileChanged(const QString &fileName,
+bool FileSystem::fileChanged(const QFileInfo &info,
     qint64 previousSize,
     time_t previousMtime)
 {
-    return getSize(fileName) != previousSize
-        || getModTime(fileName) != previousMtime;
-}
-
-bool FileSystem::verifyFileUnchanged(const QString &fileName,
-    qint64 previousSize,
-    time_t previousMtime)
-{
-    const qint64 actualSize = getSize(fileName);
-    const time_t actualMtime = getModTime(fileName);
-    if (actualSize != previousSize || actualMtime != previousMtime) {
-        qCInfo(lcFileSystem) << "File" << fileName << "has changed:"
-                             << "size: " << previousSize << "<->" << actualSize
-                             << ", mtime: " << previousMtime << "<->" << actualMtime;
-        return false;
+    // previousMtime == -1 indicates the file does not exist
+    if (!info.exists() && previousMtime != -1) {
+        qCDebug(lcFileSystem) << info.filePath() << "was removed";
+        return true;
     }
-    return true;
+    const qint64 actualSize = getSize(info);
+    const time_t actualMtime = getModTime(info.filePath());
+    if (actualSize != previousSize || actualMtime != previousMtime) {
+        qCDebug(lcFileSystem) << "File" << info.filePath() << "has changed:"
+                              << "size: " << previousSize << "<->" << actualSize
+                              << ", mtime: " << previousMtime << "<->" << actualMtime;
+        return true;
+    }
+    return false;
 }
 
 #ifdef Q_OS_WIN
@@ -126,15 +123,15 @@ static qint64 getSizeWithCsync(const QString &filename)
 }
 #endif
 
-qint64 FileSystem::getSize(const QString &filename)
+qint64 FileSystem::getSize(const QFileInfo &info)
 {
 #ifdef Q_OS_WIN
-    if (isLnkFile(filename)) {
+    if (isLnkFile(info.fileName())) {
         // Qt handles .lnk as symlink... https://doc.qt.io/qt-5/qfileinfo.html#details
-        return getSizeWithCsync(filename);
+        return getSizeWithCsync(info.filePath());
     }
 #endif
-    return QFileInfo(filename).size();
+    return info.size();
 }
 
 // Code inspired from Qt5's QDir::removeRecursively
