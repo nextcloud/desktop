@@ -641,6 +641,11 @@ bool Account::isChecksumRecalculateRequestSupported() const
     return serverVersionInt() >= makeServerVersion(checksumRecalculateRequestServerVersionMinSupportedMajor, 0, 0);
 }
 
+int Account::checksumRecalculateServerVersionMinSupportedMajor() const
+{
+    return checksumRecalculateRequestServerVersionMinSupportedMajor;
+}
+
 void Account::setServerVersion(const QString &version)
 {
     if (version == _serverVersion) {

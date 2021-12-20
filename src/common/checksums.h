@@ -146,6 +146,8 @@ public:
         ChecksumTypeUnknown,
         ChecksumMismatch,
     };
+    Q_ENUM(FailureReason)
+
     explicit ValidateChecksumHeader(QObject *parent = nullptr);
 
     /**
@@ -172,7 +174,8 @@ public:
 
 signals:
     void validated(const QByteArray &checksumType, const QByteArray &checksum);
-    void validationFailed(const QString &errMsg, FailureReason reason);
+    void validationFailed(const QString &errMsg, const QByteArray &calculatedChecksumType,
+        const QByteArray &calculatedChecksum, ValidateChecksumHeader::FailureReason reason);
 
 private slots:
     void slotChecksumCalculated(const QByteArray &checksumType, const QByteArray &checksum);

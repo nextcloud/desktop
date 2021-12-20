@@ -502,11 +502,11 @@ private slots:
  * @brief A basic file manipulation job
  * @ingroup libsync
  */
-class OWNCLOUDSYNC_EXPORT SimpleFileManipulationNetworkJob : public AbstractNetworkJob
+class OWNCLOUDSYNC_EXPORT SimpleFileJob : public AbstractNetworkJob
 {
     Q_OBJECT
 public:
-    explicit SimpleFileManipulationNetworkJob(AccountPtr account, const QString &filePath, QObject *parent = nullptr);
+    explicit SimpleFileJob(AccountPtr account, const QString &filePath, QObject *parent = nullptr);
 
     QNetworkReply *startRequest(const QByteArray &verb, QNetworkRequest req = QNetworkRequest(),  QIODevice *requestBody = nullptr);
 

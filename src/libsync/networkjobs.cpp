@@ -1084,12 +1084,12 @@ bool SimpleNetworkJob::finished()
     return true;
 }
 
-SimpleFileManipulationNetworkJob::SimpleFileManipulationNetworkJob(AccountPtr account, const QString &filePath, QObject *parent)
+SimpleFileJob::SimpleFileJob(AccountPtr account, const QString &filePath, QObject *parent)
     : AbstractNetworkJob(account, filePath, parent)
 {
 }
 
-QNetworkReply *SimpleFileManipulationNetworkJob::startRequest(
+QNetworkReply *SimpleFileJob::startRequest(
     const QByteArray &verb, QNetworkRequest req, QIODevice *requestBody)
 {
     const auto davUrlString = makeDavUrl(path()).toString();
@@ -1098,7 +1098,7 @@ QNetworkReply *SimpleFileManipulationNetworkJob::startRequest(
     return reply;
 }
 
-bool SimpleFileManipulationNetworkJob::finished()
+bool SimpleFileJob::finished()
 {
     emit finishedSignal(reply());
     return true;

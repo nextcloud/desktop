@@ -43,8 +43,11 @@ using namespace OCC::Utility;
          _successDown = true;
     }
 
-    void slotDownError(const QString &errMsg, ValidateChecksumHeader::FailureReason reason)
+    void slotDownError(const QString &errMsg, const QByteArray &calculatedChecksumType,
+        const QByteArray &calculatedChecksum, ValidateChecksumHeader::FailureReason reason)
     {
+        Q_UNUSED(calculatedChecksumType);
+        Q_UNUSED(calculatedChecksum);
         QCOMPARE(_expectedError, errMsg);
         QCOMPARE(_expectedFailureReason, reason);
         _errorSeen = true;
