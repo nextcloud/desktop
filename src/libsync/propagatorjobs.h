@@ -26,6 +26,7 @@ namespace OCC {
  */
 static const char checkSumHeaderC[] = "OC-Checksum";
 static const char contentMd5HeaderC[] = "Content-MD5";
+static const char checksumRecalculateOnServer[] = "X-Recalculate-Hash";
 
 /**
  * @brief Declaration of the other propagation jobs

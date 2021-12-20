@@ -337,7 +337,7 @@ ComputeChecksum *ValidateChecksumHeader::prepareStart(const QByteArray &checksum
 
     if (!parseChecksumHeader(checksumHeader, &_expectedChecksumType, &_expectedChecksum)) {
         qCWarning(lcChecksums) << "Checksum header malformed:" << checksumHeader;
-        emit validationFailed(tr("The checksum header is malformed."));
+        emit validationFailed(tr("The checksum header is malformed."), ChecksumHeaderMalformed);
         return nullptr;
     }
 
@@ -360,15 +360,28 @@ void ValidateChecksumHeader::start(std::unique_ptr<QIODevice> device, const QByt
         calculator->start(std::move(device));
 }
 
+QByteArray ValidateChecksumHeader::calculatedChecksumType() const
+{
+    return _calculatedChecksumType;
+}
+
+QByteArray ValidateChecksumHeader::calculatedChecksum() const
+{
+    return _calculatedChecksum;
+}
+
 void ValidateChecksumHeader::slotChecksumCalculated(const QByteArray &checksumType,
     const QByteArray &checksum)
 {
+    _calculatedChecksumType = checksumType;
+    _calculatedChecksum = checksum;
+
     if (checksumType != _expectedChecksumType) {
-        emit validationFailed(tr("The checksum header contained an unknown checksum type \"%1\"").arg(QString::fromLatin1(_expectedChecksumType)));
+        emit validationFailed(tr("The checksum header contained an unknown checksum type \"%1\"").arg(QString::fromLatin1(_expectedChecksumType)), ChecksumTypeUnknown);
         return;
     }
     if (checksum != _expectedChecksum) {
-        emit validationFailed(tr(R"(The downloaded file does not match the checksum, it will be resumed. "%1" != "%2")").arg(QString::fromUtf8(_expectedChecksum), QString::fromUtf8(checksum)));
+        emit validationFailed(tr(R"(The downloaded file does not match the checksum, it will be resumed. "%1" != "%2")").arg(QString::fromUtf8(_expectedChecksum), QString::fromUtf8(checksum)), ChecksumMismatch);
         return;
     }
     emit validated(checksumType, checksum);
