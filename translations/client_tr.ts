@@ -3042,7 +3042,7 @@ güncelleyici başka izinler isteyebilir.</translation>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="776"/>
         <source>Impossible to get modification time for file in conflict %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 ile çakışan dosyasının değiştirilme zamanı alınamadı</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="776"/>
