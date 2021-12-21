@@ -22,6 +22,18 @@ class PublicLinkDialog:
         "type": "QCheckBox",
         "visible": 1,
     }
+    PASSWORD_INPUT_FIELD = {
+        "container": names.qt_tabwidget_stackedwidget_OCC_ShareLinkWidget_OCC_ShareLinkWidget,
+        "name": "lineEdit_password",
+        "type": "QLineEdit",
+        "visible": 1,
+    }
+    EXPIRYDATE_CHECKBOX = {
+        "container": names.qt_tabwidget_stackedwidget_OCC_ShareLinkWidget_OCC_ShareLinkWidget,
+        "name": "checkBox_expire",
+        "type": "QCheckBox",
+        "visible": 1,
+    }
     CREATE_SHARE_BUTTON = {
         "container": names.qt_tabwidget_stackedwidget_OCC_ShareLinkWidget_OCC_ShareLinkWidget,
         "name": "createShareButton",
@@ -69,7 +81,9 @@ class PublicLinkDialog:
             squish.Qt.LeftButton,
         )
 
-    def createPublicLink(self, context, resource, password='', permissions=''):
+    def createPublicLink(
+        self, context, resource, password='', permissions='', expireDate='', linkName=''
+    ):
         radioObjectName = ''
         if permissions:
             radioObjectName = self.getRadioObjectForPermssion(permissions)
@@ -86,18 +100,13 @@ class PublicLinkDialog:
             squish.clickButton(squish.waitForObject(radioObjectName))
 
         if password:
-            squish.clickButton(squish.waitForObject(self.PASSWORD_CHECKBOX))
-            squish.mouseClick(
-                squish.waitForObject(self.PASSWORD_CHECKBOX),
-                0,
-                0,
-                squish.Qt.NoModifier,
-                squish.Qt.LeftButton,
-            )
-            squish.type(
-                squish.waitForObject(self.PASSWORD_CHECKBOX),
-                password,
-            )
+            self.setPassword(password)
+
+        if expireDate:
+            self.setExpirationDate(expireDate)
+
+        if linkName:
+            self.setLinkName(linkName)
 
         squish.clickButton(squish.waitForObject(self.CREATE_SHARE_BUTTON))
         squish.waitFor(
@@ -107,22 +116,35 @@ class PublicLinkDialog:
             )
         )
 
-    def togglesPassword(self):
+    def togglePassword(self):
         squish.clickButton(squish.waitForObject(self.PASSWORD_CHECKBOX))
 
-    def setExpirationDate(self, context, publicLinkName, resource):
-        test.compare(
-            str(squish.waitForObjectExists(self.ITEM_TO_SHARE).text),
-            resource,
+    def setPassword(self, password):
+        enabled = squish.waitForObjectExists(self.PASSWORD_CHECKBOX).checked
+        if not enabled:
+            self.togglePassword()
+
+        squish.mouseClick(
+            squish.waitForObject(self.PASSWORD_INPUT_FIELD),
+            0,
+            0,
+            squish.Qt.NoModifier,
+            squish.Qt.LeftButton,
         )
-        test.compare(
-            str(squish.waitForObjectExists(self.PUBLIC_LINK_NAME).text),
-            publicLinkName,
+        squish.type(
+            squish.waitForObject(self.PASSWORD_INPUT_FIELD),
+            password,
         )
-        expDate = []
-        for row in context.table:
-            if row[0] == 'expireDate':
-                expDate = datetime.datetime.strptime(row[1], '%Y-%m-%d')
+
+    def toggleExpirationDate(self):
+        squish.clickButton(squish.waitForObject(self.EXPIRYDATE_CHECKBOX))
+
+    def setExpirationDate(self, expireDate):
+        enabled = squish.waitForObjectExists(self.EXPIRYDATE_CHECKBOX).checked
+        if not enabled:
+            self.toggleExpirationDate()
+
+        expDate = datetime.datetime.strptime(expireDate, '%Y-%m-%d')
         expYear = expDate.year - 2000
         squish.mouseClick(
             squish.waitForObject(self.EXPIRATION_DATE_FIELD),
@@ -137,16 +159,48 @@ class PublicLinkDialog:
         squish.nativeType(expDate.day)
         squish.nativeType(expYear)
         squish.nativeType("<Return>")
-        squish.testSettings.silentVerifications = True
+
+        actualDate = squish.waitForObjectExists(self.EXPIRATION_DATE_FIELD).displayText
+        expectedDate = f"{expDate.month}/{expDate.day}/{expYear}"
+        if not actualDate == expectedDate:
+            # retry with workaround
+            self.setExpirationDateWithWorkaround(expYear, expDate.month, expDate.day)
+
         squish.waitFor(
-            lambda: (test.xvp("publicLinkExpirationProgressIndicatorInvisible"))
+            lambda: (test.vp("publicLinkExpirationProgressIndicatorInvisible"))
         )
-        waitFor(lambda: (test.vp("publicLinkExpirationProgressIndicatorInvisible")))
-        squish.testSettings.silentVerifications = False
         test.compare(
             str(squish.waitForObjectExists(self.EXPIRATION_DATE_FIELD).displayText),
-            str(expDate.month) + "/" + str(expDate.day) + "/" + str(expYear),
+            str(expectedDate),
         )
+
+    # This workaround is needed because the above function 'setExpirationDate'
+    # will not work while creating new public link
+    # See for more details: https://github.com/owncloud/client/issues/9218
+    def setExpirationDateWithWorkaround(self, year, month, day):
+        squish.mouseClick(
+            squish.waitForObject(self.EXPIRATION_DATE_FIELD),
+            0,
+            0,
+            squish.Qt.NoModifier,
+            squish.Qt.LeftButton,
+        )
+
+        # date can be edited from backward only
+        # date format is 'mm/dd/yy', so we have to edit 'year' first
+        # then 'day' and then 'month'.
+        # Move the cursor to year field
+        squish.nativeType("<Ctrl+Right>")
+        squish.nativeType("<Ctrl+Right>")
+        squish.nativeType(year)
+        # Move the cursor to day field
+        squish.nativeType("<Ctrl+Left>")
+        squish.nativeType(day)
+        # Move the cursor to month field
+        squish.nativeType("<Ctrl+Left>")
+        squish.nativeType("<Ctrl+Left>")
+        squish.nativeType(month)
+        squish.nativeType("<Return>")
 
     def getRadioObjectForPermssion(self, permissions):
         radioObjectName = ''
@@ -173,24 +227,22 @@ class PublicLinkDialog:
             )
         )
 
-    def changePassword(self, publicLinkName, password):
-        test.compare(
-            str(squish.waitForObjectExists(self.PUBLIC_LINK_NAME).text),
-            publicLinkName,
-        )
-        squish.mouseClick(
-            squish.waitForObject(names.oCC_ShareLinkWidget_lineEdit_password_QLineEdit),
-            0,
-            0,
-            squish.Qt.NoModifier,
-            squish.Qt.LeftButton,
-        )
-        squish.type(
-            squish.waitForObject(names.oCC_ShareLinkWidget_lineEdit_password_QLineEdit),
-            password,
-        )
+    def changePassword(self, password):
+        self.setPassword(password)
         squish.clickButton(
             squish.waitForObject(
                 names.oCC_ShareLinkWidget_pushButton_setPassword_QPushButton
             )
+        )
+
+    def verifyPublicLinkName(self, publicLinkName):
+        test.compare(
+            str(squish.waitForObjectExists(self.PUBLIC_LINK_NAME).text),
+            publicLinkName,
+        )
+
+    def verifyResource(self, resource):
+        test.compare(
+            str(squish.waitForObjectExists(self.ITEM_TO_SHARE).text),
+            resource,
         )

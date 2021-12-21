@@ -257,6 +257,15 @@ def step(context, resource):
 
 
 @When(
+    'the user selects "|any|" as collaborator of resource "|any|" using the client-UI'
+)
+def step(context, receiver, resource):
+    openSharingDialog(context, resource)
+    shareItem = SharingDialog()
+    shareItem.selectCollaborator(receiver)
+
+
+@When(
     'the user adds group "|any|" as collaborator of resource "|any|" with permissions "|any|" using the client-UI'
 )
 def step(context, receiver, resource, permissions):
@@ -612,7 +621,7 @@ def step(context, resource):
 @When("the user toggles the password protection using the client-UI")
 def step(context):
     publicLinkDialog = PublicLinkDialog()
-    publicLinkDialog.togglesPassword()
+    publicLinkDialog.togglePassword()
 
 
 @Then('the password progress indicator should not be visible in the client-UI')
@@ -656,12 +665,16 @@ def step(context, fileShareContext):
     )
 
 
-def createPublicLinkShare(context, resource, password='', permissions=''):
+def createPublicLinkShare(
+    context, resource, password='', permissions='', expireDate='', name=''
+):
     resource = getResourcePath(context, resource)
     openSharingDialog(context, resource)
     publicLinkDialog = PublicLinkDialog()
     publicLinkDialog.openPublicLinkDialog()
-    publicLinkDialog.createPublicLink(context, resource, password, permissions)
+    publicLinkDialog.createPublicLink(
+        context, resource, password, permissions, expireDate, name
+    )
 
 
 @When(
@@ -678,10 +691,21 @@ def step(context, resource, password):
     createPublicLinkShare(context, resource, password)
 
 
+def setExpirationDateWithVerification(resource, publicLinkName, expireDate):
+    publicLinkDialog = PublicLinkDialog()
+    publicLinkDialog.verifyResource(resource)
+    publicLinkDialog.verifyPublicLinkName(publicLinkName)
+    publicLinkDialog.setExpirationDate(expireDate)
+
+
 @When('the user edits the public link named "|any|" of file "|any|" changing following')
 def step(context, publicLinkName, resource):
-    publicLinkDialog = PublicLinkDialog()
-    publicLinkDialog.setExpirationDate(context, publicLinkName, resource)
+    expireDate = ''
+    for row in context.table:
+        if row[0] == 'expireDate':
+            expireDate = row[1]
+            break
+    setExpirationDateWithVerification(resource, publicLinkName, expireDate)
 
 
 @When(
@@ -696,6 +720,19 @@ def step(context, permissions, resource):
 )
 def step(context, permissions, resource, password):
     createPublicLinkShare(context, resource, password, permissions)
+
+
+@When('the user creates a new public link with following settings using the client-UI:')
+def step(context):
+    linkSettings = {}
+    for row in context.table:
+        linkSettings[row[0]] = row[1]
+    createPublicLinkShare(
+        context,
+        resource=linkSettings['path'],
+        password=linkSettings['password'],
+        expireDate=linkSettings['expireDate'],
+    )
 
 
 def createPublicShareWithRole(context, resource, role):
@@ -913,6 +950,21 @@ def step(context, resource, content):
     f.close()
 
     print("file has been overwritten")
+    waitForFileToBeSynced(context, resource)
+
+
+@When('the user tries to overwrite the file "|any|" with content "|any|"')
+def step(context, resource, content):
+    waitForFileToBeSynced(context, resource)
+    waitForFolderToBeSynced(context, '/')
+
+    try:
+        f = open(context.userData['currentUserSyncPath'] + resource, "w")
+        f.write(content)
+        f.close()
+    except:
+        pass
+
     waitForFileToBeSynced(context, resource)
 
 
@@ -1146,7 +1198,8 @@ def step(context, resource):
 )
 def step(context, publicLinkName, password):
     publicLinkDialog = PublicLinkDialog()
-    publicLinkDialog.changePassword(publicLinkName, password)
+    publicLinkDialog.verifyPublicLinkName(publicLinkName)
+    publicLinkDialog.changePassword(password)
 
 
 @Then(
@@ -1164,3 +1217,54 @@ def step(context, resource):
             context, receiver, resource, permissions, receiverCount
         )
         receiverCount += 1
+
+
+def searchCollaborator(collaborator):
+    shareItem = SharingDialog()
+    shareItem.searchCollaborator(collaborator)
+
+
+@When('the user searches for collaborator "|any|" using the client-UI')
+def step(context, collaborator):
+    searchCollaborator(collaborator)
+
+
+@When(
+    'the user searches for collaborator with autocomplete characters "|any|" using the client-UI'
+)
+def step(context, collaborator):
+    searchCollaborator(collaborator)
+
+
+@Then('the following users should be listed as suggested collaborators:')
+def step(context):
+    shareItem = SharingDialog()
+    for collaborator in context.table[1:]:
+        exists = False
+        try:
+            waitForObjectItem(shareItem.SUGGESTED_COLLABORATOR, collaborator[0])
+            exists = True
+        except LookupError as e:
+            pass
+
+        test.compare(exists, True, "Assert user '" + collaborator[0] + "' is listed")
+
+
+@Then('the collaborators should be listed in the following order:')
+def step(context):
+    shareItem = SharingDialog()
+    for index, collaborator in enumerate(context.table[1:], start=1):
+        test.compare(
+            str(
+                waitForObjectExists(
+                    {
+                        "container": names.sharingDialogUG_scrollArea_QScrollArea,
+                        "name": "sharedWith",
+                        "occurrence": index,
+                        "type": "QLabel",
+                        "visible": 1,
+                    }
+                ).text
+            ),
+            collaborator[0],
+        )
