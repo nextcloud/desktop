@@ -3118,7 +3118,7 @@ Nie zaleca się korzystania z niego.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="239"/>
         <source>Server address does not seem to be valid</source>
-        <translation>Adres serwera jest nieprawidłowy</translation>
+        <translation>Adres serwera wygląda na nieprawidłowy</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="293"/>
