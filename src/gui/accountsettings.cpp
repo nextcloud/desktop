@@ -323,6 +323,10 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
 
     removeFolderAction(menu);
 
+    if (folder->virtualFilesEnabled() && !Theme::instance()->forceVirtualFilesOption()) {
+        menu->addAction(tr("Disable virtual file support..."), this, &AccountSettings::slotDisableVfsCurrentFolder);
+    }
+
     if (Theme::instance()->showVirtualFilesOption()
         && !folder->virtualFilesEnabled() && FolderMan::instance()->checkVfsAvailability(folder->path())) {
         const auto mode = bestAvailableVfsMode();
