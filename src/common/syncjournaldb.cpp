@@ -1640,7 +1640,7 @@ void SyncJournalDb::wipeErrorBlacklistEntry(const QString &relativeFile, SyncJou
 
         query.prepare("DELETE FROM blacklist WHERE path=?1 AND errorCategory=?2");
         query.bindValue(1, relativeFile);
-        query.bindValue(1, category);
+        query.bindValue(2, category);
         if (!query.exec()) {
             sqlFail(QStringLiteral("Deletion of blacklist item failed."), query);
         }
