@@ -103,7 +103,7 @@
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="178"/>
         <source>Could not remove folder</source>
-        <translation type="unfinished"/>
+        <translation>ไม่สามารถลบโฟลเดอร์</translation>
     </message>
 </context>
 <context>
@@ -1422,7 +1422,7 @@ Please consider removing this folder from the account and adding it again.</sour
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1074"/>
         <source>Waiting...</source>
-        <translation>กรุณารอซักครู่...</translation>
+        <translation>โปรดรอสักครู่...</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folderstatusmodel.cpp" line="1076"/>
@@ -2022,7 +2022,7 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="444"/>
         <source>Update Failed</source>
-        <translation>อัพเดทล้มเหลว</translation>
+        <translation>อัปเดตล้มเหลว</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="450"/>
@@ -2727,7 +2727,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="707"/>
         <source>Broken webserver returned empty content length for non-empty file on resume</source>
-        <translation type="unfinished"/>
+        <translation>เว็บเซิร์ฟเวอร์ที่ใช้งานส่งคืนเนื้อหาที่ว่างเปล่าสำหรับไฟล์ที่ไม่ว่างเปล่าหลังจากการทำซ้ำ</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="714"/>
@@ -2805,7 +2805,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="79"/>
         <source>%1 failed with: %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 ล้มเหลวเนื่องจาก: %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="109"/>
@@ -4121,7 +4121,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="109"/>
         <source>Cannot create a placeholder because a file with the placeholder name already exist</source>
-        <translation type="unfinished"/>
+        <translation>ไม่สามารถสร้างตัวยึดตำแหน่งได้เนื่องจากมีไฟล์ที่มีชื่อตัวยึดอยู่แล้ว</translation>
     </message>
 </context>
 <context>
@@ -4444,7 +4444,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="472"/>
         <source>Start a &amp;clean sync (Create a backup and erases the local folder!)</source>
-        <translation type="unfinished"/>
+        <translation>เริ่มการ &amp;clean ซิงค์ (สร้างการสำรองข้อมูลและลบโฟลเดอร์ในเครื่อง!)</translation>
     </message>
 </context>
 <context>
@@ -4669,7 +4669,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/guiutility.cpp" line="83"/>
         <source>Shutting down %1</source>
-        <translation type="unfinished"/>
+        <translation>กำลังปิด %1</translation>
     </message>
 </context>
 <context>
