@@ -2322,7 +2322,7 @@ Note that this selects only what pool upgrades are taken from, and that there ar
 Items where deletion is allowed will be deleted if they prevent a directory from being removed. This is useful for meta data.</source>
         <translation>パターンに一致するファイルやフォルダーは同期されません。
 
-削除を許可された項目は、ディレクトリの削除を妨げる場合に削除されます。これはメタデータファイルに役立ちます。</translation>
+削除を許可した項目は、ディレクトリの削除を妨げる場合に削除されます。メタデータファイル等を指定するとよいでしょう。</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="93"/>
