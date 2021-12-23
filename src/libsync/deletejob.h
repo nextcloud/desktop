@@ -23,7 +23,7 @@ namespace OCC {
  * @brief The DeleteJob class
  * @ingroup libsync
  */
-class DeleteJob : public AbstractNetworkJob
+class DeleteJob : public SimpleFileJob
 {
     Q_OBJECT
 public:
@@ -31,13 +31,9 @@ public:
     explicit DeleteJob(AccountPtr account, const QUrl &url, QObject *parent = nullptr);
 
     void start() override;
-    bool finished() override;
 
     QByteArray folderToken() const;
     void setFolderToken(const QByteArray &folderToken);
-
-signals:
-    void finishedSignal();
 
 private:
     QUrl _url; // Only used if the constructor taking a url is taken.

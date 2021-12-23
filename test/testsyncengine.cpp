@@ -565,7 +565,7 @@ private slots:
                     reply->setRawHeader(OCC::contentMd5HeaderC, contentMd5Value);
                 return reply;
             } else if (op == QNetworkAccessManager::CustomOperation) {
-                if (request.hasRawHeader(OCC::checksumRecalculateOnServer)) {
+                if (request.hasRawHeader(OCC::checksumRecalculateOnServerHeaderC)) {
                     if (!isChecksumRecalculateSupported) {
                         return new FakeErrorReply(op, request, &parent, 402);
                     }
