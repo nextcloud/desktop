@@ -1060,9 +1060,8 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
 
         if (!isFilePlaceHolder && !isOnlineOnlyFolder) {
             if (localEntry.isDirectory && folderPlaceHolderAvailability.isValid() && !isOnlineOnlyFolder) {
-                // a VFS folder but is not online0only (has some files hydrated)
+                // a VFS folder but is not online-only (has some files hydrated)
                 qCInfo(lcDisco) << "Virtual directory without db entry for" << path._local << "but it contains hydrated file(s), so let's keep it and reupload.";
-                emit _discoveryData->addErrorToGui(SyncFileItem::SoftError, tr("Conflict when uploading some files to a folder. Those, conflicted, are going to get cleared!"), path._local);
                 return;
             }
             qCWarning(lcDisco) << "Virtual file without db entry for" << path._local
