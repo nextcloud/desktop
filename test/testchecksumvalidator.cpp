@@ -44,7 +44,7 @@ using namespace OCC::Utility;
     }
 
     void slotDownError(const QString &errMsg, const QByteArray &calculatedChecksumType,
-        const QByteArray &calculatedChecksum, ValidateChecksumHeader::FailureReason reason)
+        const QByteArray &calculatedChecksum, const ValidateChecksumHeader::FailureReason reason)
     {
         Q_UNUSED(calculatedChecksumType);
         Q_UNUSED(calculatedChecksum);
