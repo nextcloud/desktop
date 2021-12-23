@@ -44,7 +44,6 @@ class ActivityListModel : public QAbstractListModel
 public:
     enum DataRole {
         ActionIconRole = Qt::UserRole + 1,
-        UserIconRole,
         AccountRole,
         ObjectTypeRole,
         ActionsLinksRole,
@@ -59,7 +58,6 @@ public:
         LinkRole,
         PointInTimeRole,
         AccountConnectedRole,
-        SyncFileStatusRole,
         DisplayActions,
         ShareableRole,
     };
@@ -90,6 +88,7 @@ public:
     Q_INVOKABLE void triggerAction(int activityIndex, int actionIndex);
 
     AccountState *accountState() const;
+    void setAccountState(AccountState *state);
 
 public slots:
     void slotRefreshActivity();
@@ -103,7 +102,6 @@ protected:
     void activitiesReceived(const QJsonDocument &json, int statusCode);
     QHash<int, QByteArray> roleNames() const override;
 
-    void setAccountState(AccountState *state);
     void setCurrentlyFetching(bool value);
     bool currentlyFetching() const;
     void setDoneFetching(bool value);

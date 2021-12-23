@@ -61,6 +61,7 @@ nextcloud_add_test(IconUtils)
 nextcloud_add_test(NotificationCache)
 nextcloud_add_test(SetUserStatusDialog)
 nextcloud_add_test(UnifiedSearchListmodel)
+nextcloud_add_test(ActivityListModel)
 
 if( UNIX AND NOT APPLE )
     nextcloud_add_test(InotifyWatcher)

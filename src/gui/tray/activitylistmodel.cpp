@@ -269,8 +269,12 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
     return QVariant();
 }
 
-int ActivityListModel::rowCount(const QModelIndex &) const
+int ActivityListModel::rowCount(const QModelIndex &parent) const
 {
+    if(parent.isValid()) {
+        return 0;
+    }
+
     return _finalList.count();
 }
 
@@ -342,7 +346,6 @@ void ActivityListModel::activitiesReceived(const QJsonDocument &json, int status
         a._icon = json.value(QStringLiteral("icon")).toString();
 
         auto richSubjectData = json.value(QStringLiteral("subject_rich")).toArray();
-        Q_ASSERT(richSubjectData.size() > 1);
 
         if(richSubjectData.size() > 1) {
             a._subjectRich = richSubjectData[0].toString();
@@ -621,14 +624,8 @@ void ActivityListModel::combineActivityLists()
     }
 
     beginResetModel();
-    _finalList.clear();
+    _finalList = resultList;
     endResetModel();
-
-    if (resultList.count() > 0) {
-        beginInsertRows(QModelIndex(), 0, resultList.count() - 1);
-        _finalList = resultList;
-        endInsertRows();
-    }
 }
 
 bool ActivityListModel::canFetchActivities() const
@@ -638,11 +635,8 @@ bool ActivityListModel::canFetchActivities() const
 
 void ActivityListModel::fetchMore(const QModelIndex &)
 {
-    if (canFetchActivities()) {
+    if (canFetchActivities() && !_currentlyFetching) {
         startFetchJob();
-    } else {
-        _doneFetching = true;
-        combineActivityLists();
     }
 }
 
@@ -672,4 +666,6 @@ void ActivityListModel::slotRemoveAccount()
     _totalActivitiesFetched = 0;
     _showMoreActivitiesAvailableEntry = false;
 }
+
 }
+
