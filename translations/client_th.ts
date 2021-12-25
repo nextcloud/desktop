@@ -961,7 +961,7 @@ File synchronization desktop utility.</source>
     <message>
         <location filename="../src/gui/models/expandingheaderview.cpp" line="78"/>
         <source>Reset column sizes</source>
-        <translation type="unfinished"/>
+        <translation>รีเซ็ตขนาดคอลัมน์</translation>
     </message>
 </context>
 <context>
@@ -1012,7 +1012,7 @@ File synchronization desktop utility.</source>
     <message>
         <location filename="../src/gui/folder.cpp" line="207"/>
         <source>%1 is not writable.</source>
-        <translation type="unfinished"/>
+        <translation>%1 ไม่สามารถเขียนได้</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="473"/>
@@ -1895,7 +1895,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="163"/>
         <source>Reset column sizes</source>
-        <translation type="unfinished"/>
+        <translation>รีเซ็ตขนาดคอลัมน์</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="182"/>
@@ -1978,7 +1978,7 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/gui/models/models.cpp" line="82"/>
         <source>%1 Filter:</source>
-        <translation type="unfinished"/>
+        <translation>%1 ตัวกรอง:</translation>
     </message>
     <message>
         <location filename="../src/gui/models/models.cpp" line="103"/>
@@ -1988,12 +1988,12 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="217"/>
         <source>Reset Filters</source>
-        <translation type="unfinished"/>
+        <translation>รีเซ็ตตัวกรอง</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="296"/>
         <source>Status Filter:</source>
-        <translation type="unfinished"/>
+        <translation>ตัวกรองสถานะ:</translation>
     </message>
 </context>
 <context>
@@ -2514,7 +2514,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="371"/>
         <source>Can&apos;t remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
-        <translation>ไม่สามารถลบและสำรองข้อมูลโฟลเดอร์เพราะโฟลเดอร์หรือไฟล์ในนั้นจะเปิดในโปรแกรมอื่นอยู่ กรุณาปิดโฟลเดอร์หรือไฟล์และกดลองใหม่อีกครั้งหรือยกเลิกการติดตั้ง</translation>
+        <translation>ไม่สามารถลบและสำรองข้อมูลโฟลเดอร์ เพราะโฟลเดอร์หรือไฟล์นั้นเปิดในโปรแกรมอื่นอยู่ กรุณาปิดโฟลเดอร์หรือไฟล์และกดลองใหม่อีกครั้งหรือยกเลิกการติดตั้ง</translation>
     </message>
 </context>
 <context>
@@ -3698,7 +3698,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1057"/>
         <source>Open in browser</source>
-        <translation>เปิดในเบราว์เซอร์</translation>
+        <translation>เปิดด้วยเบราว์เซอร์</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1065"/>
@@ -4565,7 +4565,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="82"/>
         <source>Undefined</source>
-        <translation type="unfinished"/>
+        <translation>ไม่ได้กำหนด</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="84"/>
@@ -4596,22 +4596,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="94"/>
         <source>File Ignored</source>
-        <translation type="unfinished"/>
+        <translation>ไฟล์ที่ถูกละเว้น</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="96"/>
         <source>Restored</source>
-        <translation type="unfinished"/>
+        <translation>คืนค่าแล้ว</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="100"/>
         <source>Blacklisted</source>
-        <translation type="unfinished"/>
+        <translation>ขึ้นบัญชีดำแล้ว</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="102"/>
         <source>Excluded</source>
-        <translation type="unfinished"/>
+        <translation>ยกเว้นแล้ว</translation>
     </message>
 </context>
 <context>
