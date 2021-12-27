@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+   <Fragment>
+      <Binary Id="RegistryCleanup" SourceFile="RegistryCleanup.vbs"/>
+      <CustomAction Id='RegistryCleanupCustomAction' BinaryKey="RegistryCleanup" VBScriptCall="RegistryCleanup" Return="ignore" Execute="immediate"/>
+   </Fragment>
+</Wix>
