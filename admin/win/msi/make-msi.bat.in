@@ -17,10 +17,10 @@ Rem Generate collect.wxs
 if %ERRORLEVEL% neq 0 exit %ERRORLEVEL%
 
 Rem Compile en-US (https://www.firegiant.com/wix/tutorial/transforms/morphing-installers/)
-"%WIX%\bin\candle.exe" -dcodepage=1252 -dPlatform=%BuildArch% -arch %BuildArch% -dHarvestAppDir="%HarvestAppDir%" -ext WixUtilExtension NCMsiHelper.wxs WinShellExt.wxs collect.wxs Nextcloud.wxs
+"%WIX%\bin\candle.exe" -dcodepage=1252 -dPlatform=%BuildArch% -arch %BuildArch% -dHarvestAppDir="%HarvestAppDir%" -ext WixUtilExtension NCMsiHelper.wxs WinShellExt.wxs collect.wxs Nextcloud.wxs RegistryCleanupCustomAction.wxs
 if %ERRORLEVEL% neq 0 exit %ERRORLEVEL%
 
 Rem Link MSI package
-"%WIX%\bin\light.exe" -sw1076 -ext WixUIExtension -ext WixUtilExtension -cultures:en-us NCMsiHelper.wixobj WinShellExt.wixobj collect.wixobj Nextcloud.wixobj -out "@MSI_INSTALLER_FILENAME@"
+"%WIX%\bin\light.exe" -sw1076 -ext WixUIExtension -ext WixUtilExtension -cultures:en-us NCMsiHelper.wixobj WinShellExt.wixobj collect.wixobj Nextcloud.wixobj RegistryCleanupCustomAction.wixobj -out "@MSI_INSTALLER_FILENAME@"
 
 exit %ERRORLEVEL%

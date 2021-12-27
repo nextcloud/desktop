@@ -26,6 +26,8 @@ install(FILES
         ${CMAKE_CURRENT_BINARY_DIR}/make-msi.bat
         Platform.wxi
         Nextcloud.wxs
+        RegistryCleanup.vbs
+        RegistryCleanupCustomAction.wxs
         gui/banner.bmp
         gui/dialog.bmp
     DESTINATION msi/)
