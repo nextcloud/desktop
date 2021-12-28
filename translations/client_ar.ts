@@ -490,7 +490,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="334"/>
         <source>Enable virtual file support%1...</source>
-        <translation>تمكين دعم الملف الظاهري٪ 1 ...</translation>
+        <translation>تمكين دعم الملف الظاهري٪1 ...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="334"/>
@@ -1545,7 +1545,7 @@ Please consider removing this folder from the account and adding it again.</sour
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="477"/>
         <source>Use virtual files instead of downloading content immediately%1</source>
-        <translation>استخدم الملفات الظاهرية بدلاً من تنزيل المحتوى فورًا٪ 1</translation>
+        <translation>استخدم الملفات الظاهرية بدلاً من تنزيل المحتوى فورًا٪1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="477"/>
@@ -2354,7 +2354,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="84"/>
         <source>Use &amp;virtual files instead of downloading content immediately%1</source>
-        <translation>استخدم &amp; الملفات الظاهرية بدلاً من تنزيل المحتوى فورًا٪ 1</translation>
+        <translation>استخدم &amp; الملفات الظاهرية بدلاً من تنزيل المحتوى فورًا٪1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="167"/>
