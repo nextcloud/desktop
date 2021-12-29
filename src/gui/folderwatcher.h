@@ -23,6 +23,7 @@
 #include <QString>
 #include <QStringList>
 #include <QElapsedTimer>
+#include <QTimer>
 #include <QHash>
 #include <QScopedPointer>
 #include <QSet>
@@ -118,7 +119,10 @@ protected:
 private:
     QScopedPointer<FolderWatcherPrivate> _d;
     QElapsedTimer _timer;
+    QTimer _syncInterval;
+    std::chrono::milliseconds _syncIntervalLenght;
     QSet<QString> _lastPaths;
+    QSet<QString> _changedPaths;
     Folder *_folder;
     bool _isReliable = true;
 
@@ -128,6 +132,7 @@ private:
     QString _testNotificationPath;
 
     friend class FolderWatcherPrivate;
+    void notifyChangedPaths();
 };
 }
 

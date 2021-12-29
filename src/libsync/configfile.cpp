@@ -58,7 +58,6 @@ namespace OCC {
 namespace chrono = std::chrono;
 
 Q_LOGGING_CATEGORY(lcConfigFile, "nextcloud.sync.configfile", QtInfoMsg)
-
 //static const char caCertsKeyC[] = "CaCertificates"; only used from account.cpp
 static const char remotePollIntervalC[] = "remotePollInterval";
 static const char forceSyncIntervalC[] = "forceSyncInterval";
@@ -109,6 +108,9 @@ const char certPath[] = "http_certificatePath";
 const char certPasswd[] = "http_certificatePasswd";
 QString ConfigFile::_confDir = QString();
 bool ConfigFile::_askedUser = false;
+
+constexpr chrono::milliseconds defaultLocalSyncInterval(0);
+constexpr char localSyncIntervalC[] = "localSyncInterval";
 
 static chrono::milliseconds millisecondsValue(const QSettings &setting, const char *key,
     chrono::milliseconds defaultValue)
@@ -538,6 +540,23 @@ chrono::milliseconds ConfigFile::forceSyncInterval(const QString &connection) co
     if (interval < pollInterval) {
         qCWarning(lcConfigFile) << "Force sync interval is less than the remote poll inteval, reverting to" << pollInterval.count();
         interval = pollInterval;
+    }
+    return interval;
+}
+
+chrono::milliseconds ConfigFile::localSyncInterval(const QString &connection) const
+{
+    auto con(connection);
+    if (connection.isEmpty()) {
+        con = defaultConnection();
+    }
+    QSettings settings(configFile(), QSettings::IniFormat);
+    settings.beginGroup(con);
+
+    auto interval = millisecondsValue(settings, localSyncIntervalC, defaultLocalSyncInterval);
+    if (interval < defaultLocalSyncInterval) {
+        qCWarning(lcConfigFile) << "Local sync interval is less than " << defaultLocalSyncInterval.count() << " ms, reverting to default";
+        interval = defaultLocalSyncInterval;
     }
     return interval;
 }

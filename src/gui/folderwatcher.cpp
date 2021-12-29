@@ -34,6 +34,8 @@
 
 #include "folder.h"
 #include "filesystem.h"
+#include "configfile.h"
+
 
 namespace OCC {
 
@@ -43,6 +45,8 @@ FolderWatcher::FolderWatcher(Folder *folder)
     : QObject(folder)
     , _folder(folder)
 {
+    _syncIntervalLength = ConfigFile().localSyncInterval();
+    connect(&_syncInterval, &QTimer::timeout, this, &FolderWatcher::notifyChangedPaths);
 }
 
 FolderWatcher::~FolderWatcher() = default;
@@ -149,6 +153,17 @@ void FolderWatcher::changeDetected(const QString &path)
     changeDetected(paths);
 }
 
+void FolderWatcher::notifyChangedPaths()
+{
+    _syncInterval.stop();
+    _lastPaths.clear();
+    qCInfo(lcFolderWatcher) << "Detected changes in paths:" << _changedPaths;
+    for (const QString &path: qAsConst(_changedPaths)) {
+        emit pathChanged(path);
+    }
+    _changedPaths.clear();
+}
+
 void FolderWatcher::changeDetected(const QStringList &paths)
 {
     // TODO: this shortcut doesn't look very reliable:
@@ -158,14 +173,12 @@ void FolderWatcher::changeDetected(const QStringList &paths)
 
     // Check if the same path was reported within the last second.
     QSet<QString> pathsSet = paths.toSet();
-    if (pathsSet == _lastPaths && _timer.elapsed() < 1000) {
+    if (_lastPaths.contains(pathsSet) && _timer.elapsed() < 1000) {
         // the same path was reported within the last second. Skip.
         return;
     }
-    _lastPaths = pathsSet;
+    _lastPaths += pathsSet;
     _timer.restart();
-
-    QSet<QString> changedPaths;
 
     // ------- handle ignores:
     for (int i = 0; i < paths.size(); ++i) {
@@ -178,15 +191,12 @@ void FolderWatcher::changeDetected(const QStringList &paths)
             continue;
         }
 
-        changedPaths.insert(path);
+        _changedPaths.insert(path);
     }
-    if (changedPaths.isEmpty()) {
+    if (_changedPaths.isEmpty()) {
         return;
-    }
-
-    qCInfo(lcFolderWatcher) << "Detected changes in paths:" << changedPaths;
-    foreach (const QString &path, changedPaths) {
-        emit pathChanged(path);
+    } else if (!_syncInterval.isActive()) {
+        _syncInterval.start(_syncIntervalLength);
     }
 }
 
