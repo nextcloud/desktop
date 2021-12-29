@@ -293,7 +293,7 @@
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="405"/>
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
-        <translation>For å beskytte din kryptografiske identitet, krypterer vi den med en mnemonic med 12 ordbok ord. Vennligst noter disse ned og oppbevar dem trygt. De vil være nødvendige for å legge til andre enheter på kontoen din (som mobiltelefonen eller den bærbare datamaskinen).</translation>
+        <translation>For å beskytte din kryptografiske identitet, krypterer vi den med en mnemonic med 12 ord. Vennligst noter disse ned og oppbevar dem trygt. De vil være nødvendige for å legge til andre enheter på kontoen din (som mobiltelefonen eller den bærbare datamaskinen).</translation>
     </message>
 </context>
 <context>
