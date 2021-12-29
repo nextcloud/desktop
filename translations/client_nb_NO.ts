@@ -1042,7 +1042,7 @@ Denne handlingen vil avbryte enhver synkronisering som kjører.</translation>
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="89"/>
         <source>Do you want to delete the file &lt;i&gt;%1&lt;/i&gt; permanently?</source>
-        <translation>Ønsker du å slette filen &lt;i&gt;%1&lt;/i&gt; permanent?</translation>>
+        <translation>Ønsker du å slette filen &lt;i&gt;%1&lt;/i&gt; permanent?</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="90"/>
