@@ -170,7 +170,7 @@
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="174"/>
         <source>Could not remove folder &quot;%1&quot;</source>
-        <translation>Kan ikke slette katalog &quot;%1&quot;</translation>
+        <translation>Kan ikke slette mappe &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="174"/>
@@ -280,7 +280,7 @@
     <message>
         <location filename="../src/libsync/abstractpropagateremotedeleteencrypted.cpp" line="181"/>
         <source>&quot;%1 Failed to unlock encrypted folder %2&quot;.</source>
-        <translation>&quot;%1 feilet med å låse opp kryptert katalog %2&quot;.</translation>
+        <translation>&quot;%1 mislyktes med å låse opp kryptert mappe %2&quot;.</translation>
     </message>
 </context>
 <context>
@@ -354,12 +354,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="97"/>
         <source>Don&apos;t encrypt folder</source>
-        <translation>Ikke krypter katalog</translation>
+        <translation>Ikke krypter mappe</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="100"/>
         <source>Encrypt folder</source>
-        <translation>Krypter katalog</translation>
+        <translation>Krypter mappe</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="233"/>
@@ -456,7 +456,7 @@ Vent på den nye synkroniseringen, og krypter den deretter.</translation>
         <location filename="../src/gui/accountsettings.cpp" line="494"/>
         <location filename="../src/gui/accountsettings.cpp" line="560"/>
         <source>Create new folder</source>
-        <translation>Ny katalog</translation>
+        <translation>Ny mappe</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="500"/>
@@ -517,7 +517,7 @@ Vent på den nye synkroniseringen, og krypter den deretter.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="698"/>
         <source>&lt;p&gt;Could not create local folder &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Kunne ikke opprette lokal katalog &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Kunne ikke opprette lokal mappe &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="753"/>
@@ -837,7 +837,7 @@ Denne handlingen vil avbryte enhver synkronisering som kjører.</translation>
     <message>
         <location filename="../src/gui/application.cpp" line="313"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your user.</source>
-        <translation type="unfinished"/>
+        <translation>Det oppstod en feil med å nå konfigurasjonsfilen ved %1. Vennligst sørg for at filen kan nåes av din bruker.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="316"/>
@@ -878,13 +878,13 @@ Denne handlingen vil avbryte enhver synkronisering som kjører.</translation>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="122"/>
         <source>File %1 cannot be uploaded because another file with the same name, differing only in case, exists</source>
-        <translation type="unfinished"/>
+        <translation>Filen %1 kunne ikke lastes opp fordi en annen fil med det samme navnet (da andre store/små bokstaver) eksisterer allerede</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="169"/>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="302"/>
         <source>File %1 has invalid modified time. Do not upload to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Filen %1 har en ugyldig endringstid. Ikke last opp til serveren.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="293"/>
@@ -894,7 +894,7 @@ Denne handlingen vil avbryte enhver synkronisering som kjører.</translation>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="310"/>
         <source>Local file changed during syncing. It will be resumed.</source>
-        <translation type="unfinished"/>
+        <translation>Lokal fil endret under synkronisering, men vil gjenopptaes.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="324"/>
@@ -920,7 +920,7 @@ Denne handlingen vil avbryte enhver synkronisering som kjører.</translation>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="667"/>
         <source>; Restoration Failed: %1</source>
-        <translation type="unfinished"/>
+        <translation>; Gjenoppretting mislyktes: %1</translation>
     </message>
 </context>
 <context>
@@ -936,12 +936,12 @@ Denne handlingen vil avbryte enhver synkronisering som kjører.</translation>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1241"/>
         <source>Please enter your end to end encryption passphrase:&lt;br&gt;&lt;br&gt;User: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Vennligst fyll inn ditt slutt-til-slutt krypteringspassord:&lt;br&gt;&lt;br&gt;Bruker: %2&lt;br&gt;Konto: %3&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1249"/>
         <source>Enter E2E passphrase</source>
-        <translation type="unfinished"/>
+        <translation>E2E Passord</translation>
     </message>
 </context>
 <context>
@@ -955,12 +955,12 @@ Denne handlingen vil avbryte enhver synkronisering som kjører.</translation>
         <location filename="../src/gui/conflictdialog.ui" line="20"/>
         <location filename="../src/gui/conflictdialog.cpp" line="94"/>
         <source>Conflicting versions of %1.</source>
-        <translation type="unfinished"/>
+        <translation>Versjonskonflikt for %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="32"/>
         <source>Which version of the file do you want to keep?&lt;br/&gt;If you select both versions, the local file will have a number added to its name.</source>
-        <translation type="unfinished"/>
+        <translation>Hvilken versjon av filen ønsker du å beholde?&lt;br/&gt;Dersom du velger begge versjonene, vil et nummer legges til i navnet på den lokale filen.</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="46"/>
@@ -971,7 +971,7 @@ Denne handlingen vil avbryte enhver synkronisering som kjører.</translation>
         <location filename="../src/gui/conflictdialog.ui" line="57"/>
         <location filename="../src/gui/conflictdialog.ui" line="165"/>
         <source>Click to open the file</source>
-        <translation type="unfinished"/>
+        <translation>Klikk for å åpne filen</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="96"/>
@@ -1037,12 +1037,12 @@ Denne handlingen vil avbryte enhver synkronisering som kjører.</translation>
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="88"/>
         <source>Do you want to delete the directory &lt;i&gt;%1&lt;/i&gt; and all its contents permanently?</source>
-        <translation type="unfinished"/>
+        <translation>Ønsker du å permanent slette mappen &lt;i&gt;%1&lt;/i&gt; og alt innholdet</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="89"/>
         <source>Do you want to delete the file &lt;i&gt;%1&lt;/i&gt; permanently?</source>
-        <translation type="unfinished"/>
+        <translation>Ønsker du å slette filen &lt;i&gt;%1&lt;/i&gt; permanent?</translation>>
     </message>
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="90"/>
@@ -1109,12 +1109,12 @@ Denne handlingen vil avbryte enhver synkronisering som kjører.</translation>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="189"/>
         <source>Error while canceling delete of a file</source>
-        <translation type="unfinished"/>
+        <translation>En feil oppstod under avbryting av sletting av en fil</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="190"/>
         <source>Error while canceling delete of %1</source>
-        <translation type="unfinished"/>
+        <translation>En feil opsptod under avbryting av sletting av %1</translation>
     </message>
 </context>
 <context>
@@ -1122,13 +1122,13 @@ Denne handlingen vil avbryte enhver synkronisering som kjører.</translation>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="398"/>
         <source>The server file discovery reply is missing data.</source>
-        <translation type="unfinished"/>
+        <translation>Serverens svar om filoversikt mangler data.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="505"/>
         <location filename="../src/libsync/discoveryphase.cpp" line="530"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
-        <translation type="unfinished"/>
+        <translation>Serverfeil: PROPFIND svaret er ikke XML-formatert!</translation>
     </message>
 </context>
 <context>
@@ -1136,17 +1136,17 @@ Denne handlingen vil avbryte enhver synkronisering som kjører.</translation>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="264"/>
         <source>Error while opening directory %1</source>
-        <translation type="unfinished"/>
+        <translation>En feil oppstod ved åpning av mappen %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="266"/>
         <source>Directory not accessible on client, permission denied</source>
-        <translation type="unfinished"/>
+        <translation>Mappen er ikke tilgjengelig for klienten, avslåtte privilegier</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="270"/>
         <source>Directory not found: %1</source>
-        <translation>Katalog ikke funnet: %1</translation>
+        <translation>Mappe ikke funnet: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="301"/>
@@ -1156,7 +1156,7 @@ Denne handlingen vil avbryte enhver synkronisering som kjører.</translation>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="320"/>
         <source>Error while reading directory %1</source>
-        <translation>Kunne ikke lese katalogen %1</translation>
+        <translation>Kunne ikke lese mappen %1</translation>
     </message>
 </context>
 <context>
@@ -1165,7 +1165,8 @@ Denne handlingen vil avbryte enhver synkronisering som kjører.</translation>
         <location filename="../src/libsync/encryptfolderjob.cpp" line="79"/>
         <source>Could not generate the metadata for encryption, Unlocking the folder.
 This can be an issue with your OpenSSL libraries.</source>
-        <translation type="unfinished"/>
+        <translation>Kunne ikke generere metadataen for kryptering, låser opp mappen.
+Dette kan være et problem med dine OpenSSL bibliotek.</translation>
     </message>
 </context>
 <context>
@@ -1173,7 +1174,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="104"/>
         <source>The polling URL does not start with HTTPS despite the login URL started with HTTPS. Login will not be possible because this might be a security issue. Please contact your administrator.</source>
-        <translation type="unfinished"/>
+        <translation>Forespørsellenken starter ikke med HTTPS til tross for at innloggingslenken starter med HTTPS. Innlogging vil ikke være tilgjengelig da dette kan være et sikkerhetsproblem. Vennligst kontakt din administrator.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="115"/>
@@ -1203,12 +1204,12 @@ This can be an issue with your OpenSSL libraries.</source>
         <location filename="../src/gui/creds/flow2auth.cpp" line="124"/>
         <location filename="../src/gui/creds/flow2auth.cpp" line="242"/>
         <source>The reply from the server did not contain all expected fields</source>
-        <translation type="unfinished"/>
+        <translation>Svaret fra serveren innehold ikke alle de forventede feltene</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="221"/>
         <source>The returned server URL does not start with HTTPS despite the login URL started with HTTPS. Login will not be possible because this might be a security issue. Please contact your administrator.</source>
-        <translation type="unfinished"/>
+        <translation>Den returnerte URLen fra serveren starter ikke med HTTPS til tross for at innloggingslenken starter med HTTPS. Innlogging vil ikke være tilgjengelig da dette kan være et sikkerhetsproblem. Vennligst kontakt din administrator.</translation>
     </message>
 </context>
 <context>
@@ -1216,27 +1217,27 @@ This can be an issue with your OpenSSL libraries.</source>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="97"/>
         <source>Unable to open the Browser, please copy the link to your Browser.</source>
-        <translation type="unfinished"/>
+        <translation>Kunne ikke åpne nettleseren, vennligst kopier lenken til din nettleser.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="160"/>
         <source>Waiting for authorization</source>
-        <translation type="unfinished"/>
+        <translation>Avventer autentisering</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="165"/>
         <source>Polling for authorization</source>
-        <translation type="unfinished"/>
+        <translation>Ber om autentisering</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="170"/>
         <source>Starting authorization</source>
-        <translation type="unfinished"/>
+        <translation>STarter autentisering</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="174"/>
         <source>Link copied to clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>Lenke kopiert til utklippstavlen</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="221"/>
@@ -1297,7 +1298,7 @@ This can be an issue with your OpenSSL libraries.</source>
         <location filename="../src/gui/folder.cpp" line="437"/>
         <source>%1 has been added.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 navngir en fil.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="442"/>
@@ -1392,12 +1393,12 @@ This can be an issue with your OpenSSL libraries.</source>
     <message>
         <location filename="../src/gui/folder.cpp" line="1173"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
-        <translation type="unfinished"/>
+        <translation>Mappen %1 var opprettet, men var tildigere ekskludert fra synkronisering. Data inni mappen vil ikke synkroniseres.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1176"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
-        <translation type="unfinished"/>
+        <translation>Filen %1 var opprettet, men var tidligere ekskludert fra synkronisering. Den vil ikke synkroniseres.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1187"/>
@@ -1495,17 +1496,17 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folder.cpp" line="1273"/>
         <source>Remove All Files?</source>
-        <translation type="unfinished"/>
+        <translation>Fjern alle filer?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1277"/>
         <source>Remove all files</source>
-        <translation type="unfinished"/>
+        <translation>Fjern alle filer</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1278"/>
         <source>Keep files</source>
-        <translation type="unfinished"/>
+        <translation>Behold filer</translation>
     </message>
 </context>
 <context>
@@ -1513,27 +1514,27 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/foldercreationdialog.ui" line="14"/>
         <source>Create new folder</source>
-        <translation type="unfinished"/>
+        <translation>Opprett mappe</translation>
     </message>
     <message>
         <location filename="../src/gui/foldercreationdialog.ui" line="42"/>
         <source>Enter folder name</source>
-        <translation type="unfinished"/>
+        <translation>Oppgi mappenavn</translation>
     </message>
     <message>
         <location filename="../src/gui/foldercreationdialog.ui" line="61"/>
         <source>Folder already exists</source>
-        <translation type="unfinished"/>
+        <translation>Mappen eksisterer allerede</translation>
     </message>
     <message>
         <location filename="../src/gui/foldercreationdialog.cpp" line="76"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>Feil</translation>
     </message>
     <message>
         <location filename="../src/gui/foldercreationdialog.cpp" line="76"/>
         <source>Could not create a folder! Check your write permissions.</source>
-        <translation type="unfinished"/>
+        <translation>Kunne ikke opprette mappe. Vennligst sjekk dine skriverettigheter.</translation>
     </message>
 </context>
 <context>
@@ -1591,7 +1592,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="1514"/>
         <source>Sync finished with unresolved conflicts.</source>
-        <translation type="unfinished"/>
+        <translation>Synkronisering fullførte med uoppløste konflikter.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1516"/>
@@ -1626,7 +1627,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="1554"/>
         <source>The selected path does not exist!</source>
-        <translation type="unfinished"/>
+        <translation>Den valgte stien eksisterer ikke!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1558"/>
@@ -1699,7 +1700,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="203"/>
         <source>Fetching folder list from server …</source>
-        <translation type="unfinished"/>
+        <translation>Henter mappeliste fra server …</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="229"/>
@@ -1709,7 +1710,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="235"/>
         <source>Virtual file support is enabled.</source>
-        <translation type="unfinished"/>
+        <translation>Virtuell filstøtte er aktivert.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="257"/>
@@ -1719,12 +1720,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="299"/>
         <source>Synchronizing VirtualFiles with local folder</source>
-        <translation type="unfinished"/>
+        <translation>Synkroniserer virtuelle filer med lokalmappe</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="301"/>
         <source>Synchronizing with local folder</source>
-        <translation type="unfinished"/>
+        <translation>Synkroniserer med lokalmappe</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="973"/>
