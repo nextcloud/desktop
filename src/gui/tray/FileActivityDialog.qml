@@ -1,4 +1,4 @@
-import QtQuick.Window 2.15
+import QtQuick.Window 2.12
 
 import com.nextcloud.desktopclient 1.0 as NC
 
