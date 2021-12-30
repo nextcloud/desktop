@@ -447,7 +447,6 @@ endif()
 set_target_properties(nextcloudCore
   PROPERTIES
   AUTOUIC ON
-  AUTORCC ON
   AUTOMOC ON
 )
 
