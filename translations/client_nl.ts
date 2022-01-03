@@ -4040,7 +4040,7 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="219"/>
         <source>Activity</source>
-        <translation>Activiteit</translation>
+        <translation>Activiteiten</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="240"/>
