@@ -224,16 +224,22 @@ void OAuth::startAuthentication()
                     httpReplyAndClose(socket, QByteArrayLiteral("400 Bad Request"), QByteArrayLiteral("<html><head><title>400 Bad Request</title></head><body><center><h1>400 Bad Request</h1></center></body></html>"));
                     return;
                 }
+
+                // server port cannot be queried any more after server has been closed, which we want to do as early as possible in the processing chain
+                // therefore we have to store it beforehand
+                const auto serverPort = _server.serverPort();
+
                 // we only allow one response
-                qCDebug(lcOauth) << "Recieved the first valid request, stoping to listen";
+                qCDebug(lcOauth) << "Received the first valid response, closing server socket";
                 _server.close();
 
                 auto job = postTokenRequest({
                     { QStringLiteral("grant_type"), QStringLiteral("authorization_code") },
                     { QStringLiteral("code"), args.queryItemValue(QStringLiteral("code")) },
-                    { QStringLiteral("redirect_uri"), QStringLiteral("%1:%2").arg(_redirectUrl, QString::number(_server.serverPort())) },
+                    { QStringLiteral("redirect_uri"), QStringLiteral("%1:%2").arg(_redirectUrl, QString::number(serverPort)) },
                     { QStringLiteral("code_verifier"), QString::fromUtf8(_pkceCodeVerifier) },
                 });
+
                 QObject::connect(job, &SimpleNetworkJob::finishedSignal, this, [this, socket](QNetworkReply *reply) {
                     const auto jsonData = reply->readAll();
                     QJsonParseError jsonParseError;
