@@ -748,7 +748,7 @@ Window {
                 openFileActivityDialog(displayPath, absolutePath)
             }
             onActivityItemClicked: {
-                model.triggerDefaultAction(index)
+                model.slotTriggerDefaultAction(index)
             }
         }
 

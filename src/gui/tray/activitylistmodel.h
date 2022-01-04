@@ -40,6 +40,8 @@ class ActivityListModel : public QAbstractListModel
 {
     Q_OBJECT
 
+    Q_PROPERTY(quint32 maxActionButtons READ maxActionButtons CONSTANT)
+
     Q_PROPERTY(AccountState *accountState READ accountState CONSTANT)
 public:
     enum DataRole {
@@ -47,6 +49,8 @@ public:
         AccountRole,
         ObjectTypeRole,
         ActionsLinksRole,
+        ActionsLinksContextMenuRole,
+        ActionsLinksForActionButtonsRole,
         ActionTextRole,
         ActionTextColorRole,
         ActionRole,
@@ -60,6 +64,7 @@ public:
         AccountConnectedRole,
         DisplayActions,
         ShareableRole,
+        IsCurrentUserFileActivityRole,
     };
     Q_ENUM(DataRole)
 
@@ -84,15 +89,22 @@ public:
     void removeActivityFromActivityList(int row);
     void removeActivityFromActivityList(Activity activity);
 
-    Q_INVOKABLE void triggerDefaultAction(int activityIndex);
-    Q_INVOKABLE void triggerAction(int activityIndex, int actionIndex);
-
     AccountState *accountState() const;
     void setAccountState(AccountState *state);
+
+    static constexpr quint32 maxActionButtons()
+    {
+        return MaxActionButtons;
+    }
+
+    void setCurrentItem(const int currentItem);
 
 public slots:
     void slotRefreshActivity();
     void slotRemoveAccount();
+    void slotTriggerDefaultAction(const int activityIndex);
+    void slotTriggerAction(const int activityIndex, const int actionIndex);
+    void slotTriggerDismiss(const int activityIndex);
 
 signals:
     void activityJobStatusCode(int statusCode);
@@ -110,7 +122,16 @@ protected:
 
     virtual void startFetchJob();
 
+    // added these for unit tests
+    void setFinalList(const ActivityList &finalList);
+    const ActivityList &finalList() const;
+    int currentItem() const;
+    //
+
 private:
+    static QVariantList convertLinksToMenuEntries(const Activity &activity);
+    static QVariantList convertLinksToActionButtons(const Activity &activity);
+    static QVariant convertLinkToActionButton(const Activity &activity, const ActivityLink &activityLink);
     void combineActivityLists();
     bool canFetchActivities() const;
 
@@ -137,6 +158,8 @@ private:
     bool _currentlyFetching = false;
     bool _doneFetching = false;
     bool _hideOldActivities = true;
+
+    static constexpr quint32 MaxActionButtons = 2;
 };
 }
 

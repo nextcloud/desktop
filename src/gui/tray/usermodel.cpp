@@ -514,6 +514,7 @@ void User::processCompletedSyncItem(const Folder *folder, const SyncFileItemPtr 
         activity._fileAction = "file_created";
     } else if (item->_instruction == CSYNC_INSTRUCTION_RENAME) {
         activity._fileAction = "file_renamed";
+        activity._renamedFile = item->_renameTarget;
     } else {
         activity._fileAction = "file_changed";
     }

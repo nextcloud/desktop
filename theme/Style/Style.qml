@@ -50,6 +50,12 @@ QtObject {
     property int headerButtonIconSize: 32
 
     property int activityLabelBaseWidth: 240
+
+    property int activityItemActionPrimaryButtonMinWidth: 100
+    property int activityItemActionSecondaryButtonMinWidth: 80
+
+    property int roundButtonBackgroundVerticalMargins: 10
+    property int roundedButtonBackgroundVerticalMargins: 5
     
     property int userStatusEmojiSize: 8
     property int userStatusSpacing: 6

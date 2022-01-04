@@ -15,6 +15,7 @@ Window {
     height: 500
 
     ActivityList {
+        isFileActivityList: true
         anchors.fill: parent
         model: dialog.model
     }
