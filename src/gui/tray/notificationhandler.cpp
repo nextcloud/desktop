@@ -121,14 +121,7 @@ void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &j
 
         auto actions = json.value("actions").toArray();
         foreach (auto action, actions) {
-            auto actionJson = action.toObject();
-            ActivityLink al;
-            al._label = QUrl::fromPercentEncoding(actionJson.value("label").toString().toUtf8());
-            al._link = actionJson.value("link").toString();
-            al._verb = actionJson.value("type").toString().toUtf8();
-            al._primary = actionJson.value("primary").toBool();
-
-            a._links.append(al);
+            a._links.append(ActivityLink::createFomJsonObject(action.toObject()));
         }
 
         // Add another action to dismiss notification on server

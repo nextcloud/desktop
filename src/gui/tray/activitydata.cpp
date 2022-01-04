@@ -33,4 +33,15 @@ Activity::Identifier Activity::ident() const
 {
     return Identifier(_id, _accName);
 }
+
+ActivityLink ActivityLink::createFomJsonObject(const QJsonObject &obj)
+{
+    ActivityLink activityLink;
+    activityLink._label = QUrl::fromPercentEncoding(obj.value(QStringLiteral("label")).toString().toUtf8());
+    activityLink._link = obj.value(QStringLiteral("link")).toString();
+    activityLink._verb = obj.value(QStringLiteral("type")).toString().toUtf8();
+    activityLink._primary = obj.value(QStringLiteral("primary")).toBool();
+
+    return activityLink;
+}
 }

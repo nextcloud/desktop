@@ -1,109 +1,65 @@
-import QtQuick 2.5
+import QtQuick 2.15
 import QtQuick.Controls 2.3
+import QtQuick.Layouts 1.15
 import Style 1.0
 
 Item {
     id: root
-    readonly property bool labelVisible: label.visible
-    readonly property bool iconVisible: icon.visible
 
-    // label value
     property string text: ""
-    
-    // font value
-    property var font: label.font
+    property string toolTipText: ""
 
-    // icon value
+    property bool bold: false
+
     property string imageSource: ""
+    property string imageSourceHover: ""
 
-    // Tooltip value
-    property string tooltipText: text
-
-    // text color
-    property color textColor: Style.ncTextColor
-    property color textColorHovered: Style.lightHover
-
-    // text background color
-    property color textBgColor: "transparent"
-    property color textBgColorHovered: Style.lightHover
-
-    // icon background color
-    property color iconBgColor: "transparent"
-    property color iconBgColorHovered: Style.lightHover
-
-    // text border color
-    property color textBorderColor: "transparent"
-
-    property alias hovered: mouseArea.containsMouse
+    property color textColor: Style.unifiedSearchResulTitleColor
+    property color textColorHovered: Style.unifiedSearchResulSublineColor
 
     signal clicked()
 
-    Accessible.role: Accessible.Button
-    Accessible.name: text !== "" ? text : (tooltipText !== "" ? tooltipText : qsTr("Activity action button"))
-    Accessible.onPressAction: clicked()
-
-    // background with border around the Text
-    Rectangle {
-        visible: parent.labelVisible
+    Loader {
+        active: root.imageSource === ""
 
         anchors.fill: parent
 
-        // padding
-        anchors.topMargin: 10
-        anchors.bottomMargin: 10
+        sourceComponent: CustomTextButton {
+             anchors.fill: parent
+             text: root.text
+             toolTipText: root.toolTipText
 
-        border.color: parent.textBorderColor
-        border.width: 1
+             textColor: root.textColor
+             textColorHovered: root.textColorHovered
 
-        color: parent.hovered ? parent.textBgColorHovered : parent.textBgColor
-
-        radius: 25
+             onClicked: root.clicked()
+        }
     }
 
-    // background with border around the Image
-    Rectangle {
-        visible: parent.iconVisible
+    Loader {
+        active: root.imageSource !== ""
 
         anchors.fill: parent
 
-        color: parent.hovered ? parent.iconBgColorHovered : parent.iconBgColor
-    }
+        sourceComponent: CustomButton {
+            anchors.fill: parent
+            anchors.topMargin: Style.roundedButtonBackgroundVerticalMargins
+            anchors.bottomMargin: Style.roundedButtonBackgroundVerticalMargins
 
-    // label
-    Text {
-        id: label
-        visible: parent.text !== ""
-        text: parent.text
-        font: parent.font
-        color: parent.hovered ? parent.textColorHovered : parent.textColor
-        anchors.fill: parent
-        anchors.leftMargin: 10
-        anchors.rightMargin: 10
-        horizontalAlignment: Text.AlignHCenter
-        verticalAlignment: Text.AlignVCenter
-        elide: Text.ElideRight
-    }
+            text: root.text
+            toolTipText: root.toolTipText
 
-    // icon
-    Image {
-        id: icon
-        visible: parent.imageSource !== ""
-        anchors.centerIn: parent
-        source: parent.imageSource
-        sourceSize.width: visible ? 32 : 0
-        sourceSize.height: visible ? 32 : 0
-    }
+            textColor: root.textColor
+            textColorHovered: root.textColorHovered
 
-    MouseArea {
-        id: mouseArea
-        anchors.fill: parent
-        onClicked: parent.clicked()
-        hoverEnabled: true
-    }
+            bold: root.bold
 
-    ToolTip {
-        text: parent.tooltipText
-        delay: 1000
-        visible: text != "" && parent.hovered
+            imageSource: root.imageSource
+            imageSourceHover: root.imageSourceHover
+
+            bgColor: Style.ncBlue
+
+            onClicked: root.clicked()
+        }
     }
 }

@@ -17,6 +17,7 @@
 
 #include <QtCore>
 #include <QIcon>
+#include <QJsonObject>
 
 namespace OCC {
 /**
@@ -28,13 +29,20 @@ namespace OCC {
 class ActivityLink
 {
     Q_GADGET
-
+    
+    Q_PROPERTY(QString imageSource MEMBER _imageSource)
+    Q_PROPERTY(QString imageSourceHovered MEMBER _imageSourceHovered)
     Q_PROPERTY(QString label MEMBER _label)
     Q_PROPERTY(QString link MEMBER _link)
     Q_PROPERTY(QByteArray verb MEMBER _verb)
     Q_PROPERTY(bool primary MEMBER _primary)
 
 public:
+    static ActivityLink createFomJsonObject(const QJsonObject &obj);
+
+public:
+    QString _imageSource;
+    QString _imageSourceHovered;
     QString _label;
     QString _link;
     QByteArray _verb;
@@ -80,11 +88,13 @@ public:
     QString _message;
     QString _folder;
     QString _file;
+    QString _renamedFile;
     QUrl _link;
     QDateTime _dateTime;
     qint64 _expireAtMsecs = -1;
     QString _accName;
     QString _icon;
+    bool _isCurrentUserFileActivity = false;
 
     // Stores information about the error
     int _status;
