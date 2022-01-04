@@ -22,5 +22,6 @@ Icon=@APPLICATION_EXECUTABLE@
 
 # Translations
 Icon[oc]=@APPLICATION_ICON_NAME@
+Name[oc]=@APPLICATION_NAME@ Burèu
 Comment[oc]=@APPLICATION_NAME@ client de sincronizacion
 GenericName[oc]=Sincro. dossièr
