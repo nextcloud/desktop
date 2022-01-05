@@ -5,7 +5,7 @@ if(QUICK_COMPILER)
         find_package(Qt5QuickCompiler)
         set_package_properties(Qt5QuickCompiler PROPERTIES
                 DESCRIPTION "Compile QML at build time"
-                TYPE OPTIONAL
+                TYPE REQUIRED
         )
 endif()
 

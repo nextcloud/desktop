@@ -83,10 +83,6 @@ add_definitions(
     -DQT_MESSAGELOGCONTEXT #enable function name and line number in debug output
 )
 
-if(QUICK_COMPILER)
-    add_definitions(-DQUICK_COMPILER) # Enable use of QtQuick compiler
-endif()
-
 # if we cannot get it from git, directly try .tag (packages)
 # this will work if the tar balls have been properly created
 # via git-archive.
