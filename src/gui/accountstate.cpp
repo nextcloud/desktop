@@ -221,6 +221,19 @@ void AccountState::setDesktopNotificationsAllowed(bool isAllowed)
     emit desktopNotificationsAllowedChanged();
 }
 
+AccountState::ConnectionStatus AccountState::lastConnectionStatus() const
+{
+    return _lastConnectionValidatorStatus;
+}
+
+void AccountState::trySignIn()
+{
+    if (isSignedOut() && account()) {
+        account()->resetRejectedCertificates();
+        signIn();
+    }
+}
+
 void AccountState::checkConnectivity()
 {
     if (isSignedOut() || _waitingForNewCredentials) {
@@ -284,6 +297,8 @@ void AccountState::slotConnectionValidatorResult(ConnectionValidator::Status sta
         qCWarning(lcAccountState) << "Signed out, ignoring" << status << _account->url().toString();
         return;
     }
+
+    _lastConnectionValidatorStatus = status;
 
     // Come online gradually from 503 or maintenance mode
     if (status == ConnectionValidator::Connected
