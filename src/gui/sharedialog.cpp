@@ -17,6 +17,7 @@
 #include "sharee.h"
 #include "sharelinkwidget.h"
 #include "shareusergroupwidget.h"
+#include "passwordinputdialog.h"
 
 #include "sharemanager.h"
 
@@ -359,26 +360,21 @@ void ShareDialog::slotCreatePasswordForLinkShareProcessed()
     }
 }
 
-void ShareDialog::slotLinkShareRequiresPassword()
+void ShareDialog::slotLinkShareRequiresPassword(const QString &message)
 {
-    bool ok = false;
-    QString password = QInputDialog::getText(this,
-                                             tr("Password for share required"),
-                                             tr("Please enter a password for your link share:"),
-                                             QLineEdit::Password,
-                                             QString(),
-                                             &ok);
+    const auto passwordInputDialog = new PasswordInputDialog(tr("Please enter a password for your link share:"), message, this);
+    passwordInputDialog->setWindowTitle(tr("Password for share required"));
+    passwordInputDialog->setAttribute(Qt::WA_DeleteOnClose);
+    passwordInputDialog->open();
 
-    if (!ok) {
-        // The dialog was canceled so no need to do anything
+    connect(passwordInputDialog, &QDialog::finished, this, [this, passwordInputDialog](const int result) {
+        if (result == QDialog::Accepted && _manager) {
+            // Try to create the link share again with the newly entered password
+            _manager->createLinkShare(_sharePath, QString(), passwordInputDialog->password());
+            return;
+        }
         emit toggleShareLinkAnimation(false);
-        return;
-    }
-
-    if(_manager) {
-        // Try to create the link share again with the newly entered password
-        _manager->createLinkShare(_sharePath, QString(), password);
-    }
+    });
 }
 
 void ShareDialog::slotDeleteShare()

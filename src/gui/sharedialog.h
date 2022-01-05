@@ -66,7 +66,7 @@ private slots:
     void slotCreateLinkShare();
     void slotCreatePasswordForLinkShare(const QString &password);
     void slotCreatePasswordForLinkShareProcessed();
-    void slotLinkShareRequiresPassword();
+    void slotLinkShareRequiresPassword(const QString &message);
     void slotAdjustScrollWidgetSize();
 
 signals:

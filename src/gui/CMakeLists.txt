@@ -43,6 +43,7 @@ set(client_UI_SRCS
     shareuserline.ui
     sslerrordialog.ui
     addcertificatedialog.ui
+    passwordinputdialog.ui
     proxyauthdialog.ui
     mnemonicdialog.ui
     wizard/flow2authwidget.ui
@@ -92,6 +93,7 @@ set(client_SRCS
     openfilemanager.cpp
     owncloudgui.cpp
     owncloudsetupwizard.cpp
+    passwordinputdialog.cpp
     selectivesyncdialog.cpp
     settingsdialog.cpp
     sharedialog.cpp
