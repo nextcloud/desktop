@@ -36,6 +36,7 @@ PasswordInputDialog::~PasswordInputDialog()
 {
     delete ui;
 }
+
 QString PasswordInputDialog::password() const
 {
     return ui->passwordLineEdit->text();
