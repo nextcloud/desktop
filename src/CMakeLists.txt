@@ -4,8 +4,8 @@ endif()
 
 include(ECMEnableSanitizers)
 
-find_package(Qt5 5.15 COMPONENTS Core Network Xml Concurrent REQUIRED)
-find_package(Qt5 5.15 COMPONENTS WebEngineWidgets WebEngine)
+find_package(Qt5 5.12 COMPONENTS Core Network Xml Concurrent REQUIRED)
+find_package(Qt5 5.12 COMPONENTS WebEngineWidgets WebEngine)
 
 if(Qt5WebEngine_FOUND AND Qt5WebEngineWidgets_FOUND)
   add_compile_definitions(WITH_WEBENGINE=1)
