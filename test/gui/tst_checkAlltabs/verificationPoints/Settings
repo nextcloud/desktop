@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <VerificationPoint type="ObjectProperties" version="4">
 <Description/>
-<Verification object="settings_settingsdialog_toolbutton_Settings_QToolButton" property="pos.x" type="int" valueType="Value"><![CDATA[262]]>
-<base64EncodedValue>MjYy</base64EncodedValue>
-</Verification>
-<Verification object="settings_settingsdialog_toolbutton_Settings_QToolButton" property="pos.y" type="int" valueType="Value"><![CDATA[0]]>
-<base64EncodedValue>MA==</base64EncodedValue>
-</Verification>
 <Verification object="settings_settingsdialog_toolbutton_Settings_QToolButton" property="text" type="QString" valueType="Value"><![CDATA[Settings]]>
 <base64EncodedValue>U2V0dGluZ3M=</base64EncodedValue>
 </Verification>
