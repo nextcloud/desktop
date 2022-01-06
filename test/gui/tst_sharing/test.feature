@@ -370,23 +370,46 @@ Feature: Sharing
             | expireDate | 2038-07-21 |
 
 
-    Scenario Outline: simple sharing of folder by public link with different roles
+    Scenario: simple sharing of folder by public link with different roles
         Given user "Alice" has created folder "simple-folder" on the server
         And user "Alice" has set up a client with default settings
         When the user creates a new public link for folder "simple-folder" using the client-UI with these details:
-            | role | <role> |
+            | role | Viewer |
         Then user "Alice" on the server should have a share with these details:
             | field       | value          |
             | share_type  | public_link    |
             | uid_owner   | Alice          |
-            | permissions | <permissions>  |
+            | permissions | read           |
             | path        | /simple-folder |
             | name        | Public link    |
-        Examples:
-            | role        | permissions                  |
-            | Viewer      | read                         |
-            | Editor      | read, update, create, delete |
-            | Contributor | create                       |
+
+
+    Scenario: simple sharing of folder by public link with different roles
+        Given user "Alice" has created folder "simple-folder" on the server
+        And user "Alice" has set up a client with default settings
+        When the user creates a new public link for folder "simple-folder" using the client-UI with these details:
+            | role | Editor |
+        Then user "Alice" on the server should have a share with these details:
+            | field       | value                        |
+            | share_type  | public_link                  |
+            | uid_owner   | Alice                        |
+            | permissions | read, update, create, delete |
+            | path        | /simple-folder               |
+            | name        | Public link                  |
+
+
+    Scenario: simple sharing of folder by public link with different roles
+        Given user "Alice" has created folder "simple-folder" on the server
+        And user "Alice" has set up a client with default settings
+        When the user creates a new public link for folder "simple-folder" using the client-UI with these details:
+            | role | Contributor |
+        Then user "Alice" on the server should have a share with these details:
+            | field       | value          |
+            | share_type  | public_link    |
+            | uid_owner   | Alice          |
+            | permissions | create         |
+            | path        | /simple-folder |
+            | name        | Public link    |
 
 
     Scenario: sharing by public link with "Uploader" role
