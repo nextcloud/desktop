@@ -310,7 +310,6 @@ Feature: Sharing
         And the public should be able to download the file "textfile0.txt" with password "password1234" from the last created public link by "Alice" on the server
 
 
-
     Scenario: simple sharing of a file by public link with password and expiration date
         Given user "Alice" has set up a client with default settings
         And user "Alice" has uploaded file with content "ownCloud test text file" to "/textfile.txt" on the server
