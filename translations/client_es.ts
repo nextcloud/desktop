@@ -625,7 +625,7 @@ Además, esta acción interrumpirá cualquier sincronización en curso.</transla
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1131"/>
         <source>Server %1 is currently in maintenance mode.</source>
-        <translation>El servidor %1 está actualmente en modo mantenimiento.</translation>
+        <translation>El servidor %1 se encuentra en modo mantenimiento.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1134"/>
@@ -884,7 +884,7 @@ Además, esta acción interrumpirá cualquier sincronización en curso.</transla
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="169"/>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="302"/>
         <source>File %1 has invalid modified time. Do not upload to the server.</source>
-        <translation type="unfinished"/>
+        <translation>El archivo %1 tiene una hora de modificación no válida. No subir al servidor.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="293"/>
@@ -1109,12 +1109,12 @@ Además, esta acción interrumpirá cualquier sincronización en curso.</transla
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="189"/>
         <source>Error while canceling delete of a file</source>
-        <translation type="unfinished"/>
+        <translation>Error al cancelar el borrado del archivo</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="190"/>
         <source>Error while canceling delete of %1</source>
-        <translation type="unfinished"/>
+        <translation>Error al cancelar el borrado de %1</translation>
     </message>
 </context>
 <context>
@@ -3043,12 +3043,12 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="776"/>
         <source>Impossible to get modification time for file in conflict %1</source>
-        <translation type="unfinished"/>
+        <translation>Es imposible leer la hora de modificación del archivo en conflicto %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="776"/>
         <source>Impossible to get modification time for file in conflict %1)</source>
-        <translation type="unfinished"/>
+        <translation>Es imposible leer la hora de modificación del archivo en conflicto %1</translation>
     </message>
 </context>
 <context>
@@ -3538,7 +3538,7 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1136"/>
         <source>Error updating metadata due to invalid modified time</source>
-        <translation type="unfinished"/>
+        <translation>Error al actualizar los metadatos debido a la hora de modificación no válida</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1152"/>
@@ -3624,7 +3624,7 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
         <location filename="../src/libsync/propagatedownload.cpp" line="1082"/>
         <location filename="../src/libsync/propagatedownload.cpp" line="1095"/>
         <source>File %1 has invalid modified time reported by server. Do not save it.</source>
-        <translation type="unfinished"/>
+        <translation>El servidor informa que el archivo %1 tiene una hora de modificación no válida. No lo guardes.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="1220"/>
@@ -3825,7 +3825,7 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
         <location filename="../src/libsync/propagateupload.cpp" line="397"/>
         <location filename="../src/libsync/propagateupload.cpp" line="410"/>
         <source>File %1 has invalid modified time. Do not upload to the server.</source>
-        <translation type="unfinished"/>
+        <translation>El archivo %1 tiene una hora de modificación no válida. No subir al servidor.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="243"/>
@@ -5332,7 +5332,7 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
         <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="72"/>
         <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="82"/>
         <source>Error updating metadata due to invalid modified time</source>
-        <translation type="unfinished"/>
+        <translation>Error al actualizar los metadatos debido a la hora de modificación no válida</translation>
     </message>
 </context>
 <context>
@@ -5341,7 +5341,7 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
         <location filename="../src/libsync/vfs/xattr/vfs_xattr.cpp" line="73"/>
         <location filename="../src/libsync/vfs/xattr/vfs_xattr.cpp" line="83"/>
         <source>Error updating metadata due to invalid modified time</source>
-        <translation type="unfinished"/>
+        <translation>Error al actualizar los metadatos debido a la hora de modificación no válida</translation>
     </message>
 </context>
 <context>
