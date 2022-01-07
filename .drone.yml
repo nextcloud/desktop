@@ -9,7 +9,7 @@ steps:
       path: /drone/build
   commands:
     - cd /drone/build
-    - cmake -DCMAKE_C_COMPILER=gcc-10 -DCMAKE_CXX_COMPILER=g++-10 -DCMAKE_BUILD_TYPE=Debug -DBUILD_UPDATER=ON -DBUILD_TESTING=1 -DECM_ENABLE_SANITIZERS=address -DCMAKE_CXX_FLAGS=-Werror ../src
+    - cmake -DCMAKE_C_COMPILER=gcc-10 -DCMAKE_CXX_COMPILER=g++-10 -DCMAKE_BUILD_TYPE=Debug -DQUICK_COMPILER=ON -DBUILD_UPDATER=ON -DBUILD_TESTING=1 -DECM_ENABLE_SANITIZERS=address -DCMAKE_CXX_FLAGS=-Werror ../src
 - name: compile
   image: ghcr.io/nextcloud/continuous-integration-client:client-5.15-4
   volumes:
@@ -53,7 +53,7 @@ steps:
       path: /drone/build
   commands:
     - cd /drone/build
-    - cmake -GNinja -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_C_COMPILER=clang-10 -DCMAKE_CXX_COMPILER=clang++-10 -DCMAKE_BUILD_TYPE=Debug -DBUILD_UPDATER=ON -DBUILD_TESTING=1 -DECM_ENABLE_SANITIZERS=address -DCMAKE_CXX_FLAGS=-Werror ../src
+    - cmake -GNinja -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_C_COMPILER=clang-10 -DCMAKE_CXX_COMPILER=clang++-10 -DCMAKE_BUILD_TYPE=Debug -DQUICK_COMPILER=ON -DBUILD_UPDATER=ON -DBUILD_TESTING=1 -DECM_ENABLE_SANITIZERS=address -DCMAKE_CXX_FLAGS=-Werror ../src
 - name: compile
   image: ghcr.io/nextcloud/continuous-integration-client:client-5.15-4
   volumes:
