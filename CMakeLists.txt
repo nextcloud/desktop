@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.6)
 set(CMAKE_CXX_STANDARD 14)
+cmake_policy(SET CMP0071 NEW) # Enable use of QtQuick compiler/generated code
 
 project(client)
 
@@ -105,6 +106,9 @@ if(APPLE AND BUILD_OWNCLOUD_OSX_BUNDLE)
     set(LIB_INSTALL_DIR "${APPLICATION_NAME}.app/Contents/MacOS")
     set(BIN_INSTALL_DIR "${APPLICATION_NAME}.app/Contents/MacOS")
 endif()
+
+
+option(QUICK_COMPILER "Use QtQuick compiler to improve performance" ON)
 
 # this option removes Http authentication, keychain, shibboleth etc and is intended for
 # external authentication mechanisms
