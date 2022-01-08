@@ -3466,52 +3466,52 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>伺服器報告沒有 %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1065"/>
+        <location filename="../src/libsync/discovery.cpp" line="946"/>
         <source>Conflict when uploading some files to a folder. Those, conflicted, are going to get cleared!</source>
         <translation>將某些檔案上傳到資料夾時發生衝突。那些有衝突的檔案將被清除！</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1084"/>
+        <location filename="../src/libsync/discovery.cpp" line="1083"/>
         <source>Conflict when uploading a folder. It&apos;s going to get cleared!</source>
         <translation>上傳資料夾時發生衝突。將被清除！</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1087"/>
+        <location filename="../src/libsync/discovery.cpp" line="1086"/>
         <source>Conflict when uploading a file. It&apos;s going to get removed!</source>
         <translation>上傳檔案時發生衝突。將被清除！</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1417"/>
+        <location filename="../src/libsync/discovery.cpp" line="1416"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>被忽略，因為它在“選擇要同步的內容”黑名單中</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1450"/>
+        <location filename="../src/libsync/discovery.cpp" line="1449"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>拒絕此操作，您沒有在此新增子資料夾的權限。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1455"/>
+        <location filename="../src/libsync/discovery.cpp" line="1454"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>拒絕此操作，您沒有新增檔案在此資料夾的權限。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1468"/>
+        <location filename="../src/libsync/discovery.cpp" line="1467"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>不允許上傳此檔案，因為它在伺服器上是唯讀的，正在還原</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1490"/>
+        <location filename="../src/libsync/discovery.cpp" line="1489"/>
         <source>Moved to invalid target, restoring</source>
         <translation>已移至無效目標，正在還原</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1503"/>
+        <location filename="../src/libsync/discovery.cpp" line="1502"/>
         <source>Not allowed to remove, restoring</source>
         <translation>不允許刪除，還原</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1612"/>
+        <location filename="../src/libsync/discovery.cpp" line="1611"/>
         <source>Error while reading the database</source>
         <translation>讀取數據庫時發生錯誤。</translation>
     </message>
@@ -3521,7 +3521,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>伺服器讀取目錄 &apos;%1&apos; 時發生錯誤：%2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1673"/>
+        <location filename="../src/libsync/discovery.cpp" line="1672"/>
         <source>Server replied with an error while reading directory &quot;%1&quot; : %2</source>
         <translation>伺服器在讀取目錄「%1」回覆錯誤：%2</translation>
     </message>

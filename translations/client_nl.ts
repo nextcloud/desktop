@@ -1108,12 +1108,12 @@ Dit zal alle synchronisaties, die op dit moment bezig zijn, afbreken.</translati
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="189"/>
         <source>Error while canceling delete of a file</source>
-        <translation type="unfinished"/>
+        <translation>Fout bij annuleren verwijderen bestand</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="190"/>
         <source>Error while canceling delete of %1</source>
-        <translation type="unfinished"/>
+        <translation>Fout bij annuleren verwijderen van %1</translation>
     </message>
 </context>
 <context>
@@ -3044,12 +3044,12 @@ vragen om extra autorisaties tijdens installatie.</translation>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="776"/>
         <source>Impossible to get modification time for file in conflict %1</source>
-        <translation type="unfinished"/>
+        <translation>Onmogelijk om wijzigingstijd te krijgen voor bestand in conflict %1)</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="776"/>
         <source>Impossible to get modification time for file in conflict %1)</source>
-        <translation type="unfinished"/>
+        <translation>Onmogelijk om wijzigingstijd te krijgen voor bestand in conflict %1)</translation>
     </message>
 </context>
 <context>
@@ -3469,52 +3469,52 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
         <translation>Server rapporteerde nr %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1065"/>
+        <location filename="../src/libsync/discovery.cpp" line="946"/>
         <source>Conflict when uploading some files to a folder. Those, conflicted, are going to get cleared!</source>
         <translation>Conflict bij het uploaden van sommige bestanden naar een map. Die betreffende conflicterende bestanden zullen worden gewist!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1084"/>
+        <location filename="../src/libsync/discovery.cpp" line="1083"/>
         <source>Conflict when uploading a folder. It&apos;s going to get cleared!</source>
         <translation>Conflict bij het uploaden van een map. Het wordt opgeruimd!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1087"/>
+        <location filename="../src/libsync/discovery.cpp" line="1086"/>
         <source>Conflict when uploading a file. It&apos;s going to get removed!</source>
         <translation>Conflict bij het uploaden van een bestand. Het wordt verwijderd!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1417"/>
+        <location filename="../src/libsync/discovery.cpp" line="1416"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Genegeerd vanwege de &quot;wat synchroniseren&quot; negeerlijst</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1450"/>
+        <location filename="../src/libsync/discovery.cpp" line="1449"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Niet toegestaan, omdat je geen machtiging hebt om submappen aan die map toe te voegen</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1455"/>
+        <location filename="../src/libsync/discovery.cpp" line="1454"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Niet toegestaan omdat je geen machtiging hebt om bestanden in die map toe te voegen</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1468"/>
+        <location filename="../src/libsync/discovery.cpp" line="1467"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Niet toegestaan om dit bestand te uploaden, omdat het alleen-lezen is op de server, herstellen</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1490"/>
+        <location filename="../src/libsync/discovery.cpp" line="1489"/>
         <source>Moved to invalid target, restoring</source>
         <translation>Verplaatst naar ongeldig doel, herstellen</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1503"/>
+        <location filename="../src/libsync/discovery.cpp" line="1502"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Niet toegestaan om te verwijderen, herstellen</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1612"/>
+        <location filename="../src/libsync/discovery.cpp" line="1611"/>
         <source>Error while reading the database</source>
         <translation>Fout bij lezen database</translation>
     </message>
@@ -3524,7 +3524,7 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
         <translation>Server gaf een foutmelding bij lezen directory &apos;%1&apos; : %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1673"/>
+        <location filename="../src/libsync/discovery.cpp" line="1672"/>
         <source>Server replied with an error while reading directory &quot;%1&quot; : %2</source>
         <translation>Server gaf een foutmelding bij lezen directory &quot;%1&apos;&quot;: %2</translation>
     </message>
@@ -3539,7 +3539,7 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1136"/>
         <source>Error updating metadata due to invalid modified time</source>
-        <translation type="unfinished"/>
+        <translation>Fout bij updaten van metadata vanwege ongeldige gewijzigde tijd</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1152"/>
@@ -3625,7 +3625,7 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
         <location filename="../src/libsync/propagatedownload.cpp" line="1082"/>
         <location filename="../src/libsync/propagatedownload.cpp" line="1095"/>
         <source>File %1 has invalid modified time reported by server. Do not save it.</source>
-        <translation type="unfinished"/>
+        <translation>Bestand %1 heeft een ongeldige wijzigingstijd gerapporteerd door de server. Bewaar het niet.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="1220"/>
@@ -5333,7 +5333,7 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
         <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="72"/>
         <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="82"/>
         <source>Error updating metadata due to invalid modified time</source>
-        <translation type="unfinished"/>
+        <translation>Fout bij updaten van metadata vanwege ongeldige gewijzigde tijd</translation>
     </message>
 </context>
 <context>
@@ -5342,7 +5342,7 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
         <location filename="../src/libsync/vfs/xattr/vfs_xattr.cpp" line="73"/>
         <location filename="../src/libsync/vfs/xattr/vfs_xattr.cpp" line="83"/>
         <source>Error updating metadata due to invalid modified time</source>
-        <translation type="unfinished"/>
+        <translation>Fout bij updaten van metadata vanwege ongeldige gewijzigde tijd</translation>
     </message>
 </context>
 <context>
