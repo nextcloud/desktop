@@ -182,6 +182,7 @@ if(BUILD_CLIENT)
       pkg_check_modules(CLOUDPROVIDERS cloudproviders IMPORTED_TARGET)
 
       if(CLOUDPROVIDERS_FOUND)
+        pkg_check_modules(DBUS-1 REQUIRED dbus-1 IMPORTED_TARGET)
         pkg_check_modules(GIO REQUIRED gio-2.0 IMPORTED_TARGET)
         pkg_check_modules(GLIB2 REQUIRED glib-2.0 IMPORTED_TARGET)
       endif()
