@@ -28,6 +28,7 @@ class PasswordInputDialog : public QDialog
 
 public:
     explicit PasswordInputDialog(const QString &description, const QString &error, QWidget *parent = nullptr);
+    ~PasswordInputDialog() override;
 
     QString password() const;
 

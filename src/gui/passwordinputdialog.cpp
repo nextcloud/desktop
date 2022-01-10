@@ -32,6 +32,8 @@ PasswordInputDialog::PasswordInputDialog(const QString &description, const QStri
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 }
 
+PasswordInputDialog::~PasswordInputDialog() = default;
+
 QString PasswordInputDialog::password() const
 {
     return _ui->passwordLineEdit->text();
