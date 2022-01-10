@@ -324,7 +324,7 @@ Feature: Sharing
         And the public should be able to download the file "textfile.txt" with password "pass123" from the last created public link by "Alice" on the server
 
 
-    @issue-8733
+    @skip @issue-9321
     Scenario: user changes the expiration date of an already existing public link using webUI
         Given user "Alice" has uploaded file with content "ownCloud test text file 0" to "/textfile0.txt" on the server
         And user "Alice" has set up a client with default settings
@@ -354,7 +354,7 @@ Feature: Sharing
         Then as user "Alice" the folder "simple-folder" should have a public link on the server
         And the public should be able to download the folder "lorem.txt" with password "pass123" from the last created public link by "Alice" on the server
 
-    @issue-8733
+    @skip @issue-9321
     Scenario: user changes the expiration date of an already existing public link for folder using client-UI
         Given user "Alice" has created folder "simple-folder" on the server
         And user "Alice" has set up a client with default settings

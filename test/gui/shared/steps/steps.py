@@ -990,6 +990,46 @@ def step(context):
     enableVFSSupport("Enable virtual file support (experimental)...")
 
 
+@Then('the "|any|" button should be available')
+def step(context, btnText):
+    # The enabling/disabling VFS button do not have it's own object
+    # But it is inside the "stack_folderList_QTreeView" object.
+    # So we are clicking at (718, 27) of "stack_folderList_QTreeView" object to enable/disable VFS
+    mouseClick(
+        waitForObjectItem(names.stack_folderList_QTreeView, "_1"),
+        718,
+        27,
+        Qt.NoModifier,
+        Qt.LeftButton,
+    )
+    waitForObjectItem(names.settings_QMenu, btnText)
+
+
+@Given("the user has enabled virtual file support")
+def step(context):
+    enableVFSSupport("Enable virtual file support (experimental)...")
+
+
+@When("the user disables virtual file support")
+def step(context):
+    # The enabling/disabling VFS button do not have it's own object
+    # But it is inside the "stack_folderList_QTreeView" object.
+    # So we are clicking at (718, 27) of "stack_folderList_QTreeView" object to enable/disable VFS
+    mouseClick(
+        waitForObjectItem(names.stack_folderList_QTreeView, "_1"),
+        733,
+        27,
+        Qt.NoModifier,
+        Qt.LeftButton,
+    )
+    activateItem(
+        waitForObjectItem(names.settings_QMenu, "Disable virtual file support...")
+    )
+    clickButton(
+        waitForObject(names.disable_virtual_file_support_Disable_support_QPushButton)
+    )
+
+
 @When('the user accepts the certificate')
 def step(context):
     clickButton(waitForObject(names.oCC_SslErrorDialog_cbTrustConnect_QCheckBox))
@@ -1230,11 +1270,11 @@ def step(context):
         )
 
 
-@Then("VFS enabled baseline image should match the default screenshot")
+@Then('VFS enabled baseline image should match the default screenshot')
 def step(context):
     test.vp("VP_VFS_enabled")
 
 
-@Then("VFS enabled baseline image should not match the default screenshot")
+@Then('VFS enabled baseline image should not match the default screenshot')
 def step(context):
     test.xvp("VP_VFS_enabled")
