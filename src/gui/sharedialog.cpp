@@ -16,6 +16,7 @@
 #include "sharedialog.h"
 #include "sharee.h"
 #include "sharelinkwidget.h"
+#include "internallinkwidget.h"
 #include "shareusergroupwidget.h"
 #include "passwordinputdialog.h"
 
@@ -142,6 +143,11 @@ ShareDialog::ShareDialog(QPointer<AccountState> accountState,
     _scrollAreaLayout = new QVBoxLayout(_scrollAreaViewPort);
     _scrollAreaLayout->setContentsMargins(0, 0, 0, 0);
     _ui->scrollArea->setWidget(_scrollAreaViewPort);
+
+    _internalLinkWidget = new InternalLinkWidget(localPath, this);
+    _ui->verticalLayout->addWidget(_internalLinkWidget);
+    _internalLinkWidget->setupUiOptions();
+    connect(this, &ShareDialog::styleChanged, _internalLinkWidget, &InternalLinkWidget::slotStyleChanged);
 }
 
 ShareLinkWidget *ShareDialog::addLinkShareWidget(const QSharedPointer<LinkShare> &linkShare)
