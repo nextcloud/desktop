@@ -19,26 +19,21 @@ namespace OCC {
 
 PasswordInputDialog::PasswordInputDialog(const QString &description, const QString &error, QWidget *parent)
     : QDialog(parent)
-    , ui(new Ui::PasswordInputDialog)
+    , _ui(new Ui::PasswordInputDialog)
 {
-    ui->setupUi(this);
+    _ui->setupUi(this);
 
-    ui->passwordLineEditLabel->setText(description);
-    ui->passwordLineEditLabel->setVisible(!description.isEmpty());
+    _ui->passwordLineEditLabel->setText(description);
+    _ui->passwordLineEditLabel->setVisible(!description.isEmpty());
 
-    ui->labelErrorMessage->setText(error);
-    ui->labelErrorMessage->setVisible(!error.isEmpty());
+    _ui->labelErrorMessage->setText(error);
+    _ui->labelErrorMessage->setVisible(!error.isEmpty());
 
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 }
 
-PasswordInputDialog::~PasswordInputDialog()
-{
-    delete ui;
-}
-
 QString PasswordInputDialog::password() const
 {
-    return ui->passwordLineEdit->text();
+    return _ui->passwordLineEdit->text();
 }
 }
