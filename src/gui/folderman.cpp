@@ -818,7 +818,7 @@ void FolderMan::startScheduledSyncSoon()
     }
 
     seconds delay { 1s }; // Startup, if _lastSyncFolder is still empty.
-    seconds sinceLastSync;
+    seconds sinceLastSync {};
 
     // Require a pause based on the duration of the last sync run.
     if (Folder *lastFolder = _lastSyncFolder) {
