@@ -140,6 +140,14 @@ class OCSYNC_EXPORT ValidateChecksumHeader : public QObject
 {
     Q_OBJECT
 public:
+    enum FailureReason {
+        Success,
+        ChecksumHeaderMalformed,
+        ChecksumTypeUnknown,
+        ChecksumMismatch,
+    };
+    Q_ENUM(FailureReason)
+
     explicit ValidateChecksumHeader(QObject *parent = nullptr);
 
     /**
@@ -161,9 +169,13 @@ public:
      */
     void start(std::unique_ptr<QIODevice> device, const QByteArray &checksumHeader);
 
+    QByteArray calculatedChecksumType() const;
+    QByteArray calculatedChecksum() const;
+
 signals:
     void validated(const QByteArray &checksumType, const QByteArray &checksum);
-    void validationFailed(const QString &errMsg);
+    void validationFailed(const QString &errMsg, const QByteArray &calculatedChecksumType,
+        const QByteArray &calculatedChecksum, const ValidateChecksumHeader::FailureReason reason);
 
 private slots:
     void slotChecksumCalculated(const QByteArray &checksumType, const QByteArray &checksum);
@@ -173,6 +185,9 @@ private:
 
     QByteArray _expectedChecksumType;
     QByteArray _expectedChecksum;
+
+    QByteArray _calculatedChecksumType;
+    QByteArray _calculatedChecksum;
 };
 
 /**

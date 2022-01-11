@@ -55,6 +55,7 @@ Q_LOGGING_CATEGORY(lcMkColJob, "nextcloud.sync.networkjob.mkcol", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcProppatchJob, "nextcloud.sync.networkjob.proppatch", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcJsonApiJob, "nextcloud.sync.networkjob.jsonapi", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcDetermineAuthTypeJob, "nextcloud.sync.networkjob.determineauthtype", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcSimpleFileJob, "nextcloud.sync.networkjob.simplefilejob", QtInfoMsg)
 const int notModifiedStatusCode = 304;
 
 QByteArray parseEtag(const char *header)
@@ -1084,9 +1085,39 @@ bool SimpleNetworkJob::finished()
     return true;
 }
 
+SimpleFileJob::SimpleFileJob(AccountPtr account, const QString &filePath, QObject *parent)
+    : AbstractNetworkJob(account, filePath, parent)
+{
+}
+
+QNetworkReply *SimpleFileJob::startRequest(
+    const QByteArray &verb, const QNetworkRequest req, QIODevice *requestBody)
+{
+    return startRequest(verb, makeDavUrl(path()), req, requestBody);
+}
+
+QNetworkReply *SimpleFileJob::startRequest(
+    const QByteArray &verb, const QUrl &url, const QNetworkRequest req, QIODevice *requestBody)
+{
+    _verb = verb;
+    const auto reply = sendRequest(verb, url, req, requestBody);
+
+    if (reply->error() != QNetworkReply::NoError) {
+        qCWarning(lcSimpleFileJob) << verb << " Network error: " << reply->errorString();
+    }
+    AbstractNetworkJob::start();
+    return reply;
+}
+
+bool SimpleFileJob::finished()
+{
+    qCInfo(lcSimpleFileJob) << _verb << "for" << reply()->request().url() << "FINISHED WITH STATUS" << replyStatusString();
+    emit finishedSignal(reply());
+    return true;
+}
 
 DeleteApiJob::DeleteApiJob(AccountPtr account, const QString &path, QObject *parent)
-    : AbstractNetworkJob(account, path, parent)
+    : SimpleFileJob(account, path, parent)
 {
 
 }
@@ -1095,14 +1126,13 @@ void DeleteApiJob::start()
 {
     QNetworkRequest req;
     req.setRawHeader("OCS-APIREQUEST", "true");
-    QUrl url = Utility::concatUrlPath(account()->url(), path());
-    sendRequest("DELETE", url, req);
-    AbstractNetworkJob::start();
+
+    startRequest("DELETE", req);
 }
 
 bool DeleteApiJob::finished()
 {
-    qCInfo(lcJsonApiJob) << "JsonApiJob of" << reply()->request().url() << "FINISHED WITH STATUS"
+    qCInfo(lcJsonApiJob) << "DeleteApiJob of" << reply()->request().url() << "FINISHED WITH STATUS"
                          << reply()->error()
                          << (reply()->error() == QNetworkReply::NoError ? QLatin1String("") : errorString());
 
@@ -1118,7 +1148,7 @@ bool DeleteApiJob::finished()
     const auto replyData = QString::fromUtf8(reply()->readAll());
     qCInfo(lcJsonApiJob()) << "TMX Delete Job" << replyData;
     emit result(httpStatus);
-    return true;
+    return SimpleFileJob::finished();
 }
 
 void fetchPrivateLinkUrl(AccountPtr account, const QString &remotePath,
