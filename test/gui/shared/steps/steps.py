@@ -84,16 +84,10 @@ def step(context):
 def step(context, displayname, host):
     displayname = substituteInLineCodes(context, displayname)
     host = substituteInLineCodes(context, host)
+    accountStatus = AccountStatus(context, displayname, host)
+
     test.compare(
-        str(
-            waitForObjectExists(
-                {
-                    "name": "settingsdialog_toolbutton_" + displayname + "@" + host,
-                    "type": "QToolButton",
-                    "visible": 1,
-                }
-            ).text
-        ),
+        accountStatus.getText(),
         displayname + "\n" + host,
     )
 
@@ -759,16 +753,16 @@ def step(context, resource):
         createPublicShareWithRole(context, resource, role)
 
 
-@When('the user logs out of the client-UI')
-def step(context):
-    accountStatus = AccountStatus()
+@When('the user "|any|" logs out of the client-UI')
+def step(context, username):
+    accountStatus = AccountStatus(context, getDisplaynameForUser(context, username))
     accountStatus.accountAction("Log out")
 
 
 def isUserSignedOut(context, username):
     displayname = getDisplaynameForUser(context, username)
     server = context.userData['localBackendUrl']
-    accountStatus = AccountStatus()
+    accountStatus = AccountStatus(context, getDisplaynameForUser(context, username))
     test.compare(
         str(waitForObjectExists(accountStatus.SIGNED_OUT_TEXT_BAR).text),
         'Signed out from <a href="'
@@ -784,8 +778,7 @@ def isUserSignedOut(context, username):
 def isUserSignedIn(context, username):
     displayname = getDisplaynameForUser(context, username)
     server = context.userData['localBackendUrl']
-    accountStatus = AccountStatus()
-
+    accountStatus = AccountStatus(context, getDisplaynameForUser(context, username))
     test.compare(
         str(waitForObjectExists(accountStatus.SIGNED_OUT_TEXT_BAR).text),
         'Connected '
@@ -810,14 +803,14 @@ def step(context, username):
     # TODO: find some way to dynamically to check if files are synced
     # It might take some time for all files to sync
     snooze(5)
-    accountStatus = AccountStatus()
+    accountStatus = AccountStatus(context, getDisplaynameForUser(context, username))
     accountStatus.accountAction("Log out")
     isUserSignedOut(context, username)
 
 
 @When('user "|any|" logs in to the client-UI')
 def step(context, username):
-    accountStatus = AccountStatus()
+    accountStatus = AccountStatus(context, getDisplaynameForUser(context, username))
     accountStatus.accountAction("Log in")
     password = getPasswordForUser(context, username)
     enterUserPassword = EnterPassword()
@@ -838,18 +831,8 @@ def step(context, username, host):
     displayname = substituteInLineCodes(context, displayname)
     host = substituteInLineCodes(context, host)
 
-    clickButton(
-        waitForObject(
-            {
-                "name": "settingsdialog_toolbutton_" + displayname + "@" + host,
-                "type": "QToolButton",
-                "visible": 1,
-            }
-        )
-    )
-
     waitForFolderToBeSynced(context, '/')
-    accountStatus = AccountStatus()
+    accountStatus = AccountStatus(context, displayname, host)
     accountStatus.removeConnection()
 
 
