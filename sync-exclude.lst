@@ -8,6 +8,7 @@
 ]Icon\r*
 ].DS_Store
 ].ds_store
+*.textClipping
 ._*
 ]Thumbs.db
 ]photothumb.db
