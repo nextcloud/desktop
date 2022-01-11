@@ -883,7 +883,7 @@ Dit zal alle synchronisaties, die op dit moment bezig zijn, afbreken.</translati
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="169"/>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="302"/>
         <source>File %1 has invalid modified time. Do not upload to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Bestand %1 heeft een ongeldige wijzigingstijd. Niet uploaden naar de server.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="293"/>
@@ -3826,7 +3826,7 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
         <location filename="../src/libsync/propagateupload.cpp" line="397"/>
         <location filename="../src/libsync/propagateupload.cpp" line="410"/>
         <source>File %1 has invalid modified time. Do not upload to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Bestand %1 heeft een ongeldige wijzigingstijd. Niet uploaden naar de server.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="243"/>
@@ -6414,7 +6414,7 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="56"/>
         <source>Updated local metadata</source>
-        <translation>Lokale metadata ge-uploaded</translation>
+        <translation>Lokale metadata geüploaded</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="59"/>
