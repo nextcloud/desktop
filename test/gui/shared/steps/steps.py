@@ -1192,6 +1192,10 @@ def step(context, resource):
     clickButton(waitForObject(names.linkShares_QToolButton_2))
     clickButton(waitForObject(names.oCC_ShareLinkWidget_Delete_QPushButton))
 
+    waitFor(
+        lambda: (not object.exists(names.linkShares_QToolButton_2)),
+    )
+
 
 @When(
     'the user changes the password of public link "|any|" to "|any|" using the client-UI'
