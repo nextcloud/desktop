@@ -45,14 +45,6 @@ include("${CMAKE_CURRENT_LIST_DIR}/THEME.cmake")
 set(synclib_NAME "${APPLICATION_EXECUTABLE}sync")
 
 
-# For config.h
-include_directories(BEFORE ${CMAKE_CURRENT_BINARY_DIR})
-# Allows includes based on src/ like #include "common/utility.h" or #include "csync/csync.h"
-include_directories(
-    ${CMAKE_CURRENT_SOURCE_DIR}/src
-    ${CMAKE_CURRENT_BINARY_DIR}/src
-)
-
 # disable the crashreporter if libcrashreporter-qt is not available or we're building for ARM
 if( CMAKE_SYSTEM_PROCESSOR MATCHES "arm" OR NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/src/3rdparty/libcrashreporter-qt/CMakeLists.txt")
     set( WITH_CRASHREPORTER OFF )
@@ -66,14 +58,8 @@ include(GenerateExportHeader)
 
 include(GetGitRevisionDescription)
 
+# used in src/csync/CMakeLists.txt
 get_git_head_revision(GIT_REFSPEC GIT_SHA1)
-
-add_definitions(
-    -DQT_USE_QSTRINGBUILDER
-    -DQT_MESSAGELOGCONTEXT #enable function name and line number in debug output
-    -DQT_DEPRECATED_WARNINGS
-    -DQT_NO_FOREACH
-)
 
 # if we cannot get it from git, directly try .tag (packages)
 # this will work if the tar balls have been properly created
@@ -93,15 +79,8 @@ set(SYSCONFDIR ${SYSCONF_INSTALL_DIR})
 # this option removes Http authentication, keychain, shibboleth etc and is intended for
 # external authentication mechanisms
 option(TOKEN_AUTH_ONLY "TOKEN_AUTH_ONLY" OFF)
-if(TOKEN_AUTH_ONLY)
-   message("Compiling with token authentication")
-   add_definitions(-DTOKEN_AUTH_ONLY=1)
-endif()
 
 option(NO_MSG_HANDLER "Don't redirect QDebug outputs to the log window/file" OFF)
-if(NO_MSG_HANDLER)
-   add_definitions(-DNO_MSG_HANDLER=1)
-endif()
 
 # this option builds the shell integration
 option(BUILD_SHELL_INTEGRATION "BUILD_SHELL_INTEGRATION" ON)
@@ -156,15 +135,6 @@ if (NOT DEFINED APPLICATION_ICON_NAME)
     set(APPLICATION_ICON_NAME "${APPLICATION_SHORTNAME}")
 endif()
 
-if( WIN32 )
-    add_definitions( -D__USE_MINGW_ANSI_STDIO=1 )
-    add_definitions( -DNOMINMAX )
-    # Get APIs from from Vista onwards.
-    add_definitions(-D_WIN32_WINNT=0x0600)
-    add_definitions(-DWINVER=0x0600)
-    add_definitions(-DNTDDI_VERSION=0x0A000003)
-endif()
-
 file(GLOB_RECURSE OWNCLOUD_ICONS "${OEM_THEME_DIR}/theme/colored/*-${APPLICATION_ICON_NAME}-icon.png")
 if (NOT OWNCLOUD_ICONS)
     generate_legacy_icons(${OEM_THEME_DIR}/theme OWNCLOUD_ICONS)
@@ -203,8 +173,6 @@ endif()
 if(BUILD_TESTING)
     add_subdirectory(test)
 endif()
-
-configure_file(config.h.in ${CMAKE_CURRENT_BINARY_DIR}/config.h)
 
 feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)
 

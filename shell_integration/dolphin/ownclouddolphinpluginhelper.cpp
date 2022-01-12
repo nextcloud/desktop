@@ -23,7 +23,6 @@
 #include <QFile>
 #include <QLoggingCategory>
 #include "ownclouddolphinpluginhelper.h"
-#include "config.h"
 #include <QJsonObject>
 #include <QJsonDocument>
 

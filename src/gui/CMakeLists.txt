@@ -134,6 +134,12 @@ add_library(owncloudCore STATIC ${final_src})
 set_target_properties(owncloudCore PROPERTIES AUTOUIC ON AUTORCC ON)
 target_link_libraries(owncloudCore PUBLIC Qt5::Widgets Qt5::Network Qt5::Xml
                                           libsync)
+target_compile_definitions(owncloudCore
+    PUBLIC QT_USE_QSTRINGBUILDER
+           QT_MESSAGELOGCONTEXT  # enable function name and line number in debug output
+           QT_DEPRECATED_WARNINGS
+           QT_NO_FOREACH
+)
 
 add_subdirectory(socketapi)
 

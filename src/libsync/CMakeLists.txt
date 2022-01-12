@@ -1,8 +1,3 @@
-add_definitions(-DQT_NO_CAST_TO_ASCII
-                -DQT_NO_CAST_FROM_ASCII
-                -DQT_NO_URL_CAST_FROM_STRING
-                -DQT_NO_CAST_FROM_BYTEARRAY)
-
 set(libsync_SRCS
     account.cpp
     bandwidthmanager.cpp
@@ -82,6 +77,16 @@ target_link_libraries(libsync PUBLIC
     csync
     Qt5::Core Qt5::Network
 )
+target_compile_definitions(libsync
+    PRIVATE QT_NO_CAST_TO_ASCII
+            QT_NO_CAST_FROM_ASCII
+            QT_NO_URL_CAST_FROM_STRING
+            QT_NO_CAST_FROM_BYTEARRAY
+            QT_USE_QSTRINGBUILDER
+            QT_MESSAGELOGCONTEXT  # enable function name and line number in debug output
+            QT_DEPRECATED_WARNINGS
+            QT_NO_FOREACH
+)
 
 if ( APPLE )
     target_link_libraries(libsync PUBLIC
@@ -98,7 +103,11 @@ endif()
 
 if(Inotify_FOUND)
     target_include_directories(libsync PRIVATE ${Inotify_INCLUDE_DIRS})
-    target_link_libraries(libsync PUBLIC ${Inotify_LIBRARIES} )
+    target_link_libraries(libsync PUBLIC ${Inotify_LIBRARIES})
+endif()
+
+if(NO_MSG_HANDLER)
+    target_compile_definitions(libsync PRIVATE -DNO_MSG_HANDLER=1)
 endif()
 
 GENERATE_EXPORT_HEADER(libsync

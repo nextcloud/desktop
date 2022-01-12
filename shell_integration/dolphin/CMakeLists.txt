@@ -30,9 +30,6 @@ include(KDECompilerSettings)
 include(ECMMarkNonGuiExecutable)
 include(GenerateExportHeader)
 
-include_directories(${CMAKE_CURRENT_BINARY_DIR})
-add_definitions(-DQT_USE_FAST_CONCATENATION -DQT_USE_FAST_OPERATOR_PLUS)
-
 if (NOT DEFINED APPLICATION_EXECUTABLE )
   set ( APPLICATION_EXECUTABLE  "owncloud" )
 endif()
@@ -43,6 +40,7 @@ add_library(${OWNCLOUDDOLPHINHELPER} SHARED ownclouddolphinpluginhelper.cpp)
 target_link_libraries(${OWNCLOUDDOLPHINHELPER} Qt5::Network Qt5::Gui)
 generate_export_header(${OWNCLOUDDOLPHINHELPER} BASE_NAME ownclouddolphinpluginhelper)
 install(TARGETS ${OWNCLOUDDOLPHINHELPER} LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
+target_compile_definitions(${OWNCLOUDDOLPHINHELPER} PRIVATE QT_USE_FAST_CONCATENATION QT_USE_FAST_OPERATOR_PLUS APPLICATION_SHORTNAME="${APPLICATION_SHORTNAME}")
 
 #---OVERLAY PLUGIN---
 set(OWNCLOUDDOLPHINOVERLAYPLUGIN ${APPLICATION_EXECUTABLE}dolphinoverlayplugin)
