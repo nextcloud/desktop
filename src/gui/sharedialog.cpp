@@ -136,21 +136,7 @@ ShareDialog::ShareDialog(QPointer<AccountState> accountState,
     connect(job, &PropfindJob::finishedWithError, this, &ShareDialog::slotPropfindError);
     job->start();
 
-    bool sharingPossible = true;
-    if (!accountState->account()->capabilities().sharePublicLink()) {
-        qCWarning(lcSharing) << "Link shares have been disabled";
-        sharingPossible = false;
-    } else if (!(maxSharingPermissions & SharePermissionShare)) {
-        qCWarning(lcSharing) << "The file cannot be shared because it does not have sharing permission.";
-        sharingPossible = false;
-    }
-
-    if (sharingPossible) {
-        _manager = new ShareManager(accountState->account(), this);
-        connect(_manager, &ShareManager::sharesFetched, this, &ShareDialog::slotSharesFetched);
-        connect(_manager, &ShareManager::linkShareCreated, this, &ShareDialog::slotAddLinkShareWidget);
-        connect(_manager, &ShareManager::linkShareRequiresPassword, this, &ShareDialog::slotLinkShareRequiresPassword);
-    }
+    initShareManager();
 }
 
 ShareLinkWidget *ShareDialog::addLinkShareWidget(const QSharedPointer<LinkShare> &linkShare)
@@ -319,10 +305,31 @@ void ShareDialog::showSharingUi()
         _userGroupWidget->getShares();
     }
 
+    initShareManager();
+
     if (theme->linkSharing()) {
         if(_manager) {
             _manager->fetchShares(_sharePath);
         }
+    }
+}
+
+void ShareDialog::initShareManager()
+{
+    bool sharingPossible = true;
+    if (!_accountState->account()->capabilities().sharePublicLink()) {
+        qCWarning(lcSharing) << "Link shares have been disabled";
+        sharingPossible = false;
+    } else if (!(_maxSharingPermissions & SharePermissionShare)) {
+        qCWarning(lcSharing) << "The file cannot be shared because it does not have sharing permission.";
+        sharingPossible = false;
+    }
+
+    if (!_manager && sharingPossible) {
+        _manager = new ShareManager(_accountState->account(), this);
+        connect(_manager, &ShareManager::sharesFetched, this, &ShareDialog::slotSharesFetched);
+        connect(_manager, &ShareManager::linkShareCreated, this, &ShareDialog::slotAddLinkShareWidget);
+        connect(_manager, &ShareManager::linkShareRequiresPassword, this, &ShareDialog::slotLinkShareRequiresPassword);
     }
 }
 
