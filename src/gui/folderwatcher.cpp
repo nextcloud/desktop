@@ -142,7 +142,7 @@ void FolderWatcher::changeDetected(const QStringList &paths)
     //   - why do we skip the file altogether instead of e.g. reducing the upload frequency?
 
     // Check if the same path was reported within the last second.
-    QSet<QString> pathsSet = paths.toSet();
+    const QSet<QString> pathsSet = paths.toSet();
     if (pathsSet == _lastPaths && _timer.elapsed() < 1000) {
         // the same path was reported within the last second. Skip.
         return;
@@ -150,11 +150,8 @@ void FolderWatcher::changeDetected(const QStringList &paths)
     _lastPaths = pathsSet;
     _timer.restart();
 
-    QSet<QString> changedPaths;
-
     // ------- handle ignores:
-    for (int i = 0; i < paths.size(); ++i) {
-        QString path = paths[i];
+    for (const auto &path : pathsSet) {
         if (!_testNotificationPath.isEmpty()
             && Utility::fileNamesEqual(path, _testNotificationPath)) {
             _testNotificationPath.clear();
@@ -163,14 +160,7 @@ void FolderWatcher::changeDetected(const QStringList &paths)
             continue;
         }
 
-        changedPaths.insert(path);
-    }
-    if (changedPaths.isEmpty()) {
-        return;
-    }
-
-    qCInfo(lcFolderWatcher) << "Detected changes in paths:" << changedPaths;
-    for (const auto &path : qAsConst(changedPaths)) {
+        qCInfo(lcFolderWatcher) << "Detected changes in paths:" << path;
         emit pathChanged(path);
     }
 }
