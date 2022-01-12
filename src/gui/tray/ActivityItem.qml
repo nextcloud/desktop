@@ -152,7 +152,7 @@ MouseArea {
                 Layout.alignment: Qt.AlignRight
                 flat: true
                 hoverEnabled: true
-                visible: displayActions && (path !== "")
+                visible: isShareable
                 display: AbstractButton.IconOnly
                 icon.source: "qrc:///client/theme/share.svg"
                 icon.color: "transparent"

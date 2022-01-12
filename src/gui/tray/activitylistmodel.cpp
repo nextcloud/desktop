@@ -68,6 +68,7 @@ QHash<int, QByteArray> ActivityListModel::roleNames() const
     roles[ObjectTypeRole] = "objectType";
     roles[PointInTimeRole] = "dateTime";
     roles[DisplayActions] = "displayActions";
+    roles[ShareableRole] = "isShareable";
     return roles;
 }
 
@@ -262,6 +263,8 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
         return (ast && ast->isConnected());
     case DisplayActions:
         return _displayActions;
+    case ShareableRole:
+        return !data(index, PathRole).toString().isEmpty() && _displayActions && a._fileAction != "file_deleted" && a._status != SyncFileItem::FileIgnored;
     default:
         return QVariant();
     }
