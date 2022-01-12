@@ -70,7 +70,7 @@ bool VfsXAttr::isHydrating() const
 Result<void, QString> VfsXAttr::updateMetadata(const QString &filePath, time_t modtime, qint64, const QByteArray &)
 {
     if (modtime <= 0) {
-        return {tr("Error updating metadata due to invalid modified time")};
+        return {tr("Error updating metadata due to invalid modification time")};
     }
 
     FileSystem::setModTime(filePath, modtime);
@@ -80,7 +80,7 @@ Result<void, QString> VfsXAttr::updateMetadata(const QString &filePath, time_t m
 Result<void, QString> VfsXAttr::createPlaceholder(const SyncFileItem &item)
 {
     if (item._modtime <= 0) {
-        return {tr("Error updating metadata due to invalid modified time")};
+        return {tr("Error updating metadata due to invalid modification time")};
     }
 
     const auto path = QString(_setupParams.filesystemPath + item._file);

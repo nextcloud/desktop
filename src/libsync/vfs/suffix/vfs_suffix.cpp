@@ -69,7 +69,7 @@ bool VfsSuffix::isHydrating() const
 Result<void, QString> VfsSuffix::updateMetadata(const QString &filePath, time_t modtime, qint64, const QByteArray &)
 {
     if (modtime <= 0) {
-        return {tr("Error updating metadata due to invalid modified time")};
+        return {tr("Error updating metadata due to invalid modification time")};
     }
 
     FileSystem::setModTime(filePath, modtime);
@@ -79,7 +79,7 @@ Result<void, QString> VfsSuffix::updateMetadata(const QString &filePath, time_t 
 Result<void, QString> VfsSuffix::createPlaceholder(const SyncFileItem &item)
 {
     if (item._modtime <= 0) {
-        return {tr("Error updating metadata due to invalid modified time")};
+        return {tr("Error updating metadata due to invalid modification time")};
     }
 
     // The concrete shape of the placeholder is also used in isDehydratedPlaceholder() below
