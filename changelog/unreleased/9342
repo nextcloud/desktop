@@ -1,0 +1,6 @@
+Bugfix: Infinite sync loop if folder is locked
+
+We fixed a bug that caused an infinite sync loop if an error occured.
+
+https://github.com/owncloud/client/issues/9342
+https://github.com/owncloud/client-desktop-vfs-win/pull/14

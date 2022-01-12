@@ -214,6 +214,7 @@ void SyncFileStatusTracker::slotAboutToPropagate(const SyncFileItemSet &items)
     for (const auto &item : qAsConst(items)) {
         qCDebug(lcStatusTracker) << "Investigating" << item->destination() << item->_status << item->_instruction;
         _dirtyPaths.remove(item->destination());
+        _dirtyPaths.remove(item->_originalFile);
 
         if (hasErrorStatus(*item)) {
             _syncProblems[item->destination()] = SyncFileStatus::StatusError;
