@@ -108,7 +108,7 @@ if(APPLE AND BUILD_OWNCLOUD_OSX_BUNDLE)
 endif()
 
 
-option(QUICK_COMPILER "Use QtQuick compiler to improve performance" ON)
+option(QUICK_COMPILER "Use QtQuick compiler to improve performance" OFF)
 
 # this option removes Http authentication, keychain, shibboleth etc and is intended for
 # external authentication mechanisms
