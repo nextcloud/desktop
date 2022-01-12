@@ -889,33 +889,33 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="293"/>
         <source>File Removed (start upload) %1</source>
-        <translation type="unfinished"/>
+        <translation>ファイルが削除されました（アップロード開始します）%1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="310"/>
         <source>Local file changed during syncing. It will be resumed.</source>
-        <translation type="unfinished"/>
+        <translation>ローカルファイルが同期中に変更されました。再開します。</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="324"/>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="637"/>
         <source>Local file changed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>ローカルのファイルが同期中に変更されました。</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="456"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>メタデータの更新中にエラーが発生しました: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="459"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>ファイル %1 は現在使用中です</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="620"/>
         <source>The local file was removed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>同期中にローカルファイルが削除されました。</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="667"/>
@@ -3450,7 +3450,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="496"/>
         <source>permission</source>
-        <translation type="unfinished"/>
+        <translation>権限</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="500"/>
@@ -5958,7 +5958,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/UnifiedSearchResultFetchMoreTrigger.qml" line="24"/>
         <source>Load more results</source>
-        <translation type="unfinished"/>
+        <translation>結果をさらに読み込む</translation>
     </message>
 </context>
 <context>
@@ -5974,7 +5974,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/UnifiedSearchResultListItem.qml" line="37"/>
         <source>Load more results</source>
-        <translation type="unfinished"/>
+        <translation>結果をさらに読み込む</translation>
     </message>
 </context>
 <context>
