@@ -1,0 +1,5 @@
+Bugfix: Run a full local discovery after we where paused or on a forced sync
+
+Previously we did a incremental search wich might have skipped some local changes.
+
+https://github.com/owncloud/client/issues/9341

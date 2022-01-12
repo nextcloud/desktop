@@ -1,5 +1,7 @@
 import names
 import squish
+import object
+from urllib.parse import urlparse
 
 
 class AccountStatus:
@@ -30,6 +32,18 @@ class AccountStatus:
         "visible": 1,
     }
 
+    settingsdialogToolbutton = None
+
+    def __init__(self, context, displayname, host=None):
+        if host == None:
+            host = urlparse(context.userData['localBackendUrl']).netloc
+        self.settingsdialogToolbutton = {
+            "name": "settingsdialog_toolbutton_" + displayname + "@" + host,
+            "type": "QToolButton",
+            "visible": 1,
+        }
+        squish.clickButton(squish.waitForObject(self.settingsdialogToolbutton))
+
     def accountAction(self, action):
         squish.sendEvent(
             "QMouseEvent",
@@ -46,3 +60,9 @@ class AccountStatus:
     def removeConnection(self):
         self.accountAction("Remove")
         squish.clickButton(squish.waitForObject(self.REMOVE_CONNECTION_BUTTON))
+        squish.waitFor(
+            lambda: (not object.exists(self.settingsdialogToolbutton)),
+        )
+
+    def getText(self):
+        return str(squish.waitForObjectExists(self.settingsdialogToolbutton).text)

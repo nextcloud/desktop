@@ -719,6 +719,7 @@ void AccountSettings::slotEnableCurrentFolder(bool terminate)
         if (f->isSyncRunning() && terminate) {
             f->slotTerminateSync();
         }
+        f->slotNextSyncFullLocalDiscovery(); // ensure we don't forget about local errors
         f->setSyncPaused(!currentlyPaused);
 
         // keep state for the icon setting.
@@ -761,7 +762,7 @@ void AccountSettings::slotForceSyncCurrentFolder()
         }
 
         selectedFolder->slotWipeErrorBlacklist(); // issue #6757
-
+        selectedFolder->slotNextSyncFullLocalDiscovery(); // ensure we don't forget about local errors
         // Insert the selected folder at the front of the queue
         folderMan->scheduleFolderNext(selectedFolder);
     }
