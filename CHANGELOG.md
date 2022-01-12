@@ -23,6 +23,8 @@ Summary
 * Bugfix - Fix failing dehydration causing files to be moved to trash: [#9257](https://github.com/owncloud/client/pull/9257)
 * Bugfix - Do not show Activity tab if server app is disabled or uninstalled: [#9260](https://github.com/owncloud/client/issues/9260)
 * Bugfix - Handle file locks for delete jobs: [#9293](https://github.com/owncloud/client/issues/9293)
+* Bugfix - Run a full local discovery after we where paused or on a forced sync: [#9341](https://github.com/owncloud/client/issues/9341)
+* Bugfix - Infinite sync loop if folder is locked: [#9342](https://github.com/owncloud/client/issues/9342)
 * Bugfix - We fixed a possible crash: [#13](https://github.com/owncloud/client-desktop-vfs-win/pull/13)
 * Change - Make sharedialog preview be more resilient: [#8938](https://github.com/owncloud/client/issues/8938)
 * Enhancement - Allow to remove broken sync folders: [#9099](https://github.com/owncloud/client/pull/9099)
@@ -147,6 +149,19 @@ Details
 
    https://github.com/owncloud/client/issues/9293
    https://github.com/owncloud/client/pull/9295
+
+* Bugfix - Run a full local discovery after we where paused or on a forced sync: [#9341](https://github.com/owncloud/client/issues/9341)
+
+   Previously we did a incremental search wich might have skipped some local changes.
+
+   https://github.com/owncloud/client/issues/9341
+
+* Bugfix - Infinite sync loop if folder is locked: [#9342](https://github.com/owncloud/client/issues/9342)
+
+   We fixed a bug that caused an infinite sync loop if an error occured.
+
+   https://github.com/owncloud/client/issues/9342
+   https://github.com/owncloud/client-desktop-vfs-win/pull/14
 
 * Bugfix - We fixed a possible crash: [#13](https://github.com/owncloud/client-desktop-vfs-win/pull/13)
 
