@@ -77,6 +77,8 @@ public:
         const QString &privateLinkUrl,
         QWidget *parent = nullptr);
     ~ShareUserGroupWidget() override;
+    
+    QVBoxLayout *shareUserGroupLayout();
 
 signals:
     void togglePublicLinkShare(bool);
@@ -98,7 +100,6 @@ private slots:
     void slotCompleterActivated(const QModelIndex &index);
     void slotCompleterHighlighted(const QModelIndex &index);
     void slotShareesReady();
-    void slotAdjustScrollWidgetSize();
     void slotPrivateLinkShare();
     void displayError(int code, const QString &message);
 
@@ -113,6 +114,7 @@ private:
 
     Ui::ShareUserGroupWidget *_ui;
     QScrollArea *_parentScrollArea;
+    QVBoxLayout *_shareUserGroup;
     AccountPtr _account;
     QString _sharePath;
     QString _localPath;
