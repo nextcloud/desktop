@@ -739,12 +739,12 @@ Ova će radnja prekinuti bilo koju trenutačnu sinkronizaciju.</translation>
 <context>
     <name>OCC::ActivityListModel</name>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="376"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="379"/>
         <source>Files from the ignore list as well as symbolic links are not synced.</source>
         <translation>Ne sinkroniziraju se datoteke s popisa za zanemarivanje kao ni simboličke poveznice.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="573"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="576"/>
         <source>For more activities please open the Activity app.</source>
         <translation>Više aktivnosti možete pronaći u aplikaciji Activity.</translation>
     </message>
@@ -889,6 +889,11 @@ Ova će radnja prekinuti bilo koju trenutačnu sinkronizaciju.</translation>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="293"/>
         <source>File Removed (start upload) %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="305"/>
+        <source>File %1 has invalid modification time. Do not upload to the server.</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -3342,6 +3347,19 @@ Ovo je novi, eksperimentalni način rada. Ako se odlučite aktivirati ga, prijav
     </message>
 </context>
 <context>
+    <name>OCC::PasswordInputDialog</name>
+    <message>
+        <location filename="../src/gui/passwordinputdialog.ui" line="23"/>
+        <source>Password for share required</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/passwordinputdialog.ui" line="35"/>
+        <source>Please enter a password for your share:</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>OCC::PollJob</name>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="137"/>
@@ -3533,6 +3551,11 @@ Ovo je novi, eksperimentalni način rada. Ako se odlučite aktivirati ga, prijav
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1016"/>
         <source>Error writing metadata to the database</source>
         <translation>Pogreška pri pisanju metapodataka u bazu podataka</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1136"/>
+        <source>Error updating metadata due to invalid modification time</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1136"/>
@@ -3843,6 +3866,13 @@ Ovo je novi, eksperimentalni način rada. Ako se odlučite aktivirati ga, prijav
         <translation>Otpremanje %1 premašuje kvotu za mapu</translation>
     </message>
     <message>
+        <location filename="../src/libsync/propagateupload.cpp" line="322"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="397"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="410"/>
+        <source>File %1 has invalid modification time. Do not upload to the server.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/libsync/propagateupload.cpp" line="394"/>
         <source>File Removed (start upload) %1</source>
         <translation>Datoteka je uklonjena (početak otpremanja) %1</translation>
@@ -4069,17 +4099,17 @@ Ovo je novi, eksperimentalni način rada. Ako se odlučite aktivirati ga, prijav
         <translation>Ikona</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="91"/>
+        <location filename="../src/gui/sharedialog.cpp" line="92"/>
         <source>%1</source>
         <translation>%1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="112"/>
+        <location filename="../src/gui/sharedialog.cpp" line="113"/>
         <source>Folder: %2</source>
         <translation>Mapa: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="115"/>
+        <location filename="../src/gui/sharedialog.cpp" line="116"/>
         <source>%1 Sharing</source>
         <translation>%1 Dijeljenje</translation>
     </message>
@@ -4089,19 +4119,19 @@ Ovo je novi, eksperimentalni način rada. Ako se odlučite aktivirati ga, prijav
         <translation>Datoteku nije moguće dijeliti jer je dijeljena bez dopuštenja.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="300"/>
+        <location filename="../src/gui/sharedialog.cpp" line="301"/>
         <source>The file cannot be shared because it does not have sharing permission.</source>
         <translation>Datoteku nije moguće dijeliti jer nema dopuštenje za dijeljenje.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharedialog.cpp" line="365"/>
+        <source>Please enter a password for your link share:</source>
+        <translation>Unesite zaporku svoje poveznice dijeljenja:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="366"/>
         <source>Password for share required</source>
         <translation>Potrebna je zaporka za dijeljenje</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharedialog.cpp" line="367"/>
-        <source>Please enter a password for your link share:</source>
-        <translation>Unesite zaporku svoje poveznice dijeljenja:</translation>
     </message>
 </context>
 <context>
@@ -5330,12 +5360,24 @@ Ovo je novi, eksperimentalni način rada. Ako se odlučite aktivirati ga, prijav
     <message>
         <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="72"/>
         <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="82"/>
+        <source>Error updating metadata due to invalid modification time</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="72"/>
+        <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="82"/>
         <source>Error updating metadata due to invalid modified time</source>
         <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>OCC::VfsXAttr</name>
+    <message>
+        <location filename="../src/libsync/vfs/xattr/vfs_xattr.cpp" line="73"/>
+        <location filename="../src/libsync/vfs/xattr/vfs_xattr.cpp" line="83"/>
+        <source>Error updating metadata due to invalid modification time</source>
+        <translation type="unfinished"/>
+    </message>
     <message>
         <location filename="../src/libsync/vfs/xattr/vfs_xattr.cpp" line="73"/>
         <location filename="../src/libsync/vfs/xattr/vfs_xattr.cpp" line="83"/>
