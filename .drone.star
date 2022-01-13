@@ -53,6 +53,7 @@ def main(ctx):
                 "check-starlark",
                 "changelog",
                 "clang-debug-ninja",
+                "GUI-tests",
             ],
         ),
     ]
@@ -75,6 +76,14 @@ def main(ctx):
             trigger = cron_trigger,
         ),
         gui_tests(ctx, trigger = cron_trigger),
+        notification(
+            name = "build",
+            trigger = cron_trigger,
+            depends_on = [
+                "clang-debug-ninja",
+                "GUI-tests",
+            ],
+        ),
     ]
 
     if ctx.build.event == "cron":
@@ -409,8 +418,8 @@ def notification(name, depends_on = [], trigger = {}):
                 "image": "plugins/slack",
                 "pull": "always",
                 "settings": {
-                    "webhook": from_secret("slack_webhook"),
-                    "channel": "desktop-ci",
+                    "webhook": from_secret("private_rocketchat"),
+                    "channel": "desktop-internal",
                 },
             },
         ],
