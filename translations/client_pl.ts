@@ -739,12 +739,12 @@ Ta czynność spowoduje przerwanie aktualnie uruchomionej synchronizacji.</trans
 <context>
     <name>OCC::ActivityListModel</name>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="376"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="379"/>
         <source>Files from the ignore list as well as symbolic links are not synced.</source>
         <translation>Pliki z listy ignorowanych oraz dowiązania symboliczne nie są synchronizowane.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="573"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="576"/>
         <source>For more activities please open the Activity app.</source>
         <translation>Aby uzyskać więcej informacji o działaniach, otwórz aplikację Aktywność.</translation>
     </message>
@@ -890,6 +890,11 @@ Ta czynność spowoduje przerwanie aktualnie uruchomionej synchronizacji.</trans
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="293"/>
         <source>File Removed (start upload) %1</source>
         <translation>Plik usunięty (rozpocznij wysyłanie) %1</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="305"/>
+        <source>File %1 has invalid modification time. Do not upload to the server.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="310"/>
@@ -3342,6 +3347,19 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
     </message>
 </context>
 <context>
+    <name>OCC::PasswordInputDialog</name>
+    <message>
+        <location filename="../src/gui/passwordinputdialog.ui" line="23"/>
+        <source>Password for share required</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/passwordinputdialog.ui" line="35"/>
+        <source>Please enter a password for your share:</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>OCC::PollJob</name>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="137"/>
@@ -3533,6 +3551,11 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1016"/>
         <source>Error writing metadata to the database</source>
         <translation>Błąd podczas zapisu metadanych do bazy danych</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1136"/>
+        <source>Error updating metadata due to invalid modification time</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1136"/>
@@ -3843,6 +3866,13 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
         <translation>Wysłanie %1 przekracza limit dla katalogu</translation>
     </message>
     <message>
+        <location filename="../src/libsync/propagateupload.cpp" line="322"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="397"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="410"/>
+        <source>File %1 has invalid modification time. Do not upload to the server.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/libsync/propagateupload.cpp" line="394"/>
         <source>File Removed (start upload) %1</source>
         <translation>Plik usunięto (rozpoczęto wysyłanie) %1</translation>
@@ -4069,17 +4099,17 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
         <translation>Ikona</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="91"/>
+        <location filename="../src/gui/sharedialog.cpp" line="92"/>
         <source>%1</source>
         <translation>%1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="112"/>
+        <location filename="../src/gui/sharedialog.cpp" line="113"/>
         <source>Folder: %2</source>
         <translation>Katalog: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="115"/>
+        <location filename="../src/gui/sharedialog.cpp" line="116"/>
         <source>%1 Sharing</source>
         <translation>Udostępnianie %1</translation>
     </message>
@@ -4089,19 +4119,19 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
         <translation>Nie można udostępnić pliku, ponieważ nie ma uprawnień do udostępniania.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="300"/>
+        <location filename="../src/gui/sharedialog.cpp" line="301"/>
         <source>The file cannot be shared because it does not have sharing permission.</source>
         <translation>Nie można udostępnić pliku, ponieważ nie ma uprawnień do udostępniania.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharedialog.cpp" line="365"/>
+        <source>Please enter a password for your link share:</source>
+        <translation>Wprowadź hasło do udostępnionego linku:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="366"/>
         <source>Password for share required</source>
         <translation>Wymagane hasło do udostępnienia</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharedialog.cpp" line="367"/>
-        <source>Please enter a password for your link share:</source>
-        <translation>Wprowadź hasło do udostępnionego linku:</translation>
     </message>
 </context>
 <context>
@@ -5330,12 +5360,24 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
     <message>
         <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="72"/>
         <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="82"/>
+        <source>Error updating metadata due to invalid modification time</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="72"/>
+        <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="82"/>
         <source>Error updating metadata due to invalid modified time</source>
         <translation>Błąd podczas aktualizacji metadanych z powodu nieprawidłowego czasu modyfikacji</translation>
     </message>
 </context>
 <context>
     <name>OCC::VfsXAttr</name>
+    <message>
+        <location filename="../src/libsync/vfs/xattr/vfs_xattr.cpp" line="73"/>
+        <location filename="../src/libsync/vfs/xattr/vfs_xattr.cpp" line="83"/>
+        <source>Error updating metadata due to invalid modification time</source>
+        <translation type="unfinished"/>
+    </message>
     <message>
         <location filename="../src/libsync/vfs/xattr/vfs_xattr.cpp" line="73"/>
         <location filename="../src/libsync/vfs/xattr/vfs_xattr.cpp" line="83"/>
