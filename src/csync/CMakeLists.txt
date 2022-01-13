@@ -4,10 +4,6 @@ set(APPLICATION_NAME "ocsync")
 set(LIBRARY_VERSION ${MIRALL_VERSION})
 set(LIBRARY_SOVERSION "0")
 
-# add definitions
-option(MEM_NULL_TESTS "Enable NULL memory testing" OFF)
-
-
 include(ConfigureChecks.cmake)
 include(../common/common.cmake)
 
@@ -49,10 +45,6 @@ target_compile_definitions(csync
             QT_DEPRECATED_WARNINGS
             QT_NO_FOREACH
 )
-
-if(MEM_NULL_TESTS)
-    target_compile_definitions(csync PUBLIC -DCSYNC_MEM_NULL_TESTS)
-endif(MEM_NULL_TESTS)
 
 if(TOKEN_AUTH_ONLY)
     message("Compiling with token authentication")
