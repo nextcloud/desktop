@@ -226,6 +226,11 @@ void OwncloudAdvancedSetupPage::fetchUserAvatar()
     if (Theme::isHidpi()) {
         avatarSize *= 2;
     }
+
+    if (account->isPublicShareLink()) {
+        return;
+    }
+
     const auto avatarJob = new AvatarJob(account, account->davUser(), avatarSize, this);
     avatarJob->setTimeout(20 * 1000);
     QObject::connect(avatarJob, &AvatarJob::avatarPixmap, this, [this](const QImage &avatarImage) {

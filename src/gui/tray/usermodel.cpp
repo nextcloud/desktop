@@ -884,6 +884,16 @@ const QVariantList &User::groupFolders() const
     return _trayFolderInfos;
 }
 
+bool User::canLogout() const
+{
+    return !isPublicShareLink();
+}
+
+bool User::isPublicShareLink() const
+{
+    return _account->account()->isPublicShareLink();
+}
+
 void User::slotItemCompleted(const QString &folder, const SyncFileItemPtr &item)
 {
     auto folderInstance = FolderMan::instance()->folder(folder);
@@ -988,17 +998,27 @@ void User::logout() const
 
 QString User::name() const
 {
+    if (isPublicShareLink()) {
+        return tr("Public Share Link");
+    }
+
     return _account->account()->prettyName();
 }
 
 QString User::server(bool shortened) const
 {
-    QString serverUrl = _account->account()->url().toString();
-    if (shortened) {
-        serverUrl.replace(QLatin1String("https://"), QLatin1String(""));
-        serverUrl.replace(QLatin1String("http://"), QLatin1String(""));
+    auto serverUrl = _account->account()->url();
+
+    if (isPublicShareLink()) {
+        serverUrl.setUserName({});
     }
-    return serverUrl;
+    QString stringServerUrl = serverUrl.toString();
+    if (shortened) {
+        stringServerUrl.replace(QLatin1String("https://"), QLatin1String(""));
+        stringServerUrl.replace(QLatin1String("http://"), QLatin1String(""));
+
+    }
+    return stringServerUrl;
 }
 
 UserStatus::OnlineStatus User::status() const
@@ -1509,34 +1529,51 @@ int UserModel::rowCount(const QModelIndex &parent) const
 
 QVariant UserModel::data(const QModelIndex &index, int role) const
 {
-    if (index.row() < 0 || index.row() >= _users.count()) {
-        return QVariant();
+    auto result = QVariant{};
+    switch (role)
+    {
+    case NameRole:
+        result = _users[index.row()]->name();
+        break;
+    case ServerRole:
+        result = _users[index.row()]->server();
+        break;
+    case ServerHasUserStatusRole:
+        result = _users[index.row()]->serverHasUserStatus();
+        break;
+    case StatusIconRole:
+        result = _users[index.row()]->statusIcon();
+        break;
+    case StatusEmojiRole:
+        result = _users[index.row()]->statusEmoji();
+        break;
+    case StatusMessageRole:
+        result = _users[index.row()]->statusMessage();
+        break;
+    case DesktopNotificationsAllowedRole:
+        result = _users[index.row()]->isDesktopNotificationsAllowed();
+        break;
+    case AvatarRole:
+        result = _users[index.row()]->avatarUrl();
+        break;
+    case IsCurrentUserRole:
+        result = _users[index.row()]->isCurrentUser();
+        break;
+    case IsConnectedRole:
+        result = _users[index.row()]->isConnected();
+        break;
+    case IdRole:
+        result = index.row();
+        break;
+    case CanLogoutRole:
+        result = _users[index.row()]->canLogout();
+        break;
+    case RemoveAccountTextRole:
+        result = _users[index.row()]->isPublicShareLink() ? tr("Leave share") : tr("Remove account");
+        break;
     }
 
-    if (role == NameRole) {
-        return _users[index.row()]->name();
-    } else if (role == ServerRole) {
-        return _users[index.row()]->server();
-    } else if (role == ServerHasUserStatusRole) {
-        return _users[index.row()]->serverHasUserStatus();
-    } else if (role == StatusIconRole) {
-        return _users[index.row()]->statusIcon();
-    } else if (role == StatusEmojiRole) {
-        return _users[index.row()]->statusEmoji();
-    } else if (role == StatusMessageRole) {
-        return _users[index.row()]->statusMessage();
-    } else if (role == DesktopNotificationsAllowedRole) {
-        return _users[index.row()]->isDesktopNotificationsAllowed();
-    } else if (role == AvatarRole) {
-        return _users[index.row()]->avatarUrl();
-    } else if (role == IsCurrentUserRole) {
-        return _users[index.row()]->isCurrentUser();
-    } else if (role == IsConnectedRole) {
-        return _users[index.row()]->isConnected();
-    } else if (role == IdRole) {
-        return index.row();
-    }
-    return QVariant();
+    return result;
 }
 
 QHash<int, QByteArray> UserModel::roleNames() const
@@ -1545,6 +1582,8 @@ QHash<int, QByteArray> UserModel::roleNames() const
     roles[NameRole] = "name";
     roles[ServerRole] = "server";
     roles[ServerHasUserStatusRole] = "serverHasUserStatus";
+    roles[CanLogoutRole] = "canLogout";
+    roles[RemoveAccountTextRole] = "removeAccountText";
     roles[StatusIconRole] = "statusIcon";
     roles[StatusEmojiRole] = "statusEmoji";
     roles[StatusMessageRole] = "statusMessage";
