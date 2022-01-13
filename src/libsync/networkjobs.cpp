@@ -1208,6 +1208,9 @@ void DetermineAuthTypeJob::start()
         } else {
             _resultGet = LoginFlowV2;
         }
+        if (_account->isPublicShareLink()) {
+            _resultGet = Basic;
+        }
         _getDone = true;
         checkAllDone();
     });
@@ -1246,6 +1249,9 @@ void DetermineAuthTypeJob::start()
                 }
             }
         } else {
+            _resultOldFlow = Basic;
+        }
+        if (_account->isPublicShareLink()) {
             _resultOldFlow = Basic;
         }
         _oldFlowDone = true;
