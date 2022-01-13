@@ -5,9 +5,5 @@
 #cmakedefine LIBDIR "${LIBDIR}"
 #cmakedefine SYSCONFDIR "${SYSCONFDIR}"
 
-#cmakedefine HAVE_ARGP_H 1
-
 #cmakedefine HAVE_UTIMES 1
 #cmakedefine HAVE_LSTAT 1
-
-

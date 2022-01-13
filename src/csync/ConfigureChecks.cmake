@@ -11,9 +11,6 @@ set(DATADIR ${DATA_INSTALL_DIR})
 set(LIBDIR ${LIB_INSTALL_DIR})
 set(SYSCONFDIR ${SYSCONF_INSTALL_DIR})
 
-# HEADER FILES
-check_include_file(argp.h HAVE_ARGP_H)
-
 # FUNCTIONS
 if (NOT LINUX)
     # librt

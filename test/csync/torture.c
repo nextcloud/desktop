@@ -17,7 +17,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
-#include "csync/config_csync.h"
 
 #include "torture.h"
 
@@ -33,7 +32,6 @@ int main(int argc, char **argv)
   struct argument_s arguments;
 
   arguments.verbose = 0;
-  torture_cmdline_parse(argc, argv, &arguments);
   verbosity = arguments.verbose;
 
   return torture_run_tests();
