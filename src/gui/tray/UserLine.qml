@@ -133,6 +133,7 @@ AbstractButton {
                 id: userMoreButtonMenu
                 closePolicy: Menu.CloseOnPressOutsideParent | Menu.CloseOnEscape
 
+<<<<<<< HEAD
                 MenuItem {
                     visible: model.isConnected && model.serverHasUserStatus
                     height: visible ? implicitHeight : 0
@@ -152,6 +153,10 @@ AbstractButton {
                }
 
                 MenuItem {
+                    text: model.isConnected ? qsTr("Log out") : qsTr("Log in")
+                    visible: model.canLogout
+                    height: visible ? implicitHeight : 0
+                    width: parent.width
                     text: model.isConnected ? qsTr("Log out") : qsTr("Log in")
                     font.pixelSize: Style.topLinePixelSize
                     hoverEnabled: true
@@ -175,7 +180,7 @@ AbstractButton {
 
                 MenuItem {
                     id: removeAccountButton
-                    text: qsTr("Remove account")
+                    text: model.removeAccountText
                     font.pixelSize: Style.topLinePixelSize
                     hoverEnabled: true
                     onClicked: {
