@@ -739,12 +739,12 @@ Současně tato akce zruší jakoukoli právě probíhající synchronizaci.</tr
 <context>
     <name>OCC::ActivityListModel</name>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="376"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="379"/>
         <source>Files from the ignore list as well as symbolic links are not synced.</source>
         <translation>Soubory ze seznamu ignorovaných a symbolické odkazy nejsou synchronizovány.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="573"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="576"/>
         <source>For more activities please open the Activity app.</source>
         <translation>Více z aktivit si zobrazíte otevřením aplikace Aktivity</translation>
     </message>
@@ -890,6 +890,11 @@ Současně tato akce zruší jakoukoli právě probíhající synchronizaci.</tr
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="293"/>
         <source>File Removed (start upload) %1</source>
         <translation>Soubor odebrán (zahájit nahrávání) %1</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="305"/>
+        <source>File %1 has invalid modification time. Do not upload to the server.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="310"/>
@@ -3341,6 +3346,19 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
     </message>
 </context>
 <context>
+    <name>OCC::PasswordInputDialog</name>
+    <message>
+        <location filename="../src/gui/passwordinputdialog.ui" line="23"/>
+        <source>Password for share required</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/passwordinputdialog.ui" line="35"/>
+        <source>Please enter a password for your share:</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>OCC::PollJob</name>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="137"/>
@@ -3532,6 +3550,11 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1016"/>
         <source>Error writing metadata to the database</source>
         <translation>Chyba při zapisování metadat do databáze</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1136"/>
+        <source>Error updating metadata due to invalid modification time</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1136"/>
@@ -3842,6 +3865,13 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
         <translation>Nahrání %1 překračuje kvótu nastavenou pro složku</translation>
     </message>
     <message>
+        <location filename="../src/libsync/propagateupload.cpp" line="322"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="397"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="410"/>
+        <source>File %1 has invalid modification time. Do not upload to the server.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/libsync/propagateupload.cpp" line="394"/>
         <source>File Removed (start upload) %1</source>
         <translation>Soubor odebrán (zahájit nahrávání) %1</translation>
@@ -4068,17 +4098,17 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
         <translation>Ikona</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="91"/>
+        <location filename="../src/gui/sharedialog.cpp" line="92"/>
         <source>%1</source>
         <translation>%1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="112"/>
+        <location filename="../src/gui/sharedialog.cpp" line="113"/>
         <source>Folder: %2</source>
         <translation>Složka: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="115"/>
+        <location filename="../src/gui/sharedialog.cpp" line="116"/>
         <source>%1 Sharing</source>
         <translation>%1 sdílení</translation>
     </message>
@@ -4088,19 +4118,19 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
         <translation>Tento soubor nelze sdílet, protože byl nasdílen bez umožnění dalšího sdílení dál.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="300"/>
+        <location filename="../src/gui/sharedialog.cpp" line="301"/>
         <source>The file cannot be shared because it does not have sharing permission.</source>
         <translation>Tento soubor nelze sdílet, protože nemá nastavené oprávnění ke sdílení.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharedialog.cpp" line="365"/>
+        <source>Please enter a password for your link share:</source>
+        <translation>Zadejte heslo pro sdílení odkazem:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="366"/>
         <source>Password for share required</source>
         <translation>Je vyžadováno heslo ke sdílení</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharedialog.cpp" line="367"/>
-        <source>Please enter a password for your link share:</source>
-        <translation>Zadejte heslo pro sdílení odkazem:</translation>
     </message>
 </context>
 <context>
@@ -5329,12 +5359,24 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
     <message>
         <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="72"/>
         <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="82"/>
+        <source>Error updating metadata due to invalid modification time</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="72"/>
+        <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="82"/>
         <source>Error updating metadata due to invalid modified time</source>
         <translation>Chyba při aktualizaci metadat z důvodu neplatného času změny</translation>
     </message>
 </context>
 <context>
     <name>OCC::VfsXAttr</name>
+    <message>
+        <location filename="../src/libsync/vfs/xattr/vfs_xattr.cpp" line="73"/>
+        <location filename="../src/libsync/vfs/xattr/vfs_xattr.cpp" line="83"/>
+        <source>Error updating metadata due to invalid modification time</source>
+        <translation type="unfinished"/>
+    </message>
     <message>
         <location filename="../src/libsync/vfs/xattr/vfs_xattr.cpp" line="73"/>
         <location filename="../src/libsync/vfs/xattr/vfs_xattr.cpp" line="83"/>
