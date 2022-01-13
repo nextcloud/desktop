@@ -78,6 +78,7 @@ protected:
 
 private:
     void showSharingUi();
+    void initShareManager();
     ShareLinkWidget *addLinkShareWidget(const QSharedPointer<LinkShare> &linkShare);
     void initLinkShareWidget();
 
