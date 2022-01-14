@@ -58,6 +58,7 @@ QHash<int, QByteArray> ActivityListModel::roleNames() const
     roles[DisplayPathRole] = "displayPath";
     roles[PathRole] = "path";
     roles[AbsolutePathRole] = "absolutePath";
+    roles[DisplayLocationRole] = "displayLocation";
     roles[LinkRole] = "link";
     roles[MessageRole] = "message";
     roles[ActionRole] = "type";
@@ -114,15 +115,40 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
     if (!ast && _accountState != ast.data())
         return QVariant();
 
-    switch (role) {
-    case DisplayPathRole:
+    const auto getFilePath = [&]() {
         if (!a._file.isEmpty()) {
-            auto folder = FolderMan::instance()->folder(a._folder);
-            QString relPath(a._file);
-            if (folder) {
-                relPath.prepend(folder->remotePath());
-            }
+            const auto folder = FolderMan::instance()->folder(a._folder);
+
+            const QString relPath = folder ? folder->remotePath() + a._file : a._file;
+
             const auto localFiles = FolderMan::instance()->findFileInLocalFolders(relPath, ast->account());
+
+            if (localFiles.isEmpty()) {
+                return QString();
+            }
+
+            // If this is an E2EE file or folder, pretend we got no path, hiding the share button which is what we want
+            if (folder) {
+                SyncJournalFileRecord rec;
+                folder->journalDb()->getFileRecord(a._file.mid(1), &rec);
+                if (rec.isValid() && (rec._isE2eEncrypted || !rec._e2eMangledName.isEmpty())) {
+                    return QString();
+                }
+            }
+
+            return localFiles.constFirst();
+        }
+        return QString();
+    };
+
+    const auto getDisplayPath = [&a, &ast]() {
+        if (!a._file.isEmpty()) {
+            const auto folder = FolderMan::instance()->folder(a._folder);
+
+            QString relPath = folder ? folder->remotePath() + a._file : a._file;
+
+            const auto localFiles = FolderMan::instance()->findFileInLocalFolders(relPath, ast->account());
+
             if (localFiles.count() > 0) {
                 if (relPath.startsWith('/') || relPath.startsWith('\\')) {
                     return relPath.remove(0, 1);
@@ -132,54 +158,22 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
             }
         }
         return QString();
+    };
+
+    const auto displayLocation = [&]() {
+        const auto displayPath = QFileInfo(getDisplayPath()).path();
+        return displayPath == "." || displayPath == "/" ? QString() : displayPath;
+    };
+
+    switch (role) {
+    case DisplayPathRole:
+        return getDisplayPath();
     case PathRole:
-        if (!a._file.isEmpty()) {
-            const auto folder = FolderMan::instance()->folder(a._folder);
-
-            QString relPath(a._file);
-            if (folder) {
-                relPath.prepend(folder->remotePath());
-            }
-
-            // get relative path to the file so we can open it in the file manager
-            const auto localFiles = FolderMan::instance()->findFileInLocalFolders(QFileInfo(relPath).path(), ast->account());
-
-            if (localFiles.isEmpty()) {
-                return QString();
-            }
-
-            // If this is an E2EE file or folder, pretend we got no path, this leads to
-            // hiding the share button which is what we want
-            if (folder) {
-                SyncJournalFileRecord rec;
-                folder->journalDb()->getFileRecord(a._file.mid(1), &rec);
-                if (rec.isValid() && (rec._isE2eEncrypted || !rec._e2eMangledName.isEmpty())) {
-                    return QString();
-                }
-            }
-
-            return QUrl::fromLocalFile(localFiles.constFirst());
-        }
-        return QString();
-    case AbsolutePathRole: {
-        const auto folder = FolderMan::instance()->folder(a._folder);
-        QString relPath(a._file);
-        if (!a._file.isEmpty()) {
-            if (folder) {
-                relPath.prepend(folder->remotePath());
-            }
-            const auto localFiles = FolderMan::instance()->findFileInLocalFolders(relPath, ast->account());
-            if (!localFiles.empty()) {
-                return localFiles.constFirst();
-            } else {
-                qWarning("File not local folders while processing absolute path request.");
-                return QString();
-            }
-        } else {
-            qWarning("Received an absolute path request for an activity without a file path.");
-            return QString();
-        }
-    }
+        return QUrl::fromLocalFile(QFileInfo(getFilePath()).path());
+    case AbsolutePathRole:
+        return getFilePath();
+    case DisplayLocationRole:
+        return displayLocation();
     case ActionsLinksRole: {
         QList<QVariant> customList;
         foreach (ActivityLink activityLink, a._links) {
@@ -242,7 +236,11 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
         }
     }
     case ActionTextRole:
-        return a._subject;
+        if(a._subjectDisplay.isEmpty()) {
+            return a._subject;
+        }
+
+        return a._subjectDisplay;
     case ActionTextColorRole:
         return a._id == -1 ? QLatin1String("#808080") : QLatin1String("#222");   // FIXME: This is a temporary workaround for _showMoreActivitiesAvailableEntry
     case MessageRole:
@@ -332,16 +330,53 @@ void ActivityListModel::activitiesReceived(const QJsonDocument &json, int status
 
         Activity a;
         a._type = Activity::ActivityType;
-        a._objectType = json.value("object_type").toString();
+        a._objectType = json.value(QStringLiteral("object_type")).toString();
         a._accName = ast->account()->displayName();
-        a._id = json.value("activity_id").toInt();
-        a._fileAction = json.value("type").toString();
-        a._subject = json.value("subject").toString();
-        a._message = json.value("message").toString();
-        a._file = json.value("object_name").toString();
-        a._link = QUrl(json.value("link").toString());
-        a._dateTime = QDateTime::fromString(json.value("datetime").toString(), Qt::ISODate);
-        a._icon = json.value("icon").toString();
+        a._id = json.value(QStringLiteral("activity_id")).toInt();
+        a._fileAction = json.value(QStringLiteral("type")).toString();
+        a._subject = json.value(QStringLiteral("subject")).toString();
+        a._message = json.value(QStringLiteral("message")).toString();
+        a._file = json.value(QStringLiteral("object_name")).toString();
+        a._link = QUrl(json.value(QStringLiteral("link")).toString());
+        a._dateTime = QDateTime::fromString(json.value(QStringLiteral("datetime")).toString(), Qt::ISODate);
+        a._icon = json.value(QStringLiteral("icon")).toString();
+
+        auto richSubjectData = json.value(QStringLiteral("subject_rich")).toArray();
+        Q_ASSERT(richSubjectData.size() > 1);
+
+        if(richSubjectData.size() > 1) {
+            a._subjectRich = richSubjectData[0].toString();
+            auto parameters = richSubjectData[1].toObject();
+            const QRegularExpression subjectRichParameterRe(QStringLiteral("({[a-zA-Z0-9]*})"));
+            const QRegularExpression subjectRichParameterBracesRe(QStringLiteral("[{}]"));
+
+            for (auto i = parameters.begin(); i != parameters.end(); ++i) {
+                const auto parameterJsonObject = i.value().toObject();
+                const Activity::RichSubjectParameter parameter = {
+                    parameterJsonObject.value(QStringLiteral("type")).toString(),
+                    parameterJsonObject.value(QStringLiteral("id")).toString(),
+                    parameterJsonObject.value(QStringLiteral("name")).toString(),
+                    parameterJsonObject.contains(QStringLiteral("path")) ? parameterJsonObject.value(QStringLiteral("path")).toString() : QString(),
+                    parameterJsonObject.contains(QStringLiteral("link")) ? QUrl(parameterJsonObject.value(QStringLiteral("link")).toString()) : QUrl(),
+                };
+
+                a._subjectRichParameters[i.key()] = parameter;
+            }
+
+            auto displayString = a._subjectRich;
+            auto i = subjectRichParameterRe.globalMatch(displayString);
+
+            while (i.hasNext()) {
+                const auto match = i.next();
+                auto word = match.captured(1);
+                word.remove(subjectRichParameterBracesRe);
+
+                Q_ASSERT(a._subjectRichParameters.contains(word));
+                displayString = displayString.replace(match.captured(1), a._subjectRichParameters[word].name);
+            }
+
+            a._subjectDisplay = displayString;
+        }
 
         list.append(a);
         _currentItem = list.last()._id;
