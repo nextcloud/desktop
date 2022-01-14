@@ -18,6 +18,11 @@ def main(ctx):
             "refs/pull/**",
         ],
     }
+    cron_trigger = {
+        "event": [
+            "cron",
+        ],
+    }
     pipelines = [
         # check the format of gui test code
         gui_tests_format(build_trigger),
