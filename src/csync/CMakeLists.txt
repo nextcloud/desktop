@@ -1,8 +1,4 @@
 # global needed variables
-set(APPLICATION_NAME "ocsync")
-
-set(LIBRARY_VERSION ${MIRALL_VERSION})
-set(LIBRARY_SOVERSION "0")
 
 include(ConfigureChecks.cmake)
 include(../common/common.cmake)
@@ -91,9 +87,9 @@ set_target_properties(
       OUTPUT_NAME
         "${APPLICATION_EXECUTABLE}_csync"
       VERSION
-        ${LIBRARY_VERSION}
+        ${MIRALL_VERSION}
       SOVERSION
-        ${LIBRARY_SOVERSION}
+        "0"
 )
 INSTALL(TARGETS csync ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 
