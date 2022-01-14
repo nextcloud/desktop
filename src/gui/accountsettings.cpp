@@ -698,6 +698,9 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
     ac = menu->addAction(folderPaused ? tr("Resume sync") : tr("Pause sync"));
     connect(ac, &QAction::triggered, this, &AccountSettings::slotEnableCurrentFolder);
 
+    ac = menu->addAction(tr("Rename local folder"));
+    connect(ac, &QAction::triggered, this, &AccountSettings::slotRenameFolder);
+
     ac = menu->addAction(tr("Remove folder sync connection"));
     connect(ac, &QAction::triggered, this, &AccountSettings::slotRemoveCurrentFolder);
 
@@ -791,6 +794,65 @@ void AccountSettings::slotAddFolder()
     folderWizard->open();
 }
 
+void AccountSettings::slotRenameFolder()
+{
+    auto dialog = new QDialog(nullptr, Qt::WindowTitleHint | Qt::CustomizeWindowHint | Qt::WindowCloseButtonHint);
+    dialog->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed));
+    dialog->setAttribute(Qt::WA_DeleteOnClose);
+    dialog->setSizeGripEnabled(true);
+    dialog->setMaximumWidth(this->width());
+    dialog->setFixedHeight(100);
+    dialog->setWindowTitle(tr("Rename local folder"));
+
+    auto vbox = new QVBoxLayout;
+    auto hbox = new QHBoxLayout;
+    auto lineEdit = new QLineEdit;
+    auto pushButtonConfirm = new QPushButton(tr("Rename"));
+    auto pushButtonCancel = new QPushButton(tr("Cancel"));
+    lineEdit->setText(QDir(FolderMan::instance()->folder(selectedFolderAlias())->path()).dirName());
+    hbox->addWidget(pushButtonConfirm);
+    hbox->addWidget(pushButtonCancel);
+    vbox->addWidget(lineEdit);
+    vbox->addLayout(hbox);
+    dialog->setLayout(vbox);
+
+    dialog->open();
+
+    connect(pushButtonConfirm, &QPushButton::clicked, dialog, &QDialog::accept);
+    connect(pushButtonCancel, &QPushButton::clicked, dialog, &QDialog::reject);
+
+    connect(dialog, &QDialog::finished, this, [this, lineEdit](const int result) {
+        if (result == QDialog::Accepted) {
+            auto folder = FolderMan::instance()->folder(selectedFolderAlias());
+            QDir currentDirectory(folder->path());
+            QString folderPath = currentDirectory.path().chopped(currentDirectory.dirName().length());
+            const auto newFolderPath = folderPath.append(lineEdit->text());
+
+            if (currentDirectory.path() != newFolderPath) {
+                auto folderMan = FolderMan::instance();
+                folderMan->setSyncEnabled(false); // do not start more syncs.
+                if (currentDirectory.rename(currentDirectory.path(), newFolderPath)) {
+                    FolderDefinition definition;
+                    definition.localPath = FolderDefinition::prepareLocalPath(newFolderPath);
+                    definition.targetPath = FolderDefinition::prepareTargetPath(folder->remotePath());
+                    definition.ignoreHiddenFiles = folderMan->ignoreHiddenFiles();
+                    Utility::removeFavLink(folder->path());
+                    FolderMan::instance()->removeFolder(folder);
+                    Utility::setupFavLink(definition.localPath);
+
+                    if (auto f = folderMan->addFolder(_accountState, definition)) {
+                        folderMan->scheduleFolder(f);
+                        emit folderChanged();
+                    }
+                } else {
+                    QMessageBox::critical(this, tr("Folder rename failed!"),
+                        tr("Folder: %1 \n can't be renamed to: %2 !").arg(currentDirectory.dirName(), lineEdit->text()), QMessageBox::Ok);
+                }
+                folderMan->setSyncEnabled(true);
+            }
+        }
+    });
+}
 
 void AccountSettings::slotFolderWizardAccepted()
 {
