@@ -48,10 +48,43 @@ def main(ctx):
                 "check-starlark",
                 "changelog",
                 "clang-debug-ninja",
+                "GUI-tests",
             ],
         ),
     ]
-    return pipelines
+    cron_pipelines = [
+        # Build client
+        build_and_test_client(
+            ctx,
+            "gcc",
+            "g++",
+            "Release",
+            "Unix Makefiles",
+            trigger = cron_trigger,
+        ),
+        build_and_test_client(
+            ctx,
+            "clang",
+            "clang++",
+            "Debug",
+            "Ninja",
+            trigger = cron_trigger,
+        ),
+        gui_tests(ctx, trigger = cron_trigger),
+        notification(
+            name = "build",
+            trigger = cron_trigger,
+            depends_on = [
+                "clang-debug-ninja",
+                "GUI-tests",
+            ],
+        ),
+    ]
+
+    if ctx.build.event == "cron":
+        return cron_pipelines
+    else:
+        return pipelines
 
 def whenOnline(dict):
     if not "when" in dict:
@@ -380,8 +413,8 @@ def notification(name, depends_on = [], trigger = {}):
                 "image": "plugins/slack",
                 "pull": "always",
                 "settings": {
-                    "webhook": from_secret("slack_webhook"),
-                    "channel": "desktop-ci",
+                    "webhook": from_secret("private_rocketchat"),
+                    "channel": "desktop-internal",
                 },
             },
         ],
