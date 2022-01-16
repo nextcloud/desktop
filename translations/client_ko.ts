@@ -4,7 +4,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityActionButton.qml" line="42"/>
         <source>Activity action button</source>
-        <translation type="unfinished"/>
+        <translation>활동 알림 단추</translation>
     </message>
 </context>
 <context>
@@ -17,7 +17,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="40"/>
         <source>Open %1 locally</source>
-        <translation type="unfinished"/>
+        <translation>로컬에서 %1 열기</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="168"/>
@@ -27,18 +27,18 @@
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="172"/>
         <source>Share %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 공유</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="194"/>
         <location filename="../src/gui/tray/ActivityItem.qml" line="197"/>
         <source>Show more actions</source>
-        <translation type="unfinished"/>
+        <translation>더 많은 동작 보기</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="244"/>
         <source>View activity</source>
-        <translation type="unfinished"/>
+        <translation>활동 지우기</translation>
     </message>
 </context>
 <context>
@@ -46,7 +46,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityList.qml" line="30"/>
         <source>Activity list</source>
-        <translation type="unfinished"/>
+        <translation>활동 목록</translation>
     </message>
 </context>
 <context>
@@ -59,7 +59,7 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="122"/>
         <source>Checking for changes in &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>&quot;%1&quot;의 변경 사항 확인 중</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="122"/>
@@ -149,7 +149,7 @@
         <location filename="../src/common/filesystembase.cpp" line="398"/>
         <location filename="../src/common/filesystembase.cpp" line="404"/>
         <source>Could not move &quot;%1&quot; to &quot;%2&quot;</source>
-        <translation type="unfinished"/>
+        <translation>&quot;%1&quot;을(를) &quot;%2&quot;(으)로 이동할 수 없음</translation>
     </message>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="438"/>
@@ -165,17 +165,17 @@
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="158"/>
         <source>Error removing &quot;%1&quot;: %2</source>
-        <translation type="unfinished"/>
+        <translation>&quot;%1&quot; 삭제중 오류 발생: %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="158"/>
         <source>Error removing &apos;%1&apos;: %2</source>
-        <translation>&apos;%1&apos; 삭제중 오류 발생: %2;</translation>
+        <translation>&apos;%1&apos; 삭제중 오류 발생: %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="174"/>
         <source>Could not remove folder &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>폴더 &quot;%1&quot;을(를) 지울 수 없음</translation>
     </message>
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="174"/>
@@ -354,7 +354,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="89"/>
         <source>You seem to have the Virtual Files feature enabled on this folder. At the moment, it is not possible to implicitly download virtual files that are End-to-End encrypted. To get the best experience with Virtual Files and End-to-End Encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>이 폴더에 가상 파일 기능이 활성화된 것 같습니다. 종단간 암호화 된 가상 파일은 다운로드 할 수 없습니다. 종단간 암호화와 가상 파일 기능의 원활한 동작을 위해 암호화된 폴더가 &quot;로컬에서 항상 사용 가능&quot;한지 확인하십시오.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="97"/>
@@ -421,7 +421,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="89"/>
         <source>You seem to have the Virtual Files feature enabled on this folder. At  the moment, it is not possible to implicitly download virtual files that are End-to-End encrypted. To get the best experience with Virtual Files and End-to-End Encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>이 폴더에 가상 파일 기능이 활성화된 것 같습니다. 종단간 암호화 된 가상 파일은 다운로드 할 수 없습니다. 종단간 암호화와 가상 파일 기능의 원활한 동작을 위해 암호화된 폴더가 &quot;로컬에서 항상 사용 가능&quot;한지 확인하십시오.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="330"/>
@@ -433,12 +433,12 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="354"/>
         <source>Encryption failed</source>
-        <translation type="unfinished"/>
+        <translation>암호화 실패</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="354"/>
         <source>Could not encrypt folder because the folder does not exist anymore</source>
-        <translation type="unfinished"/>
+        <translation>폴더가 더 이상 존재하지 않아 해당 폴더를 암호화 할 수 없음</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="466"/>
@@ -794,7 +794,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="79"/>
         <source>An encrypted pkcs12 bundle is strongly recommended as a copy will be stored in the configuration file.</source>
-        <translation type="unfinished"/>
+        <translation>사본이 설정 파일에 저장될 것이므로, 암호화된 pkcs12 번들을 강력히 권장합니다</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.cpp" line="38"/>
@@ -860,7 +860,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="32"/>
         <source>Enter username and password for &quot;%1&quot; at %2.</source>
-        <translation type="unfinished"/>
+        <translation>%2에 &quot;%1&quot;의 사용자 이름과 암호를 입력하십시오.</translation>
     </message>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="32"/>
@@ -889,48 +889,48 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="169"/>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="302"/>
         <source>File %1 has invalid modified time. Do not upload to the server.</source>
-        <translation type="unfinished"/>
+        <translation>파일 %1의 &apos;수정 시간&apos;값이 올바르지 않습니다. 이 파일을 서버에 업로드하지 마십시오.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="293"/>
         <source>File Removed (start upload) %1</source>
-        <translation type="unfinished"/>
+        <translation>파일 삭제됨 (업로드 시작) %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="305"/>
         <source>File %1 has invalid modification time. Do not upload to the server.</source>
-        <translation type="unfinished"/>
+        <translation>파일 %1의 &apos;수정 시간&apos;값이 올바르지 않습니다. 이 파일을 서버에 업로드하지 마십시오.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="310"/>
         <source>Local file changed during syncing. It will be resumed.</source>
-        <translation type="unfinished"/>
+        <translation>동기화 중 로컬 파일이 변경되었습니다. 곧 재개됩니다.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="324"/>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="637"/>
         <source>Local file changed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>동기화 중 로컬 파일이 변경되었습니다.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="456"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>메타데이터 갱신 오류: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="459"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>파일 %1(이)가 현재 사용 중입니다.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="620"/>
         <source>The local file was removed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>동기화 중 로컬 파일이 삭제되었습니다.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="667"/>
         <source>; Restoration Failed: %1</source>
-        <translation type="unfinished"/>
+        <translation>; 복원 실패: %1</translation>
     </message>
 </context>
 <context>
@@ -1119,22 +1119,22 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="189"/>
         <source>Error while canceling deletion of a file</source>
-        <translation type="unfinished"/>
+        <translation>파일 제거를 취소하는 중 오류 발생</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="189"/>
         <source>Error while canceling delete of a file</source>
-        <translation type="unfinished"/>
+        <translation>파일 제거를 취소하는 중 오류 발생</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="190"/>
         <source>Error while canceling deletion of %1</source>
-        <translation type="unfinished"/>
+        <translation>%1의 제거를 취소하는 중 오류 발생</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="190"/>
         <source>Error while canceling delete of %1</source>
-        <translation type="unfinished"/>
+        <translation>%1의 제거를 취소하는 중 오류 발생</translation>
     </message>
 </context>
 <context>
@@ -1212,7 +1212,7 @@ OpenSSL 라이브러리 이슈일 수 있습니다.</translation>
         <location filename="../src/gui/creds/flow2auth.cpp" line="118"/>
         <location filename="../src/gui/creds/flow2auth.cpp" line="236"/>
         <source>There was an error accessing the &quot;token&quot; endpoint: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&apos;토큰&apos; 종단점에 액세스하는 중 오류가 발생했습니다: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="121"/>
@@ -1229,7 +1229,7 @@ OpenSSL 라이브러리 이슈일 수 있습니다.</translation>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="221"/>
         <source>The returned server URL does not start with HTTPS despite the login URL started with HTTPS. Login will not be possible because this might be a security issue. Please contact your administrator.</source>
-        <translation type="unfinished"/>
+        <translation>로그인 URL은 HTTPS로 시작되었으나 반환된 서버 URL이 HTTPS로 시작하지 않습니다. 보안 문제일 수 있으므로 로그인할 수 없습니다. 관리자에게 문의하십시오.</translation>
     </message>
 </context>
 <context>
@@ -1519,14 +1519,19 @@ If this was an accident and you decide to keep your files, they will be re-synce
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation type="unfinished"/>
+        <translation>동기화 폴더 &quot;%1&quot;의 모든 파일이 서버에서 삭제되었습니다.
+이러한 삭제는 로컬 동기화 폴더와 동기화되므로 복원할 권한이 없으면 해당 파일을 사용할 수 없습니다.
+파일을 복원하기로 결정한 경우, 파일을 복원할 수 있는 권한이 있으면 파일이 서버와 다시 동기화됩니다.
+파일을 삭제하기로 결정한 경우 소유자가 아닌 한 해당 파일을 사용할 수 없습니다.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1269"/>
         <source>All the files in your local sync folder &quot;%1&quot; were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
-        <translation type="unfinished"/>
+        <translation>동기화 폴더 &quot;%1&quot;의 모든 파일이 삭제되었습니다. 이 삭제는 서버와 동기화되므로 해당 파일을 복원하지 않는 한 사용할 수 없습니다.
+이 동작을 서버와 동기화하시겠습니까?
+이 동작이 우연이고 파일을 유지하고자 할 경우, 서버로부터 재동기화 될 것입니다.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1273"/>
@@ -1587,7 +1592,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="402"/>
         <source>An old sync journal &quot;%1&quot; was found, but could not be removed. Please make sure that no application is currently using it.</source>
-        <translation type="unfinished"/>
+        <translation>오래된 동기화 저널 &quot;%1&quot;을 찾았지만 제거 할 수 없습니다. 현재 사용중인 응용 프로그램이 없는지 확인하십시오.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1250"/>
@@ -1775,12 +1780,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="973"/>
         <source>Checking for changes in remote &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>원격 &quot;%1&quot;의 변경 사항 확인 중</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="977"/>
         <source>Checking for changes in local &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>로컬 &quot;%1&quot;의 변경 사항 확인 중</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="984"/>
@@ -1940,7 +1945,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="184"/>
         <source>Enter the name of the new folder to be created below &quot;%1&quot;:</source>
-        <translation type="unfinished"/>
+        <translation>&quot;%1&quot; 아래에 만들 새 폴더의 이름을 입력하십시오:</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="213"/>
@@ -2256,7 +2261,7 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="111"/>
         <source>Reading from keychain failed with error: &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>키 체인에서 읽는데 오류가 발생했습니다: &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="111"/>
@@ -2299,7 +2304,7 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="40"/>
         <source>This entry is provided by the system at &quot;%1&quot; and cannot be modified in this view.</source>
-        <translation type="unfinished"/>
+        <translation>이 항목은 &quot;%1&quot;의 시스템에서 제공하며 이 항목에서 수정할 수 없습니다.</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="40"/>
@@ -2351,7 +2356,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="94"/>
         <source>Cannot write changes to &quot;%1&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>&quot;%1&quot;에 변경 사항을 쓸 수 없음</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="94"/>
@@ -2374,62 +2379,62 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/invalidfilenamedialog.ui" line="14"/>
         <source>Invalid filename</source>
-        <translation type="unfinished"/>
+        <translation>잘못된 파일 이름</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.ui" line="23"/>
         <source>The file could not be synced because it contains characters which are not allowed on this system.</source>
-        <translation type="unfinished"/>
+        <translation>시스템에서 허용하지 않는 문자가 포함되어 이 파일을 동기화할 수 없습니다.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.ui" line="36"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>오류</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.ui" line="49"/>
         <source>Please enter a new name for the file:</source>
-        <translation type="unfinished"/>
+        <translation>이 파일의 새 이름을 입력하십시오:</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.ui" line="62"/>
         <source>New filename</source>
-        <translation type="unfinished"/>
+        <translation>새 파일 이름</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="85"/>
         <source>Rename file</source>
-        <translation type="unfinished"/>
+        <translation>파일 이름 바꾸기</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="87"/>
         <source>The file %1 could not be synced because the name contains characters which are not allowed on this system.</source>
-        <translation type="unfinished"/>
+        <translation>시스템에서 허용하지 않는 문자가 포함되어 파일 %1을(를) 동기화할 수 없습니다.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="88"/>
         <source>The following characters are not allowed on the system: * &quot; | &amp; ? , ; : \ / ~ &lt; &gt;</source>
-        <translation type="unfinished"/>
+        <translation>이 시스템에서 다음의 문자를 사용할 수 없음: * &quot; | &amp; ? , ; : \ / ~ &lt; &gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="119"/>
         <source>You don&apos;t have the permission to rename this file. Please ask the author of the file to rename it.</source>
-        <translation type="unfinished"/>
+        <translation>이 파일의 이름을 바꿀 권한이 없습니다. 이 파일의 소유자에게 변경을 요청하십시오.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="144"/>
         <source>Filename contains illegal characters: %1</source>
-        <translation type="unfinished"/>
+        <translation>파일 이름에 허용하지 않는 문자가 있음: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="158"/>
         <source>Could not rename file. Please make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>파일 이름을 바꿀 수 없습니다. 서버에 연결되어 있는지 확인하십시오.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="169"/>
         <source>Cannot rename file because a file with the same name does already exist on the server. Please pick another name.</source>
-        <translation type="unfinished"/>
+        <translation>서버에 동일한 이름의 파일이 있어 파일의 이름을 변경할 수 없습니다. 다른 이름을 선택하십시오.</translation>
     </message>
 </context>
 <context>
@@ -2574,7 +2579,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/libsync/logger.cpp" line="151"/>
         <source>&lt;nobr&gt;File &quot;%1&quot;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output &lt;b&gt;cannot&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
-        <translation type="unfinished"/>
+        <translation> 쓰기 위해 &lt;nobr&gt;파일 &apos;%1&apos;&lt;br/&gt;을 열 수 없습니다.&lt;br/&gt;&lt;br/&gt;로그 출력이 &lt;b&gt;저장되지 않습니다!&lt;/b&gt;&lt;/nobr&gt;</translation>
     </message>
 </context>
 <context>
@@ -2618,7 +2623,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="463"/>
         <source>&lt;p&gt;A new version of the %1 Client is available but the updating process failed.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; has been downloaded. The installed version is %3. If you confirm restart and update, your computer may reboot to complete the installation.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt; %1 클라이언트의 새 버전을 사용할 수 있지만, 업데이트 과정에 실패했습니다.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt;을(를) 다운로드 했습니다. 설치된 버전은 %3 입니다. 재시작 후 업데이트를 실행할 경우, 설치를 완료하기 위해 컴퓨터가 재시동할 것입니다.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="477"/>
@@ -2801,12 +2806,12 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="108"/>
         <source>New %1 update ready</source>
-        <translation type="unfinished"/>
+        <translation>새 %1 업데이트 준비됨</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="109"/>
         <source>A new update for %1 is about to be installed. The updater may ask for additional privileges during the process. Your computer may reboot to complete the installation.</source>
-        <translation type="unfinished"/>
+        <translation>새로운 업데이트 %1이(가) 곧 설치될 것입니다. 업데이터가 과정 중 추가 권한을 요청할 수 있습니다. 컴퓨터가 설치를 완료하기 위해 재시동할 수 있습니다.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="143"/>
@@ -2846,12 +2851,12 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="158"/>
         <source>Could not download update. Please open &lt;a href=&apos;%1&apos;&gt;%1&lt;/a&gt; to download the update manually.</source>
-        <translation type="unfinished"/>
+        <translation>업데이트를 다운로드할 수 없습니다. &lt;a href=&apos;%1&apos;&gt;%1&lt;/a&gt;을(를) 열어 수동으로 업데이트를 다운로드 하십시오.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="160"/>
         <source>Could not download update. Please open %1 to download the update manually.</source>
-        <translation>업데이트를 다운로드할 수 없습니다. %1을 열어 수동으로 다운로드 및 업데이트를 하십시오.</translation>
+        <translation>업데이트를 다운로드할 수 없습니다. %1을(를) 열어 수동으로 업데이트를 다운로드 하십시오.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="163"/>
@@ -2861,7 +2866,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="166"/>
         <source>New %1 is available. Please open &lt;a href=&apos;%2&apos;&gt;%2&lt;/a&gt; to download the update.</source>
-        <translation type="unfinished"/>
+        <translation>새 %1을(를) 사용할 수 있습니다. &lt;a href=&apos;%2&apos;&gt;%2&lt;/a&gt;을(를) 열어 업데이트를 다운로드하십시오.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="168"/>
@@ -2952,12 +2957,12 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="265"/>
         <source>%1 folder &quot;%2&quot; is synced to local folder &quot;%3&quot;</source>
-        <translation type="unfinished"/>
+        <translation>%1 폴더 &quot;%2&quot;(이)가 로컬 폴더 &apos;%3&apos;(으)로 동기화되었습니다.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="268"/>
         <source>Sync the folder &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>폴더 &apos;%1&apos; 동기화</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="273"/>
@@ -6379,7 +6384,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/tray/Window.qml" line="720"/>
         <location filename="../src/gui/tray/Window.qml" line="723"/>
         <source>Show more actions</source>
-        <translation>더 많은 활동 보기</translation>
+        <translation>더 많은 동작 보기</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="753"/>
