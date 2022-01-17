@@ -46,16 +46,6 @@ def main(ctx):
             trigger = build_trigger,
         ),
         gui_tests(ctx, trigger = build_trigger, version = "latest"),
-        notification(
-            name = "build",
-            trigger = build_trigger,
-            depends_on = [
-                "check-starlark",
-                "changelog",
-                "clang-debug-ninja",
-                "GUI-tests",
-            ],
-        ),
     ]
     cron_pipelines = [
         # Build client
