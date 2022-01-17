@@ -111,14 +111,12 @@ MenuItem {
                         width: parent.width
                         Label {
                             id: emoji
-                            height: Style.topLinePixelSize
                             visible: model.statusEmoji !== ""
                             text: statusEmoji
                             topPadding: -Style.accountLabelsSpacing
                         }
                         Label {
                             id: message
-                            height: Style.topLinePixelSize
                             width: parent.width - parent.spacing - emoji.width
                             visible: model.statusMessage !== ""
                             text: statusMessage
@@ -169,9 +167,8 @@ MenuItem {
                 y: userMoreButton.y + 1
             }
 
-            Menu {
+            AutoSizingMenu {
                 id: userMoreButtonMenu
-                width: 120
                 closePolicy: Menu.CloseOnPressOutsideParent | Menu.CloseOnEscape
 
                 background: Rectangle {
