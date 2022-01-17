@@ -3,15 +3,51 @@ Changelog for ownCloud Desktop Client [unreleased] (UNRELEASED)
 The following sections list the changes in ownCloud Desktop Client unreleased relevant to
 ownCloud admins and users.
 
-[unreleased]: https://github.com/owncloud/client/compare/v2.9.2...master
+[unreleased]: https://github.com/owncloud/client/compare/v2.10.0...master
+
+Summary
+-------
+
+* Bugfix - Add request time and other missing data to .owncloudsync.log: [#7348](https://github.com/owncloud/client/issues/7348)
+* Bugfix - Fix copy url location for private links: [#9048](https://github.com/owncloud/client/issues/9048)
+* Change - Make sharedialog preview be more resilient: [#8938](https://github.com/owncloud/client/issues/8938)
+
+Details
+-------
+
+* Bugfix - Add request time and other missing data to .owncloudsync.log: [#7348](https://github.com/owncloud/client/issues/7348)
+
+   Some parameters were missing for some operations. This fix makes the log more complete and more
+   useful as a result.
+
+   https://github.com/owncloud/client/issues/7348
+
+* Bugfix - Fix copy url location for private links: [#9048](https://github.com/owncloud/client/issues/9048)
+
+   We fixed a bug where a placholder was copied to the clipboard instead of the url.
+
+   https://github.com/owncloud/client/issues/9048
+
+* Change - Make sharedialog preview be more resilient: [#8938](https://github.com/owncloud/client/issues/8938)
+
+   We no longer enforce png thumbnails. We no longer replace the file icon if the thumbnail is
+   invalid.
+
+   https://github.com/owncloud/client/issues/8938
+   https://github.com/owncloud/client/pull/8939
+
+Changelog for ownCloud Desktop Client [2.10.0] (2022-01-17)
+=======================================
+The following sections list the changes in ownCloud Desktop Client 2.10.0 relevant to
+ownCloud admins and users.
+
+[2.10.0]: https://github.com/owncloud/client/compare/v2.9.2...v2.10.0
 
 Summary
 -------
 
 * Bugfix - Issues with long file path: [#4896](https://github.com/owncloud/enterprise/issues/4896)
-* Bugfix - Add request time and other missing data to .owncloudsync.log: [#7348](https://github.com/owncloud/client/issues/7348)
 * Bugfix - Do not ask for credentails at start-up when the user logged out: [#8924](https://github.com/owncloud/client/issues/8924)
-* Bugfix - Fix copy url location for private links: [#9048](https://github.com/owncloud/client/issues/9048)
 * Bugfix - A folder moved on the server was displayed as outdated: [#9071](https://github.com/owncloud/client/issues/9071)
 * Bugfix - Immediately propagate changes to the ignore list: [#8975](https://github.com/owncloud/client/issues/8975)
 * Bugfix - Fix icon name in desktop file with ownBrander themes: [#8992](https://github.com/owncloud/client/issues/8992)
@@ -26,7 +62,7 @@ Summary
 * Bugfix - Run a full local discovery after we where paused or on a forced sync: [#9341](https://github.com/owncloud/client/issues/9341)
 * Bugfix - Infinite sync loop if folder is locked: [#9342](https://github.com/owncloud/client/issues/9342)
 * Bugfix - We fixed a possible crash: [#13](https://github.com/owncloud/client-desktop-vfs-win/pull/13)
-* Change - Make sharedialog preview be more resilient: [#8938](https://github.com/owncloud/client/issues/8938)
+* Enhancement - Reintroduce issue filtering: [#9000](https://github.com/owncloud/client/issues/9000)
 * Enhancement - Allow to remove broken sync folders: [#9099](https://github.com/owncloud/client/pull/9099)
 * Enhancement - Also ignore local reapeating errors for a period of time: [#9208](https://github.com/owncloud/client/issues/9208)
 * Enhancement - Remove the availability menu from the ui: [#9291](https://github.com/owncloud/client/pull/9291)
@@ -41,13 +77,6 @@ Details
 
    https://github.com/owncloud/enterprise/issues/4896
 
-* Bugfix - Add request time and other missing data to .owncloudsync.log: [#7348](https://github.com/owncloud/client/issues/7348)
-
-   Some parameters were missing for some operations. This fix makes the log more complete and more
-   useful as a result.
-
-   https://github.com/owncloud/client/issues/7348
-
 * Bugfix - Do not ask for credentails at start-up when the user logged out: [#8924](https://github.com/owncloud/client/issues/8924)
 
    When a user would logout, and quit the client, then on the next start the client would
@@ -55,12 +84,6 @@ Details
    out before in the account settings.
 
    https://github.com/owncloud/client/issues/8924
-
-* Bugfix - Fix copy url location for private links: [#9048](https://github.com/owncloud/client/issues/9048)
-
-   We fixed a bug where a placholder was copied to the clipboard instead of the url.
-
-   https://github.com/owncloud/client/issues/9048
 
 * Bugfix - A folder moved on the server was displayed as outdated: [#9071](https://github.com/owncloud/client/issues/9071)
 
@@ -169,13 +192,13 @@ Details
 
    https://github.com/owncloud/client-desktop-vfs-win/pull/13
 
-* Change - Make sharedialog preview be more resilient: [#8938](https://github.com/owncloud/client/issues/8938)
+* Enhancement - Reintroduce issue filtering: [#9000](https://github.com/owncloud/client/issues/9000)
 
-   We no longer enforce png thumbnails. We no longer replace the file icon if the thumbnail is
-   invalid.
+   We reintroduced a filtering option to the issue table. With the addition of a Filter button we
+   also made the existing filter by account feature more accessible.
 
-   https://github.com/owncloud/client/issues/8938
-   https://github.com/owncloud/client/pull/8939
+   https://github.com/owncloud/client/issues/9000
+   https://github.com/owncloud/client/pull/9023
 
 * Enhancement - Allow to remove broken sync folders: [#9099](https://github.com/owncloud/client/pull/9099)
 
