@@ -424,17 +424,20 @@ void AccountState::slotConnectionValidatorResult(ConnectionValidator::Status sta
 void AccountState::slotInvalidCredentials()
 {
     if (!_waitingForNewCredentials) {
-        qCInfo(lcAccountState) << "Invalid credentials for" << _account->url().toString()
-                               << "asking user";
+        qCInfo(lcAccountState) << "Invalid credentials for" << _account->url().toString();
 
         _waitingForNewCredentials = true;
         if (account()->credentials()->ready()) {
             account()->credentials()->invalidateToken();
         }
         if (auto creds = qobject_cast<HttpCredentials *>(account()->credentials())) {
-            if (creds->refreshAccessToken())
+            qCInfo(lcAccountState) << "refreshing oauth";
+            if (creds->refreshAccessToken()) {
                 return;
+            }
+            qCInfo(lcAccountState) << "refreshing oauth failed";
         }
+        qCInfo(lcAccountState) << "asking user";
         account()->credentials()->askFromUser();
     }
     setState(AskingCredentials);
