@@ -1,0 +1,7 @@
+Enhancement: Reintroduce issue filtering
+
+We reintroduced a filtering option to the issue table.
+With the addition of a Filter button we also made the existing filter by account feature more accessible.
+
+https://github.com/owncloud/client/issues/9000
+https://github.com/owncloud/client/pull/9023
