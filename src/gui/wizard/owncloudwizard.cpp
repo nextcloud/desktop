@@ -80,7 +80,6 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
     // welcome text is to be shown or not.
     setWizardStyle(QWizard::ModernStyle);
 
-    connect(this, &QWizard::currentIdChanged, this, &OwncloudWizard::slotCurrentPageChanged);
     connect(_setupPage, &OwncloudSetupPage::determineAuthType, this, &OwncloudWizard::determineAuthType);
     connect(_httpCredsPage, &OwncloudHttpCredsPage::connectToOCUrl, this, &OwncloudWizard::connectToOCUrl);
     connect(_oauthCredsPage, &OwncloudOAuthCredsPage::connectToOCUrl, this, &OwncloudWizard::connectToOCUrl);
@@ -215,15 +214,6 @@ void OwncloudWizard::setAuthType(DetermineAuthTypeJob::AuthType type)
     next();
 }
 
-// TODO: update this function
-void OwncloudWizard::slotCurrentPageChanged(int id)
-{
-    qCDebug(lcWizard) << "Current Wizard page changed to " << id;
-
-    if (id == WizardCommon::Page_ServerSetup) {
-        emit clearPendingRequests();
-    }
-}
 
 void OwncloudWizard::displayError(const QString &msg)
 {
