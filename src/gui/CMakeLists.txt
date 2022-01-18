@@ -6,8 +6,6 @@ if (WIN32)
     find_package(Qt5 REQUIRED COMPONENTS WinExtras)
 endif()
 
-add_subdirectory(updater)
-
 set(client_UI_SRCS
     aboutdialog.ui
     accountsettings.ui
@@ -149,13 +147,6 @@ target_include_directories(owncloudCore PUBLIC
     ${CMAKE_CURRENT_BINARY_DIR}
 )
 
-
-target_sources(owncloudCore PRIVATE
-    updater/ocupdater.cpp
-    updater/updateinfo.cpp
-    updater/updater.cpp
-)
-
 IF( APPLE )
     find_package(Qt5 COMPONENTS MacExtras)
     target_link_libraries(owncloudCore PUBLIC Qt5::MacExtras)
@@ -166,15 +157,6 @@ IF( APPLE )
             settingsdialog_mac.mm
             guiutility_mac.mm
             folderwatcher_mac.cpp)
-
-    if(SPARKLE_FOUND)
-        # Define this, we need to check in updater.cpp
-        target_compile_definitions(owncloudCore PUBLIC HAVE_SPARKLE)
-        target_sources(owncloudCore PRIVATE
-            updater/sparkleupdater_mac.mm
-            updater/sparkleupdater.h)
-        target_link_libraries(owncloudCore PRIVATE ${SPARKLE_LIBRARY})
-   endif()
 elseif( WIN32 )
     target_sources(owncloudCore PRIVATE
             platform_win.cpp
@@ -194,6 +176,8 @@ elseif(UNIX AND NOT APPLE )
             platform_unix.cpp
             guiutility_unix.cpp)
 endif()
+
+add_subdirectory(updater)
 
 
 if(WITH_CRASHREPORTER)
