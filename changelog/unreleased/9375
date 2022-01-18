@@ -1,0 +1,5 @@
+Bugfix: Raise ssl issue dialoig above the wizard
+
+Under certain conditions it was possible that the ssl dialog was hidden behind the wizard.
+
+https://github.com/owncloud/client/pull/9375

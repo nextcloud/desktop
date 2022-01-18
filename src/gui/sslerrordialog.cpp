@@ -11,8 +11,11 @@
  * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
  * for more details.
  */
-#include "configfile.h"
 #include "sslerrordialog.h"
+#include "application.h"
+#include "configfile.h"
+#include "owncloudgui.h"
+#include "settingsdialog.h"
 
 #include <QtGui>
 #include <QtNetwork>
@@ -34,13 +37,18 @@ bool SslDialogErrorHandler::handleErrors(const QList<QSslError> &errors, const Q
 {
     Q_ASSERT(certs);
 
-    SslErrorDialog dlg(account);
+    SslErrorDialog dlg(account, ocApp()->gui()->settingsDialog());
     // whether the failing certs have previously been accepted
     if (dlg.checkFailingCertsKnown(errors)) {
         *certs = dlg.unknownCerts();
         return true;
     }
     // whether the user accepted the certs
+    // if we do that before we call exec it is executed on the wrong loop
+    // TODO: make the ssl handling asynchronous
+    QTimer::singleShot(0, &dlg, [&dlg] {
+        ocApp()->gui()->raiseDialog(&dlg);
+    });
     if (dlg.exec() == QDialog::Accepted) {
         if (dlg.trustConnection()) {
             *certs = dlg.unknownCerts();
