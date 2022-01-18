@@ -45,6 +45,7 @@ __TODO__: [patch_release_template.md](https://github.com/owncloud/client/blob/ma
 
 ### Final Rebuild after QA Approval
 
+* [ ] QA: Inform on ``#documentation-internal`` that the tag for the final release will be set a day or at least some hours before (only for a major/minor release)
 * [ ] DEV: Tag and build [builds](https://confluence.owncloud.com/display/OG/Build+and+Tags#BuildandTags-Sprintbuild) for theme 'ownCloud' and 'testpilotcloud' for final build 
      * [ ] TODO: create confluence page with info about final DEV release steps [WIP: Final release steps](https://confluence.owncloud.com/display/OG/WIP%3A+Final+release+steps+-+check+outdated+pages+first)
 * [ ] DEV: Adjust [Linux Templates](https://confluence.owncloud.com/display/OG/Branching+Off#BranchingOff-Linuxtemplates) to support the next patch release version (e.g. 2.9.1) @dschmidt @fmoc
