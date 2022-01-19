@@ -22,5 +22,6 @@ Icon=@APPLICATION_EXECUTABLE@
 
 # Translations
 Icon[sv]=@APPLICATION_ICON_NAME@
+Name[sv]=@APPLICATION_NAME@ Skrivbord
 Comment[sv]=@APPLICATION_NAME@ desktopssynkroniseringsklient
 GenericName[sv]=Mappsynkronisering
