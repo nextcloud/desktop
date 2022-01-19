@@ -120,6 +120,12 @@ if(BUILD_CLIENT)
         find_package(Sparkle REQUIRED)
     endif(APPLE)
 
+    option(WITH_APPIMAGEUPDATER OFF "Enable built-in libappimageupdate based updater on Linux")
+    add_feature_info(AppImageUpdate WITH_APPIMAGEUPDATER "Built-in libappimageupdate based updater")
+    if(WITH_APPIMAGEUPDATER)
+        find_package(AppImageUpdate REQUIRED)
+    endif()
+
     if(UNIX AND NOT APPLE)
         find_package(Inotify REQUIRED)
     endif()

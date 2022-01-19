@@ -20,6 +20,10 @@
 #include "updater/sparkleupdater.h"
 #include "updater/ocupdater.h"
 
+#ifdef WITH_APPIMAGEUPDATER
+#include "updater/appimageupdater.h"
+#endif
+
 #include "common/utility.h"
 #include "common/version.h"
 #include "configfile.h"
@@ -72,7 +76,15 @@ QUrlQuery Updater::getQueryParams()
     Theme *theme = Theme::instance();
     QString platform = QStringLiteral("stranger");
     if (Utility::isLinux()) {
-        platform = QStringLiteral("linux");
+#ifdef WITH_APPIMAGEUPDATER
+        if (Utility::runningInAppImage()) {
+            platform = "linux-appimage-" + QSysInfo::buildCpuArchitecture();
+        } else {
+#endif
+            platform = QStringLiteral("linux");
+#ifdef WITH_APPIMAGEUPDATER
+        }
+#endif
     } else if (Utility::isBSD()) {
         platform = QStringLiteral("bsd");
     } else if (Utility::isWindows()) {
@@ -135,6 +147,12 @@ Updater *Updater::create()
     // Also for MSI
     return new NSISUpdater(url);
 #else
+#ifdef WITH_APPIMAGEUPDATER
+    if (Utility::runningInAppImage()) {
+        return new AppImageUpdater(url);
+    }
+#endif
+
     // the best we can do is notify about updates
     return new PassiveUpdateNotifier(url);
 #endif
