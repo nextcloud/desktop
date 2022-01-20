@@ -38,8 +38,8 @@ MouseArea {
     ColumnLayout {
         anchors.left: root.left
         anchors.right: root.right
-        anchors.leftMargin: 15
         anchors.rightMargin: 10
+        anchors.leftMargin: 10
 
         spacing: 0
 
