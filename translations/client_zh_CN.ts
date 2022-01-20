@@ -3924,67 +3924,67 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>总是信任该证书</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="61"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="69"/>
         <source>Untrusted Certificate</source>
         <translation>不被信任的证书</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="128"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="136"/>
         <source>Cannot connect securely to &lt;i&gt;%1&lt;/i&gt;:</source>
         <translation>无法安全连接到 &lt;i&gt;%1&lt;/i&gt;: </translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="162"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="170"/>
         <source>with Certificate %1</source>
         <translation>使用证书 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="171"/>
-        <location filename="../src/gui/sslerrordialog.cpp" line="173"/>
-        <location filename="../src/gui/sslerrordialog.cpp" line="175"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="179"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="181"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="183"/>
         <source>&amp;lt;not specified&amp;gt;</source>
         <translation>&amp;lt;未指定&amp;gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="176"/>
-        <location filename="../src/gui/sslerrordialog.cpp" line="196"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="184"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="204"/>
         <source>Organization: %1</source>
         <translation>组织：%1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="177"/>
-        <location filename="../src/gui/sslerrordialog.cpp" line="197"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="185"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="205"/>
         <source>Unit: %1</source>
         <translation>单位：%1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="178"/>
-        <location filename="../src/gui/sslerrordialog.cpp" line="198"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="186"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="206"/>
         <source>Country: %1</source>
         <translation>国家: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="185"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="193"/>
         <source>Fingerprint (MD5): &lt;tt&gt;%1&lt;/tt&gt;</source>
         <translation>MD5指纹: &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="186"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="194"/>
         <source>Fingerprint (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</source>
         <translation>SHA1指纹: &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="188"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="196"/>
         <source>Effective Date: %1</source>
         <translation>有效日期：%1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="189"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="197"/>
         <source>Expiration Date: %1</source>
         <translation>过期日期：%1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="193"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="201"/>
         <source>Issuer: %1</source>
         <translation>签发人：%1</translation>
     </message>

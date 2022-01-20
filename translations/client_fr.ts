@@ -3946,67 +3946,67 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
         <translation>Faire confiance à ce certificat malgré tout</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="61"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="69"/>
         <source>Untrusted Certificate</source>
         <translation>Certificat non fiable</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="128"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="136"/>
         <source>Cannot connect securely to &lt;i&gt;%1&lt;/i&gt;:</source>
         <translation>Impossible de se connecter de manière sécurisée à &lt;i&gt;%1&lt;/i&gt; :</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="162"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="170"/>
         <source>with Certificate %1</source>
         <translation>avec certificat %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="171"/>
-        <location filename="../src/gui/sslerrordialog.cpp" line="173"/>
-        <location filename="../src/gui/sslerrordialog.cpp" line="175"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="179"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="181"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="183"/>
         <source>&amp;lt;not specified&amp;gt;</source>
         <translation>&amp;lt;non spécifié&amp;gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="176"/>
-        <location filename="../src/gui/sslerrordialog.cpp" line="196"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="184"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="204"/>
         <source>Organization: %1</source>
         <translation>Organisation : %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="177"/>
-        <location filename="../src/gui/sslerrordialog.cpp" line="197"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="185"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="205"/>
         <source>Unit: %1</source>
         <translation>Unité : %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="178"/>
-        <location filename="../src/gui/sslerrordialog.cpp" line="198"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="186"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="206"/>
         <source>Country: %1</source>
         <translation>Pays : %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="185"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="193"/>
         <source>Fingerprint (MD5): &lt;tt&gt;%1&lt;/tt&gt;</source>
         <translation>Empreinte (MD5) : &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="186"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="194"/>
         <source>Fingerprint (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</source>
         <translation>Empreinte (SHA1) : &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="188"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="196"/>
         <source>Effective Date: %1</source>
         <translation>Date de début de validité : %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="189"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="197"/>
         <source>Expiration Date: %1</source>
         <translation>Date d&apos;expiration : %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="193"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="201"/>
         <source>Issuer: %1</source>
         <translation>Émetteur : %1</translation>
     </message>

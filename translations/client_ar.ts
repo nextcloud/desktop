@@ -3944,67 +3944,67 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>الوثوق في هذه الشهادة على أي حال</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="61"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="69"/>
         <source>Untrusted Certificate</source>
         <translation>شهادة غير موثوقة</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="128"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="136"/>
         <source>Cannot connect securely to &lt;i&gt;%1&lt;/i&gt;:</source>
         <translation>تعذر الاتصال بـ &lt;i&gt;%1&lt;/i&gt; بأمان:</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="162"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="170"/>
         <source>with Certificate %1</source>
         <translation>مع شهادة %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="171"/>
-        <location filename="../src/gui/sslerrordialog.cpp" line="173"/>
-        <location filename="../src/gui/sslerrordialog.cpp" line="175"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="179"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="181"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="183"/>
         <source>&amp;lt;not specified&amp;gt;</source>
         <translation>غير محدد؛</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="176"/>
-        <location filename="../src/gui/sslerrordialog.cpp" line="196"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="184"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="204"/>
         <source>Organization: %1</source>
         <translation>المؤسسة: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="177"/>
-        <location filename="../src/gui/sslerrordialog.cpp" line="197"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="185"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="205"/>
         <source>Unit: %1</source>
         <translation>الوحدة: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="178"/>
-        <location filename="../src/gui/sslerrordialog.cpp" line="198"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="186"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="206"/>
         <source>Country: %1</source>
         <translation>البلد: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="185"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="193"/>
         <source>Fingerprint (MD5): &lt;tt&gt;%1&lt;/tt&gt;</source>
         <translation>بصمة الإصبع (MD5): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="186"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="194"/>
         <source>Fingerprint (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</source>
         <translation>بصمة الإصبع (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="188"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="196"/>
         <source>Effective Date: %1</source>
         <translation>تاريخ السريان: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="189"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="197"/>
         <source>Expiration Date: %1</source>
         <translation>تاريخ انتهاء الصلاحية: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="193"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="201"/>
         <source>Issuer: %1</source>
         <translation>المُصدِّر: %1</translation>
     </message>
