@@ -12,12 +12,18 @@
  * for more details.
  */
 
+#include <QMessageBox>
 #include <QTimer>
 #include <appimage/update.h>
 #include <chrono>
 
 #include "appimageupdater.h"
 #include "common/version.h"
+#include "theme.h"
+#include "settingsdialog.h"
+
+#include "appimageupdateavailabledialog.h"
+#include "application.h"
 
 using namespace OCC;
 using namespace std::chrono_literals;
@@ -123,38 +129,54 @@ bool AppImageUpdater::handleStartup()
 
 void AppImageUpdater::versionInfoArrived(const UpdateInfo &info)
 {
-    if (info.version().isEmpty() || Version::versionWithBuildNumber() >= QVersionNumber::fromString(info.version())) {
+    const auto &currentVersion = Version::versionWithBuildNumber();
+    const auto newVersion = QVersionNumber::fromString(info.version());
+
+    if (info.version().isEmpty() || currentVersion >= newVersion) {
         qCInfo(lcUpdater) << "Client is on latest version!";
         setDownloadState(UpToDate);
         return;
     }
 
-    const auto AppImageUpdaterShim = AppImageUpdaterShim::makeInstance(info.downloadUrl(), this);
+    const auto appImageUpdaterShim = AppImageUpdaterShim::makeInstance(info.downloadUrl(), this);
 
-    if (AppImageUpdaterShim == nullptr) {
+    if (appImageUpdaterShim == nullptr) {
         setDownloadState(DownloadFailed);
         return;
     }
 
-    if (!AppImageUpdaterShim->isUpdateAvailable()) {
+    if (!appImageUpdaterShim->isUpdateAvailable()) {
         qCCritical(lcUpdater) << "Update server reported that update is available, but AppImageUpdate disagrees, aborting";
         setDownloadState(DownloadFailed);
         return;
     }
 
-    // binding AppImageUpdaterShim shared pointer to finished callback makes sure the updater is cleaned up when it's done
-    connect(AppImageUpdaterShim, &AppImageUpdaterShim::finished, this, [this](bool succeeded) {
-        if (succeeded) {
-            qCInfo(lcUpdater) << "AppImage update complete";
-            setDownloadState(DownloadComplete);
-        } else {
-            qCInfo(lcUpdater) << "AppImage update failed";
-            setDownloadState(DownloadFailed);
-        }
+    auto dialog = new Ui::AppImageUpdateAvailableDialog(currentVersion, newVersion, ocApp()->gui()->settingsDialog());
+
+    connect(dialog, &Ui::AppImageUpdateAvailableDialog::skipUpdateButtonClicked, this, [this]() {
+        qCInfo(lcUpdater) << "Update skipped by user";
+
+        // TODO: remember this setting
     });
 
-    setDownloadState(Downloading);
-    AppImageUpdaterShim->startUpdateInBackground();
+    connect(dialog, &QDialog::accepted, this, [this, appImageUpdaterShim]() {
+        // binding AppImageUpdaterShim shared pointer to finished callback makes sure the updater is cleaned up when it's done
+        connect(appImageUpdaterShim, &AppImageUpdaterShim::finished, this, [this](bool succeeded) {
+            if (succeeded) {
+                qCInfo(lcUpdater) << "AppImage update complete";
+                setDownloadState(DownloadComplete);
+            } else {
+                qCInfo(lcUpdater) << "AppImage update failed";
+                setDownloadState(DownloadFailed);
+            }
+        });
+
+        setDownloadState(Downloading);
+        appImageUpdaterShim->startUpdateInBackground();
+    });
+
+    dialog->show();
+    ownCloudGui::raiseDialog(dialog);
 }
 
 void AppImageUpdater::backgroundCheckForUpdate()

@@ -12,7 +12,10 @@
         <file alias="resources/light/quit.svg">resources/font-awesome/light/power-off-solid.svg</file>
         <file alias="resources/light/plus-solid.svg">resources/font-awesome/light/plus-solid.svg</file>
         <file alias="resources/light/warning.svg">resources/font-awesome/light/exclamation-triangle-solid.svg</file>
-        
+        <file alias="resources/light/ban.svg">resources/font-awesome/dark/ban-solid.svg</file>
+        <file alias="resources/light/check.svg">resources/font-awesome/dark/check-solid.svg</file>
+        <file alias="resources/light/step-forward.svg">resources/font-awesome/dark/step-forward-solid.svg</file>
+
         <file alias="resources/dark/folder-sync.svg">resources/font-awesome/dark/folder-solid.svg</file>
         <file alias="resources/dark/settings.svg">resources/font-awesome/dark/cog-solid.svg</file>
         <file alias="resources/dark/activity.svg">resources/font-awesome/dark/bolt-solid.svg</file>
@@ -25,5 +28,8 @@
         <file alias="resources/dark/quit.svg">resources/font-awesome/dark/power-off-solid.svg</file>
         <file alias="resources/dark/plus-solid.svg">resources/font-awesome/dark/plus-solid.svg</file>
         <file alias="resources/dark/warning.svg">resources/font-awesome/dark/exclamation-triangle-solid.svg</file>
+        <file alias="resources/dark/ban.svg">resources/font-awesome/dark/ban-solid.svg</file>
+        <file alias="resources/dark/check.svg">resources/font-awesome/dark/check-solid.svg</file>
+        <file alias="resources/dark/step-forward.svg">resources/font-awesome/dark/step-forward-solid.svg</file>
     </qresource>
 </RCC>
