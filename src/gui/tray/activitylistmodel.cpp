@@ -74,6 +74,7 @@ QHash<int, QByteArray> ActivityListModel::roleNames() const
     roles[DisplayActions] = "displayActions";
     roles[ShareableRole] = "isShareable";
     roles[IsCurrentUserFileActivityRole] = "isCurrentUserFileActivity";
+    roles[ThumbnailRole] = "thumbnail";
     return roles;
 }
 
@@ -175,6 +176,18 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
         return displayPath == "." || displayPath == "/" ? QString() : displayPath;
     };
 
+    const auto generatePreviewMap = [](const PreviewData &preview) {
+        return(QVariantMap {
+            {QStringLiteral("source"), QStringLiteral("image://tray-image-provider/").append(preview._source)},
+               {QStringLiteral("link"), preview._link},
+               {QStringLiteral("mimeType"), preview._mimeType},
+               {QStringLiteral("fileId"), preview._fileId},
+               {QStringLiteral("view"), preview._view},
+               {QStringLiteral("isMimeTypeIcon"), preview._isMimeTypeIcon},
+               {QStringLiteral("filename"), preview._filename},
+        });
+    };
+
     switch (role) {
     case DisplayPathRole:
         return getDisplayPath();
@@ -220,11 +233,14 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
             } else {
                 // File sync successful
                 if (a._fileAction == "file_created") {
-                    return "qrc:///client/theme/colored/add.svg";
+                    return a._previews.empty() ? "qrc:///client/theme/colored/add.svg"
+                                               : "qrc:///client/theme/colored/add-bordered.svg";
                 } else if (a._fileAction == "file_deleted") {
-                    return "qrc:///client/theme/colored/delete.svg";
+                    return a._previews.empty() ? "qrc:///client/theme/colored/delete.svg"
+                                               : "qrc:///client/theme/colored/delete-bordered.svg";
                 } else {
-                    return "qrc:///client/theme/change.svg";
+                    return a._previews.empty() ? "qrc:///client/theme/change.svg"
+                                               : "qrc:///client/theme/colored/change-bordered.svg";
                 }
             }
         } else {
@@ -286,6 +302,14 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
         return !data(index, PathRole).toString().isEmpty() && a._objectType == QStringLiteral("files") && _displayActions && a._fileAction != "file_deleted" && a._status != SyncFileItem::FileIgnored;
     case IsCurrentUserFileActivityRole:
         return a._isCurrentUserFileActivity;
+    case ThumbnailRole: {
+        if(a._previews.empty()) {
+            return {};
+        }
+
+        const auto preview = a._previews[0];
+        return(generatePreviewMap(preview));
+    }
     default:
         return QVariant();
     }
@@ -324,6 +348,7 @@ void ActivityListModel::startFetchJob()
         this, &ActivityListModel::activitiesReceived);
 
     QUrlQuery params;
+    params.addQueryItem(QLatin1String("previews"), QLatin1String("true"));
     params.addQueryItem(QLatin1String("since"), QString::number(_currentItem));
     params.addQueryItem(QLatin1String("limit"), QString::number(50));
     job->addQueryParams(params);
@@ -348,80 +373,17 @@ int ActivityListModel::currentItem() const
     return _currentItem;
 }
 
-void ActivityListModel::activitiesReceived(const QJsonDocument &json, int statusCode)
+void ActivityListModel::ingestActivities(const QJsonArray &activities)
 {
-    auto activities = json.object().value("ocs").toObject().value("data").toArray();
-
     ActivityList list;
-    auto ast = _accountState;
-    if (!ast) {
-        return;
-    }
-
-    if (activities.size() == 0) {
-        _doneFetching = true;
-    }
-
-    _currentlyFetching = false;
 
     QDateTime oldestDate = QDateTime::currentDateTime();
     oldestDate = oldestDate.addDays(_maxActivitiesDays * -1);
 
-    foreach (auto activ, activities) {
-        auto json = activ.toObject();
+    for (const auto &activ : activities) {
+        const auto json = activ.toObject();
 
-        Activity a;
-        const auto activityUser = json.value(QStringLiteral("user")).toString();
-        a._type = Activity::ActivityType;
-        a._objectType = json.value(QStringLiteral("object_type")).toString();
-        a._objectId = json.value(QStringLiteral("object_id")).toInt();
-        a._objectName = json.value(QStringLiteral("object_name")).toString();
-        a._accName = ast->account()->displayName();
-        a._id = json.value(QStringLiteral("activity_id")).toInt();
-        a._fileAction = json.value(QStringLiteral("type")).toString();
-        a._subject = json.value(QStringLiteral("subject")).toString();
-        a._message = json.value(QStringLiteral("message")).toString();
-        a._file = json.value(QStringLiteral("object_name")).toString();
-        a._link = QUrl(json.value(QStringLiteral("link")).toString());
-        a._dateTime = QDateTime::fromString(json.value(QStringLiteral("datetime")).toString(), Qt::ISODate);
-        a._icon = json.value(QStringLiteral("icon")).toString();
-        a._isCurrentUserFileActivity = a._objectType == QStringLiteral("files") && activityUser == ast->account()->davUser();
-
-        auto richSubjectData = json.value(QStringLiteral("subject_rich")).toArray();
-
-        if(richSubjectData.size() > 1) {
-            a._subjectRich = richSubjectData[0].toString();
-            auto parameters = richSubjectData[1].toObject();
-            const QRegularExpression subjectRichParameterRe(QStringLiteral("({[a-zA-Z0-9]*})"));
-            const QRegularExpression subjectRichParameterBracesRe(QStringLiteral("[{}]"));
-
-            for (auto i = parameters.begin(); i != parameters.end(); ++i) {
-                const auto parameterJsonObject = i.value().toObject();
-                const Activity::RichSubjectParameter parameter = {
-                    parameterJsonObject.value(QStringLiteral("type")).toString(),
-                    parameterJsonObject.value(QStringLiteral("id")).toString(),
-                    parameterJsonObject.value(QStringLiteral("name")).toString(),
-                    parameterJsonObject.contains(QStringLiteral("path")) ? parameterJsonObject.value(QStringLiteral("path")).toString() : QString(),
-                    parameterJsonObject.contains(QStringLiteral("link")) ? QUrl(parameterJsonObject.value(QStringLiteral("link")).toString()) : QUrl(),
-                };
-
-                a._subjectRichParameters[i.key()] = parameter;
-            }
-
-            auto displayString = a._subjectRich;
-            auto i = subjectRichParameterRe.globalMatch(displayString);
-
-            while (i.hasNext()) {
-                const auto match = i.next();
-                auto word = match.captured(1);
-                word.remove(subjectRichParameterBracesRe);
-
-                Q_ASSERT(a._subjectRichParameters.contains(word));
-                displayString = displayString.replace(match.captured(1), a._subjectRichParameters[word].name);
-            }
-
-            a._subjectDisplay = displayString;
-        }
+        const auto a = Activity::fromActivityJson(json, _accountState->account());
 
         list.append(a);
         _currentItem = list.last()._id;
@@ -436,6 +398,23 @@ void ActivityListModel::activitiesReceived(const QJsonDocument &json, int status
     }
 
     _activityLists.append(list);
+}
+
+void ActivityListModel::activitiesReceived(const QJsonDocument &json, int statusCode)
+{
+    const auto activities = json.object().value(QStringLiteral("ocs")).toObject().value(QStringLiteral("data")).toArray();
+
+    if (!_accountState) {
+        return;
+    }
+
+    if (activities.empty()) {
+        _doneFetching = true;
+    }
+
+    _currentlyFetching = false;
+
+    ingestActivities(activities);
 
     combineActivityLists();
 

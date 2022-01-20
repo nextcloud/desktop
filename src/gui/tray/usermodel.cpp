@@ -16,6 +16,7 @@
 #include "tray/notificationcache.h"
 #include "tray/unifiedsearchresultslistmodel.h"
 #include "userstatusconnector.h"
+#include "thumbnailjob.h"
 
 #include <QDesktopServices>
 #include <QIcon>
@@ -499,50 +500,88 @@ bool User::isUnsolvableConflict(const SyncFileItemPtr &item) const
 
 void User::processCompletedSyncItem(const Folder *folder, const SyncFileItemPtr &item)
 {
+    const auto fileActionFromInstruction = [](const int instruction) {
+        if (instruction == CSYNC_INSTRUCTION_REMOVE) {
+            return QStringLiteral("file_deleted");
+        } else if (instruction == CSYNC_INSTRUCTION_NEW) {
+            return QStringLiteral("file_created");
+        } else if (instruction == CSYNC_INSTRUCTION_RENAME) {
+            return QStringLiteral("file_renamed");
+        } else {
+            return QStringLiteral("file_changed");
+        }
+    };
+
+    const auto messageFromFileAction = [](const QString &fileAction, const QString &fileName) {
+        if (fileAction == QStringLiteral("file_renamed")) {
+            return QObject::tr("You renamed %1").arg(fileName);
+        } else if (fileAction == QStringLiteral("file_deleted")) {
+            return QObject:: tr("You deleted %1").arg(fileName);
+        } else if (fileAction == QStringLiteral("file_created")) {
+            return QObject::tr("You created %1").arg(fileName);
+        } else {
+            return QObject::tr("You changed %1").arg(fileName);
+        }
+    };
+
     Activity activity;
     activity._type = Activity::SyncFileItemType; //client activity
     activity._status = item->_status;
     activity._dateTime = QDateTime::currentDateTime();
     activity._message = item->_originalFile;
-    activity._link = folder->accountState()->account()->url();
-    activity._accName = folder->accountState()->account()->displayName();
+    activity._link = account()->url();
+    activity._accName = account()->displayName();
     activity._file = item->_file;
     activity._folder = folder->alias();
     activity._fileAction = "";
-    activity._objectId = item->_fileId.toInt();
-    activity._objectName = item->_file;
 
     const auto fileName = QFileInfo(item->_originalFile).fileName();
 
-    if (item->_instruction == CSYNC_INSTRUCTION_REMOVE) {
-        activity._fileAction = "file_deleted";
-    } else if (item->_instruction == CSYNC_INSTRUCTION_NEW) {
-        activity._fileAction = "file_created";
-    } else if (item->_instruction == CSYNC_INSTRUCTION_RENAME) {
-        activity._fileAction = "file_renamed";
-        activity._renamedFile = item->_renameTarget;
-    } else {
-        activity._fileAction = "file_changed";
-    }
+    activity._fileAction = fileActionFromInstruction(item->_instruction);
 
     if (item->_status == SyncFileItem::NoStatus || item->_status == SyncFileItem::Success) {
         qCWarning(lcActivity) << "Item " << item->_file << " retrieved successfully.";
 
         if (item->_direction != SyncFileItem::Up) {
-            activity._message = tr("Synced %1").arg(fileName);
-        } else if (activity._fileAction == "file_renamed") {
-            activity._message = tr("You renamed %1").arg(fileName);
-        } else if (activity._fileAction == "file_deleted") {
-            activity._message = tr("You deleted %1").arg(fileName);
-        } else if (activity._fileAction == "file_created") {
-            activity._message = tr("You created %1").arg(fileName);
+            activity._message = QObject::tr("Synced %1").arg(fileName);
         } else {
-            activity._message = tr("You changed %1").arg(fileName);
+            activity._message = messageFromFileAction(activity._fileAction, fileName);
+        }
+
+        if(activity._fileAction != "file_deleted") {
+            auto remotePath = folder->remotePath();
+            remotePath.append(activity._fileAction == "file_renamed" ? item->_renameTarget : activity._file);
+
+            const auto localFiles = FolderMan::instance()->findFileInLocalFolders(item->_file, account());
+            if (!localFiles.isEmpty()) {
+                const QMimeType mimeType = _mimeDb.mimeTypeForFile(QFileInfo(localFiles.constFirst()));
+
+                // Set the preview data, though for now we can skip setting file ID, link, and view
+                PreviewData preview;
+                preview._mimeType = mimeType.name();
+                preview._filename = fileName;
+
+                if(item->isDirectory()) {
+                    preview._source = account()->url().toString() + QStringLiteral("/index.php/apps/theming/img/core/filetypes/folder.svg");
+                    preview._isMimeTypeIcon = true;
+                } else if(mimeType.isValid() && mimeType.inherits("text/plain")) {
+                    preview._source = account()->url().toString() + QStringLiteral("/index.php/apps/theming/img/core/filetypes/text.svg");
+                    preview._isMimeTypeIcon = true;
+                } else if (mimeType.isValid() && mimeType.inherits("application/pdf")) {
+                    preview._source = account()->url().toString() + QStringLiteral("/index.php/apps/theming/img/core/filetypes/application-pdf.svg");
+                    preview._isMimeTypeIcon = true;
+                } else {
+                    preview._source = account()->url().toString() + QStringLiteral("/index.php/apps/files/api/v1/thumbnail/150/150/") + remotePath;
+                    preview._isMimeTypeIcon = false;
+                }
+                activity._previews.append(preview);
+            }
         }
 
         _activityModel->addSyncFileItemToActivityList(activity);
     } else {
         qCWarning(lcActivity) << "Item " << item->_file << " retrieved resulted in error " << item->_errorString;
+
         activity._subject = item->_errorString;
 
         if (item->_status == SyncFileItem::Status::FileIgnored) {

@@ -29,6 +29,8 @@ QtObject {
     property int trayWindowRadius: 10
     property int trayWindowBorderWidth: 1
     property int trayWindowHeaderHeight: variableSize(60)
+    property int trayHorizontalMargin: 10
+    property int trayListItemIconSize: accountAvatarSize
 
     property int currentAccountButtonWidth: 220
     property int currentAccountButtonRadius: 2
@@ -58,7 +60,7 @@ QtObject {
     property int roundedButtonBackgroundVerticalMargins: 5
     
     property int userStatusEmojiSize: 8
-    property int userStatusSpacing: 6
+    property int userStatusSpacing: trayHorizontalMargin
     property int userStatusAnchorsMargin: 2
     property int accountServerAnchorsMargin: 10
     property int accountLabelsSpacing: 4

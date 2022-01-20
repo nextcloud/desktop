@@ -22,8 +22,8 @@ Window {
     color:      "transparent"
     flags:      Systray.useNormalWindow ? Qt.Window : Qt.Dialog | Qt.FramelessWindowHint
 
-
     property int fileActivityDialogObjectId: -1
+
     readonly property int maxMenuHeight: Style.trayWindowHeight - Style.trayWindowHeaderHeight - 2 * Style.trayWindowBorderWidth
 
     function openFileActivityDialog(objectName, objectId) {
@@ -345,7 +345,7 @@ Window {
                         Image {
                             id: currentAccountAvatar
 
-                            Layout.leftMargin: 8
+                            Layout.leftMargin: Style.trayHorizontalMargin
                             verticalAlignment: Qt.AlignCenter
                             cache: false
                             source: UserModel.currentUser.avatar != "" ? UserModel.currentUser.avatar : "image://avatars/fallbackWhite"
@@ -601,9 +601,9 @@ Window {
                 left: trayWindowBackground.left
                 right: trayWindowBackground.right
 
-                margins: {
-                    top: 10
-                }
+                topMargin: Style.trayHorizontalMargin + controlRoot.padding
+                leftMargin: Style.trayHorizontalMargin + controlRoot.padding
+                rightMargin: Style.trayHorizontalMargin + controlRoot.padding
             }
 
             text: UserModel.currentUser.unifiedSearchResultsListModel.searchTerm
@@ -623,7 +623,7 @@ Window {
             anchors.top: trayWindowUnifiedSearchInputContainer.bottom
             anchors.left: trayWindowBackground.left
             anchors.right: trayWindowBackground.right
-            anchors.margins: 10
+            anchors.margins: Style.trayHorizontalMargin
         }
 
         UnifiedSearchResultNothingFound {
@@ -632,7 +632,7 @@ Window {
             anchors.top: trayWindowUnifiedSearchInputContainer.bottom
             anchors.left: trayWindowBackground.left
             anchors.right: trayWindowBackground.right
-            anchors.topMargin: 10
+            anchors.topMargin: Style.trayHorizontalMargin
 
             text: UserModel.currentUser.unifiedSearchResultsListModel.searchTerm
 

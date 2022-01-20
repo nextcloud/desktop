@@ -13,15 +13,15 @@ TextField {
 
     readonly property color textFieldIconsColor: Style.menuBorder
 
-    readonly property int textFieldIconsOffset: 10
+    readonly property int textFieldIconsOffset: Style.trayHorizontalMargin
 
     readonly property double textFieldIconsScaleFactor: 0.6
 
-    readonly property int textFieldHorizontalPaddingOffset: 14
+    readonly property int textFieldHorizontalPaddingOffset: Style.trayHorizontalMargin
 
     signal clearText()
 
-    leftPadding: trayWindowUnifiedSearchTextFieldSearchIcon.width + trayWindowUnifiedSearchTextFieldSearchIcon.anchors.leftMargin + textFieldHorizontalPaddingOffset
+    leftPadding: trayWindowUnifiedSearchTextFieldSearchIcon.width + trayWindowUnifiedSearchTextFieldSearchIcon.anchors.leftMargin + textFieldHorizontalPaddingOffset - 1
     rightPadding: trayWindowUnifiedSearchTextFieldClearTextButton.width + trayWindowUnifiedSearchTextFieldClearTextButton.anchors.rightMargin + textFieldHorizontalPaddingOffset
 
     placeholderText: qsTr("Search files, messages, events …")
@@ -36,6 +36,9 @@ TextField {
 
     Image {
         id: trayWindowUnifiedSearchTextFieldSearchIcon
+        width: Style.trayListItemIconSize - anchors.leftMargin
+        fillMode: Image.PreserveAspectFit
+        horizontalAlignment: Image.AlignLeft
 
         anchors {
             left: parent.left

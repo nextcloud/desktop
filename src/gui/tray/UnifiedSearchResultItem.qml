@@ -39,7 +39,7 @@ RowLayout {
             id: unifiedSearchResultThumbnail
             visible: false
             asynchronous: true
-            source: "image://unified-search-result-icon/" + icons
+            source: "image://tray-image-provider/" + icons
             cache: true
             sourceSize.width: imageData.width
             sourceSize.height: imageData.height

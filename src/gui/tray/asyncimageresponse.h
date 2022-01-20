@@ -14,20 +14,24 @@
 
 #pragma once
 
-#include <QtCore>
+#include <QImage>
 #include <QQuickImageProvider>
 
-namespace OCC {
-
-/**
- * @brief The UnifiedSearchResultImageProvider
- * @ingroup gui
- * Allows to fetch Unified Search result icon from the server or used a local resource
- */
-
-class UnifiedSearchResultImageProvider : public QQuickAsyncImageProvider
+class AsyncImageResponse : public QQuickImageResponse
 {
 public:
-    QQuickImageResponse *requestImageResponse(const QString &id, const QSize &requestedSize) override;
+    AsyncImageResponse(const QString &id, const QSize &requestedSize);
+    void setImageAndEmitFinished(const QImage &image = {});
+    QQuickTextureFactory *textureFactory() const override;
+
+private:
+    void processNextImage();
+
+private slots:
+    void slotProcessNetworkReply();
+
+    QImage _image;
+    QStringList _imagePaths;
+    QSize _requestedImageSize;
+    int _index = 0;
 };
-}
