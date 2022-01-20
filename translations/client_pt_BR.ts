@@ -1119,7 +1119,7 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="189"/>
         <source>Error while canceling deletion of a file</source>
-        <translation type="unfinished"/>
+        <translation>Erro ao cancelar exclusão de um arquivo</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="189"/>
@@ -3568,7 +3568,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1136"/>
         <source>Error updating metadata due to invalid modification time</source>
-        <translation type="unfinished"/>
+        <translation>Erro ao atualizar os metadados devido a erro na data/hora modificada</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1136"/>
@@ -5374,7 +5374,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="72"/>
         <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="82"/>
         <source>Error updating metadata due to invalid modification time</source>
-        <translation type="unfinished"/>
+        <translation>Erro ao atualizar os metadados devido a erro na data/hora modificada</translation>
     </message>
     <message>
         <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="72"/>
@@ -5389,7 +5389,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <location filename="../src/libsync/vfs/xattr/vfs_xattr.cpp" line="73"/>
         <location filename="../src/libsync/vfs/xattr/vfs_xattr.cpp" line="83"/>
         <source>Error updating metadata due to invalid modification time</source>
-        <translation type="unfinished"/>
+        <translation>Erro ao atualizar os metadados devido a erro na data/hora modificada</translation>
     </message>
     <message>
         <location filename="../src/libsync/vfs/xattr/vfs_xattr.cpp" line="73"/>
