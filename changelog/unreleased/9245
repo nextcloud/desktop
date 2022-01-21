@@ -1,0 +1,4 @@
+Enhancement: Retry token refresh multiple times before logout
+
+https://github.com/owncloud/client/issues/9245
+https://github.com/owncloud/client/pull/9380

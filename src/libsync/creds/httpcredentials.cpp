@@ -34,10 +34,15 @@
 #include <QSettings>
 #include <QSslKey>
 
+#include <chrono>
+
+using namespace std::chrono_literals;
+
 Q_LOGGING_CATEGORY(lcHttpCredentials, "sync.credentials.http", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcHttpLegacyCredentials, "sync.credentials.http.legacy", QtInfoMsg)
 
 namespace {
+constexpr int TokenRefreshMaxRetries = 3;
 constexpr int CredentialVersion = 1;
 const char authenticationFailedC[] = "owncloud-authentication-failed";
 
@@ -241,6 +246,13 @@ bool HttpCredentials::refreshAccessToken()
     if (_isRenewingOAuthToken) {
         return true;
     }
+    if (++_tokenRefreshRetriesCount >= TokenRefreshMaxRetries) {
+        qCWarning(lcHttpCredentials) << "Too many failed refreshs" << _tokenRefreshRetriesCount << "-> log out";
+        forgetSensitiveData();
+        Q_EMIT _account->invalidCredentials();
+        _tokenRefreshRetriesCount = 0;
+        return false;
+    }
     _isRenewingOAuthToken = true;
 
     // don't touch _ready or the account state will start a new authentication
@@ -251,34 +263,12 @@ bool HttpCredentials::refreshAccessToken()
         oauth->deleteLater();
         _isRenewingOAuthToken = false;
         switch (error) {
-        // most probably a timeout
-        case QNetworkReply::OperationCanceledError:
-            Q_FALLTHROUGH();
-        case QNetworkReply::RemoteHostClosedError:
-            Q_FALLTHROUGH();
-        case QNetworkReply::ConnectionRefusedError:
-            Q_FALLTHROUGH();
-        case QNetworkReply::HostNotFoundError:
-            Q_FALLTHROUGH();
-        case QNetworkReply::TimeoutError:
-            Q_FALLTHROUGH();
-        case QNetworkReply::TemporaryNetworkFailureError:
-            Q_FALLTHROUGH();
-        case QNetworkReply::NetworkSessionFailedError:
-            Q_FALLTHROUGH();
-        case QNetworkReply::InternalServerError:
-            Q_FALLTHROUGH();
-        case QNetworkReply::ServiceUnavailableError:
-            Q_FALLTHROUGH();
-        case QNetworkReply::UnknownNetworkError:
-            QTimer::singleShot(30000, this, &HttpCredentials::refreshAccessToken);
+        case QNetworkReply::ContentNotFoundError:
+            // 404: bigip f5?
+            QTimer::singleShot(0, this, &HttpCredentials::refreshAccessToken);
             break;
         default:
-            // something is broken
-            // start fresh
-            qCWarning(lcHttpCredentials) << "Token refresh encountered an unsupported network error" << errorString << "-> log out";
-            forgetSensitiveData();
-            Q_EMIT _account->invalidCredentials();
+            QTimer::singleShot(30s, this, &HttpCredentials::refreshAccessToken);
         }
         Q_EMIT authenticationFailed();
     });
@@ -286,6 +276,7 @@ bool HttpCredentials::refreshAccessToken()
     connect(oauth, &OAuth::refreshFinished, this, [this, oauth](const QString &accessToken, const QString &refreshToken){
         oauth->deleteLater();
         _isRenewingOAuthToken = false;
+        _tokenRefreshRetriesCount = 0;
         if (refreshToken.isEmpty()) {
             // an error occured, log out
             forgetSensitiveData();
