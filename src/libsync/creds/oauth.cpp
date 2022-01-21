@@ -331,21 +331,21 @@ void OAuth::refreshAuthentication(const QString &refreshToken)
                     error == QLatin1String("invalid_request")) {
                     newRefreshToken.clear();
                 } else {
-                    qCWarning(lcOauth) << tr("Error while refreshing the token: %1 : %2").arg(error, data.value(QStringLiteral("error_description")).toString());
+                    qCWarning(lcOauth) << "Error while refreshing the token:" << error << data.value(QStringLiteral("error_description")).toString();
                 }
             } else if (reply->error() != QNetworkReply::NoError) {
-                qCWarning(lcOauth) << tr("Error while refreshing the token: %1 : %2").arg(reply->errorString(), QString::fromUtf8(jsonData));
+                qCWarning(lcOauth) << "Error while refreshing the token:" << reply->error() << ":" << reply->errorString() << reply->attribute(QNetworkRequest::HttpStatusCodeAttribute) << jsonData;
                 Q_EMIT refreshError(reply->error(), reply->errorString());
                 return;
             } else {
                 if (jsonParseError.error != QJsonParseError::NoError || data.isEmpty()) {
                     // Invalid or empty JSON: Network error maybe?
-                    qCWarning(lcOauth) << tr("Error while refreshing the token: %1 : %2").arg(jsonParseError.errorString(), QString::fromUtf8(jsonData));
+                    qCWarning(lcOauth) << "Error while refreshing the token:" << jsonParseError.errorString() << jsonData;
                 } else {
                     QString error;
                     accessToken = getRequiredField(data, QStringLiteral("access_token"), &error).toString();
                     if (!error.isEmpty()) {
-                        qCWarning(lcOauth) << tr("The reply from the server did not contain all expected fields\n:%1\nReceived data: %2").arg(error, QString::fromUtf8(jsonData));
+                        qCWarning(lcOauth) << "The reply from the server did not contain all expected fields:" << error << "received data:" << jsonData;
                     }
 
                     const auto refresh_token = data.find(QStringLiteral("refresh_token"));
