@@ -132,26 +132,19 @@ Result<void, QString> VfsCfApi::createPlaceholder(const SyncFileItem &item)
 
 Result<void, QString> VfsCfApi::dehydratePlaceholder(const SyncFileItem &item)
 {
-    const auto previousPin = pinState(item._file);
-
-    if (!FileSystem::remove(_setupParams.filesystemPath + item._file)) {
-        return QStringLiteral("Couldn't remove %1 to fulfill dehydration").arg(item._file);
-    }
-
-    const auto r = createPlaceholder(item);
-    if (!r) {
-        return r;
-    }
-
-    if (previousPin) {
-        if (*previousPin == PinState::AlwaysLocal) {
-            setPinState(item._file, PinState::Unspecified);
+    const auto localPath = QDir::toNativeSeparators(_setupParams.filesystemPath + item._file);
+    const auto handle = cfapi::handleForPath(localPath);
+    if (handle) {
+        auto result = cfapi::dehydratePlaceholder(handle, item._modtime, item._size, item._fileId);
+        if (result) {
+            return {};
         } else {
-            setPinState(item._file, *previousPin);
+            return result.error();
         }
+    } else {
+        qCWarning(lcCfApi) << "Couldn't update metadata for non existing file" << localPath;
+        return {QStringLiteral("Couldn't update metadata")};
     }
-
-    return {};
 }
 
 Result<Vfs::ConvertToPlaceholderResult, QString> VfsCfApi::convertToPlaceholder(const QString &filename, const SyncFileItem &item, const QString &replacesFile)
