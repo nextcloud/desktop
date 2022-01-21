@@ -740,6 +740,38 @@ OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> OCC::CfApiWrapper::up
     return OCC::Vfs::ConvertToPlaceholderResult::Ok;
 }
 
+OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> OCC::CfApiWrapper::dehydratePlaceholder(const FileHandle &handle, time_t modtime, qint64 size, const QByteArray &fileId)
+{
+    Q_ASSERT(handle);
+
+    if (modtime <= 0) {
+        return {QString{"Could not update metadata due to invalid modification time for %1: %2"}.arg(pathForHandle(handle)).arg(modtime)};
+    }
+
+    const auto info = findPlaceholderInfo(handle);
+    if (!info) {
+        return { "Can't update non existing placeholder info" };
+    }
+
+    const auto fileIdentity = QString::fromUtf8(fileId).toStdWString();
+    const auto fileIdentitySize = (fileIdentity.length() + 1) * sizeof(wchar_t);
+
+    CF_FILE_RANGE dehydrationRange;
+    dehydrationRange.StartingOffset.QuadPart = 0;
+    dehydrationRange.Length.QuadPart = size;
+
+    const qint64 result = CfUpdatePlaceholder(handle.get(), nullptr,
+                                              fileIdentity.data(), sizeToDWORD(fileIdentitySize),
+                                              &dehydrationRange, 1, CF_UPDATE_FLAG_MARK_IN_SYNC, nullptr, nullptr);
+
+    if (result != S_OK) {
+        qCWarning(lcCfApiWrapper) << "Couldn't update placeholder info for" << pathForHandle(handle) << ":" << QString::fromWCharArray(_com_error(result).ErrorMessage());
+        return { "Couldn't update placeholder info" };
+    }
+
+    return OCC::Vfs::ConvertToPlaceholderResult::Ok;
+}
+
 OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> OCC::CfApiWrapper::convertToPlaceholder(const FileHandle &handle, time_t modtime, qint64 size, const QByteArray &fileId, const QString &replacesPath)
 {
     Q_UNUSED(modtime);
