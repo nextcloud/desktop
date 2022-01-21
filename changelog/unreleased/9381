@@ -1,0 +1,6 @@
+Bugfix: Fallback to ownCloud sidebar icons on Mac if none provided in branding
+
+If a customer does not provide sidebar icons we use the ownCloud sidebar icons.
+
+
+https://github.com/owncloud/client/pull/9381
