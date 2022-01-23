@@ -15,6 +15,7 @@
 #include "tray/activitylistmodel.h"
 #include "tray/notificationcache.h"
 #include "tray/unifiedsearchresultslistmodel.h"
+#include "tray/talkreply.h"
 #include "userstatusconnector.h"
 #include "thumbnailjob.h"
 
@@ -79,6 +80,8 @@ User::User(AccountStatePtr &account, const bool &isCurrent, QObject *parent)
     connect(_account->account().data(), &Account::capabilitiesChanged, this, &User::accentColorChanged);
 
     connect(_activityModel, &ActivityListModel::sendNotificationRequest, this, &User::slotSendNotificationRequest);
+    
+    connect(this, &User::sendReplyMessage, this, &User::slotSendReplyMessage);
 }
 
 void User::showDesktopNotification(const QString &title, const QString &message)
@@ -783,6 +786,12 @@ void User::removeAccount() const
 {
     AccountManager::instance()->deleteAccount(_account.data());
     AccountManager::instance()->save();
+}
+
+void User::slotSendReplyMessage(const QString &token, const QString &message, const QString &replyTo)
+{
+    QPointer<TalkReply> talkReply = new TalkReply(_account.data(), this);
+    talkReply->sendReplyMessage(token, message, replyTo);
 }
 
 /*-------------------------------------------------------------------------------------*/

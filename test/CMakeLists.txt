@@ -63,6 +63,7 @@ nextcloud_add_test(SetUserStatusDialog)
 nextcloud_add_test(UnifiedSearchListmodel)
 nextcloud_add_test(ActivityListModel)
 nextcloud_add_test(ActivityData)
+nextcloud_add_test(TalkReply)
 
 if( UNIX AND NOT APPLE )
     nextcloud_add_test(InotifyWatcher)

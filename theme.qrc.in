@@ -213,5 +213,6 @@
         <file>theme/black/email.svg</file>
         <file>theme/black/edit.svg</file>
         <file>theme/delete.svg</file>
+        <file>theme/send.svg</file>
     </qresource>
 </RCC>

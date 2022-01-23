@@ -207,6 +207,7 @@ set(client_SRCS
     tray/notificationcache.h
     tray/notificationcache.cpp
     creds/credentialsfactory.h
+    tray/talkreply.cpp
     creds/credentialsfactory.cpp
     creds/httpcredentialsgui.h
     creds/httpcredentialsgui.cpp
@@ -392,7 +393,6 @@ function(generate_sized_png_from_svg icon_path size)
   if (ARG_OUTPUT_ICON_PATH)
     set(icon_name_dir ${ARG_OUTPUT_ICON_PATH})
   endif ()
-  
 
   if (EXISTS "${icon_name_dir}/${size}-${icon_name_wle}.png")
     return()

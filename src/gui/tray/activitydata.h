@@ -109,10 +109,16 @@ public:
         QUrl link;    // Optional (files only)
     };
 
+    struct TalkNotificationData {
+        QString conversationToken;
+        QString messageId;
+    };
+
     Type _type;
     qlonglong _id;
     QString _fileAction;
     int _objectId;
+    TalkNotificationData _talkNotificationData;
     QString _objectType;
     QString _objectName;
     QString _subject;

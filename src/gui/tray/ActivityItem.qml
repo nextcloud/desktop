@@ -12,7 +12,8 @@ MouseArea {
 
     property bool isFileActivityList: false
 
-    property bool isChatActivity: model.objectType === "chat" || model.objectType === "room"
+    property bool isChatActivity: model.objectType === "chat" || model.objectType === "room" || model.objectType === "call"
+    property bool isTalkReplyPossible: model.conversationToken !== ""
 
     signal fileActivityButtonClicked(string absolutePath)
 
@@ -67,6 +68,7 @@ MouseArea {
             Layout.fillWidth: true
             Layout.leftMargin: 40
             Layout.bottomMargin: model.links.length > 1 ? 5 : 0
+            Layout.topMargin: isTalkReplyPossible? 48 : 0
 
             displayActions: model.displayActions
             objectType: model.objectType

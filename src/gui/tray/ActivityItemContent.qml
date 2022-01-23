@@ -126,9 +126,22 @@ RowLayout {
             maximumLineCount: 2
             font.pixelSize: Style.subLinePixelSize
             color: "#808080"
-        }
-    }
+        }  
 
+        Loader {
+            id: talkReplyTextFieldLoader
+            active: isChatActivity && isTalkReplyPossible
+
+            anchors.top: activityTextDateTime.bottom
+            anchors.topMargin: 10
+
+            sourceComponent: TalkReplyTextField {
+                id: talkReplyMessage
+                anchors.fill: parent
+            }
+        }         
+    }    
+    
     Button {
         id: dismissActionButton
 
