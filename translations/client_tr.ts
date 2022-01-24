@@ -12,7 +12,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="26"/>
         <source>In %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 içinde</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="40"/>
@@ -899,7 +899,7 @@ Bu işlem şu anda yürütülmekte olan eşitleme işlemlerini durdurur.</transl
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="305"/>
         <source>File %1 has invalid modification time. Do not upload to the server.</source>
-        <translation type="unfinished"/>
+        <translation>%1 dosyasının değiştirilme zamanı geçersiz. Sunucuya yüklenmedi.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="310"/>
@@ -1119,7 +1119,7 @@ Bu işlem şu anda yürütülmekte olan eşitleme işlemlerini durdurur.</transl
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="189"/>
         <source>Error while canceling deletion of a file</source>
-        <translation type="unfinished"/>
+        <translation>Bir dosyanın silinmesi iptal edilirken sorun çıktı</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="189"/>
@@ -1129,7 +1129,7 @@ Bu işlem şu anda yürütülmekte olan eşitleme işlemlerini durdurur.</transl
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="190"/>
         <source>Error while canceling deletion of %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 silinmesi iptal edilirken sorun çıktı</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="190"/>
@@ -3366,12 +3366,12 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
     <message>
         <location filename="../src/gui/passwordinputdialog.ui" line="23"/>
         <source>Password for share required</source>
-        <translation type="unfinished"/>
+        <translation>Paylaşım parolası zorunludur</translation>
     </message>
     <message>
         <location filename="../src/gui/passwordinputdialog.ui" line="35"/>
         <source>Please enter a password for your share:</source>
-        <translation type="unfinished"/>
+        <translation>Lütfen paylaşımınız için bir parola yazın:</translation>
     </message>
 </context>
 <context>
@@ -3570,7 +3570,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1136"/>
         <source>Error updating metadata due to invalid modification time</source>
-        <translation type="unfinished"/>
+        <translation>Değiştirilme zamanı geçersiz olduğundan üst veriler yüklenirken sorun çıktı</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1136"/>
@@ -3885,7 +3885,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
         <location filename="../src/libsync/propagateupload.cpp" line="397"/>
         <location filename="../src/libsync/propagateupload.cpp" line="410"/>
         <source>File %1 has invalid modification time. Do not upload to the server.</source>
-        <translation type="unfinished"/>
+        <translation>%1 dosyasının değiştirilme zamanı geçersiz. Sunucuya yüklenmedi.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="394"/>
@@ -5376,7 +5376,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
         <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="72"/>
         <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="82"/>
         <source>Error updating metadata due to invalid modification time</source>
-        <translation type="unfinished"/>
+        <translation>Değiştirilme zamanı geçersiz olduğundan üst veriler yüklenirken sorun çıktı</translation>
     </message>
     <message>
         <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="72"/>
@@ -5391,7 +5391,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
         <location filename="../src/libsync/vfs/xattr/vfs_xattr.cpp" line="73"/>
         <location filename="../src/libsync/vfs/xattr/vfs_xattr.cpp" line="83"/>
         <source>Error updating metadata due to invalid modification time</source>
-        <translation type="unfinished"/>
+        <translation>Değiştirilme zamanı geçersiz olduğundan üst veriler yüklenirken sorun çıktı</translation>
     </message>
     <message>
         <location filename="../src/libsync/vfs/xattr/vfs_xattr.cpp" line="73"/>
