@@ -33,6 +33,7 @@ Major/Minor release template. Enter here, when we have three estimated dates:
 * [ ] QA: Adjust [drone](https://handbook.owncloud.com/release_processes/client/branch.html#drone) - @HanaGemela @jnweiger
 * [ ] QA: Adjust [translation jobs](https://handbook.owncloud.com/release_processes/client/branch.html#translations) - @HanaGemela @jnweiger
 * [ ] QA: Use `obs-copyprj.sh` to backup the desktop project to `desktop:client-2.6.x` (unless already done) - @HanaGemela @jnweiger
+* [ ] QA: Adjust branch of Cron Job `nightly-2-x` to the next release branch @HanaGemela @individual-it
 * [ ] Dev: Start running automated tests on the dailies - @TheOneRing @guruz
 
 ### After the First Daily Build of the New Branch:
