@@ -35,6 +35,7 @@ namespace Ui {
 }
 
 class ShareLinkWidget;
+class InternalLinkWidget;
 class ShareUserGroupWidget;
 class ShareManager;
 class LinkShare;
@@ -96,6 +97,7 @@ private:
 
     QList<ShareLinkWidget*> _linkWidgetList;
     ShareLinkWidget* _emptyShareLinkWidget = nullptr;
+    InternalLinkWidget* _internalLinkWidget = nullptr;
     ShareUserGroupWidget *_userGroupWidget = nullptr;
     QProgressIndicator *_progressIndicator = nullptr;
     
