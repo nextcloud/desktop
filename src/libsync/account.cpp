@@ -57,7 +57,8 @@ using namespace QKeychain;
 
 namespace {
 constexpr int pushNotificationsReconnectInterval = 1000 * 60 * 2;
-constexpr int usernamePrefillServerVersinMinSupportedMajor = 24;
+constexpr int usernamePrefillServerVersionMinSupportedMajor = 24;
+constexpr int checksumRecalculateRequestServerVersionMinSupportedMajor = 24;
 }
 
 namespace OCC {
@@ -632,7 +633,17 @@ bool Account::serverVersionUnsupported() const
 
 bool Account::isUsernamePrefillSupported() const
 {
-    return serverVersionInt() >= makeServerVersion(usernamePrefillServerVersinMinSupportedMajor, 0, 0);
+    return serverVersionInt() >= makeServerVersion(usernamePrefillServerVersionMinSupportedMajor, 0, 0);
+}
+
+bool Account::isChecksumRecalculateRequestSupported() const
+{
+    return serverVersionInt() >= makeServerVersion(checksumRecalculateRequestServerVersionMinSupportedMajor, 0, 0);
+}
+
+int Account::checksumRecalculateServerVersionMinSupportedMajor() const
+{
+    return checksumRecalculateRequestServerVersionMinSupportedMajor;
 }
 
 void Account::setServerVersion(const QString &version)

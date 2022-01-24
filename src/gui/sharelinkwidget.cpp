@@ -411,22 +411,6 @@ void ShareLinkWidget::slotPasswordSetError(const int code, const QString &messag
     emit createPasswordProcessed();
 }
 
-void ShareLinkWidget::startAnimation(const int start, const int end)
-{
-    auto *animation = new QPropertyAnimation(this, "maximumHeight", this);
-
-    animation->setDuration(500);
-    animation->setStartValue(start);
-    animation->setEndValue(end);
-
-    connect(animation, &QAbstractAnimation::finished, this, &ShareLinkWidget::slotAnimationFinished);
-    if (end < start) // that is to remove the widget, not to show it
-        connect(animation, &QAbstractAnimation::finished, this, &ShareLinkWidget::slotDeleteAnimationFinished);
-    connect(animation, &QVariantAnimation::valueChanged, this, &ShareLinkWidget::resizeRequested);
-
-    animation->start();
-}
-
 void ShareLinkWidget::slotDeleteShareFetched()
 {
     slotToggleShareLinkAnimation(false);
@@ -450,12 +434,6 @@ void ShareLinkWidget::toggleNoteOptions(const bool enable)
     } 
 }
 
-void ShareLinkWidget::slotAnimationFinished()
-{
-    emit resizeRequested();
-    deleteLater();
-}
-
 void ShareLinkWidget::slotCreateLabel()
 {
     const auto labelText = _shareLinkEdit->text();
@@ -472,14 +450,6 @@ void ShareLinkWidget::slotLabelSet()
 {
     toggleButtonAnimation(_shareLinkButton, _shareLinkProgressIndicator, _shareLinkWidgetAction);
     displayShareLinkLabel();
-}
-
-void ShareLinkWidget::slotDeleteAnimationFinished()
-{
-    // There is a painting bug where a small line of this widget isn't
-    // properly cleared. This explicit repaint() call makes sure any trace of
-    // the share widget is removed once it's destroyed. #4189
-    connect(this, SIGNAL(destroyed(QObject *)), parentWidget(), SLOT(repaint()));
 }
 
 void ShareLinkWidget::slotCreateShareRequiresPassword(const QString &message)

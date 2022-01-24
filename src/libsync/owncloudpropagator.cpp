@@ -1133,7 +1133,7 @@ void PropagateDirectory::slotSubJobsFinished(SyncFileItem::Status status)
 
             if (_item->_modtime <= 0) {
                 status = _item->_status = SyncFileItem::NormalError;
-                _item->_errorString = tr("Error updating metadata due to invalid modified time");
+                _item->_errorString = tr("Error updating metadata due to invalid modification time");
                 qCWarning(lcDirectory) << "Error writing to the database for file" << _item->_file;
             }
 

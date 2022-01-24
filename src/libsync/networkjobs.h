@@ -61,13 +61,38 @@ private slots:
 };
 
 /**
+ * @brief A basic file manipulation job
+ * @ingroup libsync
+ */
+class OWNCLOUDSYNC_EXPORT SimpleFileJob : public AbstractNetworkJob
+{
+    Q_OBJECT
+public:
+    explicit SimpleFileJob(AccountPtr account, const QString &filePath, QObject *parent = nullptr);
+
+    QNetworkReply *startRequest(
+        const QByteArray &verb, const QNetworkRequest req = QNetworkRequest(), QIODevice *requestBody = nullptr);
+
+    QNetworkReply *startRequest(const QByteArray &verb, const QUrl &url, const QNetworkRequest req = QNetworkRequest(),
+        QIODevice *requestBody = nullptr);
+
+signals:
+    void finishedSignal(QNetworkReply *reply);
+protected slots:
+    bool finished() override;
+
+private:
+    QByteArray _verb;
+};
+
+/**
  * @brief sends a DELETE http request to a url.
  *
  * See Nextcloud API usage for the possible DELETE requests.
  *
  * This does *not* delete files, it does a http request.
  */
-class OWNCLOUDSYNC_EXPORT DeleteApiJob : public AbstractNetworkJob
+class OWNCLOUDSYNC_EXPORT DeleteApiJob : public SimpleFileJob
 {
     Q_OBJECT
 public:

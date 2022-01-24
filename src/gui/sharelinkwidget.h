@@ -90,9 +90,6 @@ private slots:
 
     void slotContextMenuButtonClicked();
     void slotLinkContextMenuActionTriggered(QAction *action);
-
-    void slotDeleteAnimationFinished();
-    void slotAnimationFinished();
     
     void slotCreateLabel();
     void slotLabelSet();
@@ -100,7 +97,6 @@ private slots:
 signals:
     void createLinkShare();
     void deleteLinkShare();
-    void resizeRequested();
     void visualDeletionDone();
     void createPassword(const QString &password);
     void createPasswordProcessed();
@@ -118,8 +114,6 @@ private:
 
     /** Retrieve a share's name, accounting for _namesSupported */
     QString shareName() const;
-
-    void startAnimation(const int start, const int end);
 
     void customizeStyle();
     

@@ -76,12 +76,16 @@
 
         <!-- Uninstall: Remove sync folders from Explorer's Navigation Pane, only effective for the current user (home users) -->
         <Custom Action="RemoveNavigationPaneEntries" After="RemoveFiles">(NOT UPGRADINGPRODUCTCODE) AND (REMOVE="ALL")</Custom>
+		
+		<!-- Uninstall: Cleanup the Registry -->
+		<Custom Action="RegistryCleanupCustomAction" After="RemoveFiles">(NOT UPGRADINGPRODUCTCODE) AND (REMOVE="ALL")</Custom>
 
         <!-- Schedule Reboot for the Shell Extensions (in silent installation mode only, or if SCHEDULE_REBOOT argument is set-->
         <ScheduleReboot After="InstallFinalize">(SCHEDULE_REBOOT=1) OR NOT (UILevel=2)</ScheduleReboot>
     </InstallExecuteSequence>
 
     <!-- "Add or Remove" Programs Entries -->
+	<Property Id="APPNAME">$(var.AppName)</Property>
     <Property Id="ARPPRODUCTICON">$(var.AppIcon)</Property>
     <Property Id="ARPHELPLINK">$(var.AppHelpLink)</Property>
     <Property Id="ARPURLINFOABOUT">$(var.AppInfoLink)</Property>
