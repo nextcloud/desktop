@@ -1,0 +1,7 @@
+Bugfix: Don't reset change time on upload
+
+We fixed a bug where we reset the change time of Windows placeholder files to the value in the database during uploads.
+This cold cause other applications to detect non existing changes in that file.
+
+https://github.com/owncloud/client/issues/9383
+https://github.com/owncloud/client-desktop-vfs-win/pull/16
