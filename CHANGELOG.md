@@ -10,7 +10,12 @@ Summary
 
 * Bugfix - Add request time and other missing data to .owncloudsync.log: [#7348](https://github.com/owncloud/client/issues/7348)
 * Bugfix - Fix copy url location for private links: [#9048](https://github.com/owncloud/client/issues/9048)
+* Bugfix - Raise ssl issue dialoig above the wizard: [#9375](https://github.com/owncloud/client/pull/9375)
+* Bugfix - Fallback to ownCloud sidebar icons on Mac if none provided in branding: [#9381](https://github.com/owncloud/client/pull/9381)
+* Bugfix - Don't reset change time on upload: [#9383](https://github.com/owncloud/client/issues/9383)
 * Change - Make sharedialog preview be more resilient: [#8938](https://github.com/owncloud/client/issues/8938)
+* Enhancement - Retry token refresh multiple times before logout: [#9245](https://github.com/owncloud/client/issues/9245)
+* Enhancement - Don't log error when checking removed file for changes: [#9304](https://github.com/owncloud/client/issues/9304)
 
 Details
 -------
@@ -28,6 +33,27 @@ Details
 
    https://github.com/owncloud/client/issues/9048
 
+* Bugfix - Raise ssl issue dialoig above the wizard: [#9375](https://github.com/owncloud/client/pull/9375)
+
+   Under certain conditions it was possible that the ssl dialog was hidden behind the wizard.
+
+   https://github.com/owncloud/client/pull/9375
+
+* Bugfix - Fallback to ownCloud sidebar icons on Mac if none provided in branding: [#9381](https://github.com/owncloud/client/pull/9381)
+
+   If a customer does not provide sidebar icons we use the ownCloud sidebar icons.
+
+   https://github.com/owncloud/client/pull/9381
+
+* Bugfix - Don't reset change time on upload: [#9383](https://github.com/owncloud/client/issues/9383)
+
+   We fixed a bug where we reset the change time of Windows placeholder files to the value in the
+   database during uploads. This cold cause other applications to detect non existing changes in
+   that file.
+
+   https://github.com/owncloud/client/issues/9383
+   https://github.com/owncloud/client-desktop-vfs-win/pull/16
+
 * Change - Make sharedialog preview be more resilient: [#8938](https://github.com/owncloud/client/issues/8938)
 
    We no longer enforce png thumbnails. We no longer replace the file icon if the thumbnail is
@@ -35,6 +61,17 @@ Details
 
    https://github.com/owncloud/client/issues/8938
    https://github.com/owncloud/client/pull/8939
+
+* Enhancement - Retry token refresh multiple times before logout: [#9245](https://github.com/owncloud/client/issues/9245)
+
+   https://github.com/owncloud/client/issues/9245
+   https://github.com/owncloud/client/pull/9380
+
+* Enhancement - Don't log error when checking removed file for changes: [#9304](https://github.com/owncloud/client/issues/9304)
+
+   We removed some misleading error messages from the log.
+
+   https://github.com/owncloud/client/issues/9304
 
 Changelog for ownCloud Desktop Client [2.10.0] (2022-01-17)
 =======================================
