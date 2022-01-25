@@ -25,20 +25,23 @@ def traverse_loop(data):
                         # So loop through all the errors in the test step
                         if "tests" in test_step:
 
-                            for error in test_step['tests']:
+                            for test_log in test_step['tests']:
 
                                 # Sometimes, the step with assertions operations also contains this "tests" object.
                                 # And we do not consider it to be an error, if there is a result key with value "PASS"
-                                if 'result' in error and error['result'] == 'PASS':
+                                if (
+                                    'result' in test_log
+                                    and test_log['result'] == 'PASS'
+                                ):
                                     continue
 
                                 # Again, we will have to loop through the 'tests' to get failing tests from Scenario Outlines.
-                                if "tests" in error and len(error['tests']) > 0:
-                                    for outlineStep in error['tests']:
+                                if "tests" in test_log and len(test_log['tests']) > 0:
+                                    for outlineStep in test_log['tests']:
                                         # Append the information of failing tests into the list of failing tests
-                                        if (
-                                            'result' in outlineStep
-                                            and outlineStep['result'] == 'ERROR'
+                                        if 'result' in outlineStep and (
+                                            outlineStep['result'] == 'ERROR'
+                                            or outlineStep['result'] == 'FAIL'
                                         ):
                                             failing_test = {
                                                 "Feature File": str(
@@ -47,7 +50,7 @@ def traverse_loop(data):
                                                 "Feature": str(feature['name']),
                                                 "Scenario": str(scenario['name']),
                                                 "Example": str(test_step['name']),
-                                                "Test Step": str(error['name']),
+                                                "Test Step": str(test_log['name']),
                                                 "Error Details": str(
                                                     outlineStep['detail']
                                                 )
@@ -59,14 +62,17 @@ def traverse_loop(data):
 
                                 # Append the information of failing tests into the list of failing tests
                                 # If the error detail is missing(occurs mainly in runtime error) then we display "Error details not found" message.
-                                if 'result' in error and error['result'] == 'ERROR':
+                                if 'result' in test_log and (
+                                    test_log['result'] == 'ERROR'
+                                    or test_log['result'] == 'FAIL'
+                                ):
                                     failing_test = {
                                         "Feature File": str(feature_file['name']),
                                         "Feature": str(feature['name']),
                                         "Scenario": str(scenario['name']),
                                         "Test Step": str(test_step['name']),
-                                        "Error Details": str(error['detail'])
-                                        if ('detail' in error)
+                                        "Error Details": str(test_log['detail'])
+                                        if ('detail' in test_log)
                                         else "Error details not found",
                                     }
                                     failing_tests.append(failing_test)

@@ -18,6 +18,7 @@ Feature: Enable/disable virtual file support
         And user "Alice" has set up a client with default settings
         Then VFS enabled baseline image should not match the default screenshot
 
+
     Scenario: Disable VFS
         Given user "Alice" has been created on the server with default attributes and without skeleton files
         And user "Alice" has set up a client with default settings

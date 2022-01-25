@@ -79,12 +79,10 @@ public:
 
 public slots:
     void setAuthType(DetermineAuthTypeJob::AuthType type);
-    void slotCurrentPageChanged(int);
     void successfulStep();
 
 signals:
     void createLocalAndRemoteFolders();
-    void clearPendingRequests();
     void determineAuthType(const QString &);
     void connectToOCUrl(const QString &);
     // make sure to connect to this, rather than finished(int)!!

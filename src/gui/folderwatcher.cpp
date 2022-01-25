@@ -85,7 +85,8 @@ void FolderWatcher::startNotificatonTest(const QString &path)
     return;
 #endif
 
-    OC_ASSERT(_testNotificationPath.isEmpty());
+    Q_ASSERT(_testNotificationPath.isEmpty());
+    Q_ASSERT(!path.isEmpty());
     _testNotificationPath = path;
 
     // Don't do the local file modification immediately:
@@ -95,17 +96,20 @@ void FolderWatcher::startNotificatonTest(const QString &path)
 
 void FolderWatcher::startNotificationTestWhenReady()
 {
+    if (!_testNotificationPath.isEmpty()) {
+        // we already received the notification
+        return;
+    }
     if (!_d->isReady()) {
         QTimer::singleShot(1s, this, &FolderWatcher::startNotificationTestWhenReady);
         return;
     }
 
-    auto path = _testNotificationPath;
-    if (QFile::exists(path)) {
-        auto mtime = FileSystem::getModTime(path);
-        FileSystem::setModTime(path, mtime + 1);
+    if (OC_ENSURE(QFile::exists(_testNotificationPath))) {
+        const auto mtime = FileSystem::getModTime(_testNotificationPath);
+        FileSystem::setModTime(_testNotificationPath, mtime + 1);
     } else {
-        QFile f(path);
+        QFile f(_testNotificationPath);
         f.open(QIODevice::WriteOnly | QIODevice::Append);
     }
 
@@ -140,7 +144,7 @@ void FolderWatcher::changeDetected(const QStringList &paths)
     //   - why do we skip the file altogether instead of e.g. reducing the upload frequency?
 
     // Check if the same path was reported within the last second.
-    QSet<QString> pathsSet = paths.toSet();
+    const QSet<QString> pathsSet = paths.toSet();
     if (pathsSet == _lastPaths && _timer.elapsed() < 1000) {
         // the same path was reported within the last second. Skip.
         return;
@@ -148,11 +152,8 @@ void FolderWatcher::changeDetected(const QStringList &paths)
     _lastPaths = pathsSet;
     _timer.restart();
 
-    QSet<QString> changedPaths;
-
     // ------- handle ignores:
-    for (int i = 0; i < paths.size(); ++i) {
-        QString path = paths[i];
+    for (const auto &path : pathsSet) {
         if (!_testNotificationPath.isEmpty()
             && Utility::fileNamesEqual(path, _testNotificationPath)) {
             _testNotificationPath.clear();
@@ -161,14 +162,7 @@ void FolderWatcher::changeDetected(const QStringList &paths)
             continue;
         }
 
-        changedPaths.insert(path);
-    }
-    if (changedPaths.isEmpty()) {
-        return;
-    }
-
-    qCInfo(lcFolderWatcher) << "Detected changes in paths:" << changedPaths;
-    for (const auto &path : qAsConst(changedPaths)) {
+        qCInfo(lcFolderWatcher) << "Detected changes in paths:" << path;
         emit pathChanged(path);
     }
 }
