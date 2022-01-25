@@ -2360,6 +2360,19 @@ Elementer hvor sletning er tilladt vil blive slettet hvis de hindre en folder fr
     </message>
 </context>
 <context>
+    <name>OCC::InternalLinkWidget</name>
+    <message>
+        <location filename="../src/gui/internallinkwidget.ui" line="64"/>
+        <source>Internal link</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/internallinkwidget.ui" line="83"/>
+        <source>Only works for users with access to this folder</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>OCC::InvalidFilenameDialog</name>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.ui" line="14"/>
