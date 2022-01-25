@@ -225,26 +225,19 @@ void PropagateUploadFileCommon::slotStartUpload(const QByteArray &transmissionCh
         done(SyncFileItem::SoftError, tr("File Removed"));
         return;
     }
-    time_t prevModtime = _item->_modtime; // the _item value was set in PropagateUploadFile::start()
+    _item->_size = FileSystem::getSize(fullFilePath);
+
+    const time_t prevModtime = _item->_modtime; // the _item value was set in PropagateUploadFile::start()
     // but a potential checksum calculation could have taken some time during which the file could
     // have been changed again, so better check again here.
-
-    _item->_modtime = FileSystem::getModTime(fullFilePath);
-    if (prevModtime != _item->_modtime) {
-        propagator()->_anotherSyncNeeded = true;
-        done(SyncFileItem::SoftError, tr("Local file changed during syncing. It will be resumed."));
-        return;
-    }
-
-    qint64 fileSize = FileSystem::getSize(fullFilePath);
-    _item->_size = fileSize;
 
     // But skip the file if the mtime is too close to 'now'!
     // That usually indicates a file that is still being changed
     // or not yet fully copied to the destination.
-    if (fileIsStillChanging(*_item)) {
+    _item->_modtime = FileSystem::getModTime(fullFilePath);
+    if (prevModtime != _item->_modtime || fileIsStillChanging(*_item)) {
         propagator()->_anotherSyncNeeded = true;
-        done(SyncFileItem::SoftError, tr("Local file changed during sync."));
+        done(SyncFileItem::Message, tr("Local file changed during sync. It will be resumed."));
         return;
     }
 

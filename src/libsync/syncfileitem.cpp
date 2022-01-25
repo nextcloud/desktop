@@ -77,6 +77,7 @@ SyncFileItemPtr SyncFileItem::fromSyncJournalFileRecord(const SyncJournalFileRec
 
 QString SyncFileItem::statusEnumDisplayName(Status s)
 {
+    // TODO: 2.11 enumDisplayName  https://github.com/owncloud/client/issues/9043
     switch (s) {
     case SyncFileItem::NoStatus:
         return QCoreApplication::translate("SyncFileItem::Status", "Undefined");
@@ -100,6 +101,8 @@ QString SyncFileItem::statusEnumDisplayName(Status s)
         return QCoreApplication::translate("SyncFileItem::Status", "Blacklisted");
     case OCC::SyncFileItem::Excluded:
         return QCoreApplication::translate("SyncFileItem::Status", "Excluded");
+    case OCC::SyncFileItem::Message:
+        return QCoreApplication::translate("SyncFileItem::Status", "Message");
     case OCC::SyncFileItem::StatusCount:
         Q_UNREACHABLE();
     }

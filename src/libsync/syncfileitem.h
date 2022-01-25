@@ -93,6 +93,11 @@ public:
          */
         Excluded,
 
+        /**
+         *  Similar to SoftError but will not cause any error handling
+         */
+        Message,
+
         /** For use in an array or vector for the number of items in this enum.
          */
         StatusCount
