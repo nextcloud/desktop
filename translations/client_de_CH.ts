@@ -2238,22 +2238,6 @@ Beachten Sie, dass Kommandozeilenoptionen zum Logging diese Einstellungen übers
         <translation>&lt;h1&gt;Anmeldefehler&lt;/h1&gt;&lt;p&gt;%1&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="334"/>
-        <location filename="../src/libsync/creds/oauth.cpp" line="337"/>
-        <location filename="../src/libsync/creds/oauth.cpp" line="343"/>
-        <source>Error while refreshing the token: %1 : %2</source>
-        <translation>Beim Aktualisieren des Tokens ist ein Fehler aufgetreten: %1 : %2</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="348"/>
-        <source>The reply from the server did not contain all expected fields
-:%1
-Received data: %2</source>
-        <translation>Die Server-Antwort hat nicht alle erwarteten Felder enthalten
-:%1
-Empfangene Daten: %2</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="387"/>
         <source>&lt;h1&gt;Wrong user&lt;/h1&gt;&lt;p&gt;You logged-in with user &lt;em&gt;%1&lt;/em&gt;, but must login with user &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please log out of %3 in another tab, then &lt;a href=&apos;%4&apos;&gt;click here&lt;/a&gt; and log in as user %2&lt;/p&gt;</source>
         <translation>&lt;h1&gt;Falscher Benutzer&lt;/h1&gt;&lt;p&gt;Du hast dich mit dem Benutzer &lt;em&gt;%1&lt;/em&gt; angemeldet, solltest dich jedoch mit dem Benutzer &lt;em&gt;%2&lt;/em&gt; anmelden. Bitte melde dich in einem anderen Tab von %3 ab und &lt;a href=&apos;%4&apos;&gt;klicke hier&lt;/a&gt; um dich als %2 anzumelden&lt;/p&gt;</translation>

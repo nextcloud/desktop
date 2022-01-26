@@ -2230,20 +2230,6 @@ Note that using any logging command line options will override the settings.</so
         <translation>&lt;h1&gt;로그인 오류&lt;/h1&gt;&lt;p&gt;%1&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="334"/>
-        <location filename="../src/libsync/creds/oauth.cpp" line="337"/>
-        <location filename="../src/libsync/creds/oauth.cpp" line="343"/>
-        <source>Error while refreshing the token: %1 : %2</source>
-        <translation>토큰 갱신 오류: %1 : %2</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="348"/>
-        <source>The reply from the server did not contain all expected fields
-:%1
-Received data: %2</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="387"/>
         <source>&lt;h1&gt;Wrong user&lt;/h1&gt;&lt;p&gt;You logged-in with user &lt;em&gt;%1&lt;/em&gt;, but must login with user &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please log out of %3 in another tab, then &lt;a href=&apos;%4&apos;&gt;click here&lt;/a&gt; and log in as user %2&lt;/p&gt;</source>
         <translation>&lt;h1&gt;잘못된 사용자&lt;/h1&gt;&lt;p&gt;현재 &lt;em&gt;%1&lt;/em&gt; 사용자로 로그인되어 있지만, 계속 진행하려면 &lt;em&gt;%2&lt;/em&gt; 사용자로 로그인해야 합니다.&lt;br&gt;다른 탭에서 %3에서 로그아웃한 다음 &lt;a href=&apos;%4&apos;&gt;여기&lt;/a&gt;를 눌러서 %2 사용자로 다시 로그인하십시오&lt;/p&gt;</translation>

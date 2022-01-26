@@ -2242,21 +2242,6 @@ Note that using any logging command line options will override the settings.</so
         <translation>&lt;h1&gt;เข้าสู่ระบบล้มเหลว&lt;/h1&gt;%1&lt;p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="334"/>
-        <location filename="../src/libsync/creds/oauth.cpp" line="337"/>
-        <location filename="../src/libsync/creds/oauth.cpp" line="343"/>
-        <source>Error while refreshing the token: %1 : %2</source>
-        <translation>เกิดข้อผิดพลาดขณะรีเฟรชโทเค็น: %1 : %2</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="348"/>
-        <source>The reply from the server did not contain all expected fields
-:%1
-Received data: %2</source>
-        <translation>ข้อมูลที่ตอบกลับจากเซิร์ฟเวอร์ไม่พบฟิลด์ที่ต้องการ: %1
-ข้อมูลที่ได้รับแล้ว: %2</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="387"/>
         <source>&lt;h1&gt;Wrong user&lt;/h1&gt;&lt;p&gt;You logged-in with user &lt;em&gt;%1&lt;/em&gt;, but must login with user &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please log out of %3 in another tab, then &lt;a href=&apos;%4&apos;&gt;click here&lt;/a&gt; and log in as user %2&lt;/p&gt;</source>
         <translation>&lt;h1&gt;บัญผู้ใช้ไม่ถูกต้อง&lt;/h1&gt; &lt;p&gt;คุณลงชื่อเข้าใช้ด้วยบัญชีผู้ใช้ &lt;em&gt;%1&lt;/em&gt; คุณจะต้องลงชื่อเข้าใช้ด้วยบัญชี &lt;em&gt;%2&lt;/em&gt; &lt;br&gt;โปรดออกจากระบบ %3 ในแท็บอื่นแล้ว &lt;a href=&apos;%4&apos;&gt;คลิกที่นี่&lt;/a&gt; เพื่อเข้าสู่ระบบในฐานะผู้ใช้ &lt;/p&gt;</translation>
