@@ -370,6 +370,11 @@ def createFile(context, filename, username=None):
         syncPath = getUserSyncPath(context, username)
     else:
         syncPath = context.userData['currentUserSyncPath']
+
+    # A file is scheduled to be synced but is marked as ignored for 5 seconds. And if we try to sync it, it will fail. So we need to wait for 5 seconds.
+    # https://github.com/owncloud/client/issues/9325
+    snooze(5)
+
     f = open(join(syncPath, filename), "w")
     f.write(fileContent)
     f.close()

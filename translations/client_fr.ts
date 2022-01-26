@@ -2244,22 +2244,6 @@ Veuillez noter qu’utiliser les options de journalisation en ligne de commande 
         <translation>&lt;h1&gt;Erreur de connexion&lt;/h1&gt;&lt;p&gt;%1&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="334"/>
-        <location filename="../src/libsync/creds/oauth.cpp" line="337"/>
-        <location filename="../src/libsync/creds/oauth.cpp" line="343"/>
-        <source>Error while refreshing the token: %1 : %2</source>
-        <translation>Erreur lors de l&apos;actualisation du jeton: %1 : %1</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="348"/>
-        <source>The reply from the server did not contain all expected fields
-:%1
-Received data: %2</source>
-        <translation>La réponse du serveur ne contenait pas tous les champs attendus
-:%1
-Données reçues: %2</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="387"/>
         <source>&lt;h1&gt;Wrong user&lt;/h1&gt;&lt;p&gt;You logged-in with user &lt;em&gt;%1&lt;/em&gt;, but must login with user &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please log out of %3 in another tab, then &lt;a href=&apos;%4&apos;&gt;click here&lt;/a&gt; and log in as user %2&lt;/p&gt;</source>
         <translation>&lt;h1&gt;Mauvais utilisateur&lt;/h1&gt;&lt;p&gt;Vous êtes connecté avec l&apos;utilisateur &lt;em&gt;%1&lt;/em&gt;, mais vous devez vous connecter avec l&apos;utilisateur&lt;em&gt;%2&lt;/em&gt;. Veuillez vous déconnecter de  %3 l&apos;autre onglet, puis &lt;a href=&apos;%4&apos;&gt; cliquez ici&lt;/a&gt; et connectez-vous en tant que l&apos;utilisateur &lt;/p&gt;%2</translation>

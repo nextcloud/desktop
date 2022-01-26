@@ -2243,22 +2243,6 @@ Note that using any logging command line options will override the settings.</so
         <translation>&lt;h1&gt;שגיאת התחברות&lt;/h1&gt;&lt;p&gt;%1&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="334"/>
-        <location filename="../src/libsync/creds/oauth.cpp" line="337"/>
-        <location filename="../src/libsync/creds/oauth.cpp" line="343"/>
-        <source>Error while refreshing the token: %1 : %2</source>
-        <translation>שגיאה בזמן טעינה מחדש של חתימת הייצוג: %1 : %2</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="348"/>
-        <source>The reply from the server did not contain all expected fields
-:%1
-Received data: %2</source>
-        <translation>התשובה מהשרת לא הכילה את כל השדות הצפויים
-:%1
-נתונים שהתקבלו: %2</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="387"/>
         <source>&lt;h1&gt;Wrong user&lt;/h1&gt;&lt;p&gt;You logged-in with user &lt;em&gt;%1&lt;/em&gt;, but must login with user &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please log out of %3 in another tab, then &lt;a href=&apos;%4&apos;&gt;click here&lt;/a&gt; and log in as user %2&lt;/p&gt;</source>
         <translation>&lt;h1&gt;משתמש שגוי&lt;/h1&gt;&lt;p&gt;התחברת עם המשתמש &lt;em&gt;%1&lt;/em&gt;, אבל יש צורך להתחבר עם משתמש &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;יש להתנתק מ- %3 בטאב נפרד, אחר כך &lt;a href=&apos;%4&apos;&gt;יש ללחוץ כאן&lt;/a&gt; ולהתחבר כמשתמש %2&lt;/p&gt;</translation>

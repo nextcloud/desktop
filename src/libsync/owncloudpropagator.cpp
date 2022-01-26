@@ -260,6 +260,7 @@ void PropagateItemJob::done(SyncFileItem::Status statusArg, const QString &error
     case SyncFileItem::FatalError:
     case SyncFileItem::NormalError:
     case SyncFileItem::DetailError:
+    case SyncFileItem::Message:
         // Check the blacklist, possibly adjusting the item (including its status)
         blacklistUpdate(propagator()->_journal, *_item);
         break;

@@ -64,23 +64,48 @@ void LocalDiscoveryTracker::slotItemCompleted(const SyncFileItemPtr &item)
     //
     // For failures, we want to add the file to the list so the next sync
     // will be able to retry it.
-    if (item->_status == SyncFileItem::Success
-        || item->_status == SyncFileItem::FileIgnored
-        || item->_status == SyncFileItem::Restoration
-        || item->_status == SyncFileItem::Conflict
-        || (item->_status == SyncFileItem::NoStatus
-               && (item->_instruction == CSYNC_INSTRUCTION_NONE
-                      || item->_instruction == CSYNC_INSTRUCTION_UPDATE_METADATA))) {
-        if (_previousLocalDiscoveryPaths.erase(item->_file))
+
+    switch (item->_status) {
+    case SyncFileItem::NoStatus:
+        // we can't use the flags operator with CSYNC_INSTRUCTION_NONE
+        if (item->_instruction != CSYNC_INSTRUCTION_NONE && item->_instruction != CSYNC_INSTRUCTION_UPDATE_METADATA) {
+            break;
+        }
+        Q_FALLTHROUGH();
+    case SyncFileItem::Success:
+        Q_FALLTHROUGH();
+    case SyncFileItem::FileIgnored:
+        Q_FALLTHROUGH();
+    case SyncFileItem::Restoration:
+        Q_FALLTHROUGH();
+    case SyncFileItem::Conflict:
+        Q_FALLTHROUGH();
+    case OCC::SyncFileItem::Message:
+        if (_previousLocalDiscoveryPaths.erase(item->_file)) {
             qCDebug(lcLocalDiscoveryTracker) << "wiped successful item" << item->_file;
-        if (!item->_renameTarget.isEmpty() && _previousLocalDiscoveryPaths.erase(item->_renameTarget))
+        }
+        if (!item->_renameTarget.isEmpty() && _previousLocalDiscoveryPaths.erase(item->_renameTarget)) {
             qCDebug(lcLocalDiscoveryTracker) << "wiped successful item" << item->_renameTarget;
-    } else if (item->_status == SyncFileItem::StatusCount) {
+        }
+        return;
+    case OCC::SyncFileItem::FatalError:
+        Q_FALLTHROUGH();
+    case OCC::SyncFileItem::NormalError:
+        Q_FALLTHROUGH();
+    case OCC::SyncFileItem::SoftError:
+        Q_FALLTHROUGH();
+    case OCC::SyncFileItem::DetailError:
+        Q_FALLTHROUGH();
+    case OCC::SyncFileItem::BlacklistedError:
+        Q_FALLTHROUGH();
+    case OCC::SyncFileItem::Excluded:
+        break;
+    case SyncFileItem::StatusCount:
         Q_UNREACHABLE();
-    } else {
-        _localDiscoveryPaths.insert(item->_file);
-        qCDebug(lcLocalDiscoveryTracker) << "inserted error item" << item->_file;
     }
+
+    _localDiscoveryPaths.insert(item->_file);
+    qCDebug(lcLocalDiscoveryTracker) << "inserted error item" << item->_file;
 }
 
 void LocalDiscoveryTracker::slotSyncFinished(bool success)

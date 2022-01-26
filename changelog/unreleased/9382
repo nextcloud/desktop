@@ -1,0 +1,5 @@
+Bugfix: Immediately retry upload if file changed during sync
+
+If a file changed during discovery and the actual upload for multiple retries in a row, changes of it were ignored for a period of time.
+
+https://github.com/owncloud/client/issues/9382

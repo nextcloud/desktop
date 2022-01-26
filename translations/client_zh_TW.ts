@@ -2243,22 +2243,6 @@ Note that using any logging command line options will override the settings.</so
         <translation>&lt;h1&gt;登錄錯誤&lt;/h1&gt;&lt;p&gt;%1&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="334"/>
-        <location filename="../src/libsync/creds/oauth.cpp" line="337"/>
-        <location filename="../src/libsync/creds/oauth.cpp" line="343"/>
-        <source>Error while refreshing the token: %1 : %2</source>
-        <translation>刷新令牌時錯誤：％1：％2</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="348"/>
-        <source>The reply from the server did not contain all expected fields
-:%1
-Received data: %2</source>
-        <translation>伺服器的回覆未包含所有預期字段
-：％1
-收到的數據：％2</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="387"/>
         <source>&lt;h1&gt;Wrong user&lt;/h1&gt;&lt;p&gt;You logged-in with user &lt;em&gt;%1&lt;/em&gt;, but must login with user &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please log out of %3 in another tab, then &lt;a href=&apos;%4&apos;&gt;click here&lt;/a&gt; and log in as user %2&lt;/p&gt;</source>
         <translation>&lt;h1&gt;錯誤使用者&lt;/h1&gt;&lt;p&gt;您與使用者身份登錄&lt;em&gt;%1&lt;/em&gt;，與必須使用者登錄&lt;em&gt;%2&lt;/em&gt;。&lt;br&gt;請在另一個標籤中登出％3，然後&lt;a href=&apos;%4&apos;&gt;點擊這裡&lt;/a&gt;並以使用者％2身份登入&lt;/p&gt;</translation>
