@@ -7,7 +7,7 @@ Feature: Syncing files
     Background:
         Given user "Alice" has been created on the server with default attributes and without skeleton files
 
-    @smokeTest @skip @issue-9281
+    @smokeTest @issue-9281
     Scenario: Syncing a file to the server
         Given user "Alice" has set up a client with default settings
         When user "Alice" creates a file "lorem-for-upload.txt" with the following content inside the sync folder
@@ -215,7 +215,7 @@ Feature: Syncing files
         Then as "Alice" folder "original" should exist on the server
         And as "Alice" folder "copied" should exist on the server
 
-    @skip @issue-9281
+    @issue-9281
     Scenario: Verify that you can create a subfolder with long name
         Given user "Alice" has set up a client with default settings
         And user "Alice" has created a folder "Folder1" inside the sync folder
@@ -276,7 +276,7 @@ Feature: Syncing files
             | foldername                                                      |
             | An empty folder which name is obviously more than 59 characters |
 
-    
+
     Scenario: Invalid system names are synced in linux
         Given user "Alice" has set up a client with default settings
         And user "Alice" has created folder "COM" on the server
