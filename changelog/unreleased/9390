@@ -1,0 +1,6 @@
+Bugfix: Fix translated icon names in desktop file with ownBrander themes
+
+Fixes broken translated icon reference in desktop entries for some branded build themes.
+
+https://github.com/owncloud/client/pull/9390
+
