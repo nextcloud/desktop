@@ -19,13 +19,14 @@
 #include <QJsonObject>
 #include <QJsonDocument>
 
-#include "account.h"
-#include "accountstate.h"
-#include "accountmanager.h"
 #include "accessmanager.h"
+#include "account.h"
+#include "accountmanager.h"
+#include "accountstate.h"
 #include "folderman.h"
 #include "guiutility.h"
 #include "models.h"
+#include "networkjobs/jsonjob.h"
 
 #include "activitydata.h"
 #include "activitylistmodel.h"
@@ -187,11 +188,12 @@ void ActivityListModel::startFetchJob(AccountStatePtr ast)
     if (!ast || !ast->isConnected()) {
         return;
     }
-    JsonApiJob *job = new JsonApiJob(ast->account(), QStringLiteral("ocs/v2.php/cloud/activity"), this);
-    QObject::connect(job, &JsonApiJob::jsonReceived,
-        this, [job, ast, this](const QJsonDocument &json, int statusCode) {
+    JsonApiJob *job = new JsonApiJob(ast->account(), QStringLiteral("ocs/v2.php/cloud/activity"), { { QStringLiteral("page"), QStringLiteral("0") }, { QStringLiteral("pagesize"), QStringLiteral("100") } }, {}, this);
+
+    QObject::connect(job, &JsonApiJob::finishedSignal,
+        this, [job, ast, this] {
             _currentlyFetching.remove(ast);
-            const auto activities = json.object().value(QStringLiteral("ocs")).toObject().value(QStringLiteral("data")).toArray();
+            const auto activities = job->data().value(QStringLiteral("ocs")).toObject().value(QStringLiteral("data")).toArray();
 
             /*
              * in case the activity app is disabled or not installed, the server returns an empty 500 response instead of a response
@@ -220,14 +222,10 @@ void ActivityListModel::startFetchJob(AccountStatePtr ast)
 
             _activityLists[ast] = std::move(list);
 
-            emit activityJobStatusCode(ast, statusCode);
+            emit activityJobStatusCode(ast, job->ocsStatus());
 
             combineActivityLists();
         });
-    QUrlQuery params;
-    params.addQueryItem(QStringLiteral("page"), QStringLiteral("0"));
-    params.addQueryItem(QStringLiteral("pagesize"), QStringLiteral("100"));
-    job->addQueryParams(params);
 
     _currentlyFetching.insert(ast);
     qCInfo(lcActivity) << "Start fetching activities for " << ast->account()->displayName();

@@ -18,11 +18,11 @@
 
 #include "abstractnetworkjob.h"
 #include "common/result.h"
+#include <QJsonObject>
 #include <QUrlQuery>
 #include <functional>
 
 class QUrl;
-class QJsonObject;
 
 namespace OCC {
 
@@ -323,61 +323,6 @@ private slots:
 };
 
 /**
- * @brief Job to check an API that return JSON
- *
- * Note! you need to be in the connected state before calling this because of a server bug:
- * https://github.com/owncloud/core/issues/12930
- *
- * To be used like this:
- * \code
- * _job = new JsonApiJob(account, QLatin1String("ocs/v1.php/foo/bar"), this);
- * connect(job, SIGNAL(jsonReceived(QJsonDocument)), ...)
- * The received QVariantMap is null in case of error
- * \encode
- *
- * @ingroup libsync
- */
-class OWNCLOUDSYNC_EXPORT JsonApiJob : public AbstractNetworkJob
-{
-    Q_OBJECT
-public:
-    explicit JsonApiJob(const AccountPtr &account, const QString &path, QObject *parent = nullptr);
-
-    /**
-     * @brief addQueryParams - add more parameters to the ocs call
-     * @param params: list pairs of strings containing the parameter name and the value.
-     *
-     * All parameters from the passed list are appended to the query. Note
-     * that the format=json parameter is added automatically and does not
-     * need to be set this way.
-     *
-     * This function needs to be called before start() obviously.
-     */
-    void addQueryParams(const QUrlQuery &params);
-
-public slots:
-    void start() override;
-    /**
-     * Start which allow to specify a request that might contains already headers or attributes
-     */
-    void startWithRequest(QNetworkRequest request);
-
-protected:
-    bool finished() override;
-signals:
-
-    /**
-     * @brief jsonReceived - signal to report the json answer from ocs
-     * @param json - the parsed json document
-     * @param statusCode - the OCS status code: 100 (!) for success
-     */
-    void jsonReceived(const QJsonDocument &json, int statusCode);
-
-private:
-    QUrlQuery _additionalParams;
-};
-
-/**
  * @brief Checks with auth type to use for a server
  * @ingroup libsync
  */
@@ -411,32 +356,33 @@ class OWNCLOUDSYNC_EXPORT SimpleNetworkJob : public AbstractNetworkJob
 {
     Q_OBJECT
 public:
-    explicit SimpleNetworkJob(AccountPtr account, QObject *parent = nullptr);
+    using UrlQuery = QList<QPair<QString, QString>>;
 
-    void prepareRequest(const QByteArray &verb, const QUrl &url,
-        const QNetworkRequest &req = QNetworkRequest(),
-        QIODevice *requestBody = nullptr);
+    // fully qualified urls can be passed in the QNetworkRequest
+    explicit SimpleNetworkJob(AccountPtr account, const QString &path, const QByteArray &verb, QIODevice *requestBody, const QNetworkRequest &req = {}, QObject *parent = nullptr);
+    explicit SimpleNetworkJob(AccountPtr account, const QString &path, const QByteArray &verb, const UrlQuery &arguments, const QNetworkRequest &req = {}, QObject *parent = nullptr);
+    explicit SimpleNetworkJob(AccountPtr account, const QString &path, const QByteArray &verb, const QJsonObject &arguments, const QNetworkRequest &req = {}, QObject *parent = nullptr);
+    explicit SimpleNetworkJob(AccountPtr account, const QString &path, const QByteArray &verb, QByteArray &&requestBody, const QNetworkRequest &req = {}, QObject *parent = nullptr);
 
-    void prepareRequest(const QByteArray &verb, const QUrl &url,
-        const QNetworkRequest &req,
-        const QUrlQuery &arguments);
-
-    void prepareRequest(const QByteArray &verb, const QUrl &url,
-        const QNetworkRequest &req,
-        const QJsonObject &arguments);
+    virtual ~SimpleNetworkJob();
 
     void start() override;
 
 signals:
-    void finishedSignal(QNetworkReply *reply);
-private slots:
+    void finishedSignal();
+
+protected:
     bool finished() override;
 
+    QNetworkRequest _request;
+
 private:
-    QByteArray _simpleVerb;
-    QUrl _simpleUrl;
-    QIODevice *_simpleBody;
-    QNetworkRequest _simpleRequest;
+    explicit SimpleNetworkJob(AccountPtr account, const QString &path, const QByteArray &verb, const QNetworkRequest &req, QObject *parent);
+    QUrl jobUrl() const;
+
+    QByteArray _verb;
+    QByteArray _body;
+    QIODevice *_device = nullptr;
 };
 
 /**

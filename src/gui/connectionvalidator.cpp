@@ -19,10 +19,11 @@
 #include <QNetworkProxyFactory>
 #include <QXmlStreamReader>
 
-#include "connectionvalidator.h"
 #include "account.h"
-#include "networkjobs.h"
 #include "clientproxy.h"
+#include "connectionvalidator.h"
+#include "networkjobs.h"
+#include "networkjobs/jsonjob.h"
 #include <creds/abstractcredentials.h>
 
 using namespace std::chrono_literals;
@@ -225,32 +226,57 @@ void ConnectionValidator::slotAuthSuccess()
 void ConnectionValidator::checkServerCapabilities()
 {
     // The main flow now needs the capabilities
-    JsonApiJob *job = new JsonApiJob(_account, QLatin1String("ocs/v1.php/cloud/capabilities"), this);
+    auto *job = new JsonApiJob(_account, QStringLiteral("ocs/v2.php/cloud/capabilities"), {}, {}, this);
     job->setTimeout(timeoutToUse);
-    QObject::connect(job, &JsonApiJob::jsonReceived, this, &ConnectionValidator::slotCapabilitiesRecieved);
+
+    QObject::connect(job, &JsonApiJob::finishedSignal, this, [job, this] {
+        auto caps = job->data().value("ocs").toObject().value("data").toObject().value("capabilities").toObject();
+        qCInfo(lcConnectionValidator) << "Server capabilities" << caps;
+        _account->setCapabilities(caps.toVariantMap());
+
+        // New servers also report the version in the capabilities
+        QString serverVersion = caps["core"].toObject()["status"].toObject()["version"].toString();
+        if (!serverVersion.isEmpty() && !setAndCheckServerVersion(serverVersion)) {
+            return;
+        }
+
+        fetchUser();
+    });
     job->start();
-}
-
-void ConnectionValidator::slotCapabilitiesRecieved(const QJsonDocument &json)
-{
-    auto caps = json.object().value("ocs").toObject().value("data").toObject().value("capabilities").toObject();
-    qCInfo(lcConnectionValidator) << "Server capabilities" << caps;
-    _account->setCapabilities(caps.toVariantMap());
-
-    // New servers also report the version in the capabilities
-    QString serverVersion = caps["core"].toObject()["status"].toObject()["version"].toString();
-    if (!serverVersion.isEmpty() && !setAndCheckServerVersion(serverVersion)) {
-        return;
-    }
-
-    fetchUser();
 }
 
 void ConnectionValidator::fetchUser()
 {
-    JsonApiJob *job = new JsonApiJob(_account, QLatin1String("ocs/v1.php/cloud/user"), this);
+    auto *job = new JsonApiJob(_account, QLatin1String("ocs/v2.php/cloud/user"), {}, {}, this);
     job->setTimeout(timeoutToUse);
-    QObject::connect(job, &JsonApiJob::jsonReceived, this, &ConnectionValidator::slotUserFetched);
+    QObject::connect(job, &JsonApiJob::finishedSignal, this, [job, this] {
+        const QString user = job->data().value("ocs").toObject().value("data").toObject().value("id").toString();
+        if (!user.isEmpty()) {
+            _account->setDavUser(user);
+        }
+        const QString displayName = job->data().value("ocs").toObject().value("data").toObject().value("display-name").toString();
+        if (!displayName.isEmpty()) {
+            _account->setDavDisplayName(displayName);
+        }
+
+        auto capabilities = _account->capabilities();
+        // We should have received the capabilities by now. Check that assumption in a debug build. If
+        // it's not the case, the code below will assume that they are not available.
+        Q_ASSERT(capabilities.isValid());
+
+#ifndef TOKEN_AUTH_ONLY
+        if (capabilities.isValid() && capabilities.avatarsAvailable()) {
+            auto *job = new AvatarJob(_account, _account->davUser(), 128, this);
+            job->setTimeout(20s);
+            QObject::connect(job, &AvatarJob::avatarPixmap, this, &ConnectionValidator::slotAvatarImage);
+            job->start();
+            // reportResult will be called when the avatar has been received by `slotAvatarImage`
+        } else
+#endif
+        {
+            reportResult(Connected);
+        }
+    });
     job->start();
 }
 
@@ -278,36 +304,6 @@ bool ConnectionValidator::setAndCheckServerVersion(const QString &version)
         }
     }
     return true;
-}
-
-void ConnectionValidator::slotUserFetched(const QJsonDocument &json)
-{
-    QString user = json.object().value("ocs").toObject().value("data").toObject().value("id").toString();
-    if (!user.isEmpty()) {
-        _account->setDavUser(user);
-    }
-    QString displayName = json.object().value("ocs").toObject().value("data").toObject().value("display-name").toString();
-    if (!displayName.isEmpty()) {
-        _account->setDavDisplayName(displayName);
-    }
-
-    auto capabilities = _account->capabilities();
-    // We should have received the capabilities by now. Check that assumption in a debug build. If
-    // it's not the case, the code below will assume that they are not available.
-    Q_ASSERT(capabilities.isValid());
-
-#ifndef TOKEN_AUTH_ONLY
-    if (capabilities.isValid() && capabilities.avatarsAvailable()) {
-        AvatarJob *job = new AvatarJob(_account, _account->davUser(), 128, this);
-        job->setTimeout(20s);
-        QObject::connect(job, &AvatarJob::avatarPixmap, this, &ConnectionValidator::slotAvatarImage);
-        job->start();
-        // reportResult will be called when the avatar has been received by `slotAvatarImage`
-    } else
-#endif
-    {
-        reportResult(Connected);
-    }
 }
 
 #ifndef TOKEN_AUTH_ONLY

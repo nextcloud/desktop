@@ -349,8 +349,7 @@ QString AbstractNetworkJob::replyStatusString() {
     if (reply()->error() == QNetworkReply::NoError) {
         return QStringLiteral("OK");
     } else {
-        const QString enumStr = QString::fromUtf8(QMetaEnum::fromType<QNetworkReply::NetworkError>().valueToKey(static_cast<int>(reply()->error())));
-        return QStringLiteral("%1 %2").arg(enumStr, errorString());
+        return QStringLiteral("%1, %2").arg(Utility::enumToString(reply()->error()), errorString());
     }
 }
 

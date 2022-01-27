@@ -15,7 +15,7 @@
 #include "servernotificationhandler.h"
 #include "accountstate.h"
 #include "capabilities.h"
-#include "networkjobs.h"
+#include "networkjobs/jsonjob.h"
 
 #include <QJsonDocument>
 #include <QJsonObject>
@@ -49,24 +49,24 @@ void ServerNotificationHandler::slotFetchNotifications(AccountStatePtr ptr)
     }
 
     // if the previous notification job has finished, start next.
-    _notificationJob = new JsonApiJob(ptr->account(), notificationsPath, this);
-    QObject::connect(_notificationJob.data(), &JsonApiJob::jsonReceived,
-        this, &ServerNotificationHandler::slotNotificationsReceived);
-    _notificationJob->setProperty("AccountStatePtr", QVariant::fromValue<AccountStatePtr>(ptr));
+    auto *job = new JsonApiJob(ptr->account(), notificationsPath, {}, {}, this);
+    QObject::connect(job, &JsonApiJob::finishedSignal,
+        this, [job, ptr, this] {
+            slotNotificationsReceived(job, ptr);
+            deleteLater();
+        });
 
-    _notificationJob->start();
+    job->start();
 }
 
-void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &json, int statusCode)
+void ServerNotificationHandler::slotNotificationsReceived(JsonApiJob *job, const AccountStatePtr &accountState)
 {
-    if (statusCode != 200) {
-        qCWarning(lcServerNotification) << "Notifications failed with status code " << statusCode;
-        deleteLater();
+    if (job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() != 200) {
+        qCWarning(lcServerNotification) << "Notifications failed with status code " << job->ocsStatus();
         return;
     }
 
-    const auto &notifies = json.object().value(QLatin1String("ocs")).toObject().value(QLatin1String("data")).toArray();
-    AccountStatePtr ai(qvariant_cast<AccountState *>(sender()->property("AccountStatePtr")));
+    const auto &notifies = job->data().value(QLatin1String("ocs")).toObject().value(QLatin1String("data")).toArray();
 
     ActivityList list;
     list.reserve(notifies.size());
@@ -91,7 +91,7 @@ void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &j
         // https://github.com/owncloud/notifications/blob/master/docs/ocs-endpoint-v1.md#deleting-a-notification-for-a-user
         ActivityLink al;
         al._label = tr("Dismiss");
-        al._link = Utility::concatUrlPath(ai->account()->url(), notificationsPath + "/" + QString::number(id)).toString();
+        al._link = Utility::concatUrlPath(accountState->account()->url(), notificationsPath + "/" + QString::number(id)).toString();
         al._verb  = "DELETE";
         al._isPrimary = false;
         linkList.append(al);
@@ -99,7 +99,7 @@ void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &j
         list.append(Activity {
             Activity::NotificationType,
             id,
-            ai->account(),
+            accountState->account(),
             json.value(QStringLiteral("subject")).toString(),
             json.value(QStringLiteral("message")).toString(),
             QString(),
@@ -108,7 +108,5 @@ void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &j
             std::move(linkList) });
     }
     emit newNotificationList(list);
-
-    deleteLater();
 }
 }

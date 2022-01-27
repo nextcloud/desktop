@@ -61,19 +61,15 @@ namespace OCC {
   +---------------------------+
   |
   +-> checkServerCapabilities
-        JsonApiJob (cloud/capabilities)
-        |
-        +-> slotCapabilitiesRecieved -+
-                                      |
-  +-----------------------------------+
+        JsonApiJob (cloud/capabilities) -> slotCapabilitiesRecieved -+
+                                                                     |
+  +------------------------------------------------------------------+
   |
-  +-> fetchUser
-        PropfindJob
-        |
-        +-> slotUserFetched
-              AvatarJob
-              |
-              +-> slotAvatarImage --> reportResult()
+  +-> fetchUser -+
+                 |
+                 +-> AvatarJob
+                            |
+                            +-> slotAvatarImage --> reportResult()
 
     \endcode
  */
@@ -125,8 +121,6 @@ protected slots:
     void slotAuthFailed(QNetworkReply *reply);
     void slotAuthSuccess();
 
-    void slotCapabilitiesRecieved(const QJsonDocument &);
-    void slotUserFetched(const QJsonDocument &);
 #ifndef TOKEN_AUTH_ONLY
     void slotAvatarImage(const QPixmap &img);
 #endif

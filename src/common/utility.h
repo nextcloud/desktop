@@ -290,8 +290,9 @@ OCSYNC_EXPORT Q_DECLARE_LOGGING_CATEGORY(lcUtility)
     template <class E>
     QString enumToString(E value)
     {
-        return QMetaEnum::fromType<E>().valueToKeys(value);
+        return QString::fromUtf8(QMetaEnum::fromType<E>().valueToKeys(value));
     }
+
     template <class E = void>
     QString enumToDisplayName(E)
     {

@@ -53,6 +53,7 @@ void NotificationConfirmJob::start()
     }
     QNetworkRequest req;
     req.setRawHeader("Ocs-APIREQUEST", "true");
+    // TODO: json job
     req.setRawHeader("Content-Type", "application/x-www-form-urlencoded");
 
     sendRequest(_verb, _link, req);

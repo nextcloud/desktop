@@ -68,6 +68,7 @@ static QUrlQuery percentEncodeQueryItems(
 
 void OcsJob::start()
 {
+    // TODO: json job
     QNetworkRequest req;
     req.setRawHeader("Ocs-APIREQUEST", "true");
     req.setRawHeader("Content-Type", "application/x-www-form-urlencoded");

@@ -23,7 +23,7 @@
 
 
 namespace OCC {
-class SimpleNetworkJob;
+class JsonJob;
 
 /**
  * Job that do the authorization grant and fetch the access token
@@ -93,7 +93,7 @@ private:
     void finalize(const QPointer<QTcpSocket> &socket, const QString &accessToken,
         const QString &refreshToken, const QString &userId, const QUrl &messageUrl);
 
-    SimpleNetworkJob *postTokenRequest(const QList<QPair<QString, QString>> &queryItems);
+    JsonJob *postTokenRequest(const QList<QPair<QString, QString>> &queryItems);
 
     QByteArray generateRandomString(size_t size) const;
 

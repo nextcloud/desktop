@@ -37,6 +37,8 @@ set(libsync_SRCS
     creds/abstractcredentials.cpp
     creds/credentialscommon.cpp
     creds/oauth.cpp
+
+    networkjobs/jsonjob.cpp
 )
 
 if(TOKEN_AUTH_ONLY)
