@@ -14,6 +14,8 @@ Summary
 * Bugfix - Fallback to ownCloud sidebar icons on Mac if none provided in branding: [#9381](https://github.com/owncloud/client/pull/9381)
 * Bugfix - Immediately retry upload if file changed during sync: [#9382](https://github.com/owncloud/client/issues/9382)
 * Bugfix - Don't reset change time on upload: [#9383](https://github.com/owncloud/client/issues/9383)
+* Bugfix - Fix translated icon names in desktop file with ownBrander themes: [#9390](https://github.com/owncloud/client/pull/9390)
+* Bugfix - Fix potential download failure for renamed file with Windows VFS: [#18](https://github.com/owncloud/client-desktop-vfs-win/pull/18)
 * Change - Make sharedialog preview be more resilient: [#8938](https://github.com/owncloud/client/issues/8938)
 * Enhancement - Retry token refresh multiple times before logout: [#9245](https://github.com/owncloud/client/issues/9245)
 * Enhancement - Don't log error when checking removed file for changes: [#9304](https://github.com/owncloud/client/issues/9304)
@@ -61,6 +63,19 @@ Details
 
    https://github.com/owncloud/client/issues/9383
    https://github.com/owncloud/client-desktop-vfs-win/pull/16
+
+* Bugfix - Fix translated icon names in desktop file with ownBrander themes: [#9390](https://github.com/owncloud/client/pull/9390)
+
+   Fixes broken translated icon reference in desktop entries for some branded build themes.
+
+   https://github.com/owncloud/client/pull/9390
+
+* Bugfix - Fix potential download failure for renamed file with Windows VFS: [#18](https://github.com/owncloud/client-desktop-vfs-win/pull/18)
+
+   When a dehydrated file is renamed and immediately opened, the subsequent download might try to
+   create a file with the original (un-renamed) name.
+
+   https://github.com/owncloud/client-desktop-vfs-win/pull/18
 
 * Change - Make sharedialog preview be more resilient: [#8938](https://github.com/owncloud/client/issues/8938)
 
