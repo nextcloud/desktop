@@ -73,6 +73,10 @@ User::User(AccountStatePtr &account, const bool &isCurrent, QObject *parent)
     connect(_account->account().data(), &Account::userStatusChanged, this, &User::statusChanged);
     connect(_account.data(), &AccountState::desktopNotificationsAllowedChanged, this, &User::desktopNotificationsAllowedChanged);
 
+    connect(_account->account().data(), &Account::capabilitiesChanged, this, &User::headerColorChanged);
+    connect(_account->account().data(), &Account::capabilitiesChanged, this, &User::headerTextColorChanged);
+    connect(_account->account().data(), &Account::capabilitiesChanged, this, &User::accentColorChanged);
+
     connect(_activityModel, &ActivityListModel::sendNotificationRequest, this, &User::slotSendNotificationRequest);
 }
 
@@ -698,6 +702,21 @@ AccountApp *User::talkApp() const
 bool User::hasActivities() const
 {
     return _account->account()->capabilities().hasActivities();
+}
+
+QColor User::headerColor() const
+{
+    return _account->account()->headerColor();
+}
+
+QColor User::headerTextColor() const
+{
+    return _account->account()->headerTextColor();
+}
+
+QColor User::accentColor() const
+{
+    return _account->account()->accentColor();
 }
 
 AccountAppList User::appList() const

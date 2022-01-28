@@ -69,6 +69,7 @@ int main(int argc, char **argv)
     qmlRegisterType<UserStatusSelectorModel>("com.nextcloud.desktopclient", 1, 0, "UserStatusSelectorModel");
     qmlRegisterType<OCC::ActivityListModel>("com.nextcloud.desktopclient", 1, 0, "ActivityListModel");
     qmlRegisterType<OCC::FileActivityListModel>("com.nextcloud.desktopclient", 1, 0, "FileActivityListModel");
+    qmlRegisterType<Theme>("com.nextcloud.desktopclient", 1, 0, "Theme");
     qmlRegisterUncreatableType<OCC::UnifiedSearchResultsListModel>(
         "com.nextcloud.desktopclient", 1, 0, "UnifiedSearchResultsListModel", "UnifiedSearchResultsListModel");
     qRegisterMetaType<UnifiedSearchResultsListModel *>("UnifiedSearchResultsListModel*");
