@@ -15,8 +15,9 @@
 #ifndef NOTIFICATIONCONFIRMJOB_H
 #define NOTIFICATIONCONFIRMJOB_H
 
-#include "accountfwd.h"
 #include "abstractnetworkjob.h"
+#include "accountfwd.h"
+#include "networkjobs/jsonjob.h"
 
 #include <QVector>
 #include <QList>
@@ -35,19 +36,12 @@ class NotificationWidget;
  * All the communication logic is handled in this class.
  *
  */
-class NotificationConfirmJob : public AbstractNetworkJob
+class NotificationConfirmJob : public JsonApiJob
 {
     Q_OBJECT
 
 public:
-    explicit NotificationConfirmJob(AccountPtr account);
-
-    /**
-     * @brief Set the verb and link for the job
-     *
-     * @param verb currently supported GET PUT POST DELETE
-     */
-    void setLinkAndVerb(const QUrl &link, const QByteArray &verb);
+    using JsonApiJob::JsonApiJob;
 
     /**
      * @brief Start the OCS request
@@ -68,21 +62,7 @@ public:
      */
     NotificationWidget *widget();
 
-signals:
-
-    /**
-     * Result of the OCS request
-     *
-     * @param reply the reply
-     */
-    void jobFinished(QString reply, int replyCode);
-
-private slots:
-    bool finished() override;
-
 private:
-    QByteArray _verb;
-    QUrl _link;
     NotificationWidget *_widget;
 };
 }

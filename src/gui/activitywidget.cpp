@@ -328,14 +328,32 @@ void ActivityWidget::slotSendNotificationRequest(const QString &accountName, con
 
     if (validVerbs.contains(verb)) {
         if (auto acc = AccountManager::instance()->account(accountName)) {
-            NotificationConfirmJob *job = new NotificationConfirmJob(acc->account());
-            QUrl l(link);
-            job->setLinkAndVerb(l, verb);
+            const auto url = QUrl::fromUserInput(link);
+            // TODO: host validation?
+            QNetworkRequest req;
+            req.setUrl(url);
+
+            auto *job = new NotificationConfirmJob(acc->account(), {}, verb, {}, req, this);
             job->setWidget(theSender);
-            connect(job, &AbstractNetworkJob::networkError,
-                this, &ActivityWidget::slotNotifyNetworkError);
-            connect(job, &NotificationConfirmJob::jobFinished,
-                this, &ActivityWidget::slotNotifyServerFinished);
+            connect(job, &NotificationConfirmJob::finishedSignal,
+                this, [job, this] {
+                    if (job->reply()->error() == QNetworkReply::NoError) {
+                        endNotificationRequest(job->widget(), job->ocsStatus());
+                        qCInfo(lcActivity) << "Server Notification reply code" << job->ocsStatus();
+
+                        // if the notification was successful start a timer that triggers
+                        // removal of the done widgets in a few seconds
+                        // Add 200 millisecs to the predefined value to make sure that the timer in
+                        // widget's method readyToClose() has elapsed.
+                        if (job->ocsStatus() == OCS_SUCCESS_STATUS_CODE || job->ocsStatus() == OCS_SUCCESS_STATUS_CODE_V2) {
+                            scheduleWidgetToRemove(job->widget());
+                        }
+                    } else {
+                        int resultCode = job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+                        endNotificationRequest(job->widget(), resultCode);
+                        qCWarning(lcActivity) << "Server notify job failed with code " << resultCode;
+                    }
+                });
             job->start();
 
             // count the number of running notification requests. If this member var
@@ -352,38 +370,6 @@ void ActivityWidget::endNotificationRequest(NotificationWidget *widget, int repl
     _notificationRequestsRunning--;
     if (widget) {
         widget->slotNotificationRequestFinished(replyCode);
-    }
-}
-
-void ActivityWidget::slotNotifyNetworkError(QNetworkReply *reply)
-{
-    NotificationConfirmJob *job = qobject_cast<NotificationConfirmJob *>(sender());
-    if (!job) {
-        return;
-    }
-
-    int resultCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-
-    endNotificationRequest(job->widget(), resultCode);
-    qCWarning(lcActivity) << "Server notify job failed with code " << resultCode;
-}
-
-void ActivityWidget::slotNotifyServerFinished(const QString &reply, int replyCode)
-{
-    NotificationConfirmJob *job = qobject_cast<NotificationConfirmJob *>(sender());
-    if (!job) {
-        return;
-    }
-
-    endNotificationRequest(job->widget(), replyCode);
-    qCInfo(lcActivity) << "Server Notification reply code" << replyCode << reply;
-
-    // if the notification was successful start a timer that triggers
-    // removal of the done widgets in a few seconds
-    // Add 200 millisecs to the predefined value to make sure that the timer in
-    // widget's method readyToClose() has elapsed.
-    if (replyCode == OCS_SUCCESS_STATUS_CODE || replyCode == OCS_SUCCESS_STATUS_CODE_V2) {
-        scheduleWidgetToRemove(job->widget());
     }
 }
 

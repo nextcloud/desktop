@@ -188,7 +188,7 @@ void ActivityListModel::startFetchJob(AccountStatePtr ast)
     if (!ast || !ast->isConnected()) {
         return;
     }
-    JsonApiJob *job = new JsonApiJob(ast->account(), QStringLiteral("ocs/v2.php/cloud/activity"), { { QStringLiteral("page"), QStringLiteral("0") }, { QStringLiteral("pagesize"), QStringLiteral("100") } }, {}, this);
+    auto *job = new JsonApiJob(ast->account(), QStringLiteral("ocs/v2.php/cloud/activity"), { { QStringLiteral("page"), QStringLiteral("0") }, { QStringLiteral("pagesize"), QStringLiteral("100") } }, {}, this);
 
     QObject::connect(job, &JsonApiJob::finishedSignal,
         this, [job, ast, this] {
