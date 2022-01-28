@@ -2933,7 +2933,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="240"/>
         <source>Local file changed during sync. It will be resumed.</source>
-        <translation type="unfinished"/>
+        <translation>Arquivo local alterado durante a sincronização. Será retomada.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="561"/>
