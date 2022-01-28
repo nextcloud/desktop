@@ -255,6 +255,13 @@ public:
     virtual bool forbidBadSSL() const;
 
     /**
+     * Forbid use of proxy
+     *
+     * When true, the app always connects to the server directly
+     */
+    virtual bool doNotUseProxy() const;
+
+    /**
      * This is only usefull when previous version had a different overrideServerUrl
      * with a different auth type in that case You should then specify "http" or "shibboleth".
      * Normaly this should be left empty.

@@ -250,6 +250,10 @@ Application::Application(int &argc, char **argv)
         }
     }
 
+    if (_theme->doNotUseProxy()) {
+        ConfigFile().setProxyType(QNetworkProxy::NoProxy);
+    }
+
     parseOptions(arguments());
     //no need to waste time;
     if (_helpOnly || _versionOnly)

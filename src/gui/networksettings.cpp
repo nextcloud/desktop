@@ -34,41 +34,50 @@ NetworkSettings::NetworkSettings(QWidget *parent)
 {
     _ui->setupUi(this);
 
-    _ui->hostLineEdit->setPlaceholderText(tr("Hostname of proxy server"));
-    _ui->userLineEdit->setPlaceholderText(tr("Username for proxy server"));
-    _ui->passwordLineEdit->setPlaceholderText(tr("Password for proxy server"));
+    _ui->proxyGroupBox->setVisible(!Theme::instance()->doNotUseProxy());
 
-    _ui->typeComboBox->addItem(tr("HTTP(S) proxy"), QNetworkProxy::HttpProxy);
-    _ui->typeComboBox->addItem(tr("SOCKS5 proxy"), QNetworkProxy::Socks5Proxy);
+    if (!Theme::instance()->doNotUseProxy()) {
+        _ui->hostLineEdit->setPlaceholderText(tr("Hostname of proxy server"));
+        _ui->userLineEdit->setPlaceholderText(tr("Username for proxy server"));
+        _ui->passwordLineEdit->setPlaceholderText(tr("Password for proxy server"));
 
-    _ui->authRequiredcheckBox->setEnabled(true);
+        _ui->typeComboBox->addItem(tr("HTTP(S) proxy"), QNetworkProxy::HttpProxy);
+        _ui->typeComboBox->addItem(tr("SOCKS5 proxy"), QNetworkProxy::Socks5Proxy);
 
-    // Explicitly set up the enabled status of the proxy auth widgets to ensure
-    // toggling the parent enables/disables the children
-    _ui->userLineEdit->setEnabled(true);
-    _ui->passwordLineEdit->setEnabled(true);
-    _ui->authWidgets->setEnabled(_ui->authRequiredcheckBox->isChecked());
-    connect(_ui->authRequiredcheckBox, &QAbstractButton::toggled,
-        _ui->authWidgets, &QWidget::setEnabled);
+        _ui->authRequiredcheckBox->setEnabled(true);
 
-    connect(_ui->manualProxyRadioButton, &QAbstractButton::toggled,
-        _ui->manualSettings, &QWidget::setEnabled);
-    connect(_ui->manualProxyRadioButton, &QAbstractButton::toggled,
-        _ui->typeComboBox, &QWidget::setEnabled);
-    connect(_ui->manualProxyRadioButton, &QAbstractButton::toggled,
-        this, &NetworkSettings::checkAccountLocalhost);
+        // Explicitly set up the enabled status of the proxy auth widgets to ensure
+        // toggling the parent enables/disables the children
+        _ui->userLineEdit->setEnabled(true);
+        _ui->passwordLineEdit->setEnabled(true);
+        _ui->authWidgets->setEnabled(_ui->authRequiredcheckBox->isChecked());
+        connect(_ui->authRequiredcheckBox, &QAbstractButton::toggled, _ui->authWidgets, &QWidget::setEnabled);
 
-    loadProxySettings();
+        connect(_ui->manualProxyRadioButton, &QAbstractButton::toggled, _ui->manualSettings, &QWidget::setEnabled);
+        connect(_ui->manualProxyRadioButton, &QAbstractButton::toggled, _ui->typeComboBox, &QWidget::setEnabled);
+        connect(_ui->manualProxyRadioButton, &QAbstractButton::toggled, this, &NetworkSettings::checkAccountLocalhost);
+
+        loadProxySettings();
+
+        connect(_ui->typeComboBox, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this,
+            &NetworkSettings::saveProxySettings);
+        connect(_ui->proxyButtonGroup, static_cast<void (QButtonGroup::*)(int)>(&QButtonGroup::buttonClicked), this,
+            &NetworkSettings::saveProxySettings);
+        connect(_ui->hostLineEdit, &QLineEdit::editingFinished, this, &NetworkSettings::saveProxySettings);
+        connect(_ui->userLineEdit, &QLineEdit::editingFinished, this, &NetworkSettings::saveProxySettings);
+        connect(_ui->passwordLineEdit, &QLineEdit::editingFinished, this, &NetworkSettings::saveProxySettings);
+        connect(_ui->portSpinBox, &QAbstractSpinBox::editingFinished, this, &NetworkSettings::saveProxySettings);
+        connect(_ui->authRequiredcheckBox, &QAbstractButton::toggled, this, &NetworkSettings::saveProxySettings);
+
+        // Warn about empty proxy host
+        connect(_ui->hostLineEdit, &QLineEdit::textChanged, this, &NetworkSettings::checkEmptyProxyHost);
+        checkEmptyProxyHost();
+        checkAccountLocalhost();
+    } else {
+        _ui->noProxyRadioButton->setChecked(false);
+    }
+
     loadBWLimitSettings();
-
-    // proxy
-    connect(_ui->typeComboBox, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &NetworkSettings::saveProxySettings);
-    connect(_ui->proxyButtonGroup, static_cast<void (QButtonGroup::*)(int)>(&QButtonGroup::buttonClicked), this, &NetworkSettings::saveProxySettings);
-    connect(_ui->hostLineEdit, &QLineEdit::editingFinished, this, &NetworkSettings::saveProxySettings);
-    connect(_ui->userLineEdit, &QLineEdit::editingFinished, this, &NetworkSettings::saveProxySettings);
-    connect(_ui->passwordLineEdit, &QLineEdit::editingFinished, this, &NetworkSettings::saveProxySettings);
-    connect(_ui->portSpinBox, &QAbstractSpinBox::editingFinished, this, &NetworkSettings::saveProxySettings);
-    connect(_ui->authRequiredcheckBox, &QAbstractButton::toggled, this, &NetworkSettings::saveProxySettings);
 
     connect(_ui->uploadLimitRadioButton, &QAbstractButton::clicked, this, &NetworkSettings::saveBWLimitSettings);
     connect(_ui->noUploadLimitRadioButton, &QAbstractButton::clicked, this, &NetworkSettings::saveBWLimitSettings);
@@ -78,11 +87,6 @@ NetworkSettings::NetworkSettings(QWidget *parent)
     connect(_ui->autoDownloadLimitRadioButton, &QAbstractButton::clicked, this, &NetworkSettings::saveBWLimitSettings);
     connect(_ui->downloadSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &NetworkSettings::saveBWLimitSettings);
     connect(_ui->uploadSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &NetworkSettings::saveBWLimitSettings);
-
-    // Warn about empty proxy host
-    connect(_ui->hostLineEdit, &QLineEdit::textChanged, this, &NetworkSettings::checkEmptyProxyHost);
-    checkEmptyProxyHost();
-    checkAccountLocalhost();
 }
 
 NetworkSettings::~NetworkSettings()
