@@ -122,7 +122,7 @@ Window {
             anchors.right:  trayWindowBackground.right
             anchors.top:    trayWindowBackground.top
             height:         Style.trayWindowHeaderHeight
-            color:          Style.ncBlue
+            color:          UserModel.currentUser.headerColor
 
             RowLayout {
                 id: trayWindowHeaderLayout
@@ -363,7 +363,7 @@ Window {
                                 height: width
                                 anchors.bottom: currentAccountAvatar.bottom
                                 anchors.right: currentAccountAvatar.right
-                                color: Style.ncBlue
+                                color: UserModel.currentUser.headerColor
                                 radius: width*0.5
                             }
 
@@ -375,7 +375,7 @@ Window {
                                 height: width
                                 anchors.bottom: currentAccountAvatar.bottom
                                 anchors.right: currentAccountAvatar.right
-                                color: accountBtnMouseArea.containsMouse ? "white" : "transparent"
+                                color: currentAccountButton.hovered ? "white" : "transparent"
                                 opacity: 0.2
                                 radius: width*0.5
                             }
@@ -410,7 +410,7 @@ Window {
                                 width: Style.currentAccountLabelWidth
                                 text: UserModel.currentUser.name
                                 elide: Text.ElideRight
-                                color: Style.ncTextColor
+                                color: UserModel.currentUser.headerTextColor
                                 font.pixelSize: Style.topLinePixelSize
                                 font.bold: true
                             }
@@ -438,7 +438,7 @@ Window {
                                           ? UserModel.currentUser.statusMessage
                                           : UserModel.currentUser.server
                                     elide: Text.ElideRight
-                                    color: Style.ncTextColor
+                                    color: UserModel.currentUser.headerTextColor
                                     font.pixelSize: Style.subLinePixelSize
                                 }
                             }
@@ -446,7 +446,7 @@ Window {
 
                         ColorOverlay {
                             cached: true
-                            color: Style.ncTextColor
+                            color: UserModel.currentUser.headerTextColor
                             width: source.width
                             height: source.height
                             source: Image {
@@ -475,22 +475,15 @@ Window {
                     Layout.preferredHeight: Style.trayWindowHeaderHeight
                     Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
 
+                    Accessible.role: Accessible.Button
+                    Accessible.name: qsTr("Open local folder of current account")
+
                     HeaderButton {
                         id: openLocalFolderButton
                         visible: UserModel.currentUser.hasLocalFolder
                         icon.source: "qrc:///client/theme/white/folder.svg"
+                        icon.color: UserModel.currentUser.headerTextColor
                         onClicked: UserModel.openCurrentAccountLocalFolder()
-
-                        Rectangle {
-                            id: folderStateIndicatorBackground
-                            width: Style.folderStateIndicatorSize
-                            height: width
-                            anchors.top: openLocalFolderButton.verticalCenter
-                            anchors.left: openLocalFolderButton.horizontalCenter
-                            color: Style.ncBlue
-                            radius: width*0.5
-                            z: 1
-                        }
 
                         Image {
                             id: folderStateIndicator
@@ -507,12 +500,30 @@ Window {
 
                             Accessible.role: Accessible.Indicator
                             Accessible.name: UserModel.currentUser.isConnected ? qsTr("Connected") : qsTr("Disconnected")
-                            z: 2
+                            z: 1
+
+                            Rectangle {
+                                id: folderStateIndicatorBackground
+                                width: Style.folderStateIndicatorSize + 2
+                                height: width
+                                anchors.centerIn: parent
+                                color: UserModel.currentUser.headerColor
+                                radius: width*0.5
+                                z: -2
+                            }
+
+                            Rectangle {
+                                id: folderStateIndicatorBackgroundMouseHover
+                                width: Style.folderStateIndicatorSize + 2
+                                height: width
+                                anchors.centerIn: parent
+                                color: openLocalFolderButton.hovered ? "white" : "transparent"
+                                opacity: 0.2
+                                radius: width*0.5
+                                z: -1
+                            }
                         }
                     }
-
-                    Accessible.role: Accessible.Button
-                    Accessible.name: qsTr("Open local folder of current account")
                 }
 
                 HeaderButton {
@@ -520,6 +531,7 @@ Window {
 
                     visible: UserModel.currentUser.serverHasTalk
                     icon.source: "qrc:///client/theme/white/talk-app.svg"
+                    icon.color: UserModel.currentUser.headerTextColor
                     onClicked: UserModel.openCurrentAccountTalk()
 
                     Accessible.role: Accessible.Button
@@ -530,6 +542,7 @@ Window {
                 HeaderButton {
                     id: trayWindowAppsButton
                     icon.source: "qrc:///client/theme/white/more-apps.svg"
+                    icon.color: UserModel.currentUser.headerTextColor
 
                     onClicked: {
                         if(appsMenu.count <= 0) {

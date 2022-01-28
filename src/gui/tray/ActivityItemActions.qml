@@ -3,6 +3,7 @@ import QtQuick 2.15
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.2
 import Style 1.0
+import com.nextcloud.desktopclient 1.0
 
 RowLayout {
     id: root
@@ -42,7 +43,7 @@ RowLayout {
             imageSource: model.modelData.imageSource
             imageSourceHover: model.modelData.imageSourceHovered
 
-            textColor: imageSource !== "" ? Style.ncBlue : Style.unifiedSearchResulSublineColor
+            textColor: imageSource !== "" ? UserModel.currentUser.headerColor : Style.unifiedSearchResulSublineColor
             textColorHovered: imageSource !== "" ? Style.lightHover : Style.unifiedSearchResulTitleColor
 
             bold: primary

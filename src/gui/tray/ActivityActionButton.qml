@@ -2,6 +2,7 @@ import QtQuick 2.15
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.15
 import Style 1.0
+import com.nextcloud.desktopclient 1.0
 
 Item {
     id: root
@@ -57,7 +58,7 @@ Item {
             imageSource: root.imageSource
             imageSourceHover: root.imageSourceHover
 
-            bgColor: Style.ncBlue
+            bgColor: UserModel.currentUser.headerColor
 
             onClicked: root.clicked()
         }
