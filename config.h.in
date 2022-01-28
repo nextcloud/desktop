@@ -42,4 +42,6 @@
 
 #cmakedefine01 GUI_TESTING
 
+#cmakedefine BUILD_UPDATER "@BUILD_UPDATER@"
+
 #endif

@@ -36,8 +36,6 @@
 #include "common/utility.h"
 #include "logger.h"
 
-#include "config.h"
-
 #include "legalnotice.h"
 
 #include <QFileDialog>
