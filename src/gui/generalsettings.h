@@ -15,6 +15,8 @@
 #ifndef MIRALL_GENERALSETTINGS_H
 #define MIRALL_GENERALSETTINGS_H
 
+#include "config.h"
+
 #include <QWidget>
 #include <QPointer>
 
