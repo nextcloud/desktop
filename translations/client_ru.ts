@@ -12,7 +12,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="26"/>
         <source>In %1</source>
-        <translation type="unfinished"/>
+        <translation>В %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="40"/>
@@ -2373,12 +2373,12 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/internallinkwidget.ui" line="64"/>
         <source>Internal link</source>
-        <translation type="unfinished"/>
+        <translation>Внутренняя ссылка</translation>
     </message>
     <message>
         <location filename="../src/gui/internallinkwidget.ui" line="83"/>
         <source>Only works for users with access to this folder</source>
-        <translation type="unfinished"/>
+        <translation>Только для пользователей, у которых уже есть доступ к этой папке</translation>
     </message>
 </context>
 <context>
