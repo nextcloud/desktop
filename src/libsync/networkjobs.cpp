@@ -774,21 +774,19 @@ SimpleNetworkJob::SimpleNetworkJob(AccountPtr account, const QString &path, cons
 {
     Q_ASSERT((QList<QByteArray> { "GET", "PUT", "POST", "DELETE", "HEAD" }.contains(verb)));
     if (!arguments.isEmpty()) {
+        QUrlQuery args;
+        // ensure everything is percent encoded
+        // this is especially important for parameters that contain spaces or +
+        for (const auto &item : arguments) {
+            args.addQueryItem(
+                QString::fromUtf8(QUrl::toPercentEncoding(item.first)),
+                QString::fromUtf8(QUrl::toPercentEncoding(item.second)));
+        }
         if (verb == QByteArrayLiteral("POST") || verb == QByteArrayLiteral("PUT")) {
             _request.setHeader(QNetworkRequest::ContentTypeHeader, QStringLiteral("application/x-www-form-urlencoded; charset=UTF-8"));
-            QUrlQuery query;
-            query.setQueryItems(arguments);
-            _body = query.query(QUrl::FullyEncoded).toUtf8();
+            _body = args.query(QUrl::FullyEncoded).toUtf8();
             _device = new QBuffer(&_body);
         } else {
-            QUrlQuery args;
-            // ensure everything is percent encoded
-            // this is especially important for parameters that contain spaces or +
-            for (const auto &item : arguments) {
-                args.addQueryItem(
-                    QString::fromUtf8(QUrl::toPercentEncoding(item.first)),
-                    QString::fromUtf8(QUrl::toPercentEncoding(item.second)));
-            }
             Q_ASSERT(_request.url().isEmpty() || path.isEmpty());
             const auto baseUrl = jobUrl();
             Q_ASSERT(baseUrl.query().isEmpty());
