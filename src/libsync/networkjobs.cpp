@@ -782,7 +782,8 @@ SimpleNetworkJob::SimpleNetworkJob(AccountPtr account, const QString &path, cons
             _device = new QBuffer(&_body);
         } else {
             QUrlQuery args;
-            // TODO: any better idea?
+            // ensure everything is percent encoded
+            // this is especially important for parameters that contain spaces or +
             for (const auto &item : arguments) {
                 args.addQueryItem(
                     QString::fromUtf8(QUrl::toPercentEncoding(item.first)),
