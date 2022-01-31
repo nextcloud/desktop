@@ -13,7 +13,7 @@
  */
 
 #include "sharee.h"
-#include "ocsshareejob.h"
+#include "networkjobs/jsonjob.h"
 
 #include <QJsonObject>
 #include <QJsonDocument>
@@ -71,74 +71,80 @@ void ShareeModel::fetch(const QString &search, const ShareeSet &blacklist)
 {
     _search = search;
     _shareeBlacklist = blacklist;
-    OcsShareeJob *job = new OcsShareeJob(_account);
-    connect(job, &OcsShareeJob::shareeJobFinished, this, &ShareeModel::shareesFetched);
-    connect(job, &OcsJob::ocsError, this, &ShareeModel::displayErrorMessage);
-    job->getSharees(_search, _type, 1, 50);
-}
+    const JsonApiJob::UrlQuery query {
+        { "search", search },
+        { "itemType", _type },
+        { "page", "1" },
+        { "perPage", "50" }
 
-void ShareeModel::shareesFetched(const QJsonDocument &reply)
-{
-    auto data = reply.object().value("ocs").toObject().value("data").toObject();
+    };
+    auto *job = new JsonApiJob(_account, QStringLiteral("ocs/v1.php/apps/files_sharing/api/v1/sharees"), query, {}, this);
+    connect(job, &JsonApiJob::finishedSignal, this, [job, this] {
+        if (!job->ocsSuccess()) {
+            Q_EMIT displayErrorMessage(job->ocsStatus(), job->ocsMessage());
+        } else if (job->parseError().error == QJsonParseError::NoError) {
+                    auto data = job->data().value("ocs").toObject().value("data").toObject();
 
-    QVector<QSharedPointer<Sharee>> newSharees;
+                    QVector<QSharedPointer<Sharee>> newSharees;
 
-    /*
-     * Todo properly loop all of this
-     */
-    auto exact = data.value("exact").toObject();
-    {
-        const auto &users = exact.value("users").toArray();
-        for (const auto &user : users) {
-            newSharees.append(parseSharee(user.toObject()));
-        }
-        const auto &groups = exact.value("groups").toArray();
-        for (const auto &group : groups) {
-            newSharees.append(parseSharee(group.toObject()));
-        }
-        const auto &remotes = exact.value("remotes").toArray();
-        for (const auto &remote : remotes) {
-            newSharees.append(parseSharee(remote.toObject()));
-        }
-    }
+                    /*
+* Todo properly loop all of this
+                     */
+                    auto exact = data.value("exact").toObject();
+                    {
+                        const auto &users = exact.value("users").toArray();
+                        for (const auto &user : users) {
+                            newSharees.append(parseSharee(user.toObject()));
+                        }
+                        const auto &groups = exact.value("groups").toArray();
+                        for (const auto &group : groups) {
+                            newSharees.append(parseSharee(group.toObject()));
+                        }
+                        const auto &remotes = exact.value("remotes").toArray();
+                        for (const auto &remote : remotes) {
+                            newSharees.append(parseSharee(remote.toObject()));
+                        }
+                    }
 
-    {
-        const auto &users = data.value("users").toArray();
-        for (const auto &user : users) {
-            newSharees.append(parseSharee(user.toObject()));
-        }
-    }
-    {
-        const auto &groups = data.value("groups").toArray();
-        for (const auto &group : groups) {
-            newSharees.append(parseSharee(group.toObject()));
-        }
-    }
-    {
-        const auto &remotes = data.value("remotes").toArray();
-        for (const auto &remote : remotes) {
-            newSharees.append(parseSharee(remote.toObject()));
-        }
-    }
+                    {
+                        const auto &users = data.value("users").toArray();
+                        for (const auto &user : users) {
+                            newSharees.append(parseSharee(user.toObject()));
+                        }
+                    }
+                    {
+                        const auto &groups = data.value("groups").toArray();
+                        for (const auto &group : groups) {
+                            newSharees.append(parseSharee(group.toObject()));
+                        }
+                    }
+                    {
+                        const auto &remotes = data.value("remotes").toArray();
+                        for (const auto &remote : remotes) {
+                            newSharees.append(parseSharee(remote.toObject()));
+                        }
+                    }
 
-    // Filter sharees that we have already shared with
-    QVector<QSharedPointer<Sharee>> filteredSharees;
-    for (const auto &sharee : qAsConst(newSharees)) {
-        bool found = false;
-        for (const auto &blacklistSharee : qAsConst(_shareeBlacklist)) {
-            if (sharee->type() == blacklistSharee->type() && sharee->shareWith() == blacklistSharee->shareWith()) {
-                found = true;
-                break;
-            }
-        }
+                    // Filter sharees that we have already shared with
+                    QVector<QSharedPointer<Sharee>> filteredSharees;
+                    for (const auto &sharee : qAsConst(newSharees)) {
+                        bool found = false;
+                        for (const auto &blacklistSharee : qAsConst(_shareeBlacklist)) {
+                            if (sharee->type() == blacklistSharee->type() && sharee->shareWith() == blacklistSharee->shareWith()) {
+                                found = true;
+                                break;
+                            }
+                        }
 
-        if (found == false) {
-            filteredSharees.append(sharee);
-        }
-    }
+                        if (found == false) {
+                            filteredSharees.append(sharee);
+                        }
+                    }
 
-    setNewSharees(filteredSharees);
-    shareesReady();
+                    setNewSharees(filteredSharees);
+                    shareesReady();
+                } });
+    job->start();
 }
 
 QSharedPointer<Sharee> ShareeModel::parseSharee(const QJsonObject &data)

@@ -35,7 +35,6 @@
 #include "notificationconfirmjob.h"
 #include "servernotificationhandler.h"
 #include "theme.h"
-#include "ocsjob.h"
 
 #include "models/activitylistmodel.h"
 #include "models/expandingheaderview.h"
@@ -338,20 +337,19 @@ void ActivityWidget::slotSendNotificationRequest(const QString &accountName, con
             connect(job, &NotificationConfirmJob::finishedSignal,
                 this, [job, this] {
                     if (job->reply()->error() == QNetworkReply::NoError) {
-                        endNotificationRequest(job->widget(), job->ocsStatus());
+                        endNotificationRequest(job->widget(), job->ocsSuccess());
                         qCInfo(lcActivity) << "Server Notification reply code" << job->ocsStatus();
 
                         // if the notification was successful start a timer that triggers
                         // removal of the done widgets in a few seconds
                         // Add 200 millisecs to the predefined value to make sure that the timer in
                         // widget's method readyToClose() has elapsed.
-                        if (job->ocsStatus() == OCS_SUCCESS_STATUS_CODE || job->ocsStatus() == OCS_SUCCESS_STATUS_CODE_V2) {
+                        if (job->ocsSuccess()) {
                             scheduleWidgetToRemove(job->widget());
                         }
                     } else {
-                        int resultCode = job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-                        endNotificationRequest(job->widget(), resultCode);
-                        qCWarning(lcActivity) << "Server notify job failed with code " << resultCode;
+                        endNotificationRequest(job->widget(), job->ocsSuccess());
+                        qCWarning(lcActivity) << "Server notify job failed with code " << job->ocsStatus();
                     }
                 });
             job->start();
@@ -365,11 +363,11 @@ void ActivityWidget::slotSendNotificationRequest(const QString &accountName, con
     }
 }
 
-void ActivityWidget::endNotificationRequest(NotificationWidget *widget, int replyCode)
+void ActivityWidget::endNotificationRequest(NotificationWidget *widget, bool success)
 {
     _notificationRequestsRunning--;
     if (widget) {
-        widget->slotNotificationRequestFinished(replyCode);
+        widget->slotNotificationRequestFinished(success);
     }
 }
 

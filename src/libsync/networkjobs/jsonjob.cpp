@@ -84,8 +84,24 @@ void JsonApiJob::parse(const QByteArray &rawData)
     } else {
         JsonJob::parse(rawData);
         // example: "{"ocs":{"meta":{"status":"ok","statuscode":100,"message":null},"data":{"version":{"major":8,"minor":"... (504)
-        if (data().contains(QLatin1String("ocs"))) {
-            _ocsStatus = data().value(QLatin1String("ocs")).toObject().value(QLatin1String("meta")).toObject().value(QLatin1String("statuscode")).toInt();
+        if (parseError().error == QJsonParseError::NoError) {
+            if (data().contains(QLatin1String("ocs"))) {
+                const auto meta = data().value(QLatin1String("ocs")).toObject().value(QLatin1String("meta")).toObject();
+                _ocsStatus = meta.value(QLatin1String("statuscode")).toInt();
+                _ocsMessage = meta.value(QLatin1String("message")).toString();
+            } else {
+                _ocsMessage = parseError().errorString();
+            }
         }
     }
+}
+const QString &JsonApiJob::ocsMessage() const
+{
+    return _ocsMessage;
+}
+bool JsonApiJob::ocsSuccess() const
+{
+    // v1 api: 100
+    // v2 api: 200 as in http
+    return ocsStatus() == 100 || ocsStatus() == 200;
 }

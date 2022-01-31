@@ -52,9 +52,7 @@ set(client_SRCS
     lockwatcher.cpp
     logbrowser.cpp
     networksettings.cpp
-    ocsjob.cpp
     ocssharejob.cpp
-    ocsshareejob.cpp
     openfilemanager.cpp
     owncloudgui.cpp
     owncloudsetupwizard.cpp

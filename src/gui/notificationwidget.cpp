@@ -20,8 +20,6 @@
 
 #include <QPushButton>
 
-#include "ocsjob.h"
-
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcNotifications, "gui.notifications", QtInfoMsg)
@@ -102,15 +100,14 @@ void NotificationWidget::slotButtonClicked(QPushButton *buttonWidget, const Acti
     }
 }
 
-void NotificationWidget::slotNotificationRequestFinished(int statusCode)
+void NotificationWidget::slotNotificationRequestFinished(bool success)
 {
     QString doneText;
     QLocale locale;
 
     QString timeStr = locale.toString(QTime::currentTime());
 
-    // the ocs API returns stat code 100 or 200 inside the xml if it succeeded.
-    if (statusCode != OCS_SUCCESS_STATUS_CODE && statusCode != OCS_SUCCESS_STATUS_CODE_V2) {
+    if (success) {
         qCWarning(lcNotifications) << "Notification Request to Server failed, leave button visible.";
         for (auto *button : qAsConst(_buttons)) {
             button->setEnabled(true);

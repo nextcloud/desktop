@@ -90,16 +90,16 @@ QSharedPointer<Sharee> Share::getShareWith() const
 
 void Share::setPermissions(Permissions permissions)
 {
-    OcsShareJob *job = new OcsShareJob(_account);
-    connect(job, &OcsShareJob::shareJobFinished, this, &Share::slotPermissionsSet);
-    connect(job, &OcsJob::ocsError, this, &Share::slotOcsError);
-    job->setPermissions(getId(), permissions);
-}
-
-void Share::slotPermissionsSet(const QJsonDocument &, const QVariant &value)
-{
-    _permissions = (Permissions)value.toInt();
-    emit permissionsSet();
+    auto *job = OcsShareJob::setPermissions(_account, this, getId(), permissions);
+    connect(job, &JsonApiJob::finishedSignal, this, [job, permissions, this] {
+        if (!job->ocsSuccess()) {
+            emit serverError(job->ocsStatus(), job->ocsMessage());
+        } else {
+            _permissions = permissions;
+            emit permissionsSet();
+        }
+    });
+    job->start();
 }
 
 Share::Permissions Share::getPermissions() const
@@ -109,22 +109,16 @@ Share::Permissions Share::getPermissions() const
 
 void Share::deleteShare()
 {
-    OcsShareJob *job = new OcsShareJob(_account);
-    connect(job, &OcsShareJob::shareJobFinished, this, &Share::slotDeleted);
-    connect(job, &OcsJob::ocsError, this, &Share::slotOcsError);
-    job->deleteShare(getId());
-}
-
-void Share::slotDeleted()
-{
-    emit shareDeleted();
-
-    updateFolder(_account, _path);
-}
-
-void Share::slotOcsError(int statusCode, const QString &message)
-{
-    emit serverError(statusCode, message);
+    auto *job = OcsShareJob::deleteShare(_account, this, getId());
+    connect(job, &JsonApiJob::finishedSignal, this, [job, this] {
+        if (!job->ocsSuccess()) {
+            emit serverError(job->ocsStatus(), job->ocsMessage());
+        } else {
+            emit shareDeleted();
+            updateFolder(_account, _path);
+        }
+    });
+    job->start();
 }
 
 QUrl LinkShare::getLink() const
@@ -184,10 +178,16 @@ QString LinkShare::getName() const
 
 void LinkShare::setName(const QString &name)
 {
-    OcsShareJob *job = new OcsShareJob(_account);
-    connect(job, &OcsShareJob::shareJobFinished, this, &LinkShare::slotNameSet);
-    connect(job, &OcsJob::ocsError, this, &LinkShare::slotOcsError);
-    job->setName(getId(), name);
+    auto *job = OcsShareJob::setName(_account, this, getId(), name);
+    connect(job, &JsonApiJob::finishedSignal, this, [job, name, this] {
+        if (!job->ocsSuccess()) {
+            emit serverError(job->ocsStatus(), job->ocsMessage());
+        } else {
+            _name = name;
+            emit nameSet();
+        }
+    });
+    job->start();
 }
 
 QString LinkShare::getToken() const
@@ -197,51 +197,39 @@ QString LinkShare::getToken() const
 
 void LinkShare::setPassword(const QString &password)
 {
-    OcsShareJob *job = new OcsShareJob(_account);
-    connect(job, &OcsShareJob::shareJobFinished, this, &LinkShare::slotPasswordSet);
-    connect(job, &OcsJob::ocsError, this, &LinkShare::slotSetPasswordError);
-    job->setPassword(getId(), password);
-}
-
-void LinkShare::slotPasswordSet(const QJsonDocument &, const QVariant &value)
-{
-    _passwordSet = value.toString() != "";
-    emit passwordSet();
+    auto *job = OcsShareJob::setPassword(_account, this, getId(), password);
+    connect(job, &JsonApiJob::finishedSignal, this, [job, password, this] {
+        if (!job->ocsSuccess()) {
+            emit passwordSetError(job->ocsStatus(), job->ocsMessage());
+        } else {
+            _passwordSet = !password.isEmpty();
+            emit passwordSet();
+        }
+    });
+    job->start();
 }
 
 void LinkShare::setExpireDate(const QDate &date)
 {
-    OcsShareJob *job = new OcsShareJob(_account);
-    connect(job, &OcsShareJob::shareJobFinished, this, &LinkShare::slotExpireDateSet);
-    connect(job, &OcsJob::ocsError, this, &LinkShare::slotOcsError);
-    job->setExpireDate(getId(), date);
-}
-
-void LinkShare::slotExpireDateSet(const QJsonDocument &reply, const QVariant &value)
-{
-    auto data = reply.object().value("ocs").toObject().value("data").toObject();
-
-    /*
-     * If the reply provides a data back (more REST style)
-     * they use this date.
-     */
-    if (data.value("expiration").isString()) {
-        _expireDate = QDate::fromString(data.value("expiration").toString(), "yyyy-MM-dd 00:00:00");
-    } else {
-        _expireDate = value.toDate();
-    }
-    emit expireDateSet();
-}
-
-void LinkShare::slotSetPasswordError(int statusCode, const QString &message)
-{
-    emit passwordSetError(statusCode, message);
-}
-
-void LinkShare::slotNameSet(const QJsonDocument &, const QVariant &value)
-{
-    _name = value.toString();
-    emit nameSet();
+    auto *job = OcsShareJob::setExpireDate(_account, this, getId(), date);
+    connect(job, &JsonApiJob::finishedSignal, this, [job, date, this] {
+        if (!job->ocsSuccess()) {
+            emit serverError(job->ocsStatus(), job->ocsMessage());
+        } else {
+            auto data = job->data().value("ocs").toObject().value("data").toObject();
+            /*
+             * If the reply provides a data back (more REST style)
+             * they use this date.
+             */
+            if (data.value("expiration").isString()) {
+                _expireDate = QDate::fromString(data.value("expiration").toString(), "yyyy-MM-dd 00:00:00");
+            } else {
+                _expireDate = date;
+            }
+            emit expireDateSet();
+        }
+    });
+    job->start();
 }
 
 ShareManager::ShareManager(AccountPtr account, QObject *parent)
@@ -256,53 +244,48 @@ void ShareManager::createLinkShare(const QString &path,
     const QDate &expireDate,
     const Share::Permissions permissions)
 {
-    OcsShareJob *job = new OcsShareJob(_account);
-    connect(job, &OcsShareJob::shareJobFinished, this, &ShareManager::slotLinkShareCreated);
-    connect(job, &OcsJob::ocsError, this, &ShareManager::slotOcsError);
-    job->createLinkShare(path, name, password, expireDate, permissions);
+    auto *job = OcsShareJob::createLinkShare(_account, this, path, name, password, expireDate, permissions);
+    connect(job, &JsonApiJob::finishedSignal, this, [job, password, this] {
+        if (job->ocsStatus() == 403) {
+            // A 403 generally means some of the settings for the share are not allowed.
+            // Maybe a password is required, or the expire date isn't acceptable.
+            emit linkShareCreationForbidden(job->ocsMessage());
+        } else if (!job->ocsSuccess()) {
+            emit serverError(job->ocsStatus(), job->ocsMessage());
+        } else {
+            // Parse share
+            auto data = job->data().value("ocs").toObject().value("data").toObject();
+            QSharedPointer<LinkShare> share(parseLinkShare(data));
+
+            emit linkShareCreated(share);
+
+            updateFolder(_account, share->path());
+        }
+    });
+    job->start();
 }
-
-void ShareManager::slotLinkShareCreated(const QJsonDocument &reply)
-{
-    QString message;
-    int code = OcsShareJob::getJsonReturnCode(reply, message);
-
-    // A 403 generally means some of the settings for the share are not allowed.
-    // Maybe a password is required, or the expire date isn't acceptable.
-    if (code == 403) {
-        emit linkShareCreationForbidden(message);
-        return;
-    }
-
-    //Parse share
-    auto data = reply.object().value("ocs").toObject().value("data").toObject();
-    QSharedPointer<LinkShare> share(parseLinkShare(data));
-
-    emit linkShareCreated(share);
-
-    updateFolder(_account, share->path());
-}
-
 
 void ShareManager::createShare(const QString &path,
     const Share::ShareType shareType,
-    const QString shareWith,
+    const QString &shareWith,
     const Share::Permissions desiredPermissions)
 {
-    auto job = new OcsShareJob(_account);
-    connect(job, &OcsJob::ocsError, this, &ShareManager::slotOcsError);
-    connect(job, &OcsShareJob::shareJobFinished, this,
-        [=](const QJsonDocument &reply) {
+    auto *job = OcsShareJob::getSharedWithMe(_account, this);
+    connect(job, &JsonApiJob::finishedSignal, this, [=] {
+        if (!job->ocsSuccess()) {
+            emit serverError(job->ocsStatus(), job->ocsMessage());
+        } else {
             // Note: The following code attempts to determine if the item was shared with
             // the user and what the permissions were. It doesn't do a good job at it since
             // the == path comparison will mean it doesn't work for subitems of shared
             // folders. Also, it's nicer if the calling code determines the share-permissions
             // (see maxSharingPermissions) via a PropFind and passes in valid permissions.
             // Remove this code for >= 2.7.0.
+            // TODO: sigh
 
             // Find existing share permissions (if this was shared with us)
             Share::Permissions existingPermissions = SharePermissionDefault;
-            const auto &array = reply.object()[QLatin1String("ocs")].toObject()[QLatin1String("data")].toArray();
+            const auto &array = job->data()[QLatin1String("ocs")].toObject()[QLatin1String("data")].toArray();
             for (const auto &element : array) {
                 auto map = element.toObject();
                 if (map["file_target"] == path)
@@ -319,60 +302,59 @@ void ShareManager::createShare(const QString &path,
                 validPermissions &= existingPermissions;
             }
 
-            OcsShareJob *job = new OcsShareJob(_account);
-            connect(job, &OcsShareJob::shareJobFinished, this, &ShareManager::slotShareCreated);
-            connect(job, &OcsJob::ocsError, this, &ShareManager::slotOcsError);
-            job->createShare(path, shareType, shareWith, validPermissions);
-        });
-    job->getSharedWithMe();
-}
+            auto *job2 = OcsShareJob::createShare(_account, this, path, shareType, shareWith, validPermissions);
+            connect(job2, &JsonApiJob::finishedSignal, this, [job2, this] {
+            if (!job2->ocsSuccess()) {
+                emit serverError(job2->ocsStatus(), job2->ocsMessage());
+            } else {
+                //Parse share
+                auto data = job2->data().value("ocs").toObject().value("data").toObject();
+                QSharedPointer<Share> share(parseShare(data));
 
+                emit shareCreated(share);
+                updateFolder(_account, share->path());
 
-void ShareManager::slotShareCreated(const QJsonDocument &reply)
-{
-    //Parse share
-    auto data = reply.object().value("ocs").toObject().value("data").toObject();
-    QSharedPointer<Share> share(parseShare(data));
-
-    emit shareCreated(share);
-
-    updateFolder(_account, share->path());
+            } });
+            job2->start();
+        }
+    });
+    job->start();
 }
 
 void ShareManager::fetchShares(const QString &path)
 {
-    OcsShareJob *job = new OcsShareJob(_account);
-    connect(job, &OcsShareJob::shareJobFinished, this, &ShareManager::slotSharesFetched);
-    connect(job, &OcsJob::ocsError, this, &ShareManager::slotOcsError);
-    job->getShares(path);
-}
-
-void ShareManager::slotSharesFetched(const QJsonDocument &reply)
-{
-    const auto &tmpShares = reply.object().value(QLatin1String("ocs")).toObject().value(QLatin1String("data")).toArray();
-    const QString versionString = _account->serverVersion();
-    qCDebug(lcSharing) << versionString << "Fetched" << tmpShares.count() << "shares";
-
-    QList<QSharedPointer<Share>> shares;
-
-    for (const auto &share : tmpShares) {
-        auto data = share.toObject();
-
-        auto shareType = data.value("share_type").toInt();
-
-        QSharedPointer<Share> newShare;
-
-        if (shareType == Share::TypeLink) {
-            newShare = parseLinkShare(data);
+    auto *job = OcsShareJob::getShares(_account, this, path);
+    connect(job, &JsonApiJob::finishedSignal, this, [job, path, this] {
+        // 404 seems to be ok according to refactored code
+        if (job->ocsStatus() == 404) {
+            emit sharesFetched({});
+        } else if (!job->ocsSuccess()) {
+            emit serverError(job->ocsStatus(), job->ocsMessage());
         } else {
-            newShare = parseShare(data);
+            const auto &tmpShares = job->data().value(QLatin1String("ocs")).toObject().value(QLatin1String("data")).toArray();
+            qCDebug(lcSharing) << _account->serverVersion() << "Fetched" << tmpShares.count() << "shares";
+
+            QList<QSharedPointer<Share>> shares;
+
+            for (const auto &share : tmpShares) {
+                auto data = share.toObject();
+
+                auto shareType = data.value("share_type").toInt();
+
+                QSharedPointer<Share> newShare;
+
+                if (shareType == Share::TypeLink) {
+                    newShare = parseLinkShare(data);
+                } else {
+                    newShare = parseShare(data);
+                }
+                shares.append(QSharedPointer<Share>(newShare));
+            }
+            qCDebug(lcSharing) << "Sending " << shares.count() << "shares";
+            emit sharesFetched(shares);
         }
-
-        shares.append(QSharedPointer<Share>(newShare));
-    }
-
-    qCDebug(lcSharing) << "Sending " << shares.count() << "shares";
-    emit sharesFetched(shares);
+    });
+    job->start();
 }
 
 QSharedPointer<LinkShare> ShareManager::parseLinkShare(const QJsonObject &data)
@@ -420,10 +402,5 @@ QSharedPointer<Share> ShareManager::parseShare(const QJsonObject &data)
         (Share::ShareType)data.value("share_type").toInt(),
         (Share::Permissions)data.value("permissions").toInt(),
         sharee));
-}
-
-void ShareManager::slotOcsError(int statusCode, const QString &message)
-{
-    emit serverError(statusCode, message);
 }
 }

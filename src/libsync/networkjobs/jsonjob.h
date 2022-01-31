@@ -72,10 +72,16 @@ public:
     // the OCS status code: 100 (!) for success
     int ocsStatus() const;
 
+    const QString &ocsMessage() const;
+
+    // whether the job was successful
+    bool ocsSuccess() const;
+
 private:
     // using JsonJob::JsonJob;/
 
     int _ocsStatus = 0;
+    QString _ocsMessage;
 
 protected:
     virtual void parse(const QByteArray &data) override;

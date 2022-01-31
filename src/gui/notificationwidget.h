@@ -40,7 +40,7 @@ signals:
 
 public slots:
     void setActivity(const Activity &activity);
-    void slotNotificationRequestFinished(int statusCode);
+    void slotNotificationRequestFinished(bool success);
 
 protected:
     void changeEvent(QEvent *) override;
