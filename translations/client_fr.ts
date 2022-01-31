@@ -3514,7 +3514,7 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
     <message>
         <location filename="../src/libsync/discovery.cpp" line="946"/>
         <source>Conflict when uploading some files to a folder. Those, conflicted, are going to get cleared!</source>
-        <translation>Conflit lors du téléversement de certains fichiers dans un dossier. Ceux conflictuels seront effacer!</translation>
+        <translation>Conflit lors du téléversement de certains fichiers dans un dossier. Ceux conflictuels seront effacés!</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1083"/>
