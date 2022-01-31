@@ -299,6 +299,11 @@ OCSYNC_EXPORT Q_DECLARE_LOGGING_CATEGORY(lcUtility)
         static_assert(std::is_same<E, void>::value, "Not implemented");
         Q_UNREACHABLE();
     }
+
+#ifdef Q_OS_LINUX
+    OCSYNC_EXPORT QString appImageLocation();
+    OCSYNC_EXPORT bool runningInAppImage();
+#endif
 }
 /** @} */ // \addtogroup
 
