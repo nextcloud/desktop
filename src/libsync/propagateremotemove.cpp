@@ -19,6 +19,7 @@
 #include "common/syncjournalfilerecord.h"
 #include "filesystem.h"
 #include "common/asserts.h"
+#include <QFileInfo>
 #include <QFile>
 #include <QStringList>
 #include <QDir>
@@ -79,7 +80,7 @@ void PropagateRemoteMove::start()
         return;
 
     QString origin = propagator()->adjustRenamedPath(_item->_file);
-    qCDebug(lcPropagateRemoteMove) << origin << _item->_renameTarget;
+    qCInfo(lcPropagateRemoteMove) << origin << _item->_renameTarget;
 
     QString targetFile(propagator()->fullLocalPath(_item->_renameTarget));
 
@@ -254,6 +255,14 @@ void PropagateRemoteMove::finalize()
             newItem._size = oldRecord._fileSize;
         }
     }
+
+    const auto targetFile = propagator()->fullLocalPath(_item->_renameTarget);
+    if (!QFileInfo::exists(targetFile)) {
+        propagator()->_journal->commit("Remote Rename");
+        done(SyncFileItem::Success);
+        return;
+    }
+
     const auto result = propagator()->updateMetadata(newItem);
     if (!result) {
         done(SyncFileItem::FatalError, tr("Error updating metadata: %1").arg(result.error()));
