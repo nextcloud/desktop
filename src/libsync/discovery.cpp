@@ -41,7 +41,7 @@ Q_LOGGING_CATEGORY(lcDisco, "sync.discovery", QtInfoMsg)
 bool ProcessDirectoryJob::checkForInvalidFileName(const PathTuple &path,
     const std::map<QString, Entries> &entries, Entries &entry)
 {
-    const auto originalFileName = entry.localEntry.name;
+    const auto originalFileName = entry.localEntry.isValid() ? entry.localEntry.name : entry.serverEntry.name;
     const auto newFileName = originalFileName.trimmed();
 
     if (originalFileName == newFileName) {
@@ -61,7 +61,7 @@ bool ProcessDirectoryJob::checkForInvalidFileName(const PathTuple &path,
 
         if (!errorMessage.isEmpty()) {
             auto item = SyncFileItemPtr::create();
-            if (entry.localEntry.isDirectory) {
+            if ((entry.localEntry.isValid() && entry.localEntry.isDirectory) || (entry.serverEntry.isValid() && entry.serverEntry.isDirectory)) {
                 item->_type = CSyncEnums::ItemTypeDirectory;
             } else {
                 item->_type = CSyncEnums::ItemTypeFile;
@@ -76,7 +76,11 @@ bool ProcessDirectoryJob::checkForInvalidFileName(const PathTuple &path,
         }
     }
 
-    entry.localEntry.renameName = newFileName;
+    if (entry.localEntry.isValid()) {
+        entry.localEntry.renameName = newFileName;
+    } else {
+        entry.serverEntry.renameName = newFileName;
+    }
 
     return true;
 }
@@ -389,13 +393,6 @@ void ProcessDirectoryJob::processFile(PathTuple path,
     item->_originalFile = path._original;
     item->_previousSize = dbEntry._fileSize;
     item->_previousModtime = dbEntry._modtime;
-    if (!localEntry.renameName.isEmpty()) {
-        if (_dirItem) {
-            item->_renameTarget = _dirItem->_file + "/" + localEntry.renameName;
-        } else {
-            item->_renameTarget = localEntry.renameName;
-        }
-    }
 
     if (dbEntry._modtime == localEntry.modtime && dbEntry._type == ItemTypeVirtualFile && localEntry.type == ItemTypeFile) {
         item->_type = ItemTypeFile;
@@ -601,6 +598,22 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
 
     // Unknown in db: new file on the server
     Q_ASSERT(!dbEntry.isValid());
+
+    if (!serverEntry.renameName.isEmpty()) {
+        item->_renameTarget = _dirItem ? _dirItem->_file + "/" + serverEntry.renameName : serverEntry.renameName;
+        item->_originalFile = path._original;
+        item->_modtime = serverEntry.modtime;
+        item->_size = serverEntry.size;
+        item->_instruction = CSYNC_INSTRUCTION_RENAME;
+        item->_direction = SyncFileItem::Up;
+        item->_fileId = serverEntry.fileId;
+        item->_remotePerm = serverEntry.remotePerm;
+        item->_etag = serverEntry.etag;
+        item->_type = serverEntry.isDirectory ? CSyncEnums::ItemTypeDirectory : CSyncEnums::ItemTypeFile;
+
+        processFileAnalyzeLocalInfo(item, path, localEntry, serverEntry, dbEntry, _queryServer);
+        return;
+    }
 
     item->_instruction = CSYNC_INSTRUCTION_NEW;
     item->_direction = SyncFileItem::Down;
@@ -1005,6 +1018,42 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         return;
     }
 
+    if (!localEntry.renameName.isEmpty()) {
+        if (_dirItem) {
+            path._target = _dirItem->_file + "/" + localEntry.renameName;
+        } else {
+            path._target = localEntry.renameName;
+        }
+        OCC::SyncJournalFileRecord base;
+        if (!_discoveryData->_statedb->getFileRecordByInode(localEntry.inode, &base)) {
+            dbError();
+            return;
+        }
+        const auto originalPath = base.path();
+        const auto adjustedOriginalPath = _discoveryData->adjustRenamedPath(originalPath, SyncFileItem::Down);
+        _discoveryData->_renamedItemsLocal.insert(originalPath, path._target);
+        item->_renameTarget = path._target;
+        path._server = adjustedOriginalPath;
+        if (_dirItem) {
+            item->_file = _dirItem->_file + "/" + localEntry.name;
+        } else {
+            item->_file = localEntry.name;
+        }
+        path._original = originalPath;
+        item->_originalFile = path._original;
+        item->_modtime = base._modtime;
+        item->_inode = base._inode;
+        item->_instruction = CSYNC_INSTRUCTION_RENAME;
+        item->_direction = SyncFileItem::Down;
+        item->_fileId = base._fileId;
+        item->_remotePerm = base._remotePerm;
+        item->_etag = base._etag;
+        item->_type = base._type;
+
+        finalize();
+        return;
+    }
+
     // New local file or rename
     item->_instruction = CSYNC_INSTRUCTION_NEW;
     item->_direction = SyncFileItem::Up;
@@ -1341,10 +1390,11 @@ void ProcessDirectoryJob::processFileFinalize(
     if (isVfsWithSuffix()) {
         if (item->_type == ItemTypeVirtualFile) {
             addVirtualFileSuffix(path._target);
-            if (item->_instruction == CSYNC_INSTRUCTION_RENAME)
+            if (item->_instruction == CSYNC_INSTRUCTION_RENAME) {
                 addVirtualFileSuffix(item->_renameTarget);
-            else
+            } else {
                 addVirtualFileSuffix(item->_file);
+            }
         }
         if (item->_type == ItemTypeVirtualFileDehydration
             && item->_instruction == CSYNC_INSTRUCTION_SYNC) {

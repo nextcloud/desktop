@@ -198,26 +198,6 @@ void PropagateUploadFileCommon::start()
     const auto slashPosition = path.lastIndexOf('/');
     const auto parentPath = slashPosition >= 0 ? path.left(slashPosition) : QString();
 
-
-    if (!_item->_renameTarget.isEmpty() && _item->_file != _item->_renameTarget) {
-        // Try to rename the file
-        const auto originalFilePathAbsolute = propagator()->fullLocalPath(_item->_file);
-        const auto newFilePathAbsolute = propagator()->fullLocalPath(_item->_renameTarget);
-        const auto renameSuccess = QFile::rename(originalFilePathAbsolute, newFilePathAbsolute);
-        if (!renameSuccess) {
-            done(SyncFileItem::NormalError, "File contains trailing spaces and couldn't be renamed");
-            return;
-        }
-        _item->_file = _item->_renameTarget;
-        _item->_modtime = FileSystem::getModTime(newFilePathAbsolute);
-        Q_ASSERT(_item->_modtime > 0);
-        if (_item->_modtime <= 0) {
-            qCWarning(lcPropagateUpload()) << "invalid modified time" << _item->_file << _item->_modtime;
-            slotOnErrorStartFolderUnlock(SyncFileItem::NormalError, tr("File %1 has invalid modified time. Do not upload to the server.").arg(QDir::toNativeSeparators(_item->_file)));
-            return;
-        }
-    }
-
     SyncJournalFileRecord parentRec;
     bool ok = propagator()->_journal->getFileRecord(parentPath, &parentRec);
     if (!ok) {
