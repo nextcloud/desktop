@@ -418,6 +418,12 @@ CheckServerJob::CheckServerJob(AccountPtr account, QObject *parent)
 {
     setIgnoreCredentialFailure(true);
     setAuthenticationJob(true);
+
+    connect(this, &CheckServerJob::networkError, this, [this] {
+        if (timedOut()) {
+            Q_EMIT timeout(url());
+        }
+    });
 }
 
 void CheckServerJob::start()
@@ -439,17 +445,6 @@ void CheckServerJob::start()
         }
     });
     AbstractNetworkJob::start();
-}
-
-void CheckServerJob::onTimedOut()
-{
-    qCWarning(lcCheckServerJob) << "TIMEOUT";
-    if (reply() && reply()->isRunning()) {
-        emit timeout(reply()->url());
-    } else if (!reply()) {
-        qCWarning(lcCheckServerJob) << "Timeout even there was no reply?";
-    }
-    AbstractNetworkJob::onTimedOut();
 }
 
 QString CheckServerJob::version(const QJsonObject &info)
@@ -503,7 +498,6 @@ void CheckServerJob::metaDataChangedSlot()
 
 bool CheckServerJob::finished()
 {
-    // TODO: base on jsonJob
     const QUrl targetUrl = reply()->url().adjusted(QUrl::RemoveFilename);
     if (targetUrl.scheme() == QLatin1String("https")
         && reply()->sslConfiguration().sessionTicket().isEmpty()

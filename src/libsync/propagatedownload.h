@@ -35,17 +35,9 @@ protected:
     QPointer<BandwidthManager> _bandwidthManager = nullptr;
 
 public:
-    GETJob(AccountPtr account, const QString &path, QObject *parent = nullptr)
-        : AbstractNetworkJob(account, path, parent)
-    {
-    }
+    GETJob(AccountPtr account, const QString &path, QObject *parent = nullptr);
 
-    ~GETJob() override
-    {
-        if (_bandwidthManager) {
-            _bandwidthManager->unregisterDownloadJob(this);
-        }
-    }
+    ~GETJob() override;
 
     virtual qint64 currentDownloadPosition() = 0;
     virtual qint64 resumeStart() { return 0; }
@@ -61,7 +53,6 @@ public:
     void setChoked(bool c);
     void setBandwidthLimited(bool b);
     void giveBandwidthQuota(qint64 q);
-    void onTimedOut() override;
 
 signals:
     void finishedSignal();

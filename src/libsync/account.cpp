@@ -352,8 +352,6 @@ void Account::setCredentialSetting(const QString &key, const QVariant &value)
 
 void Account::slotHandleSslErrors(QPointer<QNetworkReply> reply, const QList<QSslError> &errors)
 {
-    const NetworkJobTimeoutPauser pauser(reply);
-
     // Copy info out of reply ASAP
     if (reply.isNull()) {
         return;

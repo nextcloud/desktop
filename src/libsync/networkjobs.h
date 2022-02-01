@@ -278,7 +278,6 @@ signals:
 
 private:
     bool finished() override;
-    void onTimedOut() override;
 private slots:
     virtual void metaDataChangedSlot();
     virtual void encryptedSlot();

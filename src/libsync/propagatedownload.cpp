@@ -332,14 +332,22 @@ void GETFileJob::slotReadyRead()
     }
 }
 
-void GETJob::onTimedOut()
+GETJob::GETJob(AccountPtr account, const QString &path, QObject *parent)
+    : AbstractNetworkJob(account, path, parent)
 {
-    qCWarning(lcGetJob) << this << "timeout";
-    if (reply()) {
-        _errorString = tr("Connection Timeout");
-        _errorStatus = SyncFileItem::FatalError;
+    connect(this, &GETJob::networkError, this, [this] {
+        if (timedOut()) {
+            qCWarning(lcGetJob) << this << "timeout";
+            _errorString = tr("Connection Timeout");
+            _errorStatus = SyncFileItem::FatalError;
+        }
+    });
+}
+GETJob::~GETJob()
+{
+    if (_bandwidthManager) {
+        _bandwidthManager->unregisterDownloadJob(this);
     }
-    AbstractNetworkJob::onTimedOut();
 }
 
 QString GETJob::errorString() const

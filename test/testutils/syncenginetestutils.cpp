@@ -918,6 +918,12 @@ QNetworkReply *FakeQNAM::createRequest(QNetworkAccessManager::Operation op, cons
             Q_UNREACHABLE();
         }
     }
+    // timeout would be handled by Qt
+    if (request.transferTimeout() != 0) {
+        QTimer::singleShot(request.transferTimeout(), reply, [reply] {
+            reply->abort();
+        });
+    }
     OCC::HttpLogger::logRequest(reply, op, outgoingData);
     return reply;
 }

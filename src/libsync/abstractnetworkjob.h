@@ -70,7 +70,7 @@ public:
     /* Content of the X-Request-ID header. (Only set after the request is sent) */
     QByteArray requestId();
 
-    auto timeoutSec() const { return std::chrono::duration_cast<std::chrono::seconds>(std::chrono::milliseconds(_timer.interval())); }
+    auto timeoutSec() const { return _timeout; }
     bool timedOut() const { return _timedout; }
 
     /** Returns an error message, if any. */
@@ -108,9 +108,7 @@ public:
 
     virtual bool needsRetry() const;
 
-public slots:
     void setTimeout(const std::chrono::seconds sec);
-    void resetTimeout();
 signals:
     /** Emitted on network error.
      *
@@ -161,32 +159,26 @@ protected:
      */
     virtual bool finished() = 0;
 
-    /** Called on timeout.
-     *
-     * The default implementation aborts the reply.
-     */
-    virtual void onTimedOut();
-
     QByteArray _responseTimestamp;
-    bool _timedout; // set to true when the timeout slot is received
 
     QString replyStatusString();
 
 private slots:
     void slotFinished();
-    void slotTimeout();
 
 protected:
     AccountPtr _account;
 
 private:
-    QNetworkReply *addTimer(QNetworkReply *reply);
-    bool _ignoreCredentialFailure;
+    std::chrono::seconds _timeout = httpTimeout;
+    bool _timedout = false; // set to true when the timeout slot is received
+    bool _aborted = false;
+    bool _ignoreCredentialFailure = false;
+
     QNetworkRequest _request;
     QByteArray _verb;
     QPointer<QNetworkReply> _reply; // (QPointer because the NetworkManager may be destroyed before the jobs at exit)
     QString _path;
-    QTimer _timer;
     int _http2ResendCount = 0;
 
     // Set by the xyzRequest() functions and needed to be able to redirect
@@ -199,19 +191,6 @@ private:
     int _retryCount = 0;
 
     friend QDebug(::operator<<)(QDebug debug, const AbstractNetworkJob *job);
-};
-
-/**
- * @brief Internal Helper class
- */
-class NetworkJobTimeoutPauser
-{
-public:
-    NetworkJobTimeoutPauser(QNetworkReply *reply);
-    ~NetworkJobTimeoutPauser();
-
-private:
-    QPointer<QTimer> _timer;
 };
 
 
