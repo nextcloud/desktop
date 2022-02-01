@@ -445,7 +445,7 @@ QUrl OAuth::authorisationLink() const
         { QStringLiteral("state"), QString::fromUtf8(_state) } });
 
     if (!_account->davUser().isNull()) {
-        const QString davUser = _account->davUser().replace(QLatin1Char('+'), QStringLiteral("%2B")); // Issue #7762;
+        const QString davUser = QString::fromUtf8(QUrl::toPercentEncoding(_account->davUser())); // Issue #7762;
         // open id connect
         query.addQueryItem(QStringLiteral("login_hint"), davUser);
         // oc 10
