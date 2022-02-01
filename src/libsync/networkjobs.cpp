@@ -563,9 +563,11 @@ bool CheckServerJob::finished()
 void PropfindJob::start()
 {
     connect(this, &LsColJob::directoryListingIterated, this, [this](const QString &, const QMap<QString, QString> &values) {
-        OC_ASSERT(!_done);
-        _done = true;
-        Q_EMIT result(values);
+        // we made a propfind of Depth:0, we should never get multiple entries here
+        if (OC_ENSURE(!_done)) {
+            _done = true;
+            Q_EMIT result(values);
+        }
     });
     QNetworkRequest req;
     // Always have a higher priority than the propagator because we use this from the UI
