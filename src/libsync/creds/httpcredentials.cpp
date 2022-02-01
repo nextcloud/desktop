@@ -241,17 +241,15 @@ bool HttpCredentials::stillValid(QNetworkReply *reply)
 
 bool HttpCredentials::refreshAccessToken()
 {
+    return refreshAccessTokenInternal(0);
+}
+
+bool HttpCredentials::refreshAccessTokenInternal(int tokenRefreshRetriesCount)
+{
     if (_refreshToken.isEmpty())
         return false;
     if (_isRenewingOAuthToken) {
         return true;
-    }
-    if (++_tokenRefreshRetriesCount >= TokenRefreshMaxRetries) {
-        qCWarning(lcHttpCredentials) << "Too many failed refreshs" << _tokenRefreshRetriesCount << "-> log out";
-        forgetSensitiveData();
-        Q_EMIT _account->invalidCredentials();
-        _tokenRefreshRetriesCount = 0;
-        return false;
     }
     _isRenewingOAuthToken = true;
 
@@ -259,24 +257,41 @@ bool HttpCredentials::refreshAccessToken()
     // _ready = false;
 
     OAuth *oauth = new OAuth(_account, this);
-    connect(oauth, &OAuth::refreshError, this, [oauth, this](QNetworkReply::NetworkError error, const QString &errorString) {
+    connect(oauth, &OAuth::refreshError, this, [oauth, tokenRefreshRetriesCount, this](QNetworkReply::NetworkError error, const QString &) {
         oauth->deleteLater();
-        _isRenewingOAuthToken = false;
+        int nextTry = tokenRefreshRetriesCount + 1;
+        std::chrono::seconds timeout = {};
         switch (error) {
         case QNetworkReply::ContentNotFoundError:
             // 404: bigip f5?
-            QTimer::singleShot(0, this, &HttpCredentials::refreshAccessToken);
+            timeout = 0s;
             break;
+        case QNetworkReply::HostNotFoundError:
+            Q_FALLTHROUGH();
+        case QNetworkReply::TimeoutError:
+            Q_FALLTHROUGH();
+        case QNetworkReply::TemporaryNetworkFailureError:
+            nextTry = 0;
+            Q_FALLTHROUGH();
         default:
-            QTimer::singleShot(30s, this, &HttpCredentials::refreshAccessToken);
+            timeout = 30s;
         }
+        if (nextTry >= TokenRefreshMaxRetries) {
+            qCWarning(lcHttpCredentials) << "Too many failed refreshs" << nextTry << "-> log out";
+            forgetSensitiveData();
+            Q_EMIT _account->invalidCredentials();
+            return;
+        }
+        QTimer::singleShot(timeout, this, [nextTry, this] {
+            _isRenewingOAuthToken = false;
+            refreshAccessTokenInternal(nextTry);
+        });
         Q_EMIT authenticationFailed();
     });
 
     connect(oauth, &OAuth::refreshFinished, this, [this, oauth](const QString &accessToken, const QString &refreshToken){
         oauth->deleteLater();
         _isRenewingOAuthToken = false;
-        _tokenRefreshRetriesCount = 0;
         if (refreshToken.isEmpty()) {
             // an error occured, log out
             forgetSensitiveData();
