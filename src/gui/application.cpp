@@ -101,7 +101,8 @@ namespace {
         "  --isvfsenabled             : whether to set a VFS or non-VFS folder (1 for 'yes' or 0 for 'no') when creating an account via command-line.\n"
         "  --remotedirpath            : (optional) path to a remote subfolder when creating an account via command-line.\n"
         "  --serverurl                : a server URL to use when creating an account via command-line.\n"
-        "  --forcelegacyconfigimport  : forcefully import account configurations from legacy clients (if available).\n";
+        "  --forcelegacyconfigimport  : forcefully import account configurations from legacy clients (if available).\n"
+        "  --reverse            : use a reverse layout direction.\n";
 
     QString applicationTrPath()
     {
@@ -814,6 +815,8 @@ void Application::parseOptions(const QStringList &options)
             _backgroundMode = true;
         } else if (option == QLatin1String("--version") || option == QLatin1String("-v")) {
             _versionOnly = true;
+        } else if (option == QLatin1String("--reverse")) {
+            setLayoutDirection(layoutDirection() == Qt::LeftToRight ? Qt::RightToLeft : Qt::LeftToRight);
         } else if (option.endsWith(QStringLiteral(APPLICATION_DOTVIRTUALFILE_SUFFIX))) {
             // virtual file, open it after the Folder were created (if the app is not terminated)
             QTimer::singleShot(0, this, [this, option] { openVirtualFile(option); });

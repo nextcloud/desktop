@@ -52,6 +52,9 @@ ApplicationWindow {
         Systray.destroyDialog(root);
     }
 
+    LayoutMirroring.enabled: Application.layoutDirection === Qt.RightToLeft
+    LayoutMirroring.childrenInherit: true
+
     width: root.windowWidth
     height: rootBackground.height
 

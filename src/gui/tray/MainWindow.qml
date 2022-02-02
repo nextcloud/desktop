@@ -31,6 +31,9 @@ import com.nextcloud.desktopclient
 ApplicationWindow {
     id:         trayWindow
 
+    LayoutMirroring.enabled: Application.layoutDirection === Qt.RightToLeft
+    LayoutMirroring.childrenInherit: true
+
     title:      Systray.windowTitle
     // If the main dialog is displayed as a regular window we want it to be quadratic
     width:      Systray.useNormalWindow ? Style.trayWindowHeight : Style.trayWindowWidth
