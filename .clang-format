@@ -48,11 +48,7 @@ AlwaysBreakTemplateDeclarations: true
 # clang-format does not handle that
 AllowShortFunctionsOnASingleLine: Inline
 
-# The coding style specifies some include order categories, but also tells to
-# separate categories with an empty line. It does not specify the order within
-# the categories. Since the SortInclude feature of clang-format does not
-# re-order includes separated by empty lines, the feature is not used.
-SortIncludes: false
+SortIncludes: true
 
 # macros for which the opening brace stays attached
 ForEachMacros:   [ foreach, Q_FOREACH, BOOST_FOREACH, forever, Q_FOREVER, QBENCHMARK, QBENCHMARK_ONCE ]
@@ -60,5 +56,3 @@ ForEachMacros:   [ foreach, Q_FOREACH, BOOST_FOREACH, forever, Q_FOREVER, QBENCH
 # Allow two empty lines for structuring
 MaxEmptyLinesToKeep: 2
 KeepEmptyLinesAtTheStartOfBlocks: false
-
-SortIncludes: true
