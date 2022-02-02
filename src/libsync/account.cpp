@@ -261,6 +261,7 @@ QSharedPointer<QNetworkAccessManager> Account::sharedNetworkAccessManager()
 
 QNetworkReply *Account::sendRawRequest(const QByteArray &verb, const QUrl &url, QNetworkRequest req, QIODevice *data)
 {
+    Q_ASSERT(verb.isUpper());
     req.setUrl(url);
     req.setSslConfiguration(this->getOrCreateSslConfig());
     if (verb == "HEAD" && !data) {
