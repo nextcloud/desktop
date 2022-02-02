@@ -6384,15 +6384,15 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
         <translation>Otevřít dialog sdílení</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="681"/>
-        <source>Unified search results list</source>
-        <translation>Seznam výsledků sjednoceného vyhledávání</translation>
-    </message>
-    <message>
         <location filename="../src/gui/tray/Window.qml" line="720"/>
         <location filename="../src/gui/tray/Window.qml" line="723"/>
         <source>Show more actions</source>
         <translation>Zobrazit další akce</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="681"/>
+        <source>Unified search results list</source>
+        <translation>Seznam výsledků sjednoceného vyhledávání</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="753"/>

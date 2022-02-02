@@ -6360,15 +6360,15 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Öppna delningsdialogen</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="681"/>
-        <source>Unified search results list</source>
-        <translation>Sammanlagda sökresultat</translation>
-    </message>
-    <message>
         <location filename="../src/gui/tray/Window.qml" line="720"/>
         <location filename="../src/gui/tray/Window.qml" line="723"/>
         <source>Show more actions</source>
         <translation>Visa fler åtgärder</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="681"/>
+        <source>Unified search results list</source>
+        <translation>Sammanlagda sökresultat</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="753"/>

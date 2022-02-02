@@ -6385,15 +6385,15 @@ Ovo je novi, eksperimentalni način rada. Ako se odlučite aktivirati ga, prijav
         <translation>Otvori dijaloški okvir za dijeljenje</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="681"/>
-        <source>Unified search results list</source>
-        <translation>Objedinjen popis rezultata pretraživanja</translation>
-    </message>
-    <message>
         <location filename="../src/gui/tray/Window.qml" line="720"/>
         <location filename="../src/gui/tray/Window.qml" line="723"/>
         <source>Show more actions</source>
         <translation>Prikaži dodatne radnje</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="681"/>
+        <source>Unified search results list</source>
+        <translation>Objedinjen popis rezultata pretraživanja</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="753"/>

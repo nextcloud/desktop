@@ -6375,15 +6375,15 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Apri finestra di condivisione</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="681"/>
-        <source>Unified search results list</source>
-        <translation>Lista unificata dei risultati di ricerca</translation>
-    </message>
-    <message>
         <location filename="../src/gui/tray/Window.qml" line="720"/>
         <location filename="../src/gui/tray/Window.qml" line="723"/>
         <source>Show more actions</source>
         <translation>Mostra altre azioni</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="681"/>
+        <source>Unified search results list</source>
+        <translation>Lista unificata dei risultati di ricerca</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="753"/>
