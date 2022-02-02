@@ -6385,15 +6385,15 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>開啟分享對話框</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="681"/>
-        <source>Unified search results list</source>
-        <translation>統一搜尋結果清單</translation>
-    </message>
-    <message>
         <location filename="../src/gui/tray/Window.qml" line="720"/>
         <location filename="../src/gui/tray/Window.qml" line="723"/>
         <source>Show more actions</source>
         <translation>顯示更多動作</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="681"/>
+        <source>Unified search results list</source>
+        <translation>統一搜尋結果清單</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="753"/>
