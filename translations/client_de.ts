@@ -102,7 +102,7 @@
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="175"/>
         <source>Could not remove folder</source>
-        <translation type="unfinished"/>
+        <translation>Kann Ordner nicht entfernen</translation>
     </message>
 </context>
 <context>
