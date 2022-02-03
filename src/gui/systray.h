@@ -42,6 +42,7 @@ public:
 bool canOsXSendUserNotification();
 void sendOsXUserNotification(const QString &title, const QString &message);
 void setTrayWindowLevelAndVisibleOnAllSpaces(QWindow *window);
+double statusBarThickness();
 #endif
 
 /**
