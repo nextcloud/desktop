@@ -1,116 +1,88 @@
-<!--
-This is the template for new release issues.
-TODO: split off a patch release template, so that this one is clearly only for major/minor releases.
--->
+## Reason
 
-Open an issue called 'Release 2.x.0' in client repository and copy below text into a task and tick the items:
-<hr>
+* Needed for branded client X.x.x release (link to branded release ticket)
 
-Major/Minor release template. Enter here, when we have three estimated dates:
+### Template
+[Release Template](https://github.com/owncloud/client/blob/master/.github/release_template.md)
 
-* Date of feature freeze
-* Date of QA start
-* Date of final
+__TODO__:
+* Check if anything is missing from [release_template_outdated_2020.md](https://github.com/owncloud/client/blob/master/.github/release_template_outdated_2020.md) and merge here. We use the same template for a patch, minor or major release now.
 
+### Prerequisites
 
-### Before Branching Off:
+* [ ] QA: Update [Test Plans](https://confluence.owncloud.com/display/OG/Desktop+Client+Test+Plan+Maintenance)
+* [ ] QA: Inform the docu team on rocketchat ``#documentation-internal`` about an upcoming major or minor release
+* [ ] QA: Check the translations coming from https://github.com/owncloud/client/actions/workflows/translate.yml
+* [ ] DEV: Check for new OpenSSL version 
+* [ ] DEV: Check [dependencies](https://confluence.owncloud.com/display/OG/Dependencies) for updates
+* [ ] DEV: Prepare the release in a `X.x` version branch (a patch release is maintained in the minor release branch)  
+  If this *is* a minor release:
+  * [ ] DEV: Create new `X.x` version branch.
+  * [ ] Adjust branch of Cron Job `nightly-2-x` to the next release branch  @individual-it
+* [ ] QA: Make sure [squish tests](https://confluence.owncloud.com/display/OG/Squish+testing) are running successfully on X.x branch and on nightly builds for the current release, e.g. ``nightly-2-10`` 
+* [ ] DEV: bump VERSION.cmake in master to say 2.(x+1).x unless already done.
 
-* [ ] Dev: Make sure previous minor/major version's branch is merged into current master branch e.g. 2.6 into master "one flow" - @TheOneRing @guruz
-* [ ] Dev: Check [dependencies](https://handbook.owncloud.com/release_processes/client/dependencies.html) for updates - @TheOneRing @guruz
-* [ ] Dev: Update [ChangeLog](https://handbook.owncloud.com/release_processes/client/change_log.html) - @TheOneRing @guruz
-* [ ] QA: Update [Test Plans](https://handbook.owncloud.com/release_processes/client/testlink.html) - @HanaGemela @jnweiger
-* [ ] QA: Review list of [supported platforms](https://handbook.owncloud.com/release_processes/client/supported_platforms.html) -  @HanaGemela @jnweiger @TheOneRing @guruz
-* [ ] QA: Update [documentation](https://handbook.owncloud.com/release_processes/client/documentation.html) -  @HanaGemela @jnweiger
-* [ ] QA: Check Sprint Board for remaining issues -  @HanaGemela @jnweiger
+### Build
 
-### On the Day of the First Daily Build of the New Branch:
+* [ ] DEV: Tag (Beta or RC) and build [builds](https://confluence.owncloud.com/display/OG/Build+and+Tags#BuildandTags-Sprintbuild) for theme 'ownCloud' and 'testpilotcloud' (includes ChangeLog for the tag on https://github.com/owncloud/client/releases/)
+* [ ] QA: Upload linux gpg keys to key server [key_server_upload](https://gitea.owncloud.services/client/linux-docker-install/src/branch/master/key_server_upload.sh)
+* [ ] QA: Ping ``#documentation-internal``: Changelog is ready. (open issues in ``docs-client-desktop`` repo for already known doc-relevant items and mark them accordingly, e.g. backport to 2.X.x necessary)
+* [ ] DEV: Provide 'testpilotcloud' on **Beta** update channel
+* [ ] Beta/RC [Communication](https://confluence.owncloud.com/display/OG/Marketing+and+Communication)
+   * [ ] Website links for beta (needed for the following posts)
+   * [ ] Central post https://central.owncloud.org/tags/c/news/desktop
+   * [ ] All other stakeholders
+* [ ] QA: Check Crash reporter (WIN/Mac/Linux Appimage: start 'owncloud --debug' on cmd line, system tray right click menu: 'Crash now - qt fatal' -> report window not empty, sending the report works)
 
-* [ ] Dev: Internally announce it feature freeze - @TheOneRing @guruz
-* [ ] Dev: Edit [`VERSION.cmake`](https://handbook.owncloud.com/release_processes/client/branch.html#version-cmake) - @TheOneRing @guruz
-* [ ] QA: Adjust [Linux Templates](https://handbook.owncloud.com/release_processes/client/branch.html#linux-templates) - @HanaGemela @jnweiger
-* [ ] QA: Adjust [ownBrander](https://handbook.owncloud.com/release_processes/client/branch.html#ownbrander) - @HanaGemela @jnweiger
-* [ ] QA: Adjust [AppVeyor](https://handbook.owncloud.com/release_processes/client/branch.html#appveyor) - @HanaGemela @jnweiger
-* [ ] QA: Adjust [drone](https://handbook.owncloud.com/release_processes/client/branch.html#drone) - @HanaGemela @jnweiger
-* [ ] QA: Adjust [translation jobs](https://handbook.owncloud.com/release_processes/client/branch.html#translations) - @HanaGemela @jnweiger
-* [ ] QA: Use `obs-copyprj.sh` to backup the desktop project to `desktop:client-2.6.x` (unless already done) - @HanaGemela @jnweiger
-* [ ] QA: Adjust branch of Cron Job `nightly-2-x` to the next release branch @HanaGemela @individual-it
-* [ ] Dev: Start running automated tests on the dailies - @TheOneRing @guruz
+### QA
 
-### After the First Daily Build of the New Branch:
+* [ ] DEV: [Smash box test](https://drone.owncloud.com/owncloud/smashbox-testing) Make sure tests run on latest version 
+* [ ] QA: Run [automated tests](https://confluence.owncloud.com/display/OG/Automated+Tests) (includes [Smoke test](https://confluence.owncloud.com/display/OG/Manual+Tests#ManualTests-DEVSmokeTest))
+   * [ ] All Linux platform install and gpg test ssh://git@gitea.owncloud.services:2222/client/linux-docker-install.git
+       * [ ] manually deploy a linux download repo, or use a download repo from https://download.owncloud.com/desktop/ownCloud/testing/
+       * [ ] in defs.sh edit `repo=` and update `platform_docker_images=`
+       * [ ] RUN.sh -> paste the log/test_YYYYMMDD_hhmm.log file into the client release ticket.
+       * [ ] TO DO: extend 08-appimage.sh ("xvfb-run")
+* [ ] QA: [Antivirus scan](https://confluence.owncloud.com/display/OG/Virus+Scanning)
+* [ ] QA: Create testplan according to release type (patch release: add tests in a comment, for major/minor release: create a separate ticket), for testplan templates see https://confluence.owncloud.com/display/OG/Desktop+Client+Release+Process and link here
+* [ ] QA: Add changelog testing as a comment (to the testplan ticket or here), changeLog issues see https://github.com/owncloud/client/releases/ and link here
+* [ ] QA: If required: create a separate test plan ticket for Windows VFS testing from [Template](https://github.com/owncloud/QA/blob/master/Desktop/Test_Plan_VFS.md) and link here
 
-* [ ] Announce the new branch to community and advertise dailies for public testing - marketing
-* [ ] QA: [Antivirus scan](https://handbook.owncloud.com/release_processes/client/virus.html) - @HanaGemela @jnweiger 
+### Final Rebuild after QA Approval
 
-### For All Sprint Builds:
+* [ ] QA: Inform on ``#documentation-internal`` that the tag for the final release will be set a day or at least some hours __before__ (only for a major/minor release)
+* [ ] DEV: Tag and build [builds](https://confluence.owncloud.com/display/OG/Build+and+Tags#BuildandTags-Tags) for theme 'ownCloud' and 'testpilotcloud' for final build
+* [ ] QA: Check squish tests running successful on [drone](https://drone.owncloud.com/owncloud/client) for the final tag v2.X.x
+* [ ] DEV: Adjust [Linux Templates](https://confluence.owncloud.com/display/OG/Branching+Off#BranchingOff-Linuxtemplates) to support the next patch release version (e.g. 2.9.1) @dschmidt @fmoc
+* [ ] DEV: Ping ``#release-coordination`` so that marketing can do their [actions](https://confluence.owncloud.com/display/OG/Marketing+and+Communication#MarketingandCommunication-Marketingtasks)
+* [ ] DEV: Create [a (draft) release](https://github.com/owncloud/client/releases) with Download links - save as a draft until smoke tested
+* [ ] QA: Create a new release issue for a branded release if needed [Branded Client Release Template](https://confluence.owncloud.com/pages/viewpage.action?spaceKey=OG&title=Desktop+Client+Release+Process)
+* [ ] QA: Give [heads-up](https://confluence.owncloud.com/display/OG/Marketing+and+Communication#MarketingandCommunication-Heads-upbeforethefinalrelease) before the final release 
 
-* [ ] Add latest updates to Changelog in the client source repository
-* [ ] Branch off a release branch called VERSION-rcX or VERSION-betaX  (without v, v is for tags)
-* [ ] Edit ```VERSION.cmake``` to set the suffix to beta1, beta2 etc in the release branch
-* [ ] (TODO: move to patch-release checklist) Make sure to increase the version number of the branched of release, e.g. if you release 2.3.2 then you should change VERSION.cmake in 2.3 to 2.3.3 since that branch now will be 2.3.3
-* [ ] Create [builds](https://handbook.owncloud.com/release_processes/client/build.html#sprint-build) for theme 'ownCloud' and 'testpilotcloud'  @jnweiger @hvonreth
-* [ ] Check if *tar.xz.asc files are there. If not follow the [instructions](https://github.com/owncloud/enterprise/wiki/Desktop-Signing-Knowledge)
-* [ ] Run [the smoke test](https://handbook.owncloud.com/release_processes/client/smoke_test.html)
-* [ ] Linux: Run [test](https://gitea.owncloud.services/client/linux-docker-install/src/branch/master/RUN.sh) with repo=https://download.opensuse.org/repositories/isv:/ownCloud:/desktop:/testing
-* [ ] Linux: add/remove [build targets](https://handbook.owncloud.com/release_processes/client/supported_platforms.html) @hvonreth @jnweiger
-* [ ] Create a [signed tag](https://github.com/owncloud/enterprise/wiki/Desktop-Signing-Knowledge) using ```git tag -u E94E7B37 tagname```  @guruz @jnweiger (TODO: is this still needed?)
-* [ ] Update the wordpress content at owncloud.org/download @florian - marketing
-* [ ] Inform packagers: @dragotin (openSUSE) - marketing
-* [ ] Announce on [central](https://central.owncloud.org) (copy old announcement, link to changelog, download links etc) TODO: itemize what goes into the announcement: deprecation warnings. ... - marketing
-* [ ] Inform community mailinglists devel@owncloud.org and testpilots@owncloud.org (make sure to mention it is an rc). Link to the central post so discussion happens there. - marketing
-* [ ] Check crash reporter after some days  @guruz @hvonreth
-* [ ] Update unstable channel in the owncloud hosted auto updater. Instructions [here](https://github.com/owncloud/enterprise/blob/master/client_update_checker/README.md#deploy) and [here](https://handbook.owncloud.com/release_processes/client/desktop.html#update-the-updater) @hgemela @jnweiger
+### Final QA
 
-### One Week Before the Final Release (Skip this section for patch releases):
+* [ ] QA: [Smoke test](https://confluence.owncloud.com/display/OG/Manual+Tests#ManualTests-SmokeTest)
+* [ ] DEV: Publish the release in GitHub
+* [ ] QA: Check [documentation](https://confluence.owncloud.com/display/OG/Documentation)
 
-* [ ] Communicate the release schedule on rocket-chat #release-coordination and mailinglist release-coordination@owncloud.com. Give a high level overview of the upcoming new features, changes etc.
-* [ ] Ensure marketing is aware (marketing@owncloud.com) and prepared for the release (social, .com website, cust.communications) - 1 week before minor, 2 weeks before major (minor/major is about impact)
-* [ ] Inform Achim (ageissel@owncloud.com) and GCX that the next version will be in 1 week (gcx@owncloud.com) - marketing
+### Communicate the Availability
+* [ ] Final [Marketing and Communication](https://confluence.owncloud.com/display/OG/Marketing+and+Communication)
+   * [ ] Website links for final release (needed for the following posts)
+   * [ ] QA: Central post https://central.owncloud.org/tags/c/news/desktop
+   * [ ] QA: Inform on ``#updates`` channel, so that marketing knows about the new release
+   * [ ] QA: Inform [packagers](https://confluence.owncloud.com/display/OG/Marketing+and+Communication#MarketingandCommunication-Packagers) - ping @dragotin (openSUSE)
+* [ ] Inform ``#marketing`` (@bwalter, Markus Feilner) and remind to update Wikipedia + Wikidata
+  * [ ] https://de.wikipedia.org/wiki/OwnCloud
+  * [ ] https://en.wikipedia.org/wiki/OwnCloud
+  * [ ] https://www.wikidata.org/wiki/Q20763576
 
-### One Day Before the Final Release:
-* [ ] Check [crash reporter](https://handbook.owncloud.com/release_processes/client/desktop.html#crash-reporter) for bad crashes of this RC (same crash happening to many users) @guruz @hvonreth
-* [ ] Check the translations coming from transifex: All synchronized? TODO: (20181109jw: where? how?)
-* [ ] Review drone results: `make test` TODO: Mac, [Lin](https://drone.owncloud.services/client/build-linux), Win? 
-* [ ] Run smashbox (20180719 jw: FIXME: add details, how?) (ask @dschmidt, put link to smashbox results here)
-* [ ] Inform product management and marketing and #general channel in rocker chat that we are 1 day out
+### Final Infrastructure Check
 
-### On Release Day (for the Final Release):
-For major, minor, and patch releases, but skip this section for ALPHA/BETA
+* [ ] QA/DEV: Update [stable channel](https://confluence.owncloud.com/display/OG/Online+Updater%2C+Crash+reporter%2C+Transifex#OnlineUpdater,Crashreporter,Transifex-UpdatetheUpdater) in the owncloud hosted auto updater
+* [ ] QA: Ensure that the [client release template](https://github.com/owncloud/client/blob/master/.github/release_template.md) is up to date
+* [ ] QA: Ensure that the [testplan patch release template](https://github.com/owncloud/QA/blob/master/Desktop/Regression_Test_Plan_Patch_Release.md) is up to date.
+* [ ] QA: Ensure that the [testplan minor release template](https://github.com/owncloud/QA/blob/master/Desktop/Regression_Test_Plan_Minor_Release.md) is up to date
 
-* [ ] Add last updates to Changelog in the client source repository @hvonreth @hgemela
-* [ ] Branch off a release branch once QA is done, tag with a release vA.B.C (with v, as v is for tags) @hvonreth @guruz
-* [ ] Edit ```VERSION.cmake``` hange suffix from 'git' or 'rc' to empty string "". Commit the result to the release branch only @hvonreth @guruz
-* [ ] Create [builds](https://handbook.owncloud.com/release_processes/client/build.html#final-build) for theme 'ownCloud' and 'testpilotcloud'  @jnweiger @hvonreth
-* [ ] Check if *tar.xz.asc files are [here](https://download.owncloud.com/desktop/testing). If not follow the [instructions](https://github.com/owncloud/enterprise/wiki/Desktop-Signing-Knowledge)
-* [ ] Branch isv:ownCloud:desktop to isv:ownCloud:desktop:client-X.Y.Z using [obs_integration](https://github.com/owncloud/administration/blob/master/jenkins/obs_integration/) the Linux packages will always land in the :testing repository - @jnweiger
-  ```obs-deepcopy-prj.sh isv:ownCloud:desktop isv:ownCloud:desktop:client-2.5.1```
-* [ ] Run [the smoke test](https://handbook.owncloud.com/release_processes/client/smoke_test.html)
-* [ ] Linux: Run [test](https://gitea.owncloud.services/client/linux-docker-install/src/branch/master/RUN.sh) repo=https://download.opensuse.org/repositories/isv:/ownCloud:/desktop:/testing - @jnweiger
-* [ ] Win/Mac Copy builds from ```testing``` to ```stable``` on download.owncloud.com, double check the download links. (make sure the .asc is there too.
-* [ ] Linux: also copy the *.linux-repo.html files from ```testing``` to ```stable``` **and** edit away the `:testing` strings.
-* [ ] Linux: disable publishing on project isv:ownCloud:desktop
-* [ ] Linux: copy from testing to released in OBS:
-  ```obs-deepcopy-prj.sh isv:ownCloud:desktop:testing isv:ownCloud:desktop```
-  ```obs-deepcopy-prj.sh isv:ownCloud:testpilot:testing isv:ownCloud:testpilot```
-* [ ] Linux: Re-enable OBS publishing on the project after official release date and if all distros build (check for accidentially disabled packages too) 
-* [ ] Test all advertised download links to have the expected version
-* [ ] Linux: Wait until everything is built and published, then disable publishing on project isv:ownCloud:desktop
-* [ ] Create git [signed](https://github.com/owncloud/enterprise/wiki/Desktop-Signing-Knowledge) tag in client repository using ```git tag -u E94E7B37 tagname``` 
-* [ ] Increment version number in daily builds. Special case: after the last release in a branch, jump forward to the 'next release branch'... That may mean, this is nightly is the same as edge then.
-* [ ] Create same tag for MSI code - @dschmidt 
-* [ ] Create same tag for Windows toolchain - @dschmidt 
-* [ ] Create same tag (actually a symlink) for macOS toolchain - @dschmidt 
-* [ ] Create a (draft) release [here](https://github.com/owncloud/client/releases)
-* [ ] 1h later check [changelog on website](https://owncloud.org/changelog/desktop-client/) -> it pulls from the master branch ChangeLog file hourly.  - @jnweiger
-* [ ] Update [org website](https://owncloud.org/download/#owncloud-desktop-client) -> Download ownCloud -> click open 'Desktop Client', edit win/mac/lin, each all three tabs "Production", "Technical Preview" [disabled], "Test pilot" enabled, edit the links.
-* [ ] Add the previous release to [older version](https://owncloud.org/download/older-versions/) @jnweiger + fwittek
-* [ ] Ping marketing to do their [actions](https://handbook.owncloud.com/release_processes/client/marketing.html)
-* [ ] Take pride and celebrate!
-* [ ] Tell GCX to increment the minimum supported version for enterprise customers - @mstingl
-* [ ] Check if [minimum.supported.desktop.version](https://github.com/owncloud/core/blob/master/config/config.sample.php#L1152) needs to be updated in server 
- * [ ] Ensure that the [client release template](https://github.com/owncloud/client/edit/notes-from-the-etherpad/.github/release_template.md) is up to date
-* [ ] After OBS built everything, disable publishing in OBS to prevent that accidential rebuilds hit the end users.- @jnweiger
+### A Few Days After the Release
 
-## A few days after the release (for final release)
-
-* [ ] Check the crash reporter if auto update is a good idea or we need a new release
-* [ ] Update the owncloud hosted auto [updater](https://github.com/owncloud/enterprise/blob/master/client_update_checker/README.md#deploy)  
+* [ ] DEV: Check the [crash reporter](https://confluence.owncloud.com/display/OG/Online+Updater%2C+Crash+reporter%2C+Transifex#OnlineUpdater,Crashreporter,Transifex-CrashReporter) for bad/frequent crashes
