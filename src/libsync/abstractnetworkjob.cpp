@@ -55,7 +55,7 @@ Q_LOGGING_CATEGORY(lcNetworkJob, "sync.networkjob", QtInfoMsg)
 // If not set, it is overwritten by the Application constructor with the value from the config
 seconds AbstractNetworkJob::httpTimeout = [] {
     const auto def = qEnvironmentVariableIntValue("OWNCLOUD_TIMEOUT");
-    if (def == 0) {
+    if (def <= 0) {
         milliseconds(static_cast<int>(QNetworkRequest::DefaultTransferTimeoutConstant));
     }
     return seconds(def);
