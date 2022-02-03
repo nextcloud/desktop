@@ -22,9 +22,10 @@
 #endif
 
 #include "application.h"
-#include "theme.h"
-#include "common/utility.h"
 #include "cocoainitializer.h"
+#include "common/utility.h"
+#include "guiutility.h"
+#include "theme.h"
 
 #include "updater/updater.h"
 
@@ -63,8 +64,11 @@ int main(int argc, char **argv)
     // though it looks slightly less native. Check here after the
     // QApplication was constructed, but before any QWidget is
     // constructed.
-    if (app.devicePixelRatio() > 1)
+    if (app.devicePixelRatio() > 1) {
         QApplication::setStyle(QStringLiteral("fusion"));
+    }
+    // TODO: 2.11 move to platform class
+    Utility::startShutdownWatcher();
 #endif // Q_OS_WIN
 
 #ifndef Q_OS_WIN
