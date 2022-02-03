@@ -381,9 +381,11 @@ void AbstractNetworkJob::retry()
 void AbstractNetworkJob::abort()
 {
     if (_reply) {
+        // calling abort will trigger the execution of finished()
+        // with _reply->error() == QNetworkReply::OperationCanceledError
+        // the api user can then decide whether to discard this job or retry it.
         _reply->abort();
         _aborted = true;
-        // TODO: leak?
     } else {
         deleteLater();
     }
