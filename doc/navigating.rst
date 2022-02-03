@@ -274,7 +274,7 @@ components of the path being checked.
    syntax. If your synchronization does not work as you expected, check your
    syntax.
 
-Each pattern string in the list is preceded by a checkbox. When the check box
+Each pattern string in the list is followed by a checkbox. When the check box
 contains a check mark, in addition to ignoring the file or directory component
 matched by the pattern, any matched files are also deemed "fleeting metadata"
 and removed by the client.
