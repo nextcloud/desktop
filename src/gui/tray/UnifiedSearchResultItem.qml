@@ -23,8 +23,8 @@ RowLayout {
     property int titleFontSize: Style.topLinePixelSize
     property int sublineFontSize: Style.subLinePixelSize
 
-    property string titleColor: "black"
-    property string sublineColor: "grey"
+    property color titleColor: Style.ncTextColor
+    property color sublineColor: Style.ncSecondaryTextColor
 
     Accessible.role: Accessible.ListItem
     Accessible.name: resultTitle
@@ -65,12 +65,12 @@ RowLayout {
         }
         Image {
             id: unifiedSearchResultThumbnailPlaceholder
-            visible: icons && iconPlaceholder && unifiedSearchResultThumbnail.status !== Image.Ready
             Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
             Layout.leftMargin: iconLeftMargin
             verticalAlignment: Qt.AlignCenter
             cache: true
             source: iconPlaceholder
+            visible: false
             sourceSize.height: unifiedSearchResultItemDetails.iconWidth
             sourceSize.width: unifiedSearchResultItemDetails.iconWidth
             Layout.preferredWidth: unifiedSearchResultItemDetails.iconWidth

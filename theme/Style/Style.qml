@@ -8,15 +8,18 @@ QtObject {
     readonly property int pixelSize: fontMetrics.font.pixelSize
 
     // Colors
-    property color ncBlue:      Theme.wizardHeaderBackgroundColor
-    property color ncTextColor: Theme.wizardHeaderTitleColor
-    property color lightHover:  "#f7f7f7"
-    property color menuBorder:  "#bdbdbd"
+    readonly property color ncBlue:      Theme.wizardHeaderBackgroundColor
+    readonly property color ncTextColor: Theme.systemPalette.windowText
+    readonly property color ncSecondaryTextColor: "#808080"
+    readonly property color ncHeaderTextColor: "white"
+    readonly property color lightHover:  Theme.systemPalette.highlight
+    readonly property color menuBorder:  Systray.darkMode ? Qt.lighter(backgroundColor, 3) : Qt.darker(backgroundColor, 1.5)
+    readonly property color backgroundColor: Theme.systemPalette.base
 
     // ErrorBox colors
-    property color errorBoxTextColor:       Theme.errorBoxTextColor
-    property color errorBoxBackgroundColor: Theme.errorBoxBackgroundColor
-    property color errorBoxBorderColor:     Theme.errorBoxBorderColor
+    readonly property color errorBoxTextColor:       Theme.errorBoxTextColor
+    readonly property color errorBoxBackgroundColor: Theme.errorBoxBackgroundColor
+    readonly property color errorBoxBorderColor:     Theme.errorBoxBorderColor
 
     // Fonts
     // We are using pixel size because this is cross platform comparable, point size isn't
@@ -79,8 +82,6 @@ QtObject {
     readonly property int unifiedSearchResulIconLeftMargin: 12
     readonly property int unifiedSearchResulTitleFontSize: topLinePixelSize
     readonly property int unifiedSearchResulSublineFontSize: subLinePixelSize
-    readonly property string unifiedSearchResulTitleColor: "black"
-    readonly property string unifiedSearchResulSublineColor: "grey"
 
     readonly property var fontMetrics: FontMetrics {}
 

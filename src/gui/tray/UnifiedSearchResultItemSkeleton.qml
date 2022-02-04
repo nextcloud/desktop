@@ -14,8 +14,8 @@ RowLayout {
     property int titleFontSize: Style.topLinePixelSize
     property int sublineFontSize: Style.subLinePixelSize
 
-    property string titleColor: "black"
-    property string sublineColor: "grey"
+    property color titleColor: Style.ncTextColor
+    property color sublineColor: Style.ncSecondaryTextColor
 
     property string iconColor: "#afafaf"
 

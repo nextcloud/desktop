@@ -17,6 +17,8 @@
 
 #include <QIcon>
 #include <QObject>
+#include <QPalette>
+#include <QGuiApplication>
 #include "syncresult.h"
 
 class QString;
@@ -24,7 +26,6 @@ class QObject;
 class QPixmap;
 class QColor;
 class QPaintDevice;
-class QPalette;
 
 namespace OCC {
 
@@ -66,6 +67,8 @@ class OWNCLOUDSYNC_EXPORT Theme : public QObject
     Q_PROPERTY(QColor errorBoxTextColor READ errorBoxTextColor CONSTANT)
     Q_PROPERTY(QColor errorBoxBackgroundColor READ errorBoxBackgroundColor CONSTANT)
     Q_PROPERTY(QColor errorBoxBorderColor READ errorBoxBorderColor CONSTANT)
+
+    Q_PROPERTY(QPalette systemPalette READ systemPalette NOTIFY systemPaletteChanged)
 public:
     enum CustomMediaType {
         oCSetupTop, // ownCloud connect page
@@ -590,6 +593,8 @@ public:
 
     static constexpr const char *themePrefix = ":/client/theme/";
 
+    QPalette systemPalette();
+
 protected:
 #ifndef TOKEN_AUTH_ONLY
     QIcon themeIcon(const QString &name, bool sysTray = false) const;
@@ -606,6 +611,7 @@ protected:
 
 signals:
     void systrayUseMonoIconsChanged(bool);
+    void systemPaletteChanged(const QPalette &palette);
 
 private:
     Theme(Theme const &);
@@ -613,6 +619,7 @@ private:
 
     static Theme *_instance;
     bool _mono = false;
+    QScopedPointer<QGuiApplication> _guiAppInstance;
 #ifndef TOKEN_AUTH_ONLY
     mutable QHash<QString, QIcon> _iconCache;
 #endif

@@ -15,8 +15,8 @@ Item {
     property string imageSource: ""
     property string imageSourceHover: ""
 
-    property color textColor: Style.unifiedSearchResulTitleColor
-    property color textColorHovered: Style.unifiedSearchResulSublineColor
+    property color textColor: Style.ncTextColor
+    property color textColorHovered: Style.ncSecondaryTextColor
 
     signal clicked()
 

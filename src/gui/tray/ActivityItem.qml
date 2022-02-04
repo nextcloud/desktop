@@ -22,10 +22,6 @@ MouseArea {
 
     height: childrenRect.height
 
-    ToolTip.visible: containsMouse && !activityContent.childHovered && model.displayLocation !== ""
-    ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
-    ToolTip.text: qsTr("In %1").arg(model.displayLocation)
-
     Accessible.role: Accessible.ListItem
     Accessible.name: (model.path !== "" && model.displayPath !== "") ? qsTr("Open %1 locally").arg(model.displayPath) : model.message
     Accessible.onPressAction: root.clicked()
@@ -34,6 +30,21 @@ MouseArea {
         id: activityHover
         anchors.fill: parent
         color: (parent.containsMouse ? Style.lightHover : "transparent")
+    }
+
+    ToolTip {
+        id: activityMouseAreaTooltip
+        visible: containsMouse && !activityContent.childHovered && model.displayLocation !== ""
+        delay: Qt.styleHints.mousePressAndHoldInterval
+        text: qsTr("In %1").arg(model.displayLocation)
+        contentItem: Label {
+            text: activityMouseAreaTooltip.text
+            color: Style.ncTextColor
+        }
+        background: Rectangle {
+            border.color: Style.menuBorder
+            color: Style.backgroundColor
+        }
     }
 
     ColumnLayout {

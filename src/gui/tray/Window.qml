@@ -111,6 +111,7 @@ Window {
         radius: Systray.useNormalWindow ? 0.0 : Style.trayWindowRadius
         border.width:   Style.trayWindowBorderWidth
         border.color:   Style.menuBorder
+        color: Style.backgroundColor
 
         Accessible.role: Accessible.Grouping
         Accessible.name: qsTr("Nextcloud desktop main dialog")
@@ -137,6 +138,7 @@ Window {
                     Layout.preferredHeight: Style.trayWindowHeaderHeight
                     display:                AbstractButton.IconOnly
                     flat:                   true
+                    palette: Style.systemPalette
 
                     Accessible.role: Accessible.ButtonMenu
                     Accessible.name: qsTr("Current account")
@@ -168,9 +170,11 @@ Window {
                         width: (Style.currentAccountButtonWidth - 2)
                         height: Math.min(implicitHeight, maxMenuHeight)
                         closePolicy: Menu.CloseOnPressOutsideParent | Menu.CloseOnEscape
+                        palette: Style.palette
 
                         background: Rectangle {
                             border.color: Style.menuBorder
+                            color: Style.backgroundColor
                             radius: Style.currentAccountButtonRadius
                         }
 
@@ -216,6 +220,7 @@ Window {
                             id: addAccountButton
                             height: Style.addAccountButtonHeight
                             hoverEnabled: true
+                            palette: Theme.systemPalette
 
                             background: Item {
                                 height: parent.height
@@ -234,14 +239,14 @@ Window {
                                 Image {
                                     Layout.leftMargin: 12
                                     verticalAlignment: Qt.AlignCenter
-                                    source: "qrc:///client/theme/black/add.svg"
+                                    source: Systray.darkMode ? "qrc:///client/theme/white/add.svg" : "qrc:///client/theme/black/add.svg"
                                     sourceSize.width: Style.headerButtonIconSize
                                     sourceSize.height: Style.headerButtonIconSize
                                 }
                                 Label {
                                     Layout.leftMargin: 14
                                     text: qsTr("Add account")
-                                    color: "black"
+                                    color: Style.ncTextColor
                                     font.pixelSize: Style.topLinePixelSize
                                 }
                                 // Filler on the right
@@ -267,6 +272,7 @@ Window {
                         MenuItem {
                             id: syncPauseButton
                             font.pixelSize: Style.topLinePixelSize
+                            palette.windowText: Style.ncTextColor
                             hoverEnabled: true
                             onClicked: Systray.pauseResumeSync()
 
@@ -289,6 +295,7 @@ Window {
                             id: settingsButton
                             text: qsTr("Settings")
                             font.pixelSize: Style.topLinePixelSize
+                            palette.windowText: Style.ncTextColor
                             hoverEnabled: true
                             onClicked: Systray.openSettings()
 
@@ -311,6 +318,7 @@ Window {
                             id: exitButton
                             text: qsTr("Exit");
                             font.pixelSize: Style.topLinePixelSize
+                            palette.windowText: Style.ncTextColor
                             hoverEnabled: true
                             onClicked: Systray.shutdown()
 
@@ -411,6 +419,7 @@ Window {
                                 text: UserModel.currentUser.name
                                 elide: Text.ElideRight
                                 color: UserModel.currentUser.headerTextColor
+
                                 font.pixelSize: Style.topLinePixelSize
                                 font.bold: true
                             }
@@ -566,6 +575,7 @@ Window {
 
                         background: Rectangle {
                             border.color: Style.menuBorder
+                            color: Style.backgroundColor
                             radius: 2
                         }
 
@@ -578,9 +588,21 @@ Window {
                                 id: appEntry
                                 text: appName
                                 font.pixelSize: Style.topLinePixelSize
+                                palette.windowText: Style.ncTextColor
                                 icon.source: appIconUrl
+                                icon.color: Style.ncTextColor
                                 onTriggered: UserAppsModel.openAppUrl(appUrl)
                                 hoverEnabled: true
+
+                                background: Item {
+                                    height: parent.height
+                                    width: parent.width
+                                    Rectangle {
+                                        anchors.fill: parent
+                                        anchors.margins: 1
+                                        color: parent.parent.hovered || parent.parent.visualFocus ? Style.lightHover : "transparent"
+                                    }
+                                }
 
                                 Accessible.role: Accessible.MenuItem
                                 Accessible.name: qsTr("Open %1 in browser").arg(appName)
@@ -713,16 +735,16 @@ Window {
 
                 delegate: UnifiedSearchResultListItem {
                     width: unifiedSearchResultsListView.width
-                    height: trayWindowBackground.Style.unifiedSearchItemHeight
+                    height: Style.unifiedSearchItemHeight
                     isSearchInProgress:  unifiedSearchResultsListView.model.isSearchInProgress
-                    textLeftMargin: trayWindowBackground.Style.unifiedSearchResultTextLeftMargin
-                    textRightMargin: trayWindowBackground.Style.unifiedSearchResultTextRightMargin
-                    iconWidth: trayWindowBackground.Style.unifiedSearchResulIconWidth
-                    iconLeftMargin: trayWindowBackground.Style.unifiedSearchResulIconLeftMargin
-                    titleFontSize: trayWindowBackground.Style.unifiedSearchResulTitleFontSize
-                    sublineFontSize: trayWindowBackground.Style.unifiedSearchResulSublineFontSize
-                    titleColor: trayWindowBackground.Style.unifiedSearchResulTitleColor
-                    sublineColor: trayWindowBackground.Style.unifiedSearchResulSublineColor
+                    textLeftMargin: Style.unifiedSearchResultTextLeftMargin
+                    textRightMargin: Style.unifiedSearchResultTextRightMargin
+                    iconWidth: Style.unifiedSearchResulIconWidth
+                    iconLeftMargin: Style.unifiedSearchResulIconLeftMargin
+                    titleFontSize: Style.unifiedSearchResulTitleFontSize
+                    sublineFontSize: Style.unifiedSearchResulSublineFontSize
+                    titleColor: Style.ncTextColor
+                    sublineColor: Style.ncSecondaryTextColor
                     currentFetchMoreInProgressProviderId: unifiedSearchResultsListView.model.currentFetchMoreInProgressProviderId
                     fetchMoreTriggerClicked: unifiedSearchResultsListView.model.fetchMoreTriggerClicked
                     resultClicked: unifiedSearchResultsListView.model.resultClicked

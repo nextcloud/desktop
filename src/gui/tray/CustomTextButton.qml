@@ -12,8 +12,8 @@ Label {
 
     height: implicitHeight
 
-    property color textColor: Style.unifiedSearchResulTitleColor
-    property color textColorHovered: Style.unifiedSearchResulSublineColor
+    property color textColor: Style.ncTextColor
+    property color textColorHovered: Style.ncSecondaryTextColor
 
     Accessible.role: Accessible.Button
     Accessible.name: text
@@ -33,9 +33,18 @@ Label {
     signal clicked(QtObject mouse)
 
     ToolTip {
+        id: customTextButtonTooltip
         text: root.toolTipText
         delay: Qt.styleHints.mousePressAndHoldInterval
         visible: root.toolTipText !== "" && root.hovered
+        contentItem: Label {
+            text: customTextButtonTooltip.text
+            color: Style.ncTextColor
+        }
+        background: Rectangle {
+            border.color: Style.menuBorder
+            color: Style.backgroundColor
+        }
     }
 
     MouseArea {
