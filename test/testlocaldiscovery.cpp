@@ -360,6 +360,32 @@ private slots:
         QVERIFY(fakeFolder.currentLocalState().find(fileWithSpaces));
         QVERIFY(fakeFolder.currentLocalState().find(fileTrimmed));
     }
+
+    void testCreateFileWithTrailingSpaces_localAndRemoteTrimmedExists_renameFile()
+    {
+        FakeFolder fakeFolder{FileInfo{}};
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        const QString fileWithSpaces1(" foo");
+        const QString fileWithSpaces2(" bar  ");
+        const QString fileWithSpaces3("bla ");
+
+        fakeFolder.localModifier().insert(fileWithSpaces1);
+        fakeFolder.localModifier().insert(fileWithSpaces2);
+        fakeFolder.localModifier().insert(fileWithSpaces3);
+        fakeFolder.remoteModifier().insert(fileWithSpaces1);
+        fakeFolder.remoteModifier().insert(fileWithSpaces2);
+        fakeFolder.remoteModifier().insert(fileWithSpaces3);
+
+        QVERIFY(fakeFolder.syncOnce());
+
+        QVERIFY(fakeFolder.syncOnce());
+
+        QVERIFY(fakeFolder.syncOnce());
+
+        auto expectedState = fakeFolder.currentLocalState();
+        qDebug() << expectedState;
+        QCOMPARE(fakeFolder.currentRemoteState(), expectedState);
+    }
 };
 
 QTEST_GUILESS_MAIN(TestLocalDiscovery)
