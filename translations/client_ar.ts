@@ -716,7 +716,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="462"/>
         <source>Show in file browser</source>
-        <translation type="unfinished"/>
+        <translation>تظهر في ملف المستعرض</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="158"/>
@@ -960,7 +960,7 @@ File synchronization desktop utility.</source>
     <message>
         <location filename="../src/gui/models/expandingheaderview.cpp" line="78"/>
         <source>Reset column sizes</source>
-        <translation type="unfinished"/>
+        <translation>إعادة تعيين أحجام الأعمدة</translation>
     </message>
 </context>
 <context>
@@ -1895,7 +1895,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="163"/>
         <source>Reset column sizes</source>
-        <translation type="unfinished"/>
+        <translation>إعادة تعيين أحجام الأعمدة</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="182"/>
@@ -1983,12 +1983,12 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/gui/models/models.cpp" line="103"/>
         <source>No filter</source>
-        <translation type="unfinished"/>
+        <translation>لا يوجد تصفية</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="217"/>
         <source>Reset Filters</source>
-        <translation type="unfinished"/>
+        <translation>إعادة تعيين عوامل التصفية</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="296"/>
@@ -3109,7 +3109,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="115"/>
         <source>Show in file browser</source>
-        <translation type="unfinished"/>
+        <translation>تظهر في ملف المستعرض</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="126"/>
@@ -3672,7 +3672,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="967"/>
         <source>Create and copy public link to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>إنشاء ونسخ ارتباط عام إلى الحافظة</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="969"/>
@@ -4388,7 +4388,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="98"/>
         <source>S&amp;ynchronize everything from server</source>
-        <translation type="unfinished"/>
+        <translation>مزامنة كل شيء من الخادم</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="182"/>
@@ -4582,22 +4582,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="95"/>
         <source>File Ignored</source>
-        <translation type="unfinished"/>
+        <translation>تم تجاهل الملف</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="97"/>
         <source>Restored</source>
-        <translation type="unfinished"/>
+        <translation>مسترجع</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="101"/>
         <source>Blacklisted</source>
-        <translation type="unfinished"/>
+        <translation>مدرج في القائمة المحظورة</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="103"/>
         <source>Excluded</source>
-        <translation type="unfinished"/>
+        <translation>مستثنى</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="105"/>
