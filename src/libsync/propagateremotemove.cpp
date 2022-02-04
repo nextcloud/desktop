@@ -238,10 +238,14 @@ void PropagateRemoteMove::finalize()
     auto &vfs = propagator()->syncOptions()._vfs;
     auto pinState = vfs->pinState(_item->_originalFile);
 
-    // Delete old db data.
-    propagator()->_journal->deleteFileRecord(_item->_originalFile);
-    if (!vfs->setPinState(_item->_originalFile, PinState::Inherited)) {
-        qCWarning(lcPropagateRemoteMove) << "Could not set pin state of" << _item->_originalFile << "to inherited";
+    const auto targetFile = propagator()->fullLocalPath(_item->_renameTarget);
+
+    if (QFileInfo::exists(targetFile)) {
+        // Delete old db data.
+        propagator()->_journal->deleteFileRecord(_item->_originalFile);
+        if (!vfs->setPinState(_item->_originalFile, PinState::Inherited)) {
+            qCWarning(lcPropagateRemoteMove) << "Could not set pin state of" << _item->_originalFile << "to inherited";
+        }
     }
 
     SyncFileItem newItem(*_item);
@@ -256,7 +260,6 @@ void PropagateRemoteMove::finalize()
         }
     }
 
-    const auto targetFile = propagator()->fullLocalPath(_item->_renameTarget);
     if (!QFileInfo::exists(targetFile)) {
         propagator()->_journal->commit("Remote Rename");
         done(SyncFileItem::Success);

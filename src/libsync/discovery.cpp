@@ -52,10 +52,10 @@ bool ProcessDirectoryJob::checkForInvalidFileName(const PathTuple &path,
     if (entriesIter != entries.end()) {
         QString errorMessage;
         const auto newFileNameEntry = entriesIter->second;
-        if (newFileNameEntry.serverEntry.isValid()) {
+        if (entry.serverEntry.isValid() && newFileNameEntry.serverEntry.isValid()) {
             errorMessage = tr("File contains trailing spaces and could not be renamed, because a file with the same name already exists on the server.");
         }
-        if (newFileNameEntry.localEntry.isValid()) {
+        if (entry.localEntry.isValid() && newFileNameEntry.localEntry.isValid()) {
             errorMessage = tr("File contains trailing spaces and could not be renamed, because a file with the same name already exists locally.");
         }
 
@@ -71,7 +71,7 @@ bool ProcessDirectoryJob::checkForInvalidFileName(const PathTuple &path,
             item->_instruction = CSYNC_INSTRUCTION_ERROR;
             item->_status = SyncFileItem::NormalError;
             item->_errorString = errorMessage;
-            emit _discoveryData->itemDiscovered(item);
+            processFileFinalize(item, path, false, ParentNotChanged, ParentNotChanged);
             return false;
         }
     }
@@ -852,6 +852,39 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         processFileFinalize(item, path, recurse, recurseQueryLocal, recurseQueryServer);
     };
 
+    auto handleInvalidSpaceRename = [&] (SyncFileItem::Direction direction) {
+        if (_dirItem) {
+            path._target = _dirItem->_file + "/" + localEntry.renameName;
+        } else {
+            path._target = localEntry.renameName;
+        }
+        OCC::SyncJournalFileRecord base;
+        if (!_discoveryData->_statedb->getFileRecordByInode(localEntry.inode, &base)) {
+            dbError();
+            return;
+        }
+        const auto originalPath = base.path();
+        const auto adjustedOriginalPath = _discoveryData->adjustRenamedPath(originalPath, SyncFileItem::Down);
+        _discoveryData->_renamedItemsLocal.insert(originalPath, path._target);
+        item->_renameTarget = path._target;
+        path._server = adjustedOriginalPath;
+        if (_dirItem) {
+            item->_file = _dirItem->_file + "/" + localEntry.name;
+        } else {
+            item->_file = localEntry.name;
+        }
+        path._original = originalPath;
+        item->_originalFile = path._original;
+        item->_modtime = base._modtime;
+        item->_inode = base._inode;
+        item->_instruction = CSYNC_INSTRUCTION_RENAME;
+        item->_direction = direction;
+        item->_fileId = base._fileId;
+        item->_remotePerm = base._remotePerm;
+        item->_etag = base._etag;
+        item->_type = base._type;
+    };
+
     if (!localEntry.isValid()) {
         if (_queryLocal == ParentNotChanged && dbEntry.isValid()) {
             // Not modified locally (ParentNotChanged)
@@ -933,6 +966,8 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
                     || _discoveryData->_syncOptions._vfs->needsMetadataUpdate(*item))) {
                 item->_instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
                 item->_direction = SyncFileItem::Down;
+            } else if (!localEntry.renameName.isEmpty()) {
+                handleInvalidSpaceRename(SyncFileItem::Up);
             }
         } else if (!typeChange && isVfsWithSuffix()
             && dbEntry.isVirtualFile() && !localEntry.isVirtualFile
@@ -1019,37 +1054,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
     }
 
     if (!localEntry.renameName.isEmpty()) {
-        if (_dirItem) {
-            path._target = _dirItem->_file + "/" + localEntry.renameName;
-        } else {
-            path._target = localEntry.renameName;
-        }
-        OCC::SyncJournalFileRecord base;
-        if (!_discoveryData->_statedb->getFileRecordByInode(localEntry.inode, &base)) {
-            dbError();
-            return;
-        }
-        const auto originalPath = base.path();
-        const auto adjustedOriginalPath = _discoveryData->adjustRenamedPath(originalPath, SyncFileItem::Down);
-        _discoveryData->_renamedItemsLocal.insert(originalPath, path._target);
-        item->_renameTarget = path._target;
-        path._server = adjustedOriginalPath;
-        if (_dirItem) {
-            item->_file = _dirItem->_file + "/" + localEntry.name;
-        } else {
-            item->_file = localEntry.name;
-        }
-        path._original = originalPath;
-        item->_originalFile = path._original;
-        item->_modtime = base._modtime;
-        item->_inode = base._inode;
-        item->_instruction = CSYNC_INSTRUCTION_RENAME;
-        item->_direction = SyncFileItem::Down;
-        item->_fileId = base._fileId;
-        item->_remotePerm = base._remotePerm;
-        item->_etag = base._etag;
-        item->_type = base._type;
-
+        handleInvalidSpaceRename(SyncFileItem::Down);
         finalize();
         return;
     }
