@@ -1,6 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.2
+import Style 1.0
 
 Button {
     id: root
@@ -25,6 +26,21 @@ Button {
 
     leftPadding: root.text === "" ? 5 : 10
     rightPadding: root.text === "" ? 5 : 10
+
+    ToolTip {
+        id: customButtonTooltip
+        text: root.toolTipText
+        delay: Qt.styleHints.mousePressAndHoldInterval
+        visible: root.toolTipText !== "" && root.hovered
+        contentItem: Label {
+            text: customButtonTooltip.text
+            color: Style.ncTextColor
+        }
+        background: Rectangle {
+            border.color: Style.menuBorder
+            color: Style.backgroundColor
+        }
+    }
 
     contentItem: RowLayout {
         Image {
@@ -51,11 +67,5 @@ Button {
 
             elide: Text.ElideRight
         }
-    }
-
-    ToolTip {
-        text: root.toolTipText
-        delay: Qt.styleHints.mousePressAndHoldInterval
-        visible: root.toolTipText !== "" && root.hovered
     }
 }

@@ -899,4 +899,16 @@ QColor Theme::errorBoxBorderColor() const
     return QColor{"black"};
 }
 
+QPalette Theme::systemPalette()
+{
+    if(!_guiAppInstance) {
+        const auto ptr = qobject_cast<QGuiApplication *>(QGuiApplication::instance());
+        if(ptr) {
+            _guiAppInstance.reset(ptr);
+            connect(ptr, &QGuiApplication::paletteChanged, this, &Theme::systemPaletteChanged);
+        }
+    }
+    return QGuiApplication::palette();
+}
+
 } // end namespace client

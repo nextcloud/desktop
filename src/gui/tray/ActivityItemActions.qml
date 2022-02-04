@@ -43,8 +43,8 @@ RowLayout {
             imageSource: model.modelData.imageSource
             imageSourceHover: model.modelData.imageSourceHovered
 
-            textColor: imageSource !== "" ? UserModel.currentUser.headerColor : Style.unifiedSearchResulSublineColor
-            textColorHovered: imageSource !== "" ? Style.lightHover : Style.unifiedSearchResulTitleColor
+            textColor: imageSource !== "" ? UserModel.currentUser.headerColor : Style.ncTextColor
+            textColorHovered: imageSource !== "" ? Style.lightHover : Style.ncTextColor
 
             bold: primary
 
@@ -67,15 +67,27 @@ RowLayout {
             id: moreActionsButton
 
             icon.source: "qrc:///client/theme/more.svg"
+            icon.color: Style.ncTextColor
 
             background: Rectangle {
-                color: parent.hovered ? "white" : root.moreActionsButtonColor
+                color: parent.hovered ? Style.lightHover : root.moreActionsButtonColor
                 radius: width / 2
             }
 
-            ToolTip.visible: hovered
-            ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
-            ToolTip.text: qsTr("Show more actions")
+            ToolTip {
+                id: moreActionsButtonTooltip
+                visible: parent.hovered
+                delay: Qt.styleHints.mousePressAndHoldInterval
+                text: qsTr("Show more actions")
+                contentItem: Label {
+                    text: moreActionsButtonTooltip.text
+                    color: Style.ncTextColor
+                }
+                background: Rectangle {
+                    border.color: Style.menuBorder
+                    color: Style.backgroundColor
+                }
+            }
 
             Accessible.name: qsTr("Show more actions")
 

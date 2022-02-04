@@ -33,6 +33,7 @@
 
 #include "activitydata.h"
 #include "activitylistmodel.h"
+#include "systray.h"
 
 #include "theme.h"
 
@@ -215,41 +216,48 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
     }
 
     case ActionIconRole: {
+        auto colorIconPath = QStringLiteral("qrc:///client/theme/__COLOR__/"); // We will replace __COLOR__ in QML
         if (a._type == Activity::NotificationType) {
-            return "qrc:///client/theme/black/bell.svg";
+            colorIconPath.append("bell.svg");
+            return colorIconPath;
         } else if (a._type == Activity::SyncResultType) {
-            return "qrc:///client/theme/black/state-error.svg";
+            colorIconPath.append("state-error.svg");
+            return colorIconPath;
         } else if (a._type == Activity::SyncFileItemType) {
             if (a._status == SyncFileItem::NormalError
                 || a._status == SyncFileItem::FatalError
                 || a._status == SyncFileItem::DetailError
                 || a._status == SyncFileItem::BlacklistedError) {
-                return "qrc:///client/theme/black/state-error.svg";
+                colorIconPath.append("state-error.svg");
+                return colorIconPath;
             } else if (a._status == SyncFileItem::SoftError
                 || a._status == SyncFileItem::Conflict
                 || a._status == SyncFileItem::Restoration
                 || a._status == SyncFileItem::FileLocked
                 || a._status == SyncFileItem::FileNameInvalid) {
-                return "qrc:///client/theme/black/state-warning.svg";
+                colorIconPath.append("state-warning.svg");
+                return colorIconPath;
             } else if (a._status == SyncFileItem::FileIgnored) {
-                return "qrc:///client/theme/black/state-info.svg";
+                colorIconPath.append("state-info.svg");
+                return colorIconPath;
             } else {
                 // File sync successful
                 if (a._fileAction == "file_created") {
-                    return a._previews.empty() ? "qrc:///client/theme/colored/add.svg"
-                                               : "qrc:///client/theme/colored/add-bordered.svg";
+                    return a._previews.empty() ? QStringLiteral("qrc:///client/theme/colored/add.svg")
+                                               : QStringLiteral("qrc:///client/theme/colored/add-bordered.svg");
                 } else if (a._fileAction == "file_deleted") {
-                    return a._previews.empty() ? "qrc:///client/theme/colored/delete.svg"
-                                               : "qrc:///client/theme/colored/delete-bordered.svg";
+                    return a._previews.empty() ? QStringLiteral("qrc:///client/theme/colored/delete.svg")
+                                               : QStringLiteral("qrc:///client/theme/colored/delete-bordered.svg");
                 } else {
-                    return a._previews.empty() ? "qrc:///client/theme/change.svg"
-                                               : "qrc:///client/theme/colored/change-bordered.svg";
+                    return a._previews.empty() ? colorIconPath % QStringLiteral("change.svg")
+                                               : QStringLiteral("qrc:///client/theme/colored/change-bordered.svg");
                 }
             }
         } else {
             // We have an activity
             if (a._icon.isEmpty()) {
-                return "qrc:///client/theme/black/activity.svg";
+                colorIconPath.append("activity.svg");
+                return colorIconPath;
             }
 
             return a._icon;
@@ -390,7 +398,21 @@ void ActivityListModel::ingestActivities(const QJsonArray &activities)
     for (const auto &activ : activities) {
         const auto json = activ.toObject();
 
-        const auto a = Activity::fromActivityJson(json, _accountState->account());
+        auto a = Activity::fromActivityJson(json, _accountState->account());
+
+        auto colorIconPath = QStringLiteral("qrc:///client/theme/__COLOR__/");
+        if(a._icon.contains("change.svg")) {
+            colorIconPath.append("change.svg");
+            a._icon = colorIconPath;
+        } else if(a._icon.contains("calendar.svg")) {
+            colorIconPath.append("calendar.svg");
+            a._icon = colorIconPath;
+        } else if(a._icon.contains("personal.svg")) {
+            colorIconPath.append("user.svg");
+            a._icon = colorIconPath;
+        }  else if(a._icon.contains("core/img/actions")) {
+            a._icon.insert(a._icon.indexOf(".svg"), "__WHITE_GOES_HERE__");
+        }
 
         list.append(a);
         _currentItem = list.last()._id;

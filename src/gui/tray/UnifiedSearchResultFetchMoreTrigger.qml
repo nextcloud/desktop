@@ -13,7 +13,7 @@ ColumnLayout {
 
     property int fontSize: Style.topLinePixelSize
 
-    property string textColor: "grey"
+    property string textColor: Style.ncSecondaryTextColor
 
     Accessible.role: Accessible.ListItem
     Accessible.name: unifiedSearchResultItemFetchMoreText.text
