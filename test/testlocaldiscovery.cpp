@@ -328,7 +328,7 @@ private slots:
 
     void testCreateFileWithTrailingSpaces_localTrimmedDoesExist_dontRenameAndUploadFile()
     {
-        FakeFolder fakeFolder { FileInfo::A12_B12_C12_S12() };
+        FakeFolder fakeFolder{FileInfo{}};
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
         const QString fileWithSpaces(" foo");
         const QString fileTrimmed("foo");
@@ -346,7 +346,7 @@ private slots:
 
     void testCreateFileWithTrailingSpaces_localTrimmedAlsoCreated_dontRenameAndUploadFile()
     {
-        FakeFolder fakeFolder { FileInfo::A12_B12_C12_S12() };
+        FakeFolder fakeFolder{FileInfo{}};
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
         const QString fileWithSpaces(" foo");
         const QString fileTrimmed("foo");
