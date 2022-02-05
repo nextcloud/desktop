@@ -4645,7 +4645,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>%1 %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="83"/>
+        <location filename="../src/gui/guiutility.cpp" line="92"/>
         <source>Shutting down %1</source>
         <translation type="unfinished"/>
     </message>
@@ -4653,12 +4653,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>main.cpp</name>
     <message>
-        <location filename="../src/gui/main.cpp" line="38"/>
+        <location filename="../src/gui/main.cpp" line="39"/>
         <source>System Tray not available</source>
         <translation>系统托盘不可用</translation>
     </message>
     <message>
-        <location filename="../src/gui/main.cpp" line="39"/>
+        <location filename="../src/gui/main.cpp" line="40"/>
         <source>%1 requires on a working system tray. If you are running XFCE, please follow &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;these instructions&lt;/a&gt;. Otherwise, please install a system tray application such as &apos;trayer&apos; and try again.</source>
         <translation>%1 依赖于系统托盘程序。如果你在运行 XFCE，请按 &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;这个指南（英文）&lt;/a&gt; 来设置。否则，请安装一个系统托盘程序，比如 trayer，然后再试。</translation>
     </message>
@@ -4843,53 +4843,53 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>utility</name>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="129"/>
+        <location filename="../src/gui/guiutility.cpp" line="137"/>
         <source>Could not open browser</source>
         <translation>不能打开浏览器</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="130"/>
+        <location filename="../src/gui/guiutility.cpp" line="138"/>
         <source>There was an error when launching the browser to go to URL %1. Maybe no default browser is configured?</source>
         <translation>打开链接 %1 时发生错误，是不是默认浏览器没有配置？</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="153"/>
+        <location filename="../src/gui/guiutility.cpp" line="161"/>
         <source>Could not open email client</source>
         <translation>无法打开邮件客户端</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="154"/>
+        <location filename="../src/gui/guiutility.cpp" line="162"/>
         <source>There was an error when launching the email client to create a new message. Maybe no default email client is configured?</source>
         <translation>启动email客户端并创建新消息时发生错误。是不是没有设定默认的email客户端？</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="169"/>
+        <location filename="../src/gui/guiutility.cpp" line="177"/>
         <source>Always available locally</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="173"/>
+        <location filename="../src/gui/guiutility.cpp" line="181"/>
         <source>Some available online only</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="175"/>
-        <location filename="../src/gui/guiutility.cpp" line="177"/>
+        <location filename="../src/gui/guiutility.cpp" line="183"/>
+        <location filename="../src/gui/guiutility.cpp" line="185"/>
         <source>Available online only</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="171"/>
+        <location filename="../src/gui/guiutility.cpp" line="179"/>
         <source>Currently available locally</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="184"/>
+        <location filename="../src/gui/guiutility.cpp" line="192"/>
         <source>Make always available locally</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="189"/>
+        <location filename="../src/gui/guiutility.cpp" line="197"/>
         <source>Free up local space</source>
         <translation type="unfinished"/>
     </message>

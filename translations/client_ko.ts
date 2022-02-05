@@ -4644,7 +4644,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>%2 %1 중</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="83"/>
+        <location filename="../src/gui/guiutility.cpp" line="92"/>
         <source>Shutting down %1</source>
         <translation type="unfinished"/>
     </message>
@@ -4652,12 +4652,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>main.cpp</name>
     <message>
-        <location filename="../src/gui/main.cpp" line="38"/>
+        <location filename="../src/gui/main.cpp" line="39"/>
         <source>System Tray not available</source>
         <translation>시스템 트레이를 사용할 수 없음</translation>
     </message>
     <message>
-        <location filename="../src/gui/main.cpp" line="39"/>
+        <location filename="../src/gui/main.cpp" line="40"/>
         <source>%1 requires on a working system tray. If you are running XFCE, please follow &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;these instructions&lt;/a&gt;. Otherwise, please install a system tray application such as &apos;trayer&apos; and try again.</source>
         <translation>%1을(를) 사용하려면 시스템 트레이가 필요합니다. XFCE를 사용 중이면 &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;이 작업&lt;/a&gt;을 수행하십시오. 다른 경우에는 &apos;trayer&apos;와 같은 트레이 프로그램을 설치하고 다시 시도하십시오.</translation>
     </message>
@@ -4842,53 +4842,53 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>utility</name>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="129"/>
+        <location filename="../src/gui/guiutility.cpp" line="137"/>
         <source>Could not open browser</source>
         <translation>브라우저를 열 수 없음</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="130"/>
+        <location filename="../src/gui/guiutility.cpp" line="138"/>
         <source>There was an error when launching the browser to go to URL %1. Maybe no default browser is configured?</source>
         <translation>URL %1을(를) 열기 위해서 브라우저를 실행하는 중 오류가 발생했습니다. 기본 브라우저를 설정하셨습니까?</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="153"/>
+        <location filename="../src/gui/guiutility.cpp" line="161"/>
         <source>Could not open email client</source>
         <translation>이메일 클라이언트를 열 수 없음</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="154"/>
+        <location filename="../src/gui/guiutility.cpp" line="162"/>
         <source>There was an error when launching the email client to create a new message. Maybe no default email client is configured?</source>
         <translation>새 메시지를 작성하기 위한 이메일 클라이언트를 여는 중 오류가 발생했습니다. 기본 이메일 클라이언트를 설정하셨습니까?</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="169"/>
+        <location filename="../src/gui/guiutility.cpp" line="177"/>
         <source>Always available locally</source>
         <translation>항상 로컬에서만 이용 가능</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="173"/>
+        <location filename="../src/gui/guiutility.cpp" line="181"/>
         <source>Some available online only</source>
         <translation>몇 가지는 온라인에서만 이용 가능</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="175"/>
-        <location filename="../src/gui/guiutility.cpp" line="177"/>
+        <location filename="../src/gui/guiutility.cpp" line="183"/>
+        <location filename="../src/gui/guiutility.cpp" line="185"/>
         <source>Available online only</source>
         <translation>온라인에서만 이용 가능</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="171"/>
+        <location filename="../src/gui/guiutility.cpp" line="179"/>
         <source>Currently available locally</source>
         <translation>로컬에서 현재 이용 가능</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="184"/>
+        <location filename="../src/gui/guiutility.cpp" line="192"/>
         <source>Make always available locally</source>
         <translation>항상 로컬에서만 이용 가능하게 함</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="189"/>
+        <location filename="../src/gui/guiutility.cpp" line="197"/>
         <source>Free up local space</source>
         <translation>로컬 공간을 해제함</translation>
     </message>

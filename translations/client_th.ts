@@ -4657,7 +4657,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>%1 %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="83"/>
+        <location filename="../src/gui/guiutility.cpp" line="92"/>
         <source>Shutting down %1</source>
         <translation>กำลังปิด %1</translation>
     </message>
@@ -4665,12 +4665,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>main.cpp</name>
     <message>
-        <location filename="../src/gui/main.cpp" line="38"/>
+        <location filename="../src/gui/main.cpp" line="39"/>
         <source>System Tray not available</source>
         <translation>ถาดระบบไม่สามารถใช้ได้</translation>
     </message>
     <message>
-        <location filename="../src/gui/main.cpp" line="39"/>
+        <location filename="../src/gui/main.cpp" line="40"/>
         <source>%1 requires on a working system tray. If you are running XFCE, please follow &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;these instructions&lt;/a&gt;. Otherwise, please install a system tray application such as &apos;trayer&apos; and try again.</source>
         <translation>%1 จำเป็นต้องทำงานบนถาดระบบ ถ้าคุณใช้ XFCE โปรดปฏิบัติตาม &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;คำแนะนำเหล่านี้&lt;/a&gt; อย่างไรก็ตาม กรุณาติดตั้งแอปฯถาดระบบเช่น &apos;trayer&apos; และลองอีกครั้ง</translation>
     </message>
@@ -4855,53 +4855,53 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>utility</name>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="129"/>
+        <location filename="../src/gui/guiutility.cpp" line="137"/>
         <source>Could not open browser</source>
         <translation>ไม่สามารถเปิดเบราเซอร์</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="130"/>
+        <location filename="../src/gui/guiutility.cpp" line="138"/>
         <source>There was an error when launching the browser to go to URL %1. Maybe no default browser is configured?</source>
         <translation>เกิดข้อผิดพลาดขณะเปิดเบราว์เซอร์เพื่อไปที่ URL %1 อาจยังไม่มีการกำหนดค่าเบราเซอร์เริ่มต้น</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="153"/>
+        <location filename="../src/gui/guiutility.cpp" line="161"/>
         <source>Could not open email client</source>
         <translation>ไม่สามารถเปิดไคลเอนต์อีเมล</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="154"/>
+        <location filename="../src/gui/guiutility.cpp" line="162"/>
         <source>There was an error when launching the email client to create a new message. Maybe no default email client is configured?</source>
         <translation>เกิดข้อผิดพลาดเมื่อเปิดไคลเอ็นต์อีเมลเพื่อสร้างข้อความใหม่ บางทีไคลเอ็นต์อีเมลอาจยังไม่ได้ตั้งค่า?</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="169"/>
+        <location filename="../src/gui/guiutility.cpp" line="177"/>
         <source>Always available locally</source>
         <translation>พร้อมใช้งานแบบในเครื่องเสมอ</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="173"/>
+        <location filename="../src/gui/guiutility.cpp" line="181"/>
         <source>Some available online only</source>
         <translation>พร้อมใช้งานแบบออนไลน์แค่บางอย่างเท่านั้น</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="175"/>
-        <location filename="../src/gui/guiutility.cpp" line="177"/>
+        <location filename="../src/gui/guiutility.cpp" line="183"/>
+        <location filename="../src/gui/guiutility.cpp" line="185"/>
         <source>Available online only</source>
         <translation>พร้อมใช้งานแบบออนไลน์เท่านั้น</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="171"/>
+        <location filename="../src/gui/guiutility.cpp" line="179"/>
         <source>Currently available locally</source>
         <translation>ปัจจุบันสามารถใช้งานแบบในเครื่องได้</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="184"/>
+        <location filename="../src/gui/guiutility.cpp" line="192"/>
         <source>Make always available locally</source>
         <translation>ทำให้ใช้งานแบบในเครื่องเสมอ</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="189"/>
+        <location filename="../src/gui/guiutility.cpp" line="197"/>
         <source>Free up local space</source>
         <translation>เพิ่มพื้นที่ว่าง</translation>
     </message>

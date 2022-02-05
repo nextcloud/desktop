@@ -4666,7 +4666,7 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
         <translation>%1 %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="83"/>
+        <location filename="../src/gui/guiutility.cpp" line="92"/>
         <source>Shutting down %1</source>
         <translation>Po fiket %1</translation>
     </message>
@@ -4674,12 +4674,12 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
 <context>
     <name>main.cpp</name>
     <message>
-        <location filename="../src/gui/main.cpp" line="38"/>
+        <location filename="../src/gui/main.cpp" line="39"/>
         <source>System Tray not available</source>
         <translation>Nuk ka Panel Sistemi</translation>
     </message>
     <message>
-        <location filename="../src/gui/main.cpp" line="39"/>
+        <location filename="../src/gui/main.cpp" line="40"/>
         <source>%1 requires on a working system tray. If you are running XFCE, please follow &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;these instructions&lt;/a&gt;. Otherwise, please install a system tray application such as &apos;trayer&apos; and try again.</source>
         <translation>%1 lyp një panel sistemi funksional. Nëse xhironi XFCE, ju lutemi, ndiqni &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;këto udhëzime&lt;/a&gt;. Përndryshe, ju lutemi, instaloni një aplikacion paneli sistemi, bie fjala, &apos;trayer&apos; dhe riprovoni.</translation>
     </message>
@@ -4864,53 +4864,53 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
 <context>
     <name>utility</name>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="129"/>
+        <location filename="../src/gui/guiutility.cpp" line="137"/>
         <source>Could not open browser</source>
         <translation>S’hapet dot shfletuesi</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="130"/>
+        <location filename="../src/gui/guiutility.cpp" line="138"/>
         <source>There was an error when launching the browser to go to URL %1. Maybe no default browser is configured?</source>
         <translation>Pati një gabim gjatë nisjes së shfletuesit për të hapur URL-në %1. Mos vallë nuk ka shfletues parazgjedhje të formësuar?</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="153"/>
+        <location filename="../src/gui/guiutility.cpp" line="161"/>
         <source>Could not open email client</source>
         <translation>S’u hap dot klienti email</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="154"/>
+        <location filename="../src/gui/guiutility.cpp" line="162"/>
         <source>There was an error when launching the email client to create a new message. Maybe no default email client is configured?</source>
         <translation>Pati një gabim gjatë nisjes së klientit email për të krijuar një mesazh të ri. Mos vallë s’ka të formësuar klient parazgjedhje për email-in?</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="169"/>
+        <location filename="../src/gui/guiutility.cpp" line="177"/>
         <source>Always available locally</source>
         <translation>Përherë i passhëm lokalisht</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="173"/>
+        <location filename="../src/gui/guiutility.cpp" line="181"/>
         <source>Some available online only</source>
         <translation>Disa të passhëm vetëm &lt;em&gt;online&lt;/em&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="175"/>
-        <location filename="../src/gui/guiutility.cpp" line="177"/>
+        <location filename="../src/gui/guiutility.cpp" line="183"/>
+        <location filename="../src/gui/guiutility.cpp" line="185"/>
         <source>Available online only</source>
         <translation>I passhëm vetëm &lt;em&gt;online&lt;/em&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="171"/>
+        <location filename="../src/gui/guiutility.cpp" line="179"/>
         <source>Currently available locally</source>
         <translation>Aktualisht i passhëm lokalisht</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="184"/>
+        <location filename="../src/gui/guiutility.cpp" line="192"/>
         <source>Make always available locally</source>
         <translation>Bëje përherë të passhëm lokalisht</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="189"/>
+        <location filename="../src/gui/guiutility.cpp" line="197"/>
         <source>Free up local space</source>
         <translation>Liro hapësirë vendore</translation>
     </message>

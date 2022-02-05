@@ -4664,7 +4664,7 @@ Este é un modo novo e experimental. Se decide usalo, informe de calquera proble
         <translation>%1 %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="83"/>
+        <location filename="../src/gui/guiutility.cpp" line="92"/>
         <source>Shutting down %1</source>
         <translation type="unfinished"/>
     </message>
@@ -4672,12 +4672,12 @@ Este é un modo novo e experimental. Se decide usalo, informe de calquera proble
 <context>
     <name>main.cpp</name>
     <message>
-        <location filename="../src/gui/main.cpp" line="38"/>
+        <location filename="../src/gui/main.cpp" line="39"/>
         <source>System Tray not available</source>
         <translation>Área de notificación non dispoñíbel</translation>
     </message>
     <message>
-        <location filename="../src/gui/main.cpp" line="39"/>
+        <location filename="../src/gui/main.cpp" line="40"/>
         <source>%1 requires on a working system tray. If you are running XFCE, please follow &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;these instructions&lt;/a&gt;. Otherwise, please install a system tray application such as &apos;trayer&apos; and try again.</source>
         <translation>%1 require dunha área de notificación. Se está executando XFCE, siga  &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;estas instrucións&lt;/a&gt;. Senón, instale unha aplicación de área de notificación como «trayer» e ténteo de novo.</translation>
     </message>
@@ -4862,53 +4862,53 @@ Este é un modo novo e experimental. Se decide usalo, informe de calquera proble
 <context>
     <name>utility</name>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="129"/>
+        <location filename="../src/gui/guiutility.cpp" line="137"/>
         <source>Could not open browser</source>
         <translation>Non foi posíbel abrir o navegador</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="130"/>
+        <location filename="../src/gui/guiutility.cpp" line="138"/>
         <source>There was an error when launching the browser to go to URL %1. Maybe no default browser is configured?</source>
         <translation>Produciuse un erro ao iniciar o navegador para ir ao URL %1. Quizais non estea configurado ningún navegador predeterminado?</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="153"/>
+        <location filename="../src/gui/guiutility.cpp" line="161"/>
         <source>Could not open email client</source>
         <translation>Non foi posíbel abrir o cliente de correo</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="154"/>
+        <location filename="../src/gui/guiutility.cpp" line="162"/>
         <source>There was an error when launching the email client to create a new message. Maybe no default email client is configured?</source>
         <translation>Produciuse un erro ao iniciar o cliente de correo electrónico para crear unha nova mensaxe. Quizais non estea configurado ningún cliente de correo electrónico?</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="169"/>
+        <location filename="../src/gui/guiutility.cpp" line="177"/>
         <source>Always available locally</source>
         <translation>Sempre dispoñíbel localmente </translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="173"/>
+        <location filename="../src/gui/guiutility.cpp" line="181"/>
         <source>Some available online only</source>
         <translation>Algúns dispoñíbeis só en liña</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="175"/>
-        <location filename="../src/gui/guiutility.cpp" line="177"/>
+        <location filename="../src/gui/guiutility.cpp" line="183"/>
+        <location filename="../src/gui/guiutility.cpp" line="185"/>
         <source>Available online only</source>
         <translation>Só dispoñíbel en liña</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="171"/>
+        <location filename="../src/gui/guiutility.cpp" line="179"/>
         <source>Currently available locally</source>
         <translation>Actualmente dispoñíbel localmente</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="184"/>
+        <location filename="../src/gui/guiutility.cpp" line="192"/>
         <source>Make always available locally</source>
         <translation>Facelo sempre dispoñíbel localmente </translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="189"/>
+        <location filename="../src/gui/guiutility.cpp" line="197"/>
         <source>Free up local space</source>
         <translation>Liberar espazo local</translation>
     </message>

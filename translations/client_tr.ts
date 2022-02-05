@@ -4661,7 +4661,7 @@ Bu yeni, deneysel bir moddur. Kullanmaya karar verirseniz, lütfen ortaya çıka
         <translation>%1 %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="83"/>
+        <location filename="../src/gui/guiutility.cpp" line="92"/>
         <source>Shutting down %1</source>
         <translation type="unfinished"/>
     </message>
@@ -4669,12 +4669,12 @@ Bu yeni, deneysel bir moddur. Kullanmaya karar verirseniz, lütfen ortaya çıka
 <context>
     <name>main.cpp</name>
     <message>
-        <location filename="../src/gui/main.cpp" line="38"/>
+        <location filename="../src/gui/main.cpp" line="39"/>
         <source>System Tray not available</source>
         <translation>Sistem Çekmecesi kullanılamıyor</translation>
     </message>
     <message>
-        <location filename="../src/gui/main.cpp" line="39"/>
+        <location filename="../src/gui/main.cpp" line="40"/>
         <source>%1 requires on a working system tray. If you are running XFCE, please follow &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;these instructions&lt;/a&gt;. Otherwise, please install a system tray application such as &apos;trayer&apos; and try again.</source>
         <translation>%1 çalışan bir sistem çekmecesi gerektirir. Eğer XFCE kullanıyorsanız lütfen &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;bu talimatları&lt;/a&gt; takip edin. Aksi halde &apos;trayer&apos; benzeri bir sistem çekmece uygulaması kurun ve yeniden deneyin.</translation>
     </message>
@@ -4859,53 +4859,53 @@ Bu yeni, deneysel bir moddur. Kullanmaya karar verirseniz, lütfen ortaya çıka
 <context>
     <name>utility</name>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="129"/>
+        <location filename="../src/gui/guiutility.cpp" line="137"/>
         <source>Could not open browser</source>
         <translation>Tarayıcı açılamadı</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="130"/>
+        <location filename="../src/gui/guiutility.cpp" line="138"/>
         <source>There was an error when launching the browser to go to URL %1. Maybe no default browser is configured?</source>
         <translation>%1 bağlantısına gitmek için tarayıcı başlatılırken bir hata oluştu. Herhangi bir varsayılan tarayıcı yapılandırılmamış olabilir.</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="153"/>
+        <location filename="../src/gui/guiutility.cpp" line="161"/>
         <source>Could not open email client</source>
         <translation>E-posta istemcisi açılamadı</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="154"/>
+        <location filename="../src/gui/guiutility.cpp" line="162"/>
         <source>There was an error when launching the email client to create a new message. Maybe no default email client is configured?</source>
         <translation>Yeni mesaj oluşturmak için eposta istemcisini çalıştırıken bir hata oluştu. Belki varsayılan eposta istemcisi ayarlanmamıştır? </translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="169"/>
+        <location filename="../src/gui/guiutility.cpp" line="177"/>
         <source>Always available locally</source>
         <translation>Yerel olarak her zaman kullanılabilir</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="173"/>
+        <location filename="../src/gui/guiutility.cpp" line="181"/>
         <source>Some available online only</source>
         <translation>Yalnızca bazıları çevrimiçi kullanılabilir</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="175"/>
-        <location filename="../src/gui/guiutility.cpp" line="177"/>
+        <location filename="../src/gui/guiutility.cpp" line="183"/>
+        <location filename="../src/gui/guiutility.cpp" line="185"/>
         <source>Available online only</source>
         <translation>Sadece çevrimiçi kullanılabilir</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="171"/>
+        <location filename="../src/gui/guiutility.cpp" line="179"/>
         <source>Currently available locally</source>
         <translation>Şu anda yerel olarak kullanılabilir</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="184"/>
+        <location filename="../src/gui/guiutility.cpp" line="192"/>
         <source>Make always available locally</source>
         <translation>Her zaman yerel olarak erişilebilir yapın</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="189"/>
+        <location filename="../src/gui/guiutility.cpp" line="197"/>
         <source>Free up local space</source>
         <translation>Yerel kapasite alanında yer açın</translation>
     </message>
