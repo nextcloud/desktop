@@ -559,7 +559,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="78"/>
         <source>Reject</source>
-        <translation type="unfinished"/>
+        <translation>ปฏิเสธ</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="212"/>
@@ -632,7 +632,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/models/activitylistmodel.cpp" line="120"/>
         <source>Local path</source>
-        <translation type="unfinished"/>
+        <translation>Path ในเครื่อง</translation>
     </message>
 </context>
 <context>
@@ -842,7 +842,7 @@ File synchronization desktop utility.</source>
     <message>
         <location filename="../src/gui/application.cpp" line="642"/>
         <source>Invalid path passed to --confdir</source>
-        <translation type="unfinished"/>
+        <translation>Path ที่ไม่ถูกต้องได้ถูกส่งผ่านไปยัง --confdir</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="655"/>
@@ -916,7 +916,7 @@ File synchronization desktop utility.</source>
     <message>
         <location filename="../src/libsync/creds/credentialmanager.cpp" line="204"/>
         <source>Failed to parse credentials %1</source>
-        <translation type="unfinished"/>
+        <translation>แยกวิเคราะห์ข้อมูลประจำตัวไม่สำเร็จ %1</translation>
     </message>
 </context>
 <context>
@@ -1227,17 +1227,17 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="1390"/>
         <source>The folder %1 is used in a folder sync connection!</source>
-        <translation type="unfinished"/>
+        <translation>โฟลเดอร์ %1 ถูกใช้ในการเชื่อมต่อการประสานข้อมูลโฟลเดอร์!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1397"/>
         <source>The selected path does not exist!</source>
-        <translation>เส้นทางที่เลือกไม่มีอยู่!</translation>
+        <translation>Path ที่เลือกไม่มีอยู่จริง!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1401"/>
         <source>The selected path is not a folder!</source>
-        <translation>เส้นทางที่เลือกไม่ใช่โฟลเดอร์!</translation>
+        <translation>Path ที่เลือกไม่ใช่โฟลเดอร์!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1405"/>
@@ -1262,7 +1262,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="1459"/>
         <source>%1 Please pick another one!</source>
-        <translation type="unfinished"/>
+        <translation>%1 โปรดเลือกอันอื่น!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1538"/>
@@ -1393,7 +1393,7 @@ Please consider removing this folder from the account and adding it again.</sour
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="272"/>
         <source>Local folder: %1</source>
-        <translation type="unfinished"/>
+        <translation>โฟลเดอร์ในเครื่อง: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="992"/>
@@ -1479,7 +1479,7 @@ Please consider removing this folder from the account and adding it again.</sour
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="74"/>
         <source>Enter the path to the local folder.</source>
-        <translation>ป้อนพาธไปยังโฟลเดอร์ในเครื่อง</translation>
+        <translation>ป้อน path ของโฟลเดอร์ในเครื่อง</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="132"/>
@@ -2283,7 +2283,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="160"/>
         <source>New %1 available. Please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt; to download the new AppImage manually.</source>
-        <translation type="unfinished"/>
+        <translation>ตอนนี้มี %1 พร้อมใช้งานแล้ว โปรด&lt;a href=&apos;%2&apos;&gt;คลิกที่นี่&lt;/a&gt;เพื่อดาวน์โหลด AppImage ด้วยตนเอง</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="163"/>
@@ -2341,7 +2341,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="167"/>
         <source>&lt;p&gt;&lt;strong&gt;Warning:&lt;/strong&gt; The local folder is not empty. Pick a resolution!&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;strong&gt;คำเตือน:&lt;/strong&gt;โปรดเลือกโฟลเดอร์ที่ว่างเปล่าภายในเครื่อง&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="163"/>
@@ -2678,12 +2678,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1044"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>เกิดข้อผิดพลาดในการอัปเดตข้อมูล metadata: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1047"/>
         <source>%1 the folder is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>กำลังใช้งาน %1 โฟลเดอร์</translation>
     </message>
 </context>
 <context>
@@ -2732,12 +2732,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="901"/>
         <source>File %1 cannot be saved because of a local file name clash with %2!</source>
-        <translation type="unfinished"/>
+        <translation>ไม่สามารถบันทึก %1 ไฟล์ได้เนื่องจากชื่อไฟล์ในเครื่องขัดแย้งกับ %2!</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="1023"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>เกิดข้อผิดพลาดในการอัปเดตข้อมูล metadata: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="470"/>
@@ -2745,7 +2745,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/propagatedownload.cpp" line="961"/>
         <location filename="../src/libsync/propagatedownload.cpp" line="1026"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>กำลังใช้งาน %1 ไฟล์</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="364"/>
@@ -2777,12 +2777,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="195"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>เกิดข้อผิดพลาดในการอัปเดตข้อมูล metadata: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="198"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>กำลังใช้งาน %1 ไฟล์</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="182"/>
@@ -2824,12 +2824,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="272"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>เกิดข้อผิดพลาดในการอัปเดตข้อมูล metadata: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="275"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>กำลังใช้งาน %1 ไฟล์</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="281"/>
@@ -2860,7 +2860,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="143"/>
         <source>Error writing metadata to the database: %1</source>
-        <translation type="unfinished"/>
+        <translation>เกิดข้อผิดพลาดในการเขียนข้อมูล metadata ไปยังฐานข้อมูล: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="187"/>
@@ -2883,12 +2883,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="220"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>เกิดข้อผิดพลาดในการอัปเดตข้อมูล metadata: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="223"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>กำลังใช้งาน %1 ไฟล์</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="235"/>
@@ -2911,7 +2911,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1203"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>กำลังใช้งาน %1 ไฟล์</translation>
     </message>
 </context>
 <context>
@@ -2929,17 +2929,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="240"/>
         <source>Local file changed during sync. It will be resumed.</source>
-        <translation type="unfinished"/>
+        <translation>หากไฟล์ในเครื่องถูกแก้ไขระหว่างทำการประสานข้อมูล ไฟล์ที่ถูกแก้ไขนั้นจะถูกทำการประสานข้อมูลอีกครั้ง</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="561"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>เกิดข้อผิดพลาดในการอัปเดตข้อมูล metadata: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="564"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>กำลังใช้งาน %1 ไฟล์</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="129"/>
@@ -3265,7 +3265,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sharedialog.ui" line="65"/>
         <source>ownCloud Path:</source>
-        <translation>พาธ ownCloud:</translation>
+        <translation>ownCloud path:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="105"/>
@@ -3741,7 +3741,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="103"/>
         <source>Local path must be a an absolute path</source>
-        <translation>พาธต้นทางต้องเป็นเส้นทางที่แน่นอน</translation>
+        <translation>Path ต้นทางต้องเป็นเส้นทางที่แน่นอน</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="108"/>
@@ -4124,12 +4124,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="290"/>
         <source>Unresolved %1 conflicts</source>
-        <translation type="unfinished"/>
+        <translation>มี %1 ความขัดแย้งที่ยังไม่ได้รับการแก้ไข</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="292"/>
         <source>Ignored errors %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 ข้อผิดพลาดที่ถูกละเว้น</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="306"/>
