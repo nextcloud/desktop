@@ -26,7 +26,9 @@ add_definitions(-DQT_USE_FAST_CONCATENATION -DQT_USE_FAST_OPERATOR_PLUS)
 
 #---HELPER---
 set(OWNCLOUDDOLPHINHELPER ${APPLICATION_EXECUTABLE}dolphinpluginhelper)
-add_library(${OWNCLOUDDOLPHINHELPER} SHARED ownclouddolphinpluginhelper.cpp)
+add_library(${OWNCLOUDDOLPHINHELPER} SHARED
+    ownclouddolphinpluginhelper.h
+    ownclouddolphinpluginhelper.cpp)
 target_link_libraries(${OWNCLOUDDOLPHINHELPER} Qt5::Network)
 generate_export_header(${OWNCLOUDDOLPHINHELPER} BASE_NAME ownclouddolphinpluginhelper)
 install(TARGETS ${OWNCLOUDDOLPHINHELPER} LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})

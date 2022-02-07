@@ -1,6 +1,8 @@
 if (LINUX)
     set(vfs_xattr_SRCS
+        vfs_xattr.h
         vfs_xattr.cpp
+        xattrwrapper.h
         xattrwrapper_linux.cpp
     )
 
