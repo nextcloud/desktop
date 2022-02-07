@@ -169,15 +169,14 @@ void OwncloudSetupWizard::slotFoundServer(const QUrl &url, const QJsonObject &in
         if (url.scheme() == QLatin1String("https") && oldUrl.host() == url.host()) {
             _ocWizard->account()->setUrl(url);
         } else {
-            auto accountState = AccountState::fromNewAccount(_ocWizard->account()).take(); // we manage the lifetime for this temporary AccountState ourselves (see below)
-            if (auto dialog = accountState->updateUrlDialog(url)) {
-                // Dialog is show, make sure the accountState is deleted when the dialog is done.
-                connect(dialog, &QDialog::finished, accountState, &QObject::deleteLater);
-                connect(accountState, &AccountState::urlUpdated, this, &OwncloudSetupWizard::slotDetermineAuthType);
-            } else {
-                // No dialog is show, we're done with the accountState.
-                delete accountState;
-            }
+            // the account state is only used for a quick moment to handle the URL change, and needs to be cleaned up immediately once finished
+            auto accountState = AccountState::fromNewAccount(_ocWizard->account()).take();
+            connect(accountState, &AccountState::urlUpdated, this, &OwncloudSetupWizard::slotDetermineAuthType);
+
+            auto dialog = accountState->updateUrlDialog(url);
+            Q_ASSERT(dialog != nullptr);
+            connect(dialog, &UpdateUrlDialog::finished, accountState, &AccountState::deleteLater);
+
             return;
         }
     }

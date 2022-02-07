@@ -24,7 +24,6 @@
 #include "theme.h"
 
 #include <QFontMetrics>
-#include <QMessageBox>
 #include <QRandomGenerator>
 #include <QSettings>
 #include <QTimer>
@@ -47,47 +46,28 @@ Q_LOGGING_CATEGORY(lcAccountState, "gui.account.state", QtInfoMsg)
 
 // Returns the dialog when one is shown, so callers can attach to signals. If no dialog is shown
 // (because there is one already, or the new URL matches the current URL), a nullptr is returned.
-QDialog *AccountState::updateUrlDialog(const QUrl &newUrl)
+UpdateUrlDialog *AccountState::updateUrlDialog(const QUrl &newUrl)
 {
     // guard to prevent multiple dialogs
     if (_updateUrlDialog) {
         return nullptr;
     }
-    auto accept = [=] {
+
+    _updateUrlDialog = new UpdateUrlDialog(
+        tr("Url update requested for %1").arg(_account->displayName()),
+        tr("The url for %1 changed from %2 to %3, do you want to accept the changed url?").arg(_account->displayName(), _account->url().toString(), newUrl.toString()),
+        _account->url(),
+        newUrl,
+        ocApp()->activeWindow());
+
+    connect(_updateUrlDialog, &UpdateUrlDialog::accepted, this, [=]() {
         _account->setUrl(newUrl);
         Q_EMIT _account->wantsAccountSaved(_account.data());
         Q_EMIT urlUpdated();
-    };
-
-    auto matchUrl = [](QUrl url1, QUrl url2) {
-        // ensure https://demo.owncloud.org/ matches https://demo.owncloud.org
-        // the empty path was the legacy formating before 2.9
-        if (url1.path().isEmpty()) {
-            url1.setPath(QStringLiteral("/"));
-        }
-        if (url2.path().isEmpty()) {
-            url2.setPath(QStringLiteral("/"));
-        }
-        return url1.matches(url2, QUrl::StripTrailingSlash | QUrl::NormalizePathSegments);
-    };
-
-    if (matchUrl(newUrl, _account->url())) {
-        accept();
-        return nullptr;
-    }
-
-    _updateUrlDialog = new QMessageBox(QMessageBox::Warning, tr("Url update requested for %1").arg(_account->displayName()),
-        tr("The url for %1 changed from %2 to %3, do you want to accept the changed url?").arg(_account->displayName(), _account->url().toString(), newUrl.toString()),
-        QMessageBox::NoButton, ocApp()->gui()->settingsDialog());
-    _updateUrlDialog->setAttribute(Qt::WA_DeleteOnClose);
-    auto yes = _updateUrlDialog->addButton(tr("Change url permanently to %1").arg(newUrl.toString()), QMessageBox::AcceptRole);
-    _updateUrlDialog->addButton(tr("Reject"), QMessageBox::RejectRole);
-    connect(_updateUrlDialog, &QMessageBox::finished, _account.data(), [yes, accept, this] {
-        if (_updateUrlDialog->clickedButton() == yes) {
-            accept();
-        }
     });
+
     _updateUrlDialog->show();
+
     return _updateUrlDialog;
 }
 

@@ -87,6 +87,7 @@ set(client_SRCS
     elidedlabel.cpp
     translations.cpp
     creds/httpcredentialsgui.cpp
+    updateurldialog.cpp
 
     models/activitylistmodel.cpp
     models/expandingheaderview.cpp

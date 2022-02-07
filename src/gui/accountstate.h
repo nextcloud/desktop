@@ -18,11 +18,12 @@
 
 #include "jobqueue.h"
 
+#include "connectionvalidator.h"
+#include "creds/abstractcredentials.h"
+#include "updateurldialog.h"
 #include <QByteArray>
 #include <QElapsedTimer>
 #include <QPointer>
-#include "connectionvalidator.h"
-#include "creds/abstractcredentials.h"
 #include <memory>
 
 class QDialog;
@@ -133,7 +134,7 @@ public:
      *  was not so long ago.
      */
     void tagLastSuccessfullETagRequest(const QDateTime &tp);
-    QDialog *updateUrlDialog(const QUrl &url);
+    UpdateUrlDialog *updateUrlDialog(const QUrl &newUrl);
 
 public slots:
     /// Triggers a ping to the server to update state and
@@ -167,7 +168,7 @@ private:
     bool _waitingForNewCredentials;
     QDateTime _timeOfLastETagCheck;
     QPointer<ConnectionValidator> _connectionValidator;
-    QPointer<QMessageBox> _updateUrlDialog;
+    QPointer<UpdateUrlDialog> _updateUrlDialog;
 
     /**
      * Starts counting when the server starts being back up after 503 or
