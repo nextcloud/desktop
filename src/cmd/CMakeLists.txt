@@ -1,7 +1,11 @@
 project(cmd)
 set(CMAKE_AUTOMOC TRUE)
 
-add_library(cmdCore STATIC simplesslerrorhandler.cpp netrcparser.cpp)
+add_library(cmdCore STATIC
+    simplesslerrorhandler.h
+    simplesslerrorhandler.cpp
+    netrcparser.h
+    netrcparser.cpp)
 
 target_link_libraries(cmdCore
   PUBLIC
@@ -24,7 +28,9 @@ if(CMAKE_SYSTEM_NAME STREQUAL "FreeBSD")
 endif()
 
 if(NOT BUILD_LIBRARIES_ONLY)
-  add_executable(nextcloudcmd cmd.cpp)
+  add_executable(nextcloudcmd
+      cmd.h
+      cmd.cpp)
   set_target_properties(nextcloudcmd PROPERTIES
     RUNTIME_OUTPUT_NAME "${APPLICATION_EXECUTABLE}cmd")
 

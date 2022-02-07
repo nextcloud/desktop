@@ -64,110 +64,206 @@ else()
 endif()
 
 set(client_SRCS
+    accountmanager.h
     accountmanager.cpp
+    accountsettings.h
     accountsettings.cpp
+    application.h
     application.cpp
+    invalidfilenamedialog.h
     invalidfilenamedialog.cpp
+    conflictdialog.h
     conflictdialog.cpp
+    conflictsolver.h
     conflictsolver.cpp
+    connectionvalidator.h
     connectionvalidator.cpp
+    folder.h
     folder.cpp
+    foldercreationdialog.h
     foldercreationdialog.cpp
+    folderman.h
     folderman.cpp
+    folderstatusmodel.h
     folderstatusmodel.cpp
+    folderstatusdelegate.h
     folderstatusdelegate.cpp
+    folderstatusview.h
     folderstatusview.cpp
+    folderwatcher.h
     folderwatcher.cpp
+    folderwizard.h
     folderwizard.cpp
+    generalsettings.h
     generalsettings.cpp
+    legalnotice.h
     legalnotice.cpp
+    internallinkwidget.h
     internallinkwidget.cpp
+    ignorelisteditor.h
     ignorelisteditor.cpp
+    ignorelisttablewidget.h
     ignorelisttablewidget.cpp
+    lockwatcher.h
     lockwatcher.cpp
+    logbrowser.h
     logbrowser.cpp
+    navigationpanehelper.h
     navigationpanehelper.cpp
+    networksettings.h
     networksettings.cpp
+    ocsnavigationappsjob.h
     ocsnavigationappsjob.cpp
+    ocsjob.h
     ocsjob.cpp
+    ocssharejob.h
     ocssharejob.cpp
+    ocsshareejob.h
     ocsshareejob.cpp
+    openfilemanager.h
     openfilemanager.cpp
+    owncloudgui.h
     owncloudgui.cpp
+    owncloudsetupwizard.h
     owncloudsetupwizard.cpp
+    passwordinputdialog.h
     passwordinputdialog.cpp
+    selectivesyncdialog.h
     selectivesyncdialog.cpp
+    settingsdialog.h
     settingsdialog.cpp
+    sharedialog.h
     sharedialog.cpp
+    sharelinkwidget.h
     sharelinkwidget.cpp
+    sharemanager.h
     sharemanager.cpp
+    shareusergroupwidget.h
     shareusergroupwidget.cpp
+    profilepagewidget.h
     profilepagewidget.cpp
+    sharee.h
     sharee.cpp
+    sslbutton.h
     sslbutton.cpp
+    sslerrordialog.h
     sslerrordialog.cpp
+    syncrunfilelog.h
     syncrunfilelog.cpp
+    systray.h
     systray.cpp
+    thumbnailjob.h
     thumbnailjob.cpp
+    userinfo.h
     userinfo.cpp
+    accountstate.h
     accountstate.cpp
+    addcertificatedialog.h
     addcertificatedialog.cpp
+    authenticationdialog.h
     authenticationdialog.cpp
+    proxyauthhandler.h
     proxyauthhandler.cpp
+    proxyauthdialog.h
     proxyauthdialog.cpp
+    tooltipupdater.h
     tooltipupdater.cpp
+    notificationconfirmjob.h
     notificationconfirmjob.cpp
+    guiutility.h
     guiutility.cpp
+    elidedlabel.h
     elidedlabel.cpp
+    headerbanner.h
     headerbanner.cpp
+    iconutils.h
     iconutils.cpp
+    remotewipe.h
     remotewipe.cpp
+    userstatusselectormodel.h
     userstatusselectormodel.cpp
+    emojimodel.h
     emojimodel.cpp
+    fileactivitylistmodel.h
     fileactivitylistmodel.cpp
+    tray/svgimageprovider.h
     tray/svgimageprovider.cpp
+    tray/syncstatussummary.h
     tray/syncstatussummary.cpp
+    tray/activitydata.h
     tray/activitydata.cpp
+    tray/activitylistmodel.h
     tray/activitylistmodel.cpp
+    tray/unifiedsearchresult.h
     tray/unifiedsearchresult.cpp
+    tray/unifiedsearchresultimageprovider.h
     tray/unifiedsearchresultimageprovider.cpp
+    tray/unifiedsearchresultslistmodel.h
     tray/unifiedsearchresultslistmodel.cpp
+    tray/usermodel.h
     tray/usermodel.cpp
+    tray/notificationhandler.h
     tray/notificationhandler.cpp
+    tray/notificationcache.h
     tray/notificationcache.cpp
+    creds/credentialsfactory.h
     creds/credentialsfactory.cpp
+    creds/httpcredentialsgui.h
     creds/httpcredentialsgui.cpp
+    creds/oauth.h
     creds/oauth.cpp
+    creds/flow2auth.h
     creds/flow2auth.cpp
+    creds/webflowcredentials.h
     creds/webflowcredentials.cpp
+    creds/webflowcredentialsdialog.h
     creds/webflowcredentialsdialog.cpp
+    wizard/postfixlineedit.h
     wizard/postfixlineedit.cpp
+    wizard/abstractcredswizardpage.h
     wizard/abstractcredswizardpage.cpp
+    wizard/owncloudadvancedsetuppage.h
     wizard/owncloudadvancedsetuppage.cpp
+    wizard/owncloudconnectionmethoddialog.h
     wizard/owncloudconnectionmethoddialog.cpp
+    wizard/owncloudhttpcredspage.h
     wizard/owncloudhttpcredspage.cpp
+    wizard/owncloudoauthcredspage.h
     wizard/owncloudoauthcredspage.cpp
+    wizard/flow2authcredspage.h
     wizard/flow2authcredspage.cpp
+    wizard/flow2authwidget.h
     wizard/flow2authwidget.cpp
+    wizard/owncloudsetuppage.h
     wizard/owncloudsetuppage.cpp
+    wizard/owncloudwizardcommon.h
     wizard/owncloudwizardcommon.cpp
+    wizard/owncloudwizard.h
     wizard/owncloudwizard.cpp
+    wizard/slideshow.h
     wizard/slideshow.cpp
+    wizard/welcomepage.h
     wizard/welcomepage.cpp
+    wizard/linklabel.h
     wizard/linklabel.cpp
     )
 
 if (Qt5WebEngine_FOUND AND Qt5WebEngineWidgets_FOUND)
   list(APPEND client_SRCS
+    wizard/webviewpage.h
     wizard/webviewpage.cpp
+    wizard/webview.h
     wizard/webview.cpp
   )
 endif()
 
 IF(BUILD_UPDATER)
     set(updater_SRCS
+        updater/ocupdater.h
         updater/ocupdater.cpp
+        updater/updateinfo.h
         updater/updateinfo.cpp
+        updater/updater.h
         updater/updater.cpp
     )
 endif()
@@ -201,12 +297,19 @@ list(APPEND client_SRCS folderwatcher_mac.cpp)
 ENDIF()
 
 set(3rdparty_SRC
+    ../3rdparty/QProgressIndicator/QProgressIndicator.h
     ../3rdparty/QProgressIndicator/QProgressIndicator.cpp
+    ../3rdparty/qtlockedfile/qtlockedfile.h
     ../3rdparty/qtlockedfile/qtlockedfile.cpp
+    ../3rdparty/qtsingleapplication/qtlocalpeer.h
     ../3rdparty/qtsingleapplication/qtlocalpeer.cpp
+    ../3rdparty/qtsingleapplication/qtsingleapplication.h
     ../3rdparty/qtsingleapplication/qtsingleapplication.cpp
+    ../3rdparty/qtsingleapplication/qtsinglecoreapplication.h
     ../3rdparty/qtsingleapplication/qtsinglecoreapplication.cpp
+    ../3rdparty/kmessagewidget/kmessagewidget.h
     ../3rdparty/kmessagewidget/kmessagewidget.cpp
+    ../3rdparty/kirigami/wheelhandler.h
     ../3rdparty/kirigami/wheelhandler.cpp
    )
 

@@ -2,8 +2,11 @@ if (WIN32)
     add_definitions(-D_WIN32_WINNT=_WIN32_WINNT_WIN10)
 
     add_library(nextcloudsync_vfs_cfapi SHARED
+        cfapiwrapper.h
         cfapiwrapper.cpp
+        hydrationjob.h
         hydrationjob.cpp
+        vfs_cfapi.h
         vfs_cfapi.cpp
     )
 

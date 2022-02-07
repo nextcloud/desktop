@@ -39,11 +39,15 @@ if(NO_RENAME_EXTENSION)
 endif()
 
 set(csync_SRCS
+  csync.h
   csync.cpp
+  csync_exclude.h
   csync_exclude.cpp
 
+  std/c_time.h
   std/c_time.cpp
 
+  vio/csync_vio_local.h
 )
 
 if (WIN32)

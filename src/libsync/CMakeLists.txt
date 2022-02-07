@@ -12,59 +12,111 @@ if ( APPLE )
 endif()
 
 set(libsync_SRCS
+    account.h
     account.cpp
+    pushnotifications.h
     pushnotifications.cpp
+    wordlist.h
     wordlist.cpp
+    bandwidthmanager.h
     bandwidthmanager.cpp
+    capabilities.h
     capabilities.cpp
+    clientproxy.h
     clientproxy.cpp
+    cookiejar.h
     cookiejar.cpp
+    discovery.h
     discovery.cpp
+    discoveryphase.h
     discoveryphase.cpp
+    encryptfolderjob.h
     encryptfolderjob.cpp
+    filesystem.h
     filesystem.cpp
+    httplogger.h
     httplogger.cpp
+    logger.h
     logger.cpp
+    accessmanager.h
     accessmanager.cpp
+    configfile.h
     configfile.cpp
+    abstractnetworkjob.h
     abstractnetworkjob.cpp
+    networkjobs.h
     networkjobs.cpp
+    iconjob.h
     iconjob.cpp
+    owncloudpropagator.h
     owncloudpropagator.cpp
+    nextcloudtheme.h
     nextcloudtheme.cpp
+    abstractpropagateremotedeleteencrypted.h
     abstractpropagateremotedeleteencrypted.cpp
+    deletejob.h
     deletejob.cpp
+    progressdispatcher.h
     progressdispatcher.cpp
+    propagatorjobs.h
     propagatorjobs.cpp
+    propagatedownload.h
     propagatedownload.cpp
+    propagateupload.h
     propagateupload.cpp
     propagateuploadv1.cpp
     propagateuploadng.cpp
+    bulkpropagatorjob.h
     bulkpropagatorjob.cpp
+    putmultifilejob.h
     putmultifilejob.cpp
+    propagateremotedelete.h
     propagateremotedelete.cpp
+    propagateremotedeleteencrypted.h
     propagateremotedeleteencrypted.cpp
+    propagateremotedeleteencryptedrootfolder.h
     propagateremotedeleteencryptedrootfolder.cpp
+    propagateremotemove.h
     propagateremotemove.cpp
+    propagateremotemkdir.h
     propagateremotemkdir.cpp
+    propagateuploadencrypted.h
     propagateuploadencrypted.cpp
+    propagatedownloadencrypted.h
     propagatedownloadencrypted.cpp
+    syncengine.h
     syncengine.cpp
+    syncfileitem.h
     syncfileitem.cpp
+    syncfilestatustracker.h
     syncfilestatustracker.cpp
+    localdiscoverytracker.h
     localdiscoverytracker.cpp
+    syncresult.h
     syncresult.cpp
+    syncoptions.h
     syncoptions.cpp
+    theme.h
     theme.cpp
+    clientsideencryption.h
     clientsideencryption.cpp
+    clientsideencryptionjobs.h
     clientsideencryptionjobs.cpp
+    datetimeprovider.h
     datetimeprovider.cpp
+    ocsuserstatusconnector.h
     ocsuserstatusconnector.cpp
+    userstatusconnector.h
     userstatusconnector.cpp
+    ocsprofileconnector.h
     ocsprofileconnector.cpp
+    creds/dummycredentials.h
     creds/dummycredentials.cpp
+    creds/abstractcredentials.h
     creds/abstractcredentials.cpp
+    creds/credentialscommon.h
     creds/credentialscommon.cpp
+    creds/keychainchunk.h
     creds/keychainchunk.cpp
 )
 
@@ -74,9 +126,15 @@ if (WIN32)
 endif()
 
 if(TOKEN_AUTH_ONLY)
-    set (libsync_SRCS ${libsync_SRCS} creds/tokencredentials.cpp)
+    set (libsync_SRCS
+        ${libsync_SRCS}
+        creds/tokencredentials.h
+        creds/tokencredentials.cpp)
 else()
-    set (libsync_SRCS ${libsync_SRCS} creds/httpcredentials.cpp)
+    set (libsync_SRCS
+        ${libsync_SRCS}
+        creds/httpcredentials.h
+        creds/httpcredentials.cpp)
 endif()
 
 # These headers are installed for libowncloudsync to be used by 3rd party apps
