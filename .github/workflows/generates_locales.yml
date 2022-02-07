@@ -3,6 +3,7 @@ on:
   push:
     branches:
     - master
+    - generates_locales
     paths:
     - 'doc/**'
     - '!doc/locale/**'
@@ -17,8 +18,8 @@ jobs:
         pre-build-command: pip install -r requirements.txt
         build-command: make gettext
     - uses: actions/checkout@v2
-      - name: Commit report
-        run: |
+    - name: Commit report
+      run: |
           git config --global user.name 'Nextcloud Bot'
           git config --global user.email 'bot@nextcloud.com'
           git commit -am "Updates catalog templates (POT files fetched automatically by transifex)"
