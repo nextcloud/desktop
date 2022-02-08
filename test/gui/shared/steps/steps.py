@@ -157,20 +157,16 @@ def isFileSynced(fileName):
     return isItemSynced('FILE', fileName)
 
 
-def waitForFileToBeSynced(context, fileName):
+def waitForFileToBeSynced(context, filePath):
     waitFor(
-        lambda: isFileSynced(
-            sanitizePath(context.userData['currentUserSyncPath'] + fileName)
-        ),
+        lambda: isFileSynced(sanitizePath(filePath)),
         context.userData['clientSyncTimeout'] * 1000,
     )
 
 
-def waitForFolderToBeSynced(context, folderName):
+def waitForFolderToBeSynced(context, folderPath):
     waitFor(
-        lambda: isFolderSynced(
-            sanitizePath(context.userData['currentUserSyncPath'] + folderName)
-        ),
+        lambda: isFolderSynced(sanitizePath(folderPath)),
         context.userData['clientSyncTimeout'] * 1000,
     )
 
@@ -334,19 +330,22 @@ def step(context):
     waitForFolderToBeSynced(context, '/')
 
 
-@When('the user waits for file "|any|" to be synced')
-def step(context, fileName):
-    waitForFileToBeSynced(context, fileName)
+def waitForResourceToSync(context, resource, resourceType):
+    resource = join(context.userData['currentUserSyncPath'], resource)
+    if resourceType == "file":
+        waitForFileToBeSynced(context, resource)
+    elif resourceType == "folder":
+        waitForFolderToBeSynced(context, resource)
 
 
-@When('the user waits for folder "|any|" to be synced')
-def step(context, folderName):
-    waitForFolderToBeSynced(context, folderName)
+@When(r'the user waits for (file|folder) "([^"]*)" to be synced', regexp=True)
+def step(context, type, resource):
+    waitForResourceToSync(context, resource, type)
 
 
-@Given('the user has waited for file "|any|" to be synced')
-def step(context, fileName):
-    waitForFileToBeSynced(context, fileName)
+@Given(r'the user has waited for (file|folder) "([^"]*)" to be synced', regexp=True)
+def step(context, type, resource):
+    waitForResourceToSync(context, resource, type)
 
 
 @Given(
@@ -920,9 +919,28 @@ def step(context, resource, group):
     sharingDialog.selectCollaborator(group, True)
 
 
+def overwriteFile(resource, content):
+    f = open(resource, "w")
+    f.write(content)
+    f.close()
+
+
+def tryToOverwriteFile(context, resource, content):
+    waitForFileToBeSynced(context, resource)
+    waitForFolderToBeSynced(context, '/')
+
+    try:
+        overwriteFile(resource, content)
+    except:
+        pass
+
+    waitForFileToBeSynced(context, resource)
+
+
 @When('the user overwrites the file "|any|" with content "|any|"')
 def step(context, resource, content):
     print("starting file overwrite")
+    resource = join(context.userData['currentUserSyncPath'], resource)
     waitForFileToBeSynced(context, resource)
     waitForFolderToBeSynced(context, '/')
 
@@ -933,9 +951,7 @@ def step(context, resource, content):
 
     snooze(5)
 
-    f = open(context.userData['currentUserSyncPath'] + resource, "w")
-    f.write(content)
-    f.close()
+    overwriteFile(resource, content)
 
     print("file has been overwritten")
     waitForFileToBeSynced(context, resource)
@@ -943,17 +959,14 @@ def step(context, resource, content):
 
 @When('the user tries to overwrite the file "|any|" with content "|any|"')
 def step(context, resource, content):
-    waitForFileToBeSynced(context, resource)
-    waitForFolderToBeSynced(context, '/')
+    resource = context.userData['currentUserSyncPath'] + resource
+    tryToOverwriteFile(context, resource, content)
 
-    try:
-        f = open(context.userData['currentUserSyncPath'] + resource, "w")
-        f.write(content)
-        f.close()
-    except:
-        pass
 
-    waitForFileToBeSynced(context, resource)
+@When('user "|any|" tries to overwrite the file "|any|" with content "|any|"')
+def step(context, user, resource, content):
+    resource = getResourcePath(context, resource, user)
+    tryToOverwriteFile(context, resource, content)
 
 
 def enableVFSSupport(vfsBtnText):
