@@ -39,7 +39,7 @@
         <location filename="../src/gui/tray/ActivityItemActions.qml" line="77"/>
         <location filename="../src/gui/tray/ActivityItemActions.qml" line="79"/>
         <source>Show more actions</source>
-        <translation type="unfinished"/>
+        <translation>Zobraziť ďalšie akcie</translation>
     </message>
 </context>
 <context>
@@ -48,12 +48,12 @@
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="90"/>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="92"/>
         <source>Dismiss</source>
-        <translation type="unfinished"/>
+        <translation>Odmietnuť</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="121"/>
         <source>Open share dialog</source>
-        <translation type="unfinished"/>
+        <translation>Otvoriť dialógové okno zdieľania</translation>
     </message>
 </context>
 <context>
@@ -3908,9 +3908,9 @@ Toto je nový experimentálny režim. Ak sa ho rozhodnete použiť, nahláste v�
         <translation>Nahranie %1 prekračuje kvótu, ktorá je pre priečinok nastavená</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="322"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="397"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="410"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="302"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="377"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="390"/>
         <source>File %1 has invalid modification time. Do not upload to the server.</source>
         <translation>Súbor %1 má neplatný čas poslednej zmeny. Nenahrávajte ho na server.</translation>
     </message>
@@ -5951,12 +5951,12 @@ Toto je nový experimentálny režim. Ak sa ho rozhodnete použiť, nahláste v�
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="697"/>
         <source>Mark as read</source>
-        <translation type="unfinished"/>
+        <translation>Označiť ako prečítané</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="699"/>
         <source>Reply</source>
-        <translation type="unfinished"/>
+        <translation>Odpovedať</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="482"/>

@@ -3909,9 +3909,9 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
         <translation>%1-aren kargak karpetaren kuota gainditzen du</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="322"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="397"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="410"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="302"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="377"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="390"/>
         <source>File %1 has invalid modification time. Do not upload to the server.</source>
         <translation>%1 fitxategiak aldaketa-data baliogabea du. Ez kargatu hau zerbitzarira.</translation>
     </message>

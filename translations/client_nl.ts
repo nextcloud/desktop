@@ -3911,9 +3911,9 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
         <translation>Upload van %1 overschrijdt het quotum voor de map</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="322"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="397"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="410"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="302"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="377"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="390"/>
         <source>File %1 has invalid modification time. Do not upload to the server.</source>
         <translation type="unfinished"/>
     </message>

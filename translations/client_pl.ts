@@ -3909,9 +3909,9 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
         <translation>Wysłanie %1 przekracza limit dla katalogu</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="322"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="397"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="410"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="302"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="377"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="390"/>
         <source>File %1 has invalid modification time. Do not upload to the server.</source>
         <translation>Plik %1 ma nieprawidłowy czas modyfikacji. Nie wysyłaj na serwer.</translation>
     </message>

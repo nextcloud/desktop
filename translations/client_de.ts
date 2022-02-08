@@ -3908,9 +3908,9 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
         <translation>Das Hochladen von %1 überschreitet das Speicherkontingent des Ordners </translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="322"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="397"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="410"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="302"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="377"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="390"/>
         <source>File %1 has invalid modification time. Do not upload to the server.</source>
         <translation>Die Datei %1 hat eine ungültige Änderungszeit. Nicht auf den Server hochladen.</translation>
     </message>

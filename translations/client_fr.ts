@@ -3908,9 +3908,9 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
         <translation>Le téléversement de %1 amène un dépassement de quota pour le dossier</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="322"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="397"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="410"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="302"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="377"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="390"/>
         <source>File %1 has invalid modification time. Do not upload to the server.</source>
         <translation>Le fichier %1 présente une date de modification invalide. Envoi au serveur impossible.</translation>
     </message>

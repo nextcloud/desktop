@@ -3909,9 +3909,9 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, akkor jelezze nek�
         <translation>A(z) %1 feltöltése túllépi a mappa kvótáját</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="322"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="397"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="410"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="302"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="377"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="390"/>
         <source>File %1 has invalid modification time. Do not upload to the server.</source>
         <translation>A(z) %1 fájl módosítási ideje érvénytelen. Ne töltse fel a kiszolgálóra.</translation>
     </message>
