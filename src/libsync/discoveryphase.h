@@ -49,6 +49,7 @@ struct RemoteInfo
 {
     /** FileName of the entry (this does not contains any directory or path, just the plain name */
     QString name;
+    QString renameName;
     QByteArray etag;
     QByteArray fileId;
     QByteArray checksumHeader;
