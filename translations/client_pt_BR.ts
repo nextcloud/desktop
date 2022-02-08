@@ -3907,9 +3907,9 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <translation>O envio de %1 excede a cota para a pasta</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="322"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="397"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="410"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="302"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="377"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="390"/>
         <source>File %1 has invalid modification time. Do not upload to the server.</source>
         <translation>O arquivo %1 tem hora de modificação inválida. Não envie para o servidor.</translation>
     </message>
