@@ -17,7 +17,6 @@ jobs:
         docs-folder: "doc/"
         pre-build-command: pip install -r requirements.txt
         build-command: make gettext
-    - uses: actions/checkout@v2
     - name: Commit report
       run: |
           git config --global user.name 'Nextcloud Bot'
