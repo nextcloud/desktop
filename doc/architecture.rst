@@ -3,6 +3,9 @@ Appendix B: History and Architecture
 
 .. index:: architecture
 
+
+This sentence should be added to the list of things to translate.
+
 Nextcloud provides desktop sync clients to synchronize the contents of local
 directories from computers, tablets, and handheld devices to the Nextcloud
 server.
