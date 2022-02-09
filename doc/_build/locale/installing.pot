@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Nextcloud Client Manual 3.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-02-04 13:21+0100\n"
+"POT-Creation-Date: 2022-02-09 14:36+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -274,33 +274,16 @@ msgstr ""
 msgid "The installation wizard takes you step-by-step through configuration options and account setup. First, you need to enter the URL of your Nextcloud server."
 msgstr ""
 
-#: ../../installing.rst:None
-msgid "form for choosing between login and registering"
-msgstr ""
-
 #: ../../installing.rst:179
 msgid "If you already have an account on a Nextcloud instance, you want to press the button ``Login to your Nextcloud``. If you don't have a Nextcloud instance and an account there, you might want to register an account with a provider. Press ``Create account with Provider`` in that case. Please keep in mind that the desktop client might have built without provider support. In that case, you won't see this page. Instead, you will be prompted with the next page."
-msgstr ""
-
-#: ../../installing.rst:None
-msgid "form for entering Nextcloud server URL"
 msgstr ""
 
 #: ../../installing.rst:190
 msgid "Enter the URL for your Nextcloud instance. The URL is the same URL that you type into your browser when you try to access your Nextcloud instance."
 msgstr ""
 
-#: ../../installing.rst:None
-msgid "form waiting for authorization"
-msgstr ""
-
 #: ../../installing.rst:197
 msgid "Now your web browser should open and prompt you to login into your Nextcloud instance. Enter your username and password in your web browser and grant access. After you did that, go back to the wizard. Please keep in mind that you might not need to enter your username and password if you are already logged in to your browser."
-msgstr ""
-
-#: ../../installing.rst:None
-msgid "Select which remote folders to sync, and which local folder to store\n"
-"them in."
 msgstr ""
 
 #: ../../installing.rst:207

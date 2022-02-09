@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Nextcloud Client Manual 3.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-02-04 13:21+0100\n"
+"POT-Creation-Date: 2022-02-09 14:36+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -24,50 +24,24 @@ msgstr ""
 msgid "The Nextcloud Desktop Client remains in the background and is visible as an icon in the system tray (Windows, KDE), menu bar (Mac OS X), or notification area (Linux)."
 msgstr ""
 
-#: ../../navigating.rst:None
-msgid "Status icon, green circle and white checkmark"
-msgstr ""
-
 #: ../../navigating.rst:14
 msgid "The status indicator uses icons to indicate the current status of your synchronization. The green circle with the white checkmark tells you that your synchronization is current and you are connected to your Nextcloud server."
-msgstr ""
-
-#: ../../navigating.rst:None
-msgid "Status icon, blue circle and white semi-circles"
 msgstr ""
 
 #: ../../navigating.rst:21
 msgid "The blue icon with the white semi-circles means synchronization is in progress."
 msgstr ""
 
-#: ../../navigating.rst:None
-msgid "Status icon, yellow circle and vertical parallel\n"
-"lines"
-msgstr ""
-
 #: ../../navigating.rst:27
 msgid "The yellow icon with the parallel lines tells you your synchronization has been paused. (Most likely by you.)"
-msgstr ""
-
-#: ../../navigating.rst:None
-msgid "Status icon, gray circle and three horizontal\n"
-"white dots"
 msgstr ""
 
 #: ../../navigating.rst:34
 msgid "The gray icon with three white dots means your sync client has lost its connection with your Nextcloud server."
 msgstr ""
 
-#: ../../navigating.rst:None
-msgid "Status icon, sign \"!\" in yellow circle"
-msgstr ""
-
 #: ../../navigating.rst:40
 msgid "When you see a yellow circle with the sign \"!\" that is the informational icon, so you should click it to see what it has to tell you."
-msgstr ""
-
-#: ../../navigating.rst:None
-msgid "Status icon, red circle and white x"
 msgstr ""
 
 #: ../../navigating.rst:46
@@ -80,10 +54,6 @@ msgstr ""
 
 #: ../../navigating.rst:52
 msgid "A right-click on the systray icon opens a menu for quick access to multiple operations."
-msgstr ""
-
-#: ../../navigating.rst:None
-msgid "the right-click sync client menu"
 msgstr ""
 
 #: ../../navigating.rst:58
@@ -108,11 +78,6 @@ msgstr ""
 
 #: ../../navigating.rst:65
 msgid "A left-click on your systray icon opens the main dialog of the desktop client."
-msgstr ""
-
-#: ../../navigating.rst:None
-#: ../../navigating.rst:None
-msgid "Main dialog"
 msgstr ""
 
 #: ../../navigating.rst:70
@@ -183,10 +148,6 @@ msgstr ""
 msgid "**Pause Sync** pauses sync operations without making any changes to your account. It will continue to update file and folder lists, without downloading or updating files. To stop all sync activity use **Remove Folder Sync Connection**."
 msgstr ""
 
-#: ../../navigating.rst:None
-msgid "Extra options for sync operations"
-msgstr ""
-
 #: ../../navigating.rst:113
 msgid "Nextcloud does not preserve the mtime (modification time) of directories, though it does update the mtimes on files. See `Wrong folder date when syncing <https://github.com/owncloud/core/issues/7009>`_ for discussion of this."
 msgstr ""
@@ -247,16 +208,8 @@ msgstr ""
 msgid "If you have the user status app installed on your Nextcloud server, you can set your user status from the desktop client. To do so, open the main dialog. Then click on your avatar and then click on the three dots. In the menu that opens click on **Set status**."
 msgstr ""
 
-#: ../../navigating.rst:None
-msgid "Open user status dialog from main dialog."
-msgstr ""
-
 #: ../../navigating.rst:171
 msgid "In the dialog that opens, you can set your online status if you click on either **Online**, **Away**, **Do not disturb** or **Invisible**. You can also set a custom status message with the text field below or choose one of the predefined status messages below. It is also possible to set a custom emoji if you click on the button with the emoji beside the text input field. The last thing you might want to set is when your user status should be cleared. You can choose the period after which the user status will be cleared by clicking on the button on the left hand side of the text **Clear status message after**."
-msgstr ""
-
-#: ../../navigating.rst:None
-msgid "Dialog to set user status."
 msgstr ""
 
 #: ../../navigating.rst:184
@@ -271,24 +224,12 @@ msgstr ""
 msgid "The Nextcloud desktop sync client integrates with your file manager. Finder on macOS and Explorer on Windows. Linux users must install an additional package depending on the used file manager. Available are e.g. ``nautilus-nextcloud`` (Ubuntu/Debian), ``dolphin-nextcloud`` (Kubuntu), ``nemo-nextcloud`` and ``caja-nextcloud``. You can create  share links, and share with internal Nextcloud users the same way as in your Nextcloud Web interface."
 msgstr ""
 
-#: ../../navigating.rst:None
-msgid "Sync client integration in Windows Explorer."
-msgstr ""
-
 #: ../../navigating.rst:202
 msgid "In you file explorer, click on a file and in the context menu go to **Nextcloud** and then lick on **Share options** to bring up the Share dialog."
 msgstr ""
 
-#: ../../navigating.rst:None
-msgid "Sharing from Windows Explorer."
-msgstr ""
-
 #: ../../navigating.rst:209
 msgid "From this dialog you can share a file."
-msgstr ""
-
-#: ../../navigating.rst:None
-msgid "Share dialog"
 msgstr ""
 
 #: ../../navigating.rst:216
@@ -297,10 +238,6 @@ msgstr ""
 
 #: ../../navigating.rst:218
 msgid "The General window has configuration options such as **Launch on System Startup**, **Use Monochrome Icons**, and **Show Desktop Notifications**. This is where you will find the **Edit Ignored Files** button, to launch the ignored files editor, and **Ask confirmation before downloading folders larger than [folder size]**."
-msgstr ""
-
-#: ../../navigating.rst:None
-msgid "General window contains configuration options."
 msgstr ""
 
 #: ../../navigating.rst:228

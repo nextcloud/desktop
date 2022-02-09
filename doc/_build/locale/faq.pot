@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Nextcloud Client Manual 3.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-02-04 13:21+0100\n"
+"POT-Creation-Date: 2022-02-09 14:36+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -72,16 +72,8 @@ msgstr ""
 msgid "Add a new connection which syncs to the desired directory"
 msgstr ""
 
-#: ../../faq.rst:None
-msgid "Remove an existing connection"
-msgstr ""
-
 #: ../../faq.rst:56
 msgid "To do so, in the client UI, which you can see above, click the \"**Account**\" drop-down menu and then click \"Remove\". This will display a \"**Confirm Account Removal**\" dialog window."
-msgstr ""
-
-#: ../../faq.rst:None
-msgid "Remove existing connection confirmation dialog"
 msgstr ""
 
 #: ../../faq.rst:62
@@ -90,10 +82,6 @@ msgstr ""
 
 #: ../../faq.rst:64
 msgid "Then, click the Account drop-down menu again, and this time click \"**Add new**\"."
-msgstr ""
-
-#: ../../faq.rst:None
-msgid "Replacement connection wizard"
 msgstr ""
 
 #: ../../faq.rst:69

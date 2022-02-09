@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Nextcloud Client Manual 3.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-02-04 13:21+0100\n"
+"POT-Creation-Date: 2022-02-09 14:36+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -26,10 +26,6 @@ msgstr ""
 
 #: ../../visualtour.rst:10
 msgid "The Nextcloud Client remains in the background and is visible as an icon in the system tray (Windows, KDE), status bar (macOS), or notification area (Ubuntu)."
-msgstr ""
-
-#: ../../visualtour.rst:None
-msgid "desktop client icon"
 msgstr ""
 
 #: ../../visualtour.rst:18
@@ -264,24 +260,8 @@ msgstr ""
 msgid "The main dialog, which can be invoked from the tray icon in the taskbar, will show files information about the activities of the sync client and Nextcloud."
 msgstr ""
 
-#: ../../visualtour.rst:None
-msgid "sync state paused"
-msgstr ""
-
-#: ../../visualtour.rst:None
-msgid "sync state syncing"
-msgstr ""
-
-#: ../../visualtour.rst:None
-msgid "sync state synced"
-msgstr ""
-
 #: ../../visualtour.rst:231
 msgid "If there are any synchronization issues, they will show up here:"
-msgstr ""
-
-#: ../../visualtour.rst:None
-msgid "sync state warnings"
 msgstr ""
 
 #: ../../visualtour.rst:236
@@ -292,10 +272,6 @@ msgstr ""
 msgid "When clicking on the avatar a menu opens where it is possible to add a new account or removing an existing account."
 msgstr ""
 
-#: ../../visualtour.rst:None
-msgid "user account options"
-msgstr ""
-
 #: ../../visualtour.rst:246
 msgid "User Status"
 msgstr ""
@@ -304,20 +280,8 @@ msgstr ""
 msgid "User status is displayed in the Nextcloud desktop client's tray window. Default user status is always \"Online\" if no other status is available from the server-side."
 msgstr ""
 
-#: ../../visualtour.rst:None
-msgid "User Status feature in the tray window"
-msgstr ""
-
 #: ../../visualtour.rst:254
 msgid "When clicking on ``Set status`` you can edit the emoji, message and the timer to clear your user status:"
-msgstr ""
-
-#: ../../visualtour.rst:None
-msgid "set user status menu option"
-msgstr ""
-
-#: ../../visualtour.rst:None
-msgid "changing the user status"
 msgstr ""
 
 #: ../../visualtour.rst:265
@@ -328,10 +292,6 @@ msgstr ""
 msgid "The dialog also gives information about other activities or notifications like Talk mentions or file changes. It does also show the status of the user."
 msgstr ""
 
-#: ../../visualtour.rst:None
-msgid "main dialog activities list"
-msgstr ""
-
 #: ../../visualtour.rst:275
 msgid "Unified search"
 msgstr ""
@@ -340,30 +300,10 @@ msgstr ""
 msgid "With the unified search you can find everything you have in your server - files, Talk messages, calendar appointments:"
 msgstr ""
 
-#: ../../visualtour.rst:None
-msgid "unified search files search result"
-msgstr ""
-
-#: ../../visualtour.rst:None
-msgid "unified search Talk conversations search result"
-msgstr ""
-
-#: ../../visualtour.rst:None
-msgid "unified search calendar appointments search result"
-msgstr ""
-
 #: ../../visualtour.rst:291
 msgid "Share dialog: Talk options and View Profile"
 msgstr ""
 
 #: ../../visualtour.rst:293
 msgid "You can now share a file directly in a conversation in Talk and view the sharee user profile:"
-msgstr ""
-
-#: ../../visualtour.rst:None
-msgid "open share dialog option"
-msgstr ""
-
-#: ../../visualtour.rst:None
-msgid "shared dialog sharing options"
 msgstr ""
