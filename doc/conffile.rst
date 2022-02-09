@@ -6,7 +6,7 @@ On Linux distributions:
 On Microsoft Windows systems:
         ``%APPDATA%\Nextcloud\nextcloud.cfg``
 
-Onvwewew macOS systems:
+Onvw macOS systems:
         ``$HOME/Library/Preferences/Nextcloud/nextcloud.cfg``
 
 
