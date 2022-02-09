@@ -1,0 +1,383 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2013-2021, The Nextcloud developers
+# This file is distributed under the same license as the Nextcloud Client Manual package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Nextcloud Client Manual 3.4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-02-04 13:21+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../building.rst:5
+msgid "Appendix A: Building the Client"
+msgstr ""
+
+#: ../../building.rst:7
+msgid "The goal of this section is to set up a build environment for developing and testing the Nextcloud Desktop client. If you just want to use the Nextcloud Desktop client without developing and testing it, you should download the latest stable build instead."
+msgstr ""
+
+#: ../../building.rst:12
+msgid "These instructions represent a particular streamlined and easy-to-understand methodology, but they are by no means the only way of setting up a build environment."
+msgstr ""
+
+#: ../../building.rst:16
+msgid "The steps listed here have been tested multiple times and should allow you to build the client and/or the documentation with not warnings or errors. These instructions should be current with the version, |version|, of the Nextcloud Client with which it ships. If you are using the most recent version of these instructions, and you run into errors or warnings with the latest code from the repository, please open a GitHub Issue to let us know so we can document a workaround or fix any underlying problems."
+msgstr ""
+
+#: ../../building.rst:26
+msgid "Using GitHub"
+msgstr ""
+
+#: ../../building.rst:28
+msgid "By default, cloning the GitHub repository will give you the \"master\" branch, which is the most recent. If for some reason you want to build an older version of the Nextcloud Desktop client, you can choose a branch corresponding with that version. However, for older versions of the client, please be mindful that any issues present may have been fixed in more recent versions."
+msgstr ""
+
+#: ../../building.rst:34
+msgid "Doing anything other than just downloading the existing code will require you to have a GitHub account."
+msgstr ""
+
+#: ../../building.rst:37
+msgid "If your goal in cloning and building the Nextcloud Desktop client is to contribute to its development, and you are not already a \"collaborator\" on the Nextcloud Desktop GitHub repository, you will need to create a \"fork\" by clicking the \"fork\" button in the upper right on any GitHub page in the repository. It is important to do this in advance because the URL for cloning the repository is different for a fork than for the main official version."
+msgstr ""
+
+#: ../../building.rst:44
+msgid "When cloning a GitHub repository, you have two options for authenticating your GitHub account, SSH or HTTPS. SSH requires additional setup but is more secure and simplifies things later on. For an explanation of the differences between HTTPS and SSH, as well as instructions to set up SSH, see this `GitHub help article`_ on the subject."
+msgstr ""
+
+#: ../../building.rst:52
+msgid "The most basic version of the Git command for cloning a repository is as follows:"
+msgstr ""
+
+#: ../../building.rst:58
+msgid "Which will clone the repository into the directory where you run the command."
+msgstr ""
+
+#: ../../building.rst:60
+msgid "The four versions of the ``git clone`` command are as follows:"
+msgstr ""
+
+#: ../../building.rst:62
+msgid "HTTPS from the official repository:"
+msgstr ""
+
+#: ../../building.rst:68
+msgid "SSH from the official repository:"
+msgstr ""
+
+#: ../../building.rst:74
+msgid "HTTPS from a fork (see above):"
+msgstr ""
+
+#: ../../building.rst:80
+msgid "SSH from a fork (see above):"
+msgstr ""
+
+#: ../../building.rst:87
+msgid "macOS Development Build"
+msgstr ""
+
+#: ../../building.rst:89
+msgid "While it is possible to do many of the following steps using GUI frontends, wherever possible the Terminal commands are listed instead, in order to streamline the process."
+msgstr ""
+
+#: ../../building.rst:93
+msgid "Install Xcode from the Mac App Store:"
+msgstr ""
+
+#: ../../building.rst:95
+msgid "https://apps.apple.com/app/xcode/id497799835"
+msgstr ""
+
+#: ../../building.rst:97
+msgid "Then, in Terminal:"
+msgstr ""
+
+#: ../../building.rst:99
+msgid "Install Xcode command line tools:"
+msgstr ""
+
+#: ../../building.rst:105
+msgid "Install Homebrew from `brew.sh`_ (which will just give you the following):"
+msgstr ""
+
+#: ../../building.rst:113
+msgid "Under certain cirumstances, you may get on error along the lines of ``Permission denied @ apply2files`` when installing certain Homebrew packages. This is `a known issue`_ and can be fixed by changing the permissions on the affected files with the following command:"
+msgstr ""
+
+#: ../../building.rst:123
+msgid "This workaround may lead to other shell warnings."
+msgstr ""
+
+#: ../../building.rst:127
+msgid "Install Homebrew packages:"
+msgstr ""
+
+#: ../../building.rst:133
+msgid "Certain Homebrew packages are not automatically linked in places where the build scripts can find them, so you can create a shell-profile script that will find and load them dynamically when you run a build:"
+msgstr ""
+
+#: ../../building.rst:143
+msgid "The name ``~/.nextcloud_build_variables`` is just a suggestion for convenience. You can use a different file or create an entire shell script, but this way of doing things is the simplest to explain."
+msgstr ""
+
+#: ../../building.rst:147
+msgid "Clone the Nextcloud repository to a convenient location, such as ``~/Repositories``:"
+msgstr ""
+
+#: ../../building.rst:153
+msgid "(if it doesn't already exist), then:"
+msgstr ""
+
+#: ../../building.rst:159
+msgid "The cloned repository can go basically anywhere your user account has write access, though it should not go in a directory synced with another cloud service (especially not iCloud Drive). ``~/Repositories`` is recommended for tidiness and consistency."
+msgstr ""
+
+#: ../../building.rst:168
+msgid "(See the above section on using GitHub for an explanation of what URL to use.)"
+msgstr ""
+
+#: ../../building.rst:170
+msgid "Create build directory:"
+msgstr ""
+
+#: ../../building.rst:177
+msgid "Generate the build files:"
+msgstr ""
+
+#: ../../building.rst:181
+msgid "By default Nextcloud Desktop will build in a protected directory on macOS, so you need to specify a build location. You can do this every time you build, or you can add it to your save build variables, like so:"
+msgstr ""
+
+#: ../../building.rst:191
+msgid "Replace ``~/Builds`` with a different directory if you'd like the build to end up elsewhere."
+msgstr ""
+
+#: ../../building.rst:201
+msgid "Compile and install:"
+msgstr ""
+
+#: ../../building.rst:208
+msgid "Windows Development Build"
+msgstr ""
+
+#: ../../building.rst:210
+msgid "If you want to test some changes and deploy them locally, you can build natively on Windows using MinGW. If you want to generate an installer for deployment, please follow `Windows Installer Build (Cross-Compile)`_ instead."
+msgstr ""
+
+#: ../../building.rst:214
+msgid "Get the required dependencies:"
+msgstr ""
+
+#: ../../building.rst:216
+msgid "Make sure that you have CMake_ and Git_."
+msgstr ""
+
+#: ../../building.rst:217
+msgid "Download the Qt_ MinGW package. You will use the MinGW version bundled with it."
+msgstr ""
+
+#: ../../building.rst:218
+msgid "Download an `OpenSSL Windows Build`_ (the non-\"Light\" version)"
+msgstr ""
+
+#: ../../building.rst:220
+msgid "Get the QtKeychain_ sources as well as the latest versions of the Nextcloud client from Git as follows"
+msgstr ""
+
+#: ../../building.rst:228
+msgid "Open the Qt MinGW shortcut console from the Start Menu"
+msgstr ""
+
+#: ../../building.rst:230
+msgid "Make sure that OpenSSL's ``bin`` directory as well as your qtkeychain source directories are in your PATH. This will allow CMake to find the library and headers, as well as allow the Nextcloud client to find the DLLs at runtime::"
+msgstr ""
+
+#: ../../building.rst:237
+msgid "Build qtkeychain **directly in the source directory** so that the DLL is built in the same directory as the headers to let CMake find them together through PATH::"
+msgstr ""
+
+#: ../../building.rst:245
+msgid "Create the build directory::"
+msgstr ""
+
+#: ../../building.rst:250
+msgid "Build the client::"
+msgstr ""
+
+#: ../../building.rst:255
+msgid "You can try using ninja to build in parallel using ``cmake -G Ninja ../client`` and ``ninja`` instead."
+msgstr ""
+
+#: ../../building.rst:257
+msgid "Refer to the :ref:`generic-build-instructions` section for additional options."
+msgstr ""
+
+#: ../../building.rst:259
+#: ../../building.rst:362
+msgid "The Nextcloud binary will appear in the ``bin`` directory."
+msgstr ""
+
+#: ../../building.rst:264
+msgid "Windows Installer (i.e. Deployment) Build (Cross-Compile)"
+msgstr ""
+
+#: ../../building.rst:266
+msgid "Due to the large number of dependencies, building the client installer for Windows is **currently only officially supported on openSUSE**, by using the MinGW cross compiler. You can set up any currently supported version of openSUSE in a virtual machine if you do not have it installed already."
+msgstr ""
+
+#: ../../building.rst:271
+msgid "In order to make setup simple, you can use the provided Dockerfile to build your own image."
+msgstr ""
+
+#: ../../building.rst:273
+msgid "Assuming you are in the root of the Nextcloud Client's source tree, you can build an image from this Dockerfile like this::"
+msgstr ""
+
+#: ../../building.rst:279
+msgid "Replace ``<version>`` by the version of the client you are building, e.g. |version| for the release of the client that this document describes. If you do not wish to use docker, you can run the commands in ``RUN`` manually in a shell, e.g. to create your own build environment in a virtual machine."
+msgstr ""
+
+#: ../../building.rst:284
+msgid "Docker images are specific to releases. This one refers to |version|. Newer releases may have different dependencies, and thus require a later version of the docker image! Always pick the docker image fitting your release of Nextcloud client!"
+msgstr ""
+
+#: ../../building.rst:289
+msgid "From within the source tree Run the docker instance::"
+msgstr ""
+
+#: ../../building.rst:294
+msgid "It will run the build, create an NSIS based installer, as well as run tests. You will find the resulting binary in an newly created ``build-win32`` subfolder."
+msgstr ""
+
+#: ../../building.rst:297
+msgid "If you do not wish to use docker, and ran the ``RUN`` commands above in a virtual machine, you can run the indented commands in the lower section of ``build.sh`` manually in your source tree."
+msgstr ""
+
+#: ../../building.rst:301
+msgid "Finally, you should sign the installer to avoid warnings upon installation. This requires a `Microsoft Authenticode`_ Certificate ``osslsigncode`` to sign the installer::"
+msgstr ""
+
+#: ../../building.rst:312
+msgid "For ``-in``, use the URL to the time stamping server provided by your CA along with the Authenticode certificate. Alternatively, you may use the official Microsoft ``signtool`` utility on Microsoft Windows."
+msgstr ""
+
+#: ../../building.rst:315
+msgid "If you're familiar with docker, you can use the version of ``osslsigncode`` that is part of the docker image."
+msgstr ""
+
+#: ../../building.rst:320
+msgid "Generic Build Instructions"
+msgstr ""
+
+#: ../../building.rst:322
+msgid "Compared to previous versions, building the desktop sync client has become easier. Unlike earlier versions, CSync, which is the sync engine library of the client, is now part of the client source repository and not a separate module."
+msgstr ""
+
+#: ../../building.rst:326
+msgid "To build the most up-to-date version of the client:"
+msgstr ""
+
+#: ../../building.rst:328
+msgid "Clone the latest versions of the client from Git_ as follows:"
+msgstr ""
+
+#: ../../building.rst:336
+msgid "Create the build directory"
+msgstr ""
+
+#: ../../building.rst:343
+msgid "Configure the client build"
+msgstr ""
+
+#: ../../building.rst:349
+msgid "You must use absolute paths for the ``include`` and ``library`` directories."
+msgstr ""
+
+#: ../../building.rst:352
+msgid "On macOS, you need to specify ``-DCMAKE_INSTALL_PREFIX=target``, where ``target`` is a private location, i.e. in parallel to your build dir by specifying ``../install``."
+msgstr ""
+
+#: ../../building.rst:356
+msgid "qtkeychain must be compiled with the same prefix e.g ``CMAKE_INSTALL_PREFIX=/Users/path/to/client/install/ .``"
+msgstr ""
+
+#: ../../building.rst:358
+msgid "Example:: ``cmake -DCMAKE_PREFIX_PATH=/usr/local/opt/qt5 -DCMAKE_INSTALL_PREFIX=/Users/path/to/client/install/``"
+msgstr ""
+
+#: ../../building.rst:360
+msgid "Call ``make``."
+msgstr ""
+
+#: ../../building.rst:364
+msgid "(Optional) Call ``make install`` to install the client to the ``/usr/local/bin`` directory."
+msgstr ""
+
+#: ../../building.rst:367
+msgid "The following are known cmake parameters:"
+msgstr ""
+
+#: ../../building.rst:370
+msgid "``QTKEYCHAIN_LIBRARY=/path/to/qtkeychain.dylib -DQTKEYCHAIN_INCLUDE_DIR=/path/to/qtkeychain/``:"
+msgstr ""
+
+#: ../../building.rst:370
+msgid "Used for stored credentials.  When compiling with Qt5, the library is called ``qt5keychain.dylib.`` You need to compile QtKeychain with the same Qt version."
+msgstr ""
+
+#: ../../building.rst:372
+msgid "``WITH_DOC=TRUE``: Creates doc and manpages through running ``make``; also adds install statements, providing the ability to install using ``make install``."
+msgstr ""
+
+#: ../../building.rst:374
+msgid "``CMAKE_PREFIX_PATH=/path/to/Qt5.2.0/5.2.0/yourarch/lib/cmake/``: Builds using Qt5."
+msgstr ""
+
+#: ../../building.rst:375
+msgid "``BUILD_WITH_QT4=ON``: Builds using Qt4 (even if Qt5 is found)."
+msgstr ""
+
+#: ../../building.rst:376
+msgid "``CMAKE_INSTALL_PREFIX=path``: Set an install prefix. This is mandatory on Mac OS"
+msgstr ""
+
+#: ../../building.rst:379
+#: ../../building.rst:385
+msgid "Address Sanitizer"
+msgstr ""
+
+#: ../../building.rst:381
+msgid "You can enable the address sanitizer to detect memory corruptions and other mistakes. The are the following sanitizers are available:"
+msgstr ""
+
+#: ../../building.rst:386
+msgid "Leak anitizer"
+msgstr ""
+
+#: ../../building.rst:387
+msgid "Memory sanitizer"
+msgstr ""
+
+#: ../../building.rst:388
+msgid "Undefined sanitizer"
+msgstr ""
+
+#: ../../building.rst:389
+msgid "Threads sanitizer"
+msgstr ""
+
+#: ../../building.rst:391
+msgid "You can enable one or more sanitizers through CMake. For example, to enable the address and the undefined sanitizer, execute CMake like ``cmake .. -D ECM_ENABLE_SANITIZERS=\"address;undefined\"``. Keep in mind that not all combinations of sanitizers work together, and on some platforms, not all types of sanitizers are available. For example, on Windows there is currently only the address sanitizer available. If you are on Windows, you need to make sure that the linker can find the sanitizer dlls at runtime. If you installed Visual Studio in the standard location, you could find them in **C:/ProgramFiles (x86)/Microsoft Visual Studio/2019/Community/VC/Tools/Llvm/x64/lib/clang/10.0.0/lib/windows**. Make sure you add this location to your path. You may also need to `upgrade your Visual Studio version <https://docs.microsoft.com/en-us/cpp/sanitizers/asan?view=msvc-160#install-the-addresssanitizer>`_."
+msgstr ""
+
+#: ../../building.rst:403
+msgid "If you use Visual Studio on Windows, you can enable the sanitizer if you click on **Manage Configurations**, scroll down to the section **CMake Command Arguments** and enter then ``-D ECM_ENABLE_SANITIZERS=\"address\"`` in the text input field below. After that, click on **Save and generate CMake cache to load variables** right above the table."
+msgstr ""

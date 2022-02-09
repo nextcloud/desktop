@@ -1,0 +1,369 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2013-2021, The Nextcloud developers
+# This file is distributed under the same license as the Nextcloud Client Manual package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Nextcloud Client Manual 3.4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-02-04 13:21+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../visualtour.rst:3
+msgid "Visual Tour"
+msgstr ""
+
+#: ../../visualtour.rst:8
+msgid "Icon"
+msgstr ""
+
+#: ../../visualtour.rst:10
+msgid "The Nextcloud Client remains in the background and is visible as an icon in the system tray (Windows, KDE), status bar (macOS), or notification area (Ubuntu)."
+msgstr ""
+
+#: ../../visualtour.rst:None
+msgid "desktop client icon"
+msgstr ""
+
+#: ../../visualtour.rst:18
+msgid "Menu"
+msgstr ""
+
+#: ../../visualtour.rst:22
+msgid "A right click on the icon provides the following menu:"
+msgstr ""
+
+#: ../../visualtour.rst:24
+msgid "``Open main dialog``: Opens the main dialog."
+msgstr ""
+
+#: ../../visualtour.rst:25
+msgid "``Pause sync``: Pauses the synchronization."
+msgstr ""
+
+#: ../../visualtour.rst:26
+msgid "``Settings``: Provides access to the settings menu."
+msgstr ""
+
+#: ../../visualtour.rst:27
+msgid "``Exit Nextcloud``: Quits Nextcloud Client, ending a currently running sync run."
+msgstr ""
+
+#: ../../visualtour.rst:31
+msgid "This menu is not available on macOS."
+msgstr ""
+
+#: ../../visualtour.rst:35
+msgid "Settings"
+msgstr ""
+
+#: ../../visualtour.rst:38
+msgid "Account Settings"
+msgstr ""
+
+#: ../../visualtour.rst:42
+msgid "The ``Account Settings tab`` provides an executive summary about the synced folders in the account and gives the ability to modify them."
+msgstr ""
+
+#: ../../visualtour.rst:45
+msgid "Where:"
+msgstr ""
+
+#: ../../visualtour.rst:47
+msgid "``Connected to <Nextcloud instance> as <user>``: Indicates the Nextcloud server which the client is syncing with and the user account on that server."
+msgstr ""
+
+#: ../../visualtour.rst:50
+msgid "If the End-to-End encryption app is installed, then the current used passphrase can be shown with clicking on ``Display mnemonic``."
+msgstr ""
+
+#: ../../visualtour.rst:53
+msgid "Clicking on the tree dot menu or doing a right click on the folder opens up a context menu with the following options:"
+msgstr ""
+
+#: ../../visualtour.rst:56
+msgid "``Open folder``: Opens the folder in the file explorer which the operating system provides. In example on Windows it will open the Windows Explorer."
+msgstr ""
+
+#: ../../visualtour.rst:58
+msgid "``Create new folder``: Creates a new folder."
+msgstr ""
+
+#: ../../visualtour.rst:59
+msgid "``Force sync now``: Forces a synchronization run."
+msgstr ""
+
+#: ../../visualtour.rst:60
+msgid "``Availability``: This entry is only available if the folder uses the virtual files feature. The files in the folder can be either made available offline with ``Make always available locally`` or if disk space needs to be saved, they can be turned into placeholder files with ``Free up local space``. ``Free up local space`` will not delete any files."
+msgstr ""
+
+#: ../../visualtour.rst:66
+msgid "``Add folder sync connection``: Provides the ability to add another folder to the sync (see ``Adding a folder sync connection``)."
+msgstr ""
+
+#: ../../visualtour.rst:68
+msgid "``Pause sync/Resume sync``: Will pause the current sync or prevent the client from starting a new sync.  Resume will resume the sync process."
+msgstr ""
+
+#: ../../visualtour.rst:70
+msgid "``Remove folder sync connection``: Will remove the selected folder from being synced.  This is used, for instance, when there is a desire to sync only a few folders and not the root.  First, remove the root from sync, then add the folders to sync as desired."
+msgstr ""
+
+#: ../../visualtour.rst:74
+msgid "``Edit Ignored Files``: Provides a list of files which will be ignored, i.e., will not sync between the client and server. The ignored files editor allows adding patterns for files or directories that should be excluded from the sync process. Besides normal characters, wild cards may be used, an asterisk ‘*’ indicating multiple characters, or a question mark ‘?’ indicating a single character."
+msgstr ""
+
+#: ../../visualtour.rst:80
+msgid "``Enable virtual file support/Disable virtual file support``: Enable or disable virtual file support for this folder."
+msgstr ""
+
+#: ../../visualtour.rst:87
+msgid "Adding a Folder Sync Connection"
+msgstr ""
+
+#: ../../visualtour.rst:89
+msgid "Adding a new sync is initiated by clicking ``Add Folder Sync Connection`` in the ``Account`` settings."
+msgstr ""
+
+#: ../../visualtour.rst:94
+msgid "The Directory and alias name must be unique."
+msgstr ""
+
+#: ../../visualtour.rst:96
+msgid "Then select the folder on the server to sync with.  It is important to note that, a server folder can only sync to the client one time.  So, in the above example, the sync is to the server root directory and thus it is not possible to select another folder under the root to sync."
+msgstr ""
+
+#: ../../visualtour.rst:104
+msgid "General"
+msgstr ""
+
+#: ../../visualtour.rst:108
+msgid "The tab provides several useful options:"
+msgstr ""
+
+#: ../../visualtour.rst:112
+msgid "``Launch on System Startup``: This option is automatically activated once a user has conimaged his account. Un-checking the box will cause Nextcloud client to not launch on startup for a particular user."
+msgstr ""
+
+#: ../../visualtour.rst:115
+msgid "``Show Desktop Nofications``: When checked, bubble notifications when a set of sync operations has been performed are provided."
+msgstr ""
+
+#: ../../visualtour.rst:117
+msgid "``Use Monochrome Icons``:  Use less obtrusive icons. Especially useful on macOS."
+msgstr ""
+
+#: ../../visualtour.rst:119
+msgid "``About``: provides information about authors as well as build conditions. This information is valuable when submitting a support request."
+msgstr ""
+
+#: ../../visualtour.rst:123
+msgid "Network"
+msgstr ""
+
+#: ../../visualtour.rst:127
+msgid "This tab consolidates ``Proxy Settings`` and ``Bandwith Limiting``:"
+msgstr ""
+
+#: ../../visualtour.rst:133
+msgid "Proxy Settings"
+msgstr ""
+
+#: ../../visualtour.rst:135
+msgid "``No Proxy``: Check this if Nextcloud Client should circumvent the default proxy conimaged on the system."
+msgstr ""
+
+#: ../../visualtour.rst:137
+msgid "``Use system proxy``: Default, will follow the systems proxy settings. On Linux, this will only pick up the value of the variable ``http_proxy``."
+msgstr ""
+
+#: ../../visualtour.rst:139
+msgid "``Specify proxy manually as``: Allows to specify custom proxy settings. If you require to go through a HTTP(S) proxy server such as Squid or Microsoft Forefront TMG, pick ``HTTP(S)``. ``SOCKSv5`` on the other hand is particularly useful in special company LAN setups, or in combination with the OpenSSH dynamic application level forwarding feature (see ``ssh -D``)."
+msgstr ""
+
+#: ../../visualtour.rst:144
+msgid "``Host``: Enter the host name or IP address of your proxy server, followed by the port number. HTTP proxies usually listen on Ports 8080 (default) or 3128. SOCKS server usually listen on port 1080."
+msgstr ""
+
+#: ../../visualtour.rst:147
+msgid "``Proxy Server requires authentication``: Should be checked if the proxy server does not allow anonymous usage. If checked, a username and password must be provided."
+msgstr ""
+
+#: ../../visualtour.rst:152
+msgid "Bandwidth Limiting"
+msgstr ""
+
+#: ../../visualtour.rst:154
+msgid "The Download Bandwidth can be either unlimited (default) or limited to a custom value.  This is the bandwidth available for data flowing from the Nextcloud Server to the client."
+msgstr ""
+
+#: ../../visualtour.rst:158
+msgid "The Upload Bandwidth, the bandwidth available or data flowing from the Nextcloud client to the server, has an additional option to limit automatically."
+msgstr ""
+
+#: ../../visualtour.rst:161
+msgid "When this option is checked, the Nextcloud client will surrender available bandwidth to other applications.  Use this option if there are issues with real time communication in conjunction with the Nextcloud Client."
+msgstr ""
+
+#: ../../visualtour.rst:168
+msgid "The Ignored Files Editor"
+msgstr ""
+
+#: ../../visualtour.rst:172
+msgid "Nextcloud Client has the ability to exclude files from the sync process. The ignored files editor allows editing of custom patterns for files or directories that should be excluded from the sync process."
+msgstr ""
+
+#: ../../visualtour.rst:176
+msgid "There is a system wide list of default ignore patterns. These global defaults cannot be directly modified within the editor. Hovering with the mouse will reveal the location of the global exclude definition file."
+msgstr ""
+
+#: ../../visualtour.rst:183
+msgid "Each line contains an ignore pattern string. Next to normal characters, wildcards can be used to match an arbitrary number of characters, designated by an asterisk (``*``) or a single character, designated by a question mark (``?``). If a pattern ends with a slash character (``/``) the pattern is only applied to directory components of the path to check."
+msgstr ""
+
+#: ../../visualtour.rst:189
+msgid "If the checkbox is checked for a pattern in the editor it means that files which are matched by this pattern are fleeting metadata which the client will *remove*."
+msgstr ""
+
+#: ../../visualtour.rst:193
+msgid "Modifying the global exclude definition file might render the client unusable or cause undesired behavior."
+msgstr ""
+
+#: ../../visualtour.rst:196
+msgid "Custom entries are currently not validated for syntactical correctness by the editor, but might fail to load correctly."
+msgstr ""
+
+#: ../../visualtour.rst:199
+msgid "In addition to this list, Nextcloud Client always excludes files with characters that cannot be synced to other file systems."
+msgstr ""
+
+#: ../../visualtour.rst:202
+msgid "With version 1.5.0 it also ignores files that caused individual errors while syncing for a three times. These are listed in the activity view. There also is a button to retry the sync for another three times."
+msgstr ""
+
+#: ../../visualtour.rst:206
+msgid "For more detailed information see :ref:`ignored-files-label`."
+msgstr ""
+
+#: ../../visualtour.rst:209
+msgid "Main dialog"
+msgstr ""
+
+#: ../../visualtour.rst:214
+msgid "Sync State"
+msgstr ""
+
+#: ../../visualtour.rst:216
+msgid "The main dialog, which can be invoked from the tray icon in the taskbar, will show files information about the activities of the sync client and Nextcloud."
+msgstr ""
+
+#: ../../visualtour.rst:None
+msgid "sync state paused"
+msgstr ""
+
+#: ../../visualtour.rst:None
+msgid "sync state syncing"
+msgstr ""
+
+#: ../../visualtour.rst:None
+msgid "sync state synced"
+msgstr ""
+
+#: ../../visualtour.rst:231
+msgid "If there are any synchronization issues, they will show up here:"
+msgstr ""
+
+#: ../../visualtour.rst:None
+msgid "sync state warnings"
+msgstr ""
+
+#: ../../visualtour.rst:236
+msgid "For more information on how to solve these issues see :doc:`troubleshooting`."
+msgstr ""
+
+#: ../../visualtour.rst:238
+msgid "When clicking on the avatar a menu opens where it is possible to add a new account or removing an existing account."
+msgstr ""
+
+#: ../../visualtour.rst:None
+msgid "user account options"
+msgstr ""
+
+#: ../../visualtour.rst:246
+msgid "User Status"
+msgstr ""
+
+#: ../../visualtour.rst:248
+msgid "User status is displayed in the Nextcloud desktop client's tray window. Default user status is always \"Online\" if no other status is available from the server-side."
+msgstr ""
+
+#: ../../visualtour.rst:None
+msgid "User Status feature in the tray window"
+msgstr ""
+
+#: ../../visualtour.rst:254
+msgid "When clicking on ``Set status`` you can edit the emoji, message and the timer to clear your user status:"
+msgstr ""
+
+#: ../../visualtour.rst:None
+msgid "set user status menu option"
+msgstr ""
+
+#: ../../visualtour.rst:None
+msgid "changing the user status"
+msgstr ""
+
+#: ../../visualtour.rst:265
+msgid "Activities list"
+msgstr ""
+
+#: ../../visualtour.rst:267
+msgid "The dialog also gives information about other activities or notifications like Talk mentions or file changes. It does also show the status of the user."
+msgstr ""
+
+#: ../../visualtour.rst:None
+msgid "main dialog activities list"
+msgstr ""
+
+#: ../../visualtour.rst:275
+msgid "Unified search"
+msgstr ""
+
+#: ../../visualtour.rst:277
+msgid "With the unified search you can find everything you have in your server - files, Talk messages, calendar appointments:"
+msgstr ""
+
+#: ../../visualtour.rst:None
+msgid "unified search files search result"
+msgstr ""
+
+#: ../../visualtour.rst:None
+msgid "unified search Talk conversations search result"
+msgstr ""
+
+#: ../../visualtour.rst:None
+msgid "unified search calendar appointments search result"
+msgstr ""
+
+#: ../../visualtour.rst:291
+msgid "Share dialog: Talk options and View Profile"
+msgstr ""
+
+#: ../../visualtour.rst:293
+msgid "You can now share a file directly in a conversation in Talk and view the sharee user profile:"
+msgstr ""
+
+#: ../../visualtour.rst:None
+msgid "open share dialog option"
+msgstr ""
+
+#: ../../visualtour.rst:None
+msgid "shared dialog sharing options"
+msgstr ""

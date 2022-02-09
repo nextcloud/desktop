@@ -1,0 +1,109 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2013-2021, The Nextcloud developers
+# This file is distributed under the same license as the Nextcloud Client Manual package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Nextcloud Client Manual 3.4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-02-04 13:21+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../faq.rst:2
+msgid "FAQ"
+msgstr ""
+
+#: ../../faq.rst:5
+msgid "Some Files Are Continuously Uploaded to the Server, Even When They Are Not Modified."
+msgstr ""
+
+#: ../../faq.rst:7
+msgid "It is possible that another program is changing the modification date of the file. If the file is uses the ``.eml`` extension, Windows automatically and continually changes all files, unless you remove ``\\HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\PropertySystem\\PropertyHandlers`` from the windows registry. See http://petersteier.wordpress.com/2011/10/22/windows-indexer-changes-modification-dates-of-eml-files/ for more information."
+msgstr ""
+
+#: ../../faq.rst:15
+msgid "Syncing Stops When Attempting To Sync Deeper Than 100 Sub-directories."
+msgstr ""
+
+#: ../../faq.rst:17
+msgid "The sync client has been intentionally limited to sync no deeper than 100 sub-directories. The hard limit exists to guard against bugs with cycles like symbolic link loops. When a deeply nested directory is excluded from synchronization it will be listed with other ignored files and directories in the \"Not synced\" tab of the \"Activity\" pane."
+msgstr ""
+
+#: ../../faq.rst:25
+msgid "There Was A Warning About Changes In Synchronized Folders Not Being Tracked Reliably."
+msgstr ""
+
+#: ../../faq.rst:27
+msgid "On linux when the synchronized folder contains very many subfolders the operating system may not allow for enough inotify watches to monitor the changes in all of them."
+msgstr ""
+
+#: ../../faq.rst:31
+msgid "In this case the client will not be able to immediately start the synchronization process when a file in one of the unmonitored folders changes. Instead, the client will show the warning and manually scan folders for changes in a regular interval (two hours by default)."
+msgstr ""
+
+#: ../../faq.rst:36
+msgid "This problem can be solved by setting the fs.inotify.max_user_watches sysctl to a higher value. This can usually be done either temporarily::"
+msgstr ""
+
+#: ../../faq.rst:41
+msgid "or permanently by adjusting ``/etc/sysctl.conf``."
+msgstr ""
+
+#: ../../faq.rst:44
+msgid "I Want To Move My Local Sync Folder"
+msgstr ""
+
+#: ../../faq.rst:46
+msgid "The Nextcloud desktop client does not provide a way to change the local sync directory. However, it can be done, though it is a bit unorthodox. Specifically, you have to:"
+msgstr ""
+
+#: ../../faq.rst:50
+msgid "Remove the existing connection which syncs to the wrong directory"
+msgstr ""
+
+#: ../../faq.rst:51
+msgid "Add a new connection which syncs to the desired directory"
+msgstr ""
+
+#: ../../faq.rst:None
+msgid "Remove an existing connection"
+msgstr ""
+
+#: ../../faq.rst:56
+msgid "To do so, in the client UI, which you can see above, click the \"**Account**\" drop-down menu and then click \"Remove\". This will display a \"**Confirm Account Removal**\" dialog window."
+msgstr ""
+
+#: ../../faq.rst:None
+msgid "Remove existing connection confirmation dialog"
+msgstr ""
+
+#: ../../faq.rst:62
+msgid "If you're sure, click \"**Remove connection**\"."
+msgstr ""
+
+#: ../../faq.rst:64
+msgid "Then, click the Account drop-down menu again, and this time click \"**Add new**\"."
+msgstr ""
+
+#: ../../faq.rst:None
+msgid "Replacement connection wizard"
+msgstr ""
+
+#: ../../faq.rst:69
+msgid "This opens the Nextcloud Connection Wizard, which you can see above, *but* with an extra option. This option provides the ability to either: keep the existing data (synced by the previous connection) or to start a clean sync (erasing the existing data)."
+msgstr ""
+
+#: ../../faq.rst:74
+msgid "Be careful before choosing the \"Start a clean sync\" option. The old sync folder *may* contain a considerable amount of data, ranging into the gigabytes or terabytes. If it does, after the client creates the new connection, it will have to download **all** of that information again. Instead, first move or copy the old local sync folder, containing a copy of the existing files, to the new location. Then, when creating the new connection choose \"*keep existing data*\" instead. The Nextcloud client will check the files in the newly-added sync folder and find that they match what is on the server and not need to download anything."
+msgstr ""
+
+#: ../../faq.rst:76
+msgid "Make your choice and click \"**Connect...**\". This will then step you through the Connection Wizard, just as you did when you setup the previous sync connection, but giving you the opportunity to choose a new sync directory."
+msgstr ""

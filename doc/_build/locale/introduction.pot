@@ -1,0 +1,65 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2013-2021, The Nextcloud developers
+# This file is distributed under the same license as the Nextcloud Client Manual package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Nextcloud Client Manual 3.4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-02-04 13:21+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../introduction.rst:3
+msgid "Introduction"
+msgstr ""
+
+#: ../../introduction.rst:5
+msgid "Available for Windows, macOS, and various Linux distributions, the Nextcloud Desktop Sync client enables you to:"
+msgstr ""
+
+#: ../../introduction.rst:8
+msgid "Specify one or more directories on your computer that you want to synchronize to the Nextcloud server."
+msgstr ""
+
+#: ../../introduction.rst:10
+msgid "Always have the latest files synchronized, wherever they are located."
+msgstr ""
+
+#: ../../introduction.rst:12
+msgid "Your files are always automatically synchronized between your Nextcloud server and local PC."
+msgstr ""
+
+#: ../../introduction.rst:16
+msgid "Improvements and New Features"
+msgstr ""
+
+#: ../../introduction.rst:18
+msgid "The |version| release of the Nextcloud desktop sync client has many new features and improvements."
+msgstr ""
+
+#: ../../introduction.rst:21
+msgid "Main dialog will be a regular window if tray icons are not available on the system."
+msgstr ""
+
+#: ../../introduction.rst:22
+msgid "Virtual files wil be optional. That enables the desktop client to run on older Windows versions."
+msgstr ""
+
+#: ../../introduction.rst:23
+msgid "Improvements for the virtual files on Windows"
+msgstr ""
+
+#: ../../introduction.rst:24
+msgid "Network traffic performance improvements"
+msgstr ""
+
+#: ../../introduction.rst:25
+msgid "Improvements to the sync engine"
+msgstr ""

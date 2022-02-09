@@ -1,0 +1,147 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2013-2021, The Nextcloud developers
+# This file is distributed under the same license as the Nextcloud Client Manual package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Nextcloud Client Manual 3.4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-02-04 13:21+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../autoupdate.rst:3
+msgid "The Automatic Updater"
+msgstr ""
+
+#: ../../autoupdate.rst:5
+msgid "The Automatic Updater ensures that you always have the latest features and bug fixes for your Nextcloud synchronization client."
+msgstr ""
+
+#: ../../autoupdate.rst:8
+msgid "The Automatic Updater updates only on macOS and Windows computers; Linux users only need to use their normal package managers. However, on Linux systems the Updater will check for updates and notify you when a new version is available."
+msgstr ""
+
+#: ../../autoupdate.rst:14
+msgid "Basic Workflow"
+msgstr ""
+
+#: ../../autoupdate.rst:16
+msgid "The following sections describe how to use the Automatic Updater on different operating systems."
+msgstr ""
+
+#: ../../autoupdate.rst:20
+msgid "Windows"
+msgstr ""
+
+#: ../../autoupdate.rst:22
+msgid "The Nextcloud client checks for updates and downloads them when available. You can view the update status under ``Settings -> General -> Updates`` in the Nextcloud client."
+msgstr ""
+
+#: ../../autoupdate.rst:26
+msgid "If an update is available, and has been successfully downloaded, the Nextcloud client starts a silent update prior to its next launch and then restarts itself. Should the silent update fail, the client offers a manual download."
+msgstr ""
+
+#: ../../autoupdate.rst:30
+msgid "Administrative privileges are required to perform the update."
+msgstr ""
+
+#: ../../autoupdate.rst:33
+msgid "macOS"
+msgstr ""
+
+#: ../../autoupdate.rst:35
+msgid "There is no automatic updater on macOS. If a new update is available, the Nextcloud client initializes a pop-up dialog to alert you of the update and requesting that you update to the latest version manually."
+msgstr ""
+
+#: ../../autoupdate.rst:40
+msgid "Linux"
+msgstr ""
+
+#: ../../autoupdate.rst:42
+msgid "Linux distributions provide their own update tools, so Nextcloud clients that use the Linux operating system do not perform any updates on their own. The client will inform you (``Settings -> General -> Updates``) when an update is available."
+msgstr ""
+
+#: ../../autoupdate.rst:48
+msgid "Preventing Automatic Updates"
+msgstr ""
+
+#: ../../autoupdate.rst:50
+msgid "In controlled environments, such as companies or universities, you might not want to enable the auto-update mechanism, as it interferes with controlled deployment tools and policies. To address this case, it is possible to disable the auto-updater entirely.  The following sections describe how to disable the auto-update mechanism for different operating systems."
+msgstr ""
+
+#: ../../autoupdate.rst:57
+msgid "Preventing Automatic Updates in Windows Environments"
+msgstr ""
+
+#: ../../autoupdate.rst:59
+msgid "Users may disable automatic updates by adding this line to the [General] section of their ``nextcloud.cfg`` files::"
+msgstr ""
+
+#: ../../autoupdate.rst:64
+msgid "Windows administrators have more options for preventing automatic updates in Windows environments by using one of two methods. The first method allows users to override the automatic update check mechanism, whereas the second method prevents any manual overrides."
+msgstr ""
+
+#: ../../autoupdate.rst:69
+msgid "To prevent automatic updates, but allow manual overrides:"
+msgstr ""
+
+#: ../../autoupdate.rst:71
+msgid "Edit these Registry keys:"
+msgstr ""
+
+#: ../../autoupdate.rst:73
+msgid "(32-bit-Windows) ``HKEY_LOCAL_MACHINE\\Software\\Nextcloud\\Nextcloud``"
+msgstr ""
+
+#: ../../autoupdate.rst:74
+msgid "(64-bit-Windows) ``HKEY_LOCAL_MACHINE\\Software\\Wow6432Node\\Nextcloud\\Nextcloud``"
+msgstr ""
+
+#: ../../autoupdate.rst:76
+#: ../../autoupdate.rst:91
+msgid "Add the key ``skipUpdateCheck`` (of type DWORD)."
+msgstr ""
+
+#: ../../autoupdate.rst:78
+#: ../../autoupdate.rst:93
+msgid "Specify a value of ``1`` to the machine."
+msgstr ""
+
+#: ../../autoupdate.rst:80
+msgid "To manually override this key, use the same value in ``HKEY_CURRENT_USER``."
+msgstr ""
+
+#: ../../autoupdate.rst:82
+msgid "To prevent automatic updates and disallow manual overrides:"
+msgstr ""
+
+#: ../../autoupdate.rst:84
+msgid "This is the preferred method of controlling the updater behavior using Group Policies."
+msgstr ""
+
+#: ../../autoupdate.rst:87
+msgid "Edit this Registry key:"
+msgstr ""
+
+#: ../../autoupdate.rst:89
+msgid "``HKEY_LOCAL_MACHINE\\Software\\Policies\\Nextcloud GmbH\\Nextcloud``"
+msgstr ""
+
+#: ../../autoupdate.rst:95
+msgid "branded clients have different key names"
+msgstr ""
+
+#: ../../autoupdate.rst:99
+msgid "Preventing Automatic Updates in Linux Environments"
+msgstr ""
+
+#: ../../autoupdate.rst:101
+msgid "Because the Linux client does not provide automatic updating functionality, there is no need to remove the automatic-update check.  However, if you want to disable it edit your desktop client configuration file, ``$HOME/.config/Nextcloud/nextcloud.cfg``. Add this line to the [General] section::"
+msgstr ""

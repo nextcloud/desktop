@@ -1,0 +1,197 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2013-2021, The Nextcloud developers
+# This file is distributed under the same license as the Nextcloud Client Manual package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Nextcloud Client Manual 3.4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-02-04 13:21+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../nextcloudcmd.rst:1
+msgid "The Nextcloud Client packages contain a command line client, ``nextcloudcmd``, that can be used to synchronize Nextcloud files to client machines."
+msgstr ""
+
+#: ../../nextcloudcmd.rst:4
+msgid "``nextcloudcmd`` performs a single *sync run* and then exits the synchronization process. In this manner, ``nextcloudcmd`` processes the differences between client and server directories and propagates the files to bring both repositories to the same state. Contrary to the GUI-based client, ``nextcloudcmd`` does not repeat synchronizations on its own. It also does not monitor for file system changes."
+msgstr ""
+
+#: ../../nextcloudcmd.rst:13
+msgid "Install ``nextcloudcmd``"
+msgstr ""
+
+#: ../../nextcloudcmd.rst:15
+msgid "CentOS"
+msgstr ""
+
+#: ../../nextcloudcmd.rst:22
+msgid "Ubuntu/Debian"
+msgstr ""
+
+#: ../../nextcloudcmd.rst:31
+msgid "Refer to the link"
+msgstr ""
+
+#: ../../nextcloudcmd.rst:33
+msgid "https://nextcloud.com/install/#install-clients"
+msgstr ""
+
+#: ../../nextcloudcmd.rst:34
+msgid "https://launchpad.net/~nextcloud-devs/+archive/ubuntu/client"
+msgstr ""
+
+#: ../../nextcloudcmd.rst:35
+msgid "https://pkgs.alpinelinux.org/packages?name=nextcloud-client"
+msgstr ""
+
+#: ../../nextcloudcmd.rst:36
+msgid "https://help.nextcloud.com/t/linux-packages-status/10216"
+msgstr ""
+
+#: ../../nextcloudcmd.rst:39
+msgid "To invoke ``nextcloudcmd``, you must provide the local and the remote repository URL using the following command::"
+msgstr ""
+
+#: ../../nextcloudcmd.rst:44
+msgid "where ``sourcedir`` is the local directory and ``nextcloudurl`` is the server URL."
+msgstr ""
+
+#: ../../nextcloudcmd.rst:47
+msgid "Other command line switches supported by ``nextcloudcmd`` include the following:"
+msgstr ""
+
+#: ../../nextcloudcmd.rst:50
+msgid "``--path``"
+msgstr ""
+
+#: ../../nextcloudcmd.rst:50
+msgid "Overrides default remote root folder to a specific subfolder on the server(e.g.: /Documents would sync the Documents subfolder on the server)"
+msgstr ""
+
+#: ../../nextcloudcmd.rst:53
+msgid "``--user``, ``-u`` ``[user]``"
+msgstr ""
+
+#: ../../nextcloudcmd.rst:53
+msgid "Use ``user`` as the login name."
+msgstr ""
+
+#: ../../nextcloudcmd.rst:56
+msgid "``--password``, ``-p`` ``[password]``"
+msgstr ""
+
+#: ../../nextcloudcmd.rst:56
+msgid "Use ``password`` as the password."
+msgstr ""
+
+#: ../../nextcloudcmd.rst:59
+msgid "``-n``"
+msgstr ""
+
+#: ../../nextcloudcmd.rst:59
+msgid "Use ``netrc (5)`` for login."
+msgstr ""
+
+#: ../../nextcloudcmd.rst:62
+msgid "``--non-interactive``"
+msgstr ""
+
+#: ../../nextcloudcmd.rst:62
+msgid "Do not prompt for questions."
+msgstr ""
+
+#: ../../nextcloudcmd.rst:65
+msgid "``--silent``, ``--s``"
+msgstr ""
+
+#: ../../nextcloudcmd.rst:65
+msgid "Inhibits verbose log output."
+msgstr ""
+
+#: ../../nextcloudcmd.rst:68
+msgid "``--trust``"
+msgstr ""
+
+#: ../../nextcloudcmd.rst:68
+msgid "Trust any SSL certificate, including invalid ones."
+msgstr ""
+
+#: ../../nextcloudcmd.rst:71
+msgid "``--httpproxy  http://[user@pass:]<server>:<port>``"
+msgstr ""
+
+#: ../../nextcloudcmd.rst:71
+msgid "Uses ``server`` as HTTP proxy."
+msgstr ""
+
+#: ../../nextcloudcmd.rst:74
+msgid "``--exclude [file]``"
+msgstr ""
+
+#: ../../nextcloudcmd.rst:74
+msgid "Exclude list file"
+msgstr ""
+
+#: ../../nextcloudcmd.rst:77
+msgid "``--unsyncedfolders [file]``"
+msgstr ""
+
+#: ../../nextcloudcmd.rst:77
+msgid "File containing the list of un-synced remote folders (selective sync)"
+msgstr ""
+
+#: ../../nextcloudcmd.rst:80
+msgid "``--max-sync-retries [n]``"
+msgstr ""
+
+#: ../../nextcloudcmd.rst:80
+msgid "Retries maximum n times (defaults to 3)"
+msgstr ""
+
+#: ../../nextcloudcmd.rst:83
+msgid "``-h``"
+msgstr ""
+
+#: ../../nextcloudcmd.rst:83
+msgid "Sync hidden files, do not ignore them"
+msgstr ""
+
+#: ../../nextcloudcmd.rst:86
+msgid "Credential Handling"
+msgstr ""
+
+#: ../../nextcloudcmd.rst:88
+msgid "``nextcloudcmd`` requires the user to specify the username and password using the standard URL pattern, e.g.,"
+msgstr ""
+
+#: ../../nextcloudcmd.rst:94
+msgid "To synchronize the Nextcloud directory ``Music`` to the local directory ``media/music``, through a proxy listening on port ``8080``, and on a gateway machine using IP address ``192.168.178.1``, the command line would be::"
+msgstr ""
+
+#: ../../nextcloudcmd.rst:102
+msgid "``nextcloudcmd`` will prompt for the user name and password, unless they have been specified on the command line or ``-n`` has been passed."
+msgstr ""
+
+#: ../../nextcloudcmd.rst:106
+msgid "Exclude List"
+msgstr ""
+
+#: ../../nextcloudcmd.rst:108
+msgid "``nextcloudcmd`` requires access to an exclude list file. It must either be installed along with ``nextcloudcmd`` and thus be available in a system location, be placed next to the binary as ``sync-exclude.lst`` or be explicitly specified with the ``--exclude`` switch."
+msgstr ""
+
+#: ../../nextcloudcmd.rst:114
+msgid "Example"
+msgstr ""
+
+#: ../../nextcloudcmd.rst:116
+msgid "Synchronize a local directory to the specified directory of the nextcloud server"
+msgstr ""

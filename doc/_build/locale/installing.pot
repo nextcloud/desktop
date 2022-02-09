@@ -1,0 +1,312 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2013-2021, The Nextcloud developers
+# This file is distributed under the same license as the Nextcloud Client Manual package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Nextcloud Client Manual 3.4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-02-04 13:21+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../installing.rst:3
+msgid "Installing the Desktop Synchronization Client"
+msgstr ""
+
+#: ../../installing.rst:5
+msgid "You can download the latest version of the Nextcloud Desktop Synchronization Client from the `Nextcloud download page`_. There are clients for Linux, macOs, and Microsoft Windows."
+msgstr ""
+
+#: ../../installing.rst:9
+msgid "The currently supported server releases are the latest three stable versions at time of publication. It means that the |version| release series is supporting stable server major versions. See https://github.com/nextcloud/server/wiki/Maintenance-and-Release-Schedule for supported major versions."
+msgstr ""
+
+#: ../../installing.rst:15
+msgid "Installation on Mac OS X and Windows is the same as for any software application: download the program and then double-click it to launch the installation, and then follow the installation wizard. After it is installed and configured the sync client will automatically keep itself updated; see :doc:`autoupdate` for more information."
+msgstr ""
+
+#: ../../installing.rst:21
+msgid "Linux users must follow the instructions on the download page to add the appropriate repository for their Linux distribution, install the signing key, and then use their package managers to install the desktop sync client. Linux users will also update their sync clients via package manager, and the client will display a notification when an update is available."
+msgstr ""
+
+#: ../../installing.rst:27
+msgid "Linux users must also have a password manager enabled, such as GNOME Keyring or KWallet, so that the sync client can login automatically."
+msgstr ""
+
+#: ../../installing.rst:30
+msgid "You will also find links to source code archives and older versions on the download page."
+msgstr ""
+
+#: ../../installing.rst:34
+msgid "System Requirements"
+msgstr ""
+
+#: ../../installing.rst:36
+msgid "Windows 8.1+"
+msgstr ""
+
+#: ../../installing.rst:37
+msgid "macOS 10.12+ (64-bit only)"
+msgstr ""
+
+#: ../../installing.rst:38
+msgid "Linux"
+msgstr ""
+
+#: ../../installing.rst:39
+msgid "FreeBSD"
+msgstr ""
+
+#: ../../installing.rst:42
+msgid "For Linux distributions, we support, if technically feasible, the latest 2 versions per platform and the previous LTS."
+msgstr ""
+
+#: ../../installing.rst:45
+msgid "Customizing the Windows Installation"
+msgstr ""
+
+#: ../../installing.rst:47
+msgid "If you just want to install Nextcloud Desktop Synchronization Client on your local system, you can simply launch the `.msi` file and configure it in the wizard that pops up."
+msgstr ""
+
+#: ../../installing.rst:52
+msgid "Features"
+msgstr ""
+
+#: ../../installing.rst:54
+msgid "The MSI installer provides several features that can be installed or removed individually, which you can also control via command-line, if you are automating the installation, then run the following command::"
+msgstr ""
+
+#: ../../installing.rst:60
+msgid "The command will install the Nextcloud Desktop Synchronization Client into the default location with the default features enabled. If you want to disable, e.g., desktop shortcut icons you can simply change the above command to the following::"
+msgstr ""
+
+#: ../../installing.rst:66
+msgid "See the following table for a list of available features:"
+msgstr ""
+
+#: ../../installing.rst:69
+msgid "Feature"
+msgstr ""
+
+#: ../../installing.rst:69
+msgid "Enabled by default"
+msgstr ""
+
+#: ../../installing.rst:69
+msgid "Description"
+msgstr ""
+
+#: ../../installing.rst:69
+msgid "Property to disable"
+msgstr ""
+
+#: ../../installing.rst:71
+msgid "Client"
+msgstr ""
+
+#: ../../installing.rst:71
+msgid "Yes, required"
+msgstr ""
+
+#: ../../installing.rst:71
+msgid "The actual client"
+msgstr ""
+
+#: ../../installing.rst:73
+msgid "DesktopShortcut"
+msgstr ""
+
+#: ../../installing.rst:73
+#: ../../installing.rst:75
+#: ../../installing.rst:77
+msgid "Yes"
+msgstr ""
+
+#: ../../installing.rst:73
+msgid "Adds a shortcut to the desktop"
+msgstr ""
+
+#: ../../installing.rst:73
+msgid "``NO_DESKTOP_SHORTCUT``"
+msgstr ""
+
+#: ../../installing.rst:75
+msgid "StartMenuShortcuts"
+msgstr ""
+
+#: ../../installing.rst:75
+msgid "Adds a shortcut to the start menu"
+msgstr ""
+
+#: ../../installing.rst:75
+msgid "``NO_START_MENU_SHORTCUTS``"
+msgstr ""
+
+#: ../../installing.rst:77
+msgid "ShellExtensions"
+msgstr ""
+
+#: ../../installing.rst:77
+msgid "Adds Explorer integration"
+msgstr ""
+
+#: ../../installing.rst:77
+msgid "``NO_SHELL_EXTENSIONS``"
+msgstr ""
+
+#: ../../installing.rst:81
+msgid "Installation"
+msgstr ""
+
+#: ../../installing.rst:83
+msgid "You can also choose to only install the client itself by using the following command::"
+msgstr ""
+
+#: ../../installing.rst:87
+msgid "If you for instance want to install everything but the ``DesktopShortcut`` and the ``ShellExtensions`` feature, you have two possibilities:"
+msgstr ""
+
+#: ../../installing.rst:89
+msgid "You explicitly name all the features you actually want to install (whitelist) where `Client` is always installed anyway::"
+msgstr ""
+
+#: ../../installing.rst:93
+msgid "You pass the `NO_DESKTOP_SHORTCUT` and `NO_SHELL_EXTENSIONS` properties::"
+msgstr ""
+
+#: ../../installing.rst:98
+msgid "The Nextcloud `.msi` remembers these properties, so you don't need to specify them on upgrades."
+msgstr ""
+
+#: ../../installing.rst:101
+msgid "You cannot use these to change the installed features, if you want to do that, see the next section."
+msgstr ""
+
+#: ../../installing.rst:104
+msgid "Changing Installed Features"
+msgstr ""
+
+#: ../../installing.rst:106
+msgid "You can change the installed features later by using `REMOVE` and `ADDDEFAULT` properties."
+msgstr ""
+
+#: ../../installing.rst:108
+msgid "If you want to add the the desktop shortcut later, run the following command::"
+msgstr ""
+
+#: ../../installing.rst:112
+msgid "If you want to remove it, simply run the following command::"
+msgstr ""
+
+#: ../../installing.rst:116
+msgid "Windows keeps track of the installed features and using `REMOVE` or `ADDDEFAULT` will only affect the mentioned features."
+msgstr ""
+
+#: ../../installing.rst:118
+msgid "Compare `REMOVE <https://msdn.microsoft.com/en-us/library/windows/desktop/aa371194(v=vs.85).aspx>`_ and `ADDDEFAULT <https://msdn.microsoft.com/en-us/library/windows/desktop/aa367518(v=vs.85).aspx>`_ on the Windows Installer Guide."
+msgstr ""
+
+#: ../../installing.rst:123
+msgid "You cannot specify `REMOVE` on initial installation as it will disable all features."
+msgstr ""
+
+#: ../../installing.rst:126
+msgid "Installation Folder"
+msgstr ""
+
+#: ../../installing.rst:128
+msgid "You can adjust the installation folder by specifying the `INSTALLDIR` property like this::"
+msgstr ""
+
+#: ../../installing.rst:133
+msgid "Be careful when using PowerShell instead of `cmd.exe`, it can be tricky to get the whitespace escaping right there. Specifying the `INSTALLDIR` like this only works on first installation, you cannot simply re-invoke the `.msi` with a different path. If you still need to change it, uninstall it first and reinstall it with the new path."
+msgstr ""
+
+#: ../../installing.rst:138
+msgid "Disabling Automatic Updates"
+msgstr ""
+
+#: ../../installing.rst:140
+msgid "To disable automatic updates, you can pass the `SKIPAUTOUPDATE` property.::"
+msgstr ""
+
+#: ../../installing.rst:145
+msgid "Launch After Installation"
+msgstr ""
+
+#: ../../installing.rst:147
+msgid "To launch the client automatically after installation, you can pass the `LAUNCH` property.::"
+msgstr ""
+
+#: ../../installing.rst:151
+msgid "This option also removes the checkbox to let users decide if they want to launch the client for non passive/quiet mode."
+msgstr ""
+
+#: ../../installing.rst:155
+msgid "This option does not have any effect without GUI."
+msgstr ""
+
+#: ../../installing.rst:158
+msgid "No Reboot After Installation"
+msgstr ""
+
+#: ../../installing.rst:160
+msgid "The Nextcloud Client schedules a reboot after installation to make sure the Explorer extension is correctly (un)loaded. If you're taking care of the reboot yourself, you can set the `REBOOT` property::"
+msgstr ""
+
+#: ../../installing.rst:165
+msgid "This will make `msiexec` exit with error `ERROR_SUCCESS_REBOOT_REQUIRED` (3010). If your deployment tooling interprets this as an actual error and you want to avoid that, you may want to set the `DO_NOT_SCHEDULE_REBOOT` instead::"
+msgstr ""
+
+#: ../../installing.rst:171
+msgid "Installation Wizard"
+msgstr ""
+
+#: ../../installing.rst:173
+msgid "The installation wizard takes you step-by-step through configuration options and account setup. First, you need to enter the URL of your Nextcloud server."
+msgstr ""
+
+#: ../../installing.rst:None
+msgid "form for choosing between login and registering"
+msgstr ""
+
+#: ../../installing.rst:179
+msgid "If you already have an account on a Nextcloud instance, you want to press the button ``Login to your Nextcloud``. If you don't have a Nextcloud instance and an account there, you might want to register an account with a provider. Press ``Create account with Provider`` in that case. Please keep in mind that the desktop client might have built without provider support. In that case, you won't see this page. Instead, you will be prompted with the next page."
+msgstr ""
+
+#: ../../installing.rst:None
+msgid "form for entering Nextcloud server URL"
+msgstr ""
+
+#: ../../installing.rst:190
+msgid "Enter the URL for your Nextcloud instance. The URL is the same URL that you type into your browser when you try to access your Nextcloud instance."
+msgstr ""
+
+#: ../../installing.rst:None
+msgid "form waiting for authorization"
+msgstr ""
+
+#: ../../installing.rst:197
+msgid "Now your web browser should open and prompt you to login into your Nextcloud instance. Enter your username and password in your web browser and grant access. After you did that, go back to the wizard. Please keep in mind that you might not need to enter your username and password if you are already logged in to your browser."
+msgstr ""
+
+#: ../../installing.rst:None
+msgid "Select which remote folders to sync, and which local folder to store\n"
+"them in."
+msgstr ""
+
+#: ../../installing.rst:207
+msgid "On the local folder options screen, you may sync all of your files on the Nextcloud server, or select individual folders. The default local sync folder is ``Nextcloud``, in your home directory. You may change this as well."
+msgstr ""
+
+#: ../../installing.rst:212
+msgid "When you have completed selecting your sync folders, click the Connect button at the bottom right. The client will attempt to connect to your Nextcloud server, and when it is successful, the wizard closes itself. You can now observe the sync activity if you open the main dialogue by clicking on the tray icon."
+msgstr ""

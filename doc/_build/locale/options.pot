@@ -1,0 +1,97 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2013-2021, The Nextcloud developers
+# This file is distributed under the same license as the Nextcloud Client Manual package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Nextcloud Client Manual 3.4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-02-04 13:21+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../options.rst:1
+msgid "You have the option of starting your Nextcloud desktop client with the ``nextcloud`` command. The following options are supported:"
+msgstr ""
+
+#: ../../options.rst:5
+msgid "``nextcloud -h`` or ``nextcloud --help``"
+msgstr ""
+
+#: ../../options.rst:5
+msgid "Displays all command options."
+msgstr ""
+
+#: ../../options.rst:7
+msgid "The other options are:"
+msgstr ""
+
+#: ../../options.rst:10
+msgid "``--logwindow``"
+msgstr ""
+
+#: ../../options.rst:10
+msgid "Opens a window displaying log output."
+msgstr ""
+
+#: ../../options.rst:14
+msgid "``--logfile`` `<filename>`"
+msgstr ""
+
+#: ../../options.rst:13
+msgid "Write log output to the file specified. To write to stdout, specify `-` as the filename."
+msgstr ""
+
+#: ../../options.rst:18
+msgid "``--logdir`` `<name>`"
+msgstr ""
+
+#: ../../options.rst:17
+msgid "Writes each synchronization log output in a new file in the specified directory."
+msgstr ""
+
+#: ../../options.rst:22
+msgid "``--logexpire`` `<hours>`"
+msgstr ""
+
+#: ../../options.rst:21
+msgid "Removes logs older than the value specified (in hours). This command is used with ``--logdir``."
+msgstr ""
+
+#: ../../options.rst:25
+msgid "``--logflush``"
+msgstr ""
+
+#: ../../options.rst:25
+msgid "Clears (flushes) the log file after each write action."
+msgstr ""
+
+#: ../../options.rst:28
+msgid "``--logdebug``"
+msgstr ""
+
+#: ../../options.rst:28
+msgid "Also output debug-level messages in the log (equivalent to setting the env var QT_LOGGING_RULES=\"qt.*=true;*.debug=true\")."
+msgstr ""
+
+#: ../../options.rst:31
+msgid "``--confdir`` `<dirname>`"
+msgstr ""
+
+#: ../../options.rst:31
+msgid "Uses the specified configuration directory."
+msgstr ""
+
+#: ../../options.rst:34
+msgid "``--background``"
+msgstr ""
+
+#: ../../options.rst:34
+msgid "Launch the application in the background (i.e. without opening the main dialog)."
+msgstr ""
