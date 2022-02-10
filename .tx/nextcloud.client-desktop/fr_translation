@@ -24,4 +24,4 @@ Icon=@APPLICATION_EXECUTABLE@
 Icon[fr]=@APPLICATION_ICON_NAME@
 Name[fr]=@APPLICATION_NAME@ Bureau
 Comment[fr]=Client de synchronisation @APPLICATION_NAME@
-GenericName[fr]=Synchronisation du dossier
+GenericName[fr]=Synchro du dossier
