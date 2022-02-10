@@ -407,12 +407,18 @@ void BulkPropagatorJob::slotPutFinished()
 
     slotJobDestroyed(job); // remove it from the _jobs list
 
+    const auto jobError = job->reply()->error();
+
     const auto replyData = job->reply()->readAll();
     const auto replyJson = QJsonDocument::fromJson(replyData);
     const auto fullReplyObject = replyJson.object();
 
     for (const auto &singleFile : _filesToUpload) {
         if (!fullReplyObject.contains(singleFile._remotePath)) {
+            if (jobError != QNetworkReply::NoError) {
+                singleFile._item->_status = SyncFileItem::NormalError;
+                abortWithError(singleFile._item, SyncFileItem::NormalError, tr("Network Error: %1").arg(jobError));
+            }
             continue;
         }
         const auto singleReplyObject = fullReplyObject[singleFile._remotePath].toObject();
