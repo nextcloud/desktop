@@ -62,7 +62,13 @@ bool hasLaunchOnStartup_private(const QString &)
 
             if (LSSharedFileListItemResolve(item, 0, &itemUrlRef, NULL) == noErr && itemUrlRef) {
                 CFStringRef itemUrlString = CFURLGetString(itemUrlRef);
-                if (CFStringCompare(itemUrlString, appUrlRefString, 0) == kCFCompareEqualTo) {
+
+                // Check if we found "our" app url.
+                // IMPORTANT: this needs to be a case-insensitive compare, because (most) macOS
+                // file systems are case insensitive, so if e.g. "btr.app" is replaced by "BtR.app"
+                // in an update, they should be treated the same.
+                // See also: https://github.com/owncloud/client/issues/9387
+                if (CFStringCompare(itemUrlString, appUrlRefString, kCFCompareCaseInsensitive) == kCFCompareEqualTo) {
                     returnValue = true;
                 }
                 CFRelease(itemUrlRef);
@@ -108,7 +114,13 @@ void setLaunchOnStartup_private(const QString &appName, const QString &guiName, 
 
                 if (LSSharedFileListItemResolve(item, 0, &itemUrlRef, NULL) == noErr && itemUrlRef) {
                     CFStringRef itemUrlString = CFURLGetString(itemUrlRef);
-                    if (CFStringCompare(itemUrlString, appUrlRefString, 0) == kCFCompareEqualTo) {
+
+                    // Check if we found "our" app url.
+                    // IMPORTANT: this needs to be a case-insensitive compare, because (most) macOS
+                    // file systems are case insensitive, so if e.g. "btr.app" is replaced by "BtR.app"
+                    // in an update, they should be treated the same.
+                    // See also: https://github.com/owncloud/client/issues/9387
+                    if (CFStringCompare(itemUrlString, appUrlRefString, kCFCompareCaseInsensitive) == kCFCompareEqualTo) {
                         LSSharedFileListItemRemove(loginItems, item); // remove it!
                     }
                     CFRelease(itemUrlRef);
