@@ -52,7 +52,7 @@
           <item row="0" column="0">
            <widget class="QCheckBox" name="autostartCheckBox">
             <property name="text">
-             <string>&amp;Launch on System Startup</string>
+             <string>Start on &amp;Login</string>
             </property>
            </widget>
           </item>
