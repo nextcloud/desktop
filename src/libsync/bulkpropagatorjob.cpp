@@ -290,7 +290,10 @@ void BulkPropagatorJob::slotStartUpload(SyncFileItemPtr item,
     const QString originalFilePath = propagator()->fullLocalPath(item->_file);
 
     if (!FileSystem::fileExists(fullFilePath)) {
-        return slotOnErrorStartFolderUnlock(item, SyncFileItem::SoftError, tr("File Removed (start upload) %1").arg(fullFilePath));
+        _pendingChecksumFiles.remove(item->_file);
+        slotOnErrorStartFolderUnlock(item, SyncFileItem::SoftError, tr("File Removed (start upload) %1").arg(fullFilePath));
+        checkPropagationIsDone();
+        return;
     }
     const time_t prevModtime = item->_modtime; // the _item value was set in PropagateUploadFile::start()
     // but a potential checksum calculation could have taken some time during which the file could
