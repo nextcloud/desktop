@@ -665,6 +665,8 @@ private:
 
     void resetDelayedUploadTasks();
 
+    static void adjustDeletedFoldersWithNewChildren(SyncFileItemVector &items);
+
     AccountPtr _account;
     QScopedPointer<PropagateRootDirectory> _rootJob;
     SyncOptions _syncOptions;
