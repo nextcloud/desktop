@@ -25,14 +25,9 @@ namespace OCC {
 
 inline QByteArray getEtagFromReply(QNetworkReply *reply)
 {
-    QByteArray ocEtag = parseEtag(reply->rawHeader("OC-ETag"));
-    QByteArray etag = parseEtag(reply->rawHeader("ETag"));
-    QByteArray ret = ocEtag;
+    QByteArray ret = parseEtag(reply->rawHeader("OC-ETag"));
     if (ret.isEmpty()) {
-        ret = etag;
-    }
-    if (ocEtag.length() > 0 && ocEtag != etag) {
-        qCDebug(lcPropagator) << "Quite peculiar, we have an etag != OC-Etag [no problem!]" << etag << ocEtag;
+        ret = parseEtag(reply->rawHeader("ETag"));
     }
     return ret;
 }
