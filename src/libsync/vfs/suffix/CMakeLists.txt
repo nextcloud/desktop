@@ -1,4 +1,5 @@
 add_library(nextcloudsync_vfs_suffix SHARED
+    vfs_suffix.h
     vfs_suffix.cpp
 )
 
