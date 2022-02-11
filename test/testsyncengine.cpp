@@ -887,6 +887,57 @@ private slots:
         QCOMPARE(nPUT, 6);
         QCOMPARE(nPOST, 0);
     }
+
+    /**
+     * Checks whether subsequent large uploads are skipped after a 507 error
+     */
+    void testNetworkErrorsWithBulkUpload()
+    {
+        FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
+        fakeFolder.syncEngine().account()->setCapabilities({ { "dav", QVariantMap{ {"bulkupload", "1.0"} } } });
+
+        // Disable parallel uploads
+        SyncOptions syncOptions;
+        syncOptions._parallelNetworkJobs = 0;
+        fakeFolder.syncEngine().setSyncOptions(syncOptions);
+
+        int nPUT = 0;
+        int nPOST = 0;
+        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *) -> QNetworkReply * {
+            auto contentType = request.header(QNetworkRequest::ContentTypeHeader).toString();
+            if (op == QNetworkAccessManager::PostOperation) {
+                ++nPOST;
+                if (contentType.startsWith(QStringLiteral("multipart/related; boundary="))) {
+                    return new FakeErrorReply(op, request, this, 400);
+                }
+                return  nullptr;
+            } else if (op == QNetworkAccessManager::PutOperation) {
+                ++nPUT;
+            }
+            return  nullptr;
+        });
+
+        fakeFolder.localModifier().insert("A/big1", 1);
+        fakeFolder.localModifier().insert("A/big2", 1);
+        fakeFolder.localModifier().insert("A/big3", 1);
+        fakeFolder.localModifier().insert("A/big4", 1);
+        fakeFolder.localModifier().insert("A/big5", 1);
+        fakeFolder.localModifier().insert("A/big6", 1);
+        fakeFolder.localModifier().insert("A/big7", 1);
+        fakeFolder.localModifier().insert("A/big8", 1);
+        fakeFolder.localModifier().insert("B/big8", 1);
+
+        QVERIFY(!fakeFolder.syncOnce());
+        QCOMPARE(nPUT, 0);
+        QCOMPARE(nPOST, 1);
+        nPUT = 0;
+        nPOST = 0;
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(nPUT, 9);
+        QCOMPARE(nPOST, 0);
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+    }
 };
 
 QTEST_GUILESS_MAIN(TestSyncEngine)
