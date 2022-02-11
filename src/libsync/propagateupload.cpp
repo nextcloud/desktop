@@ -61,6 +61,21 @@ static bool fileIsStillChanging(const SyncFileItem &item)
         && msSinceMod > -10000;
 }
 
+PUTFileJob::PUTFileJob(AccountPtr account, const QString &path, std::unique_ptr<QIODevice> device, const QMap<QByteArray, QByteArray> &headers, int chunk, QObject *parent)
+    : PUTFileJob(account, Utility::concatUrlPath(account->davUrl(), path), std::move(device), headers, chunk, parent)
+{
+}
+
+PUTFileJob::PUTFileJob(AccountPtr account, const QUrl &url, std::unique_ptr<QIODevice> device, const QMap<QByteArray, QByteArray> &headers, int chunk, QObject *parent)
+    : AbstractNetworkJob(account, QString(), parent)
+    , _device(device.release())
+    , _headers(headers)
+    , _url(url)
+    , _chunk(chunk)
+{
+    _device->setParent(this);
+}
+
 PUTFileJob::~PUTFileJob()
 {
     // Make sure that we destroy the QNetworkReply before our _device of which it keeps an internal pointer.
@@ -76,13 +91,8 @@ void PUTFileJob::start()
 
     req.setPriority(QNetworkRequest::LowPriority); // Long uploads must not block non-propagation jobs.
 
-    if (_url.isValid()) {
-        sendRequest("PUT", _url, req, _device);
-    } else {
-        sendRequest("PUT", makeDavUrl(path()), req, _device);
-    }
+    sendRequest("PUT", _url, req, _device);
 
-    connect(reply(), &QNetworkReply::uploadProgress, this, &PUTFileJob::uploadProgress);
     connect(this, &AbstractNetworkJob::networkActivity, account().data(), &Account::propagatorNetworkActivity);
     _requestTimer.start();
     AbstractNetworkJob::start();
@@ -99,6 +109,11 @@ bool PUTFileJob::finished()
 
     emit finishedSignal();
     return true;
+}
+
+void PUTFileJob::newReplyHook(QNetworkReply *reply)
+{
+    connect(reply, &QNetworkReply::uploadProgress, this, &PUTFileJob::uploadProgress);
 }
 
 void PropagateUploadFileCommon::setDeleteExisting(bool enabled)

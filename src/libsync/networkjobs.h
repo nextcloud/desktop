@@ -283,6 +283,9 @@ private slots:
     virtual void metaDataChangedSlot();
     virtual void encryptedSlot();
 
+protected:
+    void newReplyHook(QNetworkReply *) override;
+
 private:
     bool _subdirFallback;
 
@@ -427,16 +430,22 @@ public:
 
     void start() override;
 
+    void addNewReplyHook(std::function<void(QNetworkReply *)> &&hook);
+
 signals:
     void finishedSignal(QNetworkReply *reply);
 private slots:
     bool finished() override;
+
+protected:
+    void newReplyHook(QNetworkReply *) override;
 
 private:
     QByteArray _simpleVerb;
     QUrl _simpleUrl;
     QIODevice *_simpleBody;
     QNetworkRequest _simpleRequest;
+    std::vector<std::function<void(QNetworkReply *)>> _replyHooks;
 };
 
 /**

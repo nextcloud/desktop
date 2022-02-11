@@ -1,0 +1,6 @@
+Bugfix: Ensure proper setup of network jobs on retries
+
+On retries network jobs where not properly setup which could
+lead to undefined behaviour.
+
+https://github.com/owncloud/client/pull/9437
