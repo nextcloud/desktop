@@ -106,6 +106,12 @@ void AbstractNetworkJob::setPath(const QString &path)
     _path = path;
 }
 
+QNetworkReply *AbstractNetworkJob::reply() const
+{
+    Q_ASSERT(_reply);
+    return _reply;
+}
+
 void AbstractNetworkJob::setupConnections(QNetworkReply *reply)
 {
     connect(reply, &QNetworkReply::finished, this, &AbstractNetworkJob::slotFinished);
@@ -443,7 +449,7 @@ QDebug operator<<(QDebug debug, const OCC::AbstractNetworkJob *job)
     QDebugStateSaver saver(debug);
     debug.setAutoInsertSpaces(false);
     debug << job->metaObject()->className() << "(" << job->url().toDisplayString();
-    if (auto reply = job->reply()) {
+    if (auto reply = job->_reply) {
         debug << ", " << reply->request().rawHeader("Original-Request-ID")
               << ", " << reply->request().rawHeader("X-Request-ID");
 

@@ -1,0 +1,5 @@
+Bugfix: Progress reporting for TUS uploads
+
+We fixed a bug with missing progress reporting in TUS uploads
+
+https://github.com/owncloud/client/issues/9121

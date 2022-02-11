@@ -59,7 +59,7 @@ public:
 
     QUrl url() const { return _request.url(); }
 
-    QNetworkReply *reply() const { return _reply; }
+    QNetworkReply *reply() const;
 
     void setIgnoreCredentialFailure(bool ignore);
     bool ignoreCredentialFailure() const { return _ignoreCredentialFailure; }
