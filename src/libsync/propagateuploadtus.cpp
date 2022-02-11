@@ -245,6 +245,7 @@ void PropagateUploadFileTUS::slotChunkFinished()
         check->start();
         return;
     }
+    _item->_remotePerm = RemotePermissions::fromServerString(QString::fromUtf8(job->reply()->rawHeader("Oc-Perm")));
     // the file id should only be empty for new files up- or downloaded
     finalize(etag, job->reply()->rawHeader("OC-FileID"));
 }
