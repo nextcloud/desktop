@@ -413,6 +413,64 @@ void OwncloudPropagator::resetDelayedUploadTasks()
     _delayedTasks.clear();
 }
 
+void OwncloudPropagator::adjustDeletedFoldersWithNewChildren(SyncFileItemVector &items)
+{
+    /* 
+       process each item that is new and is a directory and make sure every parent in its tree has the instruction CSYNC_INSTRUCTION_NEW
+       instead of CSYNC_INSTRUCTION_REMOVE 
+    */
+    for (const auto &item : items) {
+        if (item->_instruction != CSYNC_INSTRUCTION_NEW || item->_direction != SyncFileItem::Up || !item->isDirectory() || item->_file == QStringLiteral("/")) {
+            continue;
+        }
+
+        // #1 get root folder name for the current item that we need to reupload
+        const auto folderPathSplit = item->_file.split(QLatin1Char('/'), Qt::SkipEmptyParts);
+        if (folderPathSplit.isEmpty()) {
+            continue;
+        }
+        const auto itemRootFolderName = folderPathSplit.first();
+        if (itemRootFolderName.isEmpty()) {
+            continue;
+        }
+        // #2 iterate backwords (for optimization) and find the root folder by name
+        const auto itemRootFolderReverseIt = std::find_if(std::rbegin(items), std::rend(items), [&itemRootFolderName](const auto &currentItem) {
+            return currentItem->_file == itemRootFolderName;
+        });
+
+        if (itemRootFolderReverseIt == std::rend(items)) {
+            continue;
+        }
+
+        // #3 convert reverse iterator to normal iterator
+        const auto itemFolderIt = (itemRootFolderReverseIt + 1).base();
+
+        // #4 if the root folder is set to be removed, then we will need to fix this by reuploading every folder in
+        // the tree, including the root
+        if (itemFolderIt == std::end(items)) {
+            continue;
+        }
+
+        auto nextFolderInTreeIt = itemFolderIt;
+        do {
+            // #5 Iterate forward from the CSYNC_INSTRUCTION_NEW folder's root, and make sure every folder in it's tree is set to CSYNC_INSTRUCTION_NEW
+            if ((*nextFolderInTreeIt)->isDirectory()
+                && (*nextFolderInTreeIt)->_instruction == CSYNC_INSTRUCTION_REMOVE
+                && (*nextFolderInTreeIt)->_direction == SyncFileItem::Down
+                && item->_file.startsWith(QString((*nextFolderInTreeIt)->_file) + QLatin1Char('/'))) {
+
+                qCWarning(lcPropagator) << "WARNING: New directory to upload " << item->_file
+                    << "is in the removed directories tree " << (*nextFolderInTreeIt)->_file
+                    << " This should not happen! But, we are going to reupload the entire folder structure.";
+
+                (*nextFolderInTreeIt)->_instruction = CSYNC_INSTRUCTION_NEW;
+                (*nextFolderInTreeIt)->_direction = SyncFileItem::Up;
+            }
+            ++nextFolderInTreeIt;
+        } while (nextFolderInTreeIt != std::end(items) && (*nextFolderInTreeIt)->_file != item->_file);
+    }
+}
+
 qint64 OwncloudPropagator::smallFileSize()
 {
     const qint64 smallFileSize = 100 * 1024; //default to 1 MB. Not dynamic right now.
@@ -447,6 +505,9 @@ void OwncloudPropagator::start(SyncFileItemVector &&items)
         }),
             items.end());
     }
+
+    // process each item that is new and is a directory and make sure every parent in its tree has the instruction NEW instead of REMOVE
+    adjustDeletedFoldersWithNewChildren(items);
 
     resetDelayedUploadTasks();
     _rootJob.reset(new PropagateRootDirectory(this));
