@@ -1,16 +1,9 @@
-Description: Debianize installation folder for kde plugin
- Inside debian we want that the kde plugins are directly found,
- so we need to push them to known places.
-Author: Sandro Knauß <hefee@debian.org>
-Origin: Debian
-Forwarded: not-needed
-Last-Update: 2019-01-15
----
-This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
+diff --git a/shell_integration/dolphin/CMakeLists.txt b/shell_integration/dolphin/CMakeLists.txt
+index 76b6f6ea9..eaf2f51d1 100644
 --- a/shell_integration/dolphin/CMakeLists.txt
 +++ b/shell_integration/dolphin/CMakeLists.txt
-@@ -43,13 +43,14 @@ set(OWNCLOUDDOLPHINHELPER ${APPLICATION_
- add_library(${OWNCLOUDDOLPHINHELPER} SHARED ownclouddolphinpluginhelper.cpp)
+@@ -31,13 +31,14 @@ add_library(${OWNCLOUDDOLPHINHELPER} SHARED
+     ownclouddolphinpluginhelper.cpp)
  target_link_libraries(${OWNCLOUDDOLPHINHELPER} Qt5::Network)
  generate_export_header(${OWNCLOUDDOLPHINHELPER} BASE_NAME ownclouddolphinpluginhelper)
 -install(TARGETS ${OWNCLOUDDOLPHINHELPER} LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
@@ -25,7 +18,7 @@ This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
  
  #---ACTION PLUGIN---
  set(OWNCLOUDDOLPHINACTIONPLUGIN ${APPLICATION_EXECUTABLE}dolphinactionplugin)
-@@ -58,3 +59,4 @@ target_link_libraries(${OWNCLOUDDOLPHINA
+@@ -46,3 +47,4 @@ target_link_libraries(${OWNCLOUDDOLPHINACTIONPLUGIN} KF5::CoreAddons KF5::KIOCor
  configure_file(ownclouddolphinactionplugin.desktop.in ${OWNCLOUDDOLPHINACTIONPLUGIN}.desktop ESCAPE_QUOTES @ONLY)
  install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${OWNCLOUDDOLPHINACTIONPLUGIN}.desktop DESTINATION ${KDE_INSTALL_KSERVICES5DIR})
  install(TARGETS ${OWNCLOUDDOLPHINACTIONPLUGIN} DESTINATION ${KDE_INSTALL_PLUGINDIR})
