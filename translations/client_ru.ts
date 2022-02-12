@@ -922,27 +922,32 @@ This action will abort any currently running synchronization.</source>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="327"/>
-        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="640"/>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="646"/>
         <source>Local file changed during sync.</source>
         <translation>Локальный файл изменился во время синхронизации.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="459"/>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="420"/>
+        <source>Network Error: %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="465"/>
         <source>Error updating metadata: %1</source>
         <translation>Ошибка обновления метаданных: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="462"/>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="468"/>
         <source>The file %1 is currently in use</source>
         <translation>В настоящее время используется файл %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="623"/>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="629"/>
         <source>The local file was removed during sync.</source>
         <translation>Локальный файл был удален во время синхронизации.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="670"/>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="676"/>
         <source>; Restoration Failed: %1</source>
         <translation>; Восстановление не удалось: %1</translation>
     </message>
@@ -3520,7 +3525,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="501"/>
         <source>Server reported no %1</source>
-        <translation>Сервер сообщил об отсутствии % 1</translation>
+        <translation>Сервер сообщил об отсутствии %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="946"/>
