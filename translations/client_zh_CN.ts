@@ -4,7 +4,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="26"/>
         <source>In %1</source>
-        <translation type="unfinished"/>
+        <translation>在 %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="40"/>
@@ -39,7 +39,7 @@
         <location filename="../src/gui/tray/ActivityItemActions.qml" line="77"/>
         <location filename="../src/gui/tray/ActivityItemActions.qml" line="79"/>
         <source>Show more actions</source>
-        <translation type="unfinished"/>
+        <translation>显示更多操作</translation>
     </message>
 </context>
 <context>
@@ -48,12 +48,12 @@
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="90"/>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="92"/>
         <source>Dismiss</source>
-        <translation type="unfinished"/>
+        <translation>忽略</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="121"/>
         <source>Open share dialog</source>
-        <translation type="unfinished"/>
+        <translation>打开共享对话框</translation>
     </message>
 </context>
 <context>
@@ -910,7 +910,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="305"/>
         <source>File %1 has invalid modification time. Do not upload to the server.</source>
-        <translation type="unfinished"/>
+        <translation>文件 %1 修改时间无效。不要上传到服务器。</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="313"/>
@@ -919,27 +919,32 @@ This action will abort any currently running synchronization.</source>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="327"/>
-        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="640"/>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="646"/>
         <source>Local file changed during sync.</source>
         <translation>本地文件在同步时发生变化。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="459"/>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="420"/>
+        <source>Network Error: %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="465"/>
         <source>Error updating metadata: %1</source>
         <translation>更新元数据出错：%1 </translation>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="462"/>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="468"/>
         <source>The file %1 is currently in use</source>
         <translation>文件 %1 在使用中</translation>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="623"/>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="629"/>
         <source>The local file was removed during sync.</source>
         <translation>本地文件在同步时被删除</translation>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="670"/>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="676"/>
         <source>; Restoration Failed: %1</source>
         <translation>; 还原失败：%1</translation>
     </message>
@@ -1130,7 +1135,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="189"/>
         <source>Error while canceling deletion of a file</source>
-        <translation type="unfinished"/>
+        <translation>取消删除一个文件时出错</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="189"/>
@@ -1140,7 +1145,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="190"/>
         <source>Error while canceling deletion of %1</source>
-        <translation type="unfinished"/>
+        <translation>取消删除 %1 时发生错误</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="190"/>
@@ -2384,12 +2389,12 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/internallinkwidget.ui" line="64"/>
         <source>Internal link</source>
-        <translation type="unfinished"/>
+        <translation>内部链接</translation>
     </message>
     <message>
         <location filename="../src/gui/internallinkwidget.ui" line="83"/>
         <source>Only works for users with access to this folder</source>
-        <translation type="unfinished"/>
+        <translation>仅适用于有权限访问此文件夹的用户</translation>
     </message>
 </context>
 <context>
@@ -3376,12 +3381,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/passwordinputdialog.ui" line="23"/>
         <source>Password for share required</source>
-        <translation type="unfinished"/>
+        <translation>需要共享密码</translation>
     </message>
     <message>
         <location filename="../src/gui/passwordinputdialog.ui" line="35"/>
         <source>Please enter a password for your share:</source>
-        <translation type="unfinished"/>
+        <translation>请输入您的共享链接密码：</translation>
     </message>
 </context>
 <context>
@@ -3580,7 +3585,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1136"/>
         <source>Error updating metadata due to invalid modification time</source>
-        <translation type="unfinished"/>
+        <translation>由于修改时间无效，更新元数据时出错</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1136"/>
@@ -3887,7 +3892,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/propagateupload.cpp" line="377"/>
         <location filename="../src/libsync/propagateupload.cpp" line="390"/>
         <source>File %1 has invalid modification time. Do not upload to the server.</source>
-        <translation type="unfinished"/>
+        <translation>文件 %1 修改时间无效。不要上传到服务器。</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="302"/>
@@ -5385,7 +5390,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="72"/>
         <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="82"/>
         <source>Error updating metadata due to invalid modification time</source>
-        <translation type="unfinished"/>
+        <translation>由于修改时间无效，更新元数据时出错</translation>
     </message>
     <message>
         <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="72"/>
@@ -5400,7 +5405,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/vfs/xattr/vfs_xattr.cpp" line="73"/>
         <location filename="../src/libsync/vfs/xattr/vfs_xattr.cpp" line="83"/>
         <source>Error updating metadata due to invalid modification time</source>
-        <translation type="unfinished"/>
+        <translation>由于修改时间无效，更新元数据时出错</translation>
     </message>
     <message>
         <location filename="../src/libsync/vfs/xattr/vfs_xattr.cpp" line="73"/>
@@ -5933,12 +5938,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="697"/>
         <source>Mark as read</source>
-        <translation type="unfinished"/>
+        <translation>标记为已读</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="699"/>
         <source>Reply</source>
-        <translation type="unfinished"/>
+        <translation>回复</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="482"/>
