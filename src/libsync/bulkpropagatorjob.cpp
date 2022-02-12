@@ -417,7 +417,7 @@ void BulkPropagatorJob::slotPutFinished()
         if (!fullReplyObject.contains(singleFile._remotePath)) {
             if (jobError != QNetworkReply::NoError) {
                 singleFile._item->_status = SyncFileItem::NormalError;
-                abortWithError(singleFile._item, SyncFileItem::NormalError, tr("Network Error: %1").arg(jobError));
+                abortWithError(singleFile._item, SyncFileItem::NormalError, tr("Network error: %1").arg(jobError));
             }
             continue;
         }
