@@ -10,11 +10,15 @@ Summary
 
 * Bugfix - Add request time and other missing data to .owncloudsync.log: [#7348](https://github.com/owncloud/client/issues/7348)
 * Bugfix - Fix copy url location for private links: [#9048](https://github.com/owncloud/client/issues/9048)
+* Bugfix - Progress reporting for TUS uploads: [#9121](https://github.com/owncloud/client/issues/9121)
 * Bugfix - Raise ssl issue dialoig above the wizard: [#9375](https://github.com/owncloud/client/pull/9375)
 * Bugfix - Fallback to ownCloud sidebar icons on Mac if none provided in branding: [#9381](https://github.com/owncloud/client/pull/9381)
 * Bugfix - Immediately retry upload if file changed during sync: [#9382](https://github.com/owncloud/client/issues/9382)
 * Bugfix - Don't reset change time on upload: [#9383](https://github.com/owncloud/client/issues/9383)
+* Bugfix - Fix toggling launch-on-login for macOS: [#9387](https://github.com/owncloud/client/issues/9387)
 * Bugfix - Fix translated icon names in desktop file with ownBrander themes: [#9390](https://github.com/owncloud/client/pull/9390)
+* Bugfix - Add open local/remote folder options: [#9405](https://github.com/owncloud/client/issues/9405)
+* Bugfix - Ensure proper setup of network jobs on retries: [#9437](https://github.com/owncloud/client/pull/9437)
 * Bugfix - Fix potential download failure for renamed file with Windows VFS: [#18](https://github.com/owncloud/client-desktop-vfs-win/pull/18)
 * Change - Make sharedialog preview be more resilient: [#8938](https://github.com/owncloud/client/issues/8938)
 * Enhancement - Retry token refresh multiple times before logout: [#9245](https://github.com/owncloud/client/issues/9245)
@@ -35,6 +39,12 @@ Details
    We fixed a bug where a placholder was copied to the clipboard instead of the url.
 
    https://github.com/owncloud/client/issues/9048
+
+* Bugfix - Progress reporting for TUS uploads: [#9121](https://github.com/owncloud/client/issues/9121)
+
+   We fixed a bug with missing progress reporting in TUS uploads
+
+   https://github.com/owncloud/client/issues/9121
 
 * Bugfix - Raise ssl issue dialoig above the wizard: [#9375](https://github.com/owncloud/client/pull/9375)
 
@@ -64,11 +74,33 @@ Details
    https://github.com/owncloud/client/issues/9383
    https://github.com/owncloud/client-desktop-vfs-win/pull/16
 
+* Bugfix - Fix toggling launch-on-login for macOS: [#9387](https://github.com/owncloud/client/issues/9387)
+
+   This would fail when upgrading the application, and the upgraded version has one or more
+   letters in the name changed from/to upper-case.
+
+   https://github.com/owncloud/client/issues/9387
+   https://github.com/owncloud/client/pull/9433
+
 * Bugfix - Fix translated icon names in desktop file with ownBrander themes: [#9390](https://github.com/owncloud/client/pull/9390)
 
    Fixes broken translated icon reference in desktop entries for some branded build themes.
 
    https://github.com/owncloud/client/pull/9390
+
+* Bugfix - Add open local/remote folder options: [#9405](https://github.com/owncloud/client/issues/9405)
+
+   Add the "open local/remote folder" context menu items for non-sync-root items back into the
+   accounts tab in the settings dialog.
+
+   https://github.com/owncloud/client/issues/9405
+   https://github.com/owncloud/client/pull/9420
+
+* Bugfix - Ensure proper setup of network jobs on retries: [#9437](https://github.com/owncloud/client/pull/9437)
+
+   On retries network jobs where not properly setup which could lead to undefined behaviour.
+
+   https://github.com/owncloud/client/pull/9437
 
 * Bugfix - Fix potential download failure for renamed file with Windows VFS: [#18](https://github.com/owncloud/client-desktop-vfs-win/pull/18)
 
