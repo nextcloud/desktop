@@ -12,7 +12,7 @@ jobs:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
         debug-only: false
         exempt-all-milestones: true
-        exempt-issue-labels: "blue-ticket, p1-urgent, p2-high, p3-medium, p4-low"
+        exempt-issue-labels: "blue-ticket, p1-urgent, p2-high, p3-medium, p4-low, QA:team"
         days-before-stale: 30
         stale-issue-message: "This issue was marked stale because it has been open for 30 days with no activity. Remove the stale label or comment or this will be closed in 7 days."
         days-before-close: 7  

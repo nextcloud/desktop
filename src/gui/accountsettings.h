@@ -60,7 +60,6 @@ public:
 
 signals:
     void folderChanged();
-    void openFolderAlias(const QString &);
     void showIssuesList(const QString &folderAlias);
 
 public slots:
@@ -75,8 +74,6 @@ protected slots:
     void slotScheduleCurrentFolderForceFullDiscovery();
     void slotForceSyncCurrentFolder();
     void slotRemoveCurrentFolder();
-    void slotOpenCurrentFolder(); // sync folder
-    void slotOpenCurrentLocalSubFolder(); // selected subfolder in sync folder
     void slotEnableVfsCurrentFolder();
     void slotDisableVfsCurrentFolder();
     void slotSetCurrentFolderAvailability(PinState state);

@@ -102,7 +102,7 @@ protected:
     DetermineAuthTypeJob::AuthType _authType = DetermineAuthTypeJob::AuthType::Unknown;
 
 private:
-    int _tokenRefreshRetriesCount = 0;
+    bool refreshAccessTokenInternal(int tokenRefreshRetriesCount);
     // HttpLegacyCredentials is incompelte
     QPointer<QObject> _credentialMigration;
 };

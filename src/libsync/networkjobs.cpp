@@ -436,14 +436,6 @@ void CheckServerJob::start()
     req.setRawHeader(QByteArrayLiteral("OC-Connection-Validator"), QByteArrayLiteral("desktop"));
     req.setMaximumRedirectsAllowed(_maxRedirectsAllowed);
     sendRequest("GET", Utility::concatUrlPath(_serverUrl, path()), req);
-    connect(reply(), &QNetworkReply::metaDataChanged, this, &CheckServerJob::metaDataChangedSlot);
-    connect(reply(), &QNetworkReply::encrypted, this, &CheckServerJob::encryptedSlot);
-    connect(reply(), &QNetworkReply::redirected, this, [this] {
-        const auto code = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-        if (code == 302 || code == 307) {
-            _redirectDistinct = false;
-        }
-    });
     AbstractNetworkJob::start();
 }
 
@@ -478,6 +470,18 @@ static void mergeSslConfigurationForSslButton(const QSslConfiguration &config, A
 void CheckServerJob::encryptedSlot()
 {
     mergeSslConfigurationForSslButton(reply()->sslConfiguration(), account());
+}
+
+void CheckServerJob::newReplyHook(QNetworkReply *reply)
+{
+    connect(reply, &QNetworkReply::metaDataChanged, this, &CheckServerJob::metaDataChangedSlot);
+    connect(reply, &QNetworkReply::encrypted, this, &CheckServerJob::encryptedSlot);
+    connect(reply, &QNetworkReply::redirected, this, [reply, this] {
+        const auto code = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+        if (code == 302 || code == 307) {
+            _redirectDistinct = false;
+        }
+    });
 }
 
 int CheckServerJob::maxRedirectsAllowed() const
@@ -824,6 +828,11 @@ void SimpleNetworkJob::start()
     AbstractNetworkJob::start();
 }
 
+void SimpleNetworkJob::addNewReplyHook(std::function<void(QNetworkReply *)> &&hook)
+{
+    _replyHooks.push_back(hook);
+}
+
 bool SimpleNetworkJob::finished()
 {
     emit finishedSignal();
@@ -838,6 +847,13 @@ QUrl SimpleNetworkJob::jobUrl() const
     }
     Q_ASSERT(url.isValid());
     return url;
+}
+
+void SimpleNetworkJob::newReplyHook(QNetworkReply *reply)
+{
+    for (const auto &hook : _replyHooks) {
+        hook(reply);
+    }
 }
 
 void fetchPrivateLinkUrl(AccountPtr account, const QString &remotePath, QObject *target,

@@ -37,7 +37,7 @@ def hook(context):
     DEFAULT_CONFIG = {
         'localBackendUrl': 'https://localhost:9200/',
         'secureLocalBackendUrl': 'https://localhost:9200/',
-        'clientSyncTimeout': 60,
+        'clientSyncTimeout': 10,
         'middlewareUrl': 'http://localhost:3000/',
         'clientConfigFile': '-',
         'clientRootSyncPath': '/tmp/client-bdd/',

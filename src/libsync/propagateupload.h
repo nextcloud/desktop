@@ -98,24 +98,9 @@ private:
 
 public:
     explicit PUTFileJob(AccountPtr account, const QString &path, std::unique_ptr<QIODevice> device,
-        const QMap<QByteArray, QByteArray> &headers, int chunk, QObject *parent = nullptr)
-        : AbstractNetworkJob(account, path, parent)
-        , _device(device.release())
-        , _headers(headers)
-        , _chunk(chunk)
-    {
-        _device->setParent(this);
-    }
+        const QMap<QByteArray, QByteArray> &headers, int chunk, QObject *parent = nullptr);
     explicit PUTFileJob(AccountPtr account, const QUrl &url, std::unique_ptr<QIODevice> device,
-        const QMap<QByteArray, QByteArray> &headers, int chunk, QObject *parent = nullptr)
-        : AbstractNetworkJob(account, QString(), parent)
-        , _device(device.release())
-        , _headers(headers)
-        , _url(url)
-        , _chunk(chunk)
-    {
-        _device->setParent(this);
-    }
+        const QMap<QByteArray, QByteArray> &headers, int chunk, QObject *parent = nullptr);
     ~PUTFileJob() override;
 
     int _chunk;
@@ -138,6 +123,9 @@ public:
     {
         return std::chrono::milliseconds(_requestTimer.elapsed());
     }
+
+protected:
+    void newReplyHook(QNetworkReply *reply) override;
 
 signals:
     void finishedSignal();

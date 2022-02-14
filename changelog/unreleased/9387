@@ -1,0 +1,7 @@
+Bugfix: Fix toggling launch-on-login for macOS
+
+This would fail when upgrading the application, and the upgraded version
+has one or more letters in the name changed from/to upper-case.
+
+https://github.com/owncloud/client/issues/9387
+https://github.com/owncloud/client/pull/9433

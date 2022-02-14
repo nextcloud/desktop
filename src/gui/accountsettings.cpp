@@ -243,11 +243,21 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
     const auto removeFolderAction = [this](QMenu *menu) {
         return menu->addAction(tr("Remove folder sync connection"), this, &AccountSettings::slotRemoveCurrentFolder);
     };
+
     QTreeView *tv = ui->_folderList;
     QModelIndex index = tv->indexAt(pos);
     if (!index.isValid()) {
         return;
-    } else if (!_model->data(index, FolderStatusDelegate::IsReady).toBool()) {
+    }
+
+    auto classification = _model->classify(index);
+    if (classification != FolderStatusModel::RootFolder && classification != FolderStatusModel::SubFolder) {
+        return;
+    }
+
+
+    // Only allow removal if the item isn't in "ready" state.
+    if (classification == FolderStatusModel::RootFolder && !_model->data(index, FolderStatusDelegate::IsReady).toBool()) {
         QMenu *menu = new QMenu(tv);
         menu->setAttribute(Qt::WA_DeleteOnClose);
         removeFolderAction(menu);
@@ -255,37 +265,70 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
         return;
     }
 
-    if (_model->classify(index) == FolderStatusModel::SubFolder) {
-        QMenu *menu = new QMenu(tv);
-        menu->setAttribute(Qt::WA_DeleteOnClose);
+    QMenu *menu = new QMenu(tv);
+    menu->setAttribute(Qt::WA_DeleteOnClose);
 
-        QAction *ac = menu->addAction(tr("Open local folder"));
-        connect(ac, &QAction::triggered, this, &AccountSettings::slotOpenCurrentLocalSubFolder);
+    // Add an action to open the folder in the system's file browser:
 
+    QUrl folderUrl;
+    if (classification == FolderStatusModel::SubFolder) {
         QString fileName = _model->data(index, FolderStatusDelegate::FolderPathRole).toString();
-        if (!QFile::exists(fileName)) {
-            ac->setEnabled(false);
+        folderUrl = QUrl::fromLocalFile(fileName);
+    } else {
+        // the root folder
+        auto alias = _model->data(index, FolderStatusDelegate::FolderAliasRole).toString();
+        if (Folder *f = FolderMan::instance()->folder(alias)) {
+            folderUrl = QUrl::fromLocalFile(f->path());
+        }
+    }
+
+    if (!folderUrl.isEmpty()) {
+        QString openLocallyLabel;
+        if (Utility::isWindows()) {
+            openLocallyLabel = tr("Show in Explorer");
+        } else if (Utility::isMac()) {
+            openLocallyLabel = tr("Show in Finder");
+        } else {
+            openLocallyLabel = tr("Show if file manager");
         }
 
-        ac = menu->addAction(tr("Open folder in browser"));
-        auto info = _model->infoForIndex(index);
-        OC_ASSERT(info);
+        QAction *ac = menu->addAction(openLocallyLabel, [folderUrl]() {
+            qCInfo(lcAccountSettings) << "Opening local folder" << folderUrl;
+            if (!QDesktopServices::openUrl(folderUrl)) {
+                qCWarning(lcAccountSettings) << "QDesktopServices::openUrl failed for" << folderUrl;
+            }
+        });
+
+        if (!QFile::exists(folderUrl.toLocalFile())) {
+            ac->setEnabled(false);
+        }
+    }
+
+    // Add an action to open the folder on the server in a webbrowser:
+
+    if (auto info = _model->infoForIndex(index)) {
         QString path = info->_folder->remotePathTrailingSlash();
-        path += info->_path;
-        connect(ac, &QAction::triggered, this, [this, path]{
+        if (classification == FolderStatusModel::SubFolder) {
+            // Only add the path of subfolders, because the remote path is the path of the root folder.
+            path += info->_path;
+        }
+        menu->addAction(tr("Show in Browser"), [this, path] {
             fetchPrivateLinkUrl(_accountState->account(), path, this, [](const QString &url) {
                 Utility::openBrowser(url, nullptr);
             });
         });
+    }
 
+    // For sub-folders we're now done.
 
+    if (_model->classify(index) == FolderStatusModel::SubFolder) {
         menu->popup(QCursor::pos());
         return;
     }
 
-    if (_model->classify(index) != FolderStatusModel::RootFolder) {
-        return;
-    }
+    // Root-folder specific actions:
+
+    menu->addSeparator();
 
     tv->setCurrentIndex(index);
     QString alias = _model->data(index, FolderStatusDelegate::FolderAliasRole).toString();
@@ -293,32 +336,24 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
     bool folderConnected = _model->data(index, FolderStatusDelegate::FolderAccountConnected).toBool();
     auto folderMan = FolderMan::instance();
     QPointer<Folder> folder = folderMan->folder(alias);
-    if (!folder || !OC_ENSURE(folder->isReady()))
-        return;
-
-    QMenu *menu = new QMenu(tv);
-
-    menu->setAttribute(Qt::WA_DeleteOnClose);
-
-    QAction *ac = menu->addAction(tr("Open folder"));
-    connect(ac, &QAction::triggered, this, &AccountSettings::slotOpenCurrentFolder);
+    OC_ASSERT(folder && folder->isReady());
 
     if (!ui->_folderList->isExpanded(index) && folder->supportsSelectiveSync()) {
-        ac = menu->addAction(tr("Choose what to sync"));
+        QAction *ac = menu->addAction(tr("Choose what to sync"));
         ac->setEnabled(folderConnected);
         connect(ac, &QAction::triggered, this, &AccountSettings::doExpand);
     }
 
     if (!folderPaused) {
-        ac = menu->addAction(tr("Force sync now"));
-        if (folder && folder->isSyncRunning()) {
+        QAction *ac = menu->addAction(tr("Force sync now"));
+        if (folder->isSyncRunning()) {
             ac->setText(tr("Restart sync"));
         }
         ac->setEnabled(folderConnected);
         connect(ac, &QAction::triggered, this, &AccountSettings::slotForceSyncCurrentFolder);
     }
 
-    ac = menu->addAction(folderPaused ? tr("Resume sync") : tr("Pause sync"));
+    QAction *ac = menu->addAction(folderPaused ? tr("Resume sync") : tr("Pause sync"));
     connect(ac, &QAction::triggered, this, &AccountSettings::slotEnableCurrentFolder);
 
     removeFolderAction(menu);
@@ -501,24 +536,6 @@ void AccountSettings::slotRemoveCurrentFolder()
         messageBox->open();
         ownCloudGui::raiseDialog(messageBox);
     }
-}
-
-void AccountSettings::slotOpenCurrentFolder()
-{
-    auto alias = selectedFolderAlias();
-    if (!alias.isEmpty()) {
-        emit openFolderAlias(alias);
-    }
-}
-
-void AccountSettings::slotOpenCurrentLocalSubFolder()
-{
-    QModelIndex selected = ui->_folderList->selectionModel()->currentIndex();
-    if (!selected.isValid() || _model->classify(selected) != FolderStatusModel::SubFolder)
-        return;
-    QString fileName = _model->data(selected, FolderStatusDelegate::FolderPathRole).toString();
-    QUrl url = QUrl::fromLocalFile(fileName);
-    QDesktopServices::openUrl(url);
 }
 
 void AccountSettings::slotEnableVfsCurrentFolder()

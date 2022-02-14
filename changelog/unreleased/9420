@@ -1,0 +1,7 @@
+Bugfix: add open local/remote folder options
+
+Add the "open local/remote folder" context menu items for non-sync-root
+items back into the accounts tab in the settings dialog.
+
+https://github.com/owncloud/client/issues/9405
+https://github.com/owncloud/client/pull/9420

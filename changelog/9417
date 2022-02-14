@@ -1,0 +1,5 @@
+Bugfix: Fix possible crash
+
+We change the initialisation of a Windows icon to prevent a possible crash.
+
+https://github.com/owncloud/client/issues/9417

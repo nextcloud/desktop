@@ -149,13 +149,14 @@ void PropagateUploadFileTUS::startNextChunk()
                                   << "Chunk:" << chunkSize << chunkSize / (_item->_size + 1) * 100;
 
     _jobs.append(job);
-    connect(job->reply(), &QNetworkReply::uploadProgress, device, &UploadDevice::slotJobUploadProgress);
-    connect(job->reply(), &QNetworkReply::uploadProgress, this,[this](qint64 bytesSent, qint64){
-       propagator()->reportProgress(*_item, _currentOffset + bytesSent);
-
-    });
     connect(job, &SimpleNetworkJob::finishedSignal, this, &PropagateUploadFileTUS::slotChunkFinished);
-    connect(job, &QObject::destroyed, this, &PropagateUploadFileCommon::slotJobDestroyed);
+    connect(job, &SimpleNetworkJob::destroyed, this, &PropagateUploadFileCommon::slotJobDestroyed);
+    job->addNewReplyHook([device, this](QNetworkReply *reply) {
+        connect(reply, &QNetworkReply::uploadProgress, device, &UploadDevice::slotJobUploadProgress);
+        connect(reply, &QNetworkReply::uploadProgress, this, [this](qint64 bytesSent, qint64) {
+            propagator()->reportProgress(*_item, _currentOffset + bytesSent);
+        });
+    });
     job->start();
 }
 
@@ -251,6 +252,7 @@ void PropagateUploadFileTUS::slotChunkFinished()
         check->start();
         return;
     }
+    _item->_remotePerm = RemotePermissions::fromServerString(QString::fromUtf8(job->reply()->rawHeader("Oc-Perm")));
     // the file id should only be empty for new files up- or downloaded
     finalize(etag, job->reply()->rawHeader("OC-FileID"));
 }

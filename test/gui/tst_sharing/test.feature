@@ -7,6 +7,7 @@ Feature: Sharing
 
     Background:
         Given user "Alice" has been created on the server with default attributes and without skeleton files
+        And the setting "shareapi_auto_accept_share" on the server of app "core" has been set to "yes"
 
     @smokeTest
     Scenario: simple sharing with user
@@ -18,6 +19,27 @@ Feature: Sharing
         And the user adds "Brian Murphy" as collaborator of resource "simple-folder" with permissions "edit,share" using the client-UI
         Then user "Brian Murphy" should be listed in the collaborators list for file "textfile0.txt" with permissions "edit,share" on the client-UI
         And user "Brian Murphy" should be listed in the collaborators list for file "simple-folder" with permissions "edit,share" on the client-UI
+        And as "Brian" folder "simple-folder" should exist on the server
+        And as "Brian" file "textfile0.txt" should exist on the server
+
+
+    Scenario: sharing file and folder with user who has some other shares
+        Given user "Brian" has been created on the server with default attributes and without skeleton files
+        And user "Alice" has created folder "shared" on the server
+        And user "Alice" has created folder "simple-folder" on the server
+        And user "Alice" has uploaded file with content "ownCloud test text file" to "textfile.txt" on the server
+        And user "Alice" has uploaded file with content "shared file" to "sharedfile.txt" on the server
+        And user "Alice" has shared folder "shared" on the server with user "Brian" with "all" permissions
+        And user "Alice" has shared file "sharedfile.txt" on the server with user "Brian" with "all" permissions
+        And user "Alice" has set up a client with default settings
+        When the user adds "Brian Murphy" as collaborator of resource "textfile.txt" with permissions "edit,share" using the client-UI
+        And the user adds "Brian Murphy" as collaborator of resource "simple-folder" with permissions "edit,share" using the client-UI
+        Then user "Brian Murphy" should be listed in the collaborators list for file "textfile.txt" with permissions "edit,share" on the client-UI
+        And user "Brian Murphy" should be listed in the collaborators list for file "simple-folder" with permissions "edit,share" on the client-UI
+        And as "Brian" folder "shared" should exist on the server
+        And as "Brian" file "sharedfile.txt" should exist on the server
+        And as "Brian" folder "simple-folder" should exist on the server
+        And as "Brian" file "textfile.txt" should exist on the server
 
 
     Scenario: sharing file/folder with a user that has special characters as username
@@ -30,6 +52,8 @@ Feature: Sharing
         And the user adds "Speci@l_Name-.+" as collaborator of resource "FOLDER" with permissions "edit,share" using the client-UI
         Then user "Speci@l_Name-.+" should be listed in the collaborators list for file "textfile.txt" with permissions "edit,share" on the client-UI
         And user "Speci@l_Name-.+" should be listed in the collaborators list for file "FOLDER" with permissions "edit,share" on the client-UI
+        And as "Speci@l_Name-.+" folder "FOLDER" should exist on the server
+        And as "Speci@l_Name-.+" file "textfile.txt" should exist on the server
 
 
     Scenario: Share files/folders with special characters in their name
@@ -41,23 +65,36 @@ Feature: Sharing
         And the user adds "Brian Murphy" as collaborator of resource "$ample1?.txt" with permissions "edit,share" using the client-UI
         Then user "Brian Murphy" should be listed in the collaborators list for file "SampleFolder,With,$pecial?Characters" with permissions "edit,share" on the client-UI
         And user "Brian Murphy" should be listed in the collaborators list for file "$ample1?.txt" with permissions "edit,share" on the client-UI
+        And as "Brian" folder "SampleFolder,With,$pecial?Characters" should exist on the server
+        And as "Brian" file "$ample1?.txt" should exist on the server
 
 
-    Scenario: try to share a file with a user to whom the file has already been shared
+    Scenario: try to share a file/folder with a user to whom the file has already been shared
         Given user "Brian" has been created on the server with default attributes and without skeleton files
+        And user "Alice" has created folder "SharedFolder" on the server
         And user "Alice" has uploaded file with content "ownCloud test text file" to "/textfile.txt" on the server
+        And user "Alice" has shared folder "SharedFolder" on the server with user "Brian" with "all" permissions
         And user "Alice" has shared file "textfile.txt" on the server with user "Brian" with "all" permissions
         And user "Alice" has set up a client with default settings
         When the user opens the sharing dialog of "textfile.txt" using the client-UI
         And the user searches for collaborator "Brian Murphy" using the client-UI
         Then the error "No results for 'Brian Murphy'" should be displayed
+        When the user closes the sharing dialog
+        And the user opens the sharing dialog of "SharedFolder" using the client-UI
+        And the user searches for collaborator "Brian Murphy" using the client-UI
+        Then the error "No results for 'Brian Murphy'" should be displayed
 
 
-    Scenario: try to self share a file
+    Scenario: try to self share a file/folder
         Given user "Alice" has uploaded file with content "ownCloud test text file" to "/textfile.txt" on the server
+        And user "Alice" has created folder "OwnFolder" on the server
         And user "Alice" has set up a client with default settings
         When the user opens the sharing dialog of "textfile.txt" using the client-UI
         And the user selects "Alice Hansen" as collaborator of resource "textfile.txt" using the client-UI
+        Then the error "Can't share with yourself" should be displayed
+        When the user closes the sharing dialog
+        And the user opens the sharing dialog of "OwnFolder" using the client-UI
+        And the user selects "Alice Hansen" as collaborator of resource "OwnFolder" using the client-UI
         Then the error "Can't share with yourself" should be displayed
 
 
@@ -77,16 +114,24 @@ Feature: Sharing
     Scenario: collaborators are listed in chronological order
         Given user "Brian" has been created on the server with default attributes and without skeleton files
         And user "Carol" has been created on the server with default attributes and without skeleton files
+        And user "TestUser1" has been created on the server with default attributes and without skeleton files
+        And user "TestUser2" has been created on the server with default attributes and without skeleton files
+        And user "TestUser3" has been created on the server with default attributes and without skeleton files
         And user "Alice" has uploaded file with content "ownCloud test text file" to "textfile.txt" on the server
         And user "Alice" has shared file "textfile.txt" on the server with user "Carol" with "all" permissions
         And user "Alice" has shared file "textfile.txt" on the server with user "Brian" with "all" permissions
+        And user "Alice" has shared file "textfile.txt" on the server with user "TestUser1" with "all" permissions
+        And user "Alice" has shared file "textfile.txt" on the server with user "TestUser3" with "all" permissions
+        And user "Alice" has shared file "textfile.txt" on the server with user "TestUser2" with "all" permissions
         And user "Alice" has set up a client with default settings
         When the user opens the sharing dialog of "textfile.txt" using the client-UI
         Then the collaborators should be listed in the following order:
             | collaborator |
             | Carol King   |
             | Brian Murphy |
-
+            | TestUser1    |
+            | TestUser3    |
+            | TestUser2    |
 
     @issue-7459
     Scenario: Progress indicator should not be visible after unselecting the password protection checkbox while sharing through public link
@@ -98,44 +143,107 @@ Feature: Sharing
         Then the password progress indicator should not be visible in the client-UI - expected to fail
 
 
-    Scenario: Collaborator should not see to whom a file is shared.
+    Scenario: Collaborator should not see to whom a file/folder is shared.
         Given user "Brian" has been created on the server with default attributes and without skeleton files
         And user "Alice" has uploaded file with content "ownCloud test text file 0" to "/textfile0.txt" on the server
+        And user "Alice" has created folder "Folder" on the server
         And user "Alice" has shared file "/textfile0.txt" on the server with user "Brian" with "read, share" permission
+        And user "Alice" has shared folder "Folder" on the server with user "Brian" with "read, share" permission
         And user "Brian" has set up a client with default settings
         When the user opens the sharing dialog of "textfile0.txt" using the client-UI
         Then the error text "The item is not shared with any users or groups" should be displayed in the sharing dialog
+        When the user closes the sharing dialog
+        And the user opens the sharing dialog of "Folder" using the client-UI
+        Then the error text "The item is not shared with any users or groups" should be displayed in the sharing dialog
 
 
-    Scenario: Group sharing
+    Scenario: share file and folder to a group
         Given group "grp1" has been created on the server
+        And user "Brian" has been created on the server with default attributes and without skeleton files
+        And user "Brian" has been added to group "grp1" on the server
         And user "Alice" has uploaded file with content "ownCloud test text file 0" to "/textfile0.txt" on the server
+        And user "Alice" has created folder "simple-folder" on the server
         And user "Alice" has set up a client with default settings
         When the user adds group "grp1" as collaborator of resource "textfile0.txt" with permissions "edit,share" using the client-UI
         Then group "grp1" should be listed in the collaborators list for file "textfile0.txt" with permissions "edit,share" on the client-UI
+        When the user adds group "grp1" as collaborator of resource "simple-folder" with permissions "edit,share" using the client-UI
+        Then group "grp1" should be listed in the collaborators list for file "simple-folder" with permissions "edit,share" on the client-UI
+        And as "Brian" folder "simple-folder" should exist on the server
+        And as "Brian" file "textfile0.txt" should exist on the server
 
 
-    Scenario: User (non-author) can not share to a group to which the file is already shared
+    Scenario: User (non-author) can not share to a group to which the file/folder is already shared
         Given user "Brian" has been created on the server with default attributes and without skeleton files
         And group "grp1" has been created on the server
         And user "Brian" on the server has been added to group "grp1"
         And user "Alice" has uploaded file with content "ownCloud test text file 0" to "/textfile0.txt" on the server
+        And user "Alice" has created folder "Folder" on the server
         And user "Alice" has shared file "/textfile0.txt" on the server with user "Brian" with "read, share, update" permission
+        And user "Alice" has shared folder "Folder" on the server with user "Brian" with "read, share, update" permission
         And user "Alice" has shared file "/textfile0.txt" on the server with group "grp1" with "read, share, update" permission
+        And user "Alice" has shared folder "Folder" on the server with group "grp1" with "read, share, update" permission
         And user "Brian" has set up a client with default settings
         When the user tires to share resource "textfile0.txt" with the group "grp1" using the client-UI
         Then the error "Path already shared with this group" should be displayed
+        When the user closes the sharing dialog
+        And the user tires to share resource "Folder" with the group "grp1" using the client-UI
+        Then the error "Path already shared with this group" should be displayed
 
 
-    Scenario: sharee edits content of a file inside of a shared folder shared by sharer
+    Scenario: sharee edits content of files shared by sharer
         Given user "Alice" has created folder "simple-folder" on the server
-        And user "Alice" has uploaded file with content "ownCloud test text file 0" to "simple-folder/textfile.txt" on the server
+        And user "Alice" has uploaded file with content "file inside a folder" to "simple-folder/textfile.txt" on the server
+        And user "Alice" has uploaded file with content "file in the root" to "textfile.txt" on the server
         And user "Brian" has been created on the server with default attributes and without skeleton files
         And user "Alice" has shared folder "simple-folder" on the server with user "Brian" with "all" permissions
+        And user "Alice" has shared file "textfile.txt" on the server with user "Brian" with "all" permissions
         And user "Brian" has set up a client with default settings
-        When the user overwrites the file "simple-folder/textfile.txt" with content "overwrite ownCloud test text file"
-        Then as "Brian" the file "simple-folder/textfile.txt" on the server should have the content "overwrite ownCloud test text file"
-        And as "Alice" the file "simple-folder/textfile.txt" on the server should have the content "overwrite ownCloud test text file"
+        When the user overwrites the file "textfile.txt" with content "overwrite file in the root"
+        And the user overwrites the file "simple-folder/textfile.txt" with content "overwrite file inside a folder"
+        Then as "Brian" the file "simple-folder/textfile.txt" on the server should have the content "overwrite file inside a folder"
+        And as "Brian" the file "textfile.txt" on the server should have the content "overwrite file in the root"
+        And as "Alice" the file "simple-folder/textfile.txt" on the server should have the content "overwrite file inside a folder"
+        And as "Alice" the file "textfile.txt" on the server should have the content "overwrite file in the root"
+
+
+    Scenario: sharee tries to edit content of files shared without write permission
+        Given user "Alice" has created folder "Parent" on the server
+        And user "Alice" has uploaded file with content "file inside a folder" to "Parent/textfile.txt" on the server
+        And user "Alice" has uploaded file with content "file in the root" to "textfile.txt" on the server
+        And user "Brian" has been created on the server with default attributes and without skeleton files
+        And user "Alice" has shared folder "Parent" on the server with user "Brian" with "read" permissions
+        And user "Alice" has shared file "textfile.txt" on the server with user "Brian" with "read" permissions
+        And user "Brian" has set up a client with default settings
+        When the user tries to overwrite the file "Parent/textfile.txt" with content "overwrite file inside a folder"
+        And the user tries to overwrite the file "textfile.txt" with content "overwrite file in the root"
+        Then as "Brian" the file "Parent/textfile.txt" on the server should have the content "file inside a folder"
+        And as "Brian" the file "textfile.txt" on the server should have the content "file in the root"
+        And as "Alice" the file "Parent/textfile.txt" on the server should have the content "file inside a folder"
+        And as "Alice" the file "textfile.txt" on the server should have the content "file in the root"
+
+
+    Scenario: sharee edits shared files and again try to edit after write permission is revoked
+        Given user "Alice" has uploaded file with content "ownCloud test text file" to "textfile.txt" on the server
+        And user "Alice" has created folder "FOLDER" on the server
+        And user "Alice" has uploaded file with content "some content" to "FOLDER/simple.txt" on the server
+        And user "Brian" has been created on the server with default attributes and without skeleton files
+        And user "Alice" has shared file "textfile.txt" on the server with user "Brian" with "all" permissions
+        And user "Alice" has shared folder "FOLDER" on the server with user "Brian" with "all" permissions
+        And user "Brian" has set up a client with default settings
+        When the user waits for the files to sync
+        And the user adds another account with
+            | server   | %local_server% |
+            | user     | Alice          |
+            | password | 1234           |
+        And the user removes permissions "edit" for user "Brian Murphy" of resource "textfile.txt" using the client-UI
+        And the user closes the sharing dialog
+        And the user removes permissions "edit" for user "Brian Murphy" of resource "FOLDER" using the client-UI
+        And user "Brian" tries to overwrite the file "textfile.txt" with content "overwrite ownCloud test text file"
+        And user "Brian" tries to overwrite the file "FOLDER/simple.txt" with content "overwrite some content"
+        Then as "Brian" the file "textfile.txt" on the server should have the content "ownCloud test text file"
+        And as "Brian" the file "FOLDER/simple.txt" on the server should have the content "some content"
+        And as "Alice" the file "textfile.txt" on the server should have the content "ownCloud test text file"
+        And as "Alice" the file "FOLDER/simple.txt" on the server should have the content "some content"
 
 
     Scenario: sharee creates a file and a folder inside a shared folder
@@ -155,37 +263,6 @@ Feature: Sharing
         And as "Brian" folder "Parent/localFolder" should exist on the server
         And as "Alice" file "Parent/localFile.txt" should exist on the server
         And as "Alice" folder "Parent/localFolder" should exist on the server
-
-
-    Scenario: sharee tries to edit content of a file inside of a shared folder without write permission
-        Given user "Alice" has created folder "Parent" on the server
-        And user "Alice" has uploaded file with content "ownCloud test text file" to "Parent/textfile.txt" on the server
-        And user "Brian" has been created on the server with default attributes and without skeleton files
-        And user "Alice" has shared folder "Parent" on the server with user "Brian" with "read" permissions
-        And user "Brian" has set up a client with default settings
-        When the user tries to overwrite the file "Parent/textfile.txt" with content "overwrite ownCloud test text file"
-        Then as "Brian" the file "Parent/textfile.txt" on the server should have the content "ownCloud test text file"
-        And as "Alice" the file "Parent/textfile.txt" on the server should have the content "ownCloud test text file"
-
-
-    Scenario: sharee edits content of a file shared by sharer
-        Given user "Alice" has uploaded file with content "ownCloud test text file 0" to "textfile.txt" on the server
-        And user "Brian" has been created on the server with default attributes and without skeleton files
-        And user "Alice" has shared file "textfile.txt" on the server with user "Brian" with "all" permissions
-        And user "Brian" has set up a client with default settings
-        When the user overwrites the file "textfile.txt" with content "overwrite ownCloud test text file"
-        Then as "Brian" the file "textfile.txt" on the server should have the content "overwrite ownCloud test text file"
-        And as "Alice" the file "textfile.txt" on the server should have the content "overwrite ownCloud test text file"
-
-
-    Scenario: sharee tries to edit a file shared without write permission
-        Given user "Brian" has been created on the server with default attributes and without skeleton files
-        And user "Alice" has uploaded file with content "ownCloud test text file" to "textfile.txt" on the server
-        And user "Alice" has shared file "textfile.txt" on the server with user "Brian" with "read" permissions
-        And user "Brian" has set up a client with default settings
-        When the user tries to overwrite the file "textfile.txt" with content "overwrite ownCloud test text file"
-        Then as "Brian" the file "textfile.txt" on the server should have the content "ownCloud test text file"
-        And as "Alice" the file "textfile.txt" on the server should have the content "ownCloud test text file"
 
 
     Scenario: reshare a file/folder

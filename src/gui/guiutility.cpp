@@ -45,30 +45,39 @@ Q_LOGGING_CATEGORY(lcGuiUtility, "gui.utility", QtInfoMsg)
 
 using namespace OCC;
 
+#ifdef Q_OS_WIN
 namespace {
 
-#ifdef Q_OS_WIN
 // TODO: 2.11 move to the new Platform class
 struct
 {
     HANDLE windowMessageWatcherEvent = CreateEventW(nullptr, true, false, nullptr);
     bool windowMessageWatcherRun = true;
+    std::thread *watcherThread = nullptr;
 } watchWMCtx;
+}
 
-void startShutdownWatcher()
+void Utility::startShutdownWatcher()
 {
+    if (watchWMCtx.watcherThread) {
+        return;
+    }
     // Qt only receives window message if a window was displayed at least once
     // create an invisible window to handle WM_ENDSESSION
     // We also block a system shutdown until we are properly shutdown our selfs
     // In the unlikely case that we require more than 5s Windows will require a fullscreen message
     // with our icon, title and the reason why we are blocking the shutdown.
-    new std::thread([] {
+
+    // ensure to initialise the icon in the main thread
+    HICON icon = {};
+    if (qobject_cast<QGuiApplication *>(qApp)) {
+        icon = QtWin::toHICON(Theme::instance()->applicationIcon().pixmap(64, 64));
+    }
+    watchWMCtx.watcherThread = new std::thread([icon] {
         WNDCLASS wc = {};
         wc.hInstance = GetModuleHandle(nullptr);
         wc.lpszClassName = L"ocWindowMessageWatcher";
-        if (qobject_cast<QGuiApplication *>(qApp)) {
-            wc.hIcon = QtWin::toHICON(Theme::instance()->applicationIcon().pixmap(64, 64));
-        }
+        wc.hIcon = icon;
         wc.lpfnWndProc = [](HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) -> LRESULT {
             //            qDebug() << MSG { hwnd, msg, wParam, lParam, 0, {} };
             if (msg == WM_QUERYENDSESSION) {
@@ -116,9 +125,8 @@ void startShutdownWatcher()
         SetEvent(watchWMCtx.windowMessageWatcherEvent);
     });
 }
-Q_COREAPP_STARTUP_FUNCTION(startShutdownWatcher);
 #endif
-}
+
 
 bool Utility::openBrowser(const QUrl &url, QWidget *errorWidgetParent)
 {

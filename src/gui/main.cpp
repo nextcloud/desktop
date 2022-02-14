@@ -54,6 +54,8 @@ int main(int argc, char **argv)
 
     Utility::tweakUIStyle();
 
+    // TODO: 2.11 move to platform class
+    Utility::startShutdownWatcher();
     // if handleStartup returns true, main()
     // needs to terminate here, e.g. because
     // the updater is triggered
