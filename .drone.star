@@ -188,7 +188,7 @@ def build_and_test_client(ctx, c_compiler, cxx_compiler, build_type, generator, 
 def gui_tests(ctx, trigger = {}, depends_on = [], filterTags = [], version = "daily-master-qa"):
     pipeline_name = "GUI-tests"
     build_dir = "build-" + pipeline_name
-    squish_parameters = "--retry 1 --reportgen stdout --reportgen json,/drone/src/test/guiTestReport --tags ~@skip"
+    squish_parameters = "--retry 1 --reportgen stdout --reportgen json,/drone/src/test/guiTestReport --envvar QT_LOGGING_RULES=sync.httplogger=true;gui.socketapi=false --tags ~@skip"
 
     if (len(filterTags) > 0):
         for tags in filterTags:
