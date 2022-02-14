@@ -61,6 +61,11 @@ namespace Utility {
 
     QString socketApiSocketPath();
 
+#ifdef Q_OS_WIN
+    // utility thread that takes care of proper Windows logout handling
+    void startShutdownWatcher();
+#endif
+
 } // namespace Utility
 } // namespace OCC
 

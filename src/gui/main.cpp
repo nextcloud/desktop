@@ -54,8 +54,10 @@ int main(int argc, char **argv)
 
     Utility::tweakUIStyle();
 
+#ifdef Q_OS_WIN
     // TODO: 2.11 move to platform class
     Utility::startShutdownWatcher();
+#endif
     // if handleStartup returns true, main()
     // needs to terminate here, e.g. because
     // the updater is triggered
