@@ -8,6 +8,7 @@ Feature: deleting files and folders
 	Background:
         Given user "Alice" has been created on the server with default attributes and without skeleton files
 
+    @skip @issue-9439
     Scenario Outline: Delete a file
         Given user "Alice" has uploaded file with content "ownCloud test text file 0" to "<fileName>" on the server
         And user "Alice" has set up a client with default settings
@@ -19,7 +20,7 @@ Feature: deleting files and folders
             | textfile0.txt                               |
             | textfile0-with-name-more-than-20-characters |
 
-
+    @skip @issue-9439
     Scenario Outline: Delete a folder
         Given user "Alice" has created folder "<folderName>" on the server
         And user "Alice" has set up a client with default settings

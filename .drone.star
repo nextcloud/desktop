@@ -5,6 +5,8 @@
 # with a specific compiler.
 #
 
+OC_TESTING_MIDDLEWARE = "owncloud/owncloud-test-middleware:1.3.1"
+
 dir = {
     "base": "/drone",
 }
@@ -186,7 +188,7 @@ def build_and_test_client(ctx, c_compiler, cxx_compiler, build_type, generator, 
 def gui_tests(ctx, trigger = {}, depends_on = [], filterTags = [], version = "daily-master-qa"):
     pipeline_name = "GUI-tests"
     build_dir = "build-" + pipeline_name
-    squish_parameters = "--retry 1 --reportgen stdout --reportgen json,/drone/src/test/guiTestReport --tags ~@skip"
+    squish_parameters = "--retry 1 --reportgen stdout --reportgen json,/drone/src/test/guiTestReport --envvar QT_LOGGING_RULES=sync.httplogger=true;gui.socketapi=false --tags ~@skip"
 
     if (len(filterTags) > 0):
         for tags in filterTags:
@@ -232,11 +234,15 @@ def gui_tests(ctx, trigger = {}, depends_on = [], filterTags = [], version = "da
                      },
                  ] +
                  showGuiTestResult(),
-        "services": testMiddleware() +
+        "services": testMiddlewareService() +
                     owncloudService() +
                     databaseService(),
         "trigger": trigger,
         "depends_on": depends_on,
+        "volumes": [{
+            "name": "uploads",
+            "temp": {},
+        }],
     }
 
 def build_client(ctx, c_compiler, cxx_compiler, build_type, generator, build_command, build_dir):
@@ -484,23 +490,22 @@ def owncloudService():
         ],
     }]
 
-def testMiddleware():
+def testMiddlewareService():
+    environment = {
+        "BACKEND_HOST": "http://owncloud",
+        "NODE_TLS_REJECT_UNAUTHORIZED": "0",
+        "MIDDLEWARE_HOST": "testmiddleware",
+        "REMOTE_UPLOAD_DIR": "/uploads",
+    }
+
     return [{
         "name": "testmiddleware",
-        "image": "owncloudci/nodejs:14",
-        "pull": "always",
-        "environment": {
-            "MIDDLEWARE_HOST": "testmiddleware",
-            "BACKEND_HOST": "http://owncloud",
-        },
-        "commands": [
-            ". ./.drone.env",
-            "git clone https://github.com/owncloud/owncloud-test-middleware.git /drone/src/middleware",
-            "cd /drone/src/middleware",
-            "git checkout $MIDDLEWARE_COMMITID",
-            "yarn install",
-            "yarn start",
-        ],
+        "image": OC_TESTING_MIDDLEWARE,
+        "environment": environment,
+        "volumes": [{
+            "name": "uploads",
+            "path": "/uploads",
+        }],
     }]
 
 def owncloudLog():
