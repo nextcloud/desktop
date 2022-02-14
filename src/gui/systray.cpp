@@ -308,15 +308,11 @@ void Systray::forceWindowInit(QQuickWindow *window) const
 
 QScreen *Systray::currentScreen() const
 {
-    const auto screens = QGuiApplication::screens();
-    const auto cursorPos = QCursor::pos();
+    const auto screen = QGuiApplication::screenAt(QCursor::pos());
 
-    for (const auto screen : screens) {
-        if (screen->geometry().contains(cursorPos)) {
-            return screen;
-        }
+    if(screen) {
+        return screen;
     }
-
     // Didn't find anything matching the cursor position,
     // falling back to the primary screen
     return QGuiApplication::primaryScreen();
