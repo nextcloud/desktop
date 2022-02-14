@@ -386,8 +386,7 @@ Feature: Sharing
         Then as user "Alice" the file "textfile0.txt" should have a public link on the server
         And the public should be able to download the file "textfile0.txt" with password "password1234" from the last created public link by "Alice" on the server
 
-
-
+    @skip @issue-9430
     Scenario: simple sharing of a file by public link with password and expiration date
         Given user "Alice" has set up a client with default settings
         And user "Alice" has uploaded file with content "ownCloud test text file" to "/textfile.txt" on the server
@@ -396,7 +395,7 @@ Feature: Sharing
             | password   | pass123      |
             | expireDate | 2031-10-14   |
         Then as user "Alice" the file "textfile.txt" should have a public link on the server
-        And the fields of the last public link share response of user "Alice" should include on the server
+        And the last public link share response of user "Alice" should include the following fields on the server
             | expireDate | 2031-10-14 |
         And the public should be able to download the file "textfile.txt" with password "pass123" from the last created public link by "Alice" on the server
 
@@ -412,7 +411,7 @@ Feature: Sharing
         When the user opens the public links dialog of "textfile0.txt" using the client-UI
         And the user edits the public link named "Public link" of file "textfile0.txt" changing following
             | expireDate | 2038-07-21 |
-        Then the fields of the last public link share response of user "Alice" should include on the server
+        Then the last public link share response of user "Alice" should include the following fields on the server
             | expireDate | 2038-07-21 |
 
     @smokeTest
