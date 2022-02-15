@@ -54,4 +54,13 @@ UpdateUrlDialog::UpdateUrlDialog(const QString &title, const QString &content, c
     addButton(tr("Reject"), QMessageBox::RejectRole);
 }
 
+UpdateUrlDialog *UpdateUrlDialog::fromAccount(AccountPtr account, const QUrl &newUrl, QWidget *parent)
+{
+    return new UpdateUrlDialog(
+        tr("Url update requested for %1").arg(account->displayName()),
+        tr("The url for %1 changed from %2 to %3, do you want to accept the changed url?").arg(account->displayName(), account->url().toString(), newUrl.toString()),
+        account->url(),
+        newUrl,
+        parent);
+}
 }

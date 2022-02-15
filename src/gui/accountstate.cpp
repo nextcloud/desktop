@@ -53,12 +53,7 @@ UpdateUrlDialog *AccountState::updateUrlDialog(const QUrl &newUrl)
         return nullptr;
     }
 
-    _updateUrlDialog = new UpdateUrlDialog(
-        tr("Url update requested for %1").arg(_account->displayName()),
-        tr("The url for %1 changed from %2 to %3, do you want to accept the changed url?").arg(_account->displayName(), _account->url().toString(), newUrl.toString()),
-        _account->url(),
-        newUrl,
-        ocApp()->activeWindow());
+    _updateUrlDialog = UpdateUrlDialog::fromAccount(_account, newUrl, ocApp()->activeWindow());
 
     connect(_updateUrlDialog, &UpdateUrlDialog::accepted, this, [=]() {
         _account->setUrl(newUrl);

@@ -14,6 +14,8 @@
 
 #pragma once
 
+#include "account.h"
+
 #include <QMessageBox>
 #include <QUrl>
 #include <QWidget>
@@ -30,6 +32,9 @@ class UpdateUrlDialog : public QMessageBox
 {
     Q_OBJECT
 public:
+    static UpdateUrlDialog *fromAccount(AccountPtr account, const QUrl &newUrl, QWidget *parent = nullptr);
+
+private:
     explicit UpdateUrlDialog(const QString &title, const QString &content, const QUrl &oldUrl, const QUrl &newUrl, QWidget *parent = nullptr);
 
 private:
