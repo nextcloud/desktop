@@ -1283,3 +1283,20 @@ def step(context):
 @Then('VFS enabled baseline image should not match the default screenshot')
 def step(context):
     test.xvp("VP_VFS_enabled")
+
+
+@Given('user "|any|" has created the following files inside the sync folder:')
+def step(context, username):
+    '''
+    Create files without any content
+    '''
+    syncPath = getUserSyncPath(context, username)
+
+    # A file is scheduled to be synced but is marked as ignored for 5 seconds. And if we try to sync it, it will fail. So we need to wait for 5 seconds.
+    # https://github.com/owncloud/client/issues/9325
+    snooze(5)
+
+    for row in context.table[1:]:
+        filename = syncPath + row[0]
+        f = open(join(syncPath, filename), "w")
+        f.close()
