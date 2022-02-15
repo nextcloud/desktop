@@ -929,6 +929,11 @@ Denne handling vil annullere alle i øjeblikket kørende synkroniseringer.</tran
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="420"/>
+        <source>Network error: %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="420"/>
         <source>Network Error: %1</source>
         <translation type="unfinished"/>
     </message>
