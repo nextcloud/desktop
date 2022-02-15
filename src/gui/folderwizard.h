@@ -60,10 +60,16 @@ public:
     void cleanupPage() override;
 
     void setFolderMap(const Folder::Map &fm) { _folderMap = fm; }
+
+protected:
+    void changeEvent(QEvent *) override;
+
 protected slots:
     void slotChooseLocalFolder();
 
 private:
+    void changeStyle();
+
     Ui_FolderWizardSourcePage _ui;
     Folder::Map _folderMap;
     AccountPtr _account;

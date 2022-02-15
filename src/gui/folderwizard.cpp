@@ -77,6 +77,8 @@ FolderWizardLocalPath::FolderWizardLocalPath(const AccountPtr &account)
 
     _ui.warnLabel->setTextFormat(Qt::RichText);
     _ui.warnLabel->hide();
+
+    changeStyle();
 }
 
 FolderWizardLocalPath::~FolderWizardLocalPath() = default;
@@ -139,6 +141,31 @@ void FolderWizardLocalPath::slotChooseLocalFolder()
         _ui.localFolderLineEdit->setText(QDir::toNativeSeparators(dir));
     }
     emit completeChanged();
+}
+
+
+void FolderWizardLocalPath::changeEvent(QEvent *e)
+{
+    switch (e->type()) {
+    case QEvent::StyleChange:
+    case QEvent::PaletteChange:
+    case QEvent::ThemeChange:
+        // Notify the other widgets (Dark-/Light-Mode switching)
+        changeStyle();
+        break;
+    default:
+        break;
+    }
+
+    FormatWarningsWizardPage::changeEvent(e);
+}
+
+void FolderWizardLocalPath::changeStyle()
+{
+    const auto warnYellow = Theme::isDarkColor(QGuiApplication::palette().base().color()) ? QColor(63, 63, 0) : QColor(255, 255, 192);
+    auto modifiedPalette = _ui.warnLabel->palette();
+    modifiedPalette.setColor(QPalette::Window, warnYellow);
+    _ui.warnLabel->setPalette(modifiedPalette);
 }
 
 // =================================================================================
