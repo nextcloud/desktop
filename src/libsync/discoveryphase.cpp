@@ -203,6 +203,17 @@ QPair<bool, QByteArray> DiscoveryPhase::findAndCancelDeletedJob(const QString &o
     return { result, oldEtag };
 }
 
+void DiscoveryPhase::enqueueDirectoryToDelete(const QString &path, ProcessDirectoryJob* const directoryJob)
+{
+    _queuedDeletedDirectories[path] = directoryJob;
+
+    if (directoryJob->_dirItem && directoryJob->_dirItem->_isRestoration
+        && directoryJob->_dirItem->_direction == SyncFileItem::Down
+        && directoryJob->_dirItem->_instruction == CSYNC_INSTRUCTION_NEW) {
+        _directoryNamesToRestoreOnPropagation.push_back(path);
+    }
+}
+
 void DiscoveryPhase::startJob(ProcessDirectoryJob *job)
 {
     ENFORCE(!_currentRootJob);

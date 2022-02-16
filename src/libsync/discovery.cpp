@@ -1295,8 +1295,11 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             chopVirtualFileSuffix(serverOriginalPath);
         auto job = new RequestEtagJob(_discoveryData->_account, serverOriginalPath, this);
         connect(job, &RequestEtagJob::finishedWithResult, this, [=](const HttpResult<QByteArray> &etag) mutable {
-            if (!etag || (etag.get() != base._etag && !item->isDirectory()) || _discoveryData->isRenamed(originalPath)) {
-                qCInfo(lcDisco) << "Can't rename because the etag has changed or the directory is gone" << originalPath;
+            
+
+            if (!etag || (etag.get() != base._etag && !item->isDirectory()) || _discoveryData->isRenamed(originalPath)
+                || (isAnyParentBeingRestored(originalPath) && !isRename(originalPath))) {
+                qCInfo(lcDisco) << "Can't rename because the etag has changed or the directory is gone or we are restoring one of the file's parents." << originalPath;
                 // Can't be a rename, leave it as a new.
                 postProcessLocalNew();
             } else {
@@ -1436,7 +1439,7 @@ void ProcessDirectoryJob::processFileFinalize(
         job->setInsideEncryptedTree(isInsideEncryptedTree() || item->_isEncrypted);
         if (removed) {
             job->setParent(_discoveryData);
-            _discoveryData->_queuedDeletedDirectories[path._original] = job;
+            _discoveryData->enqueueDirectoryToDelete(path._original, job);
         } else {
             connect(job, &ProcessDirectoryJob::finished, this, &ProcessDirectoryJob::subJobFinished);
             _queuedJobs.push_back(job);
@@ -1550,7 +1553,8 @@ bool ProcessDirectoryJob::checkPermissions(const OCC::SyncFileItemPtr &item)
             // No permissions set
             return true;
         }
-        if (!perms.hasPermission(RemotePermissions::CanDelete)) {
+        if (!perms.hasPermission(RemotePermissions::CanDelete) || isAnyParentBeingRestored(item->_file))
+        {
             item->_instruction = CSYNC_INSTRUCTION_NEW;
             item->_direction = SyncFileItem::Down;
             item->_isRestoration = true;
@@ -1566,6 +1570,35 @@ bool ProcessDirectoryJob::checkPermissions(const OCC::SyncFileItemPtr &item)
     return true;
 }
 
+bool ProcessDirectoryJob::isAnyParentBeingRestored(const QString &file) const
+{
+    for (const auto &directoryNameToRestore : _discoveryData->_directoryNamesToRestoreOnPropagation) {
+        if (file.startsWith(QString(directoryNameToRestore + QLatin1Char('/')))) {
+            qCWarning(lcDisco) << "File" << file << " is within the tree that's being restored" << directoryNameToRestore;
+            return true;
+        }
+    }
+    return false;
+}
+
+bool ProcessDirectoryJob::isRename(const QString &originalPath) const
+{
+    return (originalPath.startsWith(_currentFolder._original)
+        && originalPath.lastIndexOf('/') == _currentFolder._original.size());
+
+    /* TODO: This was needed at some point to cover an edge case which I am no longer to reproduce and it might no longer be the case.
+    *  Still, leaving this here just in case the edge case is caught at some point in future.
+    * 
+    OCC::SyncJournalFileRecord base;
+    // are we allowed to rename?
+    if (!_discoveryData || !_discoveryData->_statedb || !_discoveryData->_statedb->getFileRecord(originalPath, &base)) {
+        return false;
+    }
+    qCWarning(lcDisco) << "isRename from" << originalPath << " to" << targetPath << " :"
+                       << base._remotePerm.hasPermission(RemotePermissions::CanRename);
+    return base._remotePerm.hasPermission(RemotePermissions::CanRename);
+    */
+}
 
 auto ProcessDirectoryJob::checkMovePermissions(RemotePermissions srcPerm, const QString &srcPath,
                                                bool isDirectory)
