@@ -930,7 +930,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="420"/>
         <source>Network error: %1</source>
-        <translation type="unfinished"/>
+        <translation>網路錯誤：%1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="420"/>

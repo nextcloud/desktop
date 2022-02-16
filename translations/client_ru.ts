@@ -39,7 +39,7 @@
         <location filename="../src/gui/tray/ActivityItemActions.qml" line="77"/>
         <location filename="../src/gui/tray/ActivityItemActions.qml" line="79"/>
         <source>Show more actions</source>
-        <translation type="unfinished"/>
+        <translation>Показывать больше действий</translation>
     </message>
 </context>
 <context>
@@ -48,12 +48,12 @@
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="90"/>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="92"/>
         <source>Dismiss</source>
-        <translation type="unfinished"/>
+        <translation>Отказать</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="121"/>
         <source>Open share dialog</source>
-        <translation type="unfinished"/>
+        <translation>Открыть диалоговое окно общего доступа</translation>
     </message>
 </context>
 <context>
@@ -929,12 +929,12 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="420"/>
         <source>Network error: %1</source>
-        <translation type="unfinished"/>
+        <translation>Сетевая ошибка: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="420"/>
         <source>Network Error: %1</source>
-        <translation type="unfinished"/>
+        <translation>Сетевая ошибка: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="465"/>
@@ -5956,12 +5956,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="697"/>
         <source>Mark as read</source>
-        <translation type="unfinished"/>
+        <translation>Отметить как прочитанное</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="699"/>
         <source>Reply</source>
-        <translation type="unfinished"/>
+        <translation>Ответить</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="482"/>
