@@ -279,16 +279,16 @@ Feature: Syncing files
 
     Scenario: Invalid system names are synced in linux
         Given user "Alice" has set up a client with default settings
-        And user "Alice" has created folder "COM" on the server
+        And user "Alice" has created folder "CON" on the server
         And user "Alice" has created folder "test%" on the server
         And user "Alice" has uploaded file on the server with content "server content" to "/PRN"
         And user "Alice" has uploaded file on the server with content "server content" to "/foo%"
         When the user waits for the files to sync
-        Then the folder "COM" should exist on the file system
+        Then the folder "CON" should exist on the file system
         And the folder "test%" should exist on the file system
         And the file "PRN" should exist on the file system
         And the file "foo%" should exist on the file system
-        And as "Alice" folder "COM" should exist on the server
+        And as "Alice" folder "CON" should exist on the server
         And as "Alice" folder "test%" should exist on the server
         And as "Alice" file "/PRN" should exist on the server
         And as "Alice" file "/foo%" should exist on the server
