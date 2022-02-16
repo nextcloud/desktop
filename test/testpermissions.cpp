@@ -216,13 +216,10 @@ private slots:
         currentLocalState = fakeFolder.currentLocalState();
         QVERIFY(currentLocalState.find("readonlyDirectory_PERM_M_/cannotBeRemoved_PERM_WVN_.data"));
         QVERIFY(currentLocalState.find("readonlyDirectory_PERM_M_/subdir_PERM_CK_"));
-        // the subdirectory had delete permissions, so the contents were deleted
-        QVERIFY(!currentLocalState.find("readonlyDirectory_PERM_M_/subdir_PERM_CK_/subsubdir_PERM_CKDNV_"));
+        // the subdirectory had delete permissions, but, it was within the recovered directory, so must also get recovered
+        QVERIFY(currentLocalState.find("readonlyDirectory_PERM_M_/subdir_PERM_CK_/subsubdir_PERM_CKDNV_"));
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
-        // restore
-        fakeFolder.remoteModifier().mkdir("readonlyDirectory_PERM_M_/subdir_PERM_CK_/subsubdir_PERM_CKDNV_");
-        fakeFolder.remoteModifier().insert("readonlyDirectory_PERM_M_/subdir_PERM_CK_/subsubdir_PERM_CKDNV_/normalFile_PERM_WVND_.data");
         applyPermissionsFromName(fakeFolder.remoteModifier());
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
@@ -499,15 +496,51 @@ private slots:
         lm.rename("changeonly/sub2/filetorname2a", "changeonly/sub2/aaa2_renamed");
         lm.rename("changeonly/sub2/filetorname2z", "changeonly/sub2/zzz2_renamed");
 
-        lm.rename("changeonly/sub1", "changeonly/aaa");
-        lm.rename("changeonly/sub2", "changeonly/zzz");
-
-
         auto expectedState = fakeFolder.currentLocalState();
 
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), expectedState);
         QCOMPARE(fakeFolder.currentRemoteState(), expectedState);
+
+        lm.rename("changeonly/sub1", "changeonly/aaa");
+        lm.rename("changeonly/sub2", "changeonly/zzz");
+
+        expectedState = fakeFolder.currentLocalState();
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), expectedState);
+        QCOMPARE(fakeFolder.currentRemoteState(), expectedState);
+    }
+
+    void testParentMoveNotAllowedChildrenRestored()
+    {
+        FakeFolder fakeFolder{FileInfo{}};
+        auto &lm = fakeFolder.localModifier();
+        auto &rm = fakeFolder.remoteModifier();
+        rm.mkdir("forbidden-move");
+        rm.mkdir("forbidden-move/sub1");
+        rm.insert("forbidden-move/sub1/file1.txt", 100);
+        rm.mkdir("forbidden-move/sub2");
+        rm.insert("forbidden-move/sub2/file2.txt", 100);
+
+        rm.find("forbidden-move")->permissions = RemotePermissions::fromServerString("WNCK");
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        lm.rename("forbidden-move", "forbidden-move-new");
+
+        QVERIFY(fakeFolder.syncOnce());
+
+        // verify that original folder did not get wiped (files are still there)
+        QVERIFY(fakeFolder.currentRemoteState().find("forbidden-move/sub1/file1.txt"));
+        QVERIFY(fakeFolder.currentRemoteState().find("forbidden-move/sub2/file2.txt"));
+
+        // verify that the duplicate folder has been created when trying to rename a folder that has its move permissions forbidden
+        QVERIFY(fakeFolder.currentRemoteState().find("forbidden-move-new/sub1/file1.txt"));
+        QVERIFY(fakeFolder.currentRemoteState().find("forbidden-move-new/sub2/file2.txt"));
+
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
     }
 };
 
