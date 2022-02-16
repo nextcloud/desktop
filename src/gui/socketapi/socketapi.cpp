@@ -341,7 +341,10 @@ void SocketApi::slotReadSocket()
     while (socket->canReadLine()) {
         // Make sure to normalize the input from the socket to
         // make sure that the path will match, especially on OS X.
-        const QString line = QString::fromUtf8(socket->readLine().trimmed()).normalized(QString::NormalizationForm_C);
+        QString line = QString::fromUtf8(socket->readLine()).normalized(QString::NormalizationForm_C);
+        // Note: do NOT use QString::trimmed() here! That will also remove any trailing spaces (which _are_ part of the filename)!
+        line.chop(1); // remove the '\n'
+
         qCInfo(lcSocketApi) << "Received SocketAPI message <--" << line << "from" << socket;
         const int argPos = line.indexOf(QLatin1Char(':'));
         const QByteArray command = line.midRef(0, argPos).toUtf8().toUpper();

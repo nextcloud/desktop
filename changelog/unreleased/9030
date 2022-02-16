@@ -1,0 +1,4 @@
+Bugfix: Do not strip trailing whitespace from a file or folder name
+
+https://github.com/owncloud/client/issues/9030
+https://github.com/owncloud/client/pull/9452
