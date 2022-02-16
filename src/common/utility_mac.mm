@@ -103,7 +103,8 @@ bool Utility::hasLaunchOnStartup(const QString &appName)
                         // ... and yes, it's the correct app-id...
                         if (id program = plist[@"Program"]) {
                             // .. and there is a program mentioned ...
-                            if ([QCoreApplication::applicationFilePath().toNSString() isEqualToString:program]) {
+                            // (Note: case insensitive compare, because most fs setups on mac are case insensitive)
+                            if ([QCoreApplication::applicationFilePath().toNSString() compare:program options:NSCaseInsensitiveSearch] == NSOrderedSame) {
                                 // ... and it's our executable ..
                                 if (NSNumber *value = plist[@"RunAtLoad"]) {
                                     // yes, there is even a RunAtLoad key, so use it!
@@ -189,7 +190,7 @@ void Utility::setLaunchOnStartup(const QString &appName, const QString &guiName,
                 if (!result) {
                     qCWarning(lcUtility) << result.error();
                 }
-            } else if ([fullPath isEqualToString:programValue]) {
+            } else if ([fullPath compare:programValue options:NSCaseInsensitiveSearch] == NSOrderedSame) { // (Note: case insensitive compare, because most fs setups on mac are case insensitive)
                 // Wohoo, it's ours! Now carefully change only the RunAtLoad entry. If any value for
                 // e.g. KeepAlive was changed, we leave it as-is.
                 auto result = modifyPlist(plistFile, plist, enable);
