@@ -177,44 +177,6 @@ private:
 #endif
 
 /**
- * @brief Send a Proppatch request
- *
- * Setting the desired properties with setProperties() is mandatory.
- *
- * WARNING: Untested!
- *
- * @ingroup libsync
- */
-class OWNCLOUDSYNC_EXPORT ProppatchJob : public AbstractNetworkJob
-{
-    Q_OBJECT
-public:
-    explicit ProppatchJob(AccountPtr account, const QString &path, QObject *parent = nullptr);
-    void start() override;
-
-    /**
-     * Used to specify which properties shall be set.
-     *
-     * The property keys can
-     *  - contain no colon: they refer to a property in the DAV: namespace
-     *  - contain a colon: and thus specify an explicit namespace,
-     *    e.g. "ns:with:colons:bar", which is "bar" in the "ns:with:colons" namespace
-     */
-    void setProperties(QMap<QByteArray, QByteArray> properties);
-    QMap<QByteArray, QByteArray> properties() const;
-
-signals:
-    void success();
-    void finishedWithError();
-
-private slots:
-    bool finished() override;
-
-private:
-    QMap<QByteArray, QByteArray> _properties;
-};
-
-/**
  * @brief The MkColJob class
  * @ingroup libsync
  */

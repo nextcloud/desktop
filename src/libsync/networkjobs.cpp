@@ -49,7 +49,6 @@ Q_LOGGING_CATEGORY(lcCheckServerJob, "sync.networkjob.checkserver", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcPropfindJob, "sync.networkjob.propfind", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcAvatarJob, "sync.networkjob.avatar", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcMkColJob, "sync.networkjob.mkcol", QtInfoMsg)
-Q_LOGGING_CATEGORY(lcProppatchJob, "sync.networkjob.proppatch", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcDetermineAuthTypeJob, "sync.networkjob.determineauthtype", QtInfoMsg)
 
 QByteArray parseEtag(const QByteArray &header)
@@ -637,81 +636,6 @@ bool AvatarJob::finished()
 #endif
 
 /*********************************************************************************************/
-
-ProppatchJob::ProppatchJob(AccountPtr account, const QString &path, QObject *parent)
-    : AbstractNetworkJob(account, path, parent)
-{
-}
-
-void ProppatchJob::start()
-{
-    if (_properties.isEmpty()) {
-        qCWarning(lcProppatchJob) << "Proppatch with no properties!";
-    }
-    QNetworkRequest req;
-
-    QByteArray propStr;
-    QMapIterator<QByteArray, QByteArray> it(_properties);
-    while (it.hasNext()) {
-        it.next();
-        QByteArray keyName = it.key();
-        QByteArray keyNs;
-        if (keyName.contains(':')) {
-            int colIdx = keyName.lastIndexOf(":");
-            keyNs = keyName.left(colIdx);
-            keyName = keyName.mid(colIdx + 1);
-        }
-
-        propStr += "    <" + keyName;
-        if (!keyNs.isEmpty()) {
-            propStr += " xmlns=\"" + keyNs + "\" ";
-        }
-        propStr += ">";
-        propStr += it.value();
-        propStr += "</" + keyName + ">\n";
-    }
-    QByteArray xml = "<?xml version=\"1.0\" ?>\n"
-                     "<d:propertyupdate xmlns:d=\"DAV:\">\n"
-                     "  <d:set><d:prop>\n"
-        + propStr + "  </d:prop></d:set>\n"
-                    "</d:propertyupdate>\n";
-
-    QBuffer *buf = new QBuffer(this);
-    buf->setData(xml);
-    buf->open(QIODevice::ReadOnly);
-    sendRequest("PROPPATCH", makeDavUrl(path()), req, buf);
-    AbstractNetworkJob::start();
-}
-
-void ProppatchJob::setProperties(QMap<QByteArray, QByteArray> properties)
-{
-    _properties = properties;
-}
-
-QMap<QByteArray, QByteArray> ProppatchJob::properties() const
-{
-    return _properties;
-}
-
-bool ProppatchJob::finished()
-{
-    qCInfo(lcProppatchJob) << "PROPPATCH of" << reply()->request().url() << "FINISHED WITH STATUS"
-                           << replyStatusString();
-
-    int http_result_code = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-
-    if (http_result_code == 207) {
-        emit success();
-    } else {
-        qCWarning(lcProppatchJob) << "*not* successful, http result code is" << http_result_code
-                                  << (http_result_code == 302 ? reply()->header(QNetworkRequest::LocationHeader).toString() : QLatin1String(""));
-        emit finishedWithError();
-    }
-    return true;
-}
-
-/*********************************************************************************************/
-
 EntityExistsJob::EntityExistsJob(AccountPtr account, const QString &path, QObject *parent)
     : AbstractNetworkJob(account, path, parent)
 {
