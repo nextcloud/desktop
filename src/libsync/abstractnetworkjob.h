@@ -194,7 +194,6 @@ private:
     QNetworkRequest _request;
     QByteArray _verb;
     QPointer<QNetworkReply> _reply; // (QPointer because the NetworkManager may be destroyed before the jobs at exit)
-    int _http2ResendCount = 0;
 
     // Set by the xyzRequest() functions and needed to be able to redirect
     // requests, should it be required.

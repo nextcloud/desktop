@@ -156,6 +156,9 @@ bool AbstractNetworkJob::needsRetry() const
                 return true;
             }
         }
+        if (_reply->error() == QNetworkReply::ContentReSendError && _reply->attribute(QNetworkRequest::Http2WasUsedAttribute).toBool()) {
+            return true;
+        }
     }
     return false;
 }
@@ -194,35 +197,6 @@ void AbstractNetworkJob::slotFinished()
     if (_reply->error() == QNetworkReply::SslHandshakeFailedError) {
         qCWarning(lcNetworkJob) << "SslHandshakeFailedError:" << errorString() << ": can be caused by a webserver wanting SSL client certificates";
     }
-    // Qt doesn't yet transparently resend HTTP2 requests, do so here
-    const auto maxHttp2Resends = 3;
-    QByteArray verb = HttpLogger::requestVerb(*reply());
-    if (_reply->error() == QNetworkReply::ContentReSendError
-        && _reply->attribute(QNetworkRequest::Http2WasUsedAttribute).toBool()) {
-        if ((_requestBody && !_requestBody->isSequential()) || verb.isEmpty()) {
-            qCWarning(lcNetworkJob) << "Can't resend HTTP2 request, verb or body not suitable"
-                                    << _reply->request().url() << verb << _requestBody;
-        } else if (_http2ResendCount >= maxHttp2Resends) {
-            qCWarning(lcNetworkJob) << "Not resending HTTP2 request, number of resends exhausted"
-                                    << _reply->request().url() << _http2ResendCount;
-        } else {
-            qCInfo(lcNetworkJob) << "HTTP2 resending" << _reply->request().url();
-            _http2ResendCount++;
-
-            if (_requestBody) {
-                if (!_requestBody->isOpen())
-                    _requestBody->open(QIODevice::ReadOnly);
-                _requestBody->seek(0);
-            }
-            // TODO: use retry
-            sendRequest(
-                verb,
-                _reply->request(),
-                _requestBody);
-            return;
-        }
-    }
-
     if (_reply->error() != QNetworkReply::NoError) {
         if (_account->jobQueue()->retry(this)) {
             qCDebug(lcNetworkJob) << "Queuing: " << _reply->url() << " for retry";
@@ -386,7 +360,14 @@ void AbstractNetworkJob::retry()
     _retryCount++;
     qCInfo(lcNetworkJob) << "Restarting" << _verb << _request.url() << "for the" << _retryCount << "time";
     if (_requestBody) {
-        _requestBody->seek(0);
+        if (_requestBody->isSequential()) {
+            Q_ASSERT(_requestBody->isOpen());
+            _requestBody->seek(0);
+        } else {
+            qCWarning(lcNetworkJob) << "Can't resend request, body not suitable" << this;
+            abort();
+            return;
+        }
     }
     sendRequest(_verb, _request, _requestBody);
 }

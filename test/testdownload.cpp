@@ -245,7 +245,7 @@ private slots:
 
         QSignalSpy completeSpy(&fakeFolder.syncEngine(), &SyncEngine::itemCompleted);
         QVERIFY(!fakeFolder.syncOnce());
-        QCOMPARE(resendActual, 4); // the 4th fails because it only resends 3 times
+        QCOMPARE(resendActual, 6); // AbstractNetworkJob::MaxRetryCount + 1
         QCOMPARE(getItem(completeSpy, "A/resendme")->_status, SyncFileItem::NormalError);
         QVERIFY(getItem(completeSpy, "A/resendme")->_errorString.contains(serverMessage));
     }
