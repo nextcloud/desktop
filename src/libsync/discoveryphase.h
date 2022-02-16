@@ -114,7 +114,7 @@ class DiscoverySingleDirectoryJob : public QObject
 {
     Q_OBJECT
 public:
-    explicit DiscoverySingleDirectoryJob(const AccountPtr &account, const QString &path, QObject *parent = nullptr);
+    explicit DiscoverySingleDirectoryJob(const AccountPtr &account, const QUrl &baseUrl, const QString &path, QObject *parent = nullptr);
     // Specify that this is the root and we need to check the data-fingerprint
     void setIsRootPath() { _isRootPath = true; }
     void start();
@@ -136,6 +136,7 @@ private:
     QString _subPath;
     QByteArray _firstEtag;
     AccountPtr _account;
+    const QUrl _baseUrl;
     // The first result is for the directory itself and need to be ignored.
     // This flag is true if it was already ignored.
     bool _ignoredFirst;
@@ -237,10 +238,17 @@ class DiscoveryPhase : public QObject
 
 public:
     // input
+    DiscoveryPhase(const AccountPtr &account, const QUrl &baseUrl, QObject *parent = nullptr)
+        : QObject(parent)
+        , _account(account)
+        , _baseUrl(baseUrl)
+    {
+    }
+    AccountPtr _account;
+    const QUrl _baseUrl;
     QString _localDir; // absolute path to the local directory. ends with '/'
     QString _remoteFolder; // remote folder, ends with '/'
     SyncJournalDb *_statedb;
-    AccountPtr _account;
     SyncOptions _syncOptions;
     ExcludedFiles *_excludes;
     QRegExp _invalidFilenameRx; // FIXME: maybe move in ExcludedFiles

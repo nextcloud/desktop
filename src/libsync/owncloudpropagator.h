@@ -367,7 +367,7 @@ public:
     bool _finishedEmited; // used to ensure that finished is only emitted once
 
 public:
-    OwncloudPropagator(AccountPtr account, const QString &localDir,
+    OwncloudPropagator(AccountPtr account, const QUrl &baseUrl, const QString &localDir,
         const QString &remoteFolder, SyncJournalDb *progressDb)
         : _journal(progressDb)
         , _finishedEmited(false)
@@ -375,6 +375,7 @@ public:
         , _anotherSyncNeeded(false)
         , _chunkSize(10 * 1000 * 1000) // 10 MB, overridden in setSyncOptions
         , _account(account)
+        , _webDavUrl(baseUrl)
         , _localDir((localDir.endsWith(QLatin1Char('/'))) ? localDir : localDir + QLatin1Char('/'))
         , _remoteFolder((remoteFolder.endsWith(QLatin1Char('/'))) ? remoteFolder : remoteFolder + QLatin1Char('/'))
     {
@@ -472,6 +473,11 @@ public:
 
     AccountPtr account() const;
 
+    QUrl webDavUrl() const
+    {
+        return _webDavUrl;
+    }
+
     enum DiskSpaceResult {
         DiskSpaceOk,
         DiskSpaceFailure,
@@ -561,6 +567,7 @@ private:
 
     const QString _localDir; // absolute path to the local directory. ends with '/'
     const QString _remoteFolder; // remote folder, ends with '/'
+    const QUrl _webDavUrl; // full webdav url, might be the same as in the account
 };
 
 /**

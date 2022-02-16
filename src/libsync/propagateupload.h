@@ -93,14 +93,11 @@ private:
     QIODevice *_device;
     QMap<QByteArray, QByteArray> _headers;
     QString _errorString;
-    QUrl _url;
     QElapsedTimer _requestTimer;
 
 public:
-    explicit PUTFileJob(AccountPtr account, const QString &path, std::unique_ptr<QIODevice> device,
-        const QMap<QByteArray, QByteArray> &headers, int chunk, QObject *parent = nullptr);
-    explicit PUTFileJob(AccountPtr account, const QUrl &url, std::unique_ptr<QIODevice> device,
-        const QMap<QByteArray, QByteArray> &headers, int chunk, QObject *parent = nullptr);
+    explicit PUTFileJob(AccountPtr account, const QUrl &url, const QString &path, std::unique_ptr<QIODevice> device,
+        const HeaderMap &headers, int chunk, QObject *parent = nullptr);
     ~PUTFileJob() override;
 
     int _chunk;
@@ -347,10 +344,10 @@ private:
     QVector<UploadRangeInfo> _rangesToUpload;
 
     /**
-     * Return the URL of a chunk.
+     * Return the path of a chunk.
      * If chunkOffset == -1, returns the URL of the parent folder containing the chunks
      */
-    QUrl chunkUrl(qint64 chunkOffset = -1);
+    QString chunkPath(qint64 chunkOffset = -1);
 
     /**
      * Finds the range starting at 'start' in _rangesToUpload and removes the first

@@ -78,9 +78,10 @@ static const std::chrono::milliseconds s_touchedFilesMaxAgeMs(3 * 1000);
 // doc in header
 std::chrono::milliseconds SyncEngine::minimumFileAgeForUpload(2000);
 
-SyncEngine::SyncEngine(AccountPtr account, const QString &localPath,
+SyncEngine::SyncEngine(AccountPtr account, const QUrl &baseUrl, const QString &localPath,
     const QString &remotePath, OCC::SyncJournalDb *journal)
     : _account(account)
+    , _baseUrl(baseUrl)
     , _needsUpdate(false)
     , _syncRunning(false)
     , _localPath(localPath)
@@ -246,8 +247,7 @@ void SyncEngine::deleteStaleUploadInfos(const SyncFileItemSet &syncItems)
         for (auto transferId : ids) {
             if (!transferId)
                 continue; // Was not a chunked upload
-            QUrl url = Utility::concatUrlPath(account()->url(), QLatin1String("remote.php/dav/uploads/") + account()->davUser() + QLatin1Char('/') + QString::number(transferId));
-            (new DeleteJob(account(), url, this))->start();
+            (new DeleteJob(account(), account()->url(), QLatin1String("remote.php/dav/uploads/") + account()->davUser() + QLatin1Char('/') + QString::number(transferId), this))->start();
         }
     }
 }
@@ -464,8 +464,7 @@ void SyncEngine::startSync()
 
     // TODO: add a constructor to DiscoveryPhase
     // pass a syncEngine object rather than copying everyhting to another object
-    _discoveryPhase.reset(new DiscoveryPhase);
-    _discoveryPhase->_account = _account;
+    _discoveryPhase.reset(new DiscoveryPhase(_account, _baseUrl));
     _discoveryPhase->_excludes = _excludedFiles.data();
     _discoveryPhase->_statedb = _journal;
     _discoveryPhase->_localDir = _localPath;
@@ -661,8 +660,7 @@ void SyncEngine::slotDiscoveryFinished()
         // do a database commit
         _journal->commit(QStringLiteral("post treewalk"));
 
-        _propagator = QSharedPointer<OwncloudPropagator>(
-            new OwncloudPropagator(_account, _localPath, _remotePath, _journal));
+        _propagator = QSharedPointer<OwncloudPropagator>::create(_account, _baseUrl, _localPath, _remotePath, _journal);
         _propagator->setSyncOptions(_syncOptions);
         connect(_propagator.data(), &OwncloudPropagator::itemCompleted,
             this, &SyncEngine::slotItemCompleted);

@@ -108,7 +108,7 @@ void DiscoveryPhase::checkSelectiveSyncNewFolder(const QString &path, RemotePerm
     }
 
     // do a PROPFIND to know the size of this folder
-    auto propfindJob = new PropfindJob(_account, _remoteFolder + path, this);
+    auto propfindJob = new PropfindJob(_account, _baseUrl, _remoteFolder + path, this);
     propfindJob->setProperties(QList<QByteArray>() << "resourcetype"
                                                    << "http://owncloud.org/ns:size");
     QObject::connect(propfindJob, &PropfindJob::finishedWithError,
@@ -247,7 +247,11 @@ void DiscoveryPhase::scheduleMoreJobs()
 }
 
 DiscoverySingleLocalDirectoryJob::DiscoverySingleLocalDirectoryJob(const AccountPtr &account, const QString &localPath, OCC::Vfs *vfs, QObject *parent)
- : QObject(parent), QRunnable(), _localPath(localPath), _account(account), _vfs(vfs)
+    : QObject(parent)
+    , QRunnable()
+    , _localPath(localPath)
+    , _account(account)
+    , _vfs(vfs)
 {
     qRegisterMetaType<QVector<LocalInfo> >("QVector<LocalInfo>");
 }
@@ -330,9 +334,10 @@ void DiscoverySingleLocalDirectoryJob::run() {
     emit finished(results);
 }
 
-DiscoverySingleDirectoryJob::DiscoverySingleDirectoryJob(const AccountPtr &account, const QString &path, QObject *parent)
+DiscoverySingleDirectoryJob::DiscoverySingleDirectoryJob(const AccountPtr &account, const QUrl &baseUrl, const QString &path, QObject *parent)
     : QObject(parent)
     , _subPath(path)
+    , _baseUrl(baseUrl)
     , _account(account)
     , _ignoredFirst(false)
     , _isRootPath(false)
@@ -343,7 +348,7 @@ DiscoverySingleDirectoryJob::DiscoverySingleDirectoryJob(const AccountPtr &accou
 void DiscoverySingleDirectoryJob::start()
 {
     // Start the actual HTTP job
-    LsColJob *lsColJob = new LsColJob(_account, _subPath, this);
+    LsColJob *lsColJob = new LsColJob(_account, _baseUrl, _subPath, this);
 
     QList<QByteArray> props;
     props << "resourcetype"

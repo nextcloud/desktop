@@ -59,7 +59,7 @@ class OWNCLOUDSYNC_EXPORT SyncEngine : public QObject
 {
     Q_OBJECT
 public:
-    SyncEngine(AccountPtr account, const QString &localPath,
+    SyncEngine(AccountPtr account, const QUrl &baseUrl, const QString &localPath,
         const QString &remotePath, SyncJournalDb *journal);
     ~SyncEngine() override;
 
@@ -229,6 +229,7 @@ private:
     SyncFileItemSet _syncItems;
 
     AccountPtr _account;
+    const QUrl _baseUrl;
     bool _needsUpdate;
     bool _syncRunning;
     QString _localPath;

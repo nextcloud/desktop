@@ -70,8 +70,8 @@ QByteArray parseEtag(const QByteArray &header)
     return arr;
 }
 
-RequestEtagJob::RequestEtagJob(AccountPtr account, const QString &path, QObject *parent)
-    : AbstractNetworkJob(account, path, parent)
+RequestEtagJob::RequestEtagJob(AccountPtr account, const QUrl &rootUrl, const QString &path, QObject *parent)
+    : AbstractNetworkJob(account, rootUrl, path, parent)
 {
 }
 
@@ -90,7 +90,7 @@ void RequestEtagJob::start()
     buf->setData(xml);
     buf->open(QIODevice::ReadOnly);
     // assumes ownership
-    sendRequest("PROPFIND", makeDavUrl(path()), req, buf);
+    sendRequest("PROPFIND", req, buf);
     AbstractNetworkJob::start();
 }
 
@@ -130,15 +130,9 @@ bool RequestEtagJob::finished()
 
 /*********************************************************************************************/
 
-MkColJob::MkColJob(AccountPtr account, const QString &path, QObject *parent)
-    : AbstractNetworkJob(account, path, parent)
-{
-}
-
-MkColJob::MkColJob(AccountPtr account, const QUrl &url,
+MkColJob::MkColJob(AccountPtr account, const QUrl &url, const QString &path,
     const QMap<QByteArray, QByteArray> &extraHeaders, QObject *parent)
-    : AbstractNetworkJob(account, QString(), parent)
-    , _url(url)
+    : AbstractNetworkJob(account, url, path, parent)
     , _extraHeaders(extraHeaders)
 {
 }
@@ -153,11 +147,7 @@ void MkColJob::start()
     }
 
     // assumes ownership
-    if (_url.isValid()) {
-        sendRequest("MKCOL", _url, req);
-    } else {
-        sendRequest("MKCOL", makeDavUrl(path()), req);
-    }
+    sendRequest("MKCOL", req);
     AbstractNetworkJob::start();
 }
 
@@ -306,15 +296,8 @@ bool LsColXMLParser::parse(const QByteArray &xml, QHash<QString, qint64> *sizes,
 
 /*********************************************************************************************/
 
-LsColJob::LsColJob(AccountPtr account, const QString &path, QObject *parent)
-    : AbstractNetworkJob(account, QString(), parent)
-    , _url(makeDavUrl(path))
-{
-}
-
-LsColJob::LsColJob(AccountPtr account, const QUrl &url, QObject *parent)
-    : AbstractNetworkJob(account, QString(), parent)
-    , _url(url)
+LsColJob::LsColJob(AccountPtr account, const QUrl &url, const QString &path, QObject *parent)
+    : AbstractNetworkJob(account, url, path, parent)
 {
 }
 
@@ -400,7 +383,7 @@ void LsColJob::startImpl(const QNetworkRequest &req)
     QBuffer *buf = new QBuffer(this);
     buf->setData(data);
     buf->open(QIODevice::ReadOnly);
-    sendRequest(QByteArrayLiteral("PROPFIND"), _url, req, buf);
+    sendRequest(QByteArrayLiteral("PROPFIND"), req, buf);
     AbstractNetworkJob::start();
 }
 
@@ -412,7 +395,7 @@ const QHash<QString, qint64> &LsColJob::sizes() const
 /*********************************************************************************************/
 
 CheckServerJob::CheckServerJob(AccountPtr account, QObject *parent)
-    : AbstractNetworkJob(account, QStringLiteral("status.php"), parent)
+    : AbstractNetworkJob(account, account->url(), QStringLiteral("status.php"), parent)
     , _subdirFallback(false)
 {
     setIgnoreCredentialFailure(true);
@@ -427,14 +410,14 @@ CheckServerJob::CheckServerJob(AccountPtr account, QObject *parent)
 
 void CheckServerJob::start()
 {
-    _serverUrl = account()->url();
+    _serverUrl = baseUrl();
     QNetworkRequest req;
     // don't authenticate the request to a possibly external service
     req.setAttribute(HttpCredentials::DontAddCredentialsAttribute, true);
     req.setAttribute(QNetworkRequest::RedirectPolicyAttribute, QNetworkRequest::NoLessSafeRedirectPolicy);
     req.setRawHeader(QByteArrayLiteral("OC-Connection-Validator"), QByteArrayLiteral("desktop"));
     req.setMaximumRedirectsAllowed(_maxRedirectsAllowed);
-    sendRequest("GET", Utility::concatUrlPath(_serverUrl, path()), req);
+    sendRequest("GET", req);
     AbstractNetworkJob::start();
 }
 
@@ -580,19 +563,13 @@ void PropfindJob::start()
 
 #ifndef TOKEN_AUTH_ONLY
 AvatarJob::AvatarJob(AccountPtr account, const QString &userId, int size, QObject *parent)
-    : AbstractNetworkJob(account, QString(), parent)
+    : AbstractNetworkJob(account, account->url(), QStringLiteral("remote.php/dav/avatars/%1/%2.png").arg(userId, QString::number(size)), parent)
 {
-    if (account->serverVersionInt() >= Account::makeServerVersion(10, 0, 0)) {
-        _avatarUrl = Utility::concatUrlPath(account->url(), QStringLiteral("remote.php/dav/avatars/%1/%2.png").arg(userId, QString::number(size)));
-    } else {
-        _avatarUrl = Utility::concatUrlPath(account->url(), QStringLiteral("index.php/avatar/%1/%2").arg(userId, QString::number(size)));
-    }
 }
 
 void AvatarJob::start()
 {
-    QNetworkRequest req;
-    sendRequest("GET", _avatarUrl, req);
+    sendRequest("GET");
     AbstractNetworkJob::start();
 }
 
@@ -636,14 +613,15 @@ bool AvatarJob::finished()
 #endif
 
 /*********************************************************************************************/
-EntityExistsJob::EntityExistsJob(AccountPtr account, const QString &path, QObject *parent)
-    : AbstractNetworkJob(account, path, parent)
+
+EntityExistsJob::EntityExistsJob(AccountPtr account, const QUrl &rootUrl, const QString &path, QObject *parent)
+    : AbstractNetworkJob(account, rootUrl, path, parent)
 {
 }
 
 void EntityExistsJob::start()
 {
-    sendRequest("HEAD", makeAccountUrl(path()));
+    sendRequest("HEAD");
     AbstractNetworkJob::start();
 }
 
@@ -657,7 +635,7 @@ bool EntityExistsJob::finished()
 
 
 DetermineAuthTypeJob::DetermineAuthTypeJob(AccountPtr account, QObject *parent)
-    : AbstractNetworkJob(account, QString(), parent)
+    : AbstractNetworkJob(account, account->davUrl(), {}, parent)
 {
     setAuthenticationJob(true);
     setIgnoreCredentialFailure(true);
@@ -665,14 +643,14 @@ DetermineAuthTypeJob::DetermineAuthTypeJob(AccountPtr account, QObject *parent)
 
 void DetermineAuthTypeJob::start()
 {
-    qCInfo(lcDetermineAuthTypeJob) << "Determining auth type for" << _account->davUrl();
+    qCInfo(lcDetermineAuthTypeJob) << "Determining auth type for" << url();
 
     QNetworkRequest req;
     // Prevent HttpCredentialsAccessManager from setting an Authorization header.
     req.setAttribute(HttpCredentials::DontAddCredentialsAttribute, true);
     // Don't reuse previous auth credentials
     req.setAttribute(QNetworkRequest::AuthenticationReuseAttribute, QNetworkRequest::Manual);
-    sendRequest("PROPFIND", _account->davUrl(), req);
+    sendRequest("PROPFIND", req);
     AbstractNetworkJob::start();
 }
 
@@ -690,15 +668,15 @@ bool DetermineAuthTypeJob::finished()
     return true;
 }
 
-SimpleNetworkJob::SimpleNetworkJob(AccountPtr account, const QString &path, const QByteArray &verb, const QNetworkRequest &req, QObject *parent)
-    : AbstractNetworkJob(account, path, parent)
+SimpleNetworkJob::SimpleNetworkJob(AccountPtr account, const QUrl &rootUrl, const QString &path, const QByteArray &verb, const QNetworkRequest &req, QObject *parent)
+    : AbstractNetworkJob(account, rootUrl, path, parent)
     , _verb(verb)
     , _request(req)
 {
 }
 
-SimpleNetworkJob::SimpleNetworkJob(AccountPtr account, const QString &path, const QByteArray &verb, const UrlQuery &arguments, const QNetworkRequest &req, QObject *parent)
-    : SimpleNetworkJob(account, path, verb, req, parent)
+SimpleNetworkJob::SimpleNetworkJob(AccountPtr account, const QUrl &rootUrl, const QString &path, const QByteArray &verb, const UrlQuery &arguments, const QNetworkRequest &req, QObject *parent)
+    : SimpleNetworkJob(account, rootUrl, path, verb, req, parent)
 {
     Q_ASSERT((QList<QByteArray> { "GET", "PUT", "POST", "DELETE", "HEAD" }.contains(verb)));
     if (!arguments.isEmpty()) {
@@ -715,28 +693,25 @@ SimpleNetworkJob::SimpleNetworkJob(AccountPtr account, const QString &path, cons
             _body = args.query(QUrl::FullyEncoded).toUtf8();
             _device = new QBuffer(&_body);
         } else {
-            Q_ASSERT(_request.url().isEmpty() || path.isEmpty());
-            const auto baseUrl = jobUrl();
-            Q_ASSERT(baseUrl.query().isEmpty());
-            _request.setUrl(Utility::concatUrlPath(baseUrl, {}, args));
+            setQuery(args);
         }
     }
 }
 
-SimpleNetworkJob::SimpleNetworkJob(AccountPtr account, const QString &path, const QByteArray &verb, const QJsonObject &arguments, const QNetworkRequest &req, QObject *parent)
-    : SimpleNetworkJob(account, path, verb, QJsonDocument(arguments).toJson(), req, parent)
+SimpleNetworkJob::SimpleNetworkJob(AccountPtr account, const QUrl &rootUrl, const QString &path, const QByteArray &verb, const QJsonObject &arguments, const QNetworkRequest &req, QObject *parent)
+    : SimpleNetworkJob(account, rootUrl, path, verb, QJsonDocument(arguments).toJson(), req, parent)
 {
     _request.setHeader(QNetworkRequest::ContentTypeHeader, QStringLiteral("application/json"));
 }
 
-SimpleNetworkJob::SimpleNetworkJob(AccountPtr account, const QString &path, const QByteArray &verb, QIODevice *requestBody, const QNetworkRequest &req, QObject *parent)
-    : SimpleNetworkJob(account, path, verb, req, parent)
+SimpleNetworkJob::SimpleNetworkJob(AccountPtr account, const QUrl &rootUrl, const QString &path, const QByteArray &verb, QIODevice *requestBody, const QNetworkRequest &req, QObject *parent)
+    : SimpleNetworkJob(account, rootUrl, path, verb, req, parent)
 {
     _device = requestBody;
 }
 
-SimpleNetworkJob::SimpleNetworkJob(AccountPtr account, const QString &path, const QByteArray &verb, QByteArray &&requestBody, const QNetworkRequest &req, QObject *parent)
-    : SimpleNetworkJob(account, path, verb, new QBuffer(&_body), req, parent)
+SimpleNetworkJob::SimpleNetworkJob(AccountPtr account, const QUrl &rootUrl, const QString &path, const QByteArray &verb, QByteArray &&requestBody, const QNetworkRequest &req, QObject *parent)
+    : SimpleNetworkJob(account, rootUrl, path, verb, new QBuffer(&_body), req, parent)
 {
     _body = requestBody;
 }
@@ -748,7 +723,7 @@ void SimpleNetworkJob::start()
 {
     Q_ASSERT(!_verb.isEmpty());
     // AbstractNetworkJob will take ownership of the buffer
-    sendRequest(_verb, jobUrl(), _request, _device);
+    sendRequest(_verb, _request, _device);
     AbstractNetworkJob::start();
 }
 
@@ -763,16 +738,6 @@ bool SimpleNetworkJob::finished()
     return true;
 }
 
-QUrl SimpleNetworkJob::jobUrl() const
-{
-    auto url = _request.url();
-    if (url.isEmpty()) {
-        url = Utility::concatUrlPath(account()->url(), path());
-    }
-    Q_ASSERT(url.isValid());
-    return url;
-}
-
 void SimpleNetworkJob::newReplyHook(QNetworkReply *reply)
 {
     for (const auto &hook : _replyHooks) {
@@ -780,11 +745,11 @@ void SimpleNetworkJob::newReplyHook(QNetworkReply *reply)
     }
 }
 
-void fetchPrivateLinkUrl(AccountPtr account, const QString &remotePath, QObject *target,
+void fetchPrivateLinkUrl(AccountPtr account, const QUrl &baseUrl, const QString &remotePath, QObject *target,
     std::function<void(const QString &url)> targetFun)
 {
     // Retrieve the new link by PROPFIND
-    PropfindJob *job = new PropfindJob(account, remotePath, target);
+    PropfindJob *job = new PropfindJob(account, baseUrl, remotePath, target);
     job->setProperties({ QByteArrayLiteral("http://owncloud.org/ns:privatelink") });
     job->setTimeout(10s);
     QObject::connect(job, &PropfindJob::result, target, [=](const QMap<QString, QString> &result) {

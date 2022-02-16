@@ -28,18 +28,10 @@ namespace OCC {
 Q_LOGGING_CATEGORY(lcMoveJob, "sync.networkjob.move", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcPropagateRemoteMove, "sync.propagator.remotemove", QtInfoMsg)
 
-MoveJob::MoveJob(AccountPtr account, const QString &path,
-    const QString &destination, QObject *parent)
-    : AbstractNetworkJob(account, path, parent)
+MoveJob::MoveJob(AccountPtr account, const QUrl &url, const QString &path, const QString &destination,
+    HeaderMap extraHeaders, QObject *parent)
+    : AbstractNetworkJob(account, url, path, parent)
     , _destination(destination)
-{
-}
-
-MoveJob::MoveJob(AccountPtr account, const QUrl &url, const QString &destination,
-    QMap<QByteArray, QByteArray> extraHeaders, QObject *parent)
-    : AbstractNetworkJob(account, QString(), parent)
-    , _destination(destination)
-    , _url(url)
     , _extraHeaders(extraHeaders)
 {
 }
@@ -51,11 +43,7 @@ void MoveJob::start()
     for (auto it = _extraHeaders.constBegin(); it != _extraHeaders.constEnd(); ++it) {
         req.setRawHeader(it.key(), it.value());
     }
-    if (_url.isValid()) {
-        sendRequest("MOVE", _url, req);
-    } else {
-        sendRequest("MOVE", makeDavUrl(path()), req);
-    }
+    sendRequest("MOVE", req);
     AbstractNetworkJob::start();
 }
 
@@ -140,7 +128,7 @@ void PropagateRemoteMove::start()
                                           << folderTargetAlt << "to" << folderTarget;
         }
     }
-    _job = new MoveJob(propagator()->account(), remoteSource, remoteDestination, this);
+    _job = new MoveJob(propagator()->account(), propagator()->webDavUrl(), remoteSource, remoteDestination, {}, this);
     connect(_job.data(), &MoveJob::finishedSignal, this, &PropagateRemoteMove::slotMoveJobFinished);
     propagator()->_activeJobList.append(this);
     _job->start();

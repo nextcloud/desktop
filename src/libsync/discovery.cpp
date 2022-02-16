@@ -595,7 +595,7 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
         } else {
             // we need to make a request to the server to know that the original file is deleted on the server
             _pendingAsyncJobs++;
-            auto job = new RequestEtagJob(_discoveryData->_account, _discoveryData->_remoteFolder + originalPath, this);
+            auto job = new RequestEtagJob(_discoveryData->_account, _discoveryData->_baseUrl, _discoveryData->_remoteFolder + originalPath, this);
             connect(job, &RequestEtagJob::finishedWithResult, this, [=](const HttpResult<QByteArray> &etag) mutable {
                 _pendingAsyncJobs--;
                 QTimer::singleShot(0, _discoveryData, &DiscoveryPhase::scheduleMoreJobs);
@@ -993,7 +993,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         if (base.isVirtualFile() && isVfsWithSuffix()) {
             serverOriginalPath = chopVirtualFileSuffix(serverOriginalPath);
         }
-        auto job = new RequestEtagJob(_discoveryData->_account, serverOriginalPath, this);
+        auto job = new RequestEtagJob(_discoveryData->_account, _discoveryData->_baseUrl, serverOriginalPath, this);
         connect(job, &RequestEtagJob::finishedWithResult, this, [=](const HttpResult<QByteArray> &etag) mutable {
             if (!etag || (etag.get() != base._etag && !item->isDirectory()) || _discoveryData->isRenamed(originalPath)) {
                 qCInfo(lcDisco) << "Can't rename because the etag has changed or the directory is gone" << originalPath;
@@ -1383,7 +1383,7 @@ QString ProcessDirectoryJob::chopVirtualFileSuffix(const QString &str) const
 
 DiscoverySingleDirectoryJob *ProcessDirectoryJob::startAsyncServerQuery()
 {
-    auto serverJob = new DiscoverySingleDirectoryJob(_discoveryData->_account,
+    auto serverJob = new DiscoverySingleDirectoryJob(_discoveryData->_account, _discoveryData->_baseUrl,
         _discoveryData->_remoteFolder + _currentFolder._server, this);
     if (!_dirItem)
         serverJob->setIsRootPath(); // query the fingerprint on the root

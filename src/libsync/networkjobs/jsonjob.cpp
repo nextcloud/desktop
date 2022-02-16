@@ -64,7 +64,7 @@ const QJsonObject &JsonJob::data() const
 
 
 JsonApiJob::JsonApiJob(AccountPtr account, const QString &path, const QByteArray &verb, const UrlQuery &arguments, const QNetworkRequest &req, QObject *parent)
-    : JsonJob(account, path, verb, UrlQuery { { QStringLiteral("format"), QStringLiteral("json") } } + arguments, req, parent)
+    : JsonJob(account, account->url(), path, verb, UrlQuery { { QStringLiteral("format"), QStringLiteral("json") } } + arguments, req, parent)
 {
     _request.setRawHeader(QByteArrayLiteral("OCS-APIREQUEST"), QByteArrayLiteral("true"));
 }

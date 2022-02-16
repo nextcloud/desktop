@@ -61,13 +61,35 @@ seconds AbstractNetworkJob::httpTimeout = [] {
     return seconds(def);
 }();
 
-AbstractNetworkJob::AbstractNetworkJob(AccountPtr account, const QString &path, QObject *parent)
+AbstractNetworkJob::AbstractNetworkJob(AccountPtr account, const QUrl &baseUrl, const QString &path, QObject *parent)
     : QObject(parent)
     , _account(account)
+    , _baseUrl(baseUrl)
     , _path(path)
 {
     // Since we hold a QSharedPointer to the account, this makes no sense. (issue #6893)
     OC_ASSERT(account != parent);
+}
+
+QUrl AbstractNetworkJob::baseUrl() const
+{
+    return _baseUrl;
+}
+
+QUrl AbstractNetworkJob::url() const
+{
+    return Utility::concatUrlPath(baseUrl(), path(), query());
+}
+
+
+void AbstractNetworkJob::setQuery(const QUrlQuery &query)
+{
+    _query = query;
+}
+
+QUrlQuery AbstractNetworkJob::query() const
+{
+    return _query;
 }
 
 void AbstractNetworkJob::setReply(QNetworkReply *reply)
@@ -85,11 +107,6 @@ void AbstractNetworkJob::setTimeout(const std::chrono::seconds sec)
 void AbstractNetworkJob::setIgnoreCredentialFailure(bool ignore)
 {
     _ignoreCredentialFailure = ignore;
-}
-
-void AbstractNetworkJob::setPath(const QString &path)
-{
-    _path = path;
 }
 
 QNetworkReply *AbstractNetworkJob::reply() const
@@ -144,19 +161,20 @@ bool AbstractNetworkJob::needsRetry() const
 }
 
 
-void AbstractNetworkJob::sendRequest(const QByteArray &verb, const QUrl &url,
+void AbstractNetworkJob::sendRequest(const QByteArray &verb,
     const QNetworkRequest &req, QIODevice *requestBody)
 {
     _verb = verb;
     _request = req;
-    _request.setUrl(url);
     _requestBody = requestBody;
+    Q_ASSERT(_request.url().isEmpty() || _request.url() == url());
     Q_ASSERT(_request.transferTimeout() == 0 || _request.transferTimeout() == duration_cast<milliseconds>(_timeout).count());
+    _request.setUrl(url());
     _request.setTransferTimeout(duration_cast<milliseconds>(_timeout).count());
     if (!isAuthenticationJob() && _account->jobQueue()->enqueue(this)) {
         return;
     }
-    auto reply = _account->sendRawRequest(verb, url, _request, requestBody);
+    auto reply = _account->sendRawRequest(verb, _request.url(), _request, requestBody);
     if (_requestBody) {
         _requestBody->setParent(reply);
     }
@@ -169,17 +187,6 @@ void AbstractNetworkJob::adoptRequest(QNetworkReply *reply)
     setupConnections(reply);
     newReplyHook(reply);
     _request = reply->request();
-}
-
-QUrl AbstractNetworkJob::makeAccountUrl(const QString &relativePath) const
-{
-    return Utility::concatUrlPath(_account->url(), relativePath);
-}
-
-QUrl AbstractNetworkJob::makeDavUrl(const QString &relativePath) const
-{
-    // ensure we always used the remote folder
-    return Utility::concatUrlPath(_account->davUrl(), OC_ENSURE(relativePath.startsWith(QLatin1Char('/'))) ? relativePath : QLatin1Char('/') + relativePath);
 }
 
 void AbstractNetworkJob::slotFinished()
@@ -207,9 +214,9 @@ void AbstractNetworkJob::slotFinished()
                     _requestBody->open(QIODevice::ReadOnly);
                 _requestBody->seek(0);
             }
+            // TODO: use retry
             sendRequest(
                 verb,
-                _reply->request().url(),
                 _reply->request(),
                 _requestBody);
             return;
@@ -381,7 +388,7 @@ void AbstractNetworkJob::retry()
     if (_requestBody) {
         _requestBody->seek(0);
     }
-    sendRequest(_verb, _request.url(), _request, _requestBody);
+    sendRequest(_verb, _request, _requestBody);
 }
 
 void AbstractNetworkJob::abort()

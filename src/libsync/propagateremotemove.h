@@ -26,13 +26,11 @@ class MoveJob : public AbstractNetworkJob
 {
     Q_OBJECT
     const QString _destination;
-    const QUrl _url; // Only used (instead of path) when the constructor taking an URL is used
-    QMap<QByteArray, QByteArray> _extraHeaders;
+    HeaderMap _extraHeaders;
 
 public:
-    explicit MoveJob(AccountPtr account, const QString &path, const QString &destination, QObject *parent = nullptr);
-    explicit MoveJob(AccountPtr account, const QUrl &url, const QString &destination,
-        QMap<QByteArray, QByteArray> _extraHeaders, QObject *parent = nullptr);
+    explicit MoveJob(AccountPtr account, const QUrl &url, const QString &path, const QString &destination,
+        HeaderMap _extraHeaders, QObject *parent = nullptr);
 
     void start() override;
     bool finished() override;

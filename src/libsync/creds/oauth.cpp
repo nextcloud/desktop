@@ -109,7 +109,7 @@ private:
             { QStringLiteral("token_endpoint_auth_method"), QStringLiteral("client_secret_basic") } });
         QNetworkRequest req;
         req.setUrl(_registrationEndpoint);
-        auto job = new OCC::JsonJob(_account->sharedFromThis(), {}, "POST", json, req, this);
+        auto job = new OCC::JsonJob(_account->sharedFromThis(), _account->url(), {}, "POST", json, req, this);
         job->setAuthenticationJob(true);
         connect(job, &OCC::JsonJob::finishedSignal, this, [this, job] {
             if (job->parseError().error == QJsonParseError::NoError) {
@@ -409,13 +409,12 @@ JsonJob *OAuth::postTokenRequest(const QList<QPair<QString, QString>> &queryItem
     const QByteArray basicAuth = QStringLiteral("%1:%2").arg(_clientId, _clientSecret).toUtf8().toBase64();
     req.setRawHeader("Authorization", "Basic " + basicAuth);
     req.setAttribute(HttpCredentials::DontAddCredentialsAttribute, true);
-    req.setUrl(requestTokenUrl);
 
     SimpleNetworkJob::UrlQuery arguments { { QStringLiteral("client_id"), _clientId },
         { QStringLiteral("client_secret"), _clientSecret },
         { QStringLiteral("scope"), Theme::instance()->openIdConnectScopes() } };
     arguments << queryItems;
-    auto job = new JsonJob(_account->sharedFromThis(), {}, "POST", arguments, req, this);
+    auto job = new JsonJob(_account->sharedFromThis(), requestTokenUrl, {}, "POST", arguments, req, this);
     job->setAuthenticationJob(true);
     job->setTimeout(qMin(30s, job->timeoutSec()));
     return job;
@@ -486,7 +485,7 @@ void OAuth::fetchWellKnown()
             _wellKnownFinished = true;
             Q_EMIT fetchWellKnownFinished();
         } else {
-            auto job = new JsonJob(_account->sharedFromThis(), QStringLiteral("/.well-known/openid-configuration"), "GET", {}, {}, this);
+            auto job = new JsonJob(_account->sharedFromThis(), _account->url(), QStringLiteral("/.well-known/openid-configuration"), "GET", {}, {}, this);
             job->setAuthenticationJob(true);
             job->setTimeout(qMin(30s, job->timeoutSec()));
             QObject::connect(job, &JsonJob::finishedSignal, this, [job, this] {

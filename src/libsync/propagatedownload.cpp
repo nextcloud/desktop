@@ -72,31 +72,16 @@ QString OWNCLOUDSYNC_EXPORT createDownloadTmpFileName(const QString &previous)
 }
 
 // DOES NOT take ownership of the device.
-GETFileJob::GETFileJob(AccountPtr account, const QString &path, QIODevice *device,
+GETFileJob::GETFileJob(AccountPtr account, const QUrl &url, const QString &path, QIODevice *device,
     const QMap<QByteArray, QByteArray> &headers, const QByteArray &expectedEtagForResume,
     qint64 resumeStart, QObject *parent)
-    : GETJob(account, path, parent)
+    : GETJob(account, url, path, parent)
     , _device(device)
     , _headers(headers)
     , _expectedEtagForResume(expectedEtagForResume)
     , _expectedContentLength(-1)
     , _contentLength(-1)
     , _resumeStart(resumeStart)
-    , _hasEmittedFinishedSignal(false)
-{
-}
-
-GETFileJob::GETFileJob(AccountPtr account, const QUrl &url, QIODevice *device,
-    const QMap<QByteArray, QByteArray> &headers, const QByteArray &expectedEtagForResume,
-    qint64 resumeStart, QObject *parent)
-    : GETJob(account, url.toString(QUrl::FullyEncoded), parent)
-    , _device(device)
-    , _headers(headers)
-    , _expectedEtagForResume(expectedEtagForResume)
-    , _expectedContentLength(-1)
-    , _contentLength(-1)
-    , _resumeStart(resumeStart)
-    , _directDownloadUrl(url)
     , _hasEmittedFinishedSignal(false)
 {
 }
@@ -116,12 +101,7 @@ void GETFileJob::start()
 
     req.setPriority(QNetworkRequest::LowPriority); // Long downloads must not block non-propagation jobs.
 
-    if (_directDownloadUrl.isEmpty()) {
-        sendRequest("GET", makeDavUrl(path()), req);
-    } else {
-        // Use direct URL
-        sendRequest("GET", _directDownloadUrl, req);
-    }
+    sendRequest("GET", req);
 
     qCDebug(lcGetJob) << _bandwidthManager << _bandwidthChoked << _bandwidthLimited;
     if (_bandwidthManager) {
@@ -175,12 +155,7 @@ void GETFileJob::slotMetaDataChanged()
     }
     _etag = getEtagFromReply(reply());
 
-    if (!_directDownloadUrl.isEmpty() && !_etag.isEmpty()) {
-        qCInfo(lcGetJob) << "Direct download used, ignoring server ETag" << _etag;
-        _etag = QByteArray(); // reset received ETag
-    } else if (!_directDownloadUrl.isEmpty()) {
-        // All fine, ETag empty and directDownloadUrl used
-    } else if (_etag.isEmpty()) {
+    if (_etag.isEmpty()) {
         qCWarning(lcGetJob) << "No E-Tag reply by server, considering it invalid";
         _errorString = tr("No E-Tag received from server, check Proxy/Gateway");
         _errorStatus = SyncFileItem::NormalError;
@@ -332,8 +307,8 @@ void GETFileJob::slotReadyRead()
     }
 }
 
-GETJob::GETJob(AccountPtr account, const QString &path, QObject *parent)
-    : AbstractNetworkJob(account, path, parent)
+GETJob::GETJob(AccountPtr account, const QUrl &rootUrl, const QString &path, QObject *parent)
+    : AbstractNetworkJob(account, rootUrl, path, parent)
 {
     connect(this, &GETJob::networkError, this, [this] {
         if (timedOut()) {
@@ -563,7 +538,7 @@ void PropagateDownloadFile::startFullDownload()
 
     if (_item->_directDownloadUrl.isEmpty()) {
         // Normal job, download from oC instance
-        _job = new GETFileJob(propagator()->account(),
+        _job = new GETFileJob(propagator()->account(), propagator()->webDavUrl(),
             propagator()->fullRemotePath(_item->_file),
             &_tmpFile, headers, _expectedEtagForResume, _resumeStart, this);
     } else {
@@ -577,6 +552,7 @@ void PropagateDownloadFile::startFullDownload()
         QUrl url = QUrl::fromUserInput(_item->_directDownloadUrl);
         _job = new GETFileJob(propagator()->account(),
             url,
+            {},
             &_tmpFile, headers, _expectedEtagForResume, _resumeStart, this);
     }
     _job->setBandwidthManager(&propagator()->_bandwidthManager);

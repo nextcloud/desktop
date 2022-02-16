@@ -38,7 +38,7 @@
 
 namespace OCC {
 
-QUrl PropagateUploadFileNG::chunkUrl(qint64 chunkOffset)
+QString PropagateUploadFileNG::chunkPath(qint64 chunkOffset)
 {
     QString path = QLatin1String("remote.php/dav/uploads/")
         + propagator()->account()->davUser()
@@ -47,7 +47,7 @@ QUrl PropagateUploadFileNG::chunkUrl(qint64 chunkOffset)
         // We need to do add leading 0 because the server orders the chunk alphabetically
         path += QLatin1Char('/') + QString::number(chunkOffset).rightJustified(16, QLatin1Char('0')); // 1e16 is 10 petabyte
     }
-    return Utility::concatUrlPath(propagator()->account()->url(), path);
+    return path;
 }
 
 
@@ -115,11 +115,9 @@ void PropagateUploadFileNG::doStartUploadNext()
     if (progressInfo._valid && progressInfo.isChunked() && progressInfo._modtime == _item->_modtime
             && progressInfo._size == _item->_size) {
         _transferId = progressInfo._transferid;
-        auto url = chunkUrl();
-        auto job = new LsColJob(propagator()->account(), url, this);
+        auto job = new LsColJob(propagator()->account(), propagator()->account()->url(), chunkPath(), this);
         _jobs.append(job);
-        job->setProperties(QList<QByteArray>() << "resourcetype"
-                                               << "getcontentlength");
+        job->setProperties({ QByteArrayLiteral("resourcetype"), QByteArrayLiteral("getcontentlength") });
         connect(job, &LsColJob::finishedWithoutError, this, &PropagateUploadFileNG::slotPropfindFinished);
         connect(job, &LsColJob::finishedWithError,
             this, &PropagateUploadFileNG::slotPropfindFinishedWithError);
@@ -132,7 +130,7 @@ void PropagateUploadFileNG::doStartUploadNext()
         // The upload info is stale. remove the stale chunks on the server
         _transferId = progressInfo._transferid;
         // Fire and forget. Any error will be ignored.
-        (new DeleteJob(propagator()->account(), chunkUrl(), this))->start();
+        (new DeleteJob(propagator()->account(), propagator()->account()->url(), chunkPath(), this))->start();
         // startNewUpload will reset the _transferId and the UploadInfo in the db.
     }
 
@@ -141,7 +139,7 @@ void PropagateUploadFileNG::doStartUploadNext()
 
 void PropagateUploadFileNG::slotPropfindIterate(const QString &name, const QMap<QString, QString> &properties)
 {
-    if (name == chunkUrl().path()) {
+    if (name.endsWith(chunkPath())) {
         return; // skip the info about the path itself
     }
     bool ok = false;
@@ -205,7 +203,7 @@ void PropagateUploadFileNG::slotPropfindFinished()
 
         // Wipe the old chunking data.
         // Fire and forget. Any error will be ignored.
-        (new DeleteJob(propagator()->account(), chunkUrl(), this))->start();
+        (new DeleteJob(propagator()->account(), propagator()->account()->url(), chunkPath(), this))->start();
 
         propagator()->_activeJobList.append(this);
         startNewUpload();
@@ -223,7 +221,7 @@ void PropagateUploadFileNG::slotPropfindFinished()
         // we should remove the later chunks. Otherwise when we do dynamic chunk sizing, we may end up
         // with corruptions if there are too many chunks, or if we abort and there are still stale chunks.
         for (auto it = _serverChunks.begin(); it != _serverChunks.end(); ++it) {
-            auto job = new DeleteJob(propagator()->account(), Utility::concatUrlPath(chunkUrl(), it->originalName), this);
+            auto job = new DeleteJob(propagator()->account(), propagator()->account()->url(), chunkPath() + QLatin1Char('/') + it->originalName, this);
             QObject::connect(job, &DeleteJob::finishedSignal, this, &PropagateUploadFileNG::slotDeleteJobFinished);
             _jobs.append(job);
             job->start();
@@ -311,7 +309,7 @@ void PropagateUploadFileNG::startNewUpload()
     propagator()->_journal->commit(QStringLiteral("Upload info"));
     QMap<QByteArray, QByteArray> headers;
     headers["OC-Total-Length"] = QByteArray::number(_item->_size);
-    auto job = new MkColJob(propagator()->account(), chunkUrl(), headers, this);
+    auto job = new MkColJob(propagator()->account(), propagator()->account()->url(), chunkPath(), headers, this);
     connect(job, &MkColJob::finishedWithError,
         this, &PropagateUploadFileNG::slotMkColFinished);
     connect(job, &MkColJob::finishedWithoutError,
@@ -367,9 +365,9 @@ void PropagateUploadFileNG::doFinalMove()
     headers[QByteArrayLiteral("OC-Total-Length")] = QByteArray::number(_bytesToUpload);
     headers[QByteArrayLiteral("OC-Total-File-Length")] = QByteArray::number(_item->_size);
 
-    const QUrl source = Utility::concatUrlPath(chunkUrl(), QStringLiteral("/.file"));
+    const QString source = chunkPath() + QStringLiteral("/.file");
 
-    auto job = new MoveJob(propagator()->account(), source, destination, headers, this);
+    auto job = new MoveJob(propagator()->account(), propagator()->account()->url(), source, destination, headers, this);
     _jobs.append(job);
     connect(job, &MoveJob::finishedSignal, this, &PropagateUploadFileNG::slotMoveJobFinished);
     connect(job, &QObject::destroyed, this, &PropagateUploadFileCommon::slotJobDestroyed);
@@ -408,11 +406,9 @@ void PropagateUploadFileNG::startNextChunk()
     QMap<QByteArray, QByteArray> headers;
     headers["OC-Chunk-Offset"] = QByteArray::number(_currentChunkOffset);
 
-    QUrl url = chunkUrl(_currentChunkOffset);
-
     // job takes ownership of device via a QScopedPointer. Job deletes itself when finishing
     auto devicePtr = device.get(); // for connections later
-    PUTFileJob *job = new PUTFileJob(propagator()->account(), url, std::move(device), headers, 0, this);
+    PUTFileJob *job = new PUTFileJob(propagator()->account(), propagator()->account()->url(), chunkPath(_currentChunkOffset), std::move(device), headers, 0, this);
     _jobs.append(job);
     connect(job, &PUTFileJob::finishedSignal, this, &PropagateUploadFileNG::slotPutFinished);
     connect(job, &PUTFileJob::uploadProgress,

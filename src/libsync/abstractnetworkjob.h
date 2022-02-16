@@ -22,13 +22,14 @@
 
 #include "owncloudlib.h"
 
-#include <QObject>
-#include <QNetworkRequest>
-#include <QNetworkReply>
-#include <QPointer>
-#include <QElapsedTimer>
 #include <QDateTime>
+#include <QElapsedTimer>
+#include <QNetworkReply>
+#include <QNetworkRequest>
+#include <QObject>
+#include <QPointer>
 #include <QTimer>
+#include <QUrlQuery>
 
 #include <chrono>
 
@@ -41,6 +42,8 @@ namespace OCC {
 
 class AbstractSslErrorHandler;
 
+using HeaderMap = QMap<QByteArray, QByteArray>;
+
 /**
  * @brief The AbstractNetworkJob class
  * @ingroup libsync
@@ -49,17 +52,23 @@ class OWNCLOUDSYNC_EXPORT AbstractNetworkJob : public QObject
 {
     Q_OBJECT
 public:
-    explicit AbstractNetworkJob(AccountPtr account, const QString &path, QObject *parent = nullptr);
+    explicit AbstractNetworkJob(AccountPtr account, const QUrl &baseUrl, const QString &path, QObject *parent = nullptr);
     ~AbstractNetworkJob() override;
 
     virtual void start();
 
     AccountPtr account() const { return _account; }
-
-    void setPath(const QString &path);
     QString path() const { return _path; }
 
-    QUrl url() const { return _request.url(); }
+    /*
+     * A base Url, for most of the jobs this will be the webdav entry point.
+     */
+    QUrl baseUrl() const;
+
+    /*
+     * The absolute url: baseUrl() + path() + query()
+     */
+    QUrl url() const;
 
     QNetworkReply *reply() const;
 
@@ -124,7 +133,7 @@ protected:
      *
      * Takes ownership of the requestBody (to allow redirects).
      */
-    void sendRequest(const QByteArray &verb, const QUrl &url,
+    void sendRequest(const QByteArray &verb,
         const QNetworkRequest &req = QNetworkRequest(),
         QIODevice *requestBody = nullptr);
 
@@ -147,12 +156,6 @@ protected:
      */
     virtual void newReplyHook(QNetworkReply *) {}
 
-    /// Creates a url for the account from a relative path
-    QUrl makeAccountUrl(const QString &relativePath) const;
-
-    /// Like makeAccountUrl() but uses the account's dav base path
-    QUrl makeDavUrl(const QString &relativePath) const;
-
     /** Called at the end of QNetworkReply::finished processing.
      *
      * Returning true triggers a deleteLater() of this job.
@@ -169,7 +172,20 @@ private slots:
 protected:
     AccountPtr _account;
 
+    /*
+     * The url query appended to the url.
+     * The query will not be set as part of the body.
+     * The query must be fully encoded.
+     */
+    void setQuery(const QUrlQuery &query);
+    QUrlQuery query() const;
+
 private:
+    const QUrl _baseUrl;
+    const QString _path;
+
+    QUrlQuery _query;
+
     std::chrono::seconds _timeout = httpTimeout;
     bool _timedout = false; // set to true when the timeout slot is received
     bool _aborted = false;
@@ -178,7 +194,6 @@ private:
     QNetworkRequest _request;
     QByteArray _verb;
     QPointer<QNetworkReply> _reply; // (QPointer because the NetworkManager may be destroyed before the jobs at exit)
-    QString _path;
     int _http2ResendCount = 0;
 
     // Set by the xyzRequest() functions and needed to be able to redirect

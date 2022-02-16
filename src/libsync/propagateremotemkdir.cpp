@@ -45,7 +45,7 @@ void PropagateRemoteMkdir::start()
         return slotStartMkcolJob();
     }
 
-    _job = new DeleteJob(propagator()->account(),
+    _job = new DeleteJob(propagator()->account(), propagator()->webDavUrl(),
         propagator()->fullRemotePath(_item->_file),
         this);
     connect(qobject_cast<DeleteJob *>(_job), &DeleteJob::finishedSignal, this, &PropagateRemoteMkdir::slotStartMkcolJob);
@@ -59,8 +59,8 @@ void PropagateRemoteMkdir::slotStartMkcolJob()
 
     qCDebug(lcPropagateRemoteMkdir) << _item->_file;
 
-    _job = new MkColJob(propagator()->account(),
-        propagator()->fullRemotePath(_item->_file),
+    _job = new MkColJob(propagator()->account(), propagator()->webDavUrl(),
+        propagator()->fullRemotePath(_item->_file), {},
         this);
     connect(qobject_cast<MkColJob *>(_job), &MkColJob::finishedWithError, this, &PropagateRemoteMkdir::slotMkcolJobFinished);
     connect(qobject_cast<MkColJob *>(_job), &MkColJob::finishedWithoutError, this, &PropagateRemoteMkdir::slotMkcolJobFinished);
@@ -114,7 +114,7 @@ void PropagateRemoteMkdir::slotMkcolJobFinished()
     _item->_fileId = _job->reply()->rawHeader("OC-FileId");
 
     propagator()->_activeJobList.append(this);
-    auto propfindJob = new PropfindJob(_job->account(), _job->path(), this);
+    auto propfindJob = new PropfindJob(_job->account(), _job->baseUrl(), _job->path(), this);
     propfindJob->setProperties({"http://owncloud.org/ns:permissions"});
     connect(propfindJob, &PropfindJob::result, this, [this](const QMap<QString, QString> &result) {
         propagator()->_activeJobList.removeOne(this);
