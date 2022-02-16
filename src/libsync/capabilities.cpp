@@ -27,6 +27,7 @@ Capabilities::Capabilities(const QVariantMap &capabilities)
     , _fileSharingCapabilities(_capabilities.value(QStringLiteral("files_sharing")).toMap())
     , _fileSharingPublicCapabilities(_fileSharingCapabilities.value(QStringLiteral("public"), {}).toMap())
     , _tusSupport(_capabilities.value(QStringLiteral("files")).toMap().value(QStringLiteral("tus_support")).toMap())
+    , _spaces(_capabilities.value(QStringLiteral("spaces")).toMap())
 {
 }
 
@@ -179,6 +180,12 @@ const TusSupport &Capabilities::tusSupport() const
     return _tusSupport;
 }
 
+
+const SpaceSupport &Capabilities::spacesSupport() const
+{
+    return _spaces;
+}
+
 bool Capabilities::chunkingParallelUploadDisabled() const
 {
     return _capabilities.value(QStringLiteral("dav")).toMap().value(QStringLiteral("chunkingParallelUploadDisabled")).toBool();
@@ -253,5 +260,20 @@ bool TusSupport::isValid() const
 {
     return !version.isNull();
 }
+
+SpaceSupport::SpaceSupport(const QVariantMap &spaces_support)
+{
+    if (spaces_support.isEmpty()) {
+        return;
+    }
+    enabled = spaces_support.value(QLatin1String("enabled")).toBool();
+    version = QVersionNumber::fromString(spaces_support.value(QLatin1String("version")).toString());
+}
+
+bool SpaceSupport::isValid() const
+{
+    return !version.isNull();
+}
+
 
 } // namespace OCC
