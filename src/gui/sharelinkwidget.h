@@ -34,7 +34,6 @@ namespace Ui {
 }
 
 class AbstractCredentials;
-class QuotaInfo;
 class SyncResult;
 class LinkShare;
 class Share;

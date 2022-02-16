@@ -68,8 +68,8 @@ QString makeLegacyDbName(const OCC::FolderDefinition &def, const OCC::AccountPtr
     if (legacyUrl.path() == QLatin1String("/")) {
         legacyUrl.setPath(QString());
     }
-    const QString key = QStringLiteral("%1@%2:%3").arg(account->credentials()->user(), legacyUrl.toString(), def.targetPath);
-    return OCC::SyncJournalDb::makeDbName(def.localPath, QString::fromUtf8(QCryptographicHash::hash(key.toUtf8(), QCryptographicHash::Md5).left(6).toHex()));
+    const QString key = QStringLiteral("%1@%2:%3").arg(account->credentials()->user(), legacyUrl.toString(), def.targetPath());
+    return OCC::SyncJournalDb::makeDbName(def.localPath(), QString::fromUtf8(QCryptographicHash::hash(key.toUtf8(), QCryptographicHash::Md5).left(6).toHex()));
 }
 }
 
@@ -315,8 +315,8 @@ void FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account,
             const auto defaultJournalPath = [&account, folderDefinition] {
                 // if we would have booth the 2.9.0 file name and the lagacy file
                 // with the md5 infix we prefer the 2.9.0 version
-                const QDir info(folderDefinition.localPath);
-                const QString defaultPath = SyncJournalDb::makeDbName(folderDefinition.localPath);
+                const QDir info(folderDefinition.localPath());
+                const QString defaultPath = SyncJournalDb::makeDbName(folderDefinition.localPath());
                 if (info.exists(defaultPath)) {
                     return defaultPath;
                 }
@@ -332,6 +332,11 @@ void FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account,
                 }
                 return defaultPath;
             }();
+
+            // migration: 2.10 did not specify a webdav url
+            if (folderDefinition._webDavUrl.isEmpty()) {
+                folderDefinition._webDavUrl = account->account()->davUrl();
+            }
 
             // Migration: Old settings don't have journalPath
             if (folderDefinition.journalPath.isEmpty()) {
@@ -350,7 +355,7 @@ void FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account,
 
             // Migration: If an old .csync_journal.db is found, move it to the new name.
             if (backwardsCompatible) {
-                SyncJournalDb::maybeMigrateDb(folderDefinition.localPath, folderDefinition.absoluteJournalPath());
+                SyncJournalDb::maybeMigrateDb(folderDefinition.localPath(), folderDefinition.absoluteJournalPath());
             }
 
             auto vfs = createVfsFromPlugin(folderDefinition.virtualFilesMode);
@@ -584,8 +589,8 @@ Folder *FolderMan::setupFolderFromOldConfigFile(const QString &file, AccountStat
 
     FolderDefinition folderDefinition;
     folderDefinition.alias = alias;
-    folderDefinition.localPath = path;
-    folderDefinition.targetPath = targetPath;
+    folderDefinition.setLocalPath(path);
+    folderDefinition.setTargetPath(targetPath);
     folderDefinition.paused = paused;
     folderDefinition.ignoreHiddenFiles = ignoreHiddenFiles();
 
@@ -1058,7 +1063,7 @@ Folder *FolderMan::addFolder(AccountStatePtr accountState, const FolderDefinitio
 {
     // Choose a db filename
     auto definition = folderDefinition;
-    definition.journalPath = SyncJournalDb::makeDbName(folderDefinition.localPath);
+    definition.journalPath = SyncJournalDb::makeDbName(folderDefinition.localPath());
 
     if (!ensureJournalGone(definition.absoluteJournalPath())) {
         return nullptr;

@@ -37,7 +37,6 @@ namespace Ui {
 }
 
 class AbstractCredentials;
-class QuotaInfo;
 class SyncResult;
 class Share;
 class Sharee;

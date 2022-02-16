@@ -564,11 +564,9 @@ void FolderStatusModel::fetchMore(const QModelIndex &parent)
     if (info->_path != QLatin1String("/")) {
         path += info->_path;
     }
-    LsColJob *job = new LsColJob(_accountState->account(), path, this);
+    LsColJob *job = new LsColJob(_accountState->account(), info->_folder->webDavUrl(), path, this);
     info->_fetchingJob = job;
-    job->setProperties(QList<QByteArray>() << "resourcetype"
-                                           << "http://owncloud.org/ns:size"
-                                           << "http://owncloud.org/ns:permissions");
+    job->setProperties({ QByteArrayLiteral("resourcetype"), QByteArrayLiteral("http://owncloud.org/ns:size"), QByteArrayLiteral("http://owncloud.org/ns:permissions") });
     job->setTimeout(60s);
     connect(job, &LsColJob::directoryListingSubfolders,
         this, &FolderStatusModel::slotUpdateDirectories);

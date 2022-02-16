@@ -52,9 +52,10 @@ SocketUploadJob::SocketUploadJob(const QSharedPointer<SocketApiJobV2> &job)
 void SocketUploadJob::prepareTag(const AccountPtr &account)
 {
     const QJsonObject json({ { QStringLiteral("name"), backupTagNameC() } });
-    auto tagJob = new OCC::SimpleNetworkJob(account, tagUrl(), "POST", json, {}, this);
+    auto tagJob = new OCC::SimpleNetworkJob(account, account->url(), tagUrl(), "POST", json, {}, this);
     connect(tagJob, &OCC::SimpleNetworkJob::finishedSignal, this, [account, this] {
-        auto propfindJob = new OCC::LsColJob(account, tagUrl(), this);
+        // TODO: dav url
+        auto propfindJob = new OCC::LsColJob(account, account->davUrl(), tagUrl(), this);
         propfindJob->setProperties({ QByteArrayLiteral("http://owncloud.org/ns:display-name"), QByteArrayLiteral("http://owncloud.org/ns:id") });
 
         connect(propfindJob, &LsColJob::directoryListingIterated, this, [this](const QString &, const QMap<QString, QString> &data) {
@@ -108,7 +109,8 @@ void SocketUploadJob::start()
     }
 
     auto db = new SyncJournalDb(tmp->fileName(), this);
-    auto engine = new SyncEngine(account->account(), _localPath.endsWith(QLatin1Char('/')) ? _localPath : _localPath + QLatin1Char('/'), remotePath, db);
+    // TODO: folder based url
+    auto engine = new SyncEngine(account->account(), account->account()->davUrl(), _localPath.endsWith(QLatin1Char('/')) ? _localPath : _localPath + QLatin1Char('/'), remotePath, db);
     engine->setParent(db);
     tmp->setParent(db);
 
@@ -129,7 +131,7 @@ void SocketUploadJob::start()
 
     connect(engine, &OCC::SyncEngine::finished, this, [engine, this](bool ok) {
         if (ok) {
-            auto tagJob = new OCC::SimpleNetworkJob(engine->account(),
+            auto tagJob = new OCC::SimpleNetworkJob(engine->account(), engine->account()->url(),
                 QStringLiteral("remote.php/dav/systemtags-relations/files/%1/%2").arg(_backupFileId, QString::number(_finisedTagId)),
                 "PUT", {}, {}, this);
             connect(tagJob, &OCC::SimpleNetworkJob::finishedSignal, this, [tagJob, this] {
@@ -161,11 +163,12 @@ void SocketUploadJob::start()
     prepareTag(account->account());
 
     // create the dir, fail if it already exists
-    auto mkdir = new OCC::MkColJob(engine->account(), remotePath);
-    connect(mkdir, &OCC::MkColJob::finishedWithoutError, this, [engine, remotePath, this]{
-
+    // TODO:: dav url
+    auto mkdir = new OCC::MkColJob(engine->account(), engine->account()->davUrl(), remotePath, {}, this);
+    connect(mkdir, &OCC::MkColJob::finishedWithoutError, this, [engine, remotePath, this] {
         // we need the int file id without the instance id so we can't use the OC-FileId
-        auto propfindJob = new PropfindJob(engine->account(), remotePath, this);
+        // TODO; dav url
+        auto propfindJob = new PropfindJob(engine->account(), engine->account()->davUrl(), remotePath, this);
         propfindJob->setProperties({ QByteArrayLiteral("http://owncloud.org/ns:fileid") });
 
         connect(propfindJob, &PropfindJob::result, this, [engine, this](const QMap<QString, QString> &data) {

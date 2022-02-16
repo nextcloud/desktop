@@ -106,7 +106,8 @@ QSize SelectiveSyncWidget::sizeHint() const
 
 void SelectiveSyncWidget::refreshFolders()
 {
-    LsColJob *job = new LsColJob(_account, _folderPath, this);
+    // TODO: legacy
+    LsColJob *job = new LsColJob(_account, _account->davUrl(), _folderPath, this);
     job->setProperties(QList<QByteArray>() << "resourcetype"
                                            << "http://owncloud.org/ns:size");
     connect(job, &LsColJob::directoryListingSubfolders,
@@ -272,7 +273,8 @@ void SelectiveSyncWidget::slotItemExpanded(QTreeWidgetItem *item)
     QString dir = item->data(0, Qt::UserRole).toString();
     if (dir.isEmpty())
         return;
-    LsColJob *job = new LsColJob(_account, _folderPath + dir, this);
+    // TODO: legacy
+    LsColJob *job = new LsColJob(_account, _account->davUrl(), _folderPath + dir, this);
     job->setProperties(QList<QByteArray>() << "resourcetype"
                                            << "http://owncloud.org/ns:size");
     connect(job, &LsColJob::directoryListingSubfolders,

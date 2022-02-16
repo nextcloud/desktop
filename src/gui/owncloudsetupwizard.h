@@ -66,6 +66,8 @@ private slots:
 private:
     explicit OwncloudSetupWizard(QWidget *parent = nullptr);
     ~OwncloudSetupWizard() override;
+
+    void addFolder(AccountStatePtr account, const QString &localFolder, const QString &remotePath, const QUrl &webDavUrl);
     void startWizard();
     void testOwnCloudConnect();
     void createRemoteFolder();

@@ -59,9 +59,13 @@ namespace {
  */
 auto versionC()
 {
-    return QStringLiteral("version");
+    return QLatin1String("version");
 }
 
+auto davUrlC()
+{
+    return QLatin1String("davUrl");
+}
 constexpr int WinVfsSettingsVersion = 4;
 constexpr int SettingsVersion = 2;
 }
@@ -101,7 +105,7 @@ Folder::Folder(const FolderDefinition &definition,
     // those errors should not persist over sessions
     _journal.wipeErrorBlacklistCategory(SyncJournalErrorBlacklistRecord::Category::LocalSoftError);
 
-    _engine.reset(new SyncEngine(_accountState->account(), path(), remotePath(), &_journal));
+    _engine.reset(new SyncEngine(_accountState->account(), webDavUrl(), path(), remotePath(), &_journal));
     // pass the setting if hidden files are to be ignored, will be read in csync_update
     _engine->setIgnoreHiddenFiles(_definition.ignoreHiddenFiles);
 
@@ -182,15 +186,15 @@ bool Folder::checkLocalPath()
 #ifdef Q_OS_WIN
     Utility::NtfsPermissionLookupRAII ntfs_perm;
 #endif
-    const QFileInfo fi(_definition.localPath);
+    const QFileInfo fi(_definition.localPath());
     _canonicalLocalPath = fi.canonicalFilePath();
 #ifdef Q_OS_MAC
     // Workaround QTBUG-55896  (Should be fixed in Qt 5.8)
     _canonicalLocalPath = _canonicalLocalPath.normalized(QString::NormalizationForm_C);
 #endif
     if (_canonicalLocalPath.isEmpty()) {
-        qCWarning(lcFolder) << "Broken symlink:" << _definition.localPath;
-        _canonicalLocalPath = _definition.localPath;
+        qCWarning(lcFolder) << "Broken symlink:" << _definition.localPath();
+        _canonicalLocalPath = _definition.localPath();
     } else if (!_canonicalLocalPath.endsWith('/')) {
         _canonicalLocalPath.append('/');
     }
@@ -200,14 +204,14 @@ bool Folder::checkLocalPath()
     } else {
         QString error;
         // Check directory again
-        if (!FileSystem::fileExists(_definition.localPath, fi)) {
-            error = tr("Local folder %1 does not exist.").arg(_definition.localPath);
+        if (!FileSystem::fileExists(_definition.localPath(), fi)) {
+            error = tr("Local folder %1 does not exist.").arg(_definition.localPath());
         } else if (!fi.isDir()) {
-            error = tr("%1 should be a folder but is not.").arg(_definition.localPath);
+            error = tr("%1 should be a folder but is not.").arg(_definition.localPath());
         } else if (!fi.isReadable()) {
-            error = tr("%1 is not readable.").arg(_definition.localPath);
+            error = tr("%1 is not readable.").arg(_definition.localPath());
         } else if (!fi.isWritable()) {
-            error = tr("%1 is not writable.").arg(_definition.localPath);
+            error = tr("%1 is not writable.").arg(_definition.localPath());
         }
         if (!error.isEmpty()) {
             _syncResult.appendErrorString(error);
@@ -243,7 +247,7 @@ QString Folder::path() const
 
 QString Folder::shortGuiLocalPath() const
 {
-    QString p = _definition.localPath;
+    QString p = _definition.localPath();
     QString home = QDir::homePath();
     if (!home.endsWith('/')) {
         home.append('/');
@@ -286,20 +290,27 @@ bool Folder::isSyncRunning() const
 
 QString Folder::remotePath() const
 {
-    return _definition.targetPath;
+    return _definition.targetPath();
+}
+
+QUrl Folder::webDavUrl() const
+{
+    return _definition.webDavUrl();
 }
 
 QString Folder::remotePathTrailingSlash() const
 {
-    QString result = remotePath();
-    if (!result.endsWith('/'))
-        result.append('/');
-    return result;
+    const QString remote = remotePath();
+    if (remote == QLatin1Char('/')) {
+        return remote;
+    }
+    Q_ASSERT(!remote.endsWith(QLatin1Char('/')));
+    return remote + QLatin1Char('/');
 }
 
 QUrl Folder::remoteUrl() const
 {
-    return Utility::concatUrlPath(_accountState->account()->davUrl(), remotePath());
+    return Utility::concatUrlPath(webDavUrl(), remotePath());
 }
 
 bool Folder::syncPaused() const
@@ -391,7 +402,7 @@ void Folder::slotRunEtagJob()
     // Do the ordinary etag check for the root folder and schedule a
     // sync if it's different.
 
-    _requestEtagJob = new RequestEtagJob(account, remotePath(), this);
+    _requestEtagJob = new RequestEtagJob(account, webDavUrl(), remotePath(), this);
     _requestEtagJob->setTimeout(60s);
     // check if the etag is different when retrieved
     QObject::connect(_requestEtagJob.data(), &RequestEtagJob::etagRetreived, this, &Folder::etagRetreived);
@@ -533,10 +544,9 @@ void Folder::startVfs()
         return;
     }
 
-    VfsSetupParams vfsParams;
+    VfsSetupParams vfsParams(_accountState->account(), webDavUrl());
     vfsParams.filesystemPath = path();
     vfsParams.remotePath = remotePathTrailingSlash();
-    vfsParams.account = _accountState->account();
     vfsParams.journal = &_journal;
     vfsParams.providerDisplayName = Theme::instance()->appNameGUI();
     vfsParams.providerName = Theme::instance()->appName();
@@ -571,7 +581,7 @@ void Folder::startVfs()
 int Folder::slotDiscardDownloadProgress()
 {
     // Delete from journal and from filesystem.
-    QDir folderpath(_definition.localPath);
+    QDir folderpath(_definition.localPath());
     QSet<QString> keep_nothing;
     const QVector<SyncJournalDb::DownloadInfo> deleted_infos =
         _journal.getAndDeleteStaleDownloadInfos(keep_nothing);
@@ -1327,9 +1337,10 @@ void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction dir, std::functio
 
 void FolderDefinition::save(QSettings &settings, const FolderDefinition &folder)
 {
-    settings.setValue(QLatin1String("localPath"), folder.localPath);
+    settings.setValue(QLatin1String("localPath"), folder.localPath());
     settings.setValue(QLatin1String("journalPath"), folder.journalPath);
-    settings.setValue(QLatin1String("targetPath"), folder.targetPath);
+    settings.setValue(QLatin1String("targetPath"), folder.targetPath());
+    settings.setValue(davUrlC(), folder.webDavUrl());
     settings.setValue(QLatin1String("paused"), folder.paused);
     settings.setValue(QLatin1String("ignoreHiddenFiles"), folder.ignoreHiddenFiles);
 
@@ -1351,9 +1362,10 @@ bool FolderDefinition::load(QSettings &settings, const QString &alias,
     FolderDefinition *folder)
 {
     folder->alias = FolderMan::unescapeAlias(alias);
-    folder->localPath = settings.value(QLatin1String("localPath")).toString();
+    folder->setLocalPath(settings.value(QLatin1String("localPath")).toString());
     folder->journalPath = settings.value(QLatin1String("journalPath")).toString();
-    folder->targetPath = settings.value(QLatin1String("targetPath")).toString();
+    folder->setTargetPath(settings.value(QLatin1String("targetPath")).toString());
+    folder->_webDavUrl = settings.value(davUrlC()).toUrl();
     folder->paused = settings.value(QLatin1String("paused")).toBool();
     folder->ignoreHiddenFiles = settings.value(QLatin1String("ignoreHiddenFiles"), QVariant(true)).toBool();
     folder->navigationPaneClsid = settings.value(QLatin1String("navigationPaneClsid")).toUuid();
@@ -1372,43 +1384,30 @@ bool FolderDefinition::load(QSettings &settings, const QString &alias,
             folder->upgradeVfsMode = true; // maybe winvfs is available?
         }
     }
-
-    // Old settings can contain paths with native separators. In the rest of the
-    // code we assume /, so clean it up now.
-    folder->localPath = prepareLocalPath(folder->localPath);
-
-    // Target paths also have a convention
-    folder->targetPath = prepareTargetPath(folder->targetPath);
-
     return true;
 }
 
-QString FolderDefinition::prepareLocalPath(const QString &path)
+void FolderDefinition::setLocalPath(const QString &path)
 {
-    QString p = QDir::fromNativeSeparators(path);
-    if (!p.endsWith(QLatin1Char('/'))) {
-        p.append(QLatin1Char('/'));
+    _localPath = QDir::fromNativeSeparators(path);
+    if (!_localPath.endsWith(QLatin1Char('/'))) {
+        _localPath.append(QLatin1Char('/'));
     }
-    return p;
 }
 
-QString FolderDefinition::prepareTargetPath(const QString &path)
+void FolderDefinition::setTargetPath(const QString &path)
 {
-    QString p = path;
-    if (p.endsWith(QLatin1Char('/'))) {
-        p.chop(1);
-    }
+    _targetPath = Utility::stripTrailingSlash(path);
     // Doing this second ensures the empty string or "/" come
     // out as "/".
-    if (!p.startsWith(QLatin1Char('/'))) {
-        p.prepend(QLatin1Char('/'));
+    if (!_targetPath.startsWith(QLatin1Char('/'))) {
+        _targetPath.prepend(QLatin1Char('/'));
     }
-    return p;
 }
 
 QString FolderDefinition::absoluteJournalPath() const
 {
-    return QDir(localPath).filePath(journalPath);
+    return QDir(localPath()).filePath(journalPath);
 }
 
 } // namespace OCC

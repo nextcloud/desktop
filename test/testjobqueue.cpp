@@ -19,8 +19,9 @@ class TestJob : public AbstractNetworkJob
 {
     // AbstractNetworkJob interface
 public:
+    // TODO: davurl
     TestJob(AccountPtr account)
-        : AbstractNetworkJob(account, QStringLiteral("/A/a1"))
+        : AbstractNetworkJob(account, account->davUrl(), QStringLiteral("/A/a1"))
     {
     }
 
@@ -39,7 +40,7 @@ public:
         buf->setData(xml);
         buf->open(QIODevice::ReadOnly);
         // assumes ownership
-        sendRequest("PROPFIND", makeDavUrl(path()), req, buf);
+        sendRequest("PROPFIND", req, buf);
         AbstractNetworkJob::start();
     }
 

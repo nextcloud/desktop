@@ -174,7 +174,7 @@ void ConnectionValidator::checkAuthentication()
     // simply GET the webdav root, will fail if credentials are wrong.
     // continue in slotAuthCheck here :-)
     qCDebug(lcConnectionValidator) << "# Check whether authenticated propfind works.";
-    PropfindJob *job = new PropfindJob(_account, "/", this);
+    PropfindJob *job = new PropfindJob(_account, _account->davUrl(), {}, this);
     job->setAuthenticationJob(true); // don't retry
     job->setTimeout(timeoutToUse);
     job->setProperties(QList<QByteArray>() << "getlastmodified");

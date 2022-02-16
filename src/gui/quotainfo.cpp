@@ -98,10 +98,9 @@ void QuotaInfo::slotCheckQuota()
         _job->deleteLater();
     }
 
-    AccountPtr account = _accountState->account();
-    _job = new PropfindJob(account, quotaBaseFolder(), this);
-    _job->setProperties(QList<QByteArray>() << "quota-available-bytes"
-                                            << "quota-used-bytes");
+    const AccountPtr &account = _accountState->account();
+    _job = new PropfindJob(account, account->davUrl(), quotaBaseFolder(), this);
+    _job->setProperties({ QByteArrayLiteral("quota-available-bytes"), QByteArrayLiteral("quota-used-bytes") });
     connect(_job.data(), &PropfindJob::result, this, &QuotaInfo::slotUpdateLastQuota);
     connect(_job.data(), &AbstractNetworkJob::networkError, this, &QuotaInfo::slotRequestFailed);
     _job->start();

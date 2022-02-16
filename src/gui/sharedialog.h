@@ -41,6 +41,7 @@ class ShareDialog : public QDialog
 
 public:
     explicit ShareDialog(AccountStatePtr accountState,
+        const QUrl &baseUrl,
         const QString &sharePath,
         const QString &localPath,
         SharePermissions maxSharingPermissions,
@@ -71,6 +72,7 @@ private:
     ShareLinkWidget *_linkWidget;
     ShareUserGroupWidget *_userGroupWidget;
     QProgressIndicator *_progressIndicator;
+    const QUrl _baseUrl;
 };
 }
 

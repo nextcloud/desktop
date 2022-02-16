@@ -40,6 +40,7 @@ namespace OCC {
 static const int thumbnailSize = 40;
 
 ShareDialog::ShareDialog(AccountStatePtr accountState,
+    const QUrl &baseUrl,
     const QString &sharePath,
     const QString &localPath,
     SharePermissions maxSharingPermissions,
@@ -55,6 +56,7 @@ ShareDialog::ShareDialog(AccountStatePtr accountState,
     , _linkWidget(nullptr)
     , _userGroupWidget(nullptr)
     , _progressIndicator(nullptr)
+    , _baseUrl(baseUrl)
 {
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setAttribute(Qt::WA_DeleteOnClose);
@@ -128,7 +130,7 @@ ShareDialog::ShareDialog(AccountStatePtr accountState,
 
     // Server versions >= 9.1 support the "share-permissions" property
     // older versions will just return share-permissions: ""
-    auto job = new PropfindJob(accountState->account(), _sharePath);
+    auto job = new PropfindJob(accountState->account(), _baseUrl, _sharePath);
     job->setProperties({ QByteArrayLiteral("http://open-collaboration-services.org/ns:share-permissions"),
         QByteArrayLiteral("http://owncloud.org/ns:privatelink") });
     job->setTimeout(10s);

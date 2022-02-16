@@ -135,7 +135,8 @@ void OwncloudAdvancedSetupPage::initializePage()
     QTimer::singleShot(0, wizard()->button(QWizard::FinishButton), qOverload<>(&QWidget::setFocus));
 
     auto acc = owncloudWizard()->account();
-    auto quotaJob = new PropfindJob(acc, owncloudWizard()->remoteFolder(), this);
+    // TODO: legacy
+    auto quotaJob = new PropfindJob(acc, acc->davUrl(), owncloudWizard()->remoteFolder(), this);
     quotaJob->setProperties(QList<QByteArray>() << "http://owncloud.org/ns:size");
 
     connect(quotaJob, &PropfindJob::result, this, &OwncloudAdvancedSetupPage::slotQuotaRetrieved);

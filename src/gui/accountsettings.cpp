@@ -312,8 +312,8 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
             // Only add the path of subfolders, because the remote path is the path of the root folder.
             path += info->_path;
         }
-        menu->addAction(tr("Show in Browser"), [this, path] {
-            fetchPrivateLinkUrl(_accountState->account(), path, this, [](const QString &url) {
+        menu->addAction(tr("Show in Browser"), [path, davUrl = info->_folder->webDavUrl(), this] {
+            fetchPrivateLinkUrl(_accountState->account(), davUrl, path, this, [](const QString &url) {
                 Utility::openBrowser(url, nullptr);
             });
         });
@@ -442,28 +442,26 @@ void AccountSettings::slotFolderWizardAccepted()
     qCInfo(lcAccountSettings) << "Folder wizard completed";
 
     FolderDefinition definition;
-    definition.localPath = FolderDefinition::prepareLocalPath(
-        folderWizard->field(QLatin1String("sourceFolder")).toString());
-    definition.targetPath = FolderDefinition::prepareTargetPath(
-        folderWizard->property("targetPath").toString());
+    definition.setLocalPath(folderWizard->field(QLatin1String("sourceFolder")).toString());
+    definition.setTargetPath(folderWizard->property("targetPath").toString());
 
     if (folderWizard->property("useVirtualFiles").toBool()) {
         definition.virtualFilesMode = bestAvailableVfsMode();
     }
 
     {
-        QDir dir(definition.localPath);
+        QDir dir(definition.localPath());
         if (!dir.exists()) {
-            qCInfo(lcAccountSettings) << "Creating folder" << definition.localPath;
+            qCInfo(lcAccountSettings) << "Creating folder" << definition.localPath();
             if (!dir.mkpath(".")) {
                 QMessageBox::warning(this, tr("Folder creation failed"),
                     tr("<p>Could not create local folder <i>%1</i>.")
-                        .arg(QDir::toNativeSeparators(definition.localPath)));
+                        .arg(QDir::toNativeSeparators(definition.localPath())));
                 return;
             }
         }
-        FileSystem::setFolderMinimumPermissions(definition.localPath);
-        Utility::setupFavLink(definition.localPath);
+        FileSystem::setFolderMinimumPermissions(definition.localPath());
+        Utility::setupFavLink(definition.localPath());
     }
 
     /* take the value from the definition of already existing folders. All folders have

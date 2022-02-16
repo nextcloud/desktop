@@ -40,8 +40,8 @@ private Q_SLOTS:
         QVERIFY(d.mkdir("bar"));
         const QString foo = dir.path() + QStringLiteral("/foo");
         const QString bar = dir.path() + QStringLiteral("/bar");
-        QVERIFY(TestUtils::folderMan()->addFolder(newAccountState, TestUtils::createDummyFolderDefinition(foo)));
-        QVERIFY(TestUtils::folderMan()->addFolder(newAccountState, TestUtils::createDummyFolderDefinition(bar)));
+        QVERIFY(TestUtils::folderMan()->addFolder(newAccountState, TestUtils::createDummyFolderDefinition(newAccountState->account(), foo)));
+        QVERIFY(TestUtils::folderMan()->addFolder(newAccountState, TestUtils::createDummyFolderDefinition(newAccountState->account(), bar)));
 
 
         // populate with dummy data

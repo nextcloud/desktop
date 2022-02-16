@@ -51,24 +51,21 @@ class LocalDiscoveryTracker;
 class FolderDefinition
 {
 public:
-    FolderDefinition()
-        : paused(false)
-        , ignoreHiddenFiles(true)
-    {
-    }
+    FolderDefinition() = default;
+    FolderDefinition(const QUrl &davUrl)
+        : _webDavUrl(davUrl) {
+
+        };
 
     /// The name of the folder in the ui and internally
     QString alias;
-    /// path on local machine (always trailing /)
-    QString localPath;
     /// path to the journal, usually relative to localPath
     QString journalPath;
-    /// path on remote (usually no trailing /, exception "/")
-    QString targetPath;
+
     /// whether the folder is paused
-    bool paused;
+    bool paused = false;
     /// whether the folder syncs hidden files
-    bool ignoreHiddenFiles;
+    bool ignoreHiddenFiles = true;
     /// Which virtual files setting the folder uses
     Vfs::Mode virtualFilesMode = Vfs::Off;
     /// The CLSID where this folder appears in registry for the Explorer navigation pane entry.
@@ -95,13 +92,37 @@ public:
     static int maxSettingsVersion() { return 4; }
 
     /// Ensure / as separator and trailing /.
-    static QString prepareLocalPath(const QString &path);
+    void setLocalPath(const QString &path);
 
     /// Remove ending /, then ensure starting '/': so "/foo/bar" and "/".
-    static QString prepareTargetPath(const QString &path);
+    void setTargetPath(const QString &path);
 
     /// journalPath relative to localPath.
     QString absoluteJournalPath() const;
+
+    QString localPath() const
+    {
+        return _localPath;
+    }
+    QString targetPath() const
+    {
+        return _targetPath;
+    }
+    const QUrl &webDavUrl() const
+    {
+        Q_ASSERT(_webDavUrl.isValid());
+        return _webDavUrl;
+    }
+
+private:
+    /// path on local machine (always trailing /)
+    QString _localPath;
+    /// path on remote (usually no trailing /, exception "/")
+    QString _targetPath;
+
+    QUrl _webDavUrl;
+
+    friend class FolderMan;
 };
 
 /**
@@ -157,6 +178,11 @@ public:
      * remote folder path, usually without trailing /, exception "/"
      */
     QString remotePath() const;
+
+    /**
+     * The full remote webdav url
+     */
+    QUrl webDavUrl() const;
 
     /**
      * remote folder path, always with a trailing /

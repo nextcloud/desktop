@@ -196,7 +196,8 @@ void FolderWizardRemotePath::slotCreateRemoteFolder(const QString &folder)
     }
     fullPath += "/" + folder;
 
-    MkColJob *job = new MkColJob(_account, fullPath, this);
+    // TODO: legacy
+    MkColJob *job = new MkColJob(_account, _account->davUrl(), fullPath, {}, this);
     /* check the owncloud configuration file and query the ownCloud */
     connect(job, &MkColJob::finishedWithoutError,
         this, &FolderWizardRemotePath::slotCreateRemoteFolderFinished);
@@ -395,7 +396,8 @@ void FolderWizardRemotePath::slotTypedPathFound(const QStringList &subpaths)
 
 LsColJob *FolderWizardRemotePath::runLsColJob(const QString &path)
 {
-    LsColJob *job = new LsColJob(_account, path, this);
+    // TODO: legacy
+    LsColJob *job = new LsColJob(_account, _account->davUrl(), path, this);
     job->setProperties(QList<QByteArray>() << "resourcetype");
     connect(job, &LsColJob::directoryListingSubfolders,
         this, &FolderWizardRemotePath::slotUpdateDirectories);

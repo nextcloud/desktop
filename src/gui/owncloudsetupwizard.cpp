@@ -276,7 +276,8 @@ void OwncloudSetupWizard::slotCreateLocalAndRemoteFolders()
         qCDebug(lcWizard) << "Creating local sync folder" << _ocWizard->localFolder() << "success:" << ok;
     }
     if (nextStep) {
-        EntityExistsJob *job = new EntityExistsJob(_ocWizard->account(), Utility::concatUrlPath(_ocWizard->account()->davPath(), _ocWizard->remoteFolder()).path(), this);
+        // TODO: legacy
+        EntityExistsJob *job = new EntityExistsJob(_ocWizard->account(), _ocWizard->account()->davUrl(), _ocWizard->remoteFolder(), this);
         connect(job, &EntityExistsJob::exists, this, &OwncloudSetupWizard::slotRemoteFolderExists);
         job->start();
     } else {
@@ -312,7 +313,8 @@ void OwncloudSetupWizard::createRemoteFolder()
 {
     qCDebug(lcWizard) << "creating folder on ownCloud:" << _ocWizard->remoteFolder();
 
-    MkColJob *job = new MkColJob(_ocWizard->account(), _ocWizard->remoteFolder(), this);
+    // TODO: legacy
+    MkColJob *job = new MkColJob(_ocWizard->account(), _ocWizard->account()->davUrl(), _ocWizard->remoteFolder(), {}, this);
     connect(job, &MkColJob::finishedWithError, this, &OwncloudSetupWizard::slotCreateRemoteFolderFinished);
     connect(job, &MkColJob::finishedWithoutError, this, [this] {
         qCDebug(lcWizard) << "Remote folder" << _ocWizard->remoteFolder() << "created successfully.";
@@ -383,6 +385,41 @@ bool OwncloudSetupWizard::ensureStartFromScratch(const QString &localFolder)
     return renameOk;
 }
 
+
+void OwncloudSetupWizard::addFolder(AccountStatePtr account, const QString &localFolder, const QString &remotePath, const QUrl &webDavUrl)
+{
+    FolderMan *folderMan = FolderMan::instance();
+    qCInfo(lcWizard) << "Adding folder definition for" << localFolder << remotePath;
+    FolderDefinition folderDefinition(webDavUrl);
+    folderDefinition.setLocalPath(localFolder);
+    folderDefinition.setTargetPath(remotePath);
+    folderDefinition.ignoreHiddenFiles = folderMan->ignoreHiddenFiles();
+    if (_ocWizard->useVirtualFileSync()) {
+        folderDefinition.virtualFilesMode = bestAvailableVfsMode();
+    }
+#ifdef Q_OS_WIN
+    if (folderMan->navigationPaneHelper().showInExplorerNavigationPane())
+        folderDefinition.navigationPaneClsid = QUuid::createUuid();
+#endif
+
+    auto f = folderMan->addFolder(account, folderDefinition);
+    if (f) {
+        if (folderDefinition.virtualFilesMode != Vfs::Off && _ocWizard->useVirtualFileSync())
+            f->setRootPinState(PinState::OnlineOnly);
+
+        f->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList,
+            _ocWizard->selectiveSyncBlacklist());
+        if (!_ocWizard->isConfirmBigFolderChecked()) {
+            // The user already accepted the selective sync dialog. everything is in the white list
+            f->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList,
+                QStringList() << QLatin1String("/"));
+        }
+        qCDebug(lcWizard) << "Local sync folder" << localFolder << "successfully created!";
+    } else {
+        qCWarning(lcWizard) << "Failed to create local sync folder!";
+    }
+}
+
 // Method executed when the user end has finished the basic setup.
 void OwncloudSetupWizard::slotAssistantFinished(int result)
 {
@@ -391,45 +428,16 @@ void OwncloudSetupWizard::slotAssistantFinished(int result)
     } else if (_ocWizard->manualFolderConfig()) {
         applyAccountChanges();
     } else {
-        FolderMan *folderMan = FolderMan::instance();
-        auto account = applyAccountChanges();
-
-        QString localFolder = FolderDefinition::prepareLocalPath(_ocWizard->localFolder());
-
+        const QString localFolder = _ocWizard->localFolder();
         bool startFromScratch = _ocWizard->field("OCSyncFromScratch").toBool();
+
         if (!startFromScratch || ensureStartFromScratch(localFolder)) {
-            qCInfo(lcWizard) << "Adding folder definition for" << localFolder << _ocWizard->remoteFolder();
-            FolderDefinition folderDefinition;
-            folderDefinition.localPath = localFolder;
-            folderDefinition.targetPath = FolderDefinition::prepareTargetPath(_ocWizard->remoteFolder());
-            folderDefinition.ignoreHiddenFiles = folderMan->ignoreHiddenFiles();
-            if (_ocWizard->useVirtualFileSync()) {
-                folderDefinition.virtualFilesMode = bestAvailableVfsMode();
-            }
-#ifdef Q_OS_WIN
-            if (folderMan->navigationPaneHelper().showInExplorerNavigationPane())
-                folderDefinition.navigationPaneClsid = QUuid::createUuid();
-#endif
-
-            auto f = folderMan->addFolder(account, folderDefinition);
-            if (f) {
-                if (folderDefinition.virtualFilesMode != Vfs::Off && _ocWizard->useVirtualFileSync())
-                    f->setRootPinState(PinState::OnlineOnly);
-
-                f->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList,
-                    _ocWizard->selectiveSyncBlacklist());
-                if (!_ocWizard->isConfirmBigFolderChecked()) {
-                    // The user already accepted the selective sync dialog. everything is in the white list
-                    f->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList,
-                        QStringList() << QLatin1String("/"));
-                }
-                qCDebug(lcWizard) << "Local sync folder" << localFolder << "successfully created!";
-            } else {
-                qCWarning(lcWizard) << "Failed to create local sync folder!";
-            }
+            auto account = applyAccountChanges();
+            addFolder(account, localFolder, _ocWizard->remoteFolder(), account->account()->davUrl());
+        } else {
+            qCWarning(lcWizard) << "Failed to create local sync folder!";
         }
     }
-
     // notify others.
     emit ownCloudWizardDone(result);
 }

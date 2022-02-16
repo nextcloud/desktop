@@ -13,18 +13,19 @@
  */
 #pragma once
 
+#include "assert.h"
+#include "ocsynclib.h"
+#include "pinstate.h"
+#include "result.h"
+#include "syncfilestatus.h"
+
 #include <QObject>
 #include <QScopedPointer>
 #include <QSharedPointer>
+#include <QUrl>
 #include <QVersionNumber>
 
 #include <memory>
-
-#include "assert.h"
-#include "ocsynclib.h"
-#include "result.h"
-#include "syncfilestatus.h"
-#include "pinstate.h"
 
 typedef struct csync_file_stat_s csync_file_stat_t;
 
@@ -39,6 +40,13 @@ class SyncFileItem;
 /** Collection of parameters for initializing a Vfs instance. */
 struct OCSYNC_EXPORT VfsSetupParams
 {
+    VfsSetupParams() = default;
+
+    explicit VfsSetupParams(const AccountPtr &account, const QUrl &baseUrl)
+        : account(account)
+        , _baseUrl(baseUrl)
+    {
+    }
     /** The full path to the folder on the local filesystem
      *
      * Always ends with /.
@@ -69,6 +77,14 @@ struct OCSYNC_EXPORT VfsSetupParams
      *  a different presentaton to identify the accounts
      */
     bool multipleAccountsRegistered = false;
+
+    const QUrl &baseUrl() const
+    {
+        return _baseUrl;
+    }
+
+private:
+    QUrl _baseUrl;
 };
 
 /** Interface describing how to deal with virtual/placeholder files.

@@ -37,11 +37,12 @@ namespace TestUtils {
         return acc;
     }
 
-    FolderDefinition createDummyFolderDefinition(const QString &path)
+    FolderDefinition createDummyFolderDefinition(const AccountPtr &account, const QString &path)
     {
-        OCC::FolderDefinition d;
-        d.localPath = path;
-        d.targetPath = path;
+        // TODO: legacy
+        OCC::FolderDefinition d(account->davUrl());
+        d.setLocalPath(path);
+        d.setTargetPath(path);
         d.alias = path;
         return d;
     }
