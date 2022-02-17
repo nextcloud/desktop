@@ -265,6 +265,84 @@ Feature: Sharing
         And as "Alice" folder "Parent/localFolder" should exist on the server
 
 
+    Scenario: sharee tries to create a file and a folder inside a shared folder without write permission
+        Given user "Alice" has created folder "Parent" on the server
+        And user "Brian" has been created on the server with default attributes and without skeleton files
+        And user "Alice" has shared folder "Parent" on the server with user "Brian" with "read" permissions
+        And user "Brian" has set up a client with default settings
+        When the user waits for folder "Parent" to be synced
+        And user "Brian" creates a file "Parent/localFile.txt" with the following content inside the sync folder
+            """
+            test content
+            """
+        And user "Brian" creates a folder "Parent/localFolder" inside the sync folder
+        And the user waits for the files to sync
+        Then as "Brian" file "Parent/localFile.txt" should not exist on the server
+        And as "Brian" folder "Parent/localFolder" should not exist on the server
+        And as "Alice" file "Parent/localFile.txt" should not exist on the server
+        And as "Alice" folder "Parent/localFolder" should not exist on the server
+
+
+    Scenario: sharee renames the shared file and folder
+        Given user "Alice" has uploaded file with content "ownCloud test text file 0" to "textfile.txt" on the server
+        And user "Alice" has created folder "FOLDER" on the server
+        And user "Brian" has been created on the server with default attributes and without skeleton files
+        And user "Alice" has shared file "textfile.txt" on the server with user "Brian" with "all" permissions
+        And user "Alice" has shared file "FOLDER" on the server with user "Brian" with "all" permissions
+        And user "Brian" has set up a client with default settings
+        When the user waits for folder "FOLDER" to be synced
+        When the user waits for file "textfile.txt" to be synced
+        And the user renames a file "textfile.txt" to "lorem.txt"
+        And the user renames a folder "FOLDER" to "PARENT"
+        And the user waits for folder "PARENT" to be synced
+        And the user waits for file "lorem.txt" to be synced
+        Then as "Brian" folder "FOLDER" should not exist on the server
+        And as "Brian" file "textfile.txt" should not exist on the server
+        And as "Brian" folder "PARENT" should exist on the server
+        And as "Brian" file "lorem.txt" should exist on the server
+        # File/folder will not change for Alice
+        And as "Alice" folder "FOLDER" should exist on the server
+        And as "Alice" file "textfile.txt" should exist on the server
+        And as "Alice" folder "PARENT" should not exist on the server
+        And as "Alice" file "lorem.txt" should not exist on the server
+
+    @skip @issue-9439
+    Scenario: sharee deletes a file and folder shared by sharer
+        Given user "Alice" has uploaded file with content "ownCloud test text file 0" to "textfile.txt" on the server
+        And user "Alice" has created folder "Folder" on the server
+        And user "Brian" has been created on the server with default attributes and without skeleton files
+        And user "Alice" has shared file "textfile.txt" on the server with user "Brian" with "all" permissions
+        And user "Alice" has shared file "Folder" on the server with user "Brian" with "all" permissions
+        And user "Brian" has set up a client with default settings
+        When the user waits for file "textfile.txt" to be synced
+        And the user waits for folder "Folder" to be synced
+        And the user deletes the file "textfile.txt"
+        And the user deletes the folder "Folder"
+        And the user waits for the files to sync
+        Then as "Brian" file "textfile.txt" on the server should not exist
+        And as "Brian" folder "Folder" on the server should not exist
+        And as "Alice" file "textfile.txt" on the server should not exist
+        And as "Alice" folder "Folder" on the server should not exist
+
+
+    Scenario: sharee tries to delete shared file and folder without permissions
+        Given user "Alice" has uploaded file with content "ownCloud test text file 0" to "textfile.txt" on the server
+        And user "Alice" has created folder "Folder" on the server
+        And user "Brian" has been created on the server with default attributes and without skeleton files
+        And user "Alice" has shared file "textfile.txt" on the server with user "Brian" with "read" permissions
+        And user "Alice" has shared file "Folder" on the server with user "Brian" with "read" permissions
+        And user "Brian" has set up a client with default settings
+        When the user waits for file "textfile.txt" to be synced
+        And the user waits for folder "Folder" to be synced
+        And the user deletes the file "textfile.txt"
+        And the user deletes the folder "Folder"
+        And the user waits for the files to sync
+        Then as "Brian" file "textfile.txt" on the server should exist
+        And as "Brian" folder "Folder" on the server should exist
+        And as "Alice" file "textfile.txt" on the server should exist
+        And as "Alice" folder "Folder" on the server should exist
+
+
     Scenario: reshare a file/folder
         Given user "Brian" has been created on the server with default attributes and without skeleton files
         And user "Carol" has been created on the server with default attributes and without skeleton files
@@ -277,6 +355,8 @@ Feature: Sharing
         And the user adds "Carol King" as collaborator of resource "textfile.txt" with permissions "edit,share" using the client-UI
         Then user "Carol King" should be listed in the collaborators list for file "FOLDER" with permissions "edit,share" on the client-UI
         And user "Carol King" should be listed in the collaborators list for file "textfile.txt" with permissions "edit,share" on the client-UI
+        And as "Carol" folder "FOLDER" should exist on the server
+        And as "Carol" file "textfile.txt" should exist on the server
 
 
     Scenario: try to reshare a file/folder shared without share permission
@@ -293,23 +373,18 @@ Feature: Sharing
         Then the error text "The file can not be shared because it was shared without sharing permission." should be displayed in the sharing dialog
 
 
-    Scenario: unshare a shared file
+    Scenario: unshare a shared file and folder
         Given user "Brian" has been created on the server with default attributes and without skeleton files
         And user "Alice" has uploaded file with content "ownCloud test text file 0" to "textfile0.txt" on the server
+        And user "Alice" has created folder "simple-folder" on the server
         And user "Alice" has shared file "textfile0.txt" on the server with user "Brian" with "all" permissions
+        And user "Alice" has shared folder "simple-folder" on the server with user "Brian" with "all" permissions
         And user "Alice" has set up a client with default settings
         When the user unshares the resource "textfile0.txt" for collaborator "Brian Murphy" using the client-UI
         Then the text "The item is not shared with any users or groups" should be displayed in the sharing dialog
         And as "Brian" file "textfile0.txt" on the server should not exist
-
-
-    Scenario: unshare a shared folder
-        Given user "Brian" has been created on the server with default attributes and without skeleton files
-        And user "Alice" has created folder "simple-folder" on the server
-        And user "Alice" has uploaded file with content "ownCloud test text file 0" to "textfile0.txt" on the server
-        And user "Alice" has shared folder "simple-folder" on the server with user "Brian" with "all" permissions
-        And user "Alice" has set up a client with default settings
-        When the user unshares the resource "simple-folder" for collaborator "Brian Murphy" using the client-UI
+        When the user closes the sharing dialog
+        And the user unshares the resource "simple-folder" for collaborator "Brian Murphy" using the client-UI
         Then the text "The item is not shared with any users or groups" should be displayed in the sharing dialog
         And as "Brian" folder "simple-folder" on the server should not exist
 
@@ -331,7 +406,6 @@ Feature: Sharing
             | Carol King   | edit,share  |
             | David Lopez  | edit,share  |
 
-
     @issue-7423
     Scenario: unshare a reshared file
         Given user "Alice" has uploaded file with content "ownCloud test text file" to "textfile.txt" on the server
@@ -344,12 +418,35 @@ Feature: Sharing
         Then the text "The item is not shared with any users or groups" should be displayed in the sharing dialog
 
     @smokeTest
-    Scenario: simple sharing of a file by public link without password
+    Scenario: simple sharing of file and folder by public link without password
         Given user "Alice" has uploaded file with content "ownCloud test text file 0" to "/textfile0.txt" on the server
+        And user "Alice" has created folder "simple-folder" on the server
+        And user "Alice" has created folder "simple-folder/child" on the server
         And user "Alice" has set up a client with default settings
         When the user creates a new public link for file "textfile0.txt" without password using the client-UI
+        And the user closes the sharing dialog
         Then as user "Alice" the file "textfile0.txt" should have a public link on the server
         And the public should be able to download the file "textfile0.txt" without password from the last created public link by "Alice" on the server
+        When the user creates a new public link with permissions "Download / View" for folder "simple-folder" without password using the client-UI
+        Then as user "Alice" the folder "simple-folder" should have a public link on the server
+        And the public should be able to download the folder "simple-folder/child" without password from the last created public link by "Alice" on the server
+
+
+    Scenario Outline: simple sharing of file and folder by public link with password
+        Given user "Alice" has uploaded file with content "ownCloud test text file 0" to "/textfile0.txt" on the server
+        And user "Alice" has created folder "simple-folder" on the server
+        And user "Alice" has set up a client with default settings
+        When the user creates a new public link for file "textfile0.txt" with password "<password>" using the client-UI
+        And the user closes the sharing dialog
+        Then as user "Alice" the file "textfile0.txt" should have a public link on the server
+        And the public should be able to download the file "textfile0.txt" with password "<password>" from the last created public link by "Alice" on the server
+        When the user creates a new public link with permissions "Download / View" for folder "simple-folder" with password "<password>" using the client-UI
+        Then as user "Alice" the folder "simple-folder" should have a public link on the server
+        And the public should be able to download the folder "simple-folder" with password "<password>" from the last created public link by "Alice" on the server
+        Examples:
+            | password     |
+            | password1234 |
+            | p@$s!23      |
 
 
     Scenario: sharing of a file by public link and deleting the link
@@ -386,7 +483,37 @@ Feature: Sharing
         Then as user "Alice" the file "textfile0.txt" should have a public link on the server
         And the public should be able to download the file "textfile0.txt" with password "password1234" from the last created public link by "Alice" on the server
 
-    @skip @issue-9430
+
+    Scenario: simple sharing of a file by public link with default expiration date
+        Given user "Alice" has set up a client with default settings
+        And user "Alice" has uploaded file with content "ownCloud test text file" to "/textfile.txt" on the server
+        When the user creates a new public link with following settings using the client-UI:
+            | path       | textfile.txt |
+            | expireDate | %default%    |
+        And the user closes the sharing dialog
+        Then the expiration date of the last public link of file "textfile.txt" should be "%default%"
+        And as user "Alice" the file "textfile.txt" should have a public link on the server
+
+    @skip @issue-9321
+    Scenario: simple sharing of file and folder by public link with expiration date
+        Given user "Alice" has set up a client with default settings
+        And user "Alice" has created folder "FOLDER" on the server
+        And user "Alice" has uploaded file with content "ownCloud test text file" to "/textfile.txt" on the server
+        When the user creates a new public link with following settings using the client-UI:
+            | path       | textfile.txt |
+            | expireDate | 2031-10-14   |
+        Then as user "Alice" the file "textfile.txt" should have a public link on the server
+        And the fields of the last public link share response of user "Alice" should include on the server
+            | expireDate | 2031-10-14 |
+        When the user closes the sharing dialog
+        And the user creates a new public link with following settings using the client-UI:
+            | path       | FOLDER     |
+            | expireDate | 2031-12-30 |
+        Then as user "Alice" the file "FOLDER" should have a public link on the server
+        And the fields of the last public link share response of user "Alice" should include on the server
+            | expireDate | 2031-12-30 |
+
+    @skip @issue-9321
     Scenario: simple sharing of a file by public link with password and expiration date
         Given user "Alice" has set up a client with default settings
         And user "Alice" has uploaded file with content "ownCloud test text file" to "/textfile.txt" on the server
@@ -399,9 +526,8 @@ Feature: Sharing
             | expireDate | 2031-10-14 |
         And the public should be able to download the file "textfile.txt" with password "pass123" from the last created public link by "Alice" on the server
 
-
     @skip @issue-9321
-    Scenario: user changes the expiration date of an already existing public link using webUI
+    Scenario: user changes the expiration date of an already existing public link for file using client-UI
         Given user "Alice" has uploaded file with content "ownCloud test text file 0" to "/textfile0.txt" on the server
         And user "Alice" has set up a client with default settings
         And user "Alice" has created a public link on the server with following settings
@@ -413,22 +539,6 @@ Feature: Sharing
             | expireDate | 2038-07-21 |
         Then the last public link share response of user "Alice" should include the following fields on the server
             | expireDate | 2038-07-21 |
-
-    @smokeTest
-    Scenario: simple sharing of a folder by public link without password
-        Given user "Alice" has created folder "simple-folder" on the server
-        And user "Alice" has set up a client with default settings
-        When the user creates a new public link with permissions "Download / View" for folder "simple-folder" without password using the client-UI
-        Then as user "Alice" the folder "simple-folder" should have a public link on the server
-        And the public should be able to download the folder "lorem.txt" without password from the last created public link by "Alice" on the server
-
-
-    Scenario: simple sharing of a folder by public link with password
-        Given user "Alice" has created folder "simple-folder" on the server
-        And user "Alice" has set up a client with default settings
-        When the user creates a new public link with permissions "Download / View" for folder "simple-folder" with password "pass123" using the client-UI
-        Then as user "Alice" the folder "simple-folder" should have a public link on the server
-        And the public should be able to download the folder "lorem.txt" with password "pass123" from the last created public link by "Alice" on the server
 
     @skip @issue-9321
     Scenario: user changes the expiration date of an already existing public link for folder using client-UI
@@ -465,7 +575,7 @@ Feature: Sharing
             | Contributor | create                       |
 
 
-    Scenario: sharing by public link with "Uploader" role
+    Scenario: sharing a folder by public link with "Uploader" role and check if file can be downloaded
         Given user "Alice" has created folder "simple-folder" on the server
         And user "Alice" has created file "simple-folder/lorem.txt" on the server
         And user "Alice" has set up a client with default settings
@@ -482,8 +592,7 @@ Feature: Sharing
 
 
     Scenario Outline: change collaborator permissions of a file & folder
-        Given the setting "shareapi_auto_accept_share" on the server of app "core" has been set to "yes"
-        And the administrator on the server has set the default folder for received shares to "Shares"
+        Given the administrator on the server has set the default folder for received shares to "Shares"
         And user "Alice" has created folder "simple-folder" on the server
         And user "Alice" has created file "lorem.txt" on the server
         And user "Brian" has been created on the server with default attributes and without skeleton files
@@ -516,17 +625,3 @@ Feature: Sharing
             | edit        | read, share                  | read, share              |
             | share       | read, update, create, delete | read,update              |
             | edit,share  | read                         | read                     |
-
-
-    Scenario: sharee deletes a file shared by sharer
-        Given the setting "shareapi_auto_accept_share" on the server of app "core" has been set to "yes"
-        And the administrator on the server has set the default folder for received shares to "Shares"
-        And user "Alice" has uploaded file with content "ownCloud test text file 0" to "textfile.txt" on the server
-        And user "Brian" has been created on the server with default attributes and without skeleton files
-        And user "Alice" has shared file "textfile.txt" on the server with user "Brian" with "all" permissions
-        And user "Brian" has set up a client with default settings
-        When the user waits for file "Shares/textfile.txt" to be synced
-        And the user deletes the file "Shares/textfile.txt"
-        And the user waits for the files to sync
-        Then as "Brian" file "Shares/textfile0.txt" on the server should not exist
-        And as "Alice" file "textfile0.txt" on the server should not exist
