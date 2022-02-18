@@ -938,6 +938,106 @@ private slots:
         QCOMPARE(nPOST, 0);
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
     }
+
+    void testRemoteMoveFailedInsufficientStorageLocalMoveRolledBack()
+    {
+        FakeFolder fakeFolder{FileInfo{}};
+
+        // create a big shared folder with some files
+        fakeFolder.remoteModifier().mkdir("big_shared_folder");
+        fakeFolder.remoteModifier().mkdir("big_shared_folder/shared_files");
+        fakeFolder.remoteModifier().insert("big_shared_folder/shared_files/big_shared_file_A.data", 1000);
+        fakeFolder.remoteModifier().insert("big_shared_folder/shared_files/big_shared_file_B.data", 1000);
+
+        // make sure big shared folder is synced
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(fakeFolder.currentLocalState().find("big_shared_folder/shared_files/big_shared_file_A.data"));
+        QVERIFY(fakeFolder.currentLocalState().find("big_shared_folder/shared_files/big_shared_file_B.data"));
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        // try to move from a big shared folder to your own folder
+        fakeFolder.localModifier().mkdir("own_folder");
+        fakeFolder.localModifier().rename(
+            "big_shared_folder/shared_files/big_shared_file_A.data", "own_folder/big_shared_file_A.data");
+        fakeFolder.localModifier().rename(
+            "big_shared_folder/shared_files/big_shared_file_B.data", "own_folder/big_shared_file_B.data");
+
+        // emulate server MOVE 507 error
+        QObject parent;
+        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request,
+                                         QIODevice *outgoingData) -> QNetworkReply * {
+            Q_UNUSED(outgoingData)
+
+            if (op == QNetworkAccessManager::CustomOperation
+                && request.attribute(QNetworkRequest::CustomVerbAttribute).toString() == QStringLiteral("MOVE")) {
+                return new FakeErrorReply(op, request, &parent, 507);
+            }
+            return nullptr;
+        });
+
+        // make sure the first sync failes and files get restored to original folder
+        QVERIFY(!fakeFolder.syncOnce());
+
+        QVERIFY(fakeFolder.syncOnce());
+
+        QVERIFY(fakeFolder.currentLocalState().find("big_shared_folder/shared_files/big_shared_file_A.data"));
+        QVERIFY(fakeFolder.currentLocalState().find("big_shared_folder/shared_files/big_shared_file_B.data"));
+        QVERIFY(!fakeFolder.currentLocalState().find("own_folder/big_shared_file_A.data"));
+        QVERIFY(!fakeFolder.currentLocalState().find("own_folder/big_shared_file_B.data"));
+
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+    }
+
+    void testRemoteMoveFailedForbiddenLocalMoveRolledBack()
+    {
+        FakeFolder fakeFolder{FileInfo{}};
+
+        // create a big shared folder with some files
+        fakeFolder.remoteModifier().mkdir("big_shared_folder");
+        fakeFolder.remoteModifier().mkdir("big_shared_folder/shared_files");
+        fakeFolder.remoteModifier().insert("big_shared_folder/shared_files/big_shared_file_A.data", 1000);
+        fakeFolder.remoteModifier().insert("big_shared_folder/shared_files/big_shared_file_B.data", 1000);
+
+        // make sure big shared folder is synced
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(fakeFolder.currentLocalState().find("big_shared_folder/shared_files/big_shared_file_A.data"));
+        QVERIFY(fakeFolder.currentLocalState().find("big_shared_folder/shared_files/big_shared_file_B.data"));
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        // try to move from a big shared folder to your own folder
+        fakeFolder.localModifier().mkdir("own_folder");
+        fakeFolder.localModifier().rename(
+            "big_shared_folder/shared_files/big_shared_file_A.data", "own_folder/big_shared_file_A.data");
+        fakeFolder.localModifier().rename(
+            "big_shared_folder/shared_files/big_shared_file_B.data", "own_folder/big_shared_file_B.data");
+
+        // emulate server MOVE 507 error
+        QObject parent;
+        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request,
+                                         QIODevice *outgoingData) -> QNetworkReply * {
+            Q_UNUSED(outgoingData)
+
+            auto attributeCustomVerb = request.attribute(QNetworkRequest::CustomVerbAttribute).toString();
+
+            if (op == QNetworkAccessManager::CustomOperation
+                && request.attribute(QNetworkRequest::CustomVerbAttribute).toString() == QStringLiteral("MOVE")) {
+                return new FakeErrorReply(op, request, &parent, 403);
+            }
+            return nullptr;
+        });
+
+        // make sure the first sync failes and files get restored to original folder
+        QVERIFY(!fakeFolder.syncOnce());
+
+        QVERIFY(fakeFolder.syncOnce());
+
+        QVERIFY(fakeFolder.currentLocalState().find("big_shared_folder/shared_files/big_shared_file_A.data"));
+        QVERIFY(fakeFolder.currentLocalState().find("big_shared_folder/shared_files/big_shared_file_B.data"));
+        QVERIFY(!fakeFolder.currentLocalState().find("own_folder/big_shared_file_A.data"));
+        QVERIFY(!fakeFolder.currentLocalState().find("own_folder/big_shared_file_B.data"));
+
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+    }
 };
 
 QTEST_GUILESS_MAIN(TestSyncEngine)
