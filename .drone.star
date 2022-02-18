@@ -6,6 +6,7 @@
 #
 
 OC_TESTING_MIDDLEWARE = "owncloud/owncloud-test-middleware:1.4.0"
+GUI_TEST_REPORT_DIR = "/drone/src/test/guiReportUpload"
 
 dir = {
     "base": "/drone",
@@ -188,7 +189,7 @@ def build_and_test_client(ctx, c_compiler, cxx_compiler, build_type, generator, 
 def gui_tests(ctx, trigger = {}, depends_on = [], filterTags = [], version = "daily-master-qa"):
     pipeline_name = "GUI-tests"
     build_dir = "build-" + pipeline_name
-    squish_parameters = "--retry 1 --reportgen stdout --reportgen json,/drone/src/test/guiTestReport --envvar QT_LOGGING_RULES=sync.httplogger=true;gui.socketapi=false --tags ~@skip"
+    squish_parameters = "--retry 1 --reportgen html,%s --envvar QT_LOGGING_RULES=sync.httplogger=true;gui.socketapi=false --tags ~@skip" % GUI_TEST_REPORT_DIR
 
     if (len(filterTags) > 0):
         for tags in filterTags:
@@ -224,6 +225,7 @@ def gui_tests(ctx, trigger = {}, depends_on = [], filterTags = [], version = "da
                          "pull": "always",
                          "environment": {
                              "LICENSEKEY": from_secret("squish_license_server"),
+                             "GUI_TEST_REPORT_DIR": GUI_TEST_REPORT_DIR,
                              "CLIENT_REPO": "/drone/src/",
                              "MIDDLEWARE_URL": "http://testmiddleware:3000/",
                              "BACKEND_HOST": "http://owncloud/",
@@ -233,16 +235,23 @@ def gui_tests(ctx, trigger = {}, depends_on = [], filterTags = [], version = "da
                          },
                      },
                  ] +
-                 showGuiTestResult(),
+                 # GUI test result has been disabled for now, as we squish can not produce the result in both html and json format.
+                 # Disabled untill the feature to generate json result is implemented in squish, or some other method to reuse the log parser is implemented.
+                 #  showGuiTestResult() +
+                 uploadGuiTestLogs() +
+                 buildGithubComment(pipeline_name) +
+                 githubComment(pipeline_name),
         "services": testMiddlewareService() +
                     owncloudService() +
                     databaseService(),
         "trigger": trigger,
         "depends_on": depends_on,
-        "volumes": [{
-            "name": "uploads",
-            "temp": {},
-        }],
+        "volumes": [
+            {
+                "name": "uploads",
+                "temp": {},
+            },
+        ],
     }
 
 def build_client(ctx, c_compiler, cxx_compiler, build_type, generator, build_command, build_dir):
@@ -536,8 +545,8 @@ def setGuiTestReportDir():
         "image": "owncloud/ubuntu:16.04",
         "pull": "always",
         "commands": [
-            "mkdir /drone/src/test/guiTestReport",
-            "chmod ugo+rwx /drone/src/test/guiTestReport",
+            "mkdir %s" % GUI_TEST_REPORT_DIR,
+            "chmod ugo+rwx %s" % GUI_TEST_REPORT_DIR,
         ],
     }]
 
@@ -552,6 +561,100 @@ def showGuiTestResult():
         "when": {
             "status": [
                 "failure",
+            ],
+        },
+    }]
+
+def uploadGuiTestLogs():
+    return [{
+        "name": "upload-gui-test-result",
+        "image": "plugins/s3",
+        "pull": "if-not-exists",
+        "settings": {
+            "bucket": {
+                "from_secret": "cache_public_s3_bucket",
+            },
+            "endpoint": {
+                "from_secret": "cache_s3_endpoint",
+            },
+            "path_style": True,
+            "source": "%s/**/*" % GUI_TEST_REPORT_DIR,
+            "strip_prefix": "%s" % GUI_TEST_REPORT_DIR,
+            "target": "/${DRONE_REPO}/${DRONE_BUILD_NUMBER}/guiReportUpload",
+        },
+        "environment": {
+            "AWS_ACCESS_KEY_ID": {
+                "from_secret": "cache_s3_access_key",
+            },
+            "AWS_SECRET_ACCESS_KEY": {
+                "from_secret": "cache_s3_secret_key",
+            },
+        },
+        "when": {
+            "status": [
+                "failure",
+            ],
+            "event": [
+                "pull_request",
+            ],
+        },
+    }]
+
+def buildGithubComment(suite):
+    return [{
+        "name": "build-github-comment",
+        "image": "owncloud/ubuntu:20.04",
+        "commands": [
+            'echo ":boom: The GUI tests failed.\nGUI Logs: ($CACHE_ENDPOINT/$CACHE_BUCKET/${DRONE_REPO}/${DRONE_BUILD_NUMBER}/guiReportUpload/index.html)\
+            \nServer Logs: (($CACHE_ENDPOINT/$CACHE_BUCKET/${DRONE_REPO}/${DRONE_BUILD_NUMBER}/guiReportUpload/serverlog.log)" >> %s/comments.file' % GUI_TEST_REPORT_DIR,
+        ],
+        "environment": {
+            "TEST_CONTEXT": suite,
+            "CACHE_ENDPOINT": {
+                "from_secret": "cache_public_s3_server",
+            },
+            "CACHE_BUCKET": {
+                "from_secret": "cache_public_s3_bucket",
+            },
+        },
+        "when": {
+            "status": [
+                "failure",
+            ],
+            "event": [
+                "pull_request",
+            ],
+        },
+        "volumes": [{
+            "name": "serverlog",
+            "path": "/serverlog.log",
+        }],
+    }]
+
+def githubComment(alternateSuiteName):
+    prefix = "Results for <strong>%s</strong> ${DRONE_BUILD_LINK}/${DRONE_JOB_NUMBER}${DRONE_STAGE_NUMBER}/1" % alternateSuiteName
+    return [{
+        "name": "github-comment",
+        "image": "jmccann/drone-github-comment:1",
+        "pull": "if-not-exists",
+        "settings": {
+            "message_file": "%s/comments.file" % GUI_TEST_REPORT_DIR,
+        },
+        "environment": {
+            "GITHUB_TOKEN": {
+                "from_secret": "github_token",
+            },
+        },
+        "commands": [
+            "if [ -s %s/comments.file ]; then echo '%s' | cat - %s/comments.file > temp && mv temp %s/comments.file && /bin/drone-github-comment; fi" % (GUI_TEST_REPORT_DIR, prefix, GUI_TEST_REPORT_DIR, GUI_TEST_REPORT_DIR),
+        ],
+        "when": {
+            "status": [
+                "success",
+                "failure",
+            ],
+            "event": [
+                "pull_request",
             ],
         },
     }]
