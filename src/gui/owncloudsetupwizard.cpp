@@ -36,6 +36,7 @@
 #include "settingsdialog.h"
 
 #include "creds/dummycredentials.h"
+#include <graphapi/drives.h>
 
 using namespace std::chrono_literals;
 
@@ -433,7 +434,29 @@ void OwncloudSetupWizard::slotAssistantFinished(int result)
 
         if (!startFromScratch || ensureStartFromScratch(localFolder)) {
             auto account = applyAccountChanges();
-            addFolder(account, localFolder, _ocWizard->remoteFolder(), account->account()->davUrl());
+            if (account->account()->capabilities().spacesSupport().enabled) {
+                auto *drive = new OCC::GraphApi::Drives(account->account());
+                connect(drive, &OCC::GraphApi::Drives::finishedSignal, [account, localFolder, result, drive, this] {
+                    if (drive->parseError().error == QJsonParseError::NoError) {
+                        const auto &drives = drive->drives();
+                        if (!drives.isEmpty()) {
+                            const QDir localDir(localFolder);
+                            localDir.mkdir(".");
+                            for (const auto &d : drives) {
+                                const QDir driveLocalFolder = localDir.filePath(d.getName());
+                                driveLocalFolder.mkdir(".");
+                                addFolder(account, driveLocalFolder.absolutePath(), {}, QUrl::fromEncoded(d.getRoot().getWebDavUrl().toUtf8()));
+                            }
+                        }
+                    }
+                    // notify others.
+                    emit ownCloudWizardDone(result);
+                });
+                drive->start();
+                return;
+            } else {
+                addFolder(account, localFolder, _ocWizard->remoteFolder(), account->account()->davUrl());
+            }
         } else {
             qCWarning(lcWizard) << "Failed to create local sync folder!";
         }
