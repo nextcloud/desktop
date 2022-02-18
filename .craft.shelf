@@ -1,3 +1,6 @@
 [General]
 version = 2
 blueprintrepositories = https://github.com/owncloud/craft-blueprints-owncloud.git|master|;https://invent.kde.org/packaging/craft-blueprints-kde.git|master|
+
+[libs/libre-graph-api-cpp-qt-client]
+version = v0.11.0

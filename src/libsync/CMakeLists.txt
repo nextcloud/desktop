@@ -1,3 +1,5 @@
+find_package(LibreGraphAPI REQUIRED)
+
 set(libsync_SRCS
     account.cpp
     bandwidthmanager.cpp
@@ -43,6 +45,8 @@ set(libsync_SRCS
 
     abstractcorejob.cpp
     determineauthtypejobfactory.cpp
+
+    graphapi/drives.cpp
 )
 
 if(TOKEN_AUTH_ONLY)
@@ -79,6 +83,7 @@ IF (NOT APPLE)
 ENDIF(NOT APPLE)
 
 add_library(libsync SHARED ${libsync_SRCS})
+
 target_link_libraries(libsync PUBLIC
     csync
     Qt5::Core Qt5::Network
@@ -93,6 +98,9 @@ target_compile_definitions(libsync
             QT_DEPRECATED_WARNINGS
             QT_NO_FOREACH
 )
+
+target_link_libraries(libsync PUBLIC OpenAPI::LibreGraphAPI)
+add_subdirectory(graphapi)
 
 if ( APPLE )
     target_link_libraries(libsync PUBLIC
