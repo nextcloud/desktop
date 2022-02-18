@@ -9,8 +9,10 @@ Summary
 -------
 
 * Bugfix - Add request time and other missing data to .owncloudsync.log: [#7348](https://github.com/owncloud/client/issues/7348)
+* Bugfix - Do not strip trailing whitespace from a file or folder name: [#9030](https://github.com/owncloud/client/issues/9030)
 * Bugfix - Fix copy url location for private links: [#9048](https://github.com/owncloud/client/issues/9048)
 * Bugfix - Progress reporting for TUS uploads: [#9121](https://github.com/owncloud/client/issues/9121)
+* Bugfix - Mention source file in activity tab when renaming: [#9238](https://github.com/owncloud/client/issues/9238)
 * Bugfix - Raise ssl issue dialoig above the wizard: [#9375](https://github.com/owncloud/client/pull/9375)
 * Bugfix - Fallback to ownCloud sidebar icons on Mac if none provided in branding: [#9381](https://github.com/owncloud/client/pull/9381)
 * Bugfix - Immediately retry upload if file changed during sync: [#9382](https://github.com/owncloud/client/issues/9382)
@@ -34,6 +36,11 @@ Details
 
    https://github.com/owncloud/client/issues/7348
 
+* Bugfix - Do not strip trailing whitespace from a file or folder name: [#9030](https://github.com/owncloud/client/issues/9030)
+
+   https://github.com/owncloud/client/issues/9030
+   https://github.com/owncloud/client/pull/9452
+
 * Bugfix - Fix copy url location for private links: [#9048](https://github.com/owncloud/client/issues/9048)
 
    We fixed a bug where a placholder was copied to the clipboard instead of the url.
@@ -45,6 +52,11 @@ Details
    We fixed a bug with missing progress reporting in TUS uploads
 
    https://github.com/owncloud/client/issues/9121
+
+* Bugfix - Mention source file in activity tab when renaming: [#9238](https://github.com/owncloud/client/issues/9238)
+
+   https://github.com/owncloud/client/issues/9238
+   https://github.com/owncloud/client/pull/9453
 
 * Bugfix - Raise ssl issue dialoig above the wizard: [#9375](https://github.com/owncloud/client/pull/9375)
 
