@@ -208,6 +208,17 @@ void PropagateRemoteMove::slotMoveJobFinished()
     if (err != QNetworkReply::NoError) {
         SyncFileItem::Status status = classifyError(err, _item->_httpErrorCode,
             &propagator()->_anotherSyncNeeded);
+        const auto filePath = propagator()->fullLocalPath(_item->_renameTarget);
+        const auto filePathOriginal = propagator()->fullLocalPath(_item->_originalFile);
+        QFile file(filePath);
+        if (!file.rename(filePathOriginal)) {
+            qCWarning(lcPropagateRemoteMove) << "Could not MOVE file" << filePathOriginal << " to" << filePath
+                                             << " with error:" << _job->errorString() << " and failed to restore it !";
+        } else {
+            qCWarning(lcPropagateRemoteMove)
+                << "Could not MOVE file" << filePathOriginal << " to" << filePath
+                << " with error:" << _job->errorString() << " and successfully restored it.";
+        }
         done(status, _job->errorString());
         return;
     }

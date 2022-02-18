@@ -22,6 +22,7 @@ public:
 
     SyncFileStatus statusOf(const QString &relativePath) const {
         QFileInfo file(_syncEngine.localPath(), relativePath);
+        auto locPath = _syncEngine.localPath();
         // Start from the end to get the latest status
         for (int i = size() - 1; i >= 0; --i) {
             if (QFileInfo(at(i)[0].toString()) == file)
@@ -467,6 +468,7 @@ private slots:
     }
 
     void renameError() {
+        // when rename has failed - the old file name must be restored
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
         fakeFolder.serverErrorPaths().append("A/a1");
         fakeFolder.localModifier().rename("A/a1", "A/a1m");
@@ -488,22 +490,22 @@ private slots:
         fakeFolder.execUntilFinished();
         verifyThatPushMatchesPull(fakeFolder, statusSpy);
         QCOMPARE(statusSpy.statusOf("A/a1m"), SyncFileStatus(SyncFileStatus::StatusError));
-        QCOMPARE(statusSpy.statusOf("A/a1"), statusSpy.statusOf("A/a1notexist"));
+        QCOMPARE(statusSpy.statusOf("A/a1"), SyncFileStatus(SyncFileStatus::StatusUpToDate));
         QCOMPARE(statusSpy.statusOf("A"), SyncFileStatus(SyncFileStatus::StatusWarning));
         QCOMPARE(statusSpy.statusOf(""), SyncFileStatus(SyncFileStatus::StatusWarning));
         QCOMPARE(statusSpy.statusOf("B"), SyncFileStatus(SyncFileStatus::StatusUpToDate));
         QCOMPARE(statusSpy.statusOf("B/b1m"), SyncFileStatus(SyncFileStatus::StatusUpToDate));
         statusSpy.clear();
 
-        QVERIFY(!fakeFolder.syncOnce());
+        QVERIFY(fakeFolder.syncOnce());
         verifyThatPushMatchesPull(fakeFolder, statusSpy);
         statusSpy.clear();
-        QVERIFY(!fakeFolder.syncOnce());
+        QVERIFY(fakeFolder.syncOnce());
         verifyThatPushMatchesPull(fakeFolder, statusSpy);
-        QCOMPARE(statusSpy.statusOf("A/a1m"), SyncFileStatus(SyncFileStatus::StatusError));
+        QCOMPARE(statusSpy.statusOf("A/a1m"), SyncFileStatus(SyncFileStatus::StatusNone));
         QCOMPARE(statusSpy.statusOf("A/a1"), statusSpy.statusOf("A/a1notexist"));
-        QCOMPARE(statusSpy.statusOf("A"), SyncFileStatus(SyncFileStatus::StatusWarning));
-        QCOMPARE(statusSpy.statusOf(""), SyncFileStatus(SyncFileStatus::StatusWarning));
+        QCOMPARE(statusSpy.statusOf("A"), SyncFileStatus(SyncFileStatus::StatusNone));
+        QCOMPARE(statusSpy.statusOf(""), SyncFileStatus(SyncFileStatus::StatusUpToDate));
         QCOMPARE(statusSpy.statusOf("B"), SyncFileStatus(SyncFileStatus::StatusNone));
         QCOMPARE(statusSpy.statusOf("B/b1m"), SyncFileStatus(SyncFileStatus::StatusNone));
         statusSpy.clear();
