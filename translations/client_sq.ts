@@ -4747,8 +4747,8 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="48"/>
-        <source>Moved to %1</source>
-        <translation>U kalua te %1</translation>
+        <source>%1 moved to %2</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="50"/>

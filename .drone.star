@@ -5,7 +5,7 @@
 # with a specific compiler.
 #
 
-OC_TESTING_MIDDLEWARE = "owncloud/owncloud-test-middleware:1.3.1"
+OC_TESTING_MIDDLEWARE = "owncloud/owncloud-test-middleware:1.4.0"
 
 dir = {
     "base": "/drone",

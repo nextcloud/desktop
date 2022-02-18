@@ -1,0 +1,4 @@
+Bugfix: mention source file in activity tab when renaming
+
+https://github.com/owncloud/client/issues/9238
+https://github.com/owncloud/client/pull/9453

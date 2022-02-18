@@ -4742,8 +4742,8 @@ Bu yeni, deneysel bir moddur. Kullanmaya karar verirseniz, lütfen ortaya çıka
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="48"/>
-        <source>Moved to %1</source>
-        <translation>%1 konumuna taşındı</translation>
+        <source>%1 moved to %2</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="50"/>

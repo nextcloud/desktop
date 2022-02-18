@@ -4745,8 +4745,8 @@ Este é un modo novo e experimental. Se decide usalo, informe de calquera proble
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="48"/>
-        <source>Moved to %1</source>
-        <translation>Movido a %1</translation>
+        <source>%1 moved to %2</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="50"/>

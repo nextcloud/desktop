@@ -1016,7 +1016,7 @@ File synchronization desktop utility.</source>
     <message>
         <location filename="../src/gui/folder.cpp" line="207"/>
         <source>%1 is not writable.</source>
-        <translation type="unfinished"/>
+        <translation> Το %1 δεν είναι εγγράψιμο.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="473"/>
@@ -1232,7 +1232,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="1390"/>
         <source>The folder %1 is used in a folder sync connection!</source>
-        <translation type="unfinished"/>
+        <translation>Ο φάκελος %1 χρησιμοποιείται ήδη για συγχρονισμό!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1397"/>
@@ -1767,7 +1767,7 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="355"/>
         <source>unknown (%1)</source>
-        <translation type="unfinished"/>
+        <translation>άγνωστo (%1)</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="365"/>
@@ -1982,7 +1982,7 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/gui/models/models.cpp" line="82"/>
         <source>%1 Filter:</source>
-        <translation type="unfinished"/>
+        <translation>%1 Φίλτρο:</translation>
     </message>
     <message>
         <location filename="../src/gui/models/models.cpp" line="103"/>
@@ -4262,7 +4262,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="303"/>
         <source>Up to date (%1)</source>
-        <translation type="unfinished"/>
+        <translation>Ενημερωμένο (%1)</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="307"/>
@@ -4742,8 +4742,8 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="48"/>
-        <source>Moved to %1</source>
-        <translation>Μετακινήθηκαν στο %1</translation>
+        <source>%1 moved to %2</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="50"/>

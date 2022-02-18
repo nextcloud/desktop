@@ -279,16 +279,54 @@ Feature: Syncing files
 
     Scenario: Invalid system names are synced in linux
         Given user "Alice" has set up a client with default settings
-        And user "Alice" has created folder "COM" on the server
+        And user "Alice" has created folder "CON" on the server
         And user "Alice" has created folder "test%" on the server
         And user "Alice" has uploaded file on the server with content "server content" to "/PRN"
         And user "Alice" has uploaded file on the server with content "server content" to "/foo%"
         When the user waits for the files to sync
-        Then the folder "COM" should exist on the file system
+        Then the folder "CON" should exist on the file system
         And the folder "test%" should exist on the file system
         And the file "PRN" should exist on the file system
         And the file "foo%" should exist on the file system
-        And as "Alice" folder "COM" should exist on the server
+        And as "Alice" folder "CON" should exist on the server
         And as "Alice" folder "test%" should exist on the server
         And as "Alice" file "/PRN" should exist on the server
         And as "Alice" file "/foo%" should exist on the server
+
+
+    Scenario: various types of files can be synced from server to client
+        Given user "Alice" has set up a client with default settings
+        And user "Alice" has created folder "simple-folder" on the server
+        And user "Alice" has uploaded file "testavatar.png" to "simple-folder/testavatar.png" on the server
+        And user "Alice" has uploaded file "testavatar.jpg" to "simple-folder/testavatar.jpg" on the server
+        And user "Alice" has uploaded file "testavatar.jpeg" to "simple-folder/testavatar.jpeg" on the server
+        And user "Alice" has uploaded file "testimage.mp3" to "simple-folder/testimage.mp3" on the server
+        And user "Alice" has uploaded file "test_video.mp4" to "simple-folder/test_video.mp4" on the server
+        And user "Alice" has uploaded file "simple.pdf" to "simple-folder/simple.pdf" on the server
+        When the user waits for folder "simple-folder" to be synced
+        Then the folder "simple-folder" should exist on the file system
+        And the file "simple-folder/testavatar.png" should exist on the file system
+        And the file "simple-folder/testavatar.jpg" should exist on the file system
+        And the file "simple-folder/testavatar.jpeg" should exist on the file system
+        And the file "simple-folder/testimage.mp3" should exist on the file system
+        And the file "simple-folder/test_video.mp4" should exist on the file system
+        And the file "simple-folder/simple.pdf" should exist on the file system
+
+
+    Scenario: various types of files can be synced from client to server
+        Given user "Alice" has set up a client with default settings
+        And user "Alice" has created the following files inside the sync folder:
+            | files            |
+            | /testavatar.png  |
+            | /testavatar.jpg  |
+            | /testavatar.jpeg |
+            | /testaudio.mp3   |
+            | /test_video.mp4  |
+            | /simple.txt      |
+        When the user waits for the files to sync
+        Then as "Alice" file "testavatar.png" should exist on the server
+        And as "Alice" file "testavatar.jpg" should exist on the server
+        And as "Alice" file "testavatar.jpeg" should exist on the server
+        And as "Alice" file "testaudio.mp3" should exist on the server
+        And as "Alice" file "test_video.mp4" should exist on the server
+        And as "Alice" file "simple.txt" should exist on the server

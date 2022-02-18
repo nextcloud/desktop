@@ -2,7 +2,7 @@
 import names
 import os
 import sys
-from os import listdir
+from os import listdir, rename
 from os.path import isfile, join, isdir
 import re
 import urllib.request
@@ -399,11 +399,22 @@ def createFolder(context, foldername, username=None):
     os.makedirs(path)
 
 
+def renameFileFolder(context, source, destination):
+    source = join(context.userData['currentUserSyncPath'], source)
+    destination = join(context.userData['currentUserSyncPath'], destination)
+    rename(source, destination)
+
+
 @When('the user copies the folder "|any|" to "|any|"')
 def step(context, sourceFolder, destinationFolder):
     source_dir = join(context.userData['currentUserSyncPath'], sourceFolder)
     destination_dir = join(context.userData['currentUserSyncPath'], destinationFolder)
     shutil.copytree(source_dir, destination_dir)
+
+
+@When(r'the user renames a (file|folder) "([^"]*)" to "([^"]*)"', regexp=True)
+def step(context, type, source, destination):
+    renameFileFolder(context, source, destination)
 
 
 @Given(r"^(.*) on the server (.*)$", regexp=True)
@@ -689,6 +700,21 @@ def step(context, resource, password):
     createPublicLinkShare(context, resource, password)
 
 
+@Then('the expiration date of the last public link of file "|any|" should be "|any|"')
+def step(context, resource, expiryDate):
+    openSharingDialog(context, resource)
+    publicLinkDialog = PublicLinkDialog()
+    publicLinkDialog.openPublicLinkDialog()
+
+    if expiryDate.strip("%") == "default":
+        expiryDate = PublicLinkDialog.getDefaultExpiryDate()
+
+    publicLinkDialog.verifyExpirationDate(expiryDate)
+
+    shareItem = SharingDialog()
+    shareItem.closeSharingDialog()
+
+
 def setExpirationDateWithVerification(resource, publicLinkName, expireDate):
     publicLinkDialog = PublicLinkDialog()
     publicLinkDialog.verifyResource(resource)
@@ -725,11 +751,18 @@ def step(context):
     linkSettings = {}
     for row in context.table:
         linkSettings[row[0]] = row[1]
+
+    if "path" not in linkSettings:
+        raise Exception("'path' is required but not given.")
+
+    if "expireDate" in linkSettings and linkSettings['expireDate'] == "%default%":
+        linkSettings['expireDate'] = linkSettings['expireDate'].strip("%")
+
     createPublicLinkShare(
         context,
         resource=linkSettings['path'],
-        password=linkSettings['password'],
-        expireDate=linkSettings['expireDate'],
+        password=linkSettings['password'] if "password" in linkSettings else None,
+        expireDate=linkSettings['expireDate'] if "expireDate" in linkSettings else None,
     )
 
 
@@ -1283,3 +1316,20 @@ def step(context):
 @Then('VFS enabled baseline image should not match the default screenshot')
 def step(context):
     test.xvp("VP_VFS_enabled")
+
+
+@Given('user "|any|" has created the following files inside the sync folder:')
+def step(context, username):
+    '''
+    Create files without any content
+    '''
+    syncPath = getUserSyncPath(context, username)
+
+    # A file is scheduled to be synced but is marked as ignored for 5 seconds. And if we try to sync it, it will fail. So we need to wait for 5 seconds.
+    # https://github.com/owncloud/client/issues/9325
+    snooze(5)
+
+    for row in context.table[1:]:
+        filename = syncPath + row[0]
+        f = open(join(syncPath, filename), "w")
+        f.close()
