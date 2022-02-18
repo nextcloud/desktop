@@ -4,5 +4,5 @@ target_sources(owncloudCore PRIVATE
     )
     
 if( APPLE )
-    target_sources(owncloudCore PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/socketapisocket_mac.mm)
+    target_sources(owncloudCore PRIVATE socketapisocket_mac.mm)
 endif()
