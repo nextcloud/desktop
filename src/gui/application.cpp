@@ -247,6 +247,21 @@ Application::Application(int &argc, char **argv)
     // needed during commandline options parsing
     setApplicationVersion(_theme->versionSwitchOutput());
 
+#if defined(OC_PLUGIN_DIR) && defined(Q_OS_LINUX)
+    const QString extraPluginDir = QDir(QApplication::applicationDirPath()).filePath(QStringLiteral(OC_PLUGIN_DIR));
+    qCInfo(lcApplication) << "Adding extra plugin search path:" << extraPluginDir;
+    this->addLibraryPath(extraPluginDir);
+#endif
+
+    // Check vfs plugins
+    if (Theme::instance()->showVirtualFilesOption() && bestAvailableVfsMode() == Vfs::Off) {
+        qCWarning(lcApplication) << "Theme wants to show vfs mode, but no vfs plugins are available";
+    }
+    if (isVfsPluginAvailable(Vfs::WindowsCfApi))
+        qCInfo(lcApplication) << "VFS windows plugin is available";
+    if (isVfsPluginAvailable(Vfs::WithSuffix))
+        qCInfo(lcApplication) << "VFS suffix plugin is available";
+
     parseOptions(arguments());
 
     if (isRunning())
@@ -275,21 +290,6 @@ Application::Application(int &argc, char **argv)
     // The timeout is initialized with an environment variable, if not, override with the value from the config
     if (!AbstractNetworkJob::httpTimeout)
         AbstractNetworkJob::httpTimeout = cfg.timeout();
-
-#if defined(OC_PLUGIN_DIR) && defined(Q_OS_LINUX)
-    const QString extraPluginDir = QDir(QApplication::applicationDirPath()).filePath(QStringLiteral(OC_PLUGIN_DIR));
-    qCInfo(lcApplication) << "Adding extra plugin search path:" << extraPluginDir;
-    this->addLibraryPath(extraPluginDir);
-#endif
-
-    // Check vfs plugins
-    if (Theme::instance()->showVirtualFilesOption() && bestAvailableVfsMode() == Vfs::Off) {
-        qCWarning(lcApplication) << "Theme wants to show vfs mode, but no vfs plugins are available";
-    }
-    if (isVfsPluginAvailable(Vfs::WindowsCfApi))
-        qCInfo(lcApplication) << "VFS windows plugin is available";
-    if (isVfsPluginAvailable(Vfs::WithSuffix))
-        qCInfo(lcApplication) << "VFS suffix plugin is available";
 
     if (_quitInstance) {
         QTimer::singleShot(0, qApp, &QApplication::quit);
