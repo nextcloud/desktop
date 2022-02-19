@@ -61,7 +61,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityList.qml" line="30"/>
         <source>Activity list</source>
-        <translation type="unfinished"/>
+        <translation>Aktiviteettilista</translation>
     </message>
 </context>
 <context>
