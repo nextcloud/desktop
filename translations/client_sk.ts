@@ -930,12 +930,12 @@ Táto akcia zruší všetky prebiehajúce synchronizácie.</translation>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="420"/>
         <source>Network error: %1</source>
-        <translation type="unfinished"/>
+        <translation>Chyba siete: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="420"/>
         <source>Network Error: %1</source>
-        <translation type="unfinished"/>
+        <translation>Chyba siete: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="465"/>
