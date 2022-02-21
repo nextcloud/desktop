@@ -58,9 +58,12 @@ public:
         Error };
     Q_ENUM(Result);
 
-    OAuth(Account *account, QObject *parent);
+    OAuth(const QUrl &serverUrl, const QString &davUser, QNetworkAccessManager *networkAccessManager, const QVariantMap &dynamicRegistrationData, QObject *parent);
     ~OAuth() override;
-    void startAuthentication();
+
+    // TODO: consider deleting default copy/move constructors
+
+    virtual void startAuthentication();
     void refreshAuthentication(const QString &refreshToken);
     void openBrowser();
     QUrl authorisationLink() const;
@@ -71,7 +74,7 @@ public:
      */
     void authorisationLinkAsync(std::function<void(const QUrl&)> callback) const;
 
-signals:
+Q_SIGNALS:
     /**
      * The state has changed.
      * when logged in, token has the value of the token.
@@ -88,17 +91,26 @@ signals:
 
     void fetchWellKnownFinished();
 
+protected:
+    QUrl _serverUrl;
+    QString _davUser;
+    QVariantMap _dynamicRegistrationData;
+    QNetworkAccessManager *_networkAccessManager;
+    bool _isRefreshingToken;
+
+    virtual void fetchWellKnown();
+
+    // not an ideal solution to use a virtual method as a callback for the child class to override, but it's the easiest option
+    virtual void dynamicRegistrationDataReceived(const QVariantMap &dynamicRegistrationData);
+
 private:
-    void fetchWellKnown();
     void finalize(const QPointer<QTcpSocket> &socket, const QString &accessToken,
         const QString &refreshToken, const QString &userId, const QUrl &messageUrl);
 
-    JsonJob *postTokenRequest(const QList<QPair<QString, QString>> &queryItems);
+    QNetworkReply *postTokenRequest(const QList<QPair<QString, QString>> &queryItems);
 
     QByteArray generateRandomString(size_t size) const;
 
-
-    Account* _account;
     QTcpServer _server;
     bool _wellKnownFinished = false;
 
@@ -111,8 +123,27 @@ private:
     QString _redirectUrl;
     QByteArray _pkceCodeVerifier;
     QByteArray _state;
-
-    bool _isRefreshingToken = false;
 };
 
-} // namespace OCC
+/**
+ * This variant of OAuth uses an account's network access manager etc.
+ * Instead of relying on the user to provide a working server URL, a CheckServerJob is run upon start(), which also stores the fetched cookies in the account's state.
+ * Furthermore, it takes care of storing and loading the dynamic registration data in the account's credentials manager.
+ */
+class OWNCLOUDSYNC_EXPORT AccountBasedOAuth : public OAuth
+{
+public:
+    explicit AccountBasedOAuth(AccountPtr account, QObject *parent = nullptr);
+
+    void startAuthentication() override;
+
+protected:
+    void fetchWellKnown() override;
+
+    void dynamicRegistrationDataReceived(const QVariantMap &dynamicRegistrationData) override;
+
+private:
+    AccountPtr _account;
+};
+
+} // namespce OCC

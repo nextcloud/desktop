@@ -118,8 +118,9 @@ public:
         fakeQnam = new FakeQNAM({});
         account = OCC::Account::create();
         account->setUrl(sOAuthTestServer);
+        // the account seizes ownership over the qnam in account->setCredentials(...) by keeping a shared pointer on it
+        // therefore, we should never call fakeQnam->setThis(...)
         account->setCredentials(new FakeCredentials{fakeQnam});
-        fakeQnam->setParent(this);
         fakeQnam->setOverride([this](QNetworkAccessManager::Operation op, const QNetworkRequest &req, QIODevice *device) {
             if (req.url().path().endsWith(".well-known/openid-configuration")) {
                 return this->wellKnownReply(op, req);
@@ -134,9 +135,10 @@ public:
         QObject::connect(&desktopServiceHook, &DesktopServiceHook::hooked,
                          this, &OAuthTestCase::openBrowserHook);
 
-        oauth.reset(new OAuth(account.data(), nullptr));
+        oauth.reset(new AccountBasedOAuth(account, this));
         QObject::connect(oauth.data(), &OAuth::result, this, &OAuthTestCase::oauthResult);
         oauth->startAuthentication();
+
         QTRY_VERIFY(done());
     }
 
@@ -224,6 +226,7 @@ public:
     }
 
     virtual void oauthResult(OAuth::Result result, const QString &user, const QString &token , const QString &refreshToken) {
+        Q_ASSERT(result == OAuth::LoggedIn);
         QCOMPARE(state, TokenAsked);
         QCOMPARE(result, OAuth::LoggedIn);
         QCOMPARE(user, QString("admin"));

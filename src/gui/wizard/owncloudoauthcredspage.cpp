@@ -107,7 +107,7 @@ void OwncloudOAuthCredsPage::asyncAuthResult(OAuth::Result r, const QString &use
 OAuth *OwncloudOAuthCredsPage::oauth()
 {
     if (!_asyncAuth) {
-        _asyncAuth.reset(new OAuth(owncloudWizard()->account().data(), this));
+        _asyncAuth.reset(new AccountBasedOAuth(owncloudWizard()->account()->sharedFromThis(), this));
         connect(_asyncAuth.data(), &OAuth::result, this, &OwncloudOAuthCredsPage::asyncAuthResult, Qt::QueuedConnection);
         _asyncAuth->startAuthentication();
     }

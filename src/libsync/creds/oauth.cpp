@@ -18,8 +18,8 @@
 #include "common/version.h"
 #include "credentialmanager.h"
 #include "creds/httpcredentials.h"
+#include "creds/jobs/determineuserjobfactory.h"
 #include "networkjobs.h"
-#include "networkjobs/jsonjob.h"
 #include "theme.h"
 
 #include <QApplication>
@@ -39,8 +39,9 @@ using namespace OCC;
 Q_LOGGING_CATEGORY(lcOauth, "sync.credentials.oauth", QtInfoMsg)
 
 namespace {
-const QString clientSecretC()
+const QString dynamicRegistrationDataC()
 {
+    // this is a legacy identifier
     return QStringLiteral("http/clientSecret");
 }
 
@@ -73,9 +74,10 @@ class RegisterClientJob : public QObject
 {
     Q_OBJECT
 public:
-    RegisterClientJob(Account *accout, const QUrl &registrationEndpoint, QObject *parent)
+    RegisterClientJob(QNetworkAccessManager *networkAccessManager, QVariantMap &dynamicRegistrationData, const QUrl &registrationEndpoint, QObject *parent)
         : QObject(parent)
-        , _account(accout)
+        , _networkAccessManager(networkAccessManager)
+        , _dynamicRegistrationData(dynamicRegistrationData)
         , _registrationEndpoint(registrationEndpoint)
     {
         connect(this, &RegisterClientJob::errorOccured, this, &RegisterClientJob::deleteLater);
@@ -84,24 +86,19 @@ public:
 
     void start()
     {
-        auto job = _account->credentialManager()->get(clientSecretC());
-        connect(job, &CredentialJob::finished, this, [this, job] {
-            qDebug() << job->errorString() << job->error();
-            if (job->data().isValid()) {
-                rgisterClientFinished(job->data().value<QVariantMap>());
-            } else {
-                qCCritical(lcOauth) << "Failed to read client id" << job->errorString();
-                rgisterClientOnline();
-            }
-        });
+        if (!_dynamicRegistrationData.isEmpty()) {
+            registerClientFinished(_dynamicRegistrationData);
+        } else {
+            registerClientOnline();
+        }
     }
 
 Q_SIGNALS:
-    void finished(const QString &clientId, const QString &clientSecret);
+    void finished(const QString &clientId, const QString &clientSecret, const QVariantMap &dynamicRegistrationData);
     void errorOccured(const QString &error);
 
 private:
-    void rgisterClientOnline()
+    void registerClientOnline()
     {
         const QJsonObject json({ { QStringLiteral("client_name"), QStringLiteral("%1 %2").arg(Theme::instance()->appNameGUI(), OCC::Version::versionWithBuildNumber().toString()) },
             { QStringLiteral("redirect_uris"), QJsonArray { QStringLiteral("http://127.0.0.1") } },
@@ -109,20 +106,22 @@ private:
             { QStringLiteral("token_endpoint_auth_method"), QStringLiteral("client_secret_basic") } });
         QNetworkRequest req;
         req.setUrl(_registrationEndpoint);
-        auto job = new OCC::JsonJob(_account->sharedFromThis(), _account->url(), {}, "POST", json, req, this);
-        job->setAuthenticationJob(true);
-        connect(job, &OCC::JsonJob::finishedSignal, this, [this, job] {
-            if (job->parseError().error == QJsonParseError::NoError) {
-                rgisterClientFinished(job->data().toVariantMap());
+        req.setAttribute(HttpCredentials::DontAddCredentialsAttribute, true);
+        auto reply = _networkAccessManager->post(req, QJsonDocument(json).toJson());
+        connect(reply, &QNetworkReply::finished, this, [reply, this] {
+            const auto data = reply->readAll();
+            QJsonParseError error {};
+            const auto json = QJsonDocument::fromJson(data, &error);
+            if (error.error == QJsonParseError::NoError) {
+                registerClientFinished(json.object().toVariantMap());
             } else {
-                qCWarning(lcOauth) << "Failed to register the client" << job->parseError().errorString();
-                Q_EMIT errorOccured(job->parseError().errorString());
+                qCWarning(lcOauth) << "Failed to register the client" << error.errorString() << data;
+                Q_EMIT errorOccured(error.errorString());
             }
         });
-        job->start();
     }
 
-    void rgisterClientFinished(const QVariantMap &data)
+    void registerClientFinished(const QVariantMap &data)
     {
         {
             QString error;
@@ -134,16 +133,18 @@ private:
             // 0 means it doesn't expire
             if (expireDate) {
                 const auto qExpireDate = QDateTime::fromSecsSinceEpoch(expireDate);
-                qCInfo(lcOauth) << "Client id iessued at:" << QDateTime::fromSecsSinceEpoch(data[QStringLiteral("client_id_issued_at")].value<quint64>())
+                qCInfo(lcOauth) << "Client id issued at:" << QDateTime::fromSecsSinceEpoch(data[QStringLiteral("client_id_issued_at")].value<quint64>())
                                 << "expires at" << qExpireDate;
                 if (QDateTime::currentDateTimeUtc() > qExpireDate) {
                     qCDebug(lcOauth) << "Client registration expired";
-                    rgisterClientOnline();
+                    registerClientOnline();
                     return;
                 }
             }
         }
-        _account->credentialManager()->set(clientSecretC(), data);
+        // extracting these values could be done by the signal receiver, too, but that'd require duplicating the error handling code
+        // therefore, we extract the values here and pass them separately in the signal
+        // sure, the data will be redundant, but it's worth it
         QString error;
         const auto client_id = getRequiredField(data, QStringLiteral("client_id"), &error).toString();
         const auto client_secret = getRequiredField(data, QStringLiteral("client_secret"), &error).toString();
@@ -151,28 +152,30 @@ private:
             Q_EMIT errorOccured(error);
             return;
         }
-        Q_EMIT finished(client_id, client_secret);
+        Q_EMIT finished(client_id, client_secret, data);
     }
 
 private:
-    Account *_account;
+    QNetworkAccessManager *_networkAccessManager;
+    QVariantMap _dynamicRegistrationData;
     QUrl _registrationEndpoint;
 };
 
 }
 
-OAuth::OAuth(Account *account, QObject *parent)
+OAuth::OAuth(const QUrl &serverUrl, const QString &davUser, QNetworkAccessManager *networkAccessManager, const QVariantMap &dynamicRegistrationData, QObject *parent)
     : QObject(parent)
-    , _account(account)
     , _clientId(Theme::instance()->oauthClientId())
     , _clientSecret(Theme::instance()->oauthClientSecret())
     , _redirectUrl(Theme::instance()->oauthLocalhost())
+    , _serverUrl(serverUrl)
+    , _davUser(davUser)
+    , _dynamicRegistrationData(dynamicRegistrationData)
+    , _networkAccessManager(networkAccessManager)
 {
 }
 
-OAuth::~OAuth()
-{
-}
+OAuth::~OAuth() = default;
 
 void OAuth::startAuthentication()
 {
@@ -188,10 +191,11 @@ void OAuth::startAuthentication()
 
     connect(this, &OAuth::fetchWellKnownFinished, this, [this] {
         if (_registrationEndpoint.isValid()) {
-            auto job = new RegisterClientJob(_account, _registrationEndpoint, this);
-            connect(job, &RegisterClientJob::finished, this, [this](const QString &clientId, const QString &clientSecret) {
+            auto job = new RegisterClientJob(_networkAccessManager, _dynamicRegistrationData, _registrationEndpoint, this);
+            connect(job, &RegisterClientJob::finished, this, [this](const QString &clientId, const QString &clientSecret, const QVariantMap &dynamicRegistrationData) {
                 _clientId = clientId;
                 _clientSecret = clientSecret;
+                Q_EMIT dynamicRegistrationDataReceived(dynamicRegistrationData);
                 Q_EMIT authorisationLinkChanged(authorisationLink());
             });
             connect(job, &RegisterClientJob::errorOccured, this, [this](const QString &error) {
@@ -235,15 +239,17 @@ void OAuth::startAuthentication()
                 qCDebug(lcOauth) << "Received the first valid response, closing server socket";
                 _server.close();
 
-                auto tokenJob = postTokenRequest({
+                auto reply = postTokenRequest({
                     { QStringLiteral("grant_type"), QStringLiteral("authorization_code") },
                     { QStringLiteral("code"), args.queryItemValue(QStringLiteral("code")) },
                     { QStringLiteral("redirect_uri"), QStringLiteral("%1:%2").arg(_redirectUrl, QString::number(serverPort)) },
                     { QStringLiteral("code_verifier"), QString::fromUtf8(_pkceCodeVerifier) },
                 });
 
-                QObject::connect(tokenJob, &JsonJob::finishedSignal, this, [tokenJob, socket, this] {
-                    const auto data = tokenJob->data().toVariantMap();
+                connect(reply, &QNetworkReply::finished, this, [reply, socket, this] {
+                    const auto jsonData = reply->readAll();
+                    QJsonParseError jsonParseError;
+                    const auto data = QJsonDocument::fromJson(jsonData, &jsonParseError).object().toVariantMap();
                     QString fieldsError;
                     const QString accessToken = getRequiredField(data, QStringLiteral("access_token"), &fieldsError).toString();
                     const QString refreshToken = getRequiredField(data, QStringLiteral("refresh_token"), &fieldsError).toString();
@@ -251,7 +257,7 @@ void OAuth::startAuthentication()
                     const QString user = data[QStringLiteral("user_id")].toString();
                     const QUrl messageUrl = QUrl::fromEncoded(data[QStringLiteral("message_url")].toByteArray());
 
-                    if (tokenJob->reply()->error() != QNetworkReply::NoError || tokenJob->parseError().error != QJsonParseError::NoError
+                    if (reply->error() != QNetworkReply::NoError || jsonParseError.error != QJsonParseError::NoError
                         || !fieldsError.isEmpty()
                         || tokenType != QLatin1String("bearer")) {
                         // do we have error message suitable for users?
@@ -263,12 +269,12 @@ void OAuth::startAuthentication()
                         if (!errorReason.isEmpty()) {
                             errorReason = tr("Error returned from the server: <em>%1</em>")
                                               .arg(errorReason.toHtmlEscaped());
-                        } else if (tokenJob->reply()->error() != QNetworkReply::NoError) {
+                        } else if (reply->error() != QNetworkReply::NoError) {
                             errorReason = tr("There was an error accessing the 'token' endpoint: <br><em>%1</em>")
-                                              .arg(tokenJob->reply()->errorString().toHtmlEscaped());
-                        } else if (tokenJob->parseError().error != QJsonParseError::NoError) {
+                                              .arg(reply->errorString().toHtmlEscaped());
+                        } else if (jsonParseError.error != QJsonParseError::NoError) {
                             errorReason = tr("Could not parse the JSON returned from the server: <br><em>%1</em>")
-                                              .arg(tokenJob->parseError().errorString());
+                                              .arg(jsonParseError.errorString());
                         } else if (tokenType != QStringLiteral("bearer")) {
                             errorReason = tr("Unsupported token type: %1").arg(tokenType);
                         } else if (!fieldsError.isEmpty()) {
@@ -286,27 +292,20 @@ void OAuth::startAuthentication()
                         finalize(socket, accessToken, refreshToken, user, messageUrl);
                         return;
                     }
-                    // If the reply don't contains the user id, we must do another call to query it
-                    QNetworkRequest req;
-                    // We are not connected yet so we need to handle the authentication manually
-                    req.setRawHeader("Authorization", "Bearer " + accessToken.toUtf8());
-                    // We just added the Authorization header, don't let HttpCredentialsAccessManager tamper with it
-                    req.setAttribute(HttpCredentials::DontAddCredentialsAttribute, true);
-                    JsonApiJob *job = new JsonApiJob(_account->sharedFromThis(), QStringLiteral("ocs/v2.php/cloud/user"), {}, req, this);
-                    job->setTimeout(qMin(job->timeoutSec(), 30s));
-                    connect(job, &JsonApiJob::finishedSignal, this, [=] {
-                        if (job->ocsStatus() != 200) {
+
+                    auto *job = DetermineUserJobFactory(_networkAccessManager, accessToken, this).startJob(_serverUrl);
+
+                    connect(job, &CoreJob::finished, this, [=]() {
+                        if (!job->success()) {
                             httpReplyAndClose(socket, QByteArrayLiteral("500 Internal Server Error"),
-                                tr("<h1>Login Error</h1><p>Failed to retrieve user info</p>").toUtf8());
+                                tr("<h1>Login Error</h1><p>%1</p>").arg(job->errorMessage()).toUtf8());
                             emit result(Error);
                         } else {
-                            const QString user = job->data().value(QStringLiteral("ocs")).toObject().value(QStringLiteral("data")).toObject().value(QStringLiteral("id")).toString();
+                            const QString user = job->result().toString();
                             finalize(socket, accessToken, refreshToken, user, messageUrl);
                         }
                     });
-                    job->start();
                 });
-                tokenJob->start();
             });
         }
     });
@@ -316,13 +315,15 @@ void OAuth::refreshAuthentication(const QString &refreshToken)
 {
     _isRefreshingToken = true;
     auto refresh = [this, &refreshToken] {
-        auto job = postTokenRequest({ { QStringLiteral("grant_type"), QStringLiteral("refresh_token") },
+        auto reply = postTokenRequest({ { QStringLiteral("grant_type"), QStringLiteral("refresh_token") },
             { QStringLiteral("refresh_token"), refreshToken } });
-        connect(job, &JsonJob::finishedSignal, this, [job, refreshToken, this] {
+        connect(reply, &QNetworkReply::finished, this, [reply, refreshToken, this]() {
+            const auto jsonData = reply->readAll();
+            QJsonParseError jsonParseError;
+            const auto data = QJsonDocument::fromJson(jsonData, &jsonParseError).object().toVariantMap();
             QString accessToken;
             QString newRefreshToken = refreshToken;
             // https://developer.okta.com/docs/reference/api/oidc/#response-properties-2
-            const auto data = job->data().toVariantMap();
             const QString error = data.value(QStringLiteral("error")).toString();
             if (!error.isEmpty()) {
                 if (error == QLatin1String("invalid_grant") ||
@@ -331,14 +332,14 @@ void OAuth::refreshAuthentication(const QString &refreshToken)
                 } else {
                     qCWarning(lcOauth) << "Error while refreshing the token:" << error << data.value(QStringLiteral("error_description")).toString();
                 }
-            } else if (job->reply()->error() != QNetworkReply::NoError) {
-                qCWarning(lcOauth) << "Error while refreshing the token:" << job->reply()->error() << ":" << job->reply()->errorString() << job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute);
-                Q_EMIT refreshError(job->reply()->error(), job->reply()->errorString());
+            } else if (reply->error() != QNetworkReply::NoError) {
+                qCWarning(lcOauth) << "Error while refreshing the token:" << reply->error() << ":" << reply->errorString() << reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
+                Q_EMIT refreshError(reply->error(), reply->errorString());
                 return;
             } else {
-                if (job->parseError().error != QJsonParseError::NoError || data.isEmpty()) {
+                if (jsonParseError.error != QJsonParseError::NoError || data.isEmpty()) {
                     // Invalid or empty JSON: Network error maybe?
-                    qCWarning(lcOauth) << "Error while refreshing the token:" << job->parseError().errorString();
+                    qCWarning(lcOauth) << "Error while refreshing the token:" << jsonParseError.errorString();
                 } else {
                     QString error;
                     accessToken = getRequiredField(data, QStringLiteral("access_token"), &error).toString();
@@ -354,11 +355,10 @@ void OAuth::refreshAuthentication(const QString &refreshToken)
             }
             Q_EMIT refreshFinished(accessToken, newRefreshToken);
         });
-        job->start();
     };
     connect(this, &OAuth::fetchWellKnownFinished, this, [this, refresh] {
         if (_registrationEndpoint.isValid()) {
-            auto registerJob = new RegisterClientJob(_account, _registrationEndpoint, this);
+            auto registerJob = new RegisterClientJob(_networkAccessManager, _dynamicRegistrationData, _registrationEndpoint, this);
             connect(registerJob, &RegisterClientJob::finished, this, [this, refresh](const QString &clientId, const QString &clientSecret) {
                 _clientId = clientId;
                 _clientSecret = clientSecret;
@@ -379,14 +379,14 @@ void OAuth::refreshAuthentication(const QString &refreshToken)
 void OAuth::finalize(const QPointer<QTcpSocket> &socket, const QString &accessToken,
     const QString &refreshToken, const QString &user, const QUrl &messageUrl)
 {
-    if (!_account->davUser().isNull() && user != _account->davUser()) {
+    if (!_davUser.isEmpty() && user != _davUser) {
         // Connected with the wrong user
-        qCWarning(lcOauth) << "We expected the user" << _account->davUser() << "but the server answered with user" << user;
+        qCWarning(lcOauth) << "We expected the user" << _davUser << "but the server answered with user" << user;
         const QString message = tr("<h1>Wrong user</h1>"
                                    "<p>You logged-in with user <em>%1</em>, but must login with user <em>%2</em>.<br>"
                                    "Please log out of %3 in another tab, then <a href='%4'>click here</a> "
                                    "and log in as user %2</p>")
-                                    .arg(user, _account->davUser(), Theme::instance()->appNameGUI(),
+                                    .arg(user, _davUser, Theme::instance()->appNameGUI(),
                                         authorisationLink().toString(QUrl::FullyEncoded));
         httpReplyAndClose(socket, QByteArrayLiteral("403 Forbidden"), message.toUtf8());
         // We are still listening on the socket so we will get the new connection
@@ -402,22 +402,22 @@ void OAuth::finalize(const QPointer<QTcpSocket> &socket, const QString &accessTo
     emit result(LoggedIn, user, accessToken, refreshToken);
 }
 
-JsonJob *OAuth::postTokenRequest(const QList<QPair<QString, QString>> &queryItems)
+QNetworkReply *OAuth::postTokenRequest(const QList<QPair<QString, QString>> &queryItems)
 {
-    const QUrl requestTokenUrl = _tokenEndpoint.isEmpty() ? Utility::concatUrlPath(_account->url(), QStringLiteral("/index.php/apps/oauth2/api/v1/token")) : _tokenEndpoint;
+    const QUrl requestTokenUrl = _tokenEndpoint.isEmpty() ? Utility::concatUrlPath(_serverUrl, QStringLiteral("/index.php/apps/oauth2/api/v1/token")) : _tokenEndpoint;
     QNetworkRequest req;
     const QByteArray basicAuth = QStringLiteral("%1:%2").arg(_clientId, _clientSecret).toUtf8().toBase64();
     req.setRawHeader("Authorization", "Basic " + basicAuth);
+    req.setHeader(QNetworkRequest::ContentTypeHeader, QStringLiteral("application/x-www-form-urlencoded; charset=UTF-8"));
     req.setAttribute(HttpCredentials::DontAddCredentialsAttribute, true);
 
-    SimpleNetworkJob::UrlQuery arguments { { QStringLiteral("client_id"), _clientId },
-        { QStringLiteral("client_secret"), _clientSecret },
-        { QStringLiteral("scope"), Theme::instance()->openIdConnectScopes() } };
-    arguments << queryItems;
-    auto job = new JsonJob(_account->sharedFromThis(), requestTokenUrl, {}, "POST", arguments, req, this);
-    job->setAuthenticationJob(true);
-    job->setTimeout(qMin(30s, job->timeoutSec()));
-    return job;
+    QUrlQuery arguments;
+    arguments.setQueryItems(QList<QPair<QString, QString>> { { QStringLiteral("client_id"), _clientId },
+                                { QStringLiteral("client_secret"), _clientSecret },
+                                { QStringLiteral("scope"), Theme::instance()->openIdConnectScopes() } }
+        << queryItems);
+    req.setUrl(requestTokenUrl);
+    return _networkAccessManager->post(req, arguments.toString(QUrl::FullyEncoded).toUtf8());
 }
 
 QByteArray OAuth::generateRandomString(size_t size) const
@@ -443,8 +443,8 @@ QUrl OAuth::authorisationLink() const
         { QStringLiteral("prompt"), Theme::instance()->openIdConnectPrompt() },
         { QStringLiteral("state"), QString::fromUtf8(_state) } });
 
-    if (!_account->davUser().isNull()) {
-        const QString davUser = QString::fromUtf8(QUrl::toPercentEncoding(_account->davUser())); // Issue #7762;
+    if (!_davUser.isEmpty()) {
+        const QString davUser = QString::fromUtf8(QUrl::toPercentEncoding(_davUser)); // Issue #7762;
         // open id connect
         query.addQueryItem(QStringLiteral("login_hint"), davUser);
         // oc 10
@@ -452,7 +452,7 @@ QUrl OAuth::authorisationLink() const
     }
     const QUrl url = _authEndpoint.isValid()
         ? Utility::concatUrlPath(_authEndpoint, {}, query)
-        : Utility::concatUrlPath(_account->url(), QStringLiteral("/index.php/apps/oauth2/authorize"), query);
+        : Utility::concatUrlPath(_serverUrl, QStringLiteral("/index.php/apps/oauth2/authorize"), query);
     return url;
 }
 
@@ -467,51 +467,41 @@ void OAuth::authorisationLinkAsync(std::function<void (const QUrl &)> callback) 
 
 void OAuth::fetchWellKnown()
 {
-    auto checkServer = new CheckServerJob(_account->sharedFromThis(), this);
-    checkServer->setTimeout(qMin(30s, checkServer->timeoutSec()));
-    connect(checkServer, &CheckServerJob::instanceNotFound, this, [this](QNetworkReply *reply) {
-        if (_isRefreshingToken) {
-            Q_EMIT refreshError(reply->error(), reply->errorString());
-        } else {
-            Q_EMIT result(Error);
-        }
-    });
-    connect(checkServer, &CheckServerJob::instanceFound, this, [this] {
-        const QPair<QString, QString> urls = Theme::instance()->oauthOverrideAuthUrl();
-        if (!urls.first.isNull()) {
-            OC_ASSERT(!urls.second.isNull());
-            _authEndpoint = QUrl::fromUserInput(urls.first);
-            _tokenEndpoint = QUrl::fromUserInput(urls.second);
+    const QPair<QString, QString> urls = Theme::instance()->oauthOverrideAuthUrl();
+
+    if (!urls.first.isNull()) {
+        OC_ASSERT(!urls.second.isNull());
+        _authEndpoint = QUrl::fromUserInput(urls.first);
+        _tokenEndpoint = QUrl::fromUserInput(urls.second);
+        _wellKnownFinished = true;
+        Q_EMIT fetchWellKnownFinished();
+    } else {
+        QNetworkRequest req;
+        req.setAttribute(HttpCredentials::DontAddCredentialsAttribute, true);
+        req.setUrl(Utility::concatUrlPath(_serverUrl, QStringLiteral("/.well-known/openid-configuration")));
+        auto reply = _networkAccessManager->get(req);
+        QObject::connect(reply, &QNetworkReply::finished, this, [reply, this] {
             _wellKnownFinished = true;
-            Q_EMIT fetchWellKnownFinished();
-        } else {
-            auto job = new JsonJob(_account->sharedFromThis(), _account->url(), QStringLiteral("/.well-known/openid-configuration"), "GET", {}, {}, this);
-            job->setAuthenticationJob(true);
-            job->setTimeout(qMin(30s, job->timeoutSec()));
-            QObject::connect(job, &JsonJob::finishedSignal, this, [job, this] {
-                _wellKnownFinished = true;
-                if (job->reply()->error() != QNetworkReply::NoError) {
-                    // Most likely the file does not exist, default to the normal endpoint
-                    Q_EMIT fetchWellKnownFinished();
-                    return;
-                }
-                if (job->parseError().error == QJsonParseError::NoError) {
-                    const auto &json = job->data();
-                    _authEndpoint = QUrl::fromEncoded(json[QStringLiteral("authorization_endpoint")].toString().toUtf8());
-                    _tokenEndpoint = QUrl::fromEncoded(json[QStringLiteral("token_endpoint")].toString().toUtf8());
-                    _registrationEndpoint = QUrl::fromEncoded(json[QStringLiteral("registration_endpoint")].toString().toUtf8());
-                    _redirectUrl = QStringLiteral("http://127.0.0.1");
-                } else if (job->parseError().error == QJsonParseError::IllegalValue) {
-                    qCDebug(lcOauth) << ".well-known did not return json, the server most probably does not support oidc";
-                } else {
-                    qCWarning(lcOauth) << "Json parse error in well-known: " << job->parseError().errorString();
-                }
+            if (reply->error() != QNetworkReply::NoError) {
+                // Most likely the file does not exist, default to the normal endpoint
                 Q_EMIT fetchWellKnownFinished();
-            });
-            job->start();
-        }
-    });
-    checkServer->start();
+                return;
+            }
+            QJsonParseError err = {};
+            QJsonObject data = QJsonDocument::fromJson(reply->readAll(), &err).object();
+            if (err.error == QJsonParseError::NoError) {
+                _authEndpoint = QUrl::fromEncoded(data[QStringLiteral("authorization_endpoint")].toString().toUtf8());
+                _tokenEndpoint = QUrl::fromEncoded(data[QStringLiteral("token_endpoint")].toString().toUtf8());
+                _registrationEndpoint = QUrl::fromEncoded(data[QStringLiteral("registration_endpoint")].toString().toUtf8());
+                _redirectUrl = QStringLiteral("http://127.0.0.1");
+            } else if (err.error == QJsonParseError::IllegalValue) {
+                qCDebug(lcOauth) << ".well-known did not return json, the server most probably does not support oidc";
+            } else {
+                qCWarning(lcOauth) << "Json parse error in well-known: " << err.errorString();
+            }
+            Q_EMIT fetchWellKnownFinished();
+        });
+    }
 }
 
 /**
@@ -554,6 +544,70 @@ void OAuth::openBrowser()
             emit result(NotSupported, QString());
         }
     });
+}
+
+void OAuth::dynamicRegistrationDataReceived(const QVariantMap &dynamicRegistrationData)
+{
+    // the default class (used by the wizard only) doesn't know how to handle such data, and also doesn't need to
+    // only the derived AccountBasedOAuth class must be able to handle the data
+    Q_UNUSED(dynamicRegistrationData);
+}
+
+
+AccountBasedOAuth::AccountBasedOAuth(AccountPtr account, QObject *parent)
+    : OAuth(account->url(), account->davUser(), account->networkAccessManager(), {}, parent)
+    , _account(account)
+{
+}
+
+void AccountBasedOAuth::startAuthentication()
+{
+    auto credentialsJob = _account->credentialManager()->get(dynamicRegistrationDataC());
+
+    connect(credentialsJob, &CredentialJob::finished, this, [=] {
+        credentialsJob->deleteLater();
+
+        const auto data = [credentialsJob]() -> QVariantMap {
+            if (credentialsJob->data().isValid()) {
+                return credentialsJob->data().value<QVariantMap>();
+            } else {
+                qCCritical(lcOauth) << "Failed to read client id" << credentialsJob->errorString();
+                return {};
+            }
+        }();
+
+        _dynamicRegistrationData = data;
+
+        OAuth::startAuthentication();
+    });
+}
+
+void AccountBasedOAuth::fetchWellKnown()
+{
+    auto *checkServerJob = new CheckServerJob(_account->sharedFromThis(), this);
+    checkServerJob->setTimeout(qMin(30s, checkServerJob->timeoutSec()));
+
+    connect(checkServerJob, &CheckServerJob::instanceNotFound, this, [this](QNetworkReply *reply) {
+        if (_isRefreshingToken) {
+            Q_EMIT refreshError(reply->error(), reply->errorString());
+        } else {
+            Q_EMIT result(Error);
+        }
+    });
+
+    connect(checkServerJob, &CheckServerJob::instanceFound, this, [this](const QUrl &url, const QJsonObject &info) {
+        qDebug() << url;
+        OAuth::fetchWellKnown();
+    });
+
+    checkServerJob->start();
+}
+
+void AccountBasedOAuth::dynamicRegistrationDataReceived(const QVariantMap &dynamicRegistrationData)
+{
+    // the base class doesn't use the data at all, so no need to call its implementation
+    auto credentialsJob = _account->credentialManager()->set(dynamicRegistrationDataC(), dynamicRegistrationData);
+    credentialsJob->start();
 }
 
 #include "oauth.moc"

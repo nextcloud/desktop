@@ -61,7 +61,7 @@ void HttpCredentialsGui::askFromUser()
 void HttpCredentialsGui::askFromUserAsync()
 {
     const auto updateOAuth = [this] {
-        _asyncAuth.reset(new OAuth(_account, this));
+        _asyncAuth.reset(new AccountBasedOAuth(_account->sharedFromThis(), this));
         connect(_asyncAuth.data(), &OAuth::result,
             this, &HttpCredentialsGui::asyncAuthResult);
         connect(_asyncAuth.data(), &OAuth::destroyed,

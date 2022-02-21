@@ -256,9 +256,9 @@ bool HttpCredentials::refreshAccessTokenInternal(int tokenRefreshRetriesCount)
     // don't touch _ready or the account state will start a new authentication
     // _ready = false;
 
-    OAuth *oauth = new OAuth(_account, this);
-    connect(oauth, &OAuth::refreshError, this, [oauth, tokenRefreshRetriesCount, this](QNetworkReply::NetworkError error, const QString &) {
-        oauth->deleteLater();
+    OAuth *oAuth = new AccountBasedOAuth(_account->sharedFromThis(), this);
+    connect(oAuth, &OAuth::refreshError, this, [oAuth, tokenRefreshRetriesCount, this](QNetworkReply::NetworkError error, const QString &) {
+        oAuth->deleteLater();
         int nextTry = tokenRefreshRetriesCount + 1;
         std::chrono::seconds timeout = {};
         switch (error) {
@@ -289,8 +289,8 @@ bool HttpCredentials::refreshAccessTokenInternal(int tokenRefreshRetriesCount)
         Q_EMIT authenticationFailed();
     });
 
-    connect(oauth, &OAuth::refreshFinished, this, [this, oauth](const QString &accessToken, const QString &refreshToken){
-        oauth->deleteLater();
+    connect(oAuth, &OAuth::refreshFinished, this, [this, oAuth](const QString &accessToken, const QString &refreshToken) {
+        oAuth->deleteLater();
         _isRenewingOAuthToken = false;
         if (refreshToken.isEmpty()) {
             // an error occured, log out
@@ -300,16 +300,16 @@ bool HttpCredentials::refreshAccessTokenInternal(int tokenRefreshRetriesCount)
             return;
         }
         _refreshToken = refreshToken;
-        if (!accessToken.isNull())
-        {
+        if (!accessToken.isNull()) {
             _ready = true;
             _password = accessToken;
             persist();
         }
         emit fetched();
     });
-    oauth->refreshAuthentication(_refreshToken);
+    oAuth->refreshAuthentication(_refreshToken);
     Q_EMIT authenticationStarted();
+
     return true;
 }
 
