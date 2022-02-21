@@ -1,0 +1,7 @@
+Bugfix: Remove outdated translations
+
+Due to a bug we were not removing the translations that fell below
+a required quality margin, we only stopped updating them.
+Resulting in even worse translations in some cases.
+
+https://github.com/owncloud/client/issues/9105

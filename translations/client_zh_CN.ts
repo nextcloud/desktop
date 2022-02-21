@@ -3575,48 +3575,48 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::SocketApi</name>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="584"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="587"/>
         <source>Share with %1</source>
         <comment>parameter is ownCloud</comment>
         <translation>使用 %1 共享</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="617"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="620"/>
         <source>Context menu share</source>
         <translation>上下文菜单分享</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="622"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="625"/>
         <source>Context menu share %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="790"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="793"/>
         <source>Confirm deletion</source>
         <translation>确认删除</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="792"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="795"/>
         <source>Do you want to delete the directory &lt;i&gt;%1&lt;/i&gt; and all its contents permanently?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="793"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="796"/>
         <source>Do you want to delete the file &lt;i&gt;%1&lt;/i&gt; permanently?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="835"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="838"/>
         <source>Select new location...</source>
         <translation>选择一个新的位置....</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="845"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="848"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="846"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="849"/>
         <source>Moving file failed:
 
 %1</source>
@@ -3625,89 +3625,89 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="914"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="917"/>
         <source>I shared something with you</source>
         <translation>我给你分享了一些东西</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="927"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="957"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="930"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="960"/>
         <source>Share...</source>
         <translation>分享到...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="929"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="973"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="932"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="976"/>
         <source>Copy private link to clipboard</source>
         <translation>将私有链接复制到剪切板</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="930"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="933"/>
         <source>Send private link by email...</source>
         <translation>通过email发送私有链接</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="955"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="958"/>
         <source>Resharing this file is not allowed</source>
         <translation>再次分享这个文件是不被允许的</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="955"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="958"/>
         <source>Resharing this folder is not allowed</source>
         <translation>再次分享这个文件夹是不被允许的</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="967"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="970"/>
         <source>Create and copy public link to clipboard</source>
         <translation>创建并复制公共链接到剪贴板</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="969"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="972"/>
         <source>Copy public link to clipboard</source>
         <translation>复制公共链接到剪切板</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1057"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1060"/>
         <source>Open in browser</source>
         <translation>在浏览器中打开</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1065"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1068"/>
         <source>Show file versions in browser</source>
         <translation>在浏览器中查看这个版本</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1088"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1091"/>
         <source>Rename...</source>
         <translation>重命名...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1091"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1094"/>
         <source>Rename and upload...</source>
         <translation>重命名并上传</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1096"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1099"/>
         <source>Move and rename...</source>
         <translation>重命名并移动...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1099"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1102"/>
         <source>Move, rename and upload...</source>
         <translation>重命名，移动并上传...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1102"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1105"/>
         <source>Delete local changes</source>
         <translation>删除本地改动</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1107"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1110"/>
         <source>Move and upload...</source>
         <translation>移动并上传...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1108"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1111"/>
         <source>Delete</source>
         <translation>删除</translation>
     </message>

@@ -22,6 +22,9 @@ jobs:
           submodules: recursive
           ref: "2.10"
 
+      - name: l10n-remove-old
+        run: bash .github/workflows/run-in-docker.sh rabits/qt:5.12-desktop "cd translations && make l10n-remove-old"
+
       - name: l10n-read
         run: bash .github/workflows/run-in-docker.sh rabits/qt:5.12-desktop "cd translations && make l10n-read"
 
@@ -31,9 +34,6 @@ jobs:
 
       - name: l10n-pull
         run: bash .github/workflows/run-in-docker.sh owncloudci/transifex:latest "cd translations && make l10n-pull"
-
-      - name: l10n-write
-        run: bash .github/workflows/run-in-docker.sh owncloudci/transifex:latest "cd translations && make l10n-write"
 
       - name: l10n-clean
         run: bash .github/workflows/run-in-docker.sh owncloudci/transifex:latest "cd translations && make l10n-clean"
