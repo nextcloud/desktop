@@ -11,6 +11,7 @@ Summary
 * Bugfix - Add request time and other missing data to .owncloudsync.log: [#7348](https://github.com/owncloud/client/issues/7348)
 * Bugfix - Do not strip trailing whitespace from a file or folder name: [#9030](https://github.com/owncloud/client/issues/9030)
 * Bugfix - Fix copy url location for private links: [#9048](https://github.com/owncloud/client/issues/9048)
+* Bugfix - Remove outdated translations: [#9105](https://github.com/owncloud/client/issues/9105)
 * Bugfix - Progress reporting for TUS uploads: [#9121](https://github.com/owncloud/client/issues/9121)
 * Bugfix - Mention source file in activity tab when renaming: [#9238](https://github.com/owncloud/client/issues/9238)
 * Bugfix - Raise ssl issue dialoig above the wizard: [#9375](https://github.com/owncloud/client/pull/9375)
@@ -46,6 +47,13 @@ Details
    We fixed a bug where a placholder was copied to the clipboard instead of the url.
 
    https://github.com/owncloud/client/issues/9048
+
+* Bugfix - Remove outdated translations: [#9105](https://github.com/owncloud/client/issues/9105)
+
+   Due to a bug we were not removing the translations that fell below a required quality margin, we
+   only stopped updating them. Resulting in even worse translations in some cases.
+
+   https://github.com/owncloud/client/issues/9105
 
 * Bugfix - Progress reporting for TUS uploads: [#9121](https://github.com/owncloud/client/issues/9121)
 
