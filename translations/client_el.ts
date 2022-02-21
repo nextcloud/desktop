@@ -3797,7 +3797,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="279"/>
         <source>Error setting pin state</source>
-        <translation type="unfinished"/>
+        <translation>Σφάλμα ρύθμισης της κατάστασης pin</translation>
     </message>
 </context>
 <context>
@@ -3864,7 +3864,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="279"/>
         <source>Error setting pin state</source>
-        <translation type="unfinished"/>
+        <translation>Σφάλμα ρύθμισης της κατάστασης pin</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="286"/>
