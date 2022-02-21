@@ -22,5 +22,6 @@ Icon=@APPLICATION_EXECUTABLE@
 
 # Translations
 Icon[el]=@APPLICATION_ICON_NAME@
+Name[el]=@APPLICATION_NAME@ Επιφάνεια Εργασίας
 Comment[el]=@APPLICATION_NAME@ πρόγραμμα συγχρονισμού
 GenericName[el]=Συγχρονισμός φακέλου
