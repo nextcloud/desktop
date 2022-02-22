@@ -93,7 +93,7 @@ const QString moveToTrashC() { return QStringLiteral("moveToTrash"); }
 }
 
 QString ConfigFile::_confDir = QString();
-const std::chrono::seconds DefaultRemotePollInterval { 30 }; // default remote poll time in milliseconds
+const std::chrono::seconds DefaultRemotePollInterval { 30 }; // default remote poll time in seconds
 
 static chrono::milliseconds millisecondsValue(const QSettings &setting, const QString &key,
     chrono::milliseconds defaultValue)
@@ -418,9 +418,11 @@ chrono::milliseconds ConfigFile::remotePollInterval(std::chrono::seconds default
 
     auto defaultPollInterval { DefaultRemotePollInterval };
 
-    // The server default-capabilities is set to 60, which is, if interpreted in milliseconds,
-    // pretty small. If the value is above 5 seconds, it was set intentionally.
+    // The server default-capabilities was set to 60 in some server releases,
+    // which, if interpreted in milliseconds, is pretty small.
+    // If the value is above 5 seconds, it was set intentionally.
     // Server admins have to set the value in Milliseconds!
+    // i.e. set to greater than 5000 milliseconds on the server to be effective.
     if (defaultVal > chrono::seconds(5)) {
         defaultPollInterval = defaultVal;
     }
