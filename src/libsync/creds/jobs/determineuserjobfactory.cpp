@@ -34,7 +34,7 @@ CoreJob *DetermineUserJobFactory::startJob(const QUrl &url)
 
     QUrlQuery urlQuery({ { QStringLiteral("format"), QStringLiteral("json") } });
 
-    QNetworkRequest req(Utility::concatUrlPath(url, QStringLiteral("ocs/v2.php/cloud/user"), urlQuery));
+    auto req = makeRequest(Utility::concatUrlPath(url, QStringLiteral("ocs/v2.php/cloud/user"), urlQuery));
 
     // We are not connected yet so we need to handle the authentication manually
     req.setRawHeader("Authorization", "Bearer " + _accessToken.toUtf8());

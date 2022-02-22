@@ -18,6 +18,7 @@
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 
+#include "abstractnetworkjob.h"
 #include "owncloudlib.h"
 
 namespace OCC {
@@ -121,6 +122,20 @@ protected:
      * @param networkError network error instance or NoError if the error is not caused by a network issue
      */
     static void setJobError(CoreJob *job, const QString &errorMessage, const QNetworkReply::NetworkError networkError);
+
+    /**
+     * Factory to create QNetworkRequests with properly set timeout.
+     */
+    template <typename... Params>
+    static OWNCLOUDSYNC_EXPORT QNetworkRequest makeRequest(Params... params)
+    {
+        auto request = QNetworkRequest(params...);
+
+        const auto timeoutMilliseconds = static_cast<int>(AbstractNetworkJob::httpTimeout.count());
+        request.setTransferTimeout(timeoutMilliseconds);
+
+        return request;
+    }
 
 private:
     QNetworkAccessManager *_nam;

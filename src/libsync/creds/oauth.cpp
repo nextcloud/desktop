@@ -479,6 +479,7 @@ void OAuth::fetchWellKnown()
         QNetworkRequest req;
         req.setAttribute(HttpCredentials::DontAddCredentialsAttribute, true);
         req.setUrl(Utility::concatUrlPath(_serverUrl, QStringLiteral("/.well-known/openid-configuration")));
+        req.setTransferTimeout(static_cast<int>(AbstractNetworkJob::httpTimeout.count()));
         auto reply = _networkAccessManager->get(req);
         QObject::connect(reply, &QNetworkReply::finished, this, [reply, this] {
             _wellKnownFinished = true;

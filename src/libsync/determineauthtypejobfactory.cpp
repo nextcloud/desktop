@@ -35,7 +35,8 @@ CoreJob *DetermineAuthTypeJobFactory::startJob(const QUrl &url)
 {
     auto job = new CoreJob;
 
-    QNetworkRequest req(Utility::concatUrlPath(url, QStringLiteral("remote.php/dav/files/")));
+    auto req = makeRequest(Utility::concatUrlPath(url, QStringLiteral("remote.php/dav/files/")));
+
     req.setAttribute(HttpCredentials::DontAddCredentialsAttribute, true);
     req.setAttribute(QNetworkRequest::AuthenticationReuseAttribute, QNetworkRequest::Manual);
 
