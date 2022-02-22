@@ -275,7 +275,7 @@ Application::Application(int &argc, char **argv)
 
     ConfigFile cfg;
     // The timeout is initialized with an environment variable, if not, override with the value from the config
-    if (AbstractNetworkJob::httpTimeout == std::chrono::milliseconds(static_cast<int>(QNetworkRequest::DefaultTransferTimeoutConstant))) {
+    if (AbstractNetworkJob::httpTimeout == AbstractNetworkJob::DefaultHttpTimeout) {
         AbstractNetworkJob::httpTimeout = cfg.timeout();
     }
 

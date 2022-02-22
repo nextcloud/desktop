@@ -44,7 +44,7 @@ using namespace std::chrono;
 using namespace std::chrono_literals;
 
 namespace {
-const int MaxRetryCount = 5;
+constexpr int MaxRetryCount = 5;
 }
 
 
@@ -56,7 +56,7 @@ Q_LOGGING_CATEGORY(lcNetworkJob, "sync.networkjob", QtInfoMsg)
 seconds AbstractNetworkJob::httpTimeout = [] {
     const auto def = qEnvironmentVariableIntValue("OWNCLOUD_TIMEOUT");
     if (def <= 0) {
-        milliseconds(static_cast<int>(QNetworkRequest::DefaultTransferTimeoutConstant));
+        return AbstractNetworkJob::DefaultHttpTimeout;
     }
     return seconds(def);
 }();

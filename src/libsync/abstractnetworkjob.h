@@ -107,6 +107,12 @@ public:
      */
     static std::chrono::seconds httpTimeout;
 
+    /**
+     * The default 5 minutes timeout if none is specified by the config.
+     * Qt's default would be 30s.
+     */
+    static constexpr std::chrono::seconds DefaultHttpTimeout { 5 * 60 };
+
     /** whether or noth this job should be restarted after authentication */
     bool  isAuthenticationJob() const;
     void  setAuthenticationJob(bool b);
