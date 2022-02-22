@@ -195,6 +195,7 @@ private:
     std::chrono::seconds _timeout = httpTimeout;
     bool _timedout = false; // set to true when the timeout slot is received
     bool _aborted = false;
+    bool _finished = false;
     bool _ignoreCredentialFailure = false;
 
     QNetworkRequest _request;

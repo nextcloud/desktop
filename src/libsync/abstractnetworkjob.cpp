@@ -194,6 +194,7 @@ void AbstractNetworkJob::adoptRequest(QNetworkReply *reply)
 
 void AbstractNetworkJob::slotFinished()
 {
+    _finished = true;
     if (_reply->error() == QNetworkReply::SslHandshakeFailedError) {
         qCWarning(lcNetworkJob) << "SslHandshakeFailedError:" << errorString() << ": can be caused by a webserver wanting SSL client certificates";
     }
@@ -289,6 +290,9 @@ QString AbstractNetworkJob::errorStringParsingBody(QByteArray *body)
 
 AbstractNetworkJob::~AbstractNetworkJob()
 {
+    if (!_finished && !_aborted && !_timedout) {
+        qCCritical(lcNetworkJob) << "Deleting running job" << this << parent();
+    }
     setReply(nullptr);
 }
 

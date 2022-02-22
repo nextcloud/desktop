@@ -713,7 +713,7 @@ SimpleNetworkJob::SimpleNetworkJob(AccountPtr account, const QUrl &rootUrl, cons
 SimpleNetworkJob::SimpleNetworkJob(AccountPtr account, const QUrl &rootUrl, const QString &path, const QByteArray &verb, QByteArray &&requestBody, const QNetworkRequest &req, QObject *parent)
     : SimpleNetworkJob(account, rootUrl, path, verb, new QBuffer(&_body), req, parent)
 {
-    _body = requestBody;
+    _body = std::move(requestBody);
 }
 
 SimpleNetworkJob::~SimpleNetworkJob()
