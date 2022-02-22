@@ -678,7 +678,7 @@ SimpleNetworkJob::SimpleNetworkJob(AccountPtr account, const QUrl &rootUrl, cons
 SimpleNetworkJob::SimpleNetworkJob(AccountPtr account, const QUrl &rootUrl, const QString &path, const QByteArray &verb, const UrlQuery &arguments, const QNetworkRequest &req, QObject *parent)
     : SimpleNetworkJob(account, rootUrl, path, verb, req, parent)
 {
-    Q_ASSERT((QList<QByteArray> { "GET", "PUT", "POST", "DELETE", "HEAD" }.contains(verb)));
+    Q_ASSERT((QList<QByteArray> { "GET", "PUT", "POST", "DELETE", "HEAD", "PATCH" }.contains(verb)));
     if (!arguments.isEmpty()) {
         QUrlQuery args;
         // ensure everything is percent encoded
@@ -688,7 +688,7 @@ SimpleNetworkJob::SimpleNetworkJob(AccountPtr account, const QUrl &rootUrl, cons
                 QString::fromUtf8(QUrl::toPercentEncoding(item.first)),
                 QString::fromUtf8(QUrl::toPercentEncoding(item.second)));
         }
-        if (verb == QByteArrayLiteral("POST") || verb == QByteArrayLiteral("PUT")) {
+        if (verb == QByteArrayLiteral("POST") || verb == QByteArrayLiteral("PUT") || verb == QByteArrayLiteral("PATCH")) {
             _request.setHeader(QNetworkRequest::ContentTypeHeader, QStringLiteral("application/x-www-form-urlencoded; charset=UTF-8"));
             _body = args.query(QUrl::FullyEncoded).toUtf8();
             _device = new QBuffer(&_body);
