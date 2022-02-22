@@ -18,8 +18,9 @@
  */
 #include "config.h"
 
-#include "common/utility.h"
+#include "common/asserts.h"
 #include "common/filesystembase.h"
+#include "common/utility.h"
 #include "version.h"
 
 // Note:  This file must compile without QtGui
@@ -486,7 +487,8 @@ QUrl Utility::concatUrlPath(const QUrl &url, const QString &concatPath,
         }
         path += concatPath; // put the complete path together
     }
-
+    Q_ASSERT(!path.contains(QStringLiteral("//")));
+    Q_ASSERT(url.query().isEmpty());
     QUrl tmpUrl = url;
     tmpUrl.setPath(path);
     tmpUrl.setQuery(queryItems);
