@@ -178,7 +178,6 @@ private slots:
         fakeFolder.remoteModifier().remove("A");
 
         // put new files and folders into a local folder "A"
-        fakeFolder.localModifier().mkdir("A/B/C/c1/c2");
         fakeFolder.localModifier().insert("A/B/C/c1/c2/newfile.txt", 100);
         fakeFolder.localModifier().insert("A/B/C/c1/c2/Readme.data", 100);
         fakeFolder.localModifier().mkdir("A/B/C/c1/c2/newfiles");
