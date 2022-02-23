@@ -36,6 +36,8 @@
 #include <QSet>
 #include <QNetworkProxy>
 
+using namespace std::chrono_literals;
+
 namespace {
 /*
  * [Accounts]
