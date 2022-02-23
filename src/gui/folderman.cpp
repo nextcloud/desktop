@@ -145,10 +145,12 @@ FolderMan::FolderMan(QObject *parent)
 
     _socketApi.reset(new SocketApi);
 
-    // Set the remote poll interval fixed to 1 second (1000 milliseconds)
-    // That does not mean that it polls every 1 second, but it checks every 1 second
-    // if one of the folders is due to sync.
-    _etagPollTimer.setInterval(1000);
+    // Set the remote poll interval fixed to 10 seconds.
+    // That does not mean that it polls every 10 seconds, but it checks every 10 seconds
+    // if one of the folders is due to sync. This means that if the server advertises a
+    // pollinterval that is not a multiple of 10 seconds, then that pollinterval will be
+    // rounded up to the next 10 seconds in practice. 10-second granularity is acceptable.
+    _etagPollTimer.setInterval(10s);
     QObject::connect(&_etagPollTimer, &QTimer::timeout, this, &FolderMan::slotEtagPollTimerTimeout);
     _etagPollTimer.start();
 
