@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="de_DE">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="de">
 <context>
     <name>CrashReporter</name>
     <message>
@@ -29,7 +29,7 @@
     <message>
         <location filename="../src/3rdparty/libcrashreporter-qt/src/libcrashreporter-gui/CrashReporter.ui" line="284"/>
         <source>You can disable sending crash reports in the configuration dialog.</source>
-        <translation>Sie können das Versenden von Crash-Reports im Konfigurations-Dialog abschalten.</translation>
+        <translation>Du kannst das Versenden von Crash-Reports im Konfigurations-Dialog abschalten.</translation>
     </message>
     <message>
         <location filename="../src/3rdparty/libcrashreporter-qt/src/libcrashreporter-gui/CrashReporter.cpp" line="112"/>
@@ -65,7 +65,7 @@
     <message>
         <location filename="../src/3rdparty/libcrashreporter-qt/src/libcrashreporter-gui/CrashReporter.cpp" line="300"/>
         <source>Sent! &lt;b&gt;Many thanks&lt;/b&gt;. Please refer to crash &lt;a href=&quot;clipboard://%1&quot;&gt;&lt;b&gt;%1&lt;/b&gt;&lt;/a&gt; (click to copy) in bug reports.</source>
-        <translation>Gesendet! &lt;b&gt;Vielen Dank&lt;/b&gt;. Bitte referenzieren Sie Crash &lt;a href=&quot;clipboard://%1&quot;&gt;&lt;b&gt;%1&lt;/b&gt;&lt;/a&gt; (anklicken zum Kopieren) in Ihren Bug-Reports.</translation>
+        <translation>Gesendet! &lt;b&gt;Vielen Dank&lt;/b&gt;. Bitte referenziere Crash &lt;a href=&quot;clipboard://%1&quot;&gt;&lt;b&gt;%1&lt;/b&gt;&lt;/a&gt; (anklicken zum Kopieren) in Ihren Bug-Reports.</translation>
     </message>
     <message>
         <location filename="../src/3rdparty/libcrashreporter-qt/src/libcrashreporter-gui/CrashReporter.cpp" line="309"/>
@@ -86,7 +86,7 @@
     <message>
         <location filename="../src/common/filesystembase.cpp" line="398"/>
         <source>Could not make directories in trash</source>
-        <translation>Ordner können nicht im Papierkorb erstellt werden</translation>
+        <translation>Im Papierkorb können keine Ordner erstellt werden</translation>
     </message>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="412"/>
@@ -102,7 +102,7 @@
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="175"/>
         <source>Could not remove folder</source>
-        <translation>Kann Ordner nicht entfernen</translation>
+        <translation>Der Ordner konnte nicht gelöscht weden</translation>
     </message>
 </context>
 <context>
@@ -115,12 +115,12 @@
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="20"/>
         <source>Pick a local folder on your computer to sync</source>
-        <translation>Wählen Sie einen lokalen Ordner zum Synchronisieren aus</translation>
+        <translation>Lokales Verzeichnis zum Synchronisieren auswählen</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="29"/>
         <source>&amp;Choose...</source>
-        <translation>Aus&amp;wählen…</translation>
+        <translation>Auswählen…</translation>
     </message>
 </context>
 <context>
@@ -133,7 +133,7 @@
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="20"/>
         <source>Select a remote destination folder</source>
-        <translation>Einen entfernten Zielordner auswählen</translation>
+        <translation>Entfernten Zielordner auswählen</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="49"/>
@@ -176,7 +176,7 @@
     <message>
         <location filename="../src/gui/notificationwidget.ui" line="106"/>
         <source>TextLabel</source>
-        <translation>Text Label</translation>
+        <translation>Text-Label</translation>
     </message>
 </context>
 <context>
@@ -189,7 +189,7 @@
     <message>
         <location filename="../src/gui/aboutdialog.ui" line="88"/>
         <source>TextLabel</source>
-        <translation>Text Label</translation>
+        <translation>TextLabel</translation>
     </message>
     <message>
         <location filename="../src/gui/aboutdialog.ui" line="96"/>
@@ -207,7 +207,7 @@
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="297"/>
         <source>Connection timed out</source>
-        <translation>Zeitüberschreitung bei der Verbindung</translation>
+        <translation>Zeitüberschreitung beim Verbindungsaufbau</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="299"/>
@@ -253,7 +253,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="159"/>
         <source>Unchecked folders will be &lt;b&gt;removed&lt;/b&gt; from your local file system and will not be synchronized to this computer anymore</source>
-        <translation>Nicht markierte Ordner werden von Ihrem lokalen Dateisystem &lt;b&gt;entfernt&lt;/b&gt; und werden auch nicht mehr auf diesem Rechner synchronisiert</translation>
+        <translation>Nicht markierte Ordner werden von Deinem lokalen Dateisystem &lt;b&gt;entfernt&lt;/b&gt; und künftig nicht mehr synchronisiert</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="205"/>
@@ -301,7 +301,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="208"/>
         <source>Account</source>
-        <translation>Benutzerkonto</translation>
+        <translation>Konto</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="342"/>
@@ -311,17 +311,17 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="348"/>
         <source>Force sync now</source>
-        <translation>Synchronisation jetzt erzwingen </translation>
+        <translation>Synchronisation jetzt erzwingen</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="350"/>
         <source>Restart sync</source>
-        <translation>Synchronisation neustarten</translation>
+        <translation>Synchronisation neu starten</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="244"/>
         <source>Remove folder sync connection</source>
-        <translation>Ordner-Synchronisation entfernen</translation>
+        <translation>Synchronisations Verzeichnis löschen</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="288"/>
@@ -351,22 +351,22 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="459"/>
         <source>Folder creation failed</source>
-        <translation>Anlegen des Ordners fehlgeschlagen</translation>
+        <translation>Erstellung des Ordners fehlgeschlagen</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="460"/>
         <source>&lt;p&gt;Could not create local folder &lt;i&gt;%1&lt;/i&gt;.</source>
-        <translation>&lt;p&gt;Konnte lokalen Ordner &lt;i&gt;%1&lt;/i&gt; nicht anlegen.</translation>
+        <translation>&lt;p&gt;Der lokale Ordner &lt;i&gt;%1&lt;/i&gt; konnte nicht angelegt werden.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="517"/>
         <source>Confirm Folder Sync Connection Removal</source>
-        <translation>Bestätigen Sie die Löschung der Ordner-Synchronisation</translation>
+        <translation>Löschen der Ordner Sychronisation bestätigen</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="525"/>
         <source>Remove Folder Sync Connection</source>
-        <translation>Ordner-Synchronisation entfernen</translation>
+        <translation>Synchronisations Verzeichnis löschen</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="611"/>
@@ -382,9 +382,7 @@ The only advantage of disabling virtual file support is that the selective sync 
 This action will abort any currently running synchronization.</source>
         <translation>Diese Aktion wird die Unterstützung für virtuelle Dateien abschalten. Als Konsequenz werden Inhalte aus Ordnern heruntergeladen, die aktuell als &apos;nur online verfügbar&apos; markiert sind.
 
-Der einzige Vorteil durch das Abschalten der Unterstützung für virtuelle Dateien ist, dass das Feature selective sync wieder verfügbar wird.
-
-Diese Aktion wird gerade laufende Synchronisationen abbrechen.</translation>
+Das Feature &quot;selective sync&quot; wird wieder verfügbar. Diese Aktion bricht die aktuell laufende Synchronisation ab.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="619"/>
@@ -399,12 +397,12 @@ Diese Aktion wird gerade laufende Synchronisationen abbrechen.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="722"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
-        <translation>Die Synchronisation läuft gerade.&lt;br/&gt;Wollen Sie sie beenden?</translation>
+        <translation>Die Synchronisation läuft gerade.&lt;br/&gt;Willst Du sie beenden?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="819"/>
         <source>%1 in use</source>
-        <translation>%1 wird verwendet</translation>
+        <translation>%1 benutzt</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="846"/>
@@ -419,7 +417,7 @@ Diese Aktion wird gerade laufende Synchronisationen abbrechen.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="860"/>
         <source>Server %1 is temporarily unavailable.</source>
-        <translation>Server %1 ist derzeit nicht verfügbar.</translation>
+        <translation>Der Server %1 ist temporär nicht erreichbar.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="863"/>
@@ -429,7 +427,7 @@ Diese Aktion wird gerade laufende Synchronisationen abbrechen.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="866"/>
         <source>Signed out from %1.</source>
-        <translation>Abgemeldet von %1.</translation>
+        <translation>Von %1 ausgeloggt.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="876"/>
@@ -439,12 +437,12 @@ Diese Aktion wird gerade laufende Synchronisationen abbrechen.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="881"/>
         <source>No connection to %1 at %2.</source>
-        <translation>Keine Verbindung zu %1 auf %2</translation>
+        <translation>Keine Verbindung zu %1 auf %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="920"/>
         <source>Log in</source>
-        <translation>Einloggen</translation>
+        <translation>Anmelden</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1015"/>
@@ -454,27 +452,27 @@ Diese Aktion wird gerade laufende Synchronisationen abbrechen.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1017"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
-        <translation>Es gibt Verzeichnisse, die nicht synchronisiert werden konnten, da diese externe Speicher sind:</translation>
+        <translation>Es gibt Verzeichnisse, die nicht synchronisiert werden konnten, da sie externer Speicher sind:</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1018"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
-        <translation>Es gibt Verzeichnisse, die nicht synchronisiert werden konnten, da diese zu groß oder externe Speicher sind:</translation>
+        <translation>Es gibt Verzeichnisse, die nicht synchronisiert werden konnten, da sie  zu groß oder externer Speicher sind:</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1051"/>
         <source>Confirm Account Removal</source>
-        <translation>Konto wirklich entfernen?</translation>
+        <translation>Nutzerkonto Löschen bestätigen</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1052"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Wollen Sie wirklich die Verbindung zum Konto &lt;i&gt;%1&lt;/i&gt; lösen?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Anmerkung:&lt;/b&gt; Dieser Vorgang wird &lt;b&gt;keine&lt;/b&gt; Dateien löschen.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Möchtest Du den Zugang zum Nutzerkonto &lt;i&gt;%1&lt;/i&gt; wirklich löschen?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Hinweis:&lt;/b&gt;Es werden &lt;b&gt;keine&lt;/b&gt; lokalen Daten gelöscht.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1057"/>
         <source>Remove connection</source>
-        <translation>Verbindung entfernen</translation>
+        <translation>Zugang löschen</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="200"/>
@@ -485,17 +483,17 @@ Diese Aktion wird gerade laufende Synchronisationen abbrechen.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="356"/>
         <source>Resume sync</source>
-        <translation>Synchronisation fortsetzen</translation>
+        <translation>Sync fortsetzen</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="356"/>
         <source>Pause sync</source>
-        <translation>Synchronisation pausieren</translation>
+        <translation>Sync pausieren</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="369"/>
         <source>Enable virtual file support%1...</source>
-        <translation>Unterstützung für virtuelle Dateien einschalten %1...</translation>
+        <translation>Unterstützung für virtuelle Dateien aktivieren%1...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="369"/>
@@ -505,17 +503,17 @@ Diese Aktion wird gerade laufende Synchronisationen abbrechen.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="518"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Möchten Sie den Ordner &lt;i&gt;%1&lt;/i&gt; wirklich nicht mehr synchronisieren?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Anmerkung:&lt;/b&gt; Dies wird &lt;b&gt;keine&lt;/b&gt; Dateien löschen.&lt;/p&gt;</translation>
+        <translation>&lt;P&gt;Willst Du die Synchronisation des Verzeichnisses &lt;i&gt;%1&lt;/i&gt; wirklich aufgeben?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Hinweis:&lt;/b&gt; Diese Aktion wird &lt;b&gt;keine&lt;/b&gt; Dateien löschen.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="806"/>
         <source>%1 (%3%) of %2 in use. Some folders, including network mounted or shared folders, might have different limits.</source>
-        <translation>%1 (%3%) von %2 Serverkapazität verwendet. Einige Ordner, einschließlich über das Netzwerk verbundene oder freigegebene Ordner oder geteilte Ordner können unterschiedliche Beschränkungen aufweisen. </translation>
+        <translation>%1 (%3%) von %2 verwendet. Einige Verzeichnisse, z. B. Netzwerklaufwerke oder geteilte Verzeichnisse, können abweichende Speicher-Kontingente haben.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="807"/>
         <source>%1 of %2 in use</source>
-        <translation>%1 von %2 Serverkapazität verwendet</translation>
+        <translation>%1 von %2 belegt</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="816"/>
@@ -525,7 +523,7 @@ Diese Aktion wird gerade laufende Synchronisationen abbrechen.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="853"/>
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
-        <translation>Die Serverversion %1 ist nicht unterstützt! Fortfahren auf eigenes Risiko.</translation>
+        <translation>Die Server Version %1 wird nicht unterstützt. Auf eigenes Risiko weitermachen?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="873"/>
@@ -535,7 +533,7 @@ Diese Aktion wird gerade laufende Synchronisationen abbrechen.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="886"/>
         <source>Server configuration error: %1 at %2.</source>
-        <translation>Konfigurationsfehler im Server: %1 auf %2.</translation>
+        <translation>Fehler in der Serverkonfiguration: %1 bei %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="897"/>
@@ -583,7 +581,7 @@ Diese Aktion wird gerade laufende Synchronisationen abbrechen.</translation>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="218"/>
         <source>Service unavailable</source>
-        <translation>Dienst nicht verfügbar</translation>
+        <translation>Service nicht erreichbar</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="220"/>
@@ -608,7 +606,7 @@ Diese Aktion wird gerade laufende Synchronisationen abbrechen.</translation>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="228"/>
         <source>Unknown account state</source>
-        <translation>Unbekannten Konto-Zustand</translation>
+        <translation>Status des Kontos unbekannt</translation>
     </message>
 </context>
 <context>
@@ -626,7 +624,7 @@ Diese Aktion wird gerade laufende Synchronisationen abbrechen.</translation>
     <message>
         <location filename="../src/gui/models/activitylistmodel.cpp" line="116"/>
         <source>Account</source>
-        <translation>Benutzerkonto</translation>
+        <translation>Konto</translation>
     </message>
     <message>
         <location filename="../src/gui/models/activitylistmodel.cpp" line="118"/>
@@ -645,7 +643,7 @@ Diese Aktion wird gerade laufende Synchronisationen abbrechen.</translation>
         <location filename="../src/gui/activitywidget.cpp" line="485"/>
         <location filename="../src/gui/activitywidget.cpp" line="529"/>
         <source>Server Activity</source>
-        <translation>Serveraktivität</translation>
+        <translation>Server aktivität</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="491"/>
@@ -655,7 +653,7 @@ Diese Aktion wird gerade laufende Synchronisationen abbrechen.</translation>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="537"/>
         <source>Not Synced</source>
-        <translation>nicht synchronisiert</translation>
+        <translation>Nicht synchronisiert</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="540"/>
@@ -701,7 +699,7 @@ Diese Aktion wird gerade laufende Synchronisationen abbrechen.</translation>
     <message numerus="yes">
         <location filename="../src/gui/activitywidget.cpp" line="302"/>
         <source>%n notifications(s) for %1 and %2.</source>
-        <translation><numerusform>%n Benachrichtigung für %1 und %2.</numerusform><numerusform>%n Benachrichtigungen für %1 und %2.</numerusform></translation>
+        <translation><numerusform>%1 Benachrichtigung für %1 und %2.</numerusform><numerusform>%n Benachrichtigungen für %1 und %2.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="304"/>
@@ -716,7 +714,7 @@ Diese Aktion wird gerade laufende Synchronisationen abbrechen.</translation>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="454"/>
         <source>Copy to clipboard</source>
-        <translation>In die Zwischenablage kopieren</translation>
+        <translation>In Zwischenablage kopieren</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="462"/>
@@ -726,7 +724,7 @@ Diese Aktion wird gerade laufende Synchronisationen abbrechen.</translation>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="158"/>
         <source>&lt;br/&gt;Account %1 does not have activities enabled.</source>
-        <translation>&lt;br/&gt;Für Konto %1 sind serverseitig keine Aktivitäten aktiviert.</translation>
+        <translation>&lt;br/&gt;Benutzerkonto %1 hat keine Aktivitäten aktiviert.</translation>
     </message>
 </context>
 <context>
@@ -734,17 +732,17 @@ Diese Aktion wird gerade laufende Synchronisationen abbrechen.</translation>
     <message>
         <location filename="../src/gui/application.cpp" line="174"/>
         <source>Continuing will mean &lt;b&gt;deleting these settings&lt;/b&gt;.</source>
-        <translation>Fortsetzen bedeutet &lt;b&gt;dass diese Einstellungen gelöscht werden&lt;/b&gt;.</translation>
+        <translation>Fortsetzen bedeutet &lt;b&gt;das diese Einstellungen gelöscht werden&lt;/b&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="176"/>
         <source>Continuing will mean &lt;b&gt;ignoring these settings&lt;/b&gt;.</source>
-        <translation>Fortsetzen bedeutet &lt;b&gt;dass diese Einstellungen ignoriert werden&lt;/b&gt;.</translation>
+        <translation>Fortsetzen bedeutet &lt;b&gt;das diese Einstellungen ignoriert werden&lt;/b&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="182"/>
         <source>Some settings were configured in newer versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation>Einige Einstellungen wurden in neueren Versionen dieses Programms eingestellt und nutzen Funktionen die in dieser Version nicht verfügbar sind. &lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt; Die aktuelle Konfigurations-Datei wurde bereits an folgenden Ort gesichert: &lt;i&gt;%2&lt;/i&gt;</translation>
+        <translation>Einige Einstellungen wurden in neueren Versionen dieses Programms eingestellt und nutzen Funktionen, die in dieser Version nicht verfügbar sind. &lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt; Die aktuelle Konfigurations-Datei wurde bereits an folgenden Ort gesichert: &lt;i&gt;%2&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="189"/>
@@ -869,7 +867,7 @@ File synchronization desktop utility.</source>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="32"/>
         <source>Enter username and password for &apos;%1&apos; at %2.</source>
-        <translation>Benutzername und Passwort für &apos;%1&apos; auf %2 eingeben.</translation>
+        <translation>Benutzernamen und Passwort für &apos;%1&apos; auf %2 eingeben.</translation>
     </message>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="37"/>
@@ -892,12 +890,12 @@ File synchronization desktop utility.</source>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="260"/>
         <source>The configured server for this client is too old</source>
-        <translation>Der konfigurierte Server ist für diesen Client zu alt</translation>
+        <translation>Der konfigurierte Server ist zu alt für diesen Client </translation>
     </message>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="261"/>
         <source>Please update to the latest server and restart the client.</source>
-        <translation>Aktualisieren Sie auf die letzte Server-Version und starten Sie den Client neu.</translation>
+        <translation>Bitte aktualisiere auf die neueste Server-Version und starte den Client neu.</translation>
     </message>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="152"/>
@@ -973,12 +971,12 @@ File synchronization desktop utility.</source>
     <message>
         <location filename="../src/gui/folder.cpp" line="201"/>
         <source>Local folder %1 does not exist.</source>
-        <translation>Lokales Verzeichnis %1 existiert nicht.</translation>
+        <translation>Lokales Verzeichnis %1 existiert nicht</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="203"/>
         <source>%1 should be a folder but is not.</source>
-        <translation>%1 sollte ein Ordner sein, ist es aber nicht.</translation>
+        <translation>%1 sollte ein Verzeichnis sein, ist es aber nicht.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="205"/>
@@ -1021,7 +1019,7 @@ File synchronization desktop utility.</source>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="473"/>
         <source>%1 and %n other file(s) have been added.</source>
-        <translation><numerusform>%1 und %n andere Datei(en) wurden hinzugefügt.</numerusform><numerusform>%1 und %n andere Datei(en) wurden hinzugefügt.</numerusform></translation>
+        <translation><numerusform>%1 und %n andere Dateien wurden hinzugefügt.</numerusform><numerusform>%1 und %n andere Datei(en) wurden hinzugefügt.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="475"/>
@@ -1052,17 +1050,17 @@ File synchronization desktop utility.</source>
     <message>
         <location filename="../src/gui/folder.cpp" line="503"/>
         <source>%1 has a sync conflict. Please check the conflict file!</source>
-        <translation>Es gab einen Konflikt bei der Synchronisierung von %1. Bitte prüfen Sie die Konfliktdatei!</translation>
+        <translation>Es gab einen Konflikt bei der Synchronisierung von %1. Bitte prüfe die Konfliktdatei!</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="508"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
-        <translation><numerusform>%1 und %n weitere Datei konnten aufgrund von Fehlern nicht synchronisiert werden. Schauen Sie in das Protokoll für Details.</numerusform><numerusform>%1 und %n weitere Dateien konnten aufgrund von Fehlern nicht synchronisiert werden. Schauen Sie in das Protokoll für Details.</numerusform></translation>
+        <translation><numerusform>%1 und %n weitere Datei konnten aufgrund von Fehlern nicht synchronisiert werden. Schaue in das Protokoll für Details.</numerusform><numerusform>%1 und %n weitere Dateien konnten aufgrund von Fehlern nicht synchronisiert werden. Schaue in das Protokoll für Details.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="510"/>
         <source>%1 could not be synced due to an error. See the log for details.</source>
-        <translation>%1 konnte aufgrund eines Fehlers nicht synchronisiert werden. Schauen Sie in das Protokoll für Details.</translation>
+        <translation>%1 konnte aufgrund eines Fehlers nicht synchronisiert werden. Schaue in das Protokoll für Details.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="516"/>
@@ -1078,7 +1076,7 @@ File synchronization desktop utility.</source>
         <location filename="../src/gui/folder.cpp" line="1138"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
-        <translation>Ein neues Verzeichnis größer als %1 MB wurde hinzugefügt: %2.
+        <translation>Ein neues Verzeichnis, welcher größer als %1 MB ist, wurde hinzugefügt: %2.
 </translation>
     </message>
     <message>
@@ -1091,17 +1089,17 @@ File synchronization desktop utility.</source>
     <message>
         <location filename="../src/gui/folder.cpp" line="1142"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
-        <translation>Bitte wechseln Sie zu den Einstellungen, falls Sie das Verzeichnis herunterladen möchten.</translation>
+        <translation>Bitte wechsele zu den Einstellungen, falls du das Verzeichnis herunterladen möchtest.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1201"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
-        <translation>Der Ordner %1 wurde erzeugt aber früher von der Synchronisation ausgeschlossen. Daten im Ordner werden nicht synchronisiert.</translation>
+        <translation>Ordner %1 wurde angelegt, aber früher von der Synchronisation ausgeschlossen. Daten im Ordner werden nicht synchronisiert.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1204"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
-        <translation>Die Datei %1 wurde erzeugt aber früher von der Synchronisation ausgeschlossen. Sie wird nicht synchronisiert.</translation>
+        <translation>Datei %1 wurde angelegt, aber früher von der Synchronisation ausgeschlossen, sie wird nicht synchronisiert.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1215"/>
@@ -1123,18 +1121,18 @@ These deletes will be synchronized to your local sync folder, making such files 
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
         <translation>Alle Dateien im Synchronisationsordner &apos;%1&apos; wurden auf dem Server gelöscht.
-Diese Löschung wird in Ihren lokalen Synchronisationsordner übernommen. Dadurch sind die Dateien nicht mehr verfügbar, falls Sie keine Möglichkeit zur Wiederherstellung haben.
-Wenn Sie sich dazu entscheiden, diese Dateien zu behalten, werden diese wieder zum Server synchronisiert. Dies geschieht jedoch nur, wenn Sie die Rechte dazu haben.
-Wenn Sie sich zum Löschen der Dateien entscheiden, sind diese nicht mehr verfügbar, außer Sie sind der Eigentümer.</translation>
+Diese Löschung wird in dein lokales Synchronisationsverzeichnis synchronisiert. Dadurch sind die Dateien nicht mehr verfügbar, falls du keine Möglichkeit zur Wiederherstellung hast.
+Wenn du dich entscheidest, diese Dateien zu behalten, werden diese wieder zum Server synchronisiert. Dies geschieht nur, wenn du die Rechte dazu hast.
+Wenn du dich zum Löschen der Dateien entscheidest, sind diese nicht mehr verfügbar, außer du bist der Eigentümer.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1297"/>
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
-        <translation>Alle Dateien im lokalen Synchronisationsordner &apos;%1&apos; wurden gelöscht. Diese Löschung wird mit Ihrem Server synchronisiert, wodurch die Dateien nicht mehr verfügbar sind, es sei denn, sie werden wiederhergestellt.
-Sind Sie sich sicher, dass Sie diese Aktion mit Ihrem Server synchronisieren möchten?
-Falls dies ein Missgeschick war und Sie sich zum Behalten der Dateien entscheiden, werden diese wieder vom Server synchronisiert.</translation>
+        <translation>Alle Dateien im Synchronisationsordner &apos;%1&apos; werden auf dem Server gelöscht. Diese Löschung wird mit deinem Server synchronisiert, wodurch die Dateien nicht mehr verfügbar sind, außer diese werden wiederhergestellt.
+Bist du dir sicher, dass du diese Aktion mit Ihrem Server synchronisieren möchtest?
+Falls dies ein Missgeschick war und du dich zum Behalten der Datei entscheidest, werden diese wieder vom Server synchronisiert.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1301"/>
@@ -1144,7 +1142,7 @@ Falls dies ein Missgeschick war und Sie sich zum Behalten der Dateien entscheide
     <message>
         <location filename="../src/gui/folder.cpp" line="1305"/>
         <source>Remove all files</source>
-        <translation>Lösche alle Dateien</translation>
+        <translation>Alle Dateien löschen</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1306"/>
@@ -1157,22 +1155,22 @@ Falls dies ein Missgeschick war und Sie sich zum Behalten der Dateien entscheide
     <message>
         <location filename="../src/gui/folderman.cpp" line="450"/>
         <source>Could not reset folder state</source>
-        <translation>Konnte Ordner-Zustand nicht zurücksetzen</translation>
+        <translation>Ordnerzustand konnte nicht zurückgesetzt werden</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="451"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
-        <translation>Ein altes Synchronisations-Journal &apos;%1&apos; wurde gefunden, konnte jedoch nicht entfernt werden. Bitte stellen Sie sicher, dass keine Anwendung es verwendet.</translation>
+        <translation>Ein altes Synchronisations-Journal &apos;%1&apos; wurde gefunden, konnte jedoch nicht entfernt werden. Bitte stelle sicher, dass keine Anwendung es verwendet.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1233"/>
         <source> (backup)</source>
-        <translation>(Sicherung)</translation>
+        <translation>(Backup)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1238"/>
         <source> (backup %1)</source>
-        <translation>(Sicherung %1)</translation>
+        <translation>(Backup %1)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1340"/>
@@ -1182,7 +1180,7 @@ Falls dies ein Missgeschick war und Sie sich zum Behalten der Dateien entscheide
     <message>
         <location filename="../src/gui/folderman.cpp" line="1343"/>
         <source>Waiting to start syncing.</source>
-        <translation>Wartet auf Beginn der Synchronisation</translation>
+        <translation>Warten auf Beginn der Synchronisation</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1346"/>
@@ -1227,7 +1225,7 @@ Falls dies ein Missgeschick war und Sie sich zum Behalten der Dateien entscheide
     <message>
         <location filename="../src/gui/folderman.cpp" line="1382"/>
         <source>No valid folder selected!</source>
-        <translation>Kein gültiger Ordner gewählt!</translation>
+        <translation>Keinen gültigen Ordner ausgewählt!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1390"/>
@@ -1242,27 +1240,27 @@ Falls dies ein Missgeschick war und Sie sich zum Behalten der Dateien entscheide
     <message>
         <location filename="../src/gui/folderman.cpp" line="1401"/>
         <source>The selected path is not a folder!</source>
-        <translation>Der gewählte Pfad ist kein Ordner!</translation>
+        <translation>Der gewählte Pfad ist kein Verzeichnis!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1405"/>
         <source>You have no permission to write to the selected folder!</source>
-        <translation>Sie haben keine Schreibberechtigung für den ausgewählten Ordner!</translation>
+        <translation>Sie sind nicht berechtigt, in diesen Ordner zu schreiben!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1442"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
-        <translation>Es existiert bereits eine Synchronisation vom Server zu diesem lokalen Ordner. Bitte wählen Sie ein anderes lokales Verzeichnis!</translation>
+        <translation>Es exisitiert bereits eine Synchronisation vom Server zu diesem lokalen Ordner. Bitte wähle ein anderes lokales Verzeichnis!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1446"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
-        <translation>Der lokale Ordner %1 liegt innerhalb eines synchronisierten Ordners. Bitte wählen Sie einen anderen aus!</translation>
+        <translation>Das lokale Verzeichnis %1 enthält schon ein Verzeichnis, das schon mit einer anderen Verbindung synchronisiert wird. Bitte wähle ein anderes Verzeichnis!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1452"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
-        <translation>Der lokale Ordner %1 liegt in einem Ordner, der bereits synchronisiert wird. Bitte wählen Sie einen anderen aus!</translation>
+        <translation>Das lokale Verzeichnis %1 liegt innerhalb eines Verzeichnisses, das schon synchronisiert wird. Bitte wähle ein anderes Verzeichnis! </translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1459"/>
@@ -1282,7 +1280,7 @@ Please consider removing this folder from the account and adding it again.</sour
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="46"/>
         <source>Add Folder Sync Connection</source>
-        <translation>Ordner-Synchronisation hinzufügen</translation>
+        <translation>Synchronisiertes Verzeichnis hinzufügen</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="293"/>
@@ -1295,12 +1293,12 @@ Please consider removing this folder from the account and adding it again.</sour
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="148"/>
         <source>You need to be connected to add a folder</source>
-        <translation>Sie müssen verbunden sein, um einen Ordner hinzuzufügen</translation>
+        <translation>Du musst verbunden sein, um einen Ordner hinzuzufügen</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="150"/>
         <source>Click this button to add a folder to synchronize.</source>
-        <translation>Wählen Sie diese Schaltfläche, um einen zu synchronisierenden Ordner hinzuzufügen.</translation>
+        <translation>Zum Hinzufügen eines Ordner zur Synchronisation diesen Knopf drücken.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="159"/>
@@ -1312,7 +1310,7 @@ Please consider removing this folder from the account and adding it again.</sour
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="185"/>
         <source>Error while loading the list of folders from the server.</source>
-        <translation>Fehler beim Empfang der Ordnerliste vom Server.</translation>
+        <translation>Fehler beim Herunterladen der Verzeichnisliste vom Server.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="227"/>
@@ -1322,12 +1320,12 @@ Please consider removing this folder from the account and adding it again.</sour
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="247"/>
         <source>Signed out</source>
-        <translation>Abgemeldet</translation>
+        <translation>austreten</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="188"/>
         <source>Fetching folder list from server...</source>
-        <translation>Empfange Orderliste vom Server...</translation>
+        <translation>Abrufen der Ordnerlisten vom Server...</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="214"/>
@@ -1337,12 +1335,12 @@ Please consider removing this folder from the account and adding it again.</sour
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="895"/>
         <source>Checking for changes in remote &apos;%1&apos;</source>
-        <translation>Änderungen der entfernten Ressource &apos;%1&apos; werden geprüft</translation>
+        <translation>Prüfe Änderungen der entfernten &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="899"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
-        <translation>Änderungen der lokalen Ressource &apos;%1&apos; werden geprüft</translation>
+        <translation>Prüfe Änderungen der lokalen &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="906"/>
@@ -1353,7 +1351,7 @@ Please consider removing this folder from the account and adding it again.</sour
         <location filename="../src/gui/folderstatusmodel.cpp" line="941"/>
         <source>, &apos;%1&apos;</source>
         <extracomment>Build a list of file names</extracomment>
-        <translation>, &apos;%1&apos;</translation>
+        <translation>,&apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="944"/>
@@ -1422,7 +1420,7 @@ Please consider removing this folder from the account and adding it again.</sour
         <location filename="../src/gui/folderstatusmodel.cpp" line="1021"/>
         <source>%1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;12 MB of 345 MB, file 6 of 7&quot;</extracomment>
-        <translation>%1 of %2, Datei %3 von %4</translation>
+        <translation>%1 von %2, Datei %3 von %4</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1028"/>
@@ -1432,17 +1430,17 @@ Please consider removing this folder from the account and adding it again.</sour
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1074"/>
         <source>Waiting...</source>
-        <translation>Warte...</translation>
+        <translation>warten...</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folderstatusmodel.cpp" line="1076"/>
         <source>Waiting for %n other folder(s)...</source>
-        <translation><numerusform>Warte auf einen anderen Ordner</numerusform><numerusform>Warte auf %n andere Ordner</numerusform></translation>
+        <translation><numerusform>Warte auf ein Verzeichnis...</numerusform><numerusform>Warte auf %n andere Verzeichnisse...</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1082"/>
         <source>Preparing to sync...</source>
-        <translation>Bereite Synchronisation vor...</translation>
+        <translation>Synchronisation vorbereiten...</translation>
     </message>
 </context>
 <context>
@@ -1458,7 +1456,7 @@ Please consider removing this folder from the account and adding it again.</sour
     <message>
         <location filename="../src/gui/folderwatcher_linux.cpp" line="90"/>
         <source>This problem usually happens when the inotify watches are exhausted. Check the FAQ for details.</source>
-        <translation>Dieses Problem tritt normalerweise auf, wenn die Inotify-watcher erschöpft sind. Überprüfen Sie die FAQ für Details.</translation>
+        <translation>Dieses Problem tritt normalerweise auf, wenn die Inotify-watcher erschöpft sind. Überprüfe die FAQ für Details.</translation>
     </message>
 </context>
 <context>
@@ -1466,12 +1464,12 @@ Please consider removing this folder from the account and adding it again.</sour
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="566"/>
         <source>Add Folder Sync Connection</source>
-        <translation>Ordner-Synchronisation hinzufügen</translation>
+        <translation>Synchronisiertes Verzeichnis hinzufügen</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="568"/>
         <source>Add Sync Connection</source>
-        <translation>Synchronisation hinzufügen</translation>
+        <translation>Füge eine Verzeichnis Sychronisation hinzu</translation>
     </message>
 </context>
 <context>
@@ -1502,7 +1500,7 @@ Please consider removing this folder from the account and adding it again.</sour
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="181"/>
         <source>Enter the name of the new folder to be created below &apos;%1&apos;:</source>
-        <translation>Geben Sie den Namen des neuen, unter &apos;%1&apos; zu erstellenden Ordners ein: </translation>
+        <translation>Gib den Namen des neuen, unter &apos;%1&apos; zu erstellenden Ordners ein:</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="210"/>
@@ -1512,22 +1510,22 @@ Please consider removing this folder from the account and adding it again.</sour
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="220"/>
         <source>Authentication failed accessing %1</source>
-        <translation>Die Authentifizierung ist beim Zugriff auf %1 fehlgeschlagen</translation>
+        <translation>Beim Zugriff auf %1 ist die Authentifizierung fehlgeschlagen</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="222"/>
         <source>Failed to create the folder on %1. Please check manually.</source>
-        <translation>Die Erstellung des Ordners auf %1 ist fehlgeschlagen. Bitte prüfen Sie dies manuell.</translation>
+        <translation>Die Erstellung des Ordners auf %1 ist fehlgeschlagen. Bitte prüfe dies manuell.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="240"/>
         <source>Failed to list a folder. Error: %1</source>
-        <translation>Konnte Ordner nicht listen. Fehler: %1</translation>
+        <translation>Fehler beim Auflisten des Verzeichnisses. Fehler: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="321"/>
         <source>Choose this to sync the entire account</source>
-        <translation>Wählen Sie dies, um das gesamte Konto zu synchronisieren</translation>
+        <translation>Wähle dies, um das gesamte Konto zu synchronisieren</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="431"/>
@@ -1537,12 +1535,12 @@ Please consider removing this folder from the account and adding it again.</sour
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="433"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a parent folder of &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation>Sie synchronisieren bereits &lt;i&gt;%1&lt;/i&gt;, das ein übergeordneten Ordner von &lt;i&gt;%2&lt;/i&gt; ist.</translation>
+        <translation>Du synchronisierst bereits &lt;i&gt;%1&lt;/i&gt;, das ein übergeordneten Ordner von &lt;i&gt;%2&lt;/i&gt; ist.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="435"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a subfolder of &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation>Sie synchronisieren bereits &lt;i&gt;%1&lt;/i&gt;, das ein untergeordneter Ordner von &lt;i&gt;%2&lt;/i&gt; ist.</translation>
+        <translation>Der sync von &lt;i&gt;%1&lt;/i&gt; läuft schon, als Unterverzeichnis von &lt;i&gt;%2&lt;/i&gt;.</translation>
     </message>
 </context>
 <context>
@@ -1550,17 +1548,17 @@ Please consider removing this folder from the account and adding it again.</sour
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="477"/>
         <source>Use virtual files instead of downloading content immediately%1</source>
-        <translation>Virtuelle Dateien verwenden, anstatt die Dateien herunter zu laden%1</translation>
+        <translation>Virtuelle Dateien verwenden, anstatt die Dateien gleich herunter zu laden%1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="477"/>
         <source> (experimental)</source>
-        <translation>(Experimentell)</translation>
+        <translation>(experimentell)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="509"/>
         <source>Virtual files are not available for the selected folder</source>
-        <translation>Virtuelle Dateien sind für den ausgewählten Ordner nicht verfügbar</translation>
+        <translation>Virtuelle Dateien sind für den gewählten Ordner nicht verügbar</translation>
     </message>
 </context>
 <context>
@@ -1586,12 +1584,12 @@ Please consider removing this folder from the account and adding it again.</sour
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="187"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
-        <translation>Es wurde ein unterschiedlicher E-Tag zum Fortfahren empfangen. Bitte beim nächsten mal nochmal versuchen.</translation>
+        <translation>Beim Fortfahren wurde ein abweichender E-Tag empfangen. Bitte erneut versuchen.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="198"/>
         <source>We received an unexpected download Content-Length.</source>
-        <translation>Unerwartete Content-Length beim Herunterladen empfangen.</translation>
+        <translation>Unerwartete Daten-Länge beim Herunterladen empfangen.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="225"/>
@@ -1627,17 +1625,17 @@ Please consider removing this folder from the account and adding it again.</sour
     <message>
         <location filename="../src/gui/generalsettings.ui" line="113"/>
         <source>Sync hidden files</source>
-        <translation>Synchronisiere versteckte Dateien</translation>
+        <translation>Versteckte Dateien synchronisieren</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="142"/>
         <source>Log Settings</source>
-        <translation>Einstellungen für Logging</translation>
+        <translation>Log-Einstellungen</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="169"/>
         <source>Advanced - Approval of folder sync (Non virtual file mode only)</source>
-        <translation>Erweitert - Synchronisierung von Ordner genehmigen (Ausschliesslich im nicht-virtuellen Dateien Modus)</translation>
+        <translation>Erweitert - Synchronisierung von Ordnern genehmigen (Ausschliesslich im nicht-virtuellen Dateien Modus)</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="229"/>
@@ -1667,7 +1665,7 @@ Please consider removing this folder from the account and adding it again.</sour
     <message>
         <location filename="../src/gui/generalsettings.ui" line="98"/>
         <source>Advanced</source>
-        <translation>Erweitert</translation>
+        <translation>Fortgeschritten</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="41"/>
@@ -1688,7 +1686,7 @@ Please consider removing this folder from the account and adding it again.</sour
     <message>
         <location filename="../src/gui/generalsettings.ui" line="219"/>
         <source>Ask for confirmation before synchronizing external storages</source>
-        <translation>Bestätigung erfragen, bevor externe Speicher synchronisiert werden</translation>
+        <translation>Bestätigung erfragen, bevor externe Speicher synchronisiert werden.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="55"/>
@@ -1698,7 +1696,7 @@ Please consider removing this folder from the account and adding it again.</sour
     <message>
         <location filename="../src/gui/generalsettings.ui" line="48"/>
         <source>Show &amp;Desktop Notifications</source>
-        <translation>Zeige &amp;Desktop-Benachrichtigungen</translation>
+        <translation>zeige Desktop Benachrichtigungen</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="253"/>
@@ -1708,22 +1706,22 @@ Please consider removing this folder from the account and adding it again.</sour
     <message>
         <location filename="../src/gui/generalsettings.ui" line="135"/>
         <source>Edit &amp;Ignored Files</source>
-        <translation>I&amp;gnorierte Dateien bearbeiten</translation>
+        <translation>&amp;Ignorierte Dateien bearbeiten</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="106"/>
         <source>Show sync folders in &amp;Explorer&apos;s Navigation Pane</source>
-        <translation>Synchronisations-Ordner und Explorer-Navigation zeigen</translation>
+        <translation>Zeige synchronisierte Ordner in der Explorer Navigation.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="126"/>
         <source>S&amp;how crash reporter</source>
-        <translation>&amp;Crash-Reporter anzeigen</translation>
+        <translation>Crash-Reporter anzeigen</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="302"/>
         <source>&amp;Restart &amp;&amp; Update</source>
-        <translation>&amp;Neustarten &amp;&amp; aktualisieren</translation>
+        <translation>&amp;Neustarten &amp;&amp; Aktualisieren</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="334"/>
@@ -1751,7 +1749,7 @@ Please consider removing this folder from the account and adding it again.</sour
 
 Note that this selects only what pool upgrades are taken from, and that there are no downgrades: So going back from the beta channel to the stable channel usually cannot be done immediately and means waiting for a stable version that is newer than the currently installed beta version.</source>
         <translation>Der Update-Kanal legt fest welche Programm-Updates zur Installation angeboten werden. Der &quot;Stabil&quot;-Kanal enthält nur Upgrades die als verlässlich betrachtet werden, während Versionen im &quot;Beta&quot;-Kanal neuer Funktionen und Fehlerbehebungen enthalten können, die bisher noch nicht komplett bzw. ausführlich genug getestet werden konnten.
-Beachten Sie, das dies nur bestimmt von welchem Bereich Sie Upgrades erhalten und dass es keine Downgrade-Möglichkeiten gibt: Ein &quot;Schritt zurück&quot; vom Beta-Kanal zum Stabilen-Kanal kann normalerweise nicht unverzüglich erfolgen und bedeutet Wartezeiten auf eine Stabile-Version, die dann neuer ist als die jeweils aktuell installierte Beta-Version.</translation>
+Beachten Sie, das dies nur bestimmt von welchem Bereich Sie Upgrades erhalten und das es keine Downgrade-Möglichkeiten gibt: Einen &quot;Schritt zurück&quot; vom Beta-Kanal zum Stabilen-Kanal kann normalerweise nicht unverzüglich erfolgen und bedeutet Wartezeiten auf eine Stabile-Version, die dann neuer ist als die jeweils aktuell installierte Beta-Version.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="241"/>
@@ -1784,7 +1782,7 @@ Beachten Sie, das dies nur bestimmt von welchem Bereich Sie Upgrades erhalten un
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="132"/>
         <source>Reading from keychain failed with error: &apos;%1&apos;</source>
-        <translation>Schlüsselbund fehlgeschlagen mit Fehler: &apos;%1&apos;</translation>
+        <translation>Das Lesen aus dem Schlüsselbund schlug mit folgendem Fehler schief: &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="139"/>
@@ -1794,7 +1792,7 @@ Beachten Sie, das dies nur bestimmt von welchem Bereich Sie Upgrades erhalten un
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="179"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Click here&lt;/a&gt; to request an app password from the web interface.</source>
-        <translation>&lt;a href=&quot;%1&quot;&gt;Klicken Sie hier&lt;/a&gt; um ein App-Passwort von dem Web-Interface zu erhalten.</translation>
+        <translation>&lt;a href=&quot;%1&quot;&gt;Klicke hier&lt;/a&gt; um ein App-Passwort von dem Web-Interface zu erhalten.</translation>
     </message>
 </context>
 <context>
@@ -1807,7 +1805,7 @@ Beachten Sie, das dies nur bestimmt von welchem Bereich Sie Upgrades erhalten un
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="20"/>
         <source>Files Ignored by Patterns</source>
-        <translation>Nach Muster ignorierte Dateien</translation>
+        <translation>Dateien, welche durch Mustererkennung ignoriert werden</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="59"/>
@@ -1822,7 +1820,7 @@ Beachten Sie, das dies nur bestimmt von welchem Bereich Sie Upgrades erhalten un
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="46"/>
         <source>Allow Deletion</source>
-        <translation>Löschen erlauben</translation>
+        <translation>Erlaube Löschung</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="69"/>
@@ -1834,9 +1832,9 @@ Beachten Sie, das dies nur bestimmt von welchem Bereich Sie Upgrades erhalten un
         <source>Files or folders matching a pattern will not be synchronized. Changes take effect the next time folders are synchronized.
 
 Items where deletion is allowed will be deleted if they prevent a directory from being removed. This is useful for meta data.</source>
-        <translation>Dateien oder Ordner, die diesem Muster entsprechen, werden nicht synchronisiert. Änderungen werden bei der nächsten Synchronisation übernommen.
+        <translation>Dateien oder Verzeichnisse deren Namen mit dem regulären Ausdruck erfasst werden, werden von der Synchronisation ausgeschlossen. Änderungen werden bei der nächsten Synchronisation übernommen.
 
-Objekte, bei denen Löschen erlaubt ist, werden gelöscht, wenn sie die Löschung eines Ordners verhindern würden. Das ist für Metadaten nützlich.</translation>
+Elemente, für die Löschen erlaubt ist, werden gelöscht, wenn sie andernfalls das Löschen eines ansonsten leeren Ordners verhindern würden.</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="112"/>
@@ -1884,12 +1882,12 @@ Objekte, bei denen Löschen erlaubt ist, werden gelöscht, wenn sie die Löschun
     <message>
         <location filename="../src/gui/issueswidget.ui" line="83"/>
         <source>There were too many issues. Not all will be visible here.</source>
-        <translation>Es gab zu viele Probleme. Nicht alle können hier dargestellt werden.</translation>
+        <translation>Es gab zu viele Fehler. Nicht alle werden hier angezeigt.</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="93"/>
         <source>There were conflicts. Check the documentation on how to resolve them.</source>
-        <translation>Es bestehen Konflikte. Prüfen Sie die Dokumentation, wie diese zu lösen sind.</translation>
+        <translation>Es bestehen Konflikte. Prüfe die Dokumentation, wie diese zu lösen sind.</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="135"/>
@@ -1904,12 +1902,12 @@ Objekte, bei denen Löschen erlaubt ist, werden gelöscht, wenn sie die Löschun
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="182"/>
         <source>There were conflicts. &lt;a href=&quot;%1&quot;&gt;Check the documentation on how to resolve them.&lt;/a&gt;</source>
-        <translation>Es bestehen Konflikte. &lt;a href=&quot;%1&quot;&gt;Prüfen Sie die Dokumentation, wie diese zu lösen sind.&lt;/a&gt;</translation>
+        <translation>Es bestehen Konflikte. &lt;a href=&quot;%1&quot;&gt;Prüfe die Dokumentation, wie diese zu lösen sind.&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="202"/>
         <source>Account</source>
-        <translation>Benutzerkonto</translation>
+        <translation>Konto</translation>
     </message>
 </context>
 <context>
@@ -1946,13 +1944,13 @@ Objekte, bei denen Löschen erlaubt ist, werden gelöscht, wenn sie die Löschun
         <location filename="../src/gui/logbrowser.ui" line="71"/>
         <source>The client can write debug logs to a temporary folder. These logs are very helpful for diagnosing problems.
 Since log files can get large, the client will start a new one for each sync run and compress older ones. It is also recommended to enable deleting log files after a couple of hours to avoid consuming too much disk space.</source>
-        <translation>Der Client kann Debug-Logs in einen temporären Ordner schreiben. Diese Logs sind sehr hilfreich bei der Fehlersuche.
-Da die Log Dateien groß werden können, wird der Client eine neue Datei für jeden Synchronisationslauf anlegen und alte Dateien komprimieren. Es wird außerdem empfohlen das Löschen von Log Dateien nach einigen Stunden einzuschalten. Dies verhindert unnötigen Verbrauch von Plattenplatz.</translation>
+        <translation>Der Client kann Debug-Logs in einen temporären Ordner schreiben. Die darin enthaltenen Informationen sind hilfreich zur Diagnose von Störungen.
+Da diese Logs sehr gross werden können, erstellt der Client für jede Synchronisierung ein neues Log und komprimiert Ältere. Es empfiehlt sich, die automatische Löschung von Log-Dateien nach ein paar Stunden einzuschalten. Damit wird verhindert, dass zu viel Speicherplatz belegt wird. </translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.ui" line="84"/>
         <source>If enabled, logs will be written to:</source>
-        <translation>Logs werden - wenn eingeschaltet - geschrieben nach:</translation>
+        <translation>Wenn eingeschaltet, werden Logs hier erstellt:</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.ui" line="91"/>
@@ -1962,7 +1960,7 @@ Da die Log Dateien groß werden können, wird der Client eine neue Datei für je
     <message>
         <location filename="../src/gui/logbrowser.ui" line="123"/>
         <source>Log Http traffic </source>
-        <translation>HTTP Datenverkehr loggen</translation>
+        <translation>HTTP-Kommunikation aufzeichnen</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.ui" line="143"/>
@@ -2094,7 +2092,7 @@ Beachten Sie, dass Kommandozeilenoptionen zum Logging diese Einstellungen übers
     <message>
         <location filename="../src/gui/networksettings.ui" line="135"/>
         <source>Proxy server requires authentication</source>
-        <translation>Proxyserver erfordert eine Authentifizierung</translation>
+        <translation>Proxyserver erfordert Authentifizierung</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="180"/>
@@ -2128,7 +2126,7 @@ Beachten Sie, dass Kommandozeilenoptionen zum Logging diese Einstellungen übers
         <location filename="../src/gui/networksettings.ui" line="217"/>
         <location filename="../src/gui/networksettings.ui" line="296"/>
         <source>Limit to 3/4 of estimated bandwidth</source>
-        <translation>Auf 3/4 der geschätzten Bandbreite begrenzen</translation>
+        <translation>Limitierung auf 3/4 der geschätzten Bandbreite</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="280"/>
@@ -2207,29 +2205,28 @@ Beachten Sie, dass Kommandozeilenoptionen zum Logging diese Einstellungen übers
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="270"/>
         <source>Could not parse the JSON returned from the server: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
-        <translation>Die JSON Antwort des Servers konnte nicht geparst werden: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
+        <translation>Die JSON Antwort des Servers konnte nicht reparst werden: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="273"/>
         <source>Unsupported token type: %1</source>
-        <translation>Nicht unterstützter Tokentyp: %1</translation>
+        <translation>Nicht unterstützter Token-Typ: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="275"/>
         <source>The reply from the server did not contain all expected fields
 :%1</source>
-        <translation>Die Antwort des Servers hat nicht alle erwarteten Felder beinhaltet
-:%1</translation>
+        <translation>Die Server-Antwort hat nicht alle erwarteten Felder enthalten: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="277"/>
         <source>Unknown Error</source>
-        <translation>Unbekannter Fehler</translation>
+        <translation>Ein unbekannter Fehler ist aufgetreten.</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="301"/>
         <source>&lt;h1&gt;Login Error&lt;/h1&gt;&lt;p&gt;Failed to retrieve user info&lt;/p&gt;</source>
-        <translation>&lt;h1&gt;Anmeldefehler &lt;/h1&gt;&lt;p&gt;Konnte Benutzerdaten nicht auslesen&lt;/p&gt;</translation>
+        <translation>&lt;h1&gt;Login Fehler&lt;/h1&gt;&lt;p&gt;Nutzerinformation konnte nicht abgerufen werden&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="552"/>
@@ -2244,12 +2241,12 @@ Beachten Sie, dass Kommandozeilenoptionen zum Logging diese Einstellungen übers
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="281"/>
         <source>&lt;h1&gt;Login Error&lt;/h1&gt;&lt;p&gt;%1&lt;/p&gt;</source>
-        <translation>&lt;h1&gt;Anmeldefehler &lt;/h1&gt;&lt;p&gt;%1&lt;/p&gt;</translation>
+        <translation>&lt;h1&gt;Anmeldefehler&lt;/h1&gt;&lt;p&gt;%1&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="387"/>
         <source>&lt;h1&gt;Wrong user&lt;/h1&gt;&lt;p&gt;You logged-in with user &lt;em&gt;%1&lt;/em&gt;, but must login with user &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please log out of %3 in another tab, then &lt;a href=&apos;%4&apos;&gt;click here&lt;/a&gt; and log in as user %2&lt;/p&gt;</source>
-        <translation>&lt;h1&gt;Falscher Benutzer&lt;/h1&gt;&lt;p&gt;Sie haben sich mit dem Benutzer &lt;em&gt;%1&lt;/em&gt; angemeldet, sollten sich jedoch mit dem Benutzer &lt;em&gt;%2&lt;/em&gt; anmelden. &lt;br&gt;Bitte melden Sie sich in einem anderen Tab von %3 ab und &lt;a href=&apos;%4&apos;&gt;klicken Sie hier&lt;/a&gt; um sich als %2&lt;/p&gt; anzumelden</translation>
+        <translation>&lt;h1&gt;Falscher Benutzer&lt;/h1&gt;&lt;p&gt;Du hast dich mit dem Benutzer &lt;em&gt;%1&lt;/em&gt; angemeldet, solltest dich jedoch mit dem Benutzer &lt;em&gt;%2&lt;/em&gt; anmelden. Bitte melde dich in einem anderen Tab von %3 ab und &lt;a href=&apos;%4&apos;&gt;klicke hier&lt;/a&gt; um dich als %2 anzumelden&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -2268,7 +2265,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="152"/>
         <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; to download the update manually.</source>
-        <translation>Aktualisierung kann nicht herunter geladen werden. Bitte klicken Sie &lt;a href=&apos;%1&apos;&gt;hier&lt;/a&gt; um die Aktualisierung manuell herunter zu laden.</translation>
+        <translation>Aktualisierung kann nicht herunter geladen werden. Bitte klicke &lt;a href=&apos;%1&apos;&gt;hier&lt;/a&gt; um die Aktualisierung manuell herunter zu laden.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="154"/>
@@ -2298,7 +2295,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="165"/>
         <source>Checking update server...</source>
-        <translation>Aktualisierungsserver wird überprüft …</translation>
+        <translation>Update-Server wird überprüft…</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="167"/>
@@ -2308,12 +2305,12 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="171"/>
         <source>No updates available. Your installation is at the latest version.</source>
-        <translation>Keine Aktualisierungen verfügbar. Ihre Installation ist die aktuelle Version.</translation>
+        <translation>Keine Updates verfügbar. Ihre Installation ist die aktuelle Version.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="190"/>
         <source>Update Check</source>
-        <translation>Aktualitätsprüfung</translation>
+        <translation>Aktualisierungsüberprüfung</translation>
     </message>
 </context>
 <context>
@@ -2326,7 +2323,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="50"/>
         <source>Setup local folder options</source>
-        <translation>Einstellungen der Optionen für lokale Verzeichnisse </translation>
+        <translation>Einstellungen der Optionen für lokale Verzeichnisse</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="55"/>
@@ -2336,27 +2333,27 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="84"/>
         <source> (experimental)</source>
-        <translation>(Experimentell)</translation>
+        <translation>(experimentell)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="84"/>
         <source>Use &amp;virtual files instead of downloading content immediately%1</source>
-        <translation>&amp;Virtuelle Dateien verwenden, anstatt die Dateien herunter zu laden%1</translation>
+        <translation>&amp;Virtuelle Dateien verwenden, anstatt die Dateien gleich herunter zu laden%1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="167"/>
         <source>&lt;p&gt;&lt;strong&gt;Warning:&lt;/strong&gt; The local folder is not empty. Pick a resolution!&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;strong&gt;Achtung:&lt;/strong&gt; Der lokale Ordner ist nicht leer. Bitte wählen Sie eine entsprechende Lösung!&lt;/p&gt;</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="163"/>
         <source>Sync the folder &apos;%1&apos;</source>
-        <translation>Ordner &apos;%1&apos; synchronisieren</translation>
+        <translation>Synchronisiere Verzeichnis &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="208"/>
         <source>Virtual files are not available for the selected folder</source>
-        <translation>Virtuelle Dateien sind für den ausgewählten Ordner nicht verfügbar</translation>
+        <translation>Virtuelle Dateien sind für den gewählten Ordner nicht verügbar</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="242"/>
@@ -2390,7 +2387,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="60"/>
         <source>Enter user credentials</source>
-        <translation>Geben Sie die Benutzer-Anmeldeinformationen ein</translation>
+        <translation>Gib die Benutzer-Anmeldeinformationen ein</translation>
     </message>
 </context>
 <context>
@@ -2403,12 +2400,12 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="42"/>
         <source>Login in your browser</source>
-        <translation>Melden Sie sich in Ihrem Browser an</translation>
+        <translation>Melde dich in deinem Browser an</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="51"/>
         <source>Copy link to clipboard</source>
-        <translation>Link in Zwischenablage kopieren</translation>
+        <translation>Link in die Zwischenablage kopieren</translation>
     </message>
 </context>
 <context>
@@ -2441,7 +2438,7 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="116"/>
         <source>This url is secure. You can use it.</source>
-        <translation>Diese URL ist sicher. Sie können Sie benutzen.</translation>
+        <translation>Diese URL ist sicher. Du kannst Sie benutzen.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="155"/>
@@ -2464,7 +2461,7 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="208"/>
         <source>Timeout while trying to connect to %1 at %2.</source>
-        <translation>Zeitüberschreitung beim Verbindungsversuch mit %1 unter %2.</translation>
+        <translation>Zeitüberschreitung beim Verbindungsversuch mit %1 unter %2. </translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="189"/>
@@ -2489,7 +2486,7 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="333"/>
         <source>The remote folder creation failed because the provided credentials are wrong!&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
-        <translation>Die Remote-Ordner-Erstellung ist fehlgeschlagen, weil die angegebenen Zugangsdaten falsch sind. Bitte gehen Sie zurück und überprüfen Sie die Zugangsdaten.</translation>
+        <translation>Die Remote-Ordner-Erstellung ist fehlgeschlagen, weil die angegebenen Zugangsdaten falsch sind. Bitte gehe zurück und überprüfe die Zugangsdaten.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="341"/>
@@ -2499,7 +2496,7 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="370"/>
         <source>Folder rename failed</source>
-        <translation>Ordner umbenennen fehlgeschlagen.</translation>
+        <translation>Das Umbenennen des Ordners ist fehlgeschlagen</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="371"/>
@@ -2533,7 +2530,7 @@ The virtual files mode is mutually exclusive with selective sync. Currently unse
 Switching to this mode will abort any currently running synchronization.
 
 This is a new, experimental mode. If you decide to use it, please report any issues that come up.</source>
-        <translation>Wenn der Modus &quot;Virtuelle Dateien&quot; aktiviert ist, werden die Dateien nicht sofort heruntergeladen. Stattdessen wird für jede Datei des Servers eine winzige &quot;%1&quot; Datei erstellt. Der Inhalt der Dateien kann durch Ausführen der Datei oder über das Kontext-Menü heruntergeladen werden.
+        <translation>Wenn der Modus &quot;Virtuelle Dateien&quot; aktiviert ist, werden die Dateien nicht sofort heruntergeladen. Stattdessen wird für jede Datei des Servers eine  winzige &quot;%1&quot; Datei erstellt. Der Inhalt der Dateien kann durch Ausführen der Datei oder über das Kontext-Menü heruntergeladen werden.
 
 Der Modus virtuelle Dateien schließt sich mit dem Modus &quot;Selective Sync&quot; gegenseitig aus. Aktuell abgewählte Ordner werden zu nur online verfügbaren Ordnern umgesetzt und die Einstellungen im &quot;Selective Sync&quot; werden verworfen.
 
@@ -2560,12 +2557,12 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
     <message>
         <location filename="../src/libsync/discovery.cpp" line="251"/>
         <source>File names ending with a period are not supported on this file system.</source>
-        <translation>Dateinamen die mit einem Punkt enden sind in diesem Dateisystem nicht unterstützt.</translation>
+        <translation>Dateinamen enden mit einem Punkt, die in diesem Dateisystem nicht unterstützt wird.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="264"/>
         <source>File names containing the character &apos;%1&apos; are not supported on this file system.</source>
-        <translation>Dateinamen beinhalten das Zeichen &apos;%1&apos; diese werden in diesem Dateisystem nicht unterstützt.</translation>
+        <translation>Dateinamen beinhalten das Zeichen &apos;%1&apos; und diese werden in diesem Dateisystems nicht unterstützt.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="267"/>
@@ -2580,7 +2577,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
     <message>
         <location filename="../src/libsync/discovery.cpp" line="278"/>
         <source>Filename contains trailing spaces.</source>
-        <translation>Der Dateiname endet mit Leerzeichen.</translation>
+        <translation>Dateiname endet mit Leerzeichen.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="281"/>
@@ -2590,7 +2587,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
     <message>
         <location filename="../src/libsync/discovery.cpp" line="284"/>
         <source>File/Folder is ignored because it&apos;s hidden.</source>
-        <translation>Datei wird ignoriert, weil sie versteckt ist.</translation>
+        <translation>Datei/Ordner wird ignoriert, da sie versteck sind.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="288"/>
@@ -2600,12 +2597,12 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
     <message>
         <location filename="../src/libsync/discovery.cpp" line="291"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
-        <translation>Konflikt: Serverversion heruntergeladen, lokale Kopie umbenannt und nicht hochgeladen.</translation>
+        <translation>Konflikt: Version des Servers heruntergeladen, lokale Kopie umbenannt und nicht hochgeladen.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="295"/>
         <source>The filename cannot be encoded on your file system.</source>
-        <translation>Der Dateiname kann auf Ihrem Dateisystem nicht kodiert werden.</translation>
+        <translation>Der Dateiname kann auf deinem Dateisystem nicht kodiert werden.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="298"/>
@@ -2655,12 +2652,12 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1197"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
-        <translation>Nicht erlaubt, da Sie keine Rechte zur Erstellung von Unterordnern haben</translation>
+        <translation>Nicht erlaubt, weil keine Rechte bestehen, diesem Verzeichnis Unterverzeichnisse hinzuzufügen.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1202"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
-        <translation>Nicht erlaubt, da Sie keine Rechte zum Hinzufügen von Dateien in diesen Ordner haben</translation>
+        <translation>Nicht erlaubt, weil die nötigen Rechte fehlen, Dateien zu dem Verzeichnis hinzuzufügen</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1215"/>
@@ -2712,12 +2709,12 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="524"/>
         <source>Free space on disk is less than %1</source>
-        <translation>Der freie Speicher auf der Festplatte ist weniger als %1</translation>
+        <translation>Der freie Speicherplatz beträgt weniger als %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="647"/>
         <source>File was deleted from server</source>
-        <translation>Die Datei wurde vom Server gelöscht</translation>
+        <translation>Datei wurde vom Server gelöscht</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="707"/>
@@ -2772,12 +2769,12 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="161"/>
         <source>could not delete file %1, error: %2</source>
-        <translation>Konnte Datei %1 nicht löschen. Fehler: %2</translation>
+        <translation>Die Datei %1 konnte nicht gelöscht werden, Fehler: %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="176"/>
         <source>Can not create local folder %1 because of a local file name clash with %2</source>
-        <translation>Der lokale Ordner %1 konnte aufgrund eines Namenkonfliktes mit %2 nicht erstellt werden</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="195"/>
@@ -2792,7 +2789,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="182"/>
         <source>could not create folder %1</source>
-        <translation>Ordner %1 konnte nicht angelegt werden </translation>
+        <translation>konnte Verzeichnis %1 nicht anlegen</translation>
     </message>
 </context>
 <context>
@@ -2929,7 +2926,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="240"/>
         <source>File Removed</source>
-        <translation>Datei gelöscht</translation>
+        <translation>Datei entfernt</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="255"/>
@@ -3034,7 +3031,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="268"/>
         <source>The server did not acknowledge the last chunk. (No e-tag was present)</source>
-        <translation>Der Server hat den letzten Block nicht bestätigt. (Der E-Tag war nicht vorhanden)</translation>
+        <translation>Der Server konnte das letzte Stück nicht bestätigen. (Keine  Entitätmarke war vorhanden)</translation>
     </message>
 </context>
 <context>
@@ -3072,7 +3069,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
     <message>
         <location filename="../src/gui/models/protocolitemmodel.cpp" line="138"/>
         <source>Account</source>
-        <translation>Benutzerkonto</translation>
+        <translation>Konto</translation>
     </message>
     <message>
         <location filename="../src/gui/models/protocolitemmodel.cpp" line="140"/>
@@ -3090,7 +3087,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
     <message>
         <location filename="../src/gui/protocolwidget.ui" line="22"/>
         <source>Local sync protocol</source>
-        <translation>Lokales Sychronisationsprotokoll</translation>
+        <translation>Lokales synchronisations Protokoll</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.ui" line="45"/>
@@ -3100,12 +3097,12 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="91"/>
         <source>Account</source>
-        <translation>Benutzerkonto</translation>
+        <translation>Konto</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="105"/>
         <source>Copy to clipboard</source>
-        <translation>In die Zwischenablage kopieren</translation>
+        <translation>In Zwischenablage kopieren</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="115"/>
@@ -3120,7 +3117,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="139"/>
         <source>Retry sync</source>
-        <translation>Synchronisation wiederholen</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -3128,7 +3125,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="20"/>
         <source>Proxy authentication required</source>
-        <translation>Proxy-Authentifzierung erforderlich</translation>
+        <translation>Authentifizierung am Proxy notwendig</translation>
     </message>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="35"/>
@@ -3143,7 +3140,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="26"/>
         <source>The proxy server needs a username and password.</source>
-        <translation>Der Proxyserver benötigt Benutzername und Passwort</translation>
+        <translation>Das Proxy-Server braucht einen Benutzername und ein Password.</translation>
     </message>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="45"/>
@@ -3169,7 +3166,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="73"/>
         <source>Loading ...</source>
-        <translation>Laden…</translation>
+        <translation>Ladevorgang …</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="79"/>
@@ -3237,7 +3234,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="363"/>
         <source>Account</source>
-        <translation>Benutzerkonto</translation>
+        <translation>Konto</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.ui" line="14"/>
@@ -3290,7 +3287,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="108"/>
         <source>The server does not allow sharing</source>
-        <translation>Der Server erlaubt das teilen nicht</translation>
+        <translation>Dieser Server erlaubt das Teilen nicht</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="124"/>
@@ -3318,7 +3315,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="14"/>
         <source>Share NewDocument.odt</source>
-        <translation>Teile NewDocument.odt</translation>
+        <translation>NeuesDokument.odt teilen</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="147"/>
@@ -3363,7 +3360,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="235"/>
         <source>Set &amp;expiration date</source>
-        <translation>Ablaufdatum setzen</translation>
+        <translation>Ablaufdatum s&amp;etzen</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="181"/>
@@ -3378,7 +3375,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="99"/>
         <source>Download / View</source>
-        <translation>Herunterladen/Ansehen</translation>
+        <translation>Herunterladen / Ansehen</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="137"/>
@@ -3394,7 +3391,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
         <location filename="../src/gui/sharelinkwidget.cpp" line="118"/>
         <location filename="../src/gui/sharelinkwidget.cpp" line="353"/>
         <source>P&amp;assword protect</source>
-        <translation>Passwort geschützt</translation>
+        <translation>passwortgeschützt</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="96"/>
@@ -3425,12 +3422,12 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="164"/>
         <source>Copy link to clipboard</source>
-        <translation>Link in Zwischenablage kopieren</translation>
+        <translation>Link in die Zwischenablage kopieren</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="165"/>
         <source>Copy link to clipboard (direct download)</source>
-        <translation>Link in die Zwischenablage kopieren (direkter download)</translation>
+        <translation>Link in die Zwischenablage kopieren (Sofortiges herunterladen)</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="166"/>
@@ -3440,7 +3437,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="167"/>
         <source>Send link by email (direct download)</source>
-        <translation>Link per Email senden (direkter download)</translation>
+        <translation>Link über E-Mail senden (Sofortiges herunterladen)</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="285"/>
@@ -3450,7 +3447,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="579"/>
         <source>I shared %1 with you</source>
-        <translation>Ich habe %1 mit Ihnen geteilt</translation>
+        <translation>Ich habe %1 mit dir geteilt</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="593"/>
@@ -3460,7 +3457,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="594"/>
         <source>&lt;p&gt;Do you really want to delete the public link share &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;Note: This action cannot be undone.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Möchte Sie wirklich den öffentlichen Link &lt;i&gt;%1 &lt;/i&gt;löschen?&lt;p&gt;Hinweis: Dies kann nicht rückgängig gemacht werden.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Möchtest du wirklich den öffentlichen Link &lt;i&gt;%1&lt;/i&gt; löschen?&lt;/p&gt;&lt;p&gt;Hinweis: Dies kann nicht rückgängig gemacht werden.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="601"/>
@@ -3482,7 +3479,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
         <location filename="../src/gui/sharelinkwidget.cpp" line="357"/>
         <location filename="../src/gui/sharelinkwidget.cpp" line="547"/>
         <source>Please Set Password</source>
-        <translation>Bitte wählen Sie ein Passwort:</translation>
+        <translation>Bitte setze ein Passwort</translation>
     </message>
 </context>
 <context>
@@ -3490,17 +3487,17 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
     <message>
         <location filename="../src/gui/shareusergroupwidget.ui" line="14"/>
         <source>Share NewDocument.odt</source>
-        <translation>Teile NewDocument.odt</translation>
+        <translation>NeuesDokument.odt teilen</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.ui" line="22"/>
         <source>Share with users or groups ...</source>
-        <translation>Mit Benutzern oder Gruppen teilen…</translation>
+        <translation>Mit Benutzern oder Gruppen teilen ...</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.ui" line="108"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;You can direct people to this shared file or folder &lt;a href=&quot;private link menu&quot;&gt;&lt;span style=&quot; text-decoration: underline&quot;&gt;by giving them a private link&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sie können Personen direkt zu dieser Freigabe leiten, wenn Sie Ihnen diesen &lt;a href=&quot;private link menu&quot;&gt;&lt;span style=&quot; text-decoration: underline&quot;&gt;privaten Link&lt;/span&gt;&lt;/a&gt;  geben.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Du kannst Leute direkt zu dieser Freigabe leiten, wenn du ihnen einen &lt;a href=&quot;private link menu&quot;&gt;&lt;span style=&quot; text-decoration: underline&quot;&gt;privaten Link&lt;/span&gt;&lt;/a&gt; gibst.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="212"/>
@@ -3515,7 +3512,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="245"/>
         <source>Copy link to clipboard</source>
-        <translation>Link in Zwischenablage kopieren</translation>
+        <translation>Link in die Zwischenablage kopieren</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="247"/>
@@ -3525,12 +3522,12 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="257"/>
         <source>No results for &apos;%1&apos;</source>
-        <translation>Keine Ergebnisse für &apos;%1&apos;</translation>
+        <translation>keine Ergebnisse für &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="345"/>
         <source>I shared something with you</source>
-        <translation>Ich habe etwas mit Ihnen geteilt</translation>
+        <translation>Ich habe etwas mit dir geteilt</translation>
     </message>
 </context>
 <context>
@@ -3592,7 +3589,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
         <location filename="../src/gui/socketapi/socketapi.cpp" line="587"/>
         <source>Share with %1</source>
         <comment>parameter is ownCloud</comment>
-        <translation>Via %1 teilen</translation>
+        <translation>Mit %1 teilen</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="620"/>
@@ -3641,7 +3638,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="917"/>
         <source>I shared something with you</source>
-        <translation>Ich habe etwas mit Ihnen geteilt</translation>
+        <translation>Ich habe etwas mit dir geteilt</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="930"/>
@@ -3653,17 +3650,17 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
         <location filename="../src/gui/socketapi/socketapi.cpp" line="932"/>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="976"/>
         <source>Copy private link to clipboard</source>
-        <translation>Privater Link in die Zwischenablage kopiert</translation>
+        <translation>Privaten Link in die Zwischenablage kopieren</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="933"/>
         <source>Send private link by email...</source>
-        <translation>Sende privaten Link per Email...</translation>
+        <translation>Privaten Link über E-Mail senden...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="958"/>
         <source>Resharing this file is not allowed</source>
-        <translation>Weiter-Teilen dieser Datei ist nicht erlaubt.</translation>
+        <translation>Weiteres Teilen ist nicht erlaubt.</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="958"/>
@@ -3683,7 +3680,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1060"/>
         <source>Open in browser</source>
-        <translation>Im Browser öffnen</translation>
+        <translation>Öffnen im Browser</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1068"/>
@@ -3731,7 +3728,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
     <message>
         <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="65"/>
         <source>Failed to rerieve tags</source>
-        <translation>Fehler bim auslesen von Tags</translation>
+        <translation>Tags konnten nicht abgerufen werden</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="95"/>
@@ -3741,7 +3738,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
     <message>
         <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="98"/>
         <source>Failed to find %1</source>
-        <translation>Konnte %1 nicht finden</translation>
+        <translation>%1 konnte nicht gefunden werden</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="103"/>
@@ -3751,32 +3748,32 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
     <message>
         <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="108"/>
         <source>Failed to create temporary database</source>
-        <translation>Fehler beim Erstellen der temporären Datenbank</translation>
+        <translation>Die temporäre Datenbank konnte nicht erstellt werden</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="137"/>
         <source>Backup of %1 succeeded</source>
-        <translation>Backup von %1 war erfolgreich</translation>
+        <translation>Backup von %1 erfolgreich abgeschlossen</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="140"/>
         <source>Failed to set success tag</source>
-        <translation>Fehler beim Setzen des Success-Tags</translation>
+        <translation>Setzen des Erfolgs-Tags fehlgeschlagen</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="147"/>
         <source>Failed to create backup: %1</source>
-        <translation>Fehler beim Erstellen des Backups: %1</translation>
+        <translation>Backup konnte nicht erstellt werden: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="177"/>
         <source>Failed to file id tags</source>
-        <translation>Fehler beim Setzen des ID-Tags</translation>
+        <translation>ID-Tags konnten nicht abgelegt werden</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="193"/>
         <source>Backup of %1 failed with: %2</source>
-        <translation>Backup von %1 fehlgeschlagen mit: %2</translation>
+        <translation>Backup von %1 fehlgeschlagen mit Fehler: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="209"/>
@@ -3799,7 +3796,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="93"/>
         <source>Subject Alternative Names:</source>
-        <translation>Subject Alternative Names:</translation>
+        <translation>Betreffende alternative Namen (SAN):</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="94"/>
@@ -3824,7 +3821,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="98"/>
         <source>Serial:</source>
-        <translation>Seriennummer:</translation>
+        <translation>Schlüssel:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="101"/>
@@ -3839,7 +3836,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="105"/>
         <source>Issued on:</source>
-        <translation>Ausgestellt am:</translation>
+        <translation>Ausgestellt auf:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="106"/>
@@ -3891,7 +3888,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="206"/>
         <source>No support for SSL session tickets/identifiers</source>
-        <translation>Keine Unterstützung für SSL session tickets</translation>
+        <translation>Keine Unterstützung für sogenannte SSL Session Tickets/Identifiers.</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="216"/>
@@ -3907,7 +3904,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
         <location filename="../src/gui/sslbutton.cpp" line="178"/>
         <source>This connection is NOT secure as it is not encrypted.
 </source>
-        <translation>Diese Verbindung ist NICHT sicher, da diese nicht verschlüsselt ist.
+        <translation>Diese Verbindung ist NICHT sicher, da sie nicht verschlüsselt ist.
 </translation>
     </message>
 </context>
@@ -3921,17 +3918,17 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
     <message>
         <location filename="../src/gui/sslerrordialog.ui" line="32"/>
         <source>Trust this certificate anyway</source>
-        <translation>Diesem Zertifikat trotzdem vertrauen</translation>
+        <translation>Diesem Zertifikat trotzdem vertrauen.</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="69"/>
         <source>Untrusted Certificate</source>
-        <translation>Nicht vertrauenswürdiges Zertifikat</translation>
+        <translation>Unvertrautes Zertifikat</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="136"/>
         <source>Cannot connect securely to &lt;i&gt;%1&lt;/i&gt;:</source>
-        <translation>Kann keine sichere Verbindung zu &lt;i&gt;%1&lt;/i&gt; herstellen:</translation>
+        <translation>Kann nicht verschlüsselt mit &lt;i&gt;%1&lt;/i&gt;: verbinden:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="170"/>
@@ -3943,7 +3940,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
         <location filename="../src/gui/sslerrordialog.cpp" line="181"/>
         <location filename="../src/gui/sslerrordialog.cpp" line="183"/>
         <source>&amp;lt;not specified&amp;gt;</source>
-        <translation>&amp;lt;nicht angegeben&amp;gt;</translation>
+        <translation>&amp;lt;Nicht angegeben&amp;gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="184"/>
@@ -3966,12 +3963,12 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="193"/>
         <source>Fingerprint (MD5): &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation>Fingerabdruck (MD5): &lt;tt&gt;%1&lt;/tt&gt;</translation>
+        <translation>Prüfsumme (MD5): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="194"/>
         <source>Fingerprint (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation>Fingerabdruck (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</translation>
+        <translation>Prüfsumme (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="196"/>
@@ -3994,18 +3991,18 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="188"/>
         <source>%1 (skipped due to earlier error, trying again in %2)</source>
-        <translation>%1 (Übersprungen aufgrund des früheren Fehlers, erneuter Versuch in %2)</translation>
+        <translation>%1(Übersprungen aufgrund des früheren Fehler,s erneuter Versuch in %2)</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="392"/>
         <source>Only %1 are available, need at least %2 to start</source>
         <comment>Placeholders are postfixed with file sizes using Utility::octetsToString()</comment>
-        <translation>Nur %1 sind verfügbar. Zum Beginnen werden mindestens %2 benötigt.</translation>
+        <translation>Nur %1 zur Verfügung stehen, müssen mindestens %2 zu starten</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="420"/>
         <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
-        <translation>Öffnen oder Erstellen der Sync-Datenbank nicht möglich. Bitte sicherstellen, dass Schreibrechte für den zu synchronisierenden Ordner existieren.</translation>
+        <translation>Öffnen oder erstellen der Sync-Datenbank nicht möglich. Bitte sicherstellen, dass Schreibrechte für den zu synchronisierenden Ordner existieren.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1014"/>
@@ -4053,7 +4050,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
     <message>
         <location filename="../src/common/syncjournaldb.cpp" line="931"/>
         <source>Failed to connect database.</source>
-        <translation>Die Verbindung zur Datenbank konnte nicht hergestellt werden.</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -4069,7 +4066,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
     <message>
         <location filename="../src/libsync/theme.cpp" line="460"/>
         <source>&lt;p&gt;Version %1. For more information visit &lt;a href=&quot;%2&quot;&gt;https://%3&lt;/a&gt;&lt;/p&gt;&lt;p&gt;For known issues and help, please visit: &lt;a href=&quot;https://central.owncloud.org/c/desktop-client&quot;&gt;https://central.owncloud.org&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz,  Jan-Christoph Borchardt, Thomas Müller, Dominik Schmidt, Michael Stingl, Hannah von Reth, and others.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;&lt;p&gt;Distributed by %4 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br/&gt;%5 and the %5 logo are registered trademarks of %4 in the United States, other countries, or both.&lt;/p&gt;&lt;p&gt;&lt;small&gt;%6&lt;/small&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Version %1. Weitere Informationen unter &lt;a href=&quot;%2&quot;&gt;https://%3&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Für bekannte Fehler und die Hilfe, besuchen Sie bitte: &lt;a href=&quot;https://central.owncloud.org/c/desktop-client&quot;&gt;https://central.owncloud.org&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;Von Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz, Jan-Christoph Borchardt,  Thomas Müller, Dominik Schmidt, Michael Stingl, Hannah von Reth und anderen.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;&lt;p&gt;Lizenziert unter den Bedingungen der GNU General Public License (GPL) Version 2.0.&lt;br/&gt;%5 und das %5 Logo sind eingetragene Warenzeichen von %4 in den USA, anderen Ländern, oder beidem.&lt;/p&gt;&lt;p&gt;&lt;small&gt;%6&lt;/small&gt;&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Version %1. Für weitere Informationen &lt;a href=&quot;%2&quot;&gt;https://%3&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Für bekannte Probleme und Hilfe: &lt;a href=&quot;https://central.owncloud.org/c/desktop-client&quot;&gt;https://central.owncloud.org&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;Von Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz,  Jan-Christoph Borchardt, Thomas Müller, Dominik Schmidt, Michael Stingl, Hannah von Reth und Weitere.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Urheberrecht ownCloud GmbH&lt;/p&gt;&lt;p&gt;Verteilt von %4 und lizenziert unter der GNU General Public License (GPL) Version 2.0.&lt;br/&gt;%5 und das %5 Logo sind eingetragene Marken von %4 in den Vereinigten Staaten, weiteren Ländern oder beides.&lt;/p&gt;&lt;p&gt;&lt;small&gt;%6&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -4082,7 +4079,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
     <message>
         <location filename="../src/common/checksums.cpp" line="366"/>
         <source>The checksum header contained an unknown checksum type &apos;%1&apos;</source>
-        <translation>Die Prüfsummen-Kopfzeile enthielt den unbekannten Prüfsummentypen &apos;%1&apos;.</translation>
+        <translation>Der Prüfsummenkopf beinhaltet eine unbekannte Prüfsumme vom Typ &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/common/checksums.cpp" line="370"/>
@@ -4095,17 +4092,17 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
     <message>
         <location filename="../src/common/vfs.cpp" line="77"/>
         <source>The Virtual filesystem feature does not support a drive as sync root</source>
-        <translation>Das Feature Virtuelle Dateien unterstützt keine Laufwerke als Synchronisationspunkt</translation>
+        <translation>Das virtuelle Dateisystem Feature unterstützt kein Laufwerk als Synchronisationsordner</translation>
     </message>
     <message>
         <location filename="../src/common/vfs.cpp" line="81"/>
         <source>The Virtual filesystem feature requires a NTFS file system, %1 is using %2</source>
-        <translation>Das Feature Virtuelle Dateien benötigt ein NTFS Dateisystem, %1 benutzt %2</translation>
+        <translation>Das virtuelle Dateisystem Feature benötigt ein NTFS Dateisystem, %1 nutzt %2</translation>
     </message>
     <message>
         <location filename="../src/common/vfs.cpp" line="85"/>
         <source>The Virtual filesystem feature is not supported on network drives</source>
-        <translation>Das Feature Virtuelle Dateien unterstützt keine Netzwerk-Laufwerke</translation>
+        <translation>Die Funktion für das virtuelle Dateisystem wird auf Netzwerklaufwerken nicht unterstützt</translation>
     </message>
 </context>
 <context>
@@ -4121,7 +4118,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="253"/>
         <source>Please sign in</source>
-        <translation>Bitte melden Sie sich an</translation>
+        <translation>Bitte melde Dich an</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="281"/>
@@ -4146,14 +4143,14 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="317"/>
         <source>Open in browser</source>
-        <translation>Im Browser öffnen</translation>
+        <translation>Öffnen im Browser</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="367"/>
         <location filename="../src/gui/owncloudgui.cpp" line="691"/>
         <location filename="../src/gui/owncloudgui.cpp" line="786"/>
         <source>Log in...</source>
-        <translation>Einloggen...</translation>
+        <translation>Anmelden...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="371"/>
@@ -4185,7 +4182,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="183"/>
         <source>The server on account %1 runs an unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
-        <translation>Der Server mit Konto %1 läuft mit einer nicht unterstützten Version %2. Die Verwendung dieses Clienten mit nicht unterstützten Serverversionen ist ungetestet und möglicherweise gefährlich. Fortfahren auf eigenes Risiko.</translation>
+        <translation>Der Server für Konto %1 benutzt eine nicht unterstützte Version %2. Die Client Software kann vielleicht mit nicht unterstützten Versionen funktionieren, doch dies ist nicht getestet. Weiter auf eigenes Risiko.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="769"/>
@@ -4215,12 +4212,12 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="234"/>
         <source>Disconnected from %1</source>
-        <translation>Von %1 getrennt</translation>
+        <translation>Getrennt von %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="182"/>
         <source>Unsupported Server Version</source>
-        <translation>nicht unterstützte Server Version</translation>
+        <translation>Nicht unterstützte Server Version</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="224"/>
@@ -4230,12 +4227,12 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="226"/>
         <source>Disconnected from some accounts</source>
-        <translation>Die Verbindungen zu einigen Konten wurde getrennt</translation>
+        <translation>Verbindungen zu einigen Konnten getrennt</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="237"/>
         <source>Disconnected from accounts:</source>
-        <translation>Verbindungen zu Konten wurde getrennt:</translation>
+        <translation>Verbindungen zu Konnten getrennt:</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="239"/>
@@ -4245,12 +4242,12 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="254"/>
         <source>Signed out</source>
-        <translation>Abgemeldet</translation>
+        <translation>Ausgeloggt</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="258"/>
         <source>Account synchronization is disabled</source>
-        <translation>Account Synchronisation ist deaktiviert</translation>
+        <translation>Synchronisieren der Konten ist deaktiviert</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="259"/>
@@ -4270,42 +4267,42 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="356"/>
         <source>Unpause all folders</source>
-        <translation>Setze alle Ordner fort</translation>
+        <translation>Mit allen Ordnern fortfahren</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="361"/>
         <source>Pause all folders</source>
-        <translation>Stoppe alle Ordner</translation>
+        <translation>Alle Ordner pausieren</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="662"/>
         <source>Unpause all synchronization</source>
-        <translation>Setze gesamte Synchronisation fort</translation>
+        <translation>Alle Synchronisationen fortsetzen</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="664"/>
         <source>Unpause synchronization</source>
-        <translation>Setze Synchronisation fort</translation>
+        <translation>Synchronisation fortsetzen</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="672"/>
         <source>Pause all synchronization</source>
-        <translation>Stoppe gesamte Synchronisation</translation>
+        <translation>Alle Synchronisationen anhalten</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="674"/>
         <source>Pause synchronization</source>
-        <translation>Stoppe Synchronisation</translation>
+        <translation>Synchronisation anhalten</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="681"/>
         <source>Log out of all accounts</source>
-        <translation>Bei allen Konten abmelden</translation>
+        <translation>Auß allen Konten abmelden</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="689"/>
         <source>Log in to all accounts...</source>
-        <translation>Bei allen Konten anmelden...</translation>
+        <translation>In allen Konten anmelden...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="772"/>
@@ -4325,12 +4322,12 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="836"/>
         <source>Checking for changes in remote &apos;%1&apos;</source>
-        <translation>Änderungen der entfernten Ressource &apos;%1&apos; werden geprüft</translation>
+        <translation>Prüfe Änderungen der entfernten &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="839"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
-        <translation>Änderungen der lokalen Ressource &apos;%1&apos; werden geprüft</translation>
+        <translation>Prüfe Änderungen der lokalen &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="854"/>
@@ -4379,7 +4376,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="469"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If this box is checked, existing content in the local folder will be erased to start a clean sync from the server.&lt;/p&gt;&lt;p&gt;Do not check this if the local content should be uploaded to the servers folder.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Wenn diese Option gesetzt ist, werden bestehende Inhalte im lokalen Ordner gelöscht, um eine saubere Synchronisation nur der Serverdaten zu ermöglichen.&lt;/p&gt;&lt;p&gt;Wählen Sie diese Option nicht, wenn die lokale Inhalte auf den Server übertragen werden sollen.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Wenn diese Auswahlbox angeklickt wird, wird vorhandener Inhalt des lokalen Verzeichnisses gelöscht, um eine saubere Synchronisation des Servers zu ermöglichen.&lt;/p&gt;&lt;p&gt;Sie darf nicht angewählt werden, wenn die vorhandenen Dateien in dem Verzeichnis auf den Server hochgeladen werden sollen.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="165"/>
@@ -4411,7 +4408,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="245"/>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="248"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When this option is selected, the wizard will close without synchronizing anything. You can use the &amp;quot;Add Folder Sync Connection&amp;quot; button from the account settings to choose which pair of local and remote folder you wish to synchronize&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Wenn diese Option angewählt ist, wird der Installationsassistent, ohne irgendetwas zu synchronisieren, beendet. Sie können den &amp;quot;Synchronisationsverzeichnis&amp;quot; Button in den Kontoeinstellungen nutzen, um das Ordnerpaar zwischen lokal und entfernt festzulegen, die Sie synchronisieren möchten&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Wenn diese Option angewählt ist, wird der Installationsassistent, ohne irgendetwas zu synchronisieren, beendet. Du kannst den &amp;quot;Synchronisationsverzeichnis&amp;quot; Button in den Kontoeinstellungen nutzen, um das Ordnerpaar zwischen lokal und entfernt festzulegen, die du synchronisieren möchtest&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="251"/>
@@ -4431,7 +4428,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="459"/>
         <source>&amp;Keep local data</source>
-        <translation>&amp;Lokale Daten behalten</translation>
+        <translation>Lokale Daten &amp;behalten</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="472"/>
@@ -4467,12 +4464,12 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="36"/>
         <source>Please switch to your browser to proceed.</source>
-        <translation>Bitte wechseln Sie zum Fortfahren in den Browser.</translation>
+        <translation>Bitte wechsle zum Fortfahren in deinen Browser.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="46"/>
         <source>An error occurred while connecting. Please try again.</source>
-        <translation>Fehler beim Aufbau der Verbindung. Bitte nochmal versuchen.</translation>
+        <translation>Verbindungsproblem. Bitte nochmal versuchen.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="56"/>
@@ -4513,12 +4510,12 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="454"/>
         <source>%n day(s) ago</source>
-        <translation><numerusform>vor %n Tage(n)</numerusform><numerusform>vor %n Tage(n)</numerusform></translation>
+        <translation><numerusform>vor %n Tag(en)</numerusform><numerusform>Vor %n Tage(n)</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="462"/>
         <source>%n hour(s) ago</source>
-        <translation><numerusform>vor %n Stunde(n)</numerusform><numerusform>vor %n Stunde(n)</numerusform></translation>
+        <translation><numerusform>Vor %n Stunde(n)</numerusform><numerusform>Vor %n Stunde(n)</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="467"/>
@@ -4573,7 +4570,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="91"/>
         <source>Success</source>
-        <translation>Erfolg</translation>
+        <translation>Erfolgreich</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="93"/>
@@ -4588,7 +4585,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="97"/>
         <source>Restored</source>
-        <translation>Wiederhergestellt</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="101"/>
@@ -4674,12 +4671,12 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
     <message>
         <location filename="../src/gui/main.cpp" line="39"/>
         <source>System Tray not available</source>
-        <translation>Die Taskleiste ist nicht verfügbar.</translation>
+        <translation>Benachrichtigungsfeld nicht verfügbar</translation>
     </message>
     <message>
         <location filename="../src/gui/main.cpp" line="40"/>
         <source>%1 requires on a working system tray. If you are running XFCE, please follow &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;these instructions&lt;/a&gt;. Otherwise, please install a system tray application such as &apos;trayer&apos; and try again.</source>
-        <translation>%1 benötigt ein funktionierendes Benachrichtigungsfeld. Falls Sie XFCE einsetzen, dann folgen Sie bitte &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;diesen Anweisungen&lt;/a&gt;. Andernfalls installieren Sie bitte ein Benachrichtigungsfeld wie zum Beispiel „Trayer“ und versuchen es nochmal.</translation>
+        <translation>%1 benötigt ein funktionierendes Benachrichtigungsfeld. Wenn Sie XFCE benutzen, folden Sie bitte &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;diesen Anweisungen&lt;/a&gt;. Andernfalls installieren Sie bitte ein Benachrichtigungsfeld wie zum Beispiel „Trayer“ und versuchen es noch einmal.</translation>
     </message>
 </context>
 <context>
@@ -4695,7 +4692,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
     <message>
         <location filename="../src/libsync/theme.cpp" line="427"/>
         <source>%1 (Built against Qt %1)</source>
-        <translation>%1 (Mit Qt %1 gebaut)</translation>
+        <translation>%1 (Gegen Qt %1 kompiliert)</translation>
     </message>
 </context>
 <context>
@@ -4711,7 +4708,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="33"/>
         <source>Virtual file created</source>
-        <translation>Virtuelle Datei erstellt</translation>
+        <translation>Virtuelle Datei wurde erstellt</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="35"/>
@@ -4731,12 +4728,12 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="43"/>
         <source>Server version downloaded, copied changed local file into conflict file</source>
-        <translation>Serverversion heruntergeladen. Die bearbeitete lokale Datei wurde in eine Konfliktdatei kopiert</translation>
+        <translation>Serverversion heruntergeladen. Die bearbeitete lokale Datei wurde in eine Konfliktdatei verschoben.</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="45"/>
         <source>Deleted</source>
-        <translation>Gelöscht</translation>
+        <translation>gelöscht</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="48"/>
@@ -4761,7 +4758,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="56"/>
         <source>Updated local metadata</source>
-        <translation>Lokale Metadaten aktualisiert</translation>
+        <translation>Lokale Metadaten wurden aktualisiert</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="59"/>
@@ -4772,7 +4769,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="72"/>
         <source>downloading</source>
-        <translation>Herunterladen</translation>
+        <translation>Lade herunter</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="74"/>
@@ -4811,7 +4808,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
     <message>
         <location filename="../src/libsync/theme.cpp" line="101"/>
         <source>Status undefined</source>
-        <translation>Status nicht definiert</translation>
+        <translation>Status undefiniert</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="104"/>
@@ -4821,12 +4818,12 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
     <message>
         <location filename="../src/libsync/theme.cpp" line="107"/>
         <source>Sync is running</source>
-        <translation>Synchronisation läuft</translation>
+        <translation>Sync läuft</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="110"/>
         <source>Sync Success</source>
-        <translation>Synchronisation erfolgreich</translation>
+        <translation>Sync erfolgreich</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="113"/>
@@ -4846,17 +4843,17 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
     <message>
         <location filename="../src/libsync/theme.cpp" line="122"/>
         <source>Preparing to sync</source>
-        <translation>Synchronisation wird vorbereitet</translation>
+        <translation>Synchronisation wird vorbereitet </translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="125"/>
         <source>Aborting...</source>
-        <translation>Abbruch …</translation>
+        <translation>Es wird abgebrochen …</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="128"/>
         <source>Sync is paused</source>
-        <translation>Synchronisation wird angehalten</translation>
+        <translation>Synchronisation wurde angehalten</translation>
     </message>
 </context>
 <context>
@@ -4864,12 +4861,12 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
     <message>
         <location filename="../src/gui/guiutility.cpp" line="137"/>
         <source>Could not open browser</source>
-        <translation>Konnte Browser nicht öffnen</translation>
+        <translation>Browser konnte nicht geöffnet werden</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="138"/>
         <source>There was an error when launching the browser to go to URL %1. Maybe no default browser is configured?</source>
-        <translation>Die URL %1 konnte aufgrund eines Fehlers nicht aufgerufen werden. Ist vielleicht kein Standard-Browser konfiguriert?</translation>
+        <translation>Die URL %1 konnte aufgrund eines Fehlers beim Start des Browsers nicht aufgerufen werden. Ist vielleicht kein Standardbrowser konfiguriert?</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="161"/>
@@ -4879,7 +4876,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
     <message>
         <location filename="../src/gui/guiutility.cpp" line="162"/>
         <source>There was an error when launching the email client to create a new message. Maybe no default email client is configured?</source>
-        <translation>Es ist ein Fehler beim Öffnen einer E-Mail Anwendung zum Erstellen einer neuen Nachricht aufgetreten. Vielleicht ist keine E-Mail Anwendung konfiguriert?</translation>
+        <translation>Es ist ein Fehler beim Öffnen der E-Mail Anwendung, zum Erstellen einer neuen Nachricht, aufgetreten. Vielleicht ist keine standardmäßige E-Mail Anwendung konfiguriert?</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="177"/>
