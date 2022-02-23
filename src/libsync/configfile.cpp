@@ -93,7 +93,7 @@ const QString moveToTrashC() { return QStringLiteral("moveToTrash"); }
 }
 
 QString ConfigFile::_confDir = QString();
-const std::chrono::seconds DefaultRemotePollInterval { 30 }; // default remote poll time in seconds
+const std::chrono::seconds DefaultRemotePollInterval { 30 };
 
 static chrono::milliseconds millisecondsValue(const QSettings &setting, const QString &key,
     chrono::milliseconds defaultValue)
