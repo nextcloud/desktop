@@ -1148,122 +1148,122 @@ If this was an accident and you decide to keep your files, they will be re-synce
 <context>
     <name>OCC::FolderMan</name>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="450"/>
+        <location filename="../src/gui/folderman.cpp" line="454"/>
         <source>Could not reset folder state</source>
         <translation>폴더 상태를 초기화할 수 없음</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="451"/>
+        <location filename="../src/gui/folderman.cpp" line="455"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
         <translation>과거의 동기화 저널 &apos;%1&apos;을(를) 찾았으나 삭제할 수 없습니다. 사용 중인 프로그램이 없는지 확인하십시오.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1233"/>
+        <location filename="../src/gui/folderman.cpp" line="1237"/>
         <source> (backup)</source>
         <translation> (백업)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1238"/>
+        <location filename="../src/gui/folderman.cpp" line="1242"/>
         <source> (backup %1)</source>
         <translation> (백업 %1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1340"/>
+        <location filename="../src/gui/folderman.cpp" line="1344"/>
         <source>Undefined State.</source>
         <translation>정의되지 않은 상태입니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1343"/>
+        <location filename="../src/gui/folderman.cpp" line="1347"/>
         <source>Waiting to start syncing.</source>
         <translation>동기화가 시작되기를 기다리는 중입니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1346"/>
+        <location filename="../src/gui/folderman.cpp" line="1350"/>
         <source>Preparing for sync.</source>
         <translation>동기화 준비 중입니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1349"/>
+        <location filename="../src/gui/folderman.cpp" line="1353"/>
         <source>Sync is running.</source>
         <translation>동기화 중입니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1354"/>
+        <location filename="../src/gui/folderman.cpp" line="1358"/>
         <source>Sync was successful, unresolved conflicts.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1356"/>
+        <location filename="../src/gui/folderman.cpp" line="1360"/>
         <source>Last Sync was successful.</source>
         <translation>마지막 동기화가 성공했습니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1362"/>
+        <location filename="../src/gui/folderman.cpp" line="1366"/>
         <source>Setup Error.</source>
         <translation>설치 오류입니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1365"/>
+        <location filename="../src/gui/folderman.cpp" line="1369"/>
         <source>User Abort.</source>
         <translation>사용자가 중단했습니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1368"/>
+        <location filename="../src/gui/folderman.cpp" line="1372"/>
         <source>Sync is paused.</source>
         <translation>동기화가 일시 정지되었습니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1374"/>
+        <location filename="../src/gui/folderman.cpp" line="1378"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1(동기화 중지됨)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1382"/>
+        <location filename="../src/gui/folderman.cpp" line="1386"/>
         <source>No valid folder selected!</source>
         <translation>올바른 폴더를 선택하지 않았습니다!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1390"/>
+        <location filename="../src/gui/folderman.cpp" line="1394"/>
         <source>The folder %1 is used in a folder sync connection!</source>
         <translation>%1 폴더는 폴더 동기화 연결에 이용됩니다!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1397"/>
+        <location filename="../src/gui/folderman.cpp" line="1401"/>
         <source>The selected path does not exist!</source>
         <translation>선택된 경로가 존재하지 않습니다!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1401"/>
+        <location filename="../src/gui/folderman.cpp" line="1405"/>
         <source>The selected path is not a folder!</source>
         <translation>선택한 경로가 폴더가 아닙니다!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1405"/>
+        <location filename="../src/gui/folderman.cpp" line="1409"/>
         <source>You have no permission to write to the selected folder!</source>
         <translation>선택한 폴더에 쓸 수 있는 권한이 없습니다!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1442"/>
+        <location filename="../src/gui/folderman.cpp" line="1446"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
         <translation>이미 서버와 이 로컬 폴더가 동기화되었습니다. 다른 로컬 폴더를 선택하십시오!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1446"/>
+        <location filename="../src/gui/folderman.cpp" line="1450"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
         <translation>로컬 폴더 %1이(가) 폴더 동기화 연결에 사용 중인 폴더를 포함하고 있습니다. 다른 폴더를 선택하십시오!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1452"/>
+        <location filename="../src/gui/folderman.cpp" line="1456"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation>로컬 폴더 %1이(가) 폴더 동기화 연결에 사용 중인 폴더에 포함되어 있습니다. 다른 폴더를 선택하십시오!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1459"/>
+        <location filename="../src/gui/folderman.cpp" line="1463"/>
         <source>%1 Please pick another one!</source>
         <translation>%1 다른 것을 선택하십시오!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1538"/>
+        <location filename="../src/gui/folderman.cpp" line="1542"/>
         <source>Multiple accounts are sharing the folder %1.
 This configuration is know to lead to dataloss and is no longer supported.
 Please consider removing this folder from the account and adding it again.</source>
