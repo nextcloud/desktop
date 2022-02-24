@@ -233,7 +233,7 @@
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="148"/>
         <source>An error occurred while connecting. Please try again.</source>
-        <translation>Beim Herstellen der Verbindung ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.</translation>
+        <translation>Es ist ein Fehler beim Herstellen der Verbindung aufgetreten. Bitte versuchen Sie es erneut.</translation>
     </message>
 </context>
 <context>
@@ -4082,7 +4082,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="296"/>
         <source>An error occurred while loading the list of sub folders.</source>
-        <translation>Ein Fehler ist aufgetreten, während die Liste der Unterordner geladen wurde.</translation>
+        <translation>Es ist ein Fehler während des Ladens der Liste der Unterordner aufgetreten.</translation>
     </message>
 </context>
 <context>
@@ -4870,7 +4870,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="165"/>
         <source>An error occurred while opening a folder</source>
-        <translation>Beim Öffnen eines Ordners ist ein Fehler aufgetreten.</translation>
+        <translation>Es ist ein Fehler beim Öffnen eines Ordners aufgetreten.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="168"/>
@@ -4880,7 +4880,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="173"/>
         <source>An internal error number %1 occurred.</source>
-        <translation>Ein interner Fehler mit der Fehlernummer %1  ist aufgetreten.</translation>
+        <translation>Es ist ein interner Fehler mit der Fehlernummer %1  aufgetreten.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="192"/>
@@ -5883,7 +5883,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="46"/>
         <source>An error occurred while connecting. Please try again.</source>
-        <translation>Ein Fehler trat während der Verbindung auf. Bitte erneut versuchen.</translation>
+        <translation>Es ist ein Fehler während des Verbindungsaufbau aufgetreten. Bitte erneut versuchen.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="56"/>
