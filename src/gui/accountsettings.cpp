@@ -412,12 +412,14 @@ void AccountSettings::slotAddFolder()
     FolderMan *folderMan = FolderMan::instance();
     folderMan->setSyncEnabled(false); // do not start more syncs.
 
-    FolderWizard *folderWizard = new FolderWizard(_accountState->account(), this);
+    FolderWizard *folderWizard = new FolderWizard(_accountState->account(), ocApp()->gui()->settingsDialog());
     folderWizard->setAttribute(Qt::WA_DeleteOnClose);
+    folderWizard->resize(ocApp()->gui()->settingsDialog()->sizeHintForChild());
 
     connect(folderWizard, &QDialog::accepted, this, &AccountSettings::slotFolderWizardAccepted);
     connect(folderWizard, &QDialog::rejected, this, &AccountSettings::slotFolderWizardRejected);
     folderWizard->open();
+    ocApp()->gui()->raiseDialog(folderWizard);
 }
 
 
@@ -428,8 +430,7 @@ void AccountSettings::slotFolderWizardAccepted()
 
     qCInfo(lcAccountSettings) << "Folder wizard completed";
 
-    // TODO: spaces
-    auto definition = FolderDefinition::createNewFolderDefinition(_accountState->account()->davUrl());
+    auto definition = FolderDefinition::createNewFolderDefinition(folderWizard->davUrl());
     definition.setLocalPath(folderWizard->field(QLatin1String("sourceFolder")).toString());
     definition.setTargetPath(folderWizard->property("targetPath").toString());
 

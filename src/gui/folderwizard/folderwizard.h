@@ -146,6 +146,7 @@ class FolderWizard : public QWizard
     Q_OBJECT
 public:
     enum {
+        Page_Space,
         Page_Source,
         Page_Target,
         Page_SelectiveSync
@@ -154,13 +155,19 @@ public:
     explicit FolderWizard(AccountPtr account, QWidget *parent = nullptr, Qt::WindowFlags flags = {});
     ~FolderWizard() override;
 
+    QUrl davUrl() const;
+
+    QString destination() const;
+
     bool eventFilter(QObject *watched, QEvent *event) override;
     void resizeEvent(QResizeEvent *event) override;
 
 private:
-    FolderWizardLocalPath *_folderWizardSourcePage;
-    FolderWizardRemotePath *_folderWizardTargetPage;
-    FolderWizardSelectiveSync *_folderWizardSelectiveSyncPage;
+    AccountPtr _account;
+    class SpacesPage *_spacesPage;
+    FolderWizardLocalPath *_folderWizardSourcePage = nullptr;
+    FolderWizardRemotePath *_folderWizardTargetPage = nullptr;
+    FolderWizardSelectiveSync *_folderWizardSelectiveSyncPage = nullptr;
 };
 
 

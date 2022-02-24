@@ -17,6 +17,8 @@
 #include "ui_folderwizardsourcepage.h"
 #include "ui_folderwizardtargetpage.h"
 
+#include "spacespage.h"
+
 #include "account.h"
 #include "common/asserts.h"
 #include "configfile.h"
@@ -28,6 +30,7 @@
 #include "gui/accountstate.h"
 #include "gui/folderman.h"
 #include "gui/selectivesyncdialog.h"
+#include "gui/spaces/spacesmodel.h"
 
 #include <QCheckBox>
 #include <QDesktopServices>
@@ -81,9 +84,6 @@ FolderWizardLocalPath::FolderWizardLocalPath(const AccountPtr &account, QWidget 
     connect(_ui->localFolderChooseBtn, &QAbstractButton::clicked, this, &FolderWizardLocalPath::slotChooseLocalFolder);
     _ui->localFolderChooseBtn->setToolTip(tr("Click to select a local folder to sync."));
 
-    QString defaultPath = QDir::homePath() + QLatin1Char('/') + Theme::instance()->appName();
-    defaultPath = FolderMan::instance()->findGoodPathForNewSyncFolder(defaultPath);
-    _ui->localFolderLineEdit->setText(QDir::toNativeSeparators(defaultPath));
     _ui->localFolderLineEdit->setToolTip(tr("Enter the path to the local folder."));
 
     _ui->warnLabel->setTextFormat(Qt::RichText);
@@ -98,6 +98,7 @@ FolderWizardLocalPath::~FolderWizardLocalPath()
 void FolderWizardLocalPath::initializePage()
 {
     _ui->warnLabel->hide();
+    _ui->localFolderLineEdit->setText(QDir::toNativeSeparators(static_cast<FolderWizard *>(wizard())->destination()));
 }
 
 void FolderWizardLocalPath::cleanupPage()
@@ -212,7 +213,7 @@ void FolderWizardRemotePath::slotCreateRemoteFolder(const QString &folder)
     fullPath += QLatin1Char('/') + folder;
 
     // TODO: legacy
-    MkColJob *job = new MkColJob(_account, _account->davUrl(), fullPath, {}, this);
+    MkColJob *job = new MkColJob(_account, static_cast<FolderWizard *>(wizard())->davUrl(), fullPath, {}, this);
     /* check the owncloud configuration file and query the ownCloud */
     connect(job, &MkColJob::finishedWithoutError,
         this, &FolderWizardRemotePath::slotCreateRemoteFolderFinished);
@@ -327,7 +328,7 @@ bool FolderWizardRemotePath::selectByPath(QString path)
 
 void FolderWizardRemotePath::slotUpdateDirectories(const QStringList &list)
 {
-    QString webdavFolder = QUrl(_account->davUrl()).path();
+    QString webdavFolder = static_cast<FolderWizard *>(wizard())->davUrl().path();
 
     QTreeWidgetItem *root = _ui->folderTreeWidget->topLevelItem(0);
     if (!root) {
@@ -411,8 +412,7 @@ void FolderWizardRemotePath::slotTypedPathFound(const QStringList &subpaths)
 
 LsColJob *FolderWizardRemotePath::runLsColJob(const QString &path)
 {
-    // TODO: legacy
-    LsColJob *job = new LsColJob(_account, _account->davUrl(), path, this);
+    LsColJob *job = new LsColJob(_account, static_cast<FolderWizard *>(wizard())->davUrl(), path, this);
     job->setProperties(QList<QByteArray>() << "resourcetype");
     connect(job, &LsColJob::directoryListingSubfolders,
         this, &FolderWizardRemotePath::slotUpdateDirectories);
@@ -585,19 +585,28 @@ void FolderWizardSelectiveSync::virtualFilesCheckboxClicked()
 
 FolderWizard::FolderWizard(AccountPtr account, QWidget *parent, Qt::WindowFlags flags)
     : QWizard(parent, flags)
+    , _account(account)
     , _folderWizardSourcePage(new FolderWizardLocalPath(account))
-    , _folderWizardTargetPage(nullptr)
     , _folderWizardSelectiveSyncPage(new FolderWizardSelectiveSync(account))
 {
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
+    if (account->capabilities().spacesSupport().enabled) {
+        _spacesPage = new SpacesPage(account, this);
+        setPage(Page_Space, _spacesPage);
+        _spacesPage->installEventFilter(this);
+    }
     setPage(Page_Source, _folderWizardSourcePage);
     _folderWizardSourcePage->installEventFilter(this);
-    if (!Theme::instance()->singleSyncFolder()) {
+    // for now spaces are meant to be synced as a whole
+    if (!account->capabilities().spacesSupport().enabled && !Theme::instance()->singleSyncFolder()) {
         _folderWizardTargetPage = new FolderWizardRemotePath(account);
         setPage(Page_Target, _folderWizardTargetPage);
         _folderWizardTargetPage->installEventFilter(this);
     }
-    setPage(Page_SelectiveSync, _folderWizardSelectiveSyncPage);
+    if (!account->capabilities().spacesSupport().enabled) {
+        // TODO: add spaces support to selective sync
+        setPage(Page_SelectiveSync, _folderWizardSelectiveSyncPage);
+    }
 
     setWindowTitle(tr("Add Folder Sync Connection"));
     setOptions(QWizard::CancelButtonOnLeft);
@@ -607,6 +616,28 @@ FolderWizard::FolderWizard(AccountPtr account, QWidget *parent, Qt::WindowFlags 
 
 FolderWizard::~FolderWizard()
 {
+}
+
+QUrl FolderWizard::davUrl() const
+{
+    if (_account->capabilities().spacesSupport().enabled) {
+        auto url = _spacesPage->selectedSpace(Spaces::SpacesModel::Columns::WebDavUrl).toUrl();
+        if (!url.path().endsWith(QLatin1Char('/'))) {
+            url.setPath(url.path() + QLatin1Char('/'));
+        }
+        return url;
+    }
+    return _account->davUrl();
+}
+
+QString FolderWizard::destination() const
+{
+    QString defaultPath = QDir::homePath() + QLatin1Char('/') + Theme::instance()->appName();
+    if (_account->capabilities().spacesSupport().enabled) {
+        // TODO: account whide home
+        defaultPath = QDir::homePath() + QLatin1Char('/') + _spacesPage->selectedSpace(Spaces::SpacesModel::Columns::Name).toString();
+    };
+    return FolderMan::instance()->findGoodPathForNewSyncFolder(defaultPath);
 }
 
 bool FolderWizard::eventFilter(QObject *watched, QEvent *event)

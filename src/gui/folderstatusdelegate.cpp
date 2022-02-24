@@ -41,9 +41,9 @@ FolderStatusDelegate::FolderStatusDelegate()
 {
 }
 
-QString FolderStatusDelegate::addFolderText()
+QString FolderStatusDelegate::addFolderText(bool useSpaces)
 {
-    return tr("Add Folder Sync Connection");
+    return !useSpaces ? tr("Add Folder Sync Connection") : tr("Add a space");
 }
 
 // allocate each item size in listview.
@@ -62,7 +62,7 @@ QSize FolderStatusDelegate::sizeHint(const QStyleOptionViewItem &option,
         QFontMetrics fm(qApp->font("QPushButton"));
         QStyleOptionButton opt;
         static_cast<QStyleOption &>(opt) = option;
-        opt.text = addFolderText();
+        opt.text = addFolderText(index.data(FolderStatusDelegate::IsUsingSpaces).toBool());
         return QApplication::style()->sizeFromContents(
                                         QStyle::CT_PushButton, &opt, fm.size(Qt::TextSingleLine, opt.text))
                    .expandedTo(QApplication::globalStrut())
@@ -109,6 +109,8 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 {
     QStyledItemDelegate::paint(painter, option, index);
 
+    const bool useSpaces = index.data(FolderStatusDelegate::IsUsingSpaces).toBool();
+
     auto textAlign = Qt::AlignLeft;
 
     QFont aliasFont = makeAliasFont(option.font);
@@ -131,7 +133,7 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         static_cast<QStyleOption &>(opt) = option;
         opt.state &= ~QStyle::State_Selected;
         opt.state |= QStyle::State_Raised;
-        opt.text = addFolderText();
+        opt.text = addFolderText(useSpaces);
         opt.rect.setWidth(qMin(opt.rect.width(), hint.width()));
         opt.rect.adjust(0, aliasMargin, 0, -aliasMargin);
         opt.rect = QStyle::visualRect(option.direction, option.rect, opt.rect);

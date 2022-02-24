@@ -47,8 +47,8 @@ public:
 
         AddButton, // 1 = enabled; 2 = disabled
         FolderSyncText,
-
-        IsReady // boolean
+        IsReady, // boolean
+        IsUsingSpaces // boolean
     };
     void paint(QPainter *, const QStyleOptionViewItem &, const QModelIndex &) const override;
     QSize sizeHint(const QStyleOptionViewItem &, const QModelIndex &) const override;
@@ -62,7 +62,7 @@ public:
     static int rootFolderHeightWithoutErrors(const QFontMetrics &fm, const QFontMetrics &aliasFm);
 
 private:
-    static QString addFolderText();
+    static QString addFolderText(bool useSapces);
 };
 
 } // namespace OCC

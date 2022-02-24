@@ -75,5 +75,7 @@ void ExpandingHeaderView::resizeColumns(bool reset)
 
 void ExpandingHeaderView::addResetActionToMenu(QMenu *menu)
 {
-    menu->addAction(tr("Reset column sizes"), this, [this] { resizeColumns(true); });
+    menu->addAction(tr("Reset column sizes"), this, [this] {
+        resizeColumns(true);
+    });
 }

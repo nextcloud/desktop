@@ -1,15 +1,8 @@
-add_library(folderwizard OBJECT
-    folderwizard.cpp
-    folderwizardsourcepage.ui
-    folderwizardtargetpage.ui
-
-    spacespage.cpp
-    spacespage.ui
-)
-
-target_link_libraries(folderwizard PUBLIC Qt5::Widgets libsync)
-set_target_properties(folderwizard PROPERTIES AUTOUIC ON AUTORCC ON)
-target_compile_definitions(folderwizard
+add_library(spaces OBJECT
+	spacesmodel.cpp spacesbrowser.cpp spacesbrowser.ui)
+target_link_libraries(spaces PUBLIC Qt5::Widgets libsync)
+set_target_properties(spaces PROPERTIES AUTOUIC ON AUTORCC ON)
+target_compile_definitions(spaces
     PRIVATE QT_NO_CAST_TO_ASCII
             QT_NO_CAST_FROM_ASCII
             QT_NO_URL_CAST_FROM_STRING

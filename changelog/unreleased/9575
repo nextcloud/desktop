@@ -1,0 +1,6 @@
+Enhancement: Support for OCIS Spaces
+
+We added support to sync OCIS Spaces.
+
+https://github.com/owncloud/client/pull/9154
+https://github.com/owncloud/client/pull/9575/
