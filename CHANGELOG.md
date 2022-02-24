@@ -26,6 +26,7 @@ Summary
 * Change - Make sharedialog preview be more resilient: [#8938](https://github.com/owncloud/client/issues/8938)
 * Enhancement - Retry token refresh multiple times before logout: [#9245](https://github.com/owncloud/client/issues/9245)
 * Enhancement - Don't log error when checking removed file for changes: [#9304](https://github.com/owncloud/client/issues/9304)
+* Enhancement - Provide informal German translations: [#9460](https://github.com/owncloud/client/issues/9460)
 
 Details
 -------
@@ -147,6 +148,14 @@ Details
    We removed some misleading error messages from the log.
 
    https://github.com/owncloud/client/issues/9304
+
+* Enhancement - Provide informal German translations: [#9460](https://github.com/owncloud/client/issues/9460)
+
+   The community was maintaining an informal German translation for years but we where only able
+   to provide a single version of German in the client. We now ship both versions, the informal can
+   be selected in the combobox in the advanced settings.
+
+   https://github.com/owncloud/client/issues/9460
 
 Changelog for ownCloud Desktop Client [2.10.0] (2022-01-17)
 =======================================
