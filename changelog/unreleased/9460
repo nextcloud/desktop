@@ -1,0 +1,7 @@
+Enhancement: Provide informal German translations
+
+The community was maintaining an informal German translation for years but we where only able to
+provide a single version of German in the client.
+We now ship both versions, the informal can be selected in the combobox in the advanced settings.
+
+https://github.com/owncloud/client/issues/9460
