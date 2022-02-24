@@ -143,17 +143,6 @@ protected:
         const QNetworkRequest &req = QNetworkRequest(),
         QIODevice *requestBody = nullptr);
 
-    void setReply(QNetworkReply *reply);
-
-    /** Makes this job drive a pre-made QNetworkReply
-     *
-     * This reply cannot have a QIODevice request body because we can't get
-     * at it and thus not resend it in case of redirects.
-     */
-    void adoptRequest(QNetworkReply *reply);
-
-    void setupConnections(QNetworkReply *reply);
-
     /** Can be used by derived classes to set up the network reply.
      *
      * Particularly useful when the request is redirected and reply()
@@ -172,12 +161,6 @@ protected:
 
     QString replyStatusString();
 
-private slots:
-    void slotFinished();
-
-protected:
-    AccountPtr _account;
-
     /*
      * The url query appended to the url.
      * The query will not be set as part of the body.
@@ -186,7 +169,17 @@ protected:
     void setQuery(const QUrlQuery &query);
     QUrlQuery query() const;
 
+    AccountPtr _account;
+
 private:
+    /** Makes this job drive a pre-made QNetworkReply
+     *
+     * This reply cannot have a QIODevice request body because we can't get
+     * at it and thus not resend it in case of redirects.
+     */
+    void adoptRequest(QPointer<QNetworkReply> reply);
+    void slotFinished();
+
     const QUrl _baseUrl;
     const QString _path;
 

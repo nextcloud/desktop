@@ -92,13 +92,6 @@ QUrlQuery AbstractNetworkJob::query() const
     return _query;
 }
 
-void AbstractNetworkJob::setReply(QNetworkReply *reply)
-{
-    QNetworkReply *old = _reply;
-    _reply = reply;
-    delete old;
-}
-
 void AbstractNetworkJob::setTimeout(const std::chrono::seconds sec)
 {
     _timeout = sec;
@@ -113,17 +106,6 @@ QNetworkReply *AbstractNetworkJob::reply() const
 {
     Q_ASSERT(_reply);
     return _reply;
-}
-
-void AbstractNetworkJob::setupConnections(QNetworkReply *reply)
-{
-    connect(reply, &QNetworkReply::finished, this, &AbstractNetworkJob::slotFinished);
-    connect(reply, &QNetworkReply::encrypted, this, &AbstractNetworkJob::networkActivity);
-    connect(reply->manager(), &QNetworkAccessManager::proxyAuthenticationRequired, this, &AbstractNetworkJob::networkActivity);
-    connect(reply, &QNetworkReply::sslErrors, this, &AbstractNetworkJob::networkActivity);
-    connect(reply, &QNetworkReply::metaDataChanged, this, &AbstractNetworkJob::networkActivity);
-    connect(reply, &QNetworkReply::downloadProgress, this, &AbstractNetworkJob::networkActivity);
-    connect(reply, &QNetworkReply::uploadProgress, this, &AbstractNetworkJob::networkActivity);
 }
 
 bool AbstractNetworkJob::isAuthenticationJob() const
@@ -184,12 +166,22 @@ void AbstractNetworkJob::sendRequest(const QByteArray &verb,
     adoptRequest(reply);
 }
 
-void AbstractNetworkJob::adoptRequest(QNetworkReply *reply)
+void AbstractNetworkJob::adoptRequest(QPointer<QNetworkReply> reply)
 {
-    setReply(reply);
-    setupConnections(reply);
-    newReplyHook(reply);
-    _request = reply->request();
+    std::swap(_reply, reply);
+    delete reply;
+
+    _request = _reply->request();
+
+    connect(_reply, &QNetworkReply::finished, this, &AbstractNetworkJob::slotFinished);
+    connect(_reply, &QNetworkReply::encrypted, this, &AbstractNetworkJob::networkActivity);
+    connect(_reply->manager(), &QNetworkAccessManager::proxyAuthenticationRequired, this, &AbstractNetworkJob::networkActivity);
+    connect(_reply, &QNetworkReply::sslErrors, this, &AbstractNetworkJob::networkActivity);
+    connect(_reply, &QNetworkReply::metaDataChanged, this, &AbstractNetworkJob::networkActivity);
+    connect(_reply, &QNetworkReply::downloadProgress, this, &AbstractNetworkJob::networkActivity);
+    connect(_reply, &QNetworkReply::uploadProgress, this, &AbstractNetworkJob::networkActivity);
+
+    newReplyHook(_reply);
 }
 
 void AbstractNetworkJob::slotFinished()
@@ -293,7 +285,8 @@ AbstractNetworkJob::~AbstractNetworkJob()
     if (!_finished && !_aborted && !_timedout) {
         qCCritical(lcNetworkJob) << "Deleting running job" << this << parent();
     }
-    setReply(nullptr);
+    delete _reply;
+    _reply = nullptr;
 }
 
 void AbstractNetworkJob::start()

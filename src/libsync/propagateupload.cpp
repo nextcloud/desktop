@@ -74,8 +74,6 @@ PUTFileJob::PUTFileJob(AccountPtr account, const QUrl &url, const QString &path,
 
 PUTFileJob::~PUTFileJob()
 {
-    // Make sure that we destroy the QNetworkReply before our _device of which it keeps an internal pointer.
-    setReply(nullptr);
 }
 
 void PUTFileJob::start()
