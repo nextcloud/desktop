@@ -575,7 +575,7 @@ def uploadGuiTestLogs():
                 "from_secret": "cache_public_s3_bucket",
             },
             "endpoint": {
-                "from_secret": "cache_s3_endpoint",
+                "from_secret": "cache_public_s3_server",
             },
             "path_style": True,
             "source": "%s/**/*" % GUI_TEST_REPORT_DIR,
@@ -584,10 +584,10 @@ def uploadGuiTestLogs():
         },
         "environment": {
             "AWS_ACCESS_KEY_ID": {
-                "from_secret": "cache_s3_access_key",
+                "from_secret": "cache_public_s3_access_key",
             },
             "AWS_SECRET_ACCESS_KEY": {
-                "from_secret": "cache_s3_secret_key",
+                "from_secret": "cache_public_s3_secret_key",
             },
         },
         "when": {
