@@ -417,15 +417,16 @@ void OwncloudPropagator::adjustDeletedFoldersWithNewChildren(SyncFileItemVector 
 {
     /* 
        process each item that is new and is a directory and make sure every parent in its tree has the instruction CSYNC_INSTRUCTION_NEW
-       instead of CSYNC_INSTRUCTION_REMOVE 
+       instead of CSYNC_INSTRUCTION_REMOVE
+       NOTE: We are iterating backwords to take advantage of optimization later, when searching for the parent of current it
     */
-    for (const auto &item : items) {
-        if (item->_instruction != CSYNC_INSTRUCTION_NEW || item->_direction != SyncFileItem::Up || !item->isDirectory() || item->_file == QStringLiteral("/")) {
+    for (auto it = std::crbegin(items); it != std::crend(items); ++it) {
+        if ((*it)->_instruction != CSYNC_INSTRUCTION_NEW || (*it)->_direction != SyncFileItem::Up || !(*it)->isDirectory() || (*it)->_file == QStringLiteral("/")) {
             continue;
         }
 
         // #1 get root folder name for the current item that we need to reupload
-        const auto folderPathSplit = item->_file.split(QLatin1Char('/'), Qt::SkipEmptyParts);
+        const auto folderPathSplit = (*it)->_file.split(QLatin1Char('/'), Qt::SkipEmptyParts);
         if (folderPathSplit.isEmpty()) {
             continue;
         }
@@ -434,7 +435,7 @@ void OwncloudPropagator::adjustDeletedFoldersWithNewChildren(SyncFileItemVector 
             continue;
         }
         // #2 iterate backwords (for optimization) and find the root folder by name
-        const auto itemRootFolderReverseIt = std::find_if(std::rbegin(items), std::rend(items), [&itemRootFolderName](const auto &currentItem) {
+        const auto itemRootFolderReverseIt = std::find_if(it, std::crend(items), [&itemRootFolderName](const auto &currentItem) {
             return currentItem->_file == itemRootFolderName;
         });
 
@@ -457,9 +458,9 @@ void OwncloudPropagator::adjustDeletedFoldersWithNewChildren(SyncFileItemVector 
             if ((*nextFolderInTreeIt)->isDirectory()
                 && (*nextFolderInTreeIt)->_instruction == CSYNC_INSTRUCTION_REMOVE
                 && (*nextFolderInTreeIt)->_direction == SyncFileItem::Down
-                && item->_file.startsWith(QString((*nextFolderInTreeIt)->_file) + QLatin1Char('/'))) {
+                && (*it)->_file.startsWith(QString((*nextFolderInTreeIt)->_file) + QLatin1Char('/'))) {
 
-                qCWarning(lcPropagator) << "WARNING: New directory to upload " << item->_file
+                qCWarning(lcPropagator) << "WARNING: New directory to upload " << (*it)->_file
                     << "is in the removed directories tree " << (*nextFolderInTreeIt)->_file
                     << " This should not happen! But, we are going to reupload the entire folder structure.";
 
@@ -467,7 +468,7 @@ void OwncloudPropagator::adjustDeletedFoldersWithNewChildren(SyncFileItemVector 
                 (*nextFolderInTreeIt)->_direction = SyncFileItem::Up;
             }
             ++nextFolderInTreeIt;
-        } while (nextFolderInTreeIt != std::end(items) && (*nextFolderInTreeIt)->_file != item->_file);
+        } while (nextFolderInTreeIt != std::end(items) && (*nextFolderInTreeIt)->_file != (*it)->_file);
     }
 }
 
@@ -504,6 +505,12 @@ void OwncloudPropagator::start(SyncFileItemVector &&items)
             return !names.contains(QStringRef { &i->_file });
         }),
             items.end());
+    }
+
+    QStringList files;
+
+    for (const auto &item : items) {
+        files.push_back(item->_file);
     }
 
     // process each item that is new and is a directory and make sure every parent in its tree has the instruction NEW instead of REMOVE
