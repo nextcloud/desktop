@@ -145,7 +145,6 @@ bool AbstractNetworkJob::needsRetry() const
     return false;
 }
 
-
 void AbstractNetworkJob::sendRequest(const QByteArray &verb,
     const QNetworkRequest &req, QIODevice *requestBody)
 {
@@ -161,7 +160,7 @@ void AbstractNetworkJob::sendRequest(const QByteArray &verb,
     }
     auto reply = _account->sendRawRequest(verb, _request.url(), _request, requestBody);
     if (_requestBody) {
-        _requestBody->setParent(reply);
+        _requestBody->setParent(this);
     }
     adoptRequest(reply);
 }
