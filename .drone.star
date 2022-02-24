@@ -605,8 +605,7 @@ def buildGithubComment(suite):
         "name": "build-github-comment",
         "image": "owncloud/ubuntu:20.04",
         "commands": [
-            'echo ":boom: The GUI tests failed.\nGUI Logs: ($CACHE_ENDPOINT/$CACHE_BUCKET/${DRONE_REPO}/${DRONE_BUILD_NUMBER}/guiReportUpload/index.html)\
-            \nServer Logs: (($CACHE_ENDPOINT/$CACHE_BUCKET/${DRONE_REPO}/${DRONE_BUILD_NUMBER}/guiReportUpload/serverlog.log)" >> %s/comments.file' % GUI_TEST_REPORT_DIR,
+            "bash /drone/src/test/gui/drone/comment.sh %s ${DRONE_REPO} ${DRONE_BUILD_NUMBER}" % GUI_TEST_REPORT_DIR,
         ],
         "environment": {
             "TEST_CONTEXT": suite,
@@ -625,10 +624,6 @@ def buildGithubComment(suite):
                 "pull_request",
             ],
         },
-        "volumes": [{
-            "name": "serverlog",
-            "path": "/serverlog.log",
-        }],
     }]
 
 def githubComment(alternateSuiteName):
