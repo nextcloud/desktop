@@ -65,12 +65,12 @@ ProtocolWidget::ProtocolWidget(QWidget *parent)
     header->hideSection(static_cast<int>(ProtocolItemModel::ProtocolItemRole::Status));
     header->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(header, &QHeaderView::customContextMenuRequested, header, [header, this] {
-        auto menu = showFilterMenu(header, _sortModel);
+        auto menu = showFilterMenu(header, _sortModel, static_cast<int>(ProtocolItemModel::ProtocolItemRole::Account), tr("Account"));
         header->addResetActionToMenu(menu);
     });
 
     connect(_ui->_filterButton, &QAbstractButton::clicked, this, [this] {
-        showFilterMenu(_ui->_filterButton, _sortModel);
+        showFilterMenu(_ui->_filterButton, _sortModel, static_cast<int>(ProtocolItemModel::ProtocolItemRole::Account), tr("Account"));
     });
 
     connect(FolderMan::instance(), &FolderMan::folderRemoved, this, [this](Folder *f) {
@@ -85,11 +85,20 @@ ProtocolWidget::~ProtocolWidget()
     delete _ui;
 }
 
-QMenu *ProtocolWidget::showFilterMenu(QWidget *parent, QSortFilterProxyModel *model)
+/**
+ * @brief Show a filter menu for the given model.
+ *
+ * @param parent Parent widget
+ * @param model The model that will do the filtering
+ * @param role the role (column number) to filter on
+ * @param columnName the name column on which the filter is done
+ * @return
+ */
+QMenu *ProtocolWidget::showFilterMenu(QWidget *parent, QSortFilterProxyModel *model, int role, const QString &columnName)
 {
     auto menu = new QMenu(parent);
     menu->setAttribute(Qt::WA_DeleteOnClose);
-    Models::addFilterMenuItems(menu, AccountManager::instance()->accountNames(), model, static_cast<int>(ProtocolItemModel::ProtocolItemRole::Account), tr("Account"), Qt::DisplayRole);
+    Models::addFilterMenuItems(menu, AccountManager::instance()->accountNames(), model, role, columnName, Qt::DisplayRole);
     menu->addSeparator();
     QTimer::singleShot(0, menu, [menu] {
         menu->popup(QCursor::pos());

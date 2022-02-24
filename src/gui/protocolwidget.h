@@ -49,7 +49,7 @@ public:
     ~ProtocolWidget() override;
 
     static void showContextMenu(QWidget *parent, ProtocolItemModel *model, const QModelIndexList &items);
-    static QMenu *showFilterMenu(QWidget *parent, QSortFilterProxyModel *model);
+    static QMenu *showFilterMenu(QWidget *parent, QSortFilterProxyModel *model, int role, const QString &columnName);
 
 public slots:
     void slotItemCompleted(const QString &folder, const SyncFileItemPtr &item);
