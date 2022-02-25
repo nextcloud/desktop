@@ -22,6 +22,7 @@ Summary
 * Bugfix - Fix translated icon names in desktop file with ownBrander themes: [#9390](https://github.com/owncloud/client/pull/9390)
 * Bugfix - Add open local/remote folder options: [#9405](https://github.com/owncloud/client/issues/9405)
 * Bugfix - Ensure proper setup of network jobs on retries: [#9437](https://github.com/owncloud/client/pull/9437)
+* Bugfix - Fix status of files uploaded with TUS: [#9472](https://github.com/owncloud/client/pull/9472)
 * Bugfix - Fix potential download failure for renamed file with Windows VFS: [#18](https://github.com/owncloud/client-desktop-vfs-win/pull/18)
 * Change - Make sharedialog preview be more resilient: [#8938](https://github.com/owncloud/client/issues/8938)
 * Enhancement - Retry token refresh multiple times before logout: [#9245](https://github.com/owncloud/client/issues/9245)
@@ -122,6 +123,12 @@ Details
    On retries network jobs where not properly setup which could lead to undefined behaviour.
 
    https://github.com/owncloud/client/pull/9437
+
+* Bugfix - Fix status of files uploaded with TUS: [#9472](https://github.com/owncloud/client/pull/9472)
+
+   Setting the upload status of files uploaded with TUS failed as we were still using the file.
+
+   https://github.com/owncloud/client/pull/9472
 
 * Bugfix - Fix potential download failure for renamed file with Windows VFS: [#18](https://github.com/owncloud/client-desktop-vfs-win/pull/18)
 
