@@ -33,12 +33,25 @@
 #include <QScopeGuard>
 #include <QTimer>
 
+using namespace std::chrono;
 using namespace std::chrono_literals;
 
 using namespace OCC;
 Q_LOGGING_CATEGORY(lcOauth, "sync.credentials.oauth", QtInfoMsg)
 
 namespace {
+
+auto defaultTimeout()
+{
+    // as the oauth process can be interactive we don't want 5min of inactivity
+    return qMin(30s, OCC::AbstractNetworkJob::httpTimeout);
+}
+
+auto defaultTimeoutMs()
+{
+    return static_cast<int>(duration_cast<milliseconds>(defaultTimeout()).count());
+}
+
 const QString dynamicRegistrationDataC()
 {
     // this is a legacy identifier
@@ -107,6 +120,7 @@ private:
         QNetworkRequest req;
         req.setUrl(_registrationEndpoint);
         req.setAttribute(HttpCredentials::DontAddCredentialsAttribute, true);
+        req.setTransferTimeout(defaultTimeoutMs());
         auto reply = _networkAccessManager->post(req, QJsonDocument(json).toJson());
         connect(reply, &QNetworkReply::finished, this, [reply, this] {
             const auto data = reply->readAll();
@@ -406,6 +420,7 @@ QNetworkReply *OAuth::postTokenRequest(const QList<QPair<QString, QString>> &que
 {
     const QUrl requestTokenUrl = _tokenEndpoint.isEmpty() ? Utility::concatUrlPath(_serverUrl, QStringLiteral("/index.php/apps/oauth2/api/v1/token")) : _tokenEndpoint;
     QNetworkRequest req;
+    req.setTransferTimeout(defaultTimeoutMs());
     const QByteArray basicAuth = QStringLiteral("%1:%2").arg(_clientId, _clientSecret).toUtf8().toBase64();
     req.setRawHeader("Authorization", "Basic " + basicAuth);
     req.setHeader(QNetworkRequest::ContentTypeHeader, QStringLiteral("application/x-www-form-urlencoded; charset=UTF-8"));
@@ -431,17 +446,16 @@ QByteArray OAuth::generateRandomString(size_t size) const
 QUrl OAuth::authorisationLink() const
 {
     Q_ASSERT(_server.isListening());
-    QUrlQuery query;
     const QByteArray code_challenge = QCryptographicHash::hash(_pkceCodeVerifier, QCryptographicHash::Sha256)
                                           .toBase64(QByteArray::Base64UrlEncoding | QByteArray::OmitTrailingEquals);
-    query.setQueryItems({ { QStringLiteral("response_type"), QStringLiteral("code") },
+    QUrlQuery query { { QStringLiteral("response_type"), QStringLiteral("code") },
         { QStringLiteral("client_id"), _clientId },
         { QStringLiteral("redirect_uri"), QStringLiteral("%1:%2").arg(_redirectUrl, QString::number(_server.serverPort())) },
         { QStringLiteral("code_challenge"), QString::fromLatin1(code_challenge) },
         { QStringLiteral("code_challenge_method"), QStringLiteral("S256") },
         { QStringLiteral("scope"), Theme::instance()->openIdConnectScopes() },
         { QStringLiteral("prompt"), Theme::instance()->openIdConnectPrompt() },
-        { QStringLiteral("state"), QString::fromUtf8(_state) } });
+        { QStringLiteral("state"), QString::fromUtf8(_state) } };
 
     if (!_davUser.isEmpty()) {
         const QString davUser = QString::fromUtf8(QUrl::toPercentEncoding(_davUser)); // Issue #7762;
@@ -479,7 +493,7 @@ void OAuth::fetchWellKnown()
         QNetworkRequest req;
         req.setAttribute(HttpCredentials::DontAddCredentialsAttribute, true);
         req.setUrl(Utility::concatUrlPath(_serverUrl, QStringLiteral("/.well-known/openid-configuration")));
-        req.setTransferTimeout(static_cast<int>(AbstractNetworkJob::httpTimeout.count()));
+        req.setTransferTimeout(defaultTimeoutMs());
         auto reply = _networkAccessManager->get(req);
         QObject::connect(reply, &QNetworkReply::finished, this, [reply, this] {
             _wellKnownFinished = true;
@@ -586,7 +600,7 @@ void AccountBasedOAuth::startAuthentication()
 void AccountBasedOAuth::fetchWellKnown()
 {
     auto *checkServerJob = new CheckServerJob(_account->sharedFromThis(), this);
-    checkServerJob->setTimeout(qMin(30s, checkServerJob->timeoutSec()));
+    checkServerJob->setTimeout(defaultTimeout());
 
     connect(checkServerJob, &CheckServerJob::instanceNotFound, this, [this](QNetworkReply *reply) {
         if (_isRefreshingToken) {
@@ -597,7 +611,6 @@ void AccountBasedOAuth::fetchWellKnown()
     });
 
     connect(checkServerJob, &CheckServerJob::instanceFound, this, [this](const QUrl &url, const QJsonObject &info) {
-        qDebug() << url;
         OAuth::fetchWellKnown();
     });
 
