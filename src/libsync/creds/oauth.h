@@ -96,7 +96,7 @@ protected:
     QString _davUser;
     QVariantMap _dynamicRegistrationData;
     QNetworkAccessManager *_networkAccessManager;
-    bool _isRefreshingToken;
+    bool _isRefreshingToken = false;
 
     virtual void fetchWellKnown();
 
