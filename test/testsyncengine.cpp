@@ -152,6 +152,53 @@ private slots:
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
     }
 
+    void testLocalDeleteWithReuploadForNewLocalFiles()
+    {
+        FakeFolder fakeFolder{FileInfo{}};
+
+        // create folders hierarchy with some nested dirs and files
+        fakeFolder.localModifier().mkdir("A");
+        fakeFolder.localModifier().insert("A/existingfile_A.txt", 100);
+        fakeFolder.localModifier().mkdir("A/B");
+        fakeFolder.localModifier().insert("A/B/existingfile_B.data", 100);
+        fakeFolder.localModifier().mkdir("A/B/C");
+        fakeFolder.localModifier().mkdir("A/B/C/c1");
+        fakeFolder.localModifier().mkdir("A/B/C/c1/c2");
+        fakeFolder.localModifier().insert("A/B/C/c1/c2/existingfile_C2.md", 100);
+
+        QVERIFY(fakeFolder.syncOnce());
+
+        // make sure everything is uploaded
+        QVERIFY(fakeFolder.currentRemoteState().find("A/B/C/c1/c2"));
+        QVERIFY(fakeFolder.currentRemoteState().find("A/existingfile_A.txt"));
+        QVERIFY(fakeFolder.currentRemoteState().find("A/B/existingfile_B.data"));
+        QVERIFY(fakeFolder.currentRemoteState().find("A/B/C/c1/c2/existingfile_C2.md"));
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        // remove a folder "A" on the server
+        fakeFolder.remoteModifier().remove("A");
+
+        // put new files and folders into a local folder "A"
+        fakeFolder.localModifier().insert("A/B/C/c1/c2/newfile.txt", 100);
+        fakeFolder.localModifier().insert("A/B/C/c1/c2/Readme.data", 100);
+        fakeFolder.localModifier().mkdir("A/B/C/c1/c2/newfiles");
+        fakeFolder.localModifier().insert("A/B/C/c1/c2/newfiles/newfile.txt", 100);
+        fakeFolder.localModifier().insert("A/B/C/c1/c2/newfiles/Readme.data", 100);
+
+        QVERIFY(fakeFolder.syncOnce());
+        // make sure new files and folders are uploaded (restored)
+        QVERIFY(fakeFolder.currentLocalState().find("A/B/C/c1/c2"));
+        QVERIFY(fakeFolder.currentLocalState().find("A/B/C/c1/c2/Readme.data"));
+        QVERIFY(fakeFolder.currentLocalState().find("A/B/C/c1/c2/newfiles/newfile.txt"));
+        QVERIFY(fakeFolder.currentLocalState().find("A/B/C/c1/c2/newfiles/Readme.data"));
+        // and the old files are removed
+        QVERIFY(!fakeFolder.currentLocalState().find("A/existingfile_A.txt"));
+        QVERIFY(!fakeFolder.currentLocalState().find("A/B/existingfile_B.data"));
+        QVERIFY(!fakeFolder.currentLocalState().find("A/B/C/c1/c2/existingfile_C2.md"));
+
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+    }
+
     void testEmlLocalChecksum() {
         FakeFolder fakeFolder{FileInfo{}};
         fakeFolder.localModifier().insert("a1.eml", 64, 'A');
