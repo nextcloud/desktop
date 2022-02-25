@@ -734,6 +734,9 @@ void SimpleNetworkJob::addNewReplyHook(std::function<void(QNetworkReply *)> &&ho
 
 bool SimpleNetworkJob::finished()
 {
+    if (_device) {
+        _device->close();
+    }
     emit finishedSignal();
     return true;
 }

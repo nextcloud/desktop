@@ -1,0 +1,6 @@
+Bugfix: Fix status of files uploaded with TUS
+
+Setting the upload status of files uploaded with TUS failed as we
+were still using the file.
+
+https://github.com/owncloud/client/pull/9472
