@@ -2391,7 +2391,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/internallinkwidget.ui" line="64"/>
         <source>Internal link</source>
-        <translation type="unfinished"/>
+        <translation>Εσωτερικός σύνδεσμος</translation>
     </message>
     <message>
         <location filename="../src/gui/internallinkwidget.ui" line="83"/>
@@ -3847,27 +3847,27 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Δεν ήταν δυνατή η μετονομασία % 1 σε %2, σφάλμα: %3.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="220"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="231"/>
         <source>Wrong HTTP code returned by server. Expected 201, but received &quot;%1 %2&quot;.</source>
         <translation>Ο διακομιστής επέστρεψε εσφαλμένο κωδικό HTTP. Αναμενόταν 201, αλλά ελήφθη &quot;%1 %2&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="271"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="282"/>
         <source>Error updating metadata: %1</source>
         <translation>Σφάλμα ενημέρωσης μεταδεδομένων: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="274"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="285"/>
         <source>The file %1 is currently in use</source>
         <translation>Το αρχείο %1 χρησιμοποιείται αυτήν τη στιγμή</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="279"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="290"/>
         <source>Error setting pin state</source>
         <translation>Σφάλμα ρύθμισης της κατάστασης pin</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="286"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="297"/>
         <source>Error writing metadata to the database</source>
         <translation>Σφάλμα εγγραφής μεταδεδομένων στην βάση δεδομένων</translation>
     </message>

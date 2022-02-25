@@ -3866,27 +3866,27 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
         <translation>%1 není možné přejmenovat na %2, chyba: %3</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="220"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="231"/>
         <source>Wrong HTTP code returned by server. Expected 201, but received &quot;%1 %2&quot;.</source>
         <translation>Serverem vrácen neplatný HTTP kód. Očekáván 201, ale obdržen „%1 %2“.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="271"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="282"/>
         <source>Error updating metadata: %1</source>
         <translation>Chyba při aktualizování metadat: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="274"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="285"/>
         <source>The file %1 is currently in use</source>
         <translation>Soubor %1 je v tuto chvíli používán jinou aplikací</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="279"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="290"/>
         <source>Error setting pin state</source>
         <translation>Chyba při nastavování stavu pin</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="286"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="297"/>
         <source>Error writing metadata to the database</source>
         <translation>Chyba zápisu metadat do databáze</translation>
     </message>
