@@ -423,14 +423,14 @@ void SettingsDialog::slotAccountDisplayNameChanged()
     }
 }
 
-void SettingsDialog::accountRemoved(AccountState *s)
+void SettingsDialog::accountRemoved(const AccountStatePtr &s)
 {
     for (auto it = _actionGroupWidgets.begin(); it != _actionGroupWidgets.end(); ++it) {
         auto as = qobject_cast<AccountSettings *>(*it);
         if (!as) {
             continue;
         }
-        if (as->accountsState() == s) {
+        if (as->accountsState() == s.data()) {
             _ui->toolBar->removeAction(it.key());
 
             if (_ui->stack->currentWidget() == it.value()) {

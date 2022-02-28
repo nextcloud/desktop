@@ -90,7 +90,7 @@ ActivityWidget::ActivityWidget(QWidget *parent)
     connect(_model, &ActivityListModel::activityJobStatusCode,
         this, &ActivityWidget::slotAccountActivityStatus);
 
-    connect(AccountManager::instance(), &AccountManager::accountRemoved, this, [this](AccountState *ast) {
+    connect(AccountManager::instance(), &AccountManager::accountRemoved, this, [this](const AccountStatePtr &ast) {
         if (_accountsWithoutActivities.remove(ast->account()->displayName())) {
             showLabels();
         }
@@ -139,7 +139,7 @@ void ActivityWidget::slotRefreshNotifications(AccountState *ptr)
     }
 }
 
-void ActivityWidget::slotRemoveAccount(AccountState *ptr)
+void ActivityWidget::slotRemoveAccount(const AccountStatePtr &ptr)
 {
     _model->slotRemoveAccount(ptr);
 }
@@ -556,7 +556,7 @@ void ActivitySettings::slotShowIssuesTab()
     _tab->setCurrentIndex(_syncIssueTabId);
 }
 
-void ActivitySettings::slotRemoveAccount(AccountState *ptr)
+void ActivitySettings::slotRemoveAccount(const AccountStatePtr &ptr)
 {
     _activityWidget->slotRemoveAccount(ptr);
 }

@@ -116,7 +116,7 @@ public slots:
 
 Q_SIGNALS:
     void accountAdded(AccountState *account);
-    void accountRemoved(AccountState *account);
+    void accountRemoved(const AccountStatePtr &s);
 
 private:
     AccountManager() {}

@@ -73,7 +73,7 @@ protected:
 
 private slots:
     void accountAdded(AccountState *);
-    void accountRemoved(AccountState *);
+    void accountRemoved(const AccountStatePtr &);
 
 private:
     void customizeStyle();

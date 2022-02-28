@@ -17,6 +17,7 @@
 
 #include <QtCore>
 
+#include "accountstate.h"
 #include "activitydata.h"
 
 class QJsonDocument;
@@ -24,8 +25,6 @@ class QJsonDocument;
 namespace OCC {
 
 Q_DECLARE_LOGGING_CATEGORY(lcActivity)
-
-class AccountState;
 
 /**
  * @brief The ActivityListModel
@@ -63,7 +62,7 @@ public:
 
 public slots:
     void slotRefreshActivity(AccountState *ast);
-    void slotRemoveAccount(AccountState *ast);
+    void slotRemoveAccount(const AccountStatePtr &ast);
 
 signals:
     void activityJobStatusCode(AccountState *ast, int statusCode);

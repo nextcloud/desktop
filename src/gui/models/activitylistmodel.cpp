@@ -269,9 +269,9 @@ void ActivityListModel::slotRefreshActivity(AccountState *ast)
     startFetchJob(ast);
 }
 
-void ActivityListModel::slotRemoveAccount(AccountState *ast)
+void ActivityListModel::slotRemoveAccount(const AccountStatePtr &ast)
 {
-    if (_activityLists.contains(ast)) {
+    if (_activityLists.contains(ast.data())) {
         const auto accountToRemove = ast->account()->uuid();
 
         QMutableListIterator<Activity> it(_finalList);
@@ -287,8 +287,8 @@ void ActivityListModel::slotRemoveAccount(AccountState *ast)
                 ++i;
             }
         }
-        _activityLists.remove(ast);
-        _currentlyFetching.remove(ast);
+        _activityLists.remove(ast.data());
+        _currentlyFetching.remove(ast.data());
     }
 }
 }

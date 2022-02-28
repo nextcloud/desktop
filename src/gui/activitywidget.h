@@ -73,7 +73,7 @@ public:
 public slots:
     void slotRefreshActivities(AccountState *ptr);
     void slotRefreshNotifications(AccountState *ptr);
-    void slotRemoveAccount(AccountState *ptr);
+    void slotRemoveAccount(const AccountStatePtr &ptr);
     void slotAccountActivityStatus(AccountState *ast, int statusCode);
     void slotRequestCleanupAndBlacklist(const Activity &blacklistActivity);
 
@@ -134,7 +134,7 @@ public:
 
 public slots:
     void slotRefresh(AccountState *ptr);
-    void slotRemoveAccount(AccountState *ptr);
+    void slotRemoveAccount(const AccountStatePtr &ptr);
 
     void setNotificationRefreshInterval(std::chrono::milliseconds interval);
 

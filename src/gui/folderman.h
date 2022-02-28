@@ -302,7 +302,7 @@ private slots:
     void slotStartScheduledFolderSync();
     void slotEtagPollTimerTimeout();
 
-    void slotRemoveFoldersForAccount(AccountState *accountState);
+    void slotRemoveFoldersForAccount(const AccountStatePtr &accountState);
 
     // Wraps the Folder::syncStateChange() signal into the
     // FolderMan::folderSyncStateChange(Folder*) signal.

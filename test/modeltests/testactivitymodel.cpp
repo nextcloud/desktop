@@ -40,7 +40,7 @@ private Q_SLOTS:
             Activity { Activity::ActivityType, 2, acc1, "test", "test", "foo.cpp", QUrl::fromUserInput("https://owncloud.com"), QDateTime::currentDateTime() },
             Activity { Activity::ActivityType, 4, acc2, "test", "test", "foo.cpp", QUrl::fromUserInput("https://owncloud.com"), QDateTime::currentDateTime() },
         });
-        model->slotRemoveAccount(AccountManager::instance()->accounts().first().data());
+        model->slotRemoveAccount(AccountManager::instance()->accounts().first());
     }
 };
 }

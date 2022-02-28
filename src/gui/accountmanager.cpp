@@ -391,7 +391,7 @@ void AccountManager::deleteAccount(AccountState *account)
     auto settings = ConfigFile::settingsWithGroup(QLatin1String(accountsC));
     settings->remove(account->account()->id());
 
-    emit accountRemoved(account);
+    emit accountRemoved(copy);
 }
 
 AccountPtr AccountManager::createAccount()
@@ -407,7 +407,7 @@ void AccountManager::shutdown()
 {
     const auto accounts = std::move(_accounts);
     for (const auto &acc : accounts) {
-        emit accountRemoved(acc.data());
+        emit accountRemoved(acc);
     }
 }
 

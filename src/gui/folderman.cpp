@@ -913,13 +913,13 @@ void FolderMan::slotEtagPollTimerTimeout()
     }
 }
 
-void FolderMan::slotRemoveFoldersForAccount(AccountState *accountState)
+void FolderMan::slotRemoveFoldersForAccount(const AccountStatePtr &accountState)
 {
     QList<Folder *> foldersToRemove;
     // reserve a magic number
     foldersToRemove.reserve(16);
     for (auto *folder : qAsConst(_folderMap)) {
-        if (folder->accountState() == accountState) {
+        if (folder->accountState() == accountState.data()) {
             foldersToRemove.append(folder);
         }
     }

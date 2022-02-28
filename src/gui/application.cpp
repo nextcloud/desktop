@@ -386,16 +386,16 @@ Application::~Application()
     AccountManager::instance()->shutdown();
 }
 
-void Application::slotAccountStateRemoved(AccountState *accountState)
+void Application::slotAccountStateRemoved(const AccountStatePtr &accountState)
 {
     if (_gui) {
-        disconnect(accountState, &AccountState::stateChanged,
+        disconnect(accountState.data(), &AccountState::stateChanged,
             _gui.data(), &ownCloudGui::slotAccountStateChanged);
         disconnect(accountState->account().data(), &Account::serverVersionChanged,
             _gui.data(), &ownCloudGui::slotTrayMessageIfServerUnsupported);
     }
     if (_folderManager) {
-        disconnect(accountState, &AccountState::stateChanged,
+        disconnect(accountState.data(), &AccountState::stateChanged,
             _folderManager.data(), &FolderMan::slotAccountStateChanged);
         disconnect(accountState->account().data(), &Account::serverVersionChanged,
             _folderManager.data(), &FolderMan::slotServerVersionChanged);
