@@ -386,6 +386,68 @@ private slots:
         qDebug() << expectedState;
         QCOMPARE(fakeFolder.currentRemoteState(), expectedState);
     }
+
+    void testInvalidMtimeRecovery()
+    {
+        FakeFolder fakeFolder{FileInfo{}};
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        const QString fooFileRootFolder("foo");
+        const QString barFileRootFolder("bar");
+        const QString blaFileRootFolder("bla");
+        const QString fooFileSubFolder("subfolder/foo");
+        const QString barFileSubFolder("subfolder/bar");
+        const QString blaFileSubFolder("subfolder/bla");
+
+        fakeFolder.remoteModifier().insert(fooFileRootFolder);
+        fakeFolder.remoteModifier().insert(barFileRootFolder);
+        fakeFolder.remoteModifier().insert(blaFileRootFolder);
+        fakeFolder.remoteModifier().mkdir(QStringLiteral("subfolder"));
+        fakeFolder.remoteModifier().insert(fooFileSubFolder);
+        fakeFolder.remoteModifier().insert(barFileSubFolder);
+        fakeFolder.remoteModifier().insert(blaFileSubFolder);
+
+        QVERIFY(fakeFolder.syncOnce());
+
+        fakeFolder.remoteModifier().setModTime(fooFileRootFolder, QDateTime::fromSecsSinceEpoch(0));
+        fakeFolder.remoteModifier().setModTime(barFileRootFolder, QDateTime::fromSecsSinceEpoch(0));
+        fakeFolder.remoteModifier().setModTime(blaFileRootFolder, QDateTime::fromSecsSinceEpoch(0));
+        fakeFolder.remoteModifier().setModTime(fooFileSubFolder, QDateTime::fromSecsSinceEpoch(0));
+        fakeFolder.remoteModifier().setModTime(barFileSubFolder, QDateTime::fromSecsSinceEpoch(0));
+        fakeFolder.remoteModifier().setModTime(blaFileSubFolder, QDateTime::fromSecsSinceEpoch(0));
+        fakeFolder.localModifier().setModTime(fooFileRootFolder, QDateTime::fromSecsSinceEpoch(0));
+        fakeFolder.localModifier().setModTime(barFileRootFolder, QDateTime::fromSecsSinceEpoch(0));
+        fakeFolder.localModifier().setModTime(blaFileRootFolder, QDateTime::fromSecsSinceEpoch(0));
+        fakeFolder.localModifier().setModTime(fooFileSubFolder, QDateTime::fromSecsSinceEpoch(0));
+        fakeFolder.localModifier().setModTime(barFileSubFolder, QDateTime::fromSecsSinceEpoch(0));
+        fakeFolder.localModifier().setModTime(blaFileSubFolder, QDateTime::fromSecsSinceEpoch(0));
+
+        QVERIFY(fakeFolder.syncOnce());
+
+        QVERIFY(fakeFolder.syncOnce());
+
+        auto expectedState = fakeFolder.currentLocalState();
+        QCOMPARE(fakeFolder.currentRemoteState(), expectedState);
+
+        fakeFolder.remoteModifier().setModTime(fooFileRootFolder, QDateTime::fromSecsSinceEpoch(-3600));
+        fakeFolder.remoteModifier().setModTime(barFileRootFolder, QDateTime::fromSecsSinceEpoch(-3600));
+        fakeFolder.remoteModifier().setModTime(blaFileRootFolder, QDateTime::fromSecsSinceEpoch(-3600));
+        fakeFolder.remoteModifier().setModTime(fooFileSubFolder, QDateTime::fromSecsSinceEpoch(-3600));
+        fakeFolder.remoteModifier().setModTime(barFileSubFolder, QDateTime::fromSecsSinceEpoch(-3600));
+        fakeFolder.remoteModifier().setModTime(blaFileSubFolder, QDateTime::fromSecsSinceEpoch(-3600));
+        fakeFolder.localModifier().setModTime(fooFileRootFolder, QDateTime::fromSecsSinceEpoch(-3600));
+        fakeFolder.localModifier().setModTime(barFileRootFolder, QDateTime::fromSecsSinceEpoch(-3600));
+        fakeFolder.localModifier().setModTime(blaFileRootFolder, QDateTime::fromSecsSinceEpoch(-3600));
+        fakeFolder.localModifier().setModTime(fooFileSubFolder, QDateTime::fromSecsSinceEpoch(-3600));
+        fakeFolder.localModifier().setModTime(barFileSubFolder, QDateTime::fromSecsSinceEpoch(-3600));
+        fakeFolder.localModifier().setModTime(blaFileSubFolder, QDateTime::fromSecsSinceEpoch(-3600));
+
+        QVERIFY(!fakeFolder.syncOnce());
+
+        QVERIFY(!fakeFolder.syncOnce());
+
+        expectedState = fakeFolder.currentLocalState();
+        QCOMPARE(fakeFolder.currentRemoteState(), expectedState);
+    }
 };
 
 QTEST_GUILESS_MAIN(TestLocalDiscovery)

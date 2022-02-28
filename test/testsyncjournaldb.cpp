@@ -107,8 +107,6 @@ private slots:
             QVERIFY(storedRecord._remotePerm == record._remotePerm);
             QVERIFY(storedRecord._checksumHeader == record._checksumHeader);
 
-            // qDebug()<< "OOOOO " << storedRecord._modtime.toTime_t() << record._modtime.toTime_t();
-
             // Attention: compare time_t types here, as QDateTime seem to maintain
             // milliseconds internally, which disappear in sqlite. Go for full seconds here.
             QVERIFY(storedRecord._modtime == record._modtime);
