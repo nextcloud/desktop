@@ -564,7 +564,6 @@ void PropagateDownloadFile::startAfterIsEncryptedIsChecked()
         return checksum_header.startsWith("SHA")
             || checksum_header.startsWith("MD5:");
     };
-    Q_ASSERT(_item->_modtime > 0);
     if (_item->_modtime <= 0) {
         qCWarning(lcPropagateDownload()) << "invalid modified time" << _item->_file << _item->_modtime;
     }
