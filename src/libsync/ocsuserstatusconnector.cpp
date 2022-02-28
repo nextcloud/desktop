@@ -110,18 +110,18 @@ quint64 clearAtEndOfToTimestamp(const OCC::ClearAt &clearAt)
     Q_ASSERT(clearAt._type == OCC::ClearAtType::EndOf);
 
     if (clearAt._endof == "day") {
-        return QDate::currentDate().addDays(1).startOfDay().toTime_t();
+        return QDate::currentDate().addDays(1).startOfDay().toSecsSinceEpoch();
     } else if (clearAt._endof == "week") {
         const auto days = Qt::Sunday - QDate::currentDate().dayOfWeek();
-        return QDate::currentDate().addDays(days + 1).startOfDay().toTime_t();
+        return QDate::currentDate().addDays(days + 1).startOfDay().toSecsSinceEpoch();
     }
     qCWarning(lcOcsUserStatusConnector) << "Can not handle clear at endof day type" << clearAt._endof;
-    return QDateTime::currentDateTime().toTime_t();
+    return QDateTime::currentDateTime().toSecsSinceEpoch();
 }
 
 quint64 clearAtPeriodToTimestamp(const OCC::ClearAt &clearAt)
 {
-    return QDateTime::currentDateTime().addSecs(clearAt._period).toTime_t();
+    return QDateTime::currentDateTime().addSecs(clearAt._period).toSecsSinceEpoch();
 }
 
 quint64 clearAtToTimestamp(const OCC::ClearAt &clearAt)
