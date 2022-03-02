@@ -1,0 +1,7 @@
+Bugfix: --version showed incorrect information about VFS support
+
+--version used to always show "Off", even when a VFS plugin was available.
+This has been fixed now.
+
+https://github.com/owncloud/client/issues/9155
+https://github.com/owncloud/client/pull/9457

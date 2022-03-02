@@ -1,0 +1,5 @@
+Bugfix: Fix crash on remove account
+
+We fixed a potential reference to a deleted item, when an account was removed.
+
+https://github.com/owncloud/client/issues/9367
