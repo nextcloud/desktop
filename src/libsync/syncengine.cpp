@@ -353,8 +353,10 @@ void OCC::SyncEngine::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
             if (item->_type == ItemTypeFile) {
                 const auto result = _syncOptions._vfs->convertToPlaceholder(filePath, *item);
                 if (!result) {
+                    item->_status = SyncFileItem::Status::NormalError;
                     item->_instruction = CSYNC_INSTRUCTION_ERROR;
                     item->_errorString = tr("Could not update file: %1").arg(result.error());
+                    emit itemCompleted(item);
                     return;
                 }
             }
@@ -363,8 +365,10 @@ void OCC::SyncEngine::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
             if (item->_type == ItemTypeVirtualFile) {
                 auto r = _syncOptions._vfs->updateMetadata(filePath, item->_modtime, item->_size, item->_fileId);
                 if (!r) {
+                    item->_status = SyncFileItem::Status::NormalError;
                     item->_instruction = CSYNC_INSTRUCTION_ERROR;
                     item->_errorString = tr("Could not update virtual file metadata: %1").arg(r.error());
+                    emit itemCompleted(item);
                     return;
                 }
             }
