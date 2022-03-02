@@ -13,13 +13,16 @@ Summary
 * Bugfix - Fix copy url location for private links: [#9048](https://github.com/owncloud/client/issues/9048)
 * Bugfix - Remove outdated translations: [#9105](https://github.com/owncloud/client/issues/9105)
 * Bugfix - Progress reporting for TUS uploads: [#9121](https://github.com/owncloud/client/issues/9121)
+* Bugfix - --version showed incorrect information about VFS support: [#9155](https://github.com/owncloud/client/issues/9155)
 * Bugfix - Mention source file in activity tab when renaming: [#9238](https://github.com/owncloud/client/issues/9238)
+* Bugfix - Fix crash on remove account: [#9367](https://github.com/owncloud/client/issues/9367)
 * Bugfix - Raise ssl issue dialoig above the wizard: [#9375](https://github.com/owncloud/client/pull/9375)
 * Bugfix - Fallback to ownCloud sidebar icons on Mac if none provided in branding: [#9381](https://github.com/owncloud/client/pull/9381)
 * Bugfix - Immediately retry upload if file changed during sync: [#9382](https://github.com/owncloud/client/issues/9382)
 * Bugfix - Don't reset change time on upload: [#9383](https://github.com/owncloud/client/issues/9383)
 * Bugfix - Fix toggling launch-on-login for macOS: [#9387](https://github.com/owncloud/client/issues/9387)
 * Bugfix - Fix translated icon names in desktop file with ownBrander themes: [#9390](https://github.com/owncloud/client/pull/9390)
+* Bugfix - Fix possible crash: [#9417](https://github.com/owncloud/client/issues/9417)
 * Bugfix - Add open local/remote folder options: [#9405](https://github.com/owncloud/client/issues/9405)
 * Bugfix - Ensure proper setup of network jobs on retries: [#9437](https://github.com/owncloud/client/pull/9437)
 * Bugfix - Fix status of files uploaded with TUS: [#9472](https://github.com/owncloud/client/pull/9472)
@@ -63,10 +66,24 @@ Details
 
    https://github.com/owncloud/client/issues/9121
 
+* Bugfix - --version showed incorrect information about VFS support: [#9155](https://github.com/owncloud/client/issues/9155)
+
+   --version used to always show "Off", even when a VFS plugin was available. This has been fixed
+   now.
+
+   https://github.com/owncloud/client/issues/9155
+   https://github.com/owncloud/client/pull/9457
+
 * Bugfix - Mention source file in activity tab when renaming: [#9238](https://github.com/owncloud/client/issues/9238)
 
    https://github.com/owncloud/client/issues/9238
    https://github.com/owncloud/client/pull/9453
+
+* Bugfix - Fix crash on remove account: [#9367](https://github.com/owncloud/client/issues/9367)
+
+   We fixed a potential reference to a deleted item, when an account was removed.
+
+   https://github.com/owncloud/client/issues/9367
 
 * Bugfix - Raise ssl issue dialoig above the wizard: [#9375](https://github.com/owncloud/client/pull/9375)
 
@@ -109,6 +126,12 @@ Details
    Fixes broken translated icon reference in desktop entries for some branded build themes.
 
    https://github.com/owncloud/client/pull/9390
+
+* Bugfix - Fix possible crash: [#9417](https://github.com/owncloud/client/issues/9417)
+
+   We change the initialisation of a Windows icon to prevent a possible crash.
+
+   https://github.com/owncloud/client/issues/9417
 
 * Bugfix - Add open local/remote folder options: [#9405](https://github.com/owncloud/client/issues/9405)
 
