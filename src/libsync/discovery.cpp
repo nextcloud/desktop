@@ -848,6 +848,12 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         if (_queryLocal != NormalQuery && _queryServer != NormalQuery)
             recurse = false;
 
+        if ((item->_direction == SyncFileItem::Down || item->_instruction == CSYNC_INSTRUCTION_CONFLICT) && (item->_modtime <= 0 || item->_modtime >= 0xFFFFFFFF)) {
+            item->_instruction = CSYNC_INSTRUCTION_ERROR;
+            item->_errorString = tr("Cannot sync due to invalid modification time");
+            item->_status = SyncFileItem::Status::NormalError;
+        }
+
         auto recurseQueryLocal = _queryLocal == ParentNotChanged ? ParentNotChanged : localEntry.isDirectory || item->_instruction == CSYNC_INSTRUCTION_RENAME ? NormalQuery : ParentDontExist;
         processFileFinalize(item, path, recurse, recurseQueryLocal, recurseQueryServer);
     };
@@ -875,14 +881,14 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         }
         path._original = originalPath;
         item->_originalFile = path._original;
-        item->_modtime = base._modtime;
-        item->_inode = base._inode;
+        item->_modtime = base.isValid() ? base._modtime : localEntry.modtime;
+        item->_inode = base.isValid() ? base._inode : localEntry.inode;
         item->_instruction = CSYNC_INSTRUCTION_RENAME;
         item->_direction = direction;
-        item->_fileId = base._fileId;
-        item->_remotePerm = base._remotePerm;
-        item->_etag = base._etag;
-        item->_type = base._type;
+        item->_fileId = base.isValid() ? base._fileId : QByteArray{};
+        item->_remotePerm = base.isValid() ? base._remotePerm : RemotePermissions{};
+        item->_etag = base.isValid() ? base._etag : QByteArray{};
+        item->_type = base.isValid() ? base._type : localEntry.type;
     };
 
     if (!localEntry.isValid()) {
@@ -1002,7 +1008,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             item->_type = localEntry.isDirectory ? ItemTypeDirectory : ItemTypeFile;
             _childModified = true;
         } else if (dbEntry._modtime > 0 && localEntry.modtime <= 0) {
-            item->_instruction = CSYNC_INSTRUCTION_SYNC;
+            item->_instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
             item->_direction = SyncFileItem::Down;
             item->_size = localEntry.size > 0 ? localEntry.size : dbEntry._fileSize;
             item->_modtime = dbEntry._modtime;

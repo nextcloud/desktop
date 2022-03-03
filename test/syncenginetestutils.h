@@ -128,6 +128,8 @@ public:
 
     void setModTime(const QString &relativePath, const QDateTime &modTime) override;
 
+    void setModTimeKeepEtag(const QString &relativePath, const QDateTime &modTime);
+
     FileInfo *find(PathComponents pathComponents, const bool invalidateEtags = false);
 
     FileInfo *createDir(const QString &relativePath);
