@@ -1085,6 +1085,34 @@ private slots:
 
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
     }
+
+    void testFolderWithFilesInError()
+    {
+        FakeFolder fakeFolder{FileInfo{}};
+
+        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *outgoingData) -> QNetworkReply * {
+            Q_UNUSED(outgoingData)
+
+            if (op == QNetworkAccessManager::GetOperation) {
+                const auto fileName = getFilePathFromUrl(request.url());
+                if (fileName == QStringLiteral("aaa/subfolder/foo")) {
+                    return new FakeErrorReply(op, request, &fakeFolder.syncEngine(), 403);
+                }
+            }
+            return nullptr;
+        });
+
+        fakeFolder.remoteModifier().mkdir(QStringLiteral("aaa"));
+        fakeFolder.remoteModifier().mkdir(QStringLiteral("aaa/subfolder"));
+        fakeFolder.remoteModifier().insert(QStringLiteral("aaa/subfolder/bar"));
+
+        QVERIFY(fakeFolder.syncOnce());
+
+        fakeFolder.remoteModifier().insert(QStringLiteral("aaa/subfolder/foo"));
+        QVERIFY(!fakeFolder.syncOnce());
+
+        QVERIFY(!fakeFolder.syncOnce());
+    }
 };
 
 QTEST_GUILESS_MAIN(TestSyncEngine)
