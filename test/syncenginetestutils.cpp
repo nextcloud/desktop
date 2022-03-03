@@ -188,6 +188,13 @@ void FileInfo::setModTime(const QString &relativePath, const QDateTime &modTime)
     file->lastModified = modTime;
 }
 
+void FileInfo::setModTimeKeepEtag(const QString &relativePath, const QDateTime &modTime)
+{
+    FileInfo *file = find(relativePath);
+    Q_ASSERT(file);
+    file->lastModified = modTime;
+}
+
 FileInfo *FileInfo::find(PathComponents pathComponents, const bool invalidateEtags)
 {
     if (pathComponents.isEmpty()) {
