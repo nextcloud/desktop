@@ -341,7 +341,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="315"/>
         <source>Show in Browser</source>
-        <translation type="unfinished"/>
+        <translation>Показать в браузере</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="362"/>
@@ -1994,7 +1994,7 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="217"/>
         <source>Reset Filters</source>
-        <translation type="unfinished"/>
+        <translation>Сбросить фильтры</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="296"/>
@@ -2939,7 +2939,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="255"/>
         <source>Local file changed during sync. It will be resumed.</source>
-        <translation type="unfinished"/>
+        <translation>Локальный файл изменился в процессе синхронизации. Операция будет возобновлена.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="576"/>
