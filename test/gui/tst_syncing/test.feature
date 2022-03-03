@@ -36,7 +36,6 @@ Feature: Syncing files
     Scenario: Syncing a file from the server and creating a conflict
         Given user "Alice" has uploaded file on the server with content "server content" to "/conflict.txt"
         And user "Alice" has set up a client with default settings
-        And the user has waited for file "conflict.txt" to be synced
         And the user has paused the file sync
         And the user has changed the content of local file "conflict.txt" to:
             """
@@ -83,7 +82,6 @@ Feature: Syncing files
             | folder        |
             | simple-folder |
         And the user connects the account
-        And the user waits for the files to sync
         Then the folder "simple-folder" should exist on the file system
         But the folder "large-folder" should not exist on the file system
 
@@ -190,7 +188,7 @@ Feature: Syncing files
             """
             test content
             """
-        And the user waits for folder "parent" to be synced
+        And the user waits for the files to sync
         Then as "Alice" folder "parent/subfolderEmpty1" should exist on the server
         And as "Alice" folder "parent/subfolderEmpty2" should exist on the server
         And as "Alice" folder "parent/subfolderEmpty3" should exist on the server
@@ -224,7 +222,7 @@ Feature: Syncing files
             """
             test content
             """
-        And the user waits for file "Folder1/really long folder name with some spaces and special char such as $%ñ&/test.txt" to be synced
+        And the user waits for the files to sync
         Then as "Alice" folder "Folder1" should exist on the server
         And as "Alice" folder "Folder1/really long folder name with some spaces and special char such as $%ñ&" should exist on the server
         And the file "Folder1/really long folder name with some spaces and special char such as $%ñ&/test.txt" should exist on the file system with the following content
@@ -278,11 +276,11 @@ Feature: Syncing files
 
 
     Scenario: Invalid system names are synced in linux
-        Given user "Alice" has set up a client with default settings
-        And user "Alice" has created folder "CON" on the server
+        Given user "Alice" has created folder "CON" on the server
         And user "Alice" has created folder "test%" on the server
         And user "Alice" has uploaded file on the server with content "server content" to "/PRN"
         And user "Alice" has uploaded file on the server with content "server content" to "/foo%"
+        And user "Alice" has set up a client with default settings
         When the user waits for the files to sync
         Then the folder "CON" should exist on the file system
         And the folder "test%" should exist on the file system
@@ -295,15 +293,15 @@ Feature: Syncing files
 
 
     Scenario: various types of files can be synced from server to client
-        Given user "Alice" has set up a client with default settings
-        And user "Alice" has created folder "simple-folder" on the server
+        Given user "Alice" has created folder "simple-folder" on the server
         And user "Alice" has uploaded file "testavatar.png" to "simple-folder/testavatar.png" on the server
         And user "Alice" has uploaded file "testavatar.jpg" to "simple-folder/testavatar.jpg" on the server
         And user "Alice" has uploaded file "testavatar.jpeg" to "simple-folder/testavatar.jpeg" on the server
         And user "Alice" has uploaded file "testimage.mp3" to "simple-folder/testimage.mp3" on the server
         And user "Alice" has uploaded file "test_video.mp4" to "simple-folder/test_video.mp4" on the server
         And user "Alice" has uploaded file "simple.pdf" to "simple-folder/simple.pdf" on the server
-        When the user waits for folder "simple-folder" to be synced
+        And user "Alice" has set up a client with default settings
+        When the user waits for the files to sync
         Then the folder "simple-folder" should exist on the file system
         And the file "simple-folder/testavatar.png" should exist on the file system
         And the file "simple-folder/testavatar.jpg" should exist on the file system

@@ -36,6 +36,15 @@ socketConnect = None
 
 stateDataFromMiddleware = None
 
+# File syncing in client has the following status
+SYNC_STATUS = {
+    'SYNC': 'STATUS:SYNC',  # sync in process
+    'OK': 'STATUS:OK',  # sync completed
+    'ERROR': 'STATUS:ERROR',  # file sync has error
+    'IGNORE': 'STATUS:IGNORE',  # file is igored
+    'NOP': 'STATUS:NOP',  # file yet to be synced
+}
+
 
 def getTestStateFromMiddleware(context):
     global stateDataFromMiddleware
@@ -134,7 +143,8 @@ def step(context):
     newAccount.selectSyncFolder(context)
 
 
-def isItemSynced(type, itemName):
+# Using socket API to check file sync status
+def hasSyncStatus(type, itemName, status):
     if type != 'FILE' and type != 'FOLDER':
         raise Exception("type must be 'FILE' or 'FOLDER'")
     socketConnect = syncstate.SocketConnect()
@@ -143,31 +153,114 @@ def isItemSynced(type, itemName):
     if not socketConnect.read_socket_data_with_timeout(0.1):
         return False
     for line in socketConnect.get_available_responses():
-        if line.startswith('STATUS:OK') and line.endswith(itemName):
+        if line.startswith(status) and line.endswith(itemName):
             return True
         elif line.endswith(itemName):
             return False
 
 
-def isFolderSynced(folderName):
-    return isItemSynced('FOLDER', folderName)
+def folderHasSyncStatus(folderName, status):
+    return hasSyncStatus('FOLDER', folderName, status)
 
 
-def isFileSynced(fileName):
-    return isItemSynced('FILE', fileName)
+def fileHasSyncStatus(fileName, status):
+    return hasSyncStatus('FILE', fileName, status)
 
 
-def waitForFileToBeSynced(context, filePath):
-    waitFor(
-        lambda: isFileSynced(sanitizePath(filePath)),
-        context.userData['clientSyncTimeout'] * 1000,
+def waitForFileOrFolderToHaveSyncStatus(
+    context, resource, resourceType, status=SYNC_STATUS['OK'], timeout=None
+):
+    if not timeout:
+        timeout = context.userData['maxSyncTimeout'] * 1000
+
+    resource = join(context.userData['currentUserSyncPath'], resource)
+    if resourceType.lower() == "file":
+        result = waitFor(
+            lambda: fileHasSyncStatus(sanitizePath(resource), status),
+            timeout,
+        )
+    elif resourceType.lower() == "folder":
+        result = waitFor(
+            lambda: folderHasSyncStatus(sanitizePath(resource), status),
+            timeout,
+        )
+
+    if not result:
+        if status == SYNC_STATUS['ERROR']:
+            expected = "have sync error"
+        elif status == SYNC_STATUS['IGNORE']:
+            expected = "be sync ignored"
+        else:
+            expected = "be synced"
+        raise Exception(
+            "Expected "
+            + resourceType
+            + " '"
+            + resource
+            + "' to "
+            + expected
+            + ", but not."
+        )
+
+
+def waitForSyncToStart(context, resource, resourceType):
+    resource = join(context.userData['currentUserSyncPath'], resource)
+
+    hasStatusNOP = hasSyncStatus(resourceType.upper(), resource, SYNC_STATUS['NOP'])
+    hasStatusSYNC = hasSyncStatus(resourceType.upper(), resource, SYNC_STATUS['SYNC'])
+
+    if hasStatusSYNC:
+        return
+
+    try:
+        if hasStatusNOP:
+            waitForFileOrFolderToHaveSyncStatus(
+                context, resource, resourceType, SYNC_STATUS['SYNC']
+            )
+        else:
+            waitForFileOrFolderToHaveSyncStatus(
+                context,
+                resource,
+                resourceType,
+                SYNC_STATUS['SYNC'],
+                context.userData['minSyncTimeout'] * 1000,
+            )
+    except:
+        hasStatusNOP = hasSyncStatus(resourceType.upper(), resource, SYNC_STATUS['NOP'])
+        if hasStatusNOP:
+            raise Exception(
+                "Expected "
+                + resourceType
+                + " '"
+                + resource
+                + "' to have sync started but not."
+            )
+
+
+def waitForFileOrFolderToSync(context, resource, resourceType):
+    waitForSyncToStart(context, resource, resourceType)
+    waitForFileOrFolderToHaveSyncStatus(
+        context, resource, resourceType, SYNC_STATUS['OK']
     )
 
 
-def waitForFolderToBeSynced(context, folderPath):
-    waitFor(
-        lambda: isFolderSynced(sanitizePath(folderPath)),
-        context.userData['clientSyncTimeout'] * 1000,
+def waitForRootFolderToSync(context):
+    waitForFileOrFolderToSync(
+        context, context.userData['currentUserSyncPath'], 'folder'
+    )
+
+
+def waitForFileOrFolderToHaveSyncError(context, resource, resourceType):
+    waitForSyncToStart(context, resource, resourceType)
+    waitForFileOrFolderToHaveSyncStatus(
+        context, resource, resourceType, SYNC_STATUS['ERROR']
+    )
+
+
+def waitForFileOrFolderToBeSyncIgnored(context, resource, resourceType):
+    waitForSyncToStart(context, resource, resourceType)
+    waitForFileOrFolderToHaveSyncStatus(
+        context, resource, resourceType, SYNC_STATUS['IGNORE']
     )
 
 
@@ -327,25 +420,27 @@ def collaboratorShouldBeListed(
 
 @When('the user waits for the files to sync')
 def step(context):
-    waitForFolderToBeSynced(context, '/')
-
-
-def waitForResourceToSync(context, resource, resourceType):
-    resource = join(context.userData['currentUserSyncPath'], resource)
-    if resourceType == "file":
-        waitForFileToBeSynced(context, resource)
-    elif resourceType == "folder":
-        waitForFolderToBeSynced(context, resource)
+    waitForRootFolderToSync(context)
 
 
 @When(r'the user waits for (file|folder) "([^"]*)" to be synced', regexp=True)
 def step(context, type, resource):
-    waitForResourceToSync(context, resource, type)
+    waitForFileOrFolderToSync(context, resource, type)
+
+
+@When(r'the user waits for (file|folder) "([^"]*)" to have sync error', regexp=True)
+def step(context, type, resource):
+    waitForFileOrFolderToHaveSyncError(context, resource, type)
+
+
+@When(r'the user waits for (file|folder) "([^"]*)" to be sync ignored', regexp=True)
+def step(context, type, resource):
+    waitForFileOrFolderToBeSyncIgnored(context, resource, type)
 
 
 @Given(r'the user has waited for (file|folder) "([^"]*)" to be synced', regexp=True)
 def step(context, type, resource):
-    waitForResourceToSync(context, resource, type)
+    waitForFileOrFolderToSync(context, resource, type)
 
 
 @Given(
@@ -462,11 +557,11 @@ def step(context, resourceType, resource):
     resourceExists = False
     if resourceType == 'file':
         resourceExists = fileExists(
-            resourcePath, context.userData['clientSyncTimeout'] * 1000
+            resourcePath, context.userData['maxSyncTimeout'] * 1000
         )
     elif resourceType == 'folder':
         resourceExists = folderExists(
-            resourcePath, context.userData['clientSyncTimeout'] * 1000
+            resourcePath, context.userData['maxSyncTimeout'] * 1000
         )
     else:
         raise Exception("Unsupported resource type '" + resourceType + "'")
@@ -498,7 +593,6 @@ def step(context, resourceType, resource):
 
 @Given('the user has paused the file sync')
 def step(context):
-    waitForFolderToBeSynced(context, '/')
     syncWizard = SyncWizard()
     syncWizard.performAction("Pause sync")
 
@@ -602,22 +696,7 @@ def step(context, tabName):
 
 def openSharingDialog(context, resource, itemType='file'):
     resource = getResourcePath(context, resource)
-
-    if itemType == 'folder':
-        waitFor(
-            lambda: isFolderSynced(resource),
-            context.userData['clientSyncTimeout'] * 1000,
-        )
-    elif itemType == 'file':
-        waitFor(
-            lambda: isFileSynced(resource), context.userData['clientSyncTimeout'] * 1000
-        )
-    else:
-        raise Exception("No such item type for resource")
-
-    waitFor(
-        lambda: shareResource(resource), context.userData['clientSyncTimeout'] * 1000
-    )
+    waitFor(lambda: shareResource(resource), context.userData['maxSyncTimeout'] * 1000)
 
 
 @When('the user opens the public links dialog of "|any|" using the client-UI')
@@ -836,10 +915,7 @@ def step(context, username):
 
 @Given('user "|any|" has logged out of the client-UI')
 def step(context, username):
-    waitForFolderToBeSynced(context, '/')
-    # TODO: find some way to dynamically to check if files are synced
-    # It might take some time for all files to sync
-    snooze(5)
+    waitForRootFolderToSync(context)
     accountStatus = AccountStatus(context, getDisplaynameForUser(context, username))
     accountStatus.accountAction("Log out")
     isUserSignedOut(context, username)
@@ -868,7 +944,6 @@ def step(context, username, host):
     displayname = substituteInLineCodes(context, displayname)
     host = substituteInLineCodes(context, host)
 
-    waitForFolderToBeSynced(context, '/')
     accountStatus = AccountStatus(context, displayname, host)
     accountStatus.removeConnection()
 
@@ -959,23 +1034,16 @@ def overwriteFile(resource, content):
 
 
 def tryToOverwriteFile(context, resource, content):
-    waitForFileToBeSynced(context, resource)
-    waitForFolderToBeSynced(context, '/')
-
     try:
         overwriteFile(resource, content)
     except:
         pass
-
-    waitForFileToBeSynced(context, resource)
 
 
 @When('the user overwrites the file "|any|" with content "|any|"')
 def step(context, resource, content):
     print("starting file overwrite")
     resource = join(context.userData['currentUserSyncPath'], resource)
-    waitForFileToBeSynced(context, resource)
-    waitForFolderToBeSynced(context, '/')
 
     # overwriting the file immediately after it has been synced from the server seems to have some problem.
     # The client does not see the change although the changes have already been made thus we are having a race condition
@@ -987,7 +1055,6 @@ def step(context, resource, content):
     overwriteFile(resource, content)
 
     print("file has been overwritten")
-    waitForFileToBeSynced(context, resource)
 
 
 @When('the user tries to overwrite the file "|any|" with content "|any|"')
