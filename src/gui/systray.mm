@@ -17,6 +17,11 @@
 
 namespace OCC {
 
+double statusBarThickness()
+{
+    return [NSStatusBar systemStatusBar].thickness;
+}
+
 bool canOsXSendUserNotification()
 {
     return NSClassFromString(@"NSUserNotificationCenter") != nil;

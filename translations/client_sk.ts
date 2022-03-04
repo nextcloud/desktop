@@ -5178,6 +5178,11 @@ Toto je nový experimentálny režim. Ak sa ho rozhodnete použiť, nahláste v�
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="111"/>
+        <source>Help</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/systray.cpp" line="111"/>
         <source>Exit %1</source>
         <translation>Ukončiť %1</translation>
     </message>

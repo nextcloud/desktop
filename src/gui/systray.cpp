@@ -108,6 +108,7 @@ Systray::Systray()
     auto pauseAction = contextMenu->addAction(tr("Pause sync"), this, &Systray::slotPauseAllFolders);
     auto resumeAction = contextMenu->addAction(tr("Resume sync"), this, &Systray::slotUnpauseAllFolders);
     contextMenu->addAction(tr("Settings"), this, &Systray::openSettings);
+    contextMenu->addAction(tr("Help"), this, &Systray::openHelp);
     contextMenu->addAction(tr("Exit %1").arg(Theme::instance()->appNameGUI()), this, &Systray::shutdown);
     setContextMenu(contextMenu);
 
@@ -308,15 +309,11 @@ void Systray::forceWindowInit(QQuickWindow *window) const
 
 QScreen *Systray::currentScreen() const
 {
-    const auto screens = QGuiApplication::screens();
-    const auto cursorPos = QCursor::pos();
+    const auto screen = QGuiApplication::screenAt(QCursor::pos());
 
-    for (const auto screen : screens) {
-        if (screen->geometry().contains(cursorPos)) {
-            return screen;
-        }
+    if(screen) {
+        return screen;
     }
-
     // Didn't find anything matching the cursor position,
     // falling back to the primary screen
     return QGuiApplication::primaryScreen();
@@ -389,8 +386,9 @@ QRect Systray::taskbarGeometry() const
     return tbRect;
 #elif defined(Q_OS_MACOS)
     // Finder bar is always 22px height on macOS (when treating as effective pixels)
-    auto screenWidth = currentScreenRect().width();
-    return {0, 0, screenWidth, 22};
+    const auto screenWidth = currentScreenRect().width();
+    const auto statusBarHeight = static_cast<int>(OCC::statusBarThickness());
+    return {0, 0, screenWidth, statusBarHeight};
 #else
     if (taskbarOrientation() == TaskBarPosition::Bottom || taskbarOrientation() == TaskBarPosition::Top) {
         auto screenWidth = currentScreenRect().width();

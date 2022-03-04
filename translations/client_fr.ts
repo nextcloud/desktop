@@ -39,7 +39,7 @@
         <location filename="../src/gui/tray/ActivityItemActions.qml" line="77"/>
         <location filename="../src/gui/tray/ActivityItemActions.qml" line="79"/>
         <source>Show more actions</source>
-        <translation type="unfinished"/>
+        <translation>Afficher plus d&apos;actions</translation>
     </message>
 </context>
 <context>
@@ -48,12 +48,12 @@
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="90"/>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="92"/>
         <source>Dismiss</source>
-        <translation type="unfinished"/>
+        <translation>Ignorer</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="121"/>
         <source>Open share dialog</source>
-        <translation type="unfinished"/>
+        <translation>Ouvrir la boîte de dialogue de partage</translation>
     </message>
 </context>
 <context>
@@ -907,7 +907,7 @@ Vous prenez vos propres risques.</translation>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="294"/>
         <source>File Removed (start upload) %1</source>
-        <translation>Fichier supprimé (démarrer le téléversement) %1</translation>
+        <translation>Fichier supprimé (démarrer l&apos;envoi) %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="305"/>
@@ -928,12 +928,12 @@ Vous prenez vos propres risques.</translation>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="420"/>
         <source>Network error: %1</source>
-        <translation type="unfinished"/>
+        <translation>Erreur réseau : %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="420"/>
         <source>Network Error: %1</source>
-        <translation type="unfinished"/>
+        <translation>Erreur réseau : %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="465"/>
@@ -1598,7 +1598,7 @@ S&apos;il s&apos;agissait d&apos;un accident et que vous choisissiez de conserve
     <message>
         <location filename="../src/gui/foldercreationdialog.cpp" line="76"/>
         <source>Could not create a folder! Check your write permissions.</source>
-        <translation>Impossible de créer le dossier! Veuillez vérifier vos permissions d’écriture.</translation>
+        <translation>Impossible de créer le dossier ! Veuillez vérifier vos permissions d’écriture.</translation>
     </message>
 </context>
 <context>
@@ -1855,7 +1855,7 @@ S&apos;il s&apos;agissait d&apos;un accident et que vous choisissiez de conserve
         <location filename="../src/gui/folderstatusmodel.cpp" line="1062"/>
         <source>upload %1/s</source>
         <extracomment>Example text: &quot;upload 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
-        <translation>Téléversement %1/s</translation>
+        <translation>Envoi %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1064"/>
@@ -3539,7 +3539,7 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
     <message>
         <location filename="../src/libsync/discovery.cpp" line="946"/>
         <source>Conflict when uploading some files to a folder. Those, conflicted, are going to get cleared!</source>
-        <translation>Conflit lors du téléversement de certains fichiers dans un dossier. Ceux conflictuels seront effacés!</translation>
+        <translation>Conflit lors de l&apos;envoi de certains fichiers dans un dossier. Ceux conflictuels seront effacés!</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1137"/>
@@ -3907,7 +3907,7 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
         <location filename="../src/libsync/propagateupload.cpp" line="265"/>
         <location filename="../src/libsync/propagateupload.cpp" line="683"/>
         <source>Upload of %1 exceeds the quota for the folder</source>
-        <translation>Le téléversement de %1 amène un dépassement de quota pour le dossier</translation>
+        <translation>L&apos;envoi de %1 amène un dépassement de quota pour le dossier</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="302"/>
@@ -4250,7 +4250,7 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="169"/>
         <source>File Drop (Upload Only)</source>
-        <translation>Dépôt de fichier (téléversement uniquement)</translation>
+        <translation>Dépôt de fichier (envoi uniquement)</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="184"/>
@@ -4384,7 +4384,7 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="411"/>
         <source>Please enter a password for your email share:</source>
-        <translation>Définissez un mot de passe pour le partage par email :</translation>
+        <translation>Définissez un mot de passe pour le partage par e-mail :</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="464"/>
@@ -5084,7 +5084,7 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1080"/>
         <source>There is insufficient space available on the server for some uploads.</source>
-        <translation>Il n&apos;y a pas suffisamment d’espace disponible sur le serveur pour certains téléversements.</translation>
+        <translation>Il n&apos;y a pas suffisamment d’espace disponible sur le serveur pour certains envois.</translation>
     </message>
 </context>
 <context>
@@ -5176,6 +5176,11 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
         <location filename="../src/gui/systray.cpp" line="110"/>
         <source>Settings</source>
         <translation>Paramètres</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/systray.cpp" line="111"/>
+        <source>Help</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="111"/>
@@ -5961,12 +5966,12 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="697"/>
         <source>Mark as read</source>
-        <translation type="unfinished"/>
+        <translation>Marquer comme lu</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="699"/>
         <source>Reply</source>
-        <translation type="unfinished"/>
+        <translation>Répondre</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="482"/>
@@ -6532,7 +6537,7 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="74"/>
         <source>uploading</source>
-        <translation>téléversement</translation>
+        <translation>envoi</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="76"/>

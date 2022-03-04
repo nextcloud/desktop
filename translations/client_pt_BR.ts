@@ -5177,6 +5177,11 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="111"/>
+        <source>Help</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/systray.cpp" line="111"/>
         <source>Exit %1</source>
         <translation>Sair do %1</translation>
     </message>

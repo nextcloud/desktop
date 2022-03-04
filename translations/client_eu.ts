@@ -4,7 +4,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="26"/>
         <source>In %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 -n</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="40"/>
@@ -1144,22 +1144,22 @@ Ekintza honek unean uneko sinkronizazioa bertan behera utziko du.</translation>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="189"/>
         <source>Error while canceling deletion of a file</source>
-        <translation type="unfinished"/>
+        <translation>Errore bat gertatu da fitxategi baten ezabatzea bertan behera uztean</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="189"/>
         <source>Error while canceling delete of a file</source>
-        <translation type="unfinished"/>
+        <translation>Errore bat gertatu da fitxategi baten ezabatzea bertan behera uztean</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="190"/>
         <source>Error while canceling deletion of %1</source>
-        <translation type="unfinished"/>
+        <translation>Errore bat gertatu da %1 ezabatzea bertan behera uztean</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="190"/>
         <source>Error while canceling delete of %1</source>
-        <translation type="unfinished"/>
+        <translation>Errore bat gertatu da %1 ezabatzea bertan behera uztean</translation>
     </message>
 </context>
 <context>
@@ -3100,7 +3100,7 @@ pribilegio gehigarriak eskatzen ahal dizu prozesuan.</translation>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="844"/>
         <source>Impossible to get modification time for file in conflict %1</source>
-        <translation type="unfinished"/>
+        <translation>Ezin izan da lortu %1 gatazkan dagoen fitxategiaren aldatze-denbora</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="844"/>
@@ -5176,6 +5176,11 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
         <location filename="../src/gui/systray.cpp" line="110"/>
         <source>Settings</source>
         <translation>Ezarpenak</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/systray.cpp" line="111"/>
+        <source>Help</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="111"/>
