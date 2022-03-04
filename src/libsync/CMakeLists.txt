@@ -1,4 +1,16 @@
-find_package(LibreGraphAPI REQUIRED)
+# TODO: swith to a v0.12.0 once released
+set(LibreGraphAPIVersion main)
+# TODO: pass version to find_package once LibreGraphAPI provides versioned releases
+find_package(LibreGraphAPI QUIET)
+if (NOT TARGET OpenAPI::LibreGraphAPI)
+    message(WARNING "Failed to find system OpenAPI::LibreGraphAPI: fetching ${LibreGraphAPIVersion}")
+    include(FetchContent)
+    FetchContent_Populate(LibreGraphAPISrc
+                        QUIET
+                        GIT_REPOSITORY https://github.com/owncloud/libre-graph-api-cpp-qt-client.git
+                        GIT_TAG ${LibreGraphAPIVersion})
+    add_subdirectory(${libregraphapisrc_SOURCE_DIR}/client ${libregraphapisrc_BINARY_DIR}/client EXCLUDE_FROM_ALL)
+endif()
 
 set(libsync_SRCS
     account.cpp
