@@ -13,14 +13,17 @@
  */
 
 #include <QMessageBox>
+#include <QSettings>
 #include <QTimer>
 #include <appimage/update.h>
 #include <chrono>
 
 #include "appimageupdater.h"
 #include "common/version.h"
-#include "theme.h"
+#include "libsync/configfile.h"
 #include "settingsdialog.h"
+#include "theme.h"
+#include "updater_private.h"
 
 #include "appimageupdateavailabledialog.h"
 #include "application.h"
@@ -138,6 +141,17 @@ void AppImageUpdater::versionInfoArrived(const UpdateInfo &info)
         return;
     }
 
+    auto settings = ConfigFile::makeQSettings();
+
+    const auto seenVersionString = settings.value(seenVersionC).toString();
+    if (!seenVersionString.isEmpty()) {
+        if (QVersionNumber::fromString(seenVersionString) >= QVersionNumber::fromString(info.version())) {
+            qCInfo(lcUpdater) << "Update" << seenVersionString << "was skipped previously by user";
+            setDownloadState(UpToDate);
+            return;
+        }
+    }
+
     const auto appImageUpdaterShim = AppImageUpdaterShim::makeInstance(info.downloadUrl(), this);
 
     if (appImageUpdaterShim == nullptr) {
@@ -153,10 +167,11 @@ void AppImageUpdater::versionInfoArrived(const UpdateInfo &info)
 
     auto dialog = new Ui::AppImageUpdateAvailableDialog(currentVersion, newVersion, ocApp()->gui()->settingsDialog());
 
-    connect(dialog, &Ui::AppImageUpdateAvailableDialog::skipUpdateButtonClicked, this, [this]() {
-        qCInfo(lcUpdater) << "Update skipped by user";
+    connect(dialog, &Ui::AppImageUpdateAvailableDialog::skipUpdateButtonClicked, this, [newVersion]() {
+        qCInfo(lcUpdater) << "Update" << newVersion << "skipped by user";
 
-        // TODO: remember this setting
+        auto settings = ConfigFile::makeQSettings();
+        settings.setValue(seenVersionC, newVersion.toString());
     });
 
     connect(dialog, &QDialog::accepted, this, [this, appImageUpdaterShim]() {

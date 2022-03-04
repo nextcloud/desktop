@@ -20,6 +20,7 @@
 #include "theme.h"
 
 #include "updater/ocupdater.h"
+#include "updater/updater_private.h"
 
 #include <QObject>
 #include <QtCore>
@@ -32,13 +33,6 @@
 using namespace std::chrono_literals;
 
 namespace OCC {
-
-static const char updateAvailableC[] = "Updater/updateAvailable";
-static const char updateTargetVersionC[] = "Updater/updateTargetVersion";
-static const char updateTargetVersionStringC[] = "Updater/updateTargetVersionString";
-static const char seenVersionC[] = "Updater/seenVersion";
-static const char autoUpdateAttemptedC[] = "Updater/autoUpdateAttempted";
-
 
 UpdaterScheduler::UpdaterScheduler(QObject *parent)
     : QObject(parent)
