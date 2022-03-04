@@ -1582,6 +1582,84 @@ private slots:
 
         QVERIFY(fakeFolder.syncOnce());
     }
+
+    void testInvalidMtimeLocalDiscovery()
+    {
+        constexpr auto INVALID_MTIME1 = 0;
+        constexpr auto INVALID_MTIME2 = 0xFFFFFFFF;
+        constexpr auto CURRENT_MTIME = 1646057277;
+
+        FakeFolder fakeFolder{FileInfo{}};
+        setupVfs(fakeFolder);
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        QSignalSpy statusSpy(&fakeFolder.syncEngine().syncFileStatusTracker(), &SyncFileStatusTracker::fileStatusChanged);
+
+        const QString fooFileRootFolder("foo");
+        const QString barFileRootFolder("bar");
+        const QString fooFileSubFolder("subfolder/foo");
+        const QString barFileSubFolder("subfolder/bar");
+        const QString fooFileAaaSubFolder("aaa/subfolder/foo");
+        const QString barFileAaaSubFolder("aaa/subfolder/bar");
+
+        auto checkStatus = [&]() -> SyncFileStatus::SyncFileStatusTag {
+            auto file = QFileInfo{fakeFolder.syncEngine().localPath(), barFileAaaSubFolder};
+            auto locPath = fakeFolder.syncEngine().localPath();
+            auto itemFound = false;
+            // Start from the end to get the latest status
+            for (int i = statusSpy.size() - 1; i >= 0 && !itemFound; --i) {
+                if (QFileInfo(statusSpy.at(i)[0].toString()) == file) {
+                    itemFound = true;
+                    return statusSpy.at(i)[1].value<SyncFileStatus>().tag();
+                }
+            }
+
+            return {};
+        };
+
+        fakeFolder.localModifier().insert(fooFileRootFolder);
+        fakeFolder.localModifier().insert(barFileRootFolder);
+        fakeFolder.localModifier().mkdir(QStringLiteral("subfolder"));
+        fakeFolder.localModifier().insert(fooFileSubFolder);
+        fakeFolder.localModifier().insert(barFileSubFolder);
+        fakeFolder.localModifier().mkdir(QStringLiteral("aaa"));
+        fakeFolder.localModifier().mkdir(QStringLiteral("aaa/subfolder"));
+        fakeFolder.localModifier().insert(fooFileAaaSubFolder);
+        fakeFolder.localModifier().insert(barFileAaaSubFolder);
+        fakeFolder.localModifier().setModTime(barFileAaaSubFolder, QDateTime::fromSecsSinceEpoch(INVALID_MTIME1));
+
+        fakeFolder.scheduleSync();
+        fakeFolder.execUntilBeforePropagation();
+
+        QCOMPARE(checkStatus(), SyncFileStatus::StatusError);
+
+        fakeFolder.execUntilFinished();
+
+        fakeFolder.localModifier().setModTime(barFileAaaSubFolder, QDateTime::fromSecsSinceEpoch(CURRENT_MTIME));
+
+        QVERIFY(fakeFolder.syncOnce());
+
+        fakeFolder.localModifier().appendByte(barFileAaaSubFolder);
+        fakeFolder.localModifier().setModTime(barFileAaaSubFolder, QDateTime::fromSecsSinceEpoch(INVALID_MTIME1));
+
+        fakeFolder.scheduleSync();
+        fakeFolder.execUntilBeforePropagation();
+
+        QCOMPARE(checkStatus(), SyncFileStatus::StatusError);
+
+        fakeFolder.execUntilFinished();
+
+        fakeFolder.localModifier().setModTime(barFileAaaSubFolder, QDateTime::fromSecsSinceEpoch(CURRENT_MTIME));
+
+        QVERIFY(fakeFolder.syncOnce());
+
+        fakeFolder.localModifier().appendByte(barFileAaaSubFolder);
+        fakeFolder.localModifier().setModTime(barFileAaaSubFolder, QDateTime::fromSecsSinceEpoch(INVALID_MTIME2));
+
+        fakeFolder.scheduleSync();
+        fakeFolder.execUntilBeforePropagation();
+
+        QCOMPARE(checkStatus(), SyncFileStatus::StatusError);
+    }
 };
 
 QTEST_GUILESS_MAIN(TestSyncVirtualFiles)
