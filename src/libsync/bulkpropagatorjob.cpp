@@ -673,7 +673,7 @@ void BulkPropagatorJob::handleFileRestoration(SyncFileItemPtr item,
             || item->_status == SyncFileItem::Conflict) {
             item->_status = SyncFileItem::Restoration;
         } else {
-            item->_errorString += tr("; Restoration Failed: %1").arg(errorString);
+            item->_errorString += tr("Restoration failed: %1").arg(errorString);
         }
     } else {
         if (item->_errorString.isEmpty()) {
