@@ -4,12 +4,12 @@
     <message>
         <location filename="../src/3rdparty/libcrashreporter-qt/src/libcrashreporter-gui/CrashReporter.ui" line="29"/>
         <source>Tomahawk Crash Reporter</source>
-        <translation type="unfinished"/>
+        <translation>Tomahawk репортер за крашове</translation>
     </message>
     <message>
         <location filename="../src/3rdparty/libcrashreporter-qt/src/libcrashreporter-gui/CrashReporter.ui" line="104"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/3rdparty/libcrashreporter-qt/src/libcrashreporter-gui/CrashReporter.ui" line="213"/>
@@ -29,7 +29,7 @@
     <message>
         <location filename="../src/3rdparty/libcrashreporter-qt/src/libcrashreporter-gui/CrashReporter.ui" line="284"/>
         <source>You can disable sending crash reports in the configuration dialog.</source>
-        <translation type="unfinished"/>
+        <translation>Вие можете да спрете изпращането на съобщения за сривове от диалога за конфигурация.</translation>
     </message>
     <message>
         <location filename="../src/3rdparty/libcrashreporter-qt/src/libcrashreporter-gui/CrashReporter.cpp" line="112"/>
@@ -60,7 +60,7 @@
     <message>
         <location filename="../src/3rdparty/libcrashreporter-qt/src/libcrashreporter-gui/CrashReporter.cpp" line="273"/>
         <source>Uploaded %L1 of %L2 KB.</source>
-        <translation type="unfinished"/>
+        <translation>Качени %L1 от %L2 KB.</translation>
     </message>
     <message>
         <location filename="../src/3rdparty/libcrashreporter-qt/src/libcrashreporter-gui/CrashReporter.cpp" line="300"/>
@@ -70,7 +70,7 @@
     <message>
         <location filename="../src/3rdparty/libcrashreporter-qt/src/libcrashreporter-gui/CrashReporter.cpp" line="309"/>
         <source>Failed to send crash info.</source>
-        <translation type="unfinished"/>
+        <translation>Неуспешно изпращане на информация за срива</translation>
     </message>
 </context>
 <context>
@@ -102,7 +102,7 @@
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="175"/>
         <source>Could not remove folder</source>
-        <translation type="unfinished"/>
+        <translation>Папката не може да бъде изтрита</translation>
     </message>
 </context>
 <context>
@@ -563,7 +563,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="78"/>
         <source>Reject</source>
-        <translation type="unfinished"/>
+        <translation>Отхвърлям</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="212"/>
@@ -780,7 +780,7 @@ File synchronization desktop utility.</source>
     <message>
         <location filename="../src/gui/application.cpp" line="586"/>
         <source>For more information, see http://www.owncloud.org</source>
-        <translation type="unfinished"/>
+        <translation>За повече информация, вижте http://www.owncloud.org</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="600"/>
