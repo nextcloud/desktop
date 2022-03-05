@@ -9,7 +9,7 @@ ScrollView {
 
     property bool isFileActivityList: false
 
-    signal showFileActivity(string displayPath, string absolutePath)
+    signal showFileActivity(string objectName, int objectId)
     signal activityItemClicked(int index)
 
     contentWidth: availableWidth
@@ -39,7 +39,7 @@ ScrollView {
             flickable: activityList
             onClicked: {
                 if (model.isCurrentUserFileActivity) {
-                    showFileActivity(model.displayPath, model.absolutePath)
+                    showFileActivity(model.objectName, model.objectId)
                 } else {
                     activityItemClicked(model.index)
                 }

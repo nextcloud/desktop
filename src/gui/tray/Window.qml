@@ -23,13 +23,13 @@ Window {
     flags:      Systray.useNormalWindow ? Qt.Window : Qt.Dialog | Qt.FramelessWindowHint
 
 
-    property var fileActivityDialogAbsolutePath: ""
+    property int fileActivityDialogObjectId: -1
     readonly property int maxMenuHeight: Style.trayWindowHeight - Style.trayWindowHeaderHeight - 2 * Style.trayWindowBorderWidth
 
-    function openFileActivityDialog(displayPath, absolutePath) {
-        fileActivityDialogLoader.displayPath = displayPath
-        fileActivityDialogLoader.absolutePath = absolutePath
-        fileActivityDialogLoader.refresh()
+    function openFileActivityDialog(objectName, objectId) {
+        fileActivityDialogLoader.objectName = objectName;
+        fileActivityDialogLoader.objectId = objectId;
+        fileActivityDialogLoader.refresh();
     }
 
     Component.onCompleted: Systray.forceWindowInit(trayWindow)
@@ -81,8 +81,8 @@ Window {
             Systray.setClosed();
         }
 
-        function onShowFileActivityDialog(displayPath, absolutePath) {
-            openFileActivityDialog(displayPath, absolutePath)
+        function onShowFileActivityDialog(objectName, objectId) {
+            openFileActivityDialog(objectName, objectId)
         }
     }
 
@@ -745,7 +745,7 @@ Window {
             activeFocusOnTab: true
             model: activityModel
             onShowFileActivity: {
-                openFileActivityDialog(displayPath, absolutePath)
+                openFileActivityDialog(objectName, objectId)
             }
             onActivityItemClicked: {
                 model.slotTriggerDefaultAction(index)
@@ -755,18 +755,18 @@ Window {
         Loader {
             id: fileActivityDialogLoader
 
-            property string displayPath: ""
-            property string absolutePath: ""
+            property string objectName: ""
+            property int objectId: -1
 
             function refresh() {
                 active = true
-                item.model.load(activityModel.accountState, absolutePath)
+                item.model.load(activityModel.accountState, objectId)
                 item.show()
             }
 
             active: false
             sourceComponent: FileActivityDialog {
-                title: qsTr("%1 - File activity").arg(fileActivityDialogLoader.displayPath)
+                title: qsTr("%1 - File activity").arg(fileActivityDialogLoader.objectName)
                 onClosing: fileActivityDialogLoader.active = false
             }
 

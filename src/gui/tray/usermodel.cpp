@@ -505,6 +505,8 @@ void User::processCompletedSyncItem(const Folder *folder, const SyncFileItemPtr 
     activity._file = item->_file;
     activity._folder = folder->alias();
     activity._fileAction = "";
+    activity._objectId = item->_fileId.toInt();
+    activity._objectName = item->_file;
 
     const auto fileName = QFileInfo(item->_originalFile).fileName();
 
