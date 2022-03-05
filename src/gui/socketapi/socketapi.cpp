@@ -497,7 +497,7 @@ void SocketApi::broadcastMessage(const QString &msg, bool doWait)
 void SocketApi::processFileActivityRequest(const QString &localFile)
 {
     const auto fileData = FileData::get(localFile);
-    emit fileActivityCommandReceived(fileData.serverRelativePath, fileData.localPath);
+    emit fileActivityCommandReceived(fileData.serverRelativePath, fileData.journalRecord().numericFileId().toInt());
 }
 
 void SocketApi::processShareRequest(const QString &localFile, SocketListener *listener, ShareDialogStartPage startPage)

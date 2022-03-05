@@ -80,7 +80,9 @@ public:
     Type _type;
     qlonglong _id;
     QString _fileAction;
+    int _objectId;
     QString _objectType;
+    QString _objectName;
     QString _subject;
     QString _subjectRich;
     QHash<QString, RichSubjectParameter> _subjectRichParameters;

@@ -27,12 +27,12 @@ public:
     explicit FileActivityListModel(QObject *parent = nullptr);
 
 public slots:
-    void load(AccountState *accountState, const QString &fileId);
+    void load(AccountState *accountState, const int objectId);
 
 protected:
     void startFetchJob() override;
 
 private:
-    QString _fileId;
+    int _objectId;
 };
 }

@@ -596,12 +596,14 @@ private slots:
             const auto type = index.data(OCC::ActivityListModel::ActionRole).toInt();
             QVERIFY(type >= OCC::Activity::ActivityType);
 
-            QVERIFY(!index.data(OCC::ActivityListModel::ObjectTypeRole).toInt());
             QVERIFY(!index.data(OCC::ActivityListModel::AccountRole).toString().isEmpty());
             QVERIFY(!index.data(OCC::ActivityListModel::ActionTextColorRole).toString().isEmpty());
             QVERIFY(!index.data(OCC::ActivityListModel::ActionIconRole).toString().isEmpty());
             QVERIFY(!index.data(OCC::ActivityListModel::PointInTimeRole).toString().isEmpty());
 
+            QVERIFY(index.data(OCC::ActivityListModel::ObjectTypeRole).canConvert<int>());
+            QVERIFY(index.data(OCC::ActivityListModel::ObjectNameRole).canConvert<QString>());
+            QVERIFY(index.data(OCC::ActivityListModel::ObjectIdRole).canConvert<int>());
             QVERIFY(index.data(OCC::ActivityListModel::ActionsLinksRole).canConvert<QList<QVariant>>());
             QVERIFY(index.data(OCC::ActivityListModel::ActionTextRole).canConvert<QString>());
             QVERIFY(index.data(OCC::ActivityListModel::MessageRole).canConvert<QString>());
