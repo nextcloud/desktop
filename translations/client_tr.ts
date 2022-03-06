@@ -955,7 +955,7 @@ Bu işlem şu anda yürütülmekte olan eşitleme işlemlerini durdurur.</transl
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="676"/>
         <source>Restoration failed: %1</source>
-        <translation type="unfinished"/>
+        <translation>Geri yüklenemedi: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="676"/>
@@ -5185,7 +5185,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
     <message>
         <location filename="../src/gui/systray.cpp" line="111"/>
         <source>Help</source>
-        <translation type="unfinished"/>
+        <translation>Yardım</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="111"/>
