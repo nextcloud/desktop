@@ -472,6 +472,7 @@ void OAuth::authorisationLinkAsync(std::function<void (const QUrl &)> callback) 
 void OAuth::fetchWellKnown()
 {
     auto checkServer = new CheckServerJob(_account->sharedFromThis(), this);
+    checkServer->setClearCookies(true);
     checkServer->setTimeout(qMin(30 * 1000ll, checkServer->timeoutMsec()));
     connect(checkServer, &CheckServerJob::instanceNotFound, this, [this](QNetworkReply *reply) {
         if (_isRefreshingToken) {
