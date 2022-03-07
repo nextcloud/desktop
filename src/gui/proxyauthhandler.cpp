@@ -42,7 +42,7 @@ ProxyAuthHandler::ProxyAuthHandler()
     _dialog = new ProxyAuthDialog();
 
     _configFile.reset(new ConfigFile);
-    _settings.reset(new QSettings(ConfigFile::configFile(), QSettings::IniFormat));
+    _settings.reset(ConfigFile::makeQSettingsPtr());
     _settings->beginGroup(QLatin1String("Proxy"));
     _settings->beginGroup(QLatin1String("Credentials"));
 }
