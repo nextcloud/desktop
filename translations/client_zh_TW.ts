@@ -955,7 +955,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="676"/>
         <source>Restoration failed: %1</source>
-        <translation type="unfinished"/>
+        <translation>還原失敗：%1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="676"/>
@@ -5185,7 +5185,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/systray.cpp" line="111"/>
         <source>Help</source>
-        <translation type="unfinished"/>
+        <translation>說明</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="111"/>
