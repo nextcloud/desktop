@@ -289,7 +289,7 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
         } else if (Utility::isMac()) {
             openLocallyLabel = tr("Show in Finder");
         } else {
-            openLocallyLabel = tr("Show if file manager");
+            openLocallyLabel = tr("Show in file manager");
         }
 
         QAction *ac = menu->addAction(openLocallyLabel, [folderUrl]() {
