@@ -1,5 +1,4 @@
-# TODO: swith to a v0.12.0 once released
-set(LibreGraphAPIVersion main)
+set(LibreGraphAPIVersion v0.12.0)
 # TODO: pass version to find_package once LibreGraphAPI provides versioned releases
 find_package(LibreGraphAPI QUIET)
 if (NOT TARGET OpenAPI::LibreGraphAPI)
