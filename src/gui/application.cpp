@@ -273,9 +273,7 @@ Application::Application(int &argc, char **argv)
     setupLogging();
     setupTranslations();
 
-#if defined(OC_PLUGIN_DIR) && defined(Q_OS_LINUX)
-    qCInfo(lcApplication) << "Added extra plugin search path:" << extraPluginDir;
-#endif
+    qCInfo(lcApplication) << "Plugin search paths:" << libraryPaths();
 
     // Check vfs plugins
     if (Theme::instance()->showVirtualFilesOption() && bestAvailableVfsMode() == Vfs::Off) {
