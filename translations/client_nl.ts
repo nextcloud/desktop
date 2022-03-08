@@ -334,11 +334,6 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="292"/>
-        <source>Show if file manager</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../src/gui/accountsettings.cpp" line="315"/>
         <source>Show in Browser</source>
         <translation type="unfinished"/>
@@ -481,6 +476,11 @@ Deze actie annuleert alle huidig lopende synchronisatie.</translation>
         <location filename="../src/gui/accountsettings.cpp" line="922"/>
         <source>Log out</source>
         <translation>Afmelden</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="292"/>
+        <source>Show in file manager</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="356"/>
