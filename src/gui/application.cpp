@@ -248,19 +248,10 @@ Application::Application(int &argc, char **argv)
     setApplicationVersion(_theme->versionSwitchOutput());
 
 #if defined(OC_PLUGIN_DIR) && defined(Q_OS_LINUX)
+    // logged below, must be done once logger has been set up
     const QString extraPluginDir = QDir(QApplication::applicationDirPath()).filePath(QStringLiteral(OC_PLUGIN_DIR));
-    qCInfo(lcApplication) << "Adding extra plugin search path:" << extraPluginDir;
     this->addLibraryPath(extraPluginDir);
 #endif
-
-    // Check vfs plugins
-    if (Theme::instance()->showVirtualFilesOption() && bestAvailableVfsMode() == Vfs::Off) {
-        qCWarning(lcApplication) << "Theme wants to show vfs mode, but no vfs plugins are available";
-    }
-    if (isVfsPluginAvailable(Vfs::WindowsCfApi))
-        qCInfo(lcApplication) << "VFS windows plugin is available";
-    if (isVfsPluginAvailable(Vfs::WithSuffix))
-        qCInfo(lcApplication) << "VFS suffix plugin is available";
 
     parseOptions(arguments());
 
@@ -281,6 +272,19 @@ Application::Application(int &argc, char **argv)
 
     setupLogging();
     setupTranslations();
+
+#if defined(OC_PLUGIN_DIR) && defined(Q_OS_LINUX)
+    qCInfo(lcApplication) << "Added extra plugin search path:" << extraPluginDir;
+#endif
+
+    // Check vfs plugins
+    if (Theme::instance()->showVirtualFilesOption() && bestAvailableVfsMode() == Vfs::Off) {
+        qCWarning(lcApplication) << "Theme wants to show vfs mode, but no vfs plugins are available";
+    }
+    if (isVfsPluginAvailable(Vfs::WindowsCfApi))
+        qCInfo(lcApplication) << "VFS windows plugin is available";
+    if (isVfsPluginAvailable(Vfs::WithSuffix))
+        qCInfo(lcApplication) << "VFS suffix plugin is available";
 
     if (!configVersionMigration()) {
         return;
