@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.6)
+cmake_minimum_required(VERSION 3.16)
 set(CMAKE_CXX_STANDARD 14)
 cmake_policy(SET CMP0071 NEW) # Enable use of QtQuick compiler/generated code
 
