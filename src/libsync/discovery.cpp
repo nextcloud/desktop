@@ -167,10 +167,18 @@ void ProcessDirectoryJob::process()
         // local stat function.
         // Recall file shall not be ignored (#4420)
         bool isHidden = e.localEntry.isHidden || (f.first[0] == QLatin1Char('.') && f.first != QLatin1String(".sys.admin#recall#"));
-        if (handleExcluded(path._target, e.localEntry.name,
-                e.localEntry.isDirectory || e.serverEntry.isDirectory, isHidden,
-                e.localEntry.isSymLink))
+        if (handleExcluded(path._target,
+                e.localEntry.name,
+                e.localEntry.isDirectory || e.serverEntry.isDirectory,
+                isHidden,
+                e.localEntry.isSymLink)) {
+            // the file only exists in the db
+            if (!e.localEntry.isValid() && e.dbEntry.isValid()) {
+                qCWarning(lcDisco) << "Removing db entry for non exisitng ignored file:" << path._original;
+                _discoveryData->_statedb->deleteFileRecord(path._original, true);
+            }
             continue;
+        }
 
         if (_queryServer == InBlackList || _discoveryData->isInSelectiveSyncBlackList(path._original)) {
             processBlacklisted(path, e.localEntry, e.dbEntry);
