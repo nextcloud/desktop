@@ -244,6 +244,10 @@ protected:
 
     /** Bases headers that need to be sent on the PUT, or in the MOVE for chunking-ng */
     QMap<QByteArray, QByteArray> headers();
+
+#ifdef Q_OS_WIN
+    Utility::Handle m_fileLock;
+#endif
 };
 
 /**

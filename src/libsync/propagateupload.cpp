@@ -570,6 +570,10 @@ void PropagateUploadFileCommon::finalize()
     if (quotaIt != propagator()->_folderQuota.end())
         quotaIt.value() -= _item->_size;
 
+
+#ifdef Q_OS_WIN
+    m_fileLock.close();
+#endif
     // Update the database entry
     const auto result = propagator()->updateMetadata(*_item);
     if (!result) {
