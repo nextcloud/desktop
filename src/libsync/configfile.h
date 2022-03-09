@@ -42,7 +42,6 @@ public:
     static QString configPath();
     static QString configFile();
     static QSettings makeQSettings();
-    static QSettings *makeQSettingsPtr();
     static bool exists();
 
     ConfigFile();

@@ -376,11 +376,6 @@ QSettings ConfigFile::makeQSettings()
     return { configFile(), QSettings::IniFormat };
 }
 
-QSettings *ConfigFile::makeQSettingsPtr()
-{
-    return new QSettings(configFile(), QSettings::IniFormat);
-}
-
 bool ConfigFile::exists()
 {
     return QFileInfo::exists(configFile());
