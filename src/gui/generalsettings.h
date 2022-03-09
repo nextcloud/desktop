@@ -64,7 +64,6 @@ private:
     Ui::GeneralSettings *_ui;
     QPointer<IgnoreListEditor> _ignoreEditor;
     bool _currentlyLoading;
-    QMap<QString, QString> localesToLanguageNamesMap;
 };
 
 

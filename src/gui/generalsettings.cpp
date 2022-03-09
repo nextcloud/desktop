@@ -34,11 +34,11 @@
 #include "config.h"
 #include "translations.h"
 
-#include <QNetworkProxy>
 #include <QDir>
-#include <QScopedValueRollback>
 #include <QMessageBox>
+#include <QNetworkProxy>
 #include <QOperatingSystemVersion>
+#include <QScopedValueRollback>
 
 namespace OCC {
 
@@ -279,13 +279,8 @@ void GeneralSettings::saveMiscSettings()
 
     // the first entry, identified by index 0, means "use default", which is a special case handled below
     if (pickedLanguageIndex > 0) {
-        // for now, we use the locale names as labels in the dropdown
-        // therefore, we can store them directly in the config file
-        // in future versions, we will likely display nice names instead of locales to improve the user experience
-        const auto pickedLanguageName = _ui->languageDropdown->itemText(pickedLanguageIndex);
-        const auto pickedLanguageLocale = localesToLanguageNamesMap.key(pickedLanguageName);
-
-        cfgFile.setUiLanguage(pickedLanguageLocale);
+        const QString &pickedLocale = _ui->languageDropdown->itemData(pickedLanguageIndex).toString();
+        cfgFile.setUiLanguage(pickedLocale);
     } else {
         // empty string means "use system default"
         cfgFile.setUiLanguage("");
@@ -343,8 +338,19 @@ void GeneralSettings::reloadConfig()
 
 void GeneralSettings::loadLanguageNamesIntoDropdown()
 {
+    // allow method to be called more than once
+    _ui->languageDropdown->clear();
+
+    // if no option has been chosen explicitly by the user, the first entry shall be used
+    _ui->languageDropdown->addItem(tr("(use default)"));
+
     // initialize map of locales to language names
-    const auto availableLocales = Translations::listAvailableTranslations();
+    const auto availableLocales = []() {
+        auto rv = Translations::listAvailableTranslations().values();
+        rv.sort(Qt::CaseInsensitive);
+        return rv;
+    }();
+
     for (const auto &availableLocale : availableLocales) {
         auto nativeLanguageName = QLocale(availableLocale).nativeLanguageName();
 
@@ -355,20 +361,8 @@ void GeneralSettings::loadLanguageNamesIntoDropdown()
             nativeLanguageName = tr("unknown (%1)").arg(availableLocale);
         }
 
-        localesToLanguageNamesMap.insert(availableLocale, nativeLanguageName);
-    }
-
-    // allow method to be called more than once
-    _ui->languageDropdown->clear();
-
-    // if no option has been chosen explicitly by the user, the first entry shall be used
-    _ui->languageDropdown->addItem(tr("(use default)"));
-
-    QStringList availableTranslations(localesToLanguageNamesMap.values());
-    availableTranslations.sort(Qt::CaseInsensitive);
-
-    for (const auto &i : qAsConst(availableTranslations)) {
-        _ui->languageDropdown->addItem(i);
+        QString entryText = QStringLiteral("%1 (%2)").arg(nativeLanguageName, availableLocale);
+        _ui->languageDropdown->addItem(entryText, availableLocale);
     }
 }
 
