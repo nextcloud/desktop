@@ -93,6 +93,11 @@ int main(int argc, char **argv)
 #ifdef Q_OS_MAC
     Mac::CocoaInitializer cocoaInit; // RIIA
 #endif
+
+    auto surfaceFormat = QSurfaceFormat::defaultFormat();
+    surfaceFormat.setOption(QSurfaceFormat::ResetNotification);
+    QSurfaceFormat::setDefaultFormat(surfaceFormat);
+
     OCC::Application app(argc, argv);
 
 #ifdef Q_OS_WIN
@@ -125,10 +130,6 @@ int main(int argc, char **argv)
         QQuickWindow::setTextRenderType(QQuickWindow::NativeTextRendering);
     }
 #endif
-
-    auto surfaceFormat = QSurfaceFormat::defaultFormat();
-    surfaceFormat.setOption(QSurfaceFormat::ResetNotification);
-    QSurfaceFormat::setDefaultFormat(surfaceFormat);
 
 // check a environment variable for core dumps
 #ifdef Q_OS_UNIX
