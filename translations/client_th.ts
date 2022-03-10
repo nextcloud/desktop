@@ -2548,132 +2548,132 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::ProcessDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="237"/>
+        <location filename="../src/libsync/discovery.cpp" line="245"/>
         <source>Symbolic links are not supported in syncing.</source>
         <translation>ลิงก์สัญลักษณ์จะไม่ได้รับการสนับสนุนในการประสานข้อมูล</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="246"/>
+        <location filename="../src/libsync/discovery.cpp" line="254"/>
         <source>File is listed on the ignore list.</source>
         <translation>ไฟล์อยู่ในรายการที่ละเว้น</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="251"/>
+        <location filename="../src/libsync/discovery.cpp" line="259"/>
         <source>File names ending with a period are not supported on this file system.</source>
         <translation>ชื่อไฟล์ที่ลงท้ายด้วยระยะเวลา ยังไม่ได้รับการสนับสนุนบนระบบไฟล์นี้</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="264"/>
+        <location filename="../src/libsync/discovery.cpp" line="272"/>
         <source>File names containing the character &apos;%1&apos; are not supported on this file system.</source>
         <translation>ชื่อไฟล์ที่มีตัวอักษร &apos;%1&apos; ยังไม่ได้รับการสนับสนุนบนระบบไฟล์นี้</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="267"/>
+        <location filename="../src/libsync/discovery.cpp" line="275"/>
         <source>File name contains at least one invalid character</source>
         <translation>มีชื่อแฟ้มอย่างน้อยหนึ่งตัวอักษรที่ไม่ถูกต้อง</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="269"/>
+        <location filename="../src/libsync/discovery.cpp" line="277"/>
         <source>The file name is a reserved name on this file system.</source>
         <translation>ชื่อไฟล์นี้เป็นชื่อที่ถูกสงวนไว้</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="278"/>
+        <location filename="../src/libsync/discovery.cpp" line="286"/>
         <source>Filename contains trailing spaces.</source>
         <translation>ชื่อไฟล์มีช่องว่างต่อท้าย</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="281"/>
+        <location filename="../src/libsync/discovery.cpp" line="289"/>
         <source>Filename is too long.</source>
         <translation>ชื่อไฟล์ยาวเกินไป</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="284"/>
+        <location filename="../src/libsync/discovery.cpp" line="292"/>
         <source>File/Folder is ignored because it&apos;s hidden.</source>
         <translation>ไฟล์/โฟลเดอร์ ที่ซ่อนอยู่จะถูกละเว้น</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="288"/>
+        <location filename="../src/libsync/discovery.cpp" line="296"/>
         <source>Stat failed.</source>
         <translation>สถิติความล้มเหลว</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="291"/>
+        <location filename="../src/libsync/discovery.cpp" line="299"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
         <translation>เกิดปัญหาความขัดแย้ง: สำเนาที่อยู่ในเครื่องถูกเปลี่ยนชื่อและไม่ได้ถูกอัปโหลด เลยไม่ตรงกับข้อมูลที่เคยอัปโหลดไว้ในเซิฟเวอร์</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="295"/>
+        <location filename="../src/libsync/discovery.cpp" line="303"/>
         <source>The filename cannot be encoded on your file system.</source>
         <translation>ชื่อไฟล์ไม่สามารถเข้ารหัสในระบบไฟล์ของคุณได้</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="298"/>
+        <location filename="../src/libsync/discovery.cpp" line="306"/>
         <source>The filename is blacklisted on the server.</source>
         <translation>ชื่อไฟล์นี้เป็นชื่อต้องห้าม</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="401"/>
+        <location filename="../src/libsync/discovery.cpp" line="409"/>
         <source>size</source>
         <translation>ขนาด</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="403"/>
+        <location filename="../src/libsync/discovery.cpp" line="411"/>
         <source>permissions</source>
         <translation>สิทธิ์</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="405"/>
+        <location filename="../src/libsync/discovery.cpp" line="413"/>
         <source>etag</source>
         <translation>etag</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="407"/>
+        <location filename="../src/libsync/discovery.cpp" line="415"/>
         <source>file id</source>
         <translation>รหัสไฟล์</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="411"/>
+        <location filename="../src/libsync/discovery.cpp" line="419"/>
         <source>server reported no %1</source>
         <translation>เซิร์ฟเวอร์รายงานว่าไม่มี %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1237"/>
+        <location filename="../src/libsync/discovery.cpp" line="1245"/>
         <source>Moved to invalid target, restoring</source>
         <translation>ย้ายไปยังเป้าหมายที่ไม่ถูกต้อง กำลังดำเนินการกู้คืน</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1250"/>
+        <location filename="../src/libsync/discovery.cpp" line="1258"/>
         <source>Not allowed to remove, restoring</source>
         <translation>ไม่อนุญาตให้ลบเพราะกำลังฟื้นฟู</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1164"/>
+        <location filename="../src/libsync/discovery.cpp" line="1172"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>ถูกละเว้นเพราะ &quot;ข้อมูลที่เลือกประสาน&quot; ติดบัญชีดำ</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1197"/>
+        <location filename="../src/libsync/discovery.cpp" line="1205"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>ไม่อนุญาตเพราะคุณไม่มีสิทธิ์ที่จะเพิ่มโฟลเดอร์ย่อยของโฟลเดอร์นั้น</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1202"/>
+        <location filename="../src/libsync/discovery.cpp" line="1210"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>ไม่ได้รับอนุญาต เพราะคุณไม่มีสิทธิ์ที่จะเพิ่มไฟล์ในโฟลเดอร์นั้น</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1215"/>
+        <location filename="../src/libsync/discovery.cpp" line="1223"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>ไม่อนุญาตให้อัปโหลดไฟล์นี้เพราะมันจะอ่านได้เพียงอย่างเดียวบนเซิร์ฟเวอร์ กำลังกู้คืน</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1360"/>
+        <location filename="../src/libsync/discovery.cpp" line="1368"/>
         <source>Error while reading the database</source>
         <translation>เกิดข้อผิดพลาดขณะอ่านฐานข้อมูล</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1420"/>
+        <location filename="../src/libsync/discovery.cpp" line="1428"/>
         <source>Server replied with an error while reading directory &apos;%1&apos; : %2</source>
         <translation>เซิร์ฟเวอร์ตอบกลับพร้อมข้อผิดพลาดขณะอ่านไดเรกทอรีแล้ว &apos;%1&apos; : %2</translation>
     </message>
@@ -2937,12 +2937,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>หากไฟล์ในเครื่องถูกแก้ไขระหว่างทำการประสานข้อมูล ไฟล์ที่ถูกแก้ไขนั้นจะถูกทำการประสานข้อมูลอีกครั้ง</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="576"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="580"/>
         <source>Error updating metadata: %1</source>
         <translation>เกิดข้อผิดพลาดในการอัปเดตข้อมูล metadata: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="579"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="583"/>
         <source>The file %1 is currently in use</source>
         <translation>กำลังใช้งาน %1 ไฟล์</translation>
     </message>
@@ -2957,36 +2957,37 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <name>OCC::PropagateUploadFileNG</name>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="93"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="369"/>
         <source>%1 the file is currently in use</source>
         <translation>ไฟล์ %1 กำลังถูกใช้งานอยู่</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="480"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="493"/>
         <source>The local file was removed during sync.</source>
         <translation>ไฟล์ในเครื่องถูกลบออกในระหว่างการประสานข้อมูล</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="491"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="504"/>
         <source>Local file changed during sync.</source>
         <translation>ไฟล์ในเครื่องถูกเปลี่ยนแปลงขณะกำลังประสานข้อมูล</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="528"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="541"/>
         <source>The server did ask for a removed legacy feature(polling)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="533"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="546"/>
         <source>Unexpected return code from server (%1)</source>
         <translation>มีรหัสข้อผิดพลาดตอบกลับมาจากเซิร์ฟเวอร์ (%1)</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="540"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="553"/>
         <source>Missing File ID from server</source>
         <translation>ไฟล์ไอดีได้หายไปจากเซิร์ฟเวอร์</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="554"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="567"/>
         <source>Missing ETag from server</source>
         <translation>ETag ได้หายไปจากเซิร์ฟเวอร์</translation>
     </message>
