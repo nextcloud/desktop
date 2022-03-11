@@ -22,5 +22,6 @@ namespace CommonStrings {
     QString showInFileBrowser();
     QString showInWebBrowser();
     QString copyToClipBoard();
+    QString filterButtonText(int filterCount);
 }
 }

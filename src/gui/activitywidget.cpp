@@ -59,7 +59,7 @@ ActivityWidget::ActivityWidget(QWidget *parent)
     _ui->setupUi(this);
 
     _model = new ActivityListModel(this);
-    _sortModel = new QSortFilterProxyModel(this);
+    _sortModel = new SignalledQSortFilterProxyModel(this);
     _sortModel->setSourceModel(_model);
     _ui->_activityList->setModel(_sortModel);
     _sortModel->setSortRole(Models::UnderlyingDataRole);
@@ -103,11 +103,15 @@ ActivityWidget::ActivityWidget(QWidget *parent)
     header->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(header, &QListView::customContextMenuRequested, header, [header, this] {
         auto menu = ProtocolWidget::showFilterMenu(header, _sortModel, static_cast<int>(ActivityListModel::ActivityRole::Account), tr("Account"));
+        menu->addSeparator();
         header->addResetActionToMenu(menu);
     });
 
     connect(_ui->_filterButton, &QAbstractButton::clicked, this, [this] {
         ProtocolWidget::showFilterMenu(_ui->_filterButton, _sortModel, static_cast<int>(ActivityListModel::ActivityRole::Account), tr("Account"));
+    });
+    connect(_sortModel, &SignalledQSortFilterProxyModel::filterChanged, [this]() {
+        _ui->_filterButton->setText(CommonStrings::filterButtonText(_sortModel->filterRegExp().isEmpty() ? 0 : 1));
     });
 
     connect(&_removeTimer, &QTimer::timeout, this, &ActivityWidget::slotCheckToCleanWidgets);

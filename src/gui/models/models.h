@@ -14,6 +14,7 @@
 #pragma once
 
 #include <QModelIndexList>
+#include <QSortFilterProxyModel>
 #include <QString>
 #include <QtGlobal>
 
@@ -21,6 +22,19 @@ class QSortFilterProxyModel;
 class QMenu;
 
 namespace OCC {
+
+class SignalledQSortFilterProxyModel : public QSortFilterProxyModel
+{
+    Q_OBJECT
+
+public:
+    SignalledQSortFilterProxyModel(QObject *parent = nullptr);
+
+    void setFilterFixedStringSignalled(const QString &pattern);
+
+signals:
+    void filterChanged();
+};
 
 namespace Models {
     enum DataRoles {
@@ -33,7 +47,7 @@ namespace Models {
      */
     QString formatSelection(const QModelIndexList &items, int dataRole = Qt::DisplayRole);
 
-    std::function<void()> addFilterMenuItems(QMenu *menu, const QStringList &candidates, QSortFilterProxyModel *model, int column, const QString &columnName, int role);
+    std::function<void()> addFilterMenuItems(QMenu *menu, const QStringList &candidates, SignalledQSortFilterProxyModel *model, int column, const QString &columnName, int role);
 
     /**
      * Returns a vector with indices
@@ -55,5 +69,5 @@ namespace Models {
     {
         return range<T>(0, end);
     }
-};
-}
+} // OCC::Models namespace
+} // OCC namespace

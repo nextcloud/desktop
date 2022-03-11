@@ -32,7 +32,6 @@
 
 #include "models/activitylistmodel.h"
 #include "models/expandingheaderview.h"
-#include "models/models.h"
 
 #include "ui_protocolwidget.h"
 
@@ -52,7 +51,8 @@ ProtocolWidget::ProtocolWidget(QWidget *parent)
     // Build the model-view "stack":
     //  _model <- _sortModel <- _statusSortModel <- _tableView
     _model = new ProtocolItemModel(2000, false, this);
-    _sortModel = new QSortFilterProxyModel(this);
+    _sortModel = new SignalledQSortFilterProxyModel(this);
+    connect(_sortModel, &SignalledQSortFilterProxyModel::filterChanged, this, &ProtocolWidget::filterDidChange);
     _sortModel->setSourceModel(_model);
     _sortModel->setSortRole(Models::UnderlyingDataRole);
     _ui->_tableView->setModel(_sortModel);
@@ -66,6 +66,7 @@ ProtocolWidget::ProtocolWidget(QWidget *parent)
     header->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(header, &QHeaderView::customContextMenuRequested, header, [header, this] {
         auto menu = showFilterMenu(header, _sortModel, static_cast<int>(ProtocolItemModel::ProtocolItemRole::Account), tr("Account"));
+        menu->addSeparator();
         header->addResetActionToMenu(menu);
     });
 
@@ -94,12 +95,11 @@ ProtocolWidget::~ProtocolWidget()
  * @param columnName the name column on which the filter is done
  * @return
  */
-QMenu *ProtocolWidget::showFilterMenu(QWidget *parent, QSortFilterProxyModel *model, int role, const QString &columnName)
+QMenu *ProtocolWidget::showFilterMenu(QWidget *parent, SignalledQSortFilterProxyModel *model, int role, const QString &columnName)
 {
     auto menu = new QMenu(parent);
     menu->setAttribute(Qt::WA_DeleteOnClose);
     Models::addFilterMenuItems(menu, AccountManager::instance()->accountNames(), model, role, columnName, Qt::DisplayRole);
-    menu->addSeparator();
     QTimer::singleShot(0, menu, [menu] {
         menu->popup(QCursor::pos());
     });
@@ -177,4 +177,9 @@ void ProtocolWidget::slotItemCompleted(const QString &folder, const SyncFileItem
     _model->addProtocolItem(ProtocolItem { folder, item });
 }
 
+void ProtocolWidget::filterDidChange()
+{
+    _ui->_filterButton->setText(CommonStrings::filterButtonText(_sortModel->filterRegExp().isEmpty() ? 0 : 1));
 }
+
+} // OCC namespace

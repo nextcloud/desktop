@@ -42,3 +42,8 @@ QString CommonStrings::copyToClipBoard()
 {
     return QCoreApplication::translate("CommonStrings", "Copy");
 }
+
+QString CommonStrings::filterButtonText(int filterCount)
+{
+    return QCoreApplication::translate("CommonStrings", "%n Filter(s)").arg(filterCount);
+}
