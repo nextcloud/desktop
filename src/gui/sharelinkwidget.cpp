@@ -363,14 +363,13 @@ void ShareLinkWidget::slotShareSelectionChanged()
             _ui->lineEdit_password->setEnabled(false);
         }
     } else if (!selectionUnchanged) {
+        // we used to disable the checkbox (and thus the line edit) when setting a password failed
+        // now, we leave it enabled but clear the password in any case
+        // only if setting was successful, we want to show a placeholder afterwards to signalize success
         if (share && share->isPasswordSet()) {
             _ui->checkBox_password->setChecked(true);
             _ui->lineEdit_password->setPlaceholderText("********");
             _ui->lineEdit_password->setEnabled(true);
-        } else {
-            _ui->checkBox_password->setChecked(false);
-            _ui->lineEdit_password->setPlaceholderText(QString());
-            _ui->lineEdit_password->setEnabled(false);
         }
         _ui->lineEdit_password->setText(QString());
         _ui->pushButton_setPassword->setEnabled(false);
