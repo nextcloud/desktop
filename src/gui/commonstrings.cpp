@@ -21,7 +21,7 @@ QString CommonStrings::fileBrowser()
 {
 #ifdef Q_OS_WIN
     return QStringLiteral("Explorer");
-#elif Q_OS_MAC
+#elif defined(Q_OS_MAC)
     return QStringLiteral("Finder");
 #else
     return QCoreApplication::translate("CommonStrings", "file manager");
