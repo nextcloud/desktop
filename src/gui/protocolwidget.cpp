@@ -16,18 +16,19 @@
 #include <QtGui>
 #include <QtWidgets>
 
-#include "protocolwidget.h"
-#include "configfile.h"
-#include "syncresult.h"
-#include "logger.h"
-#include "theme.h"
-#include "folderman.h"
-#include "folder.h"
-#include "openfilemanager.h"
-#include "guiutility.h"
 #include "accountmanager.h"
 #include "accountstate.h"
+#include "commonstrings.h"
+#include "configfile.h"
+#include "folder.h"
+#include "folderman.h"
+#include "guiutility.h"
+#include "logger.h"
+#include "openfilemanager.h"
+#include "protocolwidget.h"
 #include "syncfileitem.h"
+#include "syncresult.h"
+#include "theme.h"
 
 #include "models/activitylistmodel.h"
 #include "models/expandingheaderview.h"
@@ -102,7 +103,7 @@ void ProtocolWidget::showContextMenu(QWidget *parent, ProtocolItemModel *model, 
     menu->setAttribute(Qt::WA_DeleteOnClose);
 
     // keep in sync with ActivityWidget::slotItemContextMenu
-    menu->addAction(tr("Copy to clipboard"), parent, [text = Models::formatSelection(items)] {
+    menu->addAction(CommonStrings::copyToClipBoard(), parent, [text = Models::formatSelection(items)] {
         QApplication::clipboard()->setText(text);
     });
 
@@ -112,7 +113,7 @@ void ProtocolWidget::showContextMenu(QWidget *parent, ProtocolItemModel *model, 
             const QString localPath = data.folder()->path() + data.path();
             if (QFileInfo::exists(localPath)) {
                 // keep in sync with ActivityWidget::slotItemContextMenu
-                menu->addAction(tr("Show in file browser"), parent, [localPath] {
+                menu->addAction(CommonStrings::showInFileBrowser(), parent, [localPath] {
                     if (QFileInfo::exists(localPath)) {
                         showInFileManager(localPath);
                     }
@@ -123,7 +124,7 @@ void ProtocolWidget::showContextMenu(QWidget *parent, ProtocolItemModel *model, 
                 fetchPrivateLinkUrl(data.folder()->accountState()->account(), data.folder()->remotePathTrailingSlash() + data.path(), parent, [parent, menu = QPointer<QMenu>(menu)](const QString &url) {
                     // as fetchPrivateLinkUrl is async we need to check the menu still exists
                     if (menu) {
-                        menu->addAction(tr("Show in web browser"), parent, [url, parent] {
+                        menu->addAction(CommonStrings::showInWebBrowser(), parent, [url, parent] {
                             Utility::openBrowser(url, parent);
                         });
                     }

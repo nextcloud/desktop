@@ -15,27 +15,27 @@
 #include <QtGui>
 #include <QtWidgets>
 
+#include "QProgressIndicator.h"
+#include "account.h"
+#include "accountmanager.h"
+#include "accountstate.h"
 #include "activitywidget.h"
+#include "commonstrings.h"
 #include "configfile.h"
-#include "syncresult.h"
-#include "logger.h"
-#include "theme.h"
-#include "folderman.h"
-#include "syncfileitem.h"
 #include "folder.h"
+#include "folderman.h"
+#include "issueswidget.h"
+#include "logger.h"
+#include "notificationconfirmjob.h"
+#include "notificationwidget.h"
+#include "ocsjob.h"
 #include "openfilemanager.h"
 #include "owncloudpropagator.h"
-#include "account.h"
-#include "accountstate.h"
-#include "accountmanager.h"
 #include "protocolwidget.h"
-#include "issueswidget.h"
-#include "QProgressIndicator.h"
-#include "notificationwidget.h"
-#include "notificationconfirmjob.h"
 #include "servernotificationhandler.h"
+#include "syncfileitem.h"
+#include "syncresult.h"
 #include "theme.h"
-#include "ocsjob.h"
 
 #include "models/activitylistmodel.h"
 #include "models/expandingheaderview.h"
@@ -451,7 +451,7 @@ void ActivityWidget::slotItemContextMenu()
     menu->setAttribute(Qt::WA_DeleteOnClose);
 
     // keep in sync with ProtocolWidget::showContextMenu
-    menu->addAction(tr("Copy to clipboard"), this, [text = Models::formatSelection(rows, Models::UnderlyingDataRole)] {
+    menu->addAction(CommonStrings::copyToClipBoard(), this, [text = Models::formatSelection(rows, Models::UnderlyingDataRole)] {
         QApplication::clipboard()->setText(text);
     });
 
@@ -459,7 +459,7 @@ void ActivityWidget::slotItemContextMenu()
         // keep in sync with ProtocolWidget::showContextMenu
         const auto localPath = rows.first().siblingAtColumn(static_cast<int>(ActivityListModel::ActivityRole::Path)).data(Models::UnderlyingDataRole).toString();
         if (!localPath.isEmpty()) {
-            menu->addAction(tr("Show in file browser"), this, [localPath] {
+            menu->addAction(CommonStrings::showInFileBrowser(), this, [localPath] {
                 if (QFileInfo::exists(localPath)) {
                     showInFileManager(localPath);
                 }
