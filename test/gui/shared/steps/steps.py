@@ -331,10 +331,10 @@ def step(context, resource):
     shareItem = SharingDialog()
 
     # In the following loop we are trying to share resource with given permission to one user at a time given from the data table in the feature file
-    for row in context.table[1:]:
+    for count, row in enumerate(context.table[1:]):
         receiver = row[0]
         permissions = row[1]
-        shareItem.addCollaborator(receiver, permissions)
+        shareItem.addCollaborator(receiver, permissions, False, count + 1)
 
     shareItem.closeSharingDialog()
 

@@ -72,7 +72,9 @@ class SharingDialog:
             collaborator,
         )
 
-    def addCollaborator(self, receiver, permissions, isGroup=False):
+    def addCollaborator(
+        self, receiver, permissions, isGroup=False, collaboratorCount=1
+    ):
         self.selectCollaborator(receiver, isGroup)
         permissionsList = permissions.split(",")
 
@@ -86,6 +88,17 @@ class SharingDialog:
             'share' not in permissionsList and shareChecked == True
         ):
             squish.clickButton(squish.waitForObject(self.SHARE_PERMISSIONS_CHECKBOX))
+
+        # wait for share to complete
+        squish.waitForObjectExists(
+            {
+                "container": names.sharingDialogUG_scrollArea_QScrollArea,
+                "name": "sharedWith",
+                "occurrence": collaboratorCount,
+                "type": "QLabel",
+                "visible": 1,
+            }
+        )
 
     def getSharingDialogMessage(self):
         return str(squish.waitForObjectExists(self.SHARING_DIALOG).text)
