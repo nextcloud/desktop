@@ -972,17 +972,17 @@ Mjet njëkohësimi kartelash për desktop.</translation>
 <context>
     <name>OCC::Folder</name>
     <message>
-        <location filename="../src/gui/folder.cpp" line="201"/>
+        <location filename="../src/gui/folder.cpp" line="200"/>
         <source>Local folder %1 does not exist.</source>
         <translation>Dosja vendore %1 s’ekziston.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="203"/>
+        <location filename="../src/gui/folder.cpp" line="202"/>
         <source>%1 should be a folder but is not.</source>
         <translation>%1 duhej të ishte dosje, por ja që s’është.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="205"/>
+        <location filename="../src/gui/folder.cpp" line="204"/>
         <source>%1 is not readable.</source>
         <translation>%1 s’është i lexueshëm.</translation>
     </message>
@@ -1015,7 +1015,12 @@ Mjet njëkohësimi kartelash për desktop.</translation>
         <translation><numerusform>U hoqën %1 dhe %n kartelë tjetër.</numerusform><numerusform>U hoqën %1 dhe %n kartela të tjera.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="207"/>
+        <location filename="../src/gui/folder.cpp" line="195"/>
+        <source>%1 failed to open the database.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="206"/>
         <source>%1 is not writable.</source>
         <translation>%1 s’është e shkrueshme.</translation>
     </message>
@@ -1071,41 +1076,41 @@ Mjet njëkohësimi kartelash për desktop.</translation>
         <translation>Veprimtari Njëkohësimesh</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="895"/>
+        <location filename="../src/gui/folder.cpp" line="898"/>
         <source>Could not read system exclude file</source>
         <translation>S’u lexua dot kartelë përjashtimi sistemi</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1138"/>
+        <location filename="../src/gui/folder.cpp" line="1141"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>U shtua një dosje më e madhe se %1 MB: %2.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1141"/>
+        <location filename="../src/gui/folder.cpp" line="1144"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>U shtua një dosje nga një depozitë e jashtme.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1142"/>
+        <location filename="../src/gui/folder.cpp" line="1145"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>Ju lutemi, shkoni te rregullimet që ta përzgjidhni, nëse doni ta shkarkoni.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1201"/>
+        <location filename="../src/gui/folder.cpp" line="1204"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation>Dosja %1 qe krijuar, por qe përjashtuar më herët nga njëkohësimi. Të dhënat brenda saj nuk do të njëkohësohen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1204"/>
+        <location filename="../src/gui/folder.cpp" line="1207"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
         <translation>Dosja %1 qe krijuar, por qe përjashtuar më herët nga njëkohësimi. S’do të njëkohësohet.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1215"/>
+        <location filename="../src/gui/folder.cpp" line="1218"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
@@ -1118,7 +1123,7 @@ Kjo do të thotë që klienti i njëkohësimeve mund të mos ngarkojë menjëher
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1292"/>
+        <location filename="../src/gui/folder.cpp" line="1295"/>
         <source>All files in the sync folder '%1' folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
@@ -1129,7 +1134,7 @@ Nëse vendosni t’i mbani këto kartela, ato do të rinjëkohësohen me shërby
 Nëse vendosni t’i fshini këto kartela, s’do të mund t’i keni, veç në mos qofshi i zoti.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1297"/>
+        <location filename="../src/gui/folder.cpp" line="1300"/>
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
@@ -1138,17 +1143,17 @@ Jeni i sigurt se doni të njëkohësohen këto veprime me shërbyesin?
 Nëse ky qe aksident dhe vendosni t’i mbani kartelat tuaja, ato do të rinjëkohësohen me shërbyesin.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1301"/>
+        <location filename="../src/gui/folder.cpp" line="1304"/>
         <source>Remove All Files?</source>
         <translation>Të hiqen Krejt Kartelat?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1305"/>
+        <location filename="../src/gui/folder.cpp" line="1308"/>
         <source>Remove all files</source>
         <translation>Hiqi krejt kartelat</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1306"/>
+        <location filename="../src/gui/folder.cpp" line="1309"/>
         <source>Keep files</source>
         <translation>Mbaji kartelat</translation>
     </message>
@@ -1156,122 +1161,122 @@ Nëse ky qe aksident dhe vendosni t’i mbani kartelat tuaja, ato do të rinjëk
 <context>
     <name>OCC::FolderMan</name>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="454"/>
+        <location filename="../src/gui/folderman.cpp" line="456"/>
         <source>Could not reset folder state</source>
         <translation>Gjendja e dosjes s’u ricaktua dot</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="455"/>
+        <location filename="../src/gui/folderman.cpp" line="457"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
         <translation>U gjet një regjistër i vjetër njëkohësimesh &apos;%1&apos;, por s’u hoq dot. Ju lutemi, sigurohuni që s’po e përdor ndonjë aplikacion.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1237"/>
+        <location filename="../src/gui/folderman.cpp" line="1241"/>
         <source> (backup)</source>
         <translation> (kopjeruajtje)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1242"/>
+        <location filename="../src/gui/folderman.cpp" line="1246"/>
         <source> (backup %1)</source>
         <translation> (kopjeruajtja %1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1344"/>
+        <location filename="../src/gui/folderman.cpp" line="1348"/>
         <source>Undefined State.</source>
         <translation>Gjendje e Papërkufizuar.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1347"/>
+        <location filename="../src/gui/folderman.cpp" line="1351"/>
         <source>Waiting to start syncing.</source>
         <translation>Po pritet të fillohet njëkohësimi.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1350"/>
+        <location filename="../src/gui/folderman.cpp" line="1354"/>
         <source>Preparing for sync.</source>
         <translation>Po përgatitet për njëkohësim.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1353"/>
+        <location filename="../src/gui/folderman.cpp" line="1357"/>
         <source>Sync is running.</source>
         <translation>Njëkohësimi po kryhet.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1358"/>
+        <location filename="../src/gui/folderman.cpp" line="1362"/>
         <source>Sync was successful, unresolved conflicts.</source>
         <translation>Njëkohësimi qe i suksesshëm, ka përplasje të pazgjidhura.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1360"/>
+        <location filename="../src/gui/folderman.cpp" line="1364"/>
         <source>Last Sync was successful.</source>
         <translation>Njëkohësimi i Fundit qe i suksesshëm.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1366"/>
+        <location filename="../src/gui/folderman.cpp" line="1370"/>
         <source>Setup Error.</source>
         <translation>Gabim te Rregullimet.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1369"/>
+        <location filename="../src/gui/folderman.cpp" line="1373"/>
         <source>User Abort.</source>
         <translation>Ndërprerje Nga Përdoruesi.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1372"/>
+        <location filename="../src/gui/folderman.cpp" line="1376"/>
         <source>Sync is paused.</source>
         <translation>Njëkohësimi është ndalur.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1378"/>
+        <location filename="../src/gui/folderman.cpp" line="1382"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (Njëkohësimi është ndalur)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1386"/>
+        <location filename="../src/gui/folderman.cpp" line="1390"/>
         <source>No valid folder selected!</source>
         <translation>S’është përzgjedhur dosje e vlefshme!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1394"/>
+        <location filename="../src/gui/folderman.cpp" line="1398"/>
         <source>The folder %1 is used in a folder sync connection!</source>
         <translation>Dosja %1 është e përdorur në një lidhje njëkohësimi dosjesh!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1401"/>
+        <location filename="../src/gui/folderman.cpp" line="1405"/>
         <source>The selected path does not exist!</source>
         <translation>Shtegu i përzgjedhur s’ekziston!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1405"/>
+        <location filename="../src/gui/folderman.cpp" line="1409"/>
         <source>The selected path is not a folder!</source>
         <translation>Shtegu i përzgjedhur s’ka dosje!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1409"/>
+        <location filename="../src/gui/folderman.cpp" line="1413"/>
         <source>You have no permission to write to the selected folder!</source>
         <translation>S’keni leje për shkrim te dosja e përzgjedhur!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1446"/>
+        <location filename="../src/gui/folderman.cpp" line="1450"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
         <translation>Ka tashmë një njëkohësim prej shërbyesi te kjo dosje vendore. Ju lutemi, përzgjidhni një tjetër dosje vendore!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1450"/>
+        <location filename="../src/gui/folderman.cpp" line="1454"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
         <translation>Dosja vendore %1 përmban tashmë një dosje të përdorur në një lidhje njëkohësimi dosjeje. Ju lutemi, zgjidhni një tjetër!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1456"/>
+        <location filename="../src/gui/folderman.cpp" line="1460"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation>Dosja vendore %1 përmbahet tashmë në një dosje të përdorur një lidhje njëkohësimi dosjeje. Ju lutemi, zgjidhni një tjetër!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1463"/>
+        <location filename="../src/gui/folderman.cpp" line="1467"/>
         <source>%1 Please pick another one!</source>
         <translation>%1 Ju lutemi, zgjidhni një tjetër!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1542"/>
+        <location filename="../src/gui/folderman.cpp" line="1546"/>
         <source>Multiple accounts are sharing the folder %1.
 This configuration is know to lead to dataloss and is no longer supported.
 Please consider removing this folder from the account and adding it again.</source>
@@ -1729,7 +1734,7 @@ Ju lutemi, shihni mundësinë e heqjes së kësaj dosjeje nga llogaria dhe të s
         <translation>&amp;Rinise &amp;&amp; Përditësoje</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="334"/>
+        <location filename="../src/gui/generalsettings.cpp" line="329"/>
         <source>You cannot disable autostart because system-wide autostart is enabled.</source>
         <translation>S’mund ta çaktivizoni vetënisjen, ngaqë është e aktivizuar vetënisja për krejt sistemin.</translation>
     </message>
@@ -1768,12 +1773,12 @@ Kini parasysh që kjo përzgjedh vetëm se nga cili thes merren përmirësimet, 
         <translation>Anuloje</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="355"/>
+        <location filename="../src/gui/generalsettings.cpp" line="361"/>
         <source>unknown (%1)</source>
         <translation>e panjohur (%1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="365"/>
+        <location filename="../src/gui/generalsettings.cpp" line="345"/>
         <source>(use default)</source>
         <translation>(përdor parazgjedhjen)</translation>
     </message>

@@ -971,17 +971,17 @@ File synchronization desktop utility.</source>
 <context>
     <name>OCC::Folder</name>
     <message>
-        <location filename="../src/gui/folder.cpp" line="201"/>
+        <location filename="../src/gui/folder.cpp" line="200"/>
         <source>Local folder %1 does not exist.</source>
         <translation>La cartella locale %1 non esiste.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="203"/>
+        <location filename="../src/gui/folder.cpp" line="202"/>
         <source>%1 should be a folder but is not.</source>
         <translation>%1 dovrebbe essere una cartella, ma non lo è.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="205"/>
+        <location filename="../src/gui/folder.cpp" line="204"/>
         <source>%1 is not readable.</source>
         <translation>%1 non è leggibile.</translation>
     </message>
@@ -1014,7 +1014,12 @@ File synchronization desktop utility.</source>
         <translation><numerusform>%1 e %n altro file sono stati rimossi.</numerusform><numerusform>%1 e %n altri file sono stati rimossi.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="207"/>
+        <location filename="../src/gui/folder.cpp" line="195"/>
+        <source>%1 failed to open the database.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="206"/>
         <source>%1 is not writable.</source>
         <translation type="unfinished"/>
     </message>
@@ -1070,19 +1075,19 @@ File synchronization desktop utility.</source>
         <translation>Sincronizza attività</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="895"/>
+        <location filename="../src/gui/folder.cpp" line="898"/>
         <source>Could not read system exclude file</source>
         <translation>Impossibile leggere il file di esclusione di sistema</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1138"/>
+        <location filename="../src/gui/folder.cpp" line="1141"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>Una nuova cartella più grande di %1 MB è stata aggiunta: %2.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1141"/>
+        <location filename="../src/gui/folder.cpp" line="1144"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>Una nuova cartella da un&apos;archiviazione esterna è stata aggiunta.
@@ -1090,22 +1095,22 @@ File synchronization desktop utility.</source>
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1142"/>
+        <location filename="../src/gui/folder.cpp" line="1145"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>Vai nelle impostazioni e selezionala se vuoi scaricarla.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1201"/>
+        <location filename="../src/gui/folder.cpp" line="1204"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation>La cattella %1 è stata creata ma esclusa dalla sincronizzazione in prevecedenza. I dati al suo interno non saranno sincronzzati.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1204"/>
+        <location filename="../src/gui/folder.cpp" line="1207"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
         <translation>Il file %1 è stato creato ma escluso in precedenza dalla sincronizzazione. Non sarà quindi sincronizzato.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1215"/>
+        <location filename="../src/gui/folder.cpp" line="1218"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
@@ -1118,7 +1123,7 @@ Ciò significa che il client di sincronizzazione potrebbe non inviare le modific
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1292"/>
+        <location filename="../src/gui/folder.cpp" line="1295"/>
         <source>All files in the sync folder '%1' folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
@@ -1129,7 +1134,7 @@ Se decidi di mantenere i file, saranno risincronizzati con il server se hai l&ap
 Se decidi di eliminarli, non ti saranno più disponibili, a meno che tu non sia il proprietario.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1297"/>
+        <location filename="../src/gui/folder.cpp" line="1300"/>
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
@@ -1138,17 +1143,17 @@ Sei sicuro di voler sincronizzare queste azioni con il server?
 Se è stato un errore e decidi di mantenere i tuoi file, verranno risincronizzati dal server.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1301"/>
+        <location filename="../src/gui/folder.cpp" line="1304"/>
         <source>Remove All Files?</source>
         <translation>Vuoi rimuovere tutti i file?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1305"/>
+        <location filename="../src/gui/folder.cpp" line="1308"/>
         <source>Remove all files</source>
         <translation>Rimuovi tutti i file</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1306"/>
+        <location filename="../src/gui/folder.cpp" line="1309"/>
         <source>Keep files</source>
         <translation>Mantieni i file</translation>
     </message>
@@ -1156,122 +1161,122 @@ Se è stato un errore e decidi di mantenere i tuoi file, verranno risincronizzat
 <context>
     <name>OCC::FolderMan</name>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="454"/>
+        <location filename="../src/gui/folderman.cpp" line="456"/>
         <source>Could not reset folder state</source>
         <translation>Impossibile ripristinare lo stato della cartella</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="455"/>
+        <location filename="../src/gui/folderman.cpp" line="457"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
         <translation>È stato trovato un vecchio registro di sincronizzazione &apos;%1&apos;, ma non può essere rimosso. Assicurati che nessuna applicazione lo stia utilizzando.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1237"/>
+        <location filename="../src/gui/folderman.cpp" line="1241"/>
         <source> (backup)</source>
         <translation>(copia di sicurezza)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1242"/>
+        <location filename="../src/gui/folderman.cpp" line="1246"/>
         <source> (backup %1)</source>
         <translation>(copia di sicurezza %1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1344"/>
+        <location filename="../src/gui/folderman.cpp" line="1348"/>
         <source>Undefined State.</source>
         <translation>Stato non definito.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1347"/>
+        <location filename="../src/gui/folderman.cpp" line="1351"/>
         <source>Waiting to start syncing.</source>
         <translation>In attesa di iniziare la sincronizzazione.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1350"/>
+        <location filename="../src/gui/folderman.cpp" line="1354"/>
         <source>Preparing for sync.</source>
         <translation>Preparazione della sincronizzazione.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1353"/>
+        <location filename="../src/gui/folderman.cpp" line="1357"/>
         <source>Sync is running.</source>
         <translation>La sincronizzazione è in corso.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1358"/>
+        <location filename="../src/gui/folderman.cpp" line="1362"/>
         <source>Sync was successful, unresolved conflicts.</source>
         <translation>La sincronia ha avuto successo, nessun conflitto.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1360"/>
+        <location filename="../src/gui/folderman.cpp" line="1364"/>
         <source>Last Sync was successful.</source>
         <translation>L&apos;ultima sincronizzazione è stata completata correttamente.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1366"/>
+        <location filename="../src/gui/folderman.cpp" line="1370"/>
         <source>Setup Error.</source>
         <translation>Errore di configurazione.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1369"/>
+        <location filename="../src/gui/folderman.cpp" line="1373"/>
         <source>User Abort.</source>
         <translation>Interrotto dall&apos;utente.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1372"/>
+        <location filename="../src/gui/folderman.cpp" line="1376"/>
         <source>Sync is paused.</source>
         <translation>La sincronizzazione è sospesa.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1378"/>
+        <location filename="../src/gui/folderman.cpp" line="1382"/>
         <source>%1 (Sync is paused)</source>
         <translation> %1 (La sincronizzazione è sospesa)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1386"/>
+        <location filename="../src/gui/folderman.cpp" line="1390"/>
         <source>No valid folder selected!</source>
         <translation>Nessuna cartella valida selezionata!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1394"/>
+        <location filename="../src/gui/folderman.cpp" line="1398"/>
         <source>The folder %1 is used in a folder sync connection!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1401"/>
+        <location filename="../src/gui/folderman.cpp" line="1405"/>
         <source>The selected path does not exist!</source>
         <translation>Il percorso selezionato non esiste!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1405"/>
+        <location filename="../src/gui/folderman.cpp" line="1409"/>
         <source>The selected path is not a folder!</source>
         <translation>Il percorso selezionato non è una cartella!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1409"/>
+        <location filename="../src/gui/folderman.cpp" line="1413"/>
         <source>You have no permission to write to the selected folder!</source>
         <translation>Non hai i permessi di scrittura per la cartella selezionata!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1446"/>
+        <location filename="../src/gui/folderman.cpp" line="1450"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
         <translation>Esiste già una sincronizzazione dal server a questa cartella locale. Seleziona un&apos;altra cartella locale!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1450"/>
+        <location filename="../src/gui/folderman.cpp" line="1454"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
         <translation>La cartella locale %1 contiene già una cartella utilizzata in una connessione di sincronizzazione delle cartelle. Selezionane un&apos;altra!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1456"/>
+        <location filename="../src/gui/folderman.cpp" line="1460"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation>La cartella locale %1 è già contenuta in una cartella utilizzata in una connessione di sincronizzazione delle cartelle. Selezionane un&apos;altra!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1463"/>
+        <location filename="../src/gui/folderman.cpp" line="1467"/>
         <source>%1 Please pick another one!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1542"/>
+        <location filename="../src/gui/folderman.cpp" line="1546"/>
         <source>Multiple accounts are sharing the folder %1.
 This configuration is know to lead to dataloss and is no longer supported.
 Please consider removing this folder from the account and adding it again.</source>
@@ -1727,7 +1732,7 @@ Please consider removing this folder from the account and adding it again.</sour
         <translation>&amp;Riavvia e aggiorna</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="334"/>
+        <location filename="../src/gui/generalsettings.cpp" line="329"/>
         <source>You cannot disable autostart because system-wide autostart is enabled.</source>
         <translation>Non puoi disattivare l&apos;avvio automatico perchè l&apos;auto-avvio a livello di sistema è attivo.</translation>
     </message>
@@ -1766,12 +1771,12 @@ Nota che ciò seleziona solo da dove vengono presi gli aggiornamenti e che non c
         <translation>Annulla</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="355"/>
+        <location filename="../src/gui/generalsettings.cpp" line="361"/>
         <source>unknown (%1)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="365"/>
+        <location filename="../src/gui/generalsettings.cpp" line="345"/>
         <source>(use default)</source>
         <translation type="unfinished"/>
     </message>

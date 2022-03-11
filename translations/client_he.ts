@@ -971,17 +971,17 @@ File synchronization desktop utility.</source>
 <context>
     <name>OCC::Folder</name>
     <message>
-        <location filename="../src/gui/folder.cpp" line="201"/>
+        <location filename="../src/gui/folder.cpp" line="200"/>
         <source>Local folder %1 does not exist.</source>
         <translation>תיקייה מקומית %1 אינה קיימת.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="203"/>
+        <location filename="../src/gui/folder.cpp" line="202"/>
         <source>%1 should be a folder but is not.</source>
         <translation>%1 אמור להיות תיקייה אבל אינו.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="205"/>
+        <location filename="../src/gui/folder.cpp" line="204"/>
         <source>%1 is not readable.</source>
         <translation>%1 אינו ניתן לקריאה.</translation>
     </message>
@@ -1014,7 +1014,12 @@ File synchronization desktop utility.</source>
         <translation><numerusform>%1 וכן %n קובץ נוסף הוסר.</numerusform><numerusform>%1 וכן %n קבצים נוספים הוסרו.</numerusform><numerusform>%1 וכן %n קבצים נוספים הוסרו.</numerusform><numerusform>%1 וכן %n קבצים נוספים הוסרו.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="207"/>
+        <location filename="../src/gui/folder.cpp" line="195"/>
+        <source>%1 failed to open the database.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="206"/>
         <source>%1 is not writable.</source>
         <translation type="unfinished"/>
     </message>
@@ -1070,41 +1075,41 @@ File synchronization desktop utility.</source>
         <translation>פעילות סנכרון</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="895"/>
+        <location filename="../src/gui/folder.cpp" line="898"/>
         <source>Could not read system exclude file</source>
         <translation>לא ניתן היה לקרוא את קובץ הלא כלולים במערכת</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1138"/>
+        <location filename="../src/gui/folder.cpp" line="1141"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>תיקייה חדשה הגדולה מ- %1 MB נוספה: %2.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1141"/>
+        <location filename="../src/gui/folder.cpp" line="1144"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>נוספה תיקייה של אחסון חיצוני.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1142"/>
+        <location filename="../src/gui/folder.cpp" line="1145"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>יש לעבור להגדרות בכדי לבחור בו אם ברצונך להוריד אותו.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1201"/>
+        <location filename="../src/gui/folder.cpp" line="1204"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation>תיקייה %1 נוצרה אבל לא נכללה בסנכרון בעבר. מידע בתיקייה לא יסונכרן.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1204"/>
+        <location filename="../src/gui/folder.cpp" line="1207"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
         <translation>קובץ %1 נוצר אבל לא נכלל בסנכרון בעבר. מידע בקובץ לא יסונכרן.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1215"/>
+        <location filename="../src/gui/folder.cpp" line="1218"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
@@ -1117,7 +1122,7 @@ This means that the synchronization client might not upload local changes immedi
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1292"/>
+        <location filename="../src/gui/folder.cpp" line="1295"/>
         <source>All files in the sync folder '%1' folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
@@ -1128,7 +1133,7 @@ If you decide to delete the files, they will be unavailable to you, unless you a
 אם קבלת החלטה למחוק את הקבצים, הם לא יהיו נגישים עבורך יותר, אלא אם כן הנך הבעלים שלהם.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1297"/>
+        <location filename="../src/gui/folder.cpp" line="1300"/>
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
@@ -1137,17 +1142,17 @@ If this was an accident and you decide to keep your files, they will be re-synce
 אם מדובר בטעות וקבלת החלטה לשמור את הקבצים שלך, הם יסונכרנו מחדש מהשרת.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1301"/>
+        <location filename="../src/gui/folder.cpp" line="1304"/>
         <source>Remove All Files?</source>
         <translation>הסרת כל הקבצים?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1305"/>
+        <location filename="../src/gui/folder.cpp" line="1308"/>
         <source>Remove all files</source>
         <translation>הסרת כל הקבצים</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1306"/>
+        <location filename="../src/gui/folder.cpp" line="1309"/>
         <source>Keep files</source>
         <translation>השארת הקבצים</translation>
     </message>
@@ -1155,122 +1160,122 @@ If this was an accident and you decide to keep your files, they will be re-synce
 <context>
     <name>OCC::FolderMan</name>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="454"/>
+        <location filename="../src/gui/folderman.cpp" line="456"/>
         <source>Could not reset folder state</source>
         <translation>לא ניתן לאפס את מצב התיקייה</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="455"/>
+        <location filename="../src/gui/folderman.cpp" line="457"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
         <translation>יומן סנכרון ישן &apos;%1&apos; אותר, אך לא ניתן להסירו. יש לוודא שאף יישום לא משתמש בו כרגע.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1237"/>
+        <location filename="../src/gui/folderman.cpp" line="1241"/>
         <source> (backup)</source>
         <translation> (גיבוי)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1242"/>
+        <location filename="../src/gui/folderman.cpp" line="1246"/>
         <source> (backup %1)</source>
         <translation> (גיבוי %1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1344"/>
+        <location filename="../src/gui/folderman.cpp" line="1348"/>
         <source>Undefined State.</source>
         <translation>מצב בלתי מוגדר.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1347"/>
+        <location filename="../src/gui/folderman.cpp" line="1351"/>
         <source>Waiting to start syncing.</source>
         <translation>ממתין להתחלת סנכרון.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1350"/>
+        <location filename="../src/gui/folderman.cpp" line="1354"/>
         <source>Preparing for sync.</source>
         <translation>מכין סנכרון.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1353"/>
+        <location filename="../src/gui/folderman.cpp" line="1357"/>
         <source>Sync is running.</source>
         <translation>הסנכרון פועל כרגע.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1358"/>
+        <location filename="../src/gui/folderman.cpp" line="1362"/>
         <source>Sync was successful, unresolved conflicts.</source>
         <translation>הסנכרון עבר בהצלחה, קיימים קונפליקטים שלו יושרו.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1360"/>
+        <location filename="../src/gui/folderman.cpp" line="1364"/>
         <source>Last Sync was successful.</source>
         <translation>הסנכרון האחרון הושלם בהצלחה.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1366"/>
+        <location filename="../src/gui/folderman.cpp" line="1370"/>
         <source>Setup Error.</source>
         <translation>שגיאת התקנה.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1369"/>
+        <location filename="../src/gui/folderman.cpp" line="1373"/>
         <source>User Abort.</source>
         <translation>משתמש ביטל פעולה.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1372"/>
+        <location filename="../src/gui/folderman.cpp" line="1376"/>
         <source>Sync is paused.</source>
         <translation>סנכרון בהשהייה.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1378"/>
+        <location filename="../src/gui/folderman.cpp" line="1382"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (סנכרון בהשהייה)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1386"/>
+        <location filename="../src/gui/folderman.cpp" line="1390"/>
         <source>No valid folder selected!</source>
         <translation>לא נבחרה תיקייה חוקית!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1394"/>
+        <location filename="../src/gui/folderman.cpp" line="1398"/>
         <source>The folder %1 is used in a folder sync connection!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1401"/>
+        <location filename="../src/gui/folderman.cpp" line="1405"/>
         <source>The selected path does not exist!</source>
         <translation>הנתיב הנבחר אינו קיים!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1405"/>
+        <location filename="../src/gui/folderman.cpp" line="1409"/>
         <source>The selected path is not a folder!</source>
         <translation>הנתיב שנבחר אינו תיקייה!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1409"/>
+        <location filename="../src/gui/folderman.cpp" line="1413"/>
         <source>You have no permission to write to the selected folder!</source>
         <translation>אין לך הרשאות לכתיבה לתיקייה הנבחרת!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1446"/>
+        <location filename="../src/gui/folderman.cpp" line="1450"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
         <translation>כבר קיים סנכרון בין השרת לתיקייה המקומית. יש לבחור תיקייה מקומית אחרת!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1450"/>
+        <location filename="../src/gui/folderman.cpp" line="1454"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
         <translation>התיקייה המקומית %1 כבר מכילה תיקייה המשמשת לחיבור סנכרון תיקייה. יש לבחור תיקייה אחרת!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1456"/>
+        <location filename="../src/gui/folderman.cpp" line="1460"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation>התיקייה המקומית %1 כבר מכילה תיקייה המשמשת לחיבור סנכרון תיקייה. יש לבחור תיקייה אחרת!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1463"/>
+        <location filename="../src/gui/folderman.cpp" line="1467"/>
         <source>%1 Please pick another one!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1542"/>
+        <location filename="../src/gui/folderman.cpp" line="1546"/>
         <source>Multiple accounts are sharing the folder %1.
 This configuration is know to lead to dataloss and is no longer supported.
 Please consider removing this folder from the account and adding it again.</source>
@@ -1726,7 +1731,7 @@ Please consider removing this folder from the account and adding it again.</sour
         <translation>&amp;הפעלה מחדש &amp;&amp; עדכן</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="334"/>
+        <location filename="../src/gui/generalsettings.cpp" line="329"/>
         <source>You cannot disable autostart because system-wide autostart is enabled.</source>
         <translation>לא ניתן להשבית את ההפעלה האוטומטית מכיוון שההפעלה האוטומטית של המערכת המלאה מופעלת.</translation>
     </message>
@@ -1765,12 +1770,12 @@ Note that this selects only what pool upgrades are taken from, and that there ar
         <translation>ביטול</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="355"/>
+        <location filename="../src/gui/generalsettings.cpp" line="361"/>
         <source>unknown (%1)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="365"/>
+        <location filename="../src/gui/generalsettings.cpp" line="345"/>
         <source>(use default)</source>
         <translation type="unfinished"/>
     </message>

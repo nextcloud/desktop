@@ -967,17 +967,17 @@ File synchronization desktop utility.</source>
 <context>
     <name>OCC::Folder</name>
     <message>
-        <location filename="../src/gui/folder.cpp" line="201"/>
+        <location filename="../src/gui/folder.cpp" line="200"/>
         <source>Local folder %1 does not exist.</source>
         <translation>Místní adresář %1 neexistuje.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="203"/>
+        <location filename="../src/gui/folder.cpp" line="202"/>
         <source>%1 should be a folder but is not.</source>
         <translation>%1 by měl být adresář, ale není.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="205"/>
+        <location filename="../src/gui/folder.cpp" line="204"/>
         <source>%1 is not readable.</source>
         <translation>%1 není čitelný.</translation>
     </message>
@@ -1010,7 +1010,12 @@ File synchronization desktop utility.</source>
         <translation><numerusform>%1 soubor bude smazán.</numerusform><numerusform>%1 a %n další soubory budou smazány.</numerusform><numerusform>%1 a %n další soubory budou smazány.</numerusform><numerusform>%1 a %n další soubory budou smazány.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="207"/>
+        <location filename="../src/gui/folder.cpp" line="195"/>
+        <source>%1 failed to open the database.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="206"/>
         <source>%1 is not writable.</source>
         <translation type="unfinished"/>
     </message>
@@ -1066,40 +1071,40 @@ File synchronization desktop utility.</source>
         <translation>Průběh synchronizace</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="895"/>
+        <location filename="../src/gui/folder.cpp" line="898"/>
         <source>Could not read system exclude file</source>
         <translation>Nezdařilo se přečtení systémového exclude souboru</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1138"/>
+        <location filename="../src/gui/folder.cpp" line="1141"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>Nová složka větší než %1 MB byla přidána: %2.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1141"/>
+        <location filename="../src/gui/folder.cpp" line="1144"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>Byla přidána složka z externího úložiště.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1142"/>
+        <location filename="../src/gui/folder.cpp" line="1145"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>Pokud to chcete stáhnout, běžte do nastavení a vyberte to.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1201"/>
+        <location filename="../src/gui/folder.cpp" line="1204"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1204"/>
+        <location filename="../src/gui/folder.cpp" line="1207"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1215"/>
+        <location filename="../src/gui/folder.cpp" line="1218"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
@@ -1108,7 +1113,7 @@ This means that the synchronization client might not upload local changes immedi
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1292"/>
+        <location filename="../src/gui/folder.cpp" line="1295"/>
         <source>All files in the sync folder '%1' folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
@@ -1118,7 +1123,7 @@ Tyto soubory budou smazány i ve vaší místní synchronizované složce a nebu
 Rozhodnete-li se soubory smazat, budou vám nedostupné, nejste-li jejich vlastníkem.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1297"/>
+        <location filename="../src/gui/folder.cpp" line="1300"/>
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
@@ -1127,17 +1132,17 @@ Jste si jisti, že chcete tyto akce synchronizovat se serverem?
 Pokud to byl omyl a chcete si soubory ponechat, budou opět synchronizovány ze serveru.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1301"/>
+        <location filename="../src/gui/folder.cpp" line="1304"/>
         <source>Remove All Files?</source>
         <translation>Odstranit všechny soubory?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1305"/>
+        <location filename="../src/gui/folder.cpp" line="1308"/>
         <source>Remove all files</source>
         <translation>Odstranit všechny soubory</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1306"/>
+        <location filename="../src/gui/folder.cpp" line="1309"/>
         <source>Keep files</source>
         <translation>Ponechat soubory</translation>
     </message>
@@ -1145,122 +1150,122 @@ Pokud to byl omyl a chcete si soubory ponechat, budou opět synchronizovány ze 
 <context>
     <name>OCC::FolderMan</name>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="454"/>
+        <location filename="../src/gui/folderman.cpp" line="456"/>
         <source>Could not reset folder state</source>
         <translation>Nelze obnovit stav adresáře</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="455"/>
+        <location filename="../src/gui/folderman.cpp" line="457"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
         <translation>Byl nalezen starý záznam synchronizace &apos;%1&apos;, ale nebylo možné jej odebrat. Ujistěte se, že není aktuálně používán jinou aplikací.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1237"/>
+        <location filename="../src/gui/folderman.cpp" line="1241"/>
         <source> (backup)</source>
         <translation> (záloha)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1242"/>
+        <location filename="../src/gui/folderman.cpp" line="1246"/>
         <source> (backup %1)</source>
         <translation> (záloha %1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1344"/>
+        <location filename="../src/gui/folderman.cpp" line="1348"/>
         <source>Undefined State.</source>
         <translation>Nedefinovaný stav.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1347"/>
+        <location filename="../src/gui/folderman.cpp" line="1351"/>
         <source>Waiting to start syncing.</source>
         <translation>Čeká na spuštění synchronizace.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1350"/>
+        <location filename="../src/gui/folderman.cpp" line="1354"/>
         <source>Preparing for sync.</source>
         <translation>Příprava na synchronizaci.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1353"/>
+        <location filename="../src/gui/folderman.cpp" line="1357"/>
         <source>Sync is running.</source>
         <translation>Synchronizace probíhá.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1358"/>
+        <location filename="../src/gui/folderman.cpp" line="1362"/>
         <source>Sync was successful, unresolved conflicts.</source>
         <translation>Synchronizace byla úspěšně dokončena, nevyřešené konflikty</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1360"/>
+        <location filename="../src/gui/folderman.cpp" line="1364"/>
         <source>Last Sync was successful.</source>
         <translation>Poslední synchronizace byla úspěšná.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1366"/>
+        <location filename="../src/gui/folderman.cpp" line="1370"/>
         <source>Setup Error.</source>
         <translation>Chyba nastavení.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1369"/>
+        <location filename="../src/gui/folderman.cpp" line="1373"/>
         <source>User Abort.</source>
         <translation>Zrušení uživatelem.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1372"/>
+        <location filename="../src/gui/folderman.cpp" line="1376"/>
         <source>Sync is paused.</source>
         <translation>Synchronizace pozastavena.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1378"/>
+        <location filename="../src/gui/folderman.cpp" line="1382"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (Synchronizace je pozastavena)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1386"/>
+        <location filename="../src/gui/folderman.cpp" line="1390"/>
         <source>No valid folder selected!</source>
         <translation>Nebyl vybrán platný adresář!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1394"/>
+        <location filename="../src/gui/folderman.cpp" line="1398"/>
         <source>The folder %1 is used in a folder sync connection!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1401"/>
+        <location filename="../src/gui/folderman.cpp" line="1405"/>
         <source>The selected path does not exist!</source>
         <translation>Vybraná cesta ke složce neexistuje!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1405"/>
+        <location filename="../src/gui/folderman.cpp" line="1409"/>
         <source>The selected path is not a folder!</source>
         <translation>Vybraná cesta nevede do adresáře!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1409"/>
+        <location filename="../src/gui/folderman.cpp" line="1413"/>
         <source>You have no permission to write to the selected folder!</source>
         <translation>Nemáte oprávnění pro zápis do zvoleného adresáře!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1446"/>
+        <location filename="../src/gui/folderman.cpp" line="1450"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
         <translation>Ze serveru se do tohoto umístění již synchronizuje. Prosím zvolte jinou místní složku!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1450"/>
+        <location filename="../src/gui/folderman.cpp" line="1454"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
         <translation>Místní adresář %1 již obsahuje podadresář použitý pro synchronizaci odesílání. Zvolte prosím jiný!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1456"/>
+        <location filename="../src/gui/folderman.cpp" line="1460"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation>Místní adresář %1 je již obsažen ve adresáři použitém pro synchronizaci. Vyberte prosím jiný!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1463"/>
+        <location filename="../src/gui/folderman.cpp" line="1467"/>
         <source>%1 Please pick another one!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1542"/>
+        <location filename="../src/gui/folderman.cpp" line="1546"/>
         <source>Multiple accounts are sharing the folder %1.
 This configuration is know to lead to dataloss and is no longer supported.
 Please consider removing this folder from the account and adding it again.</source>
@@ -1716,7 +1721,7 @@ Please consider removing this folder from the account and adding it again.</sour
         <translation>&amp;Restart &amp;&amp; aktualizace</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="334"/>
+        <location filename="../src/gui/generalsettings.cpp" line="329"/>
         <source>You cannot disable autostart because system-wide autostart is enabled.</source>
         <translation type="unfinished"/>
     </message>
@@ -1753,12 +1758,12 @@ Note that this selects only what pool upgrades are taken from, and that there ar
         <translation>Zrušit</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="355"/>
+        <location filename="../src/gui/generalsettings.cpp" line="361"/>
         <source>unknown (%1)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="365"/>
+        <location filename="../src/gui/generalsettings.cpp" line="345"/>
         <source>(use default)</source>
         <translation type="unfinished"/>
     </message>

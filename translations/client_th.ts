@@ -972,17 +972,17 @@ File synchronization desktop utility.</source>
 <context>
     <name>OCC::Folder</name>
     <message>
-        <location filename="../src/gui/folder.cpp" line="201"/>
+        <location filename="../src/gui/folder.cpp" line="200"/>
         <source>Local folder %1 does not exist.</source>
         <translation>โฟลเดอร์ %1 ไม่มีอยู่ในเครื่อง</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="203"/>
+        <location filename="../src/gui/folder.cpp" line="202"/>
         <source>%1 should be a folder but is not.</source>
         <translation>%1 ควรจะเป็นโฟลเดอร์ แต่ทำไม่ได้</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="205"/>
+        <location filename="../src/gui/folder.cpp" line="204"/>
         <source>%1 is not readable.</source>
         <translation>ไม่สามารถอ่านข้อมูล %1 ได้</translation>
     </message>
@@ -1015,7 +1015,12 @@ File synchronization desktop utility.</source>
         <translation><numerusform>%1 และ %n ไฟล์อื่น ๆ ได้ถูกลบออก</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="207"/>
+        <location filename="../src/gui/folder.cpp" line="195"/>
+        <source>%1 failed to open the database.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="206"/>
         <source>%1 is not writable.</source>
         <translation>%1 ไม่สามารถเขียนได้</translation>
     </message>
@@ -1071,41 +1076,41 @@ File synchronization desktop utility.</source>
         <translation>ความเคลื่อนไหวของการประสานข้อมูล</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="895"/>
+        <location filename="../src/gui/folder.cpp" line="898"/>
         <source>Could not read system exclude file</source>
         <translation>ไม่สามารถอ่าน ยกเว้นไฟล์ระบบ</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1138"/>
+        <location filename="../src/gui/folder.cpp" line="1141"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>โฟลเดอร์ใหม่มีขนาดใหญ่กว่า %1 เมกะไบต์ ได้ถูกเพิ่ม: %2
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1141"/>
+        <location filename="../src/gui/folder.cpp" line="1144"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>โฟลเดอร์ที่มีพื้นที่จัดเก็บข้อมูลภายนอกได้ถูกเพิ่ม
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1142"/>
+        <location filename="../src/gui/folder.cpp" line="1145"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>กรุณาไปในส่วนของการตั้งค่าเพื่อเลือก ถ้าคุณต้องการจะดาวน์โหลด</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1201"/>
+        <location filename="../src/gui/folder.cpp" line="1204"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation>โฟลเดอร์ %1 ได้ถูกสร้างขึ้นแล้วแต่ยังไม่ได้ประสานข้อมูล</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1204"/>
+        <location filename="../src/gui/folder.cpp" line="1207"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
         <translation>ไฟล์ %1 ได้ถูกสร้างขึ้นแล้วแต่ยังไม่ได้ประสานข้อมูล</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1215"/>
+        <location filename="../src/gui/folder.cpp" line="1218"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
@@ -1116,7 +1121,7 @@ This means that the synchronization client might not upload local changes immedi
 หมายความว่าการประสานข้อมูลของไคลเอ็นต์อาจยังไม่ได้อัปโหลดการเปลี่ยนแปลงในระบบทันทีและจะสแกนเฉพาะการเปลี่ยนแปลงในเครื่องและอัปโหลดไฟล์เหล่านั้นเป็นครั้งคราว (ทุกสองชั่วโมงตามค่าเริ่มต้น)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1292"/>
+        <location filename="../src/gui/folder.cpp" line="1295"/>
         <source>All files in the sync folder '%1' folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
@@ -1127,7 +1132,7 @@ If you decide to delete the files, they will be unavailable to you, unless you a
 หากคุณตัดสินใจลบไฟล์ก็จะทำให้ไม่มีใครสามารถใช้งานโฟลเดอร์นี้ได้เพราะคุณเป็นเจ้าของ</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1297"/>
+        <location filename="../src/gui/folder.cpp" line="1300"/>
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
@@ -1137,17 +1142,17 @@ If this was an accident and you decide to keep your files, they will be re-synce
 ถ้าเรื่องนี้เป็นอุบัติเหตุและคุณตัดสินใจเก็บไฟล์ของคุณ ไฟล์ของคุณก็จะถูกประสานข้อมูลใหม่อีกครั้ง</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1301"/>
+        <location filename="../src/gui/folder.cpp" line="1304"/>
         <source>Remove All Files?</source>
         <translation>ลบไฟล์ทั้งหมด?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1305"/>
+        <location filename="../src/gui/folder.cpp" line="1308"/>
         <source>Remove all files</source>
         <translation>ลบไฟล์ทั้งหมด</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1306"/>
+        <location filename="../src/gui/folder.cpp" line="1309"/>
         <source>Keep files</source>
         <translation>เก็บไฟล์เอาไว้</translation>
     </message>
@@ -1155,122 +1160,122 @@ If this was an accident and you decide to keep your files, they will be re-synce
 <context>
     <name>OCC::FolderMan</name>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="454"/>
+        <location filename="../src/gui/folderman.cpp" line="456"/>
         <source>Could not reset folder state</source>
         <translation>ไม่สามารถรีเซ็ตสถานะโฟลเดอร์</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="455"/>
+        <location filename="../src/gui/folderman.cpp" line="457"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
         <translation>บนบันทึกการประสานข้อมูลเก่า &apos;%1&apos; แต่ไม่สามารถลบออกได้ กรุณาตรวจสอบให้แน่ใจว่าไม่มีแอปฯ หรือการทำงานใดๆที่ใช้มันอยู่</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1237"/>
+        <location filename="../src/gui/folderman.cpp" line="1241"/>
         <source> (backup)</source>
         <translation>(สำรองข้อมูล)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1242"/>
+        <location filename="../src/gui/folderman.cpp" line="1246"/>
         <source> (backup %1)</source>
         <translation>(สำรองข้อมูล %1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1344"/>
+        <location filename="../src/gui/folderman.cpp" line="1348"/>
         <source>Undefined State.</source>
         <translation>สถานะที่ยังไม่ได้ถูกกำหนด</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1347"/>
+        <location filename="../src/gui/folderman.cpp" line="1351"/>
         <source>Waiting to start syncing.</source>
         <translation>กำลังรอเริ่มต้นการประสานข้อมูล</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1350"/>
+        <location filename="../src/gui/folderman.cpp" line="1354"/>
         <source>Preparing for sync.</source>
         <translation>กำลังเตรียมการประสานข้อมูล</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1353"/>
+        <location filename="../src/gui/folderman.cpp" line="1357"/>
         <source>Sync is running.</source>
         <translation>การประสานข้อมูลกำลังทำงาน</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1358"/>
+        <location filename="../src/gui/folderman.cpp" line="1362"/>
         <source>Sync was successful, unresolved conflicts.</source>
         <translation>ประสานข้อมูลสำเร็จแต่ยังมีข้อขัดแย้งที่ยังไม่ได้รับการแก้ไข</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1360"/>
+        <location filename="../src/gui/folderman.cpp" line="1364"/>
         <source>Last Sync was successful.</source>
         <translation>ประสานข้อมูลครั้งล่าสุดเสร็จเรียบร้อยแล้ว</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1366"/>
+        <location filename="../src/gui/folderman.cpp" line="1370"/>
         <source>Setup Error.</source>
         <translation>เกิดข้อผิดพลาดในการติดตั้ง</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1369"/>
+        <location filename="../src/gui/folderman.cpp" line="1373"/>
         <source>User Abort.</source>
         <translation>ยกเลิกผู้ใช้</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1372"/>
+        <location filename="../src/gui/folderman.cpp" line="1376"/>
         <source>Sync is paused.</source>
         <translation>การประสานข้อมูลถูกหยุดไว้ชั่วคราว</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1378"/>
+        <location filename="../src/gui/folderman.cpp" line="1382"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (การประสานข้อมูลถูกหยุดชั่วคราว)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1386"/>
+        <location filename="../src/gui/folderman.cpp" line="1390"/>
         <source>No valid folder selected!</source>
         <translation>เลือกโฟลเดอร์ไม่ถูกต้อง!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1394"/>
+        <location filename="../src/gui/folderman.cpp" line="1398"/>
         <source>The folder %1 is used in a folder sync connection!</source>
         <translation>โฟลเดอร์ %1 ถูกใช้ในการเชื่อมต่อการประสานข้อมูลโฟลเดอร์!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1401"/>
+        <location filename="../src/gui/folderman.cpp" line="1405"/>
         <source>The selected path does not exist!</source>
         <translation>Path ที่เลือกไม่มีอยู่จริง!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1405"/>
+        <location filename="../src/gui/folderman.cpp" line="1409"/>
         <source>The selected path is not a folder!</source>
         <translation>Path ที่เลือกไม่ใช่โฟลเดอร์!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1409"/>
+        <location filename="../src/gui/folderman.cpp" line="1413"/>
         <source>You have no permission to write to the selected folder!</source>
         <translation>คุณมีสิทธิ์เขียนโฟลเดอร์ที่เลือกนี้!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1446"/>
+        <location filename="../src/gui/folderman.cpp" line="1450"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
         <translation>โฟลเดอร์นี้ได้ถูกประสานข้อมูลกับเซิร์ฟเวอร์แล้ว โปรดเลือกโฟลเดอร์อื่น ๆ</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1450"/>
+        <location filename="../src/gui/folderman.cpp" line="1454"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
         <translation>เนื้อหาโฟลเดอร์ในเครื่อง %1 ได้ถูกใช้ไปแล้วในโฟลเดอร์ที่ประสานข้อมูล กรุณาเลือกอีกอันหนึ่ง!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1456"/>
+        <location filename="../src/gui/folderman.cpp" line="1460"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation>เนื้อหาของโฟลเดอร์ในเครื่อง %1 ไดถูกใช้ไปแล้วในโฟลเดอร์ที่ประสานข้อมูล กรุณาเลือกอีกอันหนึ่ง!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1463"/>
+        <location filename="../src/gui/folderman.cpp" line="1467"/>
         <source>%1 Please pick another one!</source>
         <translation>%1 โปรดเลือกอันอื่น!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1542"/>
+        <location filename="../src/gui/folderman.cpp" line="1546"/>
         <source>Multiple accounts are sharing the folder %1.
 This configuration is know to lead to dataloss and is no longer supported.
 Please consider removing this folder from the account and adding it again.</source>
@@ -1726,7 +1731,7 @@ Please consider removing this folder from the account and adding it again.</sour
         <translation>และเริ่มต้นใหม่ &amp;&amp; อัปเดต</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="334"/>
+        <location filename="../src/gui/generalsettings.cpp" line="329"/>
         <source>You cannot disable autostart because system-wide autostart is enabled.</source>
         <translation>คุณไม่สามารถปิดใช้งานระบบเริ่มต้นอัตโนมัติได้เนื่องจาก system-wide ได้ถูกเปิดใช้งานแล้ว</translation>
     </message>
@@ -1765,12 +1770,12 @@ Note that this selects only what pool upgrades are taken from, and that there ar
         <translation>ยกเลิก</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="355"/>
+        <location filename="../src/gui/generalsettings.cpp" line="361"/>
         <source>unknown (%1)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="365"/>
+        <location filename="../src/gui/generalsettings.cpp" line="345"/>
         <source>(use default)</source>
         <translation type="unfinished"/>
     </message>
