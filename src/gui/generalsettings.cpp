@@ -157,26 +157,8 @@ void GeneralSettings::loadMiscSettings()
     loadLanguageNamesIntoDropdown();
 
     const auto &locale = cfgFile.uiLanguage();
-
-    // index 0 means "use default", which we use unless the loop below sets another entry
-    _ui->languageDropdown->setCurrentIndex(0);
-
-    if (!locale.isEmpty()) {
-        const auto &language = QLocale(locale).nativeLanguageName();
-
-        // a simple linear search to find the right entry and choose it is sufficient for this application
-        // we can skip the "use default" entry by starting at index 1
-        // note that if the loop below never breaks, the setting falls back to "use default"
-        // this is desired behavior, as it handles cases when the selected language no longer exists
-        for (int i = 1; i < _ui->languageDropdown->count(); ++i) {
-            const auto text = _ui->languageDropdown->itemText(i);
-
-            if (text == language) {
-                _ui->languageDropdown->setCurrentIndex(i);
-                break;
-            }
-        }
-    }
+    const auto index = _ui->languageDropdown->findData(locale);
+    _ui->languageDropdown->setCurrentIndex(index < 0 ? 0 : index);
 }
 
 void GeneralSettings::showEvent(QShowEvent *)
@@ -275,16 +257,9 @@ void GeneralSettings::saveMiscSettings()
         _ui->newFolderLimitSpinBox->value());
     cfgFile.setConfirmExternalStorage(_ui->newExternalStorage->isChecked());
 
-    const auto pickedLanguageIndex = _ui->languageDropdown->currentIndex();
-
     // the first entry, identified by index 0, means "use default", which is a special case handled below
-    if (pickedLanguageIndex > 0) {
-        const QString &pickedLocale = _ui->languageDropdown->itemData(pickedLanguageIndex).toString();
-        cfgFile.setUiLanguage(pickedLocale);
-    } else {
-        // empty string means "use system default"
-        cfgFile.setUiLanguage("");
-    }
+    const QString pickedLocale = _ui->languageDropdown->currentData().toString();
+    cfgFile.setUiLanguage(pickedLocale);
 }
 
 void GeneralSettings::slotToggleLaunchOnStartup(bool enable)
