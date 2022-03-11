@@ -272,6 +272,23 @@ void OCUpdater::slotTimedOut()
     setDownloadState(DownloadTimedOut);
 }
 
+QVersionNumber OCUpdater::seenVersion()
+{
+    auto settings = ConfigFile::makeQSettings();
+    return QVersionNumber::fromString(settings.value(seenVersionC).toString());
+}
+
+void OCUpdater::setSeenVersion(const QVersionNumber &seenVersion)
+{
+    setSeenVersion(seenVersion.toString());
+}
+
+void OCUpdater::setSeenVersion(const QString &seenVersionString)
+{
+    auto settings = ConfigFile::makeQSettings();
+    settings.setValue(seenVersionC, seenVersionString);
+}
+
 ////////////////////////////////////////////////////////////////////////
 
 NSISUpdater::NSISUpdater(const QUrl &url)
@@ -331,11 +348,10 @@ void NSISUpdater::versionInfoArrived(const UpdateInfo &info)
 {
     auto settings = ConfigFile::makeQSettings();
     const auto infoVersion = QVersionNumber::fromString(info.version());
-    const auto seenString = settings.value(seenVersionC).toString();
-    const auto seenVersion = QVersionNumber::fromString(seenString);
+    const auto seenVersion = this->seenVersion();
     qCInfo(lcUpdater) << "Version info arrived:"
                       << "Your version:" << Version::versionWithBuildNumber()
-                      << "Skipped version:" << seenVersion << seenString
+                      << "Skipped version:" << seenVersion
                       << "Available version:" << infoVersion << info.version()
                       << "Available version string:" << info.versionString()
                       << "Web url:" << info.web()
@@ -516,8 +532,7 @@ bool NSISUpdater::handleStartup()
 
 void NSISUpdater::slotSetSeenVersion()
 {
-    auto settings = ConfigFile::makeQSettings();
-    settings.setValue(seenVersionC, updateInfo().version());
+    setSeenVersion(updateInfo().version());
 }
 
 ////////////////////////////////////////////////////////////////////////

@@ -16,9 +16,10 @@
 #define OCUPDATER_H
 
 #include <QObject>
-#include <QUrl>
 #include <QTemporaryFile>
 #include <QTimer>
+#include <QUrl>
+#include <QVersionNumber>
 
 #include "updater/updateinfo.h"
 #include "updater/updater.h"
@@ -127,6 +128,10 @@ private slots:
     void slotTimedOut();
 
 protected:
+    static QVersionNumber seenVersion();
+    static void setSeenVersion(const QVersionNumber &seenVersion);
+    static void setSeenVersion(const QString &seenVersionString);
+
     virtual void versionInfoArrived(const UpdateInfo &info) = 0;
     bool updateSucceeded() const;
     QNetworkAccessManager *qnam() const { return _accessManager; }

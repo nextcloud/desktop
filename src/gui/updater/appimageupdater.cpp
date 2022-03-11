@@ -141,15 +141,11 @@ void AppImageUpdater::versionInfoArrived(const UpdateInfo &info)
         return;
     }
 
-    auto settings = ConfigFile::makeQSettings();
-
-    const auto seenVersionString = settings.value(seenVersionC).toString();
-    if (!seenVersionString.isEmpty()) {
-        if (QVersionNumber::fromString(seenVersionString) >= QVersionNumber::fromString(info.version())) {
-            qCInfo(lcUpdater) << "Update" << seenVersionString << "was skipped previously by user";
-            setDownloadState(UpToDate);
-            return;
-        }
+    const auto seenVersion = this->seenVersion();
+    if (seenVersion <= newVersion) {
+        qCInfo(lcUpdater) << "Update" << seenVersion << "was skipped previously by user";
+        setDownloadState(UpToDate);
+        return;
     }
 
     const auto appImageUpdaterShim = AppImageUpdaterShim::makeInstance(info.downloadUrl(), this);
@@ -169,9 +165,7 @@ void AppImageUpdater::versionInfoArrived(const UpdateInfo &info)
 
     connect(dialog, &Ui::AppImageUpdateAvailableDialog::skipUpdateButtonClicked, this, [newVersion]() {
         qCInfo(lcUpdater) << "Update" << newVersion << "skipped by user";
-
-        auto settings = ConfigFile::makeQSettings();
-        settings.setValue(seenVersionC, newVersion.toString());
+        setSeenVersion(newVersion);
     });
 
     connect(dialog, &QDialog::accepted, this, [this, appImageUpdaterShim]() {
