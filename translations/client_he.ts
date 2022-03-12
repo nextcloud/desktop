@@ -19,7 +19,7 @@
     <message>
         <location filename="../src/gui/commonstrings.cpp" line="43"/>
         <source>Copy</source>
-        <translation type="unfinished"/>
+        <translation>העתקה</translation>
     </message>
 </context>
 <context>
@@ -690,7 +690,7 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/gui/activitywidget.cpp" line="105"/>
         <location filename="../src/gui/activitywidget.cpp" line="110"/>
         <source>Account</source>
-        <translation type="unfinished"/>
+        <translation>חשבון</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="149"/>

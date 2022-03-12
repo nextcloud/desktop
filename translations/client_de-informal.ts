@@ -19,7 +19,7 @@
     <message>
         <location filename="../src/gui/commonstrings.cpp" line="43"/>
         <source>Copy</source>
-        <translation type="unfinished"/>
+        <translation>Kopieren</translation>
     </message>
 </context>
 <context>
@@ -688,7 +688,7 @@ Das Feature &quot;selective sync&quot; wird wieder verfügbar. Diese Aktion bric
         <location filename="../src/gui/activitywidget.cpp" line="105"/>
         <location filename="../src/gui/activitywidget.cpp" line="110"/>
         <source>Account</source>
-        <translation type="unfinished"/>
+        <translation>Konto</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="149"/>

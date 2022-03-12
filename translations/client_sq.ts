@@ -14,12 +14,12 @@
     <message>
         <location filename="../src/gui/commonstrings.cpp" line="38"/>
         <source>Show in web browser</source>
-        <translation type="unfinished"/>
+        <translation>Shfaqe në shfletues</translation>
     </message>
     <message>
         <location filename="../src/gui/commonstrings.cpp" line="43"/>
         <source>Copy</source>
-        <translation type="unfinished"/>
+        <translation>Kopjoje</translation>
     </message>
 </context>
 <context>
@@ -690,7 +690,7 @@ Ky veprim do të shkaktojë ndërprerjen e çfarëdo njëkohësimi në kryerje e
         <location filename="../src/gui/activitywidget.cpp" line="105"/>
         <location filename="../src/gui/activitywidget.cpp" line="110"/>
         <source>Account</source>
-        <translation type="unfinished"/>
+        <translation>Llogari</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="149"/>

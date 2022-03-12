@@ -19,7 +19,7 @@
     <message>
         <location filename="../src/gui/commonstrings.cpp" line="43"/>
         <source>Copy</source>
-        <translation type="unfinished"/>
+        <translation>Copia</translation>
     </message>
 </context>
 <context>
@@ -690,7 +690,7 @@ Questa azione interromperà qualsiasi sincronizzazione in corso.</translation>
         <location filename="../src/gui/activitywidget.cpp" line="105"/>
         <location filename="../src/gui/activitywidget.cpp" line="110"/>
         <source>Account</source>
-        <translation type="unfinished"/>
+        <translation>Account</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="149"/>
