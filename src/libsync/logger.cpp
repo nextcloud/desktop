@@ -145,8 +145,9 @@ void Logger::setLogFile(const QString &name)
     }
 
     bool openSucceeded = false;
-    if (name == QLatin1String("-")) {
+    if (name == QLatin1Char('-')) {
         attacheToConsole();
+        setLogFlush(true);
         openSucceeded = _logFile.open(stdout, QIODevice::WriteOnly);
     } else {
         _logFile.setFileName(name);
