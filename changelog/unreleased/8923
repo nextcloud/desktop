@@ -1,0 +1,8 @@
+Enhancement: Built-in AppImage self-updater
+
+In release 2.10, we introduced a preview on our future AppImage packaging for Linux distributions.
+Now, these AppImages can self-update using a built-in libappimageupdate based updater and
+ownCloud's update infrastructure.
+
+https://github.com/owncloud/client/issues/8923
+https://github.com/owncloud/client/pull/9376
