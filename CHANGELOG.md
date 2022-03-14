@@ -28,6 +28,7 @@ Summary
 * Bugfix - Fix status of files uploaded with TUS: [#9472](https://github.com/owncloud/client/pull/9472)
 * Bugfix - Fix potential download failure for renamed file with Windows VFS: [#18](https://github.com/owncloud/client-desktop-vfs-win/pull/18)
 * Change - Make sharedialog preview be more resilient: [#8938](https://github.com/owncloud/client/issues/8938)
+* Enhancement - Built-in AppImage self-updater: [#8923](https://github.com/owncloud/client/issues/8923)
 * Enhancement - Retry token refresh multiple times before logout: [#9245](https://github.com/owncloud/client/issues/9245)
 * Enhancement - Don't log error when checking removed file for changes: [#9304](https://github.com/owncloud/client/issues/9304)
 * Enhancement - Provide informal German translations: [#9460](https://github.com/owncloud/client/issues/9460)
@@ -167,6 +168,15 @@ Details
 
    https://github.com/owncloud/client/issues/8938
    https://github.com/owncloud/client/pull/8939
+
+* Enhancement - Built-in AppImage self-updater: [#8923](https://github.com/owncloud/client/issues/8923)
+
+   In release 2.10, we introduced a preview on our future AppImage packaging for Linux
+   distributions. Now, these AppImages can self-update using a built-in libappimageupdate
+   based updater and ownCloud's update infrastructure.
+
+   https://github.com/owncloud/client/issues/8923
+   https://github.com/owncloud/client/pull/9376
 
 * Enhancement - Retry token refresh multiple times before logout: [#9245](https://github.com/owncloud/client/issues/9245)
 
