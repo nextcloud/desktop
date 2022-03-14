@@ -1735,12 +1735,12 @@ Please consider removing this folder from the account and adding it again.</sour
         <translation>&amp;Yeniden Başlat ve Güncelle</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="329"/>
+        <location filename="../src/gui/generalsettings.cpp" line="304"/>
         <source>You cannot disable autostart because system-wide autostart is enabled.</source>
         <translation>Otomatik başlatmayı kapatamazsınız, çünkü sistem bütününde aktif edildi.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="227"/>
+        <location filename="../src/gui/generalsettings.cpp" line="209"/>
         <source>Change update channel?</source>
         <translation>Güncelleme kanalı değiştirilsin mi?</translation>
     </message>
@@ -1755,7 +1755,7 @@ Please consider removing this folder from the account and adding it again.</sour
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="228"/>
+        <location filename="../src/gui/generalsettings.cpp" line="210"/>
         <source>The update channel determines which client updates will be offered for installation. The &quot;stable&quot; channel contains only upgrades that are considered reliable, while the versions in the &quot;beta&quot; channel may contain newer features and bugfixes, but have not yet been tested thoroughly.
 
 Note that this selects only what pool upgrades are taken from, and that there are no downgrades: So going back from the beta channel to the stable channel usually cannot be done immediately and means waiting for a stable version that is newer than the currently installed beta version.</source>
@@ -1764,22 +1764,22 @@ Note that this selects only what pool upgrades are taken from, and that there ar
 Bunun yalnızca hangi güncelleme kanalından alınacağını seçtiğini ve herhangi bir sürüm indirgeme olmadığını seçtiğini unutmayın. Bu nedenle beta kanalından kararlı kanala geri dönmek genellikle hemen yapılamaz ve bu, şu anda yüklü olan betadan daha yeni kararlı bir sürümü beklemek anlamına gelir.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="241"/>
+        <location filename="../src/gui/generalsettings.cpp" line="223"/>
         <source>Change update channel</source>
         <translation>Güncelleme kanalını değiştir</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="242"/>
+        <location filename="../src/gui/generalsettings.cpp" line="224"/>
         <source>Cancel</source>
         <translation>İptal</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="361"/>
+        <location filename="../src/gui/generalsettings.cpp" line="336"/>
         <source>unknown (%1)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="345"/>
+        <location filename="../src/gui/generalsettings.cpp" line="320"/>
         <source>(use default)</source>
         <translation type="unfinished"/>
     </message>

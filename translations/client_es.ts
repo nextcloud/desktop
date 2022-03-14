@@ -1738,12 +1738,12 @@ Por favor, considere eliminar esta carpeta desde la cuenta y añadirla de nuevo.
         <translation>&amp;Reiniciar &amp;&amp; Actualizar</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="329"/>
+        <location filename="../src/gui/generalsettings.cpp" line="304"/>
         <source>You cannot disable autostart because system-wide autostart is enabled.</source>
         <translation>No puede deshabilitar autoinicio porque el autoinicio del sistema principal está habilitado.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="227"/>
+        <location filename="../src/gui/generalsettings.cpp" line="209"/>
         <source>Change update channel?</source>
         <translation>¿Cambiar canal de actualizaciones?</translation>
     </message>
@@ -1758,7 +1758,7 @@ Por favor, considere eliminar esta carpeta desde la cuenta y añadirla de nuevo.
         <translation>Cambiar el idioma requiere reiniciar esta aplicación para que tenga efecto.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="228"/>
+        <location filename="../src/gui/generalsettings.cpp" line="210"/>
         <source>The update channel determines which client updates will be offered for installation. The &quot;stable&quot; channel contains only upgrades that are considered reliable, while the versions in the &quot;beta&quot; channel may contain newer features and bugfixes, but have not yet been tested thoroughly.
 
 Note that this selects only what pool upgrades are taken from, and that there are no downgrades: So going back from the beta channel to the stable channel usually cannot be done immediately and means waiting for a stable version that is newer than the currently installed beta version.</source>
@@ -1767,22 +1767,22 @@ Note that this selects only what pool upgrades are taken from, and that there ar
 Nota: esto solo selecciona el canal deseado y no permite una vueltas atrás. Volver atrás desde el canal beta al canal estable puede tardar un cierto tiempo, dado que los parches y las nuevas funcionalidades deben acabar siendo trasladadas al canal &quot;estable&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="241"/>
+        <location filename="../src/gui/generalsettings.cpp" line="223"/>
         <source>Change update channel</source>
         <translation>Cambiar canal de actualizaciones</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="242"/>
+        <location filename="../src/gui/generalsettings.cpp" line="224"/>
         <source>Cancel</source>
         <translation>Cancelar</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="361"/>
+        <location filename="../src/gui/generalsettings.cpp" line="336"/>
         <source>unknown (%1)</source>
         <translation>desconocido (%1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="345"/>
+        <location filename="../src/gui/generalsettings.cpp" line="320"/>
         <source>(use default)</source>
         <translation type="unfinished"/>
     </message>

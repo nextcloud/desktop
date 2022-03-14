@@ -1735,12 +1735,12 @@ Please consider removing this folder from the account and adding it again.</sour
         <translation>&amp;Επανεκκίνηση &amp;&amp; Ενημέρωση</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="329"/>
+        <location filename="../src/gui/generalsettings.cpp" line="304"/>
         <source>You cannot disable autostart because system-wide autostart is enabled.</source>
         <translation>Δεν μπορείτε να απενεργοποιήσετε την αυτόματη εκκίνηση επειδή είναι ενεργοποιημένη η αυτόματη εκκίνηση σε επίπεδο συστήματος.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="227"/>
+        <location filename="../src/gui/generalsettings.cpp" line="209"/>
         <source>Change update channel?</source>
         <translation>Αλλαγή καναλιού ενημέρωσης;</translation>
     </message>
@@ -1755,7 +1755,7 @@ Please consider removing this folder from the account and adding it again.</sour
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="228"/>
+        <location filename="../src/gui/generalsettings.cpp" line="210"/>
         <source>The update channel determines which client updates will be offered for installation. The &quot;stable&quot; channel contains only upgrades that are considered reliable, while the versions in the &quot;beta&quot; channel may contain newer features and bugfixes, but have not yet been tested thoroughly.
 
 Note that this selects only what pool upgrades are taken from, and that there are no downgrades: So going back from the beta channel to the stable channel usually cannot be done immediately and means waiting for a stable version that is newer than the currently installed beta version.</source>
@@ -1764,22 +1764,22 @@ Note that this selects only what pool upgrades are taken from, and that there ar
 Σημειώστε ότι αυτό επιλέγει μόνο από ποιες αναβαθμίσεις έχουν ληφθεί και ότι δεν υπάρχουν υποβαθμίσεις: Έτσι, η επιστροφή από το κανάλι beta στο σταθερό κανάλι συνήθως δεν μπορεί να γίνει αμέσως και σημαίνει αναμονή για μια σταθερή έκδοση που είναι νεότερη από την τρέχουσα beta έκδοση.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="241"/>
+        <location filename="../src/gui/generalsettings.cpp" line="223"/>
         <source>Change update channel</source>
         <translation>Αλλαγή καναλιού ενημέρωσης</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="242"/>
+        <location filename="../src/gui/generalsettings.cpp" line="224"/>
         <source>Cancel</source>
         <translation>Ακύρωση</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="361"/>
+        <location filename="../src/gui/generalsettings.cpp" line="336"/>
         <source>unknown (%1)</source>
         <translation>άγνωστo (%1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="345"/>
+        <location filename="../src/gui/generalsettings.cpp" line="320"/>
         <source>(use default)</source>
         <translation type="unfinished"/>
     </message>
