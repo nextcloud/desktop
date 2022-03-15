@@ -24,7 +24,7 @@
     <message>
         <location filename="../src/gui/commonstrings.cpp" line="48"/>
         <source>%n Filter(s)</source>
-        <translation type="unfinished"/>
+        <translation>%n Filtër(a)</translation>
     </message>
 </context>
 <context>

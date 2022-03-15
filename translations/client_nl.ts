@@ -9,12 +9,12 @@
     <message>
         <location filename="../src/gui/commonstrings.cpp" line="33"/>
         <source>Show in %1</source>
-        <translation type="unfinished"/>
+        <translation>Toon in %1</translation>
     </message>
     <message>
         <location filename="../src/gui/commonstrings.cpp" line="38"/>
         <source>Show in web browser</source>
-        <translation type="unfinished"/>
+        <translation>Toon in Browser</translation>
     </message>
     <message>
         <location filename="../src/gui/commonstrings.cpp" line="43"/>
@@ -24,7 +24,7 @@
     <message>
         <location filename="../src/gui/commonstrings.cpp" line="48"/>
         <source>%n Filter(s)</source>
-        <translation type="unfinished"/>
+        <translation>%n Filter(s)</translation>
     </message>
 </context>
 <context>
@@ -130,7 +130,7 @@
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="175"/>
         <source>Could not remove folder</source>
-        <translation type="unfinished"/>
+        <translation>Map kan niet verwijderd worden</translation>
     </message>
 </context>
 <context>
@@ -1025,7 +1025,7 @@ File synchronization desktop utility.</source>
     <message>
         <location filename="../src/gui/folder.cpp" line="206"/>
         <source>%1 is not writable.</source>
-        <translation type="unfinished"/>
+        <translation>%1 is niet schrijfbaar.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="473"/>
@@ -1407,7 +1407,7 @@ Please consider removing this folder from the account and adding it again.</sour
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="272"/>
         <source>Local folder: %1</source>
-        <translation type="unfinished"/>
+        <translation>Lokale map: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="992"/>
@@ -1776,7 +1776,7 @@ Let op dat dit alleen selecteert uit welke pool upgrades worden gehaald, en dat 
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="336"/>
         <source>unknown (%1)</source>
-        <translation type="unfinished"/>
+        <translation>onbekend (%1)</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="320"/>
@@ -1997,7 +1997,7 @@ Let op dat het gebruik van command line logopties deze instelling zullen oversch
     <message>
         <location filename="../src/gui/models/models.cpp" line="93"/>
         <source>%1 Filter:</source>
-        <translation type="unfinished"/>
+        <translation>%1 Filter:</translation>
     </message>
     <message>
         <location filename="../src/gui/models/models.cpp" line="114"/>
@@ -2007,12 +2007,12 @@ Let op dat het gebruik van command line logopties deze instelling zullen oversch
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="258"/>
         <source>Reset Filters</source>
-        <translation type="unfinished"/>
+        <translation>Reset Filters</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="349"/>
         <source>Status Filter:</source>
-        <translation type="unfinished"/>
+        <translation>Status Filter:</translation>
     </message>
 </context>
 <context>
@@ -2249,7 +2249,7 @@ Let op dat het gebruik van command line logopties deze instelling zullen oversch
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="553"/>
         <source>Oauth2 Error</source>
-        <translation type="unfinished"/>
+        <translation>OAuth2 Fout</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="554"/>
@@ -2706,7 +2706,7 @@ Dit is een nieuwe, experimentele modus. Als je besluit deze te gebruiken, meld d
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1047"/>
         <source>%1 the folder is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>%1 de folder is op dit moment in gebruik</translation>
     </message>
 </context>
 <context>
