@@ -44,6 +44,11 @@ ConnectionValidator::ConnectionValidator(AccountPtr account, QObject *parent)
 {
 }
 
+void ConnectionValidator::setClearCookies(bool clearCookies)
+{
+    _clearCookies = clearCookies;
+}
+
 void ConnectionValidator::checkServer()
 {
     _updateConfig = false;
@@ -93,6 +98,7 @@ void ConnectionValidator::systemProxyLookupDone(const QNetworkProxy &proxy)
 void ConnectionValidator::slotCheckServerAndAuth()
 {
     CheckServerJob *checkJob = new CheckServerJob(_account, this);
+    checkJob->setClearCookies(_clearCookies);
     checkJob->setTimeout(timeoutToUse);
     connect(checkJob, &CheckServerJob::instanceFound, this, &ConnectionValidator::slotStatusFound);
     connect(checkJob, &CheckServerJob::instanceNotFound, this, &ConnectionValidator::slotNoStatusFound);
@@ -101,7 +107,6 @@ void ConnectionValidator::slotCheckServerAndAuth()
         _errors.append(tr("timeout"));
         reportResult(Timeout);
     });
-    Q_EMIT aboutToStart();
     checkJob->start();
 }
 

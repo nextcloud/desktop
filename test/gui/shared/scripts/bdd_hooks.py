@@ -28,7 +28,8 @@ def hook(context):
     CONFIG_ENV_MAP = {
         'localBackendUrl': 'BACKEND_HOST',
         'secureLocalBackendUrl': 'SECURE_BACKEND_HOST',
-        'clientSyncTimeout': 'CLIENT_SYNC_TIMEOUT',
+        'maxSyncTimeout': 'MAX_SYNC_TIMEOUT',
+        'minSyncTimeout': 'MIN_SYNC_TIMEOUT',
         'middlewareUrl': 'MIDDLEWARE_URL',
         'clientConfigFile': 'CLIENT_LOG_FILE',
         'clientRootSyncPath': 'CLIENT_ROOT_SYNC_PATH',
@@ -37,7 +38,8 @@ def hook(context):
     DEFAULT_CONFIG = {
         'localBackendUrl': 'https://localhost:9200/',
         'secureLocalBackendUrl': 'https://localhost:9200/',
-        'clientSyncTimeout': 10,
+        'maxSyncTimeout': 10,
+        'minSyncTimeout': 5,
         'middlewareUrl': 'http://localhost:3000/',
         'clientConfigFile': '-',
         'clientRootSyncPath': '/tmp/client-bdd/',
@@ -62,7 +64,7 @@ def hook(context):
     for key, value in context.userData.items():
         if value == '':
             context.userData[key] = DEFAULT_CONFIG[key]
-        elif key == 'clientSyncTimeout':
+        elif key == 'maxSyncTimeout':
             context.userData[key] = builtins.int(value)
         elif key == 'clientRootSyncPath':
             # make sure there is always one trailing slash

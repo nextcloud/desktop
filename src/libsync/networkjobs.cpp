@@ -38,6 +38,8 @@
 
 #include "creds/abstractcredentials.h"
 #include "creds/httpcredentials.h"
+#include "theme.h"
+
 
 using namespace std::chrono_literals;
 
@@ -396,7 +398,6 @@ const QHash<QString, qint64> &LsColJob::sizes() const
 
 CheckServerJob::CheckServerJob(AccountPtr account, QObject *parent)
     : AbstractNetworkJob(account, account->url(), QStringLiteral("status.php"), parent)
-    , _subdirFallback(false)
 {
     setIgnoreCredentialFailure(true);
     setAuthenticationJob(true);
@@ -417,8 +418,16 @@ void CheckServerJob::start()
     req.setAttribute(QNetworkRequest::RedirectPolicyAttribute, QNetworkRequest::NoLessSafeRedirectPolicy);
     req.setRawHeader(QByteArrayLiteral("OC-Connection-Validator"), QByteArrayLiteral("desktop"));
     req.setMaximumRedirectsAllowed(_maxRedirectsAllowed);
+    if (_clearCookies && Theme::instance()->connectionValidatorClearCookies()) {
+        _account->clearCookieJar();
+    }
     sendRequest("GET", req);
     AbstractNetworkJob::start();
+}
+
+void CheckServerJob::setClearCookies(bool clearCookies)
+{
+    _clearCookies = clearCookies;
 }
 
 QString CheckServerJob::version(const QJsonObject &info)

@@ -15,23 +15,24 @@
 #include <QtGui>
 #include <QtWidgets>
 
-#include "issueswidget.h"
+#include "account.h"
+#include "accountmanager.h"
+#include "accountstate.h"
+#include "common/syncjournalfilerecord.h"
+#include "commonstrings.h"
 #include "configfile.h"
-#include "syncresult.h"
-#include "syncengine.h"
-#include "logger.h"
-#include "theme.h"
-#include "folderman.h"
-#include "syncfileitem.h"
+#include "elidedlabel.h"
 #include "folder.h"
+#include "folderman.h"
+#include "issueswidget.h"
+#include "logger.h"
 #include "models/models.h"
 #include "openfilemanager.h"
 #include "protocolwidget.h"
-#include "accountstate.h"
-#include "account.h"
-#include "accountmanager.h"
-#include "common/syncjournalfilerecord.h"
-#include "elidedlabel.h"
+#include "syncengine.h"
+#include "syncfileitem.h"
+#include "syncresult.h"
+#include "theme.h"
 
 
 #include "ui_issueswidget.h"
@@ -49,13 +50,13 @@ bool persistsUntilLocalDiscovery(const OCC::ProtocolItem &data)
 }
 namespace OCC {
 
-class SyncFileItemStatusSetSortFilterProxyModel : public QSortFilterProxyModel
+class SyncFileItemStatusSetSortFilterProxyModel : public SignalledQSortFilterProxyModel
 {
 public:
     using StatusSet = std::array<bool, SyncFileItem::StatusCount>;
 
     explicit SyncFileItemStatusSetSortFilterProxyModel(QObject *parent = nullptr)
-        : QSortFilterProxyModel(parent)
+        : SignalledQSortFilterProxyModel(parent)
     {
         resetFilter();
     }
@@ -74,16 +75,13 @@ public:
         if (_filter != newFilter) {
             _filter = newFilter;
             invalidateFilter();
+            emit filterChanged();
         }
     }
 
     void resetFilter()
     {
-        StatusSet defaultFilter;
-        defaultFilter.fill(true);
-        defaultFilter[SyncFileItem::NoStatus] = false;
-        defaultFilter[SyncFileItem::Success] = false;
-        setFilter(defaultFilter);
+        setFilter(defaultFilter());
     }
 
     bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const override
@@ -97,6 +95,47 @@ public:
         }
 
         return _filter[static_cast<SyncFileItem::Status>(sourceData)];
+    }
+
+    int filterCount()
+    {
+        StatusSet defaultSet = defaultFilter();
+        OC_ASSERT(defaultSet.size() == _filter.size());
+
+        int count = 0;
+        // The number of filters is the number of items in the current filter that differ from the default set.
+        for (size_t i = 0, ei = defaultSet.size(); i != ei; ++i) {
+            // All errors are shown as a single filter, and they are all turned on or off together.
+            // So to show them as 1 filter, ignore the first three errors...
+            switch (i) {
+            case SyncFileItem::Status::FatalError:
+                Q_FALLTHROUGH();
+            case SyncFileItem::Status::NormalError:
+                Q_FALLTHROUGH();
+            case SyncFileItem::Status::SoftError:
+                break;
+
+                // ... but *do* count the last one ...
+            case SyncFileItem::Status::DetailError:
+                Q_FALLTHROUGH();
+            default:
+                // ... just like the other status items:
+                if (defaultSet[i] != _filter[i]) {
+                    count += 1;
+                }
+            }
+        }
+        return count;
+    }
+
+private:
+    static StatusSet defaultFilter()
+    {
+        StatusSet defaultSet;
+        defaultSet.fill(true);
+        defaultSet[SyncFileItem::NoStatus] = false;
+        defaultSet[SyncFileItem::Success] = false;
+        return defaultSet;
     }
 
 private:
@@ -141,9 +180,11 @@ IssuesWidget::IssuesWidget(QWidget *parent)
     });
 
     _model = new ProtocolItemModel(20000, true, this);
-    _sortModel = new QSortFilterProxyModel(this);
+    _sortModel = new SignalledQSortFilterProxyModel(this);
+    connect(_sortModel, &SignalledQSortFilterProxyModel::filterChanged, this, &IssuesWidget::filterDidChange);
     _sortModel->setSourceModel(_model);
     _statusSortModel = new SyncFileItemStatusSetSortFilterProxyModel(this);
+    connect(_statusSortModel, &SignalledQSortFilterProxyModel::filterChanged, this, &IssuesWidget::filterDidChange);
     _statusSortModel->setSourceModel(_sortModel);
     _statusSortModel->setSortRole(Qt::DisplayRole); // Sorting should be done based on the text in the column cells, but...
     _statusSortModel->setFilterRole(Models::UnderlyingDataRole); // ... filtering should be done on the underlying enum value.
@@ -279,6 +320,18 @@ void IssuesWidget::slotItemCompleted(const QString &folder, const SyncFileItemPt
     if (!item->showInIssuesTab())
         return;
     _model->addProtocolItem(ProtocolItem { folder, item });
+}
+
+void IssuesWidget::filterDidChange()
+{
+    // We have two filters here: the filter by status (which can have multiple items checked *off*...
+    int filterCount = _statusSortModel->filterCount();
+    // .. and the filter on the account name, which can only be 1 item checked:
+    if (!_sortModel->filterRegExp().isEmpty()) {
+        filterCount += 1;
+    }
+
+    _ui->_filterButton->setText(CommonStrings::filterButtonText(filterCount));
 }
 
 void IssuesWidget::slotItemContextMenu()

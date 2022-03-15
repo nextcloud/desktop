@@ -569,6 +569,10 @@ void PropagateUploadFileCommon::finalize()
         return;
     }
 
+
+#ifdef Q_OS_WIN
+    m_fileLock.close();
+#endif
     // Update the database entry
     const auto result = propagator()->updateMetadata(*_item);
     if (!result) {

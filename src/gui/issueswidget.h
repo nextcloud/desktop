@@ -21,6 +21,7 @@
 #include <QTimer>
 
 #include "models/expandingheaderview.h"
+#include "models/models.h"
 #include "models/protocolitemmodel.h"
 #include "owncloudgui.h"
 #include "progressdispatcher.h"
@@ -52,6 +53,7 @@ public:
 public slots:
     void slotProgressInfo(const QString &folder, const ProgressInfo &progress);
     void slotItemCompleted(const QString &folder, const SyncFileItemPtr &item);
+    void filterDidChange();
 
 signals:
     void issueCountUpdated(int);
@@ -65,7 +67,7 @@ private:
     std::function<void()> addStatusFilter(QMenu *menu);
 
     ProtocolItemModel *_model;
-    QSortFilterProxyModel *_sortModel;
+    SignalledQSortFilterProxyModel *_sortModel;
     SyncFileItemStatusSetSortFilterProxyModel *_statusSortModel;
 
     Ui::IssuesWidget *_ui;

@@ -28,6 +28,7 @@ class FolderStatusDelegate : public QStyledItemDelegate
 public:
     FolderStatusDelegate();
 
+    // TODO: don't use the role but columns...
     enum datarole { FolderAliasRole = Qt::UserRole + 100,
         HeaderRole,
         FolderPathRole, // for a SubFolder it's the complete path
@@ -47,8 +48,7 @@ public:
 
         AddButton, // 1 = enabled; 2 = disabled
         FolderSyncText,
-        DataRoleCount,
-
+        
         IsReady // boolean
     };
     void paint(QPainter *, const QStyleOptionViewItem &, const QModelIndex &) const override;

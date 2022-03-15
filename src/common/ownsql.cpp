@@ -17,26 +17,35 @@
  */
 
 #include <QDateTime>
-#include <QLoggingCategory>
-#include <QString>
+#include <QDir>
 #include <QFile>
 #include <QFileInfo>
-#include <QDir>
+#include <QLoggingCategory>
+#include <QString>
 
-#include "ownsql.h"
-#include "common/utility.h"
 #include "common/asserts.h"
+#include "common/utility.h"
+#include "ownsql.h"
+
 #include <sqlite3.h>
 
-#define SQLITE_SLEEP_TIME_USEC 100000
-#define SQLITE_REPEAT_COUNT 20
+#include <chrono>
+#include <thread>
 
-#define SQLITE_DO(A)                                         \
-    if (1) {                                                 \
-        _errId = (A);                                        \
-        if (_errId != SQLITE_OK && _errId != SQLITE_DONE && _errId != SQLITE_ROW) {  \
-            _error = QString::fromUtf8(sqlite3_errmsg(_db)); \
-        }                                                    \
+using namespace std::chrono_literals;
+
+namespace {
+constexpr auto SQLITE_SLEEP_TIME = 500ms;
+constexpr int SQLITE_REPEAT_COUNT = 20;
+
+}
+
+#define SQLITE_DO(A)                                                                \
+    if (1) {                                                                        \
+        _errId = (A);                                                               \
+        if (_errId != SQLITE_OK && _errId != SQLITE_DONE && _errId != SQLITE_ROW) { \
+            _error = QString::fromUtf8(sqlite3_errmsg(_db));                        \
+        }                                                                           \
     }
 
 namespace OCC {
@@ -132,28 +141,29 @@ bool SqlDatabase::openOrCreateReadWrite(const QString &filename)
 
     auto checkResult = checkDb();
     if (checkResult != CheckDbResult::Ok) {
+        close();
         if (checkResult == CheckDbResult::CantPrepare) {
             // When disk space is low, preparing may fail even though the db is fine.
             // Typically CANTOPEN or IOERR.
             qint64 freeSpace = Utility::freeDiskSpace(QFileInfo(filename).dir().absolutePath());
             if (freeSpace != -1 && freeSpace < 1000000) {
                 qCWarning(lcSql) << "Can't prepare consistency check and disk space is low:" << freeSpace;
-                close();
-                return false;
-            }
-
-            // Even when there's enough disk space, it might very well be that the
-            // file is on a read-only filesystem and can't be opened because of that.
-            if (_errId == SQLITE_CANTOPEN) {
+            } else if (_errId == SQLITE_CANTOPEN) {
+                // Even when there's enough disk space, it might very well be that the
+                // file is on a read-only filesystem and can't be opened because of that.
                 qCWarning(lcSql) << "Can't open db to prepare consistency check, aborting";
-                close();
-                return false;
+            } else if (_errId == SQLITE_LOCKED || _errId == SQLITE_BUSY) {
+                qCWarning(lcSql) << "Can't open db to prepare consistency check, the db is locked aborting" << _errId << _error;
             }
+            return false;
         }
 
         qCCritical(lcSql) << "Consistency check failed, removing broken db" << filename;
-        close();
-        QFile::remove(filename);
+        QFile fileToRemove(filename);
+        if (!fileToRemove.remove()) {
+            qCCritical(lcSql) << "Failed to remove broken db" << filename << ":" << fileToRemove.errorString();
+            return false;
+        }
 
         return openHelper(filename, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE);
     }
@@ -254,20 +264,24 @@ int SqlQuery::prepare(const QByteArray &sql, bool allow_failure)
         finish();
     }
     if (!_sql.isEmpty()) {
-        int n = 0;
-        int rc;
-        do {
+        int rc = {};
+        for (int n = 0; n < SQLITE_REPEAT_COUNT; ++n) {
+            qCDebug(lcSql) << "SQL prepare" << _sql << "Try:" << n;
             rc = sqlite3_prepare_v2(_db, _sql.constData(), -1, &_stmt, nullptr);
-            if ((rc == SQLITE_BUSY) || (rc == SQLITE_LOCKED)) {
-                n++;
-                OCC::Utility::usleep(SQLITE_SLEEP_TIME_USEC);
+            if (rc != SQLITE_OK) {
+                qCWarning(lcSql) << "SQL prepare failed" << _sql << QString::fromUtf8(sqlite3_errmsg(_db));
+                if ((rc == SQLITE_BUSY) || (rc == SQLITE_LOCKED)) {
+                    std::this_thread::sleep_for(SQLITE_SLEEP_TIME);
+                    continue;
+                }
             }
-        } while ((n < SQLITE_REPEAT_COUNT) && ((rc == SQLITE_BUSY) || (rc == SQLITE_LOCKED)));
+            break;
+        }
         _errId = rc;
 
         if (_errId != SQLITE_OK) {
             _error = QString::fromUtf8(sqlite3_errmsg(_db));
-            qCWarning(lcSql) << "Sqlite prepare statement error:" << _error << "in" << _sql;
+            qCWarning(lcSql) << "Sqlite prepare statement error:" << _errId << _error << "in" << _sql;
             OC_ENFORCE_X(allow_failure, "SQLITE Prepare error");
         } else {
             OC_ASSERT(_stmt);
@@ -298,8 +312,6 @@ bool SqlQuery::isPragma()
 
 bool SqlQuery::exec()
 {
-    qCDebug(lcSql) << "SQL exec" << _sql;
-
     if (!_stmt) {
         qCWarning(lcSql) << "Can't exec query, statement unprepared.";
         return false;
@@ -307,18 +319,19 @@ bool SqlQuery::exec()
 
     // Don't do anything for selects, that is how we use the lib :-|
     if (!isSelect() && !isPragma()) {
-        int rc, n = 0;
-        do {
+        int rc = 0;
+        for (int n = 0; n < SQLITE_REPEAT_COUNT; ++n) {
+            qCDebug(lcSql) << "SQL exec" << _sql << "Try:" << n;
             rc = sqlite3_step(_stmt);
-            if (rc == SQLITE_LOCKED) {
-                rc = sqlite3_reset(_stmt); /* This will also return SQLITE_LOCKED */
-                n++;
-                OCC::Utility::usleep(SQLITE_SLEEP_TIME_USEC);
-            } else if (rc == SQLITE_BUSY) {
-                OCC::Utility::usleep(SQLITE_SLEEP_TIME_USEC);
-                n++;
+            if (rc != SQLITE_DONE || rc != SQLITE_ROW) {
+                qCWarning(lcSql) << "SQL exec failed" << _sql << QString::fromUtf8(sqlite3_errmsg(_db));
+                if (rc == SQLITE_LOCKED || rc == SQLITE_BUSY) {
+                    std::this_thread::sleep_for(SQLITE_SLEEP_TIME);
+                    continue;
+                }
+                break;
             }
-        } while ((n < SQLITE_REPEAT_COUNT) && ((rc == SQLITE_BUSY) || (rc == SQLITE_LOCKED)));
+        }
         _errId = rc;
 
         if (_errId != SQLITE_DONE && _errId != SQLITE_ROW) {
@@ -343,13 +356,10 @@ auto SqlQuery::next() -> NextResult
 {
     const bool firstStep = !sqlite3_stmt_busy(_stmt);
 
-    int n = 0;
-    forever {
+    for (int n = 0; n < SQLITE_REPEAT_COUNT; ++n) {
         _errId = sqlite3_step(_stmt);
-        if (n < SQLITE_REPEAT_COUNT && firstStep && (_errId == SQLITE_LOCKED || _errId == SQLITE_BUSY)) {
-            sqlite3_reset(_stmt); // not necessary after sqlite version 3.6.23.1
-            n++;
-            OCC::Utility::usleep(SQLITE_SLEEP_TIME_USEC);
+        if (firstStep && (_errId == SQLITE_LOCKED || _errId == SQLITE_BUSY)) {
+            std::this_thread::sleep_for(SQLITE_SLEEP_TIME);
         } else {
             break;
         }

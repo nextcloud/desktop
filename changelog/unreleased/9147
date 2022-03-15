@@ -1,0 +1,7 @@
+Bugfix: Fix crash if a database error occurs
+
+We no longer crash if a database error occurs on startup,
+instead the folder will enter an error sate similar to the case
+that the folder does not exist.
+
+https://github.com/owncloud/client/issues/9147

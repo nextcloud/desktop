@@ -26,6 +26,8 @@
 #include "account.h"
 #include "activitydata.h"
 
+#include "models/models.h"
+
 #include "ui_activitywidget.h"
 
 class QPushButton;
@@ -111,7 +113,7 @@ private:
     int _notificationRequestsRunning;
 
     ActivityListModel *_model;
-    QSortFilterProxyModel *_sortModel;
+    SignalledQSortFilterProxyModel *_sortModel;
     QVBoxLayout *_notificationsLayout;
 };
 

@@ -323,4 +323,31 @@ Utility::NtfsPermissionLookupRAII::~NtfsPermissionLookupRAII()
     qt_ntfs_permission_lookup--;
 }
 
+
+Utility::Handle::Handle(HANDLE h, std::function<void(HANDLE)> &&close)
+    : _handle(h)
+    , _close(std::move(close))
+{
+}
+
+Utility::Handle::Handle(HANDLE h)
+    : _handle(h)
+    , _close(&CloseHandle)
+{
+}
+
+Utility::Handle::~Handle()
+{
+    close();
+}
+
+void Utility::Handle::close()
+{
+    if (_handle != INVALID_HANDLE_VALUE) {
+        _close(_handle);
+        _handle = INVALID_HANDLE_VALUE;
+    }
+}
+
+
 } // namespace OCC

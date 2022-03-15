@@ -22,6 +22,17 @@
 
 #include <functional>
 
+OCC::SignalledQSortFilterProxyModel::SignalledQSortFilterProxyModel(QObject *parent)
+    : QSortFilterProxyModel(parent)
+{
+}
+
+void OCC::SignalledQSortFilterProxyModel::setFilterFixedStringSignalled(const QString &pattern)
+{
+    setFilterFixedString(pattern);
+    emit filterChanged();
+}
+
 QString OCC::Models::formatSelection(const QModelIndexList &items, int dataRole)
 {
     if (items.isEmpty()) {
@@ -77,9 +88,9 @@ QString OCC::Models::formatSelection(const QModelIndexList &items, int dataRole)
     return out;
 }
 
-std::function<void()> OCC::Models::addFilterMenuItems(QMenu *menu, const QStringList &candidates, QSortFilterProxyModel *model, int column, const QString &columnName, int role)
+std::function<void()> OCC::Models::addFilterMenuItems(QMenu *menu, const QStringList &candidates, SignalledQSortFilterProxyModel *model, int column, const QString &columnName, int role)
 {
-    menu->addAction(qApp->translate("OCC::Models", "%1 Filter:").arg(columnName))->setEnabled(false);
+    menu->addAction(QApplication::translate("OCC::Models", "%1 Filter:").arg(columnName))->setEnabled(false);
 
     auto filterGroup = new QActionGroup(menu);
     filterGroup->setExclusive(true);
@@ -89,7 +100,7 @@ std::function<void()> OCC::Models::addFilterMenuItems(QMenu *menu, const QString
         auto action = menu->addAction(s, menu, [=]() {
             model->setFilterRole(role);
             model->setFilterKeyColumn(column);
-            model->setFilterFixedString(filter);
+            model->setFilterFixedStringSignalled(filter);
         });
         action->setCheckable(true);
         if (currentFilter == filter) {
@@ -100,7 +111,7 @@ std::function<void()> OCC::Models::addFilterMenuItems(QMenu *menu, const QString
     };
 
 
-    auto noFilter = addAction(QApplication::translate("OCC::Models", "No filter"), QString());
+    auto noFilter = addAction(QApplication::translate("OCC::Models", "All"), QString());
 
     for (const auto &c : candidates) {
         addAction(c, c);

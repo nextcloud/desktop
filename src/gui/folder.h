@@ -214,6 +214,11 @@ public:
      */
     bool isReady() const;
 
+    bool hasSetupError() const
+    {
+        return _syncResult.status() == SyncResult::SetupError;
+    }
+
     /**
      *  Returns true if the folder needs sync poll interval wise, and can
      *  sync due to its internal state

@@ -194,24 +194,26 @@ void FolderMan::unloadFolder(Folder *f)
 {
     Q_ASSERT(f);
 
+    _folderMap.remove(f->alias());
     _socketApi->slotUnregisterPath(f->alias());
 
-    _folderMap.remove(f->alias());
 
-    disconnect(f, &Folder::syncStarted,
-        this, &FolderMan::slotFolderSyncStarted);
-    disconnect(f, &Folder::syncFinished,
-        this, &FolderMan::slotFolderSyncFinished);
-    disconnect(f, &Folder::syncStateChange,
-        this, &FolderMan::slotForwardFolderSyncStateChange);
-    disconnect(f, &Folder::syncPausedChanged,
-        this, &FolderMan::slotFolderSyncPaused);
-    disconnect(&f->syncEngine().syncFileStatusTracker(), &SyncFileStatusTracker::fileStatusChanged,
-        _socketApi.data(), &SocketApi::broadcastStatusPushMessage);
-    disconnect(f, &Folder::watchedFileChangedExternally,
-        &f->syncEngine().syncFileStatusTracker(), &SyncFileStatusTracker::slotPathTouched);
+    if (!f->hasSetupError()) {
+        disconnect(f, &Folder::syncStarted,
+            this, &FolderMan::slotFolderSyncStarted);
+        disconnect(f, &Folder::syncFinished,
+            this, &FolderMan::slotFolderSyncFinished);
+        disconnect(f, &Folder::syncStateChange,
+            this, &FolderMan::slotForwardFolderSyncStateChange);
+        disconnect(f, &Folder::syncPausedChanged,
+            this, &FolderMan::slotFolderSyncPaused);
+        disconnect(&f->syncEngine().syncFileStatusTracker(), &SyncFileStatusTracker::fileStatusChanged,
+            _socketApi.data(), &SocketApi::broadcastStatusPushMessage);
+        disconnect(f, &Folder::watchedFileChangedExternally,
+            &f->syncEngine().syncFileStatusTracker(), &SyncFileStatusTracker::slotPathTouched);
 
-    f->syncEngine().disconnect(f);
+        f->syncEngine().disconnect(f);
+    }
 }
 
 void FolderMan::unloadAndDeleteAllFolders()
@@ -1125,18 +1127,20 @@ Folder *FolderMan::addFolderInternal(
     }
 
     // See matching disconnects in unloadFolder().
-    connect(folder, &Folder::syncStarted, this, &FolderMan::slotFolderSyncStarted);
-    connect(folder, &Folder::syncFinished, this, &FolderMan::slotFolderSyncFinished);
-    connect(folder, &Folder::syncStateChange, this, &FolderMan::slotForwardFolderSyncStateChange);
-    connect(folder, &Folder::syncPausedChanged, this, &FolderMan::slotFolderSyncPaused);
-    connect(folder, &Folder::canSyncChanged, this, &FolderMan::slotFolderCanSyncChanged);
-    connect(&folder->syncEngine().syncFileStatusTracker(), &SyncFileStatusTracker::fileStatusChanged,
-        _socketApi.data(), &SocketApi::broadcastStatusPushMessage);
-    connect(folder, &Folder::watchedFileChangedExternally,
-        &folder->syncEngine().syncFileStatusTracker(), &SyncFileStatusTracker::slotPathTouched);
+    if (!folder->hasSetupError()) {
+        connect(folder, &Folder::syncStarted, this, &FolderMan::slotFolderSyncStarted);
+        connect(folder, &Folder::syncFinished, this, &FolderMan::slotFolderSyncFinished);
+        connect(folder, &Folder::syncStateChange, this, &FolderMan::slotForwardFolderSyncStateChange);
+        connect(folder, &Folder::syncPausedChanged, this, &FolderMan::slotFolderSyncPaused);
+        connect(folder, &Folder::canSyncChanged, this, &FolderMan::slotFolderCanSyncChanged);
+        connect(&folder->syncEngine().syncFileStatusTracker(), &SyncFileStatusTracker::fileStatusChanged,
+            _socketApi.data(), &SocketApi::broadcastStatusPushMessage);
+        connect(folder, &Folder::watchedFileChangedExternally,
+            &folder->syncEngine().syncFileStatusTracker(), &SyncFileStatusTracker::slotPathTouched);
 
-    folder->registerFolderWatcher();
-    registerFolderWithSocketApi(folder);
+        folder->registerFolderWatcher();
+        registerFolderWithSocketApi(folder);
+    }
     return folder;
 }
 

@@ -273,6 +273,59 @@ OCSYNC_EXPORT Q_DECLARE_LOGGING_CATEGORY(lcUtility)
         Q_DISABLE_COPY(NtfsPermissionLookupRAII);
     };
 
+
+    class OCSYNC_EXPORT Handle
+    {
+    public:
+        /**
+         * A RAAI for Windows Handles
+         */
+        Handle() = default;
+        explicit Handle(HANDLE h);
+        explicit Handle(HANDLE h, std::function<void(HANDLE)> &&close);
+
+        Handle(const Handle &) = delete;
+        Handle &operator=(const Handle &) = delete;
+
+        Handle(Handle &&other)
+        {
+            std::swap(_handle, other._handle);
+            std::swap(_close, other._close);
+        }
+
+        Handle &operator=(Handle &&other)
+        {
+            if (this != &other) {
+                std::swap(_handle, other._handle);
+                std::swap(_close, other._close);
+            }
+            return *this;
+        }
+
+        ~Handle();
+
+        HANDLE &handle()
+        {
+            return _handle;
+        }
+
+        void close();
+
+        explicit operator bool() const
+        {
+            return _handle != INVALID_HANDLE_VALUE;
+        }
+
+        operator HANDLE() const
+        {
+            return _handle;
+        }
+
+    private:
+        HANDLE _handle = INVALID_HANDLE_VALUE;
+        std::function<void(HANDLE)> _close;
+    };
+
 #endif
 
     template <class E>

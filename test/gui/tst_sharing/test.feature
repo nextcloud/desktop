@@ -200,6 +200,7 @@ Feature: Sharing
         And user "Brian" has set up a client with default settings
         When the user overwrites the file "textfile.txt" with content "overwrite file in the root"
         And the user overwrites the file "simple-folder/textfile.txt" with content "overwrite file inside a folder"
+        And the user waits for the files to sync
         Then as "Brian" the file "simple-folder/textfile.txt" on the server should have the content "overwrite file inside a folder"
         And as "Brian" the file "textfile.txt" on the server should have the content "overwrite file in the root"
         And as "Alice" the file "simple-folder/textfile.txt" on the server should have the content "overwrite file inside a folder"
@@ -216,6 +217,7 @@ Feature: Sharing
         And user "Brian" has set up a client with default settings
         When the user tries to overwrite the file "Parent/textfile.txt" with content "overwrite file inside a folder"
         And the user tries to overwrite the file "textfile.txt" with content "overwrite file in the root"
+        And the user waits for the files to sync
         Then as "Brian" the file "Parent/textfile.txt" on the server should have the content "file inside a folder"
         And as "Brian" the file "textfile.txt" on the server should have the content "file in the root"
         And as "Alice" the file "Parent/textfile.txt" on the server should have the content "file inside a folder"
@@ -230,8 +232,7 @@ Feature: Sharing
         And user "Alice" has shared file "textfile.txt" on the server with user "Brian" with "all" permissions
         And user "Alice" has shared folder "FOLDER" on the server with user "Brian" with "all" permissions
         And user "Brian" has set up a client with default settings
-        When the user waits for the files to sync
-        And the user adds another account with
+        When the user adds another account with
             | server   | %local_server% |
             | user     | Alice          |
             | password | 1234           |
@@ -240,6 +241,7 @@ Feature: Sharing
         And the user removes permissions "edit" for user "Brian Murphy" of resource "FOLDER" using the client-UI
         And user "Brian" tries to overwrite the file "textfile.txt" with content "overwrite ownCloud test text file"
         And user "Brian" tries to overwrite the file "FOLDER/simple.txt" with content "overwrite some content"
+        And the user waits for the files to sync
         Then as "Brian" the file "textfile.txt" on the server should have the content "ownCloud test text file"
         And as "Brian" the file "FOLDER/simple.txt" on the server should have the content "some content"
         And as "Alice" the file "textfile.txt" on the server should have the content "ownCloud test text file"
@@ -251,7 +253,7 @@ Feature: Sharing
         And user "Brian" has been created on the server with default attributes and without skeleton files
         And user "Alice" has shared folder "Parent" on the server with user "Brian" with "all" permissions
         And user "Brian" has set up a client with default settings
-        When the user waits for folder "Parent" to be synced
+        When the user waits for the files to sync
         And user "Brian" creates a file "Parent/localFile.txt" with the following content inside the sync folder
             """
             test content
@@ -270,13 +272,14 @@ Feature: Sharing
         And user "Brian" has been created on the server with default attributes and without skeleton files
         And user "Alice" has shared folder "Parent" on the server with user "Brian" with "read" permissions
         And user "Brian" has set up a client with default settings
-        When the user waits for folder "Parent" to be synced
+        When the user waits for the files to sync
         And user "Brian" creates a file "Parent/localFile.txt" with the following content inside the sync folder
             """
             test content
             """
         And user "Brian" creates a folder "Parent/localFolder" inside the sync folder
-        And the user waits for the files to sync
+        And the user waits for file "Parent/localFile.txt" to have sync error
+        And the user waits for folder "Parent/localFolder" to have sync error
         Then as "Brian" file "Parent/localFile.txt" should not exist on the server
         And as "Brian" folder "Parent/localFolder" should not exist on the server
         And as "Alice" file "Parent/localFile.txt" should not exist on the server
@@ -290,8 +293,7 @@ Feature: Sharing
         And user "Alice" has shared file "textfile.txt" on the server with user "Brian" with "all" permissions
         And user "Alice" has shared file "FOLDER" on the server with user "Brian" with "all" permissions
         And user "Brian" has set up a client with default settings
-        When the user waits for folder "FOLDER" to be synced
-        When the user waits for file "textfile.txt" to be synced
+        When the user waits for the files to sync
         And the user renames a file "textfile.txt" to "lorem.txt"
         And the user renames a folder "FOLDER" to "PARENT"
         And the user waits for folder "PARENT" to be synced
@@ -332,8 +334,7 @@ Feature: Sharing
         And user "Alice" has shared file "textfile.txt" on the server with user "Brian" with "read" permissions
         And user "Alice" has shared file "Folder" on the server with user "Brian" with "read" permissions
         And user "Brian" has set up a client with default settings
-        When the user waits for file "textfile.txt" to be synced
-        And the user waits for folder "Folder" to be synced
+        When the user waits for the files to sync
         And the user deletes the file "textfile.txt"
         And the user deletes the folder "Folder"
         And the user waits for the files to sync
@@ -457,18 +458,6 @@ Feature: Sharing
             | name     | Public-link   |
         When the user deletes the public link for file "textfile0.txt"
         Then as user "Alice" the file "/textfile0.txt" should not have any public link on the server
-
-
-    Scenario Outline: simple sharing of a file by public link with password
-        Given user "Alice" has set up a client with default settings
-        And user "Alice" has uploaded file with content "ownCloud test text file 0" to "/textfile0.txt" on the server
-        When the user creates a new public link for file "textfile0.txt" with password "<password>" using the client-UI
-        Then as user "Alice" the file "textfile0.txt" should have a public link on the server
-        And the public should be able to download the file "textfile0.txt" with password "<password>" from the last created public link by "Alice" on the server
-        Examples:
-            | password     |
-            | password1234 |
-            | p@$s!23      |
 
 
     Scenario: sharing of a file by public link with password and changing the password

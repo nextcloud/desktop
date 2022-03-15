@@ -97,75 +97,72 @@ Folder::Folder(const FolderDefinition &definition,
     }
     _syncResult.setStatus(status);
 
-    // check if the local path exists
-    const auto folderOk = checkLocalPath();
-
     _syncResult.setFolder(_definition.alias);
+    // check if the local path exists
+    if (checkLocalPath()) {
+        // those errors should not persist over sessions
+        _journal.wipeErrorBlacklistCategory(SyncJournalErrorBlacklistRecord::Category::LocalSoftError);
 
-    // those errors should not persist over sessions
-    _journal.wipeErrorBlacklistCategory(SyncJournalErrorBlacklistRecord::Category::LocalSoftError);
+        _engine.reset(new SyncEngine(_accountState->account(), webDavUrl(), path(), remotePath(), &_journal));
+        // pass the setting if hidden files are to be ignored, will be read in csync_update
+        _engine->setIgnoreHiddenFiles(_definition.ignoreHiddenFiles);
 
-    _engine.reset(new SyncEngine(_accountState->account(), webDavUrl(), path(), remotePath(), &_journal));
-    // pass the setting if hidden files are to be ignored, will be read in csync_update
-    _engine->setIgnoreHiddenFiles(_definition.ignoreHiddenFiles);
-
-    ConfigFile::setupDefaultExcludeFilePaths(_engine->excludedFiles());
-    if (!reloadExcludes())
-        qCWarning(lcFolder, "Could not read system exclude file");
-
-    connect(_accountState.data(), &AccountState::isConnectedChanged, this, &Folder::canSyncChanged);
-    connect(_engine.data(), &SyncEngine::rootEtag, this, &Folder::etagRetrievedFromSyncEngine);
-
-    connect(_engine.data(), &SyncEngine::started, this, &Folder::slotSyncStarted, Qt::QueuedConnection);
-    connect(_engine.data(), &SyncEngine::finished, this, &Folder::slotSyncFinished, Qt::QueuedConnection);
-
-    connect(_engine.data(), &SyncEngine::aboutToRemoveAllFiles,
-        this, &Folder::slotAboutToRemoveAllFiles);
-    connect(_engine.data(), &SyncEngine::transmissionProgress, this, &Folder::slotTransmissionProgress);
-    connect(_engine.data(), &SyncEngine::itemCompleted,
-        this, &Folder::slotItemCompleted);
-    connect(_engine.data(), &SyncEngine::newBigFolder,
-        this, &Folder::slotNewBigFolderDiscovered);
-    connect(_engine.data(), &SyncEngine::seenLockedFile, FolderMan::instance(), &FolderMan::slotSyncOnceFileUnlocks);
-    connect(_engine.data(), &SyncEngine::aboutToPropagate,
-        this, &Folder::slotLogPropagationStart);
-    connect(_engine.data(), &SyncEngine::syncError, this, &Folder::slotSyncError);
-
-    _scheduleSelfTimer.setSingleShot(true);
-    _scheduleSelfTimer.setInterval(SyncEngine::minimumFileAgeForUpload);
-    connect(&_scheduleSelfTimer, &QTimer::timeout,
-        this, &Folder::slotScheduleThisFolder);
-
-    connect(ProgressDispatcher::instance(), &ProgressDispatcher::folderConflicts,
-        this, &Folder::slotFolderConflicts);
-    connect(_engine.data(), &SyncEngine::excluded, this, [this](const QString &path, CSYNC_EXCLUDE_TYPE reason) {
-        Q_EMIT ProgressDispatcher::instance()->excluded(this, path, reason);
-    });
-
-    _localDiscoveryTracker.reset(new LocalDiscoveryTracker);
-    connect(_engine.data(), &SyncEngine::finished,
-        _localDiscoveryTracker.data(), &LocalDiscoveryTracker::slotSyncFinished);
-    connect(_engine.data(), &SyncEngine::itemCompleted,
-        _localDiscoveryTracker.data(), &LocalDiscoveryTracker::slotItemCompleted);
-
-    // Potentially upgrade suffix vfs to windows vfs
-    OC_ENFORCE(_vfs);
-    if (_definition.virtualFilesMode == Vfs::WithSuffix
-        && _definition.upgradeVfsMode) {
-        if (isVfsPluginAvailable(Vfs::WindowsCfApi)) {
-            if (auto winvfs = createVfsFromPlugin(Vfs::WindowsCfApi)) {
-                // Wipe the existing suffix files from fs and journal
-                SyncEngine::wipeVirtualFiles(path(), _journal, *_vfs);
-
-                // Then switch to winvfs mode
-                _vfs.reset(winvfs.release());
-                _definition.virtualFilesMode = Vfs::WindowsCfApi;
-            }
+        ConfigFile::setupDefaultExcludeFilePaths(_engine->excludedFiles());
+        if (!reloadExcludes()) {
+            qCWarning(lcFolder, "Could not read system exclude file");
         }
-        saveToSettings();
-    }
 
-    if (folderOk) {
+        connect(_accountState.data(), &AccountState::isConnectedChanged, this, &Folder::canSyncChanged);
+        connect(_engine.data(), &SyncEngine::rootEtag, this, &Folder::etagRetrievedFromSyncEngine);
+
+        connect(_engine.data(), &SyncEngine::started, this, &Folder::slotSyncStarted, Qt::QueuedConnection);
+        connect(_engine.data(), &SyncEngine::finished, this, &Folder::slotSyncFinished, Qt::QueuedConnection);
+
+        connect(_engine.data(), &SyncEngine::aboutToRemoveAllFiles,
+            this, &Folder::slotAboutToRemoveAllFiles);
+        connect(_engine.data(), &SyncEngine::transmissionProgress, this, &Folder::slotTransmissionProgress);
+        connect(_engine.data(), &SyncEngine::itemCompleted,
+            this, &Folder::slotItemCompleted);
+        connect(_engine.data(), &SyncEngine::newBigFolder,
+            this, &Folder::slotNewBigFolderDiscovered);
+        connect(_engine.data(), &SyncEngine::seenLockedFile, FolderMan::instance(), &FolderMan::slotSyncOnceFileUnlocks);
+        connect(_engine.data(), &SyncEngine::aboutToPropagate,
+            this, &Folder::slotLogPropagationStart);
+        connect(_engine.data(), &SyncEngine::syncError, this, &Folder::slotSyncError);
+
+        _scheduleSelfTimer.setSingleShot(true);
+        _scheduleSelfTimer.setInterval(SyncEngine::minimumFileAgeForUpload);
+        connect(&_scheduleSelfTimer, &QTimer::timeout,
+            this, &Folder::slotScheduleThisFolder);
+
+        connect(ProgressDispatcher::instance(), &ProgressDispatcher::folderConflicts,
+            this, &Folder::slotFolderConflicts);
+        connect(_engine.data(), &SyncEngine::excluded, this, [this](const QString &path, CSYNC_EXCLUDE_TYPE reason) {
+            Q_EMIT ProgressDispatcher::instance()->excluded(this, path, reason);
+        });
+
+        _localDiscoveryTracker.reset(new LocalDiscoveryTracker);
+        connect(_engine.data(), &SyncEngine::finished,
+            _localDiscoveryTracker.data(), &LocalDiscoveryTracker::slotSyncFinished);
+        connect(_engine.data(), &SyncEngine::itemCompleted,
+            _localDiscoveryTracker.data(), &LocalDiscoveryTracker::slotItemCompleted);
+
+        // Potentially upgrade suffix vfs to windows vfs
+        OC_ENFORCE(_vfs);
+        if (_definition.virtualFilesMode == Vfs::WithSuffix
+            && _definition.upgradeVfsMode) {
+            if (isVfsPluginAvailable(Vfs::WindowsCfApi)) {
+                if (auto winvfs = createVfsFromPlugin(Vfs::WindowsCfApi)) {
+                    // Wipe the existing suffix files from fs and journal
+                    SyncEngine::wipeVirtualFiles(path(), _journal, *_vfs);
+
+                    // Then switch to winvfs mode
+                    _vfs.reset(winvfs.release());
+                    _definition.virtualFilesMode = Vfs::WindowsCfApi;
+                }
+            }
+            saveToSettings();
+        }
         // Initialize the vfs plugin
         startVfs();
     }
@@ -199,10 +196,13 @@ bool Folder::checkLocalPath()
         _canonicalLocalPath.append('/');
     }
 
+    QString error;
     if (fi.isDir() && fi.isReadable() && fi.isWritable()) {
         qCDebug(lcFolder) << "Checked local path ok";
+        if (!_journal.open()) {
+            error = tr("%1 failed to open the database.").arg(_definition.localPath());
+        }
     } else {
-        QString error;
         // Check directory again
         if (!FileSystem::fileExists(_definition.localPath(), fi)) {
             error = tr("Local folder %1 does not exist.").arg(_definition.localPath());
@@ -213,11 +213,12 @@ bool Folder::checkLocalPath()
         } else if (!fi.isWritable()) {
             error = tr("%1 is not writable.").arg(_definition.localPath());
         }
-        if (!error.isEmpty()) {
-            _syncResult.appendErrorString(error);
-            _syncResult.setStatus(SyncResult::SetupError);
-            return false;
-        }
+    }
+    qCWarning(lcFolder) << error;
+    if (!error.isEmpty()) {
+        _syncResult.appendErrorString(error);
+        _syncResult.setStatus(SyncResult::SetupError);
+        return false;
     }
     return true;
 }
@@ -285,7 +286,7 @@ QString Folder::cleanPath() const
 
 bool Folder::isSyncRunning() const
 {
-    return _engine->isSyncRunning() || _vfs->isHydrating();
+    return !hasSetupError() && (_engine->isSyncRunning() || _vfs->isHydrating());
 }
 
 QString Folder::remotePath() const
@@ -557,14 +558,13 @@ void Folder::startVfs()
     connect(_vfs.data(), &Vfs::doneHydrating, this, &Folder::slotHydrationDone);
 
     connect(&_engine->syncFileStatusTracker(), &SyncFileStatusTracker::fileStatusChanged,
-            _vfs.data(), &Vfs::fileStatusChanged);
+        _vfs.data(), &Vfs::fileStatusChanged);
 
 
     connect(_vfs.data(), &Vfs::started, this, [this] {
         // Immediately mark the sqlite temporaries as excluded. They get recreated
         // on db-open and need to get marked again every time.
         QString stateDbFile = _journal.databaseFilePath();
-        _journal.open();
         _vfs->fileStatusChanged(stateDbFile + QStringLiteral("-wal"), SyncFileStatus::StatusExcluded);
         _vfs->fileStatusChanged(stateDbFile + QStringLiteral("-shm"), SyncFileStatus::StatusExcluded);
         _vfsIsReady = true;
@@ -841,6 +841,10 @@ void Folder::slotTerminateSync()
 
 void Folder::wipeForRemoval()
 {
+    // we can't acces those variables
+    if (hasSetupError()) {
+        return;
+    }
     // prevent interaction with the db etc
     _vfsIsReady = false;
 

@@ -600,6 +600,7 @@ void AccountBasedOAuth::startAuthentication()
 void AccountBasedOAuth::fetchWellKnown()
 {
     auto *checkServerJob = new CheckServerJob(_account->sharedFromThis(), this);
+    checkServerJob->setClearCookies(true);
     checkServerJob->setTimeout(defaultTimeout());
 
     connect(checkServerJob, &CheckServerJob::instanceNotFound, this, [this](QNetworkReply *reply) {

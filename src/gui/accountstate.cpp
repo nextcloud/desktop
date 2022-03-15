@@ -298,10 +298,7 @@ void AccountState::checkConnectivity(bool blockJobs)
         // Use a small authed propfind as a minimal ping when we're
         // already connected.
         if (blockJobs) {
-            if (Theme::instance()->connectionValidatorClearCookies()) {
-                // clear the cookies directly before we try to validate
-                connect(_connectionValidator, &ConnectionValidator::aboutToStart, _account.get(), &Account::clearCookieJar, Qt::DirectConnection);
-            }
+            _connectionValidator->setClearCookies(true);
             _connectionValidator->checkServer();
         } else {
             _connectionValidator->checkServerAndUpdate();
@@ -322,6 +319,7 @@ void AccountState::checkConnectivity(bool blockJobs)
         // ssl config that does not have a sensible certificate chain.
         account()->setSslConfiguration(QSslConfiguration());
         //#endif
+        account()->clearCookieJar();
         _connectionValidator->checkServerAndUpdate();
     }
 }

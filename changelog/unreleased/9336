@@ -1,0 +1,11 @@
+Enhancement: Leave password field in share dialog enabled on errors
+
+The password line edit used to be disabled because the related checkbox was unchecked upon errors
+such as failing to satisfy the requirements imposed by the "password policy" server app.
+
+Now, the checkbox will not be unchecked, leaving the line edit enabled and keeping the focus on
+it. This allows users to enter a new password and try again without having to enable the checkbox
+and clicking into the line edit again.
+
+https://github.com/owncloud/client/issues/9336
+https://github.com/owncloud/client/pull/9508

@@ -269,6 +269,17 @@ Application::Application(int &argc, char **argv)
     setupLogging();
     setupTranslations();
 
+    qCInfo(lcApplication) << "Plugin search paths:" << libraryPaths();
+
+    // Check vfs plugins
+    if (Theme::instance()->showVirtualFilesOption() && bestAvailableVfsMode() == Vfs::Off) {
+        qCWarning(lcApplication) << "Theme wants to show vfs mode, but no vfs plugins are available";
+    }
+    if (isVfsPluginAvailable(Vfs::WindowsCfApi))
+        qCInfo(lcApplication) << "VFS windows plugin is available";
+    if (isVfsPluginAvailable(Vfs::WithSuffix))
+        qCInfo(lcApplication) << "VFS suffix plugin is available";
+
     if (!configVersionMigration()) {
         return;
     }

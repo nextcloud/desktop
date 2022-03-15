@@ -19,13 +19,15 @@
 #pragma once
 
 #include "config.h"
+#include "ocsynclib.h"
+
+#include "utility.h"
 
 #include <QString>
 #include <ctime>
 #include <QFileInfo>
 #include <QLoggingCategory>
 
-#include <ocsynclib.h>
 
 class QFile;
 
@@ -122,7 +124,17 @@ namespace FileSystem {
      * Warning: The resulting file may have an empty fileName and be unsuitable for use
      * with QFileInfo! Calling seek() on the QFile with >32bit signed values will fail!
      */
-    bool OCSYNC_EXPORT openAndSeekFileSharedRead(QFile *file, QString *error, qint64 seek);
+    bool OCSYNC_EXPORT openAndSeekFileSharedRead(QFile * file, QString * error, qint64 seek);
+
+    enum class LockMode {
+        Shared,
+        Exclusive
+    };
+    Q_ENUM_NS(LockMode);
+    /**
+     * Returns true when a file is locked. (Windows only)
+     */
+    bool OCSYNC_EXPORT isFileLocked(const QString &fileName, LockMode mode);
 
 #ifdef Q_OS_WIN
     /**
@@ -142,17 +154,12 @@ namespace FileSystem {
      *    the windows API functions work with the normal "unixoid" representation too.
      */
     QString OCSYNC_EXPORT pathtoUNC(const QString &str);
-#endif
 
-    enum class LockMode {
-        Shared,
-        Exclusive
-    };
-    Q_ENUM_NS(LockMode);
     /**
-     * Returns true when a file is locked. (Windows only)
+     * This function creates a file handle with the desired LockMode
      */
-    bool OCSYNC_EXPORT isFileLocked(const QString &fileName, LockMode mode);
+    Utility::Handle OCSYNC_EXPORT lockFile(const QString &fileName, LockMode mode);
+#endif
 
     /**
      * Returns whether the file is a shortcut file (ends with .lnk)

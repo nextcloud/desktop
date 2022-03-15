@@ -15,25 +15,25 @@
 #include <QtGui>
 #include <QtWidgets>
 
+#include "QProgressIndicator.h"
+#include "account.h"
+#include "accountmanager.h"
+#include "accountstate.h"
 #include "activitywidget.h"
+#include "commonstrings.h"
 #include "configfile.h"
-#include "syncresult.h"
-#include "logger.h"
-#include "theme.h"
-#include "folderman.h"
-#include "syncfileitem.h"
 #include "folder.h"
+#include "folderman.h"
+#include "issueswidget.h"
+#include "logger.h"
+#include "notificationconfirmjob.h"
+#include "notificationwidget.h"
 #include "openfilemanager.h"
 #include "owncloudpropagator.h"
-#include "account.h"
-#include "accountstate.h"
-#include "accountmanager.h"
 #include "protocolwidget.h"
-#include "issueswidget.h"
-#include "QProgressIndicator.h"
-#include "notificationwidget.h"
-#include "notificationconfirmjob.h"
 #include "servernotificationhandler.h"
+#include "syncfileitem.h"
+#include "syncresult.h"
 #include "theme.h"
 
 #include "models/activitylistmodel.h"
@@ -61,7 +61,7 @@ ActivityWidget::ActivityWidget(QWidget *parent)
     _ui->setupUi(this);
 
     _model = new ActivityListModel(this);
-    _sortModel = new QSortFilterProxyModel(this);
+    _sortModel = new SignalledQSortFilterProxyModel(this);
     _sortModel->setSourceModel(_model);
     _ui->_activityList->setModel(_sortModel);
     _sortModel->setSortRole(Models::UnderlyingDataRole);
@@ -70,10 +70,6 @@ ActivityWidget::ActivityWidget(QWidget *parent)
     header->hideSection(static_cast<int>(ActivityListModel::ActivityRole::Path));
     header->setSectionResizeMode(QHeaderView::Interactive);
     header->setSortIndicator(static_cast<int>(ActivityListModel::ActivityRole::PointInTime), Qt::DescendingOrder);
-
-    connect(_ui->_filterButton, &QAbstractButton::clicked, this, [this] {
-        ProtocolWidget::showFilterMenu(_ui->_filterButton, _sortModel);
-    });
 
     _ui->_notifyLabel->hide();
     _ui->_notifyScroll->hide();
@@ -108,8 +104,16 @@ ActivityWidget::ActivityWidget(QWidget *parent)
     connect(_ui->_activityList, &QListView::customContextMenuRequested, this, &ActivityWidget::slotItemContextMenu);
     header->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(header, &QListView::customContextMenuRequested, header, [header, this] {
-        auto menu = ProtocolWidget::showFilterMenu(header, _sortModel);
+        auto menu = ProtocolWidget::showFilterMenu(header, _sortModel, static_cast<int>(ActivityListModel::ActivityRole::Account), tr("Account"));
+        menu->addSeparator();
         header->addResetActionToMenu(menu);
+    });
+
+    connect(_ui->_filterButton, &QAbstractButton::clicked, this, [this] {
+        ProtocolWidget::showFilterMenu(_ui->_filterButton, _sortModel, static_cast<int>(ActivityListModel::ActivityRole::Account), tr("Account"));
+    });
+    connect(_sortModel, &SignalledQSortFilterProxyModel::filterChanged, [this]() {
+        _ui->_filterButton->setText(CommonStrings::filterButtonText(_sortModel->filterRegExp().isEmpty() ? 0 : 1));
     });
 
     connect(&_removeTimer, &QTimer::timeout, this, &ActivityWidget::slotCheckToCleanWidgets);
@@ -437,7 +441,7 @@ void ActivityWidget::slotItemContextMenu()
     menu->setAttribute(Qt::WA_DeleteOnClose);
 
     // keep in sync with ProtocolWidget::showContextMenu
-    menu->addAction(tr("Copy to clipboard"), this, [text = Models::formatSelection(rows, Models::UnderlyingDataRole)] {
+    menu->addAction(CommonStrings::copyToClipBoard(), this, [text = Models::formatSelection(rows, Models::UnderlyingDataRole)] {
         QApplication::clipboard()->setText(text);
     });
 
@@ -445,7 +449,7 @@ void ActivityWidget::slotItemContextMenu()
         // keep in sync with ProtocolWidget::showContextMenu
         const auto localPath = rows.first().siblingAtColumn(static_cast<int>(ActivityListModel::ActivityRole::Path)).data(Models::UnderlyingDataRole).toString();
         if (!localPath.isEmpty()) {
-            menu->addAction(tr("Show in file browser"), this, [localPath] {
+            menu->addAction(CommonStrings::showInFileBrowser(), this, [localPath] {
                 if (QFileInfo::exists(localPath)) {
                     showInFileManager(localPath);
                 }

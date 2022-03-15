@@ -211,6 +211,11 @@ public:
     int maxRedirectsAllowed() const;
     void setMaxRedirectsAllowed(int maxRedirectsAllowed);
 
+    /** Whether to clear the cookies before we start the job
+     * This option also depends on Theme::instance()->connectionValidatorClearCookies()
+     */
+    void setClearCookies(bool clearCookies);
+
 signals:
     /** Emitted when a status.php was successfully read.
      *
@@ -241,7 +246,7 @@ protected:
     void newReplyHook(QNetworkReply *) override;
 
 private:
-    bool _subdirFallback;
+    bool _clearCookies = false;
 
     /** The permanent-redirect adjusted account url.
      *

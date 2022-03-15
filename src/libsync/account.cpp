@@ -209,6 +209,7 @@ void Account::clearCookieJar()
 {
     auto jar = qobject_cast<CookieJar *>(_am->cookieJar());
     OC_ASSERT(jar);
+    qCInfo(lcAccount) << "Clearing cookies";
     jar->setAllCookies(QList<QNetworkCookie>());
     emit wantsAccountSaved(this);
 }

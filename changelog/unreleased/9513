@@ -1,0 +1,7 @@
+Bugfix: improve filter pop-up menu and button
+    
+- replaced "No filter" option text with "All", to avoid the "No filter is not enabled" situation
+- replace the "Filter" label on the button with "1 Filter"/"2 Filters" when a filter is active, so a user can immediately see that without having to open the filter pop-up
+
+https://github.com/owncloud/client/issues/9425
+https://github.com/owncloud/client/pull/9513

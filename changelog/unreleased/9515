@@ -1,0 +1,5 @@
+Enhancement: Always flush log when logging to stdout
+
+We improved the behaviour of logging to a terminal.
+
+https://github.com/owncloud/client/pull/9515

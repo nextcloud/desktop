@@ -16,26 +16,27 @@
 #include "accountsettings.h"
 #include "ui_accountsettings.h"
 
-#include "theme.h"
-#include "folderman.h"
-#include "folderwizard.h"
-#include "folderstatusmodel.h"
-#include "folderstatusdelegate.h"
-#include "common/utility.h"
-#include "application.h"
-#include "configfile.h"
 #include "account.h"
-#include "accountstate.h"
-#include "quotainfo.h"
 #include "accountmanager.h"
-#include "owncloudsetupwizard.h"
+#include "accountstate.h"
+#include "application.h"
+#include "common/utility.h"
+#include "commonstrings.h"
+#include "configfile.h"
 #include "creds/abstractcredentials.h"
 #include "creds/httpcredentialsgui.h"
-#include "tooltipupdater.h"
 #include "filesystem.h"
-#include "wizard/owncloudwizard.h"
+#include "folderman.h"
+#include "folderstatusdelegate.h"
+#include "folderstatusmodel.h"
+#include "folderwizard.h"
 #include "guiutility.h"
+#include "owncloudsetupwizard.h"
+#include "quotainfo.h"
 #include "settingsdialog.h"
+#include "theme.h"
+#include "tooltipupdater.h"
+#include "wizard/owncloudwizard.h"
 
 #include <math.h>
 
@@ -283,16 +284,7 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
     }
 
     if (!folderUrl.isEmpty()) {
-        QString openLocallyLabel;
-        if (Utility::isWindows()) {
-            openLocallyLabel = tr("Show in Explorer");
-        } else if (Utility::isMac()) {
-            openLocallyLabel = tr("Show in Finder");
-        } else {
-            openLocallyLabel = tr("Show if file manager");
-        }
-
-        QAction *ac = menu->addAction(openLocallyLabel, [folderUrl]() {
+        QAction *ac = menu->addAction(CommonStrings::showInFileBrowser(), [folderUrl]() {
             qCInfo(lcAccountSettings) << "Opening local folder" << folderUrl;
             if (!QDesktopServices::openUrl(folderUrl)) {
                 qCWarning(lcAccountSettings) << "QDesktopServices::openUrl failed for" << folderUrl;
@@ -312,7 +304,7 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
             // Only add the path of subfolders, because the remote path is the path of the root folder.
             path += info->_path;
         }
-        menu->addAction(tr("Show in Browser"), [path, davUrl = info->_folder->webDavUrl(), this] {
+        menu->addAction(CommonStrings::showInWebBrowser(), [path, davUrl = info->_folder->webDavUrl(), this] {
             fetchPrivateLinkUrl(_accountState->account(), davUrl, path, this, [](const QString &url) {
                 Utility::openBrowser(url, nullptr);
             });

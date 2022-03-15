@@ -1,5 +1,33 @@
 <?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="ko">
 <context>
+    <name>CommonStrings</name>
+    <message>
+        <location filename="../src/gui/commonstrings.cpp" line="27"/>
+        <source>file manager</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/commonstrings.cpp" line="33"/>
+        <source>Show in %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/commonstrings.cpp" line="38"/>
+        <source>Show in web browser</source>
+        <translation>웹 브라우져에 보이기</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/commonstrings.cpp" line="43"/>
+        <source>Copy</source>
+        <translation>복사</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/commonstrings.cpp" line="48"/>
+        <source>%n Filter(s)</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>CrashReporter</name>
     <message>
         <location filename="../src/3rdparty/libcrashreporter-qt/src/libcrashreporter-gui/CrashReporter.ui" line="29"/>
@@ -277,9 +305,9 @@
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="269"/>
-        <location filename="../src/gui/accountsettings.cpp" line="526"/>
-        <location filename="../src/gui/accountsettings.cpp" line="620"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1058"/>
+        <location filename="../src/gui/accountsettings.cpp" line="518"/>
+        <location filename="../src/gui/accountsettings.cpp" line="612"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1050"/>
         <source>Cancel</source>
         <translation>취소</translation>
     </message>
@@ -289,92 +317,72 @@
         <translation>&lt;server&gt;에 사용자 &lt;user&gt;(으)로 연결됨</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="181"/>
+        <location filename="../src/gui/accountsettings.cpp" line="182"/>
         <source>No account configured.</source>
         <translation>계정이 설정되지 않았습니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="204"/>
+        <location filename="../src/gui/accountsettings.cpp" line="205"/>
         <source>Remove</source>
         <translation>삭제</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="208"/>
+        <location filename="../src/gui/accountsettings.cpp" line="209"/>
         <source>Account</source>
         <translation>계정</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="342"/>
+        <location filename="../src/gui/accountsettings.cpp" line="334"/>
         <source>Choose what to sync</source>
         <translation>동기화할 항목 선택</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="348"/>
+        <location filename="../src/gui/accountsettings.cpp" line="340"/>
         <source>Force sync now</source>
         <translation>지금 강제 동기화</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="350"/>
+        <location filename="../src/gui/accountsettings.cpp" line="342"/>
         <source>Restart sync</source>
         <translation>동기화 재시작</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="244"/>
+        <location filename="../src/gui/accountsettings.cpp" line="245"/>
         <source>Remove folder sync connection</source>
         <translation>폴더 동기화 연결 제거</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="288"/>
-        <source>Show in Explorer</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/accountsettings.cpp" line="290"/>
-        <source>Show in Finder</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/accountsettings.cpp" line="292"/>
-        <source>Show if file manager</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/accountsettings.cpp" line="315"/>
-        <source>Show in Browser</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/accountsettings.cpp" line="362"/>
+        <location filename="../src/gui/accountsettings.cpp" line="354"/>
         <source>Disable virtual file support...</source>
         <translation>가상 파일 지원 비활성화...</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="459"/>
+        <location filename="../src/gui/accountsettings.cpp" line="451"/>
         <source>Folder creation failed</source>
         <translation>폴더를 만들 수 없음</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="460"/>
+        <location filename="../src/gui/accountsettings.cpp" line="452"/>
         <source>&lt;p&gt;Could not create local folder &lt;i&gt;%1&lt;/i&gt;.</source>
         <translation>&lt;p&gt;로컬 폴더 &lt;i&gt;%1&lt;/i&gt;을(를) 만들 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="517"/>
+        <location filename="../src/gui/accountsettings.cpp" line="509"/>
         <source>Confirm Folder Sync Connection Removal</source>
         <translation>동기화 삭제 확인</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="525"/>
+        <location filename="../src/gui/accountsettings.cpp" line="517"/>
         <source>Remove Folder Sync Connection</source>
         <translation>폴더를 동기화에서 제거</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="611"/>
+        <location filename="../src/gui/accountsettings.cpp" line="603"/>
         <source>Disable virtual file support?</source>
         <translation>가상 파일 지원을 비활성화하겠습니까?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="612"/>
+        <location filename="../src/gui/accountsettings.cpp" line="604"/>
         <source>This action will disable virtual file support. As a consequence contents of folders that are currently marked as 'available online only' will be downloaded.
 
 The only advantage of disabling virtual file support is that the selective sync feature will become available again.
@@ -383,158 +391,158 @@ This action will abort any currently running synchronization.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="619"/>
+        <location filename="../src/gui/accountsettings.cpp" line="611"/>
         <source>Disable support</source>
         <translation>지원 비활성화</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="721"/>
+        <location filename="../src/gui/accountsettings.cpp" line="713"/>
         <source>Sync Running</source>
         <translation>동기화 진행 중</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="722"/>
+        <location filename="../src/gui/accountsettings.cpp" line="714"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>동기화가 진행 중입니다.&lt;br/&gt;진행을 종료하시겠습니까?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="819"/>
+        <location filename="../src/gui/accountsettings.cpp" line="811"/>
         <source>%1 in use</source>
         <translation>%1 사용 중</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="846"/>
+        <location filename="../src/gui/accountsettings.cpp" line="838"/>
         <source>%1 as &lt;i&gt;%2&lt;/i&gt;</source>
         <translation>%1에 &lt;i&gt;%2&lt;/i&gt;(으)로</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="855"/>
+        <location filename="../src/gui/accountsettings.cpp" line="847"/>
         <source>Connected to %1.</source>
         <translation>%1에 연결되었습니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="860"/>
+        <location filename="../src/gui/accountsettings.cpp" line="852"/>
         <source>Server %1 is temporarily unavailable.</source>
         <translation>서버 %1을(를) 임시로 사용할 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="863"/>
+        <location filename="../src/gui/accountsettings.cpp" line="855"/>
         <source>Server %1 is currently in maintenance mode.</source>
         <translation>서버 %1이(가) 현재 관리 모드입니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="866"/>
+        <location filename="../src/gui/accountsettings.cpp" line="858"/>
         <source>Signed out from %1.</source>
         <translation>%1에서 로그아웃했습니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="876"/>
+        <location filename="../src/gui/accountsettings.cpp" line="868"/>
         <source>Connecting to %1...</source>
         <translation>%1에 연결 중...</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="881"/>
+        <location filename="../src/gui/accountsettings.cpp" line="873"/>
         <source>No connection to %1 at %2.</source>
         <translation>%2에 %1 연결이 없습니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="920"/>
+        <location filename="../src/gui/accountsettings.cpp" line="912"/>
         <source>Log in</source>
         <translation>로그인</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1015"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1007"/>
         <source>There are folders that were not synchronized because they are too big: </source>
         <translation>이 폴더는 너무 커서 동기화할 수 없습니다: </translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1017"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1009"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
         <translation>이 폴더는 외부 저장소여서 동기화할 수 없습니다: </translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1018"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1010"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
         <translation>이 폴더는 너무 크거나 외부 저장소여서 동기화할 수 없습니다: </translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1051"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1043"/>
         <source>Confirm Account Removal</source>
         <translation>계정 삭제 확인</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1052"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1044"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;계정 &lt;i&gt;%1&lt;/i&gt;의 연결을 삭제하시겠습니까?&lt;/p&gt;&lt;p&gt;&lt;b&gt;메모:&lt;/b&gt; 이 작업은 파일을 삭제하지 &lt;b&gt;않습니다.&lt;/b&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1057"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1049"/>
         <source>Remove connection</source>
         <translation>연결 삭제</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="200"/>
-        <location filename="../src/gui/accountsettings.cpp" line="922"/>
+        <location filename="../src/gui/accountsettings.cpp" line="201"/>
+        <location filename="../src/gui/accountsettings.cpp" line="914"/>
         <source>Log out</source>
         <translation>로그아웃</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="356"/>
+        <location filename="../src/gui/accountsettings.cpp" line="348"/>
         <source>Resume sync</source>
         <translation>동기화 다시 시작</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="356"/>
+        <location filename="../src/gui/accountsettings.cpp" line="348"/>
         <source>Pause sync</source>
         <translation>동기화 일시 정지</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="369"/>
+        <location filename="../src/gui/accountsettings.cpp" line="361"/>
         <source>Enable virtual file support%1...</source>
         <translation>가상 파일 지원 %1 활성화...</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="369"/>
+        <location filename="../src/gui/accountsettings.cpp" line="361"/>
         <source> (experimental)</source>
         <translation> (실험 기능)</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="518"/>
+        <location filename="../src/gui/accountsettings.cpp" line="510"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;폴더 &lt;i&gt;%1&lt;/i&gt;을(를) 동기화하지 않으시겠습니까?&lt;/p&gt;&lt;p&gt;&lt;b&gt;메모:&lt;/b&gt; 이 작업은 파일을 삭제하지 &lt;b&gt;않습니다.&lt;/b&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="806"/>
+        <location filename="../src/gui/accountsettings.cpp" line="798"/>
         <source>%1 (%3%) of %2 in use. Some folders, including network mounted or shared folders, might have different limits.</source>
         <translation>%2 중 %1(%3%) 사용 중입니다. 네트워크 마운트 및 공유 폴더의 제한 사항은 다를 수 있습니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="807"/>
+        <location filename="../src/gui/accountsettings.cpp" line="799"/>
         <source>%1 of %2 in use</source>
         <translation>%2 중 %1 사용 중</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="816"/>
+        <location filename="../src/gui/accountsettings.cpp" line="808"/>
         <source>Currently there is no storage usage information available.</source>
         <translation>저장소 사용량 정보가 없습니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="853"/>
+        <location filename="../src/gui/accountsettings.cpp" line="845"/>
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
         <translation>서버 버전 %1 은(는) 지원되지 않습니다! 자기 책임 하에 진행하기 바랍니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="873"/>
+        <location filename="../src/gui/accountsettings.cpp" line="865"/>
         <source>Obtaining authorization from the browser.</source>
         <translation>브라우저에서 인증 획득하는 중.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="886"/>
+        <location filename="../src/gui/accountsettings.cpp" line="878"/>
         <source>Server configuration error: %1 at %2.</source>
         <translation>서버 설정 에러: %2 의 %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="897"/>
+        <location filename="../src/gui/accountsettings.cpp" line="889"/>
         <source>No %1 connection configured.</source>
         <translation>%1 연결이 설정되지 않았습니다.</translation>
     </message>
@@ -638,23 +646,23 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::ActivitySettings</name>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="485"/>
-        <location filename="../src/gui/activitywidget.cpp" line="529"/>
+        <location filename="../src/gui/activitywidget.cpp" line="489"/>
+        <location filename="../src/gui/activitywidget.cpp" line="533"/>
         <source>Server Activity</source>
         <translation>서버 활동</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="491"/>
+        <location filename="../src/gui/activitywidget.cpp" line="495"/>
         <source>Sync Protocol</source>
         <translation>동기화 프로토콜</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="537"/>
+        <location filename="../src/gui/activitywidget.cpp" line="541"/>
         <source>Not Synced</source>
         <translation>동기화되지 않음</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="540"/>
+        <location filename="../src/gui/activitywidget.cpp" line="544"/>
         <source>Not Synced (%1)</source>
         <extracomment>%1 is the number of not synced files.</extracomment>
         <translation>동기화되지 않음 (%1)</translation>
@@ -680,47 +688,43 @@ This action will abort any currently running synchronization.</source>
         <translation>필터</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="149"/>
+        <location filename="../src/gui/activitywidget.cpp" line="105"/>
+        <location filename="../src/gui/activitywidget.cpp" line="111"/>
+        <source>Account</source>
+        <translation>계정</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/activitywidget.cpp" line="153"/>
         <source>Server Activities</source>
         <translation>서버 활동</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="153"/>
+        <location filename="../src/gui/activitywidget.cpp" line="157"/>
         <source>Notifications</source>
         <translation>알림</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/activitywidget.cpp" line="296"/>
+        <location filename="../src/gui/activitywidget.cpp" line="300"/>
         <source>%n notifications(s) for %1.</source>
         <translation><numerusform>%1 에 대한 %n개의 공지 사항.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/activitywidget.cpp" line="302"/>
+        <location filename="../src/gui/activitywidget.cpp" line="306"/>
         <source>%n notifications(s) for %1 and %2.</source>
         <translation><numerusform>%1 와(과) %2 에 대한 %n개의 공지 사항.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="304"/>
+        <location filename="../src/gui/activitywidget.cpp" line="308"/>
         <source>New notifications for %1, %2 and other accounts.</source>
         <translation>%1, %2 와(과) 다른 계정에 대한 새 공지 사항들.</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="307"/>
+        <location filename="../src/gui/activitywidget.cpp" line="311"/>
         <source>Open the activity view for details.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="454"/>
-        <source>Copy to clipboard</source>
-        <translation>클립보드로 복사</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/activitywidget.cpp" line="462"/>
-        <source>Show in file browser</source>
-        <translation>파일 브라우저에 보이기</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/activitywidget.cpp" line="158"/>
+        <location filename="../src/gui/activitywidget.cpp" line="162"/>
         <source>&lt;br/&gt;Account %1 does not have activities enabled.</source>
         <translation>&lt;br&gt;%1 계정에 활동이 활성화되지 않았습니다.</translation>
     </message>
@@ -753,105 +757,105 @@ This action will abort any currently running synchronization.</source>
         <translation>계속</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="312"/>
+        <location filename="../src/gui/application.cpp" line="314"/>
         <source>Error accessing the configuration file</source>
         <translation>설정 파일 접근 오류</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="313"/>
+        <location filename="../src/gui/application.cpp" line="315"/>
         <source>There was an error while accessing the configuration file at %1.</source>
         <translation>%1에 있는 설정 파일에 접근하는 중 오류가 발생했습니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="316"/>
+        <location filename="../src/gui/application.cpp" line="318"/>
         <source>Quit %1</source>
         <translation>%1 끝내기</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="581"/>
+        <location filename="../src/gui/application.cpp" line="583"/>
         <source>%1 version %2<byte value="xd"/>
 File synchronization desktop utility.</source>
         <translation>%1 버전 %2&lt;byte value=&quot;xd&quot;/&gt;
 파일 동기화 데스크탑 유틸리티.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="586"/>
+        <location filename="../src/gui/application.cpp" line="588"/>
         <source>For more information, see http://www.owncloud.org</source>
         <translation>자세한 정보는 http://www.owncloud.org 를 참조하기 바랍니다</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="600"/>
+        <location filename="../src/gui/application.cpp" line="602"/>
         <source>Show the settings dialog while starting.</source>
         <translation>기동 시 설정 대화상자 보이기.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="601"/>
+        <location filename="../src/gui/application.cpp" line="603"/>
         <source>Quit the running instance.</source>
         <translation>실행 인스턴스 종료.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="602"/>
+        <location filename="../src/gui/application.cpp" line="604"/>
         <source>Write log to file (use - to write to stdout).</source>
         <translation>파일에 로그 기록하기(stdout에 기록하려면 -  이용).</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="603"/>
+        <location filename="../src/gui/application.cpp" line="605"/>
         <source>Write each sync log output in a new file in folder.</source>
         <translation>각 동기화 로그 출력을 폴더의 새 파일에 기록.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="604"/>
+        <location filename="../src/gui/application.cpp" line="606"/>
         <source>Remove logs older than &lt;hours&gt; hours (to be used with --logdir).</source>
         <translation>&lt;hours&gt; 시간 이상된 로그 삭제(--logdir 옵션과 함께 이용).</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="605"/>
+        <location filename="../src/gui/application.cpp" line="607"/>
         <source>Flush the log file after every write.</source>
         <translation>모든 기록 후에 로그 파일을 만듭니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="606"/>
+        <location filename="../src/gui/application.cpp" line="608"/>
         <source>Output debug-level messages in the log.</source>
         <translation>로그에 디버그 레벨 메시지 출력합니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="607"/>
-        <location filename="../src/gui/application.cpp" line="608"/>
+        <location filename="../src/gui/application.cpp" line="609"/>
+        <location filename="../src/gui/application.cpp" line="610"/>
         <source>Override UI language.</source>
         <translation>UI 언어를 덮어씁니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="609"/>
+        <location filename="../src/gui/application.cpp" line="611"/>
         <source>Use the given configuration folder.</source>
         <translation>주어진 설정 폴더를 이용합니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="610"/>
+        <location filename="../src/gui/application.cpp" line="612"/>
         <source>Enable debug mode.</source>
         <translation>디버그 모드를 활성화합니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="613"/>
+        <location filename="../src/gui/application.cpp" line="615"/>
         <source>Virtual file system file to be opened (optional).</source>
         <translation>가상 파일 시스템 파일이 열립니다(옵션).</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="613"/>
+        <location filename="../src/gui/application.cpp" line="615"/>
         <source>[&lt;vfs file&gt;]</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="642"/>
+        <location filename="../src/gui/application.cpp" line="644"/>
         <source>Invalid path passed to --confdir</source>
         <translation>--confdir 옵션에 무효한 경로가 전달됨</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="655"/>
+        <location filename="../src/gui/application.cpp" line="657"/>
         <source>Error: unknown language &quot;%1&quot; (use --list-languages to get a complete list of supported translations)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="664"/>
+        <location filename="../src/gui/application.cpp" line="666"/>
         <source>Available translations: %1</source>
         <translation>이용 가능한 번역: %1</translation>
     </message>
@@ -882,32 +886,32 @@ File synchronization desktop utility.</source>
 <context>
     <name>OCC::ConnectionValidator</name>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="51"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="56"/>
         <source>No ownCloud account configured</source>
         <translation>ownCloud 계정이 설정되지 않았음</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="260"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="265"/>
         <source>The configured server for this client is too old</source>
         <translation>이 클라이언트에 설정된 서버가 너무 오래됨</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="261"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="266"/>
         <source>Please update to the latest server and restart the client.</source>
         <translation>최신 서버로 업데이트한 다음 클라이언트를 다시 시작하십시오.</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="152"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="157"/>
         <source>Authentication error: Either username or password are wrong.</source>
         <translation>인증 오류: 사용자 이름이나 암호가 잘못되었습니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="96"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="102"/>
         <source>timeout</source>
         <translation>시간 제한</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="193"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="198"/>
         <source>The provided credentials are not correct</source>
         <translation>지정한 인증 정보가 올바르지 않음</translation>
     </message>
@@ -968,17 +972,17 @@ File synchronization desktop utility.</source>
 <context>
     <name>OCC::Folder</name>
     <message>
-        <location filename="../src/gui/folder.cpp" line="201"/>
+        <location filename="../src/gui/folder.cpp" line="200"/>
         <source>Local folder %1 does not exist.</source>
         <translation>로컬 폴더 %1이(가) 존재하지 않습니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="203"/>
+        <location filename="../src/gui/folder.cpp" line="202"/>
         <source>%1 should be a folder but is not.</source>
         <translation>%1이(가) 폴더여야 하지만 그렇지 않습니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="205"/>
+        <location filename="../src/gui/folder.cpp" line="204"/>
         <source>%1 is not readable.</source>
         <translation>%1을(를) 읽을 수 없습니다.</translation>
     </message>
@@ -1011,7 +1015,12 @@ File synchronization desktop utility.</source>
         <translation><numerusform>%1 및 %n개의 다른 파일이 삭제되었습니다.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="207"/>
+        <location filename="../src/gui/folder.cpp" line="195"/>
+        <source>%1 failed to open the database.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="206"/>
         <source>%1 is not writable.</source>
         <translation type="unfinished"/>
     </message>
@@ -1067,41 +1076,41 @@ File synchronization desktop utility.</source>
         <translation>동기화 활동</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="895"/>
+        <location filename="../src/gui/folder.cpp" line="898"/>
         <source>Could not read system exclude file</source>
         <translation>시스템 제외 파일을 읽을 수 없음</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1138"/>
+        <location filename="../src/gui/folder.cpp" line="1141"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>%1MB 보다 큰 새 폴더 추가됨: %2.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1141"/>
+        <location filename="../src/gui/folder.cpp" line="1144"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>외부 저장소에 있는 폴더가 추가되었습니다.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1142"/>
+        <location filename="../src/gui/folder.cpp" line="1145"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>다운로드하려면 설정에서 선택하십시오.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1201"/>
+        <location filename="../src/gui/folder.cpp" line="1204"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation>폴더 %1 이(가) 생성되었지만 이전에 동기화에서 제외되었습니다. 이 폴더 내부의 데이터는 동기화되지 않을 것입니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1204"/>
+        <location filename="../src/gui/folder.cpp" line="1207"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
         <translation>파일 %1 이(가) 생성되었지만 이전에 동기화에서 제외되었습니다. 이 파일은 동기화되지 않을 것입니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1215"/>
+        <location filename="../src/gui/folder.cpp" line="1218"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
@@ -1110,7 +1119,7 @@ This means that the synchronization client might not upload local changes immedi
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1292"/>
+        <location filename="../src/gui/folder.cpp" line="1295"/>
         <source>All files in the sync folder '%1' folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
@@ -1121,7 +1130,7 @@ If you decide to delete the files, they will be unavailable to you, unless you a
 파일을 삭제하려면 파일 소유자가 아니라면 해당 파일을 사용할 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1297"/>
+        <location filename="../src/gui/folder.cpp" line="1300"/>
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
@@ -1130,17 +1139,17 @@ If this was an accident and you decide to keep your files, they will be re-synce
 만약 이 작업이 잘못되었고 파일을 보존하려면 서버에서 다시 동기화 됩니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1301"/>
+        <location filename="../src/gui/folder.cpp" line="1304"/>
         <source>Remove All Files?</source>
         <translation>모든 파일을 삭제하시겠습니까?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1305"/>
+        <location filename="../src/gui/folder.cpp" line="1308"/>
         <source>Remove all files</source>
         <translation>모든 파일 삭제</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1306"/>
+        <location filename="../src/gui/folder.cpp" line="1309"/>
         <source>Keep files</source>
         <translation>파일 유지</translation>
     </message>
@@ -1148,122 +1157,122 @@ If this was an accident and you decide to keep your files, they will be re-synce
 <context>
     <name>OCC::FolderMan</name>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="454"/>
+        <location filename="../src/gui/folderman.cpp" line="456"/>
         <source>Could not reset folder state</source>
         <translation>폴더 상태를 초기화할 수 없음</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="455"/>
+        <location filename="../src/gui/folderman.cpp" line="457"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
         <translation>과거의 동기화 저널 &apos;%1&apos;을(를) 찾았으나 삭제할 수 없습니다. 사용 중인 프로그램이 없는지 확인하십시오.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1237"/>
+        <location filename="../src/gui/folderman.cpp" line="1241"/>
         <source> (backup)</source>
         <translation> (백업)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1242"/>
+        <location filename="../src/gui/folderman.cpp" line="1246"/>
         <source> (backup %1)</source>
         <translation> (백업 %1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1344"/>
+        <location filename="../src/gui/folderman.cpp" line="1348"/>
         <source>Undefined State.</source>
         <translation>정의되지 않은 상태입니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1347"/>
+        <location filename="../src/gui/folderman.cpp" line="1351"/>
         <source>Waiting to start syncing.</source>
         <translation>동기화가 시작되기를 기다리는 중입니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1350"/>
+        <location filename="../src/gui/folderman.cpp" line="1354"/>
         <source>Preparing for sync.</source>
         <translation>동기화 준비 중입니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1353"/>
+        <location filename="../src/gui/folderman.cpp" line="1357"/>
         <source>Sync is running.</source>
         <translation>동기화 중입니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1358"/>
+        <location filename="../src/gui/folderman.cpp" line="1362"/>
         <source>Sync was successful, unresolved conflicts.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1360"/>
+        <location filename="../src/gui/folderman.cpp" line="1364"/>
         <source>Last Sync was successful.</source>
         <translation>마지막 동기화가 성공했습니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1366"/>
+        <location filename="../src/gui/folderman.cpp" line="1370"/>
         <source>Setup Error.</source>
         <translation>설치 오류입니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1369"/>
+        <location filename="../src/gui/folderman.cpp" line="1373"/>
         <source>User Abort.</source>
         <translation>사용자가 중단했습니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1372"/>
+        <location filename="../src/gui/folderman.cpp" line="1376"/>
         <source>Sync is paused.</source>
         <translation>동기화가 일시 정지되었습니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1378"/>
+        <location filename="../src/gui/folderman.cpp" line="1382"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1(동기화 중지됨)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1386"/>
+        <location filename="../src/gui/folderman.cpp" line="1390"/>
         <source>No valid folder selected!</source>
         <translation>올바른 폴더를 선택하지 않았습니다!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1394"/>
+        <location filename="../src/gui/folderman.cpp" line="1398"/>
         <source>The folder %1 is used in a folder sync connection!</source>
         <translation>%1 폴더는 폴더 동기화 연결에 이용됩니다!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1401"/>
+        <location filename="../src/gui/folderman.cpp" line="1405"/>
         <source>The selected path does not exist!</source>
         <translation>선택된 경로가 존재하지 않습니다!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1405"/>
+        <location filename="../src/gui/folderman.cpp" line="1409"/>
         <source>The selected path is not a folder!</source>
         <translation>선택한 경로가 폴더가 아닙니다!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1409"/>
+        <location filename="../src/gui/folderman.cpp" line="1413"/>
         <source>You have no permission to write to the selected folder!</source>
         <translation>선택한 폴더에 쓸 수 있는 권한이 없습니다!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1446"/>
+        <location filename="../src/gui/folderman.cpp" line="1450"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
         <translation>이미 서버와 이 로컬 폴더가 동기화되었습니다. 다른 로컬 폴더를 선택하십시오!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1450"/>
+        <location filename="../src/gui/folderman.cpp" line="1454"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
         <translation>로컬 폴더 %1이(가) 폴더 동기화 연결에 사용 중인 폴더를 포함하고 있습니다. 다른 폴더를 선택하십시오!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1456"/>
+        <location filename="../src/gui/folderman.cpp" line="1460"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation>로컬 폴더 %1이(가) 폴더 동기화 연결에 사용 중인 폴더에 포함되어 있습니다. 다른 폴더를 선택하십시오!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1463"/>
+        <location filename="../src/gui/folderman.cpp" line="1467"/>
         <source>%1 Please pick another one!</source>
         <translation>%1 다른 것을 선택하십시오!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1542"/>
+        <location filename="../src/gui/folderman.cpp" line="1546"/>
         <source>Multiple accounts are sharing the folder %1.
 This configuration is know to lead to dataloss and is no longer supported.
 Please consider removing this folder from the account and adding it again.</source>
@@ -1719,12 +1728,12 @@ Please consider removing this folder from the account and adding it again.</sour
         <translation>다시 시작하고 업데이트(&amp;R)</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="334"/>
+        <location filename="../src/gui/generalsettings.cpp" line="304"/>
         <source>You cannot disable autostart because system-wide autostart is enabled.</source>
         <translation>시스템 차원의 자동 시작이 활성화되었으므로 자동 시작을 비활성화할 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="227"/>
+        <location filename="../src/gui/generalsettings.cpp" line="209"/>
         <source>Change update channel?</source>
         <translation>업데이트 채널 변경할까요?</translation>
     </message>
@@ -1739,29 +1748,29 @@ Please consider removing this folder from the account and adding it again.</sour
         <translation>언어 변경은 응용프로그램을 다시 시작해야 적용됩니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="228"/>
+        <location filename="../src/gui/generalsettings.cpp" line="210"/>
         <source>The update channel determines which client updates will be offered for installation. The &quot;stable&quot; channel contains only upgrades that are considered reliable, while the versions in the &quot;beta&quot; channel may contain newer features and bugfixes, but have not yet been tested thoroughly.
 
 Note that this selects only what pool upgrades are taken from, and that there are no downgrades: So going back from the beta channel to the stable channel usually cannot be done immediately and means waiting for a stable version that is newer than the currently installed beta version.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="241"/>
+        <location filename="../src/gui/generalsettings.cpp" line="223"/>
         <source>Change update channel</source>
         <translation>업데이트 채널 변경</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="242"/>
+        <location filename="../src/gui/generalsettings.cpp" line="224"/>
         <source>Cancel</source>
         <translation>취소</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="355"/>
+        <location filename="../src/gui/generalsettings.cpp" line="336"/>
         <source>unknown (%1)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="365"/>
+        <location filename="../src/gui/generalsettings.cpp" line="320"/>
         <source>(use default)</source>
         <translation>(기본 값 사용)</translation>
     </message>
@@ -1882,22 +1891,22 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/issueswidget.cpp" line="135"/>
+        <location filename="../src/gui/issueswidget.cpp" line="174"/>
         <source>The file %1 was ignored as its name is reserved by %2</source>
         <translation>%1 파일은 그 이름이 %2 에 의해 예약되어 있으므로 무시됩니다</translation>
     </message>
     <message>
-        <location filename="../src/gui/issueswidget.cpp" line="163"/>
+        <location filename="../src/gui/issueswidget.cpp" line="204"/>
         <source>Reset column sizes</source>
         <translation>칼럼 크기 재 설정</translation>
     </message>
     <message>
-        <location filename="../src/gui/issueswidget.cpp" line="182"/>
+        <location filename="../src/gui/issueswidget.cpp" line="223"/>
         <source>There were conflicts. &lt;a href=&quot;%1&quot;&gt;Check the documentation on how to resolve them.&lt;/a&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/issueswidget.cpp" line="202"/>
+        <location filename="../src/gui/issueswidget.cpp" line="243"/>
         <source>Account</source>
         <translation>계정</translation>
     </message>
@@ -1968,22 +1977,22 @@ Note that using any logging command line options will override the settings.</so
 <context>
     <name>OCC::Models</name>
     <message>
-        <location filename="../src/gui/models/models.cpp" line="82"/>
+        <location filename="../src/gui/models/models.cpp" line="93"/>
         <source>%1 Filter:</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/models/models.cpp" line="103"/>
-        <source>No filter</source>
-        <translation>필터 없음</translation>
+        <location filename="../src/gui/models/models.cpp" line="114"/>
+        <source>All</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/issueswidget.cpp" line="217"/>
+        <location filename="../src/gui/issueswidget.cpp" line="258"/>
         <source>Reset Filters</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/issueswidget.cpp" line="296"/>
+        <location filename="../src/gui/issueswidget.cpp" line="349"/>
         <source>Status Filter:</source>
         <translation type="unfinished"/>
     </message>
@@ -2220,12 +2229,12 @@ Note that using any logging command line options will override the settings.</so
         <translation>&lt;h1&gt;로그인 오류&lt;/h1&gt;&lt;p&gt;사용자 정보 가져오기 실패&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="552"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="553"/>
         <source>Oauth2 Error</source>
         <translation>Oauth2 오류</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="553"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="554"/>
         <source>Oauth2 authentication requires a secured connection.</source>
         <translation>Oauth2 인증은 보안 연결을 필요로 합니다.</translation>
     </message>
@@ -2533,132 +2542,132 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::ProcessDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="237"/>
+        <location filename="../src/libsync/discovery.cpp" line="245"/>
         <source>Symbolic links are not supported in syncing.</source>
         <translation>동기화 시 심볼릭 링크는 지원되지 않습니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="246"/>
+        <location filename="../src/libsync/discovery.cpp" line="254"/>
         <source>File is listed on the ignore list.</source>
         <translation>파일이 무시 목록에 포함되어 있습니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="251"/>
+        <location filename="../src/libsync/discovery.cpp" line="259"/>
         <source>File names ending with a period are not supported on this file system.</source>
         <translation>이 파일 시스템은 점으로 끝나는 파일 이름을 지원하지 않습니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="264"/>
+        <location filename="../src/libsync/discovery.cpp" line="272"/>
         <source>File names containing the character &apos;%1&apos; are not supported on this file system.</source>
         <translation>이 파일 시스템은 &apos;%1&apos; 글자를 포함하는 파일 이름을 지원하지 않습니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="267"/>
+        <location filename="../src/libsync/discovery.cpp" line="275"/>
         <source>File name contains at least one invalid character</source>
         <translation>파일 이름에 하나 이상의 사용할 수 없는 문자가 포함되어 있음</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="269"/>
+        <location filename="../src/libsync/discovery.cpp" line="277"/>
         <source>The file name is a reserved name on this file system.</source>
         <translation>이 파일 이름은 현재 파일 시스템에서 예약된 이름입니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="278"/>
+        <location filename="../src/libsync/discovery.cpp" line="286"/>
         <source>Filename contains trailing spaces.</source>
         <translation>파일 이름 끝에 공백이 있습니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="281"/>
+        <location filename="../src/libsync/discovery.cpp" line="289"/>
         <source>Filename is too long.</source>
         <translation>파일 이름이 너무 깁니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="284"/>
+        <location filename="../src/libsync/discovery.cpp" line="292"/>
         <source>File/Folder is ignored because it&apos;s hidden.</source>
         <translation>파일이나 폴더가 숨김 상태이기 때문에 무시합니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="288"/>
+        <location filename="../src/libsync/discovery.cpp" line="296"/>
         <source>Stat failed.</source>
         <translation>파일 정보를 읽을 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="291"/>
+        <location filename="../src/libsync/discovery.cpp" line="299"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
         <translation>충돌: 서버 버전을 다운로드했고, 로컬 복사본의 이름을 변경했으며 업로드하지 않았습니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="295"/>
+        <location filename="../src/libsync/discovery.cpp" line="303"/>
         <source>The filename cannot be encoded on your file system.</source>
         <translation>이 파일 이름을 현재 파일 시스템으로 인코딩할 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="298"/>
+        <location filename="../src/libsync/discovery.cpp" line="306"/>
         <source>The filename is blacklisted on the server.</source>
         <translation>이 파일 명은 서버의 블랙리스트에 들어 있습니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="401"/>
+        <location filename="../src/libsync/discovery.cpp" line="409"/>
         <source>size</source>
         <translation>크기</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="403"/>
+        <location filename="../src/libsync/discovery.cpp" line="411"/>
         <source>permissions</source>
         <translation>권한</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="405"/>
+        <location filename="../src/libsync/discovery.cpp" line="413"/>
         <source>etag</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="407"/>
+        <location filename="../src/libsync/discovery.cpp" line="415"/>
         <source>file id</source>
         <translation>파일 id</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="411"/>
+        <location filename="../src/libsync/discovery.cpp" line="419"/>
         <source>server reported no %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1237"/>
+        <location filename="../src/libsync/discovery.cpp" line="1245"/>
         <source>Moved to invalid target, restoring</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1250"/>
+        <location filename="../src/libsync/discovery.cpp" line="1258"/>
         <source>Not allowed to remove, restoring</source>
         <translation>삭제가 허용되지 않음, 복원 중</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1164"/>
+        <location filename="../src/libsync/discovery.cpp" line="1172"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>&quot;동기화할 항목 선택&quot; 블랙리스트에 추가되어 있어서 거부됨</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1197"/>
+        <location filename="../src/libsync/discovery.cpp" line="1205"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>해당 폴더에 하위 폴더를 추가할 권한이 없어서 허용되지 않음</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1202"/>
+        <location filename="../src/libsync/discovery.cpp" line="1210"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>해당 폴더에 파일을 추가할 권한이 없어서 허용되지 않음</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1215"/>
+        <location filename="../src/libsync/discovery.cpp" line="1223"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>서버에서 읽기 전용으로 공유 중이어서 허용되지 않음, 복원 중</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1360"/>
+        <location filename="../src/libsync/discovery.cpp" line="1368"/>
         <source>Error while reading the database</source>
         <translation>데이터베이스 읽기 오류</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1420"/>
+        <location filename="../src/libsync/discovery.cpp" line="1428"/>
         <source>Server replied with an error while reading directory &apos;%1&apos; : %2</source>
         <translation type="unfinished"/>
     </message>
@@ -2922,12 +2931,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="576"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="580"/>
         <source>Error updating metadata: %1</source>
         <translation>메타데이터 갱신 에러: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="579"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="583"/>
         <source>The file %1 is currently in use</source>
         <translation>파일 %1 은(는) 현재 이용 중입니다</translation>
     </message>
@@ -2942,36 +2951,37 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <name>OCC::PropagateUploadFileNG</name>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="93"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="369"/>
         <source>%1 the file is currently in use</source>
         <translation>%1  파일은  현재 이용 중입니다</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="480"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="493"/>
         <source>The local file was removed during sync.</source>
         <translation>로컬 파일이 동기화 중 삭제되었습니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="491"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="504"/>
         <source>Local file changed during sync.</source>
         <translation>로컬 파일이 동기화 중 변경되었습니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="528"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="541"/>
         <source>The server did ask for a removed legacy feature(polling)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="533"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="546"/>
         <source>Unexpected return code from server (%1)</source>
         <translation>서버에서 예상하지 못한 응답 코드를 반환함(%1)</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="540"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="553"/>
         <source>Missing File ID from server</source>
         <translation>서버에 파일 ID가 없음</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="554"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="567"/>
         <source>Missing ETag from server</source>
         <translation>서버에 ETag가 없음</translation>
     </message>
@@ -3083,27 +3093,13 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>필터</translation>
     </message>
     <message>
-        <location filename="../src/gui/protocolwidget.cpp" line="91"/>
+        <location filename="../src/gui/protocolwidget.cpp" line="68"/>
+        <location filename="../src/gui/protocolwidget.cpp" line="74"/>
         <source>Account</source>
         <translation>계정</translation>
     </message>
     <message>
-        <location filename="../src/gui/protocolwidget.cpp" line="105"/>
-        <source>Copy to clipboard</source>
-        <translation>클립보드로 복사</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/protocolwidget.cpp" line="115"/>
-        <source>Show in file browser</source>
-        <translation>파일 부라우저에 보이기</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/protocolwidget.cpp" line="126"/>
-        <source>Show in web browser</source>
-        <translation>웹 브라우져에 보이기</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/protocolwidget.cpp" line="139"/>
+        <location filename="../src/gui/protocolwidget.cpp" line="149"/>
         <source>Retry sync</source>
         <translation>동기화 재시도</translation>
     </message>
@@ -3398,7 +3394,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="168"/>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="600"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="599"/>
         <source>Delete</source>
         <translation>삭제</translation>
     </message>
@@ -3433,28 +3429,28 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>새로 만들기...</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="579"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="578"/>
         <source>I shared %1 with you</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="593"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="592"/>
         <source>Confirm Link Share Deletion</source>
         <translation>링크 공유 삭제 확인</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="594"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="593"/>
         <source>&lt;p&gt;Do you really want to delete the public link share &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;Note: This action cannot be undone.&lt;/p&gt;</source>
         <translation>&lt;p&gt;공개 링크 공유 &lt;i&gt;%1&lt;/i&gt;을(를) 삭제하시겠습니까?&lt;/p&gt;&lt;p&gt;메모: 이 작업은 취소할 수 없습니다.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="601"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="600"/>
         <source>Cancel</source>
         <translation>취소</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="62"/>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="617"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="616"/>
         <source>Public link</source>
         <translation>공개 링크</translation>
     </message>
@@ -3465,7 +3461,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="357"/>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="547"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="546"/>
         <source>Please Set Password</source>
         <translation>암호를 설정하십시오</translation>
     </message>

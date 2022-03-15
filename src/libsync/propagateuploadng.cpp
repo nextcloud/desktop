@@ -367,6 +367,19 @@ void PropagateUploadFileNG::doFinalMove()
 
     const QString source = chunkPath() + QStringLiteral("/.file");
 
+#ifdef Q_OS_WIN
+    // Try to accuire a lock on the file and keep it until we done.
+    // If the file is locked, abort before we perform the move on the server
+    const QString fileName = propagator()->fullLocalPath(_item->_file);
+    const auto lockMode = propagator()->syncOptions().requiredLockMode();
+    m_fileLock = FileSystem::lockFile(fileName, lockMode);
+    if (!m_fileLock) {
+        emit propagator()->seenLockedFile(fileName, lockMode);
+        abortWithError(SyncFileItem::SoftError, tr("%1 the file is currently in use").arg(QDir::toNativeSeparators(fileName)));
+        return;
+    }
+#endif
+
     auto job = new MoveJob(propagator()->account(), propagator()->account()->url(), source, destination, headers, this);
     _jobs.append(job);
     connect(job, &MoveJob::finishedSignal, this, &PropagateUploadFileNG::slotMoveJobFinished);

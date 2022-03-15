@@ -454,35 +454,38 @@ bool FileSystem::moveToTrash(const QString &fileName, QString *errorString)
 #endif
 }
 
-bool FileSystem::isFileLocked(const QString &fileName, LockMode mode)
-{
 #ifdef Q_OS_WIN
-    // Check if file exists
+Utility::Handle FileSystem::lockFile(const QString &fileName, LockMode mode)
+{
     const QString fName = longWinPath(fileName);
     auto accessMode = mode == LockMode::Exclusive ? 0 : FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE;
+    // Check if file exists
     DWORD attr = GetFileAttributesW(reinterpret_cast<const wchar_t *>(fName.utf16()));
     if (attr != INVALID_FILE_ATTRIBUTES) {
         // Try to open the file with as much access as possible..
-        HANDLE win_h = CreateFileW(
+        return Utility::Handle { CreateFileW(
             reinterpret_cast<const wchar_t *>(fName.utf16()),
             GENERIC_READ | GENERIC_WRITE,
             accessMode,
-            NULL, OPEN_EXISTING,
+            nullptr, OPEN_EXISTING,
             FILE_ATTRIBUTE_NORMAL | FILE_FLAG_BACKUP_SEMANTICS,
-            NULL);
+            nullptr) };
+    }
+    return {};
+}
+#endif
 
-        if (win_h == INVALID_HANDLE_VALUE) {
-            if (GetLastError() == ERROR_SHARING_VIOLATION) {
-                return true;
-            }
-            return false;
-        } else {
-            CloseHandle(win_h);
-        }
-    } else {
+
+bool FileSystem::isFileLocked(const QString &fileName, LockMode mode)
+{
+#ifdef Q_OS_WIN
+    const auto handle = lockFile(fileName, mode);
+    if (!handle) {
         const auto error = GetLastError();
-        if (error != ERROR_FILE_NOT_FOUND && error != ERROR_PATH_NOT_FOUND) {
-            qCWarning(lcFileSystem()) << "GetFileAttributesW" << Utility::formatWinError(error);
+        if (error == ERROR_SHARING_VIOLATION) {
+            return true;
+        } else if (error != ERROR_FILE_NOT_FOUND && error != ERROR_PATH_NOT_FOUND) {
+            qCWarning(lcFileSystem()) << Q_FUNC_INFO << Utility::formatWinError(error);
         }
     }
 #else

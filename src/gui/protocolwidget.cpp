@@ -16,22 +16,22 @@
 #include <QtGui>
 #include <QtWidgets>
 
-#include "protocolwidget.h"
-#include "configfile.h"
-#include "syncresult.h"
-#include "logger.h"
-#include "theme.h"
-#include "folderman.h"
-#include "folder.h"
-#include "openfilemanager.h"
-#include "guiutility.h"
 #include "accountmanager.h"
 #include "accountstate.h"
+#include "commonstrings.h"
+#include "configfile.h"
+#include "folder.h"
+#include "folderman.h"
+#include "guiutility.h"
+#include "logger.h"
+#include "openfilemanager.h"
+#include "protocolwidget.h"
 #include "syncfileitem.h"
+#include "syncresult.h"
+#include "theme.h"
 
 #include "models/activitylistmodel.h"
 #include "models/expandingheaderview.h"
-#include "models/models.h"
 
 #include "ui_protocolwidget.h"
 
@@ -51,7 +51,8 @@ ProtocolWidget::ProtocolWidget(QWidget *parent)
     // Build the model-view "stack":
     //  _model <- _sortModel <- _statusSortModel <- _tableView
     _model = new ProtocolItemModel(2000, false, this);
-    _sortModel = new QSortFilterProxyModel(this);
+    _sortModel = new SignalledQSortFilterProxyModel(this);
+    connect(_sortModel, &SignalledQSortFilterProxyModel::filterChanged, this, &ProtocolWidget::filterDidChange);
     _sortModel->setSourceModel(_model);
     _sortModel->setSortRole(Models::UnderlyingDataRole);
     _ui->_tableView->setModel(_sortModel);
@@ -64,12 +65,13 @@ ProtocolWidget::ProtocolWidget(QWidget *parent)
     header->hideSection(static_cast<int>(ProtocolItemModel::ProtocolItemRole::Status));
     header->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(header, &QHeaderView::customContextMenuRequested, header, [header, this] {
-        auto menu = showFilterMenu(header, _sortModel);
+        auto menu = showFilterMenu(header, _sortModel, static_cast<int>(ProtocolItemModel::ProtocolItemRole::Account), tr("Account"));
+        menu->addSeparator();
         header->addResetActionToMenu(menu);
     });
 
     connect(_ui->_filterButton, &QAbstractButton::clicked, this, [this] {
-        showFilterMenu(_ui->_filterButton, _sortModel);
+        showFilterMenu(_ui->_filterButton, _sortModel, static_cast<int>(ProtocolItemModel::ProtocolItemRole::Account), tr("Account"));
     });
 
     connect(FolderMan::instance(), &FolderMan::folderRemoved, this, [this](Folder *f) {
@@ -84,12 +86,20 @@ ProtocolWidget::~ProtocolWidget()
     delete _ui;
 }
 
-QMenu *ProtocolWidget::showFilterMenu(QWidget *parent, QSortFilterProxyModel *model)
+/**
+ * @brief Show a filter menu for the given model.
+ *
+ * @param parent Parent widget
+ * @param model The model that will do the filtering
+ * @param role the role (column number) to filter on
+ * @param columnName the name column on which the filter is done
+ * @return
+ */
+QMenu *ProtocolWidget::showFilterMenu(QWidget *parent, SignalledQSortFilterProxyModel *model, int role, const QString &columnName)
 {
     auto menu = new QMenu(parent);
     menu->setAttribute(Qt::WA_DeleteOnClose);
-    Models::addFilterMenuItems(menu, AccountManager::instance()->accountNames(), model, static_cast<int>(ProtocolItemModel::ProtocolItemRole::Account), tr("Account"), Qt::DisplayRole);
-    menu->addSeparator();
+    Models::addFilterMenuItems(menu, AccountManager::instance()->accountNames(), model, role, columnName, Qt::DisplayRole);
     QTimer::singleShot(0, menu, [menu] {
         menu->popup(QCursor::pos());
     });
@@ -102,7 +112,7 @@ void ProtocolWidget::showContextMenu(QWidget *parent, ProtocolItemModel *model, 
     menu->setAttribute(Qt::WA_DeleteOnClose);
 
     // keep in sync with ActivityWidget::slotItemContextMenu
-    menu->addAction(tr("Copy to clipboard"), parent, [text = Models::formatSelection(items)] {
+    menu->addAction(CommonStrings::copyToClipBoard(), parent, [text = Models::formatSelection(items)] {
         QApplication::clipboard()->setText(text);
     });
 
@@ -112,7 +122,7 @@ void ProtocolWidget::showContextMenu(QWidget *parent, ProtocolItemModel *model, 
             const QString localPath = data.folder()->path() + data.path();
             if (QFileInfo::exists(localPath)) {
                 // keep in sync with ActivityWidget::slotItemContextMenu
-                menu->addAction(tr("Show in file browser"), parent, [localPath] {
+                menu->addAction(CommonStrings::showInFileBrowser(), parent, [localPath] {
                     if (QFileInfo::exists(localPath)) {
                         showInFileManager(localPath);
                     }
@@ -123,7 +133,7 @@ void ProtocolWidget::showContextMenu(QWidget *parent, ProtocolItemModel *model, 
                 fetchPrivateLinkUrl(data.folder()->accountState()->account(), data.folder()->webDavUrl(), data.folder()->remotePathTrailingSlash() + data.path(), parent, [parent, menu = QPointer<QMenu>(menu)](const QString &url) {
                     // as fetchPrivateLinkUrl is async we need to check the menu still exists
                     if (menu) {
-                        menu->addAction(tr("Show in web browser"), parent, [url, parent] {
+                        menu->addAction(CommonStrings::showInWebBrowser(), parent, [url, parent] {
                             Utility::openBrowser(url, parent);
                         });
                     }
@@ -167,4 +177,9 @@ void ProtocolWidget::slotItemCompleted(const QString &folder, const SyncFileItem
     _model->addProtocolItem(ProtocolItem { folder, item });
 }
 
+void ProtocolWidget::filterDidChange()
+{
+    _ui->_filterButton->setText(CommonStrings::filterButtonText(_sortModel->filterRegExp().isEmpty() ? 0 : 1));
 }
+
+} // OCC namespace

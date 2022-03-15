@@ -97,6 +97,12 @@ public:
     // How often should the Application ask this object to check for the connection?
     static constexpr auto DefaultCallingInterval = std::chrono::seconds(62);
 
+
+    /** Whether to clear the cookies before we start the CheckServerJob job
+     * This option also depends on Theme::instance()->connectionValidatorClearCookies()
+     */
+    void setClearCookies(bool clearCookies);
+
 public slots:
     /// Checks the server and the authentication.
     void checkServer();
@@ -104,10 +110,6 @@ public slots:
     void systemProxyLookupDone(const QNetworkProxy &proxy);
 
 signals:
-    /**
-     * Emited before the actual validation starts
-     */
-    void aboutToStart();
     void connectionResult(ConnectionValidator::Status status, const QStringList &errors);
 
 protected slots:
@@ -139,6 +141,7 @@ private:
     QStringList _errors;
     AccountPtr _account;
     bool _updateConfig = true;
+    bool _clearCookies = false;
 };
 }
 

@@ -1,0 +1,7 @@
+Bugfix: If reuqired clear cookies in more scenarios
+
+BigIp F5 requires special cookie handling on our side.
+We only explicitly cleared the cookies when we hit an unexpected redirect,
+now we will clear them also when refreshing our OAuth token.
+
+https://github.com/owncloud/client/pull/9489

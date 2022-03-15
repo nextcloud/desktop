@@ -38,6 +38,7 @@ set(client_SRCS
     accountsettings.cpp
     application.cpp
     clientproxy.cpp
+    commonstrings.cpp
     connectionvalidator.cpp
     folder.cpp
     folderman.cpp
