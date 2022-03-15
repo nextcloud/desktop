@@ -48,6 +48,8 @@ RowLayout {
             text: (root.activityData.type === "Activity" || root.activityData.type === "Notification") ? root.activityData.subject : root.activityData.message
             width: parent.width
             elide: Text.ElideRight
+            wrapMode: Text.Wrap
+            maximumLineCount: 2
             font.pixelSize: Style.topLinePixelSize
             color: root.activityData.activityTextTitleColor
         }
@@ -58,18 +60,22 @@ RowLayout {
                                     : (root.activityData.type === "File") ? root.activityData.subject
                                                         : (root.activityData.type === "Notification") ? root.activityData.message
                                                                                     : ""
-            height: (text === "") ? 0 : activityTextTitle.height
+            height: (text === "") ? 0 : implicitHeight
             width: parent.width
             elide: Text.ElideRight
+            wrapMode: Text.Wrap
+            maximumLineCount: 2
             font.pixelSize: Style.subLinePixelSize
         }
 
         Label {
             id: activityTextDateTime
             text: root.activityData.dateTime
-            height: (text === "") ? 0 : activityTextTitle.height
+            height: (text === "") ? 0 : implicitHeight
             width: parent.width
             elide: Text.ElideRight
+            wrapMode: Text.Wrap
+            maximumLineCount: 2
             font.pixelSize: Style.subLinePixelSize
             color: "#808080"
         }
