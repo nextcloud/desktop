@@ -13,7 +13,9 @@ Summary
 * Bugfix - Fix copy url location for private links: [#9048](https://github.com/owncloud/client/issues/9048)
 * Bugfix - Remove outdated translations: [#9105](https://github.com/owncloud/client/issues/9105)
 * Bugfix - Progress reporting for TUS uploads: [#9121](https://github.com/owncloud/client/issues/9121)
+* Bugfix - Fix crash if a database error occurs: [#9147](https://github.com/owncloud/client/issues/9147)
 * Bugfix - --version showed incorrect information about VFS support: [#9155](https://github.com/owncloud/client/issues/9155)
+* Bugfix - Client warns about non exisitng files: [#9236](https://github.com/owncloud/client/issues/9236)
 * Bugfix - Mention source file in activity tab when renaming: [#9238](https://github.com/owncloud/client/issues/9238)
 * Bugfix - Fix crash on remove account: [#9367](https://github.com/owncloud/client/issues/9367)
 * Bugfix - Raise ssl issue dialoig above the wizard: [#9375](https://github.com/owncloud/client/pull/9375)
@@ -24,14 +26,21 @@ Summary
 * Bugfix - Fix translated icon names in desktop file with ownBrander themes: [#9390](https://github.com/owncloud/client/pull/9390)
 * Bugfix - Fix possible crash: [#9417](https://github.com/owncloud/client/issues/9417)
 * Bugfix - Add open local/remote folder options: [#9405](https://github.com/owncloud/client/issues/9405)
+* Bugfix - Fix Account Filter for Server Activity tab: [#9481](https://github.com/owncloud/client/pull/9481)
 * Bugfix - Ensure proper setup of network jobs on retries: [#9437](https://github.com/owncloud/client/pull/9437)
 * Bugfix - Fix status of files uploaded with TUS: [#9472](https://github.com/owncloud/client/pull/9472)
+* Bugfix - If reuqired clear cookies in more scenarios: [#9489](https://github.com/owncloud/client/pull/9489)
+* Bugfix - Improve filter pop-up menu and button: [#9425](https://github.com/owncloud/client/issues/9425)
 * Bugfix - Fix potential download failure for renamed file with Windows VFS: [#18](https://github.com/owncloud/client-desktop-vfs-win/pull/18)
+* Bugfix - Possible crash when downloading a virtual file on Windows: [#21](https://github.com/owncloud/client-desktop-vfs-win/pull/21)
+* Bugfix - Don't publish upload if we can't finish the transaction in the client: [#5052](https://github.com/owncloud/enterprise/issues/5052)
 * Change - Make sharedialog preview be more resilient: [#8938](https://github.com/owncloud/client/issues/8938)
 * Enhancement - Built-in AppImage self-updater: [#8923](https://github.com/owncloud/client/issues/8923)
 * Enhancement - Retry token refresh multiple times before logout: [#9245](https://github.com/owncloud/client/issues/9245)
 * Enhancement - Don't log error when checking removed file for changes: [#9304](https://github.com/owncloud/client/issues/9304)
+* Enhancement - Leave password field in share dialog enabled on errors: [#9336](https://github.com/owncloud/client/issues/9336)
 * Enhancement - Provide informal German translations: [#9460](https://github.com/owncloud/client/issues/9460)
+* Enhancement - Always flush log when logging to stdout: [#9515](https://github.com/owncloud/client/pull/9515)
 
 Details
 -------
@@ -67,6 +76,13 @@ Details
 
    https://github.com/owncloud/client/issues/9121
 
+* Bugfix - Fix crash if a database error occurs: [#9147](https://github.com/owncloud/client/issues/9147)
+
+   We no longer crash if a database error occurs on startup, instead the folder will enter an error
+   sate similar to the case that the folder does not exist.
+
+   https://github.com/owncloud/client/issues/9147
+
 * Bugfix - --version showed incorrect information about VFS support: [#9155](https://github.com/owncloud/client/issues/9155)
 
    --version used to always show "Off", even when a VFS plugin was available. This has been fixed
@@ -74,6 +90,13 @@ Details
 
    https://github.com/owncloud/client/issues/9155
    https://github.com/owncloud/client/pull/9457
+
+* Bugfix - Client warns about non exisitng files: [#9236](https://github.com/owncloud/client/issues/9236)
+
+   We fixed a bug where the client warns about ignored files that where added to the DB in previous
+   versions of the client and do no longer exist.
+
+   https://github.com/owncloud/client/issues/9236
 
 * Bugfix - Mention source file in activity tab when renaming: [#9238](https://github.com/owncloud/client/issues/9238)
 
@@ -142,6 +165,10 @@ Details
    https://github.com/owncloud/client/issues/9405
    https://github.com/owncloud/client/pull/9420
 
+* Bugfix - Fix Account Filter for Server Activity tab: [#9481](https://github.com/owncloud/client/pull/9481)
+
+   https://github.com/owncloud/client/pull/9481
+
 * Bugfix - Ensure proper setup of network jobs on retries: [#9437](https://github.com/owncloud/client/pull/9437)
 
    On retries network jobs where not properly setup which could lead to undefined behaviour.
@@ -154,12 +181,41 @@ Details
 
    https://github.com/owncloud/client/pull/9472
 
+* Bugfix - If reuqired clear cookies in more scenarios: [#9489](https://github.com/owncloud/client/pull/9489)
+
+   BigIp F5 requires special cookie handling on our side. We only explicitly cleared the cookies
+   when we hit an unexpected redirect, now we will clear them also when refreshing our OAuth token.
+
+   https://github.com/owncloud/client/pull/9489
+
+* Bugfix - Improve filter pop-up menu and button: [#9425](https://github.com/owncloud/client/issues/9425)
+
+   - replaced "No filter" option text with "All", to avoid the "No filter is not enabled" situation
+   - replace the "Filter" label on the button with "1 Filter"/"2 Filters" when a filter is active,
+   so a user can immediately see that without having to open the filter pop-up
+
+   https://github.com/owncloud/client/issues/9425
+   https://github.com/owncloud/client/pull/9513
+
 * Bugfix - Fix potential download failure for renamed file with Windows VFS: [#18](https://github.com/owncloud/client-desktop-vfs-win/pull/18)
 
    When a dehydrated file is renamed and immediately opened, the subsequent download might try to
    create a file with the original (un-renamed) name.
 
    https://github.com/owncloud/client-desktop-vfs-win/pull/18
+
+* Bugfix - Possible crash when downloading a virtual file on Windows: [#21](https://github.com/owncloud/client-desktop-vfs-win/pull/21)
+
+   We fixed a bug that might have caused crashes when working with virtual files on Windows.
+
+   https://github.com/owncloud/client-desktop-vfs-win/pull/21
+
+* Bugfix - Don't publish upload if we can't finish the transaction in the client: [#5052](https://github.com/owncloud/enterprise/issues/5052)
+
+   When a file gets locked during an upload we aborted after the upload finished on the server.
+   Resulting in a divergence of the local and remote state which could lead to conflicts.
+
+   https://github.com/owncloud/enterprise/issues/5052
 
 * Change - Make sharedialog preview be more resilient: [#8938](https://github.com/owncloud/client/issues/8938)
 
@@ -189,13 +245,35 @@ Details
 
    https://github.com/owncloud/client/issues/9304
 
+* Enhancement - Leave password field in share dialog enabled on errors: [#9336](https://github.com/owncloud/client/issues/9336)
+
+   The password line edit used to be disabled because the related checkbox was unchecked upon
+   errors such as failing to satisfy the requirements imposed by the "password policy" server
+   app.
+
+   Now, the checkbox will not be unchecked, leaving the line edit enabled and keeping the focus on
+   it. This allows users to enter a new password and try again without having to enable the checkbox
+   and clicking into the line edit again.
+
+   https://github.com/owncloud/client/issues/9336
+   https://github.com/owncloud/client/pull/9508
+
 * Enhancement - Provide informal German translations: [#9460](https://github.com/owncloud/client/issues/9460)
 
    The community was maintaining an informal German translation for years but we where only able
    to provide a single version of German in the client. We now ship both versions, the informal can
-   be selected in the combobox in the advanced settings.
+   be selected in the combobox in the advanced settings. To be able to distinguish between formal
+   and informal locales, we also include the locale identifier in the dropdown (e.g., "Deutsch
+   (de-informal)").
 
    https://github.com/owncloud/client/issues/9460
+   https://github.com/owncloud/client/pull/9502
+
+* Enhancement - Always flush log when logging to stdout: [#9515](https://github.com/owncloud/client/pull/9515)
+
+   We improved the behaviour of logging to a terminal.
+
+   https://github.com/owncloud/client/pull/9515
 
 Changelog for ownCloud Desktop Client [2.10.0] (2022-01-17)
 =======================================
