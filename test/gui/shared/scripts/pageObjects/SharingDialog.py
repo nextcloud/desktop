@@ -50,6 +50,12 @@ class SharingDialog:
         "window": names.sharingDialog_OCC_ShareDialog,
     }
     SHARING_DIALOG_ERROR = {"name": "errorLabel", "type": "QLabel", "visible": 1}
+    SHARING_DIALOG_CONTRIBUTOR_ROW = {
+        "container": names.sharingDialogUG_scrollArea_QScrollArea,
+        "name": "sharedWith",
+        "type": "QLabel",
+        "visible": 1,
+    }
 
     def getAvailablePermission(self):
         editChecked = squish.waitForObjectExists(self.EDIT_PERMISSIONS_CHECKBOX).checked
@@ -90,15 +96,8 @@ class SharingDialog:
             squish.clickButton(squish.waitForObject(self.SHARE_PERMISSIONS_CHECKBOX))
 
         # wait for share to complete
-        squish.waitForObjectExists(
-            {
-                "container": names.sharingDialogUG_scrollArea_QScrollArea,
-                "name": "sharedWith",
-                "occurrence": collaboratorCount,
-                "type": "QLabel",
-                "visible": 1,
-            }
-        )
+        self.SHARING_DIALOG_CONTRIBUTOR_ROW["occurrence"] = collaboratorCount
+        squish.waitForObjectExists(self.SHARING_DIALOG_CONTRIBUTOR_ROW)
 
     def getSharingDialogMessage(self):
         return str(squish.waitForObjectExists(self.SHARING_DIALOG).text)
