@@ -4,6 +4,8 @@ import QtQuick.Controls 2.3
 import QtGraphicalEffects 1.0
 import Style 1.0
 
+import com.nextcloud.desktopclient 1.0
+
 TextField {
     id: trayWindowUnifiedSearchTextField
 
@@ -28,7 +30,7 @@ TextField {
 
     background: Rectangle {
         radius: 5
-        border.color: parent.activeFocus ? Style.ncBlue : Style.menuBorder
+        border.color: parent.activeFocus ? UserModel.currentUser.accentColor : Style.menuBorder
         border.width: 1
     }
 

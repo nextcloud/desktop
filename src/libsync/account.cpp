@@ -160,6 +160,35 @@ void Account::setDavDisplayName(const QString &newDisplayName)
     emit accountChangedDisplayName();
 }
 
+QColor Account::headerColor() const
+{
+    const auto serverColor = capabilities().serverColor();
+    return serverColor.isValid() ? serverColor : Theme::defaultColor();
+}
+
+QColor Account::headerTextColor() const
+{
+    const auto headerTextColor = capabilities().serverTextColor();
+    return headerTextColor.isValid() ? headerTextColor : QColor(255,255,255);
+}
+
+QColor Account::accentColor() const
+{
+    // This will need adjusting when dark theme is a thing
+    auto serverColor = capabilities().serverColor();
+
+    if(!serverColor.isValid()) {
+        serverColor = Theme::defaultColor();
+    }
+
+    const auto effectMultiplier = 8;
+    auto darknessAdjustment = static_cast<int>((1 - Theme::getColorDarkness(serverColor)) * effectMultiplier);
+    darknessAdjustment *= darknessAdjustment; // Square the value to pronounce the darkness more in lighter colours
+    const auto baseAdjustment = 125;
+    const auto adjusted = Theme::isDarkColor(serverColor) ? serverColor : serverColor.darker(baseAdjustment + darknessAdjustment);
+    return adjusted;
+}
+
 QString Account::id() const
 {
     return _id;
@@ -586,6 +615,8 @@ const Capabilities &Account::capabilities() const
 void Account::setCapabilities(const QVariantMap &caps)
 {
     _capabilities = Capabilities(caps);
+
+    emit capabilitiesChanged();
 
     setupUserStatusConnector();
     trySetupPushNotifications();

@@ -239,6 +239,29 @@ bool Capabilities::userStatusSupportsEmoji() const
     return userStatusMap.value("supports_emoji", false).toBool();
 }
 
+QColor Capabilities::serverColor() const
+{
+    const auto themingMap = serverThemingMap();
+    return themingMap.contains("color") ? QColor(themingMap["color"].toString()) : QColor();
+}
+
+QColor Capabilities::serverTextColor() const
+{
+    const auto themingMap = serverThemingMap();
+    return themingMap.contains("color-text") ? QColor(themingMap["color-text"].toString()) : QColor();
+}
+
+QMap<QString, QVariant> Capabilities::serverThemingMap() const
+{
+    if (!_capabilities.contains("theming")) {
+        return {};
+    }
+
+    return _capabilities["theming"].toMap();
+}
+
+
+
 PushNotificationTypes Capabilities::availablePushNotifications() const
 {
     if (!_capabilities.contains("notify_push")) {

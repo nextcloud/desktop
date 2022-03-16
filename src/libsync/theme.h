@@ -62,6 +62,7 @@ class OWNCLOUDSYNC_EXPORT Theme : public QObject
 #endif
     Q_PROPERTY(QString updateCheckUrl READ updateCheckUrl CONSTANT)
 
+    Q_PROPERTY(QColor defaultColor READ defaultColor CONSTANT)
     Q_PROPERTY(QColor errorBoxTextColor READ errorBoxTextColor CONSTANT)
     Q_PROPERTY(QColor errorBoxBackgroundColor READ errorBoxBackgroundColor CONSTANT)
     Q_PROPERTY(QColor errorBoxBorderColor READ errorBoxBorderColor CONSTANT)
@@ -472,7 +473,9 @@ public:
     * (actually 2019/09/13 only systray theming).
     */
 	virtual QIcon uiThemeIcon(const QString &iconName, bool uiHasDarkBg) const;
-    
+
+    Q_INVOKABLE static double getColorDarkness(const QColor &color);
+
     /**
      * @brief Perform a calculation to check if a colour is dark or light and accounts for different sensitivity of the human eye.
      *
@@ -480,7 +483,7 @@ public:
      *
      * 2019/12/08: Moved here from SettingsDialog.
      */
-    static bool isDarkColor(const QColor &color);
+    Q_INVOKABLE static bool isDarkColor(const QColor &color);
     
     /**
      * @brief Return the colour to be used for HTML links (e.g. used in QLabel), based on the current app palette or given colour (Dark-/Light-Mode switching).
@@ -573,6 +576,8 @@ public:
     virtual bool showVirtualFilesOption() const;
 
     virtual bool enforceVirtualFilesSyncFolder() const;
+
+    static QColor defaultColor();
 
     /** @return color for the ErrorBox text. */
     virtual QColor errorBoxTextColor() const;

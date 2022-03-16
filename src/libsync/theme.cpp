@@ -776,11 +776,16 @@ QString Theme::versionSwitchOutput() const
     return helpText;
 }
 
-bool Theme::isDarkColor(const QColor &color)
+double Theme::getColorDarkness(const QColor &color)
 {
     // account for different sensitivity of the human eye to certain colors
-    double treshold = 1.0 - (0.299 * color.red() + 0.587 * color.green() + 0.114 * color.blue()) / 255.0;
-    return treshold > 0.5;
+    const double threshold = 1.0 - (0.299 * color.red() + 0.587 * color.green() + 0.114 * color.blue()) / 255.0;
+    return threshold;
+}
+
+bool Theme::isDarkColor(const QColor &color)
+{
+    return getColorDarkness(color) > 0.5;
 }
 
 QColor Theme::getBackgroundAwareLinkColor(const QColor &backgroundColor)
@@ -872,6 +877,11 @@ bool Theme::enforceVirtualFilesSyncFolder() const
 {
     const auto vfsMode = bestAvailableVfsMode();
     return ENFORCE_VIRTUAL_FILES_SYNC_FOLDER && vfsMode != OCC::Vfs::Off;
+}
+
+QColor Theme::defaultColor()
+{
+    return QColor{NEXTCLOUD_BACKGROUND_COLOR};
 }
 
 QColor Theme::errorBoxTextColor() const
