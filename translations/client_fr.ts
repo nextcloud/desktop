@@ -45,13 +45,13 @@
 <context>
     <name>ActivityItemContent</name>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="90"/>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="92"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="96"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="98"/>
         <source>Dismiss</source>
         <translation>Ignorer</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="121"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="127"/>
         <source>Open share dialog</source>
         <translation>Ouvrir la boîte de dialogue de partage</translation>
     </message>
