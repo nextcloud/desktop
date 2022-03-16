@@ -64,7 +64,7 @@ public slots:
 
 signals:
     void shareCommandReceived(const QString &sharePath, const QString &localPath, ShareDialogStartPage startPage);
-    void fileActivityCommandReceived(const QString &sharePath, const QString &localPath);
+    void fileActivityCommandReceived(const QString &objectName, const int objectId);
 
 private slots:
     void slotNewConnection();

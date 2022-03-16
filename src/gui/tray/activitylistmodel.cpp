@@ -57,7 +57,6 @@ QHash<int, QByteArray> ActivityListModel::roleNames() const
     auto roles = QAbstractListModel::roleNames();
     roles[DisplayPathRole] = "displayPath";
     roles[PathRole] = "path";
-    roles[AbsolutePathRole] = "absolutePath";
     roles[DisplayLocationRole] = "displayLocation";
     roles[LinkRole] = "link";
     roles[MessageRole] = "message";
@@ -69,6 +68,8 @@ QHash<int, QByteArray> ActivityListModel::roleNames() const
     roles[ActionsLinksForActionButtonsRole] = "linksForActionButtons";
     roles[ActionTextColorRole] = "activityTextTitleColor";
     roles[ObjectTypeRole] = "objectType";
+    roles[ObjectIdRole] = "objectId";
+    roles[ObjectNameRole] = "objectName";
     roles[PointInTimeRole] = "dateTime";
     roles[DisplayActions] = "displayActions";
     roles[ShareableRole] = "isShareable";
@@ -179,8 +180,6 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
         return getDisplayPath();
     case PathRole:
         return QFileInfo(getFilePath()).path();
-    case AbsolutePathRole:
-        return getFilePath();
     case DisplayLocationRole:
         return displayLocation();
     case ActionsLinksRole: {
@@ -239,6 +238,10 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
     }
     case ObjectTypeRole:
         return a._objectType;
+    case ObjectIdRole:
+        return a._objectId;
+    case ObjectNameRole:
+        return a._objectName;
     case ActionRole: {
         switch (a._type) {
         case Activity::ActivityType:
@@ -371,6 +374,8 @@ void ActivityListModel::activitiesReceived(const QJsonDocument &json, int status
         const auto activityUser = json.value(QStringLiteral("user")).toString();
         a._type = Activity::ActivityType;
         a._objectType = json.value(QStringLiteral("object_type")).toString();
+        a._objectId = json.value(QStringLiteral("object_id")).toInt();
+        a._objectName = json.value(QStringLiteral("object_name")).toString();
         a._accName = ast->account()->displayName();
         a._id = json.value(QStringLiteral("activity_id")).toInt();
         a._fileAction = json.value(QStringLiteral("type")).toString();
