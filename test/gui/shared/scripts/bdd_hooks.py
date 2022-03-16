@@ -96,7 +96,8 @@ def hook(context):
     # Detach (i.e. potentially terminate) all AUTs at the end of a scenario
     for ctx in applicationContextList():
         ctx.detach()
-        snooze(5)  # ToDo wait smarter till the app died
+        # ToDo wait smarter till the app died
+        snooze(context.userData['minSyncTimeout'])
 
     # delete local files/folders
     for filename in os.listdir(context.userData['clientRootSyncPath']):
