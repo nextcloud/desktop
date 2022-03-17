@@ -38,6 +38,7 @@ class User : public QObject
     Q_PROPERTY(QString avatar READ avatarUrl NOTIFY avatarChanged)
     Q_PROPERTY(bool isConnected READ isConnected NOTIFY accountStateChanged)
     Q_PROPERTY(UnifiedSearchResultsListModel* unifiedSearchResultsListModel READ getUnifiedSearchResultsListModel CONSTANT)
+
 public:
     User(AccountStatePtr &account, const bool &isCurrent = false, QObject *parent = nullptr);
 
@@ -86,6 +87,7 @@ signals:
     void headerColorChanged();
     void headerTextColorChanged();
     void accentColorChanged();
+    void sendReplyMessage(const QString &token, const QString &message, const QString &replyTo);
 
 public slots:
     void slotItemCompleted(const QString &folder, const SyncFileItemPtr &item);
@@ -105,6 +107,7 @@ public slots:
     void slotRefreshImmediately();
     void setNotificationRefreshInterval(std::chrono::milliseconds interval);
     void slotRebuildNavigationAppList();
+    void slotSendReplyMessage(const QString &conversationToken, const QString &message, const QString &replyTo);
 
 private:
     void slotPushNotificationsReady();
@@ -139,6 +142,7 @@ private:
     // number of currently running notification requests. If non zero,
     // no query for notifications is started.
     int _notificationRequestsRunning;
+    QString textSentStr;
 };
 
 class UserModel : public QAbstractListModel

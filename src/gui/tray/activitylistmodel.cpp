@@ -75,6 +75,9 @@ QHash<int, QByteArray> ActivityListModel::roleNames() const
     roles[ShareableRole] = "isShareable";
     roles[IsCurrentUserFileActivityRole] = "isCurrentUserFileActivity";
     roles[ThumbnailRole] = "thumbnail";
+    roles[TalkConversationTokenRole] = "conversationToken";
+    roles[TalkMessageIdRole] = "messageId";
+
     return roles;
 }
 
@@ -310,6 +313,10 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
         const auto preview = a._previews[0];
         return(generatePreviewMap(preview));
     }
+    case TalkConversationTokenRole:
+        return a._talkNotificationData.conversationToken;
+    case TalkMessageIdRole:
+        return a._talkNotificationData.messageId;
     default:
         return QVariant();
     }

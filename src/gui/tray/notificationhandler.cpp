@@ -100,6 +100,21 @@ void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &j
 
         //need to know, specially for remote_share
         a._objectType = json.value("object_type").toString();
+
+        // 2 cases to consider:
+        // - server == 24 & has Talk: notification type chat/call contains conversationToken/messageId in object_type
+        // - server < 24 & has Talk: notification type chat/call contains _only_ the conversationToken in object_type
+        if (a._objectType == "chat" || a._objectType == "call") {
+            const auto objectId = json.value("object_id").toString();
+            const auto objectIdData = objectId.split("/");
+            a._talkNotificationData.conversationToken = objectIdData.first();
+            if (a._objectType == "chat" && objectIdData.size() > 1) {
+                a._talkNotificationData.messageId = objectIdData.last();
+            } else {
+                qCInfo(lcServerNotification) << "Replying directly to Talk conversation" << a._talkNotificationData.conversationToken << "will not be possible because the notification doesn't contain the message ID.";
+            }
+        } 
+
         a._status = 0;
 
         a._subject = json.value("subject").toString();
