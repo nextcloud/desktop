@@ -36,8 +36,8 @@
 <context>
     <name>ActivityItemActions</name>
     <message>
-        <location filename="../src/gui/tray/ActivityItemActions.qml" line="77"/>
-        <location filename="../src/gui/tray/ActivityItemActions.qml" line="79"/>
+        <location filename="../src/gui/tray/ActivityItemActions.qml" line="78"/>
+        <location filename="../src/gui/tray/ActivityItemActions.qml" line="80"/>
         <source>Show more actions</source>
         <translation>显示更多操作</translation>
     </message>
@@ -5951,12 +5951,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>新文件夹</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="697"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="702"/>
         <source>Mark as read</source>
         <translation>标记为已读</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="699"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="704"/>
         <source>Reply</source>
         <translation>回复</translation>
     </message>
@@ -6361,6 +6361,11 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>账号切换器和设置菜单</translation>
     </message>
     <message>
+        <location filename="../src/gui/tray/Window.qml" line="499"/>
+        <source>Open local folder of current account</source>
+        <translation>打开当前账号的本地文件夹</translation>
+    </message>
+    <message>
         <location filename="../src/gui/tray/Window.qml" line="493"/>
         <source>Connected</source>
         <translation>已连接</translation>
@@ -6369,11 +6374,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/tray/Window.qml" line="493"/>
         <source>Disconnected</source>
         <translation>连接已断开</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/Window.qml" line="499"/>
-        <source>Open local folder of current account</source>
-        <translation>打开当前账号的本地文件夹</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="510"/>
@@ -6391,11 +6391,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>应用菜单</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="557"/>
-        <source>Open %1 in browser</source>
-        <translation>在浏览器中打开%1</translation>
-    </message>
-    <message>
         <location filename="../src/gui/tray/Window.qml" line="578"/>
         <source>Activity list</source>
         <translation>动态列表</translation>
@@ -6409,6 +6404,11 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/tray/Window.qml" line="812"/>
         <source>Open share dialog</source>
         <translation>打开共享对话框</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="557"/>
+        <source>Open %1 in browser</source>
+        <translation>在浏览器中打开%1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="720"/>

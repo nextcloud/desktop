@@ -36,8 +36,8 @@
 <context>
     <name>ActivityItemActions</name>
     <message>
-        <location filename="../src/gui/tray/ActivityItemActions.qml" line="77"/>
-        <location filename="../src/gui/tray/ActivityItemActions.qml" line="79"/>
+        <location filename="../src/gui/tray/ActivityItemActions.qml" line="78"/>
+        <location filename="../src/gui/tray/ActivityItemActions.qml" line="80"/>
         <source>Show more actions</source>
         <translation>Показывать больше действий</translation>
     </message>
@@ -5964,12 +5964,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Новая папка</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="697"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="702"/>
         <source>Mark as read</source>
         <translation>Отметить как прочитанное</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="699"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="704"/>
         <source>Reply</source>
         <translation>Ответить</translation>
     </message>
@@ -6374,6 +6374,11 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Переключение уч. записей и настройки</translation>
     </message>
     <message>
+        <location filename="../src/gui/tray/Window.qml" line="499"/>
+        <source>Open local folder of current account</source>
+        <translation>Открыть локальную папку текущей учетной записи</translation>
+    </message>
+    <message>
         <location filename="../src/gui/tray/Window.qml" line="493"/>
         <source>Connected</source>
         <translation>Подключено</translation>
@@ -6382,11 +6387,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/tray/Window.qml" line="493"/>
         <source>Disconnected</source>
         <translation>Отключено</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/Window.qml" line="499"/>
-        <source>Open local folder of current account</source>
-        <translation>Открыть локальную папку текущей учетной записи</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="510"/>
@@ -6404,11 +6404,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Меню приложений</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="557"/>
-        <source>Open %1 in browser</source>
-        <translation>Открыть %1 в браузере</translation>
-    </message>
-    <message>
         <location filename="../src/gui/tray/Window.qml" line="578"/>
         <source>Activity list</source>
         <translation>События</translation>
@@ -6422,6 +6417,11 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/tray/Window.qml" line="812"/>
         <source>Open share dialog</source>
         <translation>Открыть диалог настройки общего доступа</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="557"/>
+        <source>Open %1 in browser</source>
+        <translation>Открыть %1 в браузере</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="720"/>
