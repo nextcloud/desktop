@@ -66,6 +66,7 @@ public:
         DisplayActions,
         ShareableRole,
         IsCurrentUserFileActivityRole,
+        ThumbnailRole,
     };
     Q_ENUM(DataRole)
 
@@ -135,6 +136,8 @@ private:
     static QVariant convertLinkToActionButton(const Activity &activity, const ActivityLink &activityLink);
     void combineActivityLists();
     bool canFetchActivities() const;
+
+    void ingestActivities(const QJsonArray &activities);
 
     ActivityList _activityLists;
     ActivityList _syncFileItemLists;

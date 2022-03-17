@@ -195,10 +195,10 @@ set(client_SRCS
     tray/activitylistmodel.h
     tray/activitylistmodel.cpp
     tray/unifiedsearchresult.h
+    tray/asyncimageresponse.cpp
     tray/unifiedsearchresult.cpp
-    tray/unifiedsearchresultimageprovider.h
-    tray/unifiedsearchresultimageprovider.cpp
     tray/unifiedsearchresultslistmodel.h
+    tray/trayimageprovider.cpp
     tray/unifiedsearchresultslistmodel.cpp
     tray/usermodel.h
     tray/usermodel.cpp
