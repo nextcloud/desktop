@@ -48,21 +48,32 @@
 	// - Be prefixed with the code signing Team ID
 	// - Then infixed with the sandbox App Group
 	// - The App Group itself must be a prefix of (or equal to) the application bundle identifier
-	// We end up in the official signed client with: 9B5WD74GWJ.com.owncloud.desktopclient.socketApi
+	// We end up in the official signed client with: 9B5WD74GWJ.com.owncloud.desktopclient.socket
 	// With ad-hoc signing (the '-' signing identity) we must drop the Team ID.
 	// When the code isn't sandboxed (e.g. the OC client or the legacy overlay icon extension)
 	// the OS doesn't seem to put any restriction on the port name, so we just follow what
 	// the sandboxed App Extension needs.
 	// https://developer.apple.com/library/mac/documentation/Security/Conceptual/AppSandboxDesignGuide/AppSandboxInDepth/AppSandboxInDepth.html#//apple_ref/doc/uid/TP40011183-CH3-SW24
-	NSString *serverName = [socketApiPrefix stringByAppendingString:@".socketApi"];
-	//NSLog(@"FinderSync serverName %@", serverName);
+    
+    NSURL *container = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:socketApiPrefix];
+    NSURL *socketPath = [container URLByAppendingPathComponent:@".socket" isDirectory:NO];
+    
+    NSLog(@"Socket path: %@", socketPath.path);
 
-	_syncClientProxy = [[SyncClientProxy alloc] initWithDelegate:self serverName:serverName];
-	_registeredDirectories = [[NSMutableSet alloc] init];
-	_strings = [[NSMutableDictionary alloc] init];
+    if (socketPath.path) {
+        self.lineProcessor = [[LineProcessor alloc] initWithDelegate:self];
+        self.localSocketClient = [[LocalSocketClient alloc] init:socketPath.path
+                                                                 lineProcessor:self.lineProcessor];
+        [self.localSocketClient start];
+    } else {
+        NSLog(@"No socket path. Not initiating local socket client.");
+        self.localSocketClient = nil;
+    }
+    _registeredDirectories = [[NSMutableSet alloc] init];
+    _strings = [[NSMutableDictionary alloc] init];
+    _menuIsComplete = [[NSCondition alloc] init];
 
-	[_syncClientProxy start];
-	return self;
+    return self;
 }
 
 #pragma mark - Primary Finder Sync protocol methods
@@ -76,7 +87,7 @@
 	}
 
 	NSString* normalizedPath = [[url path] decomposedStringWithCanonicalMapping];
-	[_syncClientProxy askForIcon:normalizedPath isDirectory:isDir];
+	[self.localSocketClient askForIcon:normalizedPath isDirectory:isDir];
 }
 
 #pragma mark - Menu and toolbar item support
@@ -95,8 +106,19 @@
 	return string;
 }
 
+- (void)waitForMenuToArrive
+{
+    [self->_menuIsComplete lock];
+    [self->_menuIsComplete wait];
+    [self->_menuIsComplete unlock];
+}
+
 - (NSMenu *)menuForMenuKind:(FIMenuKind)whichMenu
 {
+    if(![self.localSocketClient isConnected]) {
+        return nil;
+    }
+    
 	FIFinderSyncController *syncController = [FIFinderSyncController defaultController];
 	NSMutableSet *rootPaths = [[NSMutableSet alloc] init];
 	[syncController.directoryURLs enumerateObjectsUsingBlock: ^(id obj, BOOL *stop) {
@@ -116,8 +138,11 @@
 	}];
 
 	NSString *paths = [self selectedPathsSeparatedByRecordSeparator];
-	// calling this IPC calls us back from client with several MENU_ITEM entries and then our askOnSocket returns again
-	[_syncClientProxy askOnSocket:paths query:@"GET_MENU_ITEMS"];
+	[self.localSocketClient askOnSocket:paths query:@"GET_MENU_ITEMS"];
+    
+    // Since the LocalSocketClient communicates asynchronously. wait here until the menu
+    // is delivered by another thread
+    [self waitForMenuToArrive];
 
 	id contextMenuTitle = [_strings objectForKey:@"CONTEXT_MENU_TITLE"];
 	if (contextMenuTitle && !onlyRootsSelected) {
@@ -151,7 +176,7 @@
 	long idx = [(NSMenuItem*)sender tag];
 	NSString *command = [[_menuItems objectAtIndex:idx] valueForKey:@"command"];
 	NSString *paths = [self selectedPathsSeparatedByRecordSeparator];
-	[_syncClientProxy askOnSocket:paths query:command];
+	[self.localSocketClient askOnSocket:paths query:command];
 }
 
 #pragma mark - SyncClientProxyDelegate implementation
@@ -164,6 +189,7 @@
 
 - (void)reFetchFileNameCacheForPath:(NSString*)path
 {
+    
 }
 
 - (void)registerPath:(NSString*)path
@@ -189,7 +215,14 @@
 	_menuItems = [[NSMutableArray alloc] init];
 }
 - (void)addMenuItem:(NSDictionary *)item {
+    NSLog(@"Adding menu item.");
 	[_menuItems addObject:item];
+}
+
+- (void)menuHasCompleted
+{
+    NSLog(@"Emitting menu is complete signal now.");
+    [self->_menuIsComplete signal];
 }
 
 - (void)connectionDidDie

@@ -6,5 +6,5 @@ target_sources(nextcloudCore PRIVATE
 )
 
 if( APPLE )
-    target_sources(nextcloudCore PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/socketapisocket_mac.mm)
+    target_sources(nextcloudCore PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/socketapi_mac.mm)
 endif()

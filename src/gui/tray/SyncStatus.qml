@@ -11,7 +11,7 @@ RowLayout {
 
     property alias model: syncStatus
 
-    spacing: 0
+    spacing: Style.trayHorizontalMargin
 
     NC.SyncStatusSummary {
         id: syncStatus
@@ -19,15 +19,18 @@ RowLayout {
 
     Image {
         id: syncIcon
+        Layout.preferredWidth: Style.trayListItemIconSize * 0.85
+        Layout.preferredHeight: Style.trayListItemIconSize * 0.85
 
         Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
         Layout.topMargin: 16
+        Layout.rightMargin: Style.trayListItemIconSize * 0.15
         Layout.bottomMargin: 16
-        Layout.leftMargin: 16
+        Layout.leftMargin: Style.trayHorizontalMargin
 
         source: syncStatus.syncIcon
-        sourceSize.width: 32
-        sourceSize.height: 32
+        sourceSize.width: 64
+        sourceSize.height: 64
         rotation: syncStatus.syncing ? 0 : 0
     }
  
@@ -45,8 +48,7 @@ RowLayout {
 
         Layout.alignment: Qt.AlignVCenter
         Layout.topMargin: 8
-        Layout.rightMargin: 16
-        Layout.leftMargin: 10
+        Layout.rightMargin: Style.trayHorizontalMargin
         Layout.bottomMargin: 8
         Layout.fillWidth: true
         Layout.fillHeight: true
@@ -65,7 +67,7 @@ RowLayout {
         Loader {
             Layout.fillWidth: true
 
-            active: syncStatus.syncing;
+            active: syncStatus.syncing
             visible: syncStatus.syncing
             
             sourceComponent: ProgressBar {
