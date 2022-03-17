@@ -1517,6 +1517,149 @@ private slots:
         QCOMPARE(fakeFolder.currentLocalState().find("A/hello" DVSUFFIX)->size, 222);
         QCOMPARE(fakeFolder.currentLocalState().find("A/igno" DVSUFFIX)->size, 123);
     }
+
+    void testUpdateMetadataErrorManagement()
+    {
+        FakeFolder fakeFolder{FileInfo{}};
+        setupVfs(fakeFolder);
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        // Existing files are propagated just fine in both directions
+        fakeFolder.remoteModifier().mkdir(QStringLiteral("aaa"));
+        fakeFolder.remoteModifier().mkdir(QStringLiteral("aaa/subfolder"));
+        fakeFolder.remoteModifier().insert(QStringLiteral("aaa/subfolder/bar"));
+        QVERIFY(fakeFolder.syncOnce());
+
+        // New files on the remote create virtual files
+        fakeFolder.remoteModifier().setModTime(QStringLiteral("aaa/subfolder/bar"), QDateTime::fromSecsSinceEpoch(0));
+        QVERIFY(!fakeFolder.syncOnce());
+
+        QVERIFY(!fakeFolder.syncOnce());
+    }
+
+    void testInvalidFutureMtimeRecovery()
+    {
+        constexpr auto FUTURE_MTIME = 0xFFFFFFFF;
+        constexpr auto CURRENT_MTIME = 1646057277;
+
+        FakeFolder fakeFolder{FileInfo{}};
+        setupVfs(fakeFolder);
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        const QString fooFileRootFolder("foo");
+        const QString barFileRootFolder("bar");
+        const QString fooFileSubFolder("subfolder/foo");
+        const QString barFileSubFolder("subfolder/bar");
+        const QString fooFileAaaSubFolder("aaa/subfolder/foo");
+        const QString barFileAaaSubFolder("aaa/subfolder/bar");
+
+        fakeFolder.remoteModifier().insert(fooFileRootFolder);
+        fakeFolder.remoteModifier().insert(barFileRootFolder);
+        fakeFolder.remoteModifier().mkdir(QStringLiteral("subfolder"));
+        fakeFolder.remoteModifier().insert(fooFileSubFolder);
+        fakeFolder.remoteModifier().insert(barFileSubFolder);
+        fakeFolder.remoteModifier().mkdir(QStringLiteral("aaa"));
+        fakeFolder.remoteModifier().mkdir(QStringLiteral("aaa/subfolder"));
+        fakeFolder.remoteModifier().insert(fooFileAaaSubFolder);
+        fakeFolder.remoteModifier().insert(barFileAaaSubFolder);
+
+        QVERIFY(fakeFolder.syncOnce());
+
+        fakeFolder.remoteModifier().setModTimeKeepEtag(fooFileRootFolder, QDateTime::fromSecsSinceEpoch(CURRENT_MTIME));
+        fakeFolder.remoteModifier().setModTimeKeepEtag(barFileRootFolder, QDateTime::fromSecsSinceEpoch(CURRENT_MTIME));
+        fakeFolder.remoteModifier().setModTimeKeepEtag(fooFileSubFolder, QDateTime::fromSecsSinceEpoch(CURRENT_MTIME));
+        fakeFolder.remoteModifier().setModTimeKeepEtag(barFileSubFolder, QDateTime::fromSecsSinceEpoch(CURRENT_MTIME));
+        fakeFolder.remoteModifier().setModTimeKeepEtag(fooFileAaaSubFolder, QDateTime::fromSecsSinceEpoch(CURRENT_MTIME));
+        fakeFolder.remoteModifier().setModTimeKeepEtag(barFileAaaSubFolder, QDateTime::fromSecsSinceEpoch(CURRENT_MTIME));
+        fakeFolder.localModifier().setModTime(fooFileRootFolder + DVSUFFIX, QDateTime::fromSecsSinceEpoch(FUTURE_MTIME));
+        fakeFolder.localModifier().setModTime(barFileRootFolder + DVSUFFIX, QDateTime::fromSecsSinceEpoch(FUTURE_MTIME));
+        fakeFolder.localModifier().setModTime(fooFileSubFolder + DVSUFFIX, QDateTime::fromSecsSinceEpoch(FUTURE_MTIME));
+        fakeFolder.localModifier().setModTime(barFileSubFolder + DVSUFFIX, QDateTime::fromSecsSinceEpoch(FUTURE_MTIME));
+        fakeFolder.localModifier().setModTime(fooFileAaaSubFolder + DVSUFFIX, QDateTime::fromSecsSinceEpoch(FUTURE_MTIME));
+        fakeFolder.localModifier().setModTime(barFileAaaSubFolder + DVSUFFIX, QDateTime::fromSecsSinceEpoch(FUTURE_MTIME));
+
+        QVERIFY(fakeFolder.syncOnce());
+
+        QVERIFY(fakeFolder.syncOnce());
+    }
+
+    void testInvalidMtimeLocalDiscovery()
+    {
+        constexpr auto INVALID_MTIME1 = 0;
+        constexpr auto INVALID_MTIME2 = 0xFFFFFFFF;
+        constexpr auto CURRENT_MTIME = 1646057277;
+
+        FakeFolder fakeFolder{FileInfo{}};
+        setupVfs(fakeFolder);
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        QSignalSpy statusSpy(&fakeFolder.syncEngine().syncFileStatusTracker(), &SyncFileStatusTracker::fileStatusChanged);
+
+        const QString fooFileRootFolder("foo");
+        const QString barFileRootFolder("bar");
+        const QString fooFileSubFolder("subfolder/foo");
+        const QString barFileSubFolder("subfolder/bar");
+        const QString fooFileAaaSubFolder("aaa/subfolder/foo");
+        const QString barFileAaaSubFolder("aaa/subfolder/bar");
+
+        auto checkStatus = [&]() -> SyncFileStatus::SyncFileStatusTag {
+            auto file = QFileInfo{fakeFolder.syncEngine().localPath(), barFileAaaSubFolder};
+            auto locPath = fakeFolder.syncEngine().localPath();
+            auto itemFound = false;
+            // Start from the end to get the latest status
+            for (int i = statusSpy.size() - 1; i >= 0 && !itemFound; --i) {
+                if (QFileInfo(statusSpy.at(i)[0].toString()) == file) {
+                    itemFound = true;
+                    return statusSpy.at(i)[1].value<SyncFileStatus>().tag();
+                }
+            }
+
+            return {};
+        };
+
+        fakeFolder.localModifier().insert(fooFileRootFolder);
+        fakeFolder.localModifier().insert(barFileRootFolder);
+        fakeFolder.localModifier().mkdir(QStringLiteral("subfolder"));
+        fakeFolder.localModifier().insert(fooFileSubFolder);
+        fakeFolder.localModifier().insert(barFileSubFolder);
+        fakeFolder.localModifier().mkdir(QStringLiteral("aaa"));
+        fakeFolder.localModifier().mkdir(QStringLiteral("aaa/subfolder"));
+        fakeFolder.localModifier().insert(fooFileAaaSubFolder);
+        fakeFolder.localModifier().insert(barFileAaaSubFolder);
+        fakeFolder.localModifier().setModTime(barFileAaaSubFolder, QDateTime::fromSecsSinceEpoch(INVALID_MTIME1));
+
+        fakeFolder.scheduleSync();
+        fakeFolder.execUntilBeforePropagation();
+
+        QCOMPARE(checkStatus(), SyncFileStatus::StatusError);
+
+        fakeFolder.execUntilFinished();
+
+        fakeFolder.localModifier().setModTime(barFileAaaSubFolder, QDateTime::fromSecsSinceEpoch(CURRENT_MTIME));
+
+        QVERIFY(fakeFolder.syncOnce());
+
+        fakeFolder.localModifier().appendByte(barFileAaaSubFolder);
+        fakeFolder.localModifier().setModTime(barFileAaaSubFolder, QDateTime::fromSecsSinceEpoch(INVALID_MTIME1));
+
+        fakeFolder.scheduleSync();
+        fakeFolder.execUntilBeforePropagation();
+
+        QCOMPARE(checkStatus(), SyncFileStatus::StatusError);
+
+        fakeFolder.execUntilFinished();
+
+        fakeFolder.localModifier().setModTime(barFileAaaSubFolder, QDateTime::fromSecsSinceEpoch(CURRENT_MTIME));
+
+        QVERIFY(fakeFolder.syncOnce());
+
+        fakeFolder.localModifier().appendByte(barFileAaaSubFolder);
+        fakeFolder.localModifier().setModTime(barFileAaaSubFolder, QDateTime::fromSecsSinceEpoch(INVALID_MTIME2));
+
+        fakeFolder.scheduleSync();
+        fakeFolder.execUntilBeforePropagation();
+
+        QCOMPARE(checkStatus(), SyncFileStatus::StatusError);
+    }
 };
 
 QTEST_GUILESS_MAIN(TestSyncVirtualFiles)
