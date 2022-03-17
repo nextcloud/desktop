@@ -237,11 +237,8 @@ SocketApi::SocketApi(QObject *parent)
         // See issue #2388
         // + Theme::instance()->appName();
     } else if (Utility::isMac()) {
-        // This must match the code signing Team setting of the extension
-        // Example for developer builds (with ad-hoc signing identity): "" "com.owncloud.desktopclient" ".socketApi"
-        // Example for official signed packages: "9B5WD74GWJ." "com.owncloud.desktopclient" ".socketApi"
-        socketPath = SOCKETAPI_TEAM_IDENTIFIER_PREFIX APPLICATION_REV_DOMAIN ".socketApi";
-#ifdef Q_OS_MAC
+#ifdef Q_OS_MACOS
+        socketPath = socketApiSocketPath();
         CFURLRef url = (CFURLRef)CFAutorelease((CFURLRef)CFBundleCopyBundleURL(CFBundleGetMainBundle()));
         QString bundlePath = QUrl::fromCFURL(url).path();
 
@@ -269,14 +266,19 @@ SocketApi::SocketApi(QObject *parent)
         qCWarning(lcSocketApi) << "An unexpected system detected, this probably won't work.";
     }
 
-    SocketApiServer::removeServer(socketPath);
-    QFileInfo info(socketPath);
-    if (!info.dir().exists()) {
-        bool result = info.dir().mkpath(".");
-        qCDebug(lcSocketApi) << "creating" << info.dir().path() << result;
-        if (result) {
-            QFile::setPermissions(socketPath,
-                QFile::Permissions(QFile::ReadOwner + QFile::WriteOwner + QFile::ExeOwner));
+    QLocalServer::removeServer(socketPath);
+    // Create the socket path:
+    if (!Utility::isMac()) {
+        // Not on macOS: there the directory is there, and created for us by the sandboxing
+        // environment, because we belong to an App Group.
+        QFileInfo info(socketPath);
+        if (!info.dir().exists()) {
+            bool result = info.dir().mkpath(".");
+            qCDebug(lcSocketApi) << "creating" << info.dir().path() << result;
+            if (result) {
+                QFile::setPermissions(socketPath,
+                    QFile::Permissions(QFile::ReadOwner + QFile::WriteOwner + QFile::ExeOwner));
+            }
         }
     }
     if (!_localServer.listen(socketPath)) {
@@ -285,7 +287,7 @@ SocketApi::SocketApi(QObject *parent)
         qCInfo(lcSocketApi) << "server started, listening at " << socketPath;
     }
 
-    connect(&_localServer, &SocketApiServer::newConnection, this, &SocketApi::slotNewConnection);
+    connect(&_localServer, &QLocalServer::newConnection, this, &SocketApi::slotNewConnection);
 
     // folder watcher
     connect(FolderMan::instance(), &FolderMan::folderSyncStateChange, this, &SocketApi::slotUpdateFolderView);
@@ -302,8 +304,6 @@ SocketApi::~SocketApi()
 
 void SocketApi::slotNewConnection()
 {
-    // Note that on macOS this is not actually a line-based QIODevice, it's a SocketApiSocket which is our
-    // custom message based macOS IPC.
     QIODevice *socket = _localServer.nextPendingConnection();
 
     if (!socket) {
